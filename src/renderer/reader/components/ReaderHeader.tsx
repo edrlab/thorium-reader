@@ -41,9 +41,8 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import { IEventBusPdfPlayer, IPdfPlayerScale } from "../pdf/common/pdfReader.type";
 import HeaderSearch from "./header/HeaderSearch";
-import { IReaderMenuProps, IReaderOptionsProps } from "./options-values";
+import { IReaderMenuProps, IReaderSettingsProps } from "./options-values";
 import ReaderMenu from "./ReaderMenu";
-import { ReaderOptions } from "./ReaderOptions";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
@@ -111,7 +110,7 @@ interface IBaseProps extends TranslatorProps {
     isOnSearch: boolean;
     displayPublicationInfo: () => void;
     readerMenuProps: IReaderMenuProps;
-    readerOptionsProps: IReaderOptionsProps;
+    ReaderSettingsProps: IReaderSettingsProps;
     currentLocation: LocatorExtended;
     isDivina: boolean;
     isPdf: boolean;
@@ -730,10 +729,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             >
                                 <SVG ariaHidden={true} svg={SettingsIcon} />
                             </button>
-                            <ReaderOptions {...this.props.readerOptionsProps}
-                                isDivina={this.props.isDivina}
-                                isPdf={this.props.isPdf}
-                            />
+
                         </li>
                         <li
                             {...(this.props.menuOpen &&

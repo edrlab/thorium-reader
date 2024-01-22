@@ -7,11 +7,11 @@
 
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
+import * as Popover from "@radix-ui/react-popover";
 import * as Tabs from "@radix-ui/react-tabs";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import classNames from "classnames";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import * as TextAreaIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
 import * as LayoutIcon from "readium-desktop/renderer/assets/icons/layout-icon.svg";
 import * as AlignLeftIcon from "readium-desktop/renderer/assets/icons/alignleft-icon.svg";
@@ -26,7 +26,7 @@ import * as AlignJustifyIcon from "readium-desktop/renderer/assets/icons/align-j
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import { IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../pdf/common/pdfReader.type";
-import { IReaderOptionsProps } from "./options-values";
+import { IReaderSettingsProps } from "./options-values";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
@@ -36,9 +36,10 @@ import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app
 import debounce from "debounce";
 import fontList from "readium-desktop/utils/fontList";
 import { readerConfigInitialState, readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
+import { PopoverDialogContext } from "./PopoverDialog";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends IReaderOptionsProps {
+interface IBaseProps extends IReaderSettingsProps {
 }
 
 interface IState {
@@ -714,8 +715,8 @@ const AllowCustom = ({ overridePublisherDefault, set }:
 };
 
 
-export const ReaderOptions: React.FC<IBaseProps> = (props) => {
-    const { setSettings, readerConfig, open, toggleMenu, pdfEventBus } = props;
+export const ReaderSettings: React.FC<IBaseProps> = (props) => {
+    const { setSettings, readerConfig, open, pdfEventBus } = props;
     const [__] = useTranslator();
 
     const [pdfState, setPdfState] = React.useState<IState>({
@@ -771,7 +772,7 @@ export const ReaderOptions: React.FC<IBaseProps> = (props) => {
 
     const setPartialSettingsDebounced = React.useMemo(() => {
         const saveConfig = (config: Partial<ReaderConfig>) => {
-            setSettings({...readerConfig, ...config});
+            setSettings({ ...readerConfig, ...config });
         };
         return debounce(saveConfig, 400);
     }, [readerConfig]);
@@ -784,9 +785,11 @@ export const ReaderOptions: React.FC<IBaseProps> = (props) => {
     const [overridePublisherDefault, setOverride] = React.useState(false);
     const [tabValue, setTabValue] = React.useState("tab-display");
 
+
+
     React.useEffect(() => {
         let ov = false;
-        for (const [key,value] of Object.entries(readerConfigInitialStateDefaultPublisher)) {
+        for (const [key, value] of Object.entries(readerConfigInitialStateDefaultPublisher)) {
             if (readerConfig[key as keyof typeof readerConfigInitialState] === value) continue;
             else {
                 ov = true;
@@ -806,6 +809,8 @@ export const ReaderOptions: React.FC<IBaseProps> = (props) => {
         }
     }, [overridePublisherDefault]);
 
+    const ctx = React.useContext(PopoverDialogContext);
+    if (!ctx) return <></>;
 
     if (!readerConfig) {
         return <></>;
@@ -819,6 +824,7 @@ export const ReaderOptions: React.FC<IBaseProps> = (props) => {
     const isEpub = !isDivina && !isPdf;
 
     const sections: Array<React.JSX.Element> = [];
+    const options: Array<{ id: number, value: string, name: string, disabled: boolean }> = [];
 
     const TextTrigger =
         <Tabs.Trigger value="tab-text" disabled={overridePublisherDefault ? false : true} key={"tab-text"} data-value={"tab-text"}>
@@ -826,12 +832,14 @@ export const ReaderOptions: React.FC<IBaseProps> = (props) => {
             <h3>{__("reader.settings.text")}</h3>
             {overridePublisherDefault ? <></> : <i>{__("reader.settings.disabled")}</i>}
         </Tabs.Trigger>;
+    const optionTextItem = { id: 0, value: "tab-text", name: __("reader.settings.text"), disabled: overridePublisherDefault ? false : true };
 
     const DivinaTrigger =
         <Tabs.Trigger value="tab-divina" disabled={overridePublisherDefault ? false : true} key={"tab-divina"}>
             <SVG ariaHidden svg={TextAreaIcon} />
             <h3>{__("reader.settings.disposition.title")}</h3>
         </Tabs.Trigger>;
+    const optionDivinaItem = { id: 1, value: "tab-divina", name: __("reader.settings.disposition.title"), disabled: overridePublisherDefault ? false : true };
 
     const SpacingTrigger =
         <Tabs.Trigger value="tab-spacing" disabled={overridePublisherDefault ? false : true} key={"tab-spacing"} data-value={"tab-spacing"}>
@@ -839,122 +847,195 @@ export const ReaderOptions: React.FC<IBaseProps> = (props) => {
             <h3>{__("reader.settings.spacing")}</h3>
             {overridePublisherDefault ? <></> : <i>{__("reader.settings.disabled")}</i>}
         </Tabs.Trigger>;
+    const optionSpacingItem = { id: 2, value: "tab-spacing", name: __("reader.settings.spacing"), disabled: overridePublisherDefault ? false : true };
 
     const DisplayTrigger =
         <Tabs.Trigger value="tab-display" key={"tab-display"}>
             <SVG ariaHidden svg={LayoutIcon} />
             <h3>{__("reader.settings.display")}</h3>
         </Tabs.Trigger>;
+    const optionDisplayItem = { id: 3, value: "tab-display", name: __("reader.settings.display"), disabled: false };
 
     const AudioTrigger =
         <Tabs.Trigger value="tab-audio" key={"tab-audio"}>
             <SVG ariaHidden svg={VolumeUpIcon} />
             <h3>{__("reader.media-overlays.title")}</h3>
         </Tabs.Trigger>;
+    const optionAudioItem = { id: 4, value: "tab-audio", name: __("reader.media-overlays.title"), disabled: false };
 
     const PdfZoomTrigger =
         <Tabs.Trigger value="tab-pdfzoom" key={"tab-pdfzoom"}>
             <SVG ariaHidden svg={VolumeUpIcon} />
             <h3>{__("reader.settings.pdfZoom.title")}</h3>
         </Tabs.Trigger>;
+    const optionPdfZoomItem = { id: 5, value: "tab-pdfzoom", name: __("reader.settings.pdfZoom.title"), disabled: false };
 
     const AllowCustomContainer =
-        <div className={stylesSettings.allowCustom}>
+        <div className={stylesSettings.allowCustom} key={"allowCustom"}>
             <AllowCustom overridePublisherDefault={overridePublisherDefault} set={setOverridePublisherDefault} />
         </div>;
 
 
     if (isDivina) {
         sections.push(DivinaTrigger);
+        options.push(optionDivinaItem);
         setTabValue("tab-divina");
     }
     if (isPdf) {
         sections.push(PdfZoomTrigger);
+        options.push(optionPdfZoomItem);
         setTabValue("tab-pdfzoom");
     }
     if (isPdf || isEpub) {
         sections.push(DisplayTrigger);
+        options.push(optionDisplayItem);
     }
     if (isEpub) {
         sections.push(AudioTrigger);
+        options.push(optionAudioItem);
         sections.push(AllowCustomContainer);
         sections.push(TextTrigger);
+        options.push(optionTextItem);
         sections.push(SpacingTrigger);
+        options.push(optionSpacingItem);
     }
 
-    const nightTheme = readerConfig.night;
-    const sepiaTheme = readerConfig.sepia; // mutually exclusive
+
+    const { setDockingMode, dockedMode } = ctx;
+    const setDockingModeFull = () => setDockingMode("full");
+    const setDockingModeLeftSide = () => setDockingMode("left");
+    const setDockingModeRightSide = () => setDockingMode("right");
+
+    const optionSelected = options.find(({ value }) => value === tabValue)?.id || 0;
+    const optionDisabled = options.map(({ id, disabled }) => disabled ? id : "").filter((v) => !!v) as number[];
+
+    const Close = dockedMode ? Popover.Close : Dialog.Close;
+
+    console.log("RENDER");
 
     const { handleDivinaReadingMode, divinaReadingMode, divinaReadingModeSupported } = props;
     return (
-        <Dialog.Root
-            open={open}
-            onOpenChange={
-                (open) => {
-                    console.log("Settings modal state open=", open);
-                    toggleMenu();
-                }}
-        >
-            <Dialog.Portal>
-                <div className={stylesModals.modal_dialog_overlay}></div>
-                <Dialog.Content className={classNames(stylesModals.modal_dialog_reader, nightTheme ? stylesReader.nightMode : sepiaTheme ? stylesReader.sepiaMode : "")}>
-                    <Tabs.Root value={tabValue} defaultValue={tabValue} onValueChange={setTabValue} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
-                        <Tabs.List className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
-                            {sections}
-                        </Tabs.List>
-                        <div className={stylesSettings.settings_content}>
-                            <Tabs.Content value="tab-divina" tabIndex={-1}>
-                                <TabTitle title={__("reader.settings.disposition.title")} />
-                                <div className={stylesSettings.settings_tab}>
-                                    <DivinaSetReadingMode handleDivinaReadingMode={handleDivinaReadingMode} divinaReadingMode={divinaReadingMode} divinaReadingModeSupported={divinaReadingModeSupported} />
-                                </div>
-                            </Tabs.Content>
-                            <Tabs.Content value="tab-pdfzoom" tabIndex={-1}>
-                                <TabTitle title={__("reader.settings.disposition.title")} />
-                                <div className={stylesSettings.settings_tab}>
-                                    <PdfZoom pdfEventBus={pdfEventBus} pdfScale={pdfState.pdfScale} pdfView={pdfState.pdfView}/>
-                                </div>
-                            </Tabs.Content>
-                            <Tabs.Content value="tab-text" tabIndex={-1}>
-                                <TabTitle title={__("reader.settings.text")} />
-                                <div className={classNames(stylesSettings.settings_tab, stylesSettings.settings_reading_text, stylesSettings.section)}>
-                                    <FontSize config={readerConfig} set={setPartialSettingsDebounced}/>
-                                    <FontFamily config={readerConfig} set={setPartialSettingsDebounced}/>
-                                </div>
-                            </Tabs.Content>
-                            <Tabs.Content value="tab-spacing" tabIndex={-1}>
-                                <TabTitle title={__("reader.settings.spacing")} />
-                                <div className={stylesSettings.settings_tab}>
-                                    <ReadingSpacing config={readerConfig} set={setPartialSettingsDebounced} />
-                                </div>
-                            </Tabs.Content>
-                            <Tabs.Content value="tab-display" tabIndex={-1}>
-                                <TabTitle title={__("reader.settings.display")} />
-                                <section className={stylesSettings.settings_tab}>
-                                    {isPdf ? <></> : <Theme theme={readerConfig} set={setPartialSettingsDebounced}/>}
-                                    {isPdf ? <></> : <ReadingDisplayLayout config={readerConfig} set={setPartialSettingsDebounced}/>}
-                                    {isPdf ? <></> : <ReadingDisplayAlign config={readerConfig} set={setPartialSettingsDebounced} />}
-                                    <ReadingDisplayCol config={readerConfig} set={setPartialSettingsDebounced} isPdf={props.isPdf} pdfEventBus={props.pdfEventBus} pdfCol={pdfState.pdfCol}/>
-                                    {isPdf ? <></> : <ReadingDisplayMathJax config={readerConfig} set={setPartialSettingsDebounced} />}
-                                </section>
-                            </Tabs.Content>
-                            <Tabs.Content value="tab-audio" tabIndex={-1}>
-                                <TabTitle title={__("reader.media-overlays.title")} />
-                                <section className={stylesSettings.settings_tab}>
-                                    <ReadingAudio config={readerConfig} set={setPartialSettingsDebounced}/>
-                                </section>
-                            </Tabs.Content>
-                        </div>
-                    </Tabs.Root>
-                    <div className={stylesSettings.close_button_div}>
-                        <Dialog.Close asChild>
+        <div>
+            {
+                dockedMode ? <div key="docked-header">
+                    <ComboBox label={"change this!"} defaultItems={options} selectedKey={optionSelected}
+                        disabledKeys={optionDisabled}
+                        svg={TextAreaIcon}
+                        onSelectionChange={(id) => {
+                            console.log("selectionchange: ", id);
+                            const value = options.find(({ id: _id }) => _id === id)?.value;
+                            if (value) {
+                                setTabValue(value);
+                                console.log("set Tab Value = ", value);
+
+                            } else {
+                                console.error("Combobox No value !!!");
+                            }
+                        }}
+                        onInputChange={(v) => {
+                            console.log("inputchange: ", v);
+
+                            const value = options.find(({ name }) => name === v)?.value;
+                            if (value) {
+                                setTabValue(value);
+                                console.log("set Tab Value = ", value);
+
+                            } else {
+                                console.error("Combobox No value !!!");
+                            }
+                        }}>
+                        {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                    </ComboBox>
+
+                    <div key="docked-header-btn">
+                        <button className={stylesButtons.button_transparency_icon} aria-label="left" onClick={setDockingModeLeftSide}>
+                            <SVG ariaHidden={true} svg={QuitIcon} />
+                        </button>
+                        <button className={stylesButtons.button_transparency_icon} aria-label="right" onClick={setDockingModeRightSide}>
+                            <SVG ariaHidden={true} svg={QuitIcon} />
+                        </button>
+                        <button className={stylesButtons.button_transparency_icon} aria-label="full" onClick={setDockingModeFull}>
+                            <SVG ariaHidden={true} svg={QuitIcon} />
+                        </button>
+
+                        <Close asChild>
                             <button className={stylesButtons.button_transparency_icon} aria-label="Close">
                                 <SVG ariaHidden={true} svg={QuitIcon} />
                             </button>
-                        </Dialog.Close>
+                        </Close>
                     </div>
-                </Dialog.Content>
-            </Dialog.Portal>
-        </Dialog.Root>
+                </div> : <></>
+            }
+            <Tabs.Root value={tabValue} defaultValue={tabValue} onValueChange={dockedMode ? null : setTabValue} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
+                {
+                    dockedMode ? <></> :
+                        <Tabs.List className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
+                            {sections}
+                        </Tabs.List>
+                }
+                <div className={stylesSettings.settings_content}>
+                    <Tabs.Content value="tab-divina" tabIndex={-1}>
+                        <TabTitle title={__("reader.settings.disposition.title")} />
+                        <div className={stylesSettings.settings_tab}>
+                            <DivinaSetReadingMode handleDivinaReadingMode={handleDivinaReadingMode} divinaReadingMode={divinaReadingMode} divinaReadingModeSupported={divinaReadingModeSupported} />
+                        </div>
+                    </Tabs.Content>
+                    <Tabs.Content value="tab-pdfzoom" tabIndex={-1}>
+                        <TabTitle title={__("reader.settings.disposition.title")} />
+                        <div className={stylesSettings.settings_tab}>
+                            <PdfZoom pdfEventBus={pdfEventBus} pdfScale={pdfState.pdfScale} pdfView={pdfState.pdfView} />
+                        </div>
+                    </Tabs.Content>
+                    <Tabs.Content value="tab-text" tabIndex={-1}>
+                        <TabTitle title={__("reader.settings.text")} />
+                        <div className={classNames(stylesSettings.settings_tab, stylesSettings.settings_reading_text, stylesSettings.section)}>
+                            <FontSize config={readerConfig} set={setPartialSettingsDebounced} />
+                            <FontFamily config={readerConfig} set={setPartialSettingsDebounced} />
+                        </div>
+                    </Tabs.Content>
+                    <Tabs.Content value="tab-spacing" tabIndex={-1}>
+                        <TabTitle title={__("reader.settings.spacing")} />
+                        <div className={stylesSettings.settings_tab}>
+                            <ReadingSpacing config={readerConfig} set={setPartialSettingsDebounced} />
+                        </div>
+                    </Tabs.Content>
+                    <Tabs.Content value="tab-display" tabIndex={-1}>
+                        <TabTitle title={__("reader.settings.display")} />
+                        <section className={stylesSettings.settings_tab}>
+                            {isPdf ? <></> : <Theme theme={readerConfig} set={setPartialSettingsDebounced} />}
+                            {isPdf ? <></> : <ReadingDisplayLayout config={readerConfig} set={setPartialSettingsDebounced} />}
+                            {isPdf ? <></> : <ReadingDisplayAlign config={readerConfig} set={setPartialSettingsDebounced} />}
+                            <ReadingDisplayCol config={readerConfig} set={setPartialSettingsDebounced} isPdf={props.isPdf} pdfEventBus={props.pdfEventBus} pdfCol={pdfState.pdfCol} />
+                            {isPdf ? <></> : <ReadingDisplayMathJax config={readerConfig} set={setPartialSettingsDebounced} />}
+                        </section>
+                    </Tabs.Content>
+                    <Tabs.Content value="tab-audio" tabIndex={-1}>
+                        <TabTitle title={__("reader.media-overlays.title")} />
+                        <section className={stylesSettings.settings_tab}>
+                            <ReadingAudio config={readerConfig} set={setPartialSettingsDebounced} />
+                        </section>
+                    </Tabs.Content>
+                </div>
+            </Tabs.Root>
+            {
+                dockedMode ? <></> :
+                    <div key="modal-header" className={stylesSettings.close_button_div}>
+                        <button className={stylesButtons.button_transparency_icon} aria-label="left" onClick={setDockingModeLeftSide}>
+                            <SVG ariaHidden={true} svg={QuitIcon} />
+                        </button>
+                        <button className={stylesButtons.button_transparency_icon} aria-label="right" onClick={setDockingModeRightSide}>
+                            <SVG ariaHidden={true} svg={QuitIcon} />
+                        </button>
+                        <button className={stylesButtons.button_transparency_icon} aria-label="full" onClick={setDockingModeFull}>
+                            <SVG ariaHidden={true} svg={QuitIcon} />
+                        </button>
+                        <Close asChild>
+                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                                <SVG ariaHidden={true} svg={QuitIcon} />
+                            </button>
+                        </Close>
+                    </div>
+            }
+        </div>
     );
 };

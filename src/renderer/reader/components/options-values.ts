@@ -127,7 +127,7 @@ export const isDivinaReadingMode = (v: any): v is TdivinaReadingMode => {
     return ["single", "double", "scroll", "guided"].includes(v);
 };
 
-export interface IReaderOptionsProps {
+export interface IReaderSettingsProps {
     indexes: AdjustableSettingsNumber;
     open: boolean;
     readerConfig: ReaderConfig;
