@@ -1,0 +1,81 @@
+.toolbar_navigation {
+    height: 50px;
+    width: 100%;
+    padding: 0;
+    background-color: var(--color-extralight-grey);
+    border-bottom: 1px solid var(--color-medium-grey);
+    box-sizing: border-box;
+
+    > ul {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: inherit;
+        margin: 0;
+        list-style-type: none;
+        padding: 0 20px;
+
+        .tts_toolbar {
+            justify-content: center;
+        }
+
+        .menu_option {
+            justify-content: end;
+        }
+
+        .pdf_options {
+            max-width: 100px;
+        }
+
+        li {
+            height: 100%;
+            width: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+
+            .menu_button {
+                width: inherit;
+                height: inherit;
+                cursor: pointer;
+                padding: 5px;
+    
+                svg {
+                    height: 30px;
+                    width: 30px;
+                    fill: var(--color-blue);
+                    color: var(--color-blue);
+                }
+            }
+
+            input {
+                display: none;
+            }
+
+            label {
+                display: block;
+                height: 30px!important;
+                width: 30px!important;
+                align-items: center;
+
+                svg {
+                    width: inherit;
+                    height: inherit;
+                    fill: var(--color-blue);
+                }
+            }
+        }
+
+        > ul {
+            display: flex;
+            padding: 0;
+            flex: 1;
+        }
+    }
+}
+
+.active_svg {
+    fill: white!important;
+    color: white!important;
+}

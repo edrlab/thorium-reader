@@ -28,6 +28,7 @@ import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-2
 import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/sharp-crop_free-24px.svg";
 import * as QuitFullscreenIcon from "readium-desktop/renderer/assets/icons/sharp-uncrop_free-24px.svg";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
+import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -357,7 +358,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             !this.props.isDivina && !this.props.isPdf;
         return (
             <nav
-                className={classNames(stylesReader.main_navigation,
+                className={classNames(stylesReaderHeader.toolbar_navigation,
                     this.props.fullscreen ? stylesReader.main_navigation_fullscreen : undefined,
                     showAudioTTSToolbar || this.props.isDivina ? stylesReader.hasTtsAudio : undefined,
                     (this.props.publicationHasMediaOverlays &&
@@ -370,46 +371,47 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                 aria-label={__("accessibility.toolbar")}
             >
                 <ul>
-
-                    {(this.props.mode === ReaderMode.Attached) ? (
-                        <li className={classNames(stylesReader.showInFullScreen)}>
-                            <button
-                                className={stylesReader.menu_button}
-                                style={{transform:"rotate(-90deg)"}}
-                                onClick={this.props.handleReaderClose}
-                                title={__("reader.navigation.backHomeTitle")}
-                            >
-                                <SVG ariaHidden={true} svg={BackIcon} />
-                            </button>
-                        </li>
-                    ) : (<></>)
-                    }
-                    <li>
-                        <PublicationInfoReaderWithRadix displayPublicationInfo={this.props.displayPublicationInfo}>
-                            <PublicationInfoReaderWithRadixTrigger asChild>
+                    <ul>
+                        {(this.props.mode === ReaderMode.Attached) ? (
+                            <li className={classNames(stylesReader.showInFullScreen)}>
                                 <button
                                     className={stylesReader.menu_button}
-                                    ref={this.infoMenuButtonRef}
-                                    title={__("reader.navigation.infoTitle")}
+                                    style={{transform:"rotate(-90deg)"}}
+                                    onClick={this.props.handleReaderClose}
+                                    title={__("reader.navigation.backHomeTitle")}
                                 >
-                                    <SVG ariaHidden={true} svg={InfosIcon} />
+                                    <SVG ariaHidden={true} svg={BackIcon} />
                                 </button>
-                            </PublicationInfoReaderWithRadixTrigger>
-                            <PublicationInfoReaderWithRadixContent />
-                        </PublicationInfoReaderWithRadix>
-                    </li>
-                    {(this.props.mode === ReaderMode.Attached) ? (
+                            </li>
+                        ) : (<></>)
+                        }
                         <li>
-                            <button
-                                className={stylesReader.menu_button}
-                                onClick={this.props.handleReaderDetach}
-                                title={__("reader.navigation.detachWindowTitle")}
-                            >
-                                <SVG ariaHidden={true} svg={DetachIcon} />
-                            </button>
+                            <PublicationInfoReaderWithRadix displayPublicationInfo={this.props.displayPublicationInfo}>
+                                <PublicationInfoReaderWithRadixTrigger asChild>
+                                    <button
+                                        className={stylesReader.menu_button}
+                                        ref={this.infoMenuButtonRef}
+                                        title={__("reader.navigation.infoTitle")}
+                                    >
+                                        <SVG ariaHidden={true} svg={InfosIcon} />
+                                    </button>
+                                </PublicationInfoReaderWithRadixTrigger>
+                                <PublicationInfoReaderWithRadixContent />
+                            </PublicationInfoReaderWithRadix>
                         </li>
-                    ) : (<></>)
-                    }
+                        {(this.props.mode === ReaderMode.Attached) ? (
+                            <li>
+                                <button
+                                    className={stylesReader.menu_button}
+                                    onClick={this.props.handleReaderDetach}
+                                    title={__("reader.navigation.detachWindowTitle")}
+                                >
+                                    <SVG ariaHidden={true} svg={DetachIcon} />
+                                </button>
+                            </li>
+                        ) : (<></>)
+                        }
+                    </ul>
 
                     <ul className={classNames(stylesReader.tts_toolbar, stylesReader.showInFullScreen)}>
                         {
@@ -549,7 +551,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                         __("reader.tts.next")
                                                 }
                                             >
-                                                <SVG ariaHidden={true} svg={SkipNext} />
+                                                <SVG ariaHidden={true} svg={SkipNext} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""} />
                                             </button>
                                         </li>
                                         <li className={stylesReader.ttsSelectRate}>
@@ -622,12 +624,15 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     </>
                         }
                     </ul>
-                    <ul className={stylesReader.menu_option}>
+
+                    {
+                            this.props.isPdf || this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed" ?
+                    <ul className={classNames(stylesReader.menu_option, stylesReaderHeader.pdf_options)}>
                         {
                             this.props.isPdf
                                 ? <li
                                     {...(this.state.pdfScaleMode === "page-width" &&
-                                        { style: { backgroundColor: "rgb(193, 193, 193)" } })}
+                                        { style: { backgroundColor: "var(--color-blue" } })}
                                 >
                                     <input
                                         id="pdfScaleButton"
@@ -642,13 +647,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         htmlFor="pdfScaleButton"
                                         className={stylesReader.menu_button}
                                     >
-                                        <SVG svg={viewMode} title={__("reader.navigation.pdfscalemode")} />
+                                        <SVG svg={viewMode} title={__("reader.navigation.pdfscalemode")} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""} />
                                     </label>
                                 </li>
                                 : (this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed"
                                     ? <li
                                         {...(this.state.fxlZoomPercent !== 0 &&
-                                            { style: { backgroundColor: "rgb(193, 193, 193)" } })}
+                                            { style: { backgroundColor: "var(--color-blue"  } })}
                                     >
                                         <label
                                             htmlFor="buttonFXLZoom"
@@ -677,23 +682,25 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             aria-label={__("reader.navigation.pdfscalemode")}
                                             title={__("reader.navigation.pdfscalemode")}
                                         >
-                                            <SVG ariaHidden={true} svg={viewMode} />
+                                            <SVG ariaHidden={true} svg={viewMode} className={this.state.pdfScaleMode === "page-width" ? stylesReaderHeader.active_svg : ""} />
                                         </button>
                                     </li>
                                     : <></>)
                         }
                     </ul>
+                    : <></>
+                    }
 
                     <ul className={stylesReader.menu_option}>
                         <li
-                            {...(this.props.isOnSearch && { style: { backgroundColor: "rgb(193, 193, 193)" } })}
+                            {...(this.props.isOnSearch && { style: { backgroundColor: "var(--color-blue"  } })}
                         >
                             <HeaderSearch shortcutEnable={this.props.shortcutEnable}></HeaderSearch>
                         </li>
 
                         <li
                             {...(this.props.isOnBookmark &&
-                                { style: { backgroundColor: "rgb(193, 193, 193)" } })}
+                                { style: { backgroundColor: "var(--color-blue" } })}
                         >
                             <input
                                 id="bookmarkButton"
@@ -712,12 +719,12 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 aria-hidden="true"
                                 className={stylesReader.menu_button}
                             >
-                                <SVG ariaHidden={true} svg={MarkIcon} />
+                                <SVG ariaHidden={true} svg={MarkIcon} className={this.props.isOnBookmark ? stylesReaderHeader.active_svg : ""} />
                             </label>
                         </li>
                         <li
                             {...(this.props.settingsOpen &&
-                                { style: { backgroundColor: "rgb(193, 193, 193)" } })}
+                                { style: { backgroundColor: "var(--color-blue" } })}
                         >
                             <button
                                 aria-pressed={this.props.settingsOpen}
@@ -727,13 +734,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 ref={this.settingsMenuButtonRef}
                                 title={__("reader.navigation.settingsTitle")}
                             >
-                                <SVG ariaHidden={true} svg={SettingsIcon} />
+                                <SVG ariaHidden={true} svg={SettingsIcon} className={this.props.settingsOpen ? stylesReaderHeader.active_svg : ""} />
                             </button>
 
                         </li>
                         <li
                             {...(this.props.menuOpen &&
-                                { style: { backgroundColor: "rgb(193, 193, 193)" } })}
+                                { style: { backgroundColor: "var(--color-blue)"} })}
                         >
                             <button
                                 aria-pressed={this.props.menuOpen}
@@ -743,7 +750,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 ref={this.navigationMenuButtonRef}
                                 title={__("reader.navigation.openTableOfContentsTitle")}
                             >
-                                <SVG ariaHidden={true} svg={TOCIcon} />
+                                 <SVG ariaHidden={true} svg={TOCIcon} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""}/>
                             </button>
                             <ReaderMenu {...this.props.readerMenuProps}
                                 isDivina={this.props.isDivina}

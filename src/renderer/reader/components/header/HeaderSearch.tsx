@@ -11,6 +11,7 @@ import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/k
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
+import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -104,7 +105,7 @@ class HeaderSearch extends React.Component<IProps, undefined> {
             // ref={this.settingsMenuButtonRef}
                 title={__("reader.navigation.magnifyingGlassButton")}
             >
-                <SVG ariaHidden={true} svg={magnifyingGlass} />
+                <SVG ariaHidden={true} svg={magnifyingGlass} className={this.props.isOnSearch ? stylesReaderHeader.active_svg : ""} />
             </button>
         );
     }

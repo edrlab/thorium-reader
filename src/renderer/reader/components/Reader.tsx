@@ -146,13 +146,13 @@ const handleLinkUrl_UpdateHistoryState = (url: string, isFromOnPopState = false)
         // console.log(">> HISTORY POP STATE DO URL (1)", url_);
 
         if (window.history.state?.data === url_) {
-            window.history.replaceState({data: url_, index: windowHistory._length - 1}, "");
+            window.history.replaceState({ data: url_, index: windowHistory._length - 1 }, "");
         } else {
             windowHistory._length++;
-            window.history.pushState({data: url_, index: windowHistory._length - 1}, "");
+            window.history.pushState({ data: url_, index: windowHistory._length - 1 }, "");
         }
         if (windowHistory._readerInstance) {
-            windowHistory._readerInstance.setState({historyCanGoForward: false, historyCanGoBack: windowHistory._length > 1});
+            windowHistory._readerInstance.setState({ historyCanGoForward: false, historyCanGoBack: windowHistory._length > 1 });
         }
     }
 };
@@ -309,10 +309,10 @@ class Reader extends React.Component<IProps, IState> {
         };
 
         ttsListen((ttss: TTSStateEnum) => {
-            this.setState({ttsState: ttss});
+            this.setState({ ttsState: ttss });
         });
         mediaOverlaysListen((mos: MediaOverlaysStateEnum) => {
-            this.setState({mediaOverlaysState: mos});
+            this.setState({ mediaOverlaysState: mos });
         });
 
         this.handleTTSPlay = this.handleTTSPlay.bind(this);
@@ -526,7 +526,7 @@ class Reader extends React.Component<IProps, IState> {
 
     public async componentDidUpdate(oldProps: IProps, oldState: IState) {
         // if (oldProps.readerMode !== this.props.readerMode) {
-            // console.log("READER MODE = ", this.props.readerMode === ReaderMode.Detached ? "detached" : "attached");
+        // console.log("READER MODE = ", this.props.readerMode === ReaderMode.Detached ? "detached" : "attached");
         // }
         if (oldProps.bookmarks !== this.props.bookmarks ||
             oldState.currentLocation !== this.state.currentLocation) {
@@ -614,58 +614,60 @@ class Reader extends React.Component<IProps, IState> {
                     label={this.props.__("accessibility.skipLink")}
                 />
                 <div className={stylesReader.root}>
-                    <PopoverDialogRoot open={ReaderSettingsProps.open} toggleMenu={ReaderSettingsProps.toggleMenu}>
+                    <PopoverDialogRoot open={ReaderSettingsProps.open} toggleMenu={ReaderSettingsProps.toggleMenu} >
                         <PopoverDialogAnchor>
-                            <ReaderHeader
-                                shortcutEnable={this.state.shortcutEnable}
-                                infoOpen={this.props.infoOpen}
-                                menuOpen={this.state.menuOpen}
-                                settingsOpen={this.state.settingsOpen}
+                            <div> {/* Anchor Element */}
+                                <ReaderHeader
+                                    shortcutEnable={this.state.shortcutEnable}
+                                    infoOpen={this.props.infoOpen}
+                                    menuOpen={this.state.menuOpen}
+                                    settingsOpen={this.state.settingsOpen}
 
-                                handleTTSPlay={this.handleTTSPlay}
-                                handleTTSResume={this.handleTTSResume}
-                                handleTTSStop={this.handleTTSStop}
-                                handleTTSPrevious={this.handleTTSPrevious}
-                                handleTTSNext={this.handleTTSNext}
-                                handleTTSPause={this.handleTTSPause}
-                                handleTTSPlaybackRate={this.handleTTSPlaybackRate}
-                                handleTTSVoice={this.handleTTSVoice}
-                                ttsState={this.state.ttsState}
-                                ttsPlaybackRate={this.state.ttsPlaybackRate}
-                                ttsVoice={this.state.ttsVoice}
+                                    handleTTSPlay={this.handleTTSPlay}
+                                    handleTTSResume={this.handleTTSResume}
+                                    handleTTSStop={this.handleTTSStop}
+                                    handleTTSPrevious={this.handleTTSPrevious}
+                                    handleTTSNext={this.handleTTSNext}
+                                    handleTTSPause={this.handleTTSPause}
+                                    handleTTSPlaybackRate={this.handleTTSPlaybackRate}
+                                    handleTTSVoice={this.handleTTSVoice}
+                                    ttsState={this.state.ttsState}
+                                    ttsPlaybackRate={this.state.ttsPlaybackRate}
+                                    ttsVoice={this.state.ttsVoice}
 
-                                handleMediaOverlaysPlay={this.handleMediaOverlaysPlay}
-                                handleMediaOverlaysResume={this.handleMediaOverlaysResume}
-                                handleMediaOverlaysStop={this.handleMediaOverlaysStop}
-                                handleMediaOverlaysPrevious={this.handleMediaOverlaysPrevious}
-                                handleMediaOverlaysNext={this.handleMediaOverlaysNext}
-                                handleMediaOverlaysPause={this.handleMediaOverlaysPause}
-                                handleMediaOverlaysPlaybackRate={this.handleMediaOverlaysPlaybackRate}
-                                mediaOverlaysState={this.state.mediaOverlaysState}
-                                mediaOverlaysPlaybackRate={this.state.mediaOverlaysPlaybackRate}
-                                publicationHasMediaOverlays={this.state.r2PublicationHasMediaOverlays}
+                                    handleMediaOverlaysPlay={this.handleMediaOverlaysPlay}
+                                    handleMediaOverlaysResume={this.handleMediaOverlaysResume}
+                                    handleMediaOverlaysStop={this.handleMediaOverlaysStop}
+                                    handleMediaOverlaysPrevious={this.handleMediaOverlaysPrevious}
+                                    handleMediaOverlaysNext={this.handleMediaOverlaysNext}
+                                    handleMediaOverlaysPause={this.handleMediaOverlaysPause}
+                                    handleMediaOverlaysPlaybackRate={this.handleMediaOverlaysPlaybackRate}
+                                    mediaOverlaysState={this.state.mediaOverlaysState}
+                                    mediaOverlaysPlaybackRate={this.state.mediaOverlaysPlaybackRate}
+                                    publicationHasMediaOverlays={this.state.r2PublicationHasMediaOverlays}
 
-                                handleMenuClick={this.handleMenuButtonClick}
-                                handleSettingsClick={this.handleSettingsClick}
-                                fullscreen={this.state.fullscreen}
-                                mode={this.props.readerMode}
-                                handleFullscreenClick={this.handleFullscreenClick}
-                                handleReaderDetach={this.handleReaderDetach}
-                                handleReaderClose={this.handleReaderClose}
-                                toggleBookmark={() => this.handleToggleBookmark(false)}
-                                isOnBookmark={this.state.visibleBookmarkList.length > 0}
-                                isOnSearch={this.props.searchEnable}
-                                ReaderSettingsProps={ReaderSettingsProps}
-                                readerMenuProps={readerMenuProps}
-                                displayPublicationInfo={this.displayPublicationInfo}
-                                // tslint:disable-next-line: max-line-length
-                                currentLocation={this.props.isDivina || this.props.isPdf ? this.props.locator : this.state.currentLocation}
-                                isDivina={this.props.isDivina}
-                                isPdf={this.props.isPdf}
-                                pdfEventBus={this.state.pdfPlayerBusEvent}
-                                divinaSoundPlay={this.handleDivinaSound}
-                                r2Publication={this.props.r2Publication}
-                            />
+                                    handleMenuClick={this.handleMenuButtonClick}
+                                    handleSettingsClick={this.handleSettingsClick}
+                                    fullscreen={this.state.fullscreen}
+                                    mode={this.props.readerMode}
+                                    handleFullscreenClick={this.handleFullscreenClick}
+                                    handleReaderDetach={this.handleReaderDetach}
+                                    handleReaderClose={this.handleReaderClose}
+                                    toggleBookmark={() => this.handleToggleBookmark(false)}
+                                    isOnBookmark={this.state.visibleBookmarkList.length > 0}
+                                    isOnSearch={this.props.searchEnable}
+                                    ReaderSettingsProps={ReaderSettingsProps}
+                                    readerMenuProps={readerMenuProps}
+                                    displayPublicationInfo={this.displayPublicationInfo}
+                                    // tslint:disable-next-line: max-line-length
+                                    currentLocation={this.props.isDivina || this.props.isPdf ? this.props.locator : this.state.currentLocation}
+                                    isDivina={this.props.isDivina}
+                                    isPdf={this.props.isPdf}
+                                    pdfEventBus={this.state.pdfPlayerBusEvent}
+                                    divinaSoundPlay={this.handleDivinaSound}
+                                    r2Publication={this.props.r2Publication}
+                                />
+                            </div>
                         </PopoverDialogAnchor>
                         <PopoverDialogPortal>
                             <ReaderSettings {...ReaderSettingsProps}
@@ -959,14 +961,14 @@ class Reader extends React.Component<IProps, IState> {
         if (!isFromOnPopState) {
             // console.log("#+$%".repeat(5)  + " goToLocator history pushState()", JSON.stringify(locator), JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length, windowHistory._length);
             if (window.history.state && r.equals(locator, window.history.state.data)) {
-                window.history.replaceState({data: locator, index: windowHistory._length - 1}, "");
+                window.history.replaceState({ data: locator, index: windowHistory._length - 1 }, "");
             } else {
                 windowHistory._length++;
-                window.history.pushState({data: locator, index: windowHistory._length - 1}, "");
+                window.history.pushState({ data: locator, index: windowHistory._length - 1 }, "");
             }
 
             // windowHistory._readerInstance === this
-            this.setState({historyCanGoForward: false, historyCanGoBack: windowHistory._length > 1});
+            this.setState({ historyCanGoForward: false, historyCanGoBack: windowHistory._length > 1 });
         }
         r2HandleLinkLocator(locator);
     };
@@ -1129,154 +1131,154 @@ class Reader extends React.Component<IProps, IState> {
         }
         try {
 
-        const isAudio = locatorExt.audioPlaybackInfo
-            && locatorExt.audioPlaybackInfo.globalDuration
-            && typeof locatorExt.locator.locations.position === "number";
+            const isAudio = locatorExt.audioPlaybackInfo
+                && locatorExt.audioPlaybackInfo.globalDuration
+                && typeof locatorExt.locator.locations.position === "number";
 
-        const isDivina = this.props.r2Publication && isDivinaFn(this.props.r2Publication);
-        const isPdf = this.props.r2Publication && isPdfFn(this.props.r2Publication);
+            const isDivina = this.props.r2Publication && isDivinaFn(this.props.r2Publication);
+            const isPdf = this.props.r2Publication && isPdfFn(this.props.r2Publication);
 
-        const isFixedLayout = this.props.r2Publication &&
-            this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
+            const isFixedLayout = this.props.r2Publication &&
+                this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
 
-        let txtProgression: string | undefined;
-        let txtPagination: string | undefined;
-        let txtHeadings: string | undefined;
+            let txtProgression: string | undefined;
+            let txtPagination: string | undefined;
+            let txtHeadings: string | undefined;
 
-        if (isAudio) {
-            const percent = Math.round(locatorExt.locator.locations.position * 100);
-            txtProgression = `${percent}% [${formatTime(Math.round(locatorExt.audioPlaybackInfo.globalTime))} / ${formatTime(Math.round(locatorExt.audioPlaybackInfo.globalDuration))}]`;
-        } else if (isDivina) {
-            let totalPages = (this.state.divinaNumberOfPages && !this.state.divinaContinousEqualTrue) ? this.state.divinaNumberOfPages : (this.props.r2Publication?.Spine?.length ? this.props.r2Publication.Spine.length : undefined);
-            if (typeof totalPages === "string") {
-                try {
-                    totalPages = parseInt(totalPages, 10);
-                } catch (_e) {
-                    totalPages = 0;
+            if (isAudio) {
+                const percent = Math.round(locatorExt.locator.locations.position * 100);
+                txtProgression = `${percent}% [${formatTime(Math.round(locatorExt.audioPlaybackInfo.globalTime))} / ${formatTime(Math.round(locatorExt.audioPlaybackInfo.globalDuration))}]`;
+            } else if (isDivina) {
+                let totalPages = (this.state.divinaNumberOfPages && !this.state.divinaContinousEqualTrue) ? this.state.divinaNumberOfPages : (this.props.r2Publication?.Spine?.length ? this.props.r2Publication.Spine.length : undefined);
+                if (typeof totalPages === "string") {
+                    try {
+                        totalPages = parseInt(totalPages, 10);
+                    } catch (_e) {
+                        totalPages = 0;
+                    }
                 }
-            }
 
-            let pageNum = !this.state.divinaContinousEqualTrue ?
-                (locatorExt.locator.locations.position || 0) :
-                (Math.floor(locatorExt.locator.locations.progression * this.props.r2Publication.Spine.length) - 1);
-            if (typeof pageNum === "string") {
-                try {
-                    pageNum = parseInt(pageNum, 10) + 1;
-                } catch (_e) {
-                    pageNum = 0;
+                let pageNum = !this.state.divinaContinousEqualTrue ?
+                    (locatorExt.locator.locations.position || 0) :
+                    (Math.floor(locatorExt.locator.locations.progression * this.props.r2Publication.Spine.length) - 1);
+                if (typeof pageNum === "string") {
+                    try {
+                        pageNum = parseInt(pageNum, 10) + 1;
+                    } catch (_e) {
+                        pageNum = 0;
+                    }
+                } else if (typeof pageNum === "number") {
+                    pageNum = pageNum + 1;
                 }
-            } else if (typeof pageNum === "number") {
-                pageNum = pageNum + 1;
-            }
 
-            if (totalPages && typeof pageNum === "number") {
-                txtPagination = this.props.__("reader.navigation.currentPageTotal", { current: `${pageNum}`, total: `${totalPages}` });
+                if (totalPages && typeof pageNum === "number") {
+                    txtPagination = this.props.__("reader.navigation.currentPageTotal", { current: `${pageNum}`, total: `${totalPages}` });
 
-                txtProgression = `${Math.round(100 * (locatorExt.locator.locations.progression || 0))}%`;
+                    txtProgression = `${Math.round(100 * (locatorExt.locator.locations.progression || 0))}%`;
 
-            } else {
-                if (typeof pageNum === "number") {
+                } else {
+                    if (typeof pageNum === "number") {
+                        txtPagination = this.props.__("reader.navigation.currentPage", { current: `${pageNum}` });
+                    }
+
+                    if (typeof locatorExt.locator.locations.progression === "number") {
+                        const percent = Math.round(locatorExt.locator.locations.progression * 100);
+                        txtProgression = `${percent}%`;
+                    }
+                }
+
+            } else if (isPdf) {
+                let totalPages = this.state.pdfPlayerNumberOfPages ?
+                    this.state.pdfPlayerNumberOfPages :
+                    (this.props.r2Publication?.Metadata?.NumberOfPages ? this.props.r2Publication.Metadata.NumberOfPages : undefined);
+
+                if (typeof totalPages === "string") {
+                    try {
+                        totalPages = parseInt(totalPages, 10);
+                    } catch (_e) {
+                        totalPages = 0;
+                    }
+                }
+
+                let pageNum = (locatorExt.locator?.href as unknown) as number;
+                if (typeof pageNum === "string") {
+                    try {
+                        pageNum = parseInt(pageNum, 10);
+                    } catch (_e) {
+                        pageNum = 0;
+                    }
+                }
+
+                if (totalPages) {
+                    txtPagination = this.props.__("reader.navigation.currentPageTotal", { current: `${pageNum}`, total: `${totalPages}` });
+                    txtProgression = `${Math.round(100 * (pageNum / totalPages))}%`;
+                } else {
                     txtPagination = this.props.__("reader.navigation.currentPage", { current: `${pageNum}` });
                 }
 
-                if (typeof locatorExt.locator.locations.progression === "number") {
-                    const percent = Math.round(locatorExt.locator.locations.progression * 100);
-                    txtProgression = `${percent}%`;
-                }
-            }
+            } else if (this.props.r2Publication?.Spine && locatorExt.locator?.href) {
 
-        } else if (isPdf) {
-            let totalPages = this.state.pdfPlayerNumberOfPages ?
-            this.state.pdfPlayerNumberOfPages :
-                (this.props.r2Publication?.Metadata?.NumberOfPages ? this.props.r2Publication.Metadata.NumberOfPages : undefined);
+                const spineIndex = this.props.r2Publication.Spine.findIndex((l) => {
+                    return l.Href === locatorExt.locator.href;
+                });
+                if (spineIndex >= 0) {
+                    if (isFixedLayout) {
+                        const pageNum = spineIndex + 1;
+                        const totalPages = this.props.r2Publication.Spine.length;
 
-            if (typeof totalPages === "string") {
-                try {
-                    totalPages = parseInt(totalPages, 10);
-                } catch (_e) {
-                    totalPages = 0;
-                }
-            }
+                        txtPagination = this.props.__("reader.navigation.currentPageTotal", { current: `${pageNum}`, total: `${totalPages}` });
+                        txtProgression = `${Math.round(100 * (pageNum / totalPages))}%`;
 
-            let pageNum = (locatorExt.locator?.href as unknown) as number;
-            if (typeof pageNum === "string") {
-                try {
-                    pageNum = parseInt(pageNum, 10);
-                } catch (_e) {
-                    pageNum = 0;
-                }
-            }
+                    } else {
 
-            if (totalPages) {
-                txtPagination = this.props.__("reader.navigation.currentPageTotal", { current: `${pageNum}`, total: `${totalPages}` });
-                txtProgression = `${Math.round(100 * (pageNum / totalPages))}%`;
-            } else {
-                txtPagination = this.props.__("reader.navigation.currentPage", { current: `${pageNum}` });
-            }
-
-        } else if (this.props.r2Publication?.Spine && locatorExt.locator?.href) {
-
-            const spineIndex = this.props.r2Publication.Spine.findIndex((l) => {
-                return l.Href === locatorExt.locator.href;
-            });
-            if (spineIndex >= 0) {
-                if (isFixedLayout) {
-                    const pageNum = spineIndex + 1;
-                    const totalPages = this.props.r2Publication.Spine.length;
-
-                    txtPagination = this.props.__("reader.navigation.currentPageTotal", { current: `${pageNum}`, total: `${totalPages}` });
-                    txtProgression = `${Math.round(100 * (pageNum / totalPages))}%`;
-
-                } else {
-
-                    if (locatorExt.epubPage) {
-                        let epubPage = locatorExt.epubPage;
-                        if (epubPage.trim().length === 0 && locatorExt.epubPageID && this.props.r2Publication.PageList) {
-                            const p = this.props.r2Publication.PageList.find((page) => {
-                                return page.Title && page.Href && page.Href.endsWith(`#${locatorExt.epubPageID}`);
-                            });
-                            if (p) {
-                                epubPage = p.Title;
+                        if (locatorExt.epubPage) {
+                            let epubPage = locatorExt.epubPage;
+                            if (epubPage.trim().length === 0 && locatorExt.epubPageID && this.props.r2Publication.PageList) {
+                                const p = this.props.r2Publication.PageList.find((page) => {
+                                    return page.Title && page.Href && page.Href.endsWith(`#${locatorExt.epubPageID}`);
+                                });
+                                if (p) {
+                                    epubPage = p.Title;
+                                }
                             }
+                            txtPagination = this.props.__("reader.navigation.currentPage", { current: epubPage });
                         }
-                        txtPagination = this.props.__("reader.navigation.currentPage", { current: epubPage });
-                    }
 
-                    const percent = Math.round(locatorExt.locator.locations.progression * 100);
-                    txtProgression = `${spineIndex + 1}/${this.props.r2Publication.Spine.length}${locatorExt.locator.title ? ` (${locatorExt.locator.title})` : ""} [${percent}%]`;
+                        const percent = Math.round(locatorExt.locator.locations.progression * 100);
+                        txtProgression = `${spineIndex + 1}/${this.props.r2Publication.Spine.length}${locatorExt.locator.title ? ` (${locatorExt.locator.title})` : ""} [${percent}%]`;
 
-                    if (locatorExt.headings) {
+                        if (locatorExt.headings) {
 
-                        let rank = 999;
-                        const hs = locatorExt.headings.filter((h, _i) => {
-                            if (h.level < rank) {
+                            let rank = 999;
+                            const hs = locatorExt.headings.filter((h, _i) => {
+                                if (h.level < rank) {
 
-                                rank = h.level;
-                                return true;
-                            }
-                            return false;
-                        }).reverse();
-                        const summary = hs.reduce((arr, h, i) => {
-                            return arr.concat(
-                                i === 0 ? " " : " / ",
-                                `H${h.level} `,
-                                h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`,
+                                    rank = h.level;
+                                    return true;
+                                }
+                                return false;
+                            }).reverse();
+                            const summary = hs.reduce((arr, h, i) => {
+                                return arr.concat(
+                                    i === 0 ? " " : " / ",
+                                    `H${h.level} `,
+                                    h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`,
                                 );
-                        }, []);
+                            }, []);
 
-                        // const details = locatorExt.headings.slice().reverse().reduce((arr, h, i) => {
-                        //     return arr.concat(i === 0 ? " " : " / ", `H${h.level} ${h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}`);
-                        // }, []);
+                            // const details = locatorExt.headings.slice().reverse().reduce((arr, h, i) => {
+                            //     return arr.concat(i === 0 ? " " : " / ", `H${h.level} ${h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}`);
+                            // }, []);
 
-                        // txtHeadings = `${summary.join("")} ${details.join("")}`;
+                            // txtHeadings = `${summary.join("")} ${details.join("")}`;
 
-                        txtHeadings = summary.join("");
+                            txtHeadings = summary.join("");
+                        }
                     }
                 }
             }
-        }
 
-        this.props.toasty(`${txtPagination ? `${txtPagination} -- ` : ""}${txtProgression ? `${this.props.__("publication.progression.title")} = ${txtProgression}` : ""}${txtHeadings ? ` -- ${txtHeadings}` : ""}`);
+            this.props.toasty(`${txtPagination ? `${txtPagination} -- ` : ""}${txtProgression ? `${this.props.__("publication.progression.title")} = ${txtProgression}` : ""}${txtHeadings ? ` -- ${txtHeadings}` : ""}`);
 
         } catch (_err) {
             this.props.toasty("ERROR");
@@ -1483,9 +1485,9 @@ class Reader extends React.Component<IProps, IState> {
                     console.log(">> HISTORY POP STATE SKIP URL (2)", popState.state.data);
                 }
             }
-            this.setState({historyCanGoForward: windowHistory._length > 1 && popState.state.index < windowHistory._length - 1, historyCanGoBack: windowHistory._length > 1 && popState.state.index > 0});
+            this.setState({ historyCanGoForward: windowHistory._length > 1 && popState.state.index < windowHistory._length - 1, historyCanGoBack: windowHistory._length > 1 && popState.state.index > 0 });
         } else {
-            this.setState({historyCanGoForward: false, historyCanGoBack: false});
+            this.setState({ historyCanGoForward: false, historyCanGoBack: false });
         }
     };
 
@@ -1786,8 +1788,8 @@ class Reader extends React.Component<IProps, IState> {
             eventEmitter.on("readingmodechange", (data: any) => {
                 // console.log("READING MODE BEFORE DROP FIRST TEST");
                 // if (!readingmodeDropFirst) {
-                    // readingmodeDropFirst = true;
-                    // return;
+                // readingmodeDropFirst = true;
+                // return;
                 // }
                 console.log("DIVINA: 'readingmodechange'", data);
 
@@ -1854,7 +1856,7 @@ class Reader extends React.Component<IProps, IState> {
                 }
                 console.log("DIVINA: 'pagechange'", data);
 
-                this.setState({divinaArrowEnabled: false});
+                this.setState({ divinaArrowEnabled: false });
 
                 const isInPageChangeData = (data: any): data is { percent: number, locator: R2Locator } => {
                     return typeof data === "object" &&
@@ -1933,7 +1935,7 @@ class Reader extends React.Component<IProps, IState> {
             windowHistory._length = 1;
             // console.log("#+$%".repeat(5)  + " installNavigatorDOM => window history replaceState() ...", JSON.stringify(locator), JSON.stringify(window.history.state), window.history.length, windowHistory._length, JSON.stringify(document.location), JSON.stringify(window.location));
             // does not trigger onPopState!
-            window.history.replaceState(locator ? {data: locator, index: windowHistory._length - 1} : null, "");
+            window.history.replaceState(locator ? { data: locator, index: windowHistory._length - 1 } : null, "");
         }
     }
 
@@ -2006,7 +2008,7 @@ class Reader extends React.Component<IProps, IState> {
             // console.log("#+$%".repeat(5)  + " handleReadingLocationChange (INIT history state) => window history replaceState() ...", JSON.stringify(loc.locator), JSON.stringify(window.history.state), window.history.length, windowHistory._length, JSON.stringify(document.location), JSON.stringify(window.location));
             windowHistory._length = 1;
             // does not trigger onPopState!
-            window.history.replaceState({data: loc.locator, index: windowHistory._length - 1}, "");
+            window.history.replaceState({ data: loc.locator, index: windowHistory._length - 1 }, "");
         }
 
         // No need to explicitly refresh the bookmarks status here,
@@ -2018,7 +2020,7 @@ class Reader extends React.Component<IProps, IState> {
     // check if a bookmark is on the screen
     private async updateVisibleBookmarks(): Promise<IBookmarkState[] | undefined> {
         if (!this.props.bookmarks) {
-            this.setState({ visibleBookmarkList: []});
+            this.setState({ visibleBookmarkList: [] });
             return undefined;
         }
 
@@ -2036,7 +2038,7 @@ class Reader extends React.Component<IProps, IState> {
                     }
                 } else if (this.props.r2Publication) { // isLocatorVisible() API only once navigator ready
                     let isVisible = false;
-                    try{
+                    try {
                         isVisible = await isLocatorVisible(bookmark.locator);
                     } catch (_e) {
                         // rejection because webview not fully loaded yet
@@ -2243,9 +2245,9 @@ class Reader extends React.Component<IProps, IState> {
                     return identical;
                 }) &&
                 (this.state.currentLocation.audioPlaybackInfo ||
-                !visibleBookmarkList?.length ||
-                fromKeyboard || // SCREEN READER CTRL+B on discrete text position (container element)
-                locator.text?.highlight
+                    !visibleBookmarkList?.length ||
+                    fromKeyboard || // SCREEN READER CTRL+B on discrete text position (container element)
+                    locator.text?.highlight
                 );
 
             if (addCurrentLocationToBookmarks) {
@@ -2548,7 +2550,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(toastActions.openRequest.build(ToastType.Success, msg));
         },
         toggleFullscreen: (fullscreenOn: boolean) => {
-                dispatch(readerActions.fullScreenRequest.build(fullscreenOn));
+            dispatch(readerActions.fullScreenRequest.build(fullscreenOn));
         },
         closeReader: () => {
             dispatch(readerActions.closeRequest.build());
@@ -2589,7 +2591,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         setReadingMode: (readingMode: TdivinaReadingMode) => {
 
             console.log("Persist the reading mode", readingMode);
-            dispatch(readerLocalActionDivina.setReadingMode.build({readingMode}));
+            dispatch(readerLocalActionDivina.setReadingMode.build({ readingMode }));
         },
         clipboardCopy: (publicationIdentifier: string, clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => {
             dispatch(readerActions.clipboardCopy.build(publicationIdentifier, clipboardData));

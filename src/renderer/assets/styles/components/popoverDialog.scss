@@ -1,0 +1,44 @@
+.modal_dialog_reader {
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    width: 776px;
+    min-height: 401px;
+    // min-width: 700px;
+    height: 597px;
+    max-width: calc(100vw - 60px);
+    max-height: calc(100vh - 60px);
+    border-radius: 10px;
+    z-index: 102;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-content: flex-start;
+    color: var(--color-primary);
+    position: fixed;
+    box-sizing: border-box;
+    box-shadow: 0 2px 5px var(--color-primary);
+    
+    &.modal_dialog_full {
+        position: relative;
+        box-sizing: border-box;
+    
+        &_full {
+        width: calc(100vw - 60px);
+        height: calc(100vh - 100px);
+        }
+    }  
+  }
+
+  .popover_dialog_reader {
+    width: 350px;
+    height: 100%;
+    display: flex;
+    margin-top: 50px;
+    flex-direction: column;
+    box-sizing: border-box;
+    z-index: 102;
+    background-color: white;
+    box-shadow: 2px 0 5px var(--color-primary);
+  }

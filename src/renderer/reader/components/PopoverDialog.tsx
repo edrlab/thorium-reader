@@ -12,7 +12,7 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/renderer/common/redux/states/renderer/readerRootState";
 import classNames from "classnames";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 
 interface IProps {
     open: boolean;
@@ -71,7 +71,7 @@ export const PopoverDialogPortal: React.FC<React.PropsWithChildren>  = (props) =
     const ctx = React.useContext(PopoverDialogContext);
     if (!ctx) return <></>;
 
-    const { dockedMode } = ctx;
+    const { dockedMode, dockingMode } = ctx;
     const Portal = dockedMode ? Popover.Portal : Dialog.Portal;
     const Content = dockedMode ? Popover.Content : Dialog.Content;
 
@@ -79,11 +79,19 @@ export const PopoverDialogPortal: React.FC<React.PropsWithChildren>  = (props) =
     const nightTheme = readerConfig.night;
     const sepiaTheme = readerConfig.sepia; // mutually exclusive
 
+    const contentPopover = dockedMode ? {
+        side: dockingMode === "left" ? "left" : dockingMode === "right" ? "right" : "bottom" as "left" | "right",
+        sideOffset: -350,
+        align: "end" as "end",
+        sticky: "always" as "always",
+    }: {};
+
     const { children } = props;
     return (
         <Portal key={dockedMode ? "popover-portal" : "dialog-portal"}>
-            <Content key={dockedMode ? "popover-content" : "dialog-content"}
-                className={classNames(stylesModals.modal_dialog_reader, nightTheme ? stylesReader.nightMode : sepiaTheme ? stylesReader.sepiaMode : "")} >
+            <Content key={dockedMode ? "popover-content" : "dialog-content"} 
+                {...contentPopover}
+                className={classNames(dockedMode ? stylesPopoverDialog.popover_dialog_reader : stylesPopoverDialog.modal_dialog_reader, nightTheme ? stylesReader.nightMode : sepiaTheme ? stylesReader.sepiaMode : "")} >
                     {children}
             </Content>
         </Portal>
