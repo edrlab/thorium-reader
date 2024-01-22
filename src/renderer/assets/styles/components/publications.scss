@@ -36,12 +36,12 @@
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    height: 300px;
+    height: 285px;
     object-fit: contain;
     box-sizing: border-box;
     border: 1px solid #e2e2e2;
     border-radius: 6px;
-    background-color: #f1f1f1;
+    background-color: var(--color-extralight-grey);
   }
 
   .no_img_wrapper {
@@ -115,8 +115,8 @@
     }
   }
   &:hover {
-    border: 1px solid var(--color-button-primary);
-    background-color: var(--color-button-secondary);
+    border: 1px solid var(--color-blue);
+    background-color: var(--color-light-blue);
   }
 }
 
@@ -150,7 +150,7 @@
     }
 
     & svg {
-      fill: var(--color-button-primary);
+      fill: var(--color-blue);
       border-radius: 4px;
       transition: 200ms linear;
     }

@@ -2,7 +2,7 @@
     &_header {
         font-size: 18px;
         &_navigation {
-            background-color: var(--color-figma-grey);
+            background-color: var(--color-extralight-grey);
             border-radius: 6px;
             height: 96px;
             display: flex;
@@ -25,7 +25,7 @@
                     margin: 0;
                 }
                 label {
-                    background-color: var(--color-figma-grey);
+                    background-color: var(--color-extralight-grey);
                     top: -18px;
                 }
                 i {
@@ -69,9 +69,9 @@
                 margin: 0;
                 padding: 0;
                 width: 20px;
-                color: var(--color-button-primary);
+                color: var(--color-blue);
                 a {
-                    color: var(--color-button-primary); 
+                    color: var(--color-blue); 
                 }
             }
             &_select {
@@ -203,7 +203,7 @@
             position: absolute;
             right: 0;
             bottom: 0;
-            color: var(--color-button-primary);
+            color: var(--color-blue);
             width: 16px;
         }
     }
@@ -222,13 +222,13 @@
         position: absolute;
     }
     &_head {
-        border-bottom: 2px solid var(--color-button-secondary);
+        border-bottom: 2px solid var(--color-light-blue);
         padding: 0.7em;
         margin: 0;
-        background-color: var(--color-button-secondary);
+        background-color: var(--color-light-blue);
         white-space: nowrap;
         button {
-            color: var(--color-button-primary);
+            color: var(--color-blue);
             height: auto;
             padding: 0.2em;
             margin: 0;

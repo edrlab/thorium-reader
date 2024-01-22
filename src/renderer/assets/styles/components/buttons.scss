@@ -57,12 +57,12 @@ button {
 }
 
 .button_primary_blue {
-  border: 1px solid var(--color-button-primary);
+  border: 1px solid var(--color-blue);
   height: 30px;
   border-radius: 4px;
   padding: 5px;
   min-width: 100px;
-  background-color: var(--color-button-primary);
+  background-color: var(--color-blue);
   color: white;
   transition: 200ms linear;
   display: inline-flex;
@@ -75,7 +75,7 @@ button {
   }
 
   &:hover {
-    color: var(--color-button-primary);
+    color: var(--color-blue);
   }
 }
 
@@ -149,13 +149,13 @@ button {
 /* 4. .button_secondary */
 
 .button_secondary_blue {
-  border: 1px solid var(--color-button-primary);
+  border: 1px solid var(--color-blue);
   height: 30px;
   border-radius: 4px;
   padding: 5px;
   min-width: 100px;
-  background-color: var(--color-button-secondary);
-  color: var(--color-button-primary);
+  background-color: var(--color-light-blue);
+  color: var(--color-blue);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -163,7 +163,7 @@ button {
   svg {
     width: 12px;
     height: 12px;
-    fill: var(--color-button-primary);
+    fill: var(--color-blue);
   }
 }
 
@@ -238,12 +238,12 @@ button {
   height: 25px;
   width: 25px;
   transition-duration: 0ms;
-  fill: var(--color-button-primary);
+  fill: var(--color-blue);
 
   & svg {
     height: 25px;
     width: 25px;
-    fill: var(--color-button-primary);
+    fill: var(--color-blue);
     transition: all 0.2s 0.05s;
   }
 
@@ -273,12 +273,12 @@ button {
 }
 
 .button_nav_primary {
-  border: 1px solid var(--color-button-primary);
+  border: 1px solid var(--color-blue);
   height: 20px;
   border-radius: 4px;
   padding: 5px;
-  background-color: var(--color-button-secondary);
-  color: var(--color-button-primary);
+  background-color: var(--color-light-blue);
+  color: var(--color-blue);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -291,7 +291,7 @@ button {
   svg {
     width: 15px;
     height: 15px;
-    fill: var(--color-button-primary);
+    fill: var(--color-blue);
   }
   
   input {
@@ -327,10 +327,10 @@ button {
 }
 
 .button_format {
-  border: 1px solid var(--color-button-primary);
+  border: 1px solid var(--color-blue);
   border-radius: 4px;
-  background-color: var(--color-button-secondary);
-  color: var(--color-button-primary);
+  background-color: var(--color-light-blue);
+  color: var(--color-blue);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -341,16 +341,16 @@ button {
 }
 
 .button_catalog_infos {
-  color: var(--color-button-primary);
+  color: var(--color-blue);
   height: 30px;
   border-radius: 4px;
   padding: 20px 5px;
-  background-color: var(--color-button-secondary);
+  background-color: var(--color-light-blue);
   margin: 30px 0;
 
   svg {
     width: 20px;
-    fill: var(--color-button-primary);
+    fill: var(--color-blue);
   }
 }
 

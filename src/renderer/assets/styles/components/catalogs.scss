@@ -54,7 +54,7 @@
                 width: 30px;
                 height: 30px;
                 margin-bottom: 30px;
-                color: var(--color-button-primary);
+                color: var(--color-blue);
                 background-color: white;
                 padding: 11px;
                 border-radius: 50%;
@@ -83,13 +83,13 @@
         right: 35px;
         width: 20px;
         height: 20px;
-        color: var(--color-button-primary);
+        color: var(--color-blue);
         transition: 200ms ease-in-out;
         border: 1px solid transparent;
         border-radius: 4px;
         &:hover {
-            border: 1px solid var(--color-button-primary);
-            background-color: var(--color-button-secondary);
+            border: 1px solid var(--color-blue);
+            background-color: var(--color-light-blue);
         }
     }
     .button_delete {
@@ -98,13 +98,13 @@
         right: 0;
         width: 20px;
         height: 20px;
-        fill: var(--color-button-primary);
+        fill: var(--color-blue);
         transition: 200ms ease-in-out;
         border: 1px solid transparent;
         border-radius: 4px;
         &:hover {
-            border: 1px solid var(--color-button-primary);
-            background-color: var(--color-button-secondary);
+            border: 1px solid var(--color-blue);
+            background-color: var(--color-light-blue);
         }
     }
 }
@@ -164,7 +164,7 @@
     font-size: 14px;
     max-width: 750px;
     a {
-        color: var(--color-button-primary);
+        color: var(--color-blue);
         display: flex;
         align-items: center;
         gap: 5px;
@@ -177,12 +177,12 @@
 .catalog_breadcrumbSearch_Wrapper {
     display: flex;
     align-items: center;
-    background-color: var(--color-figma-grey);
+    background-color: var(--color-extralight-grey);
     padding: 15px;
     min-height: 40px;
     margin-bottom: 40px;
     label {
-        background-color: var(--color-figma-grey)!important;
+        background-color: var(--color-extralight-grey)!important;
         top: -18px!important;
     }
 
@@ -208,8 +208,8 @@
 
 .noPublication {
     width: 100%;
-    border: 1px solid var(--color-button-primary);
-    background-color: var(--color-button-secondary);
+    border: 1px solid var(--color-blue);
+    background-color: var(--color-light-blue);
     font-size: 16px;
     padding: 5px;
     border-radius: 6px;
@@ -218,6 +218,6 @@
     gap: 5px;
     svg {
         width: 16px;
-        color: var(--color-button-primary);
+        color: var(--color-blue);
     }
 }

@@ -21,7 +21,7 @@
   padding-top: 0;
   padding-bottom: 0;
   height: 100vh;
-  background-color: var(--color-figma-grey);
+  background-color: var(--color-extralight-grey);
   // box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.19);
   border-right: 2px solid var(--color-medium-grey);
   flex: 1;
@@ -81,11 +81,11 @@
     
       svg {
         width: 15px;
-        fill: var(--color-button-primary);
+        fill: var(--color-blue);
       }
 
       &.active {
-        color: var(--color-button-primary);
+        color: var(--color-blue);
       }
     }
   }

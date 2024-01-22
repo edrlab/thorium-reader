@@ -1,4 +1,5 @@
 export declare const ___DEBUG___COMPONENTS_BUTTONS_CSS: string;
+export declare const ___DEBUG___PARTIALS_MIXINS_CSS: string;
 export declare const block_line: string;
 export declare const button_catalog_infos: string;
 export declare const button_format: string;

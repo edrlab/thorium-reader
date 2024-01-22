@@ -1970,7 +1970,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                             /><label
                                                 aria-hidden="true"
                                                 htmlFor="setShowColumnFiltersCheckbox"
-                                                style={{ cursor: "pointer", padding: "0.2em", color: "var(--color-button-primary)", paddingBottom: "0", display: "inline-block", width: "20px" }}>
+                                                style={{ cursor: "pointer", padding: "0.2em", color: "var(--color-blue)", paddingBottom: "0", display: "inline-block", width: "20px" }}>
                                                     <SVG ariaHidden svg={SearchIcon} />
                                                 </label></>
                                     }
@@ -2016,7 +2016,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
                                     <tr key={`bodytr_${index}`} {...row.getRowProps()}
                                         style={{
-                                            backgroundColor: index % 2 ? "var(--color-figma-grey)" : undefined,
+                                            backgroundColor: index % 2 ? "var(--color-extralight-grey)" : undefined,
                                         }}>{row.cells.map((cell, i) => {
                                             return (<td key={`bodytrtd_${i}`} {...cell.getCellProps()}
                                             >{

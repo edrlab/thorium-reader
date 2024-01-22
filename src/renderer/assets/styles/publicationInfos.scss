@@ -16,7 +16,7 @@
         margin-bottom: 20px;
     }
     .button_primary {
-        border: 1px solid var(--color-button-primary);
+        border: 1px solid var(--color-blue);
         height: 20px;
         border-radius: 4px;
         padding: 2px;
@@ -24,14 +24,14 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: var(--color-button-primary);
+        background-color: var(--color-blue);
         color: white;
         svg {
             fill: var(--color-secondary);
         }
     }
     .button_secondary, .button_transparency {
-        border: 1px solid var(--color-button-primary);
+        border: 1px solid var(--color-blue);
         height: 20px;
         border-radius: 4px;
         padding: 2px;
@@ -39,14 +39,14 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: var(--color-button-secondary);
-        color: var(--color-button-primary);
+        background-color: var(--color-light-blue);
+        color: var(--color-blue);
         svg {
             fill: var(--color--button-primary);
         }
         &:hover {
             background-color: white;
-            color: var(--color-button-primary);
+            color: var(--color-blue);
         }
     }
 }
@@ -147,7 +147,7 @@
     &_description_bloc {
         position: relative;
         &_seeMore {
-            color: var(--color-button-primary);
+            color: var(--color-blue);
             text-decoration: underline;
             display: flex;
             width: 100px;
@@ -207,8 +207,8 @@
     }
     details {
         summary {
-            color: var(--color-button-primary);
-            background-color: var(--color-button-secondary);
+            color: var(--color-blue);
+            background-color: var(--color-light-blue);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -228,7 +228,7 @@
         ul {
             list-style-type: none;
             li a  {
-            color: var(--color-button-primary);
+            color: var(--color-blue);
             }
         }
     }
@@ -252,7 +252,7 @@
         details {
            color: var(--color-primary);
            summary {
-            color: var(--color-button-primary);
+            color: var(--color-blue);
             cursor: pointer;
            }
         }

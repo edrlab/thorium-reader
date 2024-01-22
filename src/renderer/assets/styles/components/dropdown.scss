@@ -21,7 +21,7 @@
     height: fit-content;
     box-shadow: 0 3px 10px 5px var(--color-medium-grey);
     border-width: 1px;
-    border-color: var(--color-button-primary);
+    border-color: var(--color-blue);
     border-style: solid;
     border-radius: 10px;
     position: relative;
@@ -39,11 +39,11 @@
     font-size: 0.9rem;
     box-shadow: 0 0 10px 0 var(--color-medium-grey);
     border-width: 1px;
-    border-color: var(--color-button-primary);
+    border-color: var(--color-blue);
     border-style: solid;
     border-radius: 5px;
     position: relative;
-    background-color: var(--color-button-secondary);
+    background-color: var(--color-light-blue);
 
     &.dropdown_right::after {
       left: auto;
@@ -57,7 +57,7 @@
 
     & > * {
       text-decoration: none;
-      color:  var(--color-button-primary);;
+      color:  var(--color-blue);;
       padding: 0.7rem;
       text-align: center;
       cursor: pointer;
@@ -92,7 +92,7 @@
 }
 
 .PopoverArrow {
-  fill: var(--color-button-primary);
+  fill: var(--color-blue);
 }
 
 .PopoverContent {

@@ -62,7 +62,7 @@
 
 .AlertDialogButton.yes {
   color: var(--color-secondary);
-  background-color: var(--color-button-primary);
+  background-color: var(--color-blue);
   transition: 200ms;
   svg {
     margin-right: 5px;
@@ -73,9 +73,9 @@
 }
 
 .AlertDialogButton.abort {
-  color: var(--color-button-primary);
-  border: 1px solid var(--color-button-primary);
-  background-color: var(--color-button-secondary);
+  color: var(--color-blue);
+  border: 1px solid var(--color-blue);
+  background-color: var(--color-light-blue);
   transition: 200ms;
   &:hover {
     background-color: white;
@@ -83,9 +83,9 @@
 }
 
 .AlertDialogButton.delete {
-  color: var(--color-button-primary);
-  border: 1px solid var(--color-button-primary);
-  background-color: var(--color-button-secondary);
+  color: var(--color-blue);
+  border: 1px solid var(--color-blue);
+  background-color: var(--color-light-blue);
   transition: 200ms;
   &:hover {
     background-color: white;

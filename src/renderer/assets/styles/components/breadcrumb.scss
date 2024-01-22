@@ -39,7 +39,7 @@
   }
 
   /* color: rgb(59, 59, 59); */
-  color: var(--color-button-primary);
+  color: var(--color-blue);
 
   /* position: fixed;
   top: 123px; */
@@ -70,7 +70,7 @@
     
     & svg {
       margin: 0 0 0 5px;
-      color: var(--color-button-primary);
+      color: var(--color-blue);
     }
 
     & + .button_transparency {

@@ -1,7 +1,7 @@
 // @import url("../partials/variables.scss");
 
-$settings_bg : var(--color-button-secondary);
-$setting_color:  var(--color-button-primary);
+$settings_bg : var(--color-light-blue);
+$setting_color:  var(--color-blue);
 
 .settings_container {
     display: flex;
@@ -56,7 +56,7 @@ $setting_color:  var(--color-button-primary);
     flex: 1;
     border-right: 1px solid var(--color-medium-grey);
     padding-top: 50px;
-    background-color: var(--color-bg-tab);
+    background-color: var(--color-extralight-grey);
     button {
         height: 50px;
         transition: 200ms;
@@ -92,7 +92,7 @@ $setting_color:  var(--color-button-primary);
     }
     .allowCustom {
         display: flex;
-        accent-color: var(--color-button-primary);
+        accent-color: var(--color-blue);
         margin: 10px 10%;
     }
     button[data-value="tab-text"], button[data-value="tab-spacing"] {
@@ -264,8 +264,8 @@ $setting_color:  var(--color-button-primary);
             margin-top: 0;
         }
         button[data-state="open"] .advanced_trigger {
-            background-color: var(--color-button-secondary);
-            border-color: var(--color-button-primary);
+            background-color: var(--color-light-blue);
+            border-color: var(--color-blue);
         }
     }
     .session_text {
@@ -351,7 +351,7 @@ div[data-radix-popper-content-wrapper] {
 
 .scale_button {
     scale: 2;
-    color: var(--color-button-primary);
+    color: var(--color-blue);
 
     // border: 1px solid transparent;
     border-radius: 4px;
@@ -368,8 +368,8 @@ div[data-radix-popper-content-wrapper] {
         top: 50%;
     }
     &:active {
-        border: 1px solid var(--color-button-primary);
-        background-color: var(--color-button-secondary)!important;
+        border: 1px solid var(--color-blue);
+        background-color: var(--color-light-blue)!important;
     }
 }
 
@@ -537,7 +537,7 @@ div[data-radix-popper-content-wrapper] {
     width: 190px;
     display: flex;
     align-items: start;
-    border: 0 solid var(--color-button-primary);
+    border: 0 solid var(--color-blue);
     border-radius: 5px;
 
     p {

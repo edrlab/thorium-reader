@@ -14,8 +14,8 @@
         display: flex;
         align-items: center;
         justify-items: center;
-        color: var(--color-button-primary);
-        background-color: var(--color-button-secondary);
+        color: var(--color-blue);
+        background-color: var(--color-light-blue);
         padding: 3px;
         gap: 5px;
         width: fit-content;
@@ -23,7 +23,7 @@
         &_container {
             margin-bottom: 10px;
             svg {
-                color: var(--color-button-primary)!important;
+                color: var(--color-blue)!important;
                 width: 15px;
                 height: 15px;
                 padding-bottom: 5px;
@@ -34,10 +34,10 @@
                 }
             }
             &_edit {
-                border-left: 2px solid var(--color-button-primary);
+                border-left: 2px solid var(--color-blue);
                 width: 100%;
                 color: var(--color--primary);
-                background-color: var(--color-button-secondary);
+                background-color: var(--color-light-blue);
                 padding: 5px;
                 .keyshortElement_shortcut {
                     color: var(--color--primary);
@@ -50,11 +50,11 @@
                     position: absolute;
                     left: -2000px;
                     &:checked + label {
-                        border: 1px solid var(--color-button-primary);
+                        border: 1px solid var(--color-blue);
                         background-color: white;
-                        color: var(--color-button-primary);
+                        color: var(--color-blue);
                         svg {
-                            fill: var(--color-button-primary);
+                            fill: var(--color-blue);
                         }
                     }
                     &:focus + label {
@@ -109,7 +109,7 @@
     transition: 200ms linear;
     padding: 3px;
     &:hover{
-        background-color: var(--color-button-secondary);
-        border-color: var(--color-button-primary);
+        background-color: var(--color-light-blue);
+        border-color: var(--color-blue);
     }
 }
