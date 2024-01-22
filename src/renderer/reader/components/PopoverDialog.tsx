@@ -22,56 +22,37 @@ interface IProps {
 export interface IPopoverDialogContext {
     dockingMode: "full" | "left" | "right";
     dockedMode: boolean;
-    setDockingMode: React.Dispatch<React.SetStateAction<"full" | "left" | "right">>;
+    setDockingMode: (m: "full" | "left" | "right") => void;
 }
 
-export const PopoverDialogContext = React.createContext<IPopoverDialogContext>({ dockingMode: "full", setDockingMode: () => { }, dockedMode: false });
+export const PopoverDialogRoot: React.FC<IProps & IPopoverDialogContext & React.PropsWithChildren>  = (props) => {
 
-export const PopoverDialogRoot: React.FC<IProps & React.PropsWithChildren>  = (props) => {
-
-    const [dockingMode, setDockingMode] = React.useState<"full" | "left" | "right">("full");
-    // const setDockingModeFull = () => setDockingMode("full");
-    // const setDockingModeLeftSide = () => setDockingMode("left");
-    // const setDockingModeRightSide = () => setDockingMode("right");
-    const ctxValue = {dockingMode, setDockingMode, dockedMode: dockingMode !== "full"};
-    const { dockedMode } = ctxValue;
-
+    const { open, children, dockedMode } = props;
     const Root = dockedMode ? Popover.Root : Dialog.Root;
-    // const Close = dockedMode ? Popover.Close : Dialog.Close;
-
-    const { open, children, toggleMenu } = props;
     return (
         <Root key={dockedMode ? "popover-root" : "dialog-root"}
             open={open}
-            onOpenChange={
-                (open) => {
-                    console.log("Settings modal state open=", open);
-                    toggleMenu();
-                }}>
-            <PopoverDialogContext.Provider value={ctxValue}>
+            // onOpenChange={
+            //     (open) => {
+            //         console.log("Settings modal state open=", open);
+            //         toggleMenu();
+            //     }}
+            >
                 {
                     children
                 }
-            </PopoverDialogContext.Provider>
         </Root>
     );
 };
 
-export const PopoverDialogAnchor: React.FC<{} & React.PropsWithChildren> = (props) => {
-    const { children } = props;
-    return (
-        <PopoverDialogContext.Consumer>
-            {({dockedMode}) => dockedMode ? <Popover.Anchor asChild>{children}</Popover.Anchor> : children}
-        </PopoverDialogContext.Consumer>
-    );
+export const PopoverDialogAnchor: React.FC<IPopoverDialogContext & React.PropsWithChildren> = (props) => {
+    const { children, dockedMode } = props;
+    return dockedMode ? <Popover.Anchor asChild>{children}</Popover.Anchor> : children;
 };
 
-export const PopoverDialogPortal: React.FC<React.PropsWithChildren>  = (props) => {
+export const PopoverDialogPortal: React.FC<IPopoverDialogContext & React.PropsWithChildren>  = (props) => {
 
-    const ctx = React.useContext(PopoverDialogContext);
-    if (!ctx) return <></>;
-
-    const { dockedMode, dockingMode } = ctx;
+    const { dockedMode, dockingMode } = props;
     const Portal = dockedMode ? Popover.Portal : Dialog.Portal;
     const Content = dockedMode ? Popover.Content : Dialog.Content;
 
@@ -82,14 +63,14 @@ export const PopoverDialogPortal: React.FC<React.PropsWithChildren>  = (props) =
     const contentPopover = dockedMode ? {
         side: dockingMode === "left" ? "left" : dockingMode === "right" ? "right" : "bottom" as "left" | "right",
         sideOffset: -350,
-        align: "end" as "end",
-        sticky: "always" as "always",
+        align: "end" as const,
+        sticky: "always" as const,
     }: {};
 
     const { children } = props;
     return (
         <Portal key={dockedMode ? "popover-portal" : "dialog-portal"}>
-            <Content key={dockedMode ? "popover-content" : "dialog-content"} 
+            <Content key={dockedMode ? "popover-content" : "dialog-content"}
                 {...contentPopover}
                 style={{borderLeft : dockingMode === "right" ? "2px solid var(--color-medium-grey" : "", borderRight : dockingMode === "left" ? "2px solid var(--color-medium-grey" : ""}}
                 className={classNames(dockedMode ? stylesPopoverDialog.popover_dialog_reader : stylesPopoverDialog.modal_dialog_reader, nightTheme ? stylesReader.nightMode : sepiaTheme ? stylesReader.sepiaMode : "")} >

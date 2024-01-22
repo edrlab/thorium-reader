@@ -750,7 +750,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 ref={this.navigationMenuButtonRef}
                                 title={__("reader.navigation.openTableOfContentsTitle")}
                             >
-                                 <SVG ariaHidden={true} svg={TOCIcon} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""}/>
+                                <SVG ariaHidden={true} svg={TOCIcon} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""}/>
                             </button>
                             <ReaderMenu {...this.props.readerMenuProps}
                                 isDivina={this.props.isDivina}

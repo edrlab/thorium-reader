@@ -39,7 +39,7 @@ import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app
 import debounce from "debounce";
 import fontList from "readium-desktop/utils/fontList";
 import { readerConfigInitialState, readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
-import { PopoverDialogContext } from "./PopoverDialog";
+import { IPopoverDialogContext } from "./PopoverDialog";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps {
@@ -718,7 +718,7 @@ const AllowCustom = ({ overridePublisherDefault, set }:
 };
 
 
-export const ReaderSettings: React.FC<IBaseProps> = (props) => {
+export const ReaderSettings: React.FC<IPopoverDialogContext & IBaseProps> = (props) => {
     const { setSettings, readerConfig, open, pdfEventBus } = props;
     const [__] = useTranslator();
 
@@ -812,9 +812,6 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         }
     }, [overridePublisherDefault]);
 
-    const ctx = React.useContext(PopoverDialogContext);
-    if (!ctx) return <></>;
-
     if (!readerConfig) {
         return <></>;
     }
@@ -904,7 +901,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     }
 
 
-    const { setDockingMode, dockedMode } = ctx;
+    const { setDockingMode, dockedMode } = props;
     const setDockingModeFull = () => setDockingMode("full");
     const setDockingModeLeftSide = () => setDockingMode("left");
     const setDockingModeRightSide = () => setDockingMode("right");

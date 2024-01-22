@@ -88,7 +88,7 @@ import optionsValues, {
 } from "./options-values";
 import PickerManager from "./picker/PickerManager";
 import { URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS, URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_GOTO, URL_PARAM_GOTO_DOM_RANGE, URL_PARAM_IS_IFRAME, URL_PARAM_PREVIOUS, URL_PARAM_REFRESH, URL_PARAM_SECOND_WEBVIEW, URL_PARAM_SESSION_INFO, URL_PARAM_WEBVIEW_SLOT } from "@r2-navigator-js/electron/renderer/common/url-params";
-import { PopoverDialogAnchor, PopoverDialogPortal, PopoverDialogRoot } from "./PopoverDialog";
+import { IPopoverDialogContext, PopoverDialogAnchor, PopoverDialogPortal, PopoverDialogRoot } from "./PopoverDialog";
 import { ReaderSettings } from "./ReaderSettings";
 
 // main process code!
@@ -220,6 +220,8 @@ interface IState {
     historyCanGoBack: boolean;
     historyCanGoForward: boolean;
 
+    dockingMode: "full" | "left" | "right";
+
     // bookmarkMessage: string | undefined;
 }
 
@@ -306,6 +308,8 @@ class Reader extends React.Component<IProps, IState> {
 
             historyCanGoBack: false,
             historyCanGoForward: false,
+
+            dockingMode: "full",
         };
 
         ttsListen((ttss: TTSStateEnum) => {
@@ -586,6 +590,12 @@ class Reader extends React.Component<IProps, IState> {
             openedSection: this.state.openedSectionSettings,
         };
 
+        const readerPopoverDialogContext: IPopoverDialogContext = {
+            dockingMode: this.state.dockingMode,
+            dockedMode: this.state.dockingMode !== "full",
+            setDockingMode: (m) => { this.setState({"dockingMode": m }); },
+        };
+
         // {this.state.bookmarkMessage ? <div
         //     aria-live="assertive"
         //     aria-relevant="all"
@@ -614,9 +624,9 @@ class Reader extends React.Component<IProps, IState> {
                     label={this.props.__("accessibility.skipLink")}
                 />
                 <div className={stylesReader.root}>
-                    <PopoverDialogRoot open={ReaderSettingsProps.open} toggleMenu={ReaderSettingsProps.toggleMenu} >
-                        <PopoverDialogAnchor>
-                            <div> {/* Anchor Element */}
+                    <PopoverDialogRoot open={ReaderSettingsProps.open} toggleMenu={ReaderSettingsProps.toggleMenu} {...readerPopoverDialogContext}>
+                        <PopoverDialogAnchor {...readerPopoverDialogContext}>
+                            <div>
                                 <ReaderHeader
                                     shortcutEnable={this.state.shortcutEnable}
                                     infoOpen={this.props.infoOpen}
@@ -669,8 +679,8 @@ class Reader extends React.Component<IProps, IState> {
                                 />
                             </div>
                         </PopoverDialogAnchor>
-                        <PopoverDialogPortal>
-                            <ReaderSettings {...ReaderSettingsProps}
+                        <PopoverDialogPortal {...readerPopoverDialogContext}>
+                            <ReaderSettings {...ReaderSettingsProps} {...readerPopoverDialogContext}
                                 isDivina={this.props.isDivina}
                                 isPdf={this.props.isPdf}
                             />
@@ -684,7 +694,9 @@ class Reader extends React.Component<IProps, IState> {
                             pdfEventBus={this.state.pdfPlayerBusEvent}
                             isPdf={this.props.isPdf}
                         ></PickerManager>
-                        <div className={stylesReader.reader}>
+                        <div className={stylesReader.reader}
+                        // className={classNames(stylesReader.reader, this.state.dockingMode === "left" ? stylesReader.docked_left : "" )}
+                        >
                             <main
                                 id="main"
                                 aria-label={this.props.__("accessibility.mainContent")}
@@ -697,14 +709,12 @@ class Reader extends React.Component<IProps, IState> {
                                     title={this.props.__("accessibility.mainContent")}
                                     aria-label={this.props.__("accessibility.mainContent")}
                                     tabIndex={-1}>{this.props.__("accessibility.mainContent")}</a>
-
                                 <div
                                     id="publication_viewport"
-                                    className={stylesReader.publication_viewport}
-                                    ref={this.mainElRef}
-                                >
+                                    // className={stylesReader.publication_viewport}
+                                    className={classNames(stylesReader.publication_viewport, this.state.dockingMode === "left" ? stylesReader.docked_left : this.state.dockingMode === "right" ? stylesReader.docked_right : undefined)}
+                                    ref={this.mainElRef}>
                                 </div>
-
                                 {
                                     this.props.isDivina && this.state.divinaArrowEnabled
                                         ?

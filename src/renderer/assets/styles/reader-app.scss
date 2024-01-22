@@ -166,6 +166,7 @@ button {
   box-sizing: border-box;
   background: white;
 
+
   &_container {
     position: relative;
     flex: 1;
@@ -174,11 +175,11 @@ button {
 
 .docked {
   &_left {
-    position: fixed;
+    // position: fixed;
     left: 350px
   }
   &_right {
-    position: fixed; 
+    // position: fixed; 
     right: 350px;
   }
 }
