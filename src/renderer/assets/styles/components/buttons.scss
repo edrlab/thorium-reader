@@ -235,15 +235,16 @@ button {
 
 .button_transparency_icon,
 .button_transparency_icon_inactive {
-  height: 25px;
-  width: 25px;
+  height: 20px;
+  width: 20px;
   transition-duration: 0ms;
   fill: var(--color-blue);
 
   & svg {
-    height: 25px;
-    width: 25px;
+    height: 20px;
+    width: 20px;
     fill: var(--color-blue);
+    color: var(--color-blue);
     transition: all 0.2s 0.05s;
   }
 

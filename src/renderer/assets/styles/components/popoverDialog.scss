@@ -18,7 +18,7 @@
     color: var(--color-primary);
     position: fixed;
     box-sizing: border-box;
-    box-shadow: 0 2px 5px var(--color-primary);
+    box-shadow: 0 2px 5px var(--color-medium-grey);
     
     &.modal_dialog_full {
         position: relative;
@@ -40,5 +40,4 @@
     box-sizing: border-box;
     z-index: 102;
     background-color: white;
-    box-shadow: 2px 0 5px var(--color-primary);
   }

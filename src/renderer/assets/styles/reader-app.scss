@@ -172,6 +172,17 @@ button {
   }
 }
 
+.docked {
+  &_left {
+    position: fixed;
+    left: 350px
+  }
+  &_right {
+    position: fixed; 
+    right: 350px;
+  }
+}
+
 .side_button {
   z-index: 3;
   display: inline-block;

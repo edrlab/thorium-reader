@@ -91,6 +91,7 @@ export const PopoverDialogPortal: React.FC<React.PropsWithChildren>  = (props) =
         <Portal key={dockedMode ? "popover-portal" : "dialog-portal"}>
             <Content key={dockedMode ? "popover-content" : "dialog-content"} 
                 {...contentPopover}
+                style={{borderLeft : dockingMode === "right" ? "2px solid var(--color-medium-grey" : "", borderRight : dockingMode === "left" ? "2px solid var(--color-medium-grey" : ""}}
                 className={classNames(dockedMode ? stylesPopoverDialog.popover_dialog_reader : stylesPopoverDialog.modal_dialog_reader, nightTheme ? stylesReader.nightMode : sepiaTheme ? stylesReader.sepiaMode : "")} >
                     {children}
             </Content>

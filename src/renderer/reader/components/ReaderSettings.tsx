@@ -11,7 +11,7 @@ import * as Popover from "@radix-ui/react-popover";
 import * as Tabs from "@radix-ui/react-tabs";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import classNames from "classnames";
-import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import * as TextAreaIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
 import * as LayoutIcon from "readium-desktop/renderer/assets/icons/layout-icon.svg";
 import * as AlignLeftIcon from "readium-desktop/renderer/assets/icons/alignleft-icon.svg";
@@ -22,6 +22,9 @@ import * as PaginatedIcon from "readium-desktop/renderer/assets/icons/page-icon.
 import * as TwoColsIcon from "readium-desktop/renderer/assets/icons/2cols-icon.svg";
 import * as AlignAutoIcon from "readium-desktop/renderer/assets/icons/align-auto-icon.svg";
 import * as AlignJustifyIcon from "readium-desktop/renderer/assets/icons/align-justify-icon.svg";
+import * as DockLeftIcon from "readium-desktop/renderer/assets/icons/dockleft-icon.svg";
+import * as DockRightIcon from "readium-desktop/renderer/assets/icons/dockright-icon.svg";
+import * as DockModalIcon from "readium-desktop/renderer/assets/icons/dockmodal-icon.svg";
 // import * as AlignLefttIcon from "readium-desktop/renderer/assets/icons/alignleft-icon.svg";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
@@ -949,13 +952,13 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
                     <div key="docked-header-btn">
                         <button className={stylesButtons.button_transparency_icon} aria-label="left" onClick={setDockingModeLeftSide}>
-                            <SVG ariaHidden={true} svg={QuitIcon} />
+                            <SVG ariaHidden={true} svg={DockLeftIcon} />
                         </button>
                         <button className={stylesButtons.button_transparency_icon} aria-label="right" onClick={setDockingModeRightSide}>
-                            <SVG ariaHidden={true} svg={QuitIcon} />
+                            <SVG ariaHidden={true} svg={DockRightIcon} />
                         </button>
                         <button className={stylesButtons.button_transparency_icon} aria-label="full" onClick={setDockingModeFull}>
-                            <SVG ariaHidden={true} svg={QuitIcon} />
+                            <SVG ariaHidden={true} svg={DockModalIcon} />
                         </button>
 
                         <Close asChild>
@@ -1021,13 +1024,13 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                 dockedMode ? <></> :
                     <div key="modal-header" className={stylesSettings.close_button_div}>
                         <button className={stylesButtons.button_transparency_icon} aria-label="left" onClick={setDockingModeLeftSide}>
-                            <SVG ariaHidden={true} svg={QuitIcon} />
+                            <SVG ariaHidden={true} svg={DockLeftIcon} />
                         </button>
                         <button className={stylesButtons.button_transparency_icon} aria-label="right" onClick={setDockingModeRightSide}>
-                            <SVG ariaHidden={true} svg={QuitIcon} />
+                            <SVG ariaHidden={true} svg={DockRightIcon} />
                         </button>
                         <button className={stylesButtons.button_transparency_icon} aria-label="full" onClick={setDockingModeFull}>
-                            <SVG ariaHidden={true} svg={QuitIcon} />
+                            <SVG ariaHidden={true} svg={DockModalIcon} />
                         </button>
                         <Close asChild>
                             <button className={stylesButtons.button_transparency_icon} aria-label="Close">
