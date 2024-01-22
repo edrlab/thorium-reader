@@ -24,7 +24,7 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { dispatchHistoryPush, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
-import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.css";
+import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 

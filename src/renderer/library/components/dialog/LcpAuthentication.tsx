@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";

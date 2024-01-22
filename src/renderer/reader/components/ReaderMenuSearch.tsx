@@ -14,7 +14,7 @@ import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
 import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
 import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";

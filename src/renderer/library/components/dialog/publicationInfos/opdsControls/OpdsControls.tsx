@@ -13,7 +13,7 @@ import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/view
 import * as CartFillIcon from "readium-desktop/renderer/assets/icons/cart-fill.svg";
 import * as ImportIcon from "readium-desktop/renderer/assets/icons/import.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";

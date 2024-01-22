@@ -1,7 +1,7 @@
 /*
 =-=-= partials/focus.css => './mixins.css'
 */
-@import url('./mixins.css');
+@import "src/renderer/assets/styles/partials/mixin.scss";
 
 /*
 =-=-= partials/focus.css
@@ -32,7 +32,7 @@
 /* :global */
 
 :root.R2_CSS_CLASS__KEYBOARD_INTERACT *:focus {
-  @mixin R2_MIXIN_FOCUS_OUTLINE;
+  @include R2_MIXIN_FOCUS_OUTLINE;
 }
 
 /* :global */

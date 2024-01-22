@@ -16,7 +16,7 @@ import { Location } from "history";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 // import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
 import * as stylesPublication from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
-import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.css";
+import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 // import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
 import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";

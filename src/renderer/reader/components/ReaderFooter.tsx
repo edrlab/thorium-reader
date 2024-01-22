@@ -18,7 +18,7 @@ import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { formatTime } from "readium-desktop/common/utils/time";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";

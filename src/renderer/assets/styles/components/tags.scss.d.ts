@@ -1,9 +1,5 @@
-declare const styles: {
-  readonly "___DEBUG___COMPONENTS_TAGS_CSS": string;
-  readonly "no_hover": string;
-  readonly "tag": string;
-  readonly "tag_inputs": string;
-  readonly "tags_wrapper": string;
-};
-export = styles;
-
+export declare const ___DEBUG___COMPONENTS_TAGS_CSS: string;
+export declare const no_hover: string;
+export declare const tag: string;
+export declare const tag_inputs: string;
+export declare const tags_wrapper: string;

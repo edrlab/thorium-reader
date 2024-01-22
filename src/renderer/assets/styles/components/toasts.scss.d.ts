@@ -1,14 +1,10 @@
-declare const styles: {
-  readonly "___DEBUG___COMPONENTS_TOASTS_CSS": string;
-  readonly "closeButton": string;
-  readonly "error": string;
-  readonly "icon": string;
-  readonly "leave": string;
-  readonly "start": string;
-  readonly "success": string;
-  readonly "toRemove": string;
-  readonly "toast": string;
-  readonly "toasts_wrapper": string;
-};
-export = styles;
-
+export declare const ___DEBUG___COMPONENTS_TOASTS_CSS: string;
+export declare const closeButton: string;
+export declare const error: string;
+export declare const icon: string;
+export declare const leave: string;
+export declare const start: string;
+export declare const success: string;
+export declare const toast: string;
+export declare const toasts_wrapper: string;
+export declare const toRemove: string;

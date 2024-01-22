@@ -1,6 +1,5 @@
 export declare const allBook_table: string;
 export declare const allBook_table_body: string;
-export declare const allBook_table_container: string;
 export declare const allBook_table_head: string;
 export declare const allBook_table_wrapper: string;
 export declare const allBooks_header: string;

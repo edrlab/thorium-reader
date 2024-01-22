@@ -13,7 +13,7 @@ import { TPublication } from "readium-desktop/common/type/publication.type";
 import { formatTime } from "readium-desktop/common/utils/time";
 import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
 import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";

@@ -8,7 +8,7 @@
 import * as React from "react";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
 import CatalogMenu from "readium-desktop/renderer/library/components/publication/menu/CatalogMenu";
 import OpdsMenu from "readium-desktop/renderer/library/components/publication/menu/OpdsMenu";

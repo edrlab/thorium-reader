@@ -1,14 +1,10 @@
-declare const styles: {
-  readonly "___DEBUG___COMPONENTS_BLOCKS_CSS": string;
-  readonly "block_dashed": string;
-  readonly "block_full": string;
-  readonly "block_full_close": string;
-  readonly "block_full_update": string;
-  readonly "block_full_wrapper": string;
-  readonly "block_line": string;
-  readonly "block_line_edit": string;
-  readonly "block_line_inactive": string;
-  readonly "description_see_more": string;
-};
-export = styles;
-
+export declare const ___DEBUG___COMPONENTS_BLOCKS_CSS: string;
+export declare const block_dashed: string;
+export declare const block_full: string;
+export declare const block_full_close: string;
+export declare const block_full_update: string;
+export declare const block_full_wrapper: string;
+export declare const block_line: string;
+export declare const block_line_edit: string;
+export declare const block_line_inactive: string;
+export declare const description_see_more: string;

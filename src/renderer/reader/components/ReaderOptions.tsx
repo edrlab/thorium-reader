@@ -32,7 +32,7 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import debounce from "debounce";
 import fontList from "readium-desktop/utils/fontList";
 import { readerConfigInitialState, readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";

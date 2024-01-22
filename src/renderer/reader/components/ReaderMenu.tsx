@@ -15,7 +15,7 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
 import * as BookmarkIcon from "readium-desktop/renderer/assets/icons/outline-bookmark-24px-grey.svg";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";

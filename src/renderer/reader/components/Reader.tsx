@@ -34,7 +34,7 @@ import * as DoubleArrowDownIcon from "readium-desktop/renderer/assets/icons/doub
 import * as DoubleArrowLeftIcon from "readium-desktop/renderer/assets/icons/double_arrow_left_black_24dp.svg";
 import * as DoubleArrowRightIcon from "readium-desktop/renderer/assets/icons/double_arrow_right_black_24dp.svg";
 import * as DoubleArrowUpIcon from "readium-desktop/renderer/assets/icons/double_arrow_up_black_24dp.svg";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";

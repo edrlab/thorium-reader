@@ -15,7 +15,7 @@ import { Provider } from "react-redux";
 import { acceptedExtension, acceptedExtensionObject } from "readium-desktop/common/extension";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
 import { ensureKeyboardListenerIsInstalled } from "readium-desktop/renderer/common/keyboard";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";

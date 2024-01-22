@@ -1,0 +1,43 @@
+@mixin main_navigation_library {
+    z-index: 102;
+    width: 100%;
+    top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: auto;
+    background-color: var(--color-secondary);
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.19);
+    min-width: 600px;
+  }
+  
+  @mixin button_primary {
+    position: relative;
+    display: inline;
+    border: 1px solid var(--color-primary);
+    border-radius: 5px;
+    text-align: center;
+    color:  var(--color-primary);
+    text-decoration: none;
+    overflow: hidden;
+    cursor: pointer;
+    width: auto;
+    height: auto;
+    transition: all 0.2s;
+    flex: none;
+  
+    :hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+  }
+  
+  @mixin R2_MIXIN_FOCUS_OUTLINE {
+    outline-color: blue !important;
+    outline-style: solid !important;
+    outline-width: 2px !important;
+    outline-offset: -2px;
+  }
+  
+  .___DEBUG___PARTIALS_MIXINS_CSS {
+    display: none;
+  }
+  

@@ -1,7 +1,3 @@
-declare const styles: {
-  readonly "___DEBUG___PUBLICATION_VIEW_CSS": string;
-  readonly "card_substitute": string;
-  readonly "card_wrapper": string;
-};
-export = styles;
-
+export declare const ___DEBUG___PUBLICATION_VIEW_CSS: string;
+export declare const card_substitute: string;
+export declare const card_wrapper: string;

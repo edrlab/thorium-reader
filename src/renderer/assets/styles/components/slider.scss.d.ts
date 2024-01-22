@@ -1,12 +1,8 @@
-declare const styles: {
-  readonly "___DEBUG___COMPONENTS_SLIDER_CSS": string;
-  readonly "continue_reading": string;
-  readonly "home_section": string;
-  readonly "slider": string;
-  readonly "slider_button_next": string;
-  readonly "slider_button_prev": string;
-  readonly "slider_items": string;
-  readonly "slider_wrapper": string;
-};
-export = styles;
-
+export declare const ___DEBUG___COMPONENTS_SLIDER_CSS: string;
+export declare const continue_reading: string;
+export declare const home_section: string;
+export declare const slider: string;
+export declare const slider_button_next: string;
+export declare const slider_button_prev: string;
+export declare const slider_items: string;
+export declare const slider_wrapper: string;

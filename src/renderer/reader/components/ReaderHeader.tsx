@@ -27,7 +27,7 @@ import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_
 import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
 import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/sharp-crop_free-24px.svg";
 import * as QuitFullscreenIcon from "readium-desktop/renderer/assets/icons/sharp-uncrop_free-24px.svg";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";

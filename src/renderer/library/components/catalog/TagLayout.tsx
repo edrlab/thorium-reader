@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
 import {
     TranslatorProps, withTranslator,

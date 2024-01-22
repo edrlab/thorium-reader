@@ -1,47 +1,5 @@
-/*
-=-=-= components/inputs.css => '../partials/mixins.css'
-*/
-@import url('../partials/mixins.css');
+@import 'src/renderer/assets/styles/partials/mixin.scss';
 
-/*
-=-=-= components/inputs.css => '../partials/variables.css'
-*/
-
-/*
-@import url('../partials/variables.css');
-*/
-
-/*
-=-=-= components/inputs.css
-*/
-
-/*
-
-	1. input[type="text"]
-	   input[type="number"]
-	   input[type="phone"]
-	   input[type="email"]
-	   input[type="password"]
-	   input[type="date"]
-	   input[type="time"]
-	   input[type="week"]
-	   input[type="color"]
-	   input[type="url"]
-	   input[type="search"]
-
-	2. input[type="checkbox"]
-
-	3. input[type="radio"] (list)
-
-	4. select & option
-
-  5. form_group
-
-  6. dropzone
-
-*/
-
-/* 1. input[type="text"] ... */
 
 input[type="text"],
 input[type="number"],
@@ -96,7 +54,7 @@ input[type="color"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
 input[type="url"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
 input[type="search"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE) {
   &:focus {
-    @mixin R2_MIXIN_FOCUS_OUTLINE;
+    @include R2_MIXIN_FOCUS_OUTLINE;
   }
 }
 
@@ -113,137 +71,10 @@ background-color: white !important;
     }
 }
 
-  /* & input[type="search"] {
-    width: 225px;
-  }
-
-  & button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 38px;
-    width: 36px;
-    background-color: transparent;
-    margin: 0;
-  }
-} */
-
-/* 2. input[type="checkbox"] */
-
-.checkbox_keyboard {
-  position: absolute;
-  left: -2000px;
-
-  & + label {
-    width: auto;
-    height: auto;
-    font-size: 80%;
-    display: inline;
-    padding: 0.3em;
-    margin-right: 1em;
-    border-radius: 3px;
-    cursor: pointer;
-    background-color: #ffd4d4;
-    border: 2px solid rgb(171, 171, 171);
-    border-bottom: 2px solid rgb(41, 41, 41);
-    border-right: 2px solid rgb(41, 41, 41);
-
-    /* border: 2px solid rgb(41, 41, 41);
-		border-bottom: 2px solid rgb(171, 171, 171);
-		border-right: 2px solid rgb(171, 171, 171); */
-  }
-
-  &:checked + label {
-    background-color: #d4ffc6;
-
-    /* border: 2px solid rgb(171, 171, 171);
-		border-bottom: 2px solid rgb(41, 41, 41);
-		border-right: 2px solid rgb(41, 41, 41); */
-  }
-
-  &:focus + label {
-    @mixin R2_MIXIN_FOCUS_OUTLINE;
-  }
-}
-
-/* 3. input[type="radio"] (list) */
-
-.radio_list {
-  list-style-type: none;
-  margin-bottom: 20px;
-
-  & label {
-    display: inline-flex;
-    margin-bottom: 3px;
-    padding: 5px 10px 5px 2rem;
-    font-size: 16px;
-    height: 1.2rem;
-    width: 14rem;
-    color: black;
-    background: var(--color-medium-grey);
-    cursor: pointer;
-
-    & svg {
-      height: 1rem;
-      width: 1rem;
-      margin-left: -1.3rem;
-      margin-right: 0.3rem;
-    }
-
-    &:hover {
-      background: var(--color-light-grey);
-    }
-  }
-
-  & input {
-    position: absolute;
-    -webkit-appearance: none;
-    opacity: 0;
-    width: 1px;
-    height: 1px;
-
-    &:focus + label {
-      @mixin R2_MIXIN_FOCUS_OUTLINE;
-    }
-
-    &:checked + label {
-      background: var(--color-light-grey);
-    }
-  }
-}
-
-/* 4. select & option */
-
 select {
   appearance: none;
 }
 
-/* 5. form_group */
-
-/* .form_group {
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  width: 100%;
-
-  & label {
-    margin-right: 10px;
-    flex: none;
-  }
-
-  & button {
-    margin-left: 10px;
-    flex: none;
-  }
-
-  & input {
-    flex: 1;
-  }
-
-  &:not(:last-child):not(:only-child) {
-    margin-bottom: 2rem;
-  }
-} */
 
 .form_group {
   width: 150px;

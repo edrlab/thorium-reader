@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import {
     TranslatorProps, withTranslator,

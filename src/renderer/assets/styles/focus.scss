@@ -1,11 +1,13 @@
-/*
-=-=-= focus.css => './focus-mixin.css'
-*/
-@import url('./focus-mixin.css');
+@mixin R2_MIXIN_FOCUS_OUTLINE {
+  outline-color: blue !important;
+  outline-style: solid !important;
+  outline-width: 2px !important;
+  outline-offset: -2px;
+}
 
-/*
-=-=-= focus.css
-*/
+.___DEBUG___FOCUS_MIXIN_CSS {
+  display: none;
+}
 
 :root *:focus {
   outline: none;
@@ -20,7 +22,7 @@
 /* :global */
 
 :root.R2_CSS_CLASS__KEYBOARD_INTERACT *:focus {
-  @mixin R2_MIXIN_FOCUS_OUTLINE;
+  @include R2_MIXIN_FOCUS_OUTLINE;
 }
 
 /* :global */

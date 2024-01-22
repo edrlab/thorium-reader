@@ -1,8 +1,4 @@
-declare const styles: {
-  readonly "___DEBUG___COMPONENTS_BREADCRUMB_CSS": string;
-  readonly "breadcrumb": string;
-  readonly "button_transparency": string;
-  readonly "button_transparency_icon": string;
-};
-export = styles;
-
+export declare const ___DEBUG___COMPONENTS_BREADCRUMB_CSS: string;
+export declare const breadcrumb: string;
+export declare const button_transparency: string;
+export declare const button_transparency_icon: string;

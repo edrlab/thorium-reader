@@ -12,7 +12,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import classNames from "classnames";
