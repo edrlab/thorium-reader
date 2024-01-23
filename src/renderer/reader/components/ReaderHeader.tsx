@@ -9,7 +9,7 @@ import classNames from "classnames";
 import * as debug_ from "debug";
 import * as React from "react";
 // import * as Popover from "@radix-ui/react-popover";
-import * as Portal from '@radix-ui/react-portal';
+import * as Portal from "@radix-ui/react-portal";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import * as ReactDOM from "react-dom";
 import { ReaderMode } from "readium-desktop/common/models/reader";
