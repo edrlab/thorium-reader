@@ -8,6 +8,9 @@
 import classNames from "classnames";
 import * as debug_ from "debug";
 import * as React from "react";
+// import * as Popover from "@radix-ui/react-popover";
+import * as Portal from '@radix-ui/react-portal';
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import * as ReactDOM from "react-dom";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 // import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
@@ -42,7 +45,7 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import { IEventBusPdfPlayer, IPdfPlayerScale } from "../pdf/common/pdfReader.type";
 import HeaderSearch from "./header/HeaderSearch";
-import { IReaderMenuProps, IReaderSettingsProps } from "./options-values";
+import { IPopoverDialogProps, IReaderMenuProps, IReaderSettingsProps } from "./options-values";
 import ReaderMenu from "./ReaderMenu";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
@@ -52,6 +55,7 @@ import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { PublicationInfoReaderWithRadix, PublicationInfoReaderWithRadixContent, PublicationInfoReaderWithRadixTrigger } from "./dialog/publicationInfos/PublicationInfo";
+import { ReaderSettings } from "./ReaderSettings";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -77,7 +81,7 @@ interface IBaseProps extends TranslatorProps {
     mode?: ReaderMode;
     settingsOpen: boolean;
     handleMenuClick: () => void;
-    handleSettingsClick: () => void;
+    handleSettingsClick: (open?: boolean) => void;
     fullscreen: boolean;
     handleFullscreenClick: () => void;
 
@@ -117,6 +121,8 @@ interface IBaseProps extends TranslatorProps {
     isPdf: boolean;
     pdfEventBus: IEventBusPdfPlayer;
     divinaSoundPlay: (play: boolean) => void;
+
+    readerPopoverDialogContext: IPopoverDialogProps;
 }
 
 // IProps may typically extend:
@@ -138,7 +144,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
     private enableFullscreenRef: React.RefObject<HTMLButtonElement>;
     private disableFullscreenRef: React.RefObject<HTMLButtonElement>;
-    private settingsMenuButtonRef: React.RefObject<HTMLButtonElement>;
     private navigationMenuButtonRef: React.RefObject<HTMLButtonElement>;
     private infoMenuButtonRef: React.RefObject<HTMLButtonElement>;
 
@@ -149,11 +154,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         super(props);
         this.enableFullscreenRef = React.createRef<HTMLButtonElement>();
         this.disableFullscreenRef = React.createRef<HTMLButtonElement>();
-        this.settingsMenuButtonRef = React.createRef<HTMLButtonElement>();
         this.navigationMenuButtonRef = React.createRef<HTMLButtonElement>();
         this.infoMenuButtonRef = React.createRef<HTMLButtonElement>();
 
-        this.focusSettingMenuButton = this.focusSettingMenuButton.bind(this);
         this.focusNaviguationMenuButton = this.focusNaviguationMenuButton.bind(this);
 
         this.onKeyboardFixedLayoutZoomReset = this.onKeyboardFixedLayoutZoomReset.bind(this);
@@ -234,11 +237,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         if (this.props.menuOpen !== oldProps.menuOpen &&
             this.props.menuOpen === true) {
             this.focusNaviguationMenuButton();
-        }
-
-        if (this.props.settingsOpen !== oldProps.settingsOpen &&
-            this.props.settingsOpen === true) {
-            this.focusSettingMenuButton();
         }
 
         if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
@@ -356,6 +354,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
         const showAudioTTSToolbar = (this.props.currentLocation && !this.props.currentLocation.audioPlaybackInfo) &&
             !this.props.isDivina && !this.props.isPdf;
+
         return (
             <nav
                 className={classNames(stylesReaderHeader.toolbar_navigation,
@@ -726,21 +725,34 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             {...(this.props.settingsOpen &&
                                 { style: { backgroundColor: "var(--color-blue" } })}
                         >
-                            <button
-                                aria-pressed={this.props.settingsOpen}
-                                aria-label={__("reader.navigation.settingsTitle")}
-                                className={stylesReader.menu_button}
-                                onClick={this.props.handleSettingsClick.bind(this)}
-                                ref={this.settingsMenuButtonRef}
-                                title={__("reader.navigation.settingsTitle")}
-                            >
-                                <SVG ariaHidden={true} svg={SettingsIcon} className={this.props.settingsOpen ? stylesReaderHeader.active_svg : ""} />
-                            </button>
-
+                            {/* <Popover.Root onOpenChange={(v) => { console.log("SETTINGS DialogOnOpenChange", v); this.props.handleSettingsClick(v);}} modal={false}> */}
+                                {/* <Popover.Trigger asChild> */}
+                                    <button
+                                        aria-pressed={this.props.settingsOpen}
+                                        aria-label={__("reader.navigation.settingsTitle")}
+                                        className={stylesReader.menu_button}
+                                        onClick={() => this.props.handleSettingsClick()}
+                                        // ref={this.settingsMenuButtonRef}
+                                        title={__("reader.navigation.settingsTitle")}
+                                    >
+                                        <SVG ariaHidden={true} svg={SettingsIcon} className={this.props.settingsOpen ? stylesReaderHeader.active_svg : ""} />
+                                    </button>
+                                {/* </Popover.Trigger> */}
+                                { this.props.settingsOpen ? <Portal.Root>
+                                    {/* <Popover.Content */}
+                                    <div
+                                    className={classNames(this.props.readerPopoverDialogContext.dockedMode ? stylesPopoverDialog.popover_dialog_reader : stylesPopoverDialog.modal_dialog_reader,
+                                        this.props.ReaderSettingsProps.readerConfig.night ? stylesReader.nightMode : this.props.ReaderSettingsProps.readerConfig.sepia ? stylesReader.sepiaMode : "")}
+                                    >
+                                        <ReaderSettings {...this.props.ReaderSettingsProps} {...this.props.readerPopoverDialogContext} handleSettingsClick={this.props.handleSettingsClick}/>
+                                    {/* </Popover.Content> */}
+                                    </div>
+                                </Portal.Root> : <></>}
+                            {/* </Popover.Root> */}
                         </li>
                         <li
                             {...(this.props.menuOpen &&
-                                { style: { backgroundColor: "var(--color-blue)"} })}
+                                { style: { backgroundColor: "var(--color-blue)" } })}
                         >
                             <button
                                 aria-pressed={this.props.menuOpen}
@@ -750,7 +762,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 ref={this.navigationMenuButtonRef}
                                 title={__("reader.navigation.openTableOfContentsTitle")}
                             >
-                                <SVG ariaHidden={true} svg={TOCIcon} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""}/>
+                                <SVG ariaHidden={true} svg={TOCIcon} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""} />
                             </button>
                             <ReaderMenu {...this.props.readerMenuProps}
                                 isDivina={this.props.isDivina}
@@ -807,15 +819,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
     private setScaleMode = (mode: IPdfPlayerScale) => {
         this.setState({ pdfScaleMode: mode });
     };
-
-    private focusSettingMenuButton() {
-        if (!this.settingsMenuButtonRef?.current) {
-            return;
-        }
-        const button = ReactDOM.findDOMNode(this.settingsMenuButtonRef.current) as HTMLButtonElement;
-
-        button.focus();
-    }
 
     private focusNaviguationMenuButton() {
         if (!this.navigationMenuButtonRef?.current) {

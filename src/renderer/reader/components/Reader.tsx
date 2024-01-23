@@ -84,12 +84,10 @@ import {
 } from "../redux/actions";
 import { TdivinaReadingMode, defaultReadingMode } from "readium-desktop/common/redux/states/renderer/divina";
 import optionsValues, {
-    AdjustableSettingsNumber, IReaderMenuProps, IReaderSettingsProps, isDivinaReadingMode,
+    AdjustableSettingsNumber, IPopoverDialogProps, IReaderMenuProps, IReaderSettingsProps, isDivinaReadingMode,
 } from "./options-values";
 import PickerManager from "./picker/PickerManager";
 import { URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS, URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_GOTO, URL_PARAM_GOTO_DOM_RANGE, URL_PARAM_IS_IFRAME, URL_PARAM_PREVIOUS, URL_PARAM_REFRESH, URL_PARAM_SECOND_WEBVIEW, URL_PARAM_SESSION_INFO, URL_PARAM_WEBVIEW_SLOT } from "@r2-navigator-js/electron/renderer/common/url-params";
-import { IPopoverDialogContext, PopoverDialogAnchor, PopoverDialogPortal, PopoverDialogRoot } from "./PopoverDialog";
-import { ReaderSettings } from "./ReaderSettings";
 
 // main process code!
 // thoriumhttps
@@ -590,7 +588,7 @@ class Reader extends React.Component<IProps, IState> {
             openedSection: this.state.openedSectionSettings,
         };
 
-        const readerPopoverDialogContext: IPopoverDialogContext = {
+        const readerPopoverDialogContext: IPopoverDialogProps = {
             dockingMode: this.state.dockingMode,
             dockedMode: this.state.dockingMode !== "full",
             setDockingMode: (m) => { this.setState({"dockingMode": m }); },
@@ -624,68 +622,59 @@ class Reader extends React.Component<IProps, IState> {
                     label={this.props.__("accessibility.skipLink")}
                 />
                 <div className={stylesReader.root}>
-                    <PopoverDialogRoot open={ReaderSettingsProps.open} toggleMenu={ReaderSettingsProps.toggleMenu} {...readerPopoverDialogContext}>
-                        <PopoverDialogAnchor {...readerPopoverDialogContext}>
-                            <div>
-                                <ReaderHeader
-                                    shortcutEnable={this.state.shortcutEnable}
-                                    infoOpen={this.props.infoOpen}
-                                    menuOpen={this.state.menuOpen}
-                                    settingsOpen={this.state.settingsOpen}
+                    <ReaderHeader
+                        shortcutEnable={this.state.shortcutEnable}
+                        infoOpen={this.props.infoOpen}
+                        menuOpen={this.state.menuOpen}
+                        settingsOpen={this.state.settingsOpen}
 
-                                    handleTTSPlay={this.handleTTSPlay}
-                                    handleTTSResume={this.handleTTSResume}
-                                    handleTTSStop={this.handleTTSStop}
-                                    handleTTSPrevious={this.handleTTSPrevious}
-                                    handleTTSNext={this.handleTTSNext}
-                                    handleTTSPause={this.handleTTSPause}
-                                    handleTTSPlaybackRate={this.handleTTSPlaybackRate}
-                                    handleTTSVoice={this.handleTTSVoice}
-                                    ttsState={this.state.ttsState}
-                                    ttsPlaybackRate={this.state.ttsPlaybackRate}
-                                    ttsVoice={this.state.ttsVoice}
+                        handleTTSPlay={this.handleTTSPlay}
+                        handleTTSResume={this.handleTTSResume}
+                        handleTTSStop={this.handleTTSStop}
+                        handleTTSPrevious={this.handleTTSPrevious}
+                        handleTTSNext={this.handleTTSNext}
+                        handleTTSPause={this.handleTTSPause}
+                        handleTTSPlaybackRate={this.handleTTSPlaybackRate}
+                        handleTTSVoice={this.handleTTSVoice}
+                        ttsState={this.state.ttsState}
+                        ttsPlaybackRate={this.state.ttsPlaybackRate}
+                        ttsVoice={this.state.ttsVoice}
 
-                                    handleMediaOverlaysPlay={this.handleMediaOverlaysPlay}
-                                    handleMediaOverlaysResume={this.handleMediaOverlaysResume}
-                                    handleMediaOverlaysStop={this.handleMediaOverlaysStop}
-                                    handleMediaOverlaysPrevious={this.handleMediaOverlaysPrevious}
-                                    handleMediaOverlaysNext={this.handleMediaOverlaysNext}
-                                    handleMediaOverlaysPause={this.handleMediaOverlaysPause}
-                                    handleMediaOverlaysPlaybackRate={this.handleMediaOverlaysPlaybackRate}
-                                    mediaOverlaysState={this.state.mediaOverlaysState}
-                                    mediaOverlaysPlaybackRate={this.state.mediaOverlaysPlaybackRate}
-                                    publicationHasMediaOverlays={this.state.r2PublicationHasMediaOverlays}
+                        handleMediaOverlaysPlay={this.handleMediaOverlaysPlay}
+                        handleMediaOverlaysResume={this.handleMediaOverlaysResume}
+                        handleMediaOverlaysStop={this.handleMediaOverlaysStop}
+                        handleMediaOverlaysPrevious={this.handleMediaOverlaysPrevious}
+                        handleMediaOverlaysNext={this.handleMediaOverlaysNext}
+                        handleMediaOverlaysPause={this.handleMediaOverlaysPause}
+                        handleMediaOverlaysPlaybackRate={this.handleMediaOverlaysPlaybackRate}
+                        mediaOverlaysState={this.state.mediaOverlaysState}
+                        mediaOverlaysPlaybackRate={this.state.mediaOverlaysPlaybackRate}
+                        publicationHasMediaOverlays={this.state.r2PublicationHasMediaOverlays}
 
-                                    handleMenuClick={this.handleMenuButtonClick}
-                                    handleSettingsClick={this.handleSettingsClick}
-                                    fullscreen={this.state.fullscreen}
-                                    mode={this.props.readerMode}
-                                    handleFullscreenClick={this.handleFullscreenClick}
-                                    handleReaderDetach={this.handleReaderDetach}
-                                    handleReaderClose={this.handleReaderClose}
-                                    toggleBookmark={() => this.handleToggleBookmark(false)}
-                                    isOnBookmark={this.state.visibleBookmarkList.length > 0}
-                                    isOnSearch={this.props.searchEnable}
-                                    ReaderSettingsProps={ReaderSettingsProps}
-                                    readerMenuProps={readerMenuProps}
-                                    displayPublicationInfo={this.displayPublicationInfo}
-                                    // tslint:disable-next-line: max-line-length
-                                    currentLocation={this.props.isDivina || this.props.isPdf ? this.props.locator : this.state.currentLocation}
-                                    isDivina={this.props.isDivina}
-                                    isPdf={this.props.isPdf}
-                                    pdfEventBus={this.state.pdfPlayerBusEvent}
-                                    divinaSoundPlay={this.handleDivinaSound}
-                                    r2Publication={this.props.r2Publication}
-                                />
-                            </div>
-                        </PopoverDialogAnchor>
-                        <PopoverDialogPortal {...readerPopoverDialogContext}>
-                            <ReaderSettings {...ReaderSettingsProps} {...readerPopoverDialogContext}
-                                isDivina={this.props.isDivina}
-                                isPdf={this.props.isPdf}
-                            />
-                        </PopoverDialogPortal>
-                    </PopoverDialogRoot>
+                        handleMenuClick={this.handleMenuButtonClick}
+                        handleSettingsClick={this.handleSettingsClick}
+                        fullscreen={this.state.fullscreen}
+                        mode={this.props.readerMode}
+                        handleFullscreenClick={this.handleFullscreenClick}
+                        handleReaderDetach={this.handleReaderDetach}
+                        handleReaderClose={this.handleReaderClose}
+                        toggleBookmark={() => this.handleToggleBookmark(false)}
+                        isOnBookmark={this.state.visibleBookmarkList.length > 0}
+                        isOnSearch={this.props.searchEnable}
+                        ReaderSettingsProps={ReaderSettingsProps}
+                        readerMenuProps={readerMenuProps}
+                        displayPublicationInfo={this.displayPublicationInfo}
+                        // tslint:disable-next-line: max-line-length
+                        currentLocation={this.props.isDivina || this.props.isPdf ? this.props.locator : this.state.currentLocation}
+                        isDivina={this.props.isDivina}
+                        isPdf={this.props.isPdf}
+                        pdfEventBus={this.state.pdfPlayerBusEvent}
+                        divinaSoundPlay={this.handleDivinaSound}
+                        r2Publication={this.props.r2Publication}
+
+                        readerPopoverDialogContext={readerPopoverDialogContext}
+                    />
+
                     <div className={classNames(stylesReader.content_root,
                         this.state.fullscreen ? stylesReader.content_root_fullscreen : undefined,
                         this.props.isPdf ? stylesReader.content_root_skip_bottom_spacing : undefined)}>
@@ -694,9 +683,7 @@ class Reader extends React.Component<IProps, IState> {
                             pdfEventBus={this.state.pdfPlayerBusEvent}
                             isPdf={this.props.isPdf}
                         ></PickerManager>
-                        <div className={stylesReader.reader}
-                        // className={classNames(stylesReader.reader, this.state.dockingMode === "left" ? stylesReader.docked_left : "" )}
-                        >
+                        <div className={stylesReader.reader}>
                             <main
                                 id="main"
                                 aria-label={this.props.__("accessibility.mainContent")}
@@ -712,7 +699,7 @@ class Reader extends React.Component<IProps, IState> {
                                 <div
                                     id="publication_viewport"
                                     // className={stylesReader.publication_viewport}
-                                    className={classNames(stylesReader.publication_viewport, this.state.dockingMode === "left" ? stylesReader.docked_left : this.state.dockingMode === "right" ? stylesReader.docked_right : undefined)}
+                                    className={classNames(stylesReader.publication_viewport, this.state.settingsOpen ? (this.state.dockingMode === "left" ? stylesReader.docked_left : this.state.dockingMode === "right" ? stylesReader.docked_right : undefined) : undefined)}
                                     ref={this.mainElRef}>
                                 </div>
                                 {
@@ -2317,10 +2304,15 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private handleSettingsClick(openedSectionSettings?: number | undefined) {
+    private handleSettingsClick(open?: boolean, openedSectionSettings?: number | undefined) {
+        console.log("HandleSettingsClick", "settingsOpen=", this.state.settingsOpen ? "closeSettings" : "openSettings", open !== undefined ? `openFromParam=${open ? "openSettings" : "closeSettings"}`: "");
+
+        const openToggle = !this.state.settingsOpen;
+        const settingsOpen = open !== undefined ? open : openToggle;
+
         this.setState({
-            settingsOpen: !this.state.settingsOpen,
-            shortcutEnable: this.state.settingsOpen,
+            settingsOpen,
+            shortcutEnable: !settingsOpen,
             menuOpen: false,
             openedSectionSettings,
         });

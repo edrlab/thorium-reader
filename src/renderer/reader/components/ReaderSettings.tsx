@@ -6,8 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
-import * as Popover from "@radix-ui/react-popover";
+// import * as Popover from "@radix-ui/react-popover";
 import * as Tabs from "@radix-ui/react-tabs";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import classNames from "classnames";
@@ -29,7 +28,7 @@ import * as DockModalIcon from "readium-desktop/renderer/assets/icons/dockmodal-
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import { IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../pdf/common/pdfReader.type";
-import { IReaderSettingsProps } from "./options-values";
+import { IPopoverDialogProps, IReaderSettingsProps } from "./options-values";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
@@ -39,10 +38,10 @@ import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app
 import debounce from "debounce";
 import fontList from "readium-desktop/utils/fontList";
 import { readerConfigInitialState, readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
-import { IPopoverDialogContext } from "./PopoverDialog";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends IReaderSettingsProps {
+interface IBaseProps extends IReaderSettingsProps, IPopoverDialogProps {
+    handleSettingsClick: (open: boolean) => void;
 }
 
 interface IState {
@@ -717,8 +716,7 @@ const AllowCustom = ({ overridePublisherDefault, set }:
         );
 };
 
-
-export const ReaderSettings: React.FC<IPopoverDialogContext & IBaseProps> = (props) => {
+export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const { setSettings, readerConfig, open, pdfEventBus } = props;
     const [__] = useTranslator();
 
@@ -909,7 +907,7 @@ export const ReaderSettings: React.FC<IPopoverDialogContext & IBaseProps> = (pro
     const optionSelected = options.find(({ value }) => value === tabValue)?.id || 0;
     const optionDisabled = options.map(({ id, disabled }) => disabled ? id : "").filter((v) => !!v) as number[];
 
-    const Close = dockedMode ? Popover.Close : Dialog.Close;
+    // const Close = Popover.Close;
 
     console.log("RENDER");
 
@@ -958,11 +956,11 @@ export const ReaderSettings: React.FC<IPopoverDialogContext & IBaseProps> = (pro
                             <SVG ariaHidden={true} svg={DockModalIcon} />
                         </button>
 
-                        <Close asChild>
-                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                        {/* <Close asChild> */}
+                            <button className={stylesButtons.button_transparency_icon} aria-label="Close" onClick={() => props.handleSettingsClick(false)}>
                                 <SVG ariaHidden={true} svg={QuitIcon} />
                             </button>
-                        </Close>
+                        {/* </Close> */}
                     </div>
                 </div> : <></>
             }
@@ -1029,11 +1027,11 @@ export const ReaderSettings: React.FC<IPopoverDialogContext & IBaseProps> = (pro
                         <button className={stylesButtons.button_transparency_icon} aria-label="full" onClick={setDockingModeFull}>
                             <SVG ariaHidden={true} svg={DockModalIcon} />
                         </button>
-                        <Close asChild>
-                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                        {/* <Close asChild> */}
+                            <button className={stylesButtons.button_transparency_icon} aria-label="Close" onClick={() => props.handleSettingsClick(false)}>
                                 <SVG ariaHidden={true} svg={QuitIcon} />
                             </button>
-                        </Close>
+                        {/* </Close> */}
                     </div>
             }
         </div>

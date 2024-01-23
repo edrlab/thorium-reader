@@ -152,3 +152,9 @@ export interface IReaderSettingsProps {
 
     openedSection: number | undefined;
 }
+
+export interface IPopoverDialogProps {
+    dockingMode: "full" | "left" | "right";
+    dockedMode: boolean;
+    setDockingMode: (m: "full" | "left" | "right") => void;
+}

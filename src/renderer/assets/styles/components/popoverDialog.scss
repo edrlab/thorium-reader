@@ -38,6 +38,7 @@
     margin-top: 50px;
     flex-direction: column;
     box-sizing: border-box;
-    z-index: 102;
+    z-index: 10000;
     background-color: white;
+    position: relative;
   }
