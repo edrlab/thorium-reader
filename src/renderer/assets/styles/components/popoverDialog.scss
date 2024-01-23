@@ -33,12 +33,53 @@
 
   .popover_dialog_reader {
     width: 350px;
-    height: 100%;
+    height: calc(100dvh - 110px);
     display: flex;
     margin-top: 50px;
     flex-direction: column;
     box-sizing: border-box;
     z-index: 10000;
     background-color: white;
-    position: relative;
+    position: absolute;
+
+    .display_options_item {
+      background-color: transparent;
+      color: var(--reader-fontColor);
+    }
+  }
+
+  .docked_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+
+    .my_combobox_container {
+      width: 200px;
+      height: 27px;
+      background-color: var(--color-light-blue);
+      color: var(--color-blue);
+      border-color: var(--color-blue)!important;
+
+      input {
+        width: 150px;
+        height:25px;
+        background-color: inherit;
+        font-size: 16px;
+        margin-left: 10px;
+        padding: 0!important;
+      }
+
+      button {
+        background-color: inherit;
+      }
+    }
+
+    &_controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: nowrap;
+    }
   }

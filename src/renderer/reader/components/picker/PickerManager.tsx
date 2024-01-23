@@ -8,11 +8,11 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+// import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import SVG from "readium-desktop/renderer/common/components/SVG";
+// import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { IEventBusPdfPlayer } from "../../pdf/common/pdfReader.type";
 
@@ -20,6 +20,9 @@ import { readerLocalActionPicker, readerLocalActionSearch } from "../../redux/ac
 import { IPickerState } from "readium-desktop/common/redux/states/renderer/picker";
 import AnnotationPicker from "./Annotation";
 import SearchPicker from "./Search";
+import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -85,33 +88,15 @@ class PickerManager extends React.Component<IProps, IState> {
         return (
             // z-index 102 is just above top toolbar, below dialog
             // (but index stacking results in overlay on top of side panels, so not viable)
-            <div style={{
-                zIndex: 101,
-                position: "absolute",
-                left: "30px",
-                right: "30px",
-                top: "70px",
-                height: "40px",
-                padding: 0,
-                margin: 0,
-
-                backgroundColor: "var(--reader-mainColor)",
-                border: "1px solid var(--reader-separatorColor)",
-                borderRadius: "6px",
-
-                display: "flex",
-                justifyContent: "left",
-                alignItems: "center",
-
-                boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.3)",
-            }}
+            <div className={stylesReaderHeader.picker_container}
                 onKeyUp={(e: React.KeyboardEvent<HTMLDivElement>) => {
                     if (e.key === "Escape") {
                         this.props.closePicker(type);
                     }
                 }}
             >
-                <span style={{
+                <span></span>
+                {/* <span style={{
                     fontSize: "1em",
                     backgroundColor: "transparent",
                     margin: 0,
@@ -124,7 +109,7 @@ class PickerManager extends React.Component<IProps, IState> {
                             ? __("reader.picker.searchTitle")
                             : __("reader.picker.annotationTitle")
                     }
-                </span>
+                </span> */}
                 <>
                     {
 

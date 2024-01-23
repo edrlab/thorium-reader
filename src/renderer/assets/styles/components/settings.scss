@@ -5,8 +5,7 @@ $setting_color:  var(--color-blue);
 
 .settings_container {
     display: flex;
-    height: calc(100vh - 300px);
-    min-height: 570px;
+    height: 597px;
     input[type='range'], input[type="checkbox"] {
         accent-color: $setting_color;
     }

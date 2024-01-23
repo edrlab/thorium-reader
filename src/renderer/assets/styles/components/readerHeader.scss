@@ -28,7 +28,7 @@
         }
 
         li {
-            height: 100%;
+            height: 50px;
             width: 50px;
             display: flex;
             align-items: center;
@@ -40,6 +40,10 @@
                 height: inherit;
                 cursor: pointer;
                 padding: 5px;
+                box-sizing: border-box;
+                display: flex;
+                align-items: center;
+                justify-content: center;
     
                 svg {
                     height: 30px;
@@ -78,4 +82,64 @@
 .active_svg {
     fill: white!important;
     color: white!important;
+}
+
+.picker_container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0 20px;
+    width: 680px;
+    height: 75px;
+    background-color: var(--color-extralight-grey);
+    z-index: 101;
+    box-shadow: 0 6px 10px 0 var(--color-medium-grey);
+    margin-right: 200px;
+    position: absolute;
+    top: 65px;
+    right: 10px;
+    border-radius: 6px;
+
+    > span {
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 15px solid var(--color-extralight-grey);
+        position: absolute;
+        top: -15px;
+        right: 25px;
+    }
+
+    button[title="Close"] {
+        width: 15px;
+        height: 15px;
+        padding: 4px;
+        margin: 0;
+    }
+
+    .form_group {
+        margin-right: 75px;
+        label {
+        top: -18px;
+        background-color: var(--color-extralight-grey);
+        }
+
+        button {
+            svg {
+                fill: var(--color-blue);
+            }
+        }
+    }
+}
+
+.button {
+    &_close {
+        width: 20px;
+        height: 20px;
+    }
+
+    &_arrow {
+        fill: var(--color-extralight-grey);
+        width: 15px;
+        height: 10px;
+    }
 }

@@ -38,6 +38,7 @@ import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app
 import debounce from "debounce";
 import fontList from "readium-desktop/utils/fontList";
 import { readerConfigInitialState, readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps, IPopoverDialogProps {
@@ -915,7 +916,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     return (
         <div>
             {
-                dockedMode ? <div key="docked-header">
+                dockedMode ? <div key="docked-header" className={stylesPopoverDialog.docked_header}>
                     <ComboBox label={"change this!"} defaultItems={options} selectedKey={optionSelected}
                         disabledKeys={optionDisabled}
                         svg={TextAreaIcon}
@@ -945,7 +946,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                         {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                     </ComboBox>
 
-                    <div key="docked-header-btn">
+                    <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls}>
                         <button className={stylesButtons.button_transparency_icon} aria-label="left" onClick={setDockingModeLeftSide}>
                             <SVG ariaHidden={true} svg={DockLeftIcon} />
                         </button>

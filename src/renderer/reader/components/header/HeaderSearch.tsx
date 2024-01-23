@@ -22,6 +22,7 @@ import {
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import { readerLocalActionPicker, readerLocalActionSearch } from "../../redux/actions";
+import { IEventBusPdfPlayer } from "../../pdf/common/pdfReader.type";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -37,12 +38,21 @@ interface IProps extends IBaseProps,
     ReturnType<typeof mapDispatchToProps> {
 }
 
-class HeaderSearch extends React.Component<IProps, undefined> {
+interface IState {
+    pdfPlayerBusEvent: IEventBusPdfPlayer;
+}
+
+class HeaderSearch extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
 
         this.enableSearch = this.enableSearch.bind(this);
+
+
+        this.state = {
+            pdfPlayerBusEvent: undefined,
+        };
     }
 
     // public componentDidMount() {

@@ -22,6 +22,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { IEventBusPdfPlayer } from "../../pdf/common/pdfReader.type";
 
 import { readerLocalActionSearch } from "../../redux/actions";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -81,18 +82,18 @@ class SearchFormPicker extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
-            <form onSubmit={this.search} role="search">
+            <form onSubmit={this.search} role="search" className={stylesInputs.form_group}>
+                <label>
+                    {__("reader.picker.searchTitle")}
+                </label>
                 <input
                     ref={this.inputRef}
                     type="search"
                     id="menu_search"
                     aria-label={__("reader.navigation.magnifyingGlassButton")}
                     placeholder={__("reader.picker.search.input")}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.setState({inputValue: e.target.value})}
-                    style={{
-                        fontSize: "1em",
-                        verticalAlign: "text-bottom",
-                    }}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.setState({ inputValue: e.target.value })}
+                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                 />
 
                 <button
@@ -101,8 +102,9 @@ class SearchFormPicker extends React.Component<IProps, IState> {
                         width: "30px",
                         padding: "4px",
                         marginLeft: "0.4em",
-                        color: this.state.inputValue ? "black" : "grey",
-                        fill: this.state.inputValue ? "black" : "grey" }}
+                        position: "absolute",
+                        right: "-50px"
+                    }}
                     title={__("reader.picker.search.submit")}
                 >
 

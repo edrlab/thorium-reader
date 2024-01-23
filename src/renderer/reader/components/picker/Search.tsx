@@ -112,6 +112,8 @@ class SearchPicker extends React.Component<IProps, IState> {
             <div style={{
                 // margin: "10px",
                 display: "flex",
+                alignItems: "center",
+                padding: "20px 0",
                 // flexDirection: "row",
                 // width: "300px",
 
@@ -122,36 +124,6 @@ class SearchPicker extends React.Component<IProps, IState> {
                     isPdf={this.props.isPdf}
                     reset={() => this.setState({foundNumber: 0, notFound: true})}
                 ></SearchFormPicker>
-                <button
-                    disabled={notFound}
-                    onClick={previous}
-                    aria-label={__("reader.picker.search.previous")}
-                    title={__("opds.previous")}
-                    style={{
-                        width: "30px",
-                        padding: "4px",
-                        margin: 0,
-                        color: notFound ? "grey" : "black",
-                        fill: notFound ? "grey" : "black",
-                    }}
-                >
-                    <SVG ariaHidden={true} svg={ArrowLeftIcon} />
-                </button>
-                <button
-                    disabled={notFound}
-                    onClick={next}
-                    aria-label={__("reader.picker.search.next")}
-                    title={__("opds.next")}
-                    style={{
-                        width: "30px",
-                        padding: "4px",
-                        margin: 0,
-                        color: notFound ? "grey" : "black",
-                        fill: notFound ? "grey" : "black",
-                    }}
-                >
-                    <SVG ariaHidden={true} svg={ArrowRightIcon} />
-                </button>
                 {
                     load &&
                     <LoaderSearch></LoaderSearch>
@@ -183,6 +155,36 @@ class SearchPicker extends React.Component<IProps, IState> {
                 </button>
                 )
                 }
+                                <button
+                    disabled={notFound}
+                    onClick={previous}
+                    aria-label={__("reader.picker.search.previous")}
+                    title={__("opds.previous")}
+                    style={{
+                        width: "30px",
+                        padding: "4px",
+                        margin: 0,
+                        color: notFound ? "grey" : "var(--color-blue)",
+                        fill: notFound ? "grey" : "var(--color-blue)",
+                    }}
+                >
+                    <SVG ariaHidden={true} svg={ArrowLeftIcon} />
+                </button>
+                <button
+                    disabled={notFound}
+                    onClick={next}
+                    aria-label={__("reader.picker.search.next")}
+                    title={__("opds.next")}
+                    style={{
+                        width: "30px",
+                        padding: "4px",
+                        margin: 0,
+                        color: notFound ? "grey" : "var(--color-blue)",
+                        fill: notFound ? "grey" : "var(--color-blue)",
+                    }}
+                >
+                    <SVG ariaHidden={true} svg={ArrowRightIcon} />
+                </button>
             </div>
         );
 

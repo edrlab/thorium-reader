@@ -77,7 +77,7 @@ button {
   background: none;
   border: 0;
   cursor: pointer;
-  fill: var(--reader-fontColor) !important;
+  fill: var(--reader-fontColor);
   height: auto;
 
   &:hover {

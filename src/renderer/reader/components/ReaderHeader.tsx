@@ -25,7 +25,7 @@ import * as StopIcon from "readium-desktop/renderer/assets/icons/baseline-stop-2
 import * as AudioIcon from "readium-desktop/renderer/assets/icons/baseline-volume_up-24px.svg";
 import * as SettingsIcon from "readium-desktop/renderer/assets/icons/font-size.svg";
 import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
-import * as MarkIcon from "readium-desktop/renderer/assets/icons/outline-bookmark_border-24px.svg";
+import * as MarkIcon from "readium-desktop/renderer/assets/icons/bookmark-icon.svg";
 import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
 import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
 import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/sharp-crop_free-24px.svg";
@@ -138,6 +138,7 @@ interface IState {
     pdfScaleMode: IPdfPlayerScale | undefined;
     divinaSoundEnabled: boolean;
     fxlZoomPercent: number;
+    pdfPlayerBusEvent: IEventBusPdfPlayer;
 }
 
 export class ReaderHeader extends React.Component<IProps, IState> {
@@ -167,6 +168,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             pdfScaleMode: undefined,
             divinaSoundEnabled: false,
             fxlZoomPercent: 0,
+            pdfPlayerBusEvent: undefined,
         };
 
         this.timerFXLZoomDebounce = undefined;
@@ -692,11 +694,10 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                     <ul className={stylesReader.menu_option}>
                         <li
-                            {...(this.props.isOnSearch && { style: { backgroundColor: "var(--color-blue"  } })}
+                            {...(this.props.isOnSearch && { style: { backgroundColor: "var(--color-blue" } })}
                         >
                             <HeaderSearch shortcutEnable={this.props.shortcutEnable}></HeaderSearch>
                         </li>
-
                         <li
                             {...(this.props.isOnBookmark &&
                                 { style: { backgroundColor: "var(--color-blue" } })}
@@ -711,7 +712,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 title={__("reader.navigation.bookmarkTitle")}
                             />
                             {
-                            // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing
+                                // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing
                             }
                             <label
                                 htmlFor="bookmarkButton"
@@ -743,6 +744,12 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     <div
                                     className={classNames(this.props.readerPopoverDialogContext.dockedMode ? stylesPopoverDialog.popover_dialog_reader : stylesPopoverDialog.modal_dialog_reader,
                                         this.props.ReaderSettingsProps.readerConfig.night ? stylesReader.nightMode : this.props.ReaderSettingsProps.readerConfig.sepia ? stylesReader.sepiaMode : "")}
+                                        style={{
+                                            borderLeft : this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "", 
+                                            borderRight : this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
+                                            right : this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset", 
+                                            left : this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "", 
+                                        }}
                                     >
                                         <ReaderSettings {...this.props.ReaderSettingsProps} {...this.props.readerPopoverDialogContext} handleSettingsClick={this.props.handleSettingsClick}/>
                                     {/* </Popover.Content> */}
