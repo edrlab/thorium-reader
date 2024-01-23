@@ -32,7 +32,7 @@
   }
 
   .popover_dialog_reader {
-    width: 350px;
+    width: 400px;
     height: calc(100dvh - 110px);
     display: flex;
     margin-top: 50px;
@@ -55,14 +55,14 @@
     padding: 10px;
 
     .my_combobox_container {
-      width: 200px;
+      width: fit-content;
       height: 27px;
       background-color: var(--color-light-blue);
       color: var(--color-blue);
       border-color: var(--color-blue)!important;
 
       input {
-        width: 150px;
+        width: fit-content;
         height:25px;
         background-color: inherit;
         font-size: 16px;
@@ -76,10 +76,24 @@
     }
 
     &_controls {
+      width: 135px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
       flex-wrap: nowrap;
+
+      .button_transparency_icon {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+          width: 16px;
+          height: 16px;
+        }
+      }
     }
   }

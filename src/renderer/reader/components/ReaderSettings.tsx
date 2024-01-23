@@ -900,7 +900,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     }
 
 
-    const { setDockingMode, dockedMode } = props;
+    const { setDockingMode, dockedMode, dockingMode } = props;
     const setDockingModeFull = () => setDockingMode("full");
     const setDockingModeLeftSide = () => setDockingMode("left");
     const setDockingModeRightSide = () => setDockingMode("right");
@@ -947,10 +947,10 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                     </ComboBox>
 
                     <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls}>
-                        <button className={stylesButtons.button_transparency_icon} aria-label="left" onClick={setDockingModeLeftSide}>
+                        <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label="left" onClick={setDockingModeLeftSide}>
                             <SVG ariaHidden={true} svg={DockLeftIcon} />
                         </button>
-                        <button className={stylesButtons.button_transparency_icon} aria-label="right" onClick={setDockingModeRightSide}>
+                        <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label="right" onClick={setDockingModeRightSide}>
                             <SVG ariaHidden={true} svg={DockRightIcon} />
                         </button>
                         <button className={stylesButtons.button_transparency_icon} aria-label="full" onClick={setDockingModeFull}>
@@ -1025,7 +1025,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                         <button className={stylesButtons.button_transparency_icon} aria-label="right" onClick={setDockingModeRightSide}>
                             <SVG ariaHidden={true} svg={DockRightIcon} />
                         </button>
-                        <button className={stylesButtons.button_transparency_icon} aria-label="full" onClick={setDockingModeFull}>
+                        <button className={stylesButtons.button_transparency_icon} disabled aria-label="full" onClick={setDockingModeFull}>
                             <SVG ariaHidden={true} svg={DockModalIcon} />
                         </button>
                         {/* <Close asChild> */}

@@ -1,3 +1,5 @@
+export declare const button_transparency_icon: string;
+export declare const display_options_item: string;
 export declare const docked_header: string;
 export declare const docked_header_controls: string;
 export declare const modal_dialog_full: string;

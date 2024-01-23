@@ -103,7 +103,7 @@ class SearchFormPicker extends React.Component<IProps, IState> {
                         padding: "4px",
                         marginLeft: "0.4em",
                         position: "absolute",
-                        right: "-50px"
+                        right: "-50px",
                     }}
                     title={__("reader.picker.search.submit")}
                 >
