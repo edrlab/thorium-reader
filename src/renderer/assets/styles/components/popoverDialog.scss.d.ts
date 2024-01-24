@@ -1,3 +1,4 @@
+export declare const allowCustom: string;
 export declare const button_transparency_icon: string;
 export declare const display_options_item: string;
 export declare const docked_header: string;
@@ -7,3 +8,9 @@ export declare const modal_dialog_full_full: string;
 export declare const modal_dialog_reader: string;
 export declare const my_combobox_container: string;
 export declare const popover_dialog_reader: string;
+export declare const react_aria_ComboBox: string;
+export declare const section: string;
+export declare const settings_container: string;
+export declare const settings_reading_text: string;
+export declare const settings_tab: string;
+export declare const settings_tab_container_reading_spacing: string;

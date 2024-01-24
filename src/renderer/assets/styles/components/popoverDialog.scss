@@ -1,99 +1,120 @@
 .modal_dialog_reader {
-    transform: translate(-50%, -50%);
-    left: 50%;
-    top: 50%;
-    width: 776px;
-    min-height: 401px;
-    // min-width: 700px;
-    height: 597px;
-    max-width: calc(100vw - 60px);
-    max-height: calc(100vh - 60px);
-    border-radius: 10px;
-    z-index: 102;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    overflow-x: hidden;
-    align-content: flex-start;
-    color: var(--color-primary);
-    position: fixed;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  width: 776px;
+  min-height: 401px;
+  // min-width: 700px;
+  height: 597px;
+  max-width: calc(100vw - 60px);
+  max-height: calc(100vh - 60px);
+  border-radius: 10px;
+  z-index: 102;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  align-content: flex-start;
+  color: var(--color-primary);
+  position: fixed;
+  box-sizing: border-box;
+  box-shadow: 0 2px 5px var(--color-medium-grey);
+
+  &.modal_dialog_full {
+    position: relative;
     box-sizing: border-box;
-    box-shadow: 0 2px 5px var(--color-medium-grey);
-    
-    &.modal_dialog_full {
-        position: relative;
-        box-sizing: border-box;
-    
-        &_full {
-        width: calc(100vw - 60px);
-        height: calc(100vh - 100px);
-        }
-    }  
+
+    &_full {
+      width: calc(100vw - 60px);
+      height: calc(100vh - 100px);
+    }
   }
+}
 
-  .popover_dialog_reader {
-    width: 400px;
-    height: calc(100dvh - 110px);
-    display: flex;
-    margin-top: 50px;
-    flex-direction: column;
-    box-sizing: border-box;
-    z-index: 10000;
-    background-color: white;
-    position: absolute;
+.popover_dialog_reader {
+  width: 400px;
+  height: calc(100dvh - 110px);
+  display: flex;
+  margin-top: 50px;
+  flex-direction: column;
+  box-sizing: border-box;
+  z-index: 10000;
+  background-color: white;
+  position: absolute;
 
-    .display_options_item {
-      background-color: transparent;
-      color: var(--reader-fontColor);
+  .settings_container {
+    height: 100%;
+
+    .settings_tab_container_reading_spacing {
+      grid-template-columns: repeat(1, 1fr);
     }
   }
 
-  .docked_header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
+  .settings_tab .settings_reading_text .section {
+    width: 90%;
+  }
+
+  .display_options_item {
+    background-color: transparent;
+    color: var(--reader-fontColor);
+  }
+}
+
+.docked_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+
+  .react_aria_ComboBox {
+    margin: 0;
+    padding: 0;
 
     .my_combobox_container {
       width: fit-content;
       height: 27px;
       background-color: var(--color-light-blue);
       color: var(--color-blue);
-      border-color: var(--color-blue)!important;
+      border-color: var(--color-blue) !important;
 
       input {
         width: fit-content;
-        height:25px;
+        height: 25px;
         background-color: inherit;
         font-size: 16px;
         margin-left: 10px;
-        padding: 0!important;
+        padding: 0 !important;
       }
 
       button {
         background-color: inherit;
       }
     }
+  }
 
-    &_controls {
-      width: 135px;
+  &_controls {
+    width: 135px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: nowrap;
+
+    .button_transparency_icon {
+      width: 28px;
+      height: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      flex-wrap: nowrap;
 
-      .button_transparency_icon {
-        width: 28px;
-        height: 28px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        svg {
-          width: 16px;
-          height: 16px;
-        }
+      svg {
+        width: 16px;
+        height: 16px;
       }
     }
   }
+}
+
+.allowCustom {
+  padding-left: 10px;
+}

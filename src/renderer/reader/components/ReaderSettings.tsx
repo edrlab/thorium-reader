@@ -14,7 +14,7 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg"
 import * as TextAreaIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
 import * as LayoutIcon from "readium-desktop/renderer/assets/icons/layout-icon.svg";
 import * as AlignLeftIcon from "readium-desktop/renderer/assets/icons/alignleft-icon.svg";
-import * as VolumeUpIcon from "readium-desktop/renderer/assets/icons/volup-icon.svg";
+import * as VolumeUpIcon from "readium-desktop/renderer/assets/icons/volume-icon.svg";
 import * as SwatchesIcon from "readium-desktop/renderer/assets/icons/swatches-icon.svg";
 import * as ScrollableIcon from "readium-desktop/renderer/assets/icons/scroll-icon.svg";
 import * as PaginatedIcon from "readium-desktop/renderer/assets/icons/page-icon.svg";
@@ -823,7 +823,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const isEpub = !isDivina && !isPdf;
 
     const sections: Array<React.JSX.Element> = [];
-    const options: Array<{ id: number, value: string, name: string, disabled: boolean }> = [];
+    const options: Array<{ id: number, value: string, name: string, disabled: boolean, svg: any }> = [];
 
     const TextTrigger =
         <Tabs.Trigger value="tab-text" disabled={overridePublisherDefault ? false : true} key={"tab-text"} data-value={"tab-text"}>
@@ -831,14 +831,14 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
             <h3>{__("reader.settings.text")}</h3>
             {overridePublisherDefault ? <></> : <i>{__("reader.settings.disabled")}</i>}
         </Tabs.Trigger>;
-    const optionTextItem = { id: 0, value: "tab-text", name: __("reader.settings.text"), disabled: overridePublisherDefault ? false : true };
+    const optionTextItem = { id: 0, value: "tab-text", name: __("reader.settings.text"), disabled: overridePublisherDefault ? false : true, svg: TextAreaIcon };
 
     const DivinaTrigger =
         <Tabs.Trigger value="tab-divina" disabled={overridePublisherDefault ? false : true} key={"tab-divina"}>
             <SVG ariaHidden svg={TextAreaIcon} />
             <h3>{__("reader.settings.disposition.title")}</h3>
         </Tabs.Trigger>;
-    const optionDivinaItem = { id: 1, value: "tab-divina", name: __("reader.settings.disposition.title"), disabled: overridePublisherDefault ? false : true };
+    const optionDivinaItem = { id: 1, value: "tab-divina", name: __("reader.settings.disposition.title"), disabled: overridePublisherDefault ? false : true, svg: TextAreaIcon };
 
     const SpacingTrigger =
         <Tabs.Trigger value="tab-spacing" disabled={overridePublisherDefault ? false : true} key={"tab-spacing"} data-value={"tab-spacing"}>
@@ -846,28 +846,28 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
             <h3>{__("reader.settings.spacing")}</h3>
             {overridePublisherDefault ? <></> : <i>{__("reader.settings.disabled")}</i>}
         </Tabs.Trigger>;
-    const optionSpacingItem = { id: 2, value: "tab-spacing", name: __("reader.settings.spacing"), disabled: overridePublisherDefault ? false : true };
+    const optionSpacingItem = { id: 2, value: "tab-spacing", name: __("reader.settings.spacing"), disabled: overridePublisherDefault ? false : true, svg: AlignLeftIcon };
 
     const DisplayTrigger =
         <Tabs.Trigger value="tab-display" key={"tab-display"}>
             <SVG ariaHidden svg={LayoutIcon} />
             <h3>{__("reader.settings.display")}</h3>
         </Tabs.Trigger>;
-    const optionDisplayItem = { id: 3, value: "tab-display", name: __("reader.settings.display"), disabled: false };
+    const optionDisplayItem = { id: 3, value: "tab-display", name: __("reader.settings.display"), disabled: false, svg: LayoutIcon };
 
     const AudioTrigger =
         <Tabs.Trigger value="tab-audio" key={"tab-audio"}>
             <SVG ariaHidden svg={VolumeUpIcon} />
             <h3>{__("reader.media-overlays.title")}</h3>
         </Tabs.Trigger>;
-    const optionAudioItem = { id: 4, value: "tab-audio", name: __("reader.media-overlays.title"), disabled: false };
+    const optionAudioItem = { id: 4, value: "tab-audio", name: __("reader.media-overlays.title"), disabled: false, svg: VolumeUpIcon };
 
     const PdfZoomTrigger =
         <Tabs.Trigger value="tab-pdfzoom" key={"tab-pdfzoom"}>
             <SVG ariaHidden svg={VolumeUpIcon} />
             <h3>{__("reader.settings.pdfZoom.title")}</h3>
         </Tabs.Trigger>;
-    const optionPdfZoomItem = { id: 5, value: "tab-pdfzoom", name: __("reader.settings.pdfZoom.title"), disabled: false };
+    const optionPdfZoomItem = { id: 5, value: "tab-pdfzoom", name: __("reader.settings.pdfZoom.title"), disabled: false, svg: VolumeUpIcon };
 
     const AllowCustomContainer =
         <div className={stylesSettings.allowCustom} key={"allowCustom"}>
@@ -912,14 +912,16 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
     console.log("RENDER");
 
+    console.log(options.find(({ value }) => value === tabValue).svg);
+
     const { handleDivinaReadingMode, divinaReadingMode, divinaReadingModeSupported } = props;
     return (
         <div>
             {
                 dockedMode ? <div key="docked-header" className={stylesPopoverDialog.docked_header}>
-                    <ComboBox label={"change this!"} defaultItems={options} selectedKey={optionSelected}
+                    <ComboBox defaultItems={options} selectedKey={optionSelected}
                         disabledKeys={optionDisabled}
-                        svg={TextAreaIcon}
+                        svg={options.find(({ value }) => value === tabValue)?.svg}
                         onSelectionChange={(id) => {
                             console.log("selectionchange: ", id);
                             const value = options.find(({ id: _id }) => _id === id)?.value;
@@ -964,6 +966,13 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                         {/* </Close> */}
                     </div>
                 </div> : <></>
+            }
+            {
+                dockedMode ?
+                    <div className={stylesSettings.allowCustom} key={"allowCustom"}>
+                        <AllowCustom overridePublisherDefault={overridePublisherDefault} set={setOverridePublisherDefault} />
+                    </div> 
+                : <></>
             }
             <Tabs.Root value={tabValue} defaultValue={tabValue} onValueChange={dockedMode ? null : setTabValue} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {

@@ -8,6 +8,7 @@
 import classNames from "classnames";
 import * as debug_ from "debug";
 import * as React from "react";
+import * as Popover from "@radix-ui/react-popover";
 // import * as Popover from "@radix-ui/react-popover";
 import * as Portal from "@radix-ui/react-portal";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
@@ -23,7 +24,8 @@ import * as SkipNext from "readium-desktop/renderer/assets/icons/baseline-skip_n
 import * as SkipPrevious from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
 import * as StopIcon from "readium-desktop/renderer/assets/icons/baseline-stop-24px.svg";
 import * as AudioIcon from "readium-desktop/renderer/assets/icons/baseline-volume_up-24px.svg";
-import * as SettingsIcon from "readium-desktop/renderer/assets/icons/font-size.svg";
+import * as HeadphoneIcon from "readium-desktop/renderer/assets/icons/headphone-icon.svg";
+import * as SettingsIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
 import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
 import * as MarkIcon from "readium-desktop/renderer/assets/icons/bookmark-icon.svg";
 import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
@@ -499,7 +501,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             this.props.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING ||
                                             !this.props.publicationHasMediaOverlays &&
                                             this.props.ttsState === TTSStateEnum.PLAYING) ?
-                                            <li >
+                                            <li  style={{backgroundColor: "var(--color-blue" }}>
                                                 <button
                                                     className={stylesReader.menu_button}
                                                     onClick={
@@ -513,11 +515,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                             __("reader.tts.pause")
                                                     }
                                                 >
-                                                    <SVG ariaHidden={true} svg={PauseIcon} />
+                                                    <SVG ariaHidden={true} svg={PauseIcon} className={stylesReaderHeader.active_svg} />
                                                 </button>
                                             </li>
                                             :
-                                            <li >
+                                            <li>
                                                 <button
                                                     className={stylesReader.menu_button}
                                                     onClick={
@@ -552,76 +554,100 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                         __("reader.tts.next")
                                                 }
                                             >
-                                                <SVG ariaHidden={true} svg={SkipNext} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""} />
+                                                <SVG ariaHidden={true} svg={SkipNext} />
                                             </button>
                                         </li>
-                                        <li className={stylesReader.ttsSelectRate}>
-                                            <select title={
-                                                this.props.publicationHasMediaOverlays ?
-                                                    __("reader.media-overlays.speed") :
-                                                    __("reader.tts.speed")
-                                            }
-                                                onChange={(ev) => {
-                                                    if (this.props.publicationHasMediaOverlays) {
-                                                        this.props.handleMediaOverlaysPlaybackRate(
-                                                            ev.target.value.toString(),
-                                                        );
-                                                    } else {
-                                                        this.props.handleTTSPlaybackRate(
-                                                            ev.target.value.toString(),
-                                                        );
-                                                    }
-                                                }}
-                                                value={
-                                                    this.props.publicationHasMediaOverlays ?
-                                                        this.props.mediaOverlaysPlaybackRate :
-                                                        this.props.ttsPlaybackRate
-                                                }
-                                            >
-                                                <option value="3">3x</option>
-                                                <option value="2.75">2.75x</option>
-                                                <option value="2.5">2.5x</option>
-                                                <option value="2.25">2.25x</option>
-                                                <option value="2">2x</option>
-                                                <option value="1.75">1.75x</option>
-                                                <option value="1.5">1.5x</option>
-                                                <option value="1.25">1.25x</option>
-                                                <option value="1">1x</option>
-                                                <option value="0.75">0.75x</option>
-                                                <option value="0.5">0.5x</option>
-                                            </select>
+                                        <li>
+                                            <Popover.Root>
+                                                <Popover.Trigger>
+                                                    <button className={stylesReader.menu_button}>
+                                                        <SVG ariaHidden svg={HeadphoneIcon} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""} />
+                                                    </button>
+                                                </Popover.Trigger>
+                                                <Popover.Portal>
+                                                    <Popover.Content sideOffset={10}>
+                                                        <ul className={stylesReaderHeader.Tts_popover_container}> 
+                                                            <li className={stylesReader.ttsSelectRate}>
+                                                                <label>
+                                                                    {
+                                                                        this.props.publicationHasMediaOverlays ?
+                                                                            __("reader.media-overlays.speed") :
+                                                                            __("reader.tts.speed")
+                                                                    }
+                                                                </label>
+                                                                <select title={
+                                                                    this.props.publicationHasMediaOverlays ?
+                                                                        __("reader.media-overlays.speed") :
+                                                                        __("reader.tts.speed")
+                                                                }
+                                                                    onChange={(ev) => {
+                                                                        if (this.props.publicationHasMediaOverlays) {
+                                                                            this.props.handleMediaOverlaysPlaybackRate(
+                                                                                ev.target.value.toString(),
+                                                                            );
+                                                                        } else {
+                                                                            this.props.handleTTSPlaybackRate(
+                                                                                ev.target.value.toString(),
+                                                                            );
+                                                                        }
+                                                                    }}
+                                                                    value={
+                                                                        this.props.publicationHasMediaOverlays ?
+                                                                            this.props.mediaOverlaysPlaybackRate :
+                                                                            this.props.ttsPlaybackRate
+                                                                    }
+                                                                >
+                                                                    <option value="3">3x</option>
+                                                                    <option value="2.75">2.75x</option>
+                                                                    <option value="2.5">2.5x</option>
+                                                                    <option value="2.25">2.25x</option>
+                                                                    <option value="2">2x</option>
+                                                                    <option value="1.75">1.75x</option>
+                                                                    <option value="1.5">1.5x</option>
+                                                                    <option value="1.25">1.25x</option>
+                                                                    <option value="1">1x</option>
+                                                                    <option value="0.75">0.75x</option>
+                                                                    <option value="0.5">0.5x</option>
+                                                                </select>
+                                                            </li>
+                                                            {!this.props.publicationHasMediaOverlays && (
+                                                                <li className={stylesReader.ttsSelectVoice}>
+                                                                    <label>{__("reader.tts.voice")}</label>
+                                                                    <select title={__("reader.tts.voice")}
+                                                                        onChange={(ev) => {
+                                                                            const i = parseInt(ev.target.value.toString(), 10);
+                                                                            let voice = i === 0 ? null : _orderedVoices[i - 1];
+                                                                            // alert(`${i} ${voice.name} ${voice.lang} ${voice.default} ${voice.voiceURI} ${voice.localService}`);
+                                                                            if (voice && voice.name === LANG_DIVIDER_PREFIX) {
+                                                                                // voice = null;
+                                                                                voice = _orderedVoices[i];
+                                                                            }
+                                                                            this.props.handleTTSVoice(voice ? voice : null);
+                                                                        }}
+                                                                        value={
+                                                                            this.props.ttsVoice ?
+                                                                                _orderedVoices.findIndex((voice) => {
+                                                                                    // exact match
+                                                                                    return voice.name === this.props.ttsVoice.name && voice.lang === this.props.ttsVoice.lang && voice.voiceURI === this.props.ttsVoice.voiceURI && voice.default === this.props.ttsVoice.default && voice.localService === this.props.ttsVoice.localService;
+                                                                                }) + 1 : 0
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            [].concat((<option key={"tts0"} value="{i}">{`${__("reader.tts.default")}`}</option>),
+                                                                                _orderedVoices.map((voice, i) => {
+                                                                                    // SpeechSynthesisVoice
+                                                                                    return (<option key={`tts${i + 1}`} value={i + 1}>{`${voice.name}${voice.name === LANG_DIVIDER_PREFIX ? ` [${voice.lang}]` : ""}${voice.default ? " *" : ""}`}</option>);
+                                                                                }))
+                                                                        }
+                                                                    </select>
+                                                                </li>
+                                                            )}
+                                                        </ul>
+                                                        <Popover.Arrow className={stylesReaderHeader.popover_arrow} />
+                                                    </Popover.Content>
+                                                </Popover.Portal>
+                                            </Popover.Root>
                                         </li>
-                                        {!this.props.publicationHasMediaOverlays && (
-                                            <li className={stylesReader.ttsSelectVoice}>
-                                                <select title={__("reader.tts.voice")}
-                                                    onChange={(ev) => {
-                                                        const i = parseInt(ev.target.value.toString(), 10);
-                                                        let voice = i === 0 ? null : _orderedVoices[i - 1];
-                                                        // alert(`${i} ${voice.name} ${voice.lang} ${voice.default} ${voice.voiceURI} ${voice.localService}`);
-                                                        if (voice && voice.name === LANG_DIVIDER_PREFIX) {
-                                                            // voice = null;
-                                                            voice = _orderedVoices[i];
-                                                        }
-                                                        this.props.handleTTSVoice(voice ? voice : null);
-                                                    }}
-                                                    value={
-                                                        this.props.ttsVoice ?
-                                                            _orderedVoices.findIndex((voice) => {
-                                                                // exact match
-                                                                return voice.name === this.props.ttsVoice.name && voice.lang === this.props.ttsVoice.lang && voice.voiceURI === this.props.ttsVoice.voiceURI && voice.default === this.props.ttsVoice.default && voice.localService === this.props.ttsVoice.localService;
-                                                            }) + 1 : 0
-                                                    }
-                                                >
-                                                    {
-                                                        [].concat((<option key={"tts0"} value="{i}">{`${__("reader.tts.default")}`}</option>),
-                                                            _orderedVoices.map((voice, i) => {
-                                                                // SpeechSynthesisVoice
-                                                                return (<option key={`tts${i + 1}`} value={i + 1}>{`${voice.name}${voice.name === LANG_DIVIDER_PREFIX ? ` [${voice.lang}]` : ""}${voice.default ? " *" : ""}`}</option>);
-                                                            }))
-                                                    }
-                                                </select>
-                                            </li>
-                                        )}
                                     </>
                         }
                     </ul>

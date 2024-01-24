@@ -6,6 +6,16 @@
     border-bottom: 1px solid var(--color-medium-grey);
     box-sizing: border-box;
 
+    &.ttsAudioActivated:before {
+            content: "";
+            position: absolute;
+            left: calc(50% - 100px);
+            top: 48px;
+            height: 1px;
+            width: 200px;  /* or 100px */
+            border-bottom: 2px solid var(--color-blue);
+    }
+
     > ul {
         display: flex;
         align-items: center;
@@ -21,6 +31,7 @@
 
         .menu_option {
             justify-content: end;
+            gap: 10px;
         }
 
         .pdf_options {
@@ -28,16 +39,16 @@
         }
 
         li {
-            height: 50px;
-            width: 50px;
+            height: 40px;
+            width: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 5px;
 
             .menu_button {
-                width: inherit;
-                height: inherit;
+                width: 35px;
+                height: 35px;
                 cursor: pointer;
                 padding: 5px;
                 box-sizing: border-box;
@@ -46,7 +57,7 @@
                 justify-content: center;
     
                 svg {
-                    height: 30px;
+                    height: 25px;
                     width: 30px;
                     fill: var(--color-blue);
                     color: var(--color-blue);
@@ -59,9 +70,10 @@
 
             label {
                 display: block;
-                height: 30px!important;
-                width: 30px!important;
+                height: 35px!important;
+                width: 35px!important;
                 align-items: center;
+
 
                 svg {
                     width: inherit;
@@ -87,7 +99,6 @@
 .picker_container {
     display: flex;
     align-items: center;
-    width: 100%;
     padding: 0 20px;
     width: 680px;
     height: 75px;
@@ -98,7 +109,18 @@
     position: absolute;
     top: 65px;
     right: 10px;
+    left: unset;
     border-radius: 6px;
+
+    @media screen and (max-width: 930px) {
+        width: 600px;
+        left: 20px;
+        right: unset;
+
+        > span {
+            display: none;
+        }
+    }
 
     > span {
         border-left: 10px solid transparent;
@@ -106,7 +128,7 @@
         border-bottom: 15px solid var(--color-extralight-grey);
         position: absolute;
         top: -15px;
-        right: 25px;
+        right: 20px;
     }
 
     button[title="Close"] {
@@ -142,4 +164,39 @@
         width: 15px;
         height: 10px;
     }
+}
+
+.Tts_popover_container {
+    display: flex;
+    align-items: center;
+    height: 75px;
+    background-color: var(--color-extralight-grey);
+    box-shadow: 0 6px 10px 0 var(--color-medium-grey);
+    border-radius: 6px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: start;
+        border-right: 1px solid var(--color-medium-grey);
+        height: 50px;
+        padding: 0 20px;
+
+        select {
+            width: fit-content;
+            height: 30px;
+            border-radius: 6px;
+            padding: 0 10px;
+        }
+    }
+}
+
+.popover_arrow {
+    fill: var(--color-extralight-grey);
+    width: 15px;
+    height: 10px;
 }
