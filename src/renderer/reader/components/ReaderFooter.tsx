@@ -9,8 +9,8 @@
 // import * as ForwardIcon from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
 // import * as BackIcon from "readium-desktop/renderer/assets/icons/double_arrow_left_black_24dp.svg";
 // import * as ForwardIcon from "readium-desktop/renderer/assets/icons/double_arrow_right_black_24dp.svg";
-import * as BackIcon from "readium-desktop/renderer/assets/icons/arrow-left.svg";
-import * as ForwardIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
+import * as BackIcon from "readium-desktop/renderer/assets/icons/backward-icon.svg";
+import * as ForwardIcon from "readium-desktop/renderer/assets/icons/forward-icon.svg";
 
 import classNames from "classnames";
 import * as React from "react";
@@ -18,7 +18,7 @@ import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { formatTime } from "readium-desktop/common/utils/time";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
+import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -121,8 +121,8 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         let afterCurrentLocation = false;
 
         return (
-            <div className={classNames(stylesReader.reader_footer,
-                this.props.fullscreen ? stylesReader.reader_footer_fullscreen : undefined)}
+            <div className={classNames(stylesReaderFooter.reader_footer,
+                this.props.fullscreen ? stylesReaderFooter.reader_footer_fullscreen : undefined)}
                 onWheel={(ev) => {
                     if (ev.deltaY < 0 || ev.deltaX < 0) {
                         this.navLeftOrRightThrottled(true);
@@ -132,9 +132,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                 }}>
                 {
                 // !this.props.fullscreen &&
-                <div className={stylesReader.history}>
+                <div className={stylesReaderFooter.history}>
                             <button
-                                className={this.props.historyCanGoBack ? undefined : stylesReader.disabled}
+                                className={this.props.historyCanGoBack ? undefined : stylesReaderFooter.disabled}
                                 onClick={() => {
 
                                     // console.log("#+$%".repeat(5)  + " history back()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
@@ -147,7 +147,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                 <SVG ariaHidden={true} svg={BackIcon} />
                             </button>
                             <button
-                                className={this.props.historyCanGoForward ? undefined : stylesReader.disabled}
+                                className={this.props.historyCanGoForward ? undefined : stylesReaderFooter.disabled}
                                 onClick={() => {
 
                                     // console.log("#+$%".repeat(5)  + " history forward()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
@@ -162,7 +162,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                         </div>
                 }
                 {!isAudioBook &&
-                    <div className={stylesReader.arrows}>
+                    <div className={stylesReaderFooter.arrows}>
                         <button onClick={(ev) => {
                             if (ev.shiftKey) {
                                 const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
@@ -176,6 +176,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                             }
                         }}
                         title={__("reader.svg.left")}
+                        className={stylesReaderFooter.navigation_arrow_left}
                         >
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
@@ -192,19 +193,20 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                             }
                         }}
                         title={__("reader.svg.right")}
+                        className={stylesReaderFooter.navigation_arrow_right}
                         >
                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                         </button>
                     </div>
                 }
                 {!this.props.fullscreen &&
-                    <div aria-hidden="true" className={classNames(stylesReader.track_reading_wrapper,
-                        isAudioBook ? stylesReader.track_reading_wrapper_noArrows : undefined)}>
+                    <div aria-hidden="true" className={classNames(stylesReaderFooter.track_reading_wrapper,
+                        isAudioBook ? stylesReaderFooter.track_reading_wrapper_noArrows : undefined)}>
 
                         { // <div id={stylesReader.current}></div>
-                            <div id={stylesReader.track_reading}>
-                                <div id={stylesReader.chapters_markers}
-                                    className={moreInfo ? stylesReader.more_information : undefined}>
+                            <div id={stylesReaderFooter.track_reading}>
+                                <div id={stylesReaderFooter.chapters_markers}
+                                    className={moreInfo ? stylesReaderFooter.more_information : undefined}>
                                     {
                                         (isPdf
                                             // tslint:disable-next-line: max-line-length
@@ -286,7 +288,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                     className={
                                                         classNames(
                                                             "progressChunkSpineItem",
-                                                            atCurrentLocation ? stylesReader.currentSpineItem : undefined)
+                                                            atCurrentLocation ? stylesReaderFooter.currentSpineItem : undefined)
                                                     }
                                                 >
                                                     {
@@ -300,7 +302,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                 </div>
                                 {moreInfo &&
                                     <div
-                                        id={stylesReader.arrow_box}
+                                        id={stylesReaderFooter.arrow_box}
                                         style={this.getStyle(this.getArrowBoxStyle)}
                                     >
                                         <span title={spineTitle}><em>{`(${(isDivina)
@@ -319,7 +321,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                         </p>
                                         <span
                                             style={this.getStyle(this.getArrowStyle)}
-                                            className={stylesReader.after}
+                                            className={stylesReaderFooter.after}
                                         />
                                     </div>
                                 }

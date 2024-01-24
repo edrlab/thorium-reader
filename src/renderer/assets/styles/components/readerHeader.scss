@@ -111,6 +111,7 @@
     right: 10px;
     left: unset;
     border-radius: 6px;
+    border: 1px solid var(--color-medium-grey);
 
     @media screen and (max-width: 930px) {
         width: 600px;
@@ -176,6 +177,7 @@
     list-style-type: none;
     margin: 0;
     padding: 0;
+    border: 1px solid var(--color-medium-grey);
 
     li {
         display: flex;
@@ -196,6 +198,7 @@
 }
 
 .popover_arrow {
+    border-top: 2px solid var(--color-extralight-grey);
     fill: var(--color-extralight-grey);
     width: 15px;
     height: 10px;

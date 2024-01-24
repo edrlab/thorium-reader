@@ -10,3 +10,4 @@ export declare const popover_arrow: string;
 export declare const toolbar_navigation: string;
 export declare const Tts_popover_container: string;
 export declare const tts_toolbar: string;
+export declare const ttsAudioActivated: string;

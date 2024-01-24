@@ -35,6 +35,7 @@ import * as DoubleArrowLeftIcon from "readium-desktop/renderer/assets/icons/doub
 import * as DoubleArrowRightIcon from "readium-desktop/renderer/assets/icons/double_arrow_right_black_24dp.svg";
 import * as DoubleArrowUpIcon from "readium-desktop/renderer/assets/icons/double_arrow_up_black_24dp.svg";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
+import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -369,9 +370,9 @@ class Reader extends React.Component<IProps, IState> {
             if (nav) {
                 nav.classList.remove(stylesReader.HIDE_CURSOR_CLASS_head);
             }
-            const foot = window.document.querySelector(`.${stylesReader.reader_footer}`);
+            const foot = window.document.querySelector(`.${stylesReaderFooter.reader_footer}`);
             if (foot) {
-                foot.classList.remove(stylesReader.HIDE_CURSOR_CLASS_foot);
+                foot.classList.remove(stylesReaderFooter.HIDE_CURSOR_CLASS_foot);
             }
 
             // if (!window.document.fullscreenElement && !window.document.fullscreen) {
@@ -389,9 +390,9 @@ class Reader extends React.Component<IProps, IState> {
                 if (nav) {
                     nav.classList.add(stylesReader.HIDE_CURSOR_CLASS_head);
                 }
-                const foot = window.document.querySelector(`.${stylesReader.reader_footer}`);
+                const foot = window.document.querySelector(`.${stylesReaderFooter.reader_footer}`);
                 if (foot) {
-                    foot.classList.add(stylesReader.HIDE_CURSOR_CLASS_foot);
+                    foot.classList.add(stylesReaderFooter.HIDE_CURSOR_CLASS_foot);
                 }
             }, 1000);
         };
