@@ -16,6 +16,16 @@ import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-clos
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
 import * as BookmarkIcon from "readium-desktop/renderer/assets/icons/outline-bookmark-24px-grey.svg";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
+
+import * as DockLeftIcon from "readium-desktop/renderer/assets/icons/dockleft-icon.svg";
+import * as DockRightIcon from "readium-desktop/renderer/assets/icons/dockright-icon.svg";
+import * as DockModalIcon from "readium-desktop/renderer/assets/icons/dockmodal-icon.svg";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
+import * as Tabs from "@radix-ui/react-tabs";
+
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -29,11 +39,13 @@ import { Link } from "@r2-shared-js/models/publication-link";
 
 import { ILink, TToc } from "../pdf/common/pdfReader.type";
 import { readerLocalActionBookmarks } from "../redux/actions";
-import { IReaderMenuProps } from "./options-values";
+import { IPopoverDialogProps, IReaderMenuProps } from "./options-values";
 import ReaderMenuSearch from "./ReaderMenuSearch";
-import SideMenu from "./sideMenu/SideMenu";
-import { SectionData } from "./sideMenu/sideMenuData";
+// import SideMenu from "./sideMenu/SideMenu";
+// import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
+
+import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderMenuProps {
@@ -42,6 +54,8 @@ interface IBaseProps extends TranslatorProps, IReaderMenuProps {
     isDivina: boolean;
     isPdf: boolean;
     pdfNumberOfPages: number;
+    readerPopoverDialogContext: IPopoverDialogProps;
+    handleSettingsClick: (open: boolean) => void;
 }
 
 // IProps may typically extend:
@@ -56,7 +70,16 @@ interface IState {
     bookmarkToUpdate: number;
     pageError: boolean;
     refreshError: boolean;
+    tabValue: string;
 }
+
+const TabTitle = ({title}: {title: string}) => {
+    return (
+        <div className={stylesSettings.settings_tab_title}>
+            <h2>{title}</h2>
+        </div>
+    );
+};
 
 export class ReaderMenu extends React.Component<IProps, IState> {
     private goToRef: React.RefObject<HTMLInputElement>;
@@ -71,6 +94,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             bookmarkToUpdate: undefined,
             pageError: false,
             refreshError: false,
+            tabValue: "tab-toc",
         };
 
         this.closeBookarkEditForm = this.closeBookarkEditForm.bind(this);
@@ -115,7 +139,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, r2Publication, toggleMenu, pdfToc, isPdf } = this.props;
+        const { __, r2Publication, /* toggleMenu */ pdfToc, isPdf } = this.props;
         const { bookmarks } = this.props;
         if (!r2Publication) {
             return <></>;
@@ -125,65 +149,261 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         // handleMenuButtonClick(0); // "table of contents"
         // handleMenuButtonClick(3); // "search"
         // handleMenuButtonClick(4); // "goto page"
-        const sections: SectionData[] = [
-            {
-                title: __("reader.marks.toc"),
-                content:
-                    (isPdf && pdfToc?.length && this.renderLinkTree(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
-                    (isPdf && !pdfToc?.length && <p>{__("reader.toc.publicationNoToc")}</p>) ||
-                    // tslint:disable-next-line: max-line-length
-                    (!isPdf && r2Publication.TOC && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1, undefined)) ||
-                    (!isPdf && r2Publication.Spine && this.renderLinkList(__("reader.marks.toc"), r2Publication.Spine)),
-                disabled:
-                    (!r2Publication.TOC || r2Publication.TOC.length === 0) &&
-                    (!r2Publication.Spine || r2Publication.Spine.length === 0),
-            },
-            {
-                title: __("reader.marks.landmarks"),
-                content: r2Publication.Landmarks &&
-                    this.renderLinkList(__("reader.marks.landmarks"), r2Publication.Landmarks),
-                disabled: !r2Publication.Landmarks || r2Publication.Landmarks.length === 0,
-            },
-            {
-                title: __("reader.marks.bookmarks"),
-                content: this.createBookmarkList(),
-                disabled: !bookmarks || bookmarks.length === 0,
-            },
-            /*{
-                title: __("reader.marks.annotations"),
-                content: <></>,
-                disabled: true,
-            },*/
-            {
-                title: __("reader.marks.search"),
-                content: this.props.searchEnable
-                    ? <ReaderMenuSearch
-                        focusMainAreaLandmarkAndCloseMenu={this.props.focusMainAreaLandmarkAndCloseMenu}
-                    ></ReaderMenuSearch>
-                    : <></>,
-                disabled: !this.props.searchEnable || this.props.isPdf,
-                skipMaxHeight: true,
-            },
-            {
-                content: this.buildGoToPageSection(
-                    this.props.isPdf && this.props.pdfNumberOfPages
-                        ? this.props.pdfNumberOfPages.toString()
-                        : undefined),
-                disabled: false,
-                notExtendable: true,
-            },
-        ];
+        // const sections: SectionData[] = [
+        //     {
+        //         title: __("reader.marks.toc"),
+        //         content:
+        //             (isPdf && pdfToc?.length && this.renderLinkTree(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
+        //             (isPdf && !pdfToc?.length && <p>{__("reader.toc.publicationNoToc")}</p>) ||
+        //             // tslint:disable-next-line: max-line-length
+        //             (!isPdf && r2Publication.TOC && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1, undefined)) ||
+        //             (!isPdf && r2Publication.Spine && this.renderLinkList(__("reader.marks.toc"), r2Publication.Spine)),
+        //         disabled:
+        //             (!r2Publication.TOC || r2Publication.TOC.length === 0) &&
+        //             (!r2Publication.Spine || r2Publication.Spine.length === 0),
+        //     },
+        //     {
+        //         title: __("reader.marks.landmarks"),
+        //         content: r2Publication.Landmarks &&
+        //             this.renderLinkList(__("reader.marks.landmarks"), r2Publication.Landmarks),
+        //         disabled: !r2Publication.Landmarks || r2Publication.Landmarks.length === 0,
+        //     },
+        //     {
+        //         title: __("reader.marks.bookmarks"),
+        //         content: this.createBookmarkList(),
+        //         disabled: !bookmarks || bookmarks.length === 0,
+        //     },
+        //     /*{
+        //         title: __("reader.marks.annotations"),
+        //         content: <></>,
+        //         disabled: true,
+        //     },*/
+        //     {
+        //         title: __("reader.marks.search"),
+        //         content: this.props.searchEnable
+        //             ? <ReaderMenuSearch
+        //                 focusMainAreaLandmarkAndCloseMenu={this.props.focusMainAreaLandmarkAndCloseMenu}
+        //             ></ReaderMenuSearch>
+        //             : <></>,
+        //         disabled: !this.props.searchEnable || this.props.isPdf,
+        //         skipMaxHeight: true,
+        //     },
+        //     {   
+        //         title: 'Go To page' ,
+        //         content: this.buildGoToPageSection(
+        //             this.props.isPdf && this.props.pdfNumberOfPages
+        //                 ? this.props.pdfNumberOfPages.toString()
+        //                 : undefined),
+        //         disabled: false,
+        //         notExtendable: true,
+        //     },
+        // ];
+
+        const { setDockingMode, dockedMode, dockingMode } = this.props.readerPopoverDialogContext;
+        const setDockingModeFull = () => setDockingMode("full");
+        const setDockingModeLeftSide = () => setDockingMode("left");
+        const setDockingModeRightSide = () => setDockingMode("right");
+
+        const sectionsArray: Array<React.JSX.Element> = [];
+        const options: Array<{ id: number, value: string, name: string, disabled: boolean, svg: any }> = [];
+
+        const TocTrigger =
+            <Tabs.Trigger value="tab-toc" key={"tab-toc"} data-value={"tab-toc"} 
+            disabled={
+                (!r2Publication.TOC || r2Publication.TOC.length === 0) &&
+                (!r2Publication.Spine || r2Publication.Spine.length === 0)
+                }>
+                {/* <SVG ariaHidden svg={TextAreaIcon} /> */}
+                <h3>{__("reader.marks.toc")}</h3>
+            </Tabs.Trigger>;
+        const optionTocItem = { id: 0, value: "tab-toc", name: __("reader.marks.toc"), disabled:
+            (!r2Publication.TOC || r2Publication.TOC.length === 0) &&
+            (!r2Publication.Spine || r2Publication.Spine.length === 0),
+             svg: "" };
+
+        const LandMarksTrigger = 
+                <Tabs.Trigger value="tab-landmark" key={"tab-landmark"} data-value={"tab-landmark"} disabled={!r2Publication.Landmarks || r2Publication.Landmarks.length === 0}>
+                    <h3>{__("reader.marks.landmarks")}</h3>
+                </Tabs.Trigger>;
+        const optionLandmarkItem = { id: 1, value: "tab-landmark", name: __("reader.marks.landmarks"), disabled:
+         !r2Publication.Landmarks || r2Publication.Landmarks.length === 0,
+          svg: "" };
+
+        const BookmarksTrigger =
+            <Tabs.Trigger value="tab-bookmark" key={"tab-bookmark"} data-value={"tab-bookmark"} disabled={!bookmarks || bookmarks.length === 0}>
+                <h3>{__("reader.marks.bookmarks")}</h3>
+            </Tabs.Trigger>;
+        const optionBookmarkItem = { id: 2, value: "tab-bookmark", name: __("reader.marks.bookmarks"), disabled: !bookmarks || bookmarks.length === 0,
+            svg: ""
+        };
+
+        const SearchTrigger =
+            <Tabs.Trigger value="tab-search" key={"tab-search"} data-value={"tab-search"} disabled={!this.props.searchEnable || this.props.isPdf}>
+                <h3>{__("reader.marks.search")}</h3>
+            </Tabs.Trigger>;
+        const optionSearchItem = { id: 3, value: "tab-search", name: __("reader.marks.search"), disabled: !this.props.searchEnable || this.props.isPdf,
+            svg: ""
+        };
+
+        const GoToPageTrigger =
+        <Tabs.Trigger value="tab-gotopage" key={"tab-gotopage"} data-value={"tab-gotopage"} disabled={false}>
+            <h3>Go To Page</h3>
+        </Tabs.Trigger>;
+    const optionGoToPageItem = { id: 4, value: "tab-gotopage", name: "Go To Page", disabled: false,
+        svg: ""
+    };
+
+        sectionsArray.push(TocTrigger);
+        options.push(optionTocItem);
+        sectionsArray.push(LandMarksTrigger);
+        options.push(optionLandmarkItem);
+        sectionsArray.push(BookmarksTrigger);
+        options.push(optionBookmarkItem);
+        sectionsArray.push(SearchTrigger);
+        options.push(optionSearchItem);
+        sectionsArray.push(GoToPageTrigger);
+        options.push(optionGoToPageItem);
+
+        const optionSelected = options.find(({ value }) => value === this.state.tabValue)?.id || 0;
 
         return (
-            <SideMenu
-                openedSection={this.props.openedSection}
-                className={stylesReader.chapters_settings}
-                listClassName={stylesReader.chapter_settings_list}
-                open={this.props.open}
-                sections={sections}
-                toggleMenu={toggleMenu}
-                doBackFocusMenuButton={this.props.focusNaviguationMenu}
-            />
+            <>
+                {/* <SideMenu
+                    openedSection={this.props.openedSection}
+                    className={stylesReader.chapters_settings}
+                    listClassName={stylesReader.chapter_settings_list}
+                    open={this.props.open}
+                    sections={sections}
+                    toggleMenu={toggleMenu}
+                    doBackFocusMenuButton={this.props.focusNaviguationMenu}
+                /> */}
+
+                <div>
+                    {
+                        dockedMode ? <div key="docked-header" className={stylesPopoverDialog.docked_header}>
+                            <ComboBox defaultItems={options} selectedKey={optionSelected}
+                                svg={options.find(({ value }) => value === this.state.tabValue)?.svg}
+                                onSelectionChange={(id) => {
+                                    console.log("selectionchange: ", id);
+                                    const value = options.find(({ id: _id }) => _id === id)?.value;
+                                    if (value) {
+                                        this.setState({tabValue:value});
+                                        console.log("set Tab Value = ", value);
+
+                                    } else {
+                                        console.error("Combobox No value !!!");
+                                    }
+                                }}
+                                onInputChange={(v) => {
+                                    console.log("inputchange: ", v);
+
+                                    const value = options.find(({ name }) => name === v)?.value;
+                                    if (value) {
+                                        this.setState({tabValue:value});
+                                        console.log("set Tab Value = ", value);
+
+                                    } else {
+                                        console.error("Combobox No value !!!");
+                                    }
+                                }}>
+                                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                            </ComboBox>
+
+                            <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls}>
+                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label="left" onClick={setDockingModeLeftSide}>
+                                    <SVG ariaHidden={true} svg={DockLeftIcon} />
+                                </button>
+                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label="right" onClick={setDockingModeRightSide}>
+                                    <SVG ariaHidden={true} svg={DockRightIcon} />
+                                </button>
+                                <button className={stylesButtons.button_transparency_icon} aria-label="full" onClick={setDockingModeFull}>
+                                    <SVG ariaHidden={true} svg={DockModalIcon} />
+                                </button>
+
+                                <button className={stylesButtons.button_transparency_icon} aria-label="Close" onClick={() => this.props.handleSettingsClick(false)}>
+                                    <SVG ariaHidden={true} svg={QuitIcon} />
+                                </button>
+                            </div>
+                        </div> : <></>
+                    }
+                    <Tabs.Root value={this.state.tabValue} defaultValue={this.state.tabValue} onValueChange={(value) => dockedMode ? null : this.setState({tabValue: value})} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
+                        {
+                            dockedMode ? <></> :
+                                <Tabs.List className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
+                                    {sectionsArray}
+                                </Tabs.List>
+                        }
+                        <div className={stylesSettings.settings_content}>
+                            <Tabs.Content value="tab-toc" tabIndex={-1}>
+                                <TabTitle title={__("reader.marks.toc")} />
+                                <div className={stylesSettings.settings_tab}>
+                                    {(isPdf && pdfToc?.length && this.renderLinkTree(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
+                                        (isPdf && !pdfToc?.length && <p>{__("reader.toc.publicationNoToc")}</p>) ||
+                                        // tslint:disable-next-line: max-line-length
+                                        (!isPdf && r2Publication.TOC && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1, undefined)) ||
+                                        (!isPdf && r2Publication.Spine && this.renderLinkList(__("reader.marks.toc"), r2Publication.Spine))}
+                                </div>
+                            </Tabs.Content>
+
+                            <Tabs.Content value="tab-landmark" tabIndex={-1}>
+                                <TabTitle title={__("reader.marks.landmarks")} />
+                                <div className={stylesSettings.settings_tab}>
+                                    {r2Publication.Landmarks &&
+                                        this.renderLinkList(__("reader.marks.landmarks"), r2Publication.Landmarks)}
+                                </div>
+                            </Tabs.Content>
+
+                            <Tabs.Content value="tab-bookmark" tabIndex={-1}>
+                                <TabTitle title={__("reader.marks.bookmarks")} />
+                                <div className={stylesSettings.settings_tab}>
+                                    {this.createBookmarkList()}
+                                </div>
+                            </Tabs.Content>
+
+                            <Tabs.Content value="tab-search" tabIndex={-1}>
+                                <TabTitle title={__("reader.marks.search")} />
+                                <div className={stylesSettings.settings_tab}>
+                                    {this.props.searchEnable
+                                        ? <ReaderMenuSearch
+                                            focusMainAreaLandmarkAndCloseMenu={this.props.focusMainAreaLandmarkAndCloseMenu}
+                                        ></ReaderMenuSearch>
+                                        : <></>}
+                                </div>
+                            </Tabs.Content>
+
+
+                            <Tabs.Content value="tab-gotopage" tabIndex={-1}>
+                                <TabTitle title="Go To Page" />
+                                <div className={stylesSettings.settings_tab}>
+                                    {this.buildGoToPageSection(
+                                        this.props.isPdf && this.props.pdfNumberOfPages
+                                            ? this.props.pdfNumberOfPages.toString()
+                                            : undefined)}
+                                </div>
+                            </Tabs.Content>
+                        </div>
+                    </Tabs.Root>
+                    {
+                dockedMode ? <></> :
+                    <div key="modal-header" className={stylesSettings.close_button_div}>
+                        <button className={stylesButtons.button_transparency_icon} aria-label="left" onClick={setDockingModeLeftSide}>
+                            <SVG ariaHidden={true} svg={DockLeftIcon} />
+                        </button>
+                        <button className={stylesButtons.button_transparency_icon} aria-label="right" onClick={setDockingModeRightSide}>
+                            <SVG ariaHidden={true} svg={DockRightIcon} />
+                        </button>
+                        <button className={stylesButtons.button_transparency_icon} disabled aria-label="full" onClick={setDockingModeFull}>
+                            <SVG ariaHidden={true} svg={DockModalIcon} />
+                        </button>
+                        {/* <Close asChild> */}
+                            <button className={stylesButtons.button_transparency_icon} aria-label="Close" onClick={() => this.props.handleSettingsClick(false)}>
+                                <SVG ariaHidden={true} svg={QuitIcon} />
+                            </button>
+                        {/* </Close> */}
+                    </div>
+            }
+                </div>
+            </>
         );
     }
 

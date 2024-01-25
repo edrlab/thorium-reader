@@ -395,6 +395,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         className={stylesReader.menu_button}
                                         ref={this.infoMenuButtonRef}
                                         title={__("reader.navigation.infoTitle")}
+                                        disabled={this.props.settingsOpen || this.props.menuOpen}
                                     >
                                         <SVG ariaHidden={true} svg={InfosIcon} />
                                     </button>
@@ -797,11 +798,27 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             >
                                 <SVG ariaHidden={true} svg={TOCIcon} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""} />
                             </button>
-                            <ReaderMenu {...this.props.readerMenuProps}
-                                isDivina={this.props.isDivina}
-                                isPdf={this.props.isPdf}
-                                currentLocation={this.props.currentLocation}
-                                focusNaviguationMenu={this.focusNaviguationMenuButton} />
+                            { this.props.menuOpen ? 
+                            <Portal.Root>
+                                                                    <div
+                                    className={classNames(this.props.readerPopoverDialogContext.dockedMode ? stylesPopoverDialog.popover_dialog_reader : stylesPopoverDialog.modal_dialog_reader,
+                                        this.props.ReaderSettingsProps.readerConfig.night ? stylesReader.nightMode : this.props.ReaderSettingsProps.readerConfig.sepia ? stylesReader.sepiaMode : "")}
+                                        style={{
+                                            borderLeft : this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
+                                            borderRight : this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
+                                            right : this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
+                                            left : this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
+                                        }}
+                                    >
+                                <ReaderMenu {...this.props.readerMenuProps}
+                                    isDivina={this.props.isDivina}
+                                    isPdf={this.props.isPdf}
+                                    currentLocation={this.props.currentLocation}
+                                    focusNaviguationMenu={this.focusNaviguationMenuButton}
+                                    readerPopoverDialogContext={this.props.readerPopoverDialogContext}
+                                    handleSettingsClick={this.props.handleSettingsClick} />
+                                    </div>
+                            </Portal.Root> : <></>}
                         </li>
 
                         {this.props.fullscreen ?
