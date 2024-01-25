@@ -10,7 +10,6 @@ import * as debug_ from "debug";
 import * as React from "react";
 import * as Popover from "@radix-ui/react-popover";
 import * as Dialog from "@radix-ui/react-dialog";
-import * as Portal from "@radix-ui/react-portal";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import * as ReactDOM from "react-dom";
 import { ReaderMode } from "readium-desktop/common/models/reader";
@@ -82,7 +81,7 @@ interface IBaseProps extends TranslatorProps {
     shortcutEnable: boolean;
     mode?: ReaderMode;
     settingsOpen: boolean;
-    handleMenuClick: () => void;
+    handleMenuClick: (open?: boolean) => void;
     handleSettingsClick: (open?: boolean) => void;
     fullscreen: boolean;
     handleFullscreenClick: () => void;
@@ -759,7 +758,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         aria-pressed={this.props.settingsOpen}
                                         aria-label={__("reader.navigation.settingsTitle")}
                                         className={stylesReader.menu_button}
-                                        onClick={() => this.props.handleSettingsClick()}
+                                        // onClick={() => this.props.handleSettingsClick()}
                                         // ref={this.settingsMenuButtonRef}
                                         title={__("reader.navigation.settingsTitle")}
                                     >
@@ -789,37 +788,65 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             {...(this.props.menuOpen &&
                                 { style: { backgroundColor: "var(--color-blue)" } })}
                         >
-                            <button
-                                aria-pressed={this.props.menuOpen}
-                                aria-label={__("reader.navigation.openTableOfContentsTitle")}
-                                className={stylesReader.menu_button}
-                                onClick={this.props.handleMenuClick.bind(this)}
-                                ref={this.navigationMenuButtonRef}
-                                title={__("reader.navigation.openTableOfContentsTitle")}
-                            >
-                                <SVG ariaHidden={true} svg={TOCIcon} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""} />
-                            </button>
-                            { this.props.menuOpen ?
-                            <Portal.Root>
-                                                                    <div
-                                    className={classNames(this.props.readerPopoverDialogContext.dockedMode ? stylesPopoverDialog.popover_dialog_reader : stylesPopoverDialog.modal_dialog_reader,
-                                        this.props.ReaderSettingsProps.readerConfig.night ? stylesReader.nightMode : this.props.ReaderSettingsProps.readerConfig.sepia ? stylesReader.sepiaMode : "")}
+
+                            {/* { this.props.menuOpen ? */}
+
+                            <Dialog.Root onOpenChange={(v) => { console.log("MENU DialogOnOpenChange", v); this.props.handleMenuClick(v); }} modal={false}>
+                                <Dialog.Trigger asChild>
+                                    <button
+                                        aria-pressed={this.props.menuOpen}
+                                        aria-label={__("reader.navigation.openTableOfContentsTitle")}
+                                        className={stylesReader.menu_button}
+                                        // onClick={this.props.handleMenuClick.bind(this)}
+                                        ref={this.navigationMenuButtonRef}
+                                        title={__("reader.navigation.openTableOfContentsTitle")}
+                                    >
+                                        <SVG ariaHidden={true} svg={TOCIcon} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""} />
+                                    </button>
+                                </Dialog.Trigger>
+                                <Dialog.Portal>
+                                    <Dialog.Content
+                                        onPointerDownOutside={(e) => { e.preventDefault(); console.log("MenuModal onPointerDownOutside"); }}
+                                        onInteractOutside={(e) => { e.preventDefault(); console.log("MenuModal onInteractOutside"); }}
+                                        className={classNames(this.props.readerPopoverDialogContext.dockedMode ? stylesPopoverDialog.popover_dialog_reader : stylesPopoverDialog.modal_dialog_reader,
+                                            this.props.ReaderSettingsProps.readerConfig.night ? stylesReader.nightMode : this.props.ReaderSettingsProps.readerConfig.sepia ? stylesReader.sepiaMode : "")}
                                         style={{
-                                            borderLeft : this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
-                                            borderRight : this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
-                                            right : this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
-                                            left : this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
+                                            borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
+                                            borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
+                                            right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
+                                            left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
                                         }}
                                     >
-                                <ReaderMenu {...this.props.readerMenuProps}
-                                    isDivina={this.props.isDivina}
-                                    isPdf={this.props.isPdf}
-                                    currentLocation={this.props.currentLocation}
-                                    focusNaviguationMenu={this.focusNaviguationMenuButton}
-                                    readerPopoverDialogContext={this.props.readerPopoverDialogContext}
-                                    handleSettingsClick={this.props.handleSettingsClick} />
-                                    </div>
-                            </Portal.Root> : <></>}
+                                        <ReaderMenu {...this.props.readerMenuProps}
+                                            isDivina={this.props.isDivina}
+                                            isPdf={this.props.isPdf}
+                                            currentLocation={this.props.currentLocation}
+                                            focusNaviguationMenu={this.focusNaviguationMenuButton}
+                                            readerPopoverDialogContext={this.props.readerPopoverDialogContext}
+                                            handleSettingsClick={this.props.handleSettingsClick} />
+                                    </Dialog.Content>
+                                </Dialog.Portal>
+                            </Dialog.Root>
+                            {/* <Portal.Root>
+                            //                                         <div
+                            //         className={classNames(this.props.readerPopoverDialogContext.dockedMode ? stylesPopoverDialog.popover_dialog_reader : stylesPopoverDialog.modal_dialog_reader,
+                            //             this.props.ReaderSettingsProps.readerConfig.night ? stylesReader.nightMode : this.props.ReaderSettingsProps.readerConfig.sepia ? stylesReader.sepiaMode : "")}
+                            //             style={{
+                            //                 borderLeft : this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
+                            //                 borderRight : this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
+                            //                 right : this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
+                            //                 left : this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
+                            //             }}
+                            //         >
+                            //     <ReaderMenu {...this.props.readerMenuProps}
+                            //         isDivina={this.props.isDivina}
+                            //         isPdf={this.props.isPdf}
+                            //         currentLocation={this.props.currentLocation}
+                            //         focusNaviguationMenu={this.focusNaviguationMenuButton}
+                            //         readerPopoverDialogContext={this.props.readerPopoverDialogContext}
+                            //         handleSettingsClick={this.props.handleSettingsClick} />
+                            //         </div>
+                                // </Portal.Root> : <></>}*/}
                         </li>
 
                         {this.props.fullscreen ?

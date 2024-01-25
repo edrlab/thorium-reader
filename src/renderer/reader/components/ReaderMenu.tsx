@@ -7,6 +7,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import * as Dialog from "@radix-ui/react-dialog";
 import { connect } from "react-redux";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { Locator } from "readium-desktop/common/models/locator";
@@ -333,9 +334,11 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                                     <SVG ariaHidden={true} svg={DockModalIcon} />
                                 </button>
 
-                                <button className={stylesButtons.button_transparency_icon} aria-label="Close" onClick={() => this.props.handleSettingsClick(false)}>
-                                    <SVG ariaHidden={true} svg={QuitIcon} />
-                                </button>
+                                <Dialog.Close asChild>
+                                    <button className={stylesButtons.button_transparency_icon} aria-label="Close" onClick={() => this.props.handleSettingsClick(false)}>
+                                        <SVG ariaHidden={true} svg={QuitIcon} />
+                                    </button>
+                                </Dialog.Close>
                             </div>
                         </div> : <></>
                     }
@@ -408,11 +411,11 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         <button className={stylesButtons.button_transparency_icon} disabled aria-label="full" onClick={setDockingModeFull}>
                             <SVG ariaHidden={true} svg={DockModalIcon} />
                         </button>
-                        {/* <Close asChild> */}
+                        <Dialog.Close asChild>
                             <button className={stylesButtons.button_transparency_icon} aria-label="Close" onClick={() => this.props.handleSettingsClick(false)}>
                                 <SVG ariaHidden={true} svg={QuitIcon} />
                             </button>
-                        {/* </Close> */}
+                        </Dialog.Close>
                     </div>
             }
                 </div>

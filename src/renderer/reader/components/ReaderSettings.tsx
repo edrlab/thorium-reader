@@ -811,6 +811,32 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         }
     }, [overridePublisherDefault]);
 
+    const dockedModeRef = React.useRef<HTMLInputElement>();
+    const tabModeRef = React.useRef<HTMLDivElement>();
+    React.useEffect(() => {
+        console.log("ReaderSettings UPDATED");
+
+        const itv = setTimeout(() => {
+            console.log("readerSettings FOCUS");
+
+            if (dockedMode) {
+                if (dockedModeRef) {
+                    dockedModeRef.current?.focus();
+                } else {
+                    console.error("!no dockedModeRef on combobox");
+                }
+            } else {
+                if (tabModeRef) {
+                    tabModeRef.current?.focus();
+                } else {
+                    console.error("!no tabModeRef on tabList");
+                }
+            }
+        }, 1);
+
+        return () => clearInterval(itv);
+    });
+
     if (!readerConfig) {
         return <></>;
     }
@@ -913,32 +939,6 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     console.log("RENDER");
 
     console.log(options.find(({ value }) => value === tabValue).svg);
-
-    const dockedModeRef = React.useRef<HTMLInputElement>();
-    const tabModeRef = React.useRef<HTMLDivElement>();
-    React.useEffect(() => {
-        console.log("ReaderSettings UPDATED");
-
-        const itv = setTimeout(() => {
-            console.log("readerSettings FOCUS");
-
-            if (dockedMode) {
-                if (dockedModeRef) {
-                    dockedModeRef.current?.focus();
-                } else {
-                    console.error("!no dockedModeRef on combobox");
-                }
-            } else {
-                if (tabModeRef) {
-                    tabModeRef.current?.focus();
-                } else {
-                    console.error("!no tabModeRef on tabList");
-                }
-            }
-        }, 1);
-
-        return () => clearInterval(itv);
-    });
 
     const { handleDivinaReadingMode, divinaReadingMode, divinaReadingModeSupported } = props;
     const ComboBoxRef = React.forwardRef<HTMLInputElement, MyComboBoxProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <ComboBox refInputEl={forwardedRef} {...props}></ComboBox>);

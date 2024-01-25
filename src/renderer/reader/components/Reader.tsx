@@ -1998,7 +1998,7 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         // WARNING: "goto page" zero-based index in SectionData[] of ReaderMenu.tsx
-        this.handleMenuButtonClick(4);
+        this.handleMenuButtonClick(undefined, 4);
     }
 
     private onKeyboardShowTOC() {
@@ -2010,18 +2010,23 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         // WARNING: "table of contents" zero-based index in SectionData[] of ReaderMenu.tsx
-        this.handleMenuButtonClick(0);
+        this.handleMenuButtonClick(undefined, 0);
     }
 
     private showSearchResults() {
         // WARNING: "search" zero-based index in SectionData[] of ReaderMenu.tsx
-        this.handleMenuButtonClick(3);
+        this.handleMenuButtonClick(undefined, 3);
     }
 
-    private handleMenuButtonClick(openedSectionMenu?: number | undefined) {
+    private handleMenuButtonClick(open?: boolean, openedSectionMenu?: number | undefined) {
+        console.log("handleMenuButtonClick", "menuOpen=", this.state.menuOpen ? "closeMenu" : "openMenu", open !== undefined ? `openFromParam=${open ? "openMenu" : "closeMenu"}` : "");
+
+        const openToggle = !this.state.menuOpen;
+        const menuOpen = open !== undefined ? open : openToggle;
+
         this.setState({
-            menuOpen: !this.state.menuOpen,
-            shortcutEnable: this.state.menuOpen,
+            menuOpen: menuOpen,
+            shortcutEnable: !menuOpen,
             settingsOpen: false,
             openedSectionMenu,
         });
