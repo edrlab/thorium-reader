@@ -188,7 +188,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         //         disabled: !this.props.searchEnable || this.props.isPdf,
         //         skipMaxHeight: true,
         //     },
-        //     {   
+        //     {
         //         title: 'Go To page' ,
         //         content: this.buildGoToPageSection(
         //             this.props.isPdf && this.props.pdfNumberOfPages
@@ -208,7 +208,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         const options: Array<{ id: number, value: string, name: string, disabled: boolean, svg: any }> = [];
 
         const TocTrigger =
-            <Tabs.Trigger value="tab-toc" key={"tab-toc"} data-value={"tab-toc"} 
+            <Tabs.Trigger value="tab-toc" key={"tab-toc"} data-value={"tab-toc"}
             disabled={
                 (!r2Publication.TOC || r2Publication.TOC.length === 0) &&
                 (!r2Publication.Spine || r2Publication.Spine.length === 0)
@@ -219,22 +219,22 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         const optionTocItem = { id: 0, value: "tab-toc", name: __("reader.marks.toc"), disabled:
             (!r2Publication.TOC || r2Publication.TOC.length === 0) &&
             (!r2Publication.Spine || r2Publication.Spine.length === 0),
-             svg: "" };
+            svg: "" };
 
-        const LandMarksTrigger = 
+        const LandMarksTrigger =
                 <Tabs.Trigger value="tab-landmark" key={"tab-landmark"} data-value={"tab-landmark"} disabled={!r2Publication.Landmarks || r2Publication.Landmarks.length === 0}>
                     <h3>{__("reader.marks.landmarks")}</h3>
                 </Tabs.Trigger>;
         const optionLandmarkItem = { id: 1, value: "tab-landmark", name: __("reader.marks.landmarks"), disabled:
-         !r2Publication.Landmarks || r2Publication.Landmarks.length === 0,
-          svg: "" };
+        !r2Publication.Landmarks || r2Publication.Landmarks.length === 0,
+        svg: "" };
 
         const BookmarksTrigger =
             <Tabs.Trigger value="tab-bookmark" key={"tab-bookmark"} data-value={"tab-bookmark"} disabled={!bookmarks || bookmarks.length === 0}>
                 <h3>{__("reader.marks.bookmarks")}</h3>
             </Tabs.Trigger>;
         const optionBookmarkItem = { id: 2, value: "tab-bookmark", name: __("reader.marks.bookmarks"), disabled: !bookmarks || bookmarks.length === 0,
-            svg: ""
+            svg: "",
         };
 
         const SearchTrigger =
@@ -242,7 +242,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 <h3>{__("reader.marks.search")}</h3>
             </Tabs.Trigger>;
         const optionSearchItem = { id: 3, value: "tab-search", name: __("reader.marks.search"), disabled: !this.props.searchEnable || this.props.isPdf,
-            svg: ""
+            svg: "",
         };
 
         const GoToPageTrigger =
@@ -250,7 +250,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             <h3>Go To Page</h3>
         </Tabs.Trigger>;
     const optionGoToPageItem = { id: 4, value: "tab-gotopage", name: "Go To Page", disabled: false,
-        svg: ""
+        svg: "",
     };
 
         sectionsArray.push(TocTrigger);

@@ -567,7 +567,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 </Popover.Trigger>
                                                 <Popover.Portal>
                                                     <Popover.Content sideOffset={10}>
-                                                        <ul className={stylesReaderHeader.Tts_popover_container}> 
+                                                        <ul className={stylesReaderHeader.Tts_popover_container}>
                                                             <li className={stylesReader.ttsSelectRate}>
                                                                 <label>
                                                                     {
@@ -798,7 +798,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             >
                                 <SVG ariaHidden={true} svg={TOCIcon} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""} />
                             </button>
-                            { this.props.menuOpen ? 
+                            { this.props.menuOpen ?
                             <Portal.Root>
                                                                     <div
                                     className={classNames(this.props.readerPopoverDialogContext.dockedMode ? stylesPopoverDialog.popover_dialog_reader : stylesPopoverDialog.modal_dialog_reader,

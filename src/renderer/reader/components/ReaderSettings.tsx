@@ -971,7 +971,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                 dockedMode ?
                     <div className={stylesSettings.allowCustom} key={"allowCustom"}>
                         <AllowCustom overridePublisherDefault={overridePublisherDefault} set={setOverridePublisherDefault} />
-                    </div> 
+                    </div>
                 : <></>
             }
             <Tabs.Root value={tabValue} defaultValue={tabValue} onValueChange={dockedMode ? null : setTabValue} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
