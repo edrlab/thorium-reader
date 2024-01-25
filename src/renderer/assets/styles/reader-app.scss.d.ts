@@ -13,7 +13,6 @@ export declare const button_audio: string;
 export declare const center_in_tab: string;
 export declare const chapter_marker: string;
 export declare const chapter_settings_list: string;
-export declare const chapters_content: string;
 export declare const chapters_description: string;
 export declare const chapters_settings: string;
 export declare const colorChange: string;

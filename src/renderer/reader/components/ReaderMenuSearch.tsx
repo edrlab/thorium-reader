@@ -15,6 +15,7 @@ import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-a
 import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
 import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -213,7 +214,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
         let iMatch = -1;
         return <ul
             aria-label={label}
-            className={stylesReader.chapters_content}
+            className={stylesPopoverDialog.chapters_content}
             role={"list"}
         >{
             (this.props.readingOrder || []).reduce((pv, spineLink, j) => {

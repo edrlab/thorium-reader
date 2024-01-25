@@ -119,3 +119,64 @@
 .allowCustom {
   padding-left: 10px;
 }
+
+.toc_container {
+  padding: 0;
+  height: auto;
+  list-style-type: none;
+  font-size: 12px;
+  font-weight: 400;
+
+  .line, .subheading:not(.inert) {
+    color: var(--color-primary);
+    border-left: 2px solid transparent;
+    transition: 200ms;
+    width: fit-content;
+    text-align: left;
+    display: block;
+    padding: 5px 40px 5px 5px;
+    margin: 5px 0;
+    &.active:not(.inert) {
+      &:hover {
+        /* color: #808080 !important; */
+        background-color: var(--color-light-blue);
+      }
+    }
+  }
+
+  >li > div[aria-level="1"] {
+    font-weight: 600;
+    font-size: 14px;
+  }
+}
+
+.chapters_content {
+  padding: 0;
+  height: auto;
+  list-style: none;
+
+  & > li > div > a > span {
+    /* color: red !important; */
+    line-height: 1.5em;
+  }
+
+  & .chapters_content {
+    // border-left: 1px solid var(--reader-separatorColor);
+    padding: 0 0 0 10px;
+  }
+
+  & .subheading:not(.inert) {
+    &:hover {
+      background-color: var(--color-light-blue) !important;
+    }
+  }
+
+  .line {
+    &:not(.inert) {
+      cursor: pointer;
+    }
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+}

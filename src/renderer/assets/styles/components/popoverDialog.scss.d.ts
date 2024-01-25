@@ -1,8 +1,12 @@
+export declare const active: string;
 export declare const allowCustom: string;
 export declare const button_transparency_icon: string;
+export declare const chapters_content: string;
 export declare const display_options_item: string;
 export declare const docked_header: string;
 export declare const docked_header_controls: string;
+export declare const inert: string;
+export declare const line: string;
 export declare const modal_dialog_full: string;
 export declare const modal_dialog_full_full: string;
 export declare const modal_dialog_reader: string;
@@ -14,3 +18,5 @@ export declare const settings_container: string;
 export declare const settings_reading_text: string;
 export declare const settings_tab: string;
 export declare const settings_tab_container_reading_spacing: string;
+export declare const subheading: string;
+export declare const toc_container: string;

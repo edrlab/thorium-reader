@@ -456,7 +456,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
         return <ul
             aria-label={label}
-            className={stylesReader.chapters_content}
+            className={stylesPopoverDialog.chapters_content}
             role={"list"}
         >
             { links.map((link, i: number) => {
@@ -580,7 +580,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         return <ul
                     role={useTree ? (level <= 1 ? "tree" : "group") : undefined}
                     aria-label={label}
-                    className={stylesReader.chapters_content}
+                    className={classNames(stylesPopoverDialog.chapters_content, stylesPopoverDialog.toc_container)}
                 >
             { links.map((link, i: number) => {
 
@@ -588,7 +588,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
                 let emphasis = undefined;
                 if (link === headingTrailLink) {
-                    emphasis = { border: "transparent", outlineColor: "silver", outlineOffset: "0px", outlineWidth: "4px", outlineStyle: "double" };
+                    emphasis = { backgroundColor: "var(--color-light-grey)", borderLeft: "2px solid var(--color-blue)" };
                 } else if ((link as any).__inHeadingsTrail) {
                     emphasis = { border: "1px dashed silver" };
                 }

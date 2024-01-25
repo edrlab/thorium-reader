@@ -685,39 +685,6 @@ button {
   }
 }
 
-.chapters_content {
-  padding: 0;
-  height: auto;
-  list-style: none;
-
-  & > li > div > a > span {
-    /* color: red !important; */
-    line-height: 1.5em;
-  }
-
-  & .chapters_content {
-    border-left: 1px solid var(--reader-separatorColor);
-    padding: 0 0 0 20px;
-  }
-
-  & .subheading:not(.inert) {
-    &:hover {
-      background-color: var(--reader-menuPartTitleHoverColor) !important;
-    }
-  }
-
-  & .line.active:not(.inert) {
-    &:hover {
-      /* color: #808080 !important; */
-      background-color: var(--reader-separatorColor);
-    }
-
-    /* &:focus {
-      outline: -webkit-focus-ring-color auto 5px;
-    } */
-  }
-}
-
 .rtlDir {
   text-align: right !important;
 }
@@ -778,24 +745,6 @@ button {
       }
     }
   }
-}
-
-.chapters_content .line {
-  text-align: left;
-  font-size: 0.9rem;
-  display: block;
-  font-weight: bold;
-  color: #c1c1c1;
-  padding: 0.625rem 0.3125rem;
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.chapters_content .line:not(.inert) {
-  cursor: pointer;
-}
-
-.chapters_content .line:last-child {
-  border-bottom: 0;
 }
 
 p.chapters_description {
