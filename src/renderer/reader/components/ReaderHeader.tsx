@@ -9,7 +9,7 @@ import classNames from "classnames";
 import * as debug_ from "debug";
 import * as React from "react";
 import * as Popover from "@radix-ui/react-popover";
-// import * as Popover from "@radix-ui/react-popover";
+import * as Dialog from "@radix-ui/react-dialog";
 import * as Portal from "@radix-ui/react-portal";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import * as ReactDOM from "react-dom";
@@ -753,8 +753,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             {...(this.props.settingsOpen &&
                                 { style: { backgroundColor: "var(--color-blue" } })}
                         >
-                            {/* <Popover.Root onOpenChange={(v) => { console.log("SETTINGS DialogOnOpenChange", v); this.props.handleSettingsClick(v);}} modal={false}> */}
-                                {/* <Popover.Trigger asChild> */}
+                            <Dialog.Root onOpenChange={(v) => { console.log("SETTINGS DialogOnOpenChange", v); this.props.handleSettingsClick(v);}} modal={false}>
+                                <Dialog.Trigger asChild>
                                     <button
                                         aria-pressed={this.props.settingsOpen}
                                         aria-label={__("reader.navigation.settingsTitle")}
@@ -765,24 +765,25 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     >
                                         <SVG ariaHidden={true} svg={SettingsIcon} className={this.props.settingsOpen ? stylesReaderHeader.active_svg : ""} />
                                     </button>
-                                {/* </Popover.Trigger> */}
-                                { this.props.settingsOpen ? <Portal.Root>
-                                    {/* <Popover.Content */}
-                                    <div
-                                    className={classNames(this.props.readerPopoverDialogContext.dockedMode ? stylesPopoverDialog.popover_dialog_reader : stylesPopoverDialog.modal_dialog_reader,
-                                        this.props.ReaderSettingsProps.readerConfig.night ? stylesReader.nightMode : this.props.ReaderSettingsProps.readerConfig.sepia ? stylesReader.sepiaMode : "")}
+                                </Dialog.Trigger>
+                                <Dialog.Portal>
+                                    <Dialog.Content
+                                        onPointerDownOutside={(e) => {e.preventDefault();console.log("settingsModal onPointerDownOutside");}}
+                                        onInteractOutside={(e) => {e.preventDefault();console.log("SettingsModal onInteractOutside");}}
+                                        className={classNames(this.props.readerPopoverDialogContext.dockedMode ? stylesPopoverDialog.popover_dialog_reader : stylesPopoverDialog.modal_dialog_reader,
+                                            this.props.ReaderSettingsProps.readerConfig.night ? stylesReader.nightMode : this.props.ReaderSettingsProps.readerConfig.sepia ? stylesReader.sepiaMode : "")}
                                         style={{
-                                            borderLeft : this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
-                                            borderRight : this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
-                                            right : this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
-                                            left : this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
+                                            borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
+                                            borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
+                                            right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
+                                            left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
                                         }}
                                     >
-                                        <ReaderSettings {...this.props.ReaderSettingsProps} {...this.props.readerPopoverDialogContext} handleSettingsClick={this.props.handleSettingsClick}/>
-                                    {/* </Popover.Content> */}
-                                    </div>
-                                </Portal.Root> : <></>}
-                            {/* </Popover.Root> */}
+                                        <ReaderSettings {...this.props.ReaderSettingsProps} {...this.props.readerPopoverDialogContext} handleSettingsClick={this.props.handleSettingsClick} />
+                                    </Dialog.Content>
+                                </Dialog.Portal>
+
+                            </Dialog.Root>
                         </li>
                         <li
                             {...(this.props.menuOpen &&

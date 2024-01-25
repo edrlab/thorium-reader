@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-// import * as Popover from "@radix-ui/react-popover";
+import * as Dialog from "@radix-ui/react-dialog";
 import * as Tabs from "@radix-ui/react-tabs";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import classNames from "classnames";
@@ -32,7 +32,7 @@ import { IPopoverDialogProps, IReaderSettingsProps } from "./options-values";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+import { ComboBox, ComboBoxItem, MyComboBoxProps } from "readium-desktop/renderer/common/components/ComboBox";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import debounce from "debounce";
@@ -823,7 +823,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const isEpub = !isDivina && !isPdf;
 
     const sections: Array<React.JSX.Element> = [];
-    const options: Array<{ id: number, value: string, name: string, disabled: boolean, svg: any }> = [];
+    const options: Array<{ id: number, value: string, name: string, disabled: boolean, svg: {} }> = [];
 
     const TextTrigger =
         <Tabs.Trigger value="tab-text" disabled={overridePublisherDefault ? false : true} key={"tab-text"} data-value={"tab-text"}>
@@ -914,12 +914,40 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
     console.log(options.find(({ value }) => value === tabValue).svg);
 
+    const dockedModeRef = React.useRef<HTMLInputElement>();
+    const tabModeRef = React.useRef<HTMLDivElement>();
+    React.useEffect(() => {
+        console.log("ReaderSettings UPDATED");
+
+        const itv = setTimeout(() => {
+            console.log("readerSettings FOCUS");
+
+            if (dockedMode) {
+                if (dockedModeRef) {
+                    dockedModeRef.current?.focus();
+                } else {
+                    console.error("!no dockedModeRef on combobox");
+                }
+            } else {
+                if (tabModeRef) {
+                    tabModeRef.current?.focus();
+                } else {
+                    console.error("!no tabModeRef on tabList");
+                }
+            }
+        }, 1);
+
+        return () => clearInterval(itv);
+    });
+
     const { handleDivinaReadingMode, divinaReadingMode, divinaReadingModeSupported } = props;
+    const ComboBoxRef = React.forwardRef<HTMLInputElement, MyComboBoxProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <ComboBox refInputEl={forwardedRef} {...props}></ComboBox>);
+    ComboBoxRef.displayName = "ComboBox";
     return (
         <div>
             {
                 dockedMode ? <div key="docked-header" className={stylesPopoverDialog.docked_header}>
-                    <ComboBox defaultItems={options} selectedKey={optionSelected}
+                    <ComboBoxRef defaultItems={options} selectedKey={optionSelected}
                         disabledKeys={optionDisabled}
                         svg={options.find(({ value }) => value === tabValue)?.svg}
                         onSelectionChange={(id) => {
@@ -944,9 +972,11 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             } else {
                                 console.error("Combobox No value !!!");
                             }
-                        }}>
+                        }}
+                        ref={dockedModeRef}
+                        >
                         {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                    </ComboBox>
+                    </ComboBoxRef>
 
                     <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls}>
                         <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label="left" onClick={setDockingModeLeftSide}>
@@ -959,11 +989,11 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             <SVG ariaHidden={true} svg={DockModalIcon} />
                         </button>
 
-                        {/* <Close asChild> */}
-                            <button className={stylesButtons.button_transparency_icon} aria-label="Close" onClick={() => props.handleSettingsClick(false)}>
+                        <Dialog.Close asChild>
+                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
                                 <SVG ariaHidden={true} svg={QuitIcon} />
                             </button>
-                        {/* </Close> */}
+                        </Dialog.Close>
                     </div>
                 </div> : <></>
             }
@@ -977,7 +1007,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
             <Tabs.Root value={tabValue} defaultValue={tabValue} onValueChange={dockedMode ? null : setTabValue} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {
                     dockedMode ? <></> :
-                        <Tabs.List className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
+                        <Tabs.List ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
                             {sections}
                         </Tabs.List>
                 }
@@ -1037,11 +1067,11 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                         <button className={stylesButtons.button_transparency_icon} disabled aria-label="full" onClick={setDockingModeFull}>
                             <SVG ariaHidden={true} svg={DockModalIcon} />
                         </button>
-                        {/* <Close asChild> */}
-                            <button className={stylesButtons.button_transparency_icon} aria-label="Close" onClick={() => props.handleSettingsClick(false)}>
+                        <Dialog.Close asChild>
+                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
                                 <SVG ariaHidden={true} svg={QuitIcon} />
                             </button>
-                        {/* </Close> */}
+                        </Dialog.Close>
                     </div>
             }
         </div>
