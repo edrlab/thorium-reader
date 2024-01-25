@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import * as Popover from "@radix-ui/react-popover";
 import { connect } from "react-redux";
 import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -23,10 +24,15 @@ import { TDispatch } from "readium-desktop/typings/redux";
 
 import { readerLocalActionPicker, readerLocalActionSearch } from "../../redux/actions";
 import { IEventBusPdfPlayer } from "../../pdf/common/pdfReader.type";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
+import SearchPicker from "../picker/Search";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     shortcutEnable: boolean;
+    showSearchResults: () => void;
+    pdfEventBus: IEventBusPdfPlayer;
+    isPdf: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -107,16 +113,48 @@ class HeaderSearch extends React.Component<IProps, IState> {
     public render() {
         const { __ } = this.props;
         return (
-            <button
-                aria-pressed={this.props.isOnSearch}
-                aria-label={__("reader.navigation.magnifyingGlassButton")}
-                className={stylesReader.menu_button}
-                onClick={this.enableSearch}
-            // ref={this.settingsMenuButtonRef}
-                title={__("reader.navigation.magnifyingGlassButton")}
-            >
-                <SVG ariaHidden={true} svg={magnifyingGlass} className={this.props.isOnSearch ? stylesReaderHeader.active_svg : ""} />
-            </button>
+            <Popover.Root onOpenChange={(v) => { console.log("SearchPopoverMenu enabled=", v); this.enableSearch(); }}>
+                <Popover.Trigger>
+                    <button
+                        aria-pressed={this.props.isOnSearch}
+                        aria-label={__("reader.navigation.magnifyingGlassButton")}
+                        className={stylesReader.menu_button}
+                        // onClick={this.enableSearch}
+                        // ref={this.settingsMenuButtonRef}
+                        title={__("reader.navigation.magnifyingGlassButton")}
+                    >
+                        <SVG ariaHidden={true} svg={magnifyingGlass} className={this.props.isOnSearch ? stylesReaderHeader.active_svg : ""} />
+                    </button>
+                </Popover.Trigger>
+                <Popover.Portal>
+                    <Popover.Content className={stylesReaderHeader.picker_container} sideOffset={10}>
+                            <SearchPicker
+                                showSearchResults={this.props.showSearchResults}
+                                pdfEventBus={this.props.pdfEventBus}
+                                isPdf={this.props.isPdf}
+                            />
+
+                            <Popover.Close asChild>
+                                <button
+                                    style={{
+                                        width: "30px",
+                                        marginLeft: "auto",
+                                        marginRight: "0.4em",
+                                        backgroundColor: "transparent",
+                                        color: "black",
+                                        fill: "black",
+                                    }}
+                                    type="button"
+                                    aria-label={__("accessibility.closeDialog")}
+                                    title={__("accessibility.closeDialog")}
+                                >
+                                    <SVG ariaHidden={true} svg={QuitIcon} />
+                                </button>
+                            </Popover.Close>
+                        <Popover.Arrow />
+                    </Popover.Content>
+                </Popover.Portal>
+            </Popover.Root>
         );
     }
 

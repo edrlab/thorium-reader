@@ -87,7 +87,6 @@ import { TdivinaReadingMode, defaultReadingMode } from "readium-desktop/common/r
 import optionsValues, {
     AdjustableSettingsNumber, IPopoverDialogProps, IReaderMenuProps, IReaderSettingsProps, isDivinaReadingMode,
 } from "./options-values";
-import PickerManager from "./picker/PickerManager";
 import { URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS, URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_GOTO, URL_PARAM_GOTO_DOM_RANGE, URL_PARAM_IS_IFRAME, URL_PARAM_PREVIOUS, URL_PARAM_REFRESH, URL_PARAM_SECOND_WEBVIEW, URL_PARAM_SESSION_INFO, URL_PARAM_WEBVIEW_SLOT } from "@r2-navigator-js/electron/renderer/common/url-params";
 
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
@@ -684,16 +683,12 @@ class Reader extends React.Component<IProps, IState> {
                         r2Publication={this.props.r2Publication}
 
                         readerPopoverDialogContext={readerPopoverDialogContext}
+                        showSearchResults={this.showSearchResults}
                     />
 
                     <div className={classNames(stylesReader.content_root,
                         this.state.fullscreen ? stylesReader.content_root_fullscreen : undefined,
                         this.props.isPdf ? stylesReader.content_root_skip_bottom_spacing : undefined)}>
-                        <PickerManager
-                            showSearchResults={this.showSearchResults}
-                            pdfEventBus={this.state.pdfPlayerBusEvent}
-                            isPdf={this.props.isPdf}
-                        ></PickerManager>
                         <div className={stylesReader.reader}>
                             <main
                                 id="main"

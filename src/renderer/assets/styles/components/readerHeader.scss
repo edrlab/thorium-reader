@@ -106,7 +106,7 @@
     z-index: 101;
     box-shadow: 0 6px 10px 0 var(--color-medium-grey);
     margin-right: 200px;
-    position: absolute;
+    // position: absolute;
     top: 65px;
     right: 10px;
     left: unset;
@@ -124,12 +124,12 @@
     }
 
     > span {
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-        border-bottom: 15px solid var(--color-extralight-grey);
-        position: absolute;
-        top: -15px;
-        right: 20px;
+        // border-left: 10px solid transparent;
+        // border-right: 10px solid transparent;
+        // border-bottom: 15px solid var(--color-extralight-grey);
+        // position: absolute;
+        // top: -15px;
+        // right: 20px;
     }
 
     button[title="Close"] {

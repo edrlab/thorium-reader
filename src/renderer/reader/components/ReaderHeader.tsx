@@ -124,6 +124,8 @@ interface IBaseProps extends TranslatorProps {
     divinaSoundPlay: (play: boolean) => void;
 
     readerPopoverDialogContext: IPopoverDialogProps;
+
+    showSearchResults: () => void;
 }
 
 // IProps may typically extend:
@@ -722,7 +724,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         <li
                             {...(this.props.isOnSearch && { style: { backgroundColor: "var(--color-blue" } })}
                         >
-                            <HeaderSearch shortcutEnable={this.props.shortcutEnable}></HeaderSearch>
+                            <HeaderSearch shortcutEnable={this.props.shortcutEnable} pdfEventBus={this.props.pdfEventBus} isPdf={this.props.isPdf} showSearchResults={this.props.showSearchResults}></HeaderSearch>
                         </li>
                         <li
                             {...(this.props.isOnBookmark &&
