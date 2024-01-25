@@ -114,7 +114,7 @@ class HeaderSearch extends React.Component<IProps, IState> {
         const { __ } = this.props;
         return (
             <Popover.Root onOpenChange={(v) => { console.log("SearchPopoverMenu enabled=", v); this.enableSearch(); }}>
-                <Popover.Trigger>
+                <Popover.Trigger asChild>
                     <button
                         aria-pressed={this.props.isOnSearch}
                         aria-label={__("reader.navigation.magnifyingGlassButton")}
