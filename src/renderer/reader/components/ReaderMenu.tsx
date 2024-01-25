@@ -14,7 +14,7 @@ import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
-import * as BookmarkIcon from "readium-desktop/renderer/assets/icons/outline-bookmark-24px-grey.svg";
+import * as BookmarkIcon from "readium-desktop/renderer/assets/icons/bookmark-icon.svg";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
@@ -25,6 +25,11 @@ import * as DockRightIcon from "readium-desktop/renderer/assets/icons/dockright-
 import * as DockModalIcon from "readium-desktop/renderer/assets/icons/dockmodal-icon.svg";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import * as Tabs from "@radix-ui/react-tabs";
+
+import * as TocIcon from "readium-desktop/renderer/assets/icons/toc-icon.svg";
+import * as LandmarkIcon from "readium-desktop/renderer/assets/icons/landmark-icon.svg";
+import * as TargetIcon from "readium-desktop/renderer/assets/icons/target-icon.svg";
+import * as SearchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
 
 import {
     TranslatorProps, withTranslator,
@@ -213,56 +218,64 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                 (!r2Publication.TOC || r2Publication.TOC.length === 0) &&
                 (!r2Publication.Spine || r2Publication.Spine.length === 0)
                 }>
-                {/* <SVG ariaHidden svg={TextAreaIcon} /> */}
+                <SVG ariaHidden svg={TocIcon} />
                 <h3>{__("reader.marks.toc")}</h3>
             </Tabs.Trigger>;
         const optionTocItem = { id: 0, value: "tab-toc", name: __("reader.marks.toc"), disabled:
             (!r2Publication.TOC || r2Publication.TOC.length === 0) &&
             (!r2Publication.Spine || r2Publication.Spine.length === 0),
-            svg: "" };
+            svg: TocIcon };
 
         const LandMarksTrigger =
                 <Tabs.Trigger value="tab-landmark" key={"tab-landmark"} data-value={"tab-landmark"} disabled={!r2Publication.Landmarks || r2Publication.Landmarks.length === 0}>
+                    <SVG ariaHidden svg={LandmarkIcon} />
                     <h3>{__("reader.marks.landmarks")}</h3>
                 </Tabs.Trigger>;
         const optionLandmarkItem = { id: 1, value: "tab-landmark", name: __("reader.marks.landmarks"), disabled:
         !r2Publication.Landmarks || r2Publication.Landmarks.length === 0,
-        svg: "" };
+        svg: LandmarkIcon };
 
         const BookmarksTrigger =
             <Tabs.Trigger value="tab-bookmark" key={"tab-bookmark"} data-value={"tab-bookmark"} disabled={!bookmarks || bookmarks.length === 0}>
+                <SVG ariaHidden svg={BookmarkIcon} />
                 <h3>{__("reader.marks.bookmarks")}</h3>
             </Tabs.Trigger>;
         const optionBookmarkItem = { id: 2, value: "tab-bookmark", name: __("reader.marks.bookmarks"), disabled: !bookmarks || bookmarks.length === 0,
-            svg: "",
+            svg: BookmarkIcon,
         };
 
         const SearchTrigger =
             <Tabs.Trigger value="tab-search" key={"tab-search"} data-value={"tab-search"} disabled={!this.props.searchEnable || this.props.isPdf}>
+                <SVG ariaHidden svg={SearchIcon} />
                 <h3>{__("reader.marks.search")}</h3>
             </Tabs.Trigger>;
         const optionSearchItem = { id: 3, value: "tab-search", name: __("reader.marks.search"), disabled: !this.props.searchEnable || this.props.isPdf,
-            svg: "",
+            svg: SearchIcon,
         };
 
         const GoToPageTrigger =
         <Tabs.Trigger value="tab-gotopage" key={"tab-gotopage"} data-value={"tab-gotopage"} disabled={false}>
+            <SVG ariaHidden svg={TargetIcon} />
             <h3>Go To Page</h3>
         </Tabs.Trigger>;
     const optionGoToPageItem = { id: 4, value: "tab-gotopage", name: "Go To Page", disabled: false,
-        svg: "",
+        svg: TargetIcon,
     };
+
+    const Separator =
+    <span key={"separator"} style={{borderBottom: "1px solid var(--color-medium-grey)", width: "80%", margin: "0 10%"}}></span>;
 
         sectionsArray.push(TocTrigger);
         options.push(optionTocItem);
         sectionsArray.push(LandMarksTrigger);
         options.push(optionLandmarkItem);
-        sectionsArray.push(BookmarksTrigger);
-        options.push(optionBookmarkItem);
         sectionsArray.push(SearchTrigger);
         options.push(optionSearchItem);
         sectionsArray.push(GoToPageTrigger);
         options.push(optionGoToPageItem);
+        sectionsArray.push(Separator);
+        sectionsArray.push(BookmarksTrigger);
+        options.push(optionBookmarkItem);
 
         const optionSelected = options.find(({ value }) => value === this.state.tabValue)?.id || 0;
 

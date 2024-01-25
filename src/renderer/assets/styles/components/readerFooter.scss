@@ -1,19 +1,24 @@
 .navigation_arrow {
     &_left {
-        position: absolute;
-        top: -50dvh;
         left: 10px;
-        svg {
-            fill: var(--color-blue);
-        }
     }
     &_right {
-        position: absolute;
-        top: -50dvh;
         right: 10px;
-        svg {
-            fill: var(--color-blue);
-        }
+    }
+    &_docked_left {
+        left: 410px;
+    }
+    &_docked_right {
+        right: 410px;
+    }
+}
+
+.arrows button {
+    width: 50px;
+    position: absolute;
+    top: calc(50dvh - 100px);
+    svg {
+        fill: var(--color-blue);
     }
 }
 

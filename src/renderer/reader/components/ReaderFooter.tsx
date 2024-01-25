@@ -16,8 +16,6 @@ import classNames from "classnames";
 import * as React from "react";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { formatTime } from "readium-desktop/common/utils/time";
-import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
 import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
 import {
     TranslatorProps, withTranslator,
@@ -160,44 +158,6 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                 <SVG ariaHidden={true} svg={ForwardIcon} />
                             </button>
                         </div>
-                }
-                {!isAudioBook &&
-                    <div className={stylesReaderFooter.arrows}>
-                        <button onClick={(ev) => {
-                            if (ev.shiftKey) {
-                                const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
-                                if (isRTL) {
-                                    this.props.gotoEnd();
-                                } else {
-                                    this.props.gotoBegin();
-                                }
-                            } else {
-                                this.props.navLeftOrRight(true);
-                            }
-                        }}
-                        title={__("reader.svg.left")}
-                        className={stylesReaderFooter.navigation_arrow_left}
-                        >
-                            <SVG ariaHidden={true} svg={ArrowLeftIcon} />
-                        </button>
-                        <button onClick={(ev) => {
-                            if (ev.shiftKey) {
-                                const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
-                                if (isRTL) {
-                                    this.props.gotoBegin();
-                                } else {
-                                    this.props.gotoEnd();
-                                }
-                            } else {
-                                this.props.navLeftOrRight(false);
-                            }
-                        }}
-                        title={__("reader.svg.right")}
-                        className={stylesReaderFooter.navigation_arrow_right}
-                        >
-                            <SVG ariaHidden={true} svg={ArrowRightIcon} />
-                        </button>
-                    </div>
                 }
                 {!this.props.fullscreen &&
                     <div aria-hidden="true" className={classNames(stylesReaderFooter.track_reading_wrapper,

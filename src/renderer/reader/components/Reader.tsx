@@ -90,6 +90,10 @@ import optionsValues, {
 import PickerManager from "./picker/PickerManager";
 import { URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS, URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_GOTO, URL_PARAM_GOTO_DOM_RANGE, URL_PARAM_IS_IFRAME, URL_PARAM_PREVIOUS, URL_PARAM_REFRESH, URL_PARAM_SECOND_WEBVIEW, URL_PARAM_SESSION_INFO, URL_PARAM_WEBVIEW_SLOT } from "@r2-navigator-js/electron/renderer/common/url-params";
 
+import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
+import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
+import { isAudiobookFn } from "readium-desktop/common/isManifestType";
+
 
 // main process code!
 // thoriumhttps
@@ -262,6 +266,9 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardInfoWhereAmISpeak = this.onKeyboardInfoWhereAmISpeak.bind(this);
         this.onKeyboardFocusSettings = this.onKeyboardFocusSettings.bind(this);
         this.onKeyboardFocusNav = this.onKeyboardFocusNav.bind(this);
+        this.navLeftOrRight_.bind(this);
+        this.onKeyboardNavigationToBegin.bind(this);
+        this.onKeyboardNavigationToEnd.bind(this);
 
         this.onPopState = this.onPopState.bind(this);
 
@@ -605,6 +612,8 @@ class Reader extends React.Component<IProps, IState> {
         // >
         //     {this.state.bookmarkMessage}
         // </div> : <></>}
+
+        const isAudioBook = isAudiobookFn(this.props.r2Publication);
         return (
             <div className={classNames(
                 this.props.readerConfig.night && stylesReader.nightMode,
@@ -689,7 +698,8 @@ class Reader extends React.Component<IProps, IState> {
                             <main
                                 id="main"
                                 aria-label={this.props.__("accessibility.mainContent")}
-                                className={stylesReader.publication_viewport_container}>
+                                className={stylesReader.publication_viewport_container}
+                                >
                                 <a
                                     role="heading"
                                     className={stylesReader.anchor_link}
@@ -698,6 +708,28 @@ class Reader extends React.Component<IProps, IState> {
                                     title={this.props.__("accessibility.mainContent")}
                                     aria-label={this.props.__("accessibility.mainContent")}
                                     tabIndex={-1}>{this.props.__("accessibility.mainContent")}</a>
+
+                                {!isAudioBook &&
+                                    <div className={stylesReaderFooter.arrows}>
+                                        <button onClick={(ev) => {
+                                            if (ev.shiftKey) {
+                                                const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
+                                                if (isRTL) {
+                                                    this.onKeyboardNavigationToEnd.bind(this);
+                                                } else {
+                                                    this.onKeyboardNavigationToBegin.bind(this);
+                                                }
+                                            } else {
+                                                this.navLeftOrRight_(true);
+                                            }
+                                        }}
+                                            title={this.props.__("reader.svg.left")}
+                                            className={this.state.settingsOpen ? (this.state.dockingMode === "left" ? stylesReaderFooter.navigation_arrow_docked_left :  stylesReaderFooter.navigation_arrow_left) : stylesReaderFooter.navigation_arrow_left}
+                                        >
+                                            <SVG ariaHidden={true} svg={ArrowLeftIcon} />
+                                        </button>
+                                    </div>}
+
                                 <div
                                     id="publication_viewport"
                                     // className={stylesReader.publication_viewport}
@@ -744,7 +776,26 @@ class Reader extends React.Component<IProps, IState> {
                                         </div>
                                         : <></>
                                 }
-
+                                {!isAudioBook &&
+                                    <div className={stylesReaderFooter.arrows}>
+                                        <button onClick={(ev) => {
+                                            if (ev.shiftKey) {
+                                                const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
+                                                if (isRTL) {
+                                                    this.onKeyboardNavigationToBegin.bind(this);
+                                                } else {
+                                                    this.onKeyboardNavigationToEnd.bind(this);
+                                                }
+                                            } else {
+                                                this.navLeftOrRight_(false);
+                                            }
+                                        }}
+                                            title={this.props.__("reader.svg.right")}
+                                            className={this.state.settingsOpen ? (this.state.dockingMode === "right" ? stylesReaderFooter.navigation_arrow_docked_right :  stylesReaderFooter.navigation_arrow_right) : stylesReaderFooter.navigation_arrow_right}
+                                        >
+                                            <SVG ariaHidden={true} svg={ArrowRightIcon} />
+                                        </button>
+                                    </div>}
                             </main>
                         </div>
                     </div>

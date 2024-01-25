@@ -170,17 +170,21 @@ button {
   &_container {
     position: relative;
     flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
   }
 }
 
 .docked {
   &_left {
     // position: fixed;
-    left: 350px
+    left: 450px
   }
   &_right {
     // position: fixed; 
-    right: 350px;
+    right: 450px;
   }
 }
 

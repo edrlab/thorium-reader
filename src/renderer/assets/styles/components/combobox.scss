@@ -35,11 +35,11 @@
 
   .react_aria_Input {
     margin: 2px;
-    font-size: 1.072rem;
+    font-size: 12px;
     background: var(--color-secondary);
     color: var(--field-text-color);
-
-    padding: 0.286rem 2rem 0.286rem 0.571rem;
+    height: 30px;
+    padding: 0 5px;
     vertical-align: middle;
     border: none;
 

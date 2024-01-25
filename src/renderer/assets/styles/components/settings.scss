@@ -56,8 +56,9 @@ $setting_color:  var(--color-blue);
     border-right: 1px solid var(--color-medium-grey);
     padding-top: 50px;
     background-color: var(--color-extralight-grey);
+    gap: 10px;
     button {
-        height: 50px;
+        height: 30px;
         transition: 200ms;
         width: 80%;
         display: flex;
@@ -69,6 +70,10 @@ $setting_color:  var(--color-blue);
         border: 1px solid transparent;
         border-radius: 6px;
         font-weight: normal;
+
+        h3 {
+            font-size: 14px;
+        }
         &:hover {
             background-color: var(--color-medium-grey);
         }
@@ -77,7 +82,6 @@ $setting_color:  var(--color-blue);
             background-color: $settings_bg;
             border: 1px solid $setting_color;
             svg {
-                width: 25px;
                 fill: $setting_color;
             }
         }
