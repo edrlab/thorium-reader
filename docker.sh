@@ -1,6 +1,8 @@
 #!/bin/sh
 
 if [[ $(uname -m) == 'arm64' ]]; then
+rm -f ./package.json.original
+cp ./package.json ./package.json.original
 sed 's/x64/arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json
 sed 's/linux-unpacked/linux-arm64-unpacked/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json
 fi
@@ -108,8 +110,8 @@ docker logs thorium-docker-container
 #(docker rm --force thorium-docker-container || echo ok_rm2) && echo _ok_rm2
 
 if [[ $(uname -m) == 'arm64' ]]; then
-sed 's/linux-arm64-unpacked/linux-unpacked/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json
-sed 's/arm64/x64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json
+rm -f ./package.json
+mv ./package.json.original ./package.json
 fi
 
 git status
