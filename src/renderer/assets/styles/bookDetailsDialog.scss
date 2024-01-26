@@ -5,25 +5,19 @@
 .c_dialog {
   position: fixed;
   z-index: 100;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   display: flex;
   padding: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgb(0 0 0 / 50%);
   transition: 0.2s;
   min-width: 700px;
 
   &_background {
     position: fixed;
     z-index: 102;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
   
     /* filter: blur(2px); */
   }
@@ -36,8 +30,7 @@
     margin: 100px auto 20px 5rem;
     padding: 60px;
     background-color: white;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden auto;
     align-content: flex-start;
     color: #3b3b3b;
     position: relative;
@@ -203,11 +196,11 @@
         &.addTagButton {
           font-size: 1rem;
           font-weight: bold;
-          color: rgb(59, 59, 59);
+          color: rgb(59 59 59);
           height: auto;
           width: auto;
           padding: 0.5rem;
-          border: 1px solid rgb(59, 59, 59);
+          border: 1px solid rgb(59 59 59);
           border-radius: 5px;
         }
       }
@@ -269,10 +262,7 @@
 
   & > div {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    inset: 0;
     display: flex;
     align-items: center;
 
@@ -284,7 +274,7 @@
     }
   }
 
-  &:before {
+  &::before {
     content: "";
     display: block;
     padding-top: 140%;
@@ -303,7 +293,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: linear-gradient(rgba(255, 255, 255, 0), var(--color-secondary));
+      background: linear-gradient(rgb(255 255 255 / 0%), var(--color-secondary));
       height: 2rem;
     }
   }

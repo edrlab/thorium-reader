@@ -13,15 +13,12 @@
 .modal_dialog_overlay {
   position: fixed;
   z-index: 102;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   display: flex;
   padding: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgb(0 0 0 / 50%);
   transition: 0.2s;
   min-width: 700px;
   align-items: center;
@@ -30,21 +27,15 @@
   &_hidden {
     position: fixed;
     z-index: 101;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
   }
 }
 
-.modal_dialog_overlay_hidden {
-  position: fixed;
-  z-index: 101;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
+// .modal_dialog_overlay_hidden {
+//   position: fixed;
+//   z-index: 101;
+//   inset: 0;
+// }
 
 .modal_dialog {
   transform: translate(-50%, -50%);
@@ -57,12 +48,11 @@
   max-width: 960px; */
   width: 776px;
 /* max-height: calc(100vh - 100px); */
-  height: 597px;
-}
+// }
 
-.modal_dialog{
-
+// .modal_dialog{
   min-height: 401px;
+
   // min-width: 700px;
   height: fit-content;
   max-width: calc(100vw - 60px);
@@ -71,10 +61,8 @@
   z-index: 102;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden auto;
   align-content: flex-start;
-  color: var(--color-primary);
   position: fixed;
   box-sizing: border-box;
 
@@ -87,9 +75,9 @@
       height: calc(100vh - 100px);
     }
   }
-}
+// }
 
-.modal_dialog {
+// .modal_dialog {
   background-color: var(--color-secondary);
   color: var(--color-primary);
 
@@ -98,14 +86,18 @@
       background-color: transparent;
       color: var(--reader-fontColor);
     }
+
     .settings_container {
       background-color: var(--reader-secondaryColor);
     }
+
     color: var(--reader-fontColor);
+
     .react_aria_ComboBox {
       .react_aria_Button {
         background-color: var(--reader-secondaryColor);
       }
+
       .react_aria_Input {
         background-color: var(--reader-secondaryColor);    
         color: var(--reader-fontColor);
@@ -126,8 +118,7 @@
 .modal_dialog_body {
   flex: 1;
   padding: 0 20px 0 30px;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

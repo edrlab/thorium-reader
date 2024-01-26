@@ -114,6 +114,7 @@
       line-clamp: 2;
     }
   }
+
   &:hover {
     border: 1px solid var(--color-blue);
     background-color: var(--color-light-blue);
@@ -160,7 +161,6 @@
 /* 2. list */
 
 .publication_list {
-
   &_wrapper {
   display: flex;
   margin-left: 0;
@@ -225,10 +225,7 @@
 
     & > a {
       position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      inset: 0;
       display: flex;
       align-items: flex-end;
       justify-content: center;
@@ -261,7 +258,7 @@
     margin-right: -8px;
 
     & svg {
-      fill: rgb(107, 107, 107);
+      fill: rgb(107 107 107);
     }
   }
 
@@ -270,7 +267,7 @@
     width: calc(100% + 120px);
     margin-left: -60px;
     height: 40px;
-    padding: 10px 50px 10px 50px;
+    padding: 10px 50px;
     min-width: 600px;
     font-size: 0.8rem;
   
@@ -287,12 +284,11 @@
       display: inline-block;
       width: 20px;
       height: 30px;
-      margin: -5px 10px 0 10px;
+      margin: -5px 10px 0;
       top: 2px !important;
     }
   
     p.book{
-  
       &_title {
       display: inline-block;
       font-weight: 600;

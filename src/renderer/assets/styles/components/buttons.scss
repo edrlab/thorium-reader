@@ -1,7 +1,7 @@
 /*
 =-=-= components/buttons.css => '../partials/mixins.css'
 */
-@import "src/renderer/assets/styles/partials/mixin.scss";
+@import "src/renderer/assets/styles/partials/mixin";
 
 /*
 =-=-= components/buttons.css => '../partials/variables.css'
@@ -33,7 +33,7 @@ button {
     background: transparent;
   }
 
-  &[type=submit] svg {
+  &[type="submit"] svg {
     width: 13px;
   }
 
@@ -206,9 +206,9 @@ button {
   color: var(--color-primary);
   transition: all 0.2s;
   border-radius: 5px;
-  background: rgba(0, 0, 0, 0);
+  background: rgb(0 0 0 / 0%);
   font-size: 1rem;
-  font-family: "Arial", sans-serif;
+  font-family: Arial, sans-serif;
   font-weight: 600;
   cursor: pointer;
 
@@ -217,7 +217,7 @@ button {
   }
 
   &:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgb(0 0 0 / 10%);
   }
 }
 
@@ -257,7 +257,7 @@ button {
   }
 
   &:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgb(0 0 0 / 10%);
   }
 }
 
@@ -368,9 +368,9 @@ button {
   display: inline-block;
   padding: 0.3em;
   margin-right: 1em;
-  border: 2px solid rgb(171, 171, 171);
-  border-bottom: 2px solid rgb(41, 41, 41);
-  border-right: 2px solid rgb(41, 41, 41);
+  border: 2px solid rgb(171 171 171);
+  border-bottom: 2px solid rgb(41 41 41);
+  border-right: 2px solid rgb(41 41 41);
   border-radius: 3px;
   background-color: #d0d0d0;
 }
@@ -412,7 +412,7 @@ button {
   transition: all 0.2s;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgb(0 0 0 / 10%);
   }
 }
 

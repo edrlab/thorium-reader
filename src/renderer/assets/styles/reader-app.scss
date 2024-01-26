@@ -1,4 +1,4 @@
-@import "src/renderer/assets/styles/focus.scss";
+@import "src/renderer/assets/styles/focus";
 
 /*
 =-=-= reader-app.css
@@ -8,7 +8,7 @@
 
 :root.HIDE_CURSOR_CLASS,
 :root.HIDE_CURSOR_CLASS * {
-  cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=), none !important;
+  cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="), none !important;
 }
 
 .anchor_link {
@@ -29,7 +29,7 @@
 :root {
   user-select: none;
 
-  --sideButtonColor: rgb(130, 130, 130, 0.5);
+  --sideButtonColor: rgb(130 130 130 / 50%);
   --reader-mainColor: white;
   --reader-secondaryColor: white;
   --reader-fontColor: #000;
@@ -70,6 +70,7 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
+
   // font: 1.1rem "Open Sans", sans-serif;
 }
 
@@ -87,10 +88,7 @@ button {
 
 .root {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  inset: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -98,9 +96,9 @@ button {
   color: var(--reader-fontColor);
   fill: var(--reader-fontColor);
 
-  & input[type=range] {
+  & input[type="range"] {
     position: relative;
-    -webkit-appearance: none;
+    appearance: none;
     width: 50%;
     height: 18px;
     background-color: transparent;
@@ -118,7 +116,7 @@ button {
       border-radius: 10px;
       background: #6b6b6b;
       cursor: pointer;
-      -webkit-appearance: none;
+      appearance: none;
       margin-top: -6px;
     }
 
@@ -157,10 +155,7 @@ button {
   overflow: hidden;
   display: block;
   position: absolute;
-  left: 50px;
-  right: 50px;
-  top: 0;
-  bottom: 0;
+  inset: 0 50px;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -182,6 +177,7 @@ button {
     // position: fixed;
     left: 450px
   }
+
   &_right {
     // position: fixed; 
     right: 450px;
@@ -192,7 +188,7 @@ button {
   z-index: 3;
   display: inline-block;
   width: 50px;
-  background-color: rgb(0, 0, 0, 0);
+  background-color: rgb(0 0 0 / 0%);
   border: none;
 
   /* outline: none; */
@@ -219,8 +215,7 @@ button {
 
 .reader {
   display: flex;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden auto;
   flex-grow: 2;
 }
 
@@ -247,7 +242,7 @@ button {
 }
 
 .settings_action {
-  background-color: rgb(0, 0, 0, 0);
+  background-color: rgb(0 0 0 / 0%);
   border: 0;
   font-size: 1rem;
   height: 2.5rem;
@@ -313,7 +308,7 @@ button {
   
     &:hover {
       color: var(--reader-fontColor);
-      background-color: rgba(255, 255, 255, 0.6);
+      background-color: rgb(255 255 255 / 60%);
     }
   }
 }
@@ -342,7 +337,7 @@ button {
   padding-bottom: 0;
   height: auto;
   background-color: var(--reader-secondaryColor);
-  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 0 15px 0 rgb(0 0 0 / 19%);
   min-width: 600px;
 
   &:not(.hasTtsAudio) {
@@ -417,7 +412,7 @@ button {
         text-align: center !important;
         font-size: 0.9em !important;
         width: 4em;
-        -webkit-appearance: none;
+        appearance: none;
         border: 1px solid #aaa;
         border-radius: 0.4em;
         box-sizing: border-box;
@@ -477,7 +472,7 @@ button {
         left: -2000px;
 
         &:checked + label.menu_button {
-          background-color: rgb(193, 193, 193);
+          background-color: rgb(193 193 193);
         }
 
         &:focus + label.menu_button {
@@ -490,7 +485,7 @@ button {
         left: -2000px;
 
         &:checked + label.menu_button {
-          background-color: rgb(193, 193, 193);
+          background-color: rgb(193 193 193);
         }
 
         &:focus + label.menu_button {
@@ -515,10 +510,7 @@ button {
 
 .menu_background {
   position: absolute;
-  top: 60px;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  inset: 60px 0 0;
   background-color: black;
   opacity: 0.55;
   z-index: 10;
@@ -668,7 +660,7 @@ button {
   margin-top: 10px;
   margin-bottom: 30px;
 
-  input[type=number] {
+  input[type="number"] {
     background-color: transparent;
     border: none;
     border-bottom: 1px solid #c1c1c1;
@@ -760,7 +752,7 @@ p.chapters_description {
   margin-left: 20px;
   position: relative;
   text-align: left;
-  padding: 20px 0 20px 0;
+  padding: 20px 0;
   font-size: 1rem;
   border-bottom: 1px solid #e5e5e5;
 
@@ -824,7 +816,7 @@ p.chapters_description {
 
   & label {
     display: inline-flex;
-    margin: 0 3px 3px 3px;
+    margin: 0 3px 3px;
     padding: 5px 10px 5px 2rem;
     font-size: 1.25em;
     height: 1.2rem;
@@ -923,7 +915,7 @@ p.chapters_description {
 
   & label {
     cursor: pointer;
-    padding: 10px 10px 10px;
+    padding: 10px;
 
     &:focus + input {
       @include R2_MIXIN_FOCUS_OUTLINE;
@@ -963,7 +955,7 @@ p.chapters_description {
 
   & label {
     display: inline-flex;
-    margin: 0 5px 0 5px;
+    margin: 0 5px;
   }
 }
 
@@ -993,7 +985,7 @@ p.chapters_description {
   width: 20px;
 } */
 
-input[type=number] {
+input[type="number"] {
   padding: 10px;
   margin-top: 10px;
   background-color: white;
@@ -1004,7 +996,7 @@ input[type=number] {
   text-align: center;
 }
 
-input[type=radio] + label {
+input[type="radio"] + label {
   display: inline-block;
 }
 

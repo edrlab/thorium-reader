@@ -1,4 +1,4 @@
-@import 'src/renderer/assets/styles/partials/mixin.scss';
+@import 'src/renderer/assets/styles/partials/mixin';
 
 
 input[type="text"],
@@ -64,9 +64,7 @@ background-color: white !important;
     height: 30px !important;
 
     &:has(input:focus) {    
-      outline-color: blue !important;
-      outline-style: solid !important;
-      outline-width: 2px !important;
+      outline: blue solid 2px !important;
       outline-offset: -2px;
     }
 }
@@ -88,9 +86,7 @@ select {
   align-items: center;
 
   &:has(input:focus) {    
-    outline-color: blue !important;
-    outline-style: solid !important;
-    outline-width: 2px !important;
+    outline: blue solid 2px !important;
     outline-offset: -2px;
   }
 
@@ -127,9 +123,7 @@ select {
   margin-top: 30px;
 
   &:has(input:focus) {    
-    outline-color: blue !important;
-    outline-style: solid !important;
-    outline-width: 2px !important;
+    outline: blue solid 2px !important;
     outline-offset: -2px;
   }
 }
@@ -151,10 +145,7 @@ select {
 .dropzone {
   position: absolute;
   overflow: hidden;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  inset: 0;
 }
 
 .___DEBUG___COMPONENTS_INPUTS_CSS {

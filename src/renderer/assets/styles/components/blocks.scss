@@ -59,30 +59,30 @@
 
 /* 1. .block_full ... */
 
-.block_full {
-  padding: 0.5em;
-  border-radius: 10px;
-  border-width: 1px;
-  border-style: solid;
-  background: linear-gradient(160.03deg, #6fa4fc 0%, #4083fd 100%);
-  border-color: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  text-decoration: none;
-  font-size: 20px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0);
-  transition: all 0.3s;
-  line-break: anywhere;
+// .block_full {
+//   padding: 0.5em;
+//   border-radius: 10px;
+//   border-width: 1px;
+//   border-style: solid;
+//   background: linear-gradient(160.03deg, #6fa4fc 0%, #4083fd 100%);
+//   border-color: transparent;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   width: 100%;
+//   height: 100%;
+//   text-decoration: none;
+//   font-size: 20px;
+//   box-shadow: 0 2px 15px rgb(0 0 0 / 0%);
+//   transition: all 0.3s;
+//   line-break: anywhere;
 
-  & p,
-  & a,
-  & button {
-    color: #fff;
-  }
-}
+//   & p,
+//   & a,
+//   & button {
+//     color: #fff;
+//   }
+// }
 
 .block_full{
   &_wrapper {
@@ -101,10 +101,11 @@
       transform: scale(1.05);
 
       & .block_full {
-        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 2px 15px rgb(0 0 0 / 20%);
       }
     }
   }
+
   &_close {
     position: absolute;
     top: 10px;
@@ -115,15 +116,16 @@
     font-size: 20px;
     font-weight: 800;
     border-radius: 5px;
-    background: rgba(255, 255, 255, 0);
+    background: rgb(255 255 255 / 0%);
     transition: all 0.2s;
     cursor: pointer;
     margin-right: 0 !important;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgb(255 255 255 / 20%);
     }
   }
+
   &_update {
     position: absolute;
     top: 10px;
@@ -132,7 +134,7 @@
     color: #fff;
     fill: #fff;
     border-radius: 5px;
-    background: rgba(255, 255, 255, 0);
+    background: rgb(255 255 255 / 0%);
     transition: all 0.2s;
     cursor: pointer;
   
@@ -141,7 +143,7 @@
     }
   
     &:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgb(255 255 255 / 20%);
     }
   }
 }

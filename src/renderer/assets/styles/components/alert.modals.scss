@@ -1,6 +1,6 @@
 
 .AlertDialogOverlay {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgb(0 0 0 / 50%);
   position: fixed;
   inset: 0;
   animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -10,6 +10,7 @@
 .AlertDialogContent {
   background-color: white;
   border-radius: 6px;
+
   // box-shadow: hsl(206deg 22% 7% / 35%) 0 10px 38px -10px, hsl(206deg 22% 7% / 20%) 0 10px 20px -15px;
   position: fixed;
   top: 50%;
@@ -36,6 +37,7 @@
   margin-bottom: 20px;
   color: var(--color-primary);
   line-height: 1.5;
+
   ul {
     padding-left: 20px;
     list-style-type: "- ";
@@ -64,6 +66,7 @@
   color: var(--color-secondary);
   background-color: var(--color-blue);
   transition: 200ms;
+
   svg {
     margin-right: 5px;
     width: 10px;
@@ -77,6 +80,7 @@
   border: 1px solid var(--color-blue);
   background-color: var(--color-light-blue);
   transition: 200ms;
+
   &:hover {
     background-color: white;
   }
@@ -87,6 +91,7 @@
   border: 1px solid var(--color-blue);
   background-color: var(--color-light-blue);
   transition: 200ms;
+
   &:hover {
     background-color: white;
   }

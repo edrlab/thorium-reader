@@ -1,7 +1,5 @@
 @mixin R2_MIXIN_FOCUS_OUTLINE {
-  outline-color: blue !important;
-  outline-style: solid !important;
-  outline-width: 2px !important;
+  outline: blue solid 2px !important;
   outline-offset: -2px;
 }
 
@@ -38,9 +36,7 @@
 }
 
 :root *:target {
-  outline-color: green !important;
-  outline-style: solid !important;
-  outline-width: 2px !important;
+  outline: green solid 2px !important;
   outline-offset: 0;
   animation-name: readium2ElectronAnimation_TARGET;
   animation-duration: 3s;

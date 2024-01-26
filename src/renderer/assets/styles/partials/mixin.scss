@@ -6,7 +6,7 @@
     padding-bottom: 0;
     height: auto;
     background-color: var(--color-secondary);
-    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 0 15px 0 rgb(0 0 0 / 19%);
     min-width: 600px;
   }
   
@@ -26,14 +26,12 @@
     flex: none;
   
     :hover {
-      background: rgba(0, 0, 0, 0.05);
+      background: rgb(0 0 0 / 5%);
     }
   }
   
   @mixin R2_MIXIN_FOCUS_OUTLINE {
-    outline-color: blue !important;
-    outline-style: solid !important;
-    outline-width: 2px !important;
+    outline: blue solid 2px !important;
     outline-offset: -2px;
   }
   

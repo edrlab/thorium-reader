@@ -4,6 +4,7 @@
   top: 50%;
   width: 776px;
   min-height: 401px;
+
   // min-width: 700px;
   height: 597px;
   max-width: calc(100vw - 60px);
@@ -12,8 +13,7 @@
   z-index: 102;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden auto;
   align-content: flex-start;
   color: var(--color-primary);
   position: fixed;
@@ -136,6 +136,7 @@
     display: block;
     padding: 5px 40px 5px 5px;
     margin: 5px 0;
+
     &.active:not(.inert) {
       &:hover {
         /* color: #808080 !important; */
@@ -175,6 +176,7 @@
     &:not(.inert) {
       cursor: pointer;
     }
+
     &:last-child {
       border-bottom: 0;
     }

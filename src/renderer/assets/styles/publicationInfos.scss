@@ -4,17 +4,21 @@
     margin-right: -15px;
     flex-direction: row;
     align-items: flex-start;
+
     button {
         font-weight: 400;
         transition: 200ms linear;
     }
+
     svg {
         width: 16px;
         height: 16px;
     }
+
     section {
         margin-bottom: 20px;
     }
+
     .button_primary {
         border: 1px solid var(--color-blue);
         height: 20px;
@@ -26,10 +30,12 @@
         justify-content: center;
         background-color: var(--color-blue);
         color: white;
+
         svg {
             fill: var(--color-secondary);
         }
     }
+
     .button_secondary, .button_transparency {
         border: 1px solid var(--color-blue);
         height: 20px;
@@ -41,9 +47,11 @@
         justify-content: center;
         background-color: var(--color-light-blue);
         color: var(--color-blue);
+
         svg {
             fill: var(--color--button-primary);
         }
+
         &:hover {
             background-color: white;
             color: var(--color-blue);
@@ -55,6 +63,7 @@
     flex: 1;
     max-width: 35%;
     text-align: center;
+
     &_coverWrapper {
         width: 100%;
         min-height: 350px;
@@ -106,17 +115,19 @@
             }
         }
     }
+
     &_buttonsWrapper {
         width: 100%;
         display: flex;
-        flex-direction: column;
+        flex-flow: column wrap;
         justify-content: center;
         align-items: center;
         margin: 20px 0;
-        flex-wrap: wrap;
+
         > div {
             width: 100%;
         }
+
         button {
             flex: 1 0 25%; 
             margin: 5px 0;
@@ -128,24 +139,30 @@
     &_rightSide {
         padding: 0 20px;
         flex: 2;
+
         .book_title {
             font-size: 24px;
         }
+
         h2 {
             font-style: italic;
             font-weight: 700;
         }
+
         .authors {
             font-size: 18px;
         }
     }
+
     &_heading h4 {
         position: relative;
         font-weight: 600;
-        margin: 5px 0 10px 0;
+        margin: 5px 0 10px;
     }
+
     &_description_bloc {
         position: relative;
+
         &_seeMore {
             color: var(--color-blue);
             text-decoration: underline;
@@ -153,15 +170,18 @@
             width: 100px;
             align-items: center;
             justify-content: center;
+
             svg {
                 width: 20px;
                 margin: auto;
             }
         }
     }
+
     &_moreInfo_content, &_lcpInfo_content {
         div {
             margin-bottom: 5px;
+
             strong {
                 font-weight: 600;
             }
@@ -173,6 +193,7 @@
     display: flex;
     align-items: baseline;
     gap: 10px;
+
     h4 {
         min-width: fit-content;
         margin-top: 0;
@@ -185,9 +206,11 @@
         align-items: center;
         gap: 10px;
         margin-top: 10px;
+
         button {
             width: fit-content;
             min-width: 50px;
+
             svg {
                 fill: white;
             }
@@ -199,12 +222,14 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+
     p {
         display: flex;
         align-items: center;
         gap: 10px;
         margin: 0;
     }
+
     details {
         summary {
             color: var(--color-blue);
@@ -213,20 +238,25 @@
             align-items: center;
             gap: 10px;
             padding-left: 20px;
+
             :hover {
                 cursor: pointer;
             }
+
             svg {
                 width: 12px;
                 height: 12px;
                 margin-left: 2px;
             }
+
             &:first-of-type {
                 list-style-type: none;
             }
         }
+
         ul {
             list-style-type: none;
+
             li a  {
             color: var(--color-blue);
             }
@@ -236,21 +266,26 @@
 
 .accessibility_infos {
     line-height: 1.5;
+
     &_left {
         margin-block-start: 0;
         flex: 1;
         padding-left: 20px;
         list-style-type: "- ";
     }
+
     &_right {
         flex: 1;
+
         ul {
             list-style-type: none;
             margin-block-start: 0;
             padding-left: 0;
         }
+
         details {
            color: var(--color-primary);
+
            summary {
             color: var(--color-blue);
             cursor: pointer;

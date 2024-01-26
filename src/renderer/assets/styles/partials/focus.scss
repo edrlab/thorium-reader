@@ -1,7 +1,7 @@
 /*
 =-=-= partials/focus.css => './mixins.css'
 */
-@import "src/renderer/assets/styles/partials/mixin.scss";
+@import "src/renderer/assets/styles/partials/mixin";
 
 /*
 =-=-= partials/focus.css
@@ -12,9 +12,7 @@
 }
 
 :root *:target {
-  outline-color: green !important;
-  outline-style: solid !important;
-  outline-width: 2px !important;
+  outline: green solid 2px !important;
   outline-offset: 0;
   animation-name: readium2ElectronAnimation_TARGET;
   animation-duration: 3s;

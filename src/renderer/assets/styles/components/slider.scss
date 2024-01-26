@@ -8,8 +8,7 @@
 
   &_wrapper {
     position: relative;
-    overflow-x: hidden;
-    overflow-y: hidden;
+    overflow: hidden hidden;
     height: 400px;
   }
 
@@ -26,7 +25,6 @@
 }
 
 .slider_button {
-
   &_prev {
   left: -50px;
   transform: translateY(-50%) rotateY(180deg);
@@ -36,6 +34,7 @@
     right: -50px;
     transform: translateY(-50%);
   }
+
   &_prev,
   &_next {
     position: absolute;

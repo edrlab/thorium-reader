@@ -12,10 +12,9 @@
 
 .tags_wrapper {
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   align-items: flex-start;
   justify-content: flex-start;
-  flex-wrap: wrap;
 }
 
 .tag {

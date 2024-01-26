@@ -1,25 +1,29 @@
 // @import url("../partials/variables.scss");
 
-$settings_bg : var(--color-light-blue);
-$setting_color:  var(--color-blue);
+$settings_bg: var(--color-light-blue);
+$setting_color: var(--color-blue);
 
 .settings_container {
     display: flex;
     height: 597px;
+
     input[type='range'], input[type="checkbox"] {
         accent-color: $setting_color;
     }
+
     .section {
         padding-bottom: 15px ;
         border-bottom: 3px solid var(--color-light-grey);
-        margin: 10px 0 20px 0;
+        margin: 10px 0 20px;
         width: 100%;
         display: flex;
         flex-direction: column;
         gap: 5px;
+
         input[type="range"] {
             width: 150px;
         }
+
         // p {
         //     margin: 0;
         // }
@@ -35,6 +39,7 @@ $setting_color:  var(--color-blue);
             gap: 10px;
             color: $setting_color;
             font-weight: bold;
+
             svg {
                 width: 20px;
                 height: 20px;
@@ -42,6 +47,7 @@ $setting_color:  var(--color-blue);
             }
         }
     }
+
     h4 {
         margin: 0;
         font-weight: 600;
@@ -57,6 +63,7 @@ $setting_color:  var(--color-blue);
     padding-top: 50px;
     background-color: var(--color-extralight-grey);
     gap: 10px;
+
     button {
         height: 30px;
         transition: 200ms;
@@ -74,30 +81,37 @@ $setting_color:  var(--color-blue);
         h3 {
             font-size: 14px;
         }
+
         &:hover {
             background-color: var(--color-medium-grey);
         }
+
         &[data-state="active"]{ 
             color: $setting_color;
             background-color: $settings_bg;
             border: 1px solid $setting_color;
+
             svg {
                 fill: $setting_color;
             }
         }
+
         &:focus {
             position: relative;
          }
+
         svg {
             width: 15px;
             transition: 200ms linear;
         }
     }
+
     .allowCustom {
         display: flex;
         accent-color: var(--color-blue);
         margin: 10px 10%;
     }
+
     button[data-value="tab-text"], button[data-value="tab-spacing"] {
         margin-left: 20%;
     }
@@ -111,6 +125,7 @@ $setting_color:  var(--color-blue);
     flex: 1;
     border-bottom: 1px solid var(--color-medium-grey);
     margin-bottom: 20px;
+
     button {
     transition: 200ms;
     height: 100%;
@@ -120,26 +135,32 @@ $setting_color:  var(--color-blue);
     border-bottom: 1px solid transparent;
     font-weight: normal;
     flex-direction: column;
+
         &:hover {
             background-color: var(--color-medium-grey);
         }
+
         &[data-state="active"]{ 
             color: $setting_color;
             background-color: $settings_bg;
             border-bottom: 2px solid $setting_color;
+
             svg {
                 width: 30px;
                 height: 30px;
             }
         }
+
         &:focus {
             position: relative;
             }
+
         svg {
             width: 25px;
             height: 25px;
             transition: 200ms linear;
         }
+
         p {
             margin: 5px;
         }
@@ -148,9 +169,11 @@ $setting_color:  var(--color-blue);
 
 .settings_content {
     flex: 2;
+
     // box-shadow: -1px 0 0.5px rgba(0, 0, 0, 0.1);
     overflow: scroll;
     margin-top: 25px;
+
     &::-webkit-scrollbar-thumb {
         border-radius: 5px;
     }
@@ -159,11 +182,14 @@ $setting_color:  var(--color-blue);
     width: 10px;
     background: var(--color-secondary);
     }
+
     &:hover::-webkit-scrollbar-thumb {
         background-color: var(--color-medium-grey);
     }
+
     .button_transparency_icon {
         position: relative;
+
         svg {
             position: fixed;
             transform: translate(-50%,-50%);
@@ -185,23 +211,29 @@ $setting_color:  var(--color-blue);
 
 .settings_tab {
     margin: 0 25px!important;
+
     &_container {
     margin: 35px;
+
     &_reading{
         margin: 0 25px;
+
         .size_range {
             display: flex;
             align-items: center;
             height: 30px;
             gap: 10px;
+
             input {
                 cursor: pointer;
             }
+
             button {
                 width: 20px;
                 height: 20px;
                 padding: auto;
             }
+
             p {
                 padding: 5px;
                 width: 50px;
@@ -210,31 +242,39 @@ $setting_color:  var(--color-blue);
                 border-radius: 5px;
             }
         }
+
         &_spacing {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
+
             .section {
                 width: 90%!important;
+
                 .size_range {
                     display: flex;
                     align-items: center;
                     gap: 10px;
                     height: 30px;
+
                     input[type="range"] {
                         width: 150px;
                         height: 5px;
                     }
                 }
+
                 label {
                     font-weight: 600;
                 }
+
                 p {
                     font-size: 14px;
                 }
+
                 h4 {
                     margin: 0;
                 }
             }
+
             .session_text {
                 display: flex;
                 align-items: start;
@@ -246,9 +286,11 @@ $setting_color:  var(--color-blue);
                 padding: 5px 10px;
                 border-radius: 5px;
                 margin: 10px 0;
+
                 p {
                     margin: 5px 0;   
                 }
+
                 svg {
                     margin-top: 5px;
                     width: 25px;
@@ -259,6 +301,7 @@ $setting_color:  var(--color-blue);
         }
     }
     }
+
     &_title {
         display: flex;
         align-items: start;
@@ -266,14 +309,17 @@ $setting_color:  var(--color-blue);
         margin: 0 25px 20px;
         font-size: 16px;
         gap: 10px;
+
         h2 {
             margin-top: 0;
         }
+
         button[data-state="open"] .advanced_trigger {
             background-color: var(--color-light-blue);
             border-color: var(--color-blue);
         }
     }
+
     .session_text {
         display: flex;
         align-items: start;
@@ -286,9 +332,11 @@ $setting_color:  var(--color-blue);
         padding: 5px 10px;
         border-radius: 5px;
         margin: 10px 0;
+
         p {
             margin: 5px 0;   
         }
+
         svg {
             margin-top: 5px;
             width: 16px;
@@ -309,18 +357,20 @@ $setting_color:  var(--color-blue);
     border-radius: 4px;
     height: 35px;
     width: 300px;
+
     > div {
         display: flex;
         align-items: center;
         gap: 10px;
     }
     }
+
     &_icon {
         width: 24px;
         height: 24px;
     }
+
     &_item {
-        font-size: 13;
         line-height: 2;
         border-radius: 3px;
         display: flex;
@@ -331,14 +381,15 @@ $setting_color:  var(--color-blue);
         border-bottom: 1px solid var(--color-medium-grey);
         color: var(--color-primary);
         font-size: 14px;
+
         &:hover {
             cursor: pointer;
             background-color: $settings_bg;
             color: $setting_color;
         }
     }
+
     &_content {
-        background-color: black;
         overflow: hidden;
         background-color: var(--color-secondary)!important;
         opacity: 1;
@@ -367,12 +418,14 @@ div[data-radix-popper-content-wrapper] {
     text-align: center;
     border: 1px solid transparent;
     position: relative;
+
     span {
         position: absolute;
         transform: translate(-50%, -50%);
         left: 50%;
         top: 50%;
     }
+
     &:active {
         border: 1px solid var(--color-blue);
         background-color: var(--color-light-blue)!important;
@@ -383,6 +436,7 @@ div[data-radix-popper-content-wrapper] {
     display: flex;
     align-items: center;
     gap: 10px;
+
     p {
         width: fit-content;
         padding: 2px 4px;
@@ -398,21 +452,26 @@ div[data-radix-popper-content-wrapper] {
         h4 {
         margin-bottom: 10px;
         }
+
         input[type="range"] {
             width: 200px;
             height: 5px;
         }
+
         .label_fontSize, .label_fontFamily {
-            margin: 10px 0 20px 0;
+            margin: 10px 0 20px;
         }
+
         select.form_group {
             height: 30px !important;
             width: 300px;
         }
+
         .size_range {
             display: flex;
             align-items: center;
             gap: 10px;
+
             p {
                 padding: 0;
                 text-align: center;
@@ -428,10 +487,12 @@ div[data-radix-popper-content-wrapper] {
     font-size: 14px;
     height: 80px;
     list-style-type: none;
+
     svg {
         width: 30px;
         height: 30px;
     }
+
     &_item {
         display: flex;
         flex-direction: column;
@@ -444,6 +505,7 @@ div[data-radix-popper-content-wrapper] {
         transition: 200ms linear;
         min-height: 70px;
         background-color: #F5F5F5;
+
         &:hover:not([disabled])  {
             border: 1px solid $setting_color;
             background-color: $settings_bg;
@@ -451,13 +513,16 @@ div[data-radix-popper-content-wrapper] {
         }
 
     }
+
     div[role="radiogroup"] {
         button {
             transition: 200ms linear;
+
             &[data-state="checked"] {
                 border: 1px solid $setting_color;
                 background-color: $settings_bg;
                 color: $setting_color;
+
                 svg {
                 fill: $setting_color;
                 }
@@ -472,10 +537,12 @@ div[data-radix-popper-content-wrapper] {
         display: flex;
         align-items: center;
         justify-content: space-between;
+
         &:hover {
             border: none transparent;
             box-shadow: none;
         }
+
         > svg {
             position: absolute;
             left: 10px;
@@ -483,12 +550,14 @@ div[data-radix-popper-content-wrapper] {
             height: 24px;
         }
     }
+
     &_selection {
     padding: 0 0 0 35px;
     border: 1px solid var(--color-primary);
     border-radius: 4px;
     width: 300px;
     height: 35px;
+
     &__control {
         display: flex;
         align-items: center;
@@ -497,27 +566,33 @@ div[data-radix-popper-content-wrapper] {
         border: none;
         margin-right: 0;
         background-color: var(--color-secondary)!important;
+
         &:hover {
             box-shadow: none;
         }
         }
+
         &__value-container {
             padding: 0;
             color: var(--color-primary)!important;
             height: 25px;
         }
+
         &__input {
             width: 220px!important;
             padding-left: 5px!important;
             height: 23px!important;
         }
+
         &__menu {
             left: 0;
             background-color: var(--color-secondary)!important;
             color: var(--color-primary)!important;
             z-index: 2000000;
+
             > div {
                 border: 1px solid black;
+
                 > div:hover {
                         cursor: pointer;
                         
@@ -549,6 +624,7 @@ div[data-radix-popper-content-wrapper] {
     p {
         font-size: 14px;
     }
+
     label .label {
     display: inline-block;
     width: 9em;
@@ -598,6 +674,7 @@ div[data-radix-popper-content-wrapper] {
     
     label input[role="switch"]:checked ~ .state > .container {
     background-color: #0B8454;
+
     > .position {
         left: 12px;
         border-color: white;

@@ -31,6 +31,7 @@
     text-align: justify;
     line-height: 1.5em;
   }
+
   &_menu {
     height: fit-content;
     width: 180px;
@@ -152,9 +153,7 @@
     }
 
     & input:focus + label {
-      outline-color: blue !important;
-      outline-style: solid !important;
-      outline-width: 2px !important;
+      outline: blue solid 2px !important;
       outline-offset: -2px;
     }
   }

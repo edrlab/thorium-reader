@@ -1,14 +1,13 @@
+/*** be careful this file is imported in library and reader windows ***/
+
+@import 'src/renderer/assets/styles/partials/mixin';
+@import 'src/renderer/assets/styles/partials/focus';
+
+/* ============ GLOBAL ELEMENTS =============== */
+
 .__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__ {
     display: none;
 }
-
-/*** be careful this file is imported in library and reader windows ***/
-
-@import 'src/renderer/assets/styles/partials/mixin.scss';
-
-@import 'src/renderer/assets/styles/partials/focus.scss';
-
-/* ============ GLOBAL ELEMENTS =============== */
 
 :root {
   user-select: none;
@@ -26,7 +25,7 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  font: 12px "Nunito", sans-serif;
+  font: 12px Nunito, sans-serif;
   background: var(--color-secondary);
 }
 
@@ -230,10 +229,10 @@ nav + nav + .breadcrumb + .main {
   border-bottom: 3px solid var(--color-light-grey);
   position: relative;
   font-weight: 700;
-  margin: 0 0 20px 0;
+  margin: 0 0 20px;
   font-size: 1.5rem;
   border-radius: 5px 5px 0 0;
-  padding: 10px 0 5px 0;
+  padding: 10px 0 5px;
   text-decoration: none;
 }
 

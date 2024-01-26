@@ -2,12 +2,15 @@
     &_left {
         left: 10px;
     }
+
     &_right {
         right: 10px;
     }
+
     &_docked_left {
         left: 410px;
     }
+
     &_docked_right {
         right: 410px;
     }
@@ -17,6 +20,7 @@
     width: 50px;
     position: absolute;
     top: calc(50dvh - 100px);
+
     svg {
         fill: var(--color-blue);
     }
@@ -29,6 +33,7 @@
     background-color: var(--color-light-grey);
     border: 1px solid var(--color-medium-grey);
     border-radius: 6px;
+
     // overflow: hidden;
 }
 
@@ -103,7 +108,7 @@
     }
 
     & .track_reading_wrapper {
-        padding: 1rem 8rem 1rem 8rem;
+        padding: 1rem 8rem;
         bottom: 0;
         margin-top: 1rem;
         color: var(--reader-fontColor);
@@ -147,13 +152,10 @@
     top: 0;
 
     &.more_information > span {
-
         &.currentSpineItem {
             border-radius: 6px;
-            outline-color: var(--color-blue);
+            outline: var(--color-blue) solid 1px;
             outline-offset: 0;
-            outline-style: solid;
-            outline-width: 1px;
             background-color: white;
 
             span {
@@ -183,8 +185,8 @@
 position: absolute;
 width: fit-content;
 height: auto;
-padding: 10px 0 0 0;
-margin: -76px 0 0 0;
+padding: 10px 0 0;
+margin: -76px 0 0;
 left: 50%;
 background: var(--color-light-grey);
 border: 1px solid var(--color-medium-grey);
@@ -193,17 +195,16 @@ color: var(--color-primary);
 text-align: center;
 box-shadow: 0 3px 2px 0 var(--color-medium-grey);
 transform: translateX(-50%) translateY(0%);
-top: 0px;
+top: 0;
 
 & .after {
     content: " ";
     height: 0;
     width: 0;
-    border: 1px solid var(--color-medium-grey);
     position: absolute;
     pointer-events: none;
-    border: solid rgba(0, 0, 0, 0);
-    border-color: rgba(0, 0, 0, 0);
+    border: solid rgb(0 0 0 / 0%);
+    border-color: rgb(0 0 0 / 0%);
     border-width: 9px;
     border-top-color: var(--color-light-grey);
     left: 50%;
@@ -213,7 +214,7 @@ top: 0px;
 
 & span {
     display: block;
-    margin: 0 20px 5px 20px;
+    margin: 0 20px 5px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -226,8 +227,8 @@ top: 0px;
 }
 
 & p {
-    margin: 10px 0 0 0;
+    margin: 10px 0 0;
     font-size: 0.8rem;
-    padding: 0 20px 0 20px;
+    padding: 0 20px;
 }
 }
