@@ -29,14 +29,14 @@ export const _PACKAGING = __PACKAGING__;
 declare const __VSCODE_LAUNCH__: string;
 export const _VSCODE_LAUNCH = __VSCODE_LAUNCH__;
 
-declare const __GIT_BRANCH__: string;
-export const _GIT_BRANCH = __GIT_BRANCH__;
+// declare const __GIT_BRANCH__: string;
+// export const _GIT_BRANCH = __GIT_BRANCH__;
 
-declare const __GIT_SHORT__: string;
-export const _GIT_SHORT = __GIT_SHORT__;
+// declare const __GIT_SHORT__: string;
+// export const _GIT_SHORT = __GIT_SHORT__;
 
-declare const __GIT_DATE__: string;
-export const _GIT_DATE = __GIT_DATE__;
+// declare const __GIT_DATE__: string;
+// export const _GIT_DATE = __GIT_DATE__;
 
 declare const __APP_VERSION__: string;
 export const _APP_VERSION = __APP_VERSION__;
