@@ -47,7 +47,7 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { IEventBusPdfPlayer, IPdfPlayerScale } from "../pdf/common/pdfReader.type";
 import HeaderSearch from "./header/HeaderSearch";
 import { IPopoverDialogProps, IReaderMenuProps, IReaderSettingsProps } from "./options-values";
-import ReaderMenu from "./ReaderMenu";
+import { ReaderMenu } from "./ReaderMenu";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
@@ -754,7 +754,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             {...(this.props.settingsOpen &&
                                 { style: { backgroundColor: "var(--color-blue" } })}
                         >
-                            <Dialog.Root onOpenChange={(v) => { console.log("SETTINGS DialogOnOpenChange", v); this.props.handleSettingsClick(v);}} modal={false}>
+                            <Dialog.Root open={this.props.settingsOpen} onOpenChange={(v) => { console.log("SETTINGS DialogOnOpenChange", v); this.props.handleSettingsClick(v); }} modal={false}>
                                 <Dialog.Trigger asChild>
                                     <button
                                         aria-pressed={this.props.settingsOpen}
@@ -783,7 +783,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         <ReaderSettings {...this.props.ReaderSettingsProps} {...this.props.readerPopoverDialogContext} handleSettingsClick={this.props.handleSettingsClick} />
                                     </Dialog.Content>
                                 </Dialog.Portal>
-
                             </Dialog.Root>
                         </li>
                         <li
@@ -793,7 +792,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                             {/* { this.props.menuOpen ? */}
 
-                            <Dialog.Root onOpenChange={(v) => { console.log("MENU DialogOnOpenChange", v); this.props.handleMenuClick(v); }} modal={false}>
+                            <Dialog.Root open={this.props.menuOpen} onOpenChange={(v) => { console.log("MENU DialogOnOpenChange", v); this.props.handleMenuClick(v); }} modal={false}>
                                 <Dialog.Trigger asChild>
                                     <button
                                         aria-pressed={this.props.menuOpen}
@@ -820,12 +819,12 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         }}
                                     >
                                         <ReaderMenu {...this.props.readerMenuProps}
+                                            {...this.props.readerPopoverDialogContext}
                                             isDivina={this.props.isDivina}
                                             isPdf={this.props.isPdf}
                                             currentLocation={this.props.currentLocation}
                                             focusNaviguationMenu={this.focusNaviguationMenuButton}
-                                            readerPopoverDialogContext={this.props.readerPopoverDialogContext}
-                                            handleSettingsClick={this.props.handleSettingsClick} />
+                                            handleMenuClick={this.props.handleMenuClick} />
                                     </Dialog.Content>
                                 </Dialog.Portal>
                             </Dialog.Root>

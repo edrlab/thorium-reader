@@ -10,7 +10,7 @@
   max-width: calc(100vw - 60px);
   max-height: calc(100vh - 60px);
   border-radius: 10px;
-  z-index: 102;
+  z-index: 100;
   display: flex;
   flex-direction: column;
   overflow: hidden auto;
@@ -38,7 +38,7 @@
   margin-top: 50px;
   flex-direction: column;
   box-sizing: border-box;
-  z-index: 10000;
+  z-index: 100;
   background-color: white;
   position: absolute;
   overflow: scroll;

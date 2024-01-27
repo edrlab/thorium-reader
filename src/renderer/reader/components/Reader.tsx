@@ -217,8 +217,8 @@ interface IState {
     pdfPlayerToc: TToc | undefined;
     pdfPlayerNumberOfPages: number | undefined;
 
-    openedSectionSettings: number | undefined;
-    openedSectionMenu: number | undefined;
+    // openedSectionSettings: number | undefined;
+    openedSectionMenu: string;
 
     historyCanGoBack: boolean;
     historyCanGoForward: boolean;
@@ -306,8 +306,8 @@ class Reader extends React.Component<IProps, IState> {
             pdfPlayerToc: undefined,
             pdfPlayerNumberOfPages: undefined,
 
-            openedSectionSettings: undefined,
-            openedSectionMenu: undefined,
+            // openedSectionSettings: undefined,
+            openedSectionMenu: "tab-toc",
 
             divinaArrowEnabled: true,
             divinaContinousEqualTrue: false,
@@ -574,6 +574,7 @@ class Reader extends React.Component<IProps, IState> {
             isPdf: this.props.isPdf,
             openedSection: this.state.openedSectionMenu,
             pdfNumberOfPages: this.state.pdfPlayerNumberOfPages,
+            setOpenedSection: (v: string) => this.setState({ openedSectionMenu: v }),
         };
 
         const ReaderSettingsProps: IReaderSettingsProps = {
@@ -593,7 +594,7 @@ class Reader extends React.Component<IProps, IState> {
             isDivina: this.props.isDivina,
             isPdf: this.props.isPdf,
             pdfEventBus: this.state.pdfPlayerBusEvent,
-            openedSection: this.state.openedSectionSettings,
+            // openedSection: this.state.openedSectionSettings,
         };
 
         const readerPopoverDialogContext: IPopoverDialogProps = {
@@ -719,7 +720,7 @@ class Reader extends React.Component<IProps, IState> {
                                             }
                                         }}
                                             title={this.props.__("reader.svg.left")}
-                                            className={this.state.settingsOpen ? (this.state.dockingMode === "left" ? stylesReaderFooter.navigation_arrow_docked_left :  stylesReaderFooter.navigation_arrow_left) : stylesReaderFooter.navigation_arrow_left}
+                                            className={(this.state.settingsOpen || this.state.menuOpen) ? (this.state.dockingMode === "left" ? stylesReaderFooter.navigation_arrow_docked_left :  stylesReaderFooter.navigation_arrow_left) : stylesReaderFooter.navigation_arrow_left}
                                         >
                                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                                         </button>
@@ -728,7 +729,7 @@ class Reader extends React.Component<IProps, IState> {
                                 <div
                                     id="publication_viewport"
                                     // className={stylesReader.publication_viewport}
-                                    className={classNames(stylesReader.publication_viewport, this.state.settingsOpen ? (this.state.dockingMode === "left" ? stylesReader.docked_left : this.state.dockingMode === "right" ? stylesReader.docked_right : undefined) : undefined)}
+                                    className={classNames(stylesReader.publication_viewport, (this.state.settingsOpen || this.state.menuOpen) ? (this.state.dockingMode === "left" ? stylesReader.docked_left : this.state.dockingMode === "right" ? stylesReader.docked_right : undefined) : undefined)}
                                     ref={this.mainElRef}>
                                 </div>
                                 {
@@ -1993,7 +1994,7 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         // WARNING: "goto page" zero-based index in SectionData[] of ReaderMenu.tsx
-        this.handleMenuButtonClick(undefined, 4);
+        this.handleMenuButtonClick(true, "tab-gotopage");
     }
 
     private onKeyboardShowTOC() {
@@ -2005,15 +2006,15 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         // WARNING: "table of contents" zero-based index in SectionData[] of ReaderMenu.tsx
-        this.handleMenuButtonClick(undefined, 0);
+        this.handleMenuButtonClick(true, "tab-toc");
     }
 
     private showSearchResults() {
         // WARNING: "search" zero-based index in SectionData[] of ReaderMenu.tsx
-        this.handleMenuButtonClick(undefined, 3);
+        this.handleMenuButtonClick(true, "tab-search");
     }
 
-    private handleMenuButtonClick(open?: boolean, openedSectionMenu?: number | undefined) {
+    private handleMenuButtonClick(open?: boolean, openedSectionMenu?: string) {
         console.log("handleMenuButtonClick", "menuOpen=", this.state.menuOpen ? "closeMenu" : "openMenu", open !== undefined ? `openFromParam=${open ? "openMenu" : "closeMenu"}` : "");
 
         const openToggle = !this.state.menuOpen;
@@ -2021,9 +2022,9 @@ class Reader extends React.Component<IProps, IState> {
 
         this.setState({
             menuOpen: menuOpen,
-            shortcutEnable: !menuOpen,
+            shortcutEnable: true,//!menuOpen,
             settingsOpen: false,
-            openedSectionMenu,
+            openedSectionMenu: openedSectionMenu ? openedSectionMenu : this.state.openedSectionMenu,
         });
     }
 
@@ -2357,7 +2358,7 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private handleSettingsClick(open?: boolean, openedSectionSettings?: number | undefined) {
+    private handleSettingsClick(open?: boolean) {
         console.log("HandleSettingsClick", "settingsOpen=", this.state.settingsOpen ? "closeSettings" : "openSettings", open !== undefined ? `openFromParam=${open ? "openSettings" : "closeSettings"}`: "");
 
         const openToggle = !this.state.settingsOpen;
@@ -2365,9 +2366,9 @@ class Reader extends React.Component<IProps, IState> {
 
         this.setState({
             settingsOpen,
-            shortcutEnable: !settingsOpen,
+            shortcutEnable: true,//!settingsOpen,
             menuOpen: false,
-            openedSectionSettings,
+            // openedSectionSettings,
         });
     }
 

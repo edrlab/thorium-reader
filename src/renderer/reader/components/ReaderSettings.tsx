@@ -719,6 +719,8 @@ const AllowCustom = ({ overridePublisherDefault, set }:
 
 export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const { setSettings, readerConfig, open, pdfEventBus } = props;
+    const { setDockingMode, dockedMode, dockingMode } = props;
+    const { handleDivinaReadingMode, divinaReadingMode, divinaReadingModeSupported } = props;
     const [__] = useTranslator();
 
     const [pdfState, setPdfState] = React.useState<IState>({
@@ -816,7 +818,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     React.useEffect(() => {
         console.log("ReaderSettings UPDATED");
 
-        const itv = setTimeout(() => {
+        setTimeout(() => {
             console.log("readerSettings FOCUS");
 
             if (dockedMode) {
@@ -834,8 +836,26 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
             }
         }, 1);
 
+        const itv = setTimeout(() => {
+            console.log("readerSettings FOCUS");
+
+            if (dockedMode) {
+                if (dockedModeRef) {
+                    dockedModeRef.current?.focus();
+                } else {
+                    console.error("!no dockedModeRef on combobox");
+                }
+            } else {
+                if (tabModeRef) {
+                    tabModeRef.current?.focus();
+                } else {
+                    console.error("!no tabModeRef on tabList");
+                }
+            }
+        }, 1000); // force focus on tabList instead of webview
+
         return () => clearInterval(itv);
-    });
+    }, [dockingMode]);
 
     if (!readerConfig) {
         return <></>;
@@ -926,7 +946,6 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     }
 
 
-    const { setDockingMode, dockedMode, dockingMode } = props;
     const setDockingModeFull = () => setDockingMode("full");
     const setDockingModeLeftSide = () => setDockingMode("left");
     const setDockingModeRightSide = () => setDockingMode("right");
@@ -938,9 +957,6 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
     console.log("RENDER");
 
-    console.log(options.find(({ value }) => value === tabValue).svg);
-
-    const { handleDivinaReadingMode, divinaReadingMode, divinaReadingModeSupported } = props;
     const ComboBoxRef = React.forwardRef<HTMLInputElement, MyComboBoxProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <ComboBox refInputEl={forwardedRef} {...props}></ComboBox>);
     ComboBoxRef.displayName = "ComboBox";
     return (
@@ -985,7 +1001,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                         <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label="right" onClick={setDockingModeRightSide}>
                             <SVG ariaHidden={true} svg={DockRightIcon} />
                         </button>
-                        <button className={stylesButtons.button_transparency_icon} aria-label="full" onClick={setDockingModeFull}>
+                        <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "full" ? true : false} aria-label="full" onClick={setDockingModeFull}>
                             <SVG ariaHidden={true} svg={DockModalIcon} />
                         </button>
 

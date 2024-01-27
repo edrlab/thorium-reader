@@ -120,7 +120,8 @@ export interface IReaderMenuProps {
     isPdf: boolean;
     pdfNumberOfPages: number;
 
-    openedSection: number | undefined;
+    openedSection: string;
+    setOpenedSection: (v: string) => void;
 }
 
 export const isDivinaReadingMode = (v: any): v is TdivinaReadingMode => {
@@ -150,7 +151,7 @@ export interface IReaderSettingsProps {
     isDivina: boolean;
     isPdf: boolean;
 
-    openedSection: number | undefined;
+    // openedSection: number | undefined;
 }
 
 export interface IPopoverDialogProps {

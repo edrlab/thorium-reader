@@ -113,7 +113,7 @@ class HeaderSearch extends React.Component<IProps, IState> {
     public render() {
         const { __ } = this.props;
         return (
-            <Popover.Root onOpenChange={(v) => { console.log("SearchPopoverMenu enabled=", v); this.enableSearch(); }}>
+            <Popover.Root open={this.props.isOnSearch} onOpenChange={(v) => { console.log("SearchPopoverMenu enabled=", v); this.enableSearch(v); }}>
                 <Popover.Trigger asChild>
                     <button
                         aria-pressed={this.props.isOnSearch}
@@ -127,7 +127,11 @@ class HeaderSearch extends React.Component<IProps, IState> {
                     </button>
                 </Popover.Trigger>
                 <Popover.Portal>
-                    <Popover.Content className={stylesReaderHeader.picker_container} sideOffset={10}>
+                    <Popover.Content className={stylesReaderHeader.picker_container}
+                        sideOffset={10}
+                        onPointerDownOutside={(e) => { e.preventDefault(); console.log("SearchPopover onPointerDownOutside"); }}
+                        onInteractOutside={(e) => { e.preventDefault(); console.log("SearchPopover onInteractOutside"); }}
+                    >
                             <SearchPicker
                                 showSearchResults={this.props.showSearchResults}
                                 pdfEventBus={this.props.pdfEventBus}
@@ -170,7 +174,7 @@ class HeaderSearch extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.enableSearch);
     };
 
-    private enableSearch = () => {
+    private enableSearch = (v?: boolean) => {
 
         if (!this.props.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
@@ -178,7 +182,7 @@ class HeaderSearch extends React.Component<IProps, IState> {
             }
             return;
         }
-        this.props.enableSearch(!this.props.isOnSearch);
+        this.props.enableSearch(v || !this.props.enableSearch);
     };
 
 }
