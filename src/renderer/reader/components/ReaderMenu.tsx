@@ -450,10 +450,11 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const { setDockingMode, dockedMode, dockingMode } = props;
     const { focus } = props;
 
-    const [__] = useTranslator();
+    const [__, translator] = useTranslator();
 
     // const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     const searchEnable = useSelector((state: IReaderRootState) => state.search.enable);
+    const searchText = useSelector((state: IReaderRootState) => state.search.textSearch);
     const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
 
     const prevValue = React.useRef<number>(focus);
@@ -723,8 +724,8 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-search" tabIndex={-1} ref={tabSearchRef}>
-                        <TabTitle title={__("reader.marks.search")} />
-                        <div className={stylesSettings.settings_tab}>
+                        <TabTitle title={translator.translate("reader.marks.searchResult", { searchText: searchText.slice(0, 20) }) } />
+                        <div className={classNames(stylesSettings.settings_tab, stylesPopoverDialog.search_container)}>
                             {searchEnable
                                 ? <ReaderMenuSearch
                                     focusMainAreaLandmarkAndCloseMenu={focusMainAreaLandmarkAndCloseMenu}

@@ -20,6 +20,11 @@
   box-sizing: border-box;
   box-shadow: 0 2px 5px var(--color-medium-grey);
 
+  > .settings_container {
+    padding: 0 20px 0 30px;
+    overflow: hidden auto;
+  }
+
   &.modal_dialog_full {
     position: relative;
     box-sizing: border-box;
@@ -41,10 +46,12 @@
   z-index: 100;
   background-color: white;
   position: absolute;
-  overflow: scroll;
+  overflow: hidden;
 
   .settings_container {
-    height: 100%;
+    height: calc(100% - 175px);
+    padding: 0 0 0 30px;
+    overflow: hidden auto;
 
     .settings_tab_container_reading_spacing {
       grid-template-columns: repeat(1, 1fr);
@@ -127,6 +134,21 @@
   font-size: 12px;
   font-weight: 400;
 
+  >li > div[aria-level="1"] {
+    font-weight: 600;
+    font-size: 14px;
+  }
+}
+
+.chapters_content {
+  padding: 0;
+  height: auto;
+  list-style: none;
+
+  & > li > div > a > span, & .line span {
+    line-height: 1.5em;
+  }
+
   .line, .subheading:not(.inert) {
     color: var(--color-primary);
     border-left: 2px solid transparent;
@@ -143,22 +165,6 @@
         background-color: var(--color-light-blue);
       }
     }
-  }
-
-  >li > div[aria-level="1"] {
-    font-weight: 600;
-    font-size: 14px;
-  }
-}
-
-.chapters_content {
-  padding: 0;
-  height: auto;
-  list-style: none;
-
-  & > li > div > a > span {
-    /* color: red !important; */
-    line-height: 1.5em;
   }
 
   & .chapters_content {
@@ -179,6 +185,52 @@
 
     &:last-child {
       border-bottom: 0;
+    }
+  }
+}
+
+.search_container {
+  display: flex;
+  flex-direction: column;
+  
+  .correspondances {
+    padding: 0;
+    margin: 0;
+    padding-bottom: 0.4em;
+    margin-bottom: 0.4em;
+  }
+
+  .subheading {
+    font-weight: 600;
+    font-size: 14px;
+  }
+  
+  li[aria-level="1"] {
+    color: var(--color-primary);
+    border-left: 2px solid var(--color-blue);
+    transition: 200ms;
+    width: 90%;
+    text-align: left;
+    display: block;
+    padding: 5px 40px 5px 5px;
+    margin: 5px 0;
+    background-color: var(--color-light-grey);
+  }
+  
+  .search_navigation {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    button svg {
+      width: 20px;
+      fill: var(--color-blue);
+      color: var(--color-blue);
+    }
+    span {
+      padding: 5px;
+      border: 1px solid black;
+      border-radius: 6px;
+      margin: 0 5px;
     }
   }
 }

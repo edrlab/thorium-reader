@@ -290,6 +290,7 @@
             "edit": "Edit",
             "landmarks": "Landmarks",
             "search": "Search",
+            "searchResult": "Search - « {{- searchText}} »",
             "toc": "Table of Contents"
         },
         "media-overlays": {

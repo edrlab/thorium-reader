@@ -638,6 +638,7 @@ declare namespace typed_i18n {
     readonly "edit": string,
     readonly "landmarks": string,
     readonly "search": string,
+    readonly "searchResult": string,
     readonly "toc": string
   },
   readonly "media-overlays": {
@@ -769,6 +770,7 @@ declare namespace typed_i18n {
   readonly "edit": string,
   readonly "landmarks": string,
   readonly "search": string,
+  readonly "searchResult": string,
   readonly "toc": string
 };
   (_: "reader.marks.annotations", __?: {}): string;
@@ -777,6 +779,7 @@ declare namespace typed_i18n {
   (_: "reader.marks.edit", __?: {}): string;
   (_: "reader.marks.landmarks", __?: {}): string;
   (_: "reader.marks.search", __?: {}): string;
+  (_: "reader.marks.searchResult", __?: {}): string;
   (_: "reader.marks.toc", __?: {}): string;
   (_: "reader.media-overlays", __?: {}): {
   readonly "activate": string,
