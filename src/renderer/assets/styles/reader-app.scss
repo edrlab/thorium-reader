@@ -743,67 +743,6 @@ p.chapters_description {
   font-weight: 500;
 }
 
-.bookmarks_line:last-child {
-  border-bottom: 0;
-}
-
-.bookmarks_line {
-  width: calc(100% - 40px);
-  margin-left: 20px;
-  position: relative;
-  text-align: left;
-  padding: 20px 0;
-  font-size: 1rem;
-  border-bottom: 1px solid #e5e5e5;
-
-  & > button {
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    padding: 0;
-
-    & svg {
-      width: 24px;
-    }
-  }
-
-  & img {
-    width: 30px;
-    height: 30px;
-    display: inline-block;
-    vertical-align: top;
-  }
-
-  & .chapter_marker {
-    vertical-align: top;
-    position: relative;
-    display: inline-block;
-    flex: 1;
-    font-size: 0.9rem;
-    margin-right: 0.5rem;
-  }
-
-  & span {
-    display: inline-block;
-    vertical-align: top;
-    margin-top: 5px;
-  }
-}
-
-.chapter_marker .gauge {
-  width: 100%;
-  margin-top: 2px;
-  height: 4px;
-  background-color: #ececec;
-
-  & .fill {
-    height: 100%;
-    position: relative;
-    width: 63%;
-    background-color: #3b3b3b;
-  }
-}
-
 /* ============= SETTINGS MENU =================== */
 
 #themes_list {

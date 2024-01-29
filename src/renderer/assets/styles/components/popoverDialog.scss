@@ -49,7 +49,7 @@
   overflow: hidden;
 
   .settings_container {
-    height: calc(100% - 175px);
+    height: calc(100dvh - 165px);
     padding: 0 0 0 30px;
     overflow: hidden auto;
 
@@ -232,5 +232,102 @@
       border-radius: 6px;
       margin: 0 5px;
     }
+  }
+}
+
+.bookmarks_line {
+  width: calc(100% - 10px);
+  position: relative;
+  text-align: left;
+  padding: 20px 0;
+  font-size: 1rem;
+  border-bottom: 1px solid #e5e5e5;
+
+  .bookmark_name {
+    text-align: left;
+  }
+
+  .bookmark_infos {
+    display: flex;
+    background-color: var(--color-light-grey);
+    border-left: 2px solid var(--color-blue);
+    height: fit-content;
+    padding: 0 10px;
+
+    .bookmark_actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      > div {
+        display: inherit;
+        align-items: center;
+        gap: 5px;
+
+        p {
+          margin: 0;
+        }
+
+        svg {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      &_buttons svg {
+        fill: var(--color-blue);
+      }
+    }
+  }
+
+  & > button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0;
+
+    & svg {
+      width: 24px;
+    }
+  }
+
+  & img {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  & .chapter_marker {
+    vertical-align: top;
+    position: relative;
+    display: inline-block;
+    flex: 1;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+  }
+
+  & span {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 5px;
+  }
+}
+
+.bookmarks_line:last-child {
+  border-bottom: 0;
+}
+
+.chapter_marker .gauge {
+  width: 100%;
+  margin-top: 2px;
+  height: 4px;
+  background-color: #ececec;
+
+  & .fill {
+    height: 100%;
+    position: relative;
+    width: 63%;
+    background-color: #3b3b3b;
   }
 }

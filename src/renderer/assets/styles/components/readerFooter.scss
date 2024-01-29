@@ -1,10 +1,12 @@
 .navigation_arrow {
     &_left {
         left: 10px;
+        height: 50px;
     }
 
     &_right {
         right: 10px;
+        height: 50px;
     }
 
     &_docked_left {
@@ -42,6 +44,7 @@
     font-size: 0.8rem;
     padding-bottom: 10px;
     cursor: pointer;
+    margin: 0;
 }
   
 

@@ -709,7 +709,8 @@ class Reader extends React.Component<IProps, IState> {
                                     aria-label={this.props.__("accessibility.mainContent")}
                                     tabIndex={-1}>{this.props.__("accessibility.mainContent")}</a>
 
-                                {!isAudioBook &&  this.props.readerConfig.paged ?
+                                {isAudioBook ||  !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ?
+                                <></> :
                                     <div className={stylesReaderFooter.arrows}>
                                         <button onClick={(ev) => {
                                             if (ev.shiftKey) {
@@ -728,15 +729,14 @@ class Reader extends React.Component<IProps, IState> {
                                         >
                                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                                         </button>
-                                    </div>
-                                    : null}
+                                    </div>}
 
                                 <div
                                     id="publication_viewport"
                                     // className={stylesReader.publication_viewport}
                                     className={classNames(stylesReader.publication_viewport, (this.state.settingsOpen || this.state.menuOpen) ? (this.state.dockingMode === "left" ? stylesReader.docked_left : this.state.dockingMode === "right" ? stylesReader.docked_right : undefined) : undefined)}
                                     ref={this.mainElRef}
-                                    style={{inset: this.props.readerConfig.paged ? "0 50px" : "0"}}>
+                                    style={{inset: isAudioBook ||  !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : "0 50px"}}>
                                 </div>
                                 {
                                     this.props.isDivina && this.state.divinaArrowEnabled
@@ -778,7 +778,8 @@ class Reader extends React.Component<IProps, IState> {
                                         </div>
                                         : <></>
                                 }
-                                {!isAudioBook && this.props.readerConfig.paged ?
+                                {isAudioBook ||  !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ?
+                                <></> :
                                     <div className={stylesReaderFooter.arrows}>
                                         <button onClick={(ev) => {
                                             if (ev.shiftKey) {
@@ -793,13 +794,11 @@ class Reader extends React.Component<IProps, IState> {
                                             }
                                         }}
                                             title={this.props.__("reader.svg.right")}
-                                            className={this.state.settingsOpen ? (this.state.dockingMode === "right" ? stylesReaderFooter.navigation_arrow_docked_right :  stylesReaderFooter.navigation_arrow_right) : stylesReaderFooter.navigation_arrow_right}
+                                            className={(this.state.settingsOpen || this.state.menuOpen) ? (this.state.dockingMode === "right" ? stylesReaderFooter.navigation_arrow_docked_right :  stylesReaderFooter.navigation_arrow_right) : stylesReaderFooter.navigation_arrow_right}
                                         >
                                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                                         </button>
-                                    </div>
-                                    : null
-                                    }
+                                    </div>}
                             </main>
                         </div>
                     </div>

@@ -14,6 +14,7 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
 import * as BookmarkIcon from "readium-desktop/renderer/assets/icons/bookmark-icon.svg";
+import * as BookOpenIcon from "readium-desktop/renderer/assets/icons/bookOpen-icon.svg";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
@@ -395,10 +396,12 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
         }
         const style = { width: `${percent}%` };
 
-        const bname = (p >= 0 && !isAudioBook ? `${p}% ` : "") + (bookmark.name ? `${bookmark.name}` : `${__("reader.navigation.bookmarkTitle")} ${n++}`);
+        const bname = (bookmark.name ? `${bookmark.name}` : `${__("reader.navigation.bookmarkTitle")} ${n++}`);
+
+        const bprogression = (p >= 0 && !isAudioBook ? `${p}% ` : "");
 
         return (<div
-            className={stylesReader.bookmarks_line}
+            className={stylesPopoverDialog.bookmarks_line}
             key={i}
         >
             {bookmarkToUpdate === i &&
@@ -408,7 +411,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
                 />
             }
             <button
-                className={stylesReader.bookmark_infos}
+                className={stylesPopoverDialog.bookmark_infos}
                 tabIndex={0}
                 onClick={(e) => {
                     const closeNavPanel = e.shiftKey && e.altKey ? false : true;
@@ -425,22 +428,30 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
                     }
                 }
             >
-                <SVG ariaHidden={true} svg={BookmarkIcon} />
+                {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
 
-                <div className={stylesReader.chapter_marker}>
-                    <p className={stylesReader.bookmark_name} title={bname}>{bname}</p>
-                    <div className={stylesReader.gauge}>
-                        <div className={stylesReader.fill} style={style}></div>
+                <div className={stylesPopoverDialog.chapter_marker}>
+                    <p className={stylesPopoverDialog.bookmark_name} title={bname}>{bname}</p>
+                    <div className={stylesPopoverDialog.bookmark_actions}>
+                        <div>
+                            <SVG ariaHidden svg={BookOpenIcon} />
+                            <p>{bprogression}</p>
+                        </div>
+                        <div className={stylesPopoverDialog.bookmark_actions_buttons}>
+                            <button title={__("reader.marks.edit")}
+                                onClick={() => setBookmarkToUpdate(i)}>
+                                <SVG ariaHidden={true} svg={EditIcon} />
+                            </button>
+                            <button title={__("reader.marks.delete")}
+                                onClick={() => deleteBookmark(bookmark)}>
+                                <SVG ariaHidden={true} svg={DeleteIcon} />
+                            </button>
+                        </div>
+                    </div>
+                    <div className={stylesPopoverDialog.gauge}>
+                        <div className={stylesPopoverDialog.fill} style={style}></div>
                     </div>
                 </div>
-            </button>
-            <button title={__("reader.marks.edit")}
-                onClick={() => setBookmarkToUpdate(i)}>
-                <SVG ariaHidden={true} svg={EditIcon} />
-            </button>
-            <button title={__("reader.marks.delete")}
-                onClick={() => deleteBookmark(bookmark)}>
-                <SVG ariaHidden={true} svg={DeleteIcon} />
             </button>
         </div>);
     },
@@ -1002,7 +1013,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-search" tabIndex={-1}>
-                        <TabTitle title={translator.translate("reader.marks.searchResult", { searchText: searchText.slice(0, 20) }) } />
+                        <TabTitle title={searchText ? translator.translate("reader.marks.searchResult", { searchText: searchText.slice(0, 20) }) : (__("reader.marks.search")) } />
                         <div className={classNames(stylesSettings.settings_tab, stylesPopoverDialog.search_container)}>
                             {searchEnable
                                 ? <ReaderMenuSearch
