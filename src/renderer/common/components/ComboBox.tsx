@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { Button, ComboBox as ComboBoxReactAria, Input, Label, ListBox, ListBoxItem, Popover, ComboBoxProps, ValidationResult } from "react-aria-components";
+import { Button, ComboBox as ComboBoxReactAria, Input, Label, ListBox, ListBoxItem, Popover, ComboBoxProps, ValidationResult, Group } from "react-aria-components";
 import { FieldError, Text } from "react-aria-components";
 import SVG, { ISVGProps } from "./SVG";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
@@ -57,13 +57,13 @@ export function ComboBox<T extends object>(
     return (
         <ComboBoxReactAria {...props} className={StylesCombobox.react_aria_ComboBox}>
             <Label className={StylesCombobox.react_aria_Label}>{label}</Label>
-            <div className={StylesCombobox.my_combobox_container} >
+            <Group className={StylesCombobox.my_combobox_container} >
                 {svg ? <SVG ariaHidden svg={svg} /> : <></>}
                 <Input className={classNames(StylesCombobox.react_aria_Input, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} ref={refInputEl}/>
                 <Button className={StylesCombobox.react_aria_Button}>
                     <SVG ariaHidden svg={ChevronDown} />
                 </Button>
-            </div>
+            </Group>
             {description ? <Text slot="description">{description}</Text> : <></>}
             <FieldError>{errorMessage}</FieldError>
             <Popover className={StylesCombobox.react_aria_Popover}>

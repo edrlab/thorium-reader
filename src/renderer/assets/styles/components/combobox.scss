@@ -15,11 +15,15 @@
     display: flex;
     align-items: center;
     width: fit-content;
-    padding: 0 10px;
+    padding-right: 10px;
+    position: relative;
 
-    svg {
+    > svg {
       width: 20px;
-      
+      height: 20px;
+      position: absolute;
+      top: 5px;
+      left: 5px;
     }
 
     &:has(.react_aria_Input[data-focused]) {
@@ -36,10 +40,10 @@
   .react_aria_Input {
     margin: 2px;
     font-size: 12px;
-    background: var(--color-secondary);
+    background: transparent!important;
     color: var(--field-text-color);
     height: 30px;
-    padding: 0 5px;
+    padding: 0 5px 0 40px;
     vertical-align: middle;
     border: none;
 
@@ -70,6 +74,10 @@
     &[data-pressed] {
       box-shadow: none;
       background: var(--color-secondary);
+    }
+
+    svg {
+      width: 20px;
     }
   }
 }
