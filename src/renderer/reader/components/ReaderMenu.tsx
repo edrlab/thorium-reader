@@ -89,7 +89,7 @@ const isRTL = (r2Publication: R2Publication) => (_link: ILink) => {
     return isRTL;
 };
 
-const renderLinkList = (isRTLfn: (_link: ILink) => boolean, handleLinkClick: (...a: any[]) => void) => {
+const renderLinkList = (isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBaseProps["handleLinkClick"]) => {
     const T = (label: string, links: Link[]) => {
 
         return <ul
@@ -144,10 +144,21 @@ const renderLinkList = (isRTLfn: (_link: ILink) => boolean, handleLinkClick: (..
     return T;
 };
 
-const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean, handleLinkClick: (...a: any[]) => void) => {
+const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBaseProps["handleLinkClick"]) => {
     const renderLinkTree = (label: string | undefined, links: TToc, level: number, headingTrailLink: ILink | undefined): JSX.Element => {
         // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
         const useTree = false;
+
+        const linkRef = React.useRef<HTMLAnchorElement>();
+
+        React.useEffect(() => {
+
+            setTimeout(() => {
+                if (linkRef.current) {
+                    linkRef.current.focus();
+                }
+            }, 1)
+        });
 
         const treeReset = (t: TToc) => {
             for (const link of t) {
@@ -229,8 +240,10 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
                 const isRTL = isRTLfn(link);
 
                 let emphasis = undefined;
+                let flag = false;
                 if (link === headingTrailLink) {
                     emphasis = { backgroundColor: "var(--color-light-grey)", borderLeft: "2px solid var(--color-blue)" };
+                    flag = true;
                 } else if ((link as any).__inHeadingsTrail) {
                     emphasis = { border: "1px dashed silver" };
                 }
@@ -270,6 +283,7 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
                                             }
                                         }
                                         data-href={link.Href}
+                                        ref={flag ? linkRef : undefined}
                                     >
                                         <span dir={isRTL ? "rtl" : "ltr"}>{label}</span>
                                     </a>
@@ -307,6 +321,7 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
                                         }
                                     }
                                     data-href={link.Href}
+                                    ref={flag ? linkRef : undefined}
                                 >
                                     <span dir={isRTL ? "rtl" : "ltr"}>{label}</span>
                                 </a>
@@ -432,9 +447,296 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
     );
 };
 
-const GoToPageSection: React.FC<{totalPages?: string}> = () => {
-    return (<></>);
-};
+const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) => {
+
+    const { r2Publication, handleLinkClick, isDivina, isPdf, currentLocation, totalPages: totalPagesFromProps, goToLocator } = props
+    let totalPages = `${totalPagesFromProps}`;
+    const goToRef = React.useRef<HTMLInputElement>();
+
+    const [refreshError, setRefreshError] = React.useState(false);
+    const [pageError, setPageError] = React.useState(false);
+
+    const [__] = useTranslator();
+
+    React.useEffect(() => {
+        if (refreshError) {
+            if (pageError) {
+                setPageError(false);
+            } else {
+                setPageError(true);
+                setRefreshError(false);
+            }
+        }
+
+    }, [refreshError, pageError]);
+
+    const handleSubmitPage = (closeNavPanel = true) => {
+        if (!goToRef?.current?.value) {
+            return;
+        }
+
+        // currentLocation.docInfo.isFixedLayout
+        const isFixedLayout = !r2Publication.PageList &&
+            r2Publication.Metadata?.Rendition?.Layout === "fixed";
+
+        const pageNbr = goToRef.current.value.trim().replace(/\s\s+/g, " ");
+        if (isFixedLayout) {
+            try {
+                const spineIndex = parseInt(pageNbr, 10) - 1;
+                const spineLink = r2Publication.Spine[spineIndex];
+                if (spineLink) {
+                    setPageError(false);
+                    handleLinkClick(undefined, spineLink.Href, closeNavPanel);
+                    return;
+                }
+            } catch (_e) {
+                // ignore error
+            }
+
+            setRefreshError(true);
+        } else if (isDivina || isPdf) {
+            let page: number | undefined;
+
+            if (isDivina) {
+                // try {
+                //     page = parseInt(pageNbr, 10) - 1;
+                // } catch (_e) {
+                //     // ignore error
+                // }
+            } else if (isPdf) {
+                //
+            }
+            if (isPdf ||
+                (typeof page !== "undefined" && page >= 0 &&
+                    r2Publication.Spine && r2Publication.Spine[page])
+            ) {
+
+                setPageError(false);
+
+                // handleLinkClick(undefined, pageNbr);
+                const loc = {
+                    href: (page || pageNbr).toString(),
+                    // progression generate in divina pagechange event
+                };
+                goToLocator(loc as any, closeNavPanel);
+
+                return;
+            }
+
+            setRefreshError(true);
+        } else {
+            const foundPage = r2Publication.PageList ?
+                r2Publication.PageList.find((page) => page.Title === pageNbr) :
+                undefined;
+            if (foundPage) {
+                setPageError(false);
+                handleLinkClick(undefined, foundPage.Href, closeNavPanel);
+
+                return;
+            }
+
+            setRefreshError(true);
+        }
+    }
+
+    if (!r2Publication || isDivina) {
+        return <></>;
+    }
+
+    // currentLocation.docInfo.isFixedLayout
+    const isFixedLayout = r2Publication.Metadata?.Rendition?.Layout === "fixed";
+    const isFixedLayoutWithPageList = isFixedLayout && r2Publication.PageList;
+    const isFixedLayoutNoPageList = isFixedLayout && !isFixedLayoutWithPageList;
+
+    let currentPageInPageList: string | undefined;
+    if (currentLocation?.epubPageID && r2Publication.PageList) {
+        const p = r2Publication.PageList.find((page) => {
+            return page.Title && page.Href && page.Href.endsWith(`#${currentLocation.epubPageID}`);
+        });
+        if (p) {
+            currentPageInPageList = p.Title;
+        }
+    }
+    let currentPage: string | undefined;
+    if (isDivina || isPdf) {
+        currentPage = isDivina
+            ? `${currentLocation?.locator.locations.position}`
+            : currentLocation?.locator?.href;
+    } else if (currentLocation?.epubPage) {
+        const epubPageIsEmpty = currentLocation.epubPage.trim().length === 0;
+        if (epubPageIsEmpty && currentPageInPageList) {
+            currentPage = currentPageInPageList;
+        } else if (!epubPageIsEmpty) {
+            currentPage = currentLocation.epubPage;
+        }
+    }
+
+    if (isFixedLayoutWithPageList && !currentPage && currentLocation?.locator?.href) {
+        const page = r2Publication.PageList.find((l) => {
+            return l.Href === currentLocation.locator.href;
+        });
+        if (page) {
+            currentPage = page.Title;
+            if (currentPage) {
+                totalPages = r2Publication.PageList.length.toString();
+            }
+        }
+    } else if (isFixedLayoutNoPageList &&
+        currentLocation?.locator?.href &&
+        r2Publication.Spine) {
+        const spineIndex = r2Publication.Spine.findIndex((l) => {
+            return l.Href === currentLocation.locator.href;
+        });
+        if (spineIndex >= 0) {
+            currentPage = (spineIndex + 1).toString();
+            totalPages = r2Publication.Spine.length.toString();
+        }
+    } else if (currentPage) {
+        if (isDivina) {
+            try {
+                const p = parseInt(currentPage, 10) + 1;
+                currentPage = p.toString();
+            } catch (_e) {
+                // ignore
+            }
+        } else if (isPdf) {
+            currentPage = currentPage;
+        }
+    }
+
+    return < div className={stylesReader.goToPage} >
+        <p>{__("reader.navigation.goToTitle")}</p>
+
+        <label className={stylesReader.currentPage}
+            id="gotoPageLabel"
+            htmlFor="gotoPageInput">
+            {
+                currentPage ?
+                    (parseInt(totalPages, 10)
+                        // tslint:disable-next-line: max-line-length
+                        ? __("reader.navigation.currentPageTotal", { current: `${currentPage}`, total: `${totalPages}` })
+                        : __("reader.navigation.currentPage", { current: `${currentPage}` })) :
+                    ""
+            }
+        </label>
+        <form
+            id="gotoPageForm"
+            onSubmit={(e) => {
+                e.preventDefault();
+            }
+            }
+            onKeyPress=
+                {
+                    (e) => {
+                        if (e.key === "Enter" || e.key === "Space") {
+                            const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                            e.preventDefault();
+                            handleSubmitPage(closeNavPanel);
+                        }
+                    }
+                }
+            >
+            {(isFixedLayoutNoPageList || r2Publication?.PageList) &&
+                <select
+                    title={__("reader.navigation.goToTitle")}
+                    onChange={(ev) => {
+                        const val = ev.target?.value?.toString();
+                        if (!val || !goToRef?.current) {
+                            return;
+                        }
+                        goToRef.current.value = val;
+                        setPageError(false);
+
+                        // Warning: Use the `defaultValue` or `value` props on <select>
+                        // instead of setting `selected` on <option>.
+                        // ... BUT: this does not result in the behaviour we want,
+                        // which is to display the current page, OR the user-selected page (not actually current yet)
+                        // value={
+                        //     r2Publication.PageList.find((pl) => {
+                        //         return pl.Title === currentPage;
+                        //     }) ?
+                        //     currentPage : undefined
+                        // }
+                    }}
+                >
+                    {
+                        isFixedLayoutNoPageList
+                            ?
+                            r2Publication.Spine.map((_spineLink, idx) => {
+                                const indexStr = (idx + 1).toString();
+                                return (
+                                    <option
+                                        key={`pageGoto_${idx}`}
+                                        value={indexStr}
+                                        selected={currentPage === indexStr}
+                                    >
+                                        {indexStr}
+                                    </option>
+                                );
+                            })
+                            :
+                            r2Publication.PageList.map((pageLink, idx) => {
+                                return (
+                                    pageLink.Title ?
+                                        <option
+                                            key={`pageGoto_${idx}`}
+                                            value={pageLink.Title}
+                                            selected={(currentPageInPageList || currentPage) === pageLink.Title}
+                                        >
+                                            {pageLink.Title}
+                                        </option> : <></>
+                                );
+                            })
+                    }
+                </select>
+            }
+            <input
+                id="gotoPageInput"
+                aria-labelledby="gotoPageLabel"
+                ref={goToRef}
+                type="text"
+                aria-invalid={pageError}
+                onChange={() => setPageError(false)}
+                disabled={
+                    !(isFixedLayoutNoPageList || r2Publication.PageList || isDivina || isPdf)
+                }
+                placeholder={__("reader.navigation.goToPlaceHolder")}
+                alt={__("reader.navigation.goToPlaceHolder")}
+            />
+            <button
+                type="button"
+
+                onClick=
+                {(e) => {
+                    const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                    e.preventDefault();
+                    handleSubmitPage(closeNavPanel);
+                }}
+                onDoubleClick=
+                {(e) => {e.preventDefault(); handleSubmitPage(false);}}
+                disabled={
+                    !(isFixedLayoutNoPageList || r2Publication.PageList || isDivina || isPdf)
+                }
+            >
+                {__("reader.navigation.goTo")}
+            </button>
+        </form>
+
+        {pageError &&
+            <p
+                className={stylesReader.goToErrorMessage}
+                aria-live="assertive"
+                aria-relevant="all"
+                role="alert"
+            >
+                {__("reader.navigation.goToError")}
+            </p>
+        }
+
+    </div>;
+}
+
+
 
 const TabTitle = ({title}: {title: string}) => {
     return (
@@ -445,10 +747,10 @@ const TabTitle = ({title}: {title: string}) => {
 };
 
 export const ReaderMenu: React.FC<IBaseProps> = (props) => {
-    const { r2Publication, /* toggleMenu */ pdfToc, isPdf, handleMenuClick, focusMainAreaLandmarkAndCloseMenu,
+    const { r2Publication, /* toggleMenu */ pdfToc, isPdf, focusMainAreaLandmarkAndCloseMenu,
         pdfNumberOfPages, currentLocation, goToLocator, openedSection: tabValue, setOpenedSection: setTabValue } = props;
     const { setDockingMode, dockedMode, dockingMode } = props;
-    const { focus } = props;
+    const { focus, handleLinkClick } = props;
 
     const [__, translator] = useTranslator();
 
@@ -457,54 +759,28 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const searchText = useSelector((state: IReaderRootState) => state.search.textSearch);
     const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
 
-    const prevValue = React.useRef<number>(focus);
+    const prevValue = React.useRef<number>();
 
-    const tabTocRef = React.useRef<HTMLDivElement>();
-    const tabLandmarkRef = React.useRef<HTMLDivElement>();
-    const tabBookmarkRef = React.useRef<HTMLDivElement>();
-    const tabSearchRef = React.useRef<HTMLDivElement>();
-    const tabGoToPageRef = React.useRef<HTMLDivElement>();
-    React.useEffect(() => {
-        if (focus > prevValue.current) {
-            // FOCUS!!!
-
-            switch (tabValue) {
-                case "tab-toc":
-                    if (tabTocRef.current) {
-                        tabTocRef.current.focus();
-                    }
-                    break;
-                case "tab-landmark":
-                    if (tabLandmarkRef.current) {
-                        tabLandmarkRef.current.focus();
-                    }
-                    break;
-                case "tab-bookmark":
-                    if (tabBookmarkRef.current) {
-                        tabBookmarkRef.current.focus();
-                    }
-                    break;
-                case "tab-search":
-                    if (tabSearchRef.current) {
-                        tabSearchRef.current.focus();
-                    }
-                    break;
-                case "tab-gotopage":
-                    if (tabGoToPageRef.current) {
-                        tabGoToPageRef.current.focus();
-                    }
-                    break;
-            }
-
-        }
-        prevValue.current = focus;
-    }, [focus]);
-
+    // const tabTocRef = React.useRef<HTMLDivElement>();
+    // const tabLandmarkRef = React.useRef<HTMLDivElement>();
+    // const tabBookmarkRef = React.useRef<HTMLDivElement>();
+    // const tabSearchRef = React.useRef<HTMLDivElement>();
+    // const tabGoToPageRef = React.useRef<HTMLDivElement>();
     const dockedModeRef = React.useRef<HTMLInputElement>();
     const tabModeRef = React.useRef<HTMLDivElement>();
+
     React.useEffect(() => {
         console.log("readerMenu UPDATED");
+        console.log("FocusNumber", focus, prevValue.current);
+        
+        if (focus !== prevValue.current) {
+            console.log("FOCUS FOCUS", tabValue, "REQUESTED");
+            
+            prevValue.current = focus;
+            return () => { };
+        }
 
+        console.log("FOCUS DOCKING MODE CHANGED 1ms");
         setTimeout(() => {
             console.log("readerMenu FOCUS");
 
@@ -523,6 +799,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
             }
         }, 1);
 
+        console.log("FOCUS DOCKING MODE CHANGED 1s");
         const itv = setTimeout(() => {
             console.log("readerMenu FOCUS");
 
@@ -541,8 +818,9 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
             }
         }, 1000); // force focus on tabList instead of webview
 
+        prevValue.current = focus;
         return () => clearInterval(itv);
-    }, [dockingMode]);
+    }, [dockingMode, focus]);
 
     if (!r2Publication) {
         return <>Critical Error no R2Publication available</>;
@@ -629,8 +907,8 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const optionSelected = options.find(({ value }) => value === tabValue)?.id || 0;
 
     const isRTL_ = isRTL(r2Publication);
-    const renderLinkTree_ = renderLinkTree(currentLocation, isRTL_, handleMenuClick);
-    const renderLinkList_ = renderLinkList(isRTL_, handleMenuClick);
+    const renderLinkTree_ = renderLinkTree(currentLocation, isRTL_, handleLinkClick);
+    const renderLinkList_ = renderLinkList(isRTL_, handleLinkClick);
 
     const ComboBoxRef = React.forwardRef<HTMLInputElement, MyComboBoxProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <ComboBox refInputEl={forwardedRef} {...props}></ComboBox>);
     ComboBoxRef.displayName = "ComboBox";
@@ -697,7 +975,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </Tabs.List>
                 }
                 <div className={stylesSettings.settings_content}>
-                    <Tabs.Content value="tab-toc" tabIndex={-1} ref={tabTocRef}>
+                    <Tabs.Content value="tab-toc" tabIndex={-1}>
                         <TabTitle title={__("reader.marks.toc")} />
                         <div className={stylesSettings.settings_tab}>
                             {(isPdf && pdfToc?.length && renderLinkTree_(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
@@ -708,7 +986,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </Tabs.Content>
 
-                    <Tabs.Content value="tab-landmark" tabIndex={-1} ref={tabLandmarkRef}>
+                    <Tabs.Content value="tab-landmark" tabIndex={-1}>
                         <TabTitle title={__("reader.marks.landmarks")} />
                         <div className={stylesSettings.settings_tab}>
                             {r2Publication.Landmarks &&
@@ -716,14 +994,14 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </Tabs.Content>
 
-                    <Tabs.Content value="tab-bookmark" tabIndex={-1} ref={tabBookmarkRef}>
+                    <Tabs.Content value="tab-bookmark" tabIndex={-1}>
                         <TabTitle title={__("reader.marks.bookmarks")} />
                         <div className={stylesSettings.settings_tab}>
                             <BookmarkList r2Publication={r2Publication} goToLocator={goToLocator} />
                         </div>
                     </Tabs.Content>
 
-                    <Tabs.Content value="tab-search" tabIndex={-1} ref={tabSearchRef}>
+                    <Tabs.Content value="tab-search" tabIndex={-1}>
                         <TabTitle title={translator.translate("reader.marks.searchResult", { searchText: searchText.slice(0, 20) }) } />
                         <div className={classNames(stylesSettings.settings_tab, stylesPopoverDialog.search_container)}>
                             {searchEnable
@@ -734,13 +1012,13 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </Tabs.Content>
 
-                    <Tabs.Content value="tab-gotopage" tabIndex={-1} ref={tabGoToPageRef}>
+                    <Tabs.Content value="tab-gotopage" tabIndex={-1}>
                         <TabTitle title="Go To Page" />
                         <div className={stylesSettings.settings_tab}>
                             <GoToPageSection totalPages={
                                 isPdf && pdfNumberOfPages
-                                    ? pdfNumberOfPages.toString()
-                                    : undefined} />
+                                    ? pdfNumberOfPages
+                                    : 0} {...props}/>
                         </div>
                     </Tabs.Content>
                 </div>
