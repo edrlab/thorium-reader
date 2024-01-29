@@ -196,6 +196,7 @@ interface IState {
     landmarksOpen: boolean;
     landmarkTabOpen: number;
     menuOpen: boolean;
+    focusMenuOpen: number;
     fullscreen: boolean;
 
     ttsState: TTSStateEnum;
@@ -316,6 +317,8 @@ class Reader extends React.Component<IProps, IState> {
             historyCanGoForward: false,
 
             dockingMode: "full",
+
+            focusMenuOpen: 0,
         };
 
         ttsListen((ttss: TTSStateEnum) => {
@@ -565,6 +568,7 @@ class Reader extends React.Component<IProps, IState> {
 
         const readerMenuProps: IReaderMenuProps = {
             open: this.state.menuOpen,
+            focus: this.state.focusMenuOpen,
             r2Publication: this.props.r2Publication,
             handleLinkClick: this.handleLinkClick,
             goToLocator: this.goToLocator,
@@ -1994,7 +1998,7 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         // WARNING: "goto page" zero-based index in SectionData[] of ReaderMenu.tsx
-        this.handleMenuButtonClick(true, "tab-gotopage");
+        this.handleMenuButtonClick(true, "tab-gotopage", true);
     }
 
     private onKeyboardShowTOC() {
@@ -2006,15 +2010,15 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         // WARNING: "table of contents" zero-based index in SectionData[] of ReaderMenu.tsx
-        this.handleMenuButtonClick(true, "tab-toc");
+        this.handleMenuButtonClick(true, "tab-toc", true);
     }
 
     private showSearchResults() {
         // WARNING: "search" zero-based index in SectionData[] of ReaderMenu.tsx
-        this.handleMenuButtonClick(true, "tab-search");
+        this.handleMenuButtonClick(true, "tab-search", true);
     }
 
-    private handleMenuButtonClick(open?: boolean, openedSectionMenu?: string) {
+    private handleMenuButtonClick(open?: boolean, openedSectionMenu?: string, focused?: boolean) {
         console.log("handleMenuButtonClick", "menuOpen=", this.state.menuOpen ? "closeMenu" : "openMenu", open !== undefined ? `openFromParam=${open ? "openMenu" : "closeMenu"}` : "");
 
         const openToggle = !this.state.menuOpen;
@@ -2025,6 +2029,7 @@ class Reader extends React.Component<IProps, IState> {
             shortcutEnable: true,//!menuOpen,
             settingsOpen: false,
             openedSectionMenu: openedSectionMenu ? openedSectionMenu : this.state.openedSectionMenu,
+            focusMenuOpen: focused ? (this.state.focusMenuOpen + 1) : this.state.focusMenuOpen,
         });
     }
 

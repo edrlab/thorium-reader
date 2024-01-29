@@ -448,12 +448,56 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const { r2Publication, /* toggleMenu */ pdfToc, isPdf, handleMenuClick, focusMainAreaLandmarkAndCloseMenu,
         pdfNumberOfPages, currentLocation, goToLocator, openedSection: tabValue, setOpenedSection: setTabValue } = props;
     const { setDockingMode, dockedMode, dockingMode } = props;
+    const { focus } = props;
 
     const [__] = useTranslator();
 
     // const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     const searchEnable = useSelector((state: IReaderRootState) => state.search.enable);
     const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
+
+    const prevValue = React.useRef<number>(focus);
+
+    const tabTocRef = React.useRef<HTMLDivElement>();
+    const tabLandmarkRef = React.useRef<HTMLDivElement>();
+    const tabBookmarkRef = React.useRef<HTMLDivElement>();
+    const tabSearchRef = React.useRef<HTMLDivElement>();
+    const tabGoToPageRef = React.useRef<HTMLDivElement>();
+    React.useEffect(() => {
+        if (focus > prevValue.current) {
+            // FOCUS!!!
+
+            switch (tabValue) {
+                case "tab-toc":
+                    if (tabTocRef.current) {
+                        tabTocRef.current.focus();
+                    }
+                    break;
+                case "tab-landmark":
+                    if (tabLandmarkRef.current) {
+                        tabLandmarkRef.current.focus();
+                    }
+                    break;
+                case "tab-bookmark":
+                    if (tabBookmarkRef.current) {
+                        tabBookmarkRef.current.focus();
+                    }
+                    break;
+                case "tab-search":
+                    if (tabSearchRef.current) {
+                        tabSearchRef.current.focus();
+                    }
+                    break;
+                case "tab-gotopage":
+                    if (tabGoToPageRef.current) {
+                        tabGoToPageRef.current.focus();
+                    }
+                    break;
+            }
+
+        }
+        prevValue.current = focus;
+    }, [focus]);
 
     const dockedModeRef = React.useRef<HTMLInputElement>();
     const tabModeRef = React.useRef<HTMLDivElement>();
@@ -464,14 +508,14 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
             console.log("readerMenu FOCUS");
 
             if (dockedMode) {
-                if (dockedModeRef) {
-                    dockedModeRef.current?.focus();
+                if (dockedModeRef.current) {
+                    dockedModeRef.current.focus();
                 } else {
                     console.error("!no dockedModeRef on combobox");
                 }
             } else {
-                if (tabModeRef) {
-                    tabModeRef.current?.focus();
+                if (tabModeRef.current) {
+                    tabModeRef.current.focus();
                 } else {
                     console.error("!no tabModeRef on tabList");
                 }
@@ -482,13 +526,13 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
             console.log("readerMenu FOCUS");
 
             if (dockedMode) {
-                if (dockedModeRef) {
+                if (dockedModeRef.current) {
                     dockedModeRef.current?.focus();
                 } else {
                     console.error("!no dockedModeRef on combobox");
                 }
             } else {
-                if (tabModeRef) {
+                if (tabModeRef.current) {
                     tabModeRef.current?.focus();
                 } else {
                     console.error("!no tabModeRef on tabList");
@@ -500,7 +544,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     }, [dockingMode]);
 
     if (!r2Publication) {
-        return <></>;
+        return <>Critical Error no R2Publication available</>;
     }
     const setDockingModeFull = () => setDockingMode("full");
     const setDockingModeLeftSide = () => setDockingMode("left");
@@ -644,15 +688,15 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </div>
                 </div> : <></>
             }
-            <Tabs.Root ref={tabModeRef} value={tabValue} onValueChange={(value) => dockedMode ? null : setTabValue(value)} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
+            <Tabs.Root value={tabValue} onValueChange={(value) => dockedMode ? null : setTabValue(value)} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {
                     dockedMode ? <></> :
-                        <Tabs.List className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
+                        <Tabs.List ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
                             {sectionsArray}
                         </Tabs.List>
                 }
                 <div className={stylesSettings.settings_content}>
-                    <Tabs.Content value="tab-toc" tabIndex={-1}>
+                    <Tabs.Content value="tab-toc" tabIndex={-1} ref={tabTocRef}>
                         <TabTitle title={__("reader.marks.toc")} />
                         <div className={stylesSettings.settings_tab}>
                             {(isPdf && pdfToc?.length && renderLinkTree_(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
@@ -663,7 +707,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </Tabs.Content>
 
-                    <Tabs.Content value="tab-landmark" tabIndex={-1}>
+                    <Tabs.Content value="tab-landmark" tabIndex={-1} ref={tabLandmarkRef}>
                         <TabTitle title={__("reader.marks.landmarks")} />
                         <div className={stylesSettings.settings_tab}>
                             {r2Publication.Landmarks &&
@@ -671,14 +715,14 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </Tabs.Content>
 
-                    <Tabs.Content value="tab-bookmark" tabIndex={-1}>
+                    <Tabs.Content value="tab-bookmark" tabIndex={-1} ref={tabBookmarkRef}>
                         <TabTitle title={__("reader.marks.bookmarks")} />
                         <div className={stylesSettings.settings_tab}>
                             <BookmarkList r2Publication={r2Publication} goToLocator={goToLocator} />
                         </div>
                     </Tabs.Content>
 
-                    <Tabs.Content value="tab-search" tabIndex={-1}>
+                    <Tabs.Content value="tab-search" tabIndex={-1} ref={tabSearchRef}>
                         <TabTitle title={__("reader.marks.search")} />
                         <div className={stylesSettings.settings_tab}>
                             {searchEnable
@@ -689,8 +733,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </Tabs.Content>
 
-
-                    <Tabs.Content value="tab-gotopage" tabIndex={-1}>
+                    <Tabs.Content value="tab-gotopage" tabIndex={-1} ref={tabGoToPageRef}>
                         <TabTitle title="Go To Page" />
                         <div className={stylesSettings.settings_tab}>
                             <GoToPageSection totalPages={
