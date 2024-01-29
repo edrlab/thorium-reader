@@ -124,14 +124,14 @@
         }
     }
 
-    > span {
-        // border-left: 10px solid transparent;
-        // border-right: 10px solid transparent;
-        // border-bottom: 15px solid var(--color-extralight-grey);
-        // position: absolute;
-        // top: -15px;
-        // right: 20px;
-    }
+    // > span {
+    //     border-left: 10px solid transparent;
+    //     border-right: 10px solid transparent;
+    //     border-bottom: 15px solid var(--color-extralight-grey);
+    //     position: absolute;
+    //     top: -15px;
+    //     right: 20px;
+    // }
 
     button[title="Close"] {
         width: 15px;
@@ -204,4 +204,29 @@
     fill: var(--color-extralight-grey);
     width: 15px;
     height: 10px;
+}
+
+
+#bookmarkLabel .bookmarkRemove{
+    display: none;
+}
+
+#bookmarkLabel .bookmarkIcon{
+    display: block;
+}
+
+#bookmarkLabel:hover .bookmarkRemove{
+    display: none;
+}
+
+#bookmarkLabel:hover .bookmarkIcon{
+    display: block;
+}
+
+#bookmarkLabel:hover .active_svg.bookmarkRemove {
+    display: block;
+}
+
+#bookmarkLabel:hover .bookmarkIcon.active_svg  {
+    display: none;
 }

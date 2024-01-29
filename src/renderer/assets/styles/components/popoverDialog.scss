@@ -247,7 +247,13 @@
     text-align: left;
   }
 
+  .update_form input {
+    width: 100%;
+    border-radius: 6px;
+  }
+
   .bookmark_infos {
+    width: 100%;
     display: flex;
     background-color: var(--color-light-grey);
     border-left: 2px solid var(--color-blue);
@@ -276,6 +282,7 @@
 
       &_buttons svg {
         fill: var(--color-blue);
+        color: var(--color-blue);
       }
     }
   }
@@ -329,5 +336,80 @@
     position: relative;
     width: 63%;
     background-color: #3b3b3b;
+  }
+}
+
+.goToPage {
+  text-align: center;
+
+  .currentPage {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 20px 0 30px;
+    svg {
+      width: 20px;
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 20px;
+
+    .form_group {
+      height: 30px;
+      width: 375px;
+
+      & input {
+        margin: 0;
+      }
+
+      label {
+        margin: 0;
+        top: -12px;
+      }
+
+      & *:disabled {
+        cursor: not-allowed;
+      }
+    }
+
+    select {
+      width: 375px;
+      height: 36px;
+      padding: 2px;
+      border-radius: 6px;
+      border: 1px solid black;
+      appearance: auto;
+      box-sizing: border-box;
+      margin: 0;
+      margin-right: 5px;
+    }
+
+    button {
+      background-color: var(--color-blue);
+      color: white;
+      width: fit-content;
+      border-radius: 6px;
+      display: flex;
+      flex-wrap: nowrap;
+      padding: 0 5px;
+      text-wrap: nowrap;
+      svg {
+        width: 15px;
+        fill: white;
+      }
+    }
+  }
+
+  & .title {
+    color: var(--reader-fontColor);
+    font-size: 1.1rem;
+  }
+
+  & .goToErrorMessage {
+    color: red;
   }
 }

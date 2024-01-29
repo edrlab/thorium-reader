@@ -27,6 +27,7 @@ import * as HeadphoneIcon from "readium-desktop/renderer/assets/icons/headphone-
 import * as SettingsIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
 import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
 import * as MarkIcon from "readium-desktop/renderer/assets/icons/bookmark-icon.svg";
+import * as RemoveBookMarkIcon from "readium-desktop/renderer/assets/icons/BookmarkRemove-icon.svg";
 import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
 import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
 import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/sharp-crop_free-24px.svg";
@@ -746,8 +747,10 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 htmlFor="bookmarkButton"
                                 aria-hidden="true"
                                 className={stylesReader.menu_button}
+                                id="bookmarkLabel"
                             >
-                                <SVG ariaHidden={true} svg={MarkIcon} className={this.props.isOnBookmark ? stylesReaderHeader.active_svg : ""} />
+                                <SVG ariaHidden={true} svg={MarkIcon} className={classNames(stylesReaderHeader.bookmarkIcon, this.props.isOnBookmark ? stylesReaderHeader.active_svg : "")} />
+                                <SVG ariaHidden={true} svg={RemoveBookMarkIcon} className={classNames(stylesReaderHeader.bookmarkRemove,this.props.isOnBookmark ? stylesReaderHeader.active_svg : "")} />
                             </label>
                         </li>
                         <li

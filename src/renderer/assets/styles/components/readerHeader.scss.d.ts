@@ -1,4 +1,7 @@
 export declare const active_svg: string;
+export declare const bookmarkIcon: string;
+export declare const bookmarkLabel: string;
+export declare const bookmarkRemove: string;
 export declare const button_arrow: string;
 export declare const button_close: string;
 export declare const form_group: string;

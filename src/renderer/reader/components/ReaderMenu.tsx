@@ -11,14 +11,15 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
+import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
+import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as BookmarkIcon from "readium-desktop/renderer/assets/icons/bookmark-icon.svg";
 import * as BookOpenIcon from "readium-desktop/renderer/assets/icons/bookOpen-icon.svg";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 
 import * as DockLeftIcon from "readium-desktop/renderer/assets/icons/dockleft-icon.svg";
 import * as DockRightIcon from "readium-desktop/renderer/assets/icons/dockright-icon.svg";
@@ -340,7 +341,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
 
     const {r2Publication, goToLocator} = props;
     const [__] = useTranslator();
-    const [bookmarkToUpdate, setBookmarkToUpdate] = React.useState(0);
+    const [bookmarkToUpdate, setBookmarkToUpdate] = React.useState(undefined);
     const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
     const dispatch = useDispatch();
     const deleteBookmark = (bookmark: IBookmarkState) => {
@@ -410,7 +411,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
                     bookmark={bookmark}
                 />
             }
-            <button
+            <div
                 className={stylesPopoverDialog.bookmark_infos}
                 tabIndex={0}
                 onClick={(e) => {
@@ -439,11 +440,17 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
                         </div>
                         <div className={stylesPopoverDialog.bookmark_actions_buttons}>
                             <button title={__("reader.marks.edit")}
-                                onClick={() => setBookmarkToUpdate(i)}>
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setBookmarkToUpdate(i);
+                                    }
+                                }>
                                 <SVG ariaHidden={true} svg={EditIcon} />
                             </button>
                             <button title={__("reader.marks.delete")}
-                                onClick={() => deleteBookmark(bookmark)}>
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    deleteBookmark(bookmark)}}>
                                 <SVG ariaHidden={true} svg={DeleteIcon} />
                             </button>
                         </div>
@@ -452,7 +459,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
                         <div className={stylesPopoverDialog.fill} style={style}></div>
                     </div>
                 </div>
-            </button>
+            </div>
         </div>);
     },
     );
@@ -615,12 +622,13 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
         }
     }
 
-    return < div className={stylesReader.goToPage} >
-        <p>{__("reader.navigation.goToTitle")}</p>
+    return < div className={stylesPopoverDialog.goToPage} >
+        {/* <p>{__("reader.navigation.goToTitle")}</p> */}
 
-        <label className={stylesReader.currentPage}
+        <label className={stylesPopoverDialog.currentPage}
             id="gotoPageLabel"
             htmlFor="gotoPageInput">
+                <SVG ariaHidden svg={BookOpenIcon} />
             {
                 currentPage ?
                     (parseInt(totalPages, 10)
@@ -644,9 +652,29 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
                             e.preventDefault();
                             handleSubmitPage(closeNavPanel);
                         }
-                    }
                 }
-            >
+            }
+        >
+
+            <div className={stylesInputs.form_group} style={{width: "80%"}}>
+                <input
+                    id="gotoPageInput"
+                    aria-labelledby="gotoPageLabel"
+                    ref={goToRef}
+                    type="text"
+                    aria-invalid={pageError}
+                    onChange={() => setPageError(false)}
+                    disabled={
+                        !(isFixedLayoutNoPageList || r2Publication.PageList || isDivina || isPdf)
+                    }
+                    alt={__("reader.navigation.goToPlaceHolder")}
+                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                />
+                <label>
+                    {__("reader.navigation.goToPlaceHolder")}
+                </label>
+            </div>
+
             {(isFixedLayoutNoPageList || r2Publication?.PageList) &&
                 <select
                     title={__("reader.navigation.goToTitle")}
@@ -701,22 +729,10 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
                     }
                 </select>
             }
-            <input
-                id="gotoPageInput"
-                aria-labelledby="gotoPageLabel"
-                ref={goToRef}
-                type="text"
-                aria-invalid={pageError}
-                onChange={() => setPageError(false)}
-                disabled={
-                    !(isFixedLayoutNoPageList || r2Publication.PageList || isDivina || isPdf)
-                }
-                placeholder={__("reader.navigation.goToPlaceHolder")}
-                alt={__("reader.navigation.goToPlaceHolder")}
-            />
+
             <button
                 type="button"
-
+                
                 onClick=
                 {(e) => {
                     const closeNavPanel = e.shiftKey && e.altKey ? false : true;
@@ -729,13 +745,14 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
                     !(isFixedLayoutNoPageList || r2Publication.PageList || isDivina || isPdf)
                 }
             >
+                <SVG ariaHidden svg={TargetIcon} />
                 {__("reader.navigation.goTo")}
             </button>
         </form>
 
         {pageError &&
             <p
-                className={stylesReader.goToErrorMessage}
+                className={stylesPopoverDialog.goToErrorMessage}
                 aria-live="assertive"
                 aria-relevant="all"
                 role="alert"

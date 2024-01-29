@@ -11,6 +11,7 @@ import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { readerLocalActionBookmarks } from "../redux/actions";
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -56,7 +57,7 @@ export class UpdateBookmarkForm extends React.Component<IProps, IState> {
         const defaultName = bookmark.name ? bookmark.name : "";
 
         return (
-            <form onSubmit={this.submitBookmark}>
+            <form onSubmit={this.submitBookmark} className={stylesPopoverDialog.update_form}>
                 <input
                     onBlur={this.props.close}
                     ref={this.inputRef}

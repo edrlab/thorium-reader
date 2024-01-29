@@ -1011,54 +1011,6 @@ input[type="radio"] + label {
   }
 }
 
-.currentPage {
-  font-size: 80%;
-  font-weight: normal;
-  margin-bottom: 1em;
-}
-
-.goToPage {
-  text-align: center;
-
-  & .title {
-    color: var(--reader-fontColor);
-    font-size: 1.1rem;
-  }
-
-  & .goToErrorMessage {
-    color: red;
-  }
-
-  & form {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    & button {
-      border: 1px solid black;
-      border-radius: 5px;
-      background: none;
-      margin: 1rem;
-      margin-left: 8px;
-      padding: 0.5rem;
-      color: var(--reader-fontColor);
-    }
-
-    & select {
-      margin: 0;
-      margin-right: 5px;
-    }
-
-    & input {
-      margin: 0;
-    }
-
-    & *:disabled {
-      cursor: not-allowed;
-    }
-  }
-}
-
 .mathml_section {
   display: flex;
   padding: 10px;

@@ -86,7 +86,6 @@
 
   .react_aria_ListBox {
     display: block;
-    width: unset;
     max-height: inherit;
     min-height: unset;
     border: none;
@@ -104,7 +103,6 @@
     outline: none;
     cursor: pointer;
     color: var(--text-color);
-    font-size: 1.072rem;
     position: relative;
     transition: 100ms;
   
