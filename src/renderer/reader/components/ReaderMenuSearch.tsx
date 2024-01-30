@@ -241,7 +241,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                                     >
                                         <span dir={isRTL ? "rtl" : "ltr"}>{
                                         `...${v.cleanBefore}`
-                                        }<span style={{backgroundColor: "coral"}}>{
+                                        }<span style={{backgroundColor: "var(--color-blue)", color: "white", padding: "0 2px"}}>{
                                         `${v.cleanText}`
                                         }</span>{
                                         `${v.cleanAfter}...`

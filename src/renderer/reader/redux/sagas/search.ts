@@ -63,9 +63,9 @@ function* searchRequest(action: readerLocalActionSearch.request.TAction) {
 }
 
 function converterSearchResultToHighlightHandlerState(v: ISearchResult, color = {
-    red: 0,
-    green: 255,
-    blue: 0,
+    red: 16,
+    green: 83,
+    blue: 200,
 }): IHighlightHandlerState {
     return {
         uuid: v.uuid,
