@@ -414,3 +414,19 @@
     color: red;
   }
 }
+
+.gotopage_combobox {
+  .react_aria_ComboBox .my_combobox_container {
+  border: none;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  &:has(.react_aria_Input[data-focused]){
+  outline: none!important;
+  }
+  input {
+    width: 100%;
+    outline: none!important;
+  }
+  }
+}

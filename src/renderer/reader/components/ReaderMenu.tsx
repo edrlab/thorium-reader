@@ -622,6 +622,40 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
         }
     }
 
+    let options:{ id: number; name: string; value: string; }[];
+
+    if (isFixedLayoutNoPageList) {
+        options = r2Publication.Spine.map((_spineLink, idx) => {
+            const indexStr = (idx + 1).toString();
+            return (
+                {
+                    id: idx +1,
+                    name: indexStr,
+                    value: indexStr,
+                }
+            );
+        })
+    } else if (r2Publication?.PageList) {
+        options = r2Publication.PageList.map((pageLink, idx) => {
+            return (
+                pageLink.Title ?
+                {
+                    id: idx +1,
+                    name: pageLink.Title,
+                    value: pageLink.Title,
+                }
+                : null
+            )
+        })
+    }
+
+    let defaultKey;
+    
+    if (isFixedLayoutNoPageList || r2Publication?.PageList) {
+        defaultKey = options.findIndex((value) => value.name === currentPage) +1;
+    }
+    
+
     return < div className={stylesPopoverDialog.goToPage} >
         {/* <p>{__("reader.navigation.goToTitle")}</p> */}
 
@@ -656,79 +690,26 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
             }
         >
 
-            <div className={stylesInputs.form_group} style={{width: "80%"}}>
-                <input
-                    id="gotoPageInput"
-                    aria-labelledby="gotoPageLabel"
-                    ref={goToRef}
-                    type="text"
-                    aria-invalid={pageError}
-                    onChange={() => setPageError(false)}
-                    disabled={
-                        !(isFixedLayoutNoPageList || r2Publication.PageList || isDivina || isPdf)
-                    }
-                    alt={__("reader.navigation.goToPlaceHolder")}
-                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
-                />
-                <label>
-                    {__("reader.navigation.goToPlaceHolder")}
-                </label>
-            </div>
-
             {(isFixedLayoutNoPageList || r2Publication?.PageList) &&
-                <select
-                    title={__("reader.navigation.goToTitle")}
-                    onChange={(ev) => {
-                        const val = ev.target?.value?.toString();
+            <div className={classNames(stylesInputs.form_group, stylesPopoverDialog.gotopage_combobox)} style={{width: "80%"}}>
+                <label> {__("reader.navigation.goToPlaceHolder")}</label>
+                <ComboBox
+                    defaultItems={options}
+                    defaultSelectedKey={defaultKey}
+                    refInputEl={goToRef}
+                    onSelectionChange={(ev) => {
+                        const val = ev?.toString();
                         if (!val || !goToRef?.current) {
                             return;
                         }
                         goToRef.current.value = val;
                         setPageError(false);
-
-                        // Warning: Use the `defaultValue` or `value` props on <select>
-                        // instead of setting `selected` on <option>.
-                        // ... BUT: this does not result in the behaviour we want,
-                        // which is to display the current page, OR the user-selected page (not actually current yet)
-                        // value={
-                        //     r2Publication.PageList.find((pl) => {
-                        //         return pl.Title === currentPage;
-                        //     }) ?
-                        //     currentPage : undefined
-                        // }
                     }}
-                >
-                    {
-                        isFixedLayoutNoPageList
-                            ?
-                            r2Publication.Spine.map((_spineLink, idx) => {
-                                const indexStr = (idx + 1).toString();
-                                return (
-                                    <option
-                                        key={`pageGoto_${idx}`}
-                                        value={indexStr}
-                                        selected={currentPage === indexStr}
-                                    >
-                                        {indexStr}
-                                    </option>
-                                );
-                            })
-                            :
-                            r2Publication.PageList.map((pageLink, idx) => {
-                                return (
-                                    pageLink.Title ?
-                                        <option
-                                            key={`pageGoto_${idx}`}
-                                            value={pageLink.Title}
-                                            selected={(currentPageInPageList || currentPage) === pageLink.Title}
-                                        >
-                                            {pageLink.Title}
-                                        </option> : <></>
-                                );
-                            })
-                    }
-                </select>
-            }
+                    >
+                    {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                </ComboBox>
+            </div>
+}
 
             <button
                 type="button"
@@ -737,6 +718,7 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
                 {(e) => {
                     const closeNavPanel = e.shiftKey && e.altKey ? false : true;
                     e.preventDefault();
+                    console.log(goToRef?.current?.value)
                     handleSubmitPage(closeNavPanel);
                 }}
                 onDoubleClick=
