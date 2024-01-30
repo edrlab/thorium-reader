@@ -115,7 +115,7 @@ interface IBaseProps extends TranslatorProps {
     toggleBookmark: () => void;
     isOnBookmark: boolean;
     isOnSearch: boolean;
-    displayPublicationInfo: () => void;
+    handlePublicationInfo: () => void;
     readerMenuProps: IReaderMenuProps;
     ReaderSettingsProps: IReaderSettingsProps;
     currentLocation: LocatorExtended;
@@ -391,7 +391,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         ) : (<></>)
                         }
                         <li>
-                            <PublicationInfoReaderWithRadix displayPublicationInfo={this.props.displayPublicationInfo}>
+                            <PublicationInfoReaderWithRadix handlePublicationInfo={this.props.handlePublicationInfo}>
                                 <PublicationInfoReaderWithRadixTrigger asChild>
                                     <button
                                         className={stylesReader.menu_button}

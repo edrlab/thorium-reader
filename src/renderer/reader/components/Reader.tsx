@@ -359,7 +359,7 @@ class Reader extends React.Component<IProps, IState> {
         this.handleToggleBookmark = this.handleToggleBookmark.bind(this);
         this.goToLocator = this.goToLocator.bind(this);
         this.handleLinkClick = this.handleLinkClick.bind(this);
-        this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
+        this.handlePublicationInfo = this.handlePublicationInfo.bind(this);
 
         this.handleDivinaSound = this.handleDivinaSound.bind(this);
     }
@@ -678,7 +678,7 @@ class Reader extends React.Component<IProps, IState> {
                         isOnSearch={this.props.searchEnable}
                         ReaderSettingsProps={ReaderSettingsProps}
                         readerMenuProps={readerMenuProps}
-                        displayPublicationInfo={this.displayPublicationInfo}
+                        handlePublicationInfo={this.handlePublicationInfo}
                         // tslint:disable-next-line: max-line-length
                         currentLocation={this.props.isDivina || this.props.isPdf ? this.props.locator : this.state.currentLocation}
                         isDivina={this.props.isDivina}
@@ -1162,7 +1162,7 @@ class Reader extends React.Component<IProps, IState> {
             }
             return;
         }
-        this.displayPublicationInfo(true);
+        this.handlePublicationInfo(undefined, true);
     };
 
     private onKeyboardInfoWhereAmISpeak = () => {
@@ -1345,7 +1345,7 @@ class Reader extends React.Component<IProps, IState> {
             }
             return;
         }
-        this.displayPublicationInfo();
+        this.handlePublicationInfo();
     };
 
     private onKeyboardFocusNav = () => {
@@ -1544,15 +1544,18 @@ class Reader extends React.Component<IProps, IState> {
         }
     };
 
-    private displayPublicationInfo(focusWhereAmI?: boolean) {
-        if (this.props.publicationView) {
-            // TODO: subscribe to Redux action type == CloseRequest
-            // in order to reset shortcutEnable to true? Problem: must be specific to this reader window.
-            // So instead we subscribe to DOM event "Thorium:DialogClose", but this is a short-term hack!
+    private handlePublicationInfo(open?: boolean, focusWhereAmI?: boolean) {
+
+        if (open === false) {
+            this.setState({
+                shortcutEnable: true,
+            });
+            this.props.closePublicationInfo();
+        }
+        else if (this.props.publicationView) {
             this.setState({
                 shortcutEnable: false,
             });
-
             const readerReadingLocation = this.state.currentLocation ? this.state.currentLocation : undefined;
             this.props.displayPublicationInfo(this.props.publicationView.identifier, this.state.pdfPlayerNumberOfPages, this.state.divinaNumberOfPages, this.state.divinaContinousEqualTrue, readerReadingLocation, this.handleLinkUrl.bind(this), focusWhereAmI);
         }
@@ -2635,6 +2638,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                     handleLinkUrl,
                 },
             ));
+        },
+        closePublicationInfo: () => {
+            dispatch(dialogActions.closeRequest.build());
         },
         setLocator: (locator: LocatorExtended) => {
             dispatch(readerLocalActionSetLocator.build(locator));

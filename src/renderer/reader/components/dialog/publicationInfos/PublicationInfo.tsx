@@ -27,10 +27,10 @@ debug("_");
 
 const context = React.createContext<DialogType[DialogTypeName.PublicationInfoReader] | undefined>(undefined);
 // export const PublicationInfoReaderWithRadix: React.FC<React.PropsWithChildren<{actionPayload: dialogActions.openRequest.Payload<DialogTypeName.PublicationInfoReader>["data"]}>> = (props) => {
-export const PublicationInfoReaderWithRadix: React.FC<React.PropsWithChildren<{ displayPublicationInfo: () => void }>> = (props) => {
+export const PublicationInfoReaderWithRadix: React.FC<React.PropsWithChildren<{ handlePublicationInfo: (open: boolean) => void }>> = (props) => {
     const defaultOpen = false;
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const open = useSelector((state: IReaderRootState) => state.dialog.open);
     const data = useSelector((state: IReaderRootState) =>
         state.dialog.type === DialogTypeName.PublicationInfoReader
@@ -42,12 +42,12 @@ export const PublicationInfoReaderWithRadix: React.FC<React.PropsWithChildren<{ 
             open={open}
             onOpenChange={
                 (open) => {
-                    if (open) {
+                    // if (open) {
                         // dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoReader, props.actionPayload));
-                        props.displayPublicationInfo();
-                    } else {
-                        dispatch(dialogActions.closeRequest.build());
-                    }
+                        props.handlePublicationInfo(open);
+                    // } else {
+                        // dispatch(dialogActions.closeRequest.build());
+                    // }
                 }}
         >
             <context.Provider value={data}>
