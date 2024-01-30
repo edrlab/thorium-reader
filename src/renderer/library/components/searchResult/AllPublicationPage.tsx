@@ -332,8 +332,6 @@ const commonCellStyles = (props: ITableCellProps_Column & ITableCellProps_Generi
         // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "50px",
 
         padding: "0.4em",
-        overflowY: "auto",
-        overflowX: "hidden",
         textAlign: "left",
         userSelect: "text",
     };

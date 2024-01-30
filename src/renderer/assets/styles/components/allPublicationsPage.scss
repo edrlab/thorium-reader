@@ -193,19 +193,37 @@
         align-items: flex-start;
         justify-content: start;
         padding-top: 0.2em;
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: 100px;
+        margin-right: 2px;
+        &::-webkit-scrollbar {
+            width: 5px;
+            &-thumb {
+                background-color: transparent;
+                border-radius: 6px;
+
+            }
+            &-track {
+                background-color: inherit;
+                }
+        }
+        &:hover {
+            &::-webkit-scrollbar-thumb {
+                background-color: var(--color-blue);
+            }
+        }
     }
 
     &_multi_langs {
         list-style-type: none;
-        margin: 0;
         padding: 5px;
         display: flex;
         flex-flow: column nowrap;
         align-items: start;
         justify-content: start;
         gap: 5px;
-        overflow-y: scroll;
-        overflow-x: hidden;
+
         max-height: 90px;
 
         li {
