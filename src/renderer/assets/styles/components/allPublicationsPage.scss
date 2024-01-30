@@ -204,8 +204,9 @@
         align-items: start;
         justify-content: start;
         gap: 5px;
-        overflow: scroll;
-        max-height: 150px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        max-height: 90px;
 
         li {
             margin: 0;
@@ -272,7 +273,8 @@
             border-bottom: none;
             margin: 0;
             padding: 0;
-            padding-right: 20px;
+            
+            // padding-right: 20px;
         }
     }
 

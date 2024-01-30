@@ -326,13 +326,14 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 const commonCellStyles = (props: ITableCellProps_Column & ITableCellProps_GenericCell): React.CSSProperties => {
     return {
         // minHeight: props.displayType === DisplayType.Grid ? "150px" : "80px",
-        maxHeight: props.displayType === DisplayType.Grid ? "150px" : "80px",
+        maxHeight: props.displayType === DisplayType.Grid ? "150px" : "100px",
 
         // minWidth: props.displayType === DisplayType.Grid ? "150px" : "100px",
         // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "50px",
 
         padding: "0.4em",
-        overflowY: "hidden",
+        overflowY: "auto",
+        overflowX: "hidden",
         textAlign: "left",
         userSelect: "text",
     };
