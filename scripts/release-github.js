@@ -256,7 +256,7 @@ const SAFE_DEBUG = false;
 
     const tag_name = process.env.RELEASE_TAG;
     const target_commitish = process.env.GITHUB_SHA;
-    const name = `[${tag_name}] continuous test build (prerelease)`;
+    const name = `[${tag_name}] automated test build (beta)`;
     const body = `CI build job: ${ciURL}`;
     const draft = true;
     const prerelease = true;
@@ -296,10 +296,7 @@ const SAFE_DEBUG = false;
     if (createReleaseRES && createReleaseRES.data && createReleaseRES.data.id) {
         const release_id2 = createReleaseRES.data.id;
 
-        const filenames = [];
         const upload = async (filename, filepath) => {
-            filenames.push(filename);
-
             console.log("################################################");
             console.log("################ uploadReleaseAsset: " + release_id2 + " ==> " + filename);
             let uploadReleaseAssetRES = undefined;
@@ -387,10 +384,39 @@ const SAFE_DEBUG = false;
             await upload(path.basename(f), f);
         }
 
-        // TODO: listReleaseAssets + browser_download_url, to avoid hard-coding the URL
-        const updatedBody = `## Download links:\n\n${filenames.map((filename) => {
-            return `* __[${filename}](${encodeURI(`${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/releases/download/${process.env.RELEASE_TAG}/${filename}`)})__\n`;
-        })}\n\n(GitHub Action job: ${ciURL})`;
+        console.log("################################################");
+        console.log("################ listReleaseAssets2: " + release_id2);
+        let listReleaseAssetsRES2 = undefined;
+        try {
+            listReleaseAssetsRES2 = await octokit.repos.listReleaseAssets({ owner, repo, release_id: release_id2 });
+        } catch (err) {
+            console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+            if (DEBUG) console.log((err?.toString ? err.toString() : String(err)).replace(ghtoken, "GH_TOKEN_XX"));
+            console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+            console.log("listReleaseAssets2 error! Continue ... " + release_id2);
+            // console.log("listReleaseAssets2 error! Abort.");
+            // process.exit(1);
+            // return;
+        }
+
+        const assets = [];
+        if (listReleaseAssetsRES2) {
+            console.log("listReleaseAssets2 OK: " + release_id2);
+            if (DEBUG) console.log(listReleaseAssetsRES2);
+
+            if (SAFE_DEBUG) console.log(JSON.stringify(listReleaseAssetsRES2.data, null, 4));
+
+            for (const asset of listReleaseAssetsRES2.data) {
+                assets.push({ filename: asset.name, url: asset.browser_download_url });
+            }
+        }
+
+        // `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/releases/download/${process.env.RELEASE_TAG}/${asset.filename}`
+        const updatedBody = `## Download links:\n\n${assets
+            .map((asset) => {
+                return `* __[${asset.filename}](${encodeURI(asset.url)})__`;
+            })
+            .join("\n")}\n\n\n\n_(build job: ${ciURL})_`;
 
         console.log("################################################");
         console.log("################ updateRelease: " + release_id2);
