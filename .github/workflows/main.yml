@@ -42,28 +42,28 @@ jobs:
           - os: windows-latest
             osname: windows
             packname: win
-            travistag: latest-windows
+            release_tag: latest-windows
           - os: macos-latest
             osname: macos-intel
             packname: 'mac:skip-notarize'
-            travistag: latest-macos-intel
+            release_tag: latest-macos-intel
           - os: macos-14
             osname: macos-arm
             packname: 'mac:skip-notarize'
-            travistag: latest-macos-arm
+            release_tag: latest-macos-arm
           - os: ubuntu-20.04
             osname: linux
             packname: linux
-            travistag: latest-linux
+            release_tag: latest-linux
     env:
-      TRAVIS_OS_NAME_: ${{ matrix.osname }}
-      TRAVIS_TAG: ${{ matrix.travistag }}
+#      OS_NAME_: ${{ matrix.osname }}
+      RELEASE_TAG: ${{ matrix.release_tag }}
     steps:
-    - run: echo 'TRAVIS_OS_NAME_:' ${{ env.TRAVIS_OS_NAME_ }}
-    #- run: echo 'TRAVIS_TAG=latest-${{ env.TRAVIS_OS_NAME_ }}' | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-    #- run: echo 'TRAVIS_TAG=latest-${{ env.TRAVIS_OS_NAME_ }}' >> $GITHUB_ENV
-    #- run: echo '::set-env name=TRAVIS_TAG::latest-${{ env.TRAVIS_OS_NAME_ }}'
-    - run: echo 'TRAVIS_TAG:' ${{ env.TRAVIS_TAG }}
+#    - run: echo 'OS_NAME_:' ${{ env.OS_NAME_ }}
+    #- run: echo 'RELEASE_TAG=latest-${{ env.OS_NAME_ }}' | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+    #- run: echo 'RELEASE_TAG=latest-${{ env.OS_NAME_ }}' >> $GITHUB_ENV
+    #- run: echo '::set-env name=RELEASE_TAG::latest-${{ env.OS_NAME_ }}'
+    - run: echo 'RELEASE_TAG:' ${{ env.RELEASE_TAG }}
     - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
     - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
     - run: 'echo "GITHUB_SHA: ${{ github.sha }}"'
@@ -157,15 +157,15 @@ jobs:
     #   if: ${{ github.event_name != 'pull_request' }}
     #   uses: author/action-rollback@stable
     #   with:
-    #     tag: $TRAVIS_TAG
+    #     tag: $RELEASE_TAG
     #     always_delete_tag: true
     # - name: GitHub Release
     #   if: ${{ github.event_name != 'pull_request' }}
     #   id: create_release
     #   uses: actions/create-release@v1
     #   with:
-    #     tag_name: $TRAVIS_TAG
-    #     release_name: '[$TRAVIS_TAG] continuous test build (prerelease)'
+    #     tag_name: $RELEASE_TAG
+    #     release_name: '[$RELEASE_TAG] continuous test build (prerelease)'
     #     body: 'GitHub Action build job: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID'
     #     draft: false
     #     prerelease: true
@@ -194,11 +194,11 @@ jobs:
 
     #       /*
     #       const release = await github.repos.createRelease({
-    #         name: `[${process.env.TRAVIS_TAG}] continuous test build (prerelease)`,
+    #         name: `[${process.env.RELEASE_TAG}] continuous test build (prerelease)`,
     #         body: `GitHub Action build job: ${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,
     #         owner,
     #         repo,
-    #         tag_name: process.env.TRAVIS_TAG,
+    #         tag_name: process.env.RELEASE_TAG,
     #         draft: false,
     #         prerelease: true,
     #         target_commitish: sha
