@@ -28,6 +28,7 @@ It is currently localized in following languages:
 - Croatian
 - Bulgarian
 - Greek
+- Danish
 
 See: https://github.com/edrlab/thorium-reader/wiki/Localization-(l10n)-language-translations
 
