@@ -327,7 +327,7 @@
     "@types/jsdom": "^21.1.6",
     "@types/lunr": "^2.3.7",
     "@types/mime-types": "^2.1.4",
-    "@types/node": "^18.19.11",
+    "@types/node": "^18.19.12",
     "@types/ramda": "^0.29.10",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
