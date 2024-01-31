@@ -88,10 +88,52 @@ const SAFE_DEBUG = true;
     if (getReleaseByTagRES) {
         const release_id = getReleaseByTagRES.data.id;
 
-        console.log("getReleaseByTagRES OK: " + tag + " ==> " + release_id);
+        console.log("getReleaseByTag OK: " + tag + " ==> " + release_id);
         if (DEBUG) console.log(getReleaseByTagRES);
 
         if (SAFE_DEBUG) console.log(JSON.stringify(getReleaseByTagRES.data, null, 4));
+
+        console.log("################################################");
+        console.log("################ listReleaseAssets: " + release_id);
+        let listReleaseAssetsRES = undefined;
+        try {
+            listReleaseAssetsRES = await octokit.repos.listReleaseAssets({ owner, repo, release_id });
+        } catch (err) {
+            console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+            if (DEBUG) console.log((err?.toString ? err.toString() : String(err)).replace(ghtoken, "GH_TOKEN_XX"));
+            console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+            console.log("listReleaseAssets error! Continue ... " + release_id);
+            // console.log("listReleaseAssets error! Abort.");
+            // process.exit(1);
+            // return;
+        }
+        if (listReleaseAssetsRES) {
+            console.log("listReleaseAssets OK: " + release_id);
+            if (DEBUG) console.log(listReleaseAssetsRES);
+
+            if (SAFE_DEBUG) console.log(JSON.stringify(listReleaseAssetsRES.data, null, 4));
+
+            // console.log("################################################");
+            // console.log("################ deleteReleaseAsset: " + release_id + " ==> " asset_id);
+            // let deleteReleaseAssetRES = undefined;
+            // try {
+            //     deleteReleaseAssetRES = await octokit.repos.deleteReleaseAsset({ owner, repo, asset_id });
+            // } catch (err) {
+            //     console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+            //     if (DEBUG) console.log((err?.toString ? err.toString() : String(err)).replace(ghtoken, "GH_TOKEN_XX"));
+            //     console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+            //     console.log("deleteReleaseAsset error! Continue ... " + release_id + " ==> " asset_id);
+            //     // console.log("deleteReleaseAsset error! Abort.");
+            //     // process.exit(1);
+            //     // return;
+            // }
+            // if (deleteReleaseAssetRES) {
+            //     console.log("deleteReleaseAsset OK: " + release_id + " ==> " asset_id);
+            //     if (DEBUG) console.log(deleteReleaseAssetRES);
+
+            //     if (SAFE_DEBUG) console.log(JSON.stringify(deleteReleaseAssetRES.data, null, 4));
+            // }
+        }
 
         console.log("################################################");
         console.log("################ deleteRelease: " + release_id);
@@ -102,13 +144,13 @@ const SAFE_DEBUG = true;
             console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
             if (DEBUG) console.log((err?.toString ? err.toString() : String(err)).replace(ghtoken, "GH_TOKEN_XX"));
             console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-            console.log("deleteReleaseRES error! Continue ... " + release_id);
+            console.log("deleteRelease error! Continue ... " + release_id);
             // console.log("deleteRelease error! Abort.");
             // process.exit(1);
             // return;
         }
         if (deleteReleaseRES) {
-            console.log("deleteReleaseRES OK: " + release_id);
+            console.log("deleteRelease OK: " + release_id);
             if (DEBUG) console.log(deleteReleaseRES);
 
             if (SAFE_DEBUG) console.log(JSON.stringify(deleteReleaseRES.data, null, 4));
@@ -126,14 +168,14 @@ const SAFE_DEBUG = true;
         console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         if (DEBUG) console.log((err?.toString ? err.toString() : String(err)).replace(ghtoken, "GH_TOKEN_XX"));
         console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-        console.log("deleteRefRES error! Continue ... " + ref);
+        console.log("deleteRef error! Continue ... " + ref);
         // console.log("deleteRef error! Abort.");
         // process.exit(1);
         // return;
     }
 
     if (deleteRefRES) {
-        console.log("deleteRefRES OK: " + ref);
+        console.log("deleteRef OK: " + ref);
         if (DEBUG) console.log(deleteRefRES);
 
         if (SAFE_DEBUG) console.log(JSON.stringify(deleteRefRES.data, null, 4));
@@ -174,7 +216,7 @@ const SAFE_DEBUG = true;
         // return;
     }
     if (createTagRES) {
-        console.log("createTagRES OK: " + message + " -- " + object);
+        console.log("createTag OK: " + message + " -- " + object);
         if (DEBUG) console.log(createTagRES);
 
         if (SAFE_DEBUG) console.log(JSON.stringify(createTagRES.data, null, 4));
@@ -198,7 +240,7 @@ const SAFE_DEBUG = true;
         }
 
         if (createRefRES) {
-            console.log("createRefRES OK: " + ref2 + " -- " + sha);
+            console.log("createRef OK: " + ref2 + " -- " + sha);
             if (DEBUG) console.log(createRefRES);
 
             if (SAFE_DEBUG) console.log(JSON.stringify(createRefRES.data, null, 4));
@@ -239,7 +281,7 @@ const SAFE_DEBUG = true;
     }
 
     if (createReleaseRES) {
-        console.log("createReleaseRES OK: " + tag_name + " -- " + target_commitish);
+        console.log("createRelease OK: " + tag_name + " -- " + target_commitish);
         // console.log(JSON.stringify(createReleaseRES, null, 4));
         if (DEBUG) console.log(createReleaseRES);
 
@@ -272,7 +314,7 @@ const SAFE_DEBUG = true;
             }
 
             if (uploadReleaseAssetRES) {
-                console.log("uploadReleaseAssetRES OK: " + release_id2 + " ==> " + filename);
+                console.log("uploadReleaseAsset OK: " + release_id2 + " ==> " + filename);
                 if (DEBUG) console.log(uploadReleaseAssetRES);
 
                 if (SAFE_DEBUG) console.log(JSON.stringify(uploadReleaseAssetRES.data, null, 4));
@@ -358,7 +400,7 @@ const SAFE_DEBUG = true;
         }
 
         if (updateReleaseRES) {
-            console.log("updateReleaseRES OK: " + release_id2);
+            console.log("updateRelease OK: " + release_id2);
             if (DEBUG) console.log(updateReleaseRES);
 
             if (SAFE_DEBUG) console.log(JSON.stringify(updateReleaseRES.data, null, 4));
