@@ -8,7 +8,7 @@ on:
     branches: [ develop ]
 env:
 # secrets.GITHUB_TOKEN does not allow release publishing, so using Personal Access Token instead with limited scope and expiration
-  GITHUB_TOKEN: ${{ secrets.RELEASE_PUBLISH }}
+  GITHUB_TOKEN_RELEASE_PUBLISH: ${{ secrets.RELEASE_PUBLISH }}
   USE_HARD_LINKS: 'false'
 jobs:
   build:
