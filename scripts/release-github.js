@@ -388,8 +388,8 @@ const SAFE_DEBUG = false;
         }
 
         // TODO: listReleaseAssets + browser_download_url, to avoid hard-coding the URL
-        const updatedBody = `${filenames.map((filename) => {
-            return `* __[${filename}](${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/releases/download/${process.env.RELEASE_TAG}/${filename})__\n`;
+        const updatedBody = `## Download links:\n\n${filenames.map((filename) => {
+            return `* __[${filename}](${encodeURI(`${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/releases/download/${process.env.RELEASE_TAG}/${filename}`)})__\n`;
         })}\n\n(GitHub Action job: ${ciURL})`;
 
         console.log("################################################");
