@@ -407,7 +407,10 @@ const SAFE_DEBUG = false;
             if (SAFE_DEBUG) console.log(JSON.stringify(listReleaseAssetsRES2.data, null, 4));
 
             for (const asset of listReleaseAssetsRES2.data) {
-                assets.push({ filename: asset.name, url: asset.browser_download_url });
+                assets.push({
+                    filename: asset.name,
+                    url: asset.browser_download_url.replace(/\/untagged-[^\/]+\//, `/${process.env.RELEASE_TAG}/`),
+                });
             }
         }
 
