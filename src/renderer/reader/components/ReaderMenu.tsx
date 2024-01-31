@@ -159,7 +159,7 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
                 if (linkRef.current) {
                     linkRef.current.focus();
                 }
-            }, 1)
+            }, 1);
         });
 
         const treeReset = (t: TToc) => {
@@ -450,7 +450,8 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
                             <button title={__("reader.marks.delete")}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    deleteBookmark(bookmark)}}>
+                                    deleteBookmark(bookmark);
+                                }}>
                                 <SVG ariaHidden={true} svg={DeleteIcon} />
                             </button>
                         </div>
@@ -467,7 +468,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
 
 const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) => {
 
-    const { r2Publication, handleLinkClick, isDivina, isPdf, currentLocation, totalPages: totalPagesFromProps, goToLocator } = props
+    const { r2Publication, handleLinkClick, isDivina, isPdf, currentLocation, totalPages: totalPagesFromProps, goToLocator } = props;
     let totalPages = `${totalPagesFromProps}`;
     const goToRef = React.useRef<HTMLInputElement>();
 
@@ -555,7 +556,7 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
 
             setRefreshError(true);
         }
-    }
+    };
 
     if (!r2Publication || isDivina) {
         return <></>;
@@ -634,7 +635,7 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
                     value: indexStr,
                 }
             );
-        })
+        });
     } else if (r2Publication?.PageList) {
         options = r2Publication.PageList.map((pageLink, idx) => {
             return (
@@ -645,16 +646,16 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
                     value: pageLink.Title,
                 }
                 : null
-            )
-        })
+            );
+        });
     }
 
     let defaultKey;
-    
+
     if (isFixedLayoutNoPageList || r2Publication?.PageList) {
         defaultKey = options.findIndex((value) => value.name === currentPage) +1;
     }
-    
+
 
     return < div className={stylesPopoverDialog.goToPage} >
         {/* <p>{__("reader.navigation.goToTitle")}</p> */}
@@ -713,12 +714,12 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
 
             <button
                 type="button"
-                
+
                 onClick=
                 {(e) => {
                     const closeNavPanel = e.shiftKey && e.altKey ? false : true;
                     e.preventDefault();
-                    console.log(goToRef?.current?.value)
+                    console.log(goToRef?.current?.value);
                     handleSubmitPage(closeNavPanel);
                 }}
                 onDoubleClick=
@@ -744,7 +745,7 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
         }
 
     </div>;
-}
+};
 
 
 
@@ -782,10 +783,10 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     React.useEffect(() => {
         console.log("readerMenu UPDATED");
         console.log("FocusNumber", focus, prevValue.current);
-        
+
         if (focus !== prevValue.current) {
             console.log("FOCUS FOCUS", tabValue, "REQUESTED");
-            
+
             prevValue.current = focus;
             return () => { };
         }

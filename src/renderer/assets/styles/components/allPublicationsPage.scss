@@ -17,7 +17,7 @@
                 width: 370px!important;
                 height: 30px!important;
 
-                &:has(input:focus) {    
+                &:has(input:focus) {
                     outline: blue solid 2px !important;
                     outline-offset: -2px;
                   }
@@ -84,7 +84,7 @@
                 color: var(--color-blue);
 
                 a {
-                    color: var(--color-blue); 
+                    color: var(--color-blue);
                 }
             }
 
@@ -193,21 +193,24 @@
         align-items: flex-start;
         justify-content: start;
         padding-top: 0.2em;
-        overflow-y: auto;
-        overflow-x: hidden;
+        overflow: hidden auto;
         height: 100px;
         margin-right: 2px;
+
         &::-webkit-scrollbar {
             width: 5px;
+
             &-thumb {
                 background-color: transparent;
                 border-radius: 6px;
 
             }
+
             &-track {
                 background-color: inherit;
                 }
         }
+
         &:hover {
             &::-webkit-scrollbar-thumb {
                 background-color: var(--color-blue);
@@ -223,7 +226,6 @@
         align-items: start;
         justify-content: start;
         gap: 5px;
-
         max-height: 90px;
 
         li {
@@ -291,7 +293,7 @@
             border-bottom: none;
             margin: 0;
             padding: 0;
-            
+
             // padding-right: 20px;
         }
     }
