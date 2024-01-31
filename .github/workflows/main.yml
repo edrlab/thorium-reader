@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-13, macos-latest, ubuntu-20.04]
+        os: [windows-latest, macos-latest, macos-14, ubuntu-20.04]
         include:
           - os: windows-latest
             osname: windows
