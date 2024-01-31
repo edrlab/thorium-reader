@@ -6,9 +6,25 @@ on:
       - '*'
   pull_request:
     branches: [ develop ]
+# https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#permissions
+permissions:
+    actions: none
+    checks: none
+    contents: write
+    deployments: none
+    id-token: none
+    issues: none
+    packages: none
+    pages: none
+    pull-requests: none
+    repository-projects: none
+    security-events: none
+    statuses: none
 env:
-# secrets.GITHUB_TOKEN does not allow release publishing, so using Personal Access Token instead with limited scope and expiration
-  GITHUB_TOKEN_RELEASE_PUBLISH: ${{ secrets.RELEASE_PUBLISH }}
+# secrets.GITHUB_TOKEN is restricted by default instead of permissive, so it does not allow release publishing. We can use a Personal Access Token with limited scope and expiration, or configure the token for this workflow using the 'permissions' key
+#  GITHUB_TOKEN_RELEASE_PUBLISH: ${{ secrets.RELEASE_PUBLISH }}
+  GITHUB_TOKEN_RELEASE_PUBLISH: ${{ secrets.GITHUB_TOKEN }}
   USE_HARD_LINKS: 'false'
 jobs:
   build:
