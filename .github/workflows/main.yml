@@ -26,11 +26,11 @@ jobs:
             osname: windows
             packname: win
             travistag: latest-windows
-          - os: macos-13
+          - os: macos-latest
             osname: macos-intel
             packname: 'mac:skip-notarize'
             travistag: latest-macos-intel
-          - os: macos-latest
+          - os: macos-14
             osname: macos-arm
             packname: 'mac:skip-notarize'
             travistag: latest-macos-arm
