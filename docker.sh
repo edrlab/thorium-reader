@@ -62,11 +62,11 @@ docker run --name thorium-docker-container thorium-docker-image
 
 VERSION=cat package.json | grep 'version": ' | sed 's/  "version": "//' | sed 's/",//'
 
-if [[ $(uname -m) == 'arm64' ]]; then
-sed 's/x64/arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json
-sed 's/linux-unpacked/linux-arm64-unpacked/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json
-fi
-
+# if [[ $(uname -m) == 'arm64' ]]; then
+# sed 's/x64/arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json
+# sed 's/linux-unpacked/linux-arm64-unpacked/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json
+# fi
+# ??
 
 # Thorium-2.4.0-alpha.1-arm64.AppImage
 # EDRLab.ThoriumReader_2.4.0-alpha.1_arm64.deb

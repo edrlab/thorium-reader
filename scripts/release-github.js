@@ -58,7 +58,7 @@ const octokit = new Octokit({
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-const DEBUG = false;
+const DEBUG = true;
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -77,7 +77,7 @@ try {
     getReleaseByTagRES = await octokit.repos.getReleaseByTag({owner, repo, tag})
 } catch (err) {
     console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-    if (DEBUG) console.log(err);
+    if (DEBUG) console.log((err?.toString?err.toString():String(err)).replace(ghtoken, 'GH_TOKEN_XX'));
     console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
     console.log("getReleaseByTag error! Continue.");
     // if (err.status !== 404) {
@@ -100,7 +100,7 @@ if (getReleaseByTagRES) {
         deleteReleaseRES = await octokit.repos.deleteRelease({owner, repo, release_id})
     } catch (err) {
         console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-        if (DEBUG) console.log(err);
+        if (DEBUG) console.log((err?.toString?err.toString():String(err)).replace(ghtoken, 'GH_TOKEN_XX'));
         console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         console.log("deleteReleaseRES error! Continue.");
         // console.log("deleteRelease error! Abort.");
@@ -122,7 +122,7 @@ try {
     deleteRefRES = await octokit.git.deleteRef({owner, repo, ref})
 } catch (err) {
     console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-    if (DEBUG) console.log(err);
+    if (DEBUG) console.log((err?.toString?err.toString():String(err)).replace(ghtoken, 'GH_TOKEN_XX'));
     console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
     console.log("deleteRefRES error! Continue.");
     // console.log("deleteRef error! Abort.");
@@ -156,7 +156,7 @@ try {
     createTagRES = await octokit.git.createTag({owner, repo, tag, message, object, type, tagger, "tagger:name": tagger.name, "tagger:email": tagger.email, "tagger:date": tagger.date});
 } catch (err) {
     console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-    if (DEBUG) console.log(err);
+    if (DEBUG) console.log((err?.toString?err.toString():String(err)).replace(ghtoken, 'GH_TOKEN_XX'));
     console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
     console.log("createTag error! Continue.");
     // console.log("createTag error! Abort.");
@@ -177,7 +177,7 @@ if (createTagRES) {
         createRefRES = await octokit.git.createRef({owner, repo, ref: ref2, sha});
     } catch (err) {
         console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-        if (DEBUG) console.log(err);
+        if (DEBUG) console.log((err?.toString?err.toString():String(err)).replace(ghtoken, 'GH_TOKEN_XX'));
         console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         console.log("createRef error! Continue.");
         // console.log("createRef error! Abort.");
@@ -207,7 +207,7 @@ try {
     createReleaseRES = await octokit.repos.createRelease({owner, repo, tag_name, target_commitish, name, body, draft, prerelease});
 } catch (err) {
     console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-    if (DEBUG) console.log(err);
+    if (DEBUG) console.log((err?.toString?err.toString():String(err)).replace(ghtoken, 'GH_TOKEN_XX'));
     console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
     console.log("createRelease error! Continue.");
     // console.log("createRelease error! Abort.");
@@ -238,7 +238,7 @@ if (createReleaseRES && createReleaseRES.data && createReleaseRES.data.id && pro
             });
         } catch (err) {
             console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-            if (DEBUG) console.log(err);
+            if (DEBUG) console.log((err?.toString?err.toString():String(err)).replace(ghtoken, 'GH_TOKEN_XX'));
             console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
             console.log("uploadReleaseAsset error! Continue.");
             // console.log("uploadReleaseAsset error! Abort.");
