@@ -59,7 +59,7 @@ const DEBUG = false;
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-const SAFE_DEBUG = true;
+const SAFE_DEBUG = false;
 
 (async () => {
     // top-level ASYNC
@@ -387,9 +387,10 @@ const SAFE_DEBUG = true;
             await upload(path.basename(f), f);
         }
 
-        const updatedBody = `CI build job: ${ciURL}\n\n${filenames.map((filename) => {
-            return `* _${filename}_: ${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/releases/download/${process.env.RELEASE_TAG}/${filename}\n`;
-        })}`;
+        // TODO: listReleaseAssets + browser_download_url, to avoid hard-coding the URL
+        const updatedBody = `${filenames.map((filename) => {
+            return `* __[${filename}](${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/releases/download/${process.env.RELEASE_TAG}/${filename})__\n`;
+        })}\n\n(GitHub Action job: ${ciURL})`;
 
         console.log("################################################");
         console.log("################ updateRelease: " + release_id2);
