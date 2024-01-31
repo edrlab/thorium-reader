@@ -71,7 +71,7 @@ jobs:
       if: ${{ matrix.osname != 'windows' }}
       run: echo "${{ matrix.osname }}" && uname -m && arch
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     #   with:
     #     persist-credentials: false
     # - name: Git config global dump (pre)
@@ -102,7 +102,7 @@ jobs:
     - name: Git config local dump (post)
       run: 'git config --list || echo NO_GIT_GLOBAL_CONFIG || true'
       shell: bash
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with:
         node-version: '20'
         #check-latest: true

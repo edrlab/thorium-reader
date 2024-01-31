@@ -59,6 +59,7 @@ const DEBUG = false;
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+const SAFE_DEBUG = true;
 
 (async () => {
     // top-level ASYNC
@@ -90,6 +91,8 @@ const DEBUG = false;
         console.log("getReleaseByTagRES OK: " + tag + " ==> " + release_id);
         if (DEBUG) console.log(getReleaseByTagRES);
 
+        if (SAFE_DEBUG) console.log(JSON.stringify(getReleaseByTagRES.data, null, 4));
+
         console.log("################################################");
         console.log("################ deleteRelease: " + release_id);
         let deleteReleaseRES = undefined;
@@ -107,6 +110,8 @@ const DEBUG = false;
         if (deleteReleaseRES) {
             console.log("deleteReleaseRES OK: " + release_id);
             if (DEBUG) console.log(deleteReleaseRES);
+
+            if (SAFE_DEBUG) console.log(JSON.stringify(deleteReleaseRES.data, null, 4));
         }
     }
 
@@ -130,6 +135,8 @@ const DEBUG = false;
     if (deleteRefRES) {
         console.log("deleteRefRES OK: " + ref);
         if (DEBUG) console.log(deleteRefRES);
+
+        if (SAFE_DEBUG) console.log(JSON.stringify(deleteRefRES.data, null, 4));
     }
 
     const message = process.env.RELEASE_TAG;
@@ -170,6 +177,8 @@ const DEBUG = false;
         console.log("createTagRES OK: " + message + " -- " + object);
         if (DEBUG) console.log(createTagRES);
 
+        if (SAFE_DEBUG) console.log(JSON.stringify(createTagRES.data, null, 4));
+
         const ref2 = `refs/tags/${process.env.RELEASE_TAG}`;
         const sha = createTagRES.data.sha;
 
@@ -191,6 +200,8 @@ const DEBUG = false;
         if (createRefRES) {
             console.log("createRefRES OK: " + ref2 + " -- " + sha);
             if (DEBUG) console.log(createRefRES);
+
+            if (SAFE_DEBUG) console.log(JSON.stringify(createRefRES.data, null, 4));
         }
     }
 
@@ -231,6 +242,8 @@ const DEBUG = false;
         console.log("createReleaseRES OK: " + tag_name + " -- " + target_commitish);
         // console.log(JSON.stringify(createReleaseRES, null, 4));
         if (DEBUG) console.log(createReleaseRES);
+
+        if (SAFE_DEBUG) console.log(JSON.stringify(createReleaseRES.data, null, 4));
     }
 
     if (createReleaseRES && createReleaseRES.data && createReleaseRES.data.id) {
@@ -244,7 +257,7 @@ const DEBUG = false;
                 uploadReleaseAssetRES = await octokit.repos.uploadReleaseAsset({
                     owner,
                     repo,
-                    release_id2,
+                    release_id: release_id2,
                     name: filename,
                     data: await fs.readFile(filepath),
                 });
@@ -261,6 +274,8 @@ const DEBUG = false;
             if (uploadReleaseAssetRES) {
                 console.log("uploadReleaseAssetRES OK: " + release_id2 + " ==> " + filename);
                 if (DEBUG) console.log(uploadReleaseAssetRES);
+
+                if (SAFE_DEBUG) console.log(JSON.stringify(uploadReleaseAssetRES.data, null, 4));
             }
         };
 
@@ -329,7 +344,7 @@ const DEBUG = false;
             updateReleaseRES = await octokit.repos.updateRelease({
                 owner,
                 repo,
-                release_id2,
+                release_id: release_id2,
                 draft: false,
             });
         } catch (err) {
@@ -345,6 +360,8 @@ const DEBUG = false;
         if (updateReleaseRES) {
             console.log("updateReleaseRES OK: " + release_id2);
             if (DEBUG) console.log(updateReleaseRES);
+
+            if (SAFE_DEBUG) console.log(JSON.stringify(updateReleaseRES.data, null, 4));
         }
     }
 })(); // top-level ASYNC
