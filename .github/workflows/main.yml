@@ -50,6 +50,9 @@ jobs:
     - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
     - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
     - run: 'echo "GITHUB_SHA: ${{ github.sha }}"'
+    - name: Check sys arch
+      if: ${{ matrix.osname != 'windows' }}
+      run: echo "${{ matrix.osname }}" && uname -m && arch
     - name: Checkout
       uses: actions/checkout@v3
     #   with:
@@ -116,11 +119,11 @@ jobs:
       if: ${{ github.event_name == 'pull_request' }}
       run: npm run build:prod
       # && npm run test SEE https://github.com/edrlab/thorium-reader/issues/1697
-    - name: Check sys arch
-      if: ${{ matrix.osname != 'windows' }}
-      run: echo "${{ matrix.osname }}" && uname -m && arch
-    - name: non-PR action (build and package)
-      if: ${{ github.event_name != 'pull_request' }}
+    - name: non-PR action, Windows (build and package)
+      if: ${{ github.event_name != 'pull_request' && matrix.osname == 'windows' }}
+      run: npm run package:${{ matrix.packname }}
+    - name: non-PR action, non-Windows (build and package)
+      if: ${{ github.event_name != 'pull_request' && matrix.osname != 'windows' }}
       run: echo "${{ matrix.osname }}" && (if [[ ${{ matrix.osname }} == 'macos-arm' ]]; then uname -m && arch && sed 's/x64/arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json && npm run package:${{ matrix.packname }} && sed 's/arm64/x64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json; else npm run package:${{ matrix.packname }}; fi)
     #- run: ls -alsR release
     #- run: npm install @octokit/rest
