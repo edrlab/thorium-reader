@@ -51,6 +51,7 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { Locator } from "r2-shared-js/dist/es8-es2017/src/models/locator";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -92,7 +93,7 @@ const isRTL = (r2Publication: R2Publication) => (_link: ILink) => {
     return isRTL;
 };
 
-const renderLinkList = (isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBaseProps["handleLinkClick"]) => {
+const renderLinkList = (isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBaseProps["handleLinkClick"], dockedMode: boolean) => {
     const T = (label: string, links: Link[]) => {
 
         return <ul
@@ -119,7 +120,7 @@ const renderLinkList = (isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBa
                             }
                             onClick=
                             {link.Href ? (e) => {
-                                const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                const closeNavPanel = dockedMode ? false : e.shiftKey && e.altKey ? false : true;
                                 handleLinkClick(e, link.Href, closeNavPanel);
                             } : undefined}
                             onDoubleClick=
@@ -129,7 +130,7 @@ const renderLinkList = (isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBa
                             {
                                 (e) => {
                                     if (link.Href && e.key === "Enter") {
-                                        const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                        const closeNavPanel = dockedMode ? false : e.shiftKey && e.altKey ? false : true;
                                         handleLinkClick(e, link.Href, closeNavPanel);
                                     }
                                 }
@@ -147,7 +148,7 @@ const renderLinkList = (isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBa
     return T;
 };
 
-const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBaseProps["handleLinkClick"]) => {
+const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBaseProps["handleLinkClick"], dockedMode: boolean) => {
     const renderLinkTree = (label: string | undefined, links: TToc, level: number, headingTrailLink: ILink | undefined): JSX.Element => {
         // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
         const useTree = false;
@@ -270,7 +271,7 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
                                         }
                                         onClick=
                                         {link.Href ? (e) => {
-                                            const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                            const closeNavPanel = dockedMode ? false : e.shiftKey && e.altKey ? false : true;
                                             handleLinkClick(e, link.Href, closeNavPanel);
                                         } : undefined}
                                         onDoubleClick=
@@ -280,7 +281,7 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
                                         {
                                             (e) => {
                                                 if (link.Href && e.key === "Enter") {
-                                                    const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                                    const closeNavPanel = dockedMode ? false : e.shiftKey && e.altKey ? false : true;
                                                     handleLinkClick(e, link.Href, closeNavPanel);
                                                 }
                                             }
@@ -308,7 +309,7 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
                                     }
                                     onClick=
                                     {link.Href ? (e) => {
-                                        const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                        const closeNavPanel = dockedMode ? false : e.shiftKey && e.altKey ? false : true;
                                         handleLinkClick(e, link.Href, closeNavPanel);
                                     } : undefined}
                                     onDoubleClick=
@@ -318,7 +319,7 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
                                     {
                                         (e) => {
                                             if (link.Href && e.key === "Enter") {
-                                                const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                                const closeNavPanel = dockedMode ? false : e.shiftKey && e.altKey ? false : true;
                                                 handleLinkClick(e, link.Href, closeNavPanel);
                                             }
                                         }
@@ -920,8 +921,8 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const optionSelected = options.find(({ value }) => value === tabValue)?.id || 0;
 
     const isRTL_ = isRTL(r2Publication);
-    const renderLinkTree_ = renderLinkTree(currentLocation, isRTL_, handleLinkClick);
-    const renderLinkList_ = renderLinkList(isRTL_, handleLinkClick);
+    const renderLinkTree_ = renderLinkTree(currentLocation, isRTL_, handleLinkClick, dockedMode);
+    const renderLinkList_ = renderLinkList(isRTL_, handleLinkClick, dockedMode);
 
     const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     SelectRef.displayName = "Select";
@@ -1012,7 +1013,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     <Tabs.Content value="tab-bookmark" tabIndex={-1}>
                         <TabTitle title={__("reader.marks.bookmarks")} />
                         <div className={stylesSettings.settings_tab}>
-                            <BookmarkList r2Publication={r2Publication} goToLocator={goToLocator} />
+                            <BookmarkList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} />
                         </div>
                     </Tabs.Content>
 
