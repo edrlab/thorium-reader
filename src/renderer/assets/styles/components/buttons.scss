@@ -288,6 +288,11 @@ button {
   cursor: pointer;
   gap: 5px;
   box-sizing: content-box;
+  position: relative;
+  
+  &:focus-within {
+    @include R2_MIXIN_FOCUS_OUTLINE;
+  }
 
   svg {
     width: 15px;
@@ -296,7 +301,12 @@ button {
   }
   
   input {
-    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
   }
 }
 

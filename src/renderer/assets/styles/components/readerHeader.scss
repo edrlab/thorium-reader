@@ -55,6 +55,12 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+
+                &[title="search in publication"] {
+                    svg {
+                        width: 20px;
+                    }
+                }
     
                 svg {
                     height: 25px;
@@ -213,6 +219,7 @@
 
 #bookmarkLabel .bookmarkIcon{
     display: block;
+    width: 14px;
 }
 
 #bookmarkLabel:hover .bookmarkRemove{

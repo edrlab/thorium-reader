@@ -26,7 +26,7 @@ import * as AudioIcon from "readium-desktop/renderer/assets/icons/baseline-volum
 import * as HeadphoneIcon from "readium-desktop/renderer/assets/icons/headphone-icon.svg";
 import * as SettingsIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
 import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
-import * as MarkIcon from "readium-desktop/renderer/assets/icons/bookmark-icon.svg";
+import * as MarkIcon from "readium-desktop/renderer/assets/icons/outline-bookmark_border-24px.svg";
 import * as RemoveBookMarkIcon from "readium-desktop/renderer/assets/icons/BookmarkRemove-icon.svg";
 import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
 import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
@@ -378,7 +378,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                 <ul>
                     <ul>
                         {(this.props.mode === ReaderMode.Attached) ? (
-                            <li className={classNames(stylesReader.showInFullScreen)}>
+                            <li >
                                 <button
                                     className={stylesReader.menu_button}
                                     style={{transform:"rotate(-90deg)"}}
@@ -419,7 +419,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         }
                     </ul>
 
-                    <ul className={classNames(stylesReader.tts_toolbar, stylesReader.showInFullScreen)}>
+                    <ul className={classNames(stylesReader.tts_toolbar)}>
                         {
                             this.props.isDivina
                                 ?
@@ -854,7 +854,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         </li>
 
                         {this.props.fullscreen ?
-                            <li className={classNames(stylesReader.showInFullScreen)}>
+                            <li >
                                 <button
                                     className={classNames(stylesReader.menu_button)}
                                     onClick={this.props.handleFullscreenClick}
@@ -867,7 +867,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 </button>
                             </li>
                             :
-                            <li className={classNames(stylesReader.showInFullScreen, stylesReader.blue)}>
+                            <li className={classNames(stylesReader.blue)}>
                                 <button
                                     className={classNames(stylesReader.menu_button)}
                                     onClick={this.props.handleFullscreenClick}

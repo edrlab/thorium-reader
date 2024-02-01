@@ -88,7 +88,7 @@ class Header extends React.Component<IProps, undefined> {
                         <h3>{__("header.listTitle")}</h3>
                     </Link>
                 </div>
-                    <div style={{textAlign: "right", display: "flex", gap: "10px"}}>
+                    <div style={{textAlign: "right", display: "flex", gap: "10px", position: "relative"}}>
                     <PublicationAddButton />
                     {/* {
                     window.location.hash.indexOf("search") === -1

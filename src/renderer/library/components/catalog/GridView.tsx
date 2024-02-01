@@ -71,7 +71,7 @@ const EntrySection = ({entry, entryIndex}: {entry: CatalogEntryView, entryIndex:
     }
 
     return (
-        <section key={entryIndex} style={{marginBottom: "0"}} className={entry.id === "continueReading" ? stylesSlider.continue_reading : stylesSlider.home_section}>
+        <section key={entryIndex} style={{marginBottom: "0", marginTop: entry.id === "lastAdditions" ? "0" : "20px"}} className={entry.id === "continueReading" ? stylesSlider.continue_reading : stylesSlider.home_section}>
                 <h2>{title}</h2>
             {
                 <Slider
