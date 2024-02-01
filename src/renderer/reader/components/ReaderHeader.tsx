@@ -378,7 +378,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                 <ul>
                     <ul>
                         {(this.props.mode === ReaderMode.Attached) ? (
-                            <li className={classNames(stylesReader.showInFullScreen)}>
+                            <li >
                                 <button
                                     className={stylesReader.menu_button}
                                     style={{transform:"rotate(-90deg)"}}
@@ -419,7 +419,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         }
                     </ul>
 
-                    <ul className={classNames(stylesReader.tts_toolbar, stylesReader.showInFullScreen)}>
+                    <ul className={classNames(stylesReader.tts_toolbar)}>
                         {
                             this.props.isDivina
                                 ?
@@ -854,7 +854,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         </li>
 
                         {this.props.fullscreen ?
-                            <li className={classNames(stylesReader.showInFullScreen)}>
+                            <li >
                                 <button
                                     className={classNames(stylesReader.menu_button)}
                                     onClick={this.props.handleFullscreenClick}
@@ -867,7 +867,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 </button>
                             </li>
                             :
-                            <li className={classNames(stylesReader.showInFullScreen, stylesReader.blue)}>
+                            <li className={classNames(stylesReader.blue)}>
                                 <button
                                     className={classNames(stylesReader.menu_button)}
                                     onClick={this.props.handleFullscreenClick}

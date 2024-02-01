@@ -24,41 +24,17 @@ export interface MySelectProps<T extends object>
     refButEl?: React.Ref<HTMLButtonElement>;
 }
 
-// export function Select2<T extends object>(
-//     { label, description, errorMessage, children, svg, refInputEl, items, ...props }: MySelectProps<T>,
-// ) {
-//     return (
-//         <SelectReactAria {...props}>
-//             <Label className={StylesCombobox.react_aria_Label}>{label}</Label>
-//             <Group className={classNames(StylesCombobox.my_combobox_container,"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} >
-//                 {svg ? <SVG ariaHidden svg={svg} /> : <></>}
-//                 <Input className={classNames(StylesCombobox.react_aria_Input, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} />
-//                 <Button className={StylesCombobox.react_aria_Button}>
-//                     <SVG ariaHidden svg={ChevronDown} />
-//                 </Button>
-//             </Group>
-//             {description ? <Text slot="description">{description}</Text> : <></>}
-//             <FieldError>{errorMessage}</FieldError>
-//             <Popover className={StylesCombobox.react_aria_Popover}>
-//                 <ListBox className={StylesCombobox.react_aria_ListBox} items={items}>
-//                     {children}
-//                 </ListBox>
-//             </Popover>
-//         </SelectReactAria>
-//     );
-// }
-
 export function Select<T extends object>(
     { label, description, errorMessage, children, svg, refButEl, items, ...props }: MySelectProps<T>,
   ) {
     return (
       <SelectReactAria {...props}  className={StylesCombobox.react_aria_ComboBox}>
         <Label className={StylesCombobox.react_aria_Label}>{label}</Label>
-        <Group className={classNames(StylesCombobox.my_combobox_container, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} >
+        <Group className={classNames(StylesCombobox.my_combobox_container)} >
             {svg ? <SVG ariaHidden svg={svg} /> : <></>}
-            <Button ref={refButEl} className={StylesCombobox.react_aria_Button}>
-                <SelectValue />
-                <SVG ariaHidden svg={ChevronDown} />
+            <Button ref={refButEl} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                <SelectValue className={StylesCombobox.react_aria_selectValue} />
+                <SVG ariaHidden svg={ChevronDown} className={StylesCombobox.react_aria_Button} />
             </Button>
         </Group>
         {description && <Text slot="description">{description}</Text>}

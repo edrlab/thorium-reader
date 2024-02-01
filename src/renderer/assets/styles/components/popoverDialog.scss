@@ -85,7 +85,15 @@
       color: var(--color-blue);
       border-color: var(--color-blue) !important;
 
-      input {
+      > button {
+        color: var(--color-blue);
+
+        svg {
+          fill: var(--color-blue);
+        }
+      }
+
+      input, > button {
         width: fit-content;
         height: 25px;
         background-color: inherit;
@@ -97,6 +105,11 @@
 
       button {
         background-color: inherit;
+
+        svg {
+          margin-left: unset;
+          background-color: unset;
+        }
       }
     }
   }
@@ -435,4 +448,15 @@
     outline: none!important;
   }
   }
+}
+
+
+.react_aria_ListBox {
+  width: inherit;
+  background-color: white;
+}
+
+.react_aria_ComboBox [role="group"]:focus-within {
+  outline: blue solid 2px !important;
+  outline-offset: -2px;
 }

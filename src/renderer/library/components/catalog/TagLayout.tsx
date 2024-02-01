@@ -34,7 +34,7 @@ class GridTagLayout extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
-            <section>
+            <section style={{marginTop: "20px"}}>
                 <div className={stylesGlobal.heading}>
                     <h2>{__("catalog.tags")}</h2>
                     {this.props.tags.length === 0 ?

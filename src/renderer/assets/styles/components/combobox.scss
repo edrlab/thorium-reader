@@ -82,7 +82,7 @@
   }
 }
 
-.react_aria_Popover[data-trigger="ComboBox"] {
+.react_aria_Popover[data-trigger="ComboBox"], .react_aria_Popover[data-trigger="Select"]  {
   width: var(--trigger-width);
   background-color: var(--color-secondary);
   pointer-events: auto;

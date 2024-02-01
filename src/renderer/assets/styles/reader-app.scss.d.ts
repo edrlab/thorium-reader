@@ -66,7 +66,6 @@ export declare const sepiaMode: string;
 export declare const settings_action: string;
 export declare const settings_content: string;
 export declare const settings_icones: string;
-export declare const showInFullScreen: string;
 export declare const side_button: string;
 export declare const side_button_svg: string;
 export declare const skip_link: string;
