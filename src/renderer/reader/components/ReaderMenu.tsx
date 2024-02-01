@@ -698,6 +698,7 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
                     defaultItems={options}
                     defaultSelectedKey={defaultKey}
                     refInputEl={goToRef}
+                    allowsCustomValue
                     onSelectionChange={(ev) => {
                         const val = ev?.toString();
                         if (!val || !goToRef?.current) {

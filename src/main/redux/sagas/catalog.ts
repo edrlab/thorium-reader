@@ -32,7 +32,7 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 const filename_ = "readium-desktop:main:redux:sagas:catalog";
 const debug = debug_(filename_);
 
-const NB_PUB = 5;
+const NB_PUB = 10;
 
 // TODO: this memo-ization is very expensive (memory and CPU-wise) ...
 // and TaJsonDeserialize() is called in several other places in the library lifecycle

@@ -140,7 +140,7 @@ button {
   margin-bottom: 5rem;
 
   &_fullscreen {
-    margin-top: -10px;
+    // margin-top: -10px;
     margin-bottom: 60px;
   }
 
@@ -586,11 +586,10 @@ button {
 }
 
 .main_navigation_fullscreen {
-  & > ul:not(.showInFullScreen) > ul:not(.showInFullScreen) > li:not(.showInFullScreen),
-  & > ul:not(.showInFullScreen) > li:not(.showInFullScreen) {
-    display: none;
-  }
-
+  // & > ul:not(.showInFullScreen) > ul:not(.showInFullScreen) > li:not(.showInFullScreen),
+  // & > ul:not(.showInFullScreen) > li:not(.showInFullScreen) {
+  //   display: none;
+  // }
   & > ul > ul.tts_toolbar {
     margin-left: 0;
   }

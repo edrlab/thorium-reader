@@ -22,6 +22,7 @@
   padding-bottom: 0;
   height: 100vh;
   background-color: var(--color-extralight-grey);
+  max-width: 204px;
 
   // box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.19);
   border-right: 2px solid var(--color-medium-grey);
@@ -63,9 +64,14 @@
       color: inherit;
       min-width: 150px;
       justify-content: start;
+      align-items: center;
       gap: 10px;
       display: flex;
       padding: 5px;
+
+      h3 {
+        margin: 0;
+      }
     }
 
     & li {
@@ -86,6 +92,7 @@
     
       svg {
         width: 15px;
+        height: 15px;
         fill: var(--color-blue);
       }
 
