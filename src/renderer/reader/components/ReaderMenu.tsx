@@ -45,7 +45,8 @@ import ReaderMenuSearch from "./ReaderMenuSearch";
 // import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
 
-import { ComboBox, ComboBoxItem, MyComboBoxProps } from "readium-desktop/renderer/common/components/ComboBox";
+import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+import { MySelectProps, Select, SelectItem } from "readium-desktop/renderer/common/components/Select";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
@@ -778,7 +779,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     // const tabBookmarkRef = React.useRef<HTMLDivElement>();
     // const tabSearchRef = React.useRef<HTMLDivElement>();
     // const tabGoToPageRef = React.useRef<HTMLDivElement>();
-    const dockedModeRef = React.useRef<HTMLInputElement>();
+    const dockedModeRef = React.useRef<HTMLButtonElement>();
     const tabModeRef = React.useRef<HTMLDivElement>();
 
     React.useEffect(() => {
@@ -922,14 +923,16 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const renderLinkTree_ = renderLinkTree(currentLocation, isRTL_, handleLinkClick);
     const renderLinkList_ = renderLinkList(isRTL_, handleLinkClick);
 
-    const ComboBoxRef = React.forwardRef<HTMLInputElement, MyComboBoxProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <ComboBox refInputEl={forwardedRef} {...props}></ComboBox>);
-    ComboBoxRef.displayName = "ComboBox";
+    const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
+    SelectRef.displayName = "Select";
 
     return (
         <div>
             {
                 dockedMode ? <div key="docked-header" className={stylesPopoverDialog.docked_header}>
-                    <ComboBoxRef defaultItems={options} selectedKey={optionSelected}
+                    <SelectRef
+                        items={options}
+                        selectedKey={optionSelected}
                         svg={options.find(({ value }) => value === tabValue)?.svg}
                         onSelectionChange={(id) => {
                             console.log("selectionchange: ", id);
@@ -942,23 +945,23 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 console.error("Combobox No value !!!");
                             }
                         }}
-                        onInputChange={(v) => {
-                            console.log("inputchange: ", v);
+                        // onInputChange={(v) => {
+                        //     console.log("inputchange: ", v);
 
-                            const value = options.find(({ name }) => name === v)?.value;
-                            if (value === tabValue) return;
-                            if (value) {
-                                setTabValue(value);
-                                console.log("set Tab Value = ", value);
+                        //     const value = options.find(({ name }) => name === v)?.value;
+                        //     if (value === tabValue) return;
+                        //     if (value) {
+                        //         setTabValue(value);
+                        //         console.log("set Tab Value = ", value);
 
-                            } else {
-                                console.error("Combobox No value !!!");
-                            }
-                        }}
+                        //     } else {
+                        //         console.error("Combobox No value !!!");
+                        //     }
+                        // }}
                         ref={dockedModeRef}
                     >
-                        {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                    </ComboBoxRef>
+                        {item => <SelectItem>{item.name}</SelectItem>}
+                    </SelectRef>
 
                     <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls}>
                         <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label="left" onClick={setDockingModeLeftSide}>
