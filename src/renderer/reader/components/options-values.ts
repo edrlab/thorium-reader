@@ -13,7 +13,7 @@ import {
 
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import { IEventBusPdfPlayer, TToc } from "../pdf/common/pdfReader.type";
+import { TToc } from "../pdf/common/pdfReader.type";
 import { TdivinaReadingMode } from "readium-desktop/common/redux/states/renderer/divina";
 
 export const fontSize: string[] = [
@@ -145,8 +145,6 @@ export interface IReaderOptionsProps {
 
     divinaReadingMode: TdivinaReadingMode;
     divinaReadingModeSupported: TdivinaReadingMode[];
-
-    pdfEventBus: IEventBusPdfPlayer;
     isDivina: boolean;
     isPdf: boolean;
 

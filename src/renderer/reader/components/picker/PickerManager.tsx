@@ -14,17 +14,18 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { IEventBusPdfPlayer } from "../../pdf/common/pdfReader.type";
+// import { IEventBusPdfPlayer } from "../../pdf/common/pdfReader.type";
 
 import { readerLocalActionPicker, readerLocalActionSearch } from "../../redux/actions";
 import { IPickerState } from "readium-desktop/common/redux/states/renderer/picker";
 import AnnotationPicker from "./Annotation";
 import SearchPicker from "./Search";
 
+import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     showSearchResults: () => void;
-    pdfEventBus: IEventBusPdfPlayer;
     isPdf: boolean;
 }
 // IProps may typically extend:
@@ -131,7 +132,6 @@ class PickerManager extends React.Component<IProps, IState> {
                         type === "search"
                             ? <SearchPicker
                                 showSearchResults={this.props.showSearchResults}
-                                pdfEventBus={this.props.pdfEventBus}
                                 isPdf={this.props.isPdf}
                             ></SearchPicker>
                             : <AnnotationPicker></AnnotationPicker>
@@ -199,7 +199,7 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => ({
         if (type === "search") {
             dispatch(readerLocalActionSearch.cancel.build());
             if (props.isPdf) {
-                props.pdfEventBus?.dispatch("search-wipe");
+                createOrGetPdfEventBus().dispatch("search-wipe");
             }
         }
         dispatch(readerLocalActionPicker.manager.build(false));

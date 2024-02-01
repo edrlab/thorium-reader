@@ -39,7 +39,7 @@ import {
 } from "@r2-navigator-js/electron/renderer/index";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
-import { IEventBusPdfPlayer, IPdfPlayerScale } from "../pdf/common/pdfReader.type";
+import { IPdfPlayerScale } from "../pdf/common/pdfReader.type";
 import HeaderSearch from "./header/HeaderSearch";
 import { IReaderMenuProps, IReaderOptionsProps } from "./options-values";
 import ReaderMenu from "./ReaderMenu";
@@ -51,6 +51,7 @@ import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/k
 import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -114,7 +115,6 @@ interface IBaseProps extends TranslatorProps {
     currentLocation: LocatorExtended;
     isDivina: boolean;
     isPdf: boolean;
-    pdfEventBus: IEventBusPdfPlayer;
     divinaSoundPlay: (play: boolean) => void;
 }
 
@@ -193,27 +193,20 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         ensureKeyboardListenerIsInstalled();
         this.registerAllKeyboardListeners();
 
-        this.props.pdfEventBus?.subscribe("scale", this.setScaleMode);
+        createOrGetPdfEventBus().subscribe("scale", this.setScaleMode);
     }
 
     public componentWillUnmount() {
 
         this.unregisterAllKeyboardListeners();
 
-        if (this.props.pdfEventBus) {
-            this.props.pdfEventBus.remove(this.setScaleMode, "scale");
-        }
+        createOrGetPdfEventBus().remove(this.setScaleMode, "scale");
     }
 
     public componentDidUpdate(oldProps: IProps, oldState: IState) {
 
         if (oldState.divinaSoundEnabled !== this.state.divinaSoundEnabled) {
             this.props.divinaSoundPlay(this.state.divinaSoundEnabled);
-        }
-
-        if (oldProps.pdfEventBus !== this.props.pdfEventBus) {
-
-            this.props.pdfEventBus.subscribe("scale", this.setScaleMode);
         }
 
         if (this.props.fullscreen !== oldProps.fullscreen) {
@@ -631,7 +624,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         type="checkbox"
                                         checked={this.state.pdfScaleMode === "page-width"}
                                         // tslint:disable-next-line: max-line-length
-                                        onChange={() => this.props.pdfEventBus.dispatch("scale", this.state.pdfScaleMode === "page-fit" ? "page-width" : "page-fit")}
+                                        onChange={() => createOrGetPdfEventBus().dispatch("scale", this.state.pdfScaleMode === "page-fit" ? "page-width" : "page-fit")}
                                         aria-label={__("reader.navigation.pdfscalemode")}
                                     />
                                     <label

@@ -24,30 +24,41 @@ interface IEventObj {
 
 export function eventBus(
     tx: (key: any, ...a: any[]) => any,
-    rx: (ev: (key: any, ...a: any) => any) => any,
+    rx: (ev: (key: any, ...a: any) => any) => boolean,
 ): IEventBus {
 
     const event: IEventObj = {};
 
-    rx((key, ...arg) => {
+    const tryRx = () => {
+      return rx((key, ...arg) => {
+          if (event[key]) {
+              const fns = event[key];
+              fns.forEach((fn) => {
+                  try {
+                      fn(...arg);
+                  } catch (e) {
+                      debug(e);
+                  }
+              });
+          }
+      });
+    };
 
-        if (event[key]) {
-            const fns = event[key];
-            fns.forEach((fn) => {
-                try {
-                    fn(...arg);
-                } catch (e) {
-                    debug(e);
-                }
-            });
-        }
-    });
+    let rxSuccess = tryRx();
 
     const subscribe = <TKey extends string, TFn extends TCallBack>(key: TKey, fn: TFn) => {
+        if (!rxSuccess) {
+          rxSuccess = tryRx();
+        }
         event[key] = (event[key] || new Set<TCallBack>()).add(fn);
     };
 
-    const dispatch = tx;
+    const dispatch = (key: any, ...a: any[]) => {
+      if (!rxSuccess) {
+        rxSuccess = tryRx();
+      }
+      tx(key, ...a);
+    }
 
     const remove = <TKey extends string, TFn extends TCallBack>(fn: TFn, key?: TKey) => {
 

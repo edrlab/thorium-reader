@@ -39,6 +39,7 @@ import { readerLocalActionSetConfig } from "../redux/actions";
 import optionsValues, { IReaderOptionsProps } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
+import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderOptionsProps {
@@ -85,23 +86,16 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         this.handleChooseTheme = this.handleChooseTheme.bind(this);
     }
 
-    public componentDidUpdate(oldProps: IProps) {
-
-        if (oldProps.pdfEventBus !== this.props.pdfEventBus) {
-
-            this.props.pdfEventBus.subscribe("scale", this.setScale);
-            this.props.pdfEventBus.subscribe("view", this.setView);
-            this.props.pdfEventBus.subscribe("column", this.setCol);
-        }
+    public componentDidMount() {
+        createOrGetPdfEventBus().subscribe("scale", this.setScale);
+        createOrGetPdfEventBus().subscribe("view", this.setView);
+        createOrGetPdfEventBus().subscribe("column", this.setCol);
     }
 
     public componentWillUnmount() {
-
-        if (this.props.pdfEventBus) {
-            this.props.pdfEventBus.remove(this.setScale, "scale");
-            this.props.pdfEventBus.remove(this.setView, "view");
-            this.props.pdfEventBus.remove(this.setCol, "column");
-        }
+        createOrGetPdfEventBus().remove(this.setScale, "scale");
+        createOrGetPdfEventBus().remove(this.setView, "view");
+        createOrGetPdfEventBus().remove(this.setCol, "column");
     }
 
     public render() {
@@ -378,7 +372,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                         id={"radio-" + `${scale}`}
                         type="radio"
                         name="pdfZoomRadios"
-                        onChange={() => this.props.pdfEventBus.dispatch("scale", scale)}
+                        onChange={() => createOrGetPdfEventBus().dispatch("scale", scale)}
                         checked={this.state.pdfScale === scale}
                         disabled={disabled}
                     />
@@ -610,7 +604,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                                     type="radio"
                                     name="disposition"
                                     onChange={(e) => isPdf
-                                        ? this.props.pdfEventBus.dispatch("view", "scrolled")
+                                        ? createOrGetPdfEventBus().dispatch("view", "scrolled")
                                         : this.props.handleSettingChange(e, "paged", false)}
                                     checked={isPdf
                                         ? this.state.pdfView === "scrolled"
@@ -632,7 +626,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                                     type="radio"
                                     name="disposition"
                                     onChange={(e) => isPdf
-                                        ? this.props.pdfEventBus.dispatch("view", "paginated")
+                                        ? createOrGetPdfEventBus().dispatch("view", "paginated")
                                         : this.props.handleSettingChange(e, "paged", true)}
                                     checked={isPdf
                                         ? this.state.pdfView === "paginated"
@@ -717,7 +711,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                                     name="column"
                                     {...(!readerConfig.paged && { disabled: true })}
                                     onChange={(e) => isPdf
-                                        ? this.props.pdfEventBus.dispatch("column", "auto")
+                                        ? createOrGetPdfEventBus().dispatch("column", "auto")
                                         : this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
                                     checked={isPdf
                                         ? this.state.pdfCol === "auto"
@@ -743,7 +737,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                             type="radio"
                             name="column"
                             onChange={(e) => isPdf
-                                ? this.props.pdfEventBus.dispatch("column", "1")
+                                ? createOrGetPdfEventBus().dispatch("column", "1")
                                 : this.props.handleSettingChange(e, "colCount", colCountEnum.one)}
                             checked={isPdf
                                 ? this.state.pdfCol === "1"
@@ -768,7 +762,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                             name="column"
                             disabled={!isPdf && !readerConfig.paged ? true : false}
                             onChange={(e) => isPdf
-                                ? this.props.pdfEventBus.dispatch("column", "2")
+                                ? createOrGetPdfEventBus().dispatch("column", "2")
                                 : this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
                             checked={isPdf
                                 ? this.state.pdfCol === "2"
