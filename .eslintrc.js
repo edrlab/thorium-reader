@@ -6,7 +6,7 @@ module.exports = {
         es6: true,
         es2020: true,
     },
-    ignorePatterns: [ "*.*" ],
+    // ignorePatterns: [ "*.*" ],
     parserOptions: {
         project: true,
         tsconfigRootDir: __dirname,

@@ -20,7 +20,7 @@
 /* :global */
 
 .RTL_FLIP {
-    transform: scale(-1, 1);
+  transform: scale(-1, 1);
 }
 
 :root.HIDE_CURSOR_CLASS,
