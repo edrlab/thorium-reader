@@ -2,6 +2,7 @@ declare const styles: {
   readonly "HIDE_CURSOR_CLASS": string;
   readonly "HIDE_CURSOR_CLASS_foot": string;
   readonly "HIDE_CURSOR_CLASS_head": string;
+  readonly "RTL_FLIP": string;
   readonly "___DEBUG___READER_APP_CSS": string;
   readonly "active": string;
   readonly "after": string;
