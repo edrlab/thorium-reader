@@ -63,6 +63,8 @@ interface IBaseProps extends TranslatorProps {
     divinaNumberOfPages: number;
     divinaContinousEqualTrue: boolean;
 
+    disableRTLFlip: boolean;
+
     isPdf: boolean;
 }
 
@@ -120,7 +122,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
         let afterCurrentLocation = false;
 
-        const isRTL = this.props.r2Publication?.Metadata?.Direction === "rtl" || this.props.r2Publication?.Metadata?.Direction === "ttb"; // TODO RTL (see ReaderMenu.tsx)
+        const isRTL_ = this.props.r2Publication?.Metadata?.Direction === "rtl" || this.props.r2Publication?.Metadata?.Direction === "ttb"; // TODO RTL (see ReaderMenu.tsx)
+        const isRTL = !this.props.disableRTLFlip && isRTL_;
+
         return (
             <div className={classNames(stylesReader.reader_footer,
                 this.props.fullscreen ? stylesReader.reader_footer_fullscreen : undefined)}
@@ -180,7 +184,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                     this.props.gotoBegin();
                                 }
                             } else {
-                                this.props.navLeftOrRight(true);
+                                this.props.navLeftOrRight(isRTL_ && this.props.disableRTLFlip ? false : true);
                             }
                         }}
                         title={__("reader.svg.left")}
@@ -195,7 +199,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                     this.props.gotoEnd();
                                 }
                             } else {
-                                this.props.navLeftOrRight(false);
+                                this.props.navLeftOrRight(isRTL_ && this.props.disableRTLFlip ? true : false);
                             }
                         }}
                         title={__("reader.svg.right")}
@@ -398,7 +402,8 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     private getStyle(
         func: (arrowBoxPosition: number, multiplicator: number, rest: number) => string): React.CSSProperties {
 
-        const isRTL = this.props.r2Publication?.Metadata?.Direction === "rtl" || this.props.r2Publication?.Metadata?.Direction === "ttb"; // TODO RTL (see ReaderMenu.tsx)
+        const isRTL_ = this.props.r2Publication?.Metadata?.Direction === "rtl" || this.props.r2Publication?.Metadata?.Direction === "ttb"; // TODO RTL (see ReaderMenu.tsx)
+        const isRTL = !this.props.disableRTLFlip && isRTL_;
 
         let arrowBoxPosition = this.getArrowBoxPosition();
         if (isRTL) {

@@ -28,11 +28,13 @@ import { catalogViewReducer } from "./catalog";
 import { tagReducer } from "./tag";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
 // import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { readerRTLFlipReducer } from "readium-desktop/common/redux/reducers/reader/rtlFlip";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
     return combineReducers({ // ILibraryRootState
         reader: combineReducers({
             defaultConfig: readerDefaultConfigReducer,
+            disableRTLFlip: readerRTLFlipReducer,
         }),
         session: sessionReducer,
         i18n: i18nReducer,

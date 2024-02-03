@@ -21,6 +21,7 @@ import { winRegistryReaderReducer } from "./win/registry/reader";
 import { winSessionLibraryReducer } from "./win/session/library";
 import { winSessionReaderReducer } from "./win/session/reader";
 import { winModeReducer } from "../../../common/redux/reducers/winModeReducer";
+import { readerRTLFlipReducer } from "../../../common/redux/reducers/reader/rtlFlip";
 import { publicationDbReducers } from "./publication/db";
 import { opdsDbReducers } from "./opds/db";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
@@ -32,6 +33,7 @@ export const rootReducer = combineReducers({ // RootState
     i18n: i18nReducer,
     reader: combineReducers({
         defaultConfig: readerDefaultConfigReducer,
+        disableRTLFlip: readerRTLFlipReducer,
     }),
     // net: netReducer,
     // update: updateReducer,

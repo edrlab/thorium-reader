@@ -357,6 +357,7 @@
             "lineSpacing": "Zeilenabstand",
             "margin": "Seitenränder",
             "noFootnotes": "",
+            "noRTLFlip": "",
             "paginated": "Seitendarstellung",
             "paraSpacing": "",
             "pdfZoom": {

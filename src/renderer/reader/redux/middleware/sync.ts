@@ -35,6 +35,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     lcpActions.renewPublicationLicense.ID,
     lcpActions.returnPublication.ID,
     lcpActions.unlockPublicationWithPassphrase.ID,
+
+    readerActions.disableRTLFlip.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

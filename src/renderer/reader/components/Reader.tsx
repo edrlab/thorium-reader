@@ -570,6 +570,9 @@ class Reader extends React.Component<IProps, IState> {
             r2Publication: this.props.r2Publication,
             handleDivinaReadingMode: this.handleDivinaReadingMode.bind(this),
 
+            setDisableRTLFlip: this.props.setDisableRTLFlip.bind(this),
+            disableRTLFlip: this.props.disableRTLFlip,
+
             divinaReadingMode: this.props.divinaReadingMode,
             divinaReadingModeSupported: this.state.divinaReadingModeSupported,
 
@@ -654,6 +657,8 @@ class Reader extends React.Component<IProps, IState> {
                         isPdf={this.props.isPdf}
                         divinaSoundPlay={this.handleDivinaSound}
                         r2Publication={this.props.r2Publication}
+
+                        disableRTLFlip={this.props.disableRTLFlip}
                     />
                     <div className={classNames(stylesReader.content_root,
                         this.state.fullscreen ? stylesReader.content_root_fullscreen : undefined,
@@ -744,6 +749,8 @@ class Reader extends React.Component<IProps, IState> {
                     divinaNumberOfPages={this.state.divinaNumberOfPages}
                     divinaContinousEqualTrue={this.state.divinaContinousEqualTrue}
                     isPdf={this.props.isPdf}
+
+                    disableRTLFlip={this.props.disableRTLFlip}
                 />
             </div>
         );
@@ -2515,6 +2522,8 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         divinaReadingMode: state.reader.divina.readingMode,
         locale: state.i18n.locale,
         session: state.session.state,
+
+        disableRTLFlip: !!state.reader.disableRTLFlip?.disabled,
     };
 };
 
@@ -2563,9 +2572,10 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         deleteBookmark: (bookmark: IBookmarkState) => {
             dispatch(readerLocalActionBookmarks.pop.build(bookmark));
         },
+        setDisableRTLFlip: (disable: boolean) => {
+            dispatch(readerActions.disableRTLFlip.build(disable));
+        },
         setReadingMode: (readingMode: TdivinaReadingMode) => {
-
-            console.log("Persist the reading mode", readingMode);
             dispatch(readerLocalActionDivina.setReadingMode.build({readingMode}));
         },
         clipboardCopy: (publicationIdentifier: string, clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => {

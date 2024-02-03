@@ -149,4 +149,7 @@ export interface IReaderOptionsProps {
     isPdf: boolean;
 
     openedSection: number | undefined;
+
+    disableRTLFlip: boolean;
+    setDisableRTLFlip: (disabled: boolean) => void;
 }

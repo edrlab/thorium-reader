@@ -703,6 +703,7 @@ declare namespace typed_i18n {
     readonly "lineSpacing": string,
     readonly "margin": string,
     readonly "noFootnotes": string,
+    readonly "noRTLFlip": string,
     readonly "paginated": string,
     readonly "paraSpacing": string,
     readonly "pdfZoom": {
@@ -883,6 +884,7 @@ declare namespace typed_i18n {
   readonly "lineSpacing": string,
   readonly "margin": string,
   readonly "noFootnotes": string,
+  readonly "noRTLFlip": string,
   readonly "paginated": string,
   readonly "paraSpacing": string,
   readonly "pdfZoom": {
@@ -942,6 +944,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.lineSpacing", __?: {}): string;
   (_: "reader.settings.margin", __?: {}): string;
   (_: "reader.settings.noFootnotes", __?: {}): string;
+  (_: "reader.settings.noRTLFlip", __?: {}): string;
   (_: "reader.settings.paginated", __?: {}): string;
   (_: "reader.settings.paraSpacing", __?: {}): string;
   (_: "reader.settings.pdfZoom", __?: {}): {

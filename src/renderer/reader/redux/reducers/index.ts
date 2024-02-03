@@ -30,6 +30,7 @@ import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { winModeReducer } from "readium-desktop/common/redux/reducers/winModeReducer";
 import { readerDivinaReducer } from "./divina";
+import { readerRTLFlipReducer } from "readium-desktop/common/redux/reducers/reader/rtlFlip";
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
 
@@ -125,6 +126,7 @@ export const rootReducer = () => {
                     ),
             }),
             divina: readerDivinaReducer,
+            disableRTLFlip: readerRTLFlipReducer,
         }),
         search: searchReducer,
         picker: pickerReducer,

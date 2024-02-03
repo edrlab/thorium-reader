@@ -812,6 +812,16 @@ export class ReaderOptions extends React.Component<IProps, IState> {
                     />
                     <label htmlFor="noFootnotesCheckBox">{__("reader.settings.noFootnotes")}</label>
                 </div>
+
+                <div className={stylesReader.mathml_section}>
+                    <input
+                        id="noRTLFlipCheckBox"
+                        type="checkbox"
+                        checked={this.props.disableRTLFlip}
+                        onChange={() => this.props.setDisableRTLFlip(!this.props.disableRTLFlip)}
+                    />
+                    <label htmlFor="noRTLFlipCheckBox">{__("reader.settings.noRTLFlip")}</label>
+                </div>
             </div>
         </>;
     }

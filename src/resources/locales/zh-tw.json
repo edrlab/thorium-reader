@@ -357,6 +357,7 @@
             "lineSpacing": "行間距",
             "margin": "頁邊距",
             "noFootnotes": "沒有附註",
+            "noRTLFlip": "",
             "paginated": "分頁",
             "paraSpacing": "段落間距",
             "pdfZoom": {

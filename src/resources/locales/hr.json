@@ -357,6 +357,7 @@
             "lineSpacing": "Razmak između redova",
             "margin": "Margina",
             "noFootnotes": "Isključi fusnote",
+            "noRTLFlip": "",
             "paginated": "Paginirano",
             "paraSpacing": "Razmak između paragrafa",
             "pdfZoom": {

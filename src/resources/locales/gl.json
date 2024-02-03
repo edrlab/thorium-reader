@@ -357,6 +357,7 @@
             "lineSpacing": "Interlineado",
             "margin": "Marxe",
             "noFootnotes": "Desactivar notas ao pé",
+            "noRTLFlip": "",
             "paginated": "Paginado",
             "paraSpacing": "Espazado de parágrafos",
             "pdfZoom": {

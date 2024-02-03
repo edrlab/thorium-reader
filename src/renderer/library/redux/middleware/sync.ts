@@ -40,6 +40,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     catalogActions.getCatalog.ID, // request to get catalog view
 
+    readerActions.disableRTLFlip.ID,
+
     readerActions.configSetDefault.ID, // readerConfig
 ];
 
