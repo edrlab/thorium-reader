@@ -7,11 +7,11 @@
 
 import { type Reducer } from "redux";
 
-import { disableRTLFlip } from "../../actions/reader";
-import { IRTLFlipState } from "../../states/renderer/rtlFlip";
+import { disableRTLFlip } from "readium-desktop/common/redux/actions/reader";
+import { IRTLFlipState, defaultDisableRTLFLip } from "readium-desktop/common/redux/states/renderer/rtlFlip";
 
-const initialState: IRTLFlipState = {
-    disabled: false,
+export const initialState: IRTLFlipState = {
+    disabled: defaultDisableRTLFLip,
 };
 
 function readerRTLFlipReducer_(

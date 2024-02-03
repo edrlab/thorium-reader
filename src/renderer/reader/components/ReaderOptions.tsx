@@ -14,6 +14,7 @@ import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
+import { defaultDisableRTLFLip } from "readium-desktop/common/redux/states/renderer/rtlFlip";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as AutoIcon from "readium-desktop/renderer/assets/icons/auto.svg";
 import * as ColumnIcon from "readium-desktop/renderer/assets/icons/colonne.svg";
@@ -1062,8 +1063,10 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
                 dispatch(readerActions.configSetDefault.build(readerConfigInitialState));
                 dispatch(readerLocalActionSetConfig.build(readerConfigInitialState));
                 props.setSettings(readerConfigInitialState);
+                dispatch(readerActions.disableRTLFlip.build(defaultDisableRTLFLip));
             } else {
                 dispatch(readerActions.configSetDefault.build(...config));
+                dispatch(readerActions.disableRTLFlip.build(props.disableRTLFlip));
             }
 
             dispatch(toastActions.openRequest.build(ToastType.Success, "👍"));

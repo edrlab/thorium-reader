@@ -8,3 +8,5 @@
 export interface IRTLFlipState {
     disabled: boolean;
 }
+
+export const defaultDisableRTLFLip = false;
