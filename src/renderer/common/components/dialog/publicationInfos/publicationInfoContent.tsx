@@ -259,7 +259,7 @@ const Progression = (props: {
                                         <span key={`_h${k++}`}>{i === 0 ? " " : " / "}</span>
                                         <span key={`_h${k++}`} style={{ fontWeight: "bold" }}>h{h.level} </span>
                                         <span key={`_h${k++}`}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>
-                                    </div>
+                                    </div>,
                                 );
                             }, []);
 
