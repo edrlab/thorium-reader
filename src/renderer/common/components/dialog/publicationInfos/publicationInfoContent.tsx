@@ -255,9 +255,11 @@ const Progression = (props: {
                             let k = 0;
                             const summary = hs.reduce((arr, h, i) => {
                                 return arr.concat(
-                                    <span key={`_h${k++}`}>{i === 0 ? " " : " / "}</span>,
-                                    <span key={`_h${k++}`} style={{ fontWeight: "bold" }}>h{h.level} </span>,
-                                    <span key={`_h${k++}`}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>,
+                                    <div style={{ display: "flex", gap: "5px", flex: "1",overflow: "hidden", textWrap: "nowrap", textOverflow: "ellipsis"}}>
+                                        <span key={`_h${k++}`}>{i === 0 ? " " : " / "}</span>
+                                        <span key={`_h${k++}`} style={{ fontWeight: "bold" }}>h{h.level} </span>
+                                        <span key={`_h${k++}`}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>
+                                    </div>
                                 );
                             }, []);
 
@@ -344,7 +346,7 @@ const ProgressionDetails = (props: any) => {
     const [open, setOpen] = React.useState(false);
     return (
         <details open={open} onToggle={() => setOpen(!open)}>
-            <summary>
+            <summary style={{display: "flex", maxWidth: "480px"}}>
                 {summary}
                 {open ?
                     <SVG ariaHidden svg={ChevronDown} /> :

@@ -9,7 +9,7 @@ import classNames from "classnames";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import FocusLock from "react-focus-lock";
-import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";

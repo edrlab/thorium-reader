@@ -23,7 +23,7 @@ import OpdsControls from "./opdsControls/OpdsControls";
 import TagManager from "./TagManager";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 
-import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
