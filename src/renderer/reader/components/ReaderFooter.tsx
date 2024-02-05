@@ -29,7 +29,7 @@ import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
-import * as Tooltip from '@radix-ui/react-tooltip';
+import * as Tooltip from "@radix-ui/react-tooltip";
 
 function throttle(callback: (...args: any) => void, limit: number) {
     let waiting = false;
@@ -238,7 +238,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                 afterCurrentLocation = true;
                                             }
                                             return (
-                                                <Tooltip.Provider>
+                                                <Tooltip.Provider key={index}>
                                                     <Tooltip.Root>
                                                         <Tooltip.Trigger asChild>
                                                             <span
