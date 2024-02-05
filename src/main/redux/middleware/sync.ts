@@ -31,7 +31,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     readerActions.detachModeSuccess.ID,
 
-    readerActions.configSetDefault.ID,
+    // readerActions.configSetDefault.ID, ALREADY AT THE BOTTOM??
+
     readerActions.setReduxState.ID, // used only to update the catalog when dispatched from reader
 
     readerActions.fullScreenRequest.ID,
@@ -59,6 +60,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     catalogActions.setCatalog.ID, // send new catalogView to library
     catalogActions.setTagView.ID,
+
+    readerActions.disableRTLFlip.ID,
 
     readerActions.configSetDefault.ID, // readerConfig
     themeActions.setTheme.ID,

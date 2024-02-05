@@ -357,6 +357,7 @@
             "lineSpacing": "Riviväli",
             "margin": "Marginaali",
             "noFootnotes": "Alaviitteet pois käytöstä",
+            "noRTLFlip": "",
             "paginated": "Sivuiksi jaettu",
             "paraSpacing": "Kappaleiden väli",
             "pdfZoom": {

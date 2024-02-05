@@ -53,17 +53,26 @@ export const reduxPersistMiddleware: Middleware
                     version: nextState.version,
                 };
 
-                const ops = createPatch(persistPrevState, persistNextState);
-                if (ops?.length) {
-                    for (const o of ops) {
-                        patchChannel.put(o);
+                // RangeError: Maximum call stack size exceeded
+                // diffAny
+                // node_modules/rfc6902/diff.js:262:17
+                // dist
+                // node_modules/rfc6902/diff.js:135:36
+                try {
+                    const ops = createPatch(persistPrevState, persistNextState);
+                    if (ops?.length) {
+                        for (const o of ops) {
+                            patchChannel.put(o);
+                        }
+                        // We have to dispatch an action because the buffer fifo queue of saga (signal)
+                        // can not allow to trigger a function when data is available and then flush it.
+                        // We can't start a trigger on buffer new data.
+                        // Each data in the fifo queue can be triggered with a take + data exploitation.
+                        // But in your case we expect a generic flushable function.
+                        store.dispatch(winActions.persistRequest.build(ops));
                     }
-                    // We have to dispatch an action because the buffer fifo queue of saga (signal)
-                    // can not allow to trigger a function when data is available and then flush it.
-                    // We can't start a trigger on buffer new data.
-                    // Each data in the fifo queue can be triggered with a take + data exploitation.
-                    // But in your case we expect a generic flushable function.
-                    store.dispatch(winActions.persistRequest.build(ops));
+                } catch (err) {
+                    console.log(err);
                 }
 
                 return returnValue;

@@ -357,6 +357,7 @@
             "lineSpacing": "Linje-mellemrum",
             "margin": "Margin",
             "noFootnotes": "Slå fodnoter fra",
+            "noRTLFlip": "",
             "paginated": "Sideinddelt",
             "paraSpacing": "Paragraf-mellemrum",
             "pdfZoom": {

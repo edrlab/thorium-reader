@@ -55,6 +55,11 @@ export const reduxPersistMiddleware: Middleware
                     readerState.divina = nextState.reader.divina;
                     dispatchFlag = true;
                 }
+                if (prevState.reader.disableRTLFlip !== nextState.reader.disableRTLFlip) {
+
+                    readerState.disableRTLFlip = nextState.reader.disableRTLFlip;
+                    dispatchFlag = true;
+                }
                 if (dispatchFlag) {
 
                     dispatchSetReduxState(store, readerState);

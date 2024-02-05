@@ -61,6 +61,7 @@ export declare const reader_settings_value: string;
 export declare const readium2ElectronAnimation_TARGET: string;
 export declare const right: string;
 export declare const root: string;
+export declare const RTL_FLIP: string;
 export declare const rtlDir: string;
 export declare const sepiaMode: string;
 export declare const settings_action: string;

@@ -13,6 +13,7 @@ export declare const navigation_arrow_left: string;
 export declare const navigation_arrow_right: string;
 export declare const reader_footer: string;
 export declare const reader_footer_fullscreen: string;
+export declare const RTL_FLIP: string;
 export declare const track_reading: string;
 export declare const track_reading_wrapper: string;
 export declare const track_reading_wrapper_noArrows: string;

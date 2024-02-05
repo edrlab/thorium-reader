@@ -37,6 +37,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     lcpActions.unlockPublicationWithPassphrase.ID,
 
     themeActions.setTheme.ID,
+    readerActions.disableRTLFlip.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

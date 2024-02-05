@@ -82,12 +82,19 @@ const isRTL = (r2Publication: R2Publication) => (_link: ILink) => {
                 [r2Publication.Metadata.Language]) :
             [] as string[];
         isRTL = lang.reduce<boolean>((pv, cv) => {
-            const arOrHe = typeof cv === "string" ?
+            const rtlExcludingJapanese = typeof cv === "string" ?
                 // we test for Arabic and Hebrew,
                 // in order to exclude Japanese Vertical Writing Mode which is also RTL!
-                (cv.startsWith("ar") || cv.startsWith("he")) :
+                // see langStringIsRTL()
+                (
+                    cv === "ar" || cv.startsWith("ar-") ||
+                    cv === "he" || cv.startsWith("he-") ||
+                    cv === "fa" || cv.startsWith("fa-") ||
+                    cv === "zh-Hant" ||
+                    cv === "zh-TW"
+                ) :
                 false;
-            return pv || arOrHe;
+            return pv || rtlExcludingJapanese;
         }, false);
     }
     return isRTL;

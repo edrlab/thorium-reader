@@ -357,6 +357,7 @@
             "lineSpacing": "Espaçamento de linhas",
             "margin": "Margem",
             "noFootnotes": "Desativar notas de rodapé",
+            "noRTLFlip": "",
             "paginated": "Paginado",
             "paraSpacing": "Espaçamento de parágrafos",
             "pdfZoom": {

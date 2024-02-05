@@ -30,12 +30,14 @@ import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducer
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 
 // import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { readerRTLFlipReducer } from "readium-desktop/common/redux/reducers/reader/rtlFlip";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
     return combineReducers({ // ILibraryRootState
         theme: themeReducer,
         reader: combineReducers({
             defaultConfig: readerDefaultConfigReducer,
+            disableRTLFlip: readerRTLFlipReducer,
         }),
         session: sessionReducer,
         i18n: i18nReducer,

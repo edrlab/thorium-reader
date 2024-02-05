@@ -23,6 +23,7 @@ import { applyPatch } from "rfc6902";
 
 import { reduxPersistMiddleware } from "../middleware/persistence";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
+import { defaultDisableRTLFLip } from "readium-desktop/common/redux/states/renderer/rtlFlip";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -63,9 +64,17 @@ const recoveryReduxState = async (runtimeState: object): Promise<object> => {
 
     ok(Array.isArray(patch));
 
-    const errors = applyPatch(runtimeState, patch);
-
-    ok(errors.reduce((pv, cv) => pv && !cv, true));
+    // RangeError: Maximum call stack size exceeded
+    // diffAny
+    // node_modules/rfc6902/diff.js:262:17
+    // dist
+    // node_modules/rfc6902/diff.js:135:36
+    try {
+        const errors = applyPatch(runtimeState, patch);
+        ok(errors.reduce((pv, cv) => pv && !cv, true));
+    } catch (err) {
+        console.log(err);
+    }
 
     ok(typeof runtimeState === "object", "state not defined after patch");
 
@@ -199,6 +208,7 @@ export async function initStore()
     const forceDisableReaderDefaultConfigAndSessionForTheNewUI: Partial<PersistRootState> = {
         reader: {
             defaultConfig: readerConfigInitialState,
+            disableRTLFlip: reduxState?.reader?.disableRTLFlip || { disabled: defaultDisableRTLFLip },
         },
         session: {
             state: false,

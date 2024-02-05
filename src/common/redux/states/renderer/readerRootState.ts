@@ -17,6 +17,7 @@ import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
 import { TBookmarkState } from "../bookmark";
+import { IRTLFlipState } from "./rtlFlip";
 
 export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
@@ -35,5 +36,7 @@ export interface IReaderStateReader {
         mounter: TMapState<string, IHighlight>;
     };
     divina: IDivinaState;
+
+    disableRTLFlip: IRTLFlipState;
     defaultConfig: ReaderConfig; // sync across all app
 }

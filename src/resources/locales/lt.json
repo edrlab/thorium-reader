@@ -357,6 +357,7 @@
             "lineSpacing": "Eilučių išretinimas",
             "margin": "Paraštė",
             "noFootnotes": "Išjungti išnašas",
+            "noRTLFlip": "",
             "paginated": "Skaidyti į puslapius",
             "paraSpacing": "Tarpas tarp pastraipų",
             "pdfZoom": {

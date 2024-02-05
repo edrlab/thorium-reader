@@ -1,3 +1,7 @@
+.RTL_FLIP {
+    transform: scale(-1, 1);
+}
+
 .navigation_arrow {
     &_left {
         left: 10px;

@@ -357,6 +357,7 @@
             "lineSpacing": "行の間隔",
             "margin": "ページの余白",
             "noFootnotes": "脚注を表示しない",
+            "noRTLFlip": "",
             "paginated": "ページ型",
             "paraSpacing": "段落の間隔",
             "pdfZoom": {

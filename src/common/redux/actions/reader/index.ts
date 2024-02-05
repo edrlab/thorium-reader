@@ -18,6 +18,7 @@ import * as fullScreenRequest from "./fullScreenRequest";
 import * as openError from "./openError";
 import * as openRequest from "./openRequest";
 import * as setReduxState from "./setReduxState";
+import * as disableRTLFlip from "./rtlFlip";
 
 export {
     openRequest,
@@ -33,4 +34,5 @@ export {
     closeRequestFromPublication,
     fullScreenRequest,
     clipboardCopy,
+    disableRTLFlip,
 };

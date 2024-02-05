@@ -8,5 +8,4 @@ export declare const react_aria_Input: string;
 export declare const react_aria_Label: string;
 export declare const react_aria_ListBox: string;
 export declare const react_aria_Popover: string;
-export declare const react_aria_selectValue: string;
 export declare const selected: string;

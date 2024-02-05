@@ -357,6 +357,7 @@
             "lineSpacing": "Lerroartea",
             "margin": "Marjina",
             "noFootnotes": "Oin-oharrak desaktibatu",
+            "noRTLFlip": "",
             "paginated": "Orrazkera",
             "paraSpacing": "Paragrafoen arteko tartea",
             "pdfZoom": {

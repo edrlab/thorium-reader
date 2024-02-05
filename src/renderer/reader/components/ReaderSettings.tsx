@@ -39,6 +39,7 @@ import debounce from "debounce";
 import fontList from "readium-desktop/utils/fontList";
 import { readerConfigInitialState, readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
+import { createOrGetPdfEventBus } from "../pdf/driver";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps, IPopoverDialogProps {
@@ -402,7 +403,7 @@ const ReadingDisplayLayout = ({config: {paged: layout}, set}: {config: Pick<Read
     );
 };
 
-const ReadingDisplayCol = ({ config: { paged, colCount }, set, isPdf, pdfEventBus, pdfCol }: { config: Pick<ReaderConfig, "paged" | "colCount">, set: (a: Pick<ReaderConfig, "colCount">) => void, isPdf: boolean } & Pick<IBaseProps, "isPdf" | "pdfEventBus"> & Pick<IState, "pdfCol">) => {
+const ReadingDisplayCol = ({ config: { paged, colCount }, set, isPdf, pdfCol }: { config: Pick<ReaderConfig, "paged" | "colCount">, set: (a: Pick<ReaderConfig, "colCount">) => void, isPdf: boolean } & Pick<IBaseProps, "isPdf"> & Pick<IState, "pdfCol">) => {
     const [__] = useTranslator();
     const scrollable = !paged;
 
@@ -419,7 +420,7 @@ const ReadingDisplayCol = ({ config: { paged, colCount }, set, isPdf, pdfEventBu
             <div className={stylesSettings.display_options}>
                 <RadioGroup.Root orientation="horizontal" style={{ display: "flex" }} value={isPdf ? pdfCol : state}
                     onValueChange={(v) => {
-                        isPdf ? pdfEventBus.dispatch("column", v === "auto" ? "1" : v === "1" ? "1" : "2") : set({ colCount: v });}}
+                        isPdf ? createOrGetPdfEventBus().dispatch("column", v === "auto" ? "1" : v === "1" ? "1" : "2") : set({ colCount: v });}}
                     >
                         {isPdf ? <></> : <RadioGroupItem value="auto" description={`${__("reader.settings.column.auto")}`} svg={AlignJustifyIcon} disabled={false} />}
                         <RadioGroupItem value="1" description={`${__("reader.settings.column.one")}`} svg={AlignJustifyIcon} disabled={isPdf ? false : scrollable} />
@@ -656,7 +657,7 @@ const DivinaSetReadingMode = ({ handleDivinaReadingMode, divinaReadingMode, divi
     );
 };
 
-const PdfZoom = ({pdfEventBus, pdfScale, pdfView}: Pick<IBaseProps, "pdfEventBus"> & Pick<IState, "pdfScale" | "pdfView">) => {
+const PdfZoom = ({pdfScale, pdfView}: Pick<IState, "pdfScale" | "pdfView">) => {
     const [__] = useTranslator();
 
     const inputComponent = (scale: IPdfPlayerScale, disabled = false) => {
@@ -665,7 +666,7 @@ const PdfZoom = ({pdfEventBus, pdfScale, pdfView}: Pick<IBaseProps, "pdfEventBus
                 id={"radio-" + `${scale}`}
                 type="radio"
                 name="pdfZoomRadios"
-                onChange={() => pdfEventBus.dispatch("scale", scale)}
+                onChange={() => createOrGetPdfEventBus().dispatch("scale", scale)}
                 checked={pdfScale === scale}
                 disabled={disabled}
             />
@@ -718,7 +719,7 @@ const AllowCustom = ({ overridePublisherDefault, set }:
 };
 
 export const ReaderSettings: React.FC<IBaseProps> = (props) => {
-    const { setSettings, readerConfig, open, pdfEventBus } = props;
+    const { setSettings, readerConfig, open } = props;
     const { setDockingMode, dockedMode, dockingMode } = props;
     const { handleDivinaReadingMode, divinaReadingMode, divinaReadingModeSupported } = props;
     const [__] = useTranslator();
@@ -757,22 +758,17 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     };
 
     React.useEffect(() => {
-        if (pdfEventBus) {
-            pdfEventBus.subscribe("scale", setScale);
-            pdfEventBus.subscribe("view", setView);
-            pdfEventBus.subscribe("column", setCol);
-        }
+        createOrGetPdfEventBus().subscribe("scale", setScale);
+        createOrGetPdfEventBus().subscribe("view", setView);
+        createOrGetPdfEventBus().subscribe("column", setCol);
 
         return () => {
-
-            if (pdfEventBus) {
-                pdfEventBus.remove(setScale, "scale");
-                pdfEventBus.remove(setView, "view");
-                pdfEventBus.remove(setCol, "column");
-            }
+            createOrGetPdfEventBus().remove(setScale, "scale");
+            createOrGetPdfEventBus().remove(setView, "view");
+            createOrGetPdfEventBus().remove(setCol, "column");
         };
 
-    }, [pdfEventBus]);
+    }, []);
 
     const setPartialSettingsDebounced = React.useMemo(() => {
         const saveConfig = (config: Partial<ReaderConfig>) => {
@@ -1037,7 +1033,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                     <Tabs.Content value="tab-pdfzoom" tabIndex={-1}>
                         <TabTitle title={__("reader.settings.disposition.title")} />
                         <div className={stylesSettings.settings_tab}>
-                            <PdfZoom pdfEventBus={pdfEventBus} pdfScale={pdfState.pdfScale} pdfView={pdfState.pdfView} />
+                            <PdfZoom pdfScale={pdfState.pdfScale} pdfView={pdfState.pdfView} />
                         </div>
                     </Tabs.Content>
                     <Tabs.Content value="tab-text" tabIndex={-1}>
@@ -1059,7 +1055,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             {isPdf ? <></> : <Theme theme={readerConfig} set={setPartialSettingsDebounced} />}
                             {isPdf ? <></> : <ReadingDisplayLayout config={readerConfig} set={setPartialSettingsDebounced} />}
                             {isPdf ? <></> : <ReadingDisplayAlign config={readerConfig} set={setPartialSettingsDebounced} />}
-                            <ReadingDisplayCol config={readerConfig} set={setPartialSettingsDebounced} isPdf={props.isPdf} pdfEventBus={props.pdfEventBus} pdfCol={pdfState.pdfCol} />
+                            <ReadingDisplayCol config={readerConfig} set={setPartialSettingsDebounced} isPdf={props.isPdf} pdfCol={pdfState.pdfCol} />
                             {isPdf ? <></> : <ReadingDisplayMathJax config={readerConfig} set={setPartialSettingsDebounced} />}
                         </section>
                     </Tabs.Content>

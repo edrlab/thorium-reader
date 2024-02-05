@@ -31,7 +31,6 @@ import SearchPicker from "../picker/Search";
 interface IBaseProps extends TranslatorProps {
     shortcutEnable: boolean;
     showSearchResults: () => void;
-    pdfEventBus: IEventBusPdfPlayer;
     isPdf: boolean;
 }
 // IProps may typically extend:
@@ -134,7 +133,6 @@ class HeaderSearch extends React.Component<IProps, IState> {
                     >
                             <SearchPicker
                                 showSearchResults={this.props.showSearchResults}
-                                pdfEventBus={this.props.pdfEventBus}
                                 isPdf={this.props.isPdf}
                             />
 

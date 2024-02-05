@@ -357,6 +357,7 @@
             "lineSpacing": "ხაზების დაშორება",
             "margin": "მინდორი",
             "noFootnotes": "სქოლიოს გათიშვა",
+            "noRTLFlip": "",
             "paginated": "დანომრილი",
             "paraSpacing": "პარაგრაფების დაშორება",
             "pdfZoom": {

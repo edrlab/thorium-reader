@@ -68,6 +68,8 @@ function main() {
                 }
 
             });
+
+            return true;
         },
     );
 

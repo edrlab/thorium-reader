@@ -28,6 +28,7 @@ export declare const my_combobox_container: string;
 export declare const popover_dialog_reader: string;
 export declare const react_aria_ComboBox: string;
 export declare const react_aria_Input: string;
+export declare const react_aria_ListBox: string;
 export declare const search_container: string;
 export declare const search_navigation: string;
 export declare const section: string;
