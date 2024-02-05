@@ -669,7 +669,8 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
     return < div className={stylesPopoverDialog.goToPage} >
         {/* <p>{__("reader.navigation.goToTitle")}</p> */}
 
-        <label className={stylesPopoverDialog.currentPage}
+        {
+            currentPage ? <label className={stylesPopoverDialog.currentPage}
             id="gotoPageLabel"
             htmlFor="gotoPageInput">
                 <SVG ariaHidden svg={BookOpenIcon} />
@@ -681,7 +682,7 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
                         : __("reader.navigation.currentPage", { current: `${currentPage}` })) :
                     ""
             }
-        </label>
+        </label> : <></>}
         <form
             id="gotoPageForm"
             onSubmit={(e) => {
@@ -700,7 +701,6 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
             }
         >
 
-            {(isFixedLayoutNoPageList || r2Publication?.PageList) &&
             <div className={classNames(stylesInputs.form_group, stylesPopoverDialog.gotopage_combobox)} style={{width: "80%"}}>
                 <label> {__("reader.navigation.goToPlaceHolder")}</label>
                 <ComboBox
@@ -708,6 +708,7 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
                     defaultSelectedKey={defaultKey}
                     refInputEl={goToRef}
                     allowsCustomValue
+                    isDisabled={!(isFixedLayoutNoPageList || r2Publication?.PageList)}
                     onSelectionChange={(ev) => {
                         const val = ev?.toString();
                         if (!val || !goToRef?.current) {
@@ -720,8 +721,6 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
                     {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                 </ComboBox>
             </div>
-}
-
             <button
                 type="button"
 
