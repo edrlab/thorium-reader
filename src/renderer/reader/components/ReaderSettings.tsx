@@ -32,7 +32,7 @@ import { IPopoverDialogProps, IReaderSettingsProps } from "./options-values";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import { ComboBox, ComboBoxItem, MyComboBoxProps } from "readium-desktop/renderer/common/components/ComboBox";
+import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import debounce from "debounce";
@@ -40,6 +40,7 @@ import fontList from "readium-desktop/utils/fontList";
 import { readerConfigInitialState, readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import { createOrGetPdfEventBus } from "../pdf/driver";
+import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps, IPopoverDialogProps {
@@ -809,7 +810,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         }
     }, [overridePublisherDefault]);
 
-    const dockedModeRef = React.useRef<HTMLInputElement>();
+    const dockedModeRef = React.useRef<HTMLButtonElement>();
     const tabModeRef = React.useRef<HTMLDivElement>();
     React.useEffect(() => {
         console.log("ReaderSettings UPDATED");
@@ -953,13 +954,15 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
     console.log("RENDER");
 
-    const ComboBoxRef = React.forwardRef<HTMLInputElement, MyComboBoxProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <ComboBox refInputEl={forwardedRef} {...props}></ComboBox>);
-    ComboBoxRef.displayName = "ComboBox";
+    const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
+    SelectRef.displayName = "ComboBox";
     return (
         <div>
             {
                 dockedMode ? <div key="docked-header" className={stylesPopoverDialog.docked_header}>
-                    <ComboBoxRef defaultItems={options} selectedKey={optionSelected}
+                    <SelectRef
+                        items={options}
+                        selectedKey={optionSelected}
                         disabledKeys={optionDisabled}
                         svg={options.find(({ value }) => value === tabValue)?.svg}
                         onSelectionChange={(id) => {
@@ -970,25 +973,25 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                                 console.log("set Tab Value = ", value);
 
                             } else {
-                                console.error("Combobox No value !!!");
+                                // console.error("Combobox No value !!!");
                             }
                         }}
-                        onInputChange={(v) => {
-                            console.log("inputchange: ", v);
+                        // onInputChange={(v) => {
+                        //     console.log("inputchange: ", v);
 
-                            const value = options.find(({ name }) => name === v)?.value;
-                            if (value) {
-                                setTabValue(value);
-                                console.log("set Tab Value = ", value);
+                        //     const value = options.find(({ name }) => name === v)?.value;
+                        //     if (value) {
+                        //         setTabValue(value);
+                        //         console.log("set Tab Value = ", value);
 
-                            } else {
-                                console.error("Combobox No value !!!");
-                            }
-                        }}
+                        //     } else {
+                        //         console.error("Combobox No value !!!");
+                        //     }
+                        // }}
                         ref={dockedModeRef}
-                        >
+                    >
                         {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                    </ComboBoxRef>
+                    </SelectRef>
 
                     <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls}>
                         <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label="left" onClick={setDockingModeLeftSide}>
