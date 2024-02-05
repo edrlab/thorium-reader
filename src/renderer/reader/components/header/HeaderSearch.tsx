@@ -23,7 +23,6 @@ import {
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import { readerLocalActionPicker, readerLocalActionSearch } from "../../redux/actions";
-import { IEventBusPdfPlayer } from "../../pdf/common/pdfReader.type";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import SearchPicker from "../picker/Search";
 
@@ -43,21 +42,12 @@ interface IProps extends IBaseProps,
     ReturnType<typeof mapDispatchToProps> {
 }
 
-interface IState {
-    pdfPlayerBusEvent: IEventBusPdfPlayer;
-}
-
-class HeaderSearch extends React.Component<IProps, IState> {
+class HeaderSearch extends React.Component<IProps> {
 
     constructor(props: IProps) {
         super(props);
 
         this.enableSearch = this.enableSearch.bind(this);
-
-
-        this.state = {
-            pdfPlayerBusEvent: undefined,
-        };
     }
 
     // public componentDidMount() {
@@ -180,7 +170,7 @@ class HeaderSearch extends React.Component<IProps, IState> {
             }
             return;
         }
-        this.props.enableSearch(v || !this.props.enableSearch);
+        this.props.enableSearch(v || !this.props.isOnSearch);
     };
 
 }
