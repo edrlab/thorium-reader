@@ -14,7 +14,7 @@ import { ISearchDocument, ISearchResult } from "readium-desktop/utils/search/sea
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, cancel, join, put, take } from "redux-saga/effects";
 import {
-    all as allTyped, fork as forkTyped, select as selectTyped, takeEvery as takeEveryTyped,
+    all as allTyped, delay as delayTyped, fork as forkTyped, select as selectTyped, takeEvery as takeEveryTyped,
     takeLatest as takeLatestTyped,
 } from "typed-redux-saga/macro";
 
@@ -224,6 +224,8 @@ function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
     const taskSearch = yield* takeLatestTyped(readerLocalActionSearch.request.build,
         function*(action: readerLocalActionSearch.request.TAction) {
             yield join(taskRequest);
+
+            yield* delayTyped(100); // refresh load props in Search.tsx (Caused by React18 !?, the load spinner doesn't rotate now !)
 
             yield call(searchRequest, action);
         },
