@@ -14,11 +14,11 @@
     }
 
     &_docked_left {
-        left: 410px;
+        left: 360px;
     }
 
     &_docked_right {
-        right: 410px;
+        right: 360px;
     }
 }
 
@@ -169,7 +169,7 @@
             opacity: 1;
             transition: 200ms;
         }
-        
+
         &:hover {
             outline: var(--color-blue) solid 1px;
             outline-offset: 0;
