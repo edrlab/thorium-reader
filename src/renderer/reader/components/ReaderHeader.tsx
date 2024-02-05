@@ -715,7 +715,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         htmlFor="pdfScaleButton"
                                         className={stylesReader.menu_button}
                                     >
-                                        <SVG svg={viewMode} title={__("reader.navigation.pdfscalemode")} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""} />
+                                        <SVG svg={viewMode} title={__("reader.navigation.pdfscalemode")} className={this.state.pdfScaleMode === "page-width" ? stylesReaderHeader.active_svg : ""} />
                                     </label>
                                 </li>
                                 : (this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed"
