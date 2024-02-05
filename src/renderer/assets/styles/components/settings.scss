@@ -107,14 +107,18 @@ $setting_color: var(--color-blue);
     }
 
     .allowCustom {
-        display: flex;
-        accent-color: var(--color-blue);
         margin: 10px 10%;
     }
 
     button[data-value="tab-text"], button[data-value="tab-spacing"] {
         margin-left: 20%;
     }
+}
+
+.allowCustom {
+    display: flex;
+    accent-color: var(--color-blue);
+    margin: 10px;
 }
 
 .tablist_reading {
@@ -172,7 +176,7 @@ $setting_color: var(--color-blue);
 
     // box-shadow: -1px 0 0.5px rgba(0, 0, 0, 0.1);
     overflow: scroll;
-    margin-top: 25px;
+    margin-top: 30px;
 
     &::-webkit-scrollbar-thumb {
         border-radius: 5px;
@@ -202,7 +206,7 @@ $setting_color: var(--color-blue);
 
 .close_button_div {
     position: absolute;
-    top: 20px;
+    top: 10px;
     right: 20px;
     display: flex;
     align-items: center;

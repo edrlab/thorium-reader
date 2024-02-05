@@ -29,6 +29,7 @@ import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
+import * as Tooltip from '@radix-ui/react-tooltip';
 
 function throttle(callback: (...args: any) => void, limit: number) {
     let waiting = false;
@@ -237,67 +238,100 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                 afterCurrentLocation = true;
                                             }
                                             return (
-                                                <span
-                                                    onClick={(e) => {
+                                                <Tooltip.Provider>
+                                                    <Tooltip.Root>
+                                                        <Tooltip.Trigger asChild>
+                                                            <span
+                                                                onClick={(e) => {
 
-                                                        if (isDivina) {
-                                                            // const loc = {
-                                                            //     href: index.toString(),
-                                                            //     // progression generate in divina pagechange event
-                                                            // };
-                                                            // this.props.goToLocator(loc as any);
-                                                            if (link?.Href) {
-                                                                this.props.handleLinkClick(e, link.Href);
-                                                            }
+                                                                    if (isDivina) {
+                                                                        // const loc = {
+                                                                        //     href: index.toString(),
+                                                                        //     // progression generate in divina pagechange event
+                                                                        // };
+                                                                        // this.props.goToLocator(loc as any);
+                                                                        if (link?.Href) {
+                                                                            this.props.handleLinkClick(e, link.Href);
 
-                                                        } else {
+                                                                        }
+                                                                    } else {
 
-                                                            const el = e.nativeEvent.target as HTMLElement;
-                                                            const deltaX = e.nativeEvent.offsetX;
-                                                            let element = el;
-                                                            let w: number | undefined;
-                                                            while (element && element.classList) {
-                                                                if (
-                                                                    // tslint:disable-next-line: max-line-length
-                                                                    element.classList.contains("progressChunkSpineItem")
-                                                                ) {
-                                                                    w = element.offsetWidth;
-                                                                    break;
+                                                                        const el = e.nativeEvent.target as HTMLElement;
+                                                                        const deltaX = e.nativeEvent.offsetX;
+                                                                        let element = el;
+                                                                        let w: number | undefined;
+                                                                        while (element && element.classList) {
+                                                                            if (
+                                                                                // tslint:disable-next-line: max-line-length
+                                                                                element.classList.contains("progressChunkSpineItem")
+                                                                            ) {
+                                                                                w = element.offsetWidth;
+                                                                                break;
+                                                                            }
+                                                                            element = element.parentNode as HTMLElement;
+                                                                        }
+                                                                        if (!w) {
+                                                                            w = element.offsetWidth;
+                                                                        }
+                                                                        const percent = deltaX / w;
+                                                                        const loc: R2Locator = {
+                                                                            href: link.Href,
+                                                                            locations: {
+                                                                                progression: percent,
+                                                                            },
+                                                                        };
+                                                                        this.props.goToLocator(loc);
+                                                                        // this.props.handleLinkClick(e, link.Href);
+                                                                    }
+                                                                }}
+                                                                key={index}
+                                                                className={
+                                                                    classNames(
+                                                                        "progressChunkSpineItem",
+                                                                        atCurrentLocation ? stylesReaderFooter.currentSpineItem : undefined)
                                                                 }
-                                                                element = element.parentNode as HTMLElement;
+                                                            >
+                                                            {
+                                                                atCurrentLocation
+                                                                    ? <span style={this.getProgressionStyle()}></span>
+                                                                    : !afterCurrentLocation && <span></span>
                                                             }
-                                                            if (!w) {
-                                                                w = element.offsetWidth;
-                                                            }
-                                                            const percent = deltaX / w;
-
-                                                            const loc: R2Locator = {
-                                                                href: link.Href,
-                                                                locations: {
-                                                                    progression: percent,
-                                                                },
-                                                            };
-                                                            this.props.goToLocator(loc);
-                                                            // this.props.handleLinkClick(e, link.Href);
-                                                        }
-                                                    }}
-                                                    key={index}
-                                                    className={
-                                                        classNames(
-                                                            "progressChunkSpineItem",
-                                                            atCurrentLocation ? stylesReaderFooter.currentSpineItem : undefined)
-                                                    }
-                                                >
-                                                    {
-                                                        atCurrentLocation
-                                                            ? <span style={this.getProgressionStyle()}></span>
-                                                            : !afterCurrentLocation && <span></span>
-                                                    }
-                                                </span>
+                                                        </span>
+                                                    </Tooltip.Trigger>
+                                                    <Tooltip.Portal>
+                                                            <Tooltip.Content className={stylesReaderFooter.tooltip_content}>
+                                                                <div
+                                                                    id={stylesReaderFooter.arrow_box}
+                                                                    style={this.getStyle(this.getArrowBoxStyle)}
+                                                                >
+                                                                    <span title={spineTitle}><em>{`(${(isDivina)
+                                                                        ? spineTitle
+                                                                        : isPdf ?
+                                                                            parseInt(link.Href, 10).toString()
+                                                                            :
+                                                                            ((r2Publication.Spine.findIndex((spineLink) => spineLink.Href === link.Href)) + 1).toString()
+                                                                        }/${isPdf ? (r2Publication.Metadata?.NumberOfPages ? r2Publication.Metadata.NumberOfPages : 0) :
+                                                                            (isDivina
+                                                                                ? (this.props.divinaContinousEqualTrue ? r2Publication.Spine.length : this.props.divinaNumberOfPages)
+                                                                                : r2Publication.Spine.length)
+                                                                        }) `}</em> {` ${link.Title !== undefined ? link.Title : spineTitle}`}</span>
+                                                                    <p>
+                                                                        {this.getProgression()}
+                                                                    </p>
+                                                                    {/* <span
+                                                                        style={this.getStyle(this.getArrowStyle)}
+                                                                        className={stylesReaderFooter.after}
+                                                                    /> */}
+                                                                </div>
+                                                                <Tooltip.Arrow width={15} height={10} />
+                                                            </Tooltip.Content>
+                                                        </Tooltip.Portal>
+                                                    </Tooltip.Root>
+                                                </Tooltip.Provider>
                                             );
                                         })}
                                 </div>
-                                {moreInfo &&
+                                {/* {moreInfo &&
                                     <div
                                         id={stylesReaderFooter.arrow_box}
                                         style={this.getStyle(this.getArrowBoxStyle)}
@@ -321,7 +355,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                             className={stylesReaderFooter.after}
                                         />
                                     </div>
-                                }
+                                } */}
                             </div>
                         }
 
@@ -423,9 +457,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         return `calc(${arrowBoxPosition}% + ${(multiplicator * (450 * (rest / 100) - 30 * rest / 100))}px)`;
     }
 
-    private getArrowStyle(arrowBoxPosition: number, multiplicator: number, rest: number) {
-        return `calc(${arrowBoxPosition}% + ${multiplicator * 30 * rest / 100}px)`;
-    }
+    // private getArrowStyle(arrowBoxPosition: number, multiplicator: number, rest: number) {
+    //     return `calc(${arrowBoxPosition}% + ${multiplicator * 30 * rest / 100}px)`;
+    // }
 
     private handleMoreInfoClick() {
         this.setState({ moreInfo: !this.state.moreInfo });

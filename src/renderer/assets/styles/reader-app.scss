@@ -589,47 +589,47 @@ button {
   }
 }
 
-.main_navigation_fullscreen {
-  // & > ul:not(.showInFullScreen) > ul:not(.showInFullScreen) > li:not(.showInFullScreen),
-  // & > ul:not(.showInFullScreen) > li:not(.showInFullScreen) {
-  //   display: none;
-  // }
-  & > ul > ul.tts_toolbar {
-    margin-left: 0;
-  }
+// .main_navigation_fullscreen {
+//   // & > ul:not(.showInFullScreen) > ul:not(.showInFullScreen) > li:not(.showInFullScreen),
+//   // & > ul:not(.showInFullScreen) > li:not(.showInFullScreen) {
+//   //   display: none;
+//   // }
+//   & > ul > ul.tts_toolbar {
+//     margin-left: 0;
+//   }
 
-  &:not(.hasTtsAudio) {
-    background-color: transparent;
-    box-shadow: none;
+//   &:not(.hasTtsAudio) {
+//     background-color: transparent;
+//     box-shadow: none;
 
-    & > ul {
-      display: block;
+//     & > ul {
+//       display: block;
 
-      & > ul.tts_toolbar {
-        display: none;
-      }
-    }
-  }
+//       & > ul.tts_toolbar {
+//         display: none;
+//       }
+//     }
+//   }
 
-  &.hasTtsAudio:not(.ttsAudioActivated) {
-    background-color: transparent;
-    box-shadow: none;
-  }
+//   &.hasTtsAudio:not(.ttsAudioActivated) {
+//     background-color: transparent;
+//     box-shadow: none;
+//   }
 
-  /* & >  {
-    display: block;
-  }
-  & > ul, & ul.menu_option {
-    margin-right: 20px;
-    & > li {
-      & > .menu_button {
-        border-right: 1px solid #c1c1c1;
-        border-bottom: 1px solid #c1c1c1;
-        background-color: var(--reader-secondaryColor);
-      }
-    }
-  } */
-}
+//   /* & >  {
+//     display: block;
+//   }
+//   & > ul, & ul.menu_option {
+//     margin-right: 20px;
+//     & > li {
+//       & > .menu_button {
+//         border-right: 1px solid #c1c1c1;
+//         border-bottom: 1px solid #c1c1c1;
+//         background-color: var(--reader-secondaryColor);
+//       }
+//     }
+//   } */
+// }
 
 .tab_content {
   position: relative;

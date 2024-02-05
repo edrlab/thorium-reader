@@ -6,13 +6,14 @@
     border-bottom: 1px solid var(--color-medium-grey);
     box-sizing: border-box;
 
-    &.ttsAudioActivated::before {
+    &.ttsAudioActivated .tts_toolbar::before {
             content: "";
             position: absolute;
-            left: calc(50% - 100px);
-            top: 48px;
+            left: calc(50% - 105px);
+            // left: 0;
+            top: 42px;
             height: 1px;
-            width: 200px;  /* or 100px */
+            width: 210px;  /* or 100px */
             border-bottom: 2px solid var(--color-blue);
     }
 
@@ -27,6 +28,7 @@
 
         .tts_toolbar {
             justify-content: center;
+            position: relative;
         }
 
         .menu_option {
@@ -71,10 +73,12 @@
             }
 
             input {
-                display: none;
+                position: relative;
+                opacity: 0;
             }
 
             label {
+                position: absolute;
                 display: block;
                 height: 35px!important;
                 width: 35px!important;
@@ -210,6 +214,11 @@
     fill: var(--color-extralight-grey);
     width: 15px;
     height: 10px;
+}
+
+.bookmarkButton:focus + label {
+    outline: blue solid 2px !important;
+    outline-offset: -2px;
 }
 
 

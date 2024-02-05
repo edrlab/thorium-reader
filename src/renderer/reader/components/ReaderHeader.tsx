@@ -363,13 +363,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         return (
             <nav
                 className={classNames(stylesReaderHeader.toolbar_navigation,
-                    this.props.fullscreen ? stylesReader.main_navigation_fullscreen : undefined,
+                    // this.props.fullscreen ? stylesReader.main_navigation_fullscreen : undefined,
                     showAudioTTSToolbar || this.props.isDivina ? stylesReader.hasTtsAudio : undefined,
                     (useMO &&
                         this.props.mediaOverlaysState !== MediaOverlaysStateEnum.STOPPED
                         || !useMO &&
                         this.props.ttsState !== TTSStateEnum.STOPPED) ?
-                        stylesReader.ttsAudioActivated : undefined,
+                        stylesReaderHeader.ttsAudioActivated : undefined,
                 )}
                 role="navigation"
                 aria-label={__("accessibility.toolbar")}
@@ -600,7 +600,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         </li>
                                         <li>
                                             <Popover.Root>
-                                                <Popover.Trigger>
+                                                <Popover.Trigger asChild>
                                                     <button className={stylesReader.menu_button}>
                                                         <SVG ariaHidden svg={HeadphoneIcon} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""} />
                                                     </button>

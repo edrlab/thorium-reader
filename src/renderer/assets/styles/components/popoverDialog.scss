@@ -37,7 +37,7 @@
 }
 
 .popover_dialog_reader {
-  width: 400px;
+  width: 350px;
   height: calc(100dvh - 110px);
   display: flex;
   margin-top: 50px;
@@ -50,7 +50,7 @@
 
   .settings_container {
     height: calc(100dvh - 165px);
-    padding: 0 0 0 30px;
+    padding: 0;
     overflow: hidden auto;
 
     .settings_tab_container_reading_spacing {
@@ -97,7 +97,7 @@
         width: fit-content;
         height: 25px;
         background-color: inherit;
-        font-size: 16px;
+        font-size: 14px;
         margin-left: 10px;
         padding: 0 !important;
         padding-left: 30px!important;
@@ -119,7 +119,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 5px;
     flex-wrap: nowrap;
 
     .button_transparency_icon {
@@ -135,10 +135,6 @@
       }
     }
   }
-}
-
-.allowCustom {
-  padding-left: 10px;
 }
 
 .toc_container {
@@ -371,7 +367,6 @@
 
   form {
     display: flex;
-    flex-direction: column;
     align-items: start;
     gap: 20px;
 
@@ -454,6 +449,9 @@
 .react_aria_ListBox {
   width: inherit;
   background-color: white;
+  .my_item {
+    width: calc(100% - 45px);
+  }
 }
 
 .react_aria_ComboBox [role="group"]:focus-within {

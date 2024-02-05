@@ -1,5 +1,4 @@
 export declare const active: string;
-export declare const allowCustom: string;
 export declare const bookmark_actions: string;
 export declare const bookmark_actions_buttons: string;
 export declare const bookmark_infos: string;
