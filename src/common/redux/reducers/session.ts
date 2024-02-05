@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { type Reducer } from "redux";
+
 import { sessionActions } from "../actions";
 import { ISessionState } from "../states/session";
 
@@ -12,7 +14,7 @@ const initialState: ISessionState = {
     state: false,
 };
 
-export function sessionReducer(
+function sessionReducer_(
     state = initialState,
     action: sessionActions.enable.TAction,
 ): ISessionState {
@@ -25,3 +27,5 @@ export function sessionReducer(
             return state;
     }
 }
+
+export const sessionReducer = sessionReducer_ as Reducer<ReturnType<typeof sessionReducer_>>;

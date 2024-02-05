@@ -5,10 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { Reducer } from "redux";
 import { readerLocalActionAnnotationUI } from "../actions";
-import { IAnnotationUserInterfaceState, annotationDefaultState } from "../state/annotation";
+import { IAnnotationUserInterfaceState, annotationDefaultState } from "readium-desktop/common/redux/states/renderer/annotation";
 
-export function annotationUIReducer(
+function annotationUIReducer_(
     state: IAnnotationUserInterfaceState = annotationDefaultState(),
     action: readerLocalActionAnnotationUI.color.TAction |
     readerLocalActionAnnotationUI.enable.TAction |
@@ -16,6 +17,7 @@ export function annotationUIReducer(
     readerLocalActionAnnotationUI.cancel.TAction |
     readerLocalActionAnnotationUI.picker.TAction,
 ): IAnnotationUserInterfaceState {
+
 
     switch (action.type) {
         case readerLocalActionAnnotationUI.cancel.ID:
@@ -32,3 +34,5 @@ export function annotationUIReducer(
             return state;
     }
 }
+
+export const annotationUIReducer = annotationUIReducer_ as Reducer<ReturnType<typeof annotationUIReducer_>>;

@@ -7,7 +7,7 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
-import { IAnnotationUserInterfaceState } from "../../state/annotation";
+import { IAnnotationUserInterfaceState } from "readium-desktop/common/redux/states/renderer/annotation";
 
 export const ID = "READER_ANNOTATION_FOCUS";
 

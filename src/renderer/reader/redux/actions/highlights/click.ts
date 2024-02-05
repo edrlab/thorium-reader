@@ -7,16 +7,16 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 
-import { IHighlightHandlerState } from "../../state/highlight";
+import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 
 export const ID = "READER_HIGHLIGHT_CLICK";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload extends IHighlightHandlerState {
+export interface Payload extends IHighlightHandlerState {
 }
 
-export function build(data: IPayload):
-    Action<typeof ID, IPayload> {
+export function build(data: Payload):
+    Action<typeof ID, Payload> {
 
     return {
         type: ID,

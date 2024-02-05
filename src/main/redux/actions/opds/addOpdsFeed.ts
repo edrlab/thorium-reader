@@ -13,7 +13,7 @@ import { v4 as uuidv4 } from "uuid";
 export const ID = "OPDSFEED_ADD";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface Payload extends Array<OpdsFeedDocument> {}
+export interface Payload extends Array<OpdsFeedDocument> {}
 
 export function build(...feed: Array<OpdsFeedDocument | OpdsFeed>):
     Action<typeof ID, Payload> {

@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+
 export enum EventType {
     IdRequest = "ID_REQUEST",
     IdResponse = "ID_RESPONSE",
@@ -14,7 +16,5 @@ export const CHANNEL = "WIN";
 
 export interface EventPayload {
     type: EventType;
-    payload: {
-        identifier: string;
-    };
+    payload: Partial<ILibraryRootState>;
 }

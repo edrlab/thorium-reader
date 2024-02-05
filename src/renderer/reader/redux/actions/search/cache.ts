@@ -8,16 +8,16 @@
 import { Action } from "readium-desktop/common/models/redux";
 import { ISearchDocument } from "readium-desktop/utils/search/search.interface";
 
-import { ISearchState } from "../../state/search";
+import { ISearchState } from "readium-desktop/common/redux/states/renderer/search";
 
 export const ID = "READER_SEARCH_SET_CACHE";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload extends Partial<ISearchState> {
+export interface Payload extends Partial<ISearchState> {
 }
 
 export function build(...data: ISearchDocument[]):
-    Action<typeof ID, IPayload> {
+    Action<typeof ID, Payload> {
 
     return {
         type: ID,

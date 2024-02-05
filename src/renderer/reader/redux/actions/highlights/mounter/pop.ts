@@ -6,16 +6,16 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IHighlightBaseState } from "../../../state/highlight";
+import { IHighlightBaseState } from "readium-desktop/common/redux/states/renderer/highlight";
 
 export const ID = "READER_HIGHLIGHT_MOUNTER_POP";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload extends Array<IHighlightBaseState> {
+export interface Payload extends Array<IHighlightBaseState> {
 }
 
 export function build(...param: IHighlightBaseState[]):
-    Action<typeof ID, IPayload> {
+    Action<typeof ID, Payload> {
 
     return {
         type: ID,

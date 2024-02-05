@@ -14,10 +14,10 @@ export interface TranslatorProps {
     translator?: Translator;
 }
 
-type TComponentConstructor<P> = React.ComponentClass<P> | React.StatelessComponent<P>;
+type TComponentConstructor<P> = React.ComponentClass<P> | React.FunctionComponent<P>;
 
-export function withTranslator<Props>(WrappedComponent: TComponentConstructor<Props & TranslatorProps>) {
-    const WrapperComponent = class extends React.Component<Props & TranslatorProps, undefined> {
+export function withTranslator<Props>(WrappedComponent: TComponentConstructor<React.PropsWithChildren<Props & TranslatorProps>>) {
+    const WrapperComponent = class extends React.Component<React.PropsWithChildren<Props & TranslatorProps>, undefined> {
         public static displayName: string;
 
         public render() {

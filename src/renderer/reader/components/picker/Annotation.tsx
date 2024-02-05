@@ -13,7 +13,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { readerLocalActionAnnotationUI, readerLocalActionAnnotations, readerLocalActionPicker } from "../../redux/actions";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { IAnnotationState } from "readium-desktop/common/redux/states/annotation";
-import { IAnnotationUserInterfaceState } from "../../redux/state/annotation";
+import { IAnnotationUserInterfaceState } from "readium-desktop/common/redux/states/renderer/annotation";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {

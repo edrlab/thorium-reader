@@ -20,7 +20,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.closeRequest.ID,
     readerActions.detachModeRequest.ID,
     readerActions.setReduxState.ID,
-    readerActions.configSetDefault.ID,
+    readerActions.configSetDefault.ID,  // readerConfig
     // readerActions.saveBookmarkRequest.ID,
     readerActions.fullScreenRequest.ID,
 
@@ -35,6 +35,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     lcpActions.renewPublicationLicense.ID,
     lcpActions.returnPublication.ID,
     lcpActions.unlockPublicationWithPassphrase.ID,
+
+    readerActions.disableRTLFlip.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

@@ -10,13 +10,13 @@ import { Action } from "readium-desktop/common/models/redux";
 export const ID = "READER_LOCATOR_HREF_CHANGED";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload {
+export interface Payload {
     href: string;
     prevHref: string | undefined;
 }
 
 export function build(prevHref: string | undefined, href: string):
-    Action<typeof ID, IPayload> {
+    Action<typeof ID, Payload> {
 
     return {
         type: ID,

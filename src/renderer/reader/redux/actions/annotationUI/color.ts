@@ -7,7 +7,7 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { IAnnotationUserInterfaceState } from "../../state/annotation";
+import { IAnnotationUserInterfaceState } from "readium-desktop/common/redux/states/renderer/annotation";
 
 export const ID = "READER_ANNOTATION_COLOR";
 

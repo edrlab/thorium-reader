@@ -76,19 +76,20 @@ import {
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
-import { IEventBusPdfPlayer, TToc } from "../pdf/common/pdfReader.type";
-import { pdfMountAndReturnBus } from "../pdf/driver";
+import { TToc } from "../pdf/common/pdfReader.type";
+import { pdfMount } from "../pdf/driver";
 import {
     readerLocalActionBookmarks, readerLocalActionDivina, readerLocalActionSetConfig,
     readerLocalActionSetLocator,
 } from "../redux/actions";
-import { defaultReadingMode } from "../redux/state/divina";
+import { TdivinaReadingMode, defaultReadingMode } from "readium-desktop/common/redux/states/renderer/divina";
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps, isDivinaReadingMode,
-    TdivinaReadingMode,
 } from "./options-values";
 import PickerManager from "./picker/PickerManager";
 import { URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS, URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_GOTO, URL_PARAM_GOTO_DOM_RANGE, URL_PARAM_IS_IFRAME, URL_PARAM_PREVIOUS, URL_PARAM_REFRESH, URL_PARAM_SECOND_WEBVIEW, URL_PARAM_SESSION_INFO, URL_PARAM_WEBVIEW_SLOT } from "@r2-navigator-js/electron/renderer/common/url-params";
+
+import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 
 // main process code!
 // thoriumhttps
@@ -209,7 +210,6 @@ interface IState {
     divinaArrowEnabled: boolean;
     divinaContinousEqualTrue: boolean;
 
-    pdfPlayerBusEvent: IEventBusPdfPlayer;
     pdfPlayerToc: TToc | undefined;
     pdfPlayerNumberOfPages: number | undefined;
 
@@ -293,7 +293,6 @@ class Reader extends React.Component<IProps, IState> {
             divinaNumberOfPages: 0,
             divinaReadingModeSupported: [],
 
-            pdfPlayerBusEvent: undefined,
             pdfPlayerToc: undefined,
             pdfPlayerNumberOfPages: undefined,
 
@@ -420,48 +419,43 @@ class Reader extends React.Component<IProps, IState> {
 
         if (this.props.isPdf) {
 
-            await this.loadPublicationIntoViewport();
+            this.loadPublicationIntoViewport();
 
-            if (this.state.pdfPlayerBusEvent) {
-
-                this.state.pdfPlayerBusEvent.subscribe("page",
-                    (pageIndex) => {
-                        // const numberOfPages = this.props.r2Publication?.Metadata?.NumberOfPages;
-                        const loc = {
-                            locator: {
-                                href: pageIndex.toString(),
-                                locations: {
-                                    position: pageIndex,
-                                    // progression: numberOfPages ? (pageIndex / numberOfPages) : 0,
-                                    progression: 0,
-                                },
+            createOrGetPdfEventBus().subscribe("page",
+                (pageIndex) => {
+                    // const numberOfPages = this.props.r2Publication?.Metadata?.NumberOfPages;
+                    const loc = {
+                        locator: {
+                            href: pageIndex.toString(),
+                            locations: {
+                                position: pageIndex,
+                                // progression: numberOfPages ? (pageIndex / numberOfPages) : 0,
+                                progression: 0,
                             },
-                        };
-                        console.log("pdf pageChange", pageIndex);
+                        },
+                    };
+                    console.log("pdf pageChange", pageIndex);
 
-                        // TODO: this is a hack! Forcing type LocatorExtended on this non-matching object shape
-                        // only "works" because data going into the persistent store (see saveReadingLocation())
-                        // is used appropriately and selectively when extracted back out ...
-                        // however this may trip / crash future code
-                        // if strict LocatorExtended model structure is expected when
-                        // reading from the persistence layer.
-                        this.handleReadingLocationChange(loc as unknown as LocatorExtended);
-                    });
-
-                const page = this.props.locator?.locator?.href || "";
-                console.log("pdf page index", page);
-
-                this.state.pdfPlayerBusEvent.subscribe("ready", () => {
-                    this.state.pdfPlayerBusEvent.dispatch("page", page);
+                    // TODO: this is a hack! Forcing type LocatorExtended on this non-matching object shape
+                    // only "works" because data going into the persistent store (see saveReadingLocation())
+                    // is used appropriately and selectively when extracted back out ...
+                    // however this may trip / crash future code
+                    // if strict LocatorExtended model structure is expected when
+                    // reading from the persistence layer.
+                    this.handleReadingLocationChange(loc as unknown as LocatorExtended);
                 });
 
-            } else {
-                console.log("pdf bus event undefined");
-            }
+            const page = this.props.locator?.locator?.href || "";
+            console.log("pdf page index", page);
+
+            createOrGetPdfEventBus().subscribe("ready", () => {
+                createOrGetPdfEventBus().dispatch("page", page);
+            });
+
 
         } else if (this.props.isDivina) {
 
-            await this.loadPublicationIntoViewport();
+            this.loadPublicationIntoViewport();
 
             if (this.currentDivinaPlayer) {
 
@@ -516,7 +510,7 @@ class Reader extends React.Component<IProps, IState> {
 
             setReadingLocationSaver(this.handleReadingLocationChange);
             setEpubReadingSystemInfo({ name: _APP_NAME, version: _APP_VERSION });
-            await this.loadPublicationIntoViewport();
+            this.loadPublicationIntoViewport();
         }
 
         // sets state visibleBookmarkList
@@ -576,12 +570,14 @@ class Reader extends React.Component<IProps, IState> {
             r2Publication: this.props.r2Publication,
             handleDivinaReadingMode: this.handleDivinaReadingMode.bind(this),
 
+            setDisableRTLFlip: this.props.setDisableRTLFlip.bind(this),
+            disableRTLFlip: this.props.disableRTLFlip,
+
             divinaReadingMode: this.props.divinaReadingMode,
             divinaReadingModeSupported: this.state.divinaReadingModeSupported,
 
             isDivina: this.props.isDivina,
             isPdf: this.props.isPdf,
-            pdfEventBus: this.state.pdfPlayerBusEvent,
             openedSection: this.state.openedSectionSettings,
         };
 
@@ -659,16 +655,16 @@ class Reader extends React.Component<IProps, IState> {
                         currentLocation={this.props.isDivina || this.props.isPdf ? this.props.locator : this.state.currentLocation}
                         isDivina={this.props.isDivina}
                         isPdf={this.props.isPdf}
-                        pdfEventBus={this.state.pdfPlayerBusEvent}
                         divinaSoundPlay={this.handleDivinaSound}
                         r2Publication={this.props.r2Publication}
+
+                        disableRTLFlip={this.props.disableRTLFlip}
                     />
                     <div className={classNames(stylesReader.content_root,
                         this.state.fullscreen ? stylesReader.content_root_fullscreen : undefined,
                         this.props.isPdf ? stylesReader.content_root_skip_bottom_spacing : undefined)}>
                         <PickerManager
                             showSearchResults={this.showSearchResults}
-                            pdfEventBus={this.state.pdfPlayerBusEvent}
                             isPdf={this.props.isPdf}
                         ></PickerManager>
                         <div className={stylesReader.reader}>
@@ -753,6 +749,8 @@ class Reader extends React.Component<IProps, IState> {
                     divinaNumberOfPages={this.state.divinaNumberOfPages}
                     divinaContinousEqualTrue={this.state.divinaContinousEqualTrue}
                     isPdf={this.props.isPdf}
+
+                    disableRTLFlip={this.props.disableRTLFlip}
                 />
             </div>
         );
@@ -1373,7 +1371,7 @@ class Reader extends React.Component<IProps, IState> {
     private onKeyboardNavigationToBegin = () => {
 
         if (this.props.isPdf) {
-            this.state.pdfPlayerBusEvent?.dispatch("page", "1");
+            createOrGetPdfEventBus().dispatch("page", "1");
         } else if (this.props.isDivina) {
             this.currentDivinaPlayer.goToPageWithIndex(0);
         } else {
@@ -1394,7 +1392,7 @@ class Reader extends React.Component<IProps, IState> {
 
         if (this.props.isPdf) {
             if (this.state.pdfPlayerNumberOfPages) {
-                this.state.pdfPlayerBusEvent?.dispatch("page",
+                createOrGetPdfEventBus().dispatch("page",
                     this.state.pdfPlayerNumberOfPages.toString());
             }
         } else if (this.props.isDivina) {
@@ -1528,7 +1526,7 @@ class Reader extends React.Component<IProps, IState> {
 
     };
 
-    private async loadPublicationIntoViewport() {
+    private loadPublicationIntoViewport() {
 
         if (this.props.r2Publication?.Metadata?.Title) {
             const title = this.props.translator.translateContentField(this.props.r2Publication.Metadata.Title);
@@ -1564,67 +1562,64 @@ class Reader extends React.Component<IProps, IState> {
 
             console.log("pdf url", pdfUrl);
 
-            const pdfPlayerBusEvent = await pdfMountAndReturnBus(
+            pdfMount(
                 pdfUrl,
                 publicationViewport,
             );
 
-            this.setState({
-                pdfPlayerBusEvent,
-            });
-            pdfPlayerBusEvent.subscribe("copy", (txt) => clipboardInterceptor({ txt, locator: undefined }));
-            pdfPlayerBusEvent.subscribe("toc", (toc) => this.setState({ pdfPlayerToc: toc }));
-            pdfPlayerBusEvent.subscribe("numberofpages", (pages) => this.setState({ pdfPlayerNumberOfPages: pages }));
+            createOrGetPdfEventBus().subscribe("copy", (txt) => clipboardInterceptor({ txt, locator: undefined }));
+            createOrGetPdfEventBus().subscribe("toc", (toc) => this.setState({ pdfPlayerToc: toc }));
+            createOrGetPdfEventBus().subscribe("numberofpages", (pages) => this.setState({ pdfPlayerNumberOfPages: pages }));
 
-            pdfPlayerBusEvent.subscribe("keydown", (payload) => {
+            createOrGetPdfEventBus().subscribe("keydown", (payload) => {
                 keyDownEventHandler(payload, payload.elementName, payload.elementAttributes);
             });
-            pdfPlayerBusEvent.subscribe("keyup", (payload) => {
+            createOrGetPdfEventBus().subscribe("keyup", (payload) => {
                 keyUpEventHandler(payload, payload.elementName, payload.elementAttributes);
             });
 
             console.log("toc", this.state.pdfPlayerToc);
 
-            // this.state.pdfPlayerBusEvent.subscribe("page", (pageNumber) => {
+            // createOrGetPdfEventBus().subscribe("page", (pageNumber) => {
 
             //     console.log("pdfPlayer page changed", pageNumber);
             // });
 
-            // this.state.pdfPlayerBusEvent.subscribe("scale", (scale) => {
+            // createOrGetPdfEventBus().subscribe("scale", (scale) => {
 
             //     console.log("pdfPlayer scale changed", scale);
             // });
 
-            // this.state.pdfPlayerBusEvent.subscribe("view", (view) => {
+            // createOrGetPdfEventBus().subscribe("view", (view) => {
 
             //     console.log("pdfPlayer view changed", view);
             // });
 
-            // this.state.pdfPlayerBusEvent.subscribe("column", (column) => {
+            // createOrGetPdfEventBus().subscribe("column", (column) => {
 
             //     console.log("pdfPlayer column changed", column);
             // });
 
-            // this.state.pdfPlayerBusEvent.subscribe("search", (search) => {
+            // createOrGetPdfEventBus().subscribe("search", (search) => {
 
             //     console.log("pdfPlayer search word changed", search);
             // });
 
-            // this.state.pdfPlayerBusEvent.subscribe("search-next", () => {
+            // createOrGetPdfEventBus().subscribe("search-next", () => {
 
             //     console.log("pdfPlayer highlight next search word executed");
             // });
 
-            // this.state.pdfPlayerBusEvent.subscribe("search-previous", () => {
+            // createOrGetPdfEventBus().subscribe("search-previous", () => {
 
             //     console.log("pdfPlayer highlight previous search word executed");
             // });
 
             // /* master subscribe */
-            // this.state.pdfPlayerBusEvent.subscribe("page-next", () => {
+            // createOrGetPdfEventBus().subscribe("page-next", () => {
             //     console.log("pdfPlayer next page requested");
             // });
-            // this.state.pdfPlayerBusEvent.subscribe("page-previous", () => {
+            // createOrGetPdfEventBus().subscribe("page-previous", () => {
             //     console.log("pdfPlayer previous page requested");
             // });
 
@@ -2061,9 +2056,9 @@ class Reader extends React.Component<IProps, IState> {
 
         if (this.props.isPdf) {
             if (left) {
-                this.state.pdfPlayerBusEvent?.dispatch("page-previous");
+                createOrGetPdfEventBus().dispatch("page-previous");
             } else {
-                this.state.pdfPlayerBusEvent?.dispatch("page-next");
+                createOrGetPdfEventBus().dispatch("page-next");
             }
         } else if (this.props.isDivina) {
 
@@ -2099,7 +2094,7 @@ class Reader extends React.Component<IProps, IState> {
 
             const index = locator?.href || "";
             if (index) {
-                this.state.pdfPlayerBusEvent?.dispatch("page", index);
+                createOrGetPdfEventBus().dispatch("page", index);
             }
 
         } else if (this.props.isDivina) {
@@ -2131,7 +2126,7 @@ class Reader extends React.Component<IProps, IState> {
 
             const index = url;
             if (index) {
-                this.state.pdfPlayerBusEvent?.dispatch("page", index);
+                createOrGetPdfEventBus().dispatch("page", index);
             }
 
         } else if (this.props.isDivina) {
@@ -2527,6 +2522,8 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         divinaReadingMode: state.reader.divina.readingMode,
         locale: state.i18n.locale,
         session: state.session.state,
+
+        disableRTLFlip: !!state.reader.disableRTLFlip?.disabled,
     };
 };
 
@@ -2575,9 +2572,10 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         deleteBookmark: (bookmark: IBookmarkState) => {
             dispatch(readerLocalActionBookmarks.pop.build(bookmark));
         },
+        setDisableRTLFlip: (disable: boolean) => {
+            dispatch(readerActions.disableRTLFlip.build(disable));
+        },
         setReadingMode: (readingMode: TdivinaReadingMode) => {
-
-            console.log("Persist the reading mode", readingMode);
             dispatch(readerLocalActionDivina.setReadingMode.build({readingMode}));
         },
         clipboardCopy: (publicationIdentifier: string, clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => {

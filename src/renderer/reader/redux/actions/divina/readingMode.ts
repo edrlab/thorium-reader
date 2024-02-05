@@ -6,16 +6,16 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IDivinaState } from "../../state/divina";
+import { IDivinaState } from "readium-desktop/common/redux/states/renderer/divina";
 
 export const ID = "READER_SET_DIVINA_READING_MODE";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload extends IDivinaState {
+export interface Payload extends IDivinaState {
 }
 
 export function build(conf: IDivinaState):
-    Action<typeof ID, IPayload> {
+    Action<typeof ID, Payload> {
 
     return {
         type: ID,

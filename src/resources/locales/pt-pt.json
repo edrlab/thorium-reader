@@ -4,11 +4,11 @@
         "closeDialog": "Fechar",
         "importFile": "Importar publicação",
         "leftSlideButton": "Deslizar lista para a esquerda",
-        "mainContent": "conteúdo principal",
+        "mainContent": "Conteúdo principal",
         "rightSlideButton": "Deslizar lista para a direita",
         "searchBook": "Procurar por título",
         "skipLink": "Ir para o conteúdo",
-        "toolbar": "barra de ferramentas"
+        "toolbar": "Barra de ferramentas"
     },
     "apiapp": {
         "noLibraryFound": "Nenhuma biblioteca encontrada ({{- name}})"
@@ -68,13 +68,13 @@
             "continueReadingPdf": "Retomar PDF",
             "lastAdditions": "Adicionados recentemente"
         },
-        "export": "Exportar",
+        "export": "Guardar como",
         "format": "Formato",
         "lang": "Idioma",
         "lastRead": "Último lido",
         "moreInfo": "Mais informações",
         "myBooks": "Meus livros",
-        "noPublicationHelpL1": "Solte uma publicação aqui",
+        "noPublicationHelpL1": "Solte aqui uma publicação",
         "noPublicationHelpL2": "ou use o botão \"+\" acima.",
         "noPublicationHelpL3": "Ficheiros protegidos por LCP são suportados.",
         "noPublicationHelpL4": "Extensões suportadas:",
@@ -248,7 +248,7 @@
         "certificateRevoked": "O certificado foi revogado",
         "certificateSignatureInvalid": "A assinatura do certificado é inválida",
         "cover": {
-            "img": "imagem de capa"
+            "img": "Imagem de capa"
         },
         "duration": {
             "title": "Duração"
@@ -275,12 +275,12 @@
     },
     "reader": {
         "divina": {
-            "mute": "silenciar áudio",
-            "unmute": "ativar áudio"
+            "mute": "Silenciar áudio",
+            "unmute": "Ativar áudio"
         },
         "footerInfo": {
-            "lessInfo": "menos informações",
-            "moreInfo": "mais informações"
+            "lessInfo": "Menos informações",
+            "moreInfo": "Mais informações"
         },
         "marks": {
             "annotations": "Anotações",
@@ -304,25 +304,25 @@
             "title": "Narração"
         },
         "navigation": {
-            "backHomeTitle": "voltar à estante",
-            "bookmarkTitle": "marcador",
+            "backHomeTitle": "Voltar à estante",
+            "bookmarkTitle": "Marcador",
             "currentPage": "Página atual: {{- current}}",
             "currentPageTotal": "Página atual: {{- current}}/{{- total}}",
-            "detachWindowTitle": "mostrar biblioteca / janela da estante",
-            "fullscreenTitle": "abrir modo de ecrã completo",
+            "detachWindowTitle": "Mostrar biblioteca / janela da estante",
+            "fullscreenTitle": "Abrir em ecrã completo",
             "goTo": "Ir para",
             "goToError": "Esta quebra de página não existe",
             "goToPlaceHolder": "Digite um n.º de página",
             "goToTitle": "Ir para a página",
-            "historyNext": "saltar para a frente",
-            "historyPrevious": "saltar para trás",
-            "infoTitle": "informações",
-            "magnifyingGlassButton": "pesquisar no documento",
-            "openTableOfContentsTitle": "navegação",
+            "historyNext": "Saltar para a frente",
+            "historyPrevious": "Saltar para trás",
+            "infoTitle": "Informações",
+            "magnifyingGlassButton": "Pesquisar no documento",
+            "openTableOfContentsTitle": "Navegação",
             "pdfscalemode": "Ajustar à página ou largura",
-            "quitFullscreenTitle": "sair do modo de ecrã completo",
+            "quitFullscreenTitle": "Sair do modo de ecrã completo",
             "readBookTitle": "Começar a ler o livro",
-            "settingsTitle": "configurações"
+            "settingsTitle": "Configurações"
         },
         "picker": {
             "annotationTitle": "Anotações",
@@ -338,7 +338,7 @@
         },
         "settings": {
             "column": {
-                "auto": "Automático",
+                "auto": "Predefinido",
                 "one": "1 col.",
                 "oneTitle": "uma coluna",
                 "title": "Colunas",
@@ -357,6 +357,7 @@
             "lineSpacing": "Espaçamento de linhas",
             "margin": "Margem",
             "noFootnotes": "Desativar notas de rodapé",
+            "noRTLFlip": "",
             "paginated": "Paginado",
             "paraSpacing": "Espaçamento de parágrafos",
             "pdfZoom": {
@@ -374,8 +375,8 @@
             },
             "reduceMotion": "Reduzir movimento",
             "save": {
-                "apply": "guardar",
-                "reset": "redefinir",
+                "apply": "Guardar",
+                "reset": "Redefinir",
                 "title": "Configuração"
             },
             "scrolled": "Rolável",

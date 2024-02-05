@@ -25,7 +25,7 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import { readerLocalActionHighlights, readerLocalActionSearch } from "../actions";
-import { IHighlightHandlerState } from "../state/highlight";
+import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 
 function createLocatorLink(href: string, rangeInfo: IRangeInfo): R2Locator {
 

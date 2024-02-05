@@ -5,7 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IBreadCrumbItem } from "readium-desktop/renderer/common/models/breadcrumbItem.interface";
+import { type Reducer } from "redux";
+
+import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions } from "readium-desktop/renderer/library/redux/actions";
@@ -14,14 +16,14 @@ import {
 } from "readium-desktop/renderer/library/redux/actions/opds";
 import {
     IOpdsHeaderState, IOpdsSearchState,
-} from "readium-desktop/renderer/library/redux/states/opds";
+} from "readium-desktop/common/redux/states/renderer/opds";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 // import * as debug_ from "debug";
 // Logger
 // const debug = debug_("readium-desktop:renderer:redux:reducer:opds");
 
-export function opdsBreadcrumbReducer(
+function opdsBreadcrumbReducer_(
     state: IBreadCrumbItem[] = [],
     action: browseRequest.TAction,
 ): IBreadCrumbItem[] {
@@ -53,13 +55,15 @@ export function opdsBreadcrumbReducer(
     }
 }
 
-export function opdsHeaderLinkReducer(
+export const opdsBreadcrumbReducer = opdsBreadcrumbReducer_ as Reducer<ReturnType<typeof opdsBreadcrumbReducer_>>;
+
+function opdsHeaderLinkReducer_(
     state: IOpdsHeaderState = {},
     action: headerLinksUpdate.TAction,
 ): IOpdsHeaderState {
     switch (action.type) {
         case headerLinksUpdate.ID:
-            const stateNew = { ...state };
+            const stateNew: IOpdsHeaderState = {};
             for (const key of ObjectKeys(action.payload)) {
                 stateNew[key] = action.payload[key];
             }
@@ -71,7 +75,9 @@ export function opdsHeaderLinkReducer(
     }
 }
 
-export function opdsSearchLinkReducer(
+export const opdsHeaderLinkReducer = opdsHeaderLinkReducer_ as Reducer<ReturnType<typeof opdsHeaderLinkReducer_>>;
+
+function opdsSearchLinkReducer_(
     state: IOpdsSearchState = {},
     action: search.TAction,
 ): IOpdsSearchState {
@@ -83,3 +89,5 @@ export function opdsSearchLinkReducer(
             return state;
     }
 }
+
+export const opdsSearchLinkReducer = opdsSearchLinkReducer_ as Reducer<ReturnType<typeof opdsSearchLinkReducer_>>;

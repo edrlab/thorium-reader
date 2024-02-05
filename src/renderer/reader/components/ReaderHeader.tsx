@@ -40,7 +40,7 @@ import {
 } from "@r2-navigator-js/electron/renderer/index";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
-import { IEventBusPdfPlayer, IPdfPlayerScale } from "../pdf/common/pdfReader.type";
+import { IPdfPlayerScale } from "../pdf/common/pdfReader.type";
 import HeaderSearch from "./header/HeaderSearch";
 import { IReaderMenuProps, IReaderOptionsProps } from "./options-values";
 import ReaderMenu from "./ReaderMenu";
@@ -53,6 +53,7 @@ import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { readerLocalActionAnnotationUI, readerLocalActionPicker } from "../redux/actions";
+import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -116,8 +117,9 @@ interface IBaseProps extends TranslatorProps {
     currentLocation: LocatorExtended;
     isDivina: boolean;
     isPdf: boolean;
-    pdfEventBus: IEventBusPdfPlayer;
     divinaSoundPlay: (play: boolean) => void;
+
+    disableRTLFlip: boolean;
 }
 
 // IProps may typically extend:
@@ -133,6 +135,7 @@ interface IState {
     pdfScaleMode: IPdfPlayerScale | undefined;
     divinaSoundEnabled: boolean;
     fxlZoomPercent: number;
+    forceTTS: boolean;
 }
 
 export class ReaderHeader extends React.Component<IProps, IState> {
@@ -165,6 +168,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             pdfScaleMode: undefined,
             divinaSoundEnabled: false,
             fxlZoomPercent: 0,
+            forceTTS: false,
         };
 
         this.timerFXLZoomDebounce = undefined;
@@ -195,27 +199,20 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         ensureKeyboardListenerIsInstalled();
         this.registerAllKeyboardListeners();
 
-        this.props.pdfEventBus?.subscribe("scale", this.setScaleMode);
+        createOrGetPdfEventBus().subscribe("scale", this.setScaleMode);
     }
 
     public componentWillUnmount() {
 
         this.unregisterAllKeyboardListeners();
 
-        if (this.props.pdfEventBus) {
-            this.props.pdfEventBus.remove(this.setScaleMode, "scale");
-        }
+        createOrGetPdfEventBus().remove(this.setScaleMode, "scale");
     }
 
     public componentDidUpdate(oldProps: IProps, oldState: IState) {
 
         if (oldState.divinaSoundEnabled !== this.state.divinaSoundEnabled) {
             this.props.divinaSoundPlay(this.state.divinaSoundEnabled);
-        }
-
-        if (oldProps.pdfEventBus !== this.props.pdfEventBus) {
-
-            this.props.pdfEventBus.subscribe("scale", this.setScaleMode);
         }
 
         if (this.props.fullscreen !== oldProps.fullscreen) {
@@ -355,16 +352,22 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             return acc;
         }, [] as SpeechSynthesisVoice[]);
 
+        const isRTL_ = this.props.r2Publication?.Metadata?.Direction === "rtl" || this.props.r2Publication?.Metadata?.Direction === "ttb"; // TODO RTL (see ReaderMenu.tsx)
+        const isRTL = !this.props.disableRTLFlip && isRTL_;
+
         const showAudioTTSToolbar = (this.props.currentLocation && !this.props.currentLocation.audioPlaybackInfo) &&
             !this.props.isDivina && !this.props.isPdf;
+
+        const useMO = !this.state.forceTTS && this.props.publicationHasMediaOverlays;
+
         return (
             <nav
                 className={classNames(stylesReader.main_navigation,
                     this.props.fullscreen ? stylesReader.main_navigation_fullscreen : undefined,
                     showAudioTTSToolbar || this.props.isDivina ? stylesReader.hasTtsAudio : undefined,
-                    (this.props.publicationHasMediaOverlays &&
+                    (useMO &&
                         this.props.mediaOverlaysState !== MediaOverlaysStateEnum.STOPPED
-                        || !this.props.publicationHasMediaOverlays &&
+                        || !useMO &&
                         this.props.ttsState !== TTSStateEnum.STOPPED) ?
                         stylesReader.ttsAudioActivated : undefined,
                 )}
@@ -432,17 +435,22 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     <SVG ariaHidden={true} svg={AudioIcon} />
                                                 </button>
                                             </li>
-                                : (this.props.publicationHasMediaOverlays &&
+                                : (useMO &&
                                     this.props.mediaOverlaysState === MediaOverlaysStateEnum.STOPPED ||
-                                    !this.props.publicationHasMediaOverlays &&
+                                    !useMO &&
                                     this.props.ttsState === TTSStateEnum.STOPPED) ?
                                     <li className={stylesReader.button_audio}>
                                         <button
                                             className={stylesReader.menu_button}
-                                            onClick={
-                                                this.props.publicationHasMediaOverlays ?
-                                                    this.props.handleMediaOverlaysPlay :
-                                                    this.props.handleTTSPlay
+                                            onClick={(e) => {
+                                                const forceTTS = e.shiftKey && e.altKey;
+                                                this.setState({forceTTS});
+                                                if (!forceTTS && this.props.publicationHasMediaOverlays) {
+                                                    this.props.handleMediaOverlaysPlay();
+                                                } else {
+                                                    this.props.handleTTSPlay();
+                                                }
+                                            }
                                             }
                                             title={
                                                 this.props.publicationHasMediaOverlays ?
@@ -457,13 +465,18 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         <li >
                                             <button
                                                 className={stylesReader.menu_button}
-                                                onClick={
-                                                    this.props.publicationHasMediaOverlays ?
-                                                        this.props.handleMediaOverlaysStop :
-                                                        this.props.handleTTSStop
+                                                onClick={(_e) => {
+                                                  const forceTTS = this.state.forceTTS;
+                                                  this.setState({forceTTS: false});
+                                                    if (!forceTTS && this.props.publicationHasMediaOverlays) {
+                                                        this.props.handleMediaOverlaysStop();
+                                                    } else {
+                                                        this.props.handleTTSStop();
+                                                    }
+                                                }
                                                 }
                                                 title={
-                                                    this.props.publicationHasMediaOverlays ?
+                                                    useMO ?
                                                         __("reader.media-overlays.stop") :
                                                         __("reader.tts.stop")
                                                 }
@@ -475,35 +488,48 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             <button
                                                 className={stylesReader.menu_button}
                                                 onClick={(e) => {
-                                                    if (this.props.publicationHasMediaOverlays) {
-                                                        this.props.handleMediaOverlaysPrevious();
+                                                    if (useMO) {
+                                                        if (isRTL) {
+                                                          this.props.handleMediaOverlaysNext();
+                                                        } else {
+                                                          this.props.handleMediaOverlaysPrevious();
+                                                        }
                                                     } else {
-                                                        this.props.handleTTSPrevious(e.shiftKey && e.altKey);
+                                                        if (isRTL) {
+                                                          this.props.handleTTSNext(e.shiftKey && e.altKey);
+                                                        } else {
+                                                          this.props.handleTTSPrevious(e.shiftKey && e.altKey);
+                                                        }
                                                     }
                                                 }}
                                                 title={
-                                                    this.props.publicationHasMediaOverlays ?
-                                                        __("reader.media-overlays.previous") :
-                                                        __("reader.tts.previous")
+                                                  isRTL ?
+                                                  (useMO ?
+                                                      __("reader.media-overlays.next") :
+                                                      __("reader.tts.next"))
+                                                  :
+                                                  (useMO ?
+                                                      __("reader.media-overlays.previous") :
+                                                      __("reader.tts.previous"))
                                                 }
                                             >
                                                 <SVG ariaHidden={true} svg={SkipPrevious} />
                                             </button>
                                         </li>
-                                        {(this.props.publicationHasMediaOverlays &&
+                                        {(useMO &&
                                             this.props.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING ||
-                                            !this.props.publicationHasMediaOverlays &&
+                                            !useMO &&
                                             this.props.ttsState === TTSStateEnum.PLAYING) ?
                                             <li >
                                                 <button
                                                     className={stylesReader.menu_button}
                                                     onClick={
-                                                        this.props.publicationHasMediaOverlays ?
+                                                        useMO ?
                                                             this.props.handleMediaOverlaysPause :
                                                             this.props.handleTTSPause
                                                     }
                                                     title={
-                                                        this.props.publicationHasMediaOverlays ?
+                                                        useMO ?
                                                             __("reader.media-overlays.pause") :
                                                             __("reader.tts.pause")
                                                     }
@@ -514,14 +540,17 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             :
                                             <li >
                                                 <button
-                                                    className={stylesReader.menu_button}
-                                                    onClick={
-                                                        this.props.publicationHasMediaOverlays ?
-                                                            this.props.handleMediaOverlaysResume :
-                                                            this.props.handleTTSResume
+                                                    className={classNames(isRTL ? stylesReader.RTL_FLIP : undefined, stylesReader.menu_button)}
+                                                    onClick={(_e) => {
+                                                        if (useMO) {
+                                                            this.props.handleMediaOverlaysResume();
+                                                        } else {
+                                                            this.props.handleTTSResume();
+                                                        }
+                                                    }
                                                     }
                                                     title={
-                                                        this.props.publicationHasMediaOverlays ?
+                                                        useMO ?
                                                             __("reader.media-overlays.play") :
                                                             __("reader.tts.play")
                                                     }
@@ -535,16 +564,29 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 className={stylesReader.menu_button}
 
                                                 onClick={(e) => {
-                                                    if (this.props.publicationHasMediaOverlays) {
-                                                        this.props.handleMediaOverlaysNext();
+                                                  if (isRTL) {
+                                                    if (useMO) {
+                                                        this.props.handleMediaOverlaysPrevious();
                                                     } else {
-                                                        this.props.handleTTSNext(e.shiftKey && e.altKey);
+                                                        this.props.handleTTSPrevious(e.shiftKey && e.altKey);
                                                     }
+                                                  } else {
+                                                      if (useMO) {
+                                                          this.props.handleMediaOverlaysNext();
+                                                      } else {
+                                                          this.props.handleTTSNext(e.shiftKey && e.altKey);
+                                                      }
+                                                  }
                                                 }}
                                                 title={
-                                                    this.props.publicationHasMediaOverlays ?
-                                                        __("reader.media-overlays.next") :
-                                                        __("reader.tts.next")
+                                                  isRTL ?
+                                                  (useMO ?
+                                                      __("reader.media-overlays.previous") :
+                                                      __("reader.tts.previous"))
+                                                  :
+                                                  (useMO ?
+                                                      __("reader.media-overlays.next") :
+                                                      __("reader.tts.next"))
                                                 }
                                             >
                                                 <SVG ariaHidden={true} svg={SkipNext} />
@@ -552,12 +594,12 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         </li>
                                         <li className={stylesReader.ttsSelectRate}>
                                             <select title={
-                                                this.props.publicationHasMediaOverlays ?
+                                                useMO ?
                                                     __("reader.media-overlays.speed") :
                                                     __("reader.tts.speed")
                                             }
                                                 onChange={(ev) => {
-                                                    if (this.props.publicationHasMediaOverlays) {
+                                                    if (useMO) {
                                                         this.props.handleMediaOverlaysPlaybackRate(
                                                             ev.target.value.toString(),
                                                         );
@@ -568,7 +610,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     }
                                                 }}
                                                 value={
-                                                    this.props.publicationHasMediaOverlays ?
+                                                    useMO ?
                                                         this.props.mediaOverlaysPlaybackRate :
                                                         this.props.ttsPlaybackRate
                                                 }
@@ -586,7 +628,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 <option value="0.5">0.5x</option>
                                             </select>
                                         </li>
-                                        {!this.props.publicationHasMediaOverlays && (
+                                        {!useMO && (
                                             <li className={stylesReader.ttsSelectVoice}>
                                                 <select title={__("reader.tts.voice")}
                                                     onChange={(ev) => {
@@ -633,7 +675,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         type="checkbox"
                                         checked={this.state.pdfScaleMode === "page-width"}
                                         // tslint:disable-next-line: max-line-length
-                                        onChange={() => this.props.pdfEventBus.dispatch("scale", this.state.pdfScaleMode === "page-fit" ? "page-width" : "page-fit")}
+                                        onChange={() => createOrGetPdfEventBus().dispatch("scale", this.state.pdfScaleMode === "page-fit" ? "page-width" : "page-fit")}
                                         aria-label={__("reader.navigation.pdfscalemode")}
                                     />
                                     <label

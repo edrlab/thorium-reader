@@ -10,14 +10,14 @@ import { History } from "history";
 import { reduxSyncMiddleware } from "readium-desktop/renderer/library/redux/middleware/sync";
 import { rootReducer } from "readium-desktop/renderer/library/redux/reducers";
 import { rootSaga } from "readium-desktop/renderer/library/redux/sagas";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
-import { applyMiddleware, createStore, type Store } from "redux";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import { applyMiddleware, legacy_createStore as createStore, type Store } from "redux";
 import { composeWithDevTools } from "@redux-devtools/extension";
 import createSagaMiddleware from "redux-saga";
 
 import { createHashHistory } from "history";
 
-export function initStore():
+export function initStore(preloadedState: Partial<ILibraryRootState>):
 [Store<ILibraryRootState>, History & {
     listenObject: boolean;
 }] {
@@ -31,6 +31,7 @@ export function initStore():
     const sagaMiddleware = createSagaMiddleware();
     const store = createStore(
         rootReducer(routerReducer),
+        preloadedState,
         composeWithDevTools(
             applyMiddleware(
                 routerMiddleware,

@@ -15,7 +15,7 @@ import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
@@ -38,7 +38,7 @@ class LanguageSettings extends React.Component<IProps, undefined> {
         const { __ } = this.props;
         return (
             <>
-                <section>
+                <section className="settings_language-section">
                     <div className={stylesGlobal.heading}>
                         <h2>{__("settings.language.languageChoice")}</h2>
                     </div>

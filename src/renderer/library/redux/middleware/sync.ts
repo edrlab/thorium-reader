@@ -41,6 +41,10 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     catalogActions.getCatalog.ID, // request to get catalog view
     annotationActions.exportW3CAnnotationSetFromAnnotations.ID,
+
+    readerActions.disableRTLFlip.ID,
+
+    readerActions.configSetDefault.ID, // readerConfig
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

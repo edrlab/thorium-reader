@@ -16,21 +16,24 @@ import { combineReducers } from "redux";
 
 import { appActions, publicationActions, winActions } from "../actions";
 import { lcpReducer } from "./lcp";
-import { readerDefaultConfigReducer } from "./reader/defaultConfig";
+import { readerDefaultConfigReducer } from "../../../common/redux/reducers/reader/defaultConfig";
 import { winRegistryReaderReducer } from "./win/registry/reader";
 import { winSessionLibraryReducer } from "./win/session/library";
 import { winSessionReaderReducer } from "./win/session/reader";
 import { winModeReducer } from "../../../common/redux/reducers/winModeReducer";
+import { readerRTLFlipReducer } from "../../../common/redux/reducers/reader/rtlFlip";
 import { publicationDbReducers } from "./publication/db";
 import { opdsDbReducers } from "./opds/db";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
+import { ActionWithSender } from "readium-desktop/common/models/sync";
 
-export const rootReducer = combineReducers<RootState>({
+export const rootReducer = combineReducers({ // RootState
     session: sessionReducer,
     streamer: streamerReducer,
     i18n: i18nReducer,
     reader: combineReducers({
         defaultConfig: readerDefaultConfigReducer,
+        disableRTLFlip: readerRTLFlipReducer,
     }),
     // net: netReducer,
     // update: updateReducer,
@@ -71,5 +74,5 @@ export const rootReducer = combineReducers<RootState>({
     opds: combineReducers({
         catalog: opdsDbReducers,
     }),
-    version: (state, action) => action.type === appActions.initSuccess.ID ? _APP_VERSION : (state === undefined ? null : state),
+    version: (state: RootState, action: ActionWithSender) => action.type === appActions.initSuccess.ID ? _APP_VERSION : (state?.version ? state.version : null),
 });

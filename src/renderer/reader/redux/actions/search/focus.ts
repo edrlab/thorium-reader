@@ -8,16 +8,16 @@
 import { Action } from "readium-desktop/common/models/redux";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
 
-import { ISearchState } from "../../state/search";
+import { ISearchState } from "readium-desktop/common/redux/states/renderer/search";
 
 export const ID = "READER_SEARCH_FOCUS";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload extends Partial<ISearchState> {
+export interface Payload extends Partial<ISearchState> {
 }
 
 export function build(focusUUId: ISearchState["newFocusUUId"]):
-    Action<typeof ID, IPayload> {
+    Action<typeof ID, Payload> {
 
     const store = diReaderGet("store");
     const { newFocusUUId: oldFocusUUId } = store.getState().search;

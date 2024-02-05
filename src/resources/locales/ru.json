@@ -357,6 +357,7 @@
             "lineSpacing": "Межстрочный интервал",
             "margin": "Отступ",
             "noFootnotes": "",
+            "noRTLFlip": "",
             "paginated": "Страничная",
             "paraSpacing": "Интервал между абзацами",
             "pdfZoom": {

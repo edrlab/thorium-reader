@@ -63,6 +63,8 @@ interface IBaseProps extends TranslatorProps {
     divinaNumberOfPages: number;
     divinaContinousEqualTrue: boolean;
 
+    disableRTLFlip: boolean;
+
     isPdf: boolean;
 }
 
@@ -120,6 +122,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
         let afterCurrentLocation = false;
 
+        const isRTL_ = this.props.r2Publication?.Metadata?.Direction === "rtl" || this.props.r2Publication?.Metadata?.Direction === "ttb"; // TODO RTL (see ReaderMenu.tsx)
+        const isRTL = !this.props.disableRTLFlip && isRTL_;
+
         return (
             <div className={classNames(stylesReader.reader_footer,
                 this.props.fullscreen ? stylesReader.reader_footer_fullscreen : undefined)}
@@ -134,28 +139,36 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                 // !this.props.fullscreen &&
                 <div className={stylesReader.history}>
                             <button
-                                className={this.props.historyCanGoBack ? undefined : stylesReader.disabled}
+                                className={(isRTL ? this.props.historyCanGoForward : this.props.historyCanGoBack) ? undefined : stylesReader.disabled}
                                 onClick={() => {
 
                                     // console.log("#+$%".repeat(5)  + " history back()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
-                                    window.history.back();
+                                    if (isRTL) {
+                                      window.history.forward();
+                                    } else {
+                                      window.history.back();
+                                    }
                                     // window.history.go(-1);
 
                                 }}
-                                title={__("reader.navigation.historyPrevious")}
+                                title={isRTL ? __("reader.navigation.historyNext") : __("reader.navigation.historyPrevious")}
                             >
                                 <SVG ariaHidden={true} svg={BackIcon} />
                             </button>
                             <button
-                                className={this.props.historyCanGoForward ? undefined : stylesReader.disabled}
+                                className={(isRTL ? this.props.historyCanGoBack : this.props.historyCanGoForward) ? undefined : stylesReader.disabled}
                                 onClick={() => {
 
                                     // console.log("#+$%".repeat(5)  + " history forward()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
-                                    window.history.forward();
+                                    if (isRTL) {
+                                      window.history.back();
+                                    } else {
+                                      window.history.forward();
+                                    }
                                     // window.history.go(1);
 
                                 }}
-                                title={__("reader.navigation.historyNext")}
+                                title={isRTL ? __("reader.navigation.historyPrevious") : __("reader.navigation.historyNext")}
                             >
                                 <SVG ariaHidden={true} svg={ForwardIcon} />
                             </button>
@@ -165,14 +178,13 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                     <div className={stylesReader.arrows}>
                         <button onClick={(ev) => {
                             if (ev.shiftKey) {
-                                const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
                                 if (isRTL) {
                                     this.props.gotoEnd();
                                 } else {
                                     this.props.gotoBegin();
                                 }
                             } else {
-                                this.props.navLeftOrRight(true);
+                                this.props.navLeftOrRight(isRTL_ && this.props.disableRTLFlip ? false : true);
                             }
                         }}
                         title={__("reader.svg.left")}
@@ -181,14 +193,13 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                         </button>
                         <button onClick={(ev) => {
                             if (ev.shiftKey) {
-                                const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
                                 if (isRTL) {
                                     this.props.gotoBegin();
                                 } else {
                                     this.props.gotoEnd();
                                 }
                             } else {
-                                this.props.navLeftOrRight(false);
+                                this.props.navLeftOrRight(isRTL_ && this.props.disableRTLFlip ? true : false);
                             }
                         }}
                         title={__("reader.svg.right")}
@@ -204,7 +215,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                         { // <div id={stylesReader.current}></div>
                             <div id={stylesReader.track_reading}>
                                 <div id={stylesReader.chapters_markers}
-                                    className={moreInfo ? stylesReader.more_information : undefined}>
+                                    className={classNames(isRTL ? stylesReader.RTL_FLIP : undefined, moreInfo ? stylesReader.more_information : undefined)}>
                                     {
                                         (isPdf
                                             // tslint:disable-next-line: max-line-length
@@ -244,17 +255,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                         } else {
 
                                                             const el = e.nativeEvent.target as HTMLElement;
-                                                            let left = el.offsetLeft;
-                                                            if (!left) {
-                                                                left = 0;
-                                                            }
-                                                            let p = el.offsetParent as HTMLElement;
-                                                            while (p) {
-                                                                const l = p.offsetLeft;
-                                                                left += (l ? l : 0);
-                                                                p = p.offsetParent as HTMLElement;
-                                                            }
-                                                            const deltaX = e.clientX - left;
+                                                            const deltaX = e.nativeEvent.offsetX;
                                                             let element = el;
                                                             let w: number | undefined;
                                                             while (element && element.classList) {
@@ -348,7 +349,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         }
 
         let progression = currentLocation.locator.locations?.progression;
-        if (progression >= 0.9) {
+        if (progression >= 0.97) {
             progression = 1;
         }
         return {
@@ -372,7 +373,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         }
         const onePourcent = 100 / (isPdf ? r2Publication.Metadata?.NumberOfPages || 1 : r2Publication.Spine?.length);
         let progression = currentLocation.locator?.locations?.progression;
-        if (progression >= 0.9) {
+        if (progression >= 0.97) {
             progression = 1;
         }
         return ((onePourcent * spineItemId) + (onePourcent * progression));
@@ -401,7 +402,13 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     private getStyle(
         func: (arrowBoxPosition: number, multiplicator: number, rest: number) => string): React.CSSProperties {
 
-        const arrowBoxPosition = this.getArrowBoxPosition();
+        const isRTL_ = this.props.r2Publication?.Metadata?.Direction === "rtl" || this.props.r2Publication?.Metadata?.Direction === "ttb"; // TODO RTL (see ReaderMenu.tsx)
+        const isRTL = !this.props.disableRTLFlip && isRTL_;
+
+        let arrowBoxPosition = this.getArrowBoxPosition();
+        if (isRTL) {
+          arrowBoxPosition = 100 - arrowBoxPosition;
+        }
         let multiplicator = 1;
         const rest = Math.abs(arrowBoxPosition - 50);
 

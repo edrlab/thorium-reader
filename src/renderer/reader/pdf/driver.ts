@@ -22,10 +22,59 @@ import { IEventBusPdfPlayer } from "./common/pdfReader.type";
 
 // bridge between webview tx-rx communication and reader.tsx
 
-export async function pdfMountAndReturnBus(
+export function createOrGetPdfEventBus(): IEventBusPdfPlayer {
+
+  if ((window as any).pdfEventBus) {
+    return (window as any).pdfEventBus;
+  }
+  const bus: IEventBusPdfPlayer = eventBus(
+          (key, ...a) => {
+              const data = {
+                  key: JSON.stringify(key),
+                  payload: JSON.stringify(a),
+              };
+
+              const webview = document.getElementById("publication_viewport")?.firstElementChild as (Electron.WebviewTag | null);
+
+              webview?.send("pdf-eventbus", data);
+          },
+          (ev) => {
+            const webview = document.getElementById("publication_viewport")?.firstElementChild as (Electron.WebviewTag | null);
+            if (!webview) {
+              return false;
+            }
+            webview?.addEventListener("ipc-message", (event) => {
+                  // console.log("ipc-message ...");
+                  const channel = event.channel;
+                  if (channel === "pdf-eventbus") {
+
+                      const message = event.args[0];
+                      try {
+
+                          const key = typeof message?.key !== "undefined" ? JSON.parse(message.key) : undefined;
+                          const data = typeof message?.payload !== "undefined" ? JSON.parse(message.payload) : [];
+                          console.log("ipc-message pdf-eventbus received", key, data);
+
+                          if (Array.isArray(data)) {
+                              ev(key, ...data);
+                          }
+                      } catch (e) {
+                          console.log("ipc message pdf-eventbus received with parsing error", e);
+                      }
+
+                  }
+              });
+            return true;
+          },
+      );
+  (window as any).pdfEventBus = bus;
+  return bus;
+}
+
+export function pdfMount(
     pdfPath: string,
     publicationViewport: HTMLDivElement,
-): Promise<IEventBusPdfPlayer> {
+) {
 
     if (pdfPath.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)) {
         pdfPath = convertCustomSchemeToHttpUrl(pdfPath);
@@ -53,45 +102,10 @@ export async function pdfMountAndReturnBus(
 
     webview.addEventListener("dom-ready", webviewDomReadyDebugger);
 
-    const bus: IEventBusPdfPlayer = eventBus(
-        (key, ...a) => {
-            const data = {
-                key: JSON.stringify(key),
-                payload: JSON.stringify(a),
-            };
-
-            // tslint:disable-next-line: no-floating-promises
-            webview.send("pdf-eventbus", data);
-        },
-        (ev) => {
-            webview.addEventListener("ipc-message", (event) => {
-
-                const channel = event.channel;
-                if (channel === "pdf-eventbus") {
-
-                    const message = event.args[0];
-                    try {
-
-                        const key = typeof message?.key !== "undefined" ? JSON.parse(message.key) : undefined;
-                        const data = typeof message?.payload !== "undefined" ? JSON.parse(message.payload) : [];
-                        console.log("ipc-message pdf-eventbus received", key, data);
-
-                        if (Array.isArray(data)) {
-                            ev(key, ...data);
-                        }
-                    } catch (e) {
-                        console.log("ipc message pdf-eventbus received with parsing error", e);
-                    }
-
-                }
-            });
-        },
-    );
-
     webview.addEventListener("did-finish-load", () => {
 
-        console.log("did-finish-load bus.dispatch start pdfPath", pdfPath);
-        bus.dispatch("start", pdfPath);
+        console.log("did-finish-load createOrGetPdfEventBus().dispatch start pdfPath", pdfPath);
+        createOrGetPdfEventBus().dispatch("start", pdfPath);
     });
 
     let preloadPath = "index_pdf.js";
@@ -134,8 +148,6 @@ export async function pdfMountAndReturnBus(
     webview.setAttribute("src", "pdfjs://local/web/viewer.html?file=" + encodeURIComponent_RFC3986(pdfPath));
 
     publicationViewport.append(webview);
-
-    return bus;
 }
 
 const webviewDomReadyDebugger = (ev: DOMEvent) => {

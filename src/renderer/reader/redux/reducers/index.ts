@@ -9,9 +9,9 @@ import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
-import {
-    IReaderRootState, IReaderStateReader,
-} from "readium-desktop/common/redux/states/renderer/readerRootState";
+// import {
+//     IReaderRootState, IReaderStateReader,
+// } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { apiReducer } from "readium-desktop/renderer/common/redux/reducers/api";
 import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
 import { mapReducer } from "readium-desktop/utils/redux-reducers/map.reducer";
@@ -20,7 +20,7 @@ import { combineReducers } from "redux";
 import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 
 import { readerLocalActionBookmarks, readerLocalActionAnnotations, readerLocalActionHighlights } from "../actions";
-import { IHighlightHandlerState } from "../state/highlight";
+import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { readerInfoReducer } from "./info";
 import { pickerReducer } from "./picker";
 import { readerConfigReducer } from "./readerConfig";
@@ -30,16 +30,19 @@ import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { winModeReducer } from "readium-desktop/common/redux/reducers/winModeReducer";
 import { readerDivinaReducer } from "./divina";
+import { readerRTLFlipReducer } from "readium-desktop/common/redux/reducers/reader/rtlFlip";
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { IAnnotationState } from "readium-desktop/common/redux/states/annotation";
 import { annotationUIReducer } from "./annotationUI";
+import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
 
 export const rootReducer = () => {
-    return combineReducers<IReaderRootState>({
+    return combineReducers({ // IReaderRootState
         session: sessionReducer,
         api: apiReducer,
         i18n: i18nReducer,
-        reader: combineReducers<IReaderStateReader>({ // dehydrated from main process registry (preloaded state)
+        reader: combineReducers({ // IReaderStateReader, dehydrated from main process registry (preloaded state)
+            defaultConfig: readerDefaultConfigReducer,
             config: readerConfigReducer,
             info: readerInfoReducer,
             locator: readerLocatorReducer,
@@ -156,6 +159,7 @@ export const rootReducer = () => {
                     ),
             }),
             divina: readerDivinaReducer,
+            disableRTLFlip: readerRTLFlipReducer,
         }),
         search: searchReducer,
         annotation: annotationUIReducer,

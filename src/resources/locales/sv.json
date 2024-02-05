@@ -338,7 +338,7 @@
         },
         "settings": {
             "column": {
-                "auto": "Automatiskt",
+                "auto": "Standard",
                 "one": "1 kol",
                 "oneTitle": "en kolumn",
                 "title": "Kolumner",
@@ -357,6 +357,7 @@
             "lineSpacing": "Radavstånd",
             "margin": "Marginaler",
             "noFootnotes": "Avaktivera fotnoter",
+            "noRTLFlip": "",
             "paginated": "Sidindelad",
             "paraSpacing": "Styckesavstånd",
             "pdfZoom": {

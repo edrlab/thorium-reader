@@ -11,7 +11,7 @@ import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEver
 import { SagaIterator } from "redux-saga";
 
 import { readerLocalActionAnnotationUI, readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionPicker, readerLocalActionSetLocator } from "../actions";
-import { IHighlightHandlerState } from "../state/highlight";
+import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { all, put as putTyped, select as selectTyped, call as callTyped } from "typed-redux-saga";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { IAnnotationStateWithoutUUID } from "readium-desktop/common/redux/states/annotation";

@@ -6,13 +6,13 @@
 // ==LICENSE-END==
 
 import * as ramda from "ramda";
-import { ActionWithSender } from "readium-desktop/common/models/sync";
+// import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { IReaderRootState, IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
+import { UnknownAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 const dispatchSetReduxState = (
-    store: MiddlewareAPI<Dispatch<AnyAction>, IReaderRootState>,
+    store: MiddlewareAPI<Dispatch<UnknownAction>, IReaderRootState>,
     readerState: Partial<IReaderStateReader>,
 ) => {
 
@@ -23,9 +23,9 @@ const dispatchSetReduxState = (
 };
 
 export const reduxPersistMiddleware: Middleware
-    = (store: MiddlewareAPI<Dispatch<AnyAction>, IReaderRootState>) =>
-        (next: Dispatch<ActionWithSender>) =>
-            (action: ActionWithSender) => {
+    = (store: MiddlewareAPI<Dispatch<UnknownAction>, IReaderRootState>) =>
+        (next: (action: unknown) => unknown) => // Dispatch<ActionWithSender>
+            (action: unknown) => { // ActionWithSender
 
                 const prevState = store.getState();
 
@@ -58,6 +58,11 @@ export const reduxPersistMiddleware: Middleware
                 if (!ramda.equals(prevState.reader.divina, nextState.reader.divina)) {
 
                     readerState.divina = nextState.reader.divina;
+                    dispatchFlag = true;
+                }
+                if (prevState.reader.disableRTLFlip !== nextState.reader.disableRTLFlip) {
+
+                    readerState.disableRTLFlip = nextState.reader.disableRTLFlip;
                     dispatchFlag = true;
                 }
                 if (dispatchFlag) {

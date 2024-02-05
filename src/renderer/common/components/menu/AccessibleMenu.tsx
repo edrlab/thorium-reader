@@ -31,7 +31,7 @@ interface IState {
     triggerElem: HTMLElement | undefined;
 }
 
-export default class AccessibleMenu extends React.Component<IProps, IState> {
+export default class AccessibleMenu extends React.Component<React.PropsWithChildren<IProps>, IState> {
     private containerRef: React.RefObject<HTMLDivElement>;
     private ismounted = false;
 

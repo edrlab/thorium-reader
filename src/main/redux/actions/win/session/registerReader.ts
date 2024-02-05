@@ -43,6 +43,7 @@ export function build(
     // we lose purity !!
     const store = diMainGet("store");
     const readerConfigDefault = store.getState().reader.defaultConfig;
+    const disableRTLFlip = store.getState().reader.disableRTLFlip;
 
     const manifestUrlR2Protocol = manifestUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
         ? manifestUrl : convertHttpUrlToCustomScheme(manifestUrl);
@@ -50,6 +51,7 @@ export function build(
     reduxStateReader = {
         ...{
             config: readerConfigDefault,
+            disableRTLFlip,
             locator: locatorInitialState,
         },
         ...reduxStateReader,

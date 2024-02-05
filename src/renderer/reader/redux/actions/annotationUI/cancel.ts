@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IAnnotationUserInterfaceState, annotationDefaultState } from "../../state/annotation";
+import { IAnnotationUserInterfaceState, annotationDefaultState } from "readium-desktop/common/redux/states/renderer/annotation";
 
 export const ID = "READER_ANNOTATION_CANCEL";
 

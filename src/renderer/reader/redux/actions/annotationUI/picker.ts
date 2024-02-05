@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IAnnotationUserInterfaceState } from "../../state/annotation";
+import { IAnnotationUserInterfaceState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 
 export const ID = "READER_ANNOTATION_UPDATE_PICKER";

@@ -11,7 +11,7 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { error } from "readium-desktop/main/tools/error";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all } from "redux-saga/effects";
-import { call as callTyped, put as putTyped, select as selectTyped, debounce as debounceTyped } from "typed-redux-saga/macro";
+import { call as callTyped, put as putTyped, select as selectTyped, debounce as debounceTyped, SagaGenerator } from "typed-redux-saga/macro";
 import { RootState } from "../states";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -27,6 +27,7 @@ import { aboutFiltered } from "readium-desktop/main/tools/filter";
 import { publicationActions } from "../actions";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
 const filename_ = "readium-desktop:main:redux:sagas:catalog";
 const debug = debug_(filename_);
@@ -165,7 +166,9 @@ function* getPublicationView() {
     };
 }
 
-function* getCatalog() {
+// export defined
+// used to preloaded redux state in library win
+export function* getCatalog(): SagaGenerator<ILibraryRootState["publication"]> {
     debug("getCatalog");
 
     const translator = diMainGet("translator");
@@ -226,12 +229,18 @@ function* getCatalog() {
             publicationViews: pdfReaded_,
         },
     ];
-
-    yield* putTyped(catalogActions.setCatalog.build({entries}));
-
     const publicationRepository = diMainGet("publication-repository");
     const allTags = yield* callTyped(() => publicationRepository.getAllTags());
-    yield* putTyped(catalogActions.setTagView.build(allTags));
+
+    return {catalog: {entries}, tag: allTags};
+}
+
+function* getCatalogAndDispatchIt() {
+
+    const {catalog, tag} = yield* callTyped(getCatalog);
+
+    yield* putTyped(catalogActions.setCatalog.build(catalog));
+    yield* putTyped(catalogActions.setTagView.build(tag));
 }
 
 function* updateResumePosition() {
@@ -255,7 +264,7 @@ function* updateResumePosition() {
         const prevId = prevState.map(([_,v]) => v);
         const nextId = nextState.map(([_,v]) => v);
         if (!eq(prevId, nextId)) {
-            yield* callTyped(getCatalog);
+            yield* callTyped(getCatalogAndDispatchIt);
         }
         prevState = yield* selectTyped((state: RootState) => state.publication.lastReadingQueue);
     });
@@ -265,8 +274,8 @@ export function saga() {
     return all([
         takeSpawnLatest(
             [catalogActions.getCatalog.ID, publicationActions.addPublication.ID, publicationActions.deletePublication.ID],
-            getCatalog,
-            (e) => error(filename_ + ":getCatalog", e),
+            getCatalogAndDispatchIt,
+            (e) => error(filename_ + ":getCatalogAndDispatchIt", e),
         ),
         spawnLeading(
             updateResumePosition,
