@@ -62,9 +62,17 @@ const recoveryReduxState = async (runtimeState: object): Promise<object> => {
 
     ok(Array.isArray(patch));
 
-    const errors = applyPatch(runtimeState, patch);
-
-    ok(errors.reduce((pv, cv) => pv && !cv, true));
+    // RangeError: Maximum call stack size exceeded
+    // diffAny
+    // node_modules/rfc6902/diff.js:262:17
+    // dist
+    // node_modules/rfc6902/diff.js:135:36
+    try {
+        const errors = applyPatch(runtimeState, patch);
+        ok(errors.reduce((pv, cv) => pv && !cv, true));
+    } catch (err) {
+        console.log(err);
+    }
 
     ok(typeof runtimeState === "object", "state not defined after patch");
 
