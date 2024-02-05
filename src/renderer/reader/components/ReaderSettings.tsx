@@ -921,12 +921,12 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     if (isDivina) {
         sections.push(DivinaTrigger);
         options.push(optionDivinaItem);
-        setTabValue("tab-divina");
+        if (tabValue !== "tab-divina") setTabValue("tab-divina");
     }
     if (isPdf) {
         sections.push(PdfZoomTrigger);
         options.push(optionPdfZoomItem);
-        setTabValue("tab-pdfzoom");
+        if (tabValue !== "tab-pdfzoom") setTabValue("tab-pdfzoom");
     }
     if (isPdf || isEpub) {
         sections.push(DisplayTrigger);
