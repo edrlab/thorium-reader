@@ -912,7 +912,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         </Tabs.Trigger>;
     const optionPdfZoomItem = { id: 5, value: "tab-pdfzoom", name: __("reader.settings.pdfZoom.title"), disabled: false, svg: VolumeUpIcon };
 
-    const AllowCustomContainer =
+    const AllowCustomContainer = () =>
         <div className={stylesSettings.allowCustom} key={"allowCustom"}>
             <AllowCustom overridePublisherDefault={overridePublisherDefault} set={setOverridePublisherDefault} />
         </div>;
@@ -935,7 +935,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     if (isEpub) {
         sections.push(AudioTrigger);
         options.push(optionAudioItem);
-        sections.push(AllowCustomContainer);
+        sections.push(AllowCustomContainer());
         sections.push(TextTrigger);
         options.push(optionTextItem);
         sections.push(SpacingTrigger);
@@ -1013,11 +1013,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                 </div> : <></>
             }
             {
-                dockedMode ?
-                    <div className={stylesSettings.allowCustom} key={"allowCustom"}>
-                        <AllowCustom overridePublisherDefault={overridePublisherDefault} set={setOverridePublisherDefault} />
-                    </div>
-                : <></>
+                (dockedMode && isEpub) ? <AllowCustomContainer /> : <></>
             }
             <Tabs.Root value={tabValue} defaultValue={tabValue} onValueChange={dockedMode ? null : setTabValue} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {
