@@ -723,6 +723,9 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const { setSettings, readerConfig, open } = props;
     const { setDockingMode, dockedMode, dockingMode } = props;
     const { handleDivinaReadingMode, divinaReadingMode, divinaReadingModeSupported } = props;
+    const { isDivina, isPdf } = props;
+    const isEpub = !isDivina && !isPdf;
+
     const [__] = useTranslator();
 
     const [pdfState, setPdfState] = React.useState<IState>({
@@ -784,9 +787,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     }, [setPartialSettingsDebounced]);
 
     const [overridePublisherDefault, setOverride] = React.useState(false);
-    const [tabValue, setTabValue] = React.useState("tab-display");
-
-
+    const [tabValue, setTabValue] = React.useState(isDivina ? "tab-divina" : isPdf ? "tab-pdfzoom" : "tab-display");
 
     React.useEffect(() => {
         let ov = false;
@@ -862,9 +863,6 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         return <></>;
     }
 
-    const { isDivina, isPdf } = props;
-    const isEpub = !isDivina && !isPdf;
-
     const sections: Array<React.JSX.Element> = [];
     const options: Array<{ id: number, value: string, name: string, disabled: boolean, svg: {} }> = [];
 
@@ -921,12 +919,10 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     if (isDivina) {
         sections.push(DivinaTrigger);
         options.push(optionDivinaItem);
-        if (tabValue !== "tab-divina") setTabValue("tab-divina");
     }
     if (isPdf) {
         sections.push(PdfZoomTrigger);
         options.push(optionPdfZoomItem);
-        if (tabValue !== "tab-pdfzoom") setTabValue("tab-pdfzoom");
     }
     if (isPdf || isEpub) {
         sections.push(DisplayTrigger);
@@ -949,8 +945,6 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
     const optionSelected = options.find(({ value }) => value === tabValue)?.id || 0;
     const optionDisabled = options.map(({ id, disabled }) => disabled ? id : "").filter((v) => !!v) as number[];
-
-    // const Close = Popover.Close;
 
     console.log("RENDER");
 
