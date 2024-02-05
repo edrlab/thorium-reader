@@ -28,6 +28,7 @@ interface NavigationHeader {
     route: string;
     label: string;
     matchRoutes: string[];
+    searchEnable?: boolean;
     styles: string[];
     svg: any;
 }
@@ -44,6 +45,7 @@ const headerNav: NavigationHeader[] = [
         route: "/library",
         label: "allBooks",
         matchRoutes: ["/library"],
+        searchEnable: false,
         styles: [],
         svg: ShelfIcon,
     },
@@ -138,6 +140,7 @@ class Header extends React.Component<IProps, undefined> {
                 cv?.pathname.startsWith(item.route)
                     ? {
                         ...this.props.location,
+                        search: item.searchEnable ? this.props.location?.search : "",
                         pathname: cv.pathname,
                     }
                     : pv,
