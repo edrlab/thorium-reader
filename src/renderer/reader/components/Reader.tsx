@@ -594,6 +594,7 @@ class Reader extends React.Component<IProps, IState> {
 
             isDivina: this.props.isDivina,
             isPdf: this.props.isPdf,
+            isFXL: this.props.publicationView.isFXL,
             // openedSection: this.state.openedSectionSettings,
         };
 
@@ -613,7 +614,23 @@ class Reader extends React.Component<IProps, IState> {
         //     {this.state.bookmarkMessage}
         // </div> : <></>}
 
+        
         const isAudioBook = isAudiobookFn(this.props.r2Publication);
+        const arrowDisabledNotEpub = isAudioBook || this.props.isPdf || this.props.isDivina;
+        const isFXL = this.props.publicationView.isFXL;
+        const isPaginated = this.props.readerConfig.paged;
+
+        console.log(arrowDisabledNotEpub, isFXL, isPaginated);
+        // epub non fxl (page)      : false false true  : true
+        // epub non fxl (scroll)    : false false false : false
+        // epub fxl                 : false true true :   true 
+        // epub fxl (scroll)        : false true false :  true
+        // pdf                      : true false true :   false
+        // audiobook                : true false true :   false
+        // divina                   : true false true :   false
+
+        const arrowEnabled = !arrowDisabledNotEpub && (isFXL || isPaginated);
+        
         return (
             <div className={classNames(
                 this.props.readerConfig.night && stylesReader.nightMode,
@@ -705,8 +722,7 @@ class Reader extends React.Component<IProps, IState> {
                                     aria-label={this.props.__("accessibility.mainContent")}
                                     tabIndex={-1}>{this.props.__("accessibility.mainContent")}</a>
 
-                                {isAudioBook ||  !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ?
-                                <></> :
+                                {arrowEnabled ?
                                     <div className={stylesReaderFooter.arrows}>
                                         <button onClick={(ev) => {
                                             if (ev.shiftKey) {
@@ -725,7 +741,9 @@ class Reader extends React.Component<IProps, IState> {
                                         >
                                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                                         </button>
-                                    </div>}
+                                    </div>
+                                    : 
+                                    <></>}
 
                                 <div
                                     id="publication_viewport"
@@ -774,8 +792,7 @@ class Reader extends React.Component<IProps, IState> {
                                         </div>
                                         : <></>
                                 }
-                                {isAudioBook ||  !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ?
-                                <></> :
+                                {arrowEnabled ?
                                     <div className={stylesReaderFooter.arrows}>
                                         <button onClick={(ev) => {
                                             if (ev.shiftKey) {
@@ -794,7 +811,9 @@ class Reader extends React.Component<IProps, IState> {
                                         >
                                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                                         </button>
-                                    </div>}
+                                    </div>
+                                    :
+                                    <></>}
                             </main>
                         </div>
                     </div>

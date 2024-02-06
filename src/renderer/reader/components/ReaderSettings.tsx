@@ -387,16 +387,16 @@ const RadioGroupItem = (props: IRadioGroupItemProps) => {
     );
 };
 
-const ReadingDisplayLayout = ({config: {paged: layout}, set}: {config: Pick<ReaderConfig, "paged">, set: (a: Pick<ReaderConfig, "paged">) => void}) => {
+const ReadingDisplayLayout = ({isFXL, config: {paged: layout}, set}: { isFXL: boolean, config: Pick<ReaderConfig, "paged">, set: (a: Pick<ReaderConfig, "paged">) => void}) => {
     const [__] = useTranslator();
     return (
         <div className={stylesSettings.section}>
             <h4>{__("reader.settings.disposition.title")}</h4>
             <div className={stylesSettings.display_options}>
-                <RadioGroup.Root orientation="horizontal" style={{ display: "flex" }} value={layout ? "page_option" : "scroll_option"}
+                <RadioGroup.Root orientation="horizontal" style={{ display: "flex" }} value={(layout || isFXL) ? "page_option" : "scroll_option"}
                     onValueChange={(v) => set({ paged: v === "page_option" })}
                 >
-                    <RadioGroupItem value="scroll_option" description={`${__("reader.settings.scrolled")}`} svg={ScrollableIcon} disabled={false}/>
+                    <RadioGroupItem value="scroll_option" description={`${__("reader.settings.scrolled")}`} svg={ScrollableIcon} disabled={isFXL}/>
                     <RadioGroupItem value="page_option" description={`${__("reader.settings.paginated")}`} svg={PaginatedIcon} disabled={false}/>
                 </RadioGroup.Root>
             </div>
@@ -1046,7 +1046,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                         <TabTitle title={__("reader.settings.display")} />
                         <section className={stylesSettings.settings_tab}>
                             {isPdf ? <></> : <Theme theme={readerConfig} set={setPartialSettingsDebounced} />}
-                            {isPdf ? <></> : <ReadingDisplayLayout config={readerConfig} set={setPartialSettingsDebounced} />}
+                            {isPdf ? <></> : <ReadingDisplayLayout config={readerConfig} set={setPartialSettingsDebounced} isFXL={props.isFXL} />}
                             {isPdf ? <></> : <ReadingDisplayAlign config={readerConfig} set={setPartialSettingsDebounced} />}
                             <ReadingDisplayCol config={readerConfig} set={setPartialSettingsDebounced} isPdf={props.isPdf} pdfCol={pdfState.pdfCol} />
                             {isPdf ? <></> : <ReadingDisplayMathJax config={readerConfig} set={setPartialSettingsDebounced} />}

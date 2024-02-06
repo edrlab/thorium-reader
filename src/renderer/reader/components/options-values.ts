@@ -149,6 +149,7 @@ export interface IReaderSettingsProps {
     divinaReadingModeSupported: TdivinaReadingMode[];
     isDivina: boolean;
     isPdf: boolean;
+    isFXL: boolean;
 
     // openedSection: number | undefined;
     disableRTLFlip: boolean;

@@ -719,14 +719,10 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     </label>
                                 </li>
                                 : (this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed"
-                                    ? <li
-                                        {...(this.state.fxlZoomPercent !== 0 &&
-                                            { style: { backgroundColor: "var(--color-blue"  } })}
-                                    >
-                                        <label
-                                            htmlFor="buttonFXLZoom"
-                                            style={{ pointerEvents: "none", position: "absolute", paddingLeft: "12px", paddingTop: "4px", fontSize: "80%", color: "#333333" }}>{this.state.fxlZoomPercent > 0 ? `${this.state.fxlZoomPercent}%` : " "}</label>
+                                    ? <li>
                                         <button
+                                         {...(this.state.fxlZoomPercent !== 0 &&
+                                            { style: { border: "2px solid var(--color-blue)", borderRadius: "6px" } })}
                                             id="buttonFXLZoom"
                                             className={classNames(stylesReader.menu_button)}
                                             onWheel={this.onwheel}
@@ -739,21 +735,27 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 } else if (this.state.fxlZoomPercent === 200) {
                                                     this.setState({ fxlZoomPercent: 100 });
                                                     fixedLayoutZoomPercent(100); // content natural dimensions (usually larger, so equivalent to zoom in)
-                                                } else if (this.state.fxlZoomPercent === 100) {
-                                                    this.setState({ fxlZoomPercent: 50 });
-                                                    fixedLayoutZoomPercent(50); // half (zoom out, but if the content is massive then it may still be perceived as zoom in)
-                                                } else {
-                                                    this.setState({ fxlZoomPercent: 0 });
-                                                    fixedLayoutZoomPercent(0); // special value: fit inside available viewport dimensions (default)
-                                                }
-                                            }}
-                                            aria-label={__("reader.navigation.pdfscalemode")}
-                                            title={__("reader.navigation.pdfscalemode")}
-                                        >
-                                            <SVG ariaHidden={true} svg={viewMode} className={this.state.pdfScaleMode === "page-width" ? stylesReaderHeader.active_svg : ""} />
-                                        </button>
-                                    </li>
-                                    : <></>)
+                                                        } else if (this.state.fxlZoomPercent === 100) {
+                                                            this.setState({ fxlZoomPercent: 50 });
+                                                            fixedLayoutZoomPercent(50); // half (zoom out, but if the content is massive then it may still be perceived as zoom in)
+                                                        } else {
+                                                            this.setState({ fxlZoomPercent: 0 });
+                                                            fixedLayoutZoomPercent(0); // special value: fit inside available viewport dimensions (default)
+                                                        }
+                                                    }}
+                                                    aria-label={__("reader.navigation.pdfscalemode")}
+                                                    title={__("reader.navigation.pdfscalemode")}
+                                                >
+                                                    {this.state.fxlZoomPercent > 0 ?
+                                                        <label
+                                                            htmlFor="buttonFXLZoom"
+                                                            style={{ pointerEvents: "none", color: "var(--color-blue)", fontSize: "80%" }}>{this.state.fxlZoomPercent > 0 ? `${this.state.fxlZoomPercent}%` : " "}</label>
+                                                        :
+                                                        <SVG ariaHidden={true} svg={viewMode} />
+                                                    }
+                                                </button>
+                                            </li>
+                                            : <></>)
                         }
                     </ul>
                     : <></>
