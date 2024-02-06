@@ -64,7 +64,7 @@ interface IBaseProps extends TranslatorProps {
     divinaContinousEqualTrue: boolean;
 
     disableRTLFlip: boolean;
-    isRightToLeft: boolean;
+    isRTLFlip: () => boolean;
 
     isPdf: boolean;
 }
@@ -123,8 +123,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
         let afterCurrentLocation = false;
 
-        const isRTL_ = this.props.r2Publication?.Metadata?.Direction === "rtl" || this.props.r2Publication?.Metadata?.Direction === "ttb" || this.props.isRightToLeft; // TODO RTL (see ReaderMenu.tsx)
-        const isRTL = !this.props.disableRTLFlip && isRTL_;
+        const isRTL = this.props.isRTLFlip();
 
         return (
             <div className={classNames(stylesReader.reader_footer,
@@ -185,7 +184,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                     this.props.gotoBegin();
                                 }
                             } else {
-                                this.props.navLeftOrRight(isRTL_ && this.props.disableRTLFlip ? false : true);
+                                this.props.navLeftOrRight(true);
                             }
                         }}
                         title={__("reader.svg.left")}
@@ -200,7 +199,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                     this.props.gotoEnd();
                                 }
                             } else {
-                                this.props.navLeftOrRight(isRTL_ && this.props.disableRTLFlip ? true : false);
+                                this.props.navLeftOrRight(false);
                             }
                         }}
                         title={__("reader.svg.right")}
@@ -339,8 +338,8 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         );
     }
 
-    private navLeftOrRightThrottled(dir: boolean) {
-        this.props.navLeftOrRight(dir);
+    private navLeftOrRightThrottled(left: boolean) {
+        this.props.navLeftOrRight(left);
     }
 
     private getProgressionStyle(): React.CSSProperties {
@@ -403,8 +402,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     private getStyle(
         func: (arrowBoxPosition: number, multiplicator: number, rest: number) => string): React.CSSProperties {
 
-        const isRTL_ = this.props.r2Publication?.Metadata?.Direction === "rtl" || this.props.r2Publication?.Metadata?.Direction === "ttb" || this.props.isRightToLeft; // TODO RTL (see ReaderMenu.tsx)
-        const isRTL = !this.props.disableRTLFlip && isRTL_;
+        const isRTL = this.props.isRTLFlip();
 
         let arrowBoxPosition = this.getArrowBoxPosition();
         if (isRTL) {

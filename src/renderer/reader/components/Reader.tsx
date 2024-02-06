@@ -219,7 +219,6 @@ interface IState {
     historyCanGoBack: boolean;
     historyCanGoForward: boolean;
 
-    isRightToLeft: boolean;
     // bookmarkMessage: string | undefined;
 }
 
@@ -305,8 +304,6 @@ class Reader extends React.Component<IProps, IState> {
 
             historyCanGoBack: false,
             historyCanGoForward: false,
-
-            isRightToLeft: false,
         };
 
         ttsListen((ttss: TTSStateEnum) => {
@@ -350,6 +347,8 @@ class Reader extends React.Component<IProps, IState> {
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
 
         this.handleDivinaSound = this.handleDivinaSound.bind(this);
+
+        this.isRTLFlip = this.isRTLFlip.bind(this);
     }
 
     public async componentDidMount() {
@@ -547,6 +546,34 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
+    private isFixedLayout(): boolean {
+        let isFixedLayout: undefined | boolean;
+        if (this.props.r2Publication?.Spine && this.state.currentLocation?.locator?.href) { // TODO this.props.locator??
+            const link = this.props.r2Publication.Spine.find((item) => {
+                return item.Href === this.state.currentLocation.locator.href;
+            });
+            if (link?.Properties?.Layout === "fixed") {
+                isFixedLayout = true;
+            } else if (typeof link?.Properties?.Layout !== "undefined") {
+                isFixedLayout = false;
+            }
+        }
+        if (typeof isFixedLayout === "undefined") {
+            isFixedLayout = this.props.r2Publication?.Metadata?.Rendition?.Layout === "fixed";
+        }
+        return isFixedLayout;
+    }
+    private isRTL(isFixedLayout: boolean): boolean {
+        const isRTL_PackageMeta = this.props.r2Publication?.Metadata?.Direction === "rtl" || this.props.r2Publication?.Metadata?.Direction === "ttb";
+        return isFixedLayout ? isRTL_PackageMeta : (isRTL_PackageMeta || this.state.currentLocation?.docInfo?.isRightToLeft);
+    }
+    private isRTLFlip(): boolean {
+        if (this.props.disableRTLFlip) {
+            return false;
+        }
+        return this.isRTL(this.isFixedLayout());
+    }
+
     public render(): React.ReactElement<{}> {
 
         const readerMenuProps: IReaderMenuProps = {
@@ -662,7 +689,7 @@ class Reader extends React.Component<IProps, IState> {
                         r2Publication={this.props.r2Publication}
 
                         disableRTLFlip={this.props.disableRTLFlip}
-                        isRightToLeft={this.state.isRightToLeft}
+                        isRTLFlip={this.isRTLFlip}
                     />
                     <div className={classNames(stylesReader.content_root,
                         this.state.fullscreen ? stylesReader.content_root_fullscreen : undefined,
@@ -755,7 +782,7 @@ class Reader extends React.Component<IProps, IState> {
                     isPdf={this.props.isPdf}
 
                     disableRTLFlip={this.props.disableRTLFlip}
-                    isRightToLeft={this.state.isRightToLeft}
+                    isRTLFlip={this.isRTLFlip}
                 />
             </div>
         );
@@ -1977,12 +2004,6 @@ class Reader extends React.Component<IProps, IState> {
 
         ok(loc, "handleReadingLocationChange loc KO");
 
-        const isRTL = loc?.docInfo?.isRightToLeft ? true : false;
-        // if (isRTL !== this.state.isRightToLeft) {
-        //     this.setState({ isRightToLeft: isRTL });
-        // }
-        this.setState({ isRightToLeft: isRTL });
-
         if (!this.props.isDivina && !this.props.isPdf && this.ttsOverlayEnableNeedsSync) {
             ttsOverlayEnable(this.props.readerConfig.ttsEnableOverlayMode);
             ttsSentenceDetectionEnable(this.props.readerConfig.ttsEnableSentenceDetection);
@@ -2089,7 +2110,7 @@ class Reader extends React.Component<IProps, IState> {
                 this.state.ttsState === TTSStateEnum.PAUSED;
 
             if (wasPaused || wasPlaying) {
-                navLeftOrRight(left, false); // !this.state.r2PublicationHasMediaOverlays
+                navLeftOrRight(left, false);
                 // if (!this.state.r2PublicationHasMediaOverlays) {
                 //     handleTTSPlayDebounced(this);
                 // }
