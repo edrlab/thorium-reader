@@ -620,7 +620,7 @@ class Reader extends React.Component<IProps, IState> {
         const isFXL = this.props.publicationView.isFXL;
         const isPaginated = this.props.readerConfig.paged;
 
-        console.log(arrowDisabledNotEpub, isFXL, isPaginated);
+        // console.log(arrowDisabledNotEpub, isFXL, isPaginated);
         // epub non fxl (page)      : false false true  : true
         // epub non fxl (scroll)    : false false false : false
         // epub fxl                 : false true true :   true 
