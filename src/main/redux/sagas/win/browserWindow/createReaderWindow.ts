@@ -48,6 +48,12 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
         },
         icon: path.join(__dirname, "assets/icons/icon.png"),
     });
+    readerWindow.on("focus", () => {
+        readerWindow.webContents?.send("window-focus");
+    });
+    readerWindow.on("blur", () => {
+        readerWindow.webContents?.send("window-blur");
+    });
 
     if (IS_DEV) {
         const wc = readerWindow.webContents;
