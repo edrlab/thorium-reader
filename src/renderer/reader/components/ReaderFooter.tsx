@@ -64,6 +64,7 @@ interface IBaseProps extends TranslatorProps {
     divinaContinousEqualTrue: boolean;
 
     disableRTLFlip: boolean;
+    isRightToLeft: boolean;
 
     isPdf: boolean;
 }
@@ -122,7 +123,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
         let afterCurrentLocation = false;
 
-        const isRTL_ = this.props.r2Publication?.Metadata?.Direction === "rtl" || this.props.r2Publication?.Metadata?.Direction === "ttb"; // TODO RTL (see ReaderMenu.tsx)
+        const isRTL_ = this.props.r2Publication?.Metadata?.Direction === "rtl" || this.props.r2Publication?.Metadata?.Direction === "ttb" || this.props.isRightToLeft; // TODO RTL (see ReaderMenu.tsx)
         const isRTL = !this.props.disableRTLFlip && isRTL_;
 
         return (
@@ -402,7 +403,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     private getStyle(
         func: (arrowBoxPosition: number, multiplicator: number, rest: number) => string): React.CSSProperties {
 
-        const isRTL_ = this.props.r2Publication?.Metadata?.Direction === "rtl" || this.props.r2Publication?.Metadata?.Direction === "ttb"; // TODO RTL (see ReaderMenu.tsx)
+        const isRTL_ = this.props.r2Publication?.Metadata?.Direction === "rtl" || this.props.r2Publication?.Metadata?.Direction === "ttb" || this.props.isRightToLeft; // TODO RTL (see ReaderMenu.tsx)
         const isRTL = !this.props.disableRTLFlip && isRTL_;
 
         let arrowBoxPosition = this.getArrowBoxPosition();

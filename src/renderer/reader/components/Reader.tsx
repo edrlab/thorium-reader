@@ -219,6 +219,7 @@ interface IState {
     historyCanGoBack: boolean;
     historyCanGoForward: boolean;
 
+    isRightToLeft: boolean;
     // bookmarkMessage: string | undefined;
 }
 
@@ -304,6 +305,8 @@ class Reader extends React.Component<IProps, IState> {
 
             historyCanGoBack: false,
             historyCanGoForward: false,
+
+            isRightToLeft: false,
         };
 
         ttsListen((ttss: TTSStateEnum) => {
@@ -659,6 +662,7 @@ class Reader extends React.Component<IProps, IState> {
                         r2Publication={this.props.r2Publication}
 
                         disableRTLFlip={this.props.disableRTLFlip}
+                        isRightToLeft={this.state.isRightToLeft}
                     />
                     <div className={classNames(stylesReader.content_root,
                         this.state.fullscreen ? stylesReader.content_root_fullscreen : undefined,
@@ -751,6 +755,7 @@ class Reader extends React.Component<IProps, IState> {
                     isPdf={this.props.isPdf}
 
                     disableRTLFlip={this.props.disableRTLFlip}
+                    isRightToLeft={this.state.isRightToLeft}
                 />
             </div>
         );
@@ -1971,6 +1976,12 @@ class Reader extends React.Component<IProps, IState> {
     private handleReadingLocationChange(loc: LocatorExtended) {
 
         ok(loc, "handleReadingLocationChange loc KO");
+
+        const isRTL = loc?.docInfo?.isRightToLeft ? true : false;
+        // if (isRTL !== this.state.isRightToLeft) {
+        //     this.setState({ isRightToLeft: isRTL });
+        // }
+        this.setState({ isRightToLeft: isRTL });
 
         if (!this.props.isDivina && !this.props.isPdf && this.ttsOverlayEnableNeedsSync) {
             ttsOverlayEnable(this.props.readerConfig.ttsEnableOverlayMode);

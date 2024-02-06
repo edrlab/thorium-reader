@@ -118,6 +118,7 @@ interface IBaseProps extends TranslatorProps {
     divinaSoundPlay: (play: boolean) => void;
 
     disableRTLFlip: boolean;
+    isRightToLeft: boolean;
 }
 
 // IProps may typically extend:
@@ -350,7 +351,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             return acc;
         }, [] as SpeechSynthesisVoice[]);
 
-        const isRTL_ = this.props.r2Publication?.Metadata?.Direction === "rtl" || this.props.r2Publication?.Metadata?.Direction === "ttb"; // TODO RTL (see ReaderMenu.tsx)
+        const isRTL_ = this.props.r2Publication?.Metadata?.Direction === "rtl" || this.props.r2Publication?.Metadata?.Direction === "ttb" || this.props.isRightToLeft; // TODO RTL (see ReaderMenu.tsx)
         const isRTL = !this.props.disableRTLFlip && isRTL_;
 
         const showAudioTTSToolbar = (this.props.currentLocation && !this.props.currentLocation.audioPlaybackInfo) &&
