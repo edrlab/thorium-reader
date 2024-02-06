@@ -337,6 +337,60 @@ button {
   }
 }
 
+.button_nav_tertiary {
+  border: 1px solid;
+  border-color: transparent;
+  height: 20px;
+  border-radius: 4px;
+  padding: 5px;
+  background-color: transparent;
+  color: var(--color-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  width: fit-content;
+  cursor: pointer;
+  gap: 5px;
+  box-sizing: content-box;
+  position: relative;
+  transition: 200ms;
+
+  &:hover {
+    border-color: var(--color-blue);
+  }
+  
+  &:focus-within {
+    @include R2_MIXIN_FOCUS_OUTLINE;
+  }
+
+  a {
+    height: inherit;
+
+    &:hover svg {
+        transform: rotate(90deg);
+      }
+    }
+
+  svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--color-blue);
+    color: var(--color-blue);
+    transform: rotate(0);
+    transition: 200ms;
+  }
+  
+  input {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+  }
+}
+
 .button_format {
   border: 1px solid var(--color-blue);
   border-radius: 4px;

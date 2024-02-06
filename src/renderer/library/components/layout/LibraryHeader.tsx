@@ -93,13 +93,15 @@ class Header extends React.Component<IProps, undefined> {
             />
             <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
                 <ul>
+                    <div>
                     {
                         headerNav.map(
                             (item, index) =>
                                 this.buildNavItem(item, index),
                         )
                     }
-                    <li style={{position: "absolute", bottom: "10px" }}>
+                    </div>
+                    <li /* style={{position: "absolute", bottom: "10px" }} */>
                         <Settings />
                     </li>
                 </ul>

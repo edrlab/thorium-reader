@@ -134,10 +134,10 @@ export const Settings: React.FC<ISettingsProps> = () => {
 
     return <Dialog.Root>
         <Dialog.Trigger asChild>
-        <a role={"button"} title={__("header.settings")}> {/* must be a button here*/}
+        <button title={__("header.settings")}>
             <SVG ariaHidden svg={GearIcon} />
             <h3>{__("header.settings")}</h3>
-        </a>
+        </button>
         </Dialog.Trigger>
         <Dialog.Portal>
             <div className={stylesModals.modal_dialog_overlay}></div>

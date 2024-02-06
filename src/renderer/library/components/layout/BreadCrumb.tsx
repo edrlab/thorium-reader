@@ -50,7 +50,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                         ? <Link
                             to={{
                                 ...this.props.location,
-                                pathname: breadcrumb[breadcrumb.length - 2].path,
+                                pathname: breadcrumb[0].path,
                             }}
                             state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
                             title={__("opds.back")}
@@ -86,7 +86,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                                     title={breadcrumb[breadcrumb.length - 3].name}
                                     className={stylesButtons.button_transparency}
                                 >
-                                    ...
+                                    <p>...</p>
                                     <SVG ariaHidden svg={ChevronRight} />
                                 </Link>
                                 <Link

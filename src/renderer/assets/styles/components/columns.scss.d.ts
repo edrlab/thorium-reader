@@ -1,4 +1,5 @@
 export declare const ___DEBUG___COMPONENTS_COLUMNS_CSS: string;
+export declare const card_wrapper: string;
 export declare const col: string;
 export declare const col_1: string;
 export declare const col_10: string;

@@ -1,4 +1,5 @@
 export declare const active_svg: string;
+export declare const bookmarkButton: string;
 export declare const bookmarkIcon: string;
 export declare const bookmarkLabel: string;
 export declare const bookmarkRemove: string;

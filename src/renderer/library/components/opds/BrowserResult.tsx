@@ -8,6 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import * as stylesColumns from "readium-desktop/renderer/assets/styles/components/columns.scss";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import {
     TranslatorProps, withTranslator,
@@ -128,7 +129,6 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                 } else if (opds.groups ||
                     opds.publications ||
                     opds.navigation) {
-
                     content = (
                         <>
                             {
@@ -202,7 +202,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
             }
         }
 
-        return <div>
+        return <div className={stylesCatalogs.opds_browserResults}>
             {content}
         </div>;
     }

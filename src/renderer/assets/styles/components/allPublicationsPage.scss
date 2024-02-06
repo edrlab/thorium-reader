@@ -11,11 +11,16 @@
             justify-content: space-between;
             padding: 5px 20px;
             margin: 10px 0;
+            width: inherit;
 
             .form_group {
                 background-color: white!important;
                 width: 370px!important;
                 height: 30px!important;
+
+                @media screen and (width <= 1024px) {
+                    width: 50%!important;
+                }
 
                 &:has(input:focus) {
                     outline: blue solid 2px !important;
@@ -37,6 +42,11 @@
                     width: 25px;
                     height: 25px;
                     margin: auto;
+
+                    svg {
+                        width: 20px;
+                        height: 20px;
+                    }
                 }
 
                 #globalSearchInput {
@@ -61,6 +71,9 @@
             &_title {
                 font-size: 14px;
                 margin: 0 0 5px 40px;
+                position: absolute;
+                top: -18px;
+                left: 12px;
             }
 
             &_container {
@@ -257,7 +270,7 @@
 .allBook_table {
     &_wrapper {
         overflow: auto;
-        inset: 250px 60px 30px 30px;
+        inset: 250px 20px 30px 30px;
         padding: 0;
         margin-top: 0;
         margin-bottom: 0.4em;

@@ -1,4 +1,3 @@
-export declare const after: string;
 export declare const arrow_box: string;
 export declare const arrows: string;
 export declare const chapters_markers: string;

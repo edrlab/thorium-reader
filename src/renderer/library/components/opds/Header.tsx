@@ -5,24 +5,21 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classNames from "classnames";
+
 import * as React from "react";
 import { connect } from "react-redux";
-import { Link, matchPath } from "react-router-dom";
-import * as RefreshIcon from "readium-desktop/renderer/assets/icons/arrow-clockwise.svg";
-import * as HomeIcon from "readium-desktop/renderer/assets/icons/house-fill.svg";
+import { Link } from "react-router-dom";
+
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid-icon.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list-icon.svg";
-import * as AvatarIcon from "readium-desktop/renderer/assets/icons/person-fill.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import SecondaryHeader from "readium-desktop/renderer/library/components/SecondaryHeader";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
+import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import ApiappAddFormDialog from "readium-desktop/renderer/library/components/dialog/ApiappAddForm";
 import OpdsFeedAddForm from "../dialog/OpdsFeedAddForm";
@@ -95,150 +92,10 @@ class Header extends React.Component<IProps, undefined> {
                 <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
                     <OpdsFeedAddForm />
                     <ApiappAddFormDialog />
-                    {
-                        this.home()
-                    }
-                    {
-                        this.refresh()
-                    }
-                    {
-                        this.bookshelf()
-                    }
                 </div>
             </SecondaryHeader>
         );
     }
-
-    private bookshelf = () => {
-        const { bookshelf } = this.props.headerLinks;
-
-        let bookshelfComponent = <></>;
-        if (bookshelf) {
-
-            const { __ } = this.props;
-
-            const param = matchPath<keyof IOpdsBrowse, string>(
-                routes["/opds/browse"].path,
-                this.props.location.pathname,
-            ).params;
-
-            const lvl = parseInt(param.level, 10);
-
-            const route = buildOpdsBrowserRoute(
-                param.opdsId,
-                __("opds.shelf"),
-                bookshelf,
-                lvl === 1 ? 3 : (lvl + 1),
-            );
-
-            bookshelfComponent = (
-                <Link
-                    to={{
-                        ...this.props.location,
-                        pathname: route,
-                    }}
-                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                    className={classNames(stylesButtons.button_transparency_icon, stylesButtons.button_small)}
-                >
-                    <SVG svg={AvatarIcon} title={__("opds.shelf")} />
-                </Link>
-            );
-        }
-
-        return bookshelfComponent;
-    };
-
-    private home = () => {
-        const { start } = this.props.headerLinks;
-
-        let homeComponent = <></>;
-        if (start) {
-
-            const { __ } = this.props;
-
-            const param = matchPath<keyof IOpdsBrowse, string>(
-                routes["/opds/browse"].path,
-                this.props.location.pathname,
-            ).params;
-
-            const home = this.props.breadcrumb[1];
-
-            const route = buildOpdsBrowserRoute(
-                param.opdsId,
-                home.name || "",
-                start,
-                1,
-            );
-
-            homeComponent = (
-                <Link
-                    to={{
-                        ...this.props.location,
-                        pathname: route,
-                    }}
-                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                    className={classNames(stylesButtons.button_transparency_icon, stylesButtons.button_small)}
-                >
-                    <SVG svg={HomeIcon} title={__("header.homeTitle")} />
-                </Link>
-            );
-        }
-
-        return homeComponent;
-    };
-
-    private refresh = () => {
-        const { self } = this.props.headerLinks;
-        const { __ } = this.props;
-
-        let refreshComponet = <></>;
-        if (self) {
-
-            const param = matchPath<keyof IOpdsBrowse, string>(
-                routes["/opds/browse"].path,
-                this.props.location.pathname,
-            ).params;
-
-            const lvl = parseInt(param.level, 10);
-
-            const i = (lvl > 1) ? (lvl - 1) : lvl;
-            const name = this.props.breadcrumb[i]?.name;
-
-            const route = buildOpdsBrowserRoute(
-                param.opdsId,
-                name,
-                self,
-                lvl,
-            );
-
-            refreshComponet = (
-                <Link
-                    to={{
-                        ...this.props.location,
-                        pathname: route,
-                    }}
-                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                    className={classNames(stylesButtons.button_transparency_icon, stylesButtons.button_refresh, stylesButtons.button_small)}
-                >
-                    <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
-                </Link>
-            );
-        } else {
-            refreshComponet = (
-                <Link
-                    to={{
-                        ...this.props.location,
-                    }}
-                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                    className={classNames(stylesButtons.button_transparency_icon, stylesButtons.button_refresh, stylesButtons.button_small)}
-                >
-                    <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
-                </Link>
-            );
-        }
-
-        return refreshComponet;
-    };
 }
 
 const mapStateToProps = (state: ILibraryRootState) => ({

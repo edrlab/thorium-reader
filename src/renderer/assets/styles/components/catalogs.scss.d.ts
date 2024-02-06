@@ -11,3 +11,4 @@ export declare const entryList_item: string;
 export declare const entryList_ul: string;
 export declare const noPublication: string;
 export declare const numberOfItems: string;
+export declare const opds_browserResults: string;

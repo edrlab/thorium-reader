@@ -1793,8 +1793,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                             }, 200);
                         }}
                     />
-                    <div>
-                        <p className={stylesPublication.allBooks_header_pagination_title}>{__("catalog.numberOfPages")}</p>
+                    <div style={{position: "relative"}}>
+                        <label htmlFor="pageSelect" className={stylesPublication.allBooks_header_pagination_title}>{__("catalog.numberOfPages")}</label>
                         <div className={stylesPublication.allBooks_header_pagination_container}>
                             <button
                                 className={stylesPublication.allBooks_header_pagination_arrow}
@@ -1814,6 +1814,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                 <SVG ariaHidden={true} svg={ChevronRight} />
                             </button>
                             <select
+                                id="pageSelect"
                                 aria-label={`${props.__("reader.navigation.currentPageTotal", { current: tableInstance.state.pageIndex + 1, total: tableInstance.pageOptions.length })}`}
                                 className={stylesPublication.allBooks_header_pagination_select}
                                 value={tableInstance.state.pageIndex}

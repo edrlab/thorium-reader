@@ -8,6 +8,7 @@ export declare const button_keyboard: string;
 export declare const button_link: string;
 export declare const button_nav_primary: string;
 export declare const button_nav_secondary: string;
+export declare const button_nav_tertiary: string;
 export declare const button_outline_accessibility: string;
 export declare const button_primary: string;
 export declare const button_primary_blue: string;

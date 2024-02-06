@@ -255,10 +255,10 @@ const Progression = (props: {
                             let k = 0;
                             const summary = hs.reduce((arr, h, i) => {
                                 return arr.concat(
-                                    <div style={{ display: "flex", gap: "5px", flex: "1",overflow: "hidden", textWrap: "nowrap", textOverflow: "ellipsis"}}>
+                                    <div style={{ display: "flex", gap: "5px", flex: "1",overflow: "hidden", textWrap: "nowrap", paddingRight: "2px", width: Math.ceil(100 / (arr.length + 1)) + "%"}}>
                                         <span key={`_h${k++}`}>{i === 0 ? " " : " / "}</span>
                                         <span key={`_h${k++}`} style={{ fontWeight: "bold" }}>h{h.level} </span>
-                                        <span key={`_h${k++}`}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>
+                                        <span key={`_h${k++}`} style={{overflow: "hidden", textOverflow: "ellipsis"}}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>
                                     </div>,
                                 );
                             }, []);
@@ -347,11 +347,11 @@ const ProgressionDetails = (props: any) => {
     return (
         <details open={open} onToggle={() => setOpen(!open)}>
             <summary style={{display: "flex", maxWidth: "480px"}}>
-                {summary}
-                {open ?
-                    <SVG ariaHidden svg={ChevronDown} /> :
-                    <SVG ariaHidden svg={ChevronUp} />
+            {open ?
+                    <SVG ariaHidden svg={ChevronUp} /> :
+                    <SVG ariaHidden svg={ChevronDown} />
                 }
+                {summary}
             </summary>
             <ul>{details}</ul>
         </details>

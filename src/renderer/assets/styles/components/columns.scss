@@ -58,6 +58,12 @@
   -ms-flex-positive: 1;
   flex-grow: 1;
   max-width: 100%;
+
+  .card_wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 10px;
+  }
 }
 
 .col_1 {
