@@ -361,6 +361,8 @@ class Reader extends React.Component<IProps, IState> {
         this.handlePublicationInfo = this.handlePublicationInfo.bind(this);
 
         this.handleDivinaSound = this.handleDivinaSound.bind(this);
+
+        this.isRTLFlip = this.isRTLFlip.bind(this);
     }
 
     public async componentDidMount() {
@@ -558,6 +560,34 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
+    private isFixedLayout(): boolean {
+        let isFixedLayout: undefined | boolean;
+        if (this.props.r2Publication?.Spine && this.state.currentLocation?.locator?.href) { // TODO this.props.locator??
+            const link = this.props.r2Publication.Spine.find((item) => {
+                return item.Href === this.state.currentLocation.locator.href;
+            });
+            if (link?.Properties?.Layout === "fixed") {
+                isFixedLayout = true;
+            } else if (typeof link?.Properties?.Layout !== "undefined") {
+                isFixedLayout = false;
+            }
+        }
+        if (typeof isFixedLayout === "undefined") {
+            isFixedLayout = this.props.r2Publication?.Metadata?.Rendition?.Layout === "fixed";
+        }
+        return isFixedLayout;
+    }
+    private isRTL(isFixedLayout: boolean): boolean {
+        const isRTL_PackageMeta = this.props.r2Publication?.Metadata?.Direction === "rtl" || this.props.r2Publication?.Metadata?.Direction === "ttb";
+        return isFixedLayout ? isRTL_PackageMeta : (isRTL_PackageMeta || this.state.currentLocation?.docInfo?.isRightToLeft);
+    }
+    private isRTLFlip(): boolean {
+        if (this.props.disableRTLFlip) {
+            return false;
+        }
+        return this.isRTL(this.isFixedLayout());
+    }
+
     public render(): React.ReactElement<{}> {
 
         const readerMenuProps: IReaderMenuProps = {
@@ -617,7 +647,7 @@ class Reader extends React.Component<IProps, IState> {
         
         const isAudioBook = isAudiobookFn(this.props.r2Publication);
         const arrowDisabledNotEpub = isAudioBook || this.props.isPdf || this.props.isDivina;
-        const isFXL = this.props.publicationView.isFXL;
+        const isFXL = this.isFixedLayout();
         const isPaginated = this.props.readerConfig.paged;
 
         // console.log(arrowDisabledNotEpub, isFXL, isPaginated);
@@ -702,6 +732,7 @@ class Reader extends React.Component<IProps, IState> {
                         readerPopoverDialogContext={readerPopoverDialogContext}
                         showSearchResults={this.showSearchResults}
                         disableRTLFlip={this.props.disableRTLFlip}
+                        isRTLFlip={this.isRTLFlip}
                     />
 
                     <div className={classNames(stylesReader.content_root,
@@ -836,6 +867,7 @@ class Reader extends React.Component<IProps, IState> {
                     isPdf={this.props.isPdf}
 
                     disableRTLFlip={this.props.disableRTLFlip}
+                    isRTLFlip={this.isRTLFlip}
                 />
             </div>
         );
@@ -2172,7 +2204,7 @@ class Reader extends React.Component<IProps, IState> {
                 this.state.ttsState === TTSStateEnum.PAUSED;
 
             if (wasPaused || wasPlaying) {
-                navLeftOrRight(left, false); // !this.state.r2PublicationHasMediaOverlays
+                navLeftOrRight(left, false);
                 // if (!this.state.r2PublicationHasMediaOverlays) {
                 //     handleTTSPlayDebounced(this);
                 // }
