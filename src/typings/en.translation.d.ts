@@ -760,7 +760,8 @@ declare namespace typed_i18n {
   readonly "annotations": {
     readonly "highlight": string,
     readonly "addNote": string
-  }
+  },
+  readonly "fxl": { readonly "fit": string }
 };
   (_: "reader.divina", __?: {}): { readonly "mute": string, readonly "unmute": string };
   (_: "reader.divina.mute", __?: {}): string;
@@ -1056,6 +1057,8 @@ declare namespace typed_i18n {
   (_: "reader.annotations", __?: {}): { readonly "highlight": string, readonly "addNote": string };
   (_: "reader.annotations.highlight", __?: {}): string;
   (_: "reader.annotations.addNote", __?: {}): string;
+  (_: "reader.fxl", __?: {}): { readonly "fit": string };
+  (_: "reader.fxl.fit", __?: {}): string;
   (_: "settings", __?: {}): {
   readonly "tabs": {
     readonly "general": string,

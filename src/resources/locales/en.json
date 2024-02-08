@@ -419,6 +419,9 @@
         "annotations": {
             "highlight": "Highlight",
             "addNote": "Add a note"
+        },
+        "fxl": {
+            "fit": "Fit"
         }
     },
     "settings": {

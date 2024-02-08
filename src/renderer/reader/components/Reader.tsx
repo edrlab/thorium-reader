@@ -34,6 +34,7 @@ import * as DoubleArrowDownIcon from "readium-desktop/renderer/assets/icons/doub
 import * as DoubleArrowLeftIcon from "readium-desktop/renderer/assets/icons/double_arrow_left_black_24dp.svg";
 import * as DoubleArrowRightIcon from "readium-desktop/renderer/assets/icons/double_arrow_right_black_24dp.svg";
 import * as DoubleArrowUpIcon from "readium-desktop/renderer/assets/icons/double_arrow_up_black_24dp.svg";
+import * as exitZenModeIcon from "readium-desktop/renderer/assets/icons/fullscreenExit-icon.svg";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
 import {
@@ -199,6 +200,7 @@ interface IState {
     menuOpen: boolean;
     focusMenuOpen: number;
     fullscreen: boolean;
+    zenMode: boolean;
 
     ttsState: TTSStateEnum;
     ttsPlaybackRate: string;
@@ -289,6 +291,7 @@ class Reader extends React.Component<IProps, IState> {
 
             menuOpen: false,
             fullscreen: false,
+            zenMode: false,
 
             ttsState: TTSStateEnum.STOPPED,
             ttsPlaybackRate: "1",
@@ -626,6 +629,8 @@ class Reader extends React.Component<IProps, IState> {
             isPdf: this.props.isPdf,
             isFXL: this.props.publicationView.isFXL,
             // openedSection: this.state.openedSectionSettings,
+            zenMode: this.state.zenMode,
+            setZenMode : () => this.setState({ zenMode : !this.state.zenMode})
         };
 
         const readerPopoverDialogContext: IPopoverDialogProps = {
@@ -680,6 +685,7 @@ class Reader extends React.Component<IProps, IState> {
                     label={this.props.__("accessibility.skipLink")}
                 />
                 <div className={stylesReader.root}>
+                    {!this.state.zenMode ?
                 <ReaderHeader
                         shortcutEnable={this.state.shortcutEnable}
                         infoOpen={this.props.infoOpen}
@@ -734,8 +740,15 @@ class Reader extends React.Component<IProps, IState> {
                         disableRTLFlip={this.props.disableRTLFlip}
                         isRTLFlip={this.isRTLFlip}
                     />
+                    : 
+                    <button onClick={() => this.setState({ zenMode : false})} className={stylesReader.button_exitZen}>
+                        <SVG ariaHidden svg={exitZenModeIcon} />
+                    </button>
+                    }
 
-                    <div className={classNames(stylesReader.content_root,
+                    <div 
+                    style={{marginBottom: this.state.zenMode ? "0" : "5rem"}}
+                    className={classNames(stylesReader.content_root,
                         this.state.fullscreen ? stylesReader.content_root_fullscreen : undefined,
                         this.props.isPdf ? stylesReader.content_root_skip_bottom_spacing : undefined)}>
                         <div className={stylesReader.reader}>
@@ -753,7 +766,7 @@ class Reader extends React.Component<IProps, IState> {
                                     aria-label={this.props.__("accessibility.mainContent")}
                                     tabIndex={-1}>{this.props.__("accessibility.mainContent")}</a>
 
-                                {arrowEnabled ?
+                                {arrowEnabled && !this.state.zenMode ?
                                     <div className={stylesReaderFooter.arrows}>
                                         <button onClick={(ev) => {
                                             if (ev.shiftKey) {
@@ -823,7 +836,7 @@ class Reader extends React.Component<IProps, IState> {
                                         </div>
                                         : <></>
                                 }
-                                {arrowEnabled ?
+                                {arrowEnabled && !this.state.zenMode  ?
                                     <div className={stylesReaderFooter.arrows}>
                                         <button onClick={(ev) => {
                                             if (ev.shiftKey) {
@@ -849,6 +862,7 @@ class Reader extends React.Component<IProps, IState> {
                         </div>
                     </div>
                 </div>
+                { !this.state.zenMode ? 
                 <ReaderFooter
                     historyCanGoBack={this.state.historyCanGoBack}
                     historyCanGoForward={this.state.historyCanGoForward}
@@ -869,6 +883,8 @@ class Reader extends React.Component<IProps, IState> {
                     disableRTLFlip={this.props.disableRTLFlip}
                     isRTLFlip={this.isRTLFlip}
                 />
+                : <></>
+    }
             </div>
         );
     }

@@ -21,8 +21,13 @@
   }
 
   &_search_picker {
-    width: 24px;
-    align-self: center;
+      width: 15px;
+      padding: 4px;
+      margin-left: 0.4em;
+      position: absolute;
+      transform: translateY(50%);
+      left: 0;
+      top: 50%;
   }
 }
 

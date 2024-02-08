@@ -154,6 +154,8 @@ export interface IReaderSettingsProps {
     // openedSection: number | undefined;
     disableRTLFlip: boolean;
     setDisableRTLFlip: (disabled: boolean) => void;
+    zenMode: boolean;
+    setZenMode: (value : boolean) => void;
 }
 
 export interface IPopoverDialogProps {

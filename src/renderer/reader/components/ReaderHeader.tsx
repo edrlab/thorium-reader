@@ -33,9 +33,11 @@ import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/annotati
 import * as RemoveBookMarkIcon from "readium-desktop/renderer/assets/icons/BookmarkRemove-icon.svg";
 import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
 import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
-import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/sharp-crop_free-24px.svg";
-import * as QuitFullscreenIcon from "readium-desktop/renderer/assets/icons/sharp-uncrop_free-24px.svg";
+import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreen-icon.svg";
+import * as ExitFullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreenExit-icon.svg";
 import * as FloppyDiskIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
+// import * as ChevronUpIcon from "readium-desktop/renderer/assets/icons/chevron-up.svg";
+// import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
 import {
@@ -63,22 +65,24 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { PublicationInfoReaderWithRadix, PublicationInfoReaderWithRadixContent, PublicationInfoReaderWithRadixTrigger } from "./dialog/publicationInfos/PublicationInfo";
 import { ReaderSettings } from "./ReaderSettings";
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
+import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
+import { ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
-function throttle(callback: (...args: any) => void, limit: number) {
-    let waiting = false;
-    return function(this: any) {
-        if (!waiting) {
-            // eslint-disable-next-line prefer-rest-params
-            callback.apply(this, arguments);
-            waiting = true;
-            setTimeout(() => {
-                waiting = false;
-            }, limit);
-        }
-    };
-}
+// function throttle(callback: (...args: any) => void, limit: number) {
+//     let waiting = false;
+//     return function(this: any) {
+//         if (!waiting) {
+//             // eslint-disable-next-line prefer-rest-params
+//             callback.apply(this, arguments);
+//             waiting = true;
+//             setTimeout(() => {
+//                 waiting = false;
+//             }, limit);
+//         }
+//     };
+// }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -159,7 +163,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
     private navigationMenuButtonRef: React.RefObject<HTMLButtonElement>;
     private infoMenuButtonRef: React.RefObject<HTMLButtonElement>;
 
-    private onwheel: React.WheelEventHandler<HTMLButtonElement>;
+    // private onwheel: React.WheelEventHandler<HTMLSelectElement>;
     private timerFXLZoomDebounce: number | undefined;
 
     constructor(props: IProps) {
@@ -185,25 +189,25 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
         this.timerFXLZoomDebounce = undefined;
 
-        this.onwheel = throttle((ev) => {
-            const step = 10;
-            if (ev.deltaY < 0) { // "natural" gesture on MacOS :(
-                if (this.state.fxlZoomPercent >= step) {
-                    this.setState({ fxlZoomPercent: this.state.fxlZoomPercent - step });
-                }
-            } else if (ev.deltaY > 0) {
-                if (this.state.fxlZoomPercent <= 390) {
-                    this.setState({ fxlZoomPercent: this.state.fxlZoomPercent + step });
-                }
-            }
-            if (this.timerFXLZoomDebounce) {
-                clearTimeout(this.timerFXLZoomDebounce);
-            }
-            this.timerFXLZoomDebounce = window.setTimeout(() => {
-                this.timerFXLZoomDebounce = undefined;
-                fixedLayoutZoomPercent(this.state.fxlZoomPercent);
-            }, 600);
-        }, 200).bind(this);
+        // this.onwheel = throttle((ev) => {
+        //     const step = 10;
+        //     if (ev.deltaY < 0) { // "natural" gesture on MacOS :(
+        //         if (this.state.fxlZoomPercent >= step) {
+        //             this.setState({ fxlZoomPercent: this.state.fxlZoomPercent - step });
+        //         }
+        //     } else if (ev.deltaY > 0) {
+        //         if (this.state.fxlZoomPercent <= 390) {
+        //             this.setState({ fxlZoomPercent: this.state.fxlZoomPercent + step });
+        //         }
+        //     }
+        //     if (this.timerFXLZoomDebounce) {
+        //         clearTimeout(this.timerFXLZoomDebounce);
+        //     }
+        //     this.timerFXLZoomDebounce = window.setTimeout(() => {
+        //         this.timerFXLZoomDebounce = undefined;
+        //         fixedLayoutZoomPercent(this.state.fxlZoomPercent);
+        //     }, 600);
+        // }, 200).bind(this);
     }
 
     public componentDidMount() {
@@ -378,6 +382,32 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             };
             console.log(formData);
         };
+
+        const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
+        SelectRef.displayName = "ComboBox";
+
+        const fxlOptions = [
+            {
+                id: 0,
+                value: 0,
+                name: __("reader.fxl.fit")
+            },
+            {
+                id: 1,
+                value: 50,
+                name: "50%"
+            },
+            {
+                id: 2,
+                value: 100,
+                name: "100%"
+            },
+            {
+                id: 3,
+                value: 200,
+                name: "200%"
+            }
+        ]
 
         return (
             <nav
@@ -712,7 +742,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         }
                     </ul>
 
-                    {
+                    {/* {
                             this.props.isPdf || this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed" ?
                     <ul className={classNames(stylesReader.menu_option, stylesReaderHeader.pdf_options)}>
                         {
@@ -734,7 +764,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         htmlFor="pdfScaleButton"
                                         className={stylesReader.menu_button}
                                     >
-                                        <SVG svg={viewMode} title={__("reader.navigation.pdfscalemode")} className={this.state.pdfScaleMode === "page-width" ? stylesReaderHeader.active_svg : ""} />
+                                        { this.state.pdfScaleMode === "page-width" ? 
+                                        <SVG ariaHidden svg={FullscreenIcon} title={__("reader.navigation.pdfscalemode")} />
+                                        :
+                                        <SVG ariaHidden svg={ExitFullscreenIcon} title={__("reader.navigation.pdfscalemode")}className={stylesReaderHeader.active_svg} />
+                                        }
                                     </label>
                                 </li>
                                 : (this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed"
@@ -778,7 +812,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         }
                     </ul>
                     : <></>
-                    }
+                    } */}
 
                     <ul className={stylesReader.menu_option}>
                         <li
@@ -828,11 +862,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         >
                                             <div>
                                                 <label>{__("reader.annotations.highlight")}</label>
-                                                <GithubPicker 
+                                                <GithubPicker
                                                     colors={['#B80000', '#DB3E00', '#FCCB00', '#008B02', '#006B76', '#1273DE', '#004DCF', '#5300EB']}
                                                     onChangeComplete={handleColorChangeComplete}
                                                     triangle="hide"
-                                                    />
+                                                />
                                             </div>
                                             <div className={stylesReader.annotation_form_textarea_container}>
                                                 <label htmlFor="addNote">{__("reader.annotations.addNote")}</label>
@@ -846,47 +880,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 </div>
                                             </div>
                                         </form>
-                                        <Popover.Arrow style={{fill: "var(--color-light-grey)"}}  width={15} height={10}/>
+                                        <Popover.Arrow style={{ fill: "var(--color-light-grey)" }} width={15} height={10} />
                                     </Popover.Content>
                                 </Popover.Portal>
                             </Popover.Root>
 
                         </li>
-                        <li
-                            {...(this.props.settingsOpen &&
-                                { style: { backgroundColor: "var(--color-blue" } })}
-                        >
-                            <Dialog.Root open={this.props.settingsOpen} onOpenChange={(v) => { console.log("SETTINGS DialogOnOpenChange", v); this.props.handleSettingsClick(v); }} modal={false}>
-                                <Dialog.Trigger asChild>
-                                    <button
-                                        aria-pressed={this.props.settingsOpen}
-                                        aria-label={__("reader.navigation.settingsTitle")}
-                                        className={stylesReader.menu_button}
-                                        // onClick={() => this.props.handleSettingsClick()}
-                                        // ref={this.settingsMenuButtonRef}
-                                        title={__("reader.navigation.settingsTitle")}
-                                    >
-                                        <SVG ariaHidden={true} svg={SettingsIcon} className={this.props.settingsOpen ? stylesReaderHeader.active_svg : ""} />
-                                    </button>
-                                </Dialog.Trigger>
-                                <Dialog.Portal>
-                                    <Dialog.Content
-                                        onPointerDownOutside={(e) => {e.preventDefault();console.log("settingsModal onPointerDownOutside");}}
-                                        onInteractOutside={(e) => {e.preventDefault();console.log("SettingsModal onInteractOutside");}}
-                                        className={classNames(this.props.readerPopoverDialogContext.dockedMode ? stylesPopoverDialog.popover_dialog_reader : stylesPopoverDialog.modal_dialog_reader,
-                                            this.props.ReaderSettingsProps.readerConfig.night ? stylesReader.nightMode : this.props.ReaderSettingsProps.readerConfig.sepia ? stylesReader.sepiaMode : "")}
-                                        style={{
-                                            borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
-                                            borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
-                                            right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
-                                            left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
-                                        }}
-                                    >
-                                        <ReaderSettings {...this.props.ReaderSettingsProps} {...this.props.readerPopoverDialogContext} handleSettingsClick={this.props.handleSettingsClick} />
-                                    </Dialog.Content>
-                                </Dialog.Portal>
-                            </Dialog.Root>
-                        </li>
+
                         <li
                             {...(this.props.menuOpen &&
                                 { style: { backgroundColor: "var(--color-blue)" } })}
@@ -930,68 +930,157 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     </Dialog.Content>
                                 </Dialog.Portal>
                             </Dialog.Root>
-                            {/* <Portal.Root>
-                            //                                         <div
-                            //         className={classNames(this.props.readerPopoverDialogContext.dockedMode ? stylesPopoverDialog.popover_dialog_reader : stylesPopoverDialog.modal_dialog_reader,
-                            //             this.props.ReaderSettingsProps.readerConfig.night ? stylesReader.nightMode : this.props.ReaderSettingsProps.readerConfig.sepia ? stylesReader.sepiaMode : "")}
-                            //             style={{
-                            //                 borderLeft : this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
-                            //                 borderRight : this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
-                            //                 right : this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
-                            //                 left : this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
-                            //             }}
-                            //         >
-                            //     <ReaderMenu {...this.props.readerMenuProps}
-                            //         isDivina={this.props.isDivina}
-                            //         isPdf={this.props.isPdf}
-                            //         currentLocation={this.props.currentLocation}
-                            //         focusNaviguationMenu={this.focusNaviguationMenuButton}
-                            //         readerPopoverDialogContext={this.props.readerPopoverDialogContext}
-                            //         handleSettingsClick={this.props.handleSettingsClick} />
-                            //         </div>
-                                // </Portal.Root> : <></>}*/}
                         </li>
+                        <li
+                            {...(this.props.settingsOpen &&
+                                { style: { backgroundColor: "var(--color-blue" } })}
+                        >
+                            <Dialog.Root open={this.props.settingsOpen} onOpenChange={(v) => { console.log("SETTINGS DialogOnOpenChange", v); this.props.handleSettingsClick(v); }} modal={false}>
+                                <Dialog.Trigger asChild>
+                                    <button
+                                        aria-pressed={this.props.settingsOpen}
+                                        aria-label={__("reader.navigation.settingsTitle")}
+                                        className={stylesReader.menu_button}
+                                        // onClick={() => this.props.handleSettingsClick()}
+                                        // ref={this.settingsMenuButtonRef}
+                                        title={__("reader.navigation.settingsTitle")}
+                                    >
+                                        <SVG ariaHidden={true} svg={SettingsIcon} className={this.props.settingsOpen ? stylesReaderHeader.active_svg : ""} />
+                                    </button>
+                                </Dialog.Trigger>
+                                <Dialog.Portal>
+                                    <Dialog.Content
+                                        onPointerDownOutside={(e) => { e.preventDefault(); console.log("settingsModal onPointerDownOutside"); }}
+                                        onInteractOutside={(e) => { e.preventDefault(); console.log("SettingsModal onInteractOutside"); }}
+                                        className={classNames(this.props.readerPopoverDialogContext.dockedMode ? stylesPopoverDialog.popover_dialog_reader : stylesPopoverDialog.modal_dialog_reader,
+                                            this.props.ReaderSettingsProps.readerConfig.night ? stylesReader.nightMode : this.props.ReaderSettingsProps.readerConfig.sepia ? stylesReader.sepiaMode : "")}
+                                        style={{
+                                            borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
+                                            borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
+                                            right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
+                                            left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
+                                        }}
+                                    >
+                                        <ReaderSettings {...this.props.ReaderSettingsProps} {...this.props.readerPopoverDialogContext} handleSettingsClick={this.props.handleSettingsClick} />
+                                    </Dialog.Content>
+                                </Dialog.Portal>
+                            </Dialog.Root>
+                        </li>
+                        {
+                            this.props.isPdf
+                                ? <li
+                                    {...(this.state.pdfScaleMode === "page-width" &&
+                                        { style: { backgroundColor: "var(--color-blue" } })}
+                                >
+                                    <input
+                                        id="pdfScaleButton"
+                                        className={stylesReader.bookmarkButton}
+                                        type="checkbox"
+                                        checked={this.state.pdfScaleMode === "page-width"}
+                                        // tslint:disable-next-line: max-line-length
+                                        onChange={() => createOrGetPdfEventBus().dispatch("scale", this.state.pdfScaleMode === "page-fit" ? "page-width" : "page-fit")}
+                                        aria-label={__("reader.navigation.pdfscalemode")}
+                                    />
+                                    <label
+                                        htmlFor="pdfScaleButton"
+                                        className={stylesReader.menu_button}
+                                    >
+                                        {this.state.pdfScaleMode === "page-width" ?
+                                            <SVG ariaHidden svg={ExitFullscreenIcon} title={__("reader.navigation.pdfscalemode")} className={stylesReaderHeader.active_svg} /> :
+                                            <SVG ariaHidden svg={FullscreenIcon} title={__("reader.navigation.pdfscalemode")} />
 
-                        {this.props.fullscreen ?
-                            <li >
-                                <button
-                                    className={classNames(stylesReader.menu_button)}
-                                    onClick={this.props.handleFullscreenClick}
-                                    ref={this.disableFullscreenRef}
-                                    aria-pressed={this.props.fullscreen}
-                                    aria-label={__("reader.navigation.quitFullscreenTitle")}
-                                    title={__("reader.navigation.quitFullscreenTitle")}
-                                >
-                                    <SVG ariaHidden={true} svg={QuitFullscreenIcon} />
-                                </button>
-                            </li>
-                            :
-                            <li className={classNames(stylesReader.blue)}>
-                                <button
-                                    className={classNames(stylesReader.menu_button)}
-                                    onClick={this.props.handleFullscreenClick}
-                                    ref={this.enableFullscreenRef}
-                                    aria-pressed={this.props.fullscreen}
-                                    aria-label={__("reader.navigation.fullscreenTitle")}
-                                    title={__("reader.navigation.fullscreenTitle")}
-                                >
-                                    <SVG ariaHidden={true} svg={FullscreenIcon} />
-                                </button>
-                            </li>
+                                        }
+                                    </label>
+                                </li>
+                                : <></>
                         }
-                    </ul>
-                    {/*<li className={stylesReader.right}>
+                        {
+                            this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed"
+                                ? <li className={stylesReader.select_fxl}>
+                                    {/* <button
+                                        {...(this.state.fxlZoomPercent !== 0 &&
+                                            { style: { border: "2px solid var(--color-blue)", borderRadius: "6px" } })}
+                                        id="buttonFXLZoom"
+                                        className={classNames(stylesReader.menu_button)}
+                                        onWheel={this.onwheel}
+                                        onClick={() => {
+                                            // toggle
+                                            debug("FXL this.state.fxlZoomPercent TOGGLE: " + this.state.fxlZoomPercent);
+                                            if (this.state.fxlZoomPercent === 0) {
+                                                this.setState({ fxlZoomPercent: 200 });
+                                                fixedLayoutZoomPercent(200); // twice (zoom in)
+                                            } else if (this.state.fxlZoomPercent === 200) {
+                                                this.setState({ fxlZoomPercent: 100 });
+                                                fixedLayoutZoomPercent(100); // content natural dimensions (usually larger, so equivalent to zoom in)
+                                            } else if (this.state.fxlZoomPercent === 100) {
+                                                this.setState({ fxlZoomPercent: 50 });
+                                                fixedLayoutZoomPercent(50); // half (zoom out, but if the content is massive then it may still be perceived as zoom in)
+                                            } else {
+                                                this.setState({ fxlZoomPercent: 0 });
+                                                fixedLayoutZoomPercent(0); // special value: fit inside available viewport dimensions (default)
+                                            }
+                                        }}
+                                        aria-label={__("reader.navigation.pdfscalemode")}
+                                        title={__("reader.navigation.pdfscalemode")}
+                                    >
+                                        {this.state.fxlZoomPercent > 0 ?
+                                            <label
+                                                htmlFor="buttonFXLZoom"
+                                                style={{ pointerEvents: "none", color: "var(--color-blue)", fontSize: "80%" }}>{this.state.fxlZoomPercent > 0 ? `${this.state.fxlZoomPercent}%` : " "}</label>
+                                            :
+                                            <SVG ariaHidden={true} svg={viewMode} />
+                                        }
+                                    </button> */}
+                                    {/* <select
+                                        onWheel={this.onwheel}
+                                        id="buttonFXLZoom"
+                                        className={classNames(stylesReader.fxl_select)}
+                                        aria-label={__("reader.navigation.pdfscalemode")}
+                                        title={__("reader.navigation.pdfscalemode")}
+                                        onChange={(e) => {
+                                            debug("FXL this.state.fxlZoomPercent TOGGLE: " + this.state.fxlZoomPercent);
+                                            this.setState({ fxlZoomPercent: parseInt(e.target.value) });
+                                            fixedLayoutZoomPercent(parseInt(e.target.value))
+                                        }}>
+                                        <option value="">Fit</option>
+                                        <option value={0}>Auto</option>
+                                        <option value={50}>50%</option>
+                                        <option value={100}>100%</option>
+                                        <option value={200}>200%</option>
+                                    </select> */}
+
+                                    <SelectRef
+                                        id="buttonFXLZoom"
+                                        aria-label={__("reader.navigation.pdfscalemode")}
+                                        items={fxlOptions}
+                                        selectedKey={fxlOptions.find(({ value }) => this.state.fxlZoomPercent === value)?.id || 0}
+                                        defaultSelectedKey={0}
+                                        onSelectionChange={(id) => {
+                                            const value = fxlOptions.find(({ id: _id }) => _id === id)?.value;
+                                            debug("FXL this.state.fxlZoomPercent TOGGLE: " + this.state.fxlZoomPercent);
+                                            console.log(value)
+                                            this.setState({ fxlZoomPercent: value as number });
+                                            fixedLayoutZoomPercent(value as number)
+                                        }}
+                                    >
+                                        {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                                    </SelectRef>
+                                </li>
+                                : <></>
+                        }
+                        <li className={classNames(stylesReader.blue)}>
                             <button
-                                className={stylesReader.menu_button}
-                                title={ __("reader.navigation.readBookTitle")}
+                                className={classNames(stylesReader.menu_button)}
+                                onClick={() => this.props.ReaderSettingsProps.setZenMode(!this.props.ReaderSettingsProps.zenMode)}
+                                ref={this.enableFullscreenRef}
+                                aria-pressed={this.props.fullscreen}
+                                aria-label={__("reader.navigation.fullscreenTitle")}
+                                title={__("reader.navigation.fullscreenTitle")}
                             >
-                                <SVG ariaHidden={true} svg={AudioIcon} />
+                                <SVG ariaHidden={true} svg={viewMode} />
                             </button>
                         </li>
-
-                        { this.props.fullscreen ? <></> : () }
-                        */}
-
+                    </ul>
                 </ul>
             </nav>
         );

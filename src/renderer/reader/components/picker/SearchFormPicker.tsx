@@ -24,11 +24,13 @@ import { readerLocalActionSearch } from "../../redux/actions";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
+import LoaderSearch from "./LoaderSearch";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     isPdf: boolean;
     reset: () => void;
+    load: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -95,21 +97,25 @@ class SearchFormPicker extends React.Component<IProps, IState> {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.setState({ inputValue: e.target.value })}
                     className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                 />
-
-                <button
+                {
+                    this.props.load ?
+                    <LoaderSearch />
+                    :
+                    <button
                     disabled={!this.state.inputValue}
                     style={{
-                        width: "30px",
+                        width: "25px",
                         padding: "4px",
                         marginLeft: "0.4em",
-                        // position: "absolute",
-                        // right: "-50px",
+                        position: "absolute",
+                        left: "0",
                     }}
                     title={__("reader.picker.search.submit")}
                 >
 
                     <SVG ariaHidden={true} svg={magnifyingGlass} />
                 </button>
+                }
             </form>
         );
     }

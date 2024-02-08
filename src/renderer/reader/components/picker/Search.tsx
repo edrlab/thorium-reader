@@ -21,7 +21,6 @@ import {
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import { readerLocalActionSearch } from "../../redux/actions";
-import LoaderSearch from "./LoaderSearch";
 import SearchFormPicker from "./SearchFormPicker";
 
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
@@ -116,11 +115,8 @@ class SearchPicker extends React.Component<IProps, IState> {
                 <SearchFormPicker
                     isPdf={this.props.isPdf}
                     reset={() => this.setState({foundNumber: 0, notFound: true})}
+                    load={load}
                 ></SearchFormPicker>
-                {
-                    load &&
-                    <LoaderSearch></LoaderSearch>
-                }
                                 <button
                     disabled={notFound}
                     onClick={previous}

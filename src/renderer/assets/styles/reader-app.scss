@@ -1092,3 +1092,60 @@ input[type="radio"] + label {
     }
   }
 }
+
+.button_exitZen {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    right: 25px;
+    top: 12px;
+    z-index: 10;
+
+    svg {
+      color: var(--color-blue);
+      width: 25px;
+    }
+}
+
+.select_fxl {
+  width: 80px!important;
+  .react_aria_ComboBox {
+    padding-bottom: 0!important;
+    margin: 0!important;
+    gap: 0!important;
+  }
+
+  .my_combobox_container {
+    border: none!important;
+    padding-right: 0!important;
+  }
+
+  #buttonFXLZoom {
+    border: 1px solid transparent;
+    background-color: transparent;
+    color: var(--color-blue);
+    padding: 5px;
+    border-radius: 6px;
+    text-align: center;
+    height: 30px;
+    width: 80px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 200ms;
+
+    svg {
+      margin-left: 0!important;
+      background: none!important;
+    }
+  
+    .my_combobox_container {
+      padding-right: 0;
+    }
+  
+    &:hover, &:focus {
+      border: 1px solid var(--color-blue);
+      background-color: var(--color-light-blue);
+      color: var(--color-blue);
+    }
+  }
+}
