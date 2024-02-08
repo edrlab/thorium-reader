@@ -109,12 +109,13 @@
 .picker_container {
     display: flex;
     align-items: center;
-    padding: 0 20px;
-    width: 680px;
-    height: 75px;
+    padding: 0 10px;
+    width: 600px;
+    height: 40px;
     background-color: var(--color-extralight-grey);
     box-shadow: 0 6px 10px 0 var(--color-medium-grey);
-    margin-right: 200px;
+    // margin-right: 200px;
+    margin-right: 5px;
     z-index: 100;
 
     // position: absolute;
@@ -148,10 +149,15 @@
         height: 15px;
         padding: 4px;
         margin: 0;
+
+        svg {
+            height: 15px;
+        }
     }
 
     .form_group {
-        margin-right: 75px;
+        // margin-right: 75px;
+        width: 300px!important;
 
         label {
         top: -18px;

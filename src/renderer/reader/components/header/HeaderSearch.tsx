@@ -102,7 +102,7 @@ class HeaderSearch extends React.Component<IProps> {
     public render() {
         const { __ } = this.props;
         return (
-            <Popover.Root open={this.props.isOnSearch} onOpenChange={(v) => { console.log("SearchPopoverMenu enabled=", v); this.enableSearch(v); }}>
+            <Popover.Root open={this.props.isOnSearch} onOpenChange={(v) => { console.log("SearchPopoverMenu enabled=", v); this.enableSearch(v);}}>
                 <Popover.Trigger asChild>
                     <button
                         aria-pressed={this.props.isOnSearch}
@@ -117,6 +117,7 @@ class HeaderSearch extends React.Component<IProps> {
                 </Popover.Trigger>
                 <Popover.Portal>
                     <Popover.Content className={stylesReaderHeader.picker_container}
+                        align="start"
                         sideOffset={10}
                         onPointerDownOutside={(e) => { e.preventDefault(); console.log("SearchPopover onPointerDownOutside"); }}
                         onInteractOutside={(e) => { e.preventDefault(); console.log("SearchPopover onInteractOutside"); }}
@@ -143,7 +144,7 @@ class HeaderSearch extends React.Component<IProps> {
                                     <SVG ariaHidden={true} svg={QuitIcon} />
                                 </button>
                             </Popover.Close>
-                        <Popover.Arrow />
+                        {/* <Popover.Arrow /> */}
                     </Popover.Content>
                 </Popover.Portal>
             </Popover.Root>

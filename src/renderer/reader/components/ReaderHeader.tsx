@@ -6,11 +6,13 @@
 // ==LICENSE-END==
 
 import classNames from "classnames";
+import { GithubPicker } from "react-color";
 import * as debug_ from "debug";
 import * as React from "react";
 import * as Popover from "@radix-ui/react-popover";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as ReactDOM from "react-dom";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 // import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
@@ -27,11 +29,13 @@ import * as HeadphoneIcon from "readium-desktop/renderer/assets/icons/headphone-
 import * as SettingsIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
 import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
 import * as MarkIcon from "readium-desktop/renderer/assets/icons/outline-bookmark_border-24px.svg";
+import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
 import * as RemoveBookMarkIcon from "readium-desktop/renderer/assets/icons/BookmarkRemove-icon.svg";
 import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
 import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
 import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/sharp-crop_free-24px.svg";
 import * as QuitFullscreenIcon from "readium-desktop/renderer/assets/icons/sharp-uncrop_free-24px.svg";
+import * as FloppyDiskIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
 import {
@@ -145,6 +149,7 @@ interface IState {
     divinaSoundEnabled: boolean;
     fxlZoomPercent: number;
     forceTTS: boolean;
+    annotationColor: string;
 }
 
 export class ReaderHeader extends React.Component<IProps, IState> {
@@ -175,6 +180,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             divinaSoundEnabled: false,
             fxlZoomPercent: 0,
             forceTTS: false,
+            annotationColor: "#008b02",
         };
 
         this.timerFXLZoomDebounce = undefined;
@@ -359,6 +365,19 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             !this.props.isDivina && !this.props.isPdf;
 
         const useMO = !this.state.forceTTS && this.props.publicationHasMediaOverlays;
+
+        const handleColorChangeComplete = (color: any) => {
+            this.setState({ annotationColor: color.hex });
+          };
+
+        const handleFormSubmit = (event: any) => {
+            event.preventDefault();
+            const formData = {
+                addNote: event.target.addNote.value,
+                newColor: this.state.annotationColor,
+            };
+            console.log(formData);
+        };
 
         return (
             <nav
@@ -790,8 +809,48 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 id="bookmarkLabel"
                             >
                                 <SVG ariaHidden={true} svg={MarkIcon} className={classNames(stylesReaderHeader.bookmarkIcon, this.props.isOnBookmark ? stylesReaderHeader.active_svg : "")} />
-                                <SVG ariaHidden={true} svg={RemoveBookMarkIcon} className={classNames(stylesReaderHeader.bookmarkRemove,this.props.isOnBookmark ? stylesReaderHeader.active_svg : "")} />
+                                <SVG ariaHidden={true} svg={RemoveBookMarkIcon} className={classNames(stylesReaderHeader.bookmarkRemove, this.props.isOnBookmark ? stylesReaderHeader.active_svg : "")} />
                             </label>
+                        </li>
+                        <li>
+
+                            <Popover.Root>
+                                <Popover.Trigger asChild>
+                                    <button className={stylesReader.menu_button}>
+                                        <SVG ariaHidden svg={AnnotationsIcon} />
+                                    </button>
+                                </Popover.Trigger>
+                                <Popover.Portal>
+                                    <Popover.Content sideOffset={this.props.isOnSearch ? 50 : 5} align="end" >
+                                        <form
+                                            className={stylesReader.annotation_form}
+                                            onSubmit={handleFormSubmit}
+                                        >
+                                            <div>
+                                                <label>{__("reader.annotations.highlight")}</label>
+                                                <GithubPicker 
+                                                    colors={['#B80000', '#DB3E00', '#FCCB00', '#008B02', '#006B76', '#1273DE', '#004DCF', '#5300EB']}
+                                                    onChangeComplete={handleColorChangeComplete}
+                                                    triangle="hide"
+                                                    />
+                                            </div>
+                                            <div className={stylesReader.annotation_form_textarea_container}>
+                                                <label htmlFor="addNote">{__("reader.annotations.addNote")}</label>
+                                                <textarea id="addNote" name="addNote" className={stylesReader.annotation_form_textarea}></textarea>
+                                                <div className={stylesReader.annotation_form_textarea_buttons}>
+                                                    <Popover.Close className={stylesButtons.button_secondary_blue} aria-label="Cancel">Cancel</Popover.Close>
+                                                    <button type="submit" className={stylesButtons.button_primary_blue}>
+                                                        <SVG ariaHidden svg={FloppyDiskIcon} />
+                                                        Save
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <Popover.Arrow style={{fill: "var(--color-light-grey)"}}  width={15} height={10}/>
+                                    </Popover.Content>
+                                </Popover.Portal>
+                            </Popover.Root>
+
                         </li>
                         <li
                             {...(this.props.settingsOpen &&

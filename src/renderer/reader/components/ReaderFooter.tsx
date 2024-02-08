@@ -358,12 +358,6 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                 } */}
                             </div>
                         }
-
-                        <span
-                            onClick={this.handleMoreInfoClick}
-                        >
-                            {moreInfo ? __("reader.footerInfo.lessInfo") : __("reader.footerInfo.moreInfo")}
-                        </span>
                     </div>
                 }
             </div>

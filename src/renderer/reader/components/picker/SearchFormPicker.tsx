@@ -83,9 +83,9 @@ class SearchFormPicker extends React.Component<IProps, IState> {
         const { __ } = this.props;
         return (
             <form onSubmit={this.search} role="search" className={stylesInputs.form_group}>
-                <label>
+                {/* <label>
                     {__("reader.picker.searchTitle")}
-                </label>
+                </label> */}
                 <input
                     ref={this.inputRef}
                     type="search"
@@ -102,8 +102,8 @@ class SearchFormPicker extends React.Component<IProps, IState> {
                         width: "30px",
                         padding: "4px",
                         marginLeft: "0.4em",
-                        position: "absolute",
-                        right: "-50px",
+                        // position: "absolute",
+                        // right: "-50px",
                     }}
                     title={__("reader.picker.search.submit")}
                 >

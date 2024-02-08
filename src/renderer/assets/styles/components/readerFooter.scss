@@ -73,7 +73,8 @@
         display: inline;
         border: 0;
         cursor: pointer;
-        padding: 0;
+        padding: 5px;
+        border-radius: 6px;
         background-color: transparent;
         width: 30px;
         height: 30px;
@@ -85,8 +86,12 @@
 
         &.disabled {
             cursor: not-allowed;
-            opacity: 0.5;
-            color: var(--color-medium-grey);
+            background-color: var(--color-medium-grey);
+
+            svg {
+                color: var(--color-dark-grey);
+                fill: var(--color-dark-grey);
+            }
         }
     }
 
@@ -161,6 +166,23 @@
     top: 0;
     cursor: pointer;
 
+    span {
+        border-left: 1px solid transparent;
+        transition: 200ms;
+    }
+
+    &:hover {
+        span:has(span) {
+            border-left: 1px solid var(--color-extralight-grey);
+            span {
+                border-left: 1px solid var(--color-extralight-grey);
+            }
+        }
+        span {
+            border-left: 1px solid var(--color-blue);
+        }
+    }
+
     .progressChunkSpineItem {
         transition: 200ms;
         background-color: transparent;
@@ -172,6 +194,7 @@
 
         &:hover {
             outline: var(--color-blue) solid 1px;
+            z-index: 10;
             outline-offset: 0;
             background-color: white;
 
@@ -196,7 +219,8 @@
 
     & > span {
         flex-grow: 1;
-        padding: 3px 0;
+        margin: 3px 0;
+        height: 11px;
 
         & > span {
         display: block;

@@ -121,33 +121,6 @@ class SearchPicker extends React.Component<IProps, IState> {
                     load &&
                     <LoaderSearch></LoaderSearch>
                 }
-                {
-                (this.loadSeq > 2 && found) &&
-                (
-                <button
-                    disabled={notFound}
-                    onClick={() => {
-                        if (!this.props.isPdf) {
-                            this.props.showSearchResults();
-                        }
-                    }}
-                    aria-label={found}
-                    title={found}
-                    style={{
-                        width: "auto",
-                        padding: "4px",
-                        margin: 0,
-                        fontSize: "1em",
-                        color: notFound ? "grey" : "black",
-                        fill: notFound ? "grey" : "black",
-                    }}
-                >
-                    <span aria-live="polite">
-                        {found}
-                    </span>
-                </button>
-                )
-                }
                                 <button
                     disabled={notFound}
                     onClick={previous}
@@ -178,6 +151,37 @@ class SearchPicker extends React.Component<IProps, IState> {
                 >
                     <SVG ariaHidden={true} svg={ArrowRightIcon} />
                 </button>
+
+                {
+                (this.loadSeq > 2 && found) &&
+                (
+                <button
+                    disabled={notFound}
+                    onClick={() => {
+                        if (!this.props.isPdf) {
+                            this.props.showSearchResults();
+                        }
+                    }}
+                    aria-label={found}
+                    title={found}
+                    style={{
+                        width: "auto",
+                        padding: "4px",
+                        margin: 0,
+                        fontSize: "1em",
+                        // color: notFound ? "grey" : "black",
+                        fill: notFound ? "grey" : "black",
+                        background: "var(--color-light-blue)",
+                        border: "1px solid var(--color-blue)",
+                        color: "var(--color-blue)"
+                    }}
+                >
+                    <span aria-live="polite">
+                        {found}
+                    </span>
+                </button>
+                )
+                }
             </div>
         );
 

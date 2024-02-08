@@ -137,7 +137,7 @@
         "downloads": "Downloads",
         "gridTitle": "Grid view",
         "home": "Bookshelf menu",
-        "homeTitle": "home",
+        "homeTitle": "Home",
         "importTitle": "Import a publication",
         "listTitle": "List view",
         "refreshTitle": "reload",
@@ -415,6 +415,10 @@
             "speed": "Text To Speech playback rate",
             "stop": "Stop Text To Speech",
             "voice": "Text To Speech voice"
+        },
+        "annotations": {
+            "highlight": "Highlight",
+            "addNote": "Add a note"
         }
     },
     "settings": {
