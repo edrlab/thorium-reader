@@ -6,6 +6,8 @@
 // ==LICENSE-END==
 
 import * as readerLocalActionBookmarks from "./bookmarks";
+import * as readerLocalActionAnnotations from "./annotations";
+import * as readerLocalActionAnnotationUI from "./annotationUI";
 import * as readerLocalActionDivina from "./divina";
 import * as readerLocalActionHighlights from "./highlights";
 import * as readerLocalActionLocatorHrefChanged from "./locatorHrefChanged";
@@ -22,5 +24,7 @@ export {
     readerLocalActionPicker,
     readerLocalActionSearch,
     readerLocalActionBookmarks,
+    readerLocalActionAnnotations,
+    readerLocalActionAnnotationUI,
     readerLocalActionDivina,
 };

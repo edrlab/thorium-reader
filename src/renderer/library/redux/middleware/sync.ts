@@ -6,7 +6,8 @@
 // ==LICENSE-END==
 
 import {
-    apiActions, authActions, catalogActions, downloadActions, i18nActions, keyboardActions, lcpActions, readerActions, sessionActions,
+    catalogActions, lcpActions, sessionActions,
+    apiActions, authActions, downloadActions, i18nActions, keyboardActions, readerActions, annotationActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
@@ -39,6 +40,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     lcpActions.unlockPublicationWithPassphrase.ID,
 
     catalogActions.getCatalog.ID, // request to get catalog view
+    annotationActions.exportW3CAnnotationSetFromAnnotations.ID,
 
     readerActions.disableRTLFlip.ID,
 

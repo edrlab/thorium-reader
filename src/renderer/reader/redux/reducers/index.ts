@@ -19,7 +19,7 @@ import { combineReducers } from "redux";
 
 import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 
-import { readerLocalActionBookmarks, readerLocalActionHighlights } from "../actions";
+import { readerLocalActionBookmarks, readerLocalActionAnnotations, readerLocalActionHighlights } from "../actions";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { readerInfoReducer } from "./info";
 import { pickerReducer } from "./picker";
@@ -32,6 +32,8 @@ import { winModeReducer } from "readium-desktop/common/redux/reducers/winModeRed
 import { readerDivinaReducer } from "./divina";
 import { readerRTLFlipReducer } from "readium-desktop/common/redux/reducers/reader/rtlFlip";
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
+import { IAnnotationState } from "readium-desktop/common/redux/states/annotation";
+import { annotationUIReducer } from "./annotationUI";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
 
 export const rootReducer = () => {
@@ -67,6 +69,37 @@ export const rootReducer = () => {
                             sortFct: (a, b) => b[0] - a[0],
                             update: {
                                 type: readerLocalActionBookmarks.update.ID,
+                                selector: (action, queue) =>
+                                    [
+                                        queue.reduce<number>((pv, [k, v]) => v.uuid === action.payload.uuid ? k : pv, undefined),
+                                        action.payload,
+                                    ],
+                            },
+                        },
+                    ),
+            annotation: priorityQueueReducer
+                    <
+                        readerLocalActionAnnotations.push.TAction,
+                        readerLocalActionAnnotations.pop.TAction,
+                        number,
+                        IAnnotationState,
+                        string,
+                        readerLocalActionAnnotations.update.TAction
+                    >(
+                        {
+                            push: {
+                                type: readerLocalActionAnnotations.push.ID,
+                                selector: (action) =>
+                                    [(new Date()).getTime(), action.payload],
+                            },
+                            pop: {
+                                type: readerLocalActionAnnotations.pop.ID,
+                                selector: (action) =>
+                                    [undefined, action.payload],
+                            },
+                            sortFct: (a, b) => b[0] - a[0],
+                            update: {
+                                type: readerLocalActionAnnotations.update.ID,
                                 selector: (action, queue) =>
                                     [
                                         queue.reduce<number>((pv, [k, v]) => v.uuid === action.payload.uuid ? k : pv, undefined),
@@ -129,6 +162,7 @@ export const rootReducer = () => {
             disableRTLFlip: readerRTLFlipReducer,
         }),
         search: searchReducer,
+        annotation: annotationUIReducer,
         picker: pickerReducer,
         win: winReducer,
         dialog: dialogReducer,

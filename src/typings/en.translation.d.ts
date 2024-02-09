@@ -115,6 +115,7 @@ declare namespace typed_i18n {
     readonly "lastAdditions": string
   },
   readonly "export": string,
+  readonly "exportW3CAnnotation": string,
   readonly "format": string,
   readonly "lang": string,
   readonly "lastRead": string,
@@ -188,6 +189,7 @@ declare namespace typed_i18n {
   (_: "catalog.entry.continueReadingPdf", __?: {}): string;
   (_: "catalog.entry.lastAdditions", __?: {}): string;
   (_: "catalog.export", __?: {}): string;
+  (_: "catalog.exportW3CAnnotation", __?: {}): string;
   (_: "catalog.format", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.lastRead", __?: {}): string;
@@ -654,6 +656,7 @@ declare namespace typed_i18n {
   readonly "navigation": {
     readonly "backHomeTitle": string,
     readonly "bookmarkTitle": string,
+    readonly "annotationTitle": string,
     readonly "currentPage": string,
     readonly "currentPageTotal": string,
     readonly "detachWindowTitle": string,
@@ -800,6 +803,7 @@ declare namespace typed_i18n {
   (_: "reader.navigation", __?: {}): {
   readonly "backHomeTitle": string,
   readonly "bookmarkTitle": string,
+  readonly "annotationTitle": string,
   readonly "currentPage": string,
   readonly "currentPageTotal": string,
   readonly "detachWindowTitle": string,
@@ -820,6 +824,7 @@ declare namespace typed_i18n {
 };
   (_: "reader.navigation.backHomeTitle", __?: {}): string;
   (_: "reader.navigation.bookmarkTitle", __?: {}): string;
+  (_: "reader.navigation.annotationTitle", __?: {}): string;
   (_: "reader.navigation.currentPage", __?: {}): string;
   (_: "reader.navigation.currentPageTotal", __?: {}): string;
   (_: "reader.navigation.detachWindowTitle", __?: {}): string;
