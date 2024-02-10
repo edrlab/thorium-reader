@@ -11,7 +11,7 @@ import { getCount } from "../counter";
 import { getCssSelector_ } from "./cssSelector";
 import { escapeRegExp } from "./regexp";
 import { ISearchResult } from "./search.interface";
-import { cleanupStr, collapseWhitespaces } from "./transliteration";
+import { cleanupStr, collapseWhitespaces, equivalents } from "./transliteration";
 
 export async function searchDocDomSeek(searchInput: string, doc: Document, href: string): Promise<ISearchResult[]> {
     const text = doc.body.textContent;
@@ -19,10 +19,96 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
         return [];
     }
 
+    const searchInput_ = searchInput;
+
+    // searchInput = searchInput.replace(/[\s]+/gmi, '\\s+')
     searchInput = cleanupStr(searchInput);
     if (!searchInput.length) {
         return [];
     }
+
+    searchInput = escapeRegExp(searchInput);
+
+    // transliteratesDifferentLengthsLower
+    // transliteratesDifferentLengthsUpper
+    const transliterations: Record<string, string> = {
+        "œ": "oe",
+        "ᴔ": "oe",
+        "Œ": "OE", // could be "Oe" (capitalised first letter)
+        "ɶ": "OE",
+    };
+    for (const key of Object.keys(transliterations)) {
+        const val = transliterations[key];
+        searchInput = searchInput.replace(new RegExp(key, "gmi"), val);
+    }
+
+    const alreadyProcessed: string[] = [];
+    for (const key of Object.keys(transliterations)) {
+        const val = transliterations[key];
+        const valLower = val.toLowerCase();
+        if (alreadyProcessed.includes(valLower)) {
+            continue;
+        }
+        alreadyProcessed.push(valLower);
+        let rep = "(";
+        rep += "(";
+        rep += valLower;
+        rep += ")";
+        for (const key2 of Object.keys(transliterations)) {
+            const val2 = transliterations[key2];
+            const valLower2 = val2.toLowerCase();
+            if (valLower === valLower2) {
+                rep += "|";
+                rep += key2;
+            }
+        }
+        rep += ")";
+        searchInput = searchInput.replace(new RegExp(valLower, "gmi"), rep);
+    }
+
+    // https://github.com/julkue/mark.js/blob/7f7e9820514e2268918c2259b58aec3bd5f437f6/src/lib/regexpcreator.js#L256-L268
+    // searchInput = searchInput.replace(/[^(|)\\]/g, (val, indx, original) => {
+    //     const nextChar = original.charAt(indx + 1);
+    //     if (/[(|)\\]/.test(nextChar) || nextChar === "") {
+    //         return val;
+    //     } else {
+    //         return val + "\u0000";
+    //     }
+    // });
+
+    const equivalentsList = equivalents();
+    const done: number[] = [];
+    for (let i = 0; i < searchInput.length; i++) {
+        const ch = searchInput[i];
+        for (let j = 0; j < equivalentsList.length; j++) {
+            const equivalents = equivalentsList[j];
+            if (!equivalents.has(ch)) {
+                continue;
+            }
+            if (done.includes(j)) {
+                break;
+            }
+            done.push(j);
+
+            let eqs = "";
+            equivalents.forEach((eq) => {
+                eqs += eq;
+            });
+
+            searchInput = searchInput.replace(new RegExp(`[${eqs}]`, "gmi"), `[${eqs}]`);
+        }
+    }
+
+    searchInput = searchInput.replace(/ /g, "\\s+"); // see cleanupStr() which collapsed all contiguous whitespaces in single space, and trimmed
+
+    // https://github.com/julkue/mark.js/blob/7f7e9820514e2268918c2259b58aec3bd5f437f6/src/lib/regexpcreator.js#L279-L295
+    // u+00ad = soft hyphen
+    // u+200b = zero-width space
+    // u+200c = zero-width non-joiner
+    // u+200d = zero-width joiner
+    // searchInput = searchInput.split(/\u0000+/).join("[\\u00ad\\u200b\\u200c\\u200d,;\\.]*");
+
+    console.log("REGEXP SEARCH: \n" + searchInput_ + "\n==>\n" + searchInput + "\n");
 
     const iter = doc.createNodeIterator(
         doc.body,
@@ -33,7 +119,7 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
     );
 
     // normalizeDiacriticsAndLigatures(searchInput)
-    const regexp = new RegExp(escapeRegExp(searchInput).replace(/ /g, "\\s+"), "gim");
+    const regexp = new RegExp(searchInput, "gim");
 
     const searchResults: ISearchResult[] = [];
 

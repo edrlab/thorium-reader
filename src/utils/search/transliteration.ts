@@ -354,7 +354,7 @@ export const transliteratesSameLengthsLower = {
     "ΰ": "y",
     "ϋ": "y",
     "ΐ": "i",
-    "тс": "ts",
+    // "тс": "ts",
     "ł": "l",
     "і": "i",
     "ґ": "g",
@@ -574,7 +574,7 @@ export const transliteratesSameLengthsUpper = {
     "Ώ": "O",
     "Ϊ": "I",
     "Ϋ": "Y",
-    "Тс": "Ts",
+    // "Тс": "Ts",
     "Ł": "L",
     "І": "I",
     "Ґ": "G",
@@ -954,8 +954,89 @@ export const transliteratesPureDiacriticsEXTRA = {
     "ї": "і",
 } as { [str: string]: string };
 
+// https://fr.wikipedia.org/wiki/%C5%92
+// Œuf œuf oeuf
+let _equivalentsList: Array<Set<string>> | undefined;
+export const equivalents = () => {
+    if (!_equivalentsList) {
+        _equivalentsList = [];
+        for (const obj of [transliteratesPureDiacriticsLower, transliteratesPureDiacriticsUpper,
+            {
+                "і": "i",
+                "І": "I",
+                "к": "К",
+                "K": "К",
+                "е": "e",
+                "ε": "e",
+                "Е": "E",
+                "Ε": "E",
+                "Έ": "E",
+                "Α": "A",
+                "Ο": "O",
+                "ο": "o",
+                "ά": "a",
+                "к": "k",
+                "ί": "i",
+            },
+            transliteratesSameLengths,
+            // transliteratesSameLengthsLower,
+            // transliteratesSameLengthsUpper,
+            transliteratesPureDiacriticsEXTRA]) {
+            for (const key of Object.keys(obj)) {
+                const val = obj[key];
+                if (key.length !== 1 || val.length !== 1) {
+                    console.log("########## transliteration / diacritics / ligatures LENGTH NOK?! [" + key + "] [" + val + "]");
+                }
+                let foundEq: Set<string> | undefined;
+                for (const equivalents of _equivalentsList) {
+                    if (equivalents.has(key) || equivalents.has(key.toLowerCase())) {
+                        foundEq = equivalents;
+                        // console.log(">>> SET ADD 1 key: [" + key + "]");
+                        equivalents.add(key);
+                        if (!equivalents.has(val) || !equivalents.has(val.toLowerCase())) {
+                            // console.log(">>> SET ADD 1 val: [" + val + "]");
+                            equivalents.add(val);
+                        }
+                    }
+                    if (equivalents.has(val) || equivalents.has(val.toLowerCase())) {
+                        foundEq = equivalents;
+                        // console.log(">>> SET ADD 2 val: [" + val + "]");
+                        equivalents.add(val);
+                        if (!equivalents.has(key) || !equivalents.has(key.toLowerCase())) {
+                            // console.log(">>> SET ADD 2 key: [" + key + "]");
+                            equivalents.add(key);
+                        }
+                    }
+                    // if (foundEq) {
+                    //     break;
+                    // }
+                }
+                if (!foundEq) {
+                    // console.log(">>> NEW SET: [" + key + "] [" + val + "]");
+                    _equivalentsList.push(new Set<string>([key, val]));
+                }
+            }
+        }
+
+        const alreadySeen: string[] = [];
+        let i = -1;
+        for (const equivalents of _equivalentsList) {
+            let str = "";
+            for (const eq of equivalents) {
+                if (alreadySeen.includes(eq)) {
+                    console.log("-??? EQUIVALENTS already!?: [" + eq + "]");
+                }
+                alreadySeen.push(eq);
+                str += eq;
+            }
+            console.log("-DIACRITICS EQUIVALENTS: [" + (++i) + "] [" + str + "]");
+        }
+    }
+    return _equivalentsList;
+};
+
 export const collapseWhitespaces = (str: string) => {
-    return str.replace(/\n/g, " ").replace(/\s\s+/g, " ");
+    return str.replace(/[\r\n]/g, " ").replace(/\s\s+/g, " ");
 };
 
 export const cleanupStr = (str: string) => {
