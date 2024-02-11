@@ -72,6 +72,7 @@ function converterSearchResultToHighlightHandlerState(v: ISearchResult, color = 
         href: v.href,
         type: "search",
         def: {
+            // group: "search",
             color,
             selectionInfo: {
                 cleanBefore: v.cleanBefore,

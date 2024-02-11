@@ -64,6 +64,8 @@ export function* unmountHightlight(href: string, baseState: IHighlightBaseState[
     // remove hightlight mounted on the href webview
     yield* callTyped(() => highlightsRemove(href, filteredArray));
 
+    // yield* callTyped(() => highlightsRemoveAll(href, ["search", "annotation"]));
+
     // pull all hightlight from state (pop)
     // navigator-js doesn't keep hightlight state beetween webview access
     yield put(readerLocalActionHighlights.mounter.unmount.build(...baseState));
