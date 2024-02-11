@@ -14,7 +14,10 @@ import { ISearchResult } from "./search.interface";
 import { cleanupStr, collapseWhitespaces, equivalents } from "./transliteration";
 
 export async function searchDocDomSeek(searchInput: string, doc: Document, href: string): Promise<ISearchResult[]> {
+    // https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent
+    // excludes comments and processing instructions but includes CDATA! (such as <style> inside <svg>)
     const text = doc.body.textContent;
+    // console.log("SEARCH TEXT: ", text);
     if (!text) {
         return [];
     }
@@ -112,7 +115,7 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
 
     const iter = doc.createNodeIterator(
         doc.body,
-        NodeFilter.SHOW_TEXT,
+        NodeFilter.SHOW_TEXT | NodeFilter.SHOW_CDATA_SECTION,
         {
             acceptNode: (_node) => NodeFilter.FILTER_ACCEPT,
         },
@@ -153,9 +156,19 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
         let offset = matches.index;
         while (accumulated <= offset) {
             const nextNode = iter.nextNode();
+            if (!nextNode) {
+                break;
+            }
+            // console.log("nextNode.nodeValue: ", nextNode.nodeValue);
+            // console.log("nextNode.nodeValue.length: ", nextNode.nodeValue.length);
             accumulated += nextNode.nodeValue.length;
         }
+        // console.log("iter.referenceNode.nodeValue: ", iter.referenceNode.nodeValue);
+        // console.log("iter.referenceNode.nodeValue.length: ", iter.referenceNode.nodeValue.length);
         let localOffset = iter.referenceNode.nodeValue.length - (accumulated - offset);
+        // console.log("accumulated: ", accumulated);
+        // console.log("offset: ", offset);
+        // console.log("localOffset: ", localOffset);
         // console.log("start accumulated: ", accumulated);
         // console.log("start localNodeOffset: ", localOffset);
         // console.log("start iter.referenceNode.nodeValue: ", iter.referenceNode.nodeValue);
@@ -165,6 +178,9 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
         offset = matches.index + matches[0].length;
         while (accumulated <= offset) {
             const nextNode = iter.nextNode();
+            if (!nextNode) {
+                break;
+            }
             accumulated += nextNode.nodeValue.length;
         }
         localOffset = iter.referenceNode.nodeValue.length - (accumulated - offset);
