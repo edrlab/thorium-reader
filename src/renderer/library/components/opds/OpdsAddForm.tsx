@@ -12,7 +12,7 @@ import OpdsFeedAddForm from "../dialog/OpdsFeedAddForm";
 
 const OpdsAddForm: React.FC = () => {
     return (
-        <section style={{display: "flex", gap: "10px"}}>
+        <section style={{display: "flex", gap: "10px", alignItems: "end", height: "65px"}}>
             <OpdsFeedAddForm/>
             <ApiappAddFormDialog/>
         </section>

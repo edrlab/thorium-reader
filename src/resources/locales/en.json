@@ -135,15 +135,16 @@
         "books": "My Books",
         "catalogs": "Catalogs",
         "downloads": "Downloads",
-        "gridTitle": "Grid view",
+        "gridTitle": "Grid",
         "home": "Bookshelf menu",
         "homeTitle": "Home",
         "importTitle": "Import a publication",
-        "listTitle": "List view",
+        "listTitle": "List",
         "refreshTitle": "reload",
         "searchPlaceholder": "Search",
         "searchTitle": "Start a search",
-        "settings": "Settings"
+        "settings": "Settings",
+        "viewMode": "View mode"
     },
     "library": {
         "lcp": {

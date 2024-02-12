@@ -50,43 +50,46 @@ class Header extends React.Component<IProps, undefined> {
 
         return (
             <SecondaryHeader>
-                <div style={{display: "flex", gap: "10px"}}>
-                    <Link
-                        to={this.props.location}
-                        state = {{displayType: DisplayType.Grid}}
-                        replace={true}
-                        className={(displayType === DisplayType.Grid) ?
-                            stylesButtons.button_nav_primary :
-                            stylesButtons.button_nav_secondary
-                        }
-                        title={__("header.gridTitle")}
-                        aria-pressed={displayType === DisplayType.Grid}
-                        role={"button"}
-                    >
-                        {(displayType === DisplayType.Grid) ?
-                            <SVG svg={CheckIcon} ariaHidden/> :
-                            <SVG svg={GridIcon} ariaHidden/>
-                        }
-                        <h3>{__("header.gridTitle")}</h3>
-                    </Link>
-                    <Link
-                        to={this.props.location}
-                        state = {{displayType: DisplayType.List}}
-                        replace={true}
-                        className={(displayType === DisplayType.List) ?
-                            stylesButtons.button_nav_primary :
-                            stylesButtons.button_nav_secondary
-                        }
-                        title={__("header.listTitle")}
-                        aria-pressed={displayType === DisplayType.List}
-                        role={"button"}
-                    >
-                        {(displayType === DisplayType.List) ?
-                            <SVG svg={CheckIcon} ariaHidden/> :
-                            <SVG svg={ListIcon} ariaHidden/>
-                        }
-                        <h3>{__("header.listTitle")}</h3>
-                    </Link>
+                <div>
+                    <h3>{__("header.viewMode")}</h3>
+                    <div style={{ display: "flex", gap: "10px" }}>
+                        <Link
+                            to={this.props.location}
+                            state={{ displayType: DisplayType.Grid }}
+                            replace={true}
+                            className={(displayType === DisplayType.Grid) ?
+                                stylesButtons.button_nav_primary :
+                                stylesButtons.button_nav_secondary
+                            }
+                            title={__("header.gridTitle")}
+                            aria-pressed={displayType === DisplayType.Grid}
+                            role={"button"}
+                        >
+                            {(displayType === DisplayType.Grid) ?
+                                <SVG svg={CheckIcon} ariaHidden /> :
+                                <SVG svg={GridIcon} ariaHidden />
+                            }
+                            <h3>{__("header.gridTitle")}</h3>
+                        </Link>
+                        <Link
+                            to={this.props.location}
+                            state={{ displayType: DisplayType.List }}
+                            replace={true}
+                            className={(displayType === DisplayType.List) ?
+                                stylesButtons.button_nav_primary :
+                                stylesButtons.button_nav_secondary
+                            }
+                            title={__("header.listTitle")}
+                            aria-pressed={displayType === DisplayType.List}
+                            role={"button"}
+                        >
+                            {(displayType === DisplayType.List) ?
+                                <SVG svg={CheckIcon} ariaHidden /> :
+                                <SVG svg={ListIcon} ariaHidden />
+                            }
+                            <h3>{__("header.listTitle")}</h3>
+                        </Link>
+                    </div>
                 </div>
                     <div style={{textAlign: "right", display: "flex", gap: "10px", position: "relative"}}>
                     <PublicationAddButton />

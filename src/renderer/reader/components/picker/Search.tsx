@@ -169,7 +169,7 @@ class SearchPicker extends React.Component<IProps, IState> {
                         fill: notFound ? "grey" : "black",
                         background: "var(--color-light-blue)",
                         border: "1px solid var(--color-blue)",
-                        color: "var(--color-blue)"
+                        color: "var(--color-blue)",
                     }}
                 >
                     <span aria-live="polite">

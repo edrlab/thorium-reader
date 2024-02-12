@@ -315,7 +315,6 @@ button {
   height: 20px;
   border-radius: 4px;
   padding: 5px;
-  min-width: 100px;
   background-color: transparent;
   color: var(--color-primary);
   display: flex;
@@ -340,7 +339,7 @@ button {
 .button_nav_tertiary {
   border: 1px solid;
   border-color: transparent;
-  height: 20px;
+  height: 15px;
   border-radius: 4px;
   padding: 5px;
   background-color: transparent;
@@ -373,8 +372,8 @@ button {
     }
 
   svg {
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     fill: var(--color-blue);
     color: var(--color-blue);
     transform: rotate(0);

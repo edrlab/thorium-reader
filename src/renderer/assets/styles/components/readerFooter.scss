@@ -174,10 +174,12 @@
     &:hover {
         span:has(span) {
             border-left: 1px solid var(--color-extralight-grey);
+
             span {
                 border-left: 1px solid var(--color-extralight-grey);
             }
         }
+
         span {
             border-left: 1px solid var(--color-blue);
         }

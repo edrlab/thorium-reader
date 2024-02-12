@@ -316,7 +316,8 @@ declare namespace typed_i18n {
   readonly "refreshTitle": string,
   readonly "searchPlaceholder": string,
   readonly "searchTitle": string,
-  readonly "settings": string
+  readonly "settings": string,
+  readonly "viewMode": string
 };
   (_: "header.allBooks", __?: {}): string;
   (_: "header.books", __?: {}): string;
@@ -331,6 +332,7 @@ declare namespace typed_i18n {
   (_: "header.searchPlaceholder", __?: {}): string;
   (_: "header.searchTitle", __?: {}): string;
   (_: "header.settings", __?: {}): string;
+  (_: "header.viewMode", __?: {}): string;
   (_: "library", __?: {}): {
   readonly "lcp": {
     readonly "hint": string,

@@ -24,8 +24,8 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 
 import LibraryHeader from "./LibraryHeader";
 
-import * as RefreshIcon from "readium-desktop/renderer/assets/icons/arrow-clockwise.svg";
-import * as HomeIcon from "readium-desktop/renderer/assets/icons/house-fill.svg";
+import * as RefreshIcon from "readium-desktop/renderer/assets/icons/refresh-icon.svg";
+import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/person-fill.svg";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
@@ -124,7 +124,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                     >
                         {this.props.secondaryHeader}
                         {(title === "Catalogs" && this.props.breadCrumb) ?
-                            <div style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
+                            <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
                                 <h2 className={stylesAllBooks.allBooks_header}>{title}</h2>
                                 <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
                                     {
@@ -261,7 +261,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         pathname: route,
                     }}
                     state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                    className={stylesButtons.button_nav_primary}
+                    className={stylesButtons.button_nav_tertiary}
                 >
                     <SVG svg={HomeIcon} title={__("header.homeTitle")} />
                 </Link>

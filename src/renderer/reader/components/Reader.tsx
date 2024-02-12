@@ -630,7 +630,7 @@ class Reader extends React.Component<IProps, IState> {
             isFXL: this.props.publicationView.isFXL,
             // openedSection: this.state.openedSectionSettings,
             zenMode: this.state.zenMode,
-            setZenMode : () => this.setState({ zenMode : !this.state.zenMode})
+            setZenMode : () => this.setState({ zenMode : !this.state.zenMode}),
         };
 
         const readerPopoverDialogContext: IPopoverDialogProps = {

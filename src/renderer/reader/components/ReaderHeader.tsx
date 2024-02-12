@@ -390,24 +390,24 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             {
                 id: 0,
                 value: 0,
-                name: __("reader.fxl.fit")
+                name: __("reader.fxl.fit"),
             },
             {
                 id: 1,
                 value: 50,
-                name: "50%"
+                name: "50%",
             },
             {
                 id: 2,
                 value: 100,
-                name: "100%"
+                name: "100%",
             },
             {
                 id: 3,
                 value: 200,
-                name: "200%"
-            }
-        ]
+                name: "200%",
+            },
+        ];
 
         return (
             <nav
@@ -863,7 +863,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             <div>
                                                 <label>{__("reader.annotations.highlight")}</label>
                                                 <GithubPicker
-                                                    colors={['#B80000', '#DB3E00', '#FCCB00', '#008B02', '#006B76', '#1273DE', '#004DCF', '#5300EB']}
+                                                    colors={["#B80000", "#DB3E00", "#FCCB00", "#008B02", "#006B76", "#1273DE", "#004DCF", "#5300EB"]}
                                                     onChangeComplete={handleColorChangeComplete}
                                                     triangle="hide"
                                                 />
@@ -1058,9 +1058,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         onSelectionChange={(id) => {
                                             const value = fxlOptions.find(({ id: _id }) => _id === id)?.value;
                                             debug("FXL this.state.fxlZoomPercent TOGGLE: " + this.state.fxlZoomPercent);
-                                            console.log(value)
+                                            console.log(value);
                                             this.setState({ fxlZoomPercent: value as number });
-                                            fixedLayoutZoomPercent(value as number)
+                                            fixedLayoutZoomPercent(value as number);
                                         }}
                                     >
                                         {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
