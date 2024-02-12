@@ -15,7 +15,7 @@ import { cleanupStr, collapseWhitespaces, equivalents } from "./transliteration"
 
 export async function searchDocDomSeek(searchInput: string, doc: Document, href: string): Promise<ISearchResult[]> {
     // https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent
-    // excludes comments and processing instructions but includes CDATA! (such as <style> inside <svg>)
+    // 'textContent' excludes comments and processing instructions but includes CDATA! (such as <style> inside <svg>)
     const text = doc.body.textContent;
     // console.log("SEARCH TEXT: ", text);
     if (!text) {
@@ -115,7 +115,10 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
 
     const iter = doc.createNodeIterator(
         doc.body,
-        NodeFilter.SHOW_TEXT | NodeFilter.SHOW_CDATA_SECTION,
+        NodeFilter.SHOW_TEXT,
+        // 'textContent' excludes comments and processing instructions but includes CDATA! (such as <style> inside <svg>)
+        // ... but, we trim the DOM ahead of time to avoid this corner case
+        // | NodeFilter.SHOW_CDATA_SECTION
         {
             acceptNode: (_node) => NodeFilter.FILTER_ACCEPT,
         },
