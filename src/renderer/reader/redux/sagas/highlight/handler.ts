@@ -70,10 +70,10 @@ function* hrefChanged(action: readerLocalActionLocatorHrefChanged.TAction) {
     const { payload: { href, prevHref, href2, prevHref2 } } = action;
 
     const mounterStateMap = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.mounter);
-    if (!mounterStateMap?.length) {
-        debug(`hrefChanged (unmountHightlight+mountHighlight) MOUNTER STATE EMPTY -- mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
-        return;
-    }
+    // if (!mounterStateMap?.length) {
+    //     debug(`hrefChanged (unmountHightlight+mountHighlight) MOUNTER STATE EMPTY -- mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
+    //     return;
+    // }
 
     const uuids = mounterStateMap.map(([uuid, _mounterState]) => uuid);
 

@@ -48,11 +48,11 @@ export function* mountHighlight(href: string, handlerState: IHighlightHandlerSta
 
     const highlightDefinitions = handlerStateFiltered.map((v) => v.def);
 
-    debug(`mountHighlight CREATE ... -- href: [${href}] highlightDefinitions: [${false && highlightDefinitions ? highlightDefinitions.length : JSON.stringify(highlightDefinitions, null, 4)}]`);
+    debug(`mountHighlight CREATE ... -- href: [${href}] highlightDefinitions: [${highlightDefinitions ? highlightDefinitions.length : JSON.stringify(highlightDefinitions, null, 4)}]`);
 
     const createdHighlights = yield* callTyped(highlightsCreate, href, highlightDefinitions);
 
-    debug(`mountHighlight CREATED -- href: [${href}] createdHighlights: [${false && createdHighlights ? createdHighlights.length : JSON.stringify(createdHighlights, null, 4)}]`);
+    debug(`mountHighlight CREATED -- href: [${href}] createdHighlights: [${createdHighlights ? createdHighlights.length : JSON.stringify(createdHighlights, null, 4)}]`);
 
     const arrayProps = handlerStateFiltered.map((v) => ({uuid: v.uuid, href: v.href, type: v.type}));
 
@@ -67,7 +67,7 @@ export function* mountHighlight(href: string, handlerState: IHighlightHandlerSta
         createdHighlights,
     ).filter((v) => v.ref);
 
-    debug(`mountHighlight MOUNTED -- href: [${href}] mounted: [${false && mounted ? mounted.length : JSON.stringify(mounted, null, 4)}]`);
+    debug(`mountHighlight MOUNTED -- href: [${href}] mounted: [${mounted ? mounted.length : JSON.stringify(mounted, null, 4)}]`);
 
     yield put(readerLocalActionHighlights.mounter.mount.build(mounted));
 }
