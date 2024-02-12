@@ -29,6 +29,10 @@ import { Link } from "@r2-shared-js/models/publication-link";
 import { readerLocalActionHighlights, readerLocalActionSearch } from "../actions";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 
+import debounce from "debounce";
+
+const handleLinkLocatorDebounced = debounce(handleLinkLocator, 400);
+
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:search");
 
 function createLocatorLink(href: string, rangeInfo: IRangeInfo): R2Locator {
@@ -148,9 +152,7 @@ function* searchFocus(action: readerLocalActionSearch.focus.TAction) {
             ]),
         );
 
-        setTimeout(() => {
-            handleLinkLocator(createLocatorLink(newItem.href, newItem.rangeInfo));
-        }, 500);
+        handleLinkLocatorDebounced(createLocatorLink(newItem.href, newItem.rangeInfo));
 
     } else if (newItem) {
         const newItemClone = clone(newItem);
@@ -173,9 +175,7 @@ function* searchFocus(action: readerLocalActionSearch.focus.TAction) {
             ]),
         );
 
-        setTimeout(() => {
-            handleLinkLocator(createLocatorLink(newItem.href, newItem.rangeInfo));
-        }, 500);
+        handleLinkLocatorDebounced(createLocatorLink(newItem.href, newItem.rangeInfo));
     }
 }
 
