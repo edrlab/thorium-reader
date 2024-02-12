@@ -8,12 +8,12 @@
 import { ReaderConfig, ReaderInfo, ReaderMode } from "readium-desktop/common/models/reader";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { IDivinaState } from "readium-desktop/common/redux/states/renderer/divina";
-import { IHighlightHandlerState } from "./highlight";
+import { IHighlightHandlerState, IHighlightMounterState } from "./highlight";
 import { IPickerState } from "./picker";
 import { ISearchState } from "./search";
 import { TMapState } from "readium-desktop/utils/redux-reducers/map.reducer";
 
-import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
+// import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
 import { TBookmarkState } from "../bookmark";
@@ -33,7 +33,7 @@ export interface IReaderStateReader {
     bookmark: TBookmarkState;
     highlight: {
         handler: TMapState<string, IHighlightHandlerState>;
-        mounter: TMapState<string, IHighlight>;
+        mounter: TMapState<string, IHighlightMounterState>;
     };
     divina: IDivinaState;
 

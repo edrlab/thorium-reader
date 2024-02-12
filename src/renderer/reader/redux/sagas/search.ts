@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
+
 import { clone, flatten } from "ramda";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -26,6 +28,8 @@ import { Link } from "@r2-shared-js/models/publication-link";
 
 import { readerLocalActionHighlights, readerLocalActionSearch } from "../actions";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
+
+const debug = debug_("readium-desktop:renderer:reader:redux:sagas:search");
 
 function createLocatorLink(href: string, rangeInfo: IRangeInfo): R2Locator {
 
@@ -72,7 +76,7 @@ function converterSearchResultToHighlightHandlerState(v: ISearchResult, color = 
         href: v.href,
         type: "search",
         def: {
-            // group: "search",
+            group: "search",
             color,
             selectionInfo: {
                 cleanBefore: v.cleanBefore,
@@ -92,14 +96,13 @@ function converterSearchResultToHighlightHandlerState(v: ISearchResult, color = 
 
 function* searchFound(action: readerLocalActionSearch.found.TAction) {
     const { foundArray } = action.payload;
+    debug(`searchFound (push highlights) -- foundArray: [${JSON.stringify(foundArray)}]`);
 
-    const highlightHandlerState = foundArray.map(
-        (v) => converterSearchResultToHighlightHandlerState(v),
-    );
-
-    if (highlightHandlerState[0]) {
-
-        yield put(readerLocalActionHighlights.handler.push.build(...highlightHandlerState));
+    if (foundArray?.length) {
+        const highlightHandlerState = foundArray.map(
+            (v) => converterSearchResultToHighlightHandlerState(v),
+        );
+        yield put(readerLocalActionHighlights.handler.push.build(highlightHandlerState));
 
         // auto focus diable
         // yield put(readerLocalActionSearch.focus.build(highlightHandlerState[0].uuid));
@@ -109,54 +112,70 @@ function* searchFound(action: readerLocalActionSearch.found.TAction) {
 function* searchFocus(action: readerLocalActionSearch.focus.TAction) {
 
     const { newFocusUUId, oldFocusUUId } = action.payload;
-    if (newFocusUUId !== oldFocusUUId) {
+    if (newFocusUUId === oldFocusUUId) {
+        return;
+    }
 
-        const { foundArray } = yield* selectTyped((state: IReaderRootState) => state.search);
+    debug(`searchFocus -- oldFocusUUId: [${oldFocusUUId}] newFocusUUId: [${newFocusUUId}]`);
 
-        const oldItem = foundArray.find((v) => v.uuid === oldFocusUUId);
-        const newItem = foundArray.find((v) => v.uuid === newFocusUUId);
+    const { foundArray } = yield* selectTyped((state: IReaderRootState) => state.search);
 
-        if (newItem && oldItem) {
-            const oldItemClone = clone(oldItem);
-            const newItemClone = clone(newItem);
+    const oldItem = foundArray.find((v) => v.uuid === oldFocusUUId);
+    const newItem = foundArray.find((v) => v.uuid === newFocusUUId);
 
-            yield put(readerLocalActionHighlights.handler.pop.build(
-                { uuid: oldFocusUUId },
-                { uuid: newFocusUUId }),
-            );
+    if (newItem && oldItem) {
+        const oldItemClone = clone(oldItem);
+        const newItemClone = clone(newItem);
 
-            yield put(
-                readerLocalActionHighlights.handler.push.build(
-                    converterSearchResultToHighlightHandlerState(oldItemClone),
-                    converterSearchResultToHighlightHandlerState(newItemClone, {
-                        red: 255,
-                        green: 0,
-                        blue: 0,
-                    }),
-                ),
-            );
+        debug(`searchFocus (pop highlights) -- oldFocusUUId: [${oldFocusUUId}] newFocusUUId: [${newFocusUUId}]`);
 
+        yield put(readerLocalActionHighlights.handler.pop.build([
+            { uuid: oldFocusUUId },
+            { uuid: newFocusUUId },
+        ]),
+        );
+
+        debug(`searchFocus (push highlights) -- oldFocusUUId: [${oldFocusUUId}] newFocusUUId: [${newFocusUUId}]`);
+
+        yield put(
+            readerLocalActionHighlights.handler.push.build([
+                converterSearchResultToHighlightHandlerState(oldItemClone),
+                converterSearchResultToHighlightHandlerState(newItemClone, {
+                    red: 255,
+                    green: 0,
+                    blue: 0,
+                }),
+            ]),
+        );
+
+        setTimeout(() => {
             handleLinkLocator(createLocatorLink(newItem.href, newItem.rangeInfo));
+        }, 500);
 
-        } else if (newItem) {
-            const newItemClone = clone(newItem);
+    } else if (newItem) {
+        const newItemClone = clone(newItem);
 
-            yield put(readerLocalActionHighlights.handler.pop.build(
-                { uuid: newFocusUUId }),
-            );
+        debug(`searchFocus (pop highlights) -- newFocusUUId: [${newFocusUUId}]`);
 
-            yield put(
-                readerLocalActionHighlights.handler.push.build(
-                    converterSearchResultToHighlightHandlerState(newItemClone, {
-                        red: 255,
-                        green: 0,
-                        blue: 0,
-                    }),
-                ),
-            );
+        yield put(readerLocalActionHighlights.handler.pop.build([
+            { uuid: newFocusUUId },
+        ]));
 
+        debug(`searchFocus (push highlights) -- newFocusUUId: [${newFocusUUId}]`);
+
+        yield put(
+            readerLocalActionHighlights.handler.push.build([
+                converterSearchResultToHighlightHandlerState(newItemClone, {
+                    red: 255,
+                    green: 0,
+                    blue: 0,
+                }),
+            ]),
+        );
+
+        setTimeout(() => {
             handleLinkLocator(createLocatorLink(newItem.href, newItem.rangeInfo));
-        }
+        }, 500);
     }
 }
 
@@ -244,13 +263,12 @@ function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
 }
 
 function* highlightClick(action: readerLocalActionHighlights.click.TAction) {
+    debug(`highlightClick ACTION (will focus) -- handlerState: [${JSON.stringify(action.payload)}]`);
 
     const { type, uuid } = action.payload;
 
-    if (type === "search") {
-        if (uuid) {
-            yield put(readerLocalActionSearch.focus.build(uuid));
-        }
+    if (uuid && type === "search") {
+        yield put(readerLocalActionSearch.focus.build(uuid));
     }
 }
 
@@ -267,8 +285,10 @@ function* searchFocusPreviousOrNext(offset: number) {
         } else {
             item = foundArray[0];
         }
+        debug(`searchFocusPreviousOrNext (will focus) -- item: [${JSON.stringify(item)}]`);
         yield put(readerLocalActionSearch.focus.build(item.uuid));
     } else {
+        debug(`searchFocusPreviousOrNext (will focus) -- foundArray[0]: [${JSON.stringify(foundArray[0])}]`);
         yield put(readerLocalActionSearch.focus.build(foundArray[0]?.uuid || ""));
     }
 }
@@ -283,12 +303,21 @@ function searchNext() {
 
 // TODO could be moved in highlight handler saga with an action
 function* clearSearch() {
-    const handlerState = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.handler);
-    const uuidArray = handlerState
-        .filter(([, v]) => v.type === "search")
-        .map(([id]) => ({ uuid: id }));
 
-    yield put(readerLocalActionHighlights.handler.pop.build(...uuidArray));
+    const handlerStateMap = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.handler);
+    if (!handlerStateMap?.length) {
+        debug(`clearSearch HANDLER STATE EMPTY -- handlerStateMap: [${JSON.stringify(handlerStateMap)}]`);
+        return;
+    }
+
+    const uuids = handlerStateMap
+        .filter(([_uuid, handlerState]) => handlerState.type === "search")
+        .map(([uuid, _handlerState]) => ({ uuid }));
+
+    debug(`clearSearch (highlight pop) -- uuids: [${JSON.stringify(uuids)}]`);
+
+    // yield* callTyped(() => highlightsRemoveAll(href, ["search"])); // "annotation"
+    yield put(readerLocalActionHighlights.handler.pop.build(uuids));
 }
 
 function* searchCancel() {

@@ -14,7 +14,7 @@ export const ID = "READER_HIGHLIGHT_MOUNTER_PUSH";
 export interface Payload extends Array<IHighlightMounterState> {
 }
 
-export function build(...param: IHighlightMounterState[]):
+export function build(param: IHighlightMounterState[]):
     Action<typeof ID, Payload> {
 
     return {

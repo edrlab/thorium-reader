@@ -13,9 +13,11 @@ export const ID = "READER_LOCATOR_HREF_CHANGED";
 export interface Payload {
     href: string;
     prevHref: string | undefined;
+    href2: string | undefined;
+    prevHref2: string | undefined;
 }
 
-export function build(prevHref: string | undefined, href: string):
+export function build(prevHref: string | undefined, href: string, prevHref2: string | undefined, href2: string | undefined):
     Action<typeof ID, Payload> {
 
     return {
@@ -23,6 +25,8 @@ export function build(prevHref: string | undefined, href: string):
         payload: {
             href,
             prevHref,
+            href2,
+            prevHref2,
         },
     };
 }
