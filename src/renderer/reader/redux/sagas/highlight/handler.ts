@@ -25,7 +25,7 @@ const debug = debug_("readium-desktop:renderer:reader:redux:sagas:highlight:hand
 function* push(action: readerLocalActionHighlights.handler.push.TAction) {
     if (action.payload) {
 
-        debug(`push (mountHighlight) -- action.payload: [${JSON.stringify(action.payload)}]`);
+        debug(`push (mountHighlight) -- action.payload: [${JSON.stringify(action.payload.map(({uuid}) => uuid), null, 4)}]`);
 
         const href = yield* selectTyped((store: IReaderRootState) => store.reader?.locator?.locator?.href);
         debug(`push (mountHighlight) -- href: [${href}]`);
@@ -44,7 +44,7 @@ function* push(action: readerLocalActionHighlights.handler.push.TAction) {
 function* pop(action: readerLocalActionHighlights.handler.pop.TAction) {
     if (action.payload) {
 
-        debug(`pop (unmountHightlight) -- action.payload: [${JSON.stringify(action.payload)}]`);
+        debug(`pop (unmountHightlight) -- action.payload: [${JSON.stringify(action.payload.map(({uuid}) => uuid), null, 4)}]`);
 
         const href = yield* selectTyped((store: IReaderRootState) => store.reader?.locator?.locator?.href);
         const href2 = yield* selectTyped((store: IReaderRootState) => store.reader?.locator?.secondWebViewHref);
@@ -65,13 +65,13 @@ function* pop(action: readerLocalActionHighlights.handler.pop.TAction) {
 
 function* hrefChanged(action: readerLocalActionLocatorHrefChanged.TAction) {
 
-    debug(`hrefChanged (unmountHightlight+mountHighlight) -- action.payload: [${JSON.stringify(action.payload)}]`);
+    debug(`hrefChanged (unmountHightlight+mountHighlight) -- action.payload: [${JSON.stringify(action.payload, null, 4)}]`);
 
     const { payload: { href, prevHref, href2, prevHref2 } } = action;
 
     const mounterStateMap = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.mounter);
     if (!mounterStateMap?.length) {
-        debug(`hrefChanged (unmountHightlight+mountHighlight) MOUNTER STATE EMPTY -- mounterStateMap: [${JSON.stringify(mounterStateMap)}]`);
+        debug(`hrefChanged (unmountHightlight+mountHighlight) MOUNTER STATE EMPTY -- mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
         return;
     }
 
@@ -93,13 +93,13 @@ function* hrefChanged(action: readerLocalActionLocatorHrefChanged.TAction) {
 
     const handlerStateMap = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.handler);
     if (!handlerStateMap?.length) {
-        debug(`hrefChanged (mountHightlight) HANDLER STATE EMPTY -- handlerStateMap: [${JSON.stringify(handlerStateMap)}]`);
+        debug(`hrefChanged (mountHightlight) HANDLER STATE EMPTY -- handlerStateMap: [${JSON.stringify(handlerStateMap, null, 4)}]`);
         return;
     }
 
     const handlerStateMap_ = handlerStateMap.map(([_uuid, handlerState]) => handlerState);
 
-    debug(`hrefChanged (mountHighlight) -- handlerStateMap: [${JSON.stringify(handlerStateMap_)}]`);
+    debug(`hrefChanged (mountHighlight) -- handlerStateMap: [${handlerStateMap_ ? handlerStateMap_.length : JSON.stringify(handlerStateMap_, null, 4)}]`);
 
     if (href) {
         yield call(mountHighlight, href, handlerStateMap_);
@@ -111,20 +111,20 @@ function* hrefChanged(action: readerLocalActionLocatorHrefChanged.TAction) {
 
 function* dispatchClick(data: THighlightClick) {
 
-    debug(`dispatchClick -- data: [${JSON.stringify(data)}]`);
+    debug(`dispatchClick -- data: [${JSON.stringify(data, null, 4)}]`);
 
     const [href, ref] = data;
 
     const mounterStateMap = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.mounter);
     if (!mounterStateMap?.length) {
-        debug(`dispatchClick MOUNTER STATE EMPTY -- mounterStateMap: [${JSON.stringify(mounterStateMap)}]`);
+        debug(`dispatchClick MOUNTER STATE EMPTY -- mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
         return;
     }
 
     const mounterStateItem = mounterStateMap.find(([_uuid, mounterState]) => mounterState.ref.id === ref.id && mounterState.href === href);
 
     if (!mounterStateItem) {
-        debug(`dispatchClick CANNOT FIND MOUNTER -- href: [${href}] ref.id: [${ref.id}] mounterStateMap: [${JSON.stringify(mounterStateMap)}]`);
+        debug(`dispatchClick CANNOT FIND MOUNTER -- href: [${href}] ref.id: [${ref.id}] mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
         return;
     }
 
@@ -132,20 +132,20 @@ function* dispatchClick(data: THighlightClick) {
 
     const handlerStateMap = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.handler);
     if (!handlerStateMap?.length) {
-        debug(`dispatchClick HANDLER STATE EMPTY -- handlerStateMap: [${JSON.stringify(handlerStateMap)}]`);
+        debug(`dispatchClick HANDLER STATE EMPTY -- handlerStateMap: [${JSON.stringify(handlerStateMap, null, 4)}]`);
         return;
     }
 
     const handlerStateItem = handlerStateMap.find(([uuid, _handlerState]) => uuid === mounterStateItemUuid);
 
     if (!handlerStateItem) {
-        debug(`dispatchClick CANNOT FIND HANDLER -- uuid: [${mounterStateItemUuid}] handlerStateMap: [${JSON.stringify(handlerStateMap)}]`);
+        debug(`dispatchClick CANNOT FIND HANDLER -- uuid: [${mounterStateItemUuid}] handlerStateMap: [${JSON.stringify(handlerStateMap, null, 4)}]`);
         return;
     }
 
     const [uuid, handlerState] = handlerStateItem;
 
-    debug(`dispatchClick CLICK ACTION ... -- uuid: [${uuid}] handlerState: [${JSON.stringify(handlerState)}]`);
+    debug(`dispatchClick CLICK ACTION ... -- uuid: [${uuid}] handlerState: [${JSON.stringify(handlerState, null, 4)}]`);
 
     yield put(readerLocalActionHighlights.click.build(handlerState));
 }

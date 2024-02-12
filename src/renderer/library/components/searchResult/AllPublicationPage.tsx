@@ -1513,7 +1513,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
             const lcp = publicationView.lcp ? "LCP" : "";
 
-            const format = publicationView.isAudio ? "Audio" : publicationView.isDivina ? "Divina" : publicationView.isPDF ? "PDF" : publicationView.isDaisy ? "DAISY" : publicationView.isFXL ? "EPUB (FXL)" : "EPUB";
+            const format = publicationView.isAudio ? "Audio" : publicationView.isDivina ? "Divina" : publicationView.isPDF ? "PDF" : publicationView.isDaisy ? "DAISY" : publicationView.isFixedLayoutPublication ? "EPUB (FXL)" : "EPUB";
 
             const duration = (publicationView.duration ? formatTime(publicationView.duration) : "") + (publicationView.nbOfTracks ? ` (${props.__("publication.audio.tracks")}: ${publicationView.nbOfTracks})` : "");
 

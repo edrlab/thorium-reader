@@ -558,9 +558,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         }
 
         // this.props.currentLocation.docInfo.isFixedLayout
-        const isFixedLayout = this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
-        const isFixedLayoutWithPageList = isFixedLayout && this.props.r2Publication.PageList;
-        const isFixedLayoutNoPageList = isFixedLayout && !isFixedLayoutWithPageList;
+        const isFixedLayoutPublication = this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
+        const isFixedLayoutWithPageList = isFixedLayoutPublication && this.props.r2Publication.PageList;
+        const isFixedLayoutNoPageList = isFixedLayoutPublication && !isFixedLayoutWithPageList;
 
         let currentPageInPageList: string | undefined;
         if (this.props.currentLocation?.epubPageID && this.props.r2Publication.PageList) {
@@ -761,11 +761,11 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         }
 
         // this.props.currentLocation.docInfo.isFixedLayout
-        const isFixedLayout = !this.props.r2Publication.PageList &&
+        const isFixedLayoutPublication = !this.props.r2Publication.PageList &&
             this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
 
         const pageNbr = this.goToRef.current.value.trim().replace(/\s\s+/g, " ");
-        if (isFixedLayout) {
+        if (isFixedLayoutPublication) {
             try {
                 const spineIndex = parseInt(pageNbr, 10) - 1;
                 const spineLink = this.props.r2Publication.Spine[spineIndex];

@@ -29,8 +29,9 @@ export async function search(searchInput: string, data: ISearchDocument): Promis
     // so we need it here to compute CSS Selectors
     let toParse = data.isFixedLayout ? data.xml : data.xml.replace(
         /<body([\s\S]*?)>/gm,
-        "<body$1><a href=\"DUMMY_URL\">DUMMY LNIK</a>",
+        "<body$1><a href=\"DUMMY_URL\">DUMMY LINK</a>",
     );
+    // console.log(`===data.isFixedLayout ${data.isFixedLayout}`, data.xml);
 
     const contentType = data.contentType ? (data.contentType as DOMParserSupportedType) : ContentType.Xhtml;
     try {

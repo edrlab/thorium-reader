@@ -100,7 +100,7 @@ function converterSearchResultToHighlightHandlerState(v: ISearchResult, color = 
 
 function* searchFound(action: readerLocalActionSearch.found.TAction) {
     const { foundArray } = action.payload;
-    debug(`searchFound (push highlights) -- foundArray: [${JSON.stringify(foundArray)}]`);
+    debug(`searchFound (push highlights) -- foundArray: [${foundArray ? foundArray.length : JSON.stringify(foundArray, null, 4)}]`);
 
     if (foundArray?.length) {
         const highlightHandlerState = foundArray.map(
@@ -210,6 +210,8 @@ function* requestPublicationData() {
             contentType: ln.TypeLink ? ln.TypeLink : ContentType.Xhtml,
             isFixedLayout: isFixedLayout(ln, r2Manifest),
         };
+        debug(`requestPublicationData ISearchDocument: [${JSON.stringify(ret, null, 4)}]`);
+
         try {
             // DEPRECATED API (watch for the inverse function parameter order!):
             // url.resolve(manifestUrlR2Protocol, ln.Href)
@@ -227,7 +229,7 @@ function* requestPublicationData() {
                 }
             }
         } catch (e) {
-            console.error("request", ln.Href, e);
+            console.error("requestPublicationData", ln.Href, e);
         }
 
         return ret;
@@ -263,7 +265,7 @@ function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
 }
 
 function* highlightClick(action: readerLocalActionHighlights.click.TAction) {
-    debug(`highlightClick ACTION (will focus) -- handlerState: [${JSON.stringify(action.payload)}]`);
+    debug(`highlightClick ACTION (will focus) -- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
 
     const { type, uuid } = action.payload;
 
@@ -285,10 +287,10 @@ function* searchFocusPreviousOrNext(offset: number) {
         } else {
             item = foundArray[0];
         }
-        debug(`searchFocusPreviousOrNext (will focus) -- item: [${JSON.stringify(item)}]`);
+        debug(`searchFocusPreviousOrNext (will focus) -- item: [${JSON.stringify(item, null, 4)}]`);
         yield put(readerLocalActionSearch.focus.build(item.uuid));
     } else {
-        debug(`searchFocusPreviousOrNext (will focus) -- foundArray[0]: [${JSON.stringify(foundArray[0])}]`);
+        debug(`searchFocusPreviousOrNext (will focus) -- foundArray[0]: [${JSON.stringify(foundArray[0], null, 4)}]`);
         yield put(readerLocalActionSearch.focus.build(foundArray[0]?.uuid || ""));
     }
 }
@@ -306,7 +308,7 @@ function* clearSearch() {
 
     const handlerStateMap = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.handler);
     if (!handlerStateMap?.length) {
-        debug(`clearSearch HANDLER STATE EMPTY -- handlerStateMap: [${JSON.stringify(handlerStateMap)}]`);
+        debug(`clearSearch HANDLER STATE EMPTY -- handlerStateMap: [${JSON.stringify(handlerStateMap, null, 4)}]`);
         return;
     }
 
@@ -314,7 +316,7 @@ function* clearSearch() {
         .filter(([_uuid, handlerState]) => handlerState.type === "search")
         .map(([uuid, _handlerState]) => ({ uuid }));
 
-    debug(`clearSearch (highlight pop) -- uuids: [${JSON.stringify(uuids)}]`);
+    debug(`clearSearch (highlight pop) -- uuids: [${JSON.stringify(uuids, null, 4)}]`);
 
     // yield* callTyped(() => highlightsRemoveAll(href, ["search"])); // "annotation"
     yield put(readerLocalActionHighlights.handler.pop.build(uuids));

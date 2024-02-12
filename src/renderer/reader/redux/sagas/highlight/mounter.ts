@@ -30,7 +30,7 @@ export function* mountHighlight(href: string, handlerState: IHighlightHandlerSta
 
     const mounterStateMap = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.mounter);
     // if (!mounterStateMap?.length) {
-    //     debug(`mountHighlight MOUNTER STATE EMPTY -- mounterStateMap: [${JSON.stringify(mounterStateMap)}]`);
+    //     debug(`mountHighlight MOUNTER STATE EMPTY -- mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
     //     return;
     // }
 
@@ -42,17 +42,17 @@ export function* mountHighlight(href: string, handlerState: IHighlightHandlerSta
     );
 
     if (!handlerStateFiltered.length) {
-        debug(`mountHighlight NO MOUNTS TO DO -- href: [${href}] mounterStateMap: [${JSON.stringify(mounterStateMap)}] handlerState: [${JSON.stringify(handlerState)}]`);
+        debug(`mountHighlight NO MOUNTS TO DO -- href: [${href}] mounterStateMap: [${JSON.stringify(mounterStateMap)}] handlerState: [${JSON.stringify(handlerState, null, 4)}]`);
         return;
     }
 
     const highlightDefinitions = handlerStateFiltered.map((v) => v.def);
 
-    debug(`mountHighlight CREATE ... -- href: [${href}] highlightDefinitions: [${JSON.stringify(highlightDefinitions)}]`);
+    debug(`mountHighlight CREATE ... -- href: [${href}] highlightDefinitions: [${false && highlightDefinitions ? highlightDefinitions.length : JSON.stringify(highlightDefinitions, null, 4)}]`);
 
     const createdHighlights = yield* callTyped(highlightsCreate, href, highlightDefinitions);
 
-    debug(`mountHighlight CREATED -- href: [${href}] createdHighlights: [${JSON.stringify(createdHighlights)}]`);
+    debug(`mountHighlight CREATED -- href: [${href}] createdHighlights: [${false && createdHighlights ? createdHighlights.length : JSON.stringify(createdHighlights, null, 4)}]`);
 
     const arrayProps = handlerStateFiltered.map((v) => ({uuid: v.uuid, href: v.href, type: v.type}));
 
@@ -67,7 +67,7 @@ export function* mountHighlight(href: string, handlerState: IHighlightHandlerSta
         createdHighlights,
     ).filter((v) => v.ref);
 
-    debug(`mountHighlight MOUNTED -- href: [${href}] mounted: [${JSON.stringify(mounted)}]`);
+    debug(`mountHighlight MOUNTED -- href: [${href}] mounted: [${false && mounted ? mounted.length : JSON.stringify(mounted, null, 4)}]`);
 
     yield put(readerLocalActionHighlights.mounter.mount.build(mounted));
 }
@@ -78,21 +78,21 @@ export function* unmountHightlight(href: string, mountUUIDs: string[]): SagaIter
 
     const mounterStateMap = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.mounter);
     if (!mounterStateMap?.length) {
-        debug(`unmountHightlight MOUNTER STATE EMPTY -- mounterStateMap: [${JSON.stringify(mounterStateMap)}]`);
+        debug(`unmountHightlight MOUNTER STATE EMPTY -- mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
         return;
     }
 
     const mounterStateMapItems = mounterStateMap.filter(([uuid, mounterState]) => (mounterState.href === href && mountUUIDs.includes(uuid)));
 
     if (!mounterStateMapItems.length) {
-        debug(`unmountHightlight CANNOT FIND MOUNTER -- href: [${href}] mountUUIDs: [${JSON.stringify(mountUUIDs)}] mounterStateMap: [${JSON.stringify(mounterStateMap)}]`);
+        debug(`unmountHightlight CANNOT FIND MOUNTER -- href: [${href}] mountUUIDs: [${JSON.stringify(mountUUIDs)}] mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
         return;
     }
 
     const uuids = mounterStateMapItems.map(([uuid, _mounterState]) => ({ uuid }));
     const highlightIDs = mounterStateMapItems.map(([_uuid, mounterState]) => (mounterState.ref.id));
 
-    debug(`unmountHightlight -- href: [${href}] uuids: [${JSON.stringify(uuids)}] highlightIDs: [${JSON.stringify(highlightIDs)}]`);
+    debug(`unmountHightlight -- href: [${href}] uuids: [${JSON.stringify(uuids)}] highlightIDs: [${JSON.stringify(highlightIDs, null, 4)}]`);
 
     yield* callTyped(() => highlightsRemove(href, highlightIDs));
 
