@@ -271,7 +271,7 @@
     "nanoid": "^5.0.5",
     "node-fetch": "^3.3.2",
     "r2-lcp-js": "^1.0.39",
-    "r2-navigator-js": "^1.14.10",
+    "r2-navigator-js": "^1.14.11",
     "r2-opds-js": "^1.0.43",
     "r2-shared-js": "^1.0.71",
     "r2-streamer-js": "^1.0.47",
@@ -398,7 +398,7 @@
     "webpack": "^5.90.1",
     "webpack-bundle-analyzer": "^4.10.1",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1",
+    "webpack-dev-server": "^5.0.0",
     "webpack-node-externals": "^3.0.0",
     "worker-loader": "^3.0.8"
   },
