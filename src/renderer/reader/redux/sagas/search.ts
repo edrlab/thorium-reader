@@ -31,7 +31,7 @@ import { IHighlightHandlerState } from "readium-desktop/common/redux/states/rend
 
 import debounce from "debounce";
 
-const handleLinkLocatorDebounced = debounce(handleLinkLocator, 400);
+const handleLinkLocatorDebounced = debounce(handleLinkLocator, 200);
 
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:search");
 
