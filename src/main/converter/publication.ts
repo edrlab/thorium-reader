@@ -243,7 +243,7 @@ export class PublicationViewConverter {
         const isPDF = isPdfFn(r2Publication);
 
         // locatorExt.docInfo.isFixedLayout
-        const isFXL = r2Publication.Metadata?.Rendition?.Layout === "fixed";
+        const isFixedLayoutPublication = r2Publication.Metadata?.Rendition?.Layout === "fixed";
 
         // "DAISY_audioNCX" "DAISY_textNCX" "DAISY_audioFullText"
         const isDaisy = !!r2Publication.Metadata?.AdditionalJSON?.ReadiumWebPublicationConvertedFrom;
@@ -267,7 +267,7 @@ export class PublicationViewConverter {
             isDivina,
             isPDF,
             isDaisy,
-            isFXL,
+            isFixedLayoutPublication,
             lastReadTimeStamp,
 
             // legacy vs. modern a11y metadata structure

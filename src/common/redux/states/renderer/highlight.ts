@@ -18,5 +18,7 @@ export interface IHighlightHandlerState extends IHighlightBaseState {
 }
 
 export interface IHighlightMounterState extends IHighlightBaseState {
-    ref: IHighlight;
+  href: string;
+  type: IHighlightHandlerState["type"];
+  ref: IHighlight;
 }

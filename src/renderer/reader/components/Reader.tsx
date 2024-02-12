@@ -552,10 +552,12 @@ class Reader extends React.Component<IProps, IState> {
             const link = this.props.r2Publication.Spine.find((item) => {
                 return item.Href === this.state.currentLocation.locator.href;
             });
-            if (link?.Properties?.Layout === "fixed") {
-                isFixedLayout = true;
-            } else if (typeof link?.Properties?.Layout !== "undefined") {
-                isFixedLayout = false;
+            if (link) {
+                if (link.Properties?.Layout === "fixed") {
+                    isFixedLayout = true;
+                } else if (typeof link.Properties?.Layout !== "undefined") {
+                    isFixedLayout = false;
+                }
             }
         }
         if (typeof isFixedLayout === "undefined") {
@@ -1155,7 +1157,7 @@ class Reader extends React.Component<IProps, IState> {
         const isDivina = this.props.r2Publication && isDivinaFn(this.props.r2Publication);
         const isPdf = this.props.r2Publication && isPdfFn(this.props.r2Publication);
 
-        const isFixedLayout = this.props.r2Publication &&
+        const isFixedLayoutPublication = this.props.r2Publication &&
             this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
 
         let txtProgression: string | undefined;
@@ -1239,7 +1241,7 @@ class Reader extends React.Component<IProps, IState> {
                 return l.Href === locatorExt.locator.href;
             });
             if (spineIndex >= 0) {
-                if (isFixedLayout) {
+                if (isFixedLayoutPublication) {
                     const pageNum = spineIndex + 1;
                     const totalPages = this.props.r2Publication.Spine.length;
 

@@ -112,7 +112,7 @@ const Progression = (props: {
         const isPdf = r2Publication && isPdfFn(r2Publication);
 
         // locatorExt.docInfo.isFixedLayout
-        const isFixedLayout = r2Publication && // && !r2Publication.PageList
+        const isFixedLayoutPublication = r2Publication && // && !r2Publication.PageList
             r2Publication.Metadata?.Rendition?.Layout === "fixed";
 
         let txtProgression: string | undefined;
@@ -200,7 +200,7 @@ const Progression = (props: {
                 return l.Href === locatorExt.locator.href;
             });
             if (spineIndex >= 0) {
-                if (isFixedLayout) {
+                if (isFixedLayoutPublication) {
                     const pageNum = spineIndex + 1;
                     const totalPages = r2Publication.Spine.length;
 

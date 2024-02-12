@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+
 // import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { UnknownAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
@@ -13,22 +14,6 @@ import { UnknownAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 import { readerLocalActionLocatorHrefChanged } from "../actions";
 
 const debug = debug_("readium-desktop:renderer:reader:redux:middleware:locatorHrefWatcher");
-
-const dispatchHref = (
-    store: MiddlewareAPI<Dispatch<UnknownAction>, IReaderRootState>,
-    prevHref: string | undefined,
-    nextHref: string | undefined,
-    ) => {
-
-    const state = store.getState();
-    const href = state.reader?.locator?.locator?.href;
-    if (href) {
-        if (href !== nextHref) {
-            debug("readerLocalActionLocatorHrefChanged state DIFF? ", href, nextHref, prevHref);
-        }
-        store.dispatch(readerLocalActionLocatorHrefChanged.build(prevHref, href));
-    }
-};
 
 export const locatorHrefWatcherMiddleware: Middleware
     = (store: MiddlewareAPI<Dispatch<UnknownAction>, IReaderRootState>) =>
@@ -41,8 +26,16 @@ export const locatorHrefWatcherMiddleware: Middleware
 
                 const nextState = store.getState();
 
-                if (prevState?.reader?.locator?.locator?.href !== nextState?.reader?.locator?.locator?.href) {
-                    dispatchHref(store, prevState?.reader?.locator?.locator?.href, nextState?.reader?.locator?.locator?.href);
+                const prevHref = prevState?.reader?.locator?.locator?.href;
+                const prevHref2 = prevState?.reader?.locator?.secondWebViewHref;
+
+                const nextHref = nextState?.reader?.locator?.locator?.href;
+                const nextHref2 = nextState?.reader?.locator?.secondWebViewHref;
+
+                debug(`locatorHrefWatcherMiddleware -- prevHref: [${prevHref}] prevHref2: [${prevHref2}] nextHref: [${nextHref}] nextHref2: [${nextHref2}]`);
+
+                if (nextHref && prevHref !== nextHref) {
+                    store.dispatch(readerLocalActionLocatorHrefChanged.build(prevHref, nextHref, prevHref2, nextHref2));
                 }
 
                 return returnValue;

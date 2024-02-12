@@ -123,7 +123,7 @@ if (true) { // !_USE_HTTP_STREAMER) {
                 readiumcssJson.urlRoot = THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://0.0.0.0";
             }
             if (IS_DEV) {
-                console.log("_____ readiumCssJson.urlRoot (setupReadiumCSS() transformer): ", readiumcssJson.urlRoot);
+                debug("_____ readiumCssJson.urlRoot (setupReadiumCSS() transformer): ", readiumcssJson.urlRoot);
             }
 
             // import * as mime from "mime-types";
