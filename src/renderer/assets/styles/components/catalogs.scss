@@ -29,6 +29,7 @@
         box-shadow: 0 2px 15px rgb(0 0 0 / 0%);
         transition: all 0.3s;
         padding: 0;
+        background-color: var(--color-secondary);
 
         &::after {
             content: "";
@@ -61,11 +62,11 @@
                 height: 30px;
                 margin-bottom: 30px;
                 color: var(--color-blue);
-                background-color: white;
+                background-color: var(--color-secondary);
                 padding: 11px;
                 border-radius: 50%;
                 position: absolute;
-                top: -7px;
+                top: 0;
                 left: -10px;
             }
 
@@ -247,4 +248,8 @@
     margin-top: 0;
     margin-bottom: 0.4em;
     position: absolute;
+
+    .loader {
+        margin: 20%;
+    }
 }

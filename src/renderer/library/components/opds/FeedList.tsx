@@ -13,7 +13,6 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
-import * as CatalogHeaderContent from "readium-desktop/renderer/assets/icons/catalogContent-header-icon.svg";
 import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import {
@@ -89,10 +88,10 @@ class FeedList extends React.Component<IProps, IState> {
                                             item.url,
                                         ),
                                     }}
-                                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
                                     className={stylesCatalogs.catalog_content}
                                 >
-                                    <SVG ariaHidden svg={CatalogHeaderContent} />
+                                    <div style={{ width: "100%", height: "50px", backgroundColor: "var(--color-light-grey)", borderBottom: "1px solid var(--color-medium-grey)", position: "absolute", top: "2px" }}></div>
                                     <div className={stylesCatalogs.catalog_title}>
                                         <SVG ariaHidden svg={GlobeIcon} />
                                         <p title={`${item.title} --- ${item.url}`}>{item.title}</p>

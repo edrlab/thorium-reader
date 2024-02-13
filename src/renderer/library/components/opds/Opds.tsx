@@ -36,8 +36,8 @@ class Opds extends React.Component<IProps, undefined> {
         return (
             <LibraryLayout
                 title={__("header.catalogs")}
+                secondaryHeader={<OpdsAddForm />}
             >
-                <OpdsAddForm />
                 <FeedList />
             </LibraryLayout>
         );
