@@ -109,6 +109,7 @@
         "sort": "trier par",
         "tagCount": "Nombre de tags",
         "tags": "Tags",
+        "tag": "Tag",
         "update": "Éditer"
     },
     "dialog": {
@@ -134,15 +135,16 @@
         "books": "Mes Livres",
         "catalogs": "Catalogues",
         "downloads": "Téléchargements",
-        "gridTitle": "Présenter les couvertures de livres en grille",
+        "gridTitle": "Grille",
         "home": "Menu Principal",
-        "homeTitle": "Page d'accueil du flux",
+        "homeTitle": "Accueil",
         "importTitle": "Importer un livre",
-        "listTitle": "Présenter les livres sous forme de liste",
+        "listTitle": "Liste",
         "refreshTitle": "Recharger le flux",
         "searchPlaceholder": "Rechercher",
         "searchTitle": "Lancer la recherche",
-        "settings": "Préférences"
+        "settings": "Préférences",
+        "viewMode": "Mode d'affichage"
     },
     "library": {
         "lcp": {
@@ -289,6 +291,7 @@
             "edit": "Éditer",
             "landmarks": "Repères",
             "search": "Rechercher",
+            "searchResult": "Recherche - « {{- searchText}} »",
             "toc": "Table des matières"
         },
         "media-overlays": {
@@ -345,6 +348,7 @@
                 "two": "2 cols",
                 "twoTitle": "deux colonnes"
             },
+            "options": "Options",
             "display": "Affichage",
             "disposition": {
                 "title": "Disposition"
@@ -390,7 +394,9 @@
                 },
                 "title": "Thème"
             },
-            "wordSpacing": "Espacement des mots"
+            "wordSpacing": "Espacement des mots",
+            "disabled": "Désactivé",
+            "customizeReader": "Personnaliser la mise en forme"
         },
         "svg": {
             "left": "Gauche",
@@ -410,9 +416,29 @@
             "speed": "Vitesse",
             "stop": "Arrêter",
             "voice": "Voix"
+        },
+        "annotations": {
+            "highlight": "Surligner",
+            "addNote": "Ajouter une note"
+        },
+        "fxl": {
+            "fit": "Remplir"
         }
     },
     "settings": {
+        "tabs": {
+            "general": "Géneral",
+            "appearance": "Apparence",
+            "reading": "Lecture",
+            "keyboardShortcuts":"Raccourcis clavier"
+        },
+        "theme": {
+            "title": "Thème de l'application",
+            "description": "Le thème de l'application correspond au thème de votre système.",
+            "auto": "Automatique",
+            "light": "Clair",
+            "dark": "Sombre"
+        },
         "auth": {
             "wipeData": "Effacer les données d'authentification"
         },
@@ -426,7 +452,8 @@
             "loadUserJson": "Charger  le fichier",
             "resetDefaults": "Réinitialiser (défaut)",
             "save": "Sauvergarder",
-            "show": "Afficher"
+            "show": "Afficher",
+            "disclaimer": "Les raccourcis clavier sont actuellement basés sur une disposition QWERTY."
         },
         "language": {
             "languageChoice": "Choix de la langue"

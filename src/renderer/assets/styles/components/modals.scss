@@ -84,23 +84,23 @@
   &_reader {
     .display_options_item {
       background-color: transparent;
-      color: var(--reader-fontColor);
+      color: var(--color-primary);
     }
 
     .settings_container {
-      background-color: var(--reader-secondaryColor);
+      background-color: var(--color-secondary);
     }
 
-    color: var(--reader-fontColor);
+    color: var(--color-primary);
 
     .react_aria_ComboBox {
       .react_aria_Button {
-        background-color: var(--reader-secondaryColor);
+        background-color: var(--color-secondary);
       }
 
       .react_aria_Input {
         background-color: var(--reader-secondaryColor);    
-        color: var(--reader-fontColor);
+        color: var(--color-primary);
       }
     }
   }

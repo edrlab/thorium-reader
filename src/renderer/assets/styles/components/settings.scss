@@ -28,7 +28,8 @@ $setting_color: var(--color-blue);
         //     margin: 0;
         // }
         .btn_primary {
-            width: 300px;
+            width: fit-content;
+            padding: 0 5px;
             height: 35px;
             border: 1px solid $setting_color;
             border-radius: 5px;
