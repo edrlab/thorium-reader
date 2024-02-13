@@ -86,6 +86,7 @@ class TagManager extends React.Component<IProps> {
                                         (_tag) => () => this.props.link(
                                             _tag.link[0], this.props.location, _tag.name)
                                     }
+                                    location={this.props.location}
                                 >
                                 </TagButton>
                                 // <GridTagButton name={tag as string} key={index} />

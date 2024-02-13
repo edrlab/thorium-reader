@@ -60,6 +60,7 @@ export declare const publication_viewport_container: string;
 export declare const R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE: string;
 export declare const R2_CSS_CLASS__FORCE_NO_TARGET_OUTLINE: string;
 export declare const R2_CSS_CLASS__KEYBOARD_INTERACT: string;
+export declare const react_aria_ComboBox: string;
 export declare const read_settings: string;
 export declare const read_settings_list: string;
 export declare const reader: string;
