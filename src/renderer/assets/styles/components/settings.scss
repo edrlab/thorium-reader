@@ -175,7 +175,7 @@ $setting_color: var(--color-blue);
     flex: 2;
 
     // box-shadow: -1px 0 0.5px rgba(0, 0, 0, 0.1);
-    overflow: scroll;
+    overflow: hidden scroll;
     margin-top: 30px;
 
     &::-webkit-scrollbar-thumb {

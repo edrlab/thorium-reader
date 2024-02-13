@@ -169,6 +169,10 @@
     padding: 5px 40px 5px 5px;
     margin: 5px 0;
 
+    // @media (prefers-color-scheme: dark) {
+    //   color: #2D2D2D;
+    // }
+
     &.active:not(.inert) {
       &:hover {
         /* color: #808080 !important; */
@@ -271,6 +275,10 @@
     border-left: 2px solid var(--color-blue);
     height: fit-content;
     padding: 0 10px;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: #2D2D2D;
+    }
 
     .bookmark_actions {
       display: flex;

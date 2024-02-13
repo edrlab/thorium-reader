@@ -22,10 +22,18 @@ input[type="search"] {
   border-left: none;
   border-bottom: 1px solid var(--color-medium-grey);
   border-radius: 0;
-
+  
   /* outline: inherit; */
   color: var(--color-primary);
   font-size: 0.9rem;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: #2D2D2D;
+
+    &::placeholder {
+      color: white;
+    }
+  }
 
   &::placeholder {
     color: var(--color-medium-grey);
@@ -59,9 +67,14 @@ input[type="search"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE) {
 }
 
 form[role="search"] {
-background-color: white !important;
+background-color: var(--color-light-grey);
     width: 370px !important;
     height: 30px !important;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: #2D2D2D;
+      color: white;
+    }
 
     &:has(input:focus) {    
       outline: blue solid 2px !important;
@@ -84,6 +97,10 @@ select {
   position: relative;
   display: flex;
   align-items: center;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: #2D2D2D;
+  }
 
   &:has(input:focus) {    
     outline: blue solid 2px !important;

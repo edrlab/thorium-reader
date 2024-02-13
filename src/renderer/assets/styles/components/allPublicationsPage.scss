@@ -14,7 +14,7 @@
             width: inherit;
 
             .form_group {
-                background-color: white!important;
+                // background-color: white!important;
                 width: 370px!important;
                 height: 30px!important;
 
@@ -300,7 +300,7 @@
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         grid-gap: 10px;
         margin-bottom: 20px;
-        background-color: white;
+        background-color: var(--color-secondary);
 
         tr td {
             border-bottom: none;
