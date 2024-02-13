@@ -130,12 +130,12 @@ class HeaderSearch extends React.Component<IProps> {
                             <Popover.Close asChild>
                                 <button
                                     style={{
-                                        width: "30px",
+                                        width: "20px",
                                         marginLeft: "auto",
                                         marginRight: "0.4em",
                                         backgroundColor: "transparent",
-                                        color: "black",
-                                        fill: "black",
+                                        color: "var(--color-blue)",
+                                        fill: "var(--color-blue)",
                                     }}
                                     type="button"
                                     aria-label={__("accessibility.closeDialog")}

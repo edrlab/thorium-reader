@@ -65,7 +65,7 @@
             "continueReading": "Reprendre la lecture",
             "continueReadingAudioBooks": "Reprendre l'écoute",
             "continueReadingDivina": "",
-            "continueReadingPdf": "",
+            "continueReadingPdf": "Reprendre un PDF",
             "lastAdditions": "Récemment ajouté"
         },
         "export": "Sauvegarder sous",
@@ -395,7 +395,7 @@
                 "title": "Thème"
             },
             "wordSpacing": "Espacement des mots",
-            "disabled": "Désactivé",
+            "disabled": "désactivé",
             "customizeReader": "Personnaliser la mise en forme"
         },
         "svg": {

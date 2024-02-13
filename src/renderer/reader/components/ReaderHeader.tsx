@@ -28,8 +28,8 @@ import * as AudioIcon from "readium-desktop/renderer/assets/icons/baseline-volum
 import * as HeadphoneIcon from "readium-desktop/renderer/assets/icons/headphone-icon.svg";
 import * as SettingsIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
 import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
-import * as MarkIcon from "readium-desktop/renderer/assets/icons/outline-bookmark_border-24px.svg";
-import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
+import * as MarkIcon from "readium-desktop/renderer/assets/icons/bookmarkSingle-icon.svg";
+import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/comment-icon.svg";
 import * as RemoveBookMarkIcon from "readium-desktop/renderer/assets/icons/BookmarkRemove-icon.svg";
 import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
 import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
@@ -850,7 +850,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                             <Popover.Root>
                                 <Popover.Trigger asChild>
-                                    <button className={stylesReader.menu_button}>
+                                    <button className={classNames(stylesReader.menu_button, stylesReaderHeader.annotationsIcon)}>
                                         <SVG ariaHidden svg={AnnotationsIcon} />
                                     </button>
                                 </Popover.Trigger>
