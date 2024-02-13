@@ -97,10 +97,6 @@ class SearchFormPicker extends React.Component<IProps, IState> {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.setState({ inputValue: e.target.value })}
                     className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                 />
-                {
-                    this.props.load ?
-                    <LoaderSearch />
-                    :
                     <button
                     disabled={!this.state.inputValue}
                     style={{
@@ -111,11 +107,13 @@ class SearchFormPicker extends React.Component<IProps, IState> {
                         left: "0",
                     }}
                     title={__("reader.picker.search.submit")}
-                >
-
-                    <SVG ariaHidden={true} svg={magnifyingGlass} />
+                >                {
+                        this.props.load ?
+                            <LoaderSearch />
+                            :
+                            <SVG ariaHidden={true} svg={magnifyingGlass} />
+                    }
                 </button>
-                }
             </form>
         );
     }
