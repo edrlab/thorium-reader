@@ -6,21 +6,27 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-
+import {
+    highlightsDrawMargin, highlightsRemove,
+} from "@r2-navigator-js/electron/renderer";
 import {
     takeSpawnEvery, takeSpawnEveryChannel,
 } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put } from "redux-saga/effects";
-import { select as selectTyped } from "typed-redux-saga/macro";
-
+import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { readerLocalActionHighlights, readerLocalActionLocatorHrefChanged } from "../../actions";
 import {
     getHightlightClickChannel, mountHighlight, THighlightClick, unmountHightlight,
 } from "./mounter";
+import { handleLinkLocator } from "@r2-navigator-js/electron/renderer";
+import debounce from "debounce";
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
 
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:highlight:handler");
+
+const handleLinkLocatorDebounced = debounce(handleLinkLocator, 200);
 
 function* push(action: readerLocalActionHighlights.handler.push.TAction) {
     if (action.payload) {
@@ -67,6 +73,8 @@ function* hrefChanged(action: readerLocalActionLocatorHrefChanged.TAction) {
 
     debug(`hrefChanged (unmountHightlight+mountHighlight) -- action.payload: [${JSON.stringify(action.payload, null, 4)}]`);
 
+    yield* callTyped(() => highlightsDrawMargin(_drawMargin)); // should probably be invoked in mounter, not handler
+
     const { payload: { href, prevHref, href2, prevHref2 } } = action;
 
     const mounterStateMap = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.mounter);
@@ -109,11 +117,53 @@ function* hrefChanged(action: readerLocalActionLocatorHrefChanged.TAction) {
     }
 }
 
+// TODO HIGHLIGHTS-MARGIN: really naive implementation, doesn't survive in application state (good enough for early testing)
+let _drawMargin: boolean | string[] = false;
+const GROUPS = ["search", "annotations"];
+
 function* dispatchClick(data: THighlightClick) {
 
     debug(`dispatchClick -- data: [${JSON.stringify(data, null, 4)}]`);
 
-    const [href, ref] = data;
+    const [href, ref, event] = data;
+
+    // TODO HIGHLIGHTS-MARGIN: the ALT+CLICK UX is only just for experimenting (hidden undocumented feature)
+    if (event.alt) {
+
+        if (_drawMargin === false) {
+            _drawMargin = [ref.group];
+        } else if (_drawMargin === true) {
+            _drawMargin = GROUPS.filter((g) => g !== ref.group);
+        } else if (Array.isArray(_drawMargin)) {
+            if (_drawMargin.includes(ref.group)) {
+                _drawMargin = _drawMargin.filter((g) => g !== ref.group);
+            } else {
+                _drawMargin.push(ref.group);
+            }
+        } else {
+            _drawMargin = false;
+        }
+        yield* callTyped(() => highlightsDrawMargin(_drawMargin)); // should probably be invoked in mounter, not handler
+        return;
+    }
+
+    // TODO HIGHLIGHTS-ANNOTATIONS: this is just a hack for testing!
+    if (IS_DEV) {
+          if (ref.group === "annotations") {
+              if (event.meta) {
+                  yield* callTyped(() => highlightsRemove(href, [ref.id]));
+                  return;
+              }
+              if (href && ref?.selectionInfo?.rangeInfo) {
+                  handleLinkLocatorDebounced({
+                      href,
+                      locations: {
+                          cssSelector: ref.selectionInfo.rangeInfo.startContainerElementCssSelector,
+                      },
+                  });
+              }
+          }
+      }
 
     const mounterStateMap = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.mounter);
     if (!mounterStateMap?.length) {

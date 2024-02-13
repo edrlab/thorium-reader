@@ -35,6 +35,17 @@ const handleLinkLocatorDebounced = debounce(handleLinkLocator, 200);
 
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:search");
 
+const COLOR_SEARCH = {
+    red: 190,
+    green: 233,
+    blue: 34,
+};
+const COLOR_SEARCH_FOCUS = {
+    red: 241,
+    green: 79,
+    blue: 237,
+};
+
 function createLocatorLink(href: string, rangeInfo: IRangeInfo): R2Locator {
 
     return {
@@ -70,11 +81,7 @@ function* searchRequest(action: readerLocalActionSearch.request.TAction) {
     yield put(readerLocalActionSearch.found.build(flatten(res)));
 }
 
-function converterSearchResultToHighlightHandlerState(v: ISearchResult, color = {
-    red: 0,
-    green: 255,
-    blue: 0,
-}): IHighlightHandlerState {
+function converterSearchResultToHighlightHandlerState(v: ISearchResult, color = COLOR_SEARCH): IHighlightHandlerState {
     return {
         uuid: v.uuid,
         href: v.href,
@@ -144,11 +151,7 @@ function* searchFocus(action: readerLocalActionSearch.focus.TAction) {
         yield put(
             readerLocalActionHighlights.handler.push.build([
                 converterSearchResultToHighlightHandlerState(oldItemClone),
-                converterSearchResultToHighlightHandlerState(newItemClone, {
-                    red: 255,
-                    green: 0,
-                    blue: 0,
-                }),
+                converterSearchResultToHighlightHandlerState(newItemClone, COLOR_SEARCH_FOCUS),
             ]),
         );
 
@@ -167,11 +170,7 @@ function* searchFocus(action: readerLocalActionSearch.focus.TAction) {
 
         yield put(
             readerLocalActionHighlights.handler.push.build([
-                converterSearchResultToHighlightHandlerState(newItemClone, {
-                    red: 255,
-                    green: 0,
-                    blue: 0,
-                }),
+                converterSearchResultToHighlightHandlerState(newItemClone, COLOR_SEARCH_FOCUS),
             ]),
         );
 
