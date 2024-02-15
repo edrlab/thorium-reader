@@ -1066,7 +1066,7 @@ class Reader extends React.Component<IProps, IState> {
                 green: 181,
                 blue: 172,
             }];
-            const color = true ? colors[Math.floor(Math.random() * colors.length)] : {
+            const color = false ? colors[Math.floor(Math.random() * colors.length)] : {
                 red: Math.floor(Math.random() * 256),
                 green: Math.floor(Math.random() * 256),
                 blue: Math.floor(Math.random() * 256),
