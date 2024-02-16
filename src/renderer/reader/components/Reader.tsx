@@ -74,7 +74,7 @@ import {
     ttsStop, ttsVoice,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
-import { Locator as R2Locator } from "@r2-shared-js/models/locator";
+import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
 import { TToc } from "../pdf/common/pdfReader.type";
 import { pdfMount } from "../pdf/driver";
@@ -2390,6 +2390,9 @@ class Reader extends React.Component<IProps, IState> {
                 // this.setState({bookmarkMessage: msg});
                 this.props.toasty(msg);
 
+                if (locator.locations && !locator.locations.rangeInfo && this.state.currentLocation.selectionInfo?.rangeInfo) {
+                    locator.locations.rangeInfo = this.state.currentLocation.selectionInfo?.rangeInfo;
+                }
                 this.props.addBookmark({
                     locator,
                     name,

@@ -22,7 +22,7 @@ import {
 
 import { IRangeInfo } from "@r2-navigator-js/electron/common/selection";
 import { handleLinkLocator } from "@r2-navigator-js/electron/renderer";
-import { Locator as R2Locator } from "@r2-shared-js/models/locator";
+import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 
@@ -52,6 +52,7 @@ function createLocatorLink(href: string, rangeInfo: IRangeInfo): R2Locator {
         href,
         locations: {
             cssSelector: rangeInfo.startContainerElementCssSelector,
+            rangeInfo,
         },
     };
 }

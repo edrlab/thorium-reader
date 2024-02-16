@@ -9,7 +9,8 @@ import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
-import { Locator } from "readium-desktop/common/models/locator";
+import { Locator } from "@r2-navigator-js/electron/common/locator";
+
 import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";

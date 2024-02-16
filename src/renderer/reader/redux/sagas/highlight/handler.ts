@@ -159,6 +159,7 @@ function* dispatchClick(data: THighlightClick) {
                       href,
                       locations: {
                           cssSelector: ref.selectionInfo.rangeInfo.startContainerElementCssSelector,
+                          rangeInfo: ref.selectionInfo.rangeInfo,
                       },
                   });
               }

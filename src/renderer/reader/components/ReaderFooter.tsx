@@ -28,7 +28,7 @@ import {
 } from "readium-desktop/typings/react";
 
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
-import { Locator as R2Locator } from "@r2-shared-js/models/locator";
+import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 

@@ -11,7 +11,7 @@ import {
     TMouseEventOnSpan,
 } from "readium-desktop/typings/react";
 
-import { Locator as R2Locator } from "@r2-shared-js/models/locator";
+import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { TToc } from "../pdf/common/pdfReader.type";
 import { TdivinaReadingMode } from "readium-desktop/common/redux/states/renderer/divina";
