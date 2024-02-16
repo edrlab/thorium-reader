@@ -9,7 +9,7 @@ export const diSymbolTable = {
     "publication-repository": Symbol("publication-repository"),
     "opds-feed-repository": Symbol("opds-feed-repository"),
     "publication-view-converter": Symbol("publication-view-converter"),
-    "locator-view-converter": Symbol("locator-view-converter"),
+//    "locator-view-converter": Symbol("locator-view-converter"),
     "opds-feed-view-converter": Symbol("opds-feed-view-converter"),
     "publication-storage": Symbol("publication-storage"),
     // "streamer": Symbol("streamer"),

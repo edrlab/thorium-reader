@@ -14,7 +14,7 @@ import { Container } from "inversify";
 import * as path from "path";
 import { Translator } from "readium-desktop/common/services/translator";
 import { ok } from "readium-desktop/common/utils/assert";
-import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
+// import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
@@ -193,8 +193,8 @@ container.bind<OpdsFeedRepository>(diSymbolTable["opds-feed-repository"]).toCons
 // Create converters
 container.bind<PublicationViewConverter>(diSymbolTable["publication-view-converter"])
     .to(PublicationViewConverter).inSingletonScope();
-container.bind<LocatorViewConverter>(diSymbolTable["locator-view-converter"])
-    .to(LocatorViewConverter).inSingletonScope();
+// container.bind<LocatorViewConverter>(diSymbolTable["locator-view-converter"])
+//    .to(LocatorViewConverter).inSingletonScope();
 container.bind<OpdsFeedViewConverter>(diSymbolTable["opds-feed-view-converter"])
     .to(OpdsFeedViewConverter).inSingletonScope();
 
@@ -261,7 +261,7 @@ interface IGet {
     (s: "publication-repository"): PublicationRepository;
     (s: "opds-feed-repository"): OpdsFeedRepository;
     (s: "publication-view-converter"): PublicationViewConverter;
-    (s: "locator-view-converter"): LocatorViewConverter;
+//    (s: "locator-view-converter"): LocatorViewConverter;
     (s: "opds-feed-view-converter"): OpdsFeedViewConverter;
     (s: "publication-storage"): PublicationStorage;
     // (s: "streamer"): Server;

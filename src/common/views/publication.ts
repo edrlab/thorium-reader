@@ -29,7 +29,7 @@ export interface PublicationView extends Identifiable {
     isDivina?: boolean;
     isPDF?: boolean;
     isDaisy?: boolean;
-    isFXL?: boolean;
+    isFixedLayoutPublication?: boolean;
 
     lastReadTimeStamp?: number;
 

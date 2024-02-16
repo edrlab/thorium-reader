@@ -27,11 +27,11 @@ export function computeReadiumCssJsonMessageInStreamer(
     sessionInfo: string | undefined,
 ): IEventPayload_R2_EVENT_READIUMCSS {
 
-    const winId = Buffer.from(sessionInfo || "", "base64").toString("utf-8");
-    debug("winId:", winId);
+    const winId = sessionInfo ? Buffer.from(sessionInfo, "base64").toString("utf-8") : "";
 
     let settings: ReaderConfig;
     if (winId) {
+        debug("winId:", winId);
 
         const store = diMainGet("store");
         const state = store.getState();

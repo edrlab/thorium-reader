@@ -11,29 +11,121 @@ import { getCount } from "../counter";
 import { getCssSelector_ } from "./cssSelector";
 import { escapeRegExp } from "./regexp";
 import { ISearchResult } from "./search.interface";
-import { cleanupStr, collapseWhitespaces } from "./transliteration";
+import { cleanupStr, collapseWhitespaces, equivalents } from "./transliteration";
 
 export async function searchDocDomSeek(searchInput: string, doc: Document, href: string): Promise<ISearchResult[]> {
+    // https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent
+    // 'textContent' excludes comments and processing instructions but includes CDATA! (such as <style> inside <svg>)
     const text = doc.body.textContent;
+    // console.log("SEARCH TEXT: ", text);
     if (!text) {
         return [];
     }
 
+    const searchInput_ = searchInput;
+
+    // searchInput = searchInput.replace(/[\s]+/gmi, '\\s+')
     searchInput = cleanupStr(searchInput);
     if (!searchInput.length) {
         return [];
     }
 
+    searchInput = escapeRegExp(searchInput);
+
+    // transliteratesDifferentLengthsLower
+    // transliteratesDifferentLengthsUpper
+    const transliterations: Record<string, string> = {
+        "œ": "oe",
+        "ᴔ": "oe",
+        "Œ": "OE", // could be "Oe" (capitalised first letter)
+        "ɶ": "OE",
+    };
+    for (const key of Object.keys(transliterations)) {
+        const val = transliterations[key];
+        searchInput = searchInput.replace(new RegExp(key, "gmi"), val);
+    }
+
+    const alreadyProcessed: string[] = [];
+    for (const key of Object.keys(transliterations)) {
+        const val = transliterations[key];
+        const valLower = val.toLowerCase();
+        if (alreadyProcessed.includes(valLower)) {
+            continue;
+        }
+        alreadyProcessed.push(valLower);
+        let rep = "(";
+        rep += "(";
+        rep += valLower;
+        rep += ")";
+        for (const key2 of Object.keys(transliterations)) {
+            const val2 = transliterations[key2];
+            const valLower2 = val2.toLowerCase();
+            if (valLower === valLower2) {
+                rep += "|";
+                rep += key2;
+            }
+        }
+        rep += ")";
+        searchInput = searchInput.replace(new RegExp(valLower, "gmi"), rep);
+    }
+
+    // https://github.com/julkue/mark.js/blob/7f7e9820514e2268918c2259b58aec3bd5f437f6/src/lib/regexpcreator.js#L256-L268
+    // searchInput = searchInput.replace(/[^(|)\\]/g, (val, indx, original) => {
+    //     const nextChar = original.charAt(indx + 1);
+    //     if (/[(|)\\]/.test(nextChar) || nextChar === "") {
+    //         return val;
+    //     } else {
+    //         return val + "\u0000";
+    //     }
+    // });
+
+    const equivalentsList = equivalents();
+    const done: number[] = [];
+    for (let i = 0; i < searchInput.length; i++) {
+        const ch = searchInput[i];
+        for (let j = 0; j < equivalentsList.length; j++) {
+            const equivalents = equivalentsList[j];
+            if (!equivalents.has(ch)) {
+                continue;
+            }
+            if (done.includes(j)) {
+                break;
+            }
+            done.push(j);
+
+            let eqs = "";
+            equivalents.forEach((eq) => {
+                eqs += eq;
+            });
+
+            searchInput = searchInput.replace(new RegExp(`[${eqs}]`, "gmi"), `[${eqs}]`);
+        }
+    }
+
+    searchInput = searchInput.replace(/ /g, "\\s+"); // see cleanupStr() which collapsed all contiguous whitespaces in single space, and trimmed
+
+    // https://github.com/julkue/mark.js/blob/7f7e9820514e2268918c2259b58aec3bd5f437f6/src/lib/regexpcreator.js#L279-L295
+    // u+00ad = soft hyphen
+    // u+200b = zero-width space
+    // u+200c = zero-width non-joiner
+    // u+200d = zero-width joiner
+    // searchInput = searchInput.split(/\u0000+/).join("[\\u00ad\\u200b\\u200c\\u200d,;\\.]*");
+
+    console.log("REGEXP SEARCH: \n" + searchInput_ + "\n==>\n" + searchInput + "\n");
+
     const iter = doc.createNodeIterator(
         doc.body,
         NodeFilter.SHOW_TEXT,
+        // 'textContent' excludes comments and processing instructions but includes CDATA! (such as <style> inside <svg>)
+        // ... but, we trim the DOM ahead of time to avoid this corner case
+        // | NodeFilter.SHOW_CDATA_SECTION
         {
             acceptNode: (_node) => NodeFilter.FILTER_ACCEPT,
         },
     );
 
     // normalizeDiacriticsAndLigatures(searchInput)
-    const regexp = new RegExp(escapeRegExp(searchInput).replace(/ /g, "\\s+"), "gim");
+    const regexp = new RegExp(searchInput, "gim");
 
     const searchResults: ISearchResult[] = [];
 
@@ -67,9 +159,19 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
         let offset = matches.index;
         while (accumulated <= offset) {
             const nextNode = iter.nextNode();
+            if (!nextNode) {
+                break;
+            }
+            // console.log("nextNode.nodeValue: ", nextNode.nodeValue);
+            // console.log("nextNode.nodeValue.length: ", nextNode.nodeValue.length);
             accumulated += nextNode.nodeValue.length;
         }
+        // console.log("iter.referenceNode.nodeValue: ", iter.referenceNode.nodeValue);
+        // console.log("iter.referenceNode.nodeValue.length: ", iter.referenceNode.nodeValue.length);
         let localOffset = iter.referenceNode.nodeValue.length - (accumulated - offset);
+        // console.log("accumulated: ", accumulated);
+        // console.log("offset: ", offset);
+        // console.log("localOffset: ", localOffset);
         // console.log("start accumulated: ", accumulated);
         // console.log("start localNodeOffset: ", localOffset);
         // console.log("start iter.referenceNode.nodeValue: ", iter.referenceNode.nodeValue);
@@ -79,6 +181,9 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
         offset = matches.index + matches[0].length;
         while (accumulated <= offset) {
             const nextNode = iter.nextNode();
+            if (!nextNode) {
+                break;
+            }
             accumulated += nextNode.nodeValue.length;
         }
         localOffset = iter.referenceNode.nodeValue.length - (accumulated - offset);

@@ -6,7 +6,8 @@
 // ==LICENSE-END==
 
 import { Identifiable } from "readium-desktop/common/models/identifiable";
-import { Locator, LocatorType } from "readium-desktop/common/models/locator";
+import { LocatorType } from "readium-desktop/common/models/locator";
+import { Locator } from "@r2-navigator-js/electron/common/locator";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
 
 export interface LocatorDocument extends Identifiable, Timestampable {

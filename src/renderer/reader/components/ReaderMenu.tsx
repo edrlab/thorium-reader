@@ -9,6 +9,7 @@ import classNames from "classnames";
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
+
 import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
@@ -503,12 +504,12 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
             return;
         }
 
-        // currentLocation.docInfo.isFixedLayout
-        const isFixedLayout = !r2Publication.PageList &&
+        // this.props.currentLocation.docInfo.isFixedLayout
+        const isFixedLayoutPublication = !r2Publication.PageList &&
             r2Publication.Metadata?.Rendition?.Layout === "fixed";
 
         const pageNbr = goToRef.current.value.trim().replace(/\s\s+/g, " ");
-        if (isFixedLayout) {
+        if (isFixedLayoutPublication) {
             try {
                 const spineIndex = parseInt(pageNbr, 10) - 1;
                 const spineLink = r2Publication.Spine[spineIndex];
@@ -571,10 +572,13 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
         return <></>;
     }
 
-    // currentLocation.docInfo.isFixedLayout
-    const isFixedLayout = r2Publication.Metadata?.Rendition?.Layout === "fixed";
-    const isFixedLayoutWithPageList = isFixedLayout && r2Publication.PageList;
-    const isFixedLayoutNoPageList = isFixedLayout && !isFixedLayoutWithPageList;
+    // // currentLocation.docInfo.isFixedLayout
+    // const isFixedLayout = r2Publication.Metadata?.Rendition?.Layout === "fixed";
+    // const isFixedLayoutWithPageList = isFixedLayout && r2Publication.PageList;
+    // const isFixedLayoutNoPageList = isFixedLayout && !isFixedLayoutWithPageList;
+    const isFixedLayoutPublication = r2Publication.Metadata?.Rendition?.Layout === "fixed";
+    const isFixedLayoutWithPageList = isFixedLayoutPublication && r2Publication.PageList;
+    const isFixedLayoutNoPageList = isFixedLayoutPublication && !isFixedLayoutWithPageList;
 
     let currentPageInPageList: string | undefined;
     if (currentLocation?.epubPageID && r2Publication.PageList) {
@@ -585,6 +589,7 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
             currentPageInPageList = p.Title;
         }
     }
+
     let currentPage: string | undefined;
     if (isDivina || isPdf) {
         currentPage = isDivina

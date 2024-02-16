@@ -17,10 +17,10 @@ import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
 import { mapReducer } from "readium-desktop/utils/redux-reducers/map.reducer";
 import { combineReducers } from "redux";
 
-import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
+// import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 
 import { readerLocalActionBookmarks, readerLocalActionHighlights } from "../actions";
-import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
+import { IHighlightHandlerState, IHighlightMounterState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { readerInfoReducer } from "./info";
 import { pickerReducer } from "./picker";
 import { readerConfigReducer } from "./readerConfig";
@@ -91,14 +91,14 @@ export const rootReducer = () => {
                                 type: readerLocalActionHighlights.handler.push.ID,
                                 selector: (action) =>
                                     action.payload?.map(
-                                        (v) => [v.uuid, v],
+                                        (highlightHandlerState) => [highlightHandlerState.uuid, highlightHandlerState],
                                     ),
                             },
                             pop: {
                                 type: readerLocalActionHighlights.handler.pop.ID,
                                 selector: (action) =>
                                     action.payload?.map(
-                                        (v) => [v.uuid, undefined],
+                                        (highlightBaseState) => [highlightBaseState.uuid, undefined],
                                     ),
                             },
                         },
@@ -108,21 +108,21 @@ export const rootReducer = () => {
                         readerLocalActionHighlights.mounter.mount.TAction,
                         readerLocalActionHighlights.mounter.unmount.TAction,
                         string,
-                        IHighlight
+                        IHighlightMounterState
                     >(
                         {
                             push: {
                                 type: readerLocalActionHighlights.mounter.mount.ID,
                                 selector: (action) =>
                                     action.payload?.map(
-                                        (v) => [v.uuid, v.ref],
+                                        (highlightMounterState) => [highlightMounterState.uuid, highlightMounterState],
                                     ),
                             },
                             pop: {
                                 type: readerLocalActionHighlights.mounter.unmount.ID,
                                 selector: (action) =>
                                     action.payload?.map(
-                                        (v) => [v.uuid, undefined],
+                                        (highlightBaseState) => [highlightBaseState.uuid, undefined],
                                     ),
                             },
                         },

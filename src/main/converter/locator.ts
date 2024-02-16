@@ -5,21 +5,21 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { injectable} from "inversify";
+// import { injectable} from "inversify";
 
-import { LocatorDocument } from "readium-desktop/main/db/document/locator";
+// import { LocatorDocument } from "readium-desktop/main/db/document/locator";
 
-import { LocatorView } from "readium-desktop/common/views/locator";
+// import { LocatorView } from "readium-desktop/common/views/locator";
 
-@injectable()
-export class LocatorViewConverter {
-    public convertDocumentToView(doc: LocatorDocument): LocatorView {
-        return {
-            identifier: doc.identifier,
-            publicationIdentifier: doc.publicationIdentifier,
-            locator: Object.assign({}, doc.locator),
-            locatorType: doc.locatorType,
-            name: doc.name,
-        };
-    }
-}
+// @injectable()
+// export class LocatorViewConverter {
+//     public convertDocumentToView(doc: LocatorDocument): LocatorView {
+//         return {
+//             identifier: doc.identifier,
+//             publicationIdentifier: doc.publicationIdentifier,
+//             locator: Object.assign({}, doc.locator),
+//             locatorType: doc.locatorType,
+//             name: doc.name,
+//         };
+//     }
+// }

@@ -76,7 +76,7 @@ import {
     ttsStop, ttsVoice,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
-import { Locator as R2Locator } from "@r2-shared-js/models/locator";
+import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
 import { TToc } from "../pdf/common/pdfReader.type";
 import { pdfMount } from "../pdf/driver";
@@ -95,6 +95,12 @@ import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-a
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
+
+import {
+    highlightsCreate,
+} from "@r2-navigator-js/electron/renderer";
+
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
 
 // main process code!
 // thoriumhttps
@@ -569,10 +575,12 @@ class Reader extends React.Component<IProps, IState> {
             const link = this.props.r2Publication.Spine.find((item) => {
                 return item.Href === this.state.currentLocation.locator.href;
             });
-            if (link?.Properties?.Layout === "fixed") {
-                isFixedLayout = true;
-            } else if (typeof link?.Properties?.Layout !== "undefined") {
-                isFixedLayout = false;
+            if (link) {
+                if (link.Properties?.Layout === "fixed") {
+                    isFixedLayout = true;
+                } else if (typeof link.Properties?.Layout !== "undefined") {
+                    isFixedLayout = false;
+                }
             }
         }
         if (typeof isFixedLayout === "undefined") {
@@ -627,7 +635,7 @@ class Reader extends React.Component<IProps, IState> {
 
             isDivina: this.props.isDivina,
             isPdf: this.props.isPdf,
-            isFXL: this.props.publicationView.isFXL,
+            isFXL: this.props.publicationView.isFixedLayoutPublication,
             // openedSection: this.state.openedSectionSettings,
             zenMode: this.state.zenMode,
             setZenMode : () => this.setState({ zenMode : !this.state.zenMode}),
@@ -1041,6 +1049,22 @@ class Reader extends React.Component<IProps, IState> {
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.AudioStop,
             this.onKeyboardAudioStop);
+
+        // TODO HIGHLIGHTS-ANNOTATIONS: just for testing!
+        if (IS_DEV) {
+          registerKeyboardListener(
+              true, // listen for key up (not key down)
+              this.props.keyboardShortcuts.AnnotationsTest1,
+              this.onKeyboardAnnotationsTest1);
+          registerKeyboardListener(
+              true, // listen for key up (not key down)
+              this.props.keyboardShortcuts.AnnotationsTest2,
+              this.onKeyboardAnnotationsTest2);
+          registerKeyboardListener(
+              true, // listen for key up (not key down)
+              this.props.keyboardShortcuts.AnnotationsTest3,
+              this.onKeyboardAnnotationsTest3);
+        }
     }
 
     private unregisterAllKeyboardListeners() {
@@ -1068,6 +1092,13 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardAudioPreviousAlt);
         unregisterKeyboardListener(this.onKeyboardAudioNextAlt);
         unregisterKeyboardListener(this.onKeyboardAudioStop);
+
+        // TODO HIGHLIGHTS-ANNOTATIONS: just for testing!
+        if (IS_DEV) {
+            unregisterKeyboardListener(this.onKeyboardAnnotationsTest1);
+            unregisterKeyboardListener(this.onKeyboardAnnotationsTest2);
+            unregisterKeyboardListener(this.onKeyboardAnnotationsTest3);
+        }
     }
 
     private handleLinkLocator = (locator: R2Locator, isFromOnPopState = false) => {
@@ -1094,6 +1125,81 @@ class Reader extends React.Component<IProps, IState> {
     private handleLinkUrl = (url: string, isFromOnPopState = false) => {
         handleLinkUrl_UpdateHistoryState(url, isFromOnPopState);
         r2HandleLinkUrl(url);
+    };
+
+    // TODO HIGHLIGHTS-ANNOTATIONS: just for testing!
+    private onKeyboardAnnotationsTest = (type: number) => {
+
+        if (IS_DEV) {
+            if (this.props.isDivina || this.props.isPdf) {
+                return;
+            }
+
+            // navigator loc has updated selectionInfo (may have been invalidated / cleared since last notified here ... so takes precedence over local state)
+            const loc = getCurrentReadingLocation() || this.state.currentLocation;
+
+            if (!loc?.locator?.href || !loc?.selectionInfo) { // loc?.selectionIsNew
+                return;
+            }
+
+            const colors = [{
+                red: 210,
+                green: 137,
+                blue: 156,
+            },
+            {
+                red: 6,
+                green: 202,
+                blue: 56,
+            },
+            {
+                red: 57,
+                green: 153,
+                blue: 208,
+            },
+            {
+                red: 213,
+                green: 180,
+                blue: 120,
+            },
+            {
+                red: 61,
+                green: 181,
+                blue: 172,
+            }];
+            const color = false ? colors[Math.floor(Math.random() * colors.length)] : {
+                red: Math.floor(Math.random() * 256),
+                green: Math.floor(Math.random() * 256),
+                blue: Math.floor(Math.random() * 256),
+            };
+            console.log("DEV HIGHLIGHT CREATE: " + type, JSON.stringify(color, null, 4));
+
+            highlightsCreate(loc.locator.href, [
+                {
+                    selectionInfo: loc.selectionInfo,
+                    // range: Range,
+
+                    color,
+
+                    // 0 is full background (default), 1 is underline, 2 is strikethrough
+                    // FUTURE: 3 is composite background + underline
+                    drawType: type,
+
+                    expand: 3,
+
+                    group: "annotations",
+                },
+            ]);
+        }
+    };
+    private onKeyboardAnnotationsTest1 = () => {
+        this.onKeyboardAnnotationsTest(0);
+    };
+    private onKeyboardAnnotationsTest2 = () => {
+        this.onKeyboardAnnotationsTest(1);
+    };
+    private onKeyboardAnnotationsTest3 = () => {
+        this.onKeyboardAnnotationsTest(2);
     };
 
     private onKeyboardAudioStop = () => {
@@ -1256,8 +1362,8 @@ class Reader extends React.Component<IProps, IState> {
             const isDivina = this.props.r2Publication && isDivinaFn(this.props.r2Publication);
             const isPdf = this.props.r2Publication && isPdfFn(this.props.r2Publication);
 
-            const isFixedLayout = this.props.r2Publication &&
-                this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
+        const isFixedLayoutPublication = this.props.r2Publication &&
+            this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
 
             let txtProgression: string | undefined;
             let txtPagination: string | undefined;
@@ -1340,7 +1446,7 @@ class Reader extends React.Component<IProps, IState> {
                     return l.Href === locatorExt.locator.href;
                 });
                 if (spineIndex >= 0) {
-                    if (isFixedLayout) {
+                    if (isFixedLayoutPublication) {
                         const pageNum = spineIndex + 1;
                         const totalPages = this.props.r2Publication.Spine.length;
 
@@ -2394,6 +2500,9 @@ class Reader extends React.Component<IProps, IState> {
                 // this.setState({bookmarkMessage: msg});
                 this.props.toasty(msg);
 
+                if (locator.locations && !locator.locations.rangeInfo && this.state.currentLocation.selectionInfo?.rangeInfo) {
+                    locator.locations.rangeInfo = this.state.currentLocation.selectionInfo?.rangeInfo;
+                }
                 this.props.addBookmark({
                     locator,
                     name,

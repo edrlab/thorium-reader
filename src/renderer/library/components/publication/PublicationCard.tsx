@@ -75,7 +75,7 @@ class PublicationCard extends React.Component<IProps> {
             pubFormat = "PDF";
         } else if (pub.isDaisy) {
             pubFormat = "DAISY";
-        } else if (pub.isFXL) {
+        } else if (pub.isFixedLayoutPublication) {
             pubFormat = "EPUB";
         } else {
             pubFormat = "EPUB";

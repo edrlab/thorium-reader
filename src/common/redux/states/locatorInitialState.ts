@@ -6,7 +6,7 @@
 // ==LICENSE-END=
 
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
-import { Locator as R2Locator } from "@r2-shared-js/models/locator";
+import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
 export const LocatorExtendedWithLocatorOnly = (locator: R2Locator): LocatorExtended => ({
     audioPlaybackInfo: undefined,
