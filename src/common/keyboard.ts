@@ -325,6 +325,13 @@ const _defaults_ = Object.freeze({
         // meta: true,
         key: "Digit7",
     }),
+    AnnotationsTest4: Object.freeze<TKeyboardShortcut>({
+        alt: true,
+        control: true,
+        shift: true,
+        // meta: true,
+        key: "Digit8",
+    }),
 });
 export const _defaults = sortObject(_defaults_);
 
