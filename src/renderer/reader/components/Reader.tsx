@@ -1064,6 +1064,10 @@ class Reader extends React.Component<IProps, IState> {
               true, // listen for key up (not key down)
               this.props.keyboardShortcuts.AnnotationsTest3,
               this.onKeyboardAnnotationsTest3);
+          registerKeyboardListener(
+              true, // listen for key up (not key down)
+              this.props.keyboardShortcuts.AnnotationsTest4,
+              this.onKeyboardAnnotationsTest4);
         }
     }
 
@@ -1098,6 +1102,7 @@ class Reader extends React.Component<IProps, IState> {
             unregisterKeyboardListener(this.onKeyboardAnnotationsTest1);
             unregisterKeyboardListener(this.onKeyboardAnnotationsTest2);
             unregisterKeyboardListener(this.onKeyboardAnnotationsTest3);
+            unregisterKeyboardListener(this.onKeyboardAnnotationsTest4);
         }
     }
 
@@ -1142,6 +1147,8 @@ class Reader extends React.Component<IProps, IState> {
                 return;
             }
 
+            // TODO: define a preset of colours that work well in both light (aka. neutral) and dark (aka.night) modes.
+            // CSS mix-blend-mode is multiply for light, hard-light for dark.
             const colors = [{
                 red: 210,
                 green: 137,
@@ -1181,8 +1188,7 @@ class Reader extends React.Component<IProps, IState> {
 
                     color,
 
-                    // 0 is full background (default), 1 is underline, 2 is strikethrough
-                    // FUTURE: 3 is composite background + underline
+                    // 0 is full background (default), 1 is underline, 2 is strikethrough, 3 is outline
                     drawType: type,
 
                     expand: 3,
@@ -1200,6 +1206,9 @@ class Reader extends React.Component<IProps, IState> {
     };
     private onKeyboardAnnotationsTest3 = () => {
         this.onKeyboardAnnotationsTest(2);
+    };
+    private onKeyboardAnnotationsTest4 = () => {
+        this.onKeyboardAnnotationsTest(3);
     };
 
     private onKeyboardAudioStop = () => {
