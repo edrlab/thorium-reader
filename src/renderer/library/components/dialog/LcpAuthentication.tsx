@@ -102,6 +102,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                         <p>
                             <span className={stylesModals.lcp_hint}>{__("library.lcp.hint", { hint: this.props.hint })}</span>
                         </p>
+                        {/* TODO: Error message if incorrect passphrase */}
                         <div className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)}>
                             <label htmlFor="passphrase">{__("library.lcp.password")}</label>
                             <input
@@ -128,6 +129,8 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                             <SVG ariaHidden svg={this.state.infoOpen ? ChevronUp : ChevronDown} />
                         </button>
                         {this.state.infoOpen ?
+
+                        // TODO
                             <div className={stylesCatalogs.catalog_infos_text}>
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit.

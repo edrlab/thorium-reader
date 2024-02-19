@@ -15,7 +15,6 @@ import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/com
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as ReactDOM from "react-dom";
 import { ReaderMode } from "readium-desktop/common/models/reader";
-// import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/outline-exit_to_app-24px.svg";
 import * as viewMode from "readium-desktop/renderer/assets/icons/aspect_ratio-black-18dp.svg";
 import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";

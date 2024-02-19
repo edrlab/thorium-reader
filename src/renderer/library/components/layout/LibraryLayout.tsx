@@ -123,7 +123,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         className={classNames(stylesGlobal.main, this.props.mainClassName)}
                     >
                         {this.props.secondaryHeader}
-                        {(title === "Catalogs") ?
+                        {(title === __("header.catalogs")) ?
                             <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
                                 <h2 className={stylesAllBooks.allBooks_header}>{title}</h2>
                                 {this.props.breadCrumb &&

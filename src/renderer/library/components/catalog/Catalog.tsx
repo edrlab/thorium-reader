@@ -67,7 +67,7 @@ class Catalog extends React.Component<IProps, undefined> {
         const secondaryHeader = <span style={{display: "flex", justifyContent: "end", alignItems: "end", height: "65px"}}><PublicationAddButton /></span>;
         return (
             <LibraryLayout
-                title={__("header.books")}
+                title={__("header.homeTitle")}
                 secondaryHeader={secondaryHeader}
             >
                 {
