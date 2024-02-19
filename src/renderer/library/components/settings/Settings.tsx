@@ -26,7 +26,7 @@ import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { authActions, i18nActions, themeActions } from "readium-desktop/common/redux/actions";
-import * as BinIcon from "readium-desktop/renderer/assets/icons/bin-icon.svg";
+import * as BinIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { TTheme } from "readium-desktop/common/redux/states/theme";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
@@ -76,7 +76,7 @@ export const Auth = () => {
             className={stylesSettings.btn_primary}
             onClick={() => dispatch(authActions.wipeData.build())}>
             <SVG ariaHidden svg={BinIcon} />
-            <h3>{__("settings.auth.wipeData")}</h3>
+            <p>{__("settings.auth.wipeData")}</p>
         </button>
     );
 };
@@ -134,7 +134,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
 
     return <Dialog.Root>
         <Dialog.Trigger asChild>
-        <button title={__("header.settings")}>
+        <button title={__("header.settings")} style={{minWidth: "unset"}}>
             <SVG ariaHidden svg={GearIcon} />
             <h3>{__("header.settings")}</h3>
         </button>

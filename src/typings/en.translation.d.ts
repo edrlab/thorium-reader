@@ -701,6 +701,7 @@ declare namespace typed_i18n {
     readonly "display": string,
     readonly "disposition": { readonly "title": string },
     readonly "font": string,
+    readonly "preview": string,
     readonly "fontSize": string,
     readonly "justification": string,
     readonly "justify": string,
@@ -892,6 +893,7 @@ declare namespace typed_i18n {
   readonly "display": string,
   readonly "disposition": { readonly "title": string },
   readonly "font": string,
+  readonly "preview": string,
   readonly "fontSize": string,
   readonly "justification": string,
   readonly "justify": string,
@@ -955,6 +957,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.disposition", __?: {}): { readonly "title": string };
   (_: "reader.settings.disposition.title", __?: {}): string;
   (_: "reader.settings.font", __?: {}): string;
+  (_: "reader.settings.preview", __?: {}): string;
   (_: "reader.settings.fontSize", __?: {}): string;
   (_: "reader.settings.justification", __?: {}): string;
   (_: "reader.settings.justify", __?: {}): string;

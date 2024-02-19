@@ -89,6 +89,7 @@
       overflow: hidden;
       line-height: 1.2em;
       font-size: 14px;
+      margin-bottom: 5px;
     }
 
     & .publication_authors {
@@ -140,6 +141,7 @@
 
     & svg {
       fill: var(--color-blue);
+      color: var(--color-blue);
       border-radius: 4px;
       transition: 200ms linear;
     }

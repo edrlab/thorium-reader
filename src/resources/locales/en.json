@@ -139,7 +139,7 @@
         "home": "Bookshelf menu",
         "homeTitle": "Home",
         "importTitle": "Import a publication",
-        "listTitle": "List",
+        "listTitle": "Table",
         "refreshTitle": "reload",
         "searchPlaceholder": "Search",
         "searchTitle": "Start a search",
@@ -354,6 +354,7 @@
                 "title": "Layout"
             },
             "font": "Font",
+            "preview": "Preview",
             "fontSize": "Font size",
             "justification": "Alignment",
             "justify": "Justify",

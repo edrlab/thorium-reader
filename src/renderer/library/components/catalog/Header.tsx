@@ -11,7 +11,8 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid-icon.svg";
-import * as ListIcon from "readium-desktop/renderer/assets/icons/list-icon.svg";
+// import * as ListIcon from "readium-desktop/renderer/assets/icons/list-icon.svg";
+import * as TableIcon from "readium-desktop/renderer/assets/icons/table-icon.svg";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import {
@@ -51,7 +52,7 @@ class Header extends React.Component<IProps, undefined> {
         return (
             <SecondaryHeader>
                 <div>
-                    <h3>{__("header.viewMode")}</h3>
+                    <p style={{fontWeight: "600", margin: "0 0 5px"}}>{__("header.viewMode")}</p>
                     <div style={{ display: "flex", gap: "10px" }}>
                         <Link
                             to={this.props.location}
@@ -85,7 +86,7 @@ class Header extends React.Component<IProps, undefined> {
                         >
                             {(displayType === DisplayType.List) ?
                                 <SVG svg={CheckIcon} ariaHidden /> :
-                                <SVG svg={ListIcon} ariaHidden />
+                                <SVG svg={TableIcon} ariaHidden />
                             }
                             <h3>{__("header.listTitle")}</h3>
                         </Link>

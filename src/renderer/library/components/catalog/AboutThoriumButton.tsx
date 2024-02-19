@@ -54,7 +54,7 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
         return (
             <section className={stylesFooter.footer_wrapper}>
                 <a onClick={this.about}>{__("catalog.about.title", { appName: capitalizedAppName })}</a>
-                <p>{`v${_APP_VERSION}`}</p>
+                <p>- {`v${_APP_VERSION}`}</p>
             </section>
         );
     }

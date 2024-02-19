@@ -8,7 +8,7 @@
 
   &_wrapper {
     position: relative;
-    overflow: hidden hidden;
+    overflow: scroll hidden;
     height: 400px;
   }
 
@@ -26,19 +26,19 @@
 
 .slider_button {
   &_prev {
-  left: -50px;
+  right: 20px;
   transform: translateY(-50%) rotateY(180deg);
   }
 
   &_next {
-    right: -50px;
+    right: 0;
     transform: translateY(-50%);
   }
 
   &_prev,
   &_next {
     position: absolute;
-    top: 40%;
+    top: -30px;
   }
 }
 

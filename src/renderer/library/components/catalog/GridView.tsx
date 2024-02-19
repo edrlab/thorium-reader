@@ -71,7 +71,7 @@ const EntrySection = ({entry, entryIndex}: {entry: CatalogEntryView, entryIndex:
     }
 
     return (
-        <section key={entryIndex} style={{marginBottom: "0", marginTop: entry.id === "lastAdditions" ? "0" : "20px"}} className={entry.id === "continueReading" ? stylesSlider.continue_reading : stylesSlider.home_section}>
+        <section key={entryIndex} style={{marginBottom: "0", marginTop: entry.id === "continueReading" ? "0" : "20px"}} className={entry.id === "lastAdditions" ? stylesSlider.continue_reading : stylesSlider.home_section}>
                 <h2>{title}</h2>
             {
                 <Slider
@@ -124,7 +124,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
         return (
             <>
                 {
-                    this.props.catalogEntries.map((entry, entryIndex: number) =>
+                    this.props.catalogEntries.slice(0, 2).map((entry, entryIndex: number) =>
                             entry.totalCount > 0
                                 ? (
                                     <EntrySection entry={entry} entryIndex={entryIndex} key={entryIndex} />

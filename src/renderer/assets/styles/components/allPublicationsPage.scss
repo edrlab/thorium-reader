@@ -205,7 +205,7 @@
     &_wrapper {
         display: flex;
         flex-flow: row wrap;
-        align-items: flex-start;
+        align-items: center;
         justify-content: start;
         padding-top: 0.2em;
         overflow: hidden auto;
@@ -272,7 +272,7 @@
 .allBook_table {
     &_wrapper {
         overflow: auto;
-        inset: 250px 20px 30px 30px;
+        inset: 280px 20px 30px 26px;
         padding: 0;
         margin-top: 0;
         margin-bottom: 0.4em;
@@ -297,7 +297,8 @@
 
     &_body {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        grid-gap: 10px;
+        grid-gap: 15px;
+        grid-row-gap: 30px;
         margin-bottom: 20px;
         background-color: var(--color-secondary);
 

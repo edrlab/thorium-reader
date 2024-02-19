@@ -195,14 +195,13 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
         const displayType = (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid;
 
         const { __ } = this.props;
-        const title = __("catalog.allBooks");
 
         const secondaryHeader = <Header />;
         // const breadCrumb = <BreadCrumb breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}/>;
 
         return (
             <LibraryLayout
-                title={`${__("catalog.myBooks")} / ${title}`}
+                title={__("header.allBooks")}
                 secondaryHeader={secondaryHeader}
             // breadCrumb={breadCrumb}
             >

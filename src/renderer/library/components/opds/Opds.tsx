@@ -35,7 +35,7 @@ class Opds extends React.Component<IProps, undefined> {
         const { __ } = this.props;
         return (
             <LibraryLayout
-                title={__("header.catalogs")}
+                title={__("opds.breadcrumbRoot")}
                 secondaryHeader={<OpdsAddForm />}
             >
                 <FeedList />

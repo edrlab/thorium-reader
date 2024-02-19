@@ -186,13 +186,16 @@ export function* getCatalog(): SagaGenerator<ILibraryRootState["publication"]> {
         },
         all: {
             added: allAdded,
+            readed: allReaded,
         },
     } = yield* callTyped(getPublicationView);
 
     const _allAdded = aboutFiltered(allAdded);
+    const _allReaded = aboutFiltered(allReaded);
     const _epubReaded = aboutFiltered(epubReaded);
 
     const allAdded_ = _allAdded.slice(0, NB_PUB);
+    const allReaded_ = _allReaded.slice(0, NB_PUB);
     const epubReaded_ = _epubReaded.slice(0, NB_PUB);
     const audiobookReaded_ = audiobookReaded.slice(0, NB_PUB);
     const divinaReaded_ = divinaReaded.slice(0, NB_PUB);
@@ -200,6 +203,11 @@ export function* getCatalog(): SagaGenerator<ILibraryRootState["publication"]> {
 
     // Dynamic entries
     const entries: CatalogEntryView[] = [
+        {
+            id: "continueReading",
+            totalCount: allReaded.length,
+            publicationViews: allReaded_,
+        },
         {
             id: "lastAdditions",
             totalCount: allAdded_.length,

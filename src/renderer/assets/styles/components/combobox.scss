@@ -16,7 +16,7 @@
     border-radius: 6px;
     display: flex;
     align-items: center;
-    width: fit-content;
+    width: 320px;
     padding-right: 10px;
     position: relative;
 
@@ -41,13 +41,14 @@
 
   .react_aria_Input {
     margin: 2px;
-    font-size: 12px;
+    font-size: 14px;
     background: transparent!important;
     color: var(--field-text-color);
-    height: 30px;
+    height: 24px;
     padding: 0 5px 0 40px;
     vertical-align: middle;
     border: none;
+    width: 320px;
   }
 
   .react_aria_Button {

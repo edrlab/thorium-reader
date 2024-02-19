@@ -84,7 +84,7 @@ const Theme = ({theme, set}: {theme: Pick<ReaderConfig, "night" | "sepia">, set:
     const defaultKey = theme.night ? 3 : theme.sepia ? 2 : 1;
 
     return (
-        <ComboBox label={__("reader.settings.theme.title")} defaultItems={options} defaultSelectedKey={defaultKey} onSelectionChange={(key: React.Key) => {
+        <ComboBox style={{borderBottom: "3px solid var(--color-light-grey)"}} label={__("reader.settings.theme.title")} defaultItems={options} defaultSelectedKey={defaultKey} onSelectionChange={(key: React.Key) => {
             set({
                 night: key === 3,
                 sepia: key === 2,
@@ -218,6 +218,7 @@ export const FontFamily = ({config: {font}, set}: {config: Pick<ReaderConfig, "f
             >
                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
             </ComboBox>
+            <h4>{__("reader.settings.preview")}</h4>
             <span
                 aria-hidden
                 style={{

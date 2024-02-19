@@ -242,18 +242,18 @@
 #arrow_box {
 width: fit-content;
 height: auto;
-padding: 10px 0 0;
+padding: 10px 5px 5px;
 background: var(--color-light-grey);
 border: 1px solid var(--color-medium-grey);
 font-size: 16px;
 color: var(--color-primary);
-text-align: center;
+text-align: left;
 box-shadow: 0 3px 2px 0 var(--color-medium-grey);
 
 
 & span {
     display: block;
-    margin: 0 20px 5px;
+    margin: 0 5px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -266,8 +266,8 @@ box-shadow: 0 3px 2px 0 var(--color-medium-grey);
 }
 
 & p {
-    margin: 10px 0 0;
+    margin: 5px 0;
     font-size: 0.8rem;
-    padding: 0 20px;
+    padding: 0 5px;
 }
 }
