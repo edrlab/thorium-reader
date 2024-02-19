@@ -86,7 +86,6 @@ function converterSearchResultToHighlightHandlerState(v: ISearchResult, color = 
     return {
         uuid: v.uuid,
         href: v.href,
-        type: "search",
         def: {
             group: "search",
             color,
@@ -267,11 +266,11 @@ function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
 }
 
 function* highlightClick(action: readerLocalActionHighlights.click.TAction) {
-    debug(`highlightClick ACTION (will focus) -- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
 
-    const { type, uuid } = action.payload;
+    const { uuid, def: {group} } = action.payload;
 
-    if (uuid && type === "search") {
+    if (uuid && group === "search") {
+        debug(`highlightClick ACTION (will focus) -- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
         yield put(readerLocalActionSearch.focus.build(uuid));
     }
 }
@@ -315,7 +314,7 @@ function* clearSearch() {
     }
 
     const uuids = handlerStateMap
-        .filter(([_uuid, handlerState]) => handlerState.type === "search")
+        .filter(([_uuid, handlerState]) => handlerState.def.group === "search")
         .map(([uuid, _handlerState]) => ({ uuid }));
 
     debug(`clearSearch (highlight pop) -- uuids: [${JSON.stringify(uuids, null, 4)}]`);
