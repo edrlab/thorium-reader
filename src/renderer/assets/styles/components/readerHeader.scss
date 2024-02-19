@@ -65,6 +65,11 @@
                     width: 30px;
                     fill: var(--color-blue);
                     color: var(--color-blue);
+
+                    @media (prefers-color-scheme: dark) {
+                        fill: #FEFEFE;
+                        color: #FEFEFE;
+                    }
                 }
             }
 
@@ -99,6 +104,11 @@
 .active_svg {
     fill: white!important;
     color: white!important;
+
+    @media (prefers-color-scheme: dark) {
+        fill: black!important;
+        color: black!important;
+    }
 }
 
 .picker_container {
