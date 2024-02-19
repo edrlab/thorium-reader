@@ -18,6 +18,7 @@ import * as i18n from "./i18n";
 import * as ipc from "./ipc";
 import * as search from "./search";
 import * as winInit from "./win";
+import * as annotation from "./annotation";
 
 // Logger
 const filename_ = "readium-desktop:renderer:reader:saga:index";
@@ -44,5 +45,7 @@ export function* rootSaga() {
         highlightHandler.saga(),
 
         search.saga(),
+
+        annotation.saga(),
     ]);
 }

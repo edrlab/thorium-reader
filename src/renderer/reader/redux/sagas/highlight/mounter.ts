@@ -55,13 +55,12 @@ export function* mountHighlight(href: string, handlerState: IHighlightHandlerSta
 
     debug(`mountHighlight CREATED -- href: [${href}] createdHighlights: [${createdHighlights ? createdHighlights.length : JSON.stringify(createdHighlights, null, 4)}]`);
 
-    const arrayProps = handlerStateFiltered.map((v) => ({uuid: v.uuid, href: v.href, type: v.type}));
+    const arrayProps = handlerStateFiltered.map((v) => ({uuid: v.uuid, href: v.href, type: v.def.group}));
 
     const mounted = zipWith(
         (props, highlight) => ({
             uuid: props.uuid,
             href: props.href,
-            type: props.type,
             ref: highlight,
         } satisfies IHighlightMounterState),
         arrayProps,
