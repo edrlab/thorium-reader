@@ -1,3 +1,7 @@
+/*
+=-=-= readerHeader.scss
+*/
+
 .toolbar_navigation {
     height: 50px;
     width: 100%;
@@ -10,7 +14,6 @@
             content: "";
             position: absolute;
             left: calc(50% - 105px);
-            // left: 0;
             top: 42px;
             height: 1px;
             width: 210px;  /* or 100px */
@@ -49,7 +52,6 @@
             border-radius: 5px;
 
             .menu_button {
-                // width: 35px;
                 height: 30px;
                 cursor: pointer;
                 padding: 5px;
@@ -57,12 +59,6 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-
-                // &[title="search in publication"] {
-                //     svg {
-                //         width: 20px;
-                //     }
-                // }
     
                 svg {
                     height: 20px;
@@ -80,7 +76,6 @@
             label {
                 position: absolute;
                 display: block;
-                // height: 35px!important;
                 width: 35px!important;
                 align-items: center;
 
@@ -114,11 +109,8 @@
     height: 40px;
     background-color: var(--color-extralight-grey);
     box-shadow: 0 6px 10px 0 var(--color-medium-grey);
-    // margin-right: 200px;
     margin-right: 5px;
     z-index: 100;
-
-    // position: absolute;
     top: 65px;
     right: 10px;
     left: unset;
@@ -135,15 +127,6 @@
         }
     }
 
-    // > span {
-    //     border-left: 10px solid transparent;
-    //     border-right: 10px solid transparent;
-    //     border-bottom: 15px solid var(--color-extralight-grey);
-    //     position: absolute;
-    //     top: -15px;
-    //     right: 20px;
-    // }
-
     button[title="Close"] {
         width: 15px;
         height: 15px;
@@ -156,7 +139,6 @@
     }
 
     .form_group {
-        // margin-right: 75px;
         width: 300px!important;
 
         label {

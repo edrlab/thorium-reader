@@ -1,5 +1,5 @@
 /*
-=-=-= bookDetailsDialog.css
+=-=-= bookDetailsDialog.scss
 */
 
 .c_dialog {
@@ -18,8 +18,6 @@
     position: fixed;
     z-index: 102;
     inset: 0;
-  
-    /* filter: blur(2px); */
   }
 
   &__box {

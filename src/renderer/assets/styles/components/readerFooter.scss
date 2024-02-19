@@ -1,3 +1,7 @@
+/*
+=-=-= readerFooter.scss
+*/
+
 .RTL_FLIP {
     transform: scale(-1, 1);
 }
@@ -40,8 +44,6 @@
     background-color: var(--color-light-grey);
     border: 1px solid var(--color-medium-grey);
     border-radius: 6px;
-
-    // overflow: hidden;
 }
 
 #track_reading + span {
@@ -96,9 +98,6 @@
     }
 
         & svg {
-        /* fill: #c1c1c1; */
-
-        /* fill: #555555; */
         fill: var(--reader-fontColor);
         opacity: 1;
         transform: scale(0.8);
@@ -129,12 +128,9 @@
     }
 
     & .track_reading_wrapper_noArrows {
-        /* padding: 1rem 5rem 1rem 5rem; */
         padding-top: 1rem;
         padding-right: 5rem;
         padding-bottom: 1rem;
-
-        /* padding-left: 5rem; */
     }
 }
 

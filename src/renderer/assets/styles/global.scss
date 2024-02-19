@@ -1,5 +1,9 @@
 /*** be careful this file is imported in library and reader windows ***/
 
+/*
+=-=-= global.scss
+*/
+
 @import 'src/renderer/assets/styles/partials/mixin';
 @import 'src/renderer/assets/styles/partials/focus';
 
@@ -54,18 +58,13 @@ h4, button, label {
 }
 
 section {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .main {
   width: calc(100% - 120px);
   padding: 10px 30px;
   overflow-y: auto;
-  
-  /* bottom: 0;
-  left: 0;
-  right: 0;
-  top: 57px; */
   flex: 6;
   height: 100vh;
   box-sizing: border-box;
@@ -234,7 +233,7 @@ nav + nav + .breadcrumb + .main {
   position: relative;
   font-weight: 700;
   margin: 0 0 20px;
-  font-size: 1.5rem;
+  font-size: 20px;
   border-radius: 5px 5px 0 0;
   padding: 10px 0 5px;
   text-decoration: none;

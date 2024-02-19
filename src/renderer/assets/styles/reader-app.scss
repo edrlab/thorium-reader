@@ -1,7 +1,7 @@
 @import "src/renderer/assets/styles/focus";
 
 /*
-=-=-= reader-app.css
+=-=-= reader-app.scss
 */
 
 /* :global */
@@ -74,8 +74,6 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-
-  // font: 1.1rem "Open Sans", sans-serif;
 }
 
 button {
@@ -144,7 +142,6 @@ button {
   margin-bottom: 5rem;
 
   &_fullscreen {
-    // margin-top: -10px;
     margin-bottom: 60px;
   }
 
@@ -178,12 +175,10 @@ button {
 
 .docked {
   &_left {
-    // position: fixed;
     left: 350px!important;
   }
 
   &_right {
-    // position: fixed; 
     right: 350px!important;
   }
 }
@@ -194,18 +189,12 @@ button {
   width: 50px;
   background-color: rgb(0 0 0 / 0%);
   border: none;
-
-  /* outline: none; */
   fill: var(--sideButtonColor);
 
   &:hover {
     background-color: var(--sideButtonColor);
     fill: var(--secondary-color);
   }
-
-  /* &:focus {
-    outline: 1pt dashed #999;
-  } */
 
   &_svg {
     width: 45px;
@@ -234,10 +223,6 @@ button {
   }
 
   & div {
-    /* display: flex; */
-
-    /* text-align: center; */
-
     & label {
       flex-grow: 1;
       height: 1.5rem;
@@ -565,11 +550,6 @@ button {
         color: var(--reader-fontColor);
 
         &:disabled {
-          /*
-          color: grey;
-          opacity: 0.5;
-          cursor: auto;
-          */
           color: var(--disabled-color) !important;
           cursor: not-allowed;
 
@@ -588,48 +568,6 @@ button {
     }
   }
 }
-
-// .main_navigation_fullscreen {
-//   // & > ul:not(.showInFullScreen) > ul:not(.showInFullScreen) > li:not(.showInFullScreen),
-//   // & > ul:not(.showInFullScreen) > li:not(.showInFullScreen) {
-//   //   display: none;
-//   // }
-//   & > ul > ul.tts_toolbar {
-//     margin-left: 0;
-//   }
-
-//   &:not(.hasTtsAudio) {
-//     background-color: transparent;
-//     box-shadow: none;
-
-//     & > ul {
-//       display: block;
-
-//       & > ul.tts_toolbar {
-//         display: none;
-//       }
-//     }
-//   }
-
-//   &.hasTtsAudio:not(.ttsAudioActivated) {
-//     background-color: transparent;
-//     box-shadow: none;
-//   }
-
-//   /* & >  {
-//     display: block;
-//   }
-//   & > ul, & ul.menu_option {
-//     margin-right: 20px;
-//     & > li {
-//       & > .menu_button {
-//         border-right: 1px solid #c1c1c1;
-//         border-bottom: 1px solid #c1c1c1;
-//         background-color: var(--reader-secondaryColor);
-//       }
-//     }
-//   } */
-// }
 
 .tab_content {
   position: relative;
@@ -901,32 +839,6 @@ p.chapters_description {
   }
 }
 
-/* #option_colonne,
-#option_colonne1,
-#option_colonne2 {
-  display: inline-block;
-  text-align: center;
-  margin: 0 10px 20px 10px;
-  line-height: 2rem;
-  vertical-align: baseline;
-  height: 70px;
-  width: 63px;
-} */
-
-/* #option_auto,
-#option_justif,
-#option_start,
-#scroll_option,
-#page_option {
-  display: inline-block;
-  text-align: center;
-  margin: 0 10px 20px 10px;
-  line-height: 2rem;
-  vertical-align: baseline;
-  height: 15px;
-  width: 20px;
-} */
-
 input[type="number"] {
   padding: 10px;
   margin-top: 10px;
@@ -987,13 +899,6 @@ input[type="radio"] + label {
 }
 
 /* ========= FOOTER ========= */
-
-
-/*
-#current {
-	position: relative;
-}
-*/
 
 .skip_link {
   position: absolute;

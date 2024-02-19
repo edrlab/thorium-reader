@@ -1,19 +1,5 @@
 /*
-=-=-= header.css => './partials/mixins.css'
-*/
-
-// @import url('./partials/mixins.css');
-
-/*
-=-=-= header.css => './partials/variables.css'
-*/
-
-/*
-@import url('./partials/variables.css');
-*/
-
-/*
-=-=-= header.css
+=-=-= header.scss
 */
 
 .main_navigation_library {
@@ -23,8 +9,6 @@
   height: 100vh;
   background-color: var(--color-extralight-grey);
   max-width: 204px;
-
-  // box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.19);
   border-right: 2px solid var(--color-medium-grey);
   flex: 1;
   transition: 200ms linear;
@@ -90,8 +74,6 @@
       border: 1px solid transparent;
       height: 30px;
       border-radius: 4px;
-
-      // min-width: 150px;
       background-color: transparent;
       display: flex;
       align-items: center;

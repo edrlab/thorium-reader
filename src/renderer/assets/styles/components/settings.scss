@@ -1,4 +1,6 @@
-// @import url("../partials/variables.scss");
+/*
+=-=-= settings.scss
+*/
 
 $settings_bg: var(--color-light-blue);
 $setting_color: var(--color-blue);
@@ -23,10 +25,7 @@ $setting_color: var(--color-blue);
         input[type="range"] {
             width: 150px;
         }
-
-        // p {
-        //     margin: 0;
-        // }
+        
         .btn_primary {
             width: fit-content;
             padding: 0 5px;
@@ -174,8 +173,6 @@ $setting_color: var(--color-blue);
 
 .settings_content {
     flex: 2;
-
-    // box-shadow: -1px 0 0.5px rgba(0, 0, 0, 0.1);
     overflow: hidden scroll;
     margin-top: 30px;
 
@@ -414,12 +411,8 @@ div[data-radix-popper-content-wrapper] {
 .scale_button {
     scale: 2;
     color: var(--color-blue);
-
-    // border: 1px solid transparent;
     border-radius: 4px;
     width: 15px;
-
-    // height: 15px;
     text-align: center;
     border: 1px solid transparent;
     position: relative;

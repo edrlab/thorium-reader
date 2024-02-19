@@ -1,16 +1,6 @@
 /*
-=-=-= components/publications.css
+=-=-= publications.scss
 */
-
-/*
-
-	1. card
-
-	2. list
-
-*/
-
-/* 1. card */
 
 .publication_wrapper {
   width: 200px;
@@ -69,8 +59,6 @@
         word-break: break-all;
         display: -webkit-inline-box;
         -webkit-line-clamp: 3;
-
-        /* autoprefixer: ignore next */
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-align: center;
@@ -326,12 +314,6 @@
       line-height: 1.2em;
       max-height: 2.4em;
       overflow: hidden;
-
-      /*
-            multiline ellipsis!
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            */
       padding-right: 1em;
     }
 
@@ -363,12 +345,6 @@
       line-height: 1.2em;
       max-height: 2.4em;
       overflow: hidden;
-
-      /*
-            multiline ellipsis!
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            */
       padding-right: 1em;
     }
 

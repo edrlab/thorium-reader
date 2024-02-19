@@ -1,3 +1,7 @@
+/*
+=-=-= inouts.scss
+*/
+
 @import 'src/renderer/assets/styles/partials/mixin';
 
 
@@ -22,8 +26,6 @@ input[type="search"] {
   border-left: none;
   border-bottom: 1px solid var(--color-medium-grey);
   border-radius: 0;
-  
-  /* outline: inherit; */
   color: var(--color-primary);
   font-size: 0.9rem;
 
@@ -42,12 +44,6 @@ input[type="search"] {
   &.outline {
     border: 1px solid var(--color-medium-grey);
   }
-
-  /*
-  &:focus {
-    @mixin R2_MIXIN_FOCUS_OUTLINE;
-  }
-  */
 }
 
 input[type="text"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
@@ -67,7 +63,7 @@ input[type="search"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE) {
 }
 
 form[role="search"] {
-background-color: var(--color-light-grey);
+background-color: var(--color-secondary);
     width: 370px !important;
     height: 30px !important;
 
@@ -119,11 +115,6 @@ select {
       width: calc(100% - 35px);
       height: 19px;
       margin-left: 30px;
-      
-      /* &[type="search"], &[title="Add a tag"] {
-        margin: 0;
-        width: 100%;
-      } */
   }
 
   & i {

@@ -1,19 +1,8 @@
 /*
-=-=-= components/buttons.css => '../partials/mixins.css'
+=-=-= buttons.scss
 */
+
 @import "src/renderer/assets/styles/partials/mixin";
-
-/*
-=-=-= components/buttons.css => '../partials/variables.css'
-*/
-
-/*
-@import url('../partials/variables.css');
-*/
-
-/*
-=-=-= components/buttons.css
-*/
 
 button {
   padding: 0;
@@ -81,8 +70,6 @@ button {
 
 .button_primary {
   @include button_primary;
-
-  font: 1rem Arial, sans-serif;
   padding: 10px 15px;
 
   &_small {
@@ -168,7 +155,6 @@ button {
 }
 
 .button_secondary {
-  font: 1rem Arial, sans-serif;
   padding: 10px 15px;
   position: relative;
   display: inline;
@@ -390,20 +376,6 @@ button {
   }
 }
 
-.button_format {
-  border: 1px solid var(--color-blue);
-  border-radius: 4px;
-  background-color: var(--color-light-blue);
-  color: var(--color-blue);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  min-width: 30px!important;
-  width: fit-content!important;
-  cursor: pointer;
-}
-
 .button_catalog_infos {
   color: var(--color-blue);
   height: 30px;
@@ -416,26 +388,6 @@ button {
     width: 20px;
     fill: var(--color-blue);
   }
-}
-
-/*
-
-  6. .button_keyboard
-
-*/
-
-.button_keyboard {
-  width: auto;
-  height: auto;
-  font-size: 80%;
-  display: inline-block;
-  padding: 0.3em;
-  margin-right: 1em;
-  border: 2px solid rgb(171 171 171);
-  border-bottom: 2px solid rgb(41 41 41);
-  border-right: 2px solid rgb(41 41 41);
-  border-radius: 3px;
-  background-color: #d0d0d0;
 }
 
 .skip_link {
@@ -454,28 +406,6 @@ button {
     padding: 1rem;
     color: white;
     background-color: #0366d6;
-  }
-}
-
-.button_see_more {
-  font-size: 1rem;
-  height: auto;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  margin: 0;
-  padding: 5px 0;
-  border-top: 1px solid var(--color-disabled);
-  border-radius: 0 0 5px 5px;
-  color: #000;
-  -webkit-font-smoothing: subpixel-antialiased;
-  box-shadow: 0 -2px 4px 0 rgb(0 0 0 / 10%);
-  transition: all 0.2s;
-
-  &:hover {
-    background: rgb(0 0 0 / 10%);
   }
 }
 

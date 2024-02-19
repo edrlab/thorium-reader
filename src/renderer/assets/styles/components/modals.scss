@@ -1,13 +1,5 @@
 /*
-=-=-= components/modals.css => '../partials/variables.css'
-*/
-
-/*
-@import url('../partials/variables.css');
-*/
-
-/*
-=-=-= components/modals.css
+=-=-= modals.scss
 */
 
 .modal_dialog_overlay {
@@ -31,29 +23,12 @@
   }
 }
 
-// .modal_dialog_overlay_hidden {
-//   position: fixed;
-//   z-index: 101;
-//   inset: 0;
-// }
-
 .modal_dialog {
   transform: translate(-50%, -50%);
   left: 50%;
   top: 50%;
-
-  /* min-height: 570px;
-  min-width: 776px;
-  width: calc(100vw - 100px);
-  max-width: 960px; */
   width: 776px;
-/* max-height: calc(100vh - 100px); */
-// }
-
-// .modal_dialog{
   min-height: 401px;
-
-  // min-width: 700px;
   height: fit-content;
   max-width: calc(100vw - 60px);
   max-height: calc(100vh - 60px);
@@ -75,9 +50,7 @@
       height: calc(100vh - 100px);
     }
   }
-// }
-
-// .modal_dialog {
+  
   background-color: var(--color-secondary);
   color: var(--color-primary);
 
@@ -105,15 +78,6 @@
     }
   }
 }
-
-/*
-.modal_dialog_form_wrapper {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  height: 100%;
-}
-*/
 
 .modal_dialog_body {
   flex: 1;

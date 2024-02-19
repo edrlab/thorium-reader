@@ -1,11 +1,13 @@
+/*
+=-=-= popoverDialog.scss
+*/
+
 .modal_dialog_reader {
   transform: translate(-50%, -50%);
   left: 50%;
   top: 50%;
   width: 776px;
   min-height: 401px;
-
-  // min-width: 700px;
   height: 597px;
   max-width: calc(100vw - 60px);
   max-height: calc(100vh - 60px);
@@ -168,21 +170,15 @@
     display: block;
     padding: 5px 40px 5px 5px;
     margin: 5px 0;
-
-    // @media (prefers-color-scheme: dark) {
-    //   color: #2D2D2D;
-    // }
-
+    
     &.active:not(.inert) {
       &:hover {
-        /* color: #808080 !important; */
         background-color: var(--color-light-blue);
       }
     }
   }
 
   & .chapters_content {
-    // border-left: 1px solid var(--reader-separatorColor);
     padding: 0 0 0 10px;
   }
 

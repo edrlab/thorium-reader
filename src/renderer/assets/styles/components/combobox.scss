@@ -1,8 +1,10 @@
+/*
+=-=-= combobox.scss
+*/
+
 .react_aria_ComboBox {
   color: var(--text-color);
   padding-bottom: 15px;
-
-  // border-bottom: 3px solid var(--color-light-grey);
   margin: 10px 0 20px;
   width: 100%;
   display: flex;
@@ -46,14 +48,6 @@
     padding: 0 5px 0 40px;
     vertical-align: middle;
     border: none;
-
-    /*
-    See R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE class in TSX
-
-    &[data-focused] {
-      outline: none !important;
-    }
-    */
   }
 
   .react_aria_Button {

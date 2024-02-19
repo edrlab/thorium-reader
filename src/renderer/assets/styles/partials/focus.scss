@@ -1,11 +1,4 @@
-/*
-=-=-= partials/focus.css => './mixins.css'
-*/
 @import "src/renderer/assets/styles/partials/mixin";
-
-/*
-=-=-= partials/focus.css
-*/
 
 :root *:focus {
   outline: none;

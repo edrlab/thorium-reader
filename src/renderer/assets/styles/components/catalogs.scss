@@ -1,3 +1,7 @@
+/*
+=-=-= catalogs.scss
+*/
+
 .catalog_wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -124,7 +128,7 @@
 .entryList{
     &_ul {
         list-style-type: none;
-        padding: 0;
+        padding: 10px 0 0;
         display: flex;
         flex-flow: wrap;
         margin: 0;

@@ -1,21 +1,14 @@
 /*
-=-=-= components/breadcrumb.css => '../partials/variables.css'
-*/
-
-/*
-@import url('../partials/variables.css');
-*/
-
-/*
-=-=-= components/breadcrumb.css
+=-=-= breadcrumbs.scss
 */
 
 .breadcrumb {
-  /* padding: 10px; */
   font-size: 16px;
   display: flex;
   align-items: center;
   font-weight: bold;
+  color: var(--color-blue);
+  width: calc(100% - 120px);
 
   a {
     display: flex;
@@ -37,14 +30,6 @@
     text-overflow: ellipsis;
     text-wrap: nowrap;
   }
-
-  /* color: rgb(59, 59, 59); */
-  color: var(--color-blue);
-
-  /* position: fixed;
-  top: 123px; */
-  width: calc(100% - 120px);
-  border-bottom: 1px solid var(--color-light-grey);
 
   & .button_transparency_icon {
     position: relative;

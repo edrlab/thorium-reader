@@ -1,4 +1,8 @@
 
+/*
+=-=-= alert.modals.scss
+*/
+
 .AlertDialogOverlay {
   background-color: rgb(0 0 0 / 50%);
   position: fixed;
@@ -10,8 +14,6 @@
 .AlertDialogContent {
   background-color: white;
   border-radius: 6px;
-
-  // box-shadow: hsl(206deg 22% 7% / 35%) 0 10px 38px -10px, hsl(206deg 22% 7% / 20%) 0 10px 20px -15px;
   position: fixed;
   top: 50%;
   left: 50%;
