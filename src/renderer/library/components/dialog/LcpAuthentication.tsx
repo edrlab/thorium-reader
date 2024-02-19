@@ -18,6 +18,9 @@ import * as InfoIcon from "readium-desktop/renderer/assets/icons/outline-info-24
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
 import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLink-icon.svg";
+import * as CrossIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
+import * as PassIcon from "readium-desktop/renderer/assets/icons/password-icon.svg";
+import * as LightBulbIcon from "readium-desktop/renderer/assets/icons/lightbulb-icon.svg";
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import {
     TranslatorProps, withTranslator,
@@ -27,6 +30,7 @@ import { TChangeEventOnInput } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { lcpActions } from "readium-desktop/common/redux/actions";
 import classNames from "classnames";
+import { dialogActions } from "readium-desktop/common/redux/actions";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -92,19 +96,16 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                         </div>
                     </div>
                     <div className={stylesModals.modal_dialog_body}>
-                        {
-                            typeof this.props.message === "string" ?
-                                <p>
-                                    <span>{this.props.message}</span>
-                                </p>
-                                : <></>
-                        }
                         <p>
-                            <span className={stylesModals.lcp_hint}>{__("library.lcp.hint", { hint: this.props.hint })}</span>
+                            <span className={stylesModals.lcp_hint}>
+                                <SVG ariaHidden svg={LightBulbIcon} />
+                                {__("library.lcp.hint", { hint: this.props.hint })}
+                            </span>
                         </p>
                         {/* TODO: Error message if incorrect passphrase */}
                         <div className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)}>
                             <label htmlFor="passphrase">{__("library.lcp.password")}</label>
+                            <SVG ariaHidden svg={PassIcon} />
                             <input
                                 id="passphrase"
                                 aria-label={__("library.lcp.password")}
@@ -114,6 +115,14 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                             />
                         </div>
+                        {
+                            typeof this.props.message === "string" ?
+                                <p className={stylesInputs.passphrase_error}>
+                                    <SVG ariaHidden svg={CrossIcon} />
+                                    <span>{this.props.message}.</span>
+                                </p>
+                                : <></>
+                        }
                         {
                             this.props.urlHint?.href
                                 ?
@@ -149,7 +158,9 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
                             </Dialog.Close>
                             <Dialog.Close asChild>
-                                <button type="submit" className={stylesButtons.button_primary_blue} onClick={() => this.submit()}>{__("opds.addForm.addButton")}</button>
+                                <button type="submit" className={stylesButtons.button_primary_blue} onClick={(e) => {
+                                    e.preventDefault();
+                                    this.submit()}}>{__("opds.addForm.addButton")}</button>
                             </Dialog.Close>
                         </div>
                     </div>
@@ -167,6 +178,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
             return;
         }
         this.props.unlockPublication(this.props.publicationView.identifier, this.state.password);
+        this.props.closeDialog();
     };
 }
 
@@ -180,6 +192,11 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         unlockPublication: (id: string, pass: string) => {
             dispatch(lcpActions.unlockPublicationWithPassphrase.build(id, pass));
+        },
+        closeDialog: () => {
+            dispatch(
+                dialogActions.closeRequest.build(),
+            );
         },
     };
 };

@@ -148,7 +148,7 @@
     },
     "library": {
         "lcp": {
-            "hint": "(Indice : {{- hint}})",
+            "hint": "Indice : {{- hint}}",
             "password": "Mot de passe",
             "sentence": "Cette publication a besoin d'un mot de passe : ",
             "submit": "Valider",

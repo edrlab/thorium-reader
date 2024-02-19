@@ -134,6 +134,14 @@ select {
     outline: blue solid 2px !important;
     outline-offset: -2px;
   }
+
+  svg {
+    height: 14px;
+    position: absolute;
+    left: 20px;
+    top: 17px;
+    transform: translate(-50%, -50%);
+  }
 }
 
 .form_group_wrapper {
@@ -158,4 +166,18 @@ select {
 
 .___DEBUG___COMPONENTS_INPUTS_CSS {
   display: none;
+}
+
+
+.passphrase_error {
+  color: red;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0;
+
+  svg {
+    fill: red;
+    height: 12px;
+  }
 }

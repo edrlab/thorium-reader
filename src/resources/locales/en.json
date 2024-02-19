@@ -148,7 +148,7 @@
     },
     "library": {
         "lcp": {
-            "hint": "(Hint: {{- hint}})",
+            "hint": "Hint: {{- hint}}",
             "password": "Passphrase",
             "sentence": "This publication needs an LCP passphrase to be opened: ",
             "submit": "Submit",
