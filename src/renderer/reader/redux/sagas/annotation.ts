@@ -39,8 +39,7 @@ function* annotationClick(action: readerLocalActionHighlights.click.TAction) {
 
 // focus from annotation menu
 function* annotationFocus(action: readerLocalActionAnnotations.focus.TAction) {
-    debug("annotationFocus", action);
-    debug(`annotationFocus -- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
+    debug(`annotationFocus -- action: [${JSON.stringify(action.payload, null, 4)}]`);
 
     const { payload: { uuid } } = action;
 
@@ -156,22 +155,30 @@ function* annotationEnableMode(action: readerLocalActionAnnotations.enableMode.T
 }
 
 function* annotationFocusMode(action: readerLocalActionAnnotations.focusMode.TAction) {
-    debug("annotationFocusMode");
+    debug("annotationMode (UI Edition and focus on current plus remove focus if any previous)");
     
     const { payload: {previousFocusUuid, currentFocusUuid} } = action;
 
-    if (previousFocusUuid) {
-        yield* put(readerLocalActionHighlights.handler.pop.build([{uuid: previousFocusUuid}]));
+    if (previousFocusUuid ) {
+        const modeEnabled = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.mode.enable);
+        if (!modeEnabled) {
+            debug(`annotation focus mode -- delete the highlight for previousFocusUUId=${previousFocusUuid}`);
+            yield* put(readerLocalActionHighlights.handler.pop.build([{ uuid: previousFocusUuid }]));
+        }
     }
+
     if (currentFocusUuid) {
 
         const annotations = yield* selectTyped((store: IReaderRootState) => store.reader.annotation);
         const annotationItemQueue = annotations.find(([_, {uuid}]) => uuid === currentFocusUuid);
         if (!annotationItemQueue) {
-            debug(`annotation item not found [currentFocusId=${currentFocusUuid}`);
+            debug(`ERROR: annotation item not found [currentFocusId=${currentFocusUuid}`);
         } else {
+            debug(`annotation focus mode -- highlight the new currentFocusUUId=${currentFocusUuid}`);
+
             const annotationItem = annotationItemQueue[1]; // [timestamp, data]
             const { uuid, locatorExtended: { locator: { href }, selectionInfo }, color } = annotationItem;
+
             yield* put(readerLocalActionHighlights.handler.push.build([{ uuid, href, def: { selectionInfo, color, group: "annotation" } }]));
         }
     }

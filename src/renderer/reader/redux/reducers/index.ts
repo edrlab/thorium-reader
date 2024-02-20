@@ -90,13 +90,13 @@ export const rootReducer = () => {
                     {
                         push: {
                             type: readerLocalActionAnnotations.push.ID,
-                            selector: (action) =>
-                                [(new Date()).getTime(), action.payload],
+                            selector: (action, _queue) => {
+                                return [(new Date()).getTime(), action.payload];
+                            },
                         },
                         pop: {
                             type: readerLocalActionAnnotations.pop.ID,
-                            selector: (action) =>
-                                [undefined, action.payload],
+                            selector: (action, queue) => queue.find(([_, annotationState]) => action.payload.uuid === annotationState.uuid),
                         },
                         sortFct: (a, b) => b[0] - a[0],
                         update: {
