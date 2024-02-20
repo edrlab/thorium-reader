@@ -20,6 +20,8 @@ export function build(param: IBookmarkState):
     return {
         type: ID,
         payload: param,
+        // TODO payload: param is not a fresh object duplication because the priorityQueueReducer in redux-reducers compare reference and not apply a deepComparaison or Uuid compairaison.
+        // This is definitely Not a good practice !!
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
