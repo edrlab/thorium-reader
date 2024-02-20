@@ -11,7 +11,7 @@ import { TTheme } from "../../states/theme";
 export const ID = "SET_APP_THEME";
 
 export interface Payload {
-    theme: TTheme;
+    name: TTheme;
 }
 
 export function build(theme: TTheme): Action<typeof ID, Payload> {
@@ -19,7 +19,7 @@ export function build(theme: TTheme): Action<typeof ID, Payload> {
     return {
         type: ID,
         payload: {
-            theme,
+            name: theme,
         },
     };
 }

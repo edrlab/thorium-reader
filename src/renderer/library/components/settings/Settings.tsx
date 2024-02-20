@@ -109,14 +109,14 @@ const Themes = () => {
         document.body.setAttribute("data-theme", themeChosen);
         dispatch(themeActions.setTheme.build(themeChosen));
     };
-    const selectedKey = options.find(({ value }) => value === theme);
+    const selectedKey = options.find(({ value }) => value === theme.name);
 
     return (
         <div>
             <ComboBox label={__("settings.theme.title")} items={options} selectedKey={selectedKey?.id} onSelectionChange={setTheme} svg={BrushIcon}>
                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
             </ComboBox>
-            {theme === "system" ? (
+            {theme.name === "system" ? (
                 <div className={stylesSettings.session_text}>
                     <SVG ariaHidden svg={InfoIcon} />
                     <p>{__("settings.theme.description")}</p>

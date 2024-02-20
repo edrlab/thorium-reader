@@ -8,15 +8,15 @@
 import { type Reducer } from "redux";
 
 import { themeActions } from "../actions";
-import { TTheme } from "../states/theme";
+import { ITheme } from "../states/theme";
 
 function themeReducer_(
-    state: TTheme = "system",
+    state: ITheme = {name: "system"},
     action: themeActions.setTheme.TAction,
-): TTheme {
+): ITheme {
     switch (action.type) {
         case themeActions.setTheme.ID:
-            return action.payload.theme;
+            return {name: action.payload.name};
         default:
             return state;
     }

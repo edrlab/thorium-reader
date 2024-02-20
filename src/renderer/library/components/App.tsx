@@ -86,6 +86,9 @@ export default class App extends React.Component<{}, undefined> {
 
     public async componentDidMount() {
         ensureKeyboardListenerIsInstalled();
+
+        const store = diLibraryGet("store"); // diRendererSymbolTable.store
+        document.body.setAttribute("data-theme", store.getState().theme.name);
     }
 
     public render(): React.ReactElement<{}> {

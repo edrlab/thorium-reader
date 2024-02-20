@@ -6,4 +6,8 @@
 // ==LICENSE-END==
 
 export type TTheme = "system" | "dark" | "light";
+
+export interface ITheme {
+    name: TTheme,
+}
 export const themesList: Array<TTheme> = ["system", "dark", "light"];

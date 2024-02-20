@@ -68,7 +68,9 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
     switch (data.type) {
         case winIpc.EventType.IdResponse:
             // Initialize window
+
             const preloadedState: Partial<ILibraryRootState> = {
+                theme: data.payload.theme,
                 publication: data.payload.publication,
             };
             createStoreFromDi(preloadedState)
