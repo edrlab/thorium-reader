@@ -14,7 +14,7 @@ export const ID = "READER_ANNOTATIONS_MODE_FOCUS";
 interface IPayload extends Partial<IAnnotationModeState["focus"]> {
 }
 
-export function build(param: IAnnotationModeState["focus"]):
+export function build(param: Partial<IAnnotationModeState["focus"]>):
     Action<typeof ID, IPayload> {
 
     return {

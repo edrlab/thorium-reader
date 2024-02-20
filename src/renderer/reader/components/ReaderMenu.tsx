@@ -39,7 +39,7 @@ import { Link } from "@r2-shared-js/models/publication-link";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import { ILink, TToc } from "../pdf/common/pdfReader.type";
-import { readerLocalActionBookmarks } from "../redux/actions";
+import { readerLocalActionAnnotations, readerLocalActionBookmarks } from "../redux/actions";
 import { IPopoverDialogProps, IReaderMenuProps } from "./options-values";
 import ReaderMenuSearch from "./ReaderMenuSearch";
 // import SideMenu from "./sideMenu/SideMenu";
@@ -346,6 +346,143 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
     };
     return renderLinkTree;
 };
+
+const AnnotationList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+
+    const {r2Publication, goToLocator} = props;
+    const [__] = useTranslator();
+    // const [bookmarkToUpdate, setBookmarkToUpdate] = React.useState(undefined);
+    const annotations = useSelector((state: IReaderRootState) => state.reader.annotation).map(([, v]) => v);
+    const previousFocusUuid = useSelector((state: IReaderRootState) => state.annotationControlMode.focus.previousFocusUuid);
+    const dispatch = useDispatch();
+
+    if (!r2Publication || !annotations) {
+        <></>;
+    }
+
+    const isAudioBook = isAudiobookFn(r2Publication);
+
+    // WARNING: .sort() is in-place same-array mutation! (not a new array)
+    const sortedAnnotations = annotations.sort((a, b) => {
+        // -1 : a < b
+        // 0 : a === b
+        // 1 : a > b
+        if (!a.locatorExtended.locator?.href || !b.locatorExtended.locator?.href) {
+            return -1;
+        }
+        const indexA = r2Publication.Spine.findIndex((item) => item.Href === a.locatorExtended.locator.href);
+        const indexB = r2Publication.Spine.findIndex((item) => item.Href === b.locatorExtended.locator.href);
+        if (indexA < indexB) {
+            return -1;
+        }
+        if (indexA > indexB) {
+            return 1;
+        }
+        if (typeof a.locatorExtended.locator?.locations?.progression === "number" && typeof b.locatorExtended.locator?.locations?.progression === "number") {
+            if (a.locatorExtended.locator.locations.progression < b.locatorExtended.locator.locations.progression) {
+                return -1;
+            }
+            if (a.locatorExtended.locator.locations.progression > b.locatorExtended.locator.locations.progression) {
+                return 1;
+            }
+        }
+        return 0;
+    });
+    let n = 1;
+    return sortedAnnotations.map((annotation, i) => {
+        let percent = 100;
+        let p = -1;
+        if (r2Publication.Spine?.length && annotation.locatorExtended.locator?.href) {
+            const index = r2Publication.Spine.findIndex((item) => item.Href === annotation.locatorExtended.locator.href);
+            if (index >= 0) {
+                if (typeof annotation.locatorExtended.locator?.locations?.progression === "number") {
+                    percent = 100 * ((index + annotation.locatorExtended.locator.locations.progression) / r2Publication.Spine.length);
+                } else {
+                    percent = 100 * (index / r2Publication.Spine.length);
+                }
+                percent = Math.round(percent * 100) / 100;
+                p = Math.round(percent);
+            }
+        }
+        const style = { width: `${percent}%` };
+
+        const bname = (annotation?.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText.slice(0, 20)}` : `${__("reader.navigation.annotationTitle")} ${n++}`);
+        const comment = annotation.comment || "";
+
+        const bprogression = (p >= 0 && !isAudioBook ? `${p}% ` : "");
+
+        return (<div
+            className={stylesPopoverDialog.bookmarks_line}
+            key={i}
+        >
+            {/* {bookmarkToUpdate === i &&
+                <UpdateBookmarkForm
+                    close={() => setBookmarkToUpdate(undefined)}
+                    bookmark={bookmark}
+                />
+            } */}
+            <div
+                className={stylesPopoverDialog.bookmark_infos}
+                tabIndex={0}
+                onClick={(e) => {
+                    const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                    goToLocator(annotation.locatorExtended.locator, closeNavPanel);
+                    dispatch(readerLocalActionAnnotations.focus.build(annotation));
+                }}
+                onDoubleClick={(_e) => {
+                    goToLocator(annotation.locatorExtended.locator, false);
+                    dispatch(readerLocalActionAnnotations.focus.build(annotation));
+                }}
+                onKeyPress=
+                {
+                    (e) => {
+                        if (e.key === "Enter" || e.key === "Space") {
+                            const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                            goToLocator(annotation.locatorExtended.locator, closeNavPanel);
+                            dispatch(readerLocalActionAnnotations.focus.build(annotation));
+                        }
+                    }
+                }
+            >
+                {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
+
+                <div className={stylesPopoverDialog.chapter_marker}>
+                    <p className={stylesPopoverDialog.bookmark_name} title={bname}>{bname}</p>
+                    <p>{comment}</p>
+                    <div className={stylesPopoverDialog.bookmark_actions}>
+                        <div>
+                            <SVG ariaHidden svg={BookOpenIcon} />
+                            <p>{bprogression}</p>
+                        </div>
+                        <div className={stylesPopoverDialog.bookmark_actions_buttons}>
+                            <button title={__("reader.marks.edit")}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    // setBookmarkToUpdate(i);
+                                    dispatch(readerLocalActionAnnotations.focusMode.build({currentFocusUuid: annotations[i].uuid, previousFocusUuid, editionEnable: true}));
+                                    }
+                                }>
+                                <SVG ariaHidden={true} svg={EditIcon} />
+                            </button>
+                            <button title={__("reader.marks.delete")}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    dispatch(readerLocalActionAnnotations.pop.build(annotations[i]));
+                                }}>
+                                <SVG ariaHidden={true} svg={DeleteIcon} />
+                            </button>
+                        </div>
+                    </div>
+                    <div className={stylesPopoverDialog.gauge}>
+                        <div className={stylesPopoverDialog.fill} style={style}></div>
+                    </div>
+                </div>
+            </div>
+        </div>);
+    },
+    );
+};
+
 
 const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
@@ -783,6 +920,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const searchEnable = useSelector((state: IReaderRootState) => state.search.enable);
     const searchText = useSelector((state: IReaderRootState) => state.search.textSearch);
     const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
+    const annotations = useSelector((state: IReaderRootState) => state.reader.annotation).map(([, v]) => v);
 
     const prevValue = React.useRef<number>();
 
@@ -914,6 +1052,16 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         svg: TargetIcon,
     };
 
+    const AnnotationTrigger =
+        <Tabs.Trigger value="tab-annotation" key={"tab-annotation"} data-value={"tab-annotation"} disabled={!annotations || annotations.length === 0}>
+            <SVG ariaHidden svg={BookmarkIcon} />
+            <h3>{__("reader.marks.annotations")}</h3>
+        </Tabs.Trigger>;
+    const optionAnnotationItem = {
+        id: 2, value: "tab-annotation", name: __("reader.marks.annotations"), disabled: !bookmarks || bookmarks.length === 0,
+        svg: BookmarkIcon,
+    };
+
     const Separator =
         <span key={"separator"} style={{ borderBottom: "1px solid var(--color-medium-grey)", width: "80%", margin: "0 10%" }}></span>;
 
@@ -928,6 +1076,8 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     sectionsArray.push(Separator);
     sectionsArray.push(BookmarksTrigger);
     options.push(optionBookmarkItem);
+    sectionsArray.push(AnnotationTrigger);
+    options.push(optionAnnotationItem);
 
     const optionSelected = options.find(({ value }) => value === tabValue)?.id || 0;
 
@@ -1025,6 +1175,13 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         <TabTitle title={__("reader.marks.bookmarks")} />
                         <div className={stylesSettings.settings_tab}>
                             <BookmarkList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} />
+                        </div>
+                    </Tabs.Content>
+
+                    <Tabs.Content value="tab-annotation" tabIndex={-1}>
+                        <TabTitle title={__("reader.marks.annotations")} />
+                        <div className={stylesSettings.settings_tab}>
+                            <AnnotationList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} />
                         </div>
                     </Tabs.Content>
 

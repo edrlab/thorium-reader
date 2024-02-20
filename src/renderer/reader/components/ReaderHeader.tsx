@@ -34,7 +34,7 @@ import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_
 import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
 import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreen-icon.svg";
 import * as ExitFullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreenExit-icon.svg";
-import * as FloppyDiskIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
+// import * as FloppyDiskIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
 // import * as ChevronUpIcon from "readium-desktop/renderer/assets/icons/chevron-up.svg";
 // import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
@@ -66,6 +66,8 @@ import { ReaderSettings } from "./ReaderSettings";
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+import { readerLocalActionAnnotations } from "../redux/actions";
+import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -152,7 +154,6 @@ interface IState {
     divinaSoundEnabled: boolean;
     fxlZoomPercent: number;
     forceTTS: boolean;
-    annotationColor: string;
 }
 
 export class ReaderHeader extends React.Component<IProps, IState> {
@@ -183,7 +184,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             divinaSoundEnabled: false,
             fxlZoomPercent: 0,
             forceTTS: false,
-            annotationColor: "#008b02",
         };
 
         this.timerFXLZoomDebounce = undefined;
@@ -369,18 +369,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
         const useMO = !this.state.forceTTS && this.props.publicationHasMediaOverlays;
 
-        const handleColorChangeComplete = (color: any) => {
-            this.setState({ annotationColor: color.hex });
-          };
-
-        const handleFormSubmit = (event: any) => {
-            event.preventDefault();
-            const formData = {
-                addNote: event.target.addNote.value,
-                newColor: this.state.annotationColor,
-            };
-            console.log(formData);
-        };
+        let annotationItem: IAnnotationState | undefined = undefined;
+        if (this.props.annotationCurrentFocusUUID) {
+            const annotationItemQueueState = this.props.annotationsDataArray.find(([_, annotationState]) => annotationState.uuid === this.props.annotationCurrentFocusUUID);
+            if (annotationItemQueueState) {
+                annotationItem = annotationItemQueueState[1]; 
+            }
+        }
 
         const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
         SelectRef.displayName = "ComboBox";
@@ -845,46 +840,88 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 <SVG ariaHidden={true} svg={RemoveBookMarkIcon} className={classNames(stylesReaderHeader.bookmarkRemove, this.props.isOnBookmark ? stylesReaderHeader.active_svg : "")} />
                             </label>
                         </li>
-                        <li>
 
-                            <Popover.Root>
-                                <Popover.Trigger asChild>
-                                    <button className={classNames(stylesReader.menu_button, stylesReaderHeader.annotationsIcon)}>
-                                        <SVG ariaHidden svg={AnnotationsIcon} />
-                                    </button>
-                                </Popover.Trigger>
-                                <Popover.Portal>
-                                    <Popover.Content sideOffset={this.props.isOnSearch ? 50 : 5} align="end" >
-                                        <form
-                                            className={stylesReader.annotation_form}
-                                            onSubmit={handleFormSubmit}
-                                        >
-                                            <div>
-                                                <label>{__("reader.annotations.highlight")}</label>
-                                                <GithubPicker
-                                                    colors={["#B80000", "#DB3E00", "#FCCB00", "#008B02", "#006B76", "#1273DE", "#004DCF", "#5300EB"]}
-                                                    onChangeComplete={handleColorChangeComplete}
-                                                    triangle="hide"
-                                                />
-                                            </div>
-                                            <div className={stylesReader.annotation_form_textarea_container}>
-                                                <label htmlFor="addNote">{__("reader.annotations.addNote")}</label>
-                                                <textarea id="addNote" name="addNote" className={stylesReader.annotation_form_textarea}></textarea>
-                                                <div className={stylesReader.annotation_form_textarea_buttons}>
-                                                    <Popover.Close className={stylesButtons.button_secondary_blue} aria-label="Cancel">Cancel</Popover.Close>
-                                                    <button type="submit" className={stylesButtons.button_primary_blue}>
-                                                        <SVG ariaHidden svg={FloppyDiskIcon} />
-                                                        Save
-                                                    </button>
+                        <Popover.Root open={this.props.isAnnotationEditionFocusEnabled && !!annotationItem} onOpenChange={(open) => {
+                            if (open === false) {
+                                setTimeout(() => this.props.closeAnnotationEditionMode(this.props.annotationCurrentFocusUUID), 1); // trigger input onChange before the popover trigger
+                            }
+                        }}>
+                            <Popover.Trigger asChild>
+                                <li
+                                    {...(this.props.isAnnotationModeEnabled &&
+                                        { style: { backgroundColor: "var(--color-blue" } })}
+                                >
+                                    <input
+                                        id="annotationButton"
+                                        className={stylesReader.bookmarkButton}
+                                        type="checkbox"
+                                        checked={this.props.isAnnotationModeEnabled}
+                                        onChange={() => {
+                                            if (this.props.isAnnotationEditionFocusEnabled) {
+                                                // nothing
+                                            } else {
+                                                this.props.triggerAnnotationBtn();
+                                            }
+                                        }}
+                                    // aria-label={__("reader.navigation.bookmarkTitle")}
+                                    // title={__("reader.navigation.bookmarkTitle")}
+                                    />
+                                    {
+                                        // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing
+                                    }
+                                    <label
+                                        htmlFor="annotationButton"
+                                        aria-hidden="true"
+                                        className={stylesReader.menu_button}
+                                        id="annotationLabel"
+                                    >
+                                        <SVG ariaHidden svg={AnnotationsIcon} className={classNames(stylesReaderHeader.annotationsIcon)} />
+                                    </label>
+                                </li>
+                            </Popover.Trigger>
+                            <Popover.Portal>
+                                <Popover.Content sideOffset={this.props.isOnSearch ? 50 : 5} align="end" style={{ zIndex: 101 }}
+                                        onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
+                                        onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}>
+                                    <form
+                                        className={stylesReader.annotation_form}
+                                        onSubmit={(e) => {
+                                            e.preventDefault();
+                                            const txt = (e.target as any)?.addNote?.value || "";
+                                            this.props.saveAnnotation({ ...annotationItem, comment: txt });
+                                        }}
+                                    >
+                                        {annotationItem?.locatorExtended?.selectionInfo?.cleanText ?
+                                            <>
+                                                <div>
+                                                    <label>{__("reader.annotations.highlight")}</label>
+                                                    <p>Text : {annotationItem.locatorExtended.selectionInfo.cleanText.slice(0, 10)} ...</p>
+                                                    <GithubPicker
+                                                        colors={["#B80000", "#DB3E00", "#FCCB00", "#008B02", "#006B76", "#1273DE", "#004DCF", "#5300EB"]}
+                                                        color={{ r: annotationItem.color.red, g: annotationItem.color.green, b: annotationItem.color.blue }}
+                                                        onChangeComplete={(colorValue) => {
+                                                            this.props.saveAnnotation({ ...annotationItem, color: { blue: colorValue.rgb.b, green: colorValue.rgb.g, red: colorValue.rgb.r } });
+                                                        }}
+                                                        triangle="hide"
+                                                    />
                                                 </div>
-                                            </div>
-                                        </form>
-                                        <Popover.Arrow style={{ fill: "var(--color-light-grey)" }} width={15} height={10} />
-                                    </Popover.Content>
-                                </Popover.Portal>
-                            </Popover.Root>
+                                                <div className={stylesReader.annotation_form_textarea_container}>
+                                                    <label htmlFor="addNote">{__("reader.annotations.addNote")}</label>
+                                                    <textarea id="addNote" name="addNote" className={stylesReader.annotation_form_textarea} defaultValue={annotationItem.comment}></textarea>
+                                                    <div className={stylesReader.annotation_form_textarea_buttons}>
+                                                        <Popover.Close className={stylesButtons.button_secondary_blue} aria-label="cancel">Cancel</Popover.Close>
+                                                        <Popover.Close className={stylesButtons.button_secondary_blue} aria-label="delete" onClick={() => this.props.deleteAnnotation(annotationItem)}>Delete</Popover.Close>
+                                                        <Popover.Close type="submit" className={stylesButtons.button_secondary_blue} aria-label="save" onClick={() => this.props.saveAnnotation(annotationItem)}>Save</Popover.Close>
+                                                    </div>
+                                                </div>
+                                            </>
+                                            : <p>Error to display this annotation !!</p>}
+                                    </form>
+                                    <Popover.Arrow style={{ fill: "var(--color-light-grey)" }} width={15} height={10} />
+                                </Popover.Content>
+                            </Popover.Portal>
+                        </Popover.Root>
 
-                        </li>
 
                         <li
                             {...(this.props.menuOpen &&
@@ -1102,11 +1139,28 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         keyboardShortcuts: state.keyboard.shortcuts,
+        isAnnotationModeEnabled: state.annotationControlMode.mode.enable,
+        isAnnotationEditionFocusEnabled: state.annotationControlMode.focus.editionEnable,
+        annotationCurrentFocusUUID: state.annotationControlMode.focus.currentFocusUuid,
+        annotationsDataArray: state.reader.annotation,
     };
 };
 
-const mapDispatchToProps = (_dispatch: TDispatch, _props: IBaseProps) => {
-    return {};
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
+    return {
+        triggerAnnotationBtn: () => {
+            dispatch(readerLocalActionAnnotations.trigger.build());
+        },
+        closeAnnotationEditionMode: (currentFocusUuid: string) => {
+            dispatch(readerLocalActionAnnotations.focusMode.build({editionEnable: false, previousFocusUuid: currentFocusUuid, currentFocusUuid: ""}));
+        },
+        deleteAnnotation: (item: IAnnotationState) => {
+            dispatch(readerLocalActionAnnotations.pop.build(item));
+        },
+        saveAnnotation: (item: IAnnotationState) => {
+            dispatch(readerLocalActionAnnotations.update.build(item));
+        },
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(ReaderHeader));

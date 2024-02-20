@@ -309,6 +309,7 @@
         "navigation": {
             "backHomeTitle": "back to the bookshelf",
             "bookmarkTitle": "bookmark",
+            "annotationTitle": "annotation",
             "currentPage": "Current page: {{- current}}",
             "currentPageTotal": "Current page: {{- current}}/{{- total}}",
             "detachWindowTitle": "show library / bookshelf window",

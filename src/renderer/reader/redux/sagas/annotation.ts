@@ -14,10 +14,11 @@ import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalA
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
+// B80000
 const DEFAULT_COLOR = {
-    red: 109,
-    green: 163,
-    blue: 200,
+    red: 184,
+    green: 0,
+    blue: 0,
 };
 
 // Logger
@@ -44,15 +45,26 @@ function* annotationFocus(action: readerLocalActionAnnotations.focus.TAction) {
     const { payload: { uuid } } = action;
 
     const { currentFocusUuid } = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.focus);
-    yield* put(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: true}));
+    yield* put(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: false}));
 }
 
 function* annotationUpdate(action: readerLocalActionAnnotations.update.TAction) {
     debug(`annotationUpdate-- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
-    const {payload: {uuid, locatorExtended: {locator: {href}, selectionInfo}, color}} = action;
+    const {payload: {uuid, locatorExtended: {locator: {href}, selectionInfo}, color: newColor}} = action;
 
-    yield* put(readerLocalActionHighlights.handler.pop.build([{uuid}]));
-    yield* put(readerLocalActionHighlights.handler.push.build([{ uuid, href, def: { selectionInfo, color, group: "annotation" } }]));
+    const item = yield* selectTyped((store: IReaderRootState) => store.reader.highlight.handler.find(([_, highlightState]) => highlightState.uuid === uuid));
+
+    if (item) {
+        const { def: { color: previousColor } } = item[1];
+
+        if (previousColor.blue !== newColor.blue || previousColor.green !== newColor.green || previousColor.red !== newColor.red) {
+            yield* put(readerLocalActionHighlights.handler.pop.build([{ uuid }]));
+            yield* put(readerLocalActionHighlights.handler.push.build([{ uuid, href, def: { selectionInfo, color: newColor, group: "annotation" } }]));
+        }
+    } else {
+        // error sync between hightlight data array and annotation array
+        yield* put(readerLocalActionHighlights.handler.pop.build([{ uuid }]));
+    }
 }
 
 function* annotationPush(action: readerLocalActionAnnotations.push.TAction) {
@@ -84,8 +96,8 @@ function* createAnnotation(locatorExtended: readerLocalActionSetLocator.Payload)
 }
 
 function* newLocator(action: readerLocalActionSetLocator.TAction): SagaGenerator<void> {
-    const def = action.payload;
-    const { selectionInfo, selectionIsNew } = def;
+    const locatorExtended = action.payload;
+    const { selectionInfo, selectionIsNew } = locatorExtended;
 
     if (!selectionInfo || !selectionIsNew) {
         return;
@@ -98,7 +110,7 @@ function* newLocator(action: readerLocalActionSetLocator.TAction): SagaGenerator
     if (modeEnabled) {
 
         debug("annotation mode enabled [creation of the annotation]");
-        yield* call(createAnnotation, def);
+        yield* call(createAnnotation, locatorExtended);
         return;
     }
     debug("annotation mode not enabled, waiting the click on annotation button or just receive a new locator position");
@@ -113,7 +125,7 @@ function* newLocator(action: readerLocalActionSetLocator.TAction): SagaGenerator
         yield* call(newLocator, newLocatorAction);
     } else if (annotationBtnTriggerRequestedAction) {
         debug("annotation trigger btn requested, creation of the annotation");
-        yield* call(createAnnotation, def);
+        yield* call(createAnnotation, locatorExtended);
     } else {
         debug("ERROR: yield RACE not worked !!?!!");
     }

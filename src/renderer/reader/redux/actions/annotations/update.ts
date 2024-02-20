@@ -19,7 +19,7 @@ export function build(param: IAnnotationState):
 
     return {
         type: ID,
-        payload: {...param},
+        payload: param,
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
