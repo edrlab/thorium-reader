@@ -70,6 +70,7 @@ button {
 
 .button_primary {
   @include button_primary;
+
   padding: 10px 15px;
 
   &_small {

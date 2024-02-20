@@ -160,7 +160,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                             <Dialog.Close asChild>
                                 <button type="submit" className={stylesButtons.button_primary_blue} onClick={(e) => {
                                     e.preventDefault();
-                                    this.submit()}}>{__("opds.addForm.addButton")}</button>
+                                    this.submit();}}>{__("opds.addForm.addButton")}</button>
                             </Dialog.Close>
                         </div>
                     </div>
