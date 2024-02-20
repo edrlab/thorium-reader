@@ -66,6 +66,32 @@ export async function search(searchInput: string, data: ISearchDocument): Promis
                 cdataNode.parentNode.removeChild(cdataNode);
             }
         }
+
+        const sub = data.xml.substring(0, 400);
+        if (/lang\s*=\s*["']ja/.test(sub)) {
+            const iter = xmlDom.createNodeIterator(
+                xmlDom.body,
+                NodeFilter.SHOW_ELEMENT,
+                {
+                    acceptNode: (node) => {
+                        const lower = node.nodeName.toLowerCase();
+                        if ((lower === "rt" || lower === "rp") && node.parentElement?.nodeName.toLowerCase() === "ruby") {
+
+                            return NodeFilter.FILTER_ACCEPT;
+                        }
+                        return NodeFilter.FILTER_REJECT;
+                    },
+                },
+            );
+            let rubyNode: Node | undefined;
+            while (rubyNode = iter.nextNode()) {
+                if (rubyNode.parentNode) {
+                    // console.log("removed: " + rubyNode.textContent)
+                    rubyNode.parentNode.removeChild(rubyNode);
+                }
+            }
+        }
+
         return searchDocDomSeek(searchInput, xmlDom, data.href);
     } catch (e) {
         console.error("DOM Parser error", e);
