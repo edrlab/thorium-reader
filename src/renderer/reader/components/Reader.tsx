@@ -2850,7 +2850,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         dispatchReaderTSXMountedAndPublicationIntoViewportLoaded: () => {
             dispatch(winActions.initSuccess.build());
-        }
+        },
     };
 };
 
