@@ -163,6 +163,7 @@
 }
 
 .cell {
+
     a {
         cursor: pointer;
     }
@@ -212,6 +213,10 @@
         height: 100px;
         margin-right: 2px;
 
+        &:has(.button_nav_primary) {
+            justify-content: center;
+        }
+
         &::-webkit-scrollbar {
             width: 5px;
 
@@ -238,8 +243,7 @@
         padding: 5px;
         display: flex;
         flex-flow: column nowrap;
-        align-items: start;
-        justify-content: start;
+        justify-content: start!important;
         gap: 5px;
         max-height: 90px;
 

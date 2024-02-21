@@ -38,10 +38,10 @@ class GridTagButton extends React.Component<IProps, undefined> {
                 to={{
                     ...this.props.location,
                     pathname: "/library",
-                    search: `?focus=tags&value=${encodeURIComponent_RFC3986(this.props.name)}`,
+                    search: `?focus=search&value=${encodeURIComponent_RFC3986(this.props.name)}`,
                 }}
                 // state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                state = {{displayType: DisplayType.List}}
+                state = {{displayType: DisplayType.Grid}}
                 className={stylesTags.tag}
             >
                 {this.props.name}

@@ -19,8 +19,8 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 
 import AboutThoriumButton from "./AboutThoriumButton";
 import NoPublicationInfo from "./NoPublicationInfo";
-import SortMenu from "./SortMenu";
-import TagLayout from "./TagLayout";
+// import SortMenu from "./SortMenu";
+// import TagLayout from "./TagLayout";
 import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 
@@ -137,7 +137,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
                                 </div>,
                     )
                 }
-                {
+                {/* {
                     this.state.tabTags.length > 0
                         ? <TagLayout
                             tags={this.state.tabTags}
@@ -148,7 +148,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
                                 />}
                         />
                         : <></>
-                }
+                } */}
                 {
                     this.state.tabTags.length === 0 && catalogEntriesIsEmpty
                         ? <NoPublicationInfo />

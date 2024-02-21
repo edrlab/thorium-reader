@@ -120,3 +120,72 @@
     }
   }
 }
+
+
+.allPub_tagsTrigger {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border-radius: 6px;
+  padding: 5px;
+
+  svg {
+    width: 24px;
+    color: var(--color-blue);
+    fill: var(--color-blue);
+  }
+}
+
+.Popover_filter_container {
+  background-color: var(--color-secondary);
+  width: 500px;
+  border-radius: 6px;
+  border: 1px solid var(--color-medium-grey);
+  box-shadow: 0 3px 10px 5px var(--color-medium-grey);
+  padding: 20px 0 0;
+  overflow: scroll;
+  max-height: 50dvh;
+  width: fit-content;
+
+  > div {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px 10px 0;
+    width: 100%;
+    padding: 10px 0 0;
+
+    .tag_item {
+      font-size: 14px;
+      width: 100%;
+      border-bottom: 1px solid var(--color-medium-grey);
+      width: 100%;
+      padding: 5px 10px 5px 5px;
+      margin: 0;
+
+      &:hover {
+        cursor: pointer;
+        background-color: var(--color-light-blue);
+      }
+    }
+  }
+
+  .resetFilter {
+    margin: auto;
+
+    svg {
+      width: 20px;
+      color: var(--color-blue);
+      fill: var(--color-blue);
+    }
+
+    &:hover svg {
+      color: red;
+      fill: red;
+    }
+  }
+}

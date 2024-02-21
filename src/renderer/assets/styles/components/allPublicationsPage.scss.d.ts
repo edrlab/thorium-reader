@@ -9,6 +9,7 @@ export declare const allBooks_header_pagination_container: string;
 export declare const allBooks_header_pagination_opds_currentPage: string;
 export declare const allBooks_header_pagination_select: string;
 export declare const allBooks_header_pagination_title: string;
+export declare const button_nav_primary: string;
 export declare const cell: string;
 export declare const cell_bookTitle: string;
 export declare const cell_coverImg: string;

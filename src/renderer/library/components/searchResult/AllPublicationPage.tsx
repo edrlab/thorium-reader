@@ -87,7 +87,11 @@ import * as Popover from "@radix-ui/react-popover";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
 import { useSearchParams } from "react-router-dom";
-
+import * as FilterIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
+import * as DeletFilter from "readium-desktop/renderer/assets/icons/deleteFilter-icon.svg";
+import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
+// import GridTagButton from "../catalog/GridTagButton";
+ 
 // import {
 //     formatContributorToString,
 // } from "readium-desktop/renderer/common/logics/formatContributor";
@@ -111,6 +115,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 interface IState {
     publicationViews: PublicationView[] | undefined;
     accessibilitySupportEnabled: boolean;
+    tags: string[];
 }
 
 export class AllPublicationPage extends React.Component<IProps, IState> {
@@ -126,6 +131,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
         this.state = {
             publicationViews: undefined,
             accessibilitySupportEnabled: false,
+            tags: this.props.tags ? this.props.tags.slice() : [],
         };
     }
 
@@ -217,6 +223,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
                             displayPublicationInfo={this.props.displayPublicationInfo}
                             openReader={this.props.openReader}
                             focusInputRef={this.focusInputRef}
+                            tags={this.props.tags}
                         />
                         // (displayType === DisplayType.Grid ?
                         //     <GridView normalOrOpdsPublicationViews={this.state.publicationViews} /> :
@@ -305,6 +312,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
     keyboardShortcuts: state.keyboard.shortcuts,
+    tags: state.publication.tag,
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
@@ -1203,7 +1211,9 @@ interface ITableCellProps_TableView {
     focusInputRef: React.RefObject<HTMLInputElement>;
     location: Location;
     accessibilitySupportEnabled: boolean;
+    tags: string[];
 }
+
 export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Common> = (props) => {
 
     const [showColumnFilters, setShowColumnFilters] = React.useState(true);
@@ -1762,37 +1772,75 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     //     ))}
     //     </select>
 
-
-
     return (
         <>
             <div>
                 <h2 className={stylesPublication.allBooks_header}>{__("catalog.allBooks")}</h2>
                 <div className={stylesPublication.allBooks_header_navigation}>
-                    <CellGlobalFilter
-                        accessibilitySupportEnabled={props.accessibilitySupportEnabled}
-                        preGlobalFilteredRows={tableInstance.preGlobalFilteredRows}
-                        globalFilteredRows={tableInstance.globalFilteredRows}
-                        globalFilter={tableInstance.state.globalFilter}
-                        setGlobalFilter={tableInstance.setGlobalFilter}
-                        __={props.__}
-                        translator={props.translator}
-                        displayType={props.displayType}
-                        focusInputRef={props.focusInputRef}
+                    <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
+                        <CellGlobalFilter
+                            accessibilitySupportEnabled={props.accessibilitySupportEnabled}
+                            preGlobalFilteredRows={tableInstance.preGlobalFilteredRows}
+                            globalFilteredRows={tableInstance.globalFilteredRows}
+                            globalFilter={tableInstance.state.globalFilter}
+                            setGlobalFilter={tableInstance.setGlobalFilter}
+                            __={props.__}
+                            translator={props.translator}
+                            displayType={props.displayType}
+                            focusInputRef={props.focusInputRef}
 
-                        setShowColumnFilters={(show: boolean) => {
-                            const currentShow = showColumnFilters;
-                            setShowColumnFilters(show);
-                            setTimeout(() => {
-                                if (currentShow && !show) {
-                                    for (const col of tableInstance.allColumns) {
-                                        tableInstance.setFilter(col.id, "");
+                            setShowColumnFilters={(show: boolean) => {
+                                const currentShow = showColumnFilters;
+                                setShowColumnFilters(show);
+                                setTimeout(() => {
+                                    if (currentShow && !show) {
+                                        for (const col of tableInstance.allColumns) {
+                                            tableInstance.setFilter(col.id, "");
+                                        }
                                     }
-                                }
-                            }, 200);
-                        }}
-                    />
-                    <div style={{position: "relative"}}>
+                                }, 200);
+                            }}
+                        />
+                        {/* TODO : Filter */}
+                        {
+                            props.tags.length > 0
+                                ?
+                                <Popover.Root>
+                                    <Popover.Trigger asChild>
+                                        <button className={stylesTags.allPub_tagsTrigger}>
+                                            <SVG ariaHidden={true} svg={FilterIcon} />
+                                        </button>
+                                    </Popover.Trigger>
+                                    <Popover.Portal>
+                                        <Popover.Content sideOffset={5} className={stylesTags.Popover_filter_container}>
+                                            <button
+                                                className={stylesTags.resetFilter}
+                                                onClick={() => tableInstance.setGlobalFilter("")}
+                                                title="Reset Filter"
+                                            >
+                                                <SVG ariaHidden svg={DeletFilter} />
+                                            </button>
+                                            <div>
+                                                {props.tags.map((tag, i: number) => {
+                                                    return (
+                                                        <span
+                                                            key={i + 1000}
+                                                            onClick={() => tableInstance.setGlobalFilter(tag)}
+                                                            className={stylesTags.tag_item}
+                                                        >
+                                                            {tag}
+                                                        </span>
+                                                    );
+                                                })}
+                                            </div>
+                                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                                        </Popover.Content>
+                                    </Popover.Portal>
+                                </Popover.Root>
+                                : <></>
+                        }
+                    </div>
+                    <div style={{ position: "relative" }}>
                         <label htmlFor="pageSelect" className={stylesPublication.allBooks_header_pagination_title}>{__("catalog.numberOfPages")}</label>
                         <div className={stylesPublication.allBooks_header_pagination_container}>
                             <button
