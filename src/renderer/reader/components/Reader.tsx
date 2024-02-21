@@ -95,12 +95,7 @@ import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-a
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
-
-import {
-    highlightsCreate,
-} from "@r2-navigator-js/electron/renderer";
-
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import { winActions } from "readium-desktop/renderer/common/redux/actions";
 
 // main process code!
 // thoriumhttps
@@ -540,6 +535,8 @@ class Reader extends React.Component<IProps, IState> {
 
         // sets state visibleBookmarkList
         await this.updateVisibleBookmarks();
+
+        this.props.dispatchReaderTSXMountedAndPublicationIntoViewportLoaded();
     }
 
     public async componentDidUpdate(oldProps: IProps, oldState: IState) {
@@ -1051,24 +1048,24 @@ class Reader extends React.Component<IProps, IState> {
             this.onKeyboardAudioStop);
 
         // TODO HIGHLIGHTS-ANNOTATIONS: just for testing!
-        if (IS_DEV) {
-          registerKeyboardListener(
-              true, // listen for key up (not key down)
-              this.props.keyboardShortcuts.AnnotationsTest1,
-              this.onKeyboardAnnotationsTest1);
-          registerKeyboardListener(
-              true, // listen for key up (not key down)
-              this.props.keyboardShortcuts.AnnotationsTest2,
-              this.onKeyboardAnnotationsTest2);
-          registerKeyboardListener(
-              true, // listen for key up (not key down)
-              this.props.keyboardShortcuts.AnnotationsTest3,
-              this.onKeyboardAnnotationsTest3);
-          registerKeyboardListener(
-              true, // listen for key up (not key down)
-              this.props.keyboardShortcuts.AnnotationsTest4,
-              this.onKeyboardAnnotationsTest4);
-        }
+        // if (IS_DEV) {
+        //   registerKeyboardListener(
+        //       true, // listen for key up (not key down)
+        //       this.props.keyboardShortcuts.AnnotationsTest1,
+        //       this.onKeyboardAnnotationsTest1);
+        //   registerKeyboardListener(
+        //       true, // listen for key up (not key down)
+        //       this.props.keyboardShortcuts.AnnotationsTest2,
+        //       this.onKeyboardAnnotationsTest2);
+        //   registerKeyboardListener(
+        //       true, // listen for key up (not key down)
+        //       this.props.keyboardShortcuts.AnnotationsTest3,
+        //       this.onKeyboardAnnotationsTest3);
+        //   registerKeyboardListener(
+        //       true, // listen for key up (not key down)
+        //       this.props.keyboardShortcuts.AnnotationsTest4,
+        //       this.onKeyboardAnnotationsTest4);
+        // }
     }
 
     private unregisterAllKeyboardListeners() {
@@ -1098,12 +1095,12 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardAudioStop);
 
         // TODO HIGHLIGHTS-ANNOTATIONS: just for testing!
-        if (IS_DEV) {
-            unregisterKeyboardListener(this.onKeyboardAnnotationsTest1);
-            unregisterKeyboardListener(this.onKeyboardAnnotationsTest2);
-            unregisterKeyboardListener(this.onKeyboardAnnotationsTest3);
-            unregisterKeyboardListener(this.onKeyboardAnnotationsTest4);
-        }
+        // if (IS_DEV) {
+        //     unregisterKeyboardListener(this.onKeyboardAnnotationsTest1);
+        //     unregisterKeyboardListener(this.onKeyboardAnnotationsTest2);
+        //     unregisterKeyboardListener(this.onKeyboardAnnotationsTest3);
+        //     unregisterKeyboardListener(this.onKeyboardAnnotationsTest4);
+        // }
     }
 
     private handleLinkLocator = (locator: R2Locator, isFromOnPopState = false) => {
@@ -1133,83 +1130,83 @@ class Reader extends React.Component<IProps, IState> {
     };
 
     // TODO HIGHLIGHTS-ANNOTATIONS: just for testing!
-    private onKeyboardAnnotationsTest = (type: number) => {
+    // private onKeyboardAnnotationsTest = (type: number) => {
 
-        if (IS_DEV) {
-            if (this.props.isDivina || this.props.isPdf) {
-                return;
-            }
+    //     if (IS_DEV) {
+    //         if (this.props.isDivina || this.props.isPdf) {
+    //             return;
+    //         }
 
-            // navigator loc has updated selectionInfo (may have been invalidated / cleared since last notified here ... so takes precedence over local state)
-            const loc = getCurrentReadingLocation() || this.state.currentLocation;
+    //         // navigator loc has updated selectionInfo (may have been invalidated / cleared since last notified here ... so takes precedence over local state)
+    //         const loc = getCurrentReadingLocation() || this.state.currentLocation;
 
-            if (!loc?.locator?.href || !loc?.selectionInfo) { // loc?.selectionIsNew
-                return;
-            }
+    //         if (!loc?.locator?.href || !loc?.selectionInfo) { // loc?.selectionIsNew
+    //             return;
+    //         }
 
-            // TODO: define a preset of colours that work well in both light (aka. neutral) and dark (aka.night) modes.
-            // CSS mix-blend-mode is multiply for light, hard-light for dark.
-            const colors = [{
-                red: 210,
-                green: 137,
-                blue: 156,
-            },
-            {
-                red: 6,
-                green: 202,
-                blue: 56,
-            },
-            {
-                red: 57,
-                green: 153,
-                blue: 208,
-            },
-            {
-                red: 213,
-                green: 180,
-                blue: 120,
-            },
-            {
-                red: 61,
-                green: 181,
-                blue: 172,
-            }];
-            const color = false ? colors[Math.floor(Math.random() * colors.length)] : {
-                red: Math.floor(Math.random() * 256),
-                green: Math.floor(Math.random() * 256),
-                blue: Math.floor(Math.random() * 256),
-            };
-            console.log("DEV HIGHLIGHT CREATE: " + type, JSON.stringify(color, null, 4));
+    //         // TODO: define a preset of colours that work well in both light (aka. neutral) and dark (aka.night) modes.
+    //         // CSS mix-blend-mode is multiply for light, hard-light for dark.
+    //         const colors = [{
+    //             red: 210,
+    //             green: 137,
+    //             blue: 156,
+    //         },
+    //         {
+    //             red: 6,
+    //             green: 202,
+    //             blue: 56,
+    //         },
+    //         {
+    //             red: 57,
+    //             green: 153,
+    //             blue: 208,
+    //         },
+    //         {
+    //             red: 213,
+    //             green: 180,
+    //             blue: 120,
+    //         },
+    //         {
+    //             red: 61,
+    //             green: 181,
+    //             blue: 172,
+    //         }];
+    //         const color = false ? colors[Math.floor(Math.random() * colors.length)] : {
+    //             red: Math.floor(Math.random() * 256),
+    //             green: Math.floor(Math.random() * 256),
+    //             blue: Math.floor(Math.random() * 256),
+    //         };
+    //         console.log("DEV HIGHLIGHT CREATE: " + type, JSON.stringify(color, null, 4));
 
-            highlightsCreate(loc.locator.href, [
-                {
-                    selectionInfo: loc.selectionInfo,
-                    // range: Range,
+    //         highlightsCreate(loc.locator.href, [
+    //             {
+    //                 selectionInfo: loc.selectionInfo,
+    //                 // range: Range,
 
-                    color,
+    //                 color,
 
-                    // 0 is full background (default), 1 is underline, 2 is strikethrough, 3 is outline
-                    drawType: type,
+    //                 // 0 is full background (default), 1 is underline, 2 is strikethrough, 3 is outline
+    //                 drawType: type,
 
-                    expand: 3,
+    //                 expand: 3,
 
-                    group: "annotations",
-                },
-            ]);
-        }
-    };
-    private onKeyboardAnnotationsTest1 = () => {
-        this.onKeyboardAnnotationsTest(0);
-    };
-    private onKeyboardAnnotationsTest2 = () => {
-        this.onKeyboardAnnotationsTest(1);
-    };
-    private onKeyboardAnnotationsTest3 = () => {
-        this.onKeyboardAnnotationsTest(2);
-    };
-    private onKeyboardAnnotationsTest4 = () => {
-        this.onKeyboardAnnotationsTest(3);
-    };
+    //                 group: "annotations",
+    //             },
+    //         ]);
+    //     }
+    // };
+    // private onKeyboardAnnotationsTest1 = () => {
+    //     this.onKeyboardAnnotationsTest(0);
+    // };
+    // private onKeyboardAnnotationsTest2 = () => {
+    //     this.onKeyboardAnnotationsTest(1);
+    // };
+    // private onKeyboardAnnotationsTest3 = () => {
+    //     this.onKeyboardAnnotationsTest(2);
+    // };
+    // private onKeyboardAnnotationsTest4 = () => {
+    //     this.onKeyboardAnnotationsTest(3);
+    // };
 
     private onKeyboardAudioStop = () => {
         if (!this.state.shortcutEnable) {
@@ -2851,6 +2848,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         clipboardCopy: (publicationIdentifier: string, clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => {
             dispatch(readerActions.clipboardCopy.build(publicationIdentifier, clipboardData));
         },
+        dispatchReaderTSXMountedAndPublicationIntoViewportLoaded: () => {
+            dispatch(winActions.initSuccess.build());
+        }
     };
 };
 

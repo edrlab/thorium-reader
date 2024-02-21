@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 
-import { IEventPayload_R2_EVENT_HIGHLIGHT_CLICK } from "@r2-navigator-js/electron/common/events";
+// import { IEventPayload_R2_EVENT_HIGHLIGHT_CLICK } from "@r2-navigator-js/electron/common/events";
 import { zipWith } from "ramda";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { eventChannel, SagaIterator } from "redux-saga";
@@ -101,14 +101,14 @@ export function* unmountHightlight(href: string, mountUUIDs: string[]): SagaIter
     yield put(readerLocalActionHighlights.mounter.unmount.build(uuids));
 }
 
-export type THighlightClick = [string, IHighlight, IEventPayload_R2_EVENT_HIGHLIGHT_CLICK["event"]];
+export type THighlightClick = [string, IHighlight/*, IEventPayload_R2_EVENT_HIGHLIGHT_CLICK["event"]*/];
 
 export function getHightlightClickChannel() {
     const channel = eventChannel<THighlightClick>(
         (emit) => {
 
-            const handler = (href: string, highlight: IHighlight, event: IEventPayload_R2_EVENT_HIGHLIGHT_CLICK["event"]) => {
-                emit([href, highlight, event]);
+            const handler = (href: string, highlight: IHighlight/*, event: IEventPayload_R2_EVENT_HIGHLIGHT_CLICK["event"]*/) => {
+                emit([href, highlight/*, event*/]);
             };
 
             highlightsClickListen(handler);

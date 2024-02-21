@@ -7,12 +7,16 @@
 
 import * as debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { all, call, put} from "typed-redux-saga/macro";
+import { all, call, put, take} from "typed-redux-saga/macro";
 import { select as selectTyped, take as takeTyped, race as raceTyped, SagaGenerator} from "typed-redux-saga";
+import {
+    highlightsDrawMargin
+} from "@r2-navigator-js/electron/renderer";
 
 import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionSetLocator } from "../actions";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { winActions } from "readium-desktop/renderer/common/redux/actions";
 
 // B80000
 const DEFAULT_COLOR = {
@@ -24,6 +28,31 @@ const DEFAULT_COLOR = {
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
 debug("_");
+
+// let __started__ = false;
+
+// function* drawAnnotationAtStart(_action: winActions.initSuccess.TAction) {
+
+//     debug("drawAnnotationAtStart triggered by initSuccess", __started__);
+
+//     if (__started__) {
+//         return ;
+//     }
+//     __started__ = true;
+
+
+//     highlightsDrawMargin(["annotation"]);
+
+//     const annotations = yield* selectTyped((store: IReaderRootState) => store.reader.annotation);
+//     const annotationsUuids = annotations.map(([_, annotationState]) => ({ uuid: annotationState.uuid }));
+//     yield* put(readerLocalActionHighlights.handler.pop.build(annotationsUuids));
+
+//     const annotationsHighlighted = annotations.map(
+//         ([_, { uuid, locatorExtended: { locator: { href }, selectionInfo }, color }]) =>
+//             ({ uuid, href, def: { selectionInfo, color, group: "annotation" } }));
+
+//     yield* put(readerLocalActionHighlights.handler.push.build(annotationsHighlighted));
+// }
 
 // click from highlight
 function* annotationClick(action: readerLocalActionHighlights.click.TAction) {
@@ -141,6 +170,8 @@ function* newLocatorOrTriggerBtnWatcher() {
     if (newLocatorAction) {
         yield* call(newLocator, newLocatorAction);
     } else if (annotationBtnTriggerRequestedAction) {
+
+        debug(`annotationBtnTriggerRequestedAction received [${JSON.stringify(annotationBtnTriggerRequestedAction.payload, null, 4)}]`);
         const modeEnabled = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.mode.enable);
         yield* put(readerLocalActionAnnotations.enableMode.build(!modeEnabled));
     }
@@ -149,20 +180,12 @@ function* annotationEnableMode(action: readerLocalActionAnnotations.enableMode.T
     const { payload: {enable}} = action;
 
     debug(`annotationEnableMode enable=${enable}`);
-
-    const annotations = yield* selectTyped((store: IReaderRootState) => store.reader.annotation);
-    const annotationsUuids = annotations.map(([_, annotationState]) => ({ uuid: annotationState.uuid }));
-    yield* put(readerLocalActionHighlights.handler.pop.build(annotationsUuids));
-
     if (enable) {
-
-        debug("annotation mode enabled ! draws all the annotations");
-        // draw all annotations
-        const annotationsHighlighted = annotations.map(
-            ([_, { uuid, locatorExtended: { locator: { href }, selectionInfo }, color }]) =>
-                ({ uuid, href, def: { selectionInfo, color, group: "annotation" } }));
-
-        yield* put(readerLocalActionHighlights.handler.push.build(annotationsHighlighted));
+        highlightsDrawMargin(false);
+        debug("annotation mode enabled ! draws highlight NOT in marging!");
+    } else {
+        highlightsDrawMargin(["annotation"]);
+        debug("annotation mode diasbled ! draws highlight IN marging!");
     }
 }
 
@@ -172,11 +195,12 @@ function* annotationFocusMode(action: readerLocalActionAnnotations.focusMode.TAc
     const { payload: {previousFocusUuid, currentFocusUuid} } = action;
 
     if (previousFocusUuid ) {
-        const modeEnabled = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.mode.enable);
-        if (!modeEnabled) {
-            debug(`annotation focus mode -- delete the highlight for previousFocusUUId=${previousFocusUuid}`);
-            yield* put(readerLocalActionHighlights.handler.pop.build([{ uuid: previousFocusUuid }]));
-        }
+        // disable with the new annotation margin mode, annotations are never deleted/unmounted
+        // const modeEnabled = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.mode.enable);
+        // if (!modeEnabled) {
+        //     debug(`annotation focus mode -- delete the highlight for previousFocusUUId=${previousFocusUuid}`);
+        //     yield* put(readerLocalActionHighlights.handler.pop.build([{ uuid: previousFocusUuid }]));
+        // }
     }
 
     if (currentFocusUuid) {
@@ -194,6 +218,32 @@ function* annotationFocusMode(action: readerLocalActionAnnotations.focusMode.TAc
             yield* put(readerLocalActionHighlights.handler.push.build([{ uuid, href, def: { selectionInfo, color, group: "annotation" } }]));
         }
     }
+}
+
+function* readerStart() {
+
+    debug("iframe reader viewport waiting to start...");
+
+    yield all([
+        take(readerLocalActionSetLocator.build),
+        take(winActions.initSuccess.build),
+    ]);
+
+    debug("annotation iframe reader viewport is started and ready to annotate, we draws all the annoatation for the first time with 'highlightsDrawMargin' enabled");
+
+    highlightsDrawMargin(["annotation"]);
+
+    const annotations = yield* selectTyped((store: IReaderRootState) => store.reader.annotation);
+    const annotationsUuids = annotations.map(([_, annotationState]) => ({ uuid: annotationState.uuid }));
+    yield* put(readerLocalActionHighlights.handler.pop.build(annotationsUuids));
+
+    const annotationsHighlighted = annotations.map(
+        ([_, { uuid, locatorExtended: { locator: { href }, selectionInfo }, color }]) =>
+            ({ uuid, href, def: { selectionInfo, color, group: "annotation" } }));
+
+    yield* put(readerLocalActionHighlights.handler.push.build(annotationsHighlighted));
+
+    debug(`${annotationsHighlighted.length} annotation(s) drawn`);
 }
 
 export const saga = () =>
@@ -237,4 +287,8 @@ export const saga = () =>
             newLocatorOrTriggerBtnWatcher,
             (e) => console.error("newLocatorOrTriggerBtnWatcher", e),
         ),
+        spawnLeading(
+            readerStart,
+            (e) => console.error("readerStart", e),
+        )
     ]);
