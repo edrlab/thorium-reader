@@ -403,6 +403,16 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             },
         ];
 
+        const annotationsColors = [
+            "#B80000",
+            "#DB3E00", 
+            "#FCCB00", 
+            "#008B02", 
+            "#006B76", 
+            "#1273DE", 
+            "#004DCF", 
+            "#5300EB"]
+
         return (
             <nav
                 className={classNames(stylesReaderHeader.toolbar_navigation,
@@ -887,7 +897,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         className={stylesReader.menu_button}
                                         id="annotationLabel"
                                     >
-                                        <SVG ariaHidden svg={AnnotationsIcon} className={classNames(stylesReaderHeader.annotationsIcon)} />
+                                        <SVG ariaHidden svg={AnnotationsIcon} className={classNames(stylesReaderHeader.annotationsIcon, this.props.isAnnotationModeEnabled ? stylesReaderHeader.active_svg : "")} />
                                     </label>
                                 </li>
                             </Popover.Trigger>
@@ -909,7 +919,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     <label>{__("reader.annotations.highlight")}</label>
                                                     <p>Text : {annotationItem.locatorExtended.selectionInfo.cleanText.slice(0, 10)} ...</p>
                                                     <GithubPicker
-                                                        colors={["#B80000", "#DB3E00", "#FCCB00", "#008B02", "#006B76", "#1273DE", "#004DCF", "#5300EB"]}
+                                                        colors={annotationsColors}
                                                         color={{ r: annotationItem.color.red, g: annotationItem.color.green, b: annotationItem.color.blue }}
                                                         onChangeComplete={(colorValue) => {
                                                             this.props.saveAnnotation({ ...annotationItem, color: { blue: colorValue.rgb.b, green: colorValue.rgb.g, red: colorValue.rgb.r } });

@@ -1,8 +1,14 @@
 export declare const active: string;
+export declare const annotation_actions: string;
+export declare const annotation_actions_buttons: string;
+export declare const annotation_infos: string;
+export declare const annotation_name: string;
+export declare const annotations_line: string;
 export declare const bookmark_actions: string;
 export declare const bookmark_actions_buttons: string;
 export declare const bookmark_infos: string;
 export declare const bookmark_name: string;
+export declare const bookmark_textArea: string;
 export declare const bookmarks_line: string;
 export declare const button_transparency_icon: string;
 export declare const chapter_marker: string;

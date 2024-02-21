@@ -253,7 +253,15 @@
   text-align: left;
   padding: 20px 0;
   font-size: 1rem;
-  border-bottom: 1px solid #e5e5e5;
+
+  .bookmark_textArea {
+    font-family:  Nunito, sans-serif;
+    width: 100%;
+    max-width: 100%;
+    height: 100px;
+    max-height: 100px;
+    margin: 10px 0;
+  }
 
   .bookmark_name {
     text-align: left;
@@ -458,4 +466,108 @@
 .react_aria_ComboBox [role="group"]:focus-within {
   outline: blue solid 2px !important;
   outline-offset: -2px;
+}
+
+.annotations_line {
+  width: calc(100% - 10px);
+  position: relative;
+  text-align: left;
+  padding: 20px 0;
+  font-size: 1rem;
+
+  .annotation_name {
+    text-align: left;
+    background-color: var(--color-light-grey);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    margin: 0;
+    padding: 8px;
+    padding-bottom: 0;
+    border-bottom: 8px solid var(--color-light-grey);
+  }
+
+  .update_form input {
+    width: 100%;
+    border-radius: 6px;
+  }
+
+  .annotation_infos {
+    width: 100%;
+    display: flex;
+    border-left: 2px solid var(--color-blue);
+    height: fit-content;
+    padding: 0 10px;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: #2D2D2D;
+    }
+
+    .annotation_actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      >div {
+        display: inherit;
+        align-items: center;
+        gap: 10px;
+
+        >div {
+          display: flex;
+          gap: 5px;
+          align-items: center;
+        }
+
+        p {
+          margin: 0;
+        }
+
+        svg {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      &_buttons svg {
+        fill: var(--color-blue);
+        color: var(--color-blue);
+      }
+    }
+  }
+  & > button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0;
+
+    & svg {
+      width: 24px;
+    }
+  }
+
+  & img {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  & .chapter_marker {
+    vertical-align: top;
+    position: relative;
+    display: inline-block;
+    flex: 1;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+  }
+
+  & span {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 5px;
+  }
 }
