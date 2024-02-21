@@ -211,7 +211,7 @@ export async function initStore()
             disableRTLFlip: reduxState?.reader?.disableRTLFlip || { disabled: defaultDisableRTLFLip },
         },
         session: {
-            state: false,
+            state: true,
         },
     };
     const preloadedState = reduxState ? {
