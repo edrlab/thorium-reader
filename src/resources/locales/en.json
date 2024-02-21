@@ -152,7 +152,10 @@
             "password": "Passphrase",
             "sentence": "This publication needs an LCP passphrase to be opened: ",
             "submit": "Submit",
-            "urlHint": "Forgot your passphrase? Find some help here"
+            "urlHint": "Forgot your passphrase? Find some help here",
+            "whatIsLcp?": "What is LCP?",
+            "whatIsLcpInfoDetails": "EDRLab rocks !!!",
+            "whatIsLcpInfoDetailsLink": "EDRLab thorium documentation link"
         }
     },
     "message": {

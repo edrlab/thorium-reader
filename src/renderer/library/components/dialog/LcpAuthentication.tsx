@@ -14,9 +14,9 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
-import * as InfoIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
-import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
-import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
+// import * as InfoIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
+// import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+// import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
 import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLink-icon.svg";
 import * as CrossIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import * as PassIcon from "readium-desktop/renderer/assets/icons/password-icon.svg";
@@ -45,7 +45,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 
 interface IState {
     password: string | undefined;
-    infoOpen: boolean;
+    // infoOpen: boolean;
 }
 
 export class LCPAuthentication extends React.Component<IProps, IState> {
@@ -58,7 +58,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
 
         this.state = {
             password: undefined,
-            infoOpen : false,
+            // infoOpen : false,
         };
     }
 
@@ -73,13 +73,13 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
             return <></>;
         }
 
-        const openInfo = (e: any) => {
-            e.preventDefault();
-            this.setState({infoOpen : !this.state.infoOpen});
-        };
+        // const openInfo = (e: any) => {
+        //     e.preventDefault();
+        //     this.setState({infoOpen : !this.state.infoOpen});
+        // };
 
         const { __ } = this.props;
-        return <Dialog.Root defaultOpen={true}>
+        return <Dialog.Root defaultOpen={true} onOpenChange={(open) => { if (open === false) { this.props.closeDialog(); } }}>
             <Dialog.Portal>
                 <div className={stylesModals.modal_dialog_overlay}></div>
                 <Dialog.Content className={stylesModals.modal_dialog}>
@@ -95,14 +95,13 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                             </Dialog.Close>
                         </div>
                     </div>
-                    <div className={stylesModals.modal_dialog_body}>
+                    <form className={stylesModals.modal_dialog_body}>
                         <p>
                             <span className={stylesModals.lcp_hint}>
                                 <SVG ariaHidden svg={LightBulbIcon} />
                                 {__("library.lcp.hint", { hint: this.props.hint })}
                             </span>
                         </p>
-                        {/* TODO: Error message if incorrect passphrase */}
                         <div className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)}>
                             <label htmlFor="passphrase">{__("library.lcp.password")}</label>
                             <SVG ariaHidden svg={PassIcon} />
@@ -131,39 +130,31 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 </a>
                                 : <></>
                         }
-                        <div>
-                        <button className={stylesButtons.button_catalog_infos} onClick={(e) => openInfo(e)}>
-                            <SVG ariaHidden svg={InfoIcon} />
-                            What is LCP?
-                            <SVG ariaHidden svg={this.state.infoOpen ? ChevronUp : ChevronDown} />
-                        </button>
-                        {this.state.infoOpen ?
-
-                        // TODO
+                        <details>
+                            <summary className={stylesButtons.button_catalog_infos}>
+                                {/* <SVG ariaHidden svg={InfoIcon} /> */}
+                                {__("library.lcp.whatIsLcp?")}
+                                {/* <SVG ariaHidden svg={this.state.infoOpen ? ChevronUp : ChevronDown} /> */}
+                            </summary>
                             <div className={stylesCatalogs.catalog_infos_text}>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                    Phasellus elit libero, pharetra vitae cursus sed, tincidunt et elit.
-                                    Morbi laoreet iaculis nibh, non condimentum nulla euismod sed.
+                                    {__("library.lcp.whatIsLcpInfoDetails")}
                                 </p>
-                                <a href="#">
-                                    Vivamus quis pharetra eros.
+                                <a href="https://thorium.edrlab.org/">
+                                    {__("library.lcp.whatIsLcpInfoDetailsLink")}
                                     <SVG ariaHidden svg={FollowLinkIcon} />
                                 </a>
                             </div>
-                            : <></>}
-                    </div>
+                        </details>
                         <div className={stylesModals.modal_dialog_footer}>
                             <Dialog.Close asChild>
                                 <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
                             </Dialog.Close>
                             <Dialog.Close asChild>
-                                <button type="submit" className={stylesButtons.button_primary_blue} onClick={(e) => {
-                                    e.preventDefault();
-                                    this.submit();}}>{__("opds.addForm.addButton")}</button>
+                                <button type="submit" className={stylesButtons.button_primary_blue} onClick={this.submit}>{__("opds.addForm.addButton")}</button>
                             </Dialog.Close>
                         </div>
-                    </div>
+                    </form>
                 </Dialog.Content>
             </Dialog.Portal>
         </Dialog.Root>;
@@ -178,7 +169,6 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
             return;
         }
         this.props.unlockPublication(this.props.publicationView.identifier, this.state.password);
-        this.props.closeDialog();
     };
 }
 
