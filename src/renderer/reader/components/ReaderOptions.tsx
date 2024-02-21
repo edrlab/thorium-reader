@@ -31,7 +31,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TDispatch } from "readium-desktop/typings/redux";
-import fontList, { FONT_ID_DEFAULT, FONT_ID_VOID } from "readium-desktop/utils/fontList";
+import { FONT_ID_DEFAULT, FONT_ID_VOID, FONT_LIST, FONT_LIST_WITH_JA } from "readium-desktop/utils/fontList";
 
 import { colCountEnum, textAlignEnum } from "@r2-navigator-js/electron/common/readium-css-settings";
 
@@ -465,6 +465,7 @@ export class ReaderOptions extends React.Component<IProps, IState> {
 
         // TODO: https://github.com/rBurgett/system-font-families
         const readiumCSSFontID = readerConfig.font;
+        const fontList = this.props.translator?.getLocale() === "ja" ? FONT_LIST_WITH_JA : FONT_LIST;
         const fontListItem = fontList.find((f) => {
             return f.id === readiumCSSFontID && f.id !== FONT_ID_VOID;
         });

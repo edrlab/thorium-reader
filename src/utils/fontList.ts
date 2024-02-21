@@ -14,7 +14,7 @@ import { Font } from "readium-desktop/common/models/font";
 export const FONT_ID_DEFAULT = "DEFAULT";
 export const FONT_ID_VOID = "VOID";
 
-const fontList: Font[] =
+export const FONT_LIST: Font[] =
 [{
     id: FONT_ID_DEFAULT,
     label: "Default font",
@@ -52,5 +52,23 @@ const fontList: Font[] =
     label: "...",
     fontFamily: "Consolas, monospace",
 }];
+const FONT_LIST_JA: Font[] =
+[{
+    id: "JA",
+    label: "日本語 SERIF (H)",
+    fontFamily: `"ＭＳ Ｐ明朝", "MS PMincho", "Hiragino Mincho Pro", "ヒラギノ明朝 Pro W3", "游明朝", "YuMincho", "ＭＳ 明朝", "MS Mincho", "Hiragino Mincho ProN", serif`,
+}, {
+    id: "JA-SANS",
+    label: "日本語 SANS (H)",
+    fontFamily: `"ＭＳ Ｐゴシック", "MS PGothic", "Hiragino Kaku Gothic Pro W3", "ヒラギノ角ゴ Pro W3", "Hiragino Sans GB", "ヒラギノ角ゴシック W3", "游ゴシック", "YuGothic", "ＭＳ ゴシック", "MS Gothic", "Hiragino Sans", sans-serif`,
+}, {
+    id: "JA-V",
+    label: "日本語 SERIF (V)",
+    fontFamily: `"ＭＳ 明朝", "MS Mincho", "Hiragino Mincho Pro", "ヒラギノ明朝 Pro W3", "游明朝", "YuMincho", "ＭＳ Ｐ明朝", "MS PMincho", "Hiragino Mincho ProN", serif`,
+}, {
+    id: "JA-V-SANS",
+    label: "日本語 SANS (V)",
+    fontFamily: `"ＭＳ ゴシック", "MS Gothic", "Hiragino Kaku Gothic Pro W3", "ヒラギノ角ゴ Pro W3", "Hiragino Sans GB", "ヒラギノ角ゴシック W3", "游ゴシック", "YuGothic", "ＭＳ Ｐゴシック", "MS PGothic", "Hiragino Sans", sans-serif`,
+}];
 
-export default fontList;
+export const FONT_LIST_WITH_JA = FONT_LIST.push(...FONT_LIST.splice(FONT_LIST.length - 1, 1, ...FONT_LIST_JA)) && FONT_LIST;
