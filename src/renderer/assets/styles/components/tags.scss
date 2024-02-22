@@ -141,7 +141,6 @@
 
 .Popover_filter_container {
   background-color: var(--color-secondary);
-  width: 500px;
   border-radius: 6px;
   border: 1px solid var(--color-medium-grey);
   box-shadow: 0 3px 10px 5px var(--color-medium-grey);
@@ -152,8 +151,7 @@
 
   > div {
     display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
+    flex-flow: column wrap;
     justify-content: center;
     gap: 5px 10px 0;
     width: 100%;
@@ -161,7 +159,6 @@
 
     .tag_item {
       font-size: 14px;
-      width: 100%;
       border-bottom: 1px solid var(--color-medium-grey);
       width: 100%;
       padding: 5px 10px 5px 5px;

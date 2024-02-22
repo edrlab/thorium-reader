@@ -35,10 +35,10 @@
     svg {
         fill: var(--color-blue);
 
-        @media (prefers-color-scheme: dark) {
-            fill: #FEFEFE;
-            color: #FEFEFE;
-        }
+        // @media (prefers-color-scheme: dark) {
+        //     fill: #FEFEFE;
+        //     color: #FEFEFE;
+        // }
     }
 }
 
@@ -49,6 +49,7 @@
     background-color: var(--color-light-grey);
     border: 1px solid var(--color-medium-grey);
     border-radius: 6px;
+    overflow: hidden;
 }
 
 #track_reading + span {
@@ -134,7 +135,8 @@
         padding: 1rem 5rem 1rem 8rem;
         bottom: 0;
         margin-top: 1rem;
-        color: var(--reader-fontColor);
+        color: var(--color-primary);
+        background-color: var(--color-secondary);
     }
 
     & .track_reading_wrapper_noArrows {
@@ -227,8 +229,8 @@
 
     & > span {
         flex-grow: 1;
-        margin: 3px 0;
-        height: 11px;
+        margin: 2px 0;
+        height: 12px;
 
         & > span {
         display: block;

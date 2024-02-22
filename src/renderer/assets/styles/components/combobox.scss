@@ -80,7 +80,7 @@
 
 .react_aria_Popover[data-trigger="ComboBox"], .react_aria_Popover[data-trigger="Select"]  {
   width: var(--trigger-width);
-  background-color: white;
+  background-color: var(--color-secondary);
   pointer-events: auto;
   border: 1px solid var(--color-primary);
   border-radius: 6px;
@@ -106,7 +106,7 @@
     border-radius: 6px;
     outline: none;
     cursor: pointer;
-    color: var(--reader-fontColor);
+    color: var(--color-primary);
     position: relative;
     transition: 100ms;
   

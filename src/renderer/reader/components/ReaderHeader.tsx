@@ -411,7 +411,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             "#006B76", 
             "#1273DE", 
             "#004DCF", 
-            "#5300EB"]
+            "#5300EB"];
 
         return (
             <nav

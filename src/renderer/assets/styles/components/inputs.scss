@@ -63,19 +63,15 @@ input[type="search"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE) {
 }
 
 form[role="search"] {
-background-color: var(--color-secondary);
-    width: 370px !important;
-    height: 30px !important;
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+  width: 370px !important;
+  height: 30px !important;
 
-    @media (prefers-color-scheme: dark) {
-      background-color: #2D2D2D;
-      color: white;
-    }
-
-    &:has(input:focus) {    
-      outline: blue solid 2px !important;
-      outline-offset: -2px;
-    }
+  &:has(input:focus) {    
+    outline: blue solid 2px !important;
+    outline-offset: -2px;
+  }
 }
 
 select {
@@ -93,10 +89,11 @@ select {
   position: relative;
   display: flex;
   align-items: center;
+  background-color: var(--color-secondary);
 
-  @media (prefers-color-scheme: dark) {
-    background-color: #2D2D2D;
-  }
+  // @media (prefers-color-scheme: dark) {
+  //   background-color: #2D2D2D;
+  // }
 
   &:has(input:focus) {    
     outline: blue solid 2px !important;
@@ -108,6 +105,8 @@ select {
       top:-10px;
       left:10px;
       background-color: var(--color-secondary);
+      padding: 0 5px;
+      z-index: 1;
   }
 
   & >input{
@@ -115,6 +114,7 @@ select {
       width: calc(100% - 35px);
       height: 19px;
       margin-left: 30px;
+      background-color: var(--color-secondary);
   }
 
   & i {
@@ -139,7 +139,7 @@ select {
     height: 14px;
     position: absolute;
     left: 20px;
-    top: 17px;
+    // top: 17px;
     transform: translate(-50%, -50%);
   }
 }

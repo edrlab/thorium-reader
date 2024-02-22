@@ -379,11 +379,23 @@ button {
 
 .button_catalog_infos {
   color: var(--color-blue);
-  height: 30px;
   border-radius: 4px;
-  padding: 20px 5px;
+  padding: 5px;
   background-color: var(--color-light-blue);
   margin: 30px 0;
+  width: fit-content;
+
+  &[open] {
+    width: 100%;
+  }
+
+  summary {
+    font-size: 14px;
+  }
+
+  .catalog_infos_text {
+    padding-left: 5px;
+  }
 
   svg {
     width: 20px;

@@ -66,19 +66,13 @@
 
   .display_options_item {
     background-color: transparent;
-    color: var(--reader-fontColor);
+    color: var(--color-primary);
   }
-}
-
-.docked_header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px;
 
   .react_aria_ComboBox {
     margin: 0;
     padding: 0;
+    padding-bottom: 15px;
 
     .my_combobox_container {
       width: fit-content;
@@ -115,6 +109,15 @@
       }
     }
   }
+}
+
+.docked_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+
+  
 
   &_controls {
     width: 135px;
@@ -460,7 +463,8 @@
 
 .react_aria_ListBox {
   width: inherit;
-  background-color: white;
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
 }
 
 .react_aria_ComboBox [role="group"]:focus-within {
@@ -538,6 +542,7 @@
       }
     }
   }
+
   & > button {
     border: none;
     background-color: transparent;

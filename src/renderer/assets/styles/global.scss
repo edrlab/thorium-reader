@@ -59,7 +59,7 @@ h4, button, label {
 
 section {
   margin-bottom: 20px;
-}
+} 
 
 .main {
   width: calc(100% - 120px);
@@ -69,6 +69,7 @@ section {
   height: 100vh;
   box-sizing: border-box;
   position: relative;
+  color: var(--color-primary);
 }
 
 nav + nav + .main {

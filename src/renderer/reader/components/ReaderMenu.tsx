@@ -540,7 +540,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Public
     const submitBookmark = (e: TFormEvent) => {
         e.stopPropagation();
 
-        console.log("submitted", textearearef)
+        console.log("submitted", textearearef);
         if (!textearearef.current) {
             return;
         }
@@ -554,7 +554,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Public
         }
 
         setBookmarkToUpdate(false);
-    }
+    };
 
     return (
         <div
@@ -630,7 +630,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Public
             </div>
         </div>
     );
-}
+};
 
 
 const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
@@ -668,7 +668,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
             }
         }
         return 0;
-    }), [bookmarks])
+    }), [bookmarks]);
     return sortedBookmarks.map((bookmark, i) => 
         <BookmarkItem
         key={i}
@@ -676,7 +676,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
         r2Publication={r2Publication}
         i={i}
         goToLocator={goToLocator}
-         />
+         />,
     );
 };
 

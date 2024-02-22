@@ -130,8 +130,8 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 </a>
                                 : <></>
                         }
-                        <details>
-                            <summary className={stylesButtons.button_catalog_infos}>
+                        <details className={stylesButtons.button_catalog_infos}>
+                            <summary>
                                 {/* <SVG ariaHidden svg={InfoIcon} /> */}
                                 {__("library.lcp.whatIsLcp?")}
                                 {/* <SVG ariaHidden svg={this.state.infoOpen ? ChevronUp : ChevronDown} /> */}

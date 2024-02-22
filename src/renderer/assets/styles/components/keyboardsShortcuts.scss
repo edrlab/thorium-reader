@@ -64,7 +64,7 @@
 
                     &:checked + label {
                         border: 1px solid var(--color-blue);
-                        background-color: white;
+                        background-color: var(--color-secondary);
                         color: var(--color-blue);
 
                         svg {
@@ -101,10 +101,11 @@
                     width: 100px;
                     height: 30px;
                     margin-bottom: 0!important;
+                    color: var(--color--primary);
                 }
 
                 .outline {
-                    background-color: white;
+                    background-color: var(--color-secondary);
                     width: 50px;
                 }
             }

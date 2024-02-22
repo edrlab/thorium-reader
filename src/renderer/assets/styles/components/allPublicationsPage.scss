@@ -36,7 +36,7 @@
 
                 label {
                     background-color: var(--color-extralight-grey);
-                    top: -18px;
+                    top: -10px;
                 }
 
                 i {
@@ -114,6 +114,8 @@
                 border: 1px solid gray;
                 border-radius: 4px;
                 height: 30px;
+                background-color: var(--color-secondary);
+                color: var(--color-primary);
             }
 
             &_opds_currentPage {
@@ -147,8 +149,7 @@
             border-radius: 4px;
             margin: 0;
             padding: 0.2em;
-            background-color: white;
-        }
+            background-color: var(--color-secondary);        }
     }
 
     > button {
@@ -163,7 +164,6 @@
 }
 
 .cell {
-
     a {
         cursor: pointer;
     }

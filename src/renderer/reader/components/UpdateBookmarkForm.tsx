@@ -76,7 +76,7 @@ export class UpdateBookmarkForm extends React.Component<IProps, IState> {
 
     private submitBookmark(e: TFormEvent) {
         e.preventDefault();
-        console.log("submitted", this.inputRef?.current)
+        console.log("submitted", this.inputRef?.current);
         if (!this.inputRef?.current) {
             return;
         }

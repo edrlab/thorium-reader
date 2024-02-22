@@ -51,13 +51,17 @@
 
     & a, & button {
       text-decoration: none;
-      color: inherit;
+      color: var(--color-primary);
       min-width: 150px;
       justify-content: start;
       align-items: center;
       gap: 10px;
       display: flex;
       padding: 5px;
+
+      &[aria-pressed="true"] {
+        color: inherit;
+      }
 
       h3 {
         margin: 0;
@@ -82,6 +86,7 @@
         width: 15px;
         height: 15px;
         fill: var(--color-blue);
+        color: var(--color-blue);
       }
 
       &.active {
