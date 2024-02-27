@@ -213,6 +213,10 @@ if (!window.navigator.epubReadingSystem
         // Same comment that above
         const settings = store.getState().reader.defaultConfig;
 
+        // // &nbsp; &#X200B;
+        str = str.replace(/<wbr\/>/g, "<r2-wbr></r2-wbr>");
+        // str = str.replace(/<wbr><\/wbr>/g, "<r2-wbr></r2-wbr>");
+
         if (settings.enableMathJax) {
             const thorium_mathJax_script = "thorium_mathJax_script";
 
