@@ -74,5 +74,5 @@ const FONT_LIST_JA: Font[] =
     // eslint-disable-next-line quotes
     fontFamily: `"ＭＳ ゴシック", "MS Gothic", "Hiragino Kaku Gothic Pro W3", "ヒラギノ角ゴ Pro W3", "Hiragino Sans GB", "ヒラギノ角ゴシック W3", "游ゴシック", "YuGothic", "ＭＳ Ｐゴシック", "MS PGothic", "Hiragino Sans", sans-serif`,
 }];
-
-export const FONT_LIST_WITH_JA = FONT_LIST.push(...FONT_LIST.splice(FONT_LIST.length - 1, 1, ...FONT_LIST_JA)) && FONT_LIST;
+const FONT_LIST_WITH_JA_ = [].concat(...FONT_LIST);
+export const FONT_LIST_WITH_JA = FONT_LIST_WITH_JA_.push(...FONT_LIST_WITH_JA_.splice(FONT_LIST_WITH_JA_.length - 1, 1, ...FONT_LIST_JA)) && FONT_LIST_WITH_JA_;
