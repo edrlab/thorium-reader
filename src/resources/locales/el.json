@@ -43,7 +43,6 @@
     },
     "catalog": {
         "about": {
-            "button": "Περισσότερες πληροφορίες",
             "title": "Σχετικά {{- appName}}"
         },
         "addBookToLib": "Εισαγωγή",
@@ -107,6 +106,7 @@
         "readBook": "Ανάγνωση",
         "released": "Δημοσίευση το",
         "sort": "Ταξινόμηση με",
+        "tag": "",
         "tagCount": "Αριθμός ετικετών",
         "tags": "Ετικέτες",
         "update": "Επεξεργασία"
@@ -131,8 +131,6 @@
     },
     "header": {
         "allBooks": "Όλα τα βιβλία",
-        "books": "Τα βιβλία μου",
-        "catalogs": "Κατάλογοι",
         "downloads": "Λήψεις",
         "gridTitle": "Προβολή πλέγματος",
         "home": "Μενού βιβλιοθήκης",
@@ -142,15 +140,18 @@
         "refreshTitle": "Επαναφόρτωση",
         "searchPlaceholder": "Αναζήτηση",
         "searchTitle": "Έναρξη αναζήτησης",
-        "settings": "Ρυθμίσεις"
+        "settings": "Ρυθμίσεις",
+        "viewMode": ""
     },
     "library": {
         "lcp": {
             "hint": "(Υπόδειξη: {{- hint}})",
             "password": "Συνθηματική φράση",
             "sentence": "Αυτή η δημοσίευση χρειάζεται μια συνθηματική φράση LCP για να ανοίξει: ",
-            "submit": "Υποβολή",
-            "urlHint": "Στην περίπτωση αδυναμίας ανάκτησης της συνθηματικής φράσης, εδώ διατίθεται βοήθεια"
+            "urlHint": "Στην περίπτωση αδυναμίας ανάκτησης της συνθηματικής φράσης, εδώ διατίθεται βοήθεια",
+            "whatIsLcp?": "",
+            "whatIsLcpInfoDetails": "",
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -171,7 +172,6 @@
             "addButton": "Προσθήκη",
             "name": "Όνομα:",
             "namePlaceholder": "Όνομα",
-            "title": "Προσθήκη τροφοδοσίας OPDS",
             "url": "Σύνδεσμός:",
             "urlPlaceholder": "Σύνδεσμός"
         },
@@ -274,13 +274,16 @@
         "userKeyCheckInvalid": "Η φράση πρόσβασης είναι λανθασμένη"
     },
     "reader": {
+        "annotations": {
+            "addNote": "",
+            "highlight": ""
+        },
         "divina": {
             "mute": "Σίγαση ήχου",
             "unmute": "Ενεργοποίηση ήχου"
         },
-        "footerInfo": {
-            "lessInfo": "Λιγότερες πληροφορίες",
-            "moreInfo": "Περισσότερες πληροφορίες"
+        "fxl": {
+            "fit": ""
         },
         "marks": {
             "annotations": "Σχόλια",
@@ -289,6 +292,7 @@
             "edit": "Επεξεργασία",
             "landmarks": "Ορόσημα",
             "search": "Αναζήτηση",
+            "searchResult": "",
             "toc": "Πίνακας περιεχομένων"
         },
         "media-overlays": {
@@ -304,6 +308,7 @@
             "title": "Λειτουργία προφορικού αναγνώστη / Readaloud"
         },
         "navigation": {
+            "annotationTitle": "",
             "backHomeTitle": "Πίσω στη βιβλιοθήκη",
             "bookmarkTitle": "Σελιδοδείκτης",
             "currentPage": "Τρέχουσα σελίδα: {{- current}}",
@@ -320,8 +325,6 @@
             "magnifyingGlassButton": "Αναζήτηση στην δημοσίευση",
             "openTableOfContentsTitle": "Πλοήγηση",
             "pdfscalemode": "Εφαρμογή στη σελίδα ή σε ρύθμισης πλάτους",
-            "quitFullscreenTitle": "Τερματισμός λειτουργίας πλήρους οθόνης",
-            "readBookTitle": "Έναρξη διαβάσματος βιβλίου",
             "settingsTitle": "Ρυθμίσεις"
         },
         "picker": {
@@ -340,11 +343,11 @@
             "column": {
                 "auto": "Αυτόματα",
                 "one": "1 στήλη",
-                "oneTitle": "Μία στήλη",
                 "title": "Στήλες",
-                "two": "2 στήλες",
-                "twoTitle": "Δύο στήλες"
+                "two": "2 στήλες"
             },
+            "customizeReader": "",
+            "disabled": "",
             "display": "Εμφάνιση",
             "disposition": {
                 "title": "Διάταξη"
@@ -357,7 +360,6 @@
             "lineSpacing": "Διάστημα μεταξύ γραμμών",
             "margin": "Περιθώριο",
             "noFootnotes": "Απενεργοποίηση υποσημειώσεων",
-            "noRTLFlip": "",
             "paginated": "Σελιδοποιημένο",
             "paraSpacing": "Διάστημα μεταξύ παραγράφων",
             "pdfZoom": {
@@ -373,12 +375,8 @@
                 },
                 "title": "Ρύθμιση μεγέθυνσης"
             },
+            "preview": "",
             "reduceMotion": "Μείωση κίνησης",
-            "save": {
-                "apply": "Αποθήκευση",
-                "reset": "Επαναφορά",
-                "title": "Διαμόρφωση"
-            },
             "scrolled": "Μετακυλίσιμο",
             "spacing": "Διαστήματα",
             "text": "Κείμενο",
@@ -419,14 +417,12 @@
         "keyboard": {
             "advancedMenu": "Μενού",
             "cancel": "Ακύρωση",
-            "edit": "Επεξεργασία",
+            "disclaimer": "",
             "editUserJson": "Επεξεργασία αρχείο χρήστη...",
-            "hide": "Απόκρυψη",
             "keyboardShortcuts": "Συντομεύσεις πληκτρολογίου",
             "loadUserJson": "Φόρτωση από αρχείο χρήστη",
             "resetDefaults": "Επαναφορά (φόρτωση προεπιλογών)",
-            "save": "Αποθήκευση",
-            "show": "Εμφάνιση"
+            "save": "Αποθήκευση"
         },
         "language": {
             "languageChoice": "Επιλογή γλώσσας"
@@ -435,6 +431,18 @@
             "no": "Ανενεργή",
             "title": "Αποθήκευση συνεδρίας",
             "yes": "Ενεργή"
+        },
+        "tabs": {
+            "appearance": "",
+            "general": "",
+            "keyboardShortcuts": ""
+        },
+        "theme": {
+            "auto": "",
+            "dark": "",
+            "description": "",
+            "light": "",
+            "title": ""
         }
     }
 }

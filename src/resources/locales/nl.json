@@ -43,7 +43,6 @@
     },
     "catalog": {
         "about": {
-            "button": "Meer informatie",
             "title": "Over {{- appName}}"
         },
         "addBookToLib": "Voeg toe",
@@ -107,6 +106,7 @@
         "readBook": "Gelezen",
         "released": "Uitgegeven op",
         "sort": "Sorteer op",
+        "tag": "",
         "tagCount": "Label aantal",
         "tags": "Labels",
         "update": ""
@@ -131,8 +131,6 @@
     },
     "header": {
         "allBooks": "Alle boeken",
-        "books": "Mijn boeken",
-        "catalogs": "Catalogi",
         "downloads": "Downloads",
         "gridTitle": "Rasterweergave",
         "home": "Boekenplank menu",
@@ -142,15 +140,18 @@
         "refreshTitle": "laad opnieuw",
         "searchPlaceholder": "Zoeken",
         "searchTitle": "Begin met zoeken",
-        "settings": "Instellingen"
+        "settings": "Instellingen",
+        "viewMode": ""
     },
     "library": {
         "lcp": {
             "hint": "(Hint : {{- hint}})",
             "password": "Wachtwoordzin",
             "sentence": "Deze publicatie vereist een LCP wachtwoordzin om te openen: ",
-            "submit": "Verzend",
-            "urlHint": "Wachtwoordzin vergeten? Vind hulp hier"
+            "urlHint": "Wachtwoordzin vergeten? Vind hulp hier",
+            "whatIsLcp?": "",
+            "whatIsLcpInfoDetails": "",
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -171,7 +172,6 @@
             "addButton": "Voeg toe",
             "name": "Naam :",
             "namePlaceholder": "Naam",
-            "title": "Voeg een OPDS feed toe",
             "url": "Link :",
             "urlPlaceholder": "Link"
         },
@@ -274,13 +274,16 @@
         "userKeyCheckInvalid": "Wachtwoordzin is niet correct"
     },
     "reader": {
+        "annotations": {
+            "addNote": "",
+            "highlight": ""
+        },
         "divina": {
             "mute": "demp geluid",
             "unmute": "geluid aan"
         },
-        "footerInfo": {
-            "lessInfo": "minder informatie",
-            "moreInfo": "meer informatie"
+        "fxl": {
+            "fit": ""
         },
         "marks": {
             "annotations": "Annotaties",
@@ -289,6 +292,7 @@
             "edit": "Wijzig",
             "landmarks": "structuur elementen",
             "search": "Zoek",
+            "searchResult": "",
             "toc": "Inhoudsopgave"
         },
         "media-overlays": {
@@ -304,6 +308,7 @@
             "title": "Voorlezen"
         },
         "navigation": {
+            "annotationTitle": "",
             "backHomeTitle": "terug naar de boekenplank",
             "bookmarkTitle": "bladwijzer",
             "currentPage": "Huidige pagina: {{- current}}",
@@ -320,8 +325,6 @@
             "magnifyingGlassButton": "Zoek in publicatie",
             "openTableOfContentsTitle": "navigatie",
             "pdfscalemode": "Pagina aanpassen aan breedte",
-            "quitFullscreenTitle": "verlaat volledig scherm modus",
-            "readBookTitle": "begin met het lezen van het boek",
             "settingsTitle": "instellingen"
         },
         "picker": {
@@ -340,11 +343,11 @@
             "column": {
                 "auto": "Automatisch",
                 "one": "1 kol",
-                "oneTitle": "een kolom",
                 "title": "Kolommen",
-                "two": "2 kol",
-                "twoTitle": "twee kolommen"
+                "two": "2 kol"
             },
+            "customizeReader": "",
+            "disabled": "",
             "display": "Weergave",
             "disposition": {
                 "title": "Indeling"
@@ -357,7 +360,6 @@
             "lineSpacing": "Regelafstand",
             "margin": "Marge",
             "noFootnotes": "Verberg voetnoten",
-            "noRTLFlip": "",
             "paginated": "Als pagina's",
             "paraSpacing": "Paragraaf afstand",
             "pdfZoom": {
@@ -373,12 +375,8 @@
                 },
                 "title": "Uitvergroting"
             },
+            "preview": "",
             "reduceMotion": "Beperk beweging",
-            "save": {
-                "apply": "sla op",
-                "reset": "zet terug",
-                "title": "Configuratie"
-            },
             "scrolled": "Doorlopend",
             "spacing": "Afstand",
             "text": "Tekst",
@@ -419,14 +417,12 @@
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Annuleer",
-            "edit": "Wijzig",
+            "disclaimer": "",
             "editUserJson": "Wijzig gebruikersbestand...",
-            "hide": "Verberg",
             "keyboardShortcuts": "Toetsenbord shortcuts",
             "loadUserJson": "Haal uit gebruikersbestand",
             "resetDefaults": "Terug (naar oorspronkelijke instellingen)",
-            "save": "Bewaar",
-            "show": "Toon"
+            "save": "Bewaar"
         },
         "language": {
             "languageChoice": "Taal keuze"
@@ -435,6 +431,18 @@
             "no": "Schakel uit",
             "title": "Bewaar sessie",
             "yes": "Schakel in"
+        },
+        "tabs": {
+            "appearance": "",
+            "general": "",
+            "keyboardShortcuts": ""
+        },
+        "theme": {
+            "auto": "",
+            "dark": "",
+            "description": "",
+            "light": "",
+            "title": ""
         }
     }
 }

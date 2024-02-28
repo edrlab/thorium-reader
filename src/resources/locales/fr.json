@@ -43,7 +43,6 @@
     },
     "catalog": {
         "about": {
-            "button": "Plus d'informations",
             "title": "À propos de {{appName}}"
         },
         "addBookToLib": "Ajouter",
@@ -107,9 +106,9 @@
         "readBook": "Lire",
         "released": "Publié le",
         "sort": "trier par",
+        "tag": "Tag",
         "tagCount": "Nombre de tags",
         "tags": "Tags",
-        "tag": "Tag",
         "update": "Éditer"
     },
     "dialog": {
@@ -132,8 +131,6 @@
     },
     "header": {
         "allBooks": "Tous mes livres",
-        "books": "Mes Livres",
-        "catalogs": "Catalogues",
         "downloads": "Téléchargements",
         "gridTitle": "Grille",
         "home": "Menu Principal",
@@ -151,8 +148,10 @@
             "hint": "Indice : {{- hint}}",
             "password": "Mot de passe",
             "sentence": "Cette publication a besoin d'un mot de passe : ",
-            "submit": "Valider",
-            "urlHint": "Vous avez oublié votre phrase d'accès ? Trouvez de l'aide avec ce lien"
+            "urlHint": "Vous avez oublié votre phrase d'accès ? Trouvez de l'aide avec ce lien",
+            "whatIsLcp?": "",
+            "whatIsLcpInfoDetails": "",
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -173,7 +172,6 @@
             "addButton": "Ajouter",
             "name": "Nom :",
             "namePlaceholder": "Nom",
-            "title": "Ajouter un flux OPDS",
             "url": "Adresse :",
             "urlPlaceholder": "Adresse"
         },
@@ -276,13 +274,16 @@
         "userKeyCheckInvalid": "Mot de passe incorrect"
     },
     "reader": {
+        "annotations": {
+            "addNote": "Ajouter une note",
+            "highlight": "Surligner"
+        },
         "divina": {
             "mute": "desactiver le son",
             "unmute": "activer le son"
         },
-        "footerInfo": {
-            "lessInfo": "Moins d'informations",
-            "moreInfo": "Plus d'informations"
+        "fxl": {
+            "fit": "Remplir"
         },
         "marks": {
             "annotations": "Annotations",
@@ -307,6 +308,7 @@
             "title": "Lire en voix de synthèse"
         },
         "navigation": {
+            "annotationTitle": "",
             "backHomeTitle": "retour à la bibliothèque",
             "bookmarkTitle": "marque-page",
             "currentPage": "Page courante: {{- current}}",
@@ -323,8 +325,6 @@
             "magnifyingGlassButton": "recherche dans la publication",
             "openTableOfContentsTitle": "navigation",
             "pdfscalemode": "Page entière ou pleine largeur",
-            "quitFullscreenTitle": "quitter le mode plein écran",
-            "readBookTitle": "lancer la lecture du livre",
             "settingsTitle": "préférences"
         },
         "picker": {
@@ -343,18 +343,16 @@
             "column": {
                 "auto": "Défaut",
                 "one": "1 col",
-                "oneTitle": "une colonne",
                 "title": "Colonnes",
-                "two": "2 cols",
-                "twoTitle": "deux colonnes"
+                "two": "2 cols"
             },
-            "options": "Options",
+            "customizeReader": "Personnaliser la mise en forme",
+            "disabled": "désactivé",
             "display": "Affichage",
             "disposition": {
                 "title": "Disposition"
             },
             "font": "Police de caractères",
-            "preview": "Aperçu",
             "fontSize": "Taille du texte",
             "justification": "Alignement",
             "justify": "Justifié",
@@ -362,7 +360,6 @@
             "lineSpacing": "Espacement des lignes",
             "margin": "Marge",
             "noFootnotes": "Désactiver la lecture des notes",
-            "noRTLFlip": "Désactiver la lecture de droite à gauche",
             "paginated": "Paginé",
             "paraSpacing": "Espacement des paragraphes",
             "pdfZoom": {
@@ -378,12 +375,8 @@
                 },
                 "title": "Loupe"
             },
+            "preview": "Aperçu",
             "reduceMotion": "Réduire la vitesse",
-            "save": {
-                "apply": "Sauvegarder",
-                "reset": "Réinitialiser",
-                "title": "Configuration"
-            },
             "scrolled": "Défilé",
             "spacing": "Espacement",
             "text": "Texte",
@@ -395,9 +388,7 @@
                 },
                 "title": "Thème"
             },
-            "wordSpacing": "Espacement des mots",
-            "disabled": "désactivé",
-            "customizeReader": "Personnaliser la mise en forme"
+            "wordSpacing": "Espacement des mots"
         },
         "svg": {
             "left": "Gauche",
@@ -417,44 +408,21 @@
             "speed": "Vitesse",
             "stop": "Arrêter",
             "voice": "Voix"
-        },
-        "annotations": {
-            "highlight": "Surligner",
-            "addNote": "Ajouter une note"
-        },
-        "fxl": {
-            "fit": "Remplir"
         }
     },
     "settings": {
-        "tabs": {
-            "general": "Géneral",
-            "appearance": "Apparence",
-            "reading": "Lecture",
-            "keyboardShortcuts":"Raccourcis clavier"
-        },
-        "theme": {
-            "title": "Thème de l'application",
-            "description": "Le thème de l'application correspond au thème de votre système.",
-            "auto": "Automatique",
-            "light": "Clair",
-            "dark": "Sombre"
-        },
         "auth": {
             "wipeData": "Effacer les données d'authentification"
         },
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Annuler",
-            "edit": "Éditer",
+            "disclaimer": "Les raccourcis clavier sont actuellement basés sur une disposition QWERTY.",
             "editUserJson": "Éditer le fichier ...",
-            "hide": "Masquer",
             "keyboardShortcuts": "Raccourcis clavier",
             "loadUserJson": "Charger le fichier",
             "resetDefaults": "Réinitialiser (défaut)",
-            "save": "Sauvegarder",
-            "show": "Afficher",
-            "disclaimer": "Les raccourcis clavier sont actuellement basés sur une disposition QWERTY."
+            "save": "Sauvegarder"
         },
         "language": {
             "languageChoice": "Choix de la langue"
@@ -463,6 +431,18 @@
             "no": "Désactiver",
             "title": "Sauvegarder la session",
             "yes": "Activer"
+        },
+        "tabs": {
+            "appearance": "Apparence",
+            "general": "Géneral",
+            "keyboardShortcuts": "Raccourcis clavier"
+        },
+        "theme": {
+            "auto": "Automatique",
+            "dark": "Sombre",
+            "description": "Le thème de l'application correspond au thème de votre système.",
+            "light": "Clair",
+            "title": "Thème de l'application"
         }
     }
 }
