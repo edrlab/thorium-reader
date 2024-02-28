@@ -43,7 +43,6 @@
     },
     "catalog": {
         "about": {
-            "button": "より詳しい情報",
             "title": "{{appName}}について"
         },
         "addBookToLib": "追加",
@@ -107,6 +106,7 @@
         "readBook": "本を読む",
         "released": "出版日",
         "sort": "並び替え",
+        "tag": "",
         "tagCount": "タグの数",
         "tags": "タグ",
         "update": "編集"
@@ -131,8 +131,6 @@
     },
     "header": {
         "allBooks": "すべての本",
-        "books": "わたしの本",
-        "catalogs": "図書目録",
         "downloads": "ダウンロード",
         "gridTitle": "格子状に本を表示",
         "home": "本棚の機能選択",
@@ -142,15 +140,18 @@
         "refreshTitle": "再読み込み",
         "searchPlaceholder": "検索",
         "searchTitle": "検索を開始",
-        "settings": "設定"
+        "settings": "設定",
+        "viewMode": ""
     },
     "library": {
         "lcp": {
             "hint": "（ヒント：{{- hint}}）",
             "password": "パスワード",
             "sentence": "この本を読むためにはLCP解除のパスワードが必要です: ",
-            "submit": "送信",
-            "urlHint": "パスワードを忘れた場合に役に立つかもしれません"
+            "urlHint": "パスワードを忘れた場合に役に立つかもしれません",
+            "whatIsLcp?": "",
+            "whatIsLcpInfoDetails": "",
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -171,7 +172,6 @@
             "addButton": "追加",
             "name": "名前：",
             "namePlaceholder": "名前",
-            "title": "OPDSフィードを追加",
             "url": "URL：",
             "urlPlaceholder": "URL"
         },
@@ -274,13 +274,16 @@
         "userKeyCheckInvalid": "パスワードが間違っています"
     },
     "reader": {
+        "annotations": {
+            "addNote": "",
+            "highlight": ""
+        },
         "divina": {
             "mute": "音を鳴らさない",
             "unmute": "音を鳴らす"
         },
-        "footerInfo": {
-            "lessInfo": "読書位置を非表示",
-            "moreInfo": "読書位置を表示"
+        "fxl": {
+            "fit": ""
         },
         "marks": {
             "annotations": "注釈",
@@ -289,6 +292,7 @@
             "edit": "編集",
             "landmarks": "構成",
             "search": "検索",
+            "searchResult": "",
             "toc": "目次"
         },
         "media-overlays": {
@@ -304,6 +308,7 @@
             "title": "本文の読み上げ"
         },
         "navigation": {
+            "annotationTitle": "",
             "backHomeTitle": "本棚に戻る",
             "bookmarkTitle": "しおりを挟む",
             "currentPage": "現在のページ：{{- current}}",
@@ -320,8 +325,6 @@
             "magnifyingGlassButton": "この本の中で検索",
             "openTableOfContentsTitle": "ナビゲーション",
             "pdfscalemode": "画面にページを収める/画面横幅にページを合わせる",
-            "quitFullscreenTitle": "全画面表示の終了",
-            "readBookTitle": "本を読み始める",
             "settingsTitle": "設定"
         },
         "picker": {
@@ -340,11 +343,11 @@
             "column": {
                 "auto": "自動",
                 "one": "1列",
-                "oneTitle": "1列",
                 "title": "縦列",
-                "two": "2列",
-                "twoTitle": "2列"
+                "two": "2列"
             },
+            "customizeReader": "",
+            "disabled": "",
             "display": "画面表示",
             "disposition": {
                 "title": "割り付け"
@@ -357,7 +360,6 @@
             "lineSpacing": "行の間隔",
             "margin": "ページの余白",
             "noFootnotes": "脚注を表示しない",
-            "noRTLFlip": "縦書き用UIに変更しない",
             "paginated": "ページ型",
             "paraSpacing": "段落の間隔",
             "pdfZoom": {
@@ -373,12 +375,8 @@
                 },
                 "title": "拡大"
             },
+            "preview": "",
             "reduceMotion": "視差効果を減らす",
-            "save": {
-                "apply": "保存",
-                "reset": "リセット",
-                "title": "設定の構成"
-            },
             "scrolled": "スクロール型",
             "spacing": "余白・間隔",
             "text": "文字",
@@ -419,14 +417,12 @@
         "keyboard": {
             "advancedMenu": "メニュー",
             "cancel": "キャンセル",
-            "edit": "編集",
+            "disclaimer": "",
             "editUserJson": "編集：ユーザーファイル",
-            "hide": "隠す",
             "keyboardShortcuts": "キーボード ショートカット",
             "loadUserJson": "読込：ユーザーファイル",
             "resetDefaults": "リセット（初期設定に戻す）",
-            "save": "保存",
-            "show": "表示"
+            "save": "保存"
         },
         "language": {
             "languageChoice": "言語の選択"
@@ -435,6 +431,18 @@
             "no": "無効",
             "title": "セッションの保存",
             "yes": "有効"
+        },
+        "tabs": {
+            "appearance": "",
+            "general": "",
+            "keyboardShortcuts": ""
+        },
+        "theme": {
+            "auto": "",
+            "dark": "",
+            "description": "",
+            "light": "",
+            "title": ""
         }
     }
 }

@@ -43,7 +43,6 @@
     },
     "catalog": {
         "about": {
-            "button": "Mehr Informationen",
             "title": "Über {{appName}}"
         },
         "addBookToLib": "Import",
@@ -107,6 +106,7 @@
         "readBook": "Lesen",
         "released": "Veröffentlicht am",
         "sort": "Sortieren nach",
+        "tag": "",
         "tagCount": "Anzahl der Tags",
         "tags": "Tags",
         "update": ""
@@ -131,8 +131,6 @@
     },
     "header": {
         "allBooks": "Alle Bücher",
-        "books": "Meine Bücher",
-        "catalogs": "Kataloge",
         "downloads": "Downloads",
         "gridTitle": "Bücher in einem Raster präsentieren",
         "home": "Hauptmenü",
@@ -142,15 +140,18 @@
         "refreshTitle": "Feeds neu laden",
         "searchPlaceholder": "Suche",
         "searchTitle": "Suche starten",
-        "settings": "Einstellungen"
+        "settings": "Einstellungen",
+        "viewMode": ""
     },
     "library": {
         "lcp": {
             "hint": "Dein Kennwort",
             "password": "",
             "sentence": "Diese LCP-geschütze Publikation benötigt zum Öffnen ein Password: ",
-            "submit": "Absenden",
-            "urlHint": ""
+            "urlHint": "",
+            "whatIsLcp?": "",
+            "whatIsLcpInfoDetails": "",
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -171,7 +172,6 @@
             "addButton": "Hinzufügen",
             "name": "Feed-Name:",
             "namePlaceholder": "",
-            "title": "Feed hinzufügen",
             "url": "Feed-Link:",
             "urlPlaceholder": ""
         },
@@ -274,13 +274,16 @@
         "userKeyCheckInvalid": ""
     },
     "reader": {
+        "annotations": {
+            "addNote": "",
+            "highlight": ""
+        },
         "divina": {
             "mute": "",
             "unmute": ""
         },
-        "footerInfo": {
-            "lessInfo": "Weniger Informationen",
-            "moreInfo": "Mehr Informationen"
+        "fxl": {
+            "fit": ""
         },
         "marks": {
             "annotations": "Meine Anmerkungen",
@@ -289,6 +292,7 @@
             "edit": "Bearbeiten",
             "landmarks": "Navigationspunkte",
             "search": "",
+            "searchResult": "",
             "toc": "Inhaltsverzeichnis"
         },
         "media-overlays": {
@@ -304,6 +308,7 @@
             "title": ""
         },
         "navigation": {
+            "annotationTitle": "",
             "backHomeTitle": "Zurück zum Bücherregal",
             "bookmarkTitle": "Lesezeichen setzen",
             "currentPage": "",
@@ -320,8 +325,6 @@
             "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "Navigation",
             "pdfscalemode": "",
-            "quitFullscreenTitle": "Vollbildmodus beenden",
-            "readBookTitle": "Mit dem Lesen des Buches beginnen",
             "settingsTitle": "Einstellungen"
         },
         "picker": {
@@ -340,11 +343,11 @@
             "column": {
                 "auto": "Automatisch",
                 "one": "1 Spalte",
-                "oneTitle": "1 Spalte",
                 "title": "Spaltendarstellung",
-                "two": "2 Spalten",
-                "twoTitle": "2 Spalten"
+                "two": "2 Spalten"
             },
+            "customizeReader": "",
+            "disabled": "",
             "display": "Lesefluss",
             "disposition": {
                 "title": ""
@@ -357,7 +360,6 @@
             "lineSpacing": "Zeilenabstand",
             "margin": "Seitenränder",
             "noFootnotes": "",
-            "noRTLFlip": "",
             "paginated": "Seitendarstellung",
             "paraSpacing": "",
             "pdfZoom": {
@@ -373,12 +375,8 @@
                 },
                 "title": ""
             },
+            "preview": "",
             "reduceMotion": "",
-            "save": {
-                "apply": "Speichern",
-                "reset": "Zurücksetzen",
-                "title": "Aufbau"
-            },
             "scrolled": "Fortlaufend",
             "spacing": "Abstand",
             "text": "Text",
@@ -419,14 +417,12 @@
         "keyboard": {
             "advancedMenu": "Menü",
             "cancel": "Stornieren",
-            "edit": "Bearbeiten",
+            "disclaimer": "",
             "editUserJson": "Benutzerdatei bearbeiten ...",
-            "hide": "Ausblenden",
             "keyboardShortcuts": "Tastatürkürzel",
             "loadUserJson": "Aus Benutzerdatei laden",
             "resetDefaults": "Zurücksetzen (standard)",
-            "save": "Speichern",
-            "show": "Anzeigen"
+            "save": "Speichern"
         },
         "language": {
             "languageChoice": "Sprachauswahl"
@@ -435,6 +431,18 @@
             "no": "Deaktivieren",
             "title": "Sitzung speichern",
             "yes": "aktivieren"
+        },
+        "tabs": {
+            "appearance": "",
+            "general": "",
+            "keyboardShortcuts": ""
+        },
+        "theme": {
+            "auto": "",
+            "dark": "",
+            "description": "",
+            "light": "",
+            "title": ""
         }
     }
 }

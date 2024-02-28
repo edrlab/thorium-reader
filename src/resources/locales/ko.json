@@ -43,7 +43,6 @@
     },
     "catalog": {
         "about": {
-            "button": "자세히 보기",
             "title": "{{- appName}} 정보"
         },
         "addBookToLib": "열기",
@@ -107,6 +106,7 @@
         "readBook": "읽기",
         "released": "발행일",
         "sort": "정렬 기준",
+        "tag": "",
         "tagCount": "태그 개수",
         "tags": "태그",
         "update": "편집"
@@ -131,8 +131,6 @@
     },
     "header": {
         "allBooks": "모든 도서",
-        "books": "내 도서",
-        "catalogs": "카탈로그",
         "downloads": "다운로드",
         "gridTitle": "그리드보기",
         "home": "내서재 메뉴",
@@ -142,15 +140,18 @@
         "refreshTitle": "페이지 새로고침",
         "searchPlaceholder": "검색어 입력",
         "searchTitle": "검색",
-        "settings": "설정"
+        "settings": "설정",
+        "viewMode": ""
     },
     "library": {
         "lcp": {
             "hint": "(힌트: {{- hint}})",
             "password": "암호",
             "sentence": "이 출판물을 열기 위해서는 LCP 암호가 필요합니다: ",
-            "submit": "제출",
-            "urlHint": "암호를 잊으셨습니까? 여기서 도움말을 확인하십시오"
+            "urlHint": "암호를 잊으셨습니까? 여기서 도움말을 확인하십시오",
+            "whatIsLcp?": "",
+            "whatIsLcpInfoDetails": "",
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -171,7 +172,6 @@
             "addButton": "추가",
             "name": "이름:",
             "namePlaceholder": "이름",
-            "title": "OPDS feed 추가",
             "url": "링크:",
             "urlPlaceholder": "링크"
         },
@@ -274,13 +274,16 @@
         "userKeyCheckInvalid": "잘못된 암호입니다."
     },
     "reader": {
+        "annotations": {
+            "addNote": "",
+            "highlight": ""
+        },
         "divina": {
             "mute": "오디오 음소거",
             "unmute": "오디오 음소거 해제"
         },
-        "footerInfo": {
-            "lessInfo": "간략정보",
-            "moreInfo": "상세정보"
+        "fxl": {
+            "fit": ""
         },
         "marks": {
             "annotations": "주석",
@@ -289,6 +292,7 @@
             "edit": "수정",
             "landmarks": "랜드마크",
             "search": "검색",
+            "searchResult": "",
             "toc": "목차"
         },
         "media-overlays": {
@@ -304,6 +308,7 @@
             "title": "소리내어 읽기"
         },
         "navigation": {
+            "annotationTitle": "",
             "backHomeTitle": "내서재로 돌아가기",
             "bookmarkTitle": "북마크",
             "currentPage": "현재 페이지: {{- current}}",
@@ -320,8 +325,6 @@
             "magnifyingGlassButton": "도서에서 검색",
             "openTableOfContentsTitle": "탐색",
             "pdfscalemode": "페이지 또는 너비 맞춤",
-            "quitFullscreenTitle": "전체 화면모드 종료",
-            "readBookTitle": "읽기 시작",
             "settingsTitle": "설정"
         },
         "picker": {
@@ -340,11 +343,11 @@
             "column": {
                 "auto": "자동",
                 "one": "1단",
-                "oneTitle": "1단",
                 "title": "단",
-                "two": "2단",
-                "twoTitle": "2단"
+                "two": "2단"
             },
+            "customizeReader": "",
+            "disabled": "",
             "display": "디스플레이",
             "disposition": {
                 "title": "레이아웃"
@@ -357,7 +360,6 @@
             "lineSpacing": "줄 간격",
             "margin": "여백",
             "noFootnotes": "각주 비활성화",
-            "noRTLFlip": "",
             "paginated": "페이지 매김",
             "paraSpacing": "단락 간격",
             "pdfZoom": {
@@ -373,12 +375,8 @@
                 },
                 "title": "확대/축소"
             },
+            "preview": "",
             "reduceMotion": "모션 줄이기",
-            "save": {
-                "apply": "저장",
-                "reset": "초기화",
-                "title": "설정"
-            },
             "scrolled": "스크롤",
             "spacing": "간격",
             "text": "텍스트",
@@ -419,14 +417,12 @@
         "keyboard": {
             "advancedMenu": "메뉴",
             "cancel": "취소",
-            "edit": "수정",
+            "disclaimer": "",
             "editUserJson": "사용자 파일 편집...",
-            "hide": "숨기기",
             "keyboardShortcuts": "키보드 단축키",
             "loadUserJson": "사용자 파일에서 로드",
             "resetDefaults": "재설정(기본값 로드)",
-            "save": "저장",
-            "show": "보기"
+            "save": "저장"
         },
         "language": {
             "languageChoice": "언어 선택"
@@ -435,6 +431,18 @@
             "no": "비활성화",
             "title": "세션 저장",
             "yes": "활성화"
+        },
+        "tabs": {
+            "appearance": "",
+            "general": "",
+            "keyboardShortcuts": ""
+        },
+        "theme": {
+            "auto": "",
+            "dark": "",
+            "description": "",
+            "light": "",
+            "title": ""
         }
     }
 }

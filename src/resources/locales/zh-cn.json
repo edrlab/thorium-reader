@@ -43,7 +43,6 @@
     },
     "catalog": {
         "about": {
-            "button": "更多信息",
             "title": "关于{{appName}}"
         },
         "addBookToLib": "导入",
@@ -107,6 +106,7 @@
         "readBook": "阅读",
         "released": "出版日期",
         "sort": "排序方式",
+        "tag": "",
         "tagCount": "标签数",
         "tags": "标签",
         "update": "编辑"
@@ -131,8 +131,6 @@
     },
     "header": {
         "allBooks": "全部图书",
-        "books": "我的图书",
-        "catalogs": "出版目录",
         "downloads": "下载",
         "gridTitle": "网格视图",
         "home": "书架菜单",
@@ -142,15 +140,18 @@
         "refreshTitle": "重载",
         "searchPlaceholder": "搜索",
         "searchTitle": "开始搜索",
-        "settings": "设置"
+        "settings": "设置",
+        "viewMode": ""
     },
     "library": {
         "lcp": {
             "hint": "(提示: {{- hint}})",
             "password": "密码",
             "sentence": "打开此出版物需要 LCP 密码: ",
-            "submit": "提交",
-            "urlHint": "忘记密码？在此获取帮助"
+            "urlHint": "忘记密码？在此获取帮助",
+            "whatIsLcp?": "",
+            "whatIsLcpInfoDetails": "",
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -171,7 +172,6 @@
             "addButton": "添加",
             "name": "名称：",
             "namePlaceholder": "名称",
-            "title": "添加 OPDS 订阅源",
             "url": "链接：",
             "urlPlaceholder": "链接"
         },
@@ -274,13 +274,16 @@
         "userKeyCheckInvalid": "密码不正确"
     },
     "reader": {
+        "annotations": {
+            "addNote": "",
+            "highlight": ""
+        },
         "divina": {
             "mute": "静音",
             "unmute": "取消静音"
         },
-        "footerInfo": {
-            "lessInfo": "不显示阅读位置",
-            "moreInfo": "显示阅读位置"
+        "fxl": {
+            "fit": ""
         },
         "marks": {
             "annotations": "笔记",
@@ -289,6 +292,7 @@
             "edit": "编辑",
             "landmarks": "结构",
             "search": "检索",
+            "searchResult": "",
             "toc": "目录"
         },
         "media-overlays": {
@@ -304,6 +308,7 @@
             "title": "语音朗读"
         },
         "navigation": {
+            "annotationTitle": "",
             "backHomeTitle": "返回书架",
             "bookmarkTitle": "书签",
             "currentPage": "当前页面: {{- current}}",
@@ -320,8 +325,6 @@
             "magnifyingGlassButton": "在出版物中搜索",
             "openTableOfContentsTitle": "导航",
             "pdfscalemode": "适合页面宽度",
-            "quitFullscreenTitle": "退出全屏模式",
-            "readBookTitle": "开始阅读图书",
             "settingsTitle": "设置"
         },
         "picker": {
@@ -340,11 +343,11 @@
             "column": {
                 "auto": "自动",
                 "one": "1栏",
-                "oneTitle": "一栏",
                 "title": "栏",
-                "two": "2栏",
-                "twoTitle": "两栏"
+                "two": "2栏"
             },
+            "customizeReader": "",
+            "disabled": "",
             "display": "显示",
             "disposition": {
                 "title": "布局"
@@ -357,7 +360,6 @@
             "lineSpacing": "行间距",
             "margin": "页边距",
             "noFootnotes": "禁用脚注",
-            "noRTLFlip": "",
             "paginated": "已分页",
             "paraSpacing": "段落间距",
             "pdfZoom": {
@@ -373,12 +375,8 @@
                 },
                 "title": "放大"
             },
+            "preview": "",
             "reduceMotion": "减少动态效果",
-            "save": {
-                "apply": "保存",
-                "reset": "重置",
-                "title": "配置"
-            },
             "scrolled": "滚屏",
             "spacing": "间距",
             "text": "文字",
@@ -419,14 +417,12 @@
         "keyboard": {
             "advancedMenu": "菜单",
             "cancel": "取消",
-            "edit": "编辑",
+            "disclaimer": "",
             "editUserJson": "编辑用户文件...",
-            "hide": "隐藏",
             "keyboardShortcuts": "键盘快捷键",
             "loadUserJson": "从用户文件加载",
             "resetDefaults": "重置 (加载初始设置)",
-            "save": "保存",
-            "show": "显示"
+            "save": "保存"
         },
         "language": {
             "languageChoice": "选择语言"
@@ -435,6 +431,18 @@
             "no": "禁用",
             "title": "保存登录状态",
             "yes": "启用"
+        },
+        "tabs": {
+            "appearance": "",
+            "general": "",
+            "keyboardShortcuts": ""
+        },
+        "theme": {
+            "auto": "",
+            "dark": "",
+            "description": "",
+            "light": "",
+            "title": ""
         }
     }
 }

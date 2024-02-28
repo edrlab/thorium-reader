@@ -43,7 +43,6 @@
     },
     "catalog": {
         "about": {
-            "button": "Daugiau informacijos",
             "title": "Apie {{- appName}}"
         },
         "addBookToLib": "Importuoti",
@@ -107,6 +106,7 @@
         "readBook": "Skaityti",
         "released": "Išleidimo data",
         "sort": "Rikiuoti pagal",
+        "tag": "",
         "tagCount": "Žymių skaičius",
         "tags": "Žymės",
         "update": "Keisti"
@@ -131,8 +131,6 @@
     },
     "header": {
         "allBooks": "Visos knygos",
-        "books": "Mano knygos",
-        "catalogs": "Katalogai",
         "downloads": "Atsiuntimai",
         "gridTitle": "Tinkelio rodinys",
         "home": "Knygų lentynos meniu",
@@ -142,15 +140,18 @@
         "refreshTitle": "įkelti iš naujo",
         "searchPlaceholder": "Paieška",
         "searchTitle": "Ieškoti",
-        "settings": "Nuostatos"
+        "settings": "Nuostatos",
+        "viewMode": ""
     },
     "library": {
         "lcp": {
             "hint": "(Užuomina : {{- hint}})",
             "password": "Slaptažodis",
             "sentence": "Šiam leidiniui atverti reikalingas LCP slaptažodis: ",
-            "submit": "Pateikti",
-            "urlHint": "Pamiršote slaptažodį? Pagalbos ieškokite čia"
+            "urlHint": "Pamiršote slaptažodį? Pagalbos ieškokite čia",
+            "whatIsLcp?": "",
+            "whatIsLcpInfoDetails": "",
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -171,7 +172,6 @@
             "addButton": "Pridėti",
             "name": "Pavadinimas :",
             "namePlaceholder": "Pavadinimas",
-            "title": "Pridėti OPDS sklaidos kanalą",
             "url": "Nuoroda :",
             "urlPlaceholder": "Nuoroda"
         },
@@ -274,13 +274,16 @@
         "userKeyCheckInvalid": "Neteisingas slaptažodis"
     },
     "reader": {
+        "annotations": {
+            "addNote": "",
+            "highlight": ""
+        },
         "divina": {
             "mute": "išjungti garsą",
             "unmute": "įjungti garsą"
         },
-        "footerInfo": {
-            "lessInfo": "mažiau informacijos",
-            "moreInfo": "daugiau informacijos"
+        "fxl": {
+            "fit": ""
         },
         "marks": {
             "annotations": "Pastabos",
@@ -289,6 +292,7 @@
             "edit": "Keisti",
             "landmarks": "Gairės",
             "search": "Paieška",
+            "searchResult": "",
             "toc": "Turinys"
         },
         "media-overlays": {
@@ -304,6 +308,7 @@
             "title": "Readaloud"
         },
         "navigation": {
+            "annotationTitle": "",
             "backHomeTitle": "grįžti į knygų lentyną",
             "bookmarkTitle": "sukurti žymę",
             "currentPage": "Dabartinis puslapis: {{- current}}",
@@ -320,8 +325,6 @@
             "magnifyingGlassButton": "ieškoti leidinyje",
             "openTableOfContentsTitle": "naršymas",
             "pdfscalemode": "talpinti pritaikant prie puslapio aukščio/pločio",
-            "quitFullscreenTitle": "išjungti viso ekrano režimą",
-            "readBookTitle": "pradėti skaityti knygą",
             "settingsTitle": "nuostatos"
         },
         "picker": {
@@ -340,11 +343,11 @@
             "column": {
                 "auto": "Automatinis",
                 "one": "1 stulpelis",
-                "oneTitle": "Vienas stulpelis",
                 "title": "Stulpeliai",
-                "two": "2 stulpeliai",
-                "twoTitle": "Du stulpeliai"
+                "two": "2 stulpeliai"
             },
+            "customizeReader": "",
+            "disabled": "",
             "display": "Atvaizdavimas",
             "disposition": {
                 "title": "Išdėstymas"
@@ -357,7 +360,6 @@
             "lineSpacing": "Eilučių išretinimas",
             "margin": "Paraštė",
             "noFootnotes": "Išjungti išnašas",
-            "noRTLFlip": "",
             "paginated": "Skaidyti į puslapius",
             "paraSpacing": "Tarpas tarp pastraipų",
             "pdfZoom": {
@@ -373,12 +375,8 @@
                 },
                 "title": "Mastelis"
             },
+            "preview": "",
             "reduceMotion": "Mažinti judesių kiekį",
-            "save": {
-                "apply": "įrašyti",
-                "reset": "grįžti į pradinę būseną",
-                "title": "Sąranka"
-            },
             "scrolled": "Slenkantis",
             "spacing": "Išretinimas",
             "text": "Tekstas",
@@ -419,14 +417,12 @@
         "keyboard": {
             "advancedMenu": "Meniu",
             "cancel": "Nutraukti",
-            "edit": "Keisti",
+            "disclaimer": "",
             "editUserJson": "Keisti naudotojo failą...",
-            "hide": "Slėpti",
             "keyboardShortcuts": "Spartieji klavišai",
             "loadUserJson": "Įkelti iš naudotojo failo",
             "resetDefaults": "Atkurti numatytąsias reikšmes",
-            "save": "Įrašyti",
-            "show": "Rodyti"
+            "save": "Įrašyti"
         },
         "language": {
             "languageChoice": "Kalbos pasirinkimas"
@@ -435,6 +431,18 @@
             "no": "Išjungti",
             "title": "Sesijos išsaugojimas",
             "yes": "Įjungti"
+        },
+        "tabs": {
+            "appearance": "",
+            "general": "",
+            "keyboardShortcuts": ""
+        },
+        "theme": {
+            "auto": "",
+            "dark": "",
+            "description": "",
+            "light": "",
+            "title": ""
         }
     }
 }

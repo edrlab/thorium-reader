@@ -43,7 +43,6 @@
     },
     "catalog": {
         "about": {
-            "button": "Дополнительные сведения",
             "title": "О {{- appName}}"
         },
         "addBookToLib": "Импорт",
@@ -107,6 +106,7 @@
         "readBook": "Читать",
         "released": "Дата издания",
         "sort": "Сортировать по",
+        "tag": "",
         "tagCount": "Количество тегов",
         "tags": "Теги",
         "update": ""
@@ -131,8 +131,6 @@
     },
     "header": {
         "allBooks": "Все книги",
-        "books": "Мои книги",
-        "catalogs": "Каталоги",
         "downloads": "Загрузки",
         "gridTitle": "Вид сетки",
         "home": "Меню книжной полки",
@@ -142,15 +140,18 @@
         "refreshTitle": "Перезагрузить",
         "searchPlaceholder": "Поиск",
         "searchTitle": "Начать поиск",
-        "settings": "Настройки"
+        "settings": "Настройки",
+        "viewMode": ""
     },
     "library": {
         "lcp": {
             "hint": "(Подсказка : {{- hint}})",
             "password": "Пароль",
             "sentence": "Для открытия этой книги требуется пароль LCP: ",
-            "submit": "Отправить",
-            "urlHint": ""
+            "urlHint": "",
+            "whatIsLcp?": "",
+            "whatIsLcpInfoDetails": "",
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -171,7 +172,6 @@
             "addButton": "Добавить",
             "name": "Имя :",
             "namePlaceholder": "Имя",
-            "title": "Добавить OPDS каталог",
             "url": "Ссылка :",
             "urlPlaceholder": "Ссылка"
         },
@@ -274,13 +274,16 @@
         "userKeyCheckInvalid": "Пароль неверен"
     },
     "reader": {
+        "annotations": {
+            "addNote": "",
+            "highlight": ""
+        },
         "divina": {
             "mute": "",
             "unmute": ""
         },
-        "footerInfo": {
-            "lessInfo": "подробнее",
-            "moreInfo": "скрыть"
+        "fxl": {
+            "fit": ""
         },
         "marks": {
             "annotations": "Аннотации",
@@ -289,6 +292,7 @@
             "edit": "Редактировать",
             "landmarks": "Ориентиры",
             "search": "Поиск",
+            "searchResult": "",
             "toc": "Содержание"
         },
         "media-overlays": {
@@ -304,6 +308,7 @@
             "title": "Readaloud"
         },
         "navigation": {
+            "annotationTitle": "",
             "backHomeTitle": "назад к книжной полке",
             "bookmarkTitle": "закладка",
             "currentPage": "",
@@ -320,8 +325,6 @@
             "magnifyingGlassButton": "искать в книге",
             "openTableOfContentsTitle": "навигация",
             "pdfscalemode": "",
-            "quitFullscreenTitle": "выйти из полноэкранного режима",
-            "readBookTitle": "начать читать книгу",
             "settingsTitle": "настройки"
         },
         "picker": {
@@ -340,11 +343,11 @@
             "column": {
                 "auto": "Авто",
                 "one": "1 столбец",
-                "oneTitle": "один столбец",
                 "title": "Столбцы",
-                "two": "2 столбца",
-                "twoTitle": "два столбца"
+                "two": "2 столбца"
             },
+            "customizeReader": "",
+            "disabled": "",
             "display": "Отображение",
             "disposition": {
                 "title": "Разметка"
@@ -357,7 +360,6 @@
             "lineSpacing": "Межстрочный интервал",
             "margin": "Отступ",
             "noFootnotes": "",
-            "noRTLFlip": "",
             "paginated": "Страничная",
             "paraSpacing": "Интервал между абзацами",
             "pdfZoom": {
@@ -373,12 +375,8 @@
                 },
                 "title": "Увеличить"
             },
+            "preview": "",
             "reduceMotion": "",
-            "save": {
-                "apply": "сохрнить",
-                "reset": "сбросить",
-                "title": "Конфигурация"
-            },
             "scrolled": "Прокручивающаяся",
             "spacing": "Интервал",
             "text": "Текст",
@@ -419,14 +417,12 @@
         "keyboard": {
             "advancedMenu": "Меню",
             "cancel": "Отменить",
-            "edit": "Редактировать",
+            "disclaimer": "",
             "editUserJson": "Редактировать файл пользователя...",
-            "hide": "Скрыть",
             "keyboardShortcuts": "Горячие клавиши",
             "loadUserJson": "Загрузить из пользовательского файла",
             "resetDefaults": "Сбросить (загрузка по умолчанию)",
-            "save": "Сохранить",
-            "show": "Показать"
+            "save": "Сохранить"
         },
         "language": {
             "languageChoice": "Выбор языка"
@@ -435,6 +431,18 @@
             "no": "Отключить",
             "title": "Сохранение сеанса",
             "yes": "Включить"
+        },
+        "tabs": {
+            "appearance": "",
+            "general": "",
+            "keyboardShortcuts": ""
+        },
+        "theme": {
+            "auto": "",
+            "dark": "",
+            "description": "",
+            "light": "",
+            "title": ""
         }
     }
 }
