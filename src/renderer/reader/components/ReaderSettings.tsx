@@ -36,7 +36,7 @@ import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/componen
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import debounce from "debounce";
-import fontList from "readium-desktop/utils/fontList";
+import { FONT_LIST, FONT_LIST_WITH_JA } from "readium-desktop/utils/fontList";
 import { readerConfigInitialState, readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import { createOrGetPdfEventBus } from "../pdf/driver";
@@ -142,8 +142,9 @@ export const FontSize = ({config: {fontSize}, set}: {config: Pick<ReaderConfig, 
 };
 
 export const FontFamily = ({config: {font}, set}: {config: Pick<ReaderConfig, "font">, set: (a: Pick<ReaderConfig, "font">) => void}) => {
-    const [__] = useTranslator();
+    const [__, translator] = useTranslator();
 
+    const fontList = translator.getLocale() === "ja" ? FONT_LIST_WITH_JA : FONT_LIST;
     const options = fontList.map((fontItem, id) => ({ id, value: fontItem.id, name: fontItem.label, fontFamily: fontItem.fontFamily }));
     // if (fontList.findIndex((v) => v.id === font) < 0) {
     //     options.push({
