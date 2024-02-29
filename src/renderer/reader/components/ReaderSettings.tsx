@@ -515,9 +515,9 @@ const ReadingAudio = ({ config: { mediaOverlaysEnableCaptionsMode: captions, med
     );
 };
 
-const ReadingDisplayMathJax = ({ config: { enableMathJax, reduceMotion, noFootnotes }, set }:
-    { config: Pick<ReaderConfig, "enableMathJax" | "reduceMotion" | "noFootnotes">,
-    set: (a: Partial<Pick<ReaderConfig, "enableMathJax" | "reduceMotion" | "noFootnotes" | "paged">>) => void }) => {
+const ReadingDisplayMathJax = ({ config: { enableMathJax, reduceMotion, noFootnotes, noRuby }, set }:
+    { config: Pick<ReaderConfig, "enableMathJax" | "reduceMotion" | "noFootnotes" | "noRuby">,
+    set: (a: Partial<Pick<ReaderConfig, "enableMathJax" | "reduceMotion" | "noFootnotes" | "noRuby" | "paged">>) => void }) => {
     const [__] = useTranslator();
 
     const options = [
@@ -550,6 +550,15 @@ const ReadingDisplayMathJax = ({ config: { enableMathJax, reduceMotion, noFootno
             checked: noFootnotes,
             onChange: () => {
                 set({ noFootnotes: !noFootnotes });
+            },
+        },
+        {
+            id: "noRubyCheckBox",
+            name: "noRubyCheckBox",
+            label: __("reader.settings.noRuby"),
+            checked: noRuby,
+            onChange: () => {
+                set({ noRuby: !noRuby });
             },
         },
     ];
