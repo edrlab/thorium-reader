@@ -367,6 +367,7 @@
             "margin": "Margin",
             "noFootnotes": "Disable footnotes",
             "noRTLFlip": "Disable Right-To-Left UI",
+            "noRuby": "Hide Japanese Ruby",
             "paginated": "Paginated",
             "paraSpacing": "Paragraph spacing",
             "pdfZoom": {

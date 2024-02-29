@@ -362,7 +362,8 @@
             "lineSpacing": "Espacement des lignes",
             "margin": "Marge",
             "noFootnotes": "Désactiver la lecture des notes",
-            "noRTLFlip": "Désactiver la lecture de droite à gauche",
+            "noRTLFlip": "Désactiver l'inversion droite à gauche",
+            "noRuby": "Cacher le script Ruby (Japonais)",
             "paginated": "Paginé",
             "paraSpacing": "Espacement des paragraphes",
             "pdfZoom": {

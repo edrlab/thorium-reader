@@ -358,6 +358,7 @@
             "margin": "ページの余白",
             "noFootnotes": "脚注を表示しない",
             "noRTLFlip": "縦書き用UIに変更しない",
+            "noRuby": "",
             "paginated": "ページ型",
             "paraSpacing": "段落の間隔",
             "pdfZoom": {
