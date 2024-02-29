@@ -358,6 +358,7 @@
             "margin": "页边距",
             "noFootnotes": "禁用脚注",
             "noRTLFlip": "",
+            "noRuby": "",
             "paginated": "已分页",
             "paraSpacing": "段落间距",
             "pdfZoom": {

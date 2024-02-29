@@ -358,6 +358,7 @@
             "margin": "Marge",
             "noFootnotes": "Désactiver la lecture des notes",
             "noRTLFlip": "",
+            "noRuby": "",
             "paginated": "Paginé",
             "paraSpacing": "Espacement de paragraphes",
             "pdfZoom": {

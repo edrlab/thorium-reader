@@ -23,6 +23,7 @@ export const readerConfigInitialState: ReaderConfig = {
     enableMathJax: false,
     reduceMotion: false,
     noFootnotes: false,
+    noRuby: false,
     pageMargins: "0.5",
     wordSpacing: "0",
     letterSpacing: "0",

@@ -358,6 +358,7 @@
             "margin": "여백",
             "noFootnotes": "각주 비활성화",
             "noRTLFlip": "",
+            "noRuby": "",
             "paginated": "페이지 매김",
             "paraSpacing": "단락 간격",
             "pdfZoom": {

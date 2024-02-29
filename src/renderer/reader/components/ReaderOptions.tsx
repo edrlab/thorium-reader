@@ -817,6 +817,16 @@ export class ReaderOptions extends React.Component<IProps, IState> {
 
                 <div className={stylesReader.mathml_section}>
                     <input
+                        id="noRubyCheckBox"
+                        type="checkbox"
+                        checked={readerConfig.noRuby}
+                        onChange={() => this.toggleNoRuby()}
+                    />
+                    <label htmlFor="noRubyCheckBox">{__("reader.settings.noRuby")}</label>
+                </div>
+
+                <div className={stylesReader.mathml_section}>
+                    <input
                         id="noRTLFlipCheckBox"
                         type="checkbox"
                         checked={this.props.disableRTLFlip}
@@ -980,6 +990,14 @@ export class ReaderOptions extends React.Component<IProps, IState> {
         const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
 
         readerConfig.noFootnotes = !readerConfig.noFootnotes;
+        this.props.setSettings(readerConfig);
+    }
+
+    private toggleNoRuby() {
+        // TODO: smarter clone?
+        const readerConfig = JSON.parse(JSON.stringify(this.props.readerConfig));
+
+        readerConfig.noRuby = !readerConfig.noRuby;
         this.props.setSettings(readerConfig);
     }
 
