@@ -515,9 +515,19 @@ const ReadingAudio = ({ config: { mediaOverlaysEnableCaptionsMode: captions, med
     );
 };
 
-const ReadingDisplayMathJax = ({ config: { enableMathJax, reduceMotion, noFootnotes, noRuby }, set }:
-    { config: Pick<ReaderConfig, "enableMathJax" | "reduceMotion" | "noFootnotes" | "noRuby">,
-    set: (a: Partial<Pick<ReaderConfig, "enableMathJax" | "reduceMotion" | "noFootnotes" | "noRuby" | "paged">>) => void }) => {
+const ReadingDisplayMathJax = ({
+    config: { enableMathJax, reduceMotion, noFootnotes, noRuby },
+    set,
+    disableRTLFlip,
+    setDisableRTLFlip,
+}:
+{
+    config: Pick<ReaderConfig, "enableMathJax" | "reduceMotion" | "noFootnotes" | "noRuby">,
+    set: (a: Partial<Pick<ReaderConfig, "enableMathJax" | "reduceMotion" | "noFootnotes" | "noRuby" | "paged">>) => void,
+    disableRTLFlip: IReaderSettingsProps["disableRTLFlip"],
+    setDisableRTLFlip: IReaderSettingsProps["setDisableRTLFlip"],
+},
+) => {
     const [__] = useTranslator();
 
     const options = [
@@ -580,6 +590,19 @@ const ReadingDisplayMathJax = ({ config: { enableMathJax, reduceMotion, noFootno
                 </section>
 
             ))}
+
+            <section className={stylesSettings.section}>
+                <div>
+                    <input
+                        id="noRTLFlipCheckBox"
+                        type="checkbox"
+
+                        checked={disableRTLFlip}
+                        onChange={() => setDisableRTLFlip(!disableRTLFlip)}
+                    />
+                    <label htmlFor="noRTLFlipCheckBox">{__("reader.settings.noRTLFlip")}</label>
+                </div>
+            </section>
         </div>
     );
 };
@@ -1060,7 +1083,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             {isPdf ? <></> : <ReadingDisplayLayout config={readerConfig} set={setPartialSettingsDebounced} isFXL={props.isFXL} />}
                             {isPdf ? <></> : <ReadingDisplayAlign config={readerConfig} set={setPartialSettingsDebounced} />}
                             <ReadingDisplayCol config={readerConfig} set={setPartialSettingsDebounced} isPdf={props.isPdf} pdfCol={pdfState.pdfCol} />
-                            {isPdf ? <></> : <ReadingDisplayMathJax config={readerConfig} set={setPartialSettingsDebounced} />}
+                            {isPdf ? <></> : <ReadingDisplayMathJax config={readerConfig} set={setPartialSettingsDebounced} disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />}
                         </section>
                     </Tabs.Content>
                     <Tabs.Content value="tab-audio" tabIndex={-1}>
