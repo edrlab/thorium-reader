@@ -31,6 +31,7 @@ import elCatalog from "readium-desktop/resources/locales/el.json";
 import bgCatalog from "readium-desktop/resources/locales/bg.json";
 import hrCatalog from "readium-desktop/resources/locales/hr.json";
 import daCatalog from "readium-desktop/resources/locales/da.json";
+import slCatalog from "readium-desktop/resources/locales/sl.json";
 
 import { TFunction } from "readium-desktop/typings/en.translation";
 
@@ -131,6 +132,9 @@ i18nextInstance.init({
         "da": {
             translation: daCatalog,
         },
+        "sl": {
+            translation: slCatalog,
+        },
     },
     // lng: undefined,
     fallbackLng: "en",
@@ -185,6 +189,7 @@ export const AvailableLanguages = {
     "bg": "български",
     "hr": "Hrvatski",
     "da": "Danish",
+    "sl": "Slovene",
 };
 
 interface LocalizedContent {
