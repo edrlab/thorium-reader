@@ -357,8 +357,8 @@
             "lineSpacing": "行の間隔",
             "margin": "ページの余白",
             "noFootnotes": "脚注を表示しない",
-            "noRTLFlip": "縦書き用UIに変更しない",
-            "noRuby": "",
+            "noRTLFlip": "縦書きでUIを変更しない",
+            "noRuby": "ルビを表示しない",
             "paginated": "ページ型",
             "paraSpacing": "段落の間隔",
             "pdfZoom": {
