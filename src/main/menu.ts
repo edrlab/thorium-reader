@@ -29,25 +29,26 @@ export function setMenu(win: BrowserWindow, isReaderView: boolean) {
 }
 
 function devMenu(win: BrowserWindow, _isReaderView: boolean): Electron.MenuItemConstructorOptions {
-    if (_CONTINUOUS_INTEGRATION_DEPLOY) {
-        return {
-            label: "EPUB DEBUG",
-            submenu: [
-                {
-                    label: "OPEN WEB INSPECTOR / DEVELOPER TOOLS",
-                    accelerator: "Shift+Alt+CmdOrCtrl+I",
-                    click: (_item: MenuItem, _focusedWindow: BrowserWindow) => {
-                        for (const wc of webContents.getAllWebContents()) {
-                            if (wc.hostWebContents) {
-                                // wc.hostWebContents.id === readerWindow.webContents.id
-                                wc.openDevTools({ activate: true, mode: "detach" });
-                            }
-                        }
-                    },
-                },
-            ],
-        };
-    }
+    // Thorium now exposes the same debugging tools in CI buids as in command-line developer builds
+    // if (_CONTINUOUS_INTEGRATION_DEPLOY) {
+    //     return {
+    //         label: "EPUB DEBUG",
+    //         submenu: [
+    //             {
+    //                 label: "OPEN WEB INSPECTOR / DEVELOPER TOOLS",
+    //                 accelerator: "Shift+Alt+CmdOrCtrl+I",
+    //                 click: (_item: MenuItem, _focusedWindow: BrowserWindow) => {
+    //                     for (const wc of webContents.getAllWebContents()) {
+    //                         if (wc.hostWebContents) {
+    //                             // wc.hostWebContents.id === readerWindow.webContents.id
+    //                             wc.openDevTools({ activate: true, mode: "detach" });
+    //                         }
+    //                     }
+    //                 },
+    //             },
+    //         ],
+    //     };
+    // }
     return {
         label: "DEV",
         submenu: [

@@ -13,7 +13,7 @@ import { diMainGet, saveReaderWindowInDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
 import {
-    _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV, OPEN_DEV_TOOLS,
+    _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV, OPEN_DEV_TOOLS, _CONTINUOUS_INTEGRATION_DEPLOY,
 } from "readium-desktop/preprocessor-directives";
 
 import {
@@ -27,6 +27,8 @@ import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/cons
 const debug = debug_("readium-desktop:createReaderWindow");
 debug("_");
 
+const ENABLE_DEV_TOOLS = IS_DEV || _CONTINUOUS_INTEGRATION_DEPLOY;
+
 export function* createReaderWindow(action: winActions.reader.openRequest.TAction) {
 
     const { winBound, publicationIdentifier, manifestUrl, identifier, reduxState } = action.payload;
@@ -39,7 +41,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
             // enableRemoteModule: false,
             allowRunningInsecureContent: false,
             backgroundThrottling: false,
-            devTools: IS_DEV, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
+            devTools: ENABLE_DEV_TOOLS, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
             nodeIntegration: true,
             contextIsolation: false,
             nodeIntegrationInWorker: false,
@@ -56,7 +58,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
         readerWindow.webContents?.send("window-blur");
     });
 
-    if (IS_DEV) {
+    if (ENABLE_DEV_TOOLS) {
         const wc = readerWindow.webContents;
         contextMenuSetup(wc, wc.id);
     }
@@ -98,7 +100,10 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
     yield* callTyped(() => readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" }));
 
+    // TODO shouldn't the call to reader.openSucess be fenced with if (!IS_DEV) {}, just like in createlibraryWindow??
+    // (otherwise called a second time in did-finish-load event handler below)
     yield* putTyped(winActions.reader.openSucess.build(readerWindow, registerReaderAction.payload.identifier));
+
     if (IS_DEV) {
 
         readerWindow.webContents.on("did-finish-load", () => {
