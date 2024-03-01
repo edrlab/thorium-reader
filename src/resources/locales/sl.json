@@ -1,0 +1,441 @@
+{
+    "accessibility": {
+        "bookMenu": "Meni",
+        "closeDialog": "Zapri",
+        "importFile": "Uvozi publikacijo",
+        "leftSlideButton": "Premakni seznam v levo",
+        "mainContent": "glavna vsebina",
+        "rightSlideButton": "Premakni seznam v desno",
+        "searchBook": "Iskanje po naslovu",
+        "skipLink": "Preskoči na vsebino",
+        "toolbar": "orodna vrstica"
+    },
+    "apiapp": {
+        "noLibraryFound": "Ne najdem knjižnice ({{- ime}})"
+    },
+    "app": {
+        "edit": {
+            "copy": "Kopiraj",
+            "cut": "Izreži",
+            "paste": "Prilepi",
+            "redo": "Ponovi",
+            "selectAll": "Izberi vse",
+            "title": "Uredi",
+            "undo": "Razveljavi"
+        },
+        "hide": "Skrij {{- appName}}",
+        "quit": "Zapri {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Ne",
+                        "yes": "Da"
+                    },
+                    "message": "Ali želiš shraniti sejo?",
+                    "title": "Shrani sejo"
+                }
+            }
+        },
+        "window": {
+            "showLibrary": "Prikaži knjižnico / knjižna polica"
+        }
+    },
+    "catalog": {
+        "about": {
+            "button": "Več informacij",
+            "title": "O {{- appName}}"
+        },
+        "addBookToLib": "Uvozi",
+        "addTags": "Dodaj oznako",
+        "addTagsButton": "Dodaj",
+        "allBooks": "Vse knjige",
+        "bookInfo": "O knjigi",
+        "column": {
+            "ascending": "naraščajoče",
+            "descending": "padajoče",
+            "unsorted": "nerazvrščeno"
+        },
+        "delete": "Izbriši",
+        "deleteBook": "Izbriši",
+        "deleteTag": "Odstrani oznako",
+        "description": "Opis",
+        "emptyTagList": "Ni označenih knjig.",
+        "entry": {
+            "continueReading": "Nadaljuj z branjem",
+            "continueReadingAudioBooks": "Nadaljuj s poslušanjem",
+            "continueReadingDivina": "Nadaljuj z divino",
+            "continueReadingPdf": "Nadaljuj s PDF-jem",
+            "lastAdditions": "Nedavno dodano"
+        },
+        "export": "Shrani kot",
+        "format": "Format",
+        "lang": "Jezik",
+        "lastRead": "Nazadnje brano",
+        "moreInfo": "Osnovni podatki",
+        "myBooks": "Moje knjige",
+        "noPublicationHelpL1": "Drop a publication here",
+        "noPublicationHelpL2": "ali uporabi \"+\" zgornji gumb.",
+        "noPublicationHelpL3": "LCP zaščitene datoteke so podprte.",
+        "noPublicationHelpL4": "Podprte razširitve:",
+        "numberOfPages": "Število strani",
+        "opds": {
+            "auth": {
+                "cancel": "Prekliči",
+                "login": "Prijavi se"
+            },
+            "info": {
+                "availableSince": "Na voljo od",
+                "availableState": {
+                    "available": "Na voljo",
+                    "ready": "Pripravljen",
+                    "reserved": "Rezervirano",
+                    "unavailable": "Ni na voljo",
+                    "unknown": "Neznano"
+                },
+                "availableUntil": "Na voljo do",
+                "copyAvalaible": "Na voljo",
+                "copyTotal": "Kopije",
+                "holdPosition": "Položaj držanja",
+                "holdTotal": "Držano",
+                "numberOfItems": "Število elementov",
+                "priveValue": "Cena",
+                "state": "Stanje"
+            }
+        },
+        "publisher": "Založba",
+        "readBook": "Začni brati",
+        "released": "Objavljeno na",
+        "sort": "Razvrsti po",
+        "tagCount": "Število oznak",
+        "tags": "Oznake",
+        "update": "Uredi"
+    },
+    "dialog": {
+        "cancel": "Prekliči",
+        "closeModalWindow": "Zapri modalno okno",
+        "deleteFeed": "Ali res želiš izbrisati katalog?",
+        "deletePublication": "Ali res želiš izbrisati publikacijo?",
+        "import": "Ali res želiš uvoziti te datoteke:",
+        "importError": "napaka, preveri datotečno končnico ({{acceptedExtension}})",
+        "renew": "Ali res želiš obnoviti licenco za to publikacijo?",
+        "return": "Ali res želiš vrniti licenco za to publikacijo?",
+        "yes": "Da"
+    },
+    "error": {
+        "errorBox": {
+            "error": "Sporočilo o napaki:",
+            "message": "Prišlo je do napake v {{- filename}}",
+            "title": "Notranja {{- appName}} napaka"
+        }
+    },
+    "header": {
+        "allBooks": "Vse knjige",
+        "books": "Moje knjige",
+        "catalogs": "Katalogi",
+        "downloads": "Prenosi",
+        "gridTitle": "Mrežni pogled",
+        "home": "Knjižna polica",
+        "homeTitle": "domov",
+        "importTitle": "Uvozi publikacijo",
+        "listTitle": "Prikaz seznama",
+        "refreshTitle": "osveži",
+        "searchPlaceholder": "Iskanje",
+        "searchTitle": "Išči",
+        "settings": "Nastavitve"
+    },
+    "library": {
+        "lcp": {
+            "hint": "(Namig: {{- hint}})",
+            "password": "Geslo",
+            "sentence": "Za odprtje publikacije vnesi LCP geslo: ",
+            "submit": "Potrdi",
+            "urlHint": "Pozabljeno geslo? Tu lahko poiščeš pomoč"
+        }
+    },
+    "message": {
+        "download": {
+            "error": "Prenos {{- title}} ni uspel: [{{- err}}]"
+        },
+        "import": {
+            "alreadyImport": "{{- title}} je že uvožena",
+            "fail": "Uvoz {{- path}} ni uspel. {{- err}}",
+            "success": "Uvoz {{- title}} je končan."
+        },
+        "open": {
+            "error": "Publikacije ni mogoče odpreti: {{- err}}"
+        }
+    },
+    "opds": {
+        "addForm": {
+            "addButton": "Dodaj",
+            "name": "Ime:",
+            "namePlaceholder": "Ime",
+            "title": "Dodaj OPDS vir",
+            "url": "Povezava:",
+            "urlPlaceholder": "Povezava"
+        },
+        "addFormApiapp": {
+            "title": "Dodaj knjižnični račun"
+        },
+        "addMenu": "Dodaj OPDS vir",
+        "back": "Nazaj",
+        "breadcrumbRoot": "Katalogi",
+        "empty": "Ne najdem publikacije",
+        "firstPage": "Prva",
+        "lastPage": "Zadnja",
+        "menu": {
+            "aboutBook": "O knjigi",
+            "addExtract": "Uvozi izvleček",
+            "goBuyBook": "Kupi",
+            "goLoanBook": "Izposodi",
+            "goRevokeLoanBook": "Preklic izposoje",
+            "goSubBook": "Naroči se"
+        },
+        "network": {
+            "error": "Težava pri dostopu do strežnika",
+            "noInternet": "Brez internetne povezave",
+            "noInternetMessage": "Preveri omrežni kabel, modem, usmerjevalnik ali wifi",
+            "reject": "Nepričakovana težava med obdelovanjem vira",
+            "timeout": "Napaka časovne omejitve povezave, poskusi kasneje"
+        },
+        "next": "Naslednja",
+        "previous": "Prejšnja",
+        "shelf": "Polica",
+        "updateForm": {
+            "name": "Ime:",
+            "title": "Uredi OPDS vir",
+            "updateButton": "Uredi",
+            "url": "Povezava:"
+        }
+    },
+    "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": "Prijazno sintetizatorjem govora in čitalcem zaslona"
+            },
+            "accessibilityFeature": {
+                "alternativeText": "Vsebuje alternativno besedilo",
+                "displayTransformability": "Prilagodljivo besedilo in postavitev",
+                "longDescription": "V celoti opisani grafični viri",
+                "printPageNumbers": "Sklic na paginacijo tiskane knjige",
+                "readingOrder": "Vsebuje vrstni red branja",
+                "synchronizedAudioText": "Besedilo in avdio sta sinhronizirana",
+                "tableOfContents": "Vsebuje kazalo vsebine"
+            },
+            "accessibilityHazard": {
+                "flashing": "Bliskanje",
+                "motionSimulation": "Simulacija gibanja",
+                "name": "Nevarnost:",
+                "noFlashing": "Brez bliskanja",
+                "noMotionSimulation": "Brez simulacije gibanja",
+                "noSound": "Brez zvoka",
+                "none": "Nič",
+                "sound": "Zvok",
+                "unknown": "Neznano"
+            },
+            "certifierReport": "Poročilo certifikatorja",
+            "conformsTo": "V skladu z:",
+            "moreInformation": "Več informacij",
+            "name": "Dostopnost",
+            "noA11y": "Informacije o dostopnosti niso na voljo"
+        },
+        "audio": {
+            "tracks": "Zvočni posnetki"
+        },
+        "author": "Avtor",
+        "cancelledLcp": "Knjige ni mogoče prebrati, ker je bila licenca LCP preklicana.",
+        "certificateRevoked": "Certifikat je preklican",
+        "certificateSignatureInvalid": "Podpis certifikata je neveljaven",
+        "cover": {
+            "img": "Naslovnica"
+        },
+        "duration": {
+            "title": "Trajanje"
+        },
+        "expiredLcp": "Knjige ni mogoče prebrati, ker je licenca LCP potekla.",
+        "lcpEnd": "Konec",
+        "lcpRightsCopy": "Kopirani znaki",
+        "lcpRightsPrint": "Tiskane strani",
+        "lcpStart": "Začetek",
+        "licenseOutOfDate": "Licenca ni več veljavna",
+        "licenseSignatureDateInvalid": "Datum podpisa licence ni veljaven",
+        "licenseSignatureInvalid": "Podpis licence ni veljaven",
+        "progression": {
+            "title": "Napredovanje"
+        },
+        "renewButton": "Obnovi",
+        "returnButton": "Vrni",
+        "returnedLcp": "Knjige ni mogoče prebrati, ker je bila licenca LCP vrnjena.",
+        "revokedLcp": "Knjige ni mogoče prebrati, ker je bila licenca LCP preklicana.",
+        "seeLess": "Prikaži manj",
+        "seeMore": "Prikaži več",
+        "title": "Naslov",
+        "userKeyCheckInvalid": "Napačno geslo"
+    },
+    "reader": {
+        "divina": {
+            "mute": "izklopi zvok",
+            "unmute": "vklopi zvok"
+        },
+        "footerInfo": {
+            "lessInfo": "manj informacij",
+            "moreInfo": "več informacij"
+        },
+        "marks": {
+            "annotations": "Opombe",
+            "bookmarks": "Zaznamki",
+            "delete": "Izbriši",
+            "edit": "Uredi",
+            "landmarks": "Mejniki",
+            "search": "Iskanje",
+            "toc": "Kazalo vsebine"
+        },
+        "media-overlays": {
+            "activate": "Vključi glasovno branje",
+            "captions": "Podnapisi / čisti prikaz",
+            "next": "Naslednje glasovno branje",
+            "pause": "Premor glasovnega branja",
+            "play": "Predvajaj glasovno branje",
+            "previous": "Prejšnje glasovno branje",
+            "skip": "Preskoči",
+            "speed": "Hitrost glasovnega branja",
+            "stop": "Prekini glasovno branje",
+            "title": "Glasovno branje"
+        },
+        "navigation": {
+            "backHomeTitle": "nazaj na knjižno polico",
+            "bookmarkTitle": "zaznamek",
+            "currentPage": "Trenutna stran: {{- current}}",
+            "currentPageTotal": "Trenutna stran: {{- current}}/{{- total}}",
+            "detachWindowTitle": "prikaži knjižnico / okno knjižne police",
+            "fullscreenTitle": "celozaslonski način",
+            "goTo": "Pojdi na",
+            "goToError": "Prelom strani ne obstaja",
+            "goToPlaceHolder": "Vnesi številko strani",
+            "goToTitle": "Pojdi na stran",
+            "historyNext": "Skok naprej",
+            "historyPrevious": "Skok nazaj",
+            "infoTitle": "informacije",
+            "magnifyingGlassButton": "išči v publikaciji",
+            "openTableOfContentsTitle": "navigacija",
+            "pdfscalemode": "Prileganje strani ali širine",
+            "quitFullscreenTitle": "izhod iz celozaslonskega načina",
+            "readBookTitle": "prični z branjem",
+            "settingsTitle": "nastavitve"
+        },
+        "picker": {
+            "annotationTitle": "Opombe:",
+            "search": {
+                "founds": "{{- nResults}} zadetek(kov)",
+                "input": "besedilo, ki se ujema z",
+                "next": "Naslednje",
+                "notFound": "ni zadetkov",
+                "previous": "Prejšnje",
+                "submit": "Išči"
+            },
+            "searchTitle": "Iskanje:"
+        },
+        "settings": {
+            "column": {
+                "auto": "Privzeto",
+                "one": "1 col",
+                "oneTitle": "en stolpec",
+                "title": "Stolpci",
+                "two": "2 cols",
+                "twoTitle": "dva stolpca"
+            },
+            "display": "Zaslon",
+            "disposition": {
+                "title": "Postavitev"
+            },
+            "font": "Font",
+            "fontSize": "Velikost fonta",
+            "justification": "Poravnava",
+            "justify": "Razmik",
+            "letterSpacing": "Razmik med črkami",
+            "lineSpacing": "Razmik med vrsticami",
+            "margin": "Obroba",
+            "noFootnotes": "Onemogoči opombe",
+            "noRTLFlip": "",
+            "noRuby": "",
+            "paginated": "Paginirano",
+            "paraSpacing": "Razmik med odstavki",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "100 %",
+                    "150pct": "150 %",
+                    "200pct": "200 %",
+                    "300pct": "300 %",
+                    "500pct": "500 %",
+                    "50pct": "50 %",
+                    "fit": "prilagodi stran",
+                    "width": "širina strani"
+                },
+                "title": "Povečava"
+            },
+            "reduceMotion": "Zmanjšaj gibanje",
+            "save": {
+                "apply": "shrani",
+                "reset": "ponastavi",
+                "title": "Konfiguracija"
+            },
+            "scrolled": "Pomikanje",
+            "spacing": "Razmik",
+            "text": "Besedilo",
+            "theme": {
+                "name": {
+                    "Neutral": "Nevtralno",
+                    "Night": "Temno",
+                    "Sepia": "Sepija"
+                },
+                "title": "Tema"
+            },
+            "wordSpacing": "Razmik med besedami"
+        },
+        "svg": {
+            "left": "Levo",
+            "right": "Desno"
+        },
+        "toc": {
+            "publicationNoToc": "publikacija ne vsebuje kazala vsebine"
+        },
+        "tts": {
+            "activate": "Vklopi sintetizator govora",
+            "default": "Glas: privzeta nastavitev sistema",
+            "next": "Naslednji",
+            "pause": "Premor",
+            "play": "Predvajaj",
+            "previous": "Prejšnji",
+            "sentenceDetect": "Razdeli TTS besedilo",
+            "speed": "Hitrost predvajanja",
+            "stop": "Prekini predvajanje",
+            "voice": "Sintetizator govora"
+        }
+    },
+    "settings": {
+        "auth": {
+            "wipeData": "Izbriši avtentikacijske podatke"
+        },
+        "keyboard": {
+            "advancedMenu": "Meni",
+            "cancel": "Prekliči",
+            "edit": "Uredi",
+            "editUserJson": "Uredi datoteko uporabnika...",
+            "hide": "Skrij",
+            "keyboardShortcuts": "Bližnjice tipkovnice",
+            "loadUserJson": "Nalaganje iz datoteke uporabnika",
+            "resetDefaults": "Ponastavitev (naloži privzete nastavitve)",
+            "save": "Shrani",
+            "show": "Prikaži"
+        },
+        "language": {
+            "languageChoice": "Izbira jezika"
+        },
+        "session": {
+            "no": "Onemogoči",
+            "title": "Shrani sejo",
+            "yes": "Omogoči"
+        }
+    }
+}
