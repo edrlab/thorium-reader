@@ -119,14 +119,14 @@ export const memoryLoggerFilename = path.join(
 // Create databases
 //
 
-const rootDbPath = path.join(
-    userDataPath,
-    (_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "db-dev-sqlite" : "db",
-);
+// const rootDbPath = path.join(
+//     userDataPath,
+//     (_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "db-dev-sqlite" : "db",
+// );
 
-if (!fs.existsSync(rootDbPath)) {
-    fs.mkdirSync(rootDbPath);
-}
+// if (!fs.existsSync(rootDbPath)) {
+//     fs.mkdirSync(rootDbPath);
+// }
 
 const publicationRepository = new PublicationRepository();
 

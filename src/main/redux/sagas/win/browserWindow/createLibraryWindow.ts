@@ -14,7 +14,7 @@ import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
-    _RENDERER_LIBRARY_BASE_URL, _VSCODE_LAUNCH, IS_DEV, OPEN_DEV_TOOLS,
+    _RENDERER_LIBRARY_BASE_URL, _VSCODE_LAUNCH, IS_DEV, OPEN_DEV_TOOLS, _CONTINUOUS_INTEGRATION_DEPLOY,
 } from "readium-desktop/preprocessor-directives";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
@@ -25,6 +25,8 @@ import { contextMenuSetup } from "@r2-navigator-js/electron/main/browser-window-
 
 // Logger
 const debug = debug_("readium-desktop:createLibraryWindow");
+
+const ENABLE_DEV_TOOLS = IS_DEV || _CONTINUOUS_INTEGRATION_DEPLOY;
 
 // Global reference to the main window,
 // so the garbage collector doesn't close it.
@@ -49,7 +51,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
             // enableRemoteModule: false,
             allowRunningInsecureContent: false,
             backgroundThrottling: true,
-            devTools: IS_DEV, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
+            devTools: ENABLE_DEV_TOOLS, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
             nodeIntegration: true,
             contextIsolation: false,
             nodeIntegrationInWorker: false,
@@ -60,10 +62,12 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         icon: path.join(__dirname, "assets/icons/icon.png"),
     });
 
-    if (IS_DEV) {
+    if (ENABLE_DEV_TOOLS) {
         const wc = libWindow.webContents;
         contextMenuSetup(wc, wc.id);
+    }
 
+    if (IS_DEV) {
         libWindow.webContents.on("did-finish-load", () => {
             // see app.whenReady() in src/main/redux/sagas/app.ts
             // // app.whenReady().then(() => {
