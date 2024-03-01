@@ -6,29 +6,33 @@ Free application. No ads. No private data flowing anywhere.
 
 This project is in constant evolution, corrections and new features will be added soon and your support is welcome for that. The application is based on the open-source Readium Desktop toolkit.
 
-It is currently localized in following languages:
-- English
-- French
-- Portuguese
-- Swedish
-- Russian
-- Lithuanian
-- Italian
-- Japanese
-- Dutch
-- Spanish
-- German
-- Finnish
-- Chinese (Simplified + Traditional)
-- Korean
-- Georgian
-- Basque (Euskadi)
-- Galician
-- Catalan
-- Croatian
-- Bulgarian
-- Greek
-- Danish
+It is currently localized in following 25 languages:
+
+* (en) English
+* (fr) Français (French)
+* (fi) Suomi (Finish)
+* (de) Deutsch (German)
+* (es) Español (Spanish)
+* (nl) Nederlands (Dutch)
+* (ja) 日本語 (Japanese)
+* (ka) ქართული (Georgian)
+* (lt) Lietuvių (Lithuanian)
+* (pt-BR) Português Brasileiro (Portuguese - Brazil)
+* (pt-PT) Português (Portuguese - Portugal)
+* (zh-CN) 中文 - 中國/国 (Chinese trad.)
+* (zh-TW) 中文 - 台湾/灣 (Chinese simp.)
+* (it) Italiano (Italian)
+* (ru) Русский (Russian)
+* (ko) 한국어 (Korean)
+* (sv) Svenska (Swedish)
+* (ca) Catalan
+* (gl) Galician
+* (eu) Euskadi (Basque)
+* (el) ελληνικός (Greek)
+* (bg) български (Bulgarian)
+* (hr) Hrvatski (Croatian)
+* (da) Dansk (Danish)
+* (sl) Slovenščina (Slovene)
 
 See: https://github.com/edrlab/thorium-reader/wiki/Localization-(l10n)-language-translations
 
