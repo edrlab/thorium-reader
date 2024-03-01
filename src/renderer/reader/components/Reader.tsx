@@ -95,7 +95,9 @@ import {
     highlightsCreate,
 } from "@r2-navigator-js/electron/renderer";
 
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import { IS_DEV, _CONTINUOUS_INTEGRATION_DEPLOY } from "readium-desktop/preprocessor-directives";
+
+const ENABLE_HIGHLIGHTS_TEST_FEATURE = IS_DEV || _CONTINUOUS_INTEGRATION_DEPLOY;
 
 // main process code!
 // thoriumhttps
@@ -950,7 +952,7 @@ class Reader extends React.Component<IProps, IState> {
             this.onKeyboardAudioStop);
 
         // TODO HIGHLIGHTS-ANNOTATIONS: just for testing!
-        if (IS_DEV) {
+        if (ENABLE_HIGHLIGHTS_TEST_FEATURE) {
           registerKeyboardListener(
               true, // listen for key up (not key down)
               this.props.keyboardShortcuts.AnnotationsTest1,
@@ -997,7 +999,7 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardAudioStop);
 
         // TODO HIGHLIGHTS-ANNOTATIONS: just for testing!
-        if (IS_DEV) {
+        if (ENABLE_HIGHLIGHTS_TEST_FEATURE) {
             unregisterKeyboardListener(this.onKeyboardAnnotationsTest1);
             unregisterKeyboardListener(this.onKeyboardAnnotationsTest2);
             unregisterKeyboardListener(this.onKeyboardAnnotationsTest3);
@@ -1034,68 +1036,69 @@ class Reader extends React.Component<IProps, IState> {
     // TODO HIGHLIGHTS-ANNOTATIONS: just for testing!
     private onKeyboardAnnotationsTest = (type: number) => {
 
-        if (IS_DEV) {
-            if (this.props.isDivina || this.props.isPdf) {
-                return;
-            }
-
-            // navigator loc has updated selectionInfo (may have been invalidated / cleared since last notified here ... so takes precedence over local state)
-            const loc = getCurrentReadingLocation() || this.state.currentLocation;
-
-            if (!loc?.locator?.href || !loc?.selectionInfo) { // loc?.selectionIsNew
-                return;
-            }
-
-            // TODO: define a preset of colours that work well in both light (aka. neutral) and dark (aka.night) modes.
-            // CSS mix-blend-mode is multiply for light, hard-light for dark.
-            const colors = [{
-                red: 210,
-                green: 137,
-                blue: 156,
-            },
-            {
-                red: 6,
-                green: 202,
-                blue: 56,
-            },
-            {
-                red: 57,
-                green: 153,
-                blue: 208,
-            },
-            {
-                red: 213,
-                green: 180,
-                blue: 120,
-            },
-            {
-                red: 61,
-                green: 181,
-                blue: 172,
-            }];
-            const color = false ? colors[Math.floor(Math.random() * colors.length)] : {
-                red: Math.floor(Math.random() * 256),
-                green: Math.floor(Math.random() * 256),
-                blue: Math.floor(Math.random() * 256),
-            };
-            console.log("DEV HIGHLIGHT CREATE: " + type, JSON.stringify(color, null, 4));
-
-            highlightsCreate(loc.locator.href, [
-                {
-                    selectionInfo: loc.selectionInfo,
-                    // range: Range,
-
-                    color,
-
-                    // 0 is full background (default), 1 is underline, 2 is strikethrough, 3 is outline
-                    drawType: type,
-
-                    expand: 3,
-
-                    group: "annotations",
-                },
-            ]);
+        if (!ENABLE_HIGHLIGHTS_TEST_FEATURE) {
+            return;
         }
+        if (this.props.isDivina || this.props.isPdf) {
+            return;
+        }
+
+        // navigator loc has updated selectionInfo (may have been invalidated / cleared since last notified here ... so takes precedence over local state)
+        const loc = getCurrentReadingLocation() || this.state.currentLocation;
+
+        if (!loc?.locator?.href || !loc?.selectionInfo) { // loc?.selectionIsNew
+            return;
+        }
+
+        // TODO: define a preset of colours that work well in both light (aka. neutral) and dark (aka.night) modes.
+        // CSS mix-blend-mode is multiply for light, hard-light for dark.
+        const colors = [{
+            red: 210,
+            green: 137,
+            blue: 156,
+        },
+        {
+            red: 6,
+            green: 202,
+            blue: 56,
+        },
+        {
+            red: 57,
+            green: 153,
+            blue: 208,
+        },
+        {
+            red: 213,
+            green: 180,
+            blue: 120,
+        },
+        {
+            red: 61,
+            green: 181,
+            blue: 172,
+        }];
+        const color = false ? colors[Math.floor(Math.random() * colors.length)] : {
+            red: Math.floor(Math.random() * 256),
+            green: Math.floor(Math.random() * 256),
+            blue: Math.floor(Math.random() * 256),
+        };
+        console.log("DEV HIGHLIGHT CREATE: " + type, JSON.stringify(color, null, 4));
+
+        highlightsCreate(loc.locator.href, [
+            {
+                selectionInfo: loc.selectionInfo,
+                // range: Range,
+
+                color,
+
+                // 0 is full background (default), 1 is underline, 2 is strikethrough, 3 is outline
+                drawType: type,
+
+                expand: 3,
+
+                group: "annotations",
+            },
+        ]);
     };
     private onKeyboardAnnotationsTest1 = () => {
         this.onKeyboardAnnotationsTest(0);
