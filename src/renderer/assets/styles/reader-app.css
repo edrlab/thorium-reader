@@ -88,6 +88,7 @@ body {
   padding: 0;
   width: 100%;
   font: 1.1rem "Open Sans", sans-serif;
+  overflow: hidden;
 }
 
 button {
