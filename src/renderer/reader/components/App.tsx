@@ -120,6 +120,7 @@ url("${rcssPath}/fonts/iAWriterDuospace-Regular.ttf") format("truetype");
 
                 `;
                 const el = document.createElement("style");
+                el.setAttribute("id", nunitoFontStyleID);
                 el.setAttribute("type", "text/css");
                 el.appendChild(document.createTextNode(css));
                 document.head.appendChild(el);
