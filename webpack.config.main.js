@@ -227,6 +227,14 @@ let config = Object.assign(
                     },
                 ],
             }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.join(__dirname, "src", "renderer", "assets", "fonts"),
+                        to: "assets/fonts",
+                    },
+                ],
+            }),
             preprocessorDirectives.definePlugin,
         ],
     },

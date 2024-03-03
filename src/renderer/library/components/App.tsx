@@ -118,6 +118,7 @@ export default class App extends React.Component<{}, undefined> {
 
                 `;
                 const el = document.createElement("style");
+                el.setAttribute("id", nunitoFontStyleID);
                 el.setAttribute("type", "text/css");
                 el.appendChild(document.createTextNode(css));
                 document.head.appendChild(el);

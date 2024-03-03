@@ -287,7 +287,7 @@ let config = Object.assign(
                     ],
                 },
                 {
-                    // loader: "file-loader?name=assets/[name].[md5:hash].[ext]",
+                    // loader: "file-loader?name=assets/[name].[md5:hash][ext]",
                     // type: 'javascript/auto',
                     // options: {
                     //     esModule: false,
@@ -295,7 +295,7 @@ let config = Object.assign(
                     test: /\.(png|jpe?g|gif|ico)$/,
                     type: "asset/resource",
                     generator: {
-                        filename: "assets/[name].[md5:hash].[ext]",
+                        filename: "assets/[name].[md5:hash][ext]",
                     },
                 },
                 {
@@ -306,11 +306,14 @@ let config = Object.assign(
                 {
                     test: /\.ttf$/,
                     type: "asset/resource",
+                    generator: {
+                        filename: "assets/fonts/[name][ext]",
+                    },
                 },
                 // useful ?
                 {
                     exclude: /src/,
-                    // loader: "file-loader?name=assets/[name].[md5:hash].[ext]",
+                    // loader: "file-loader?name=assets/[name].[md5:hash][ext]",
                     // type: 'javascript/auto',
                     // options: {
                     //     esModule: false,
@@ -319,7 +322,7 @@ let config = Object.assign(
                     test: /\.(woff|woff2|ttf|eot|svg)$/,
                     type: "asset/resource",
                     generator: {
-                        filename: "assets/[name].[md5:hash].[ext]",
+                        filename: "assets/[name].[md5:hash][ext]",
                     },
                 },
                 {
