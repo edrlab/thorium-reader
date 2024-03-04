@@ -114,6 +114,7 @@
     },
     "dialog": {
         "cancel": "Cancel",
+        "save": "Save",
         "closeModalWindow": "Close this modal window",
         "deleteFeed": "Do you really want to delete this catalog ?",
         "deletePublication": "Do you really want to delete this publication ?",

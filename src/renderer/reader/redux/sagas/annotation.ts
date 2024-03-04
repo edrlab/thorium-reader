@@ -17,13 +17,10 @@ import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalA
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
-
-// B80000
-const DEFAULT_COLOR = {
-    red: 184,
-    green: 0,
-    blue: 0,
-};
+import { toastActions } from "readium-desktop/common/redux/actions";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { IColor } from "readium-desktop/common/redux/states/renderer/annotation";
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
@@ -35,10 +32,10 @@ function* annotationClick(action: readerLocalActionHighlights.click.TAction) {
     if (uuid && group === "annotation") {
         debug(`highlightClick ACTION (will focus) -- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
 
-        const { payload: { uuid } } = action;
+        // const { payload: { uuid } } = action;
 
-        const { currentFocusUuid } = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.focus);
-        yield* put(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: true}));
+        // const { currentFocusUuid } = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.focus);
+        // yield* put(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: true}));
     }
 }
 
@@ -46,10 +43,10 @@ function* annotationClick(action: readerLocalActionHighlights.click.TAction) {
 function* annotationFocus(action: readerLocalActionAnnotations.focus.TAction) {
     debug(`annotationFocus -- action: [${JSON.stringify(action.payload, null, 4)}]`);
 
-    const { payload: { uuid } } = action;
+    // const { payload: { uuid } } = action;
 
-    const { currentFocusUuid } = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.focus);
-    yield* put(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: false}));
+    // const { currentFocusUuid } = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.focus);
+    // yield* put(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: false}));
 }
 
 function* annotationUpdate(action: readerLocalActionAnnotations.update.TAction) {
@@ -89,14 +86,52 @@ function* annotationPop(action: readerLocalActionAnnotations.pop.TAction) {
     yield* put(readerLocalActionHighlights.handler.pop.build([{uuid}]));
 }
 
-function* createAnnotation(locatorExtended: readerLocalActionSetLocator.Payload) {
+function* createAnnotation(locatorExtended: LocatorExtended, comment: string, color: IColor) {
 
     debug(`Create an annotation for, [${locatorExtended.selectionInfo.cleanText.slice(0, 10)}]`);
     yield* put(readerLocalActionAnnotations.push.build({
-        color: DEFAULT_COLOR,
-        comment: "...",
+        color,
+        comment,
         locatorExtended,
     }));
+
+    // sure! close the popover
+    yield* put(readerLocalActionAnnotations.enableMode.build(false, ""));
+}
+
+function* newLocatorEditAndSaveTheNote(locatorExtended: LocatorExtended): SagaGenerator<void> {
+    const defaultColor = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_defaultColor);
+
+    // check the boolean value of annotation_popoverNotOpenOnNoteTaking
+    const annotation_popoverNotOpenOnNoteTaking = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_popoverNotOpenOnNoteTaking);
+    if (annotation_popoverNotOpenOnNoteTaking) {
+        yield* call(createAnnotation, locatorExtended, "", defaultColor);
+        return;
+    }
+
+    // open popover to edit and save the note
+    yield* put(readerLocalActionAnnotations.enableMode.build(true, locatorExtended.selectionInfo.cleanText.slice(0, 200)));
+
+    // wait the action of the annotation popover, the user select the text, click on "take the note" button and then edit his note with the popover.
+    // 2 choices: cancel (annotationModeEnabled = false) or takeNote with color and comment
+    const { cancelAction, noteTakenAction } = yield* raceTyped({
+        cancelAction: takeTyped(readerLocalActionAnnotations.enableMode.build),
+        noteTakenAction: takeTyped(readerLocalActionAnnotations.createNote.build),
+    });
+
+    if (cancelAction) {
+        debug("annotation canceled and not saved [not created]");
+        return;
+    } else if (noteTakenAction) {
+
+        const { color, comment } = noteTakenAction.payload;
+        debug(`annotation save the note with the color: ${color} and comment: ${comment.slice(0, 20)}`);
+
+        // get color and comment and save the note
+        yield* call(createAnnotation, locatorExtended, comment, color);
+    } else {
+        debug("ERROR: second yield RACE not worked !!?!!");
+    }
 }
 
 function* newLocator(action: readerLocalActionSetLocator.TAction): SagaGenerator<void> {
@@ -109,27 +144,32 @@ function* newLocator(action: readerLocalActionSetLocator.TAction): SagaGenerator
 
     debug(`New Selection Requested ! [${selectionInfo.cleanText.slice(0, 10)}]`);
 
-    const modeEnabled = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.mode.enable);
+    // check the boolean value of annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator
+    const annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator);
 
-    if (modeEnabled) {
-
-        debug("annotation mode enabled [creation of the annotation]");
-        yield* call(createAnnotation, locatorExtended);
-        return;
+    if (annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator) {
+        yield* call(newLocatorEditAndSaveTheNote, locatorExtended);
+        return ;
     }
-    debug("annotation mode not enabled, waiting the click on annotation button or just receive a new locator position");
 
+    // wait the click on "take a note" button or call recursively this function to reload the wait of "take a note" button
     const { newLocatorAction, annotationBtnTriggerRequestedAction } = yield* raceTyped({
         newLocatorAction: takeTyped(readerLocalActionSetLocator.build),
         annotationBtnTriggerRequestedAction: takeTyped(readerLocalActionAnnotations.trigger.build),
     });
 
     if (newLocatorAction) {
+
         debug("new Locator requested, so we drop this annotation [not created]");
+
         yield* call(newLocator, newLocatorAction);
+
     } else if (annotationBtnTriggerRequestedAction) {
+
         debug("annotation trigger btn requested, creation of the annotation");
-        yield* call(createAnnotation, locatorExtended);
+
+        yield* call(newLocatorEditAndSaveTheNote, locatorExtended);
+
     } else {
         debug("ERROR: yield RACE not worked !!?!!");
     }
@@ -143,57 +183,64 @@ function* newLocatorOrTriggerBtnWatcher() {
     });
 
     if (newLocatorAction) {
+
         yield* call(newLocator, newLocatorAction);
+
     } else if (annotationBtnTriggerRequestedAction) {
 
         debug(`annotationBtnTriggerRequestedAction received [${JSON.stringify(annotationBtnTriggerRequestedAction.payload, null, 4)}]`);
-        const modeEnabled = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.mode.enable);
-        yield* put(readerLocalActionAnnotations.enableMode.build(!modeEnabled));
+        // trigger a Toast notification to user
+        yield* put(
+            toastActions.openRequest.build(
+                ToastType.Default,
+                "No selection", // TODO: translation
+            ),
+        );
     }
 }
-function* annotationEnableMode(action: readerLocalActionAnnotations.enableMode.TAction) {
-    const { payload: {enable}} = action;
+// function* annotationEnableMode(action: readerLocalActionAnnotations.enableMode.TAction) {
+//     const { payload: {enable}} = action;
 
-    debug(`annotationEnableMode enable=${enable}`);
-    if (enable) {
-        highlightsDrawMargin(false);
-        debug("annotation mode enabled ! draws highlight NOT in marging!");
-    } else {
-        highlightsDrawMargin(["annotation"]);
-        debug("annotation mode diasbled ! draws highlight IN marging!");
-    }
-}
+//     debug(`annotationEnableMode enable=${enable}`);
+//     if (enable) {
+//         highlightsDrawMargin(false);
+//         debug("annotation mode enabled ! draws highlight NOT in marging!");
+//     } else {
+//         highlightsDrawMargin(["annotation"]);
+//         debug("annotation mode diasbled ! draws highlight IN marging!");
+//     }
+// }
 
-function* annotationFocusMode(action: readerLocalActionAnnotations.focusMode.TAction) {
-    debug("annotationMode (UI Edition and focus on current plus remove focus if any previous)");
+// function* annotationFocusMode(action: readerLocalActionAnnotations.focusMode.TAction) {
+//     debug("annotationMode (UI Edition and focus on current plus remove focus if any previous)");
     
-    const { payload: {previousFocusUuid, currentFocusUuid} } = action;
+//     const { payload: {previousFocusUuid, currentFocusUuid} } = action;
 
-    if (previousFocusUuid ) {
-        // disable with the new annotation margin mode, annotations are never deleted/unmounted
-        // const modeEnabled = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.mode.enable);
-        // if (!modeEnabled) {
-        //     debug(`annotation focus mode -- delete the highlight for previousFocusUUId=${previousFocusUuid}`);
-        //     yield* put(readerLocalActionHighlights.handler.pop.build([{ uuid: previousFocusUuid }]));
-        // }
-    }
+//     if (previousFocusUuid ) {
+//         // disable with the new annotation margin mode, annotations are never deleted/unmounted
+//         // const modeEnabled = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.mode.enable);
+//         // if (!modeEnabled) {
+//         //     debug(`annotation focus mode -- delete the highlight for previousFocusUUId=${previousFocusUuid}`);
+//         //     yield* put(readerLocalActionHighlights.handler.pop.build([{ uuid: previousFocusUuid }]));
+//         // }
+//     }
 
-    if (currentFocusUuid) {
+//     if (currentFocusUuid) {
 
-        const annotations = yield* selectTyped((store: IReaderRootState) => store.reader.annotation);
-        const annotationItemQueue = annotations.find(([_, {uuid}]) => uuid === currentFocusUuid);
-        if (!annotationItemQueue) {
-            debug(`ERROR: annotation item not found [currentFocusId=${currentFocusUuid}`);
-        } else {
-            debug(`annotation focus mode -- highlight the new currentFocusUUId=${currentFocusUuid}`);
+//         const annotations = yield* selectTyped((store: IReaderRootState) => store.reader.annotation);
+//         const annotationItemQueue = annotations.find(([_, {uuid}]) => uuid === currentFocusUuid);
+//         if (!annotationItemQueue) {
+//             debug(`ERROR: annotation item not found [currentFocusId=${currentFocusUuid}`);
+//         } else {
+//             debug(`annotation focus mode -- highlight the new currentFocusUUId=${currentFocusUuid}`);
 
-            const annotationItem = annotationItemQueue[1]; // [timestamp, data]
-            const { uuid, locatorExtended: { locator: { href }, selectionInfo }, color } = annotationItem;
+//             const annotationItem = annotationItemQueue[1]; // [timestamp, data]
+//             const { uuid, locatorExtended: { locator: { href }, selectionInfo }, color } = annotationItem;
 
-            yield* put(readerLocalActionHighlights.handler.push.build([{ uuid, href, def: { selectionInfo, color, group: "annotation" } }]));
-        }
-    }
-}
+//             yield* put(readerLocalActionHighlights.handler.push.build([{ uuid, href, def: { selectionInfo, color, group: "annotation" } }]));
+//         }
+//     }
+// }
 
 function* readerStart() {
 
@@ -223,16 +270,16 @@ function* readerStart() {
 
 export const saga = () =>
     all([
-        takeSpawnEvery(
-            readerLocalActionAnnotations.enableMode.ID,
-            annotationEnableMode,
-            (e) => console.error("readerLocalActionAnnotations.enableMode", e),
-        ),
-        takeSpawnEvery(
-            readerLocalActionAnnotations.focusMode.ID,
-            annotationFocusMode,
-            (e) => console.error("readerLocalActionAnnotations.annotationFocusMode", e),
-        ),
+        // takeSpawnEvery(
+        //     readerLocalActionAnnotations.enableMode.ID,
+        //     annotationEnableMode,
+        //     (e) => console.error("readerLocalActionAnnotations.enableMode", e),
+        // ),
+        // takeSpawnEvery(
+        //     readerLocalActionAnnotations.focusMode.ID,
+        //     annotationFocusMode,
+        //     (e) => console.error("readerLocalActionAnnotations.annotationFocusMode", e),
+        // ),
         takeSpawnEvery(
             readerLocalActionHighlights.click.ID,
             annotationClick,

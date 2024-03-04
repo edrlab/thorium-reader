@@ -271,6 +271,7 @@ declare namespace typed_i18n {
   (_: "catalog.update", __?: {}): string;
   (_: "dialog", __?: {}): {
   readonly "cancel": string,
+  readonly "save": string,
   readonly "closeModalWindow": string,
   readonly "deleteFeed": string,
   readonly "deletePublication": string,
@@ -280,7 +281,7 @@ declare namespace typed_i18n {
   readonly "return": string,
   readonly "yes": string
 };
-  (_: "dialog.cancel", __?: {}): string;
+  (_: "dialog.cancel", __?: {}): string; (_: "dialog.save", __?: {}): string;
   (_: "dialog.closeModalWindow", __?: {}): string;
   (_: "dialog.deleteFeed", __?: {}): string;
   (_: "dialog.deletePublication", __?: {}): string;

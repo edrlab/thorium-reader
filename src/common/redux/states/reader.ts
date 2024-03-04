@@ -7,6 +7,9 @@
 
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { FONT_ID_DEFAULT } from "readium-desktop/utils/fontList";
+import { IAnnotationReaderConfigState, IColor } from "./renderer/annotation";
+
+export const DEFAULT_COLOR_ANNOTATION: IColor = {red: 184, green: 0, blue: 0};
 
 export const readerConfigInitialStateDefaultPublisher = {
     font: FONT_ID_DEFAULT,
@@ -16,6 +19,13 @@ export const readerConfigInitialStateDefaultPublisher = {
     letterSpacing: "0",
     paraSpacing: "0",
     lineHeight: "0",
+};
+
+export const readerConfigInitialStateAnnotation: IAnnotationReaderConfigState = {
+    annotation_defaultColor: DEFAULT_COLOR_ANNOTATION,
+    annotation_defaultDrawType: "solid_background",
+    annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator: false,
+    annotation_popoverNotOpenOnNoteTaking: false,
 };
 
 export const readerConfigInitialState: ReaderConfig = {
@@ -37,4 +47,5 @@ export const readerConfigInitialState: ReaderConfig = {
     mediaOverlaysEnableCaptionsMode: false,
     ttsEnableOverlayMode: false,
     ...readerConfigInitialStateDefaultPublisher,
+    ...readerConfigInitialStateAnnotation,
 };

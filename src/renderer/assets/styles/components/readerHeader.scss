@@ -252,11 +252,13 @@
 
 .colorPicker {
     display: flex;
+
     div {
         input {
             position: absolute;
             z-index: -1;
         }
+
         label {
             z-index: 20;
             width: 20px;

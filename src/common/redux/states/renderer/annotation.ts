@@ -14,6 +14,8 @@ export interface IColor {
     blue: number;
 }
 
+export type TDrawType = "solid_background" | "underline" | "striketrhough" | "outline";
+
 export interface IAnnotationState {
     uuid: string;
     locatorExtended: LocatorExtended;
@@ -24,10 +26,13 @@ export interface IAnnotationState {
 export type TAnnotationState = TPQueueState<number, IAnnotationState>;
 
 export interface IAnnotationModeState {
-    mode: { enable: boolean };
-    focus: {
-        editionEnable: boolean;
-        currentFocusUuid: string;
-        previousFocusUuid: string;
-    }
+    enable: boolean,
+    cleanText: string,
+}
+
+export interface IAnnotationReaderConfigState {
+    annotation_popoverNotOpenOnNoteTaking: boolean,
+    annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator: boolean,
+    annotation_defaultColor: IColor,
+    annotation_defaultDrawType: TDrawType
 }

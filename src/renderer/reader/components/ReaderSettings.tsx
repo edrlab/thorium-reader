@@ -1030,8 +1030,8 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                     </Dialog.Close>
                     </div>
                 </div>
-        )
-    }
+        );
+    };
     return (
         <div>
             {

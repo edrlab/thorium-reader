@@ -60,6 +60,8 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "r2-shared-js/dist/es8-es2017/src/models/locator";
 import { TextArea } from "react-aria-components";
 import { TFormEvent } from "readium-desktop/typings/react";
+import { AnnotationEdit } from "./AnnotationEdit";
+import { IAnnotationState, IColor } from "readium-desktop/common/redux/states/renderer/annotation";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -354,154 +356,131 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
     return renderLinkTree;
 };
 
+const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timestamp: number, annotation: IAnnotationState, r2Publication: R2Publication, index: number }> = (props) => {
+
+    const { goToLocator, timestamp, annotation, r2Publication, index } = props;
+    const { uuid, locatorExtended, comment } = annotation;
+
+    const [isEdited, setEdition] = React.useState(false);
+    const dispatch = useDispatch();
+    const [__] = useTranslator();
+    const save = (color: IColor, comment: string) => {
+        dispatch(readerLocalActionAnnotations.update.build({
+            uuid,
+            locatorExtended,
+            color,
+            comment,
+        }));
+        setEdition(false);
+    };
+
+    const date = new Date(timestamp);
+    const dateStr = `${date.getDate()}/${`${date.getMonth() + 1}`.padStart(2, "0")}/${date.getFullYear()}`;
+    let percent = 100;
+    let p = -1;
+    if (r2Publication.Spine?.length && annotation.locatorExtended.locator?.href) {
+        const index = r2Publication.Spine.findIndex((item) => item.Href === annotation.locatorExtended.locator.href);
+        if (index >= 0) {
+            if (typeof annotation.locatorExtended.locator?.locations?.progression === "number") {
+                percent = 100 * ((index + annotation.locatorExtended.locator.locations.progression) / r2Publication.Spine.length);
+            } else {
+                percent = 100 * (index / r2Publication.Spine.length);
+            }
+            percent = Math.round(percent * 100) / 100;
+            p = Math.round(percent);
+        }
+    }
+    const style = { width: `${percent}%` };
+
+    const bname = (annotation?.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText.slice(0, 20)}` : `${__("reader.navigation.annotationTitle")} ${index}`);
+    const btext = (annotation?.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText}` : `${__("reader.navigation.annotationTitle")} ${index}`);
+
+    const bprogression = (p >= 0 ? `${p}% ` : "");
+
+    return (<div
+        className={stylesPopoverDialog.annotations_line}
+    >
+        <div
+            className={stylesPopoverDialog.annotation_infos}
+            tabIndex={0}
+
+        >
+            {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
+
+            <div className={stylesPopoverDialog.chapter_marker}>
+                <button className={stylesPopoverDialog.annotation_name} title={bname} aria-label="goToLocator"
+                    onClick={(e) => {
+                        const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                        goToLocator(annotation.locatorExtended.locator, closeNavPanel);
+                    }}
+                    onDoubleClick={(_e) => {
+                        goToLocator(annotation.locatorExtended.locator, false);
+                    }}
+                    onKeyPress=
+                    {
+                        (e) => {
+                            if (e.key === "Enter" || e.key === "Space") {
+                                const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                goToLocator(annotation.locatorExtended.locator, closeNavPanel);
+                                dispatch(readerLocalActionAnnotations.focus.build(annotation));
+                            }
+                        }
+                    }>
+                        {btext}
+                    </button>
+                {
+                    isEdited ? <AnnotationEdit uuid={uuid} save={save} cancel={() => setEdition(false)} /> : <p>{comment}</p>
+                }
+                <div className={stylesPopoverDialog.annotation_actions}>
+                    <div>
+                        <div>
+                            <SVG ariaHidden svg={CalendarIcon} />
+                            <p>{dateStr}</p>
+                        </div>
+                        <div>
+                            <SVG ariaHidden svg={BookOpenIcon} />
+                            <p>{bprogression}</p>
+                        </div>
+                    </div>
+                    <div className={stylesPopoverDialog.annotation_actions_buttons}>
+                        <button title={__("reader.marks.edit")}
+                            onClick={() => { setEdition(true); }
+                            }>
+                            <SVG ariaHidden={true} svg={EditIcon} />
+                        </button>
+                        <button>
+                            <SVG ariaHidden={true} svg={DuplicateIcon} />
+                        </button>
+                        <button title={__("reader.marks.delete")}
+                            onClick={() => {
+                                dispatch(readerLocalActionAnnotations.pop.build(annotation));
+                            }}>
+                            <SVG ariaHidden={true} svg={DeleteIcon} />
+                        </button>
+                    </div>
+                </div>
+                <div className={stylesPopoverDialog.gauge}>
+                    <div className={stylesPopoverDialog.fill} style={style}></div>
+                </div>
+            </div>
+        </div>
+    </div>);
+};
+
 const AnnotationList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
     const {r2Publication, goToLocator} = props;
     const [__] = useTranslator();
     // const [bookmarkToUpdate, setBookmarkToUpdate] = React.useState(undefined);
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
-    const previousFocusUuid = useSelector((state: IReaderRootState) => state.annotationControlMode.focus.previousFocusUuid);
-    const dispatch = useDispatch();
+    // const previousFocusUuid = useSelector((state: IReaderRootState) => state.annotationControlMode.focus.previousFocusUuid);
 
     if (!r2Publication || !annotationsQueue) {
         <></>;
     }
 
-    const isAudioBook = isAudiobookFn(r2Publication);
-
-    // WARNING: .sort() is in-place same-array mutation! (not a new array)
-    // const sortedAnnotations = annotations.sort((a, b) => {
-    //     // -1 : a < b
-    //     // 0 : a === b
-    //     // 1 : a > b
-    //     if (!a.locatorExtended.locator?.href || !b.locatorExtended.locator?.href) {
-    //         return -1;
-    //     }
-    //     const indexA = r2Publication.Spine.findIndex((item) => item.Href === a.locatorExtended.locator.href);
-    //     const indexB = r2Publication.Spine.findIndex((item) => item.Href === b.locatorExtended.locator.href);
-    //     if (indexA < indexB) {
-    //         return -1;
-    //     }
-    //     if (indexA > indexB) {
-    //         return 1;
-    //     }
-    //     if (typeof a.locatorExtended.locator?.locations?.progression === "number" && typeof b.locatorExtended.locator?.locations?.progression === "number") {
-    //         if (a.locatorExtended.locator.locations.progression < b.locatorExtended.locator.locations.progression) {
-    //             return -1;
-    //         }
-    //         if (a.locatorExtended.locator.locations.progression > b.locatorExtended.locator.locations.progression) {
-    //             return 1;
-    //         }
-    //     }
-    //     return 0;
-    // });
-    let n = 1;
-    return annotationsQueue.map((annotationQueueState, i) => {
-        const [timestamp, annotation] = annotationQueueState;
-
-        const date = new Date(timestamp);
-        const dateStr = `${date.getDate()}/${`${date.getMonth() + 1}`.padStart(2, "0")}/${date.getFullYear()}`;
-        let percent = 100;
-        let p = -1;
-        if (r2Publication.Spine?.length && annotation.locatorExtended.locator?.href) {
-            const index = r2Publication.Spine.findIndex((item) => item.Href === annotation.locatorExtended.locator.href);
-            if (index >= 0) {
-                if (typeof annotation.locatorExtended.locator?.locations?.progression === "number") {
-                    percent = 100 * ((index + annotation.locatorExtended.locator.locations.progression) / r2Publication.Spine.length);
-                } else {
-                    percent = 100 * (index / r2Publication.Spine.length);
-                }
-                percent = Math.round(percent * 100) / 100;
-                p = Math.round(percent);
-            }
-        }
-        const style = { width: `${percent}%` };
-
-        const bname = (annotation?.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText.slice(0, 20)}` : `${__("reader.navigation.annotationTitle")} ${n++}`);
-        const btext = (annotation?.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText}` : `${__("reader.navigation.annotationTitle")} ${n++}`);
-        const comment = annotation.comment || "";
-
-        const bprogression = (p >= 0 && !isAudioBook ? `${p}% ` : "");
-
-        return (<div
-            className={stylesPopoverDialog.annotations_line}
-            key={i}
-        >
-            {/* {bookmarkToUpdate === i &&
-                <UpdateBookmarkForm
-                    close={() => setBookmarkToUpdate(undefined)}
-                    bookmark={bookmark}
-                />
-            } */}
-            <div
-                className={stylesPopoverDialog.annotation_infos}
-                tabIndex={0}
-                onClick={(e) => {
-                    const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                    goToLocator(annotation.locatorExtended.locator, closeNavPanel);
-                    dispatch(readerLocalActionAnnotations.focus.build(annotation));
-                }}
-                onDoubleClick={(_e) => {
-                    goToLocator(annotation.locatorExtended.locator, false);
-                    dispatch(readerLocalActionAnnotations.focus.build(annotation));
-                }}
-                onKeyPress=
-                {
-                    (e) => {
-                        if (e.key === "Enter" || e.key === "Space") {
-                            const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                            goToLocator(annotation.locatorExtended.locator, closeNavPanel);
-                            dispatch(readerLocalActionAnnotations.focus.build(annotation));
-                        }
-                    }
-                }
-            >
-                {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
-
-                <div className={stylesPopoverDialog.chapter_marker}>
-                    <p className={stylesPopoverDialog.annotation_name} title={bname}>{btext}</p>
-                    <p>{comment}</p>
-                    <div className={stylesPopoverDialog.annotation_actions}>
-                        <div>
-                            <div>
-                                <SVG ariaHidden svg={CalendarIcon} />
-                                <p>{dateStr}</p>
-                            </div>
-                            <div>
-                                <SVG ariaHidden svg={BookOpenIcon} />
-                                <p>{bprogression}</p>
-                            </div>
-                        </div>
-                        <div className={stylesPopoverDialog.annotation_actions_buttons}>
-                            <button title={__("reader.marks.edit")}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    // setBookmarkToUpdate(i);
-                                    dispatch(readerLocalActionAnnotations.focusMode.build({currentFocusUuid: annotation.uuid, previousFocusUuid, editionEnable: true}));
-                                    }
-                                }>
-                                <SVG ariaHidden={true} svg={EditIcon} />
-                            </button>
-                            <button>
-                                <SVG ariaHidden={true} svg={DuplicateIcon} />
-                            </button>
-                            <button title={__("reader.marks.delete")}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    dispatch(readerLocalActionAnnotations.pop.build(annotation));
-                                }}>
-                                <SVG ariaHidden={true} svg={DeleteIcon} />
-                            </button>
-                        </div>
-                    </div>
-                    <div className={stylesPopoverDialog.gauge}>
-                        <div className={stylesPopoverDialog.fill} style={style}></div>
-                    </div>
-                </div>
-            </div>
-        </div>);
-    },
-    );
+    return annotationsQueue.map((annotationQueueState, i) =>
+        <AnnotationCard key={i} timestamp={annotationQueueState[0]} annotation={annotationQueueState[1]} r2Publication={r2Publication} goToLocator={goToLocator} index={i}/>);
 };
 
 const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Publication; i: number } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
@@ -1201,8 +1180,8 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </Dialog.Close>
                     </div>
                 </div>
-        )
-    }
+        );
+    };
 
     return (
         <div>

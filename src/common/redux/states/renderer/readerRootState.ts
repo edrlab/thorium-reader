@@ -25,7 +25,7 @@ export interface IReaderRootState extends IRendererCommonRootState {
     picker: IPickerState;
     search: ISearchState;
     mode: ReaderMode;
-    annotationControlMode: IAnnotationModeState;
+    annotation: IAnnotationModeState;
 }
 
 export interface IReaderStateReader {

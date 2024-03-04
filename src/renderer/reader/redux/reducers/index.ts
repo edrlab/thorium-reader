@@ -34,7 +34,6 @@ import { readerRTLFlipReducer } from "readium-desktop/common/redux/reducers/read
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
-import { annotationModeFocusReducer } from "./annotationModeFocus";
 import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { annotationModeEnableReducer } from "./annotationModeEnable";
 
@@ -166,10 +165,7 @@ export const rootReducer = () => {
             disableRTLFlip: readerRTLFlipReducer,
         }),
         search: searchReducer,
-        annotationControlMode: combineReducers({
-            mode: annotationModeEnableReducer,
-            focus: annotationModeFocusReducer,
-        }),
+        annotation: annotationModeEnableReducer,
         picker: pickerReducer,
         win: winReducer,
         dialog: dialogReducer,

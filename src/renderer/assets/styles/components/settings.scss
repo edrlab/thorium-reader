@@ -218,11 +218,13 @@ $setting_color: var(--color-blue);
     padding: 10px;
     width: 60%;
     z-index: 10;
+
     div {
         display: flex;
         align-items: center;
         gap: 10px;
     }
+
     .settings_tab_title {
         margin: 0;
 
