@@ -9,22 +9,24 @@ import * as debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { all, call, put, take} from "typed-redux-saga/macro";
 import { select as selectTyped, take as takeTyped, race as raceTyped, SagaGenerator} from "typed-redux-saga";
-import {
-    highlightsDrawMargin,
-} from "@r2-navigator-js/electron/renderer";
-
 import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionSetLocator } from "../actions";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { IColor } from "readium-desktop/common/redux/states/renderer/annotation";
+import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+import { HighlightDrawTypeBackground, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline } from "r2-navigator-js/dist/es8-es2017/src/electron/common/highlight";
+import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
 debug("_");
+
+const convertDrawTypeToNumber = (drawType: TDrawType) => {
+    return drawType === "solid_background" ? HighlightDrawTypeBackground : drawType === "outline" ? HighlightDrawTypeOutline : drawType === "striketrhough" ? HighlightDrawTypeStrikethrough : drawType === "underline" ? HighlightDrawTypeUnderline : HighlightDrawTypeBackground;
+};
 
 // click from highlight
 function* annotationClick(action: readerLocalActionHighlights.click.TAction) {
@@ -51,14 +53,14 @@ function* annotationFocus(action: readerLocalActionAnnotations.focus.TAction) {
 
 function* annotationUpdate(action: readerLocalActionAnnotations.update.TAction) {
     debug(`annotationUpdate-- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
-    const {payload: {uuid, locatorExtended: {locator: {href}, selectionInfo}, color: newColor}} = action;
+    const {payload: {uuid, locatorExtended: {locator: {href}, selectionInfo}, color: newColor, drawType}} = action;
 
     const item = yield* selectTyped((store: IReaderRootState) => store.reader.highlight.handler.find(([_, highlightState]) => highlightState.uuid === uuid));
 
     if (item) {
-        const { def: { color: previousColor } } = item[1];
+        const { def: { color: previousColor, drawType: previousDrawType } } = item[1];
 
-        if (previousColor.blue !== newColor.blue || previousColor.green !== newColor.green || previousColor.red !== newColor.red) {
+        if (previousColor.blue !== newColor.blue || previousColor.green !== newColor.green || previousColor.red !== newColor.red || convertDrawTypeToNumber(drawType) !== previousDrawType) {
             yield* put(readerLocalActionHighlights.handler.pop.build([{ uuid }]));
             yield* put(readerLocalActionHighlights.handler.push.build([{ uuid, href, def: { selectionInfo, color: newColor, group: "annotation" } }]));
         }
@@ -71,9 +73,9 @@ function* annotationUpdate(action: readerLocalActionAnnotations.update.TAction) 
 function* annotationPush(action: readerLocalActionAnnotations.push.TAction) {
 
     debug(`annotationPush : [${JSON.stringify(action.payload, null, 4)}]`);
-    const {payload: {uuid, locatorExtended: {locator: {href}, selectionInfo}, color}} = action;
+    const {payload: {uuid, locatorExtended: {locator: {href}, selectionInfo}, color, drawType}} = action;
 
-    yield* put(readerLocalActionHighlights.handler.push.build([{ uuid, href, def: { selectionInfo, color, group: "annotation" } }]));
+    yield* put(readerLocalActionHighlights.handler.push.build([{ uuid, href, def: { selectionInfo, color, group: "annotation", drawType: convertDrawTypeToNumber(drawType) } }]));
 }
 
 function* annotationPop(action: readerLocalActionAnnotations.pop.TAction) {
@@ -86,13 +88,14 @@ function* annotationPop(action: readerLocalActionAnnotations.pop.TAction) {
     yield* put(readerLocalActionHighlights.handler.pop.build([{uuid}]));
 }
 
-function* createAnnotation(locatorExtended: LocatorExtended, comment: string, color: IColor) {
+function* createAnnotation(locatorExtended: LocatorExtended, color: IColor, comment: string, drawType: TDrawType) {
 
     debug(`Create an annotation for, [${locatorExtended.selectionInfo.cleanText.slice(0, 10)}]`);
     yield* put(readerLocalActionAnnotations.push.build({
         color,
         comment,
         locatorExtended,
+        drawType,
     }));
 
     // sure! close the popover
@@ -105,7 +108,7 @@ function* newLocatorEditAndSaveTheNote(locatorExtended: LocatorExtended): SagaGe
     // check the boolean value of annotation_popoverNotOpenOnNoteTaking
     const annotation_popoverNotOpenOnNoteTaking = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_popoverNotOpenOnNoteTaking);
     if (annotation_popoverNotOpenOnNoteTaking) {
-        yield* call(createAnnotation, locatorExtended, "", defaultColor);
+        yield* call(createAnnotation, locatorExtended, defaultColor, "", "solid_background" as TDrawType);
         return;
     }
 
@@ -124,11 +127,11 @@ function* newLocatorEditAndSaveTheNote(locatorExtended: LocatorExtended): SagaGe
         return;
     } else if (noteTakenAction) {
 
-        const { color, comment } = noteTakenAction.payload;
+        const { color, comment, drawType } = noteTakenAction.payload;
         debug(`annotation save the note with the color: ${color} and comment: ${comment.slice(0, 20)}`);
 
         // get color and comment and save the note
-        yield* call(createAnnotation, locatorExtended, comment, color);
+        yield* call(createAnnotation, locatorExtended, color, comment, drawType);
     } else {
         debug("ERROR: second yield RACE not worked !!?!!");
     }
@@ -253,15 +256,16 @@ function* readerStart() {
 
     debug("annotation iframe reader viewport is started and ready to annotate, we draws all the annoatation for the first time with 'highlightsDrawMargin' enabled");
 
-    highlightsDrawMargin(["annotation"]);
+    // check boolean persisted value
+    // highlightsDrawMargin(["annotation"]);
 
     const annotations = yield* selectTyped((store: IReaderRootState) => store.reader.annotation);
     const annotationsUuids = annotations.map(([_, annotationState]) => ({ uuid: annotationState.uuid }));
     yield* put(readerLocalActionHighlights.handler.pop.build(annotationsUuids));
 
-    const annotationsHighlighted = annotations.map(
-        ([_, { uuid, locatorExtended: { locator: { href }, selectionInfo }, color }]) =>
-            ({ uuid, href, def: { selectionInfo, color, group: "annotation" } }));
+    const annotationsHighlighted: IHighlightHandlerState[] = annotations.map(
+        ([_, { uuid, locatorExtended: { locator: { href }, selectionInfo }, color, drawType}]) =>
+            ({ uuid, href, def: { selectionInfo, color, group: "annotation" }, drawType: convertDrawTypeToNumber(drawType) }));
 
     yield* put(readerLocalActionHighlights.handler.push.build(annotationsHighlighted));
 

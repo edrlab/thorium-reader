@@ -61,7 +61,7 @@ import { Locator } from "r2-shared-js/dist/es8-es2017/src/models/locator";
 import { TextArea } from "react-aria-components";
 import { TFormEvent } from "readium-desktop/typings/react";
 import { AnnotationEdit } from "./AnnotationEdit";
-import { IAnnotationState, IColor } from "readium-desktop/common/redux/states/renderer/annotation";
+import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -364,12 +364,13 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
     const [isEdited, setEdition] = React.useState(false);
     const dispatch = useDispatch();
     const [__] = useTranslator();
-    const save = (color: IColor, comment: string) => {
+    const save = (color: IColor, comment: string, drawType: TDrawType) => {
         dispatch(readerLocalActionAnnotations.update.build({
             uuid,
             locatorExtended,
             color,
             comment,
+            drawType,
         }));
         setEdition(false);
     };

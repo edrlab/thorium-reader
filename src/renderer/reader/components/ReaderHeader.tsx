@@ -65,7 +65,7 @@ import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driv
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { readerLocalActionAnnotations } from "../redux/actions";
-import { IColor } from "readium-desktop/common/redux/states/renderer/annotation";
+import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { AnnotationEdit } from "./AnnotationEdit";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
@@ -1127,8 +1127,8 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         closeAnnotationEditionMode: () => {
             dispatch(readerLocalActionAnnotations.enableMode.build(false, ""));
         },
-        saveAnnotation: (color: IColor, comment: string) => {
-            dispatch(readerLocalActionAnnotations.createNote.build(color, comment));
+        saveAnnotation: (color: IColor, comment: string, drawType: TDrawType) => {
+            dispatch(readerLocalActionAnnotations.createNote.build(color, comment, drawType));
         },
     };
 };

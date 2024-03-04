@@ -21,6 +21,7 @@ export interface IAnnotationState {
     locatorExtended: LocatorExtended;
     comment: string;
     color: IColor;
+    drawType: TDrawType;
 }
 
 export type TAnnotationState = TPQueueState<number, IAnnotationState>;
