@@ -20,6 +20,7 @@ export declare const button_transparency: string;
 export declare const button_transparency_icon: string;
 export declare const button_transparency_icon_inactive: string;
 export declare const buttons_list: string;
+export declare const catalog_infos_text: string;
 export declare const col_book_img: string;
 export declare const col_filter: string;
 export declare const disabled: string;

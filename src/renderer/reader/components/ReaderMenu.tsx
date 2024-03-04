@@ -967,7 +967,32 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
 
 
 
-const TabTitle = ({title}: {title: string}) => {
+const TabTitle = ({value}: {value: string}) => {
+    let title: string;
+    const [__, translator] = useTranslator();
+    const searchText = useSelector((state: IReaderRootState) => state.search.textSearch);
+
+    switch (value) {
+        case "tab-toc":
+        title=__("reader.marks.toc");
+        break;
+        case "tab-landmark":
+            title=__("reader.marks.landmarks");
+            break;
+        case "tab-bookmark":
+            title=__("reader.marks.bookmarks");
+            break;
+        case "tab-search":
+            title=  searchText ? translator.translate("reader.marks.searchResult", { searchText: searchText.slice(0, 20) }) 
+            : (__("reader.marks.search"));;
+            break;
+        case "tab-gotopage":
+            title="Go To Page";
+            break;
+        case "tab-annotation":
+            title=__("reader.marks.annotations");
+            break;
+    }
     return (
         <div className={stylesSettings.settings_tab_title}>
             <h2>{title}</h2>
@@ -981,11 +1006,10 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const { setDockingMode, dockedMode, dockingMode } = props;
     const { focus, handleLinkClick } = props;
 
-    const [__, translator] = useTranslator();
+    const [__] = useTranslator();
 
     // const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     const searchEnable = useSelector((state: IReaderRootState) => state.search.enable);
-    const searchText = useSelector((state: IReaderRootState) => state.search.textSearch);
     const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
     const annotations = useSelector((state: IReaderRootState) => state.reader.annotation).map(([, v]) => v);
 
@@ -1155,6 +1179,31 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     SelectRef.displayName = "Select";
 
+    const TabHeader = () => {
+        return (
+            dockedMode ? <></> :
+                <div key="modal-header" className={stylesSettings.close_button_div}>
+                    <TabTitle value={tabValue}/>
+                    <div>
+                    <button className={stylesButtons.button_transparency_icon} aria-label="left" onClick={setDockingModeLeftSide}>
+                        <SVG ariaHidden={true} svg={DockLeftIcon} />
+                    </button>
+                    <button className={stylesButtons.button_transparency_icon} aria-label="right" onClick={setDockingModeRightSide}>
+                        <SVG ariaHidden={true} svg={DockRightIcon} />
+                    </button>
+                    <button className={stylesButtons.button_transparency_icon} disabled aria-label="full" onClick={setDockingModeFull}>
+                        <SVG ariaHidden={true} svg={DockModalIcon} />
+                    </button>
+                    <Dialog.Close asChild>
+                        <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                            <SVG ariaHidden={true} svg={QuitIcon} />
+                        </button>
+                    </Dialog.Close>
+                    </div>
+                </div>
+        )
+    }
+
     return (
         <div>
             {
@@ -1220,7 +1269,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 }
                 <div className={stylesSettings.settings_content}>
                     <Tabs.Content value="tab-toc" tabIndex={-1}>
-                        <TabTitle title={__("reader.marks.toc")} />
+                    <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             {(isPdf && pdfToc?.length && renderLinkTree_(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
                                 (isPdf && !pdfToc?.length && <p>{__("reader.toc.publicationNoToc")}</p>) ||
@@ -1231,7 +1280,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-landmark" tabIndex={-1}>
-                        <TabTitle title={__("reader.marks.landmarks")} />
+                        <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             {r2Publication.Landmarks &&
                                 renderLinkList_(__("reader.marks.landmarks"), r2Publication.Landmarks)}
@@ -1239,21 +1288,21 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-bookmark" tabIndex={-1}>
-                        <TabTitle title={__("reader.marks.bookmarks")} />
+                        <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <BookmarkList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} />
                         </div>
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-annotation" tabIndex={-1}>
-                        <TabTitle title={__("reader.marks.annotations")} />
+                        <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <AnnotationList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} />
                         </div>
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-search" tabIndex={-1}>
-                        <TabTitle title={searchText ? translator.translate("reader.marks.searchResult", { searchText: searchText.slice(0, 20) }) : (__("reader.marks.search")) } />
+                        <TabHeader />
                         <div className={classNames(stylesSettings.settings_tab, stylesPopoverDialog.search_container)}>
                             {searchEnable
                                 ? <ReaderMenuSearch
@@ -1264,7 +1313,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-gotopage" tabIndex={-1}>
-                        <TabTitle title="Go To Page" />
+                        <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <GoToPageSection totalPages={
                                 isPdf && pdfNumberOfPages
@@ -1274,25 +1323,6 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </Tabs.Content>
                 </div>
             </Tabs.Root>
-            {
-                dockedMode ? <></> :
-                    <div key="modal-header" className={stylesSettings.close_button_div}>
-                        <button className={stylesButtons.button_transparency_icon} aria-label="left" onClick={setDockingModeLeftSide}>
-                            <SVG ariaHidden={true} svg={DockLeftIcon} />
-                        </button>
-                        <button className={stylesButtons.button_transparency_icon} aria-label="right" onClick={setDockingModeRightSide}>
-                            <SVG ariaHidden={true} svg={DockRightIcon} />
-                        </button>
-                        <button className={stylesButtons.button_transparency_icon} disabled aria-label="full" onClick={setDockingModeFull}>
-                            <SVG ariaHidden={true} svg={DockModalIcon} />
-                        </button>
-                        <Dialog.Close asChild>
-                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
-                                <SVG ariaHidden={true} svg={QuitIcon} />
-                            </button>
-                        </Dialog.Close>
-                    </div>
-            }
         </div>
     );
 };

@@ -53,7 +53,30 @@ interface IState {
     pdfCol?: IPdfPlayerColumn | undefined;
 }
 
-const TabTitle = ({title}: {title: string}) => {
+const TabTitle = ({value}: {value: string}) => {
+    let title: string;
+    const [__] = useTranslator();
+
+    switch (value) {
+        case "tab-divina":
+        title=__("reader.settings.disposition.title");
+        break;
+        case "tab-pdfZoom":
+            title=__("reader.settings.disposition.title");
+            break;
+        case "tab-text":
+            title=__("reader.settings.text");
+            break;
+        case "tab-spacing":
+            title=__("reader.settings.spacing");
+            break;
+        case "tab-display":
+            title=__("reader.settings.display");
+            break;
+        case "tab-audio":
+            title=__("reader.media-overlays.title");
+            break;
+    }
     return (
         <div className={stylesSettings.settings_tab_title}>
             <h2>{title}</h2>
@@ -984,6 +1007,31 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
     const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     SelectRef.displayName = "ComboBox";
+
+    const TabHeader = () => {
+        return (
+            dockedMode ? <></> :
+                <div key="modal-header" className={stylesSettings.close_button_div}>
+                    <TabTitle value={tabValue}/>
+                    <div>
+                    <button className={stylesButtons.button_transparency_icon} aria-label="left" onClick={setDockingModeLeftSide}>
+                        <SVG ariaHidden={true} svg={DockLeftIcon} />
+                    </button>
+                    <button className={stylesButtons.button_transparency_icon} aria-label="right" onClick={setDockingModeRightSide}>
+                        <SVG ariaHidden={true} svg={DockRightIcon} />
+                    </button>
+                    <button className={stylesButtons.button_transparency_icon} disabled aria-label="full" onClick={setDockingModeFull}>
+                        <SVG ariaHidden={true} svg={DockModalIcon} />
+                    </button>
+                    <Dialog.Close asChild>
+                        <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                            <SVG ariaHidden={true} svg={QuitIcon} />
+                        </button>
+                    </Dialog.Close>
+                    </div>
+                </div>
+        )
+    }
     return (
         <div>
             {
@@ -1052,32 +1100,32 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                 }
                 <div className={stylesSettings.settings_content}>
                     <Tabs.Content value="tab-divina" tabIndex={-1}>
-                        <TabTitle title={__("reader.settings.disposition.title")} />
+                        <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <DivinaSetReadingMode handleDivinaReadingMode={handleDivinaReadingMode} divinaReadingMode={divinaReadingMode} divinaReadingModeSupported={divinaReadingModeSupported} />
                         </div>
                     </Tabs.Content>
                     <Tabs.Content value="tab-pdfzoom" tabIndex={-1}>
-                        <TabTitle title={__("reader.settings.disposition.title")} />
+                    <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <PdfZoom pdfScale={pdfState.pdfScale} pdfView={pdfState.pdfView} />
                         </div>
                     </Tabs.Content>
                     <Tabs.Content value="tab-text" tabIndex={-1}>
-                        <TabTitle title={__("reader.settings.text")} />
+                    <TabHeader />
                         <div className={classNames(stylesSettings.settings_tab, stylesSettings.settings_reading_text, stylesSettings.section)}>
                             <FontSize config={readerConfig} set={setPartialSettingsDebounced} />
                             <FontFamily config={readerConfig} set={setPartialSettingsDebounced} />
                         </div>
                     </Tabs.Content>
                     <Tabs.Content value="tab-spacing" tabIndex={-1}>
-                        <TabTitle title={__("reader.settings.spacing")} />
+                    <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <ReadingSpacing config={readerConfig} set={setPartialSettingsDebounced} />
                         </div>
                     </Tabs.Content>
                     <Tabs.Content value="tab-display" tabIndex={-1}>
-                        <TabTitle title={__("reader.settings.display")} />
+                    <TabHeader />
                         <section className={stylesSettings.settings_tab}>
                             {isPdf ? <></> : <Theme theme={readerConfig} set={setPartialSettingsDebounced} />}
                             {isPdf ? <></> : <ReadingDisplayLayout config={readerConfig} set={setPartialSettingsDebounced} isFXL={props.isFXL} />}
@@ -1087,32 +1135,13 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                         </section>
                     </Tabs.Content>
                     <Tabs.Content value="tab-audio" tabIndex={-1}>
-                        <TabTitle title={__("reader.media-overlays.title")} />
+                    <TabHeader />
                         <section className={stylesSettings.settings_tab}>
                             <ReadingAudio config={readerConfig} set={setPartialSettingsDebounced} />
                         </section>
                     </Tabs.Content>
                 </div>
             </Tabs.Root>
-            {
-                dockedMode ? <></> :
-                    <div key="modal-header" className={stylesSettings.close_button_div}>
-                        <button className={stylesButtons.button_transparency_icon} aria-label="left" onClick={setDockingModeLeftSide}>
-                            <SVG ariaHidden={true} svg={DockLeftIcon} />
-                        </button>
-                        <button className={stylesButtons.button_transparency_icon} aria-label="right" onClick={setDockingModeRightSide}>
-                            <SVG ariaHidden={true} svg={DockRightIcon} />
-                        </button>
-                        <button className={stylesButtons.button_transparency_icon} disabled aria-label="full" onClick={setDockingModeFull}>
-                            <SVG ariaHidden={true} svg={DockModalIcon} />
-                        </button>
-                        <Dialog.Close asChild>
-                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
-                                <SVG ariaHidden={true} svg={QuitIcon} />
-                            </button>
-                        </Dialog.Close>
-                    </div>
-            }
         </div>
     );
 };

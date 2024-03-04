@@ -178,7 +178,7 @@ $setting_color: var(--color-blue);
 .settings_content {
     flex: 2;
     overflow: hidden scroll;
-    margin-top: 30px;
+    margin-top: 50px;
 
     &::-webkit-scrollbar-thumb {
         border-radius: 5px;
@@ -197,7 +197,7 @@ $setting_color: var(--color-blue);
         position: relative;
 
         svg {
-            position: fixed;
+            position: absolute;
             transform: translate(-50%,-50%);
             left: 50%;
             top: 50%;
@@ -212,11 +212,28 @@ $setting_color: var(--color-blue);
     right: 20px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 10px;
+    background-color: var(--color-secondary);
+    padding: 10px;
+    width: 60%;
+    z-index: 10;
+    div {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .settings_tab_title {
+        margin: 0;
+
+        h2 {
+            margin: 0;
+        }
+    }
 }
 
 .settings_tab {
-    margin: 0 25px!important;
+    margin: 10px 25px 0!important;
 
     &_container {
     margin: 35px;
