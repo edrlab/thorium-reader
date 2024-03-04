@@ -10,7 +10,7 @@ import { type Reducer } from "redux";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { readerActions } from "readium-desktop/common/redux/actions";
 
-const initialState: ReaderMode = ReaderMode.Attached;
+const initialState: ReaderMode = ReaderMode.Detached;
 
 function winModeReducer_(
     state: ReaderMode = initialState,
@@ -23,7 +23,7 @@ function winModeReducer_(
             return ReaderMode.Detached;
 
         case readerActions.attachModeRequest.ID:
-            return ReaderMode.Attached;
+            return ReaderMode.Detached;
 
         default:
             return state;

@@ -13,7 +13,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import * as ReactDOM from "react-dom";
 import { ReaderMode } from "readium-desktop/common/models/reader";
-import * as BackIcon from "readium-desktop/renderer/assets/icons/outline-exit_to_app-24px.svg";
+import * as BackIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
 import * as viewMode from "readium-desktop/renderer/assets/icons/aspect_ratio-black-18dp.svg";
 import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
 import * as PauseIcon from "readium-desktop/renderer/assets/icons/audio-pause-icon.svg";
@@ -26,9 +26,9 @@ import * as HeadphoneIcon from "readium-desktop/renderer/assets/icons/headphone-
 import * as SettingsIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
 import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
 import * as MarkIcon from "readium-desktop/renderer/assets/icons/bookmarkSingle-icon.svg";
-import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/comment-icon.svg";
+import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
 import * as RemoveBookMarkIcon from "readium-desktop/renderer/assets/icons/BookmarkRemove-icon.svg";
-import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
+// import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
 import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
 import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreen-icon.svg";
 import * as ExitFullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreenExit-icon.svg";
@@ -407,7 +407,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             !isDockedMode && !isOnSearch && stylesPopoverDialog.modal_dialog_reader,
             !isDockedMode && isOnSearch && stylesPopoverDialog.modal_dialog_reader,          
             isNightMode && stylesReader.nightMode,
-            isSepiaMode && stylesReader.sepiaMode
+            isSepiaMode && stylesReader.sepiaMode,
           );
 
         return (
@@ -426,19 +426,15 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             >
                 <ul>
                     <ul>
-                        {(this.props.mode === ReaderMode.Attached) ? (
-                            <li >
-                                <button
-                                    className={stylesReader.menu_button}
-                                    style={{transform:"rotate(-90deg)"}}
-                                    onClick={this.props.handleReaderClose}
-                                    title={__("reader.navigation.backHomeTitle")}
-                                >
-                                    <SVG ariaHidden={true} svg={BackIcon} />
-                                </button>
-                            </li>
-                        ) : (<></>)
-                        }
+                        <li >
+                            <button
+                                className={stylesReader.menu_button}
+                                onClick={this.props.handleReaderClose}
+                                title={__("reader.navigation.backHomeTitle")}
+                            >
+                                <SVG ariaHidden={true} svg={BackIcon} />
+                            </button>
+                        </li>
                         <li>
                             <PublicationInfoReaderWithRadix handlePublicationInfo={this.props.handlePublicationInfo}>
                                 <PublicationInfoReaderWithRadixTrigger asChild>
@@ -454,7 +450,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 <PublicationInfoReaderWithRadixContent />
                             </PublicationInfoReaderWithRadix>
                         </li>
-                        {(this.props.mode === ReaderMode.Attached) ? (
+                        {/* {(this.props.mode === ReaderMode.Attached) ? (
                             <li>
                                 <button
                                     className={stylesReader.menu_button}
@@ -465,7 +461,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 </button>
                             </li>
                         ) : (<></>)
-                        }
+                        } */}
                     </ul>
 
                     <ul className={classNames(stylesReader.tts_toolbar)}>
