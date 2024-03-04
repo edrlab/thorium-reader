@@ -38,6 +38,7 @@ export declare const hasTtsAudio: string;
 export declare const HIDE_CURSOR_CLASS: string;
 export declare const HIDE_CURSOR_CLASS_head: string;
 export declare const inert: string;
+export declare const isOnSearch: string;
 export declare const landmarks_tabs: string;
 export declare const landmarks_tabs_button: string;
 export declare const left_button: string;

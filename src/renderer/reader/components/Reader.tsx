@@ -637,6 +637,7 @@ class Reader extends React.Component<IProps, IState> {
             // openedSection: this.state.openedSectionSettings,
             zenMode: this.state.zenMode,
             setZenMode : () => this.setState({ zenMode : !this.state.zenMode}),
+            searchEnable: this.props.searchEnable,
         };
 
         const readerPopoverDialogContext: IPopoverDialogProps = {
@@ -798,7 +799,7 @@ class Reader extends React.Component<IProps, IState> {
                                 <div
                                     id="publication_viewport"
                                     // className={stylesReader.publication_viewport}
-                                    className={classNames(stylesReader.publication_viewport, (this.state.settingsOpen || this.state.menuOpen) ? (this.state.dockingMode === "left" ? stylesReader.docked_left : this.state.dockingMode === "right" ? stylesReader.docked_right : undefined) : undefined)}
+                                    className={classNames(stylesReader.publication_viewport, (this.state.settingsOpen || this.state.menuOpen) ? (this.state.dockingMode === "left" ? stylesReader.docked_left : this.state.dockingMode === "right" ? stylesReader.docked_right : undefined) : undefined, this.props.searchEnable ? stylesReader.isOnSearch : undefined)}
                                     ref={this.mainElRef}
                                     style={{inset: isAudioBook ||  !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : "0 50px"}}>
                                 </div>

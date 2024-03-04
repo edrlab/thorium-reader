@@ -395,6 +395,21 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             },
         ];
 
+        const isDockedMode = this.props.readerPopoverDialogContext.dockedMode;
+        const isOnSearch = this.props.isOnSearch;
+        const isNightMode = this.props.ReaderSettingsProps.readerConfig.night;
+        const isSepiaMode = this.props.ReaderSettingsProps.readerConfig.sepia;
+
+        const containerClassName = classNames(
+            isDockedMode && isOnSearch && stylesReader.isOnSearch,
+            isDockedMode && isOnSearch && stylesPopoverDialog.popover_dialog_reader,
+            isDockedMode && !isOnSearch && stylesPopoverDialog.popover_dialog_reader,
+            !isDockedMode && !isOnSearch && stylesPopoverDialog.modal_dialog_reader,
+            !isDockedMode && isOnSearch && stylesPopoverDialog.modal_dialog_reader,          
+            isNightMode && stylesReader.nightMode,
+            isSepiaMode && stylesReader.sepiaMode
+          );
+
         return (
             <nav
                 className={classNames(stylesReaderHeader.toolbar_navigation,
@@ -804,7 +819,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         <li
                             {...(this.props.isOnSearch && { style: { backgroundColor: "var(--color-blue" } })}
                         >
-                            <HeaderSearch shortcutEnable={this.props.shortcutEnable} isPdf={this.props.isPdf} showSearchResults={this.props.showSearchResults}></HeaderSearch>
+                               <HeaderSearch shortcutEnable={this.props.shortcutEnable} isPdf={this.props.isPdf} showSearchResults={this.props.showSearchResults}></HeaderSearch>
                         </li>
                         <li
                             {...(this.props.isOnBookmark &&
@@ -911,13 +926,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     <Dialog.Content
                                         onPointerDownOutside={(e) => { e.preventDefault(); console.log("MenuModal onPointerDownOutside"); }}
                                         onInteractOutside={(e) => { e.preventDefault(); console.log("MenuModal onInteractOutside"); }}
-                                        className={classNames(this.props.readerPopoverDialogContext.dockedMode ? stylesPopoverDialog.popover_dialog_reader : stylesPopoverDialog.modal_dialog_reader,
-                                            this.props.ReaderSettingsProps.readerConfig.night ? stylesReader.nightMode : this.props.ReaderSettingsProps.readerConfig.sepia ? stylesReader.sepiaMode : "")}
+                                        className={containerClassName}
                                         style={{
                                             borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
                                             borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
                                             right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
                                             left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
+                                            height: isDockedMode && isOnSearch && "calc(100dvh - 144px)",
                                         }}
                                     >
                                         <ReaderMenu {...this.props.readerMenuProps}
@@ -952,13 +967,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     <Dialog.Content
                                         onPointerDownOutside={(e) => { e.preventDefault(); console.log("settingsModal onPointerDownOutside"); }}
                                         onInteractOutside={(e) => { e.preventDefault(); console.log("SettingsModal onInteractOutside"); }}
-                                        className={classNames(this.props.readerPopoverDialogContext.dockedMode ? stylesPopoverDialog.popover_dialog_reader : stylesPopoverDialog.modal_dialog_reader,
-                                            this.props.ReaderSettingsProps.readerConfig.night ? stylesReader.nightMode : this.props.ReaderSettingsProps.readerConfig.sepia ? stylesReader.sepiaMode : "")}
+                                        className={containerClassName}
                                         style={{
                                             borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
                                             borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
                                             right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
                                             left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
+                                            height: isDockedMode && isOnSearch && "calc(100dvh - 144px)",
                                         }}
                                     >
                                         <ReaderSettings {...this.props.ReaderSettingsProps} {...this.props.readerPopoverDialogContext} handleSettingsClick={this.props.handleSettingsClick} />

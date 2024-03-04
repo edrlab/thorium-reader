@@ -156,6 +156,7 @@ export interface IReaderSettingsProps {
     setDisableRTLFlip: (disabled: boolean) => void;
     zenMode: boolean;
     setZenMode: (value : boolean) => void;
+    searchEnable: boolean;
 }
 
 export interface IPopoverDialogProps {

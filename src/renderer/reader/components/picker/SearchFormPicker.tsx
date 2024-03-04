@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
+import * as searchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -111,7 +111,7 @@ class SearchFormPicker extends React.Component<IProps, IState> {
                         this.props.load ?
                             <LoaderSearch />
                             :
-                            <SVG ariaHidden={true} svg={magnifyingGlass} />
+                            <SVG ariaHidden={true} svg={searchIcon} />
                     }
                 </button>
             </form>

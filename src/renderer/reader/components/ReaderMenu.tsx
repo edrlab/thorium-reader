@@ -1239,14 +1239,16 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </div>
                 </div> : <></>
             }
-            <Tabs.Root value={tabValue} onValueChange={(value) => dockedMode ? null : setTabValue(value)} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
+            <Tabs.Root value={tabValue} onValueChange={(value) => dockedMode ? null : setTabValue(value)} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}
+            style={{height: searchEnable && "calc(100dvh - 215px)"}}>
                 {
                     dockedMode ? <></> :
                         <Tabs.List ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
                             {sectionsArray}
                         </Tabs.List>
                 }
-                <div className={stylesSettings.settings_content}>
+                <div className={stylesSettings.settings_content}
+                style={{marginTop: dockedMode && "0"}}>
                     <Tabs.Content value="tab-toc" tabIndex={-1}>
                     <TabHeader />
                         <div className={stylesSettings.settings_tab}>

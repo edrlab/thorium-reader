@@ -107,6 +107,7 @@ class SearchPicker extends React.Component<IProps, IState> {
                 display: "flex",
                 alignItems: "center",
                 padding: "20px 0",
+                width: "400px",
                 // flexDirection: "row",
                 // width: "300px",
 
@@ -163,13 +164,15 @@ class SearchPicker extends React.Component<IProps, IState> {
                     style={{
                         width: "auto",
                         padding: "4px",
-                        margin: 0,
+                        margin: "0",
                         fontSize: "1em",
                         // color: notFound ? "grey" : "black",
                         fill: notFound ? "grey" : "black",
                         background: "var(--color-light-blue)",
                         border: "1px solid var(--color-blue)",
+                        borderRadius: "6px",
                         color: "var(--color-blue)",
+                        textWrap: "nowrap",
                     }}
                 >
                     <span aria-live="polite">

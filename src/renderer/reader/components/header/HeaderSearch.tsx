@@ -122,6 +122,7 @@ class HeaderSearch extends React.Component<IProps> {
                         onPointerDownOutside={(e) => { e.preventDefault(); console.log("SearchPopover onPointerDownOutside"); }}
                         onInteractOutside={(e) => { e.preventDefault(); console.log("SearchPopover onInteractOutside"); }}
                     >
+                        <div style={{display: "flex", gap:"10%", alignItems: "center", height: "50px", width: "100vw", justifyContent: "end"}}>
                             <SearchPicker
                                 showSearchResults={this.props.showSearchResults}
                                 isPdf={this.props.isPdf}
@@ -130,8 +131,7 @@ class HeaderSearch extends React.Component<IProps> {
                             <Popover.Close asChild>
                                 <button
                                     style={{
-                                        width: "20px",
-                                        marginLeft: "auto",
+                                        width: "25px",
                                         marginRight: "0.4em",
                                         backgroundColor: "transparent",
                                         color: "var(--color-blue)",
@@ -144,6 +144,7 @@ class HeaderSearch extends React.Component<IProps> {
                                     <SVG ariaHidden={true} svg={QuitIcon} />
                                 </button>
                             </Popover.Close>
+                            </div>
                         {/* <Popover.Arrow /> */}
                     </Popover.Content>
                 </Popover.Portal>
