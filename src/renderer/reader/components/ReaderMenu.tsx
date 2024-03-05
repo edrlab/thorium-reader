@@ -428,7 +428,7 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
         </button>
 }
         {
-            isEdited ? <AnnotationEdit uuid={uuid} save={save} cancel={() => setEdition(false)} dockedMode={props.dockedMode}/> : 
+            isEdited ? <AnnotationEdit uuid={uuid} save={save} cancel={() => setEdition(false)} dockedMode={props.dockedMode} btext={dockedEditAnnotation && btext}/> : 
             <p>{comment}</p>
         }
         {((!isEdited && props.dockedMode) || !props.dockedMode) &&

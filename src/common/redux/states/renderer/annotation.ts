@@ -35,6 +35,5 @@ export interface IAnnotationReaderConfigState {
     annotation_popoverNotOpenOnNoteTaking: boolean,
     annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator: boolean,
     annotation_defaultColor: IColor,
-    annotation_defaultDrawType: TDrawType,
-    annotation_defaultLocator: LocatorExtended
+    annotation_defaultDrawType: TDrawType
 }
