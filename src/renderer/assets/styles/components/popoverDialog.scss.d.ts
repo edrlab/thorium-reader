@@ -1,6 +1,7 @@
 export declare const active: string;
 export declare const annotation_actions: string;
 export declare const annotation_actions_buttons: string;
+export declare const annotation_actions_container: string;
 export declare const annotation_edit: string;
 export declare const annotation_edit_form: string;
 export declare const annotation_edit_form_textarea: string;

@@ -774,7 +774,9 @@ declare namespace typed_i18n {
   },
   readonly "annotations": {
     readonly "highlight": string,
-    readonly "addNote": string
+    readonly "addNote": string,
+    readonly "saveNote": string,
+    readonly "Color": string
   },
   readonly "fxl": { readonly "fit": string }
 };
@@ -1075,9 +1077,16 @@ declare namespace typed_i18n {
   (_: "reader.tts.speed", __?: {}): string;
   (_: "reader.tts.stop", __?: {}): string;
   (_: "reader.tts.voice", __?: {}): string;
-  (_: "reader.annotations", __?: {}): { readonly "highlight": string, readonly "addNote": string };
+  (_: "reader.annotations", __?: {}): {
+  readonly "highlight": string,
+  readonly "addNote": string,
+  readonly "saveNote": string,
+  readonly "Color": string
+};
   (_: "reader.annotations.highlight", __?: {}): string;
   (_: "reader.annotations.addNote", __?: {}): string;
+  (_: "reader.annotations.saveNote", __?: {}): string;
+  (_: "reader.annotations.Color", __?: {}): string;
   (_: "reader.fxl", __?: {}): { readonly "fit": string };
   (_: "reader.fxl.fit", __?: {}): string;
   (_: "settings", __?: {}): {

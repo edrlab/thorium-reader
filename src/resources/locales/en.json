@@ -426,7 +426,9 @@
         },
         "annotations": {
             "highlight": "Highlight",
-            "addNote": "Add a note"
+            "addNote": "Add a note",
+            "saveNote": "Save note",
+            "Color": "Color"
         },
         "fxl": {
             "fit": "Fit"

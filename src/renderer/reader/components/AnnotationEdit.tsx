@@ -15,6 +15,7 @@ import * as Popover from "@radix-ui/react-popover";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import * as PenIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 
 
 interface IPros {
@@ -44,7 +45,7 @@ const annotationsColorsLight = [
     "#BEDADC",
     "#C4DEF6",
     "#BED3F3",
-    "#1D4C4FB"
+    "#D4C4FB",
 ];
 
 const drawType: TDrawType[] = [
@@ -62,7 +63,7 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
     const [__] = useTranslator();
     const { annotation_defaultColor, annotation_defaultDrawType } = useSelector((state: IReaderRootState) => state.reader.defaultConfig);
 
-    // const { cleanText } = useSelector((state: IReaderRootState) => state.annotation);
+    const { cleanText } = useSelector((state: IReaderRootState) => state.annotation);
 
     let annotationState: Pick<IAnnotationState, "color"|"comment"|"drawType"> = {color: annotation_defaultColor, comment: "", drawType: annotation_defaultDrawType};
     if (uuid) {
@@ -72,6 +73,15 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
     const colorStr = `#${annotationState.color.red.toString(16).padStart(2, "0")}${annotationState.color.green.toString(16).padStart(2, "0")}${annotationState.color.blue.toString(16).padStart(2, "0")}`;
 
     const [colorSelected, setColor] = React.useState(colorStr);
+
+    // const handleColorChange = (color: string, index: number) => {
+    //     setColor(color);
+    //     // Faire quelque chose avec la couleur sélectionnée, par exemple, utiliser setColor(color)
+    
+    //     // Accéder à la couleur correspondante dans annotationsColors
+    //     const correspondingColor = annotationsColors[index];
+    //     // Faire quelque chose avec la couleur correspondante, par exemple, utiliser setCorrespondingColor(correspondingColor)
+    //   };
 
     const rgbresultmatch = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(colorSelected);
     const colorObj = rgbresultmatch ? {
@@ -92,43 +102,51 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
         className={displayFromReaderMenu ? stylesPopoverDialog.annotation_edit_form : stylesPopoverDialog.annotation_form}
     >
         {displayFromReaderMenu ? <></> :
-        <h4>{__("reader.annotations.highlight")}</h4>
+        <h4>{__("reader.annotations.addNote")}</h4>
     }
         <div
             className={displayFromReaderMenu ? "" : stylesPopoverDialog.annotations_line}
             style={{borderLeft: dockedMode && "2px solid var(--color-blue)", padding: dockedMode && "0 10px", marginTop: dockedMode && "5px" }}>
-            <p>{props.btext}</p>
+            <p>{cleanText ? cleanText : props.btext }</p>
             <textarea id="addNote" name="addNote" className={displayFromReaderMenu ? stylesPopoverDialog.annotation_edit_form_textarea : stylesPopoverDialog.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef}></textarea>
 
         </div>
         <div className={stylesPopoverDialog.annotation_actions} style={{flexDirection: dockedMode ? "column" : "row", alignItems: dockedMode ? "start" : "center"}}>
             {/* <div className={stylesReader.annotation_form_textarea_container}> */}
-            <div className={stylesPopoverDialog.colorPicker}
-                role="group">
-                {annotationsColorsLight.map((color) => (
-                    <div key={color}>
-                        <input type="radio" id={color} name="colorpicker" value={color}
-                            onChange={() => setColor(color)}
-                            checked={colorSelected === color}
-                        />
-                        <label htmlFor={color}
-                            style={{ backgroundColor: color }}
-                        ></label>
-                    </div>
-                ),
-                )}
+            <div className={stylesPopoverDialog.annotation_actions_container}>
+                <h4>{__("reader.annotations.Color")}</h4>
+                <div className={stylesPopoverDialog.colorPicker}
+                    role="group">
+                    {annotationsColorsLight.map((color) => (
+                        <div key={color}>
+                            <input type="radio" id={color} name="colorpicker" value={color}
+                                onChange={() => setColor(color)}
+                                checked={colorSelected === color}
+                            />
+                            <label htmlFor={color}
+                                style={{ backgroundColor: color, border:  colorSelected === color && "1px solid var(--color-primary)"}}
+                            >
+                                {colorSelected === color && <SVG ariaHidden svg={CheckIcon} />}
+                            </label>
+                        </div>
+                    ),
+                    )}
+                </div>
             </div>
-            <div role="group" className={stylesPopoverDialog.stylePicker}>
-                {drawType.map((type) => (
-                    <div key={type}>
-                        <input type="radio" id={type} name="drawtype" value={type}
-                            onChange={() => setDrawType(type)}
-                            checked={drawTypeSelected === type}
-                        />
-                        <label htmlFor={type} aria-label={type}><SVG ariaHidden svg={PenIcon} /></label>
-                    </div>
-                ),
-                )}
+            <div className={stylesPopoverDialog.annotation_actions_container}>
+                <h4>{__("reader.annotations.highlight")}</h4>
+                <div role="group" className={stylesPopoverDialog.stylePicker}>
+                    {drawType.map((type) => (
+                        <div key={type}>
+                            <input type="radio" id={type} name="drawtype" value={type}
+                                onChange={() => setDrawType(type)}
+                                checked={drawTypeSelected === type}
+                            />
+                            <label htmlFor={type} aria-label={type} style={{border: drawTypeSelected === type && "1px solid var(--color-blue)"}}><SVG ariaHidden svg={PenIcon} /></label>
+                        </div>
+                    ),
+                    )}
+                </div>
             </div>
         </div>
 
@@ -139,8 +157,8 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
                     : <Popover.Close className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={cancel}>{__("dialog.cancel")}</Popover.Close>
                 }
                 {displayFromReaderMenu
-                    ? <button type="submit" className={stylesButtons.button_primary_blue} aria-label="save" onClick={(e) => { e.preventDefault(); save(colorObj, textAreaRef?.current?.value || "", drawTypeSelected); }}>{__("dialog.save")}</button>
-                    : <Popover.Close type="submit" className={stylesButtons.button_primary_blue} aria-label="save" onClick={(e) => { e.preventDefault(); save(colorObj, textAreaRef?.current?.value || "", drawTypeSelected); }}>{__("dialog.save")}</Popover.Close>
+                    ? <button type="submit" className={stylesButtons.button_primary_blue} aria-label="save" onClick={(e) => { e.preventDefault(); save(colorObj, textAreaRef?.current?.value || "", drawTypeSelected); }}>{__("reader.annotations.saveNote")}</button>
+                    : <Popover.Close type="submit" className={stylesButtons.button_primary_blue} aria-label="save" onClick={(e) => { e.preventDefault(); save(colorObj, textAreaRef?.current?.value || "", drawTypeSelected); }}>{__("reader.annotations.saveNote")}</Popover.Close>
                 }
             </div>
         {/* </div> */}

@@ -966,7 +966,7 @@ const TabTitle = ({value}: {value: string}) => {
             : (__("reader.marks.search"));;
             break;
         case "tab-gotopage":
-            title="Go To Page";
+            title=(__("reader.navigation.goToTitle"));
             break;
         case "tab-annotation":
             title=__("reader.marks.annotations");
