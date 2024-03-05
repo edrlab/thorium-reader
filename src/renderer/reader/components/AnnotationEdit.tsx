@@ -19,12 +19,11 @@ import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-ic
 
 
 interface IPros {
-    save: (color: IColor, comment: string, drawType: TDrawType) => void;
+    save: (color: IColor, comment: string, drawType: TDrawType, locatorExtended?: object) => void;
     cancel: () => void;
     // onColorChanged?: (color: IColor) => void;
     uuid?: string;
     dockedMode: boolean;
-    btext?: string;
 }
 
 // const annotationsColors = [
@@ -61,11 +60,11 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
 
     const displayFromReaderMenu = !!uuid;
     const [__] = useTranslator();
-    const { annotation_defaultColor, annotation_defaultDrawType } = useSelector((state: IReaderRootState) => state.reader.defaultConfig);
+    const { annotation_defaultColor, annotation_defaultDrawType, annotation_defaultLocator } = useSelector((state: IReaderRootState) => state.reader.defaultConfig);
 
     const { cleanText } = useSelector((state: IReaderRootState) => state.annotation);
 
-    let annotationState: Pick<IAnnotationState, "color"|"comment"|"drawType"> = {color: annotation_defaultColor, comment: "", drawType: annotation_defaultDrawType};
+    let annotationState: Pick<IAnnotationState, "color"|"comment"|"drawType"|"locatorExtended"> = {color: annotation_defaultColor, comment: "", drawType: annotation_defaultDrawType, locatorExtended: annotation_defaultLocator};
     if (uuid) {
         [, annotationState] = useSelector((state: IReaderRootState) => state.reader.annotation.find(([, annotationState]) => annotationState.uuid === uuid));
     }
@@ -107,7 +106,7 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
         <div
             className={displayFromReaderMenu ? "" : stylesPopoverDialog.annotations_line}
             style={{borderLeft: dockedMode && "2px solid var(--color-blue)", padding: dockedMode && "0 10px", marginTop: dockedMode && "5px" }}>
-            <p>{cleanText ? cleanText : props.btext }</p>
+            <p>{cleanText ? cleanText :  dockedMode && annotationState.locatorExtended.selectionInfo.cleanText}</p>
             <textarea id="addNote" name="addNote" className={displayFromReaderMenu ? stylesPopoverDialog.annotation_edit_form_textarea : stylesPopoverDialog.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef}></textarea>
 
         </div>

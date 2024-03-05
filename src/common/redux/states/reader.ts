@@ -26,6 +26,7 @@ export const readerConfigInitialStateAnnotation: IAnnotationReaderConfigState = 
     annotation_defaultDrawType: "solid_background",
     annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator: false,
     annotation_popoverNotOpenOnNoteTaking: false,
+    annotation_defaultLocator: null,
 };
 
 export const readerConfigInitialState: ReaderConfig = {
