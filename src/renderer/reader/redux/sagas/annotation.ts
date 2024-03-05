@@ -25,7 +25,7 @@ const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
 debug("_");
 
 const convertDrawTypeToNumber = (drawType: TDrawType) => {
-    return drawType === "solid_background" ? HighlightDrawTypeBackground : drawType === "outline" ? HighlightDrawTypeOutline : drawType === "striketrhough" ? HighlightDrawTypeStrikethrough : drawType === "underline" ? HighlightDrawTypeUnderline : HighlightDrawTypeBackground;
+    return drawType === "solid_background" ? HighlightDrawTypeBackground : drawType === "outline" ? HighlightDrawTypeOutline : drawType === "strikethrough" ? HighlightDrawTypeStrikethrough : drawType === "underline" ? HighlightDrawTypeUnderline : HighlightDrawTypeBackground;
 };
 
 // click from highlight
@@ -195,7 +195,7 @@ function* newLocatorOrTriggerBtnWatcher() {
         // trigger a Toast notification to user
         yield* put(
             toastActions.openRequest.build(
-                ToastType.Default,
+                ToastType.Error,
                 "No selection", // TODO: translation
             ),
         );

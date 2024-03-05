@@ -6,7 +6,6 @@ export declare const bookmarkLabel: string;
 export declare const bookmarkRemove: string;
 export declare const button_arrow: string;
 export declare const button_close: string;
-export declare const colorPicker: string;
 export declare const form_group: string;
 export declare const menu_button: string;
 export declare const menu_option: string;

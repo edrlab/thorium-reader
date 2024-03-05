@@ -356,7 +356,7 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
     return renderLinkTree;
 };
 
-const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timestamp: number, annotation: IAnnotationState, r2Publication: R2Publication, index: number }> = (props) => {
+const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timestamp: number, annotation: IAnnotationState, r2Publication: R2Publication, index: number, dockedMode: boolean }> = (props) => {
 
     const { goToLocator, timestamp, annotation, r2Publication, index } = props;
     const { uuid, locatorExtended, comment } = annotation;
@@ -376,7 +376,7 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
     };
 
     const date = new Date(timestamp);
-    const dateStr = `${date.getDate()}/${`${date.getMonth() + 1}`.padStart(2, "0")}/${date.getFullYear()}`;
+    const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;
     let percent = 100;
     let p = -1;
     if (r2Publication.Spine?.length && annotation.locatorExtended.locator?.href) {
@@ -398,77 +398,76 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
 
     const bprogression = (p >= 0 ? `${p}% ` : "");
 
+    const dockedEditAnnotation = (isEdited && props.dockedMode);
+
     return (<div
         className={stylesPopoverDialog.annotations_line}
+        style={{backgroundColor: dockedEditAnnotation ? "var(--color-light-grey)" : "", borderLeft: dockedEditAnnotation && "none"}}
     >
-        <div
-            className={stylesPopoverDialog.annotation_infos}
-            tabIndex={0}
-
-        >
-            {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
-
-            <div className={stylesPopoverDialog.chapter_marker}>
-                <button className={stylesPopoverDialog.annotation_name} title={bname} aria-label="goToLocator"
-                    onClick={(e) => {
+        {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
+        {((!isEdited && props.dockedMode) || !props.dockedMode) &&
+        <button className={stylesPopoverDialog.annotation_name} title={bname} aria-label="goToLocator"
+            style={{borderLeft: dockedEditAnnotation && "2px solid var(--color-blue)"}}
+            onClick={(e) => {
+                const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                goToLocator(annotation.locatorExtended.locator, closeNavPanel);
+            }}
+            onDoubleClick={(_e) => {
+                goToLocator(annotation.locatorExtended.locator, false);
+            }}
+            onKeyPress=
+            {
+                (e) => {
+                    if (e.key === "Enter" || e.key === "Space") {
                         const closeNavPanel = e.shiftKey && e.altKey ? false : true;
                         goToLocator(annotation.locatorExtended.locator, closeNavPanel);
-                    }}
-                    onDoubleClick={(_e) => {
-                        goToLocator(annotation.locatorExtended.locator, false);
-                    }}
-                    onKeyPress=
-                    {
-                        (e) => {
-                            if (e.key === "Enter" || e.key === "Space") {
-                                const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                                goToLocator(annotation.locatorExtended.locator, closeNavPanel);
-                                dispatch(readerLocalActionAnnotations.focus.build(annotation));
-                            }
-                        }
-                    }>
-                        {btext}
-                    </button>
-                {
-                    isEdited ? <AnnotationEdit uuid={uuid} save={save} cancel={() => setEdition(false)} /> : <p>{comment}</p>
+                        dispatch(readerLocalActionAnnotations.focus.build(annotation));
+                    }
                 }
-                <div className={stylesPopoverDialog.annotation_actions}>
-                    <div>
-                        <div>
-                            <SVG ariaHidden svg={CalendarIcon} />
-                            <p>{dateStr}</p>
-                        </div>
-                        <div>
-                            <SVG ariaHidden svg={BookOpenIcon} />
-                            <p>{bprogression}</p>
-                        </div>
-                    </div>
-                    <div className={stylesPopoverDialog.annotation_actions_buttons}>
-                        <button title={__("reader.marks.edit")}
-                            onClick={() => { setEdition(true); }
-                            }>
-                            <SVG ariaHidden={true} svg={EditIcon} />
-                        </button>
-                        <button>
-                            <SVG ariaHidden={true} svg={DuplicateIcon} />
-                        </button>
-                        <button title={__("reader.marks.delete")}
-                            onClick={() => {
-                                dispatch(readerLocalActionAnnotations.pop.build(annotation));
-                            }}>
-                            <SVG ariaHidden={true} svg={DeleteIcon} />
-                        </button>
-                    </div>
+            }><p>{btext}</p>
+        </button>
+}
+        {
+            isEdited ? <AnnotationEdit uuid={uuid} save={save} cancel={() => setEdition(false)} dockedMode={props.dockedMode} btext={dockedEditAnnotation && btext}/> : 
+            <p>{comment}</p>
+        }
+        {((!isEdited && props.dockedMode) || !props.dockedMode) &&
+        <div className={stylesPopoverDialog.annotation_edit}>
+            <div>
+                <div>
+                    <SVG ariaHidden svg={CalendarIcon} />
+                    <p>{dateStr}</p>
                 </div>
-                <div className={stylesPopoverDialog.gauge}>
-                    <div className={stylesPopoverDialog.fill} style={style}></div>
+                <div>
+                    <SVG ariaHidden svg={BookOpenIcon} />
+                    <p>{bprogression}</p>
                 </div>
             </div>
+            <div className={stylesPopoverDialog.annotation_actions_buttons}>
+                <button title={__("reader.marks.edit")}
+                    onClick={() => { setEdition(true); }
+                    }>
+                    <SVG ariaHidden={true} svg={EditIcon} />
+                </button>
+                <button>
+                    <SVG ariaHidden={true} svg={DuplicateIcon} />
+                </button>
+                <button title={__("reader.marks.delete")}
+                    onClick={() => {
+                        dispatch(readerLocalActionAnnotations.pop.build(annotation));
+                    }}>
+                    <SVG ariaHidden={true} svg={DeleteIcon} />
+                </button>
+            </div>
+        </div>
+}
+        <div className={stylesPopoverDialog.gauge}>
+            <div className={stylesPopoverDialog.fill} style={style}></div>
         </div>
     </div>);
 };
 
-const AnnotationList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
     const {r2Publication, goToLocator} = props;
     const [__] = useTranslator();
@@ -481,7 +480,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMen
     }
 
     return annotationsQueue.map((annotationQueueState, i) =>
-        <AnnotationCard key={i} timestamp={annotationQueueState[0]} annotation={annotationQueueState[1]} r2Publication={r2Publication} goToLocator={goToLocator} index={i}/>);
+        <AnnotationCard key={i} timestamp={annotationQueueState[0]} annotation={annotationQueueState[1]} r2Publication={r2Publication} goToLocator={goToLocator} index={i} dockedMode={props.dockedMode}/>);
 };
 
 const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Publication; i: number } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
@@ -1279,7 +1278,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     <Tabs.Content value="tab-annotation" tabIndex={-1}>
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
-                            <AnnotationList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} />
+                            <AnnotationList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} dockedMode={dockedMode} />
                         </div>
                     </Tabs.Content>
 

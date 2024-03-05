@@ -891,7 +891,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
                                         // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
                                         >
-                                            <AnnotationEdit save={this.props.saveAnnotation} cancel={this.props.closeAnnotationEditionMode}/>
+                                            <AnnotationEdit save={this.props.saveAnnotation} cancel={this.props.closeAnnotationEditionMode} dockedMode={isDockedMode}/>
                                     <Popover.Arrow style={{ fill: "var(--color-light-grey)" }} width={15} height={10} />
                                 </Popover.Content>
                             </Popover.Portal>

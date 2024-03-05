@@ -14,7 +14,7 @@ export interface IColor {
     blue: number;
 }
 
-export type TDrawType = "solid_background" | "underline" | "striketrhough" | "outline";
+export type TDrawType = "solid_background" | "underline" | "strikethrough" | "outline";
 
 export interface IAnnotationState {
     uuid: string;
