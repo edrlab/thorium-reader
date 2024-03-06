@@ -776,7 +776,10 @@ declare namespace typed_i18n {
     readonly "highlight": string,
     readonly "addNote": string,
     readonly "saveNote": string,
-    readonly "Color": string
+    readonly "Color": string,
+    readonly "advancedMode": string,
+    readonly "advancedModeDetails": string,
+    readonly "toggleMarginMarks": string
   },
   readonly "fxl": { readonly "fit": string }
 };
@@ -1081,12 +1084,18 @@ declare namespace typed_i18n {
   readonly "highlight": string,
   readonly "addNote": string,
   readonly "saveNote": string,
-  readonly "Color": string
+  readonly "Color": string,
+  readonly "advancedMode": string,
+  readonly "advancedModeDetails": string,
+  readonly "toggleMarginMarks": string
 };
   (_: "reader.annotations.highlight", __?: {}): string;
   (_: "reader.annotations.addNote", __?: {}): string;
   (_: "reader.annotations.saveNote", __?: {}): string;
   (_: "reader.annotations.Color", __?: {}): string;
+  (_: "reader.annotations.advancedMode", __?: {}): string;
+  (_: "reader.annotations.advancedModeDetails", __?: {}): string;
+  (_: "reader.annotations.toggleMarginMarks", __?: {}): string;
   (_: "reader.fxl", __?: {}): { readonly "fit": string };
   (_: "reader.fxl.fit", __?: {}): string;
   (_: "settings", __?: {}): {

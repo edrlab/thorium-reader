@@ -23,6 +23,7 @@ import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/com
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 
 import * as DockLeftIcon from "readium-desktop/renderer/assets/icons/dockleft-icon.svg";
 import * as DockRightIcon from "readium-desktop/renderer/assets/icons/dockright-icon.svg";
@@ -34,7 +35,7 @@ import * as TocIcon from "readium-desktop/renderer/assets/icons/toc-icon.svg";
 import * as LandmarkIcon from "readium-desktop/renderer/assets/icons/landmark-icon.svg";
 import * as TargetIcon from "readium-desktop/renderer/assets/icons/target-icon.svg";
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
-import * as AnnotationIcon from "readium-desktop/renderer/assets/icons/comment-icon.svg";
+import * as AnnotationIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar-icon.svg";
 import * as DuplicateIcon from "readium-desktop/renderer/assets/icons/duplicate-icon.svg";
 
@@ -401,12 +402,12 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
     const dockedEditAnnotation = (isEdited && props.dockedMode);
 
     return (<div
-        className={stylesPopoverDialog.annotations_line}
+        className={stylesAnnotations.annotations_line}
         style={{backgroundColor: dockedEditAnnotation ? "var(--color-light-grey)" : "", borderLeft: dockedEditAnnotation && "none"}}
     >
         {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
         {((!isEdited && props.dockedMode) || !props.dockedMode) &&
-        <button className={stylesPopoverDialog.annotation_name} title={bname} aria-label="goToLocator"
+        <button className={stylesAnnotations.annotation_name} title={bname} aria-label="goToLocator"
             style={{borderLeft: dockedEditAnnotation && "2px solid var(--color-blue)"}}
             onClick={(e) => {
                 const closeNavPanel = e.shiftKey && e.altKey ? false : true;
@@ -432,7 +433,7 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
             <p>{comment}</p>
         }
         {((!isEdited && props.dockedMode) || !props.dockedMode) &&
-        <div className={stylesPopoverDialog.annotation_edit}>
+        <div className={stylesAnnotations.annotation_edit}>
             <div>
                 <div>
                     <SVG ariaHidden svg={CalendarIcon} />
@@ -443,7 +444,7 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
                     <p>{bprogression}</p>
                 </div>
             </div>
-            <div className={stylesPopoverDialog.annotation_actions_buttons}>
+            <div className={stylesAnnotations.annotation_actions_buttons}>
                 <button title={__("reader.marks.edit")}
                     onClick={() => { setEdition(true); }
                     }>
@@ -890,7 +891,7 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
         >
 
             <div className={classNames(stylesInputs.form_group, stylesPopoverDialog.gotopage_combobox)} style={{width: "80%"}}>
-                <label> {__("reader.navigation.goToPlaceHolder")}</label>
+                <label style={{position: "absolute"}}> {__("reader.navigation.goToPlaceHolder")}</label>
                 <ComboBox
                     defaultItems={options}
                     defaultSelectedKey={defaultKey}
@@ -991,6 +992,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const searchEnable = useSelector((state: IReaderRootState) => state.search.enable);
     const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
     const annotations = useSelector((state: IReaderRootState) => state.reader.annotation).map(([, v]) => v);
+    const serialAnnotator = useSelector((state: IReaderRootState) => state.reader.config.annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator);
 
     const prevValue = React.useRef<number>();
 
@@ -1202,6 +1204,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 console.error("Combobox No value !!!");
                             }
                         }}
+                        style={{margin: "0", padding: "0"}}
                         // onInputChange={(v) => {
                         //     console.log("inputchange: ", v);
 
@@ -1278,6 +1281,17 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     <Tabs.Content value="tab-annotation" tabIndex={-1}>
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
+                            <div className={stylesAnnotations.annotations_checkox}>
+                                <input type="checkbox" name="advancedAnnotations" checked={serialAnnotator} />
+                                <label htmlFor="advancedAnnotations">
+                                    <h4>{__("reader.annotations.advancedMode")}</h4>
+                                    {__("reader.annotations.advancedModeDetails")}
+                                </label>
+                            </div>
+                            <div className={stylesAnnotations.annotations_checkox}>
+                                <input type="checkbox" name="marginAnnotations" />
+                                <label htmlFor="marginAnnotations"><h4>{__("reader.annotations.toggleMarginMarks")}</h4></label>
+                            </div>
                             <AnnotationList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} dockedMode={dockedMode} />
                         </div>
                     </Tabs.Content>

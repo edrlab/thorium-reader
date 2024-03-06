@@ -428,7 +428,10 @@
             "highlight": "Highlight",
             "addNote": "Add a note",
             "saveNote": "Save note",
-            "Color": "Color"
+            "Color": "Color",
+            "advancedMode": "Advanced Mode",
+            "advancedModeDetails": "Highlighting text opens the annotation creation form",
+            "toggleMarginMarks": "Display note markers in the margin"
         },
         "fxl": {
             "fit": "Fit"

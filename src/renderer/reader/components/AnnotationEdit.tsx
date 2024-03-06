@@ -11,8 +11,9 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
+
 import * as Popover from "@radix-ui/react-popover";
-import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import * as PenIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
@@ -65,10 +66,11 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
 
     const { cleanText } = useSelector((state: IReaderRootState) => state.annotation);
 
-    let annotationState: Pick<IAnnotationState, "color"|"comment"|"drawType"> = {color: annotation_defaultColor, comment: "", drawType: annotation_defaultDrawType};
+    //TODO: change "locatorExtended" type
+    let annotationState: Pick<IAnnotationState, "color"|"comment"|"drawType"> & {locatorExtended: any} = {color: annotation_defaultColor, comment: "", drawType: annotation_defaultDrawType, locatorExtended: {selectionInfo: cleanText}};
     if (uuid) {
         [, annotationState] = useSelector((state: IReaderRootState) => state.reader.annotation.find(([, annotationState]) => annotationState.uuid === uuid));
-    }
+    } 
 
     const colorStr = `#${annotationState.color.red.toString(16).padStart(2, "0")}${annotationState.color.green.toString(16).padStart(2, "0")}${annotationState.color.blue.toString(16).padStart(2, "0")}`;
 
@@ -99,23 +101,23 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
     const [drawTypeSelected, setDrawType] = React.useState(annotationState.drawType);
 
     const component = <form
-        className={displayFromReaderMenu ? stylesPopoverDialog.annotation_edit_form : stylesPopoverDialog.annotation_form}
+        className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form : stylesAnnotations.annotation_form}
     >
         {displayFromReaderMenu ? <></> :
         <h4>{__("reader.annotations.addNote")}</h4>
     }
         <div
-            className={displayFromReaderMenu ? "" : stylesPopoverDialog.annotations_line}
-            style={{borderLeft: dockedMode && "2px solid var(--color-blue)", padding: dockedMode && "0 10px", marginTop: dockedMode && "5px" }}>
-            <p>{cleanText ? cleanText : props.btext }</p>
-            <textarea id="addNote" name="addNote" className={displayFromReaderMenu ? stylesPopoverDialog.annotation_edit_form_textarea : stylesPopoverDialog.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef}></textarea>
+            className={displayFromReaderMenu ? "" : stylesAnnotations.annotations_line}
+            style={{borderLeft: dockedMode ? "2px solid var(--color-blue)" : "", padding: dockedMode ? "0 10px" : "", marginTop: dockedMode ? "5px" : "" }}>
+            <p>{cleanText ? cleanText : dockedMode ? annotationState.locatorExtended.selectionInfo.cleanText : "" }</p>
+            <textarea id="addNote" name="addNote" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef}></textarea>
 
         </div>
-        <div className={stylesPopoverDialog.annotation_actions} style={{flexDirection: dockedMode ? "column" : "row", alignItems: dockedMode ? "start" : "center"}}>
+        <div className={stylesAnnotations.annotation_actions} style={{flexDirection: dockedMode ? "column" : "row", alignItems: dockedMode ? "start" : "center"}}>
             {/* <div className={stylesReader.annotation_form_textarea_container}> */}
-            <div className={stylesPopoverDialog.annotation_actions_container}>
+            <div className={stylesAnnotations.annotation_actions_container}>
                 <h4>{__("reader.annotations.Color")}</h4>
-                <div className={stylesPopoverDialog.colorPicker}
+                <div className={stylesAnnotations.colorPicker}
                     role="group">
                     {annotationsColorsLight.map((color) => (
                         <div key={color}>
@@ -124,25 +126,25 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
                                 checked={colorSelected === color}
                             />
                             <label htmlFor={color}
-                                style={{ backgroundColor: color, border:  colorSelected === color && "1px solid var(--color-primary)"}}
+                                style={{ backgroundColor: color, border:  colorSelected === color ? "1px solid var(--color-primary)" : ""}}
                             >
-                                {colorSelected === color && <SVG ariaHidden svg={CheckIcon} />}
+                                {colorSelected === color ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
                             </label>
                         </div>
                     ),
                     )}
                 </div>
             </div>
-            <div className={stylesPopoverDialog.annotation_actions_container}>
+            <div className={stylesAnnotations.annotation_actions_container}>
                 <h4>{__("reader.annotations.highlight")}</h4>
-                <div role="group" className={stylesPopoverDialog.stylePicker}>
+                <div role="group" className={stylesAnnotations.stylePicker}>
                     {drawType.map((type) => (
                         <div key={type}>
                             <input type="radio" id={type} name="drawtype" value={type}
                                 onChange={() => setDrawType(type)}
                                 checked={drawTypeSelected === type}
                             />
-                            <label htmlFor={type} aria-label={type} style={{border: drawTypeSelected === type && "1px solid var(--color-blue)"}}><SVG ariaHidden svg={PenIcon} /></label>
+                            <label htmlFor={type} aria-label={type} style={{border: drawTypeSelected === type ? "1px solid var(--color-blue)" : ""}}><SVG ariaHidden svg={PenIcon} /></label>
                         </div>
                     ),
                     )}
@@ -151,7 +153,7 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
         </div>
 
             {/* <label htmlFor="addNote">{__("reader.annotations.addNote")}</label> */}
-            <div className={stylesPopoverDialog.annotation_form_textarea_buttons}>
+            <div className={stylesAnnotations.annotation_form_textarea_buttons}>
                 {displayFromReaderMenu
                     ? <button className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={cancel}>{__("dialog.cancel")}</button>
                     : <Popover.Close className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={cancel}>{__("dialog.cancel")}</Popover.Close>
