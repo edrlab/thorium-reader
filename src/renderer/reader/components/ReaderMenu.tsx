@@ -63,7 +63,7 @@ import { TFormEvent } from "readium-desktop/typings/react";
 import { AnnotationEdit } from "./AnnotationEdit";
 import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { readerLocalActionAnnotations } from "../redux/actions";
+import { readerLocalActionAnnotations, readerLocalActionSetConfig } from "../redux/actions";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -997,7 +997,16 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const searchEnable = useSelector((state: IReaderRootState) => state.search.enable);
     const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
     const annotations = useSelector((state: IReaderRootState) => state.reader.annotation).map(([, v]) => v);
-    const serialAnnotator = useSelector((state: IReaderRootState) => state.reader.config.annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator);
+    const readerConfig = useSelector((state: IReaderRootState) => state.reader.config);
+
+    const dispatch = useDispatch();
+
+    const [serialAnnotator, setSerialAnnotatorMode] = React.useState(false);
+
+    React.useEffect(() => {
+        console.log("Reader MENU set serialAnnotator mode to ", serialAnnotator);
+        (window as any).__annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator = serialAnnotator;
+    }, [serialAnnotator]);
 
     const prevValue = React.useRef<number>();
 
@@ -1317,15 +1326,22 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     <Tabs.Content value="tab-annotation" tabIndex={-1}>
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
-                            <div className={stylesAnnotations.annotations_checkox}>
-                                <input type="checkbox" name="advancedAnnotations" checked={serialAnnotator} />
+                            {dockedMode ? <div className={stylesAnnotations.annotations_checkox}>
+                                <input type="checkbox" id="advancedAnnotations" name="advancedAnnotations" checked={serialAnnotator} onChange={() => { setSerialAnnotatorMode(!serialAnnotator); }} />
                                 <label htmlFor="advancedAnnotations">
                                     <h4>{__("reader.annotations.advancedMode")}</h4>
                                     {__("reader.annotations.advancedModeDetails")}
                                 </label>
+                            </div> : <></>
+                            }
+                            <div className={stylesAnnotations.annotations_checkox}>
+                                <input type="checkbox" id="quickAnnotations" name="quickAnnotations" checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
+                                    onChange={() => { dispatch(readerLocalActionSetConfig.build({ ...readerConfig, annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking })); }}
+                                />
+                                <label htmlFor="quickAnnotations"><h4>{__("reader.annotations.quickAnnotations")}</h4></label>
                             </div>
                             <div className={stylesAnnotations.annotations_checkox}>
-                                <input type="checkbox" name="marginAnnotations" />
+                                <input type="checkbox" id="marginAnnotations" name="marginAnnotations" />
                                 <label htmlFor="marginAnnotations"><h4>{__("reader.annotations.toggleMarginMarks")}</h4></label>
                             </div>
                             <AnnotationList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} dockedMode={dockedMode} />

@@ -148,7 +148,8 @@ function* newLocator(action: readerLocalActionSetLocator.TAction): SagaGenerator
     debug(`New Selection Requested ! [${selectionInfo.cleanText.slice(0, 10)}]`);
 
     // check the boolean value of annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator
-    const annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator);
+    // const annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator);
+    const annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator = (window as any).__annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator || false;
 
     if (annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator) {
         yield* call(newLocatorEditAndSaveTheNote, locatorExtended);

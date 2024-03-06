@@ -430,8 +430,9 @@
             "saveNote": "Save note",
             "Color": "Color",
             "advancedMode": "Advanced Mode",
-            "advancedModeDetails": "Highlighting text opens the annotation creation form",
-            "toggleMarginMarks": "Display note markers in the margin"
+            "advancedModeDetails": "Serial annotator mode",
+            "toggleMarginMarks": "Display note markers in the margin",
+            "quickAnnotations": "Quick annotator mode"
         },
         "fxl": {
             "fit": "Fit"
