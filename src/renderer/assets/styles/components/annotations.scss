@@ -1,3 +1,5 @@
+@import "src/renderer/assets/styles/focus";
+
 .annotations_checkox {
     display: flex;
     align-items: start;
@@ -54,6 +56,16 @@
         button {
           min-width: unset;
           width: fit-content;
+
+          svg {
+            fill: var(--color-secondary);
+            color: var(--color-secondary);
+          }
+
+          &:hover svg {
+            fill: var(--color-blue);
+            color: var(--color-blue);
+          }
         }
       }
     }
@@ -129,6 +141,10 @@
     gap: 1px;
     border: 1px solid var(--color-primary);
     border-radius: 6px;
+
+    &:has(input:focus) {
+      @include R2_MIXIN_FOCUS_OUTLINE;
+    }
   
     div {
         input {
@@ -146,6 +162,7 @@
             align-items: center;
             justify-content: center;
             border-radius: 5px;
+            cursor: pointer;
         }
     }
   }
@@ -154,6 +171,11 @@
   display: flex;
   padding: 2px;
   gap: 10px;
+  border-radius: 5px;
+
+  &:has(input:focus) {
+    @include R2_MIXIN_FOCUS_OUTLINE;
+  }
   
   div {
       input {
@@ -163,15 +185,27 @@
   
       label {
           z-index: 20;
-          width: 20px;
-          height: 20px;
+          width: 27px;
+          height: 27px;
           margin: 0;
           background-color: inherit;
+          cursor: pointer;
+          border-radius: 3px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
       }
   }
   }
   
-  
+  .drawType_active {
+    background-color: var(--color-blue)!important;
+    
+    svg {
+      color: var(--color-secondary);
+      fill: var(--color-secondary);
+    }
+  }
   
   .annotations_line {
     width: calc(100% - 10px);
@@ -258,11 +292,16 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 0 5px;
     
       >div {
         display: inherit;
         align-items: center;
-        gap: 10px;
+        gap: 5px;
+
+        button {
+          padding: 5px;
+        }
     
         >div {
           display: flex;

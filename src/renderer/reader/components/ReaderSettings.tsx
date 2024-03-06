@@ -418,7 +418,7 @@ const ReadingDisplayLayout = ({isFXL, config: {paged: layout}, set}: { isFXL: bo
         <div className={stylesSettings.section}>
             <h4>{__("reader.settings.disposition.title")}</h4>
             <div className={stylesSettings.display_options}>
-                <RadioGroup.Root orientation="horizontal" style={{ display: "flex" }} value={(layout || isFXL) ? "page_option" : "scroll_option"}
+                <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={(layout || isFXL) ? "page_option" : "scroll_option"}
                     onValueChange={(v) => set({ paged: v === "page_option" })}
                 >
                     <RadioGroupItem value="scroll_option" description={`${__("reader.settings.scrolled")}`} svg={ScrollableIcon} disabled={isFXL}/>
@@ -444,7 +444,7 @@ const ReadingDisplayCol = ({ config: { paged, colCount }, set, isPdf, pdfCol }: 
                 <h4>{__("reader.settings.column.title")}</h4>
             </div>
             <div className={stylesSettings.display_options}>
-                <RadioGroup.Root orientation="horizontal" style={{ display: "flex" }} value={isPdf ? pdfCol : state}
+                <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={isPdf ? pdfCol : state}
                     onValueChange={(v) => {
                         isPdf ? createOrGetPdfEventBus().dispatch("column", v === "auto" ? "1" : v === "1" ? "1" : "2") : set({ colCount: v });}}
                     >
@@ -466,7 +466,7 @@ const ReadingDisplayAlign = ({ config: { align }, set }: { config: Pick<ReaderCo
                 <h4>{__("reader.settings.justification")}</h4>
             </div>
             <div className={stylesSettings.display_options}>
-            <RadioGroup.Root orientation="horizontal" style={{ display: "flex" }} value={align}
+            <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={align}
                     onValueChange={(v) => set({align: v})}
                 >
                     <RadioGroupItem value="auto" description={`${__("reader.settings.column.auto")}`} svg={AlignAutoIcon} disabled={false} />
@@ -599,8 +599,8 @@ const ReadingDisplayMathJax = ({
     return (
         <div>
             {options.map((option) => (
-                <section className={stylesSettings.section} key={option.id}>
-                    <div>
+                <section key={option.id}>
+                    <div style={{display: "flex", alignItems: "center"}}>
                         <input
                             id={option.id}
                             type="checkbox"
@@ -608,13 +608,13 @@ const ReadingDisplayMathJax = ({
                             onChange={option.onChange}
                             defaultChecked={option.checked}
                         />
-                        <label htmlFor={option.id}>{option.label}</label>
+                        <label htmlFor={option.id} style={{margin: "0 5px", height: "unset"}}>{option.label}</label>
                     </div>
                 </section>
 
             ))}
 
-            <section className={stylesSettings.section}>
+            <section>
                 <div>
                     <input
                         id="noRTLFlipCheckBox"
@@ -623,7 +623,7 @@ const ReadingDisplayMathJax = ({
                         checked={disableRTLFlip}
                         onChange={() => setDisableRTLFlip(!disableRTLFlip)}
                     />
-                    <label htmlFor="noRTLFlipCheckBox">{__("reader.settings.noRTLFlip")}</label>
+                    <label htmlFor="noRTLFlipCheckBox" style={{margin: "0 5px", height: "unset"}}>{__("reader.settings.noRTLFlip")}</label>
                 </div>
             </section>
         </div>
@@ -940,18 +940,18 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
     const SpacingTrigger =
         <Tabs.Trigger value="tab-spacing" disabled={overridePublisherDefault ? false : true} key={"tab-spacing"} data-value={"tab-spacing"}>
-            <SVG ariaHidden svg={AlignLeftIcon} />
+            <SVG ariaHidden svg={LayoutIcon} />
             <h3>{__("reader.settings.spacing")}</h3>
             {overridePublisherDefault ? <></> : <i>{__("reader.settings.disabled")}</i>}
         </Tabs.Trigger>;
-    const optionSpacingItem = { id: 2, value: "tab-spacing", name: __("reader.settings.spacing"), disabled: overridePublisherDefault ? false : true, svg: AlignLeftIcon };
+    const optionSpacingItem = { id: 2, value: "tab-spacing", name: __("reader.settings.spacing"), disabled: overridePublisherDefault ? false : true, svg: LayoutIcon };
 
     const DisplayTrigger =
         <Tabs.Trigger value="tab-display" key={"tab-display"}>
-            <SVG ariaHidden svg={LayoutIcon} />
+            <SVG ariaHidden svg={AlignLeftIcon} />
             <h3>{__("reader.settings.display")}</h3>
         </Tabs.Trigger>;
-    const optionDisplayItem = { id: 3, value: "tab-display", name: __("reader.settings.display"), disabled: false, svg: LayoutIcon };
+    const optionDisplayItem = { id: 3, value: "tab-display", name: __("reader.settings.display"), disabled: false, svg: AlignLeftIcon };
 
     const AudioTrigger =
         <Tabs.Trigger value="tab-audio" key={"tab-audio"}>
@@ -1064,6 +1064,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                         //         console.error("Combobox No value !!!");
                         //     }
                         // }}
+                        style={{paddingBottom: "0", margin: "0"}}
                         ref={dockedModeRef}
                     >
                         {item => <ComboBoxItem>{item.name}</ComboBoxItem>}

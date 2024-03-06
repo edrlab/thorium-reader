@@ -1228,7 +1228,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 console.error("Combobox No value !!!");
                             }
                         }}
-                        style={{margin: "0", padding: "0"}}
+                        style={{margin: "0", padding: "0", flexDirection: "row"}}
                         // onInputChange={(v) => {
                         //     console.log("inputchange: ", v);
 

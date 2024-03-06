@@ -17,6 +17,7 @@ import * as Popover from "@radix-ui/react-popover";
 import * as PenIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
 
 
 interface IPros {
@@ -144,7 +145,9 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
                                 onChange={() => setDrawType(type)}
                                 checked={drawTypeSelected === type}
                             />
-                            <label htmlFor={type} aria-label={type} style={{border: drawTypeSelected === type ? "1px solid var(--color-blue)" : ""}}><SVG ariaHidden svg={PenIcon} /></label>
+                            <label htmlFor={type} aria-label={type} 
+                            className={drawTypeSelected === type ? stylesAnnotations.drawType_active : ""}
+                            ><SVG ariaHidden svg={PenIcon} /></label>
                         </div>
                     ),
                     )}
@@ -159,8 +162,24 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
                     : <Popover.Close className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={cancel}>{__("dialog.cancel")}</Popover.Close>
                 }
                 {displayFromReaderMenu
-                    ? <button type="submit" className={stylesButtons.button_primary_blue} aria-label="save" onClick={(e) => { e.preventDefault(); save(colorObj, textAreaRef?.current?.value || "", drawTypeSelected); }}>{__("reader.annotations.saveNote")}</button>
-                    : <Popover.Close type="submit" className={stylesButtons.button_primary_blue} aria-label="save" onClick={(e) => { e.preventDefault(); save(colorObj, textAreaRef?.current?.value || "", drawTypeSelected); }}>{__("reader.annotations.saveNote")}</Popover.Close>
+                    ? <button type="submit" 
+                    className={stylesButtons.button_primary_blue} 
+                    aria-label="save" 
+                    onClick={(e) => { e.preventDefault(); save(colorObj, textAreaRef?.current?.value || "", drawTypeSelected); }}
+                    >
+                        <SVG ariaHidden svg={SaveIcon} />
+                        {__("reader.annotations.saveNote")}
+                    </button>
+                    : 
+                    <Popover.Close 
+                    type="submit" 
+                    className={stylesButtons.button_primary_blue} 
+                    aria-label="save" 
+                    onClick={(e) => { e.preventDefault(); save(colorObj, textAreaRef?.current?.value || "", drawTypeSelected); }}
+                    >
+                        <SVG ariaHidden svg={SaveIcon} />
+                        {__("reader.annotations.saveNote")}
+                    </Popover.Close>
                 }
             </div>
         {/* </div> */}
