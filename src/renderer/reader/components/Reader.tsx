@@ -656,6 +656,7 @@ class Reader extends React.Component<IProps, IState> {
             isPdf: this.props.isPdf,
             openedSection: this.state.openedSectionMenu,
             annotationUUID: this.state.annotationUUID,
+            resetAnnotationUUID: () => { this.setState({ annotationUUID: "" }); },
             pdfNumberOfPages: this.state.pdfPlayerNumberOfPages,
             setOpenedSection: (v: string) => this.setState({ openedSectionMenu: v }),
         };

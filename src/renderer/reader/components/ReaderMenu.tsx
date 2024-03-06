@@ -989,7 +989,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         pdfNumberOfPages, currentLocation, goToLocator, openedSection: tabValue, setOpenedSection: setTabValue } = props;
     const { setDockingMode, dockedMode, dockingMode } = props;
     const { focus, handleLinkClick } = props;
-    const { annotationUUID } = props;
+    const { annotationUUID, resetAnnotationUUID } = props;
 
     const [__] = useTranslator();
 
@@ -1024,6 +1024,18 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     console.log(`annotationUUID=${annotationUUID} not found!`);
                 }
             }, 1);
+            if (dockedMode) {
+                setTimeout(() => {
+                    const annotationDiv = document.getElementById(annotationUUID);
+                    if (annotationDiv) {
+                        console.log(`annotationDiv found (${annotationDiv.tagName}) and Focus on ${annotationUUID}`);
+                        annotationDiv.focus();
+                    } else {
+                        console.log(`annotationUUID=${annotationUUID} not found!`);
+                    }
+                    resetAnnotationUUID();
+                }, 1000);
+            }
         }
 
     }, [annotationUUID]);

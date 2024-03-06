@@ -123,6 +123,7 @@ export interface IReaderMenuProps {
 
     openedSection: string;
     annotationUUID: string;
+    resetAnnotationUUID: () => void;
     setOpenedSection: (v: string) => void;
 }
 
