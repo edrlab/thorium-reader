@@ -5,14 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as focus from "./focus";
-import * as trigger from "./trigger";
-import * as enableMode from "./enableMode";
-import * as createNote from "./createNote";
+import * as pop from "./pop";
+import * as push from "./push";
+import * as update from "./update";
 
 export {
-    focus,
-    trigger,
-    enableMode,
-    createNote,
+    push,
+    pop,
+    update,
 };

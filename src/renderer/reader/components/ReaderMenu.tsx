@@ -45,7 +45,6 @@ import { Link } from "@r2-shared-js/models/publication-link";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import { ILink, TToc } from "../pdf/common/pdfReader.type";
-import { readerLocalActionAnnotations } from "../redux/actions";
 import { IPopoverDialogProps, IReaderMenuProps } from "./options-values";
 import ReaderMenuSearch from "./ReaderMenuSearch";
 // import SideMenu from "./sideMenu/SideMenu";
@@ -64,6 +63,7 @@ import { TFormEvent } from "readium-desktop/typings/react";
 import { AnnotationEdit } from "./AnnotationEdit";
 import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import { readerLocalActionAnnotations } from "../redux/actions";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -367,7 +367,7 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
     const dispatch = useDispatch();
     const [__] = useTranslator();
     const save = (color: IColor, comment: string, drawType: TDrawType) => {
-        dispatch(readerLocalActionAnnotations.update.build({
+        dispatch(readerActions.annotation.update.build({
             uuid,
             locatorExtended,
             color,
@@ -459,7 +459,7 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
                 </button>
                 <button title={__("reader.marks.delete")}
                     onClick={() => {
-                        dispatch(readerLocalActionAnnotations.pop.build(annotation));
+                        dispatch(readerActions.annotation.pop.build(annotation));
                     }}>
                     <SVG ariaHidden={true} svg={DeleteIcon} />
                 </button>

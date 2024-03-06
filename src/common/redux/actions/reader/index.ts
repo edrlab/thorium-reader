@@ -20,6 +20,7 @@ import * as openRequest from "./openRequest";
 import * as setReduxState from "./setReduxState";
 import * as disableRTLFlip from "./rtlFlip";
 import * as bookmark from "./bookmarks";
+import * as annotation from "./annotations";
 
 export {
     openRequest,
@@ -37,4 +38,5 @@ export {
     clipboardCopy,
     disableRTLFlip,
     bookmark,
+    annotation,
 };

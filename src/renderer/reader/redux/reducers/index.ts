@@ -19,7 +19,7 @@ import { combineReducers } from "redux";
 
 // import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 
-import { readerLocalActionAnnotations, readerLocalActionHighlights } from "../actions";
+import { readerLocalActionHighlights } from "../actions";
 import { IHighlightHandlerState, IHighlightMounterState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { readerInfoReducer } from "./info";
 import { pickerReducer } from "./picker";
@@ -82,27 +82,27 @@ export const rootReducer = () => {
                 ),
             annotation: priorityQueueReducer
                 <
-                    readerLocalActionAnnotations.push.TAction,
-                    readerLocalActionAnnotations.pop.TAction,
+                    readerActions.annotation.push.TAction,
+                    readerActions.annotation.pop.TAction,
                     number,
                     IAnnotationState,
                     string,
-                    readerLocalActionAnnotations.update.TAction
+                    readerActions.annotation.update.TAction
                 >(
                     {
                         push: {
-                            type: readerLocalActionAnnotations.push.ID,
+                            type: readerActions.annotation.push.ID,
                             selector: (action, _queue) => {
                                 return [(new Date()).getTime(), action.payload];
                             },
                         },
                         pop: {
-                            type: readerLocalActionAnnotations.pop.ID,
+                            type: readerActions.annotation.pop.ID,
                             selector: (action, queue) => queue.find(([_, annotationState]) => action.payload.uuid === annotationState.uuid),
                         },
                         sortFct: (a, b) => b[0] - a[0],
                         update: {
-                            type: readerLocalActionAnnotations.update.ID,
+                            type: readerActions.annotation.update.ID,
                             selector: (action, queue) =>
                                 [
                                     queue.reduce<number>((pv, [k, v]) => v.uuid === action.payload.uuid ? k : pv, undefined),

@@ -13,7 +13,7 @@ import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalA
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
-import { toastActions } from "readium-desktop/common/redux/actions";
+import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
@@ -51,7 +51,7 @@ function* annotationFocus(action: readerLocalActionAnnotations.focus.TAction) {
     // yield* put(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: false}));
 }
 
-function* annotationUpdate(action: readerLocalActionAnnotations.update.TAction) {
+function* annotationUpdate(action: readerActions.annotation.update.TAction) {
     debug(`annotationUpdate-- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
     const {payload: {uuid, locatorExtended: {locator: {href}, selectionInfo}, color: newColor, drawType}} = action;
 
@@ -70,7 +70,7 @@ function* annotationUpdate(action: readerLocalActionAnnotations.update.TAction) 
     }
 }
 
-function* annotationPush(action: readerLocalActionAnnotations.push.TAction) {
+function* annotationPush(action: readerActions.annotation.push.TAction) {
 
     debug(`annotationPush : [${JSON.stringify(action.payload, null, 4)}]`);
     const {payload: {uuid, locatorExtended: {locator: {href}, selectionInfo}, color, drawType}} = action;
@@ -78,7 +78,7 @@ function* annotationPush(action: readerLocalActionAnnotations.push.TAction) {
     yield* put(readerLocalActionHighlights.handler.push.build([{ uuid, href, def: { selectionInfo, color, group: "annotation", drawType: convertDrawTypeToNumber(drawType) } }]));
 }
 
-function* annotationPop(action: readerLocalActionAnnotations.pop.TAction) {
+function* annotationPop(action: readerActions.annotation.pop.TAction) {
     debug(`annotationPop : [${action.payload.uuid}]`);
 
     const {
@@ -91,7 +91,7 @@ function* annotationPop(action: readerLocalActionAnnotations.pop.TAction) {
 function* createAnnotation(locatorExtended: LocatorExtended, color: IColor, comment: string, drawType: TDrawType) {
 
     debug(`Create an annotation for, [${locatorExtended.selectionInfo.cleanText.slice(0, 10)}]`);
-    yield* put(readerLocalActionAnnotations.push.build({
+    yield* put(readerActions.annotation.push.build({
         color,
         comment,
         locatorExtended,
@@ -290,7 +290,7 @@ export const saga = () =>
             (e) => console.error("readerLocalActionHighlights.click", e),
         ),
         takeSpawnEvery(
-            readerLocalActionAnnotations.update.ID,
+            readerActions.annotation.update.ID,
             annotationUpdate,
             (e) => console.error("readerLocalActionAnnotations.update", e),
         ),
@@ -300,12 +300,12 @@ export const saga = () =>
             (e) => console.error("readerLocalActionAnnotations.focus", e),
         ),
         takeSpawnEvery(
-            readerLocalActionAnnotations.push.ID,
+            readerActions.annotation.push.ID,
             annotationPush,
             (e) => console.error("readerLocalActionAnnotations.push", e),
         ),
         takeSpawnEvery(
-            readerLocalActionAnnotations.pop.ID,
+            readerActions.annotation.pop.ID,
             annotationPop,
             (e) => console.error("readerLocalActionAnnotations.pop", e),
         ),
