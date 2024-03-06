@@ -67,7 +67,7 @@ import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redu
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderMenuProps, IPopoverDialogProps {
-    focusNaviguationMenu: () => void;
+    // focusNaviguationMenu: () => void;
     currentLocation: LocatorExtended;
     isDivina: boolean;
     isPdf: boolean;
@@ -402,32 +402,35 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
     const dockedEditAnnotation = (isEdited && props.dockedMode);
 
     return (<div
-        className={stylesAnnotations.annotations_line}
-        style={{backgroundColor: dockedEditAnnotation ? "var(--color-light-grey)" : "", borderLeft: dockedEditAnnotation && "none"}}
+        className={stylesPopoverDialog.annotations_line}
+        style={{ backgroundColor: dockedEditAnnotation ? "var(--color-light-grey)" : "", borderLeft: dockedEditAnnotation && "none" }}
     >
         {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
         {((!isEdited && props.dockedMode) || !props.dockedMode) &&
-        <button className={stylesAnnotations.annotation_name} title={bname} aria-label="goToLocator"
-            style={{borderLeft: dockedEditAnnotation && "2px solid var(--color-blue)"}}
-            onClick={(e) => {
-                const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                goToLocator(annotation.locatorExtended.locator, closeNavPanel);
-            }}
-            onDoubleClick={(_e) => {
-                goToLocator(annotation.locatorExtended.locator, false);
-            }}
-            onKeyPress=
-            {
-                (e) => {
-                    if (e.key === "Enter" || e.key === "Space") {
-                        const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                        goToLocator(annotation.locatorExtended.locator, closeNavPanel);
-                        dispatch(readerLocalActionAnnotations.focus.build(annotation));
+            <button className={stylesPopoverDialog.annotation_name} title={bname} aria-label="goToLocator"
+                style={{ borderLeft: dockedEditAnnotation && "2px solid var(--color-blue)" }}
+                onClick={(e) => {
+                    const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                    goToLocator(annotation.locatorExtended.locator, closeNavPanel);
+                }}
+                onDoubleClick={(_e) => {
+                    goToLocator(annotation.locatorExtended.locator, false);
+                }}
+                onKeyPress=
+                {
+                    (e) => {
+                        if (e.key === "Enter" || e.key === "Space") {
+                            const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                            goToLocator(annotation.locatorExtended.locator, closeNavPanel);
+                            dispatch(readerLocalActionAnnotations.focus.build(annotation));
+                        }
                     }
                 }
-            }><p>{btext}</p>
-        </button>
-}
+                id={uuid}
+            >
+                <p>{btext}</p>
+            </button>
+        }
         {
             isEdited ? <AnnotationEdit uuid={uuid} save={save} cancel={() => setEdition(false)} dockedMode={props.dockedMode} btext={dockedEditAnnotation && btext}/> : 
             <p>{comment}</p>
@@ -985,6 +988,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         pdfNumberOfPages, currentLocation, goToLocator, openedSection: tabValue, setOpenedSection: setTabValue } = props;
     const { setDockingMode, dockedMode, dockingMode } = props;
     const { focus, handleLinkClick } = props;
+    const { annotationUUID } = props;
 
     const [__] = useTranslator();
 
@@ -1003,6 +1007,25 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     // const tabGoToPageRef = React.useRef<HTMLDivElement>();
     const dockedModeRef = React.useRef<HTMLButtonElement>();
     const tabModeRef = React.useRef<HTMLDivElement>();
+
+    React.useEffect(() => {
+
+        console.log(`useEFFECT ReaderMenu on AnnotationUUID=${annotationUUID}`);
+        
+
+        if (annotationUUID) {
+            setTimeout(() => {
+                const annotationDiv = document.getElementById(annotationUUID);
+                if (annotationDiv) {
+                    console.log(`annotationDiv found (${annotationDiv.tagName}) and Focus on ${annotationUUID}`);
+                    annotationDiv.focus();
+                } else {
+                    console.log(`annotationUUID=${annotationUUID} not found!`);
+                }
+            }, 1);
+        }
+
+    }, [annotationUUID]);
 
     React.useEffect(() => {
         console.log("readerMenu UPDATED");

@@ -11,7 +11,7 @@ import * as React from "react";
 import * as Popover from "@radix-ui/react-popover";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
-import * as ReactDOM from "react-dom";
+// import * as ReactDOM from "react-dom";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
 import * as viewMode from "readium-desktop/renderer/assets/icons/aspect_ratio-black-18dp.svg";
@@ -172,7 +172,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         this.navigationMenuButtonRef = React.createRef<HTMLButtonElement>();
         this.infoMenuButtonRef = React.createRef<HTMLButtonElement>();
 
-        this.focusNaviguationMenuButton = this.focusNaviguationMenuButton.bind(this);
+        // this.focusNaviguationMenuButton = this.focusNaviguationMenuButton.bind(this);
 
         this.onKeyboardFixedLayoutZoomReset = this.onKeyboardFixedLayoutZoomReset.bind(this);
         this.onKeyboardFixedLayoutZoomIn = this.onKeyboardFixedLayoutZoomIn.bind(this);
@@ -243,10 +243,10 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             this.infoMenuButtonRef.current.focus();
         }
 
-        if (this.props.menuOpen !== oldProps.menuOpen &&
-            this.props.menuOpen === true) {
-            this.focusNaviguationMenuButton();
-        }
+        // if (this.props.menuOpen !== oldProps.menuOpen &&
+        //     this.props.menuOpen === true) {
+        //     this.focusNaviguationMenuButton();
+        // }
 
         if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
             console.log("READER HEADER RELOAD KEYBOARD SHORTCUTS");
@@ -936,7 +936,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             isDivina={this.props.isDivina}
                                             isPdf={this.props.isPdf}
                                             currentLocation={this.props.currentLocation}
-                                            focusNaviguationMenu={this.focusNaviguationMenuButton}
+                                            // focusNaviguationMenu={this.focusNaviguationMenuButton}
                                             handleMenuClick={this.props.handleMenuClick} />
                                     </Dialog.Content>
                                 </Dialog.Portal>
@@ -1101,14 +1101,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         this.setState({ pdfScaleMode: mode });
     };
 
-    private focusNaviguationMenuButton() {
-        if (!this.navigationMenuButtonRef?.current) {
-            return;
-        }
-        const button = ReactDOM.findDOMNode(this.navigationMenuButtonRef.current) as HTMLButtonElement;
+    // private focusNaviguationMenuButton() {
+    //     if (!this.navigationMenuButtonRef?.current) {
+    //         return;
+    //     }
+    //     const button = ReactDOM.findDOMNode(this.navigationMenuButtonRef.current) as HTMLButtonElement;
 
-        button.focus();
-    }
+    //     button.focus();
+    // }
 }
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {

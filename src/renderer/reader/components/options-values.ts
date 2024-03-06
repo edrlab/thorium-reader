@@ -122,6 +122,7 @@ export interface IReaderMenuProps {
     pdfNumberOfPages: number;
 
     openedSection: string;
+    annotationUUID: string;
     setOpenedSection: (v: string) => void;
 }
 

@@ -73,7 +73,7 @@ import {
     readiumCssUpdate, setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
     setReadingLocationSaver, ttsClickEnable, ttsListen, ttsNext, ttsOverlayEnable, ttsPause,
     ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
-    ttsStop, ttsVoice,
+    ttsStop, ttsVoice, highlightsClickListen,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
@@ -97,6 +97,7 @@ import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
+import { diReaderGet } from "../di";
 
 // main process code!
 // thoriumhttps
@@ -224,6 +225,7 @@ interface IState {
 
     // openedSectionSettings: number | undefined;
     openedSectionMenu: string;
+    annotationUUID: string;
 
     historyCanGoBack: boolean;
     historyCanGoForward: boolean;
@@ -313,6 +315,7 @@ class Reader extends React.Component<IProps, IState> {
 
             // openedSectionSettings: undefined,
             openedSectionMenu: "tab-toc",
+            annotationUUID: "",
 
             divinaArrowEnabled: true,
             divinaContinousEqualTrue: false,
@@ -537,6 +540,48 @@ class Reader extends React.Component<IProps, IState> {
         // sets state visibleBookmarkList
         await this.updateVisibleBookmarks();
 
+
+        highlightsClickListen((href, highlight, event) => {
+
+            console.log("HIGHLIGHT Click from Reader.tsx");
+            console.log(`href: ${href} | highlight: ${JSON.stringify(highlight, null, 4)} | event : ${JSON.stringify(event)}`);
+
+            const store = diReaderGet("store");
+            const mounterStateMap = store.getState()?.reader.highlight.mounter;
+            if (!mounterStateMap?.length) {
+                console.log(`highlightsClickListen MOUNTER STATE EMPTY -- mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
+                return;
+            }
+        
+            const mounterStateItem = mounterStateMap.find(([_uuid, mounterState]) => mounterState.ref.id === highlight.id && mounterState.href === href);
+        
+            if (!mounterStateItem) {
+                console.log(`highlightsClickListen CANNOT FIND MOUNTER -- href: [${href}] ref.id: [${highlight.id}] mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
+                return;
+            }
+        
+            const [mounterStateItemUuid] = mounterStateItem; // mounterStateItem[0]
+        
+            const handlerStateMap = store.getState()?.reader.highlight.handler;
+            if (!handlerStateMap?.length) {
+                console.log(`highlightsClickListen HANDLER STATE EMPTY -- handlerStateMap: [${JSON.stringify(handlerStateMap, null, 4)}]`);
+                return;
+            }
+        
+            const handlerStateItem = handlerStateMap.find(([uuid, _handlerState]) => uuid === mounterStateItemUuid);
+        
+            if (!handlerStateItem) {
+                console.log(`dispatchClick CANNOT FIND HANDLER -- uuid: [${mounterStateItemUuid}] handlerStateMap: [${JSON.stringify(handlerStateMap, null, 4)}]`);
+                return;
+            }
+        
+            const [uuid, handlerState] = handlerStateItem;
+        
+            console.log(`dispatchClick CLICK ACTION ... -- uuid: [${uuid}] handlerState: [${JSON.stringify(handlerState, null, 4)}]`);
+
+            this.handleMenuButtonClick(true, "tab-annotation", true, uuid);
+        });
+
         this.props.dispatchReaderTSXMountedAndPublicationIntoViewportLoaded();
     }
 
@@ -610,6 +655,7 @@ class Reader extends React.Component<IProps, IState> {
             pdfToc: this.state.pdfPlayerToc,
             isPdf: this.props.isPdf,
             openedSection: this.state.openedSectionMenu,
+            annotationUUID: this.state.annotationUUID,
             pdfNumberOfPages: this.state.pdfPlayerNumberOfPages,
             setOpenedSection: (v: string) => this.setState({ openedSectionMenu: v }),
         };
@@ -2093,7 +2139,7 @@ class Reader extends React.Component<IProps, IState> {
         this.handleMenuButtonClick(true, "tab-search", true);
     }
 
-    private handleMenuButtonClick(open?: boolean, openedSectionMenu?: string, focused?: boolean) {
+    private handleMenuButtonClick(open?: boolean, openedSectionMenu?: string, focused?: boolean, annotationUUID?: string) {
         console.log("handleMenuButtonClick", "menuOpen=", this.state.menuOpen ? "closeMenu" : "openMenu", open !== undefined ? `openFromParam=${open ? "openMenu" : "closeMenu"}` : "");
 
         const openToggle = !this.state.menuOpen;
@@ -2105,6 +2151,7 @@ class Reader extends React.Component<IProps, IState> {
             settingsOpen: false,
             openedSectionMenu: openedSectionMenu ? openedSectionMenu : this.state.openedSectionMenu,
             focusMenuOpen: focused ? (this.state.focusMenuOpen + 1) : this.state.focusMenuOpen,
+            annotationUUID: annotationUUID ? annotationUUID : "",
         });
     }
 

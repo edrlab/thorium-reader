@@ -62,7 +62,7 @@ function* annotationUpdate(action: readerLocalActionAnnotations.update.TAction) 
 
         if (previousColor.blue !== newColor.blue || previousColor.green !== newColor.green || previousColor.red !== newColor.red || convertDrawTypeToNumber(drawType) !== previousDrawType) {
             yield* put(readerLocalActionHighlights.handler.pop.build([{ uuid }]));
-            yield* put(readerLocalActionHighlights.handler.push.build([{ uuid, href, def: { selectionInfo, color: newColor, group: "annotation" } }]));
+            yield* put(readerLocalActionHighlights.handler.push.build([{ uuid, href, def: { selectionInfo, color: newColor, group: "annotation", drawType: convertDrawTypeToNumber(drawType) } }]));
         }
     } else {
         // error sync between hightlight data array and annotation array
@@ -265,7 +265,7 @@ function* readerStart() {
 
     const annotationsHighlighted: IHighlightHandlerState[] = annotations.map(
         ([_, { uuid, locatorExtended: { locator: { href }, selectionInfo }, color, drawType}]) =>
-            ({ uuid, href, def: { selectionInfo, color, group: "annotation" }, drawType: convertDrawTypeToNumber(drawType) }));
+            ({ uuid, href, def: { selectionInfo, color, group: "annotation", drawType: convertDrawTypeToNumber(drawType) }}));
 
     yield* put(readerLocalActionHighlights.handler.push.build(annotationsHighlighted));
 
