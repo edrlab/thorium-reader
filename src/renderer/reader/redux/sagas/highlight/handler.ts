@@ -10,14 +10,16 @@ import * as debug_ from "debug";
 //     highlightsDrawMargin, highlightsRemove,
 // } from "@r2-navigator-js/electron/renderer";
 import {
-    takeSpawnEvery,
+    takeSpawnEvery, takeSpawnEveryChannel,
 } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, call } from "redux-saga/effects";
+import { all, call, put } from "redux-saga/effects";
 import { select as selectTyped } from "typed-redux-saga/macro";
 import { readerLocalActionHighlights, readerLocalActionLocatorHrefChanged } from "../../actions";
 import {
+    THighlightClick,
+    getHightlightClickChannel,
     mountHighlight, unmountHightlight,
 } from "./mounter";
 // import { handleLinkLocator } from "@r2-navigator-js/electron/renderer";
@@ -121,89 +123,98 @@ function* hrefChanged(action: readerLocalActionLocatorHrefChanged.TAction) {
 // // let _drawMargin: boolean | string[] = false;
 // // const GROUPS = ["search", "annotations"];
 
-// function* dispatchClick(data: THighlightClick) {
+function* dispatchClick(data: THighlightClick) {
 
-//     debug(`dispatchClick -- data: [${JSON.stringify(data, null, 4)}]`);
+    debug(`dispatchClick -- data: [${JSON.stringify(data, null, 4)}]`);
 
-//     const [href, ref] = data;
+    const [href, ref] = data;
 
-//     // // TODO HIGHLIGHTS-MARGIN: the ALT+CLICK UX is only just for experimenting (hidden undocumented feature)
-//     // if (event.alt) {
+    // // TODO HIGHLIGHTS-MARGIN: the ALT+CLICK UX is only just for experimenting (hidden undocumented feature)
+    // if (event.alt) {
 
-//     //     if (_drawMargin === false) {
-//     //         _drawMargin = [ref.group];
-//     //     } else if (_drawMargin === true) {
-//     //         _drawMargin = GROUPS.filter((g) => g !== ref.group);
-//     //     } else if (Array.isArray(_drawMargin)) {
-//     //         if (_drawMargin.includes(ref.group)) {
-//     //             _drawMargin = _drawMargin.filter((g) => g !== ref.group);
-//     //         } else {
-//     //             _drawMargin.push(ref.group);
-//     //         }
-//     //     } else {
-//     //         _drawMargin = false;
-//     //     }
-//     //     yield* callTyped(() => highlightsDrawMargin(_drawMargin)); // should probably be invoked in mounter, not handler
-//     //     return;
-//     // }
+    //     if (_drawMargin === false) {
+    //         _drawMargin = [ref.group];
+    //     } else if (_drawMargin === true) {
+    //         _drawMargin = GROUPS.filter((g) => g !== ref.group);
+    //     } else if (Array.isArray(_drawMargin)) {
+    //         if (_drawMargin.includes(ref.group)) {
+    //             _drawMargin = _drawMargin.filter((g) => g !== ref.group);
+    //         } else {
+    //             _drawMargin.push(ref.group);
+    //         }
+    //     } else {
+    //         _drawMargin = false;
+    //     }
+    //     yield* callTyped(() => highlightsDrawMargin(_drawMargin)); // should probably be invoked in mounter, not handler
+    //     return;
+    // }
 
-//     // // TODO HIGHLIGHTS-ANNOTATIONS: this is just a hack for testing!
-//     // if (IS_DEV) {
-//     //       if (ref.group === "annotations") {
-//     //           if (event.meta) {
-//     //               yield* callTyped(() => highlightsRemove(href, [ref.id]));
-//     //               return;
-//     //           }
-//     //           if (href && ref?.selectionInfo?.rangeInfo) {
-//     //               handleLinkLocatorDebounced({
-//     //                   href,
-//     //                   locations: {
-//     //                       cssSelector: ref.selectionInfo.rangeInfo.startContainerElementCssSelector,
-//     //                       rangeInfo: ref.selectionInfo.rangeInfo,
-//     //                   },
-//     //               });
-//     //           }
-//     //       }
-//     //   }
+    // // TODO HIGHLIGHTS-ANNOTATIONS: this is just a hack for testing!
+    // if (IS_DEV) {
+    //       if (ref.group === "annotations") {
+    //           if (event.meta) {
+    //               yield* callTyped(() => highlightsRemove(href, [ref.id]));
+    //               return;
+    //           }
+    //           if (href && ref?.selectionInfo?.rangeInfo) {
+    //               handleLinkLocatorDebounced({
+    //                   href,
+    //                   locations: {
+    //                       cssSelector: ref.selectionInfo.rangeInfo.startContainerElementCssSelector,
+    //                       rangeInfo: ref.selectionInfo.rangeInfo,
+    //                   },
+    //               });
+    //           }
+    //       }
+    //   }
 
-//     const mounterStateMap = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.mounter);
-//     if (!mounterStateMap?.length) {
-//         debug(`dispatchClick MOUNTER STATE EMPTY -- mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
-//         return;
-//     }
+    // Not used in annotation
+    // if (ref.group === "annotation") {
+    //     return ;
 
-//     const mounterStateItem = mounterStateMap.find(([_uuid, mounterState]) => mounterState.ref.id === ref.id && mounterState.href === href);
+    //     // NOT USED FOR ANNOTATION JUST SEARCH!
+    // }
+    //
 
-//     if (!mounterStateItem) {
-//         debug(`dispatchClick CANNOT FIND MOUNTER -- href: [${href}] ref.id: [${ref.id}] mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
-//         return;
-//     }
+    const mounterStateMap = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.mounter);
+    if (!mounterStateMap?.length) {
+        debug(`dispatchClick MOUNTER STATE EMPTY -- mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
+        return;
+    }
 
-//     const [mounterStateItemUuid] = mounterStateItem; // mounterStateItem[0]
+    const mounterStateItem = mounterStateMap.find(([_uuid, mounterState]) => mounterState.ref.id === ref.id && mounterState.href === href);
 
-//     const handlerStateMap = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.handler);
-//     if (!handlerStateMap?.length) {
-//         debug(`dispatchClick HANDLER STATE EMPTY -- handlerStateMap: [${JSON.stringify(handlerStateMap, null, 4)}]`);
-//         return;
-//     }
+    if (!mounterStateItem) {
+        debug(`dispatchClick CANNOT FIND MOUNTER -- href: [${href}] ref.id: [${ref.id}] mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
+        return;
+    }
 
-//     const handlerStateItem = handlerStateMap.find(([uuid, _handlerState]) => uuid === mounterStateItemUuid);
+    const [mounterStateItemUuid] = mounterStateItem; // mounterStateItem[0]
 
-//     if (!handlerStateItem) {
-//         debug(`dispatchClick CANNOT FIND HANDLER -- uuid: [${mounterStateItemUuid}] handlerStateMap: [${JSON.stringify(handlerStateMap, null, 4)}]`);
-//         return;
-//     }
+    const handlerStateMap = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.handler);
+    if (!handlerStateMap?.length) {
+        debug(`dispatchClick HANDLER STATE EMPTY -- handlerStateMap: [${JSON.stringify(handlerStateMap, null, 4)}]`);
+        return;
+    }
 
-//     const [uuid, handlerState] = handlerStateItem;
+    const handlerStateItem = handlerStateMap.find(([uuid, _handlerState]) => uuid === mounterStateItemUuid);
 
-//     debug(`dispatchClick CLICK ACTION ... -- uuid: [${uuid}] handlerState: [${JSON.stringify(handlerState, null, 4)}]`);
+    if (!handlerStateItem) {
+        debug(`dispatchClick CANNOT FIND HANDLER -- uuid: [${mounterStateItemUuid}] handlerStateMap: [${JSON.stringify(handlerStateMap, null, 4)}]`);
+        return;
+    }
 
-//     yield put(readerLocalActionHighlights.click.build(handlerState));
-// }
+    const [uuid, handlerState] = handlerStateItem;
+
+    debug(`dispatchClick CLICK ACTION ... -- uuid: [${uuid}] handlerState: [${JSON.stringify(handlerState, null, 4)}]`);
+
+    // used for search not annotation
+    yield put(readerLocalActionHighlights.click.build(handlerState));
+}
 
 export const saga = () => {
 
-    // const clickChannel = getHightlightClickChannel();
+    const clickChannel = getHightlightClickChannel();
     return all([
         takeSpawnEvery(
             readerLocalActionHighlights.handler.pop.ID,
@@ -217,9 +228,9 @@ export const saga = () => {
             readerLocalActionLocatorHrefChanged.ID,
             hrefChanged,
         ),
-        // takeSpawnEveryChannel(
-        //     clickChannel,
-        //     dispatchClick,
-        // ),
+        takeSpawnEveryChannel(
+            clickChannel,
+            dispatchClick,
+        ),
     ]);
 };
