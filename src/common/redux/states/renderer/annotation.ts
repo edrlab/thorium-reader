@@ -33,7 +33,6 @@ export interface IAnnotationModeState {
 
 export interface IAnnotationReaderConfigState {
     annotation_popoverNotOpenOnNoteTaking: boolean,
-    annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator: boolean,
     annotation_defaultColor: IColor,
     annotation_defaultDrawType: TDrawType
 }

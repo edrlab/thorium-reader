@@ -29,17 +29,17 @@ const convertDrawTypeToNumber = (drawType: TDrawType) => {
 };
 
 // click from highlight
-function* annotationClick(action: readerLocalActionHighlights.click.TAction) {
-    const { uuid, def: {group} } = action.payload;
-    if (uuid && group === "annotation") {
-        debug(`highlightClick ACTION (will focus) -- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
+// function* annotationClick(action: readerLocalActionHighlights.click.TAction) {
+//     const { uuid, def: {group} } = action.payload;
+//     if (uuid && group === "annotation") {
+//         debug(`highlightClick ACTION (will focus) -- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
 
-        // const { payload: { uuid } } = action;
+//         // const { payload: { uuid } } = action;
 
-        // const { currentFocusUuid } = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.focus);
-        // yield* put(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: true}));
-    }
-}
+//         // const { currentFocusUuid } = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.focus);
+//         // yield* put(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: true}));
+//     }
+// }
 
 // focus from annotation menu
 function* annotationFocus(action: readerLocalActionAnnotations.focus.TAction) {
@@ -104,11 +104,12 @@ function* createAnnotation(locatorExtended: LocatorExtended, color: IColor, comm
 
 function* newLocatorEditAndSaveTheNote(locatorExtended: LocatorExtended): SagaGenerator<void> {
     const defaultColor = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_defaultColor);
+    const defaultDrawType = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_defaultDrawType);
 
     // check the boolean value of annotation_popoverNotOpenOnNoteTaking
     const annotation_popoverNotOpenOnNoteTaking = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_popoverNotOpenOnNoteTaking);
     if (annotation_popoverNotOpenOnNoteTaking) {
-        yield* call(createAnnotation, locatorExtended, defaultColor, "", "solid_background" as TDrawType);
+        yield* call(createAnnotation, locatorExtended, {...defaultColor}, "", defaultDrawType);
         return;
     }
 
@@ -148,7 +149,6 @@ function* newLocator(action: readerLocalActionSetLocator.TAction): SagaGenerator
     debug(`New Selection Requested ! [${selectionInfo.cleanText.slice(0, 10)}]`);
 
     // check the boolean value of annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator
-    // const annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator);
     const annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator = (window as any).__annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator || false;
 
     if (annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator) {
@@ -285,11 +285,11 @@ export const saga = () =>
         //     annotationFocusMode,
         //     (e) => console.error("readerLocalActionAnnotations.annotationFocusMode", e),
         // ),
-        takeSpawnEvery(
-            readerLocalActionHighlights.click.ID,
-            annotationClick,
-            (e) => console.error("readerLocalActionHighlights.click", e),
-        ),
+        // takeSpawnEvery(
+        //     readerLocalActionHighlights.click.ID,
+        //     annotationClick,
+        //     (e) => console.error("readerLocalActionHighlights.click", e),
+        // ),
         takeSpawnEvery(
             readerActions.annotation.update.ID,
             annotationUpdate,

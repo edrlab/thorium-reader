@@ -24,7 +24,6 @@ export const readerConfigInitialStateDefaultPublisher = {
 export const readerConfigInitialStateAnnotation: IAnnotationReaderConfigState = {
     annotation_defaultColor: DEFAULT_COLOR_ANNOTATION,
     annotation_defaultDrawType: "solid_background",
-    annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator: false,
     annotation_popoverNotOpenOnNoteTaking: false,
 };
 

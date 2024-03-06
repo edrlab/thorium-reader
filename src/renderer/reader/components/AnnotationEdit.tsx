@@ -18,12 +18,12 @@ import * as PenIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
-
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { readerLocalActionSetConfig } from "../redux/actions";
 
 interface IPros {
     save: (color: IColor, comment: string, drawType: TDrawType) => void;
     cancel: () => void;
-    // onColorChanged?: (color: IColor) => void;
     uuid?: string;
     dockedMode: boolean;
     btext?: string;
@@ -67,24 +67,18 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
 
     const { cleanText } = useSelector((state: IReaderRootState) => state.annotation);
 
-    //TODO: change "locatorExtended" type
-    let annotationState: Pick<IAnnotationState, "color"|"comment"|"drawType"> & {locatorExtended: any} = {color: annotation_defaultColor, comment: "", drawType: annotation_defaultDrawType, locatorExtended: {selectionInfo: cleanText}};
+    let annotationState: Pick<IAnnotationState, "color" | "comment" | "drawType"> & { locatorExtended: { selectionInfo: { cleanText: string } } }
+        = { color: annotation_defaultColor, comment: "", drawType: annotation_defaultDrawType, locatorExtended: { selectionInfo: { cleanText } } };
     if (uuid) {
         [, annotationState] = useSelector((state: IReaderRootState) => state.reader.annotation.find(([, annotationState]) => annotationState.uuid === uuid));
     } 
 
-    const colorStr = `#${annotationState.color.red.toString(16).padStart(2, "0")}${annotationState.color.green.toString(16).padStart(2, "0")}${annotationState.color.blue.toString(16).padStart(2, "0")}`;
+    const colorStr = `#${annotationState.color.red.toString(16).padStart(2, "0")}${annotationState.color.green.toString(16).padStart(2, "0")}${annotationState.color.blue.toString(16).padStart(2, "0")}`.toUpperCase();
 
     const [colorSelected, setColor] = React.useState(colorStr);
 
-    // const handleColorChange = (color: string, index: number) => {
-    //     setColor(color);
-    //     // Faire quelque chose avec la couleur sélectionnée, par exemple, utiliser setColor(color)
-    
-    //     // Accéder à la couleur correspondante dans annotationsColors
-    //     const correspondingColor = annotationsColors[index];
-    //     // Faire quelque chose avec la couleur correspondante, par exemple, utiliser setCorrespondingColor(correspondingColor)
-    //   };
+    const dispatch = useDispatch();
+    const readerConfig = useSelector((state: IReaderRootState) => state.reader.config);
 
     const rgbresultmatch = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(colorSelected);
     const colorObj = rgbresultmatch ? {
@@ -93,28 +87,49 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
         blue: parseInt(rgbresultmatch[3], 16),
       } : annotationState.color;
 
-    // React.useEffect(() => {
-    //     if (props.onColorChanged) props.onColorChanged(colorObj);
-    // }, [colorSelected])
+    const previousColorSelected = React.useRef<IColor>(colorObj);
+
 
     const textAreaRef = React.useRef<HTMLTextAreaElement>();
 
     const [drawTypeSelected, setDrawType] = React.useState(annotationState.drawType);
+    const previousDrawTypeSelected = React.useRef<TDrawType>(drawTypeSelected);
+    
+    const saveConfig = () => {
+
+        let flag = false;
+        if (previousColorSelected.current.red !== colorObj.red || previousColorSelected.current.blue !== colorObj.blue || previousColorSelected.current.green !== colorObj.green) {
+            flag = true;
+        }
+        if (previousDrawTypeSelected.current !== drawTypeSelected) {
+            flag = true;
+        }
+
+        if (flag) {
+            const newReaderConfig = { ...readerConfig };
+            newReaderConfig.annotation_defaultColor = { ...colorObj };
+            newReaderConfig.annotation_defaultDrawType = drawTypeSelected;
+            dispatch(readerLocalActionSetConfig.build(newReaderConfig));
+        }
+
+        previousColorSelected.current = { ...colorObj };
+        previousDrawTypeSelected.current = drawTypeSelected;
+    };
 
     const component = <form
         className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form : stylesAnnotations.annotation_form}
     >
         {displayFromReaderMenu ? <></> :
-        <h4>{__("reader.annotations.addNote")}</h4>
-    }
+            <h4>{__("reader.annotations.addNote")}</h4>
+        }
         <div
             className={displayFromReaderMenu ? "" : stylesAnnotations.annotations_line}
-            style={{borderLeft: dockedMode ? "2px solid var(--color-blue)" : "", padding: dockedMode ? "0 10px" : "", marginTop: dockedMode ? "5px" : "" }}>
-            <p>{cleanText ? cleanText : dockedMode ? annotationState.locatorExtended.selectionInfo.cleanText : "" }</p>
+            style={{ borderLeft: dockedMode ? "2px solid var(--color-blue)" : "", padding: dockedMode ? "0 10px" : "", marginTop: dockedMode ? "5px" : "" }}>
+            <p>{annotationState.locatorExtended.selectionInfo.cleanText}</p>
             <textarea id="addNote" name="addNote" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef}></textarea>
 
         </div>
-        <div className={stylesAnnotations.annotation_actions} style={{flexDirection: dockedMode ? "column" : "row", alignItems: dockedMode ? "start" : "center"}}>
+        <div className={stylesAnnotations.annotation_actions} style={{ flexDirection: dockedMode ? "column" : "row", alignItems: dockedMode ? "start" : "center" }}>
             {/* <div className={stylesReader.annotation_form_textarea_container}> */}
             <div className={stylesAnnotations.annotation_actions_container}>
                 <h4>{__("reader.annotations.Color")}</h4>
@@ -127,7 +142,7 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
                                 checked={colorSelected === color}
                             />
                             <label htmlFor={color}
-                                style={{ backgroundColor: color, border:  colorSelected === color ? "1px solid var(--color-primary)" : ""}}
+                                style={{ backgroundColor: color, border: colorSelected === color ? "1px solid var(--color-primary)" : "" }}
                             >
                                 {colorSelected === color ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
                             </label>
@@ -145,8 +160,8 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
                                 onChange={() => setDrawType(type)}
                                 checked={drawTypeSelected === type}
                             />
-                            <label htmlFor={type} aria-label={type} 
-                            className={drawTypeSelected === type ? stylesAnnotations.drawType_active : ""}
+                            <label htmlFor={type} aria-label={type}
+                                className={drawTypeSelected === type ? stylesAnnotations.drawType_active : ""}
                             ><SVG ariaHidden svg={PenIcon} /></label>
                         </div>
                     ),
@@ -155,33 +170,33 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
             </div>
         </div>
 
-            {/* <label htmlFor="addNote">{__("reader.annotations.addNote")}</label> */}
-            <div className={stylesAnnotations.annotation_form_textarea_buttons}>
-                {displayFromReaderMenu
-                    ? <button className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={cancel}>{__("dialog.cancel")}</button>
-                    : <Popover.Close className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={cancel}>{__("dialog.cancel")}</Popover.Close>
-                }
-                {displayFromReaderMenu
-                    ? <button type="submit" 
-                    className={stylesButtons.button_primary_blue} 
-                    aria-label="save" 
-                    onClick={(e) => { e.preventDefault(); save(colorObj, textAreaRef?.current?.value || "", drawTypeSelected); }}
-                    >
-                        <SVG ariaHidden svg={SaveIcon} />
-                        {__("reader.annotations.saveNote")}
-                    </button>
-                    : 
-                    <Popover.Close 
-                    type="submit" 
-                    className={stylesButtons.button_primary_blue} 
-                    aria-label="save" 
-                    onClick={(e) => { e.preventDefault(); save(colorObj, textAreaRef?.current?.value || "", drawTypeSelected); }}
-                    >
-                        <SVG ariaHidden svg={SaveIcon} />
-                        {__("reader.annotations.saveNote")}
-                    </Popover.Close>
-                }
-            </div>
+        {/* <label htmlFor="addNote">{__("reader.annotations.addNote")}</label> */}
+        <div className={stylesAnnotations.annotation_form_textarea_buttons}>
+            {displayFromReaderMenu
+                ? <button className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={cancel}>{__("dialog.cancel")}</button>
+                : <Popover.Close className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={cancel}>{__("dialog.cancel")}</Popover.Close>
+            }
+            {displayFromReaderMenu
+                ? <button type="submit"
+                    className={stylesButtons.button_primary_blue}
+                    aria-label="save"
+                    onClick={(e) => { e.preventDefault(); save(colorObj, textAreaRef?.current?.value || "", drawTypeSelected); saveConfig(); }}
+                >
+                    <SVG ariaHidden svg={SaveIcon} />
+                    {__("reader.annotations.saveNote")}
+                </button>
+                :
+                <Popover.Close
+                    type="submit"
+                    className={stylesButtons.button_primary_blue}
+                    aria-label="save"
+                    onClick={(e) => { e.preventDefault(); save(colorObj, textAreaRef?.current?.value || "", drawTypeSelected); saveConfig(); }}
+                >
+                    <SVG ariaHidden svg={SaveIcon} />
+                    {__("reader.annotations.saveNote")}
+                </Popover.Close>
+            }
+        </div>
         {/* </div> */}
     </form>;
 
