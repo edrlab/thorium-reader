@@ -38,6 +38,10 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     themeActions.setTheme.ID,
     readerActions.disableRTLFlip.ID,
+
+    readerActions.bookmark.pop.ID,
+    readerActions.bookmark.push.ID,
+    readerActions.bookmark.update.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

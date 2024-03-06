@@ -65,6 +65,10 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     readerActions.configSetDefault.ID, // readerConfig
     themeActions.setTheme.ID,
+
+    readerActions.bookmark.pop.ID,
+    readerActions.bookmark.push.ID,
+    readerActions.bookmark.update.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

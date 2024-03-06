@@ -81,7 +81,7 @@ import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 import { TToc } from "../pdf/common/pdfReader.type";
 import { pdfMount } from "../pdf/driver";
 import {
-    readerLocalActionBookmarks, readerLocalActionDivina, readerLocalActionSetConfig,
+    readerLocalActionDivina, readerLocalActionSetConfig,
     readerLocalActionSetLocator,
 } from "../redux/actions";
 import { TdivinaReadingMode, defaultReadingMode } from "readium-desktop/common/redux/states/renderer/divina";
@@ -2774,10 +2774,10 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             }
         },
         addBookmark: (bookmark: IBookmarkStateWithoutUUID) => {
-            dispatch(readerLocalActionBookmarks.push.build(bookmark));
+            dispatch(readerActions.bookmark.push.build(bookmark));
         },
         deleteBookmark: (bookmark: IBookmarkState) => {
-            dispatch(readerLocalActionBookmarks.pop.build(bookmark));
+            dispatch(readerActions.bookmark.pop.build(bookmark));
         },
         setDisableRTLFlip: (disable: boolean) => {
             dispatch(readerActions.disableRTLFlip.build(disable));

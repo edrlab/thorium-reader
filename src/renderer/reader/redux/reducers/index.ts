@@ -19,7 +19,7 @@ import { combineReducers } from "redux";
 
 // import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 
-import { readerLocalActionAnnotations, readerLocalActionBookmarks, readerLocalActionHighlights } from "../actions";
+import { readerLocalActionAnnotations, readerLocalActionHighlights } from "../actions";
 import { IHighlightHandlerState, IHighlightMounterState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { readerInfoReducer } from "./info";
 import { pickerReducer } from "./picker";
@@ -36,6 +36,7 @@ import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducer
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { annotationModeEnableReducer } from "./annotationModeEnable";
+import { readerActions } from "readium-desktop/common/redux/actions";
 
 export const rootReducer = () => {
 
@@ -51,27 +52,26 @@ export const rootReducer = () => {
             locator: readerLocatorReducer,
             bookmark: priorityQueueReducer
                 <
-                    readerLocalActionBookmarks.push.TAction,
-                    readerLocalActionBookmarks.pop.TAction,
+                    readerActions.bookmark.push.TAction,
+                    readerActions.bookmark.pop.TAction,
                     number,
                     IBookmarkState,
                     string,
-                    readerLocalActionBookmarks.update.TAction
+                    readerActions.bookmark.update.TAction
                 >(
                     {
                         push: {
-                            type: readerLocalActionBookmarks.push.ID,
+                            type: readerActions.bookmark.push.ID,
                             selector: (action) =>
                                 [(new Date()).getTime(), action.payload],
                         },
                         pop: {
-                            type: readerLocalActionBookmarks.pop.ID,
-                            selector: (action) =>
-                                [undefined, action.payload],
+                            type: readerActions.bookmark.pop.ID,
+                            selector: (action, queue) => queue.find(([_, bookmarkState]) => action.payload.uuid === bookmarkState.uuid),
                         },
                         sortFct: (a, b) => b[0] - a[0],
                         update: {
-                            type: readerLocalActionBookmarks.update.ID,
+                            type: readerActions.bookmark.update.ID,
                             selector: (action, queue) =>
                                 [
                                     queue.reduce<number>((pv, [k, v]) => v.uuid === action.payload.uuid ? k : pv, undefined),

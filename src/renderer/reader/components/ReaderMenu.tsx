@@ -45,7 +45,7 @@ import { Link } from "@r2-shared-js/models/publication-link";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import { ILink, TToc } from "../pdf/common/pdfReader.type";
-import { readerLocalActionAnnotations, readerLocalActionBookmarks } from "../redux/actions";
+import { readerLocalActionAnnotations } from "../redux/actions";
 import { IPopoverDialogProps, IReaderMenuProps } from "./options-values";
 import ReaderMenuSearch from "./ReaderMenuSearch";
 // import SideMenu from "./sideMenu/SideMenu";
@@ -63,6 +63,7 @@ import { TextArea } from "react-aria-components";
 import { TFormEvent } from "readium-desktop/typings/react";
 import { AnnotationEdit } from "./AnnotationEdit";
 import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
+import { readerActions } from "readium-desktop/common/redux/actions";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -495,7 +496,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Public
     const isAudioBook = isAudiobookFn(r2Publication);
     const [bookmarkToUpdate, setBookmarkToUpdate] = React.useState<boolean>(false);
     const deleteBookmark = (bookmark: IBookmarkState) => {
-        dispatch(readerLocalActionBookmarks.pop.build(bookmark));
+        dispatch(readerActions.bookmark.pop.build(bookmark));
     };
     let percent = 100;
     let p = -1;
@@ -533,7 +534,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Public
         if (normalizedValue.length > 0) {
             const newBookmark = { ...bookmark };
             newBookmark.name = normalizedValue;
-            dispatch(readerLocalActionBookmarks.update.build(newBookmark));
+            dispatch(readerActions.bookmark.update.build(newBookmark));
         }
 
         setBookmarkToUpdate(false);
