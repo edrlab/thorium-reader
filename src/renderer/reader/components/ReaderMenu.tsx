@@ -403,12 +403,12 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
     const dockedEditAnnotation = (isEdited && props.dockedMode);
 
     return (<div
-        className={stylesPopoverDialog.annotations_line}
+        className={stylesAnnotations.annotations_line}
         style={{ backgroundColor: dockedEditAnnotation ? "var(--color-light-grey)" : "", borderLeft: dockedEditAnnotation && "none" }}
     >
         {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
         {((!isEdited && props.dockedMode) || !props.dockedMode) &&
-            <button className={stylesPopoverDialog.annotation_name} title={bname} aria-label="goToLocator"
+            <button className={stylesAnnotations.annotation_name} title={bname} aria-label="goToLocator"
                 style={{ borderLeft: dockedEditAnnotation && "2px solid var(--color-blue)" }}
                 onClick={(e) => {
                     const closeNavPanel = e.shiftKey && e.altKey ? false : true;
