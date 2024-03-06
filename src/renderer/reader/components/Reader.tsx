@@ -543,6 +543,13 @@ class Reader extends React.Component<IProps, IState> {
 
         highlightsClickListen((href, highlight, event) => {
 
+            if (highlight.group !== "annotation") {
+                if (typeof (window as any).__hightlightClickChannelEmitFn === "function") {
+                    (window as any).__hightlightClickChannelEmitFn([href, highlight, event]);
+                }
+                return ;
+            }
+
             console.log("HIGHLIGHT Click from Reader.tsx");
             console.log(`href: ${href} | highlight: ${JSON.stringify(highlight, null, 4)} | event : ${JSON.stringify(event)}`);
 

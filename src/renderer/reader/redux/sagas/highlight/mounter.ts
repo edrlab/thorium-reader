@@ -17,7 +17,7 @@ import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro
 
 import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 import {
-    highlightsClickListen, highlightsCreate, highlightsRemove,
+    highlightsCreate, highlightsRemove,
 } from "@r2-navigator-js/electron/renderer";
 
 import { readerLocalActionHighlights } from "../../actions";
@@ -107,11 +107,13 @@ export function getHightlightClickChannel() {
     const channel = eventChannel<THighlightClick>(
         (emit) => {
 
-            const handler = (href: string, highlight: IHighlight/*, event: IEventPayload_R2_EVENT_HIGHLIGHT_CLICK["event"]*/) => {
-                emit([href, highlight/*, event*/]);
-            };
+            // const handler = (href: string, highlight: IHighlight/*, event: IEventPayload_R2_EVENT_HIGHLIGHT_CLICK["event"]*/) => {
+            //     emit([href, highlight/*, event*/]);
+            // };
 
-            highlightsClickListen(handler);
+            (window as any).__hightlightClickChannelEmitFn = emit;
+
+            // highlightsClickListen(handler);
 
             // eslint-disable-next-line @typescript-eslint/no-empty-function
             return () => {
