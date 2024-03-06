@@ -23,7 +23,7 @@ function winModeReducer_(
             return ReaderMode.Detached;
 
         case readerActions.attachModeRequest.ID:
-            return ReaderMode.Detached;
+            return ReaderMode.Attached;
 
         default:
             return state;
