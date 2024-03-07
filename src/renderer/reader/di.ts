@@ -54,6 +54,12 @@ const createStoreFromDi = async (preloadedState: Partial<IReaderRootState>) => {
         newConfig.annotation_popoverNotOpenOnNoteTaking = defaultConfig.annotation_popoverNotOpenOnNoteTaking;
         flag = true;
     }
+    if (newConfig.annotation_defaultDrawView === undefined) {
+
+        console.log("ANNOTATION MIGRATION !! defaultDrawView not set migrate from defaultConfig value=", newConfig.annotation_defaultDrawView);
+        newConfig.annotation_defaultDrawView = defaultConfig.annotation_defaultDrawView;
+        flag = true;
+    }
 
     if (flag) {
         console.log(`ANNOTATION MIGRATION : There are a data need to be migrated from defaultConfig to config OLD=${JSON.stringify(store.getState().reader.config, null, 4)} NEW=${JSON.stringify(newConfig, null, 4)}`);

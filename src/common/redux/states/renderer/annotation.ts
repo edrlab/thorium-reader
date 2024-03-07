@@ -31,8 +31,11 @@ export interface IAnnotationModeState {
     cleanText: string,
 }
 
+export type TDrawView = "annotation" | "margin";
+
 export interface IAnnotationReaderConfigState {
     annotation_popoverNotOpenOnNoteTaking: boolean,
     annotation_defaultColor: IColor,
     annotation_defaultDrawType: TDrawType
+    annotation_defaultDrawView: TDrawView
 }

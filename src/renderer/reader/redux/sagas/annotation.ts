@@ -9,14 +9,14 @@ import * as debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { all, call, put, take} from "typed-redux-saga/macro";
 import { select as selectTyped, take as takeTyped, race as raceTyped, SagaGenerator} from "typed-redux-saga";
-import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionSetLocator } from "../actions";
+import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionSetConfig, readerLocalActionSetLocator } from "../actions";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+import { LocatorExtended, highlightsDrawMargin } from "@r2-navigator-js/electron/renderer";
 import { HighlightDrawTypeBackground, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline } from "r2-navigator-js/dist/es8-es2017/src/electron/common/highlight";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 
@@ -257,8 +257,12 @@ function* readerStart() {
 
     debug("annotation iframe reader viewport is started and ready to annotate, we draws all the annoatation for the first time with 'highlightsDrawMargin' enabled");
 
-    // check boolean persisted value
-    // highlightsDrawMargin(["annotation"]);
+    const { annotation_defaultDrawView } = yield* selectTyped((state: IReaderRootState) => state.reader.config);
+    if (annotation_defaultDrawView === "margin") {
+        highlightsDrawMargin(["annotation"]);
+    } else {
+        highlightsDrawMargin(false);
+    }
 
     const annotations = yield* selectTyped((store: IReaderRootState) => store.reader.annotation);
     const annotationsUuids = annotations.map(([_, annotationState]) => ({ uuid: annotationState.uuid }));
@@ -271,6 +275,17 @@ function* readerStart() {
     yield* put(readerLocalActionHighlights.handler.push.build(annotationsHighlighted));
 
     debug(`${annotationsHighlighted.length} annotation(s) drawn`);
+}
+
+function* captureHightlightDrawMargin(action: readerLocalActionSetConfig.TAction) {
+    const { annotation_defaultDrawView } = action.payload;
+
+    debug(`captureHightlightDrawMargin : readerLocalActionSetConfig CHANGED apply=${annotation_defaultDrawView}`);
+    if (annotation_defaultDrawView === "margin") {
+        highlightsDrawMargin(["annotation"]);
+    } else {
+        highlightsDrawMargin(false);
+    }
 }
 
 export const saga = () =>
@@ -290,6 +305,11 @@ export const saga = () =>
         //     annotationClick,
         //     (e) => console.error("readerLocalActionHighlights.click", e),
         // ),
+        takeSpawnEvery(
+            readerLocalActionSetConfig.ID,
+            captureHightlightDrawMargin,
+            (e) => console.error("readerLocalActionSetConfig", e),
+        ),
         takeSpawnEvery(
             readerActions.annotation.update.ID,
             annotationUpdate,

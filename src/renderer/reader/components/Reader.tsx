@@ -272,6 +272,7 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardInfoWhereAmISpeak = this.onKeyboardInfoWhereAmISpeak.bind(this);
         this.onKeyboardFocusSettings = this.onKeyboardFocusSettings.bind(this);
         this.onKeyboardFocusNav = this.onKeyboardFocusNav.bind(this);
+        this.annotationDrawMarginOrPlainAnnotationToggleSwitch = this.annotationDrawMarginOrPlainAnnotationToggleSwitch.bind(this);
         this.navLeftOrRight_.bind(this);
         this.onKeyboardNavigationToBegin.bind(this);
         this.onKeyboardNavigationToEnd.bind(this);
@@ -1102,6 +1103,11 @@ class Reader extends React.Component<IProps, IState> {
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.AudioStop,
             this.onKeyboardAudioStop);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.AnnotationDrawMarginOrPlainAnnotationToggleSwitch,
+            this.annotationDrawMarginOrPlainAnnotationToggleSwitch);
     }
 
     private unregisterAllKeyboardListeners() {
@@ -1129,6 +1135,7 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardAudioPreviousAlt);
         unregisterKeyboardListener(this.onKeyboardAudioNextAlt);
         unregisterKeyboardListener(this.onKeyboardAudioStop);
+        unregisterKeyboardListener(this.annotationDrawMarginOrPlainAnnotationToggleSwitch);
     }
 
     private handleLinkLocator = (locator: R2Locator, isFromOnPopState = false) => {
@@ -1155,6 +1162,21 @@ class Reader extends React.Component<IProps, IState> {
     private handleLinkUrl = (url: string, isFromOnPopState = false) => {
         handleLinkUrl_UpdateHistoryState(url, isFromOnPopState);
         r2HandleLinkUrl(url);
+    };
+
+    private annotationDrawMarginOrPlainAnnotationToggleSwitch = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (AnnotationDrawMarginOrPlainAnnotationToggleSwitch)");
+            }
+            return;
+        }
+
+        const newReaderConfig = {...this.props.readerConfig};
+        newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "annotation" ? "margin" : "annotation";
+
+        console.log(`AnnotationDrawMarginOrPlainAnnotationToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
+        this.props.setConfig(newReaderConfig, this.props.session);
     };
 
     private onKeyboardAudioStop = () => {
