@@ -359,7 +359,7 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
 };
 
 const AnnotationComment: React.FC<{comment: string}> = (props) => {
-    const {comment} = props
+    const {comment} = props;
     const splittedComment = comment.split("\n");
 
     const strListComponent = [];
@@ -375,7 +375,7 @@ const AnnotationComment: React.FC<{comment: string}> = (props) => {
             }
         </p>
     );
-}
+};
 
 const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timestamp: number, annotation: IAnnotationState, r2Publication: R2Publication, index: number, dockedMode: boolean }> = (props) => {
 
@@ -394,7 +394,7 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
             drawType,
         }));
         setEdition(false);
-        console.log(JSON.stringify(comment))
+        console.log(JSON.stringify(comment));
     };
 
     const date = new Date(timestamp);

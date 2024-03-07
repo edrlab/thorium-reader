@@ -119,8 +119,8 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
 
     React.useEffect(() => {
         if (textAreaRef.current) {
-            textAreaRef.current.style.height = 'auto';
-            textAreaRef.current.style.height = textAreaRef.current.scrollHeight + 3 + 'px';
+            textAreaRef.current.style.height = "auto";
+            textAreaRef.current.style.height = textAreaRef.current.scrollHeight + 3 + "px";
             textAreaRef.current.focus();
         }
     }, []);
