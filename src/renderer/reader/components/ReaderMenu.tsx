@@ -1363,7 +1363,13 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 <label htmlFor="quickAnnotations"><h4>{__("reader.annotations.quickAnnotations")}</h4></label>
                             </div>
                             <div className={stylesAnnotations.annotations_checkox}>
-                                <input type="checkbox" id="marginAnnotations" name="marginAnnotations" />
+                                <input type="checkbox" id="marginAnnotations" name="marginAnnotations" checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={() => {
+                                    const newReaderConfig = { ...readerConfig };
+                                    newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "annotation" ? "margin" : "annotation";
+
+                                    console.log(`marginAnnotationsToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
+                                    dispatch(readerLocalActionSetConfig.build(newReaderConfig));
+                                }} />
                                 <label htmlFor="marginAnnotations"><h4>{__("reader.annotations.toggleMarginMarks")}</h4></label>
                             </div>
                             <AnnotationList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} dockedMode={dockedMode} />
