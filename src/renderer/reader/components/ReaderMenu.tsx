@@ -28,7 +28,13 @@ import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/compo
 import * as DockLeftIcon from "readium-desktop/renderer/assets/icons/dockleft-icon.svg";
 import * as DockRightIcon from "readium-desktop/renderer/assets/icons/dockright-icon.svg";
 import * as DockModalIcon from "readium-desktop/renderer/assets/icons/dockmodal-icon.svg";
+import * as ChevronIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
+import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
+import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
+import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
+import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
 import * as Tabs from "@radix-ui/react-tabs";
 
 import * as TocIcon from "readium-desktop/renderer/assets/icons/toc-icon.svg";
@@ -37,7 +43,7 @@ import * as TargetIcon from "readium-desktop/renderer/assets/icons/target-icon.s
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
 import * as AnnotationIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar-icon.svg";
-import * as DuplicateIcon from "readium-desktop/renderer/assets/icons/duplicate-icon.svg";
+// import * as DuplicateIcon from "readium-desktop/renderer/assets/icons/duplicate-icon.svg";
 
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
@@ -429,7 +435,7 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
         {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
         <div className={stylesAnnotations.annnotation_container}>
         {((!isEdited && props.dockedMode) || (!props.dockedMode && !isEdited)) &&
-            <button className={stylesAnnotations.annotation_name} title={bname} aria-label="goToLocator"
+            <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} title={bname} aria-label="goToLocator"
                 style={{ borderLeft: dockedEditAnnotation && "2px solid var(--color-blue)" }}
                 onClick={(e) => {
                     const closeNavPanel = e.shiftKey && e.altKey ? false : true;
@@ -477,9 +483,10 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
                     }>
                     <SVG ariaHidden={true} svg={EditIcon} />
                 </button>
-                <button>
+
+                {/* <button>
                     <SVG ariaHidden={true} svg={DuplicateIcon} />
-                </button>
+                </button> */}
                 <button title={__("reader.marks.delete")}
                     onClick={() => {
                         dispatch(readerActions.annotation.pop.build(annotation));
@@ -507,8 +514,92 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
         <></>;
     }
 
-    return annotationsQueue.map((annotationQueueState, i) =>
-        <AnnotationCard key={i} timestamp={annotationQueueState[0]} annotation={annotationQueueState[1]} r2Publication={r2Publication} goToLocator={goToLocator} index={i} dockedMode={props.dockedMode}/>);
+    const [nMatchPage, setnMatchPage] = React.useState(0);
+    const MAX_MATCHES_PER_PAGE = 10;
+    const startIndex = nMatchPage * MAX_MATCHES_PER_PAGE;
+    const begin = startIndex + 1;
+    let _foundArray = annotationsQueue;
+    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, _foundArray.length);
+
+
+
+    const onPageFirst = () => {
+        _foundArray = undefined;
+        setnMatchPage(0);
+    };
+    const onPageLast = () => {
+        if (_foundArray?.length) {
+            const nPages = Math.ceil(_foundArray.length / MAX_MATCHES_PER_PAGE);
+
+            _foundArray = undefined;
+            setnMatchPage(nPages - 1);
+        }
+    };
+    const onPagePrevious = () => {
+        if (nMatchPage <= 0) {
+            return;
+        }
+
+        _foundArray = undefined;
+        setnMatchPage(nMatchPage - 1);
+    };
+    const onPageNext = () => {
+        let lastPage = true;
+
+        if (_foundArray?.length) {
+            const nPages = Math.ceil(_foundArray.length / MAX_MATCHES_PER_PAGE);
+            lastPage = nMatchPage >= (nPages - 1);
+        }
+
+        if (lastPage) {
+            return;
+        }
+
+        _foundArray = undefined;
+        setnMatchPage(nMatchPage + 1);
+    };
+
+    return (
+        <>
+        {_foundArray.map((annotationQueueState, i) =>
+        <AnnotationCard key={i} timestamp={annotationQueueState[0]} annotation={annotationQueueState[1]} r2Publication={r2Publication} goToLocator={goToLocator} index={i} dockedMode={props.dockedMode}/>)}
+        <div className={stylesPopoverDialog.navigation_container}>
+                {(_foundArray && _foundArray?.length > MAX_MATCHES_PER_PAGE) &&
+                    <>
+                        <button title={__("opds.firstPage")}
+                            onClick={() => onPageFirst()}
+                            disabled={begin === 1 ? true : false}>
+                            <SVG ariaHidden={true} svg={ArrowFirstIcon} />
+                        </button>
+
+                        <button title={__("opds.previous")}
+                            onClick={() => onPagePrevious()}
+                            disabled={begin === 1 ? true : false}>
+                            <SVG ariaHidden={true} svg={ArrowLeftIcon} />
+                        </button>
+                        <span>
+                            {
+                                begin === end ?
+                                    `${end}` :
+                                    `${begin} - ${end}`
+                            }
+                        </span>
+                        <button title={__("opds.next")}
+                            onClick={() => onPageNext()}
+                            disabled={end === _foundArray.length ? true : false}>
+                            <SVG ariaHidden={true} svg={ArrowRightIcon} />
+                        </button>
+
+                        <button title={__("opds.lastPage")}
+                            onClick={() => onPageLast()}
+                            disabled={end === _foundArray.length ? true : false}>
+                            <SVG ariaHidden={true} svg={ArrowLastIcon} />
+                        </button>
+                    </>
+                }
+            </div>
+        </>
+        );
 };
 
 const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Publication; i: number } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
@@ -1348,7 +1439,17 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     <Tabs.Content value="tab-annotation" tabIndex={-1}>
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
-                            {dockedMode ? <div className={stylesAnnotations.annotations_checkox}>
+
+
+                            <details className={stylesAnnotations.annotations_options}>
+                                <summary>
+                                    <SVG ariaHidden svg={InfoIcon} />
+                                    {__("reader.annotations.annotationsOptions")}
+                                    <span>
+                                        <SVG ariaHidden svg={ChevronIcon} />
+                                    </span>
+                                </summary>
+                                {dockedMode ? <div className={stylesAnnotations.annotations_checkbox}>
                                 <input type="checkbox" id="advancedAnnotations" name="advancedAnnotations" checked={serialAnnotator} onChange={() => { setSerialAnnotatorMode(!serialAnnotator); }} />
                                 <label htmlFor="advancedAnnotations">
                                     <h4>{__("reader.annotations.advancedMode")}</h4>
@@ -1356,13 +1457,13 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 </label>
                             </div> : <></>
                             }
-                            <div className={stylesAnnotations.annotations_checkox}>
+                            <div className={stylesAnnotations.annotations_checkbox}>
                                 <input type="checkbox" id="quickAnnotations" name="quickAnnotations" checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
                                     onChange={() => { dispatch(readerLocalActionSetConfig.build({ ...readerConfig, annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking })); }}
                                 />
                                 <label htmlFor="quickAnnotations"><h4>{__("reader.annotations.quickAnnotations")}</h4></label>
                             </div>
-                            <div className={stylesAnnotations.annotations_checkox}>
+                            <div className={stylesAnnotations.annotations_checkbox}>
                                 <input type="checkbox" id="marginAnnotations" name="marginAnnotations" checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={() => {
                                     const newReaderConfig = { ...readerConfig };
                                     newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "annotation" ? "margin" : "annotation";
@@ -1372,6 +1473,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 }} />
                                 <label htmlFor="marginAnnotations"><h4>{__("reader.annotations.toggleMarginMarks")}</h4></label>
                             </div>
+                            </details>
                             <AnnotationList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} dockedMode={dockedMode} />
                         </div>
                     </Tabs.Content>

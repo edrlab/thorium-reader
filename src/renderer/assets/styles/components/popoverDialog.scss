@@ -229,24 +229,24 @@
     margin: 5px 0;
     background-color: var(--color-light-grey);
   }
+}
 
-  .search_navigation {
-    display: flex;
-    align-items: center;
-    justify-content: end;
+.navigation_container {
+  display: flex;
+  align-items: center;
+  justify-content: end;
 
-    button svg {
-      width: 20px;
-      fill: var(--color-blue);
-      color: var(--color-blue);
-    }
+  button svg {
+    width: 20px;
+    fill: var(--color-blue);
+    color: var(--color-blue);
+  }
 
-    span {
-      padding: 5px;
-      border: 1px solid black;
-      border-radius: 6px;
-      margin: 0 5px;
-    }
+  span {
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 6px;
+    margin: 0 5px;
   }
 }
 
@@ -425,8 +425,9 @@
       border-radius: 6px;
       display: flex;
       flex-wrap: nowrap;
-      padding: 0 5px;
+      padding: 3px 5px;
       text-wrap: nowrap;
+      box-sizing: content-box;
 
       svg {
         width: 15px;

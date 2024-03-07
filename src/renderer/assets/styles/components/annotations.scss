@@ -1,15 +1,48 @@
 @import "src/renderer/assets/styles/focus";
 
-.annotations_checkox {
+.annotations_options {
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    color: var(--color-blue);
+    font-size: 14px;
+
+    span svg {
+      fill: var(--color-blue);
+      width: 20px;
+      height: 20px;
+      margin: 0 0.75em;
+      padding-top: 5px;
+      padding-bottom: 0;
+    }
+
+    svg {
+      fill: var(--color-blue);
+      width: 14px;
+      height: 14px;
+      margin-right: 0.5em;
+    }
+  }
+  
+  &[open] > summary span svg {
+    transform: rotate(180deg);
+    padding-bottom: 5px;
+    padding-top: 0;
+  }
+
+  .annotations_checkbox {
     display: flex;
     align-items: start;
     padding: 5px;
     height: fit-content;
+    margin-left: 15px;
     
     label {
         margin: 0;
         height: fit-content!important;
     }
+}
 }
 
 .annotation_form {
@@ -98,6 +131,7 @@
       svg {
         width: 20px;
         height: 20px;
+        color: var(--color-blue);
       }
     }
   
@@ -201,8 +235,8 @@
     background-color: var(--color-blue)!important;
 
     svg {
-      color: var(--color-secondary);
-      fill: var(--color-secondary);
+      color: var(--color-secondary)!important;
+      fill: var(--color-secondary)!important;
     }
   }
   
@@ -322,8 +356,8 @@
         }
     
         svg {
-          width: 20px;
-          height: 20px;
+          width: 18px;
+          height: 18px;
         }
       }
     }

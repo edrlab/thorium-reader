@@ -14,10 +14,14 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 
 import * as Popover from "@radix-ui/react-popover";
-import * as PenIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
+// import * as PenIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
+import * as HighLightIcon from "readium-desktop/renderer/assets/icons/highlight-icon.svg";
+import * as UnderLineIcon from "readium-desktop/renderer/assets/icons/underline-icon.svg";
+import * as TextStrikeThroughtIcon from "readium-desktop/renderer/assets/icons/TextStrikethrough-icon.svg";
+import * as TextOutlineIcon from "readium-desktop/renderer/assets/icons/TextOutline-icon.svg";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { readerLocalActionSetConfig } from "../redux/actions";
 import classNames from "classnames";
@@ -95,6 +99,28 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
 
     const [drawTypeSelected, setDrawType] = React.useState(annotationState.drawType);
     const previousDrawTypeSelected = React.useRef<TDrawType>(drawTypeSelected);
+
+    const drawIcon = [
+        HighLightIcon,
+        UnderLineIcon,
+        TextStrikeThroughtIcon,
+        TextOutlineIcon,
+    ];
+
+//     switch (drawType) {
+//         case "solid_background":
+//             drawIcon = HighLightIcon;
+//             break;
+//         case "underline":
+//             drawIcon = UnderLineIcon;
+//             break;
+//         case "strikethrough":
+//             drawIcon = TextStrikeThroughtIcon;
+//             break;
+//         case "outline":
+//             drawIcon = TextOutlineIcon;
+//             break;
+// }
     
     const saveConfig = () => {
 
@@ -163,7 +189,7 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
             <div className={stylesAnnotations.annotation_actions_container}>
                 <h4>{__("reader.annotations.highlight")}</h4>
                 <div role="group" className={stylesAnnotations.stylePicker}>
-                    {drawType.map((type) => (
+                    {drawType.map((type, i) => (
                         <div key={type}>
                             <input type="radio" id={type} name="drawtype" value={type}
                                 onChange={() => setDrawType(type)}
@@ -171,7 +197,7 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
                             />
                             <label htmlFor={type} aria-label={type}
                                 className={drawTypeSelected === type ? stylesAnnotations.drawType_active : ""}
-                            ><SVG ariaHidden svg={PenIcon} /></label>
+                            ><SVG ariaHidden svg={drawIcon[i]} /></label>
                         </div>
                     ),
                     )}

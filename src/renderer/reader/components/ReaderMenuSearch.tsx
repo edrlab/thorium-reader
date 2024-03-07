@@ -103,7 +103,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
             {
                 _searchJsx
             }
-            <div className={stylesPopoverDialog.search_navigation}>
+            <div className={stylesPopoverDialog.navigation_container}>
                 {(_foundArray && _foundArray?.length > MAX_MATCHES_PER_PAGE) &&
                     <>
                         <button title={__("opds.firstPage")}
