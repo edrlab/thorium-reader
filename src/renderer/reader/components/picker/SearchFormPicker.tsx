@@ -56,6 +56,7 @@ class SearchFormPicker extends React.Component<IProps, IState> {
         // this.onKeyboardFocusSearch = this.onKeyboardFocusSearch.bind(this);
         this.inputRef = React.createRef<HTMLInputElement>();
         this.search = this.search.bind(this);
+        this.focusoutSearch = this.focusoutSearch.bind(this);
 
         this.state = {
             inputValue: "",
@@ -68,10 +69,12 @@ class SearchFormPicker extends React.Component<IProps, IState> {
 
         // focus on input
         this.inputRef?.current?.focus();
+        this.inputRef?.current?.addEventListener("focusout", this.focusoutSearch);
     }
 
     public componentWillUnmount() {
         this.unregisterAllKeyboardListeners();
+        this.inputRef?.current?.removeEventListener("focusout", this.focusoutSearch);
     }
 
     public async componentDidUpdate(oldProps: IProps) {
@@ -117,6 +120,10 @@ class SearchFormPicker extends React.Component<IProps, IState> {
             </form>
         );
     }
+    
+    private focusoutSearch = () =>  {
+        this.inputRef?.current?.focus();
+    };
 
     private registerAllKeyboardListeners() {
         registerKeyboardListener(
