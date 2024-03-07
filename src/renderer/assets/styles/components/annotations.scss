@@ -37,7 +37,6 @@
       height: 100px;
       min-height: 100px;
       max-width: 380px;
-      max-height: 100px;
       border: 1px solid rgb(118 118 118);
       border-radius: 3px;
       font-family: Nunito, sans-serif;
@@ -116,10 +115,10 @@
       min-width: 95%;
       max-width: 95%;
       min-height: 30px;
-      max-height: 100px;
       border: 1px solid var(--color-primary);
       border-radius: 3px;
       font-family: Nunito, sans-serif;
+      overflow: hidden;
   
       &_container {
       display: flex;
@@ -200,7 +199,7 @@
   
   .drawType_active {
     background-color: var(--color-blue)!important;
-    
+
     svg {
       color: var(--color-secondary);
       fill: var(--color-secondary);
@@ -218,16 +217,25 @@
   
     p {
       text-align: left;
-      overflow: hidden;
-      text-overflow: ellipsis;
+
+      // overflow: hidden;
+      // text-overflow: ellipsis;
       width: 100%;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 3;
+
+      // display: -webkit-box;
+      // -webkit-box-orient: vertical;
+      // -webkit-line-clamp: 3;
+      padding: 5px;
+      margin: 0;
     }
   
     @media (prefers-color-scheme: dark) {
       background-color: #2D2D2D;
+    }
+
+    .annnotation_container:has(.annotation_name:focus) {
+      outline: 2px solid var(--color-blue);
+      border-radius: 5px;
     }
   
     .annotation_name {
@@ -248,6 +256,10 @@
         padding: 8px;
         padding-bottom: 0;
       }
+
+      // &:focus {
+      //   outline: 2px solid var(--color-blue);
+      // }
     }
   
     .update_form input {
@@ -316,3 +328,9 @@
       }
     }
   }
+
+.docked_annotation_line {
+  border-left: 2px solid var(--color-blue);
+  padding: 0 10px;
+  margin-top: 5px;
+}

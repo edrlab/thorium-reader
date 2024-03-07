@@ -20,6 +20,7 @@ import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-ic
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { readerLocalActionSetConfig } from "../redux/actions";
+import classNames from "classnames";
 
 interface IPros {
     save: (color: IColor, comment: string, drawType: TDrawType) => void;
@@ -116,6 +117,14 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
         previousDrawTypeSelected.current = drawTypeSelected;
     };
 
+    React.useEffect(() => {
+        if (textAreaRef.current) {
+            textAreaRef.current.style.height = 'auto';
+            textAreaRef.current.style.height = textAreaRef.current.scrollHeight + 3 + 'px';
+            textAreaRef.current.focus();
+        }
+    }, []);
+
     const component = <form
         className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form : stylesAnnotations.annotation_form}
     >
@@ -123,10 +132,10 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
             <h4>{__("reader.annotations.addNote")}</h4>
         }
         <div
-            className={displayFromReaderMenu ? "" : stylesAnnotations.annotations_line}
-            style={{ borderLeft: dockedMode ? "2px solid var(--color-blue)" : "", padding: dockedMode ? "0 10px" : "", marginTop: dockedMode ? "5px" : "" }}>
+            className={classNames(displayFromReaderMenu ? "" : stylesAnnotations.annotations_line, dockedMode ? stylesAnnotations.docked_annotation_line : "")}>
             <p>{annotationState.locatorExtended.selectionInfo.cleanText}</p>
-            <textarea id="addNote" name="addNote" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef}></textarea>
+            <textarea id="addNote" name="addNote" wrap="hard" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef}
+            ></textarea>
 
         </div>
         <div className={stylesAnnotations.annotation_actions} style={{ flexDirection: dockedMode ? "column" : "row", alignItems: dockedMode ? "start" : "center" }}>

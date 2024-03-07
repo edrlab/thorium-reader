@@ -358,6 +358,25 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
     return renderLinkTree;
 };
 
+const AnnotationComment: React.FC<{comment: string}> = (props) => {
+    const {comment} = props
+    const splittedComment = comment.split("\n");
+
+    const strListComponent = [];
+    for (const strline of splittedComment) {
+        strListComponent.push(strline);
+        strListComponent.push(<br/>);
+    }
+    
+    return (
+        <p>
+            {
+                strListComponent
+            }
+        </p>
+    );
+}
+
 const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timestamp: number, annotation: IAnnotationState, r2Publication: R2Publication, index: number, dockedMode: boolean }> = (props) => {
 
     const { goToLocator, timestamp, annotation, r2Publication, index } = props;
@@ -375,6 +394,7 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
             drawType,
         }));
         setEdition(false);
+        console.log(JSON.stringify(comment))
     };
 
     const date = new Date(timestamp);
@@ -407,7 +427,8 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
         style={{ backgroundColor: dockedEditAnnotation ? "var(--color-light-grey)" : "", borderLeft: dockedEditAnnotation && "none" }}
     >
         {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
-        {((!isEdited && props.dockedMode) || !props.dockedMode) &&
+        <div className={stylesAnnotations.annnotation_container}>
+        {((!isEdited && props.dockedMode) || (!props.dockedMode && !isEdited)) &&
             <button className={stylesAnnotations.annotation_name} title={bname} aria-label="goToLocator"
                 style={{ borderLeft: dockedEditAnnotation && "2px solid var(--color-blue)" }}
                 onClick={(e) => {
@@ -434,8 +455,10 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
         }
         {
             isEdited ? <AnnotationEdit uuid={uuid} save={save} cancel={() => setEdition(false)} dockedMode={props.dockedMode} btext={dockedEditAnnotation && btext}/> : 
-            <p>{comment}</p>
+            // <p>{comment}</p>
+            <AnnotationComment comment={comment} />
         }
+        </div>
         {((!isEdited && props.dockedMode) || !props.dockedMode) &&
         <div className={stylesAnnotations.annotation_edit}>
             <div>
@@ -1287,8 +1310,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </div>
                 </div> : <></>
             }
-            <Tabs.Root value={tabValue} onValueChange={(value) => dockedMode ? null : setTabValue(value)} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}
-            style={{height: searchEnable && "calc(100dvh - 215px)"}}>
+            <Tabs.Root value={tabValue} onValueChange={(value) => dockedMode ? null : setTabValue(value)} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {
                     dockedMode ? <></> :
                         <Tabs.List ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">

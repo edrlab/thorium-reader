@@ -1092,8 +1092,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
             {
                 (dockedMode && isEpub) ? <AllowCustomContainer /> : <></>
             }
-            <Tabs.Root value={tabValue} defaultValue={tabValue} onValueChange={dockedMode ? null : setTabValue} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}
-            style={{height: props.searchEnable && "calc(100dvh - 215px)"}}>
+            <Tabs.Root value={tabValue} defaultValue={tabValue} onValueChange={dockedMode ? null : setTabValue} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {
                     dockedMode ? <></> :
                         <Tabs.List ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
