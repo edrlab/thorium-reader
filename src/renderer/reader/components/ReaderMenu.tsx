@@ -14,6 +14,7 @@ import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 
 import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as BookmarkIcon from "readium-desktop/renderer/assets/icons/bookmarkMultiple-icon.svg";
@@ -65,7 +66,6 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "r2-shared-js/dist/es8-es2017/src/models/locator";
 import { TextArea } from "react-aria-components";
-import { TFormEvent } from "readium-desktop/typings/react";
 import { AnnotationEdit } from "./AnnotationEdit";
 import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { readerActions } from "readium-desktop/common/redux/actions";
@@ -364,7 +364,7 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
     return renderLinkTree;
 };
 
-const AnnotationComment: React.FC<{comment: string}> = (props) => {
+const HardWrapComment: React.FC<{comment: string}> = (props) => {
     const {comment} = props;
     const splittedComment = comment.split("\n");
 
@@ -463,7 +463,7 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
         {
             isEdited ? <AnnotationEdit uuid={uuid} save={save} cancel={() => setEdition(false)} dockedMode={props.dockedMode} btext={dockedEditAnnotation && btext}/> : 
             // <p>{comment}</p>
-            <AnnotationComment comment={comment} />
+            <HardWrapComment comment={comment} />
         }
         </div>
         {((!isEdited && props.dockedMode) || !props.dockedMode) &&
@@ -602,15 +602,14 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Public
 
     const { bookmark, r2Publication, i, goToLocator } = props;
     const [__] = useTranslator();
+    const [isEdited, setEdition] = React.useState(false);
     const dispatch = useDispatch();
     const isAudioBook = isAudiobookFn(r2Publication);
-    const [bookmarkToUpdate, setBookmarkToUpdate] = React.useState<boolean>(false);
     const deleteBookmark = (bookmark: IBookmarkState) => {
         dispatch(readerActions.bookmark.pop.build(bookmark));
     };
     let percent = 100;
     let p = -1;
-    let n = 1;
     if (r2Publication.Spine?.length && bookmark.locator?.href) {
         const index = r2Publication.Spine.findIndex((item: any) => item.Href === bookmark.locator.href);
         if (index >= 0) {
@@ -624,31 +623,17 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Public
         }
     }
     const style = { width: `${percent}%` };
-
-    const bname = (bookmark.name ? `${bookmark.name}` : `${__("reader.navigation.bookmarkTitle")} ${n++}`);
-
     const bprogression = (p >= 0 && !isAudioBook ? `${p}% ` : "");
 
     const textearearef = React.useRef<HTMLTextAreaElement>();
 
-    const submitBookmark = (e: TFormEvent) => {
-        e.stopPropagation();
+    const submitBookmark = (textValue: string) => {
 
-        console.log("submitted", textearearef);
-        if (!textearearef.current) {
-            return;
-        }
-        const value: string = textearearef.current.value;
-        const normalizedValue = value.trim().replace(/\s\s+/g, " ");
-
-        if (normalizedValue.length > 0) {
-            const newBookmark = { ...bookmark };
-            newBookmark.name = normalizedValue;
-            dispatch(readerActions.bookmark.update.build(newBookmark));
-        }
-
-        setBookmarkToUpdate(false);
+        dispatch(readerActions.bookmark.update.build({...bookmark, name: textValue}));
+        setEdition(false);
     };
+
+    const bname = (bookmark.name ? `${bookmark.name}` : `${__("reader.navigation.bookmarkTitle")} ${i}`);
 
     return (
         <div
@@ -657,43 +642,49 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Public
         >
             <div
                 className={stylesPopoverDialog.bookmark_infos}
-                tabIndex={0}
-                onClick={(e) => {
-                    e.stopPropagation();
-                    const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                    goToLocator(bookmark.locator, closeNavPanel);
-                }}
-                onDoubleClick={(_e) => goToLocator(bookmark.locator, false)}
-                onKeyPress=
-                {
-                    (e) => {
-                        if (e.key === "Enter" || e.key === "Space") {
-                            e.stopPropagation();
-                            const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                            goToLocator(bookmark.locator, closeNavPanel);
-                        }
-                    }
-                }
             >
 
                 <div className={stylesPopoverDialog.chapter_marker}>
-                    {bookmarkToUpdate ?
-                        <form onSubmit={submitBookmark} className={stylesPopoverDialog.update_form}>
-                            <TextArea
-                                onBlur={() => setBookmarkToUpdate(false)}
-                                ref={textearearef}
+                    {isEdited ?
+                        <form className={stylesPopoverDialog.update_form}>
+                            <TextArea id="editBookmark" name="editBookmark" wrap="hard" ref={textearearef}
                                 defaultValue={bname}
                                 className={stylesPopoverDialog.bookmark_textArea}
                             />
-                            <div style={{ display: "flex", gap: "5px" }}>
-                                <button onClick={() => setBookmarkToUpdate(false)}
-                                    className={stylesButtons.button_secondary_blue}
-                                    >Cancel</button>
-                                <button type="submit" onClick={() => console.log("click")} className={stylesButtons.button_primary_blue}>Save</button>
+                            <div>
+                                <button className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={() => { setEdition(false); }}>{__("dialog.cancel")}</button>
+                                <button type="submit"
+                                    className={stylesButtons.button_primary_blue}
+                                    aria-label="save"
+                                    onClick={(e) => { e.preventDefault(); submitBookmark(textearearef?.current?.value || ""); }}
+                                >
+                                    <SVG ariaHidden svg={SaveIcon} />
+                                    {__("reader.annotations.saveNote")}
+                                </button>
                             </div>
                         </form>
                         :
-                        <p className={stylesPopoverDialog.bookmark_name} title={bname}>{bname}</p>}
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                goToLocator(bookmark.locator, closeNavPanel);
+                            }}
+                            onDoubleClick={(_e) => goToLocator(bookmark.locator, false)}
+                            onKeyPress=
+                            {
+                                (e) => {
+                                    if (e.key === "Enter" || e.key === "Space") {
+                                        e.stopPropagation();
+                                        const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                        goToLocator(bookmark.locator, closeNavPanel);
+                                    }
+                                }
+                            }
+                        >
+                            <HardWrapComment comment={bname}/>
+                        </button>
+                    }
                     <div className={stylesPopoverDialog.bookmark_actions}>
                         <div>
                             <SVG ariaHidden svg={BookOpenIcon} />
@@ -701,18 +692,12 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Public
                         </div>
                         <div className={stylesPopoverDialog.bookmark_actions_buttons}>
                             <button title={__("reader.marks.edit")}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setBookmarkToUpdate(true);
-                                }
-                                }>
+                                onClick={() => { setEdition(true); }}
+                            >
                                 <SVG ariaHidden={true} svg={EditIcon} />
                             </button>
                             <button title={__("reader.marks.delete")}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    deleteBookmark(bookmark);
-                                }}>
+                                onClick={() => { setEdition(false); deleteBookmark(bookmark); }}>
                                 <SVG ariaHidden={true} svg={DeleteIcon} />
                             </button>
                         </div>
@@ -763,15 +748,83 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
         }
         return 0;
     }), [bookmarks]);
-    return sortedBookmarks.map((bookmark, i) => 
-        <BookmarkItem
-        key={i}
-        bookmark={bookmark}
-        r2Publication={r2Publication}
-        i={i}
-        goToLocator={goToLocator}
-         />,
-    );
+
+    const MAX_MATCHES_PER_PAGE = 10;
+
+    const pageTotal =  Math.floor(sortedBookmarks.length / MAX_MATCHES_PER_PAGE) + ((sortedBookmarks.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1);
+
+    const [pageNumber, setPageNumber] = React.useState(1);
+    const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
+
+    const bookmarksPagedArray = React.useMemo(() => {
+        return sortedBookmarks.slice(startIndex, startIndex + 10); // catch the end of the array
+    }, [startIndex, sortedBookmarks]);
+
+    const isLastPage = pageTotal === pageNumber;
+    const isFirstPage = pageNumber === 1;
+    const isPaginated = pageTotal > 1;
+
+    const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
+    SelectRef.displayName = "ComboBox";
+    
+    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} on ${pageTotal}`}));
+
+    return (
+        <>
+            {
+                bookmarksPagedArray.map((bookmark, i) =>
+                    <BookmarkItem
+                        key={i}
+                        bookmark={bookmark}
+                        r2Publication={r2Publication}
+                        i={i + ((pageNumber - 1) * MAX_MATCHES_PER_PAGE)}
+                        goToLocator={goToLocator}
+                    />)
+            }
+            {
+                isPaginated ?
+                    <div className={stylesPopoverDialog.navigation_container}>
+                        <button title={__("opds.firstPage")}
+                            onClick={() => { setPageNumber(1); }}
+                            disabled={isFirstPage}>
+                            <SVG ariaHidden={true} svg={ArrowFirstIcon} />
+                        </button>
+
+                        <button title={__("opds.previous")}
+                            onClick={() => { setPageNumber(pageNumber - 1); }}
+                            disabled={isFirstPage}>
+                            <SVG ariaHidden={true} svg={ArrowLeftIcon} />
+                        </button>
+                        <div className={stylesPopoverDialog.pages}>
+                            <SelectRef
+                                id="page"
+                                aria-label={__("reader.navigation.page")}
+                                items={pageOptions}
+                                selectedKey={pageNumber}
+                                defaultSelectedKey={1}
+                                onSelectionChange={(id) => {
+                                    setPageNumber(id as number);
+                                }}
+                                label={__("reader.navigation.page")}
+                            >
+                                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                            </SelectRef>
+                        </div>
+                        <button title={__("opds.next")}
+                            onClick={() => { setPageNumber(pageNumber + 1); }}
+                            disabled={isLastPage}>
+                            <SVG ariaHidden={true} svg={ArrowRightIcon} />
+                        </button>
+
+                        <button title={__("opds.lastPage")}
+                            onClick={() => { setPageNumber(pageTotal); }}
+                            disabled={isLastPage}>
+                            <SVG ariaHidden={true} svg={ArrowLastIcon} />
+                        </button>
+                    </div>
+                    : <></>
+            }
+        </>);
 };
 
 const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) => {
