@@ -369,9 +369,10 @@ const AnnotationComment: React.FC<{comment: string}> = (props) => {
     const splittedComment = comment.split("\n");
 
     const strListComponent = [];
+    let n = 0;
     for (const strline of splittedComment) {
-        strListComponent.push(strline);
-        strListComponent.push(<br/>);
+        strListComponent.push(<span key={++n}>{strline}</span>);
+        strListComponent.push(<br key={++n}/>);
     }
     
     return (
