@@ -1107,8 +1107,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const { r2Publication, /* toggleMenu */ pdfToc, isPdf, focusMainAreaLandmarkAndCloseMenu,
         pdfNumberOfPages, currentLocation, goToLocator, openedSection: tabValue, setOpenedSection: setTabValue } = props;
     const { setDockingMode, dockedMode, dockingMode } = props;
-    const { focus, handleLinkClick } = props;
-    const { annotationUUID, resetAnnotationUUID } = props;
+    const { focus, annotationUUID, handleLinkClick } = props;
 
     const [__] = useTranslator();
 
@@ -1127,99 +1126,113 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         (window as any).__annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator = serialAnnotator;
     }, [serialAnnotator]);
 
-    const prevValue = React.useRef<number>();
-
-    // const tabTocRef = React.useRef<HTMLDivElement>();
-    // const tabLandmarkRef = React.useRef<HTMLDivElement>();
-    // const tabBookmarkRef = React.useRef<HTMLDivElement>();
-    // const tabSearchRef = React.useRef<HTMLDivElement>();
-    // const tabGoToPageRef = React.useRef<HTMLDivElement>();
     const dockedModeRef = React.useRef<HTMLButtonElement>();
     const tabModeRef = React.useRef<HTMLDivElement>();
 
+    const annotationDivRef = React.useRef<HTMLDivElement>();
+
+    const annotationDivFocusOUT = React.useMemo(() => () => {
+
+        console.log("##### AnnotationDivFocusOUT #####");
+        
+        // if (annotationDivRef.current) {
+        //     console.log("AnnotationDivFocusOUT APPLY FOCUS TO ANNOTATION DIV ELEM");
+        //     annotationDivRef.current.focus();
+        // }
+    }, []);
+
+    const dockedModeComboboxFocusOUT = React.useMemo(() => () => {
+
+        console.log("##### dockedModeRefFocusOUT #####");
+        
+        if (dockedModeRef.current) {
+            console.log("dockedModeRef APPLY FOCUS TO DIV ELEM");
+            dockedModeRef.current.focus();
+            // dockedModeRef.current.removeEventListener('focusout', dockedModeComboboxFocusOUT);
+        }
+    }, []);
+
+    // const tabmodeFocusOUT = React.useMemo(() => () => {
+
+    //     console.log("##### tabModeRefFocusOUT #####");
+        
+    //     if (tabModeRef.current) {
+    //         console.log("tabModeRef APPLY FOCUS TO DIV ELEM");
+    //         tabModeRef.current.focus();
+    //         tabModeRef.current.removeEventListener('focusout', tabmodeFocusOUT);
+    //     }
+    // }, []);
+
     React.useEffect(() => {
 
-        console.log(`useEFFECT ReaderMenu on AnnotationUUID=${annotationUUID}`);
-        
+        console.log("##########");
+        console.log(`USE EFFECT [annotationUUID=${annotationUUID}] [focus=${focus}] [tabValue=${tabValue}] [dockedMode=${dockingMode}]`);
+        console.log("##########");
 
         if (annotationUUID) {
+
             setTimeout(() => {
-                const annotationDiv = document.getElementById(annotationUUID);
-                if (annotationDiv) {
-                    console.log(`annotationDiv found (${annotationDiv.tagName}) and Focus on ${annotationUUID}`);
-                    annotationDiv.focus();
+                const elem = document.getElementById(annotationUUID) as HTMLDivElement;
+                if (elem) {
+                    console.log(`annotationDiv found "(${elem.tagName})" and Focus on [${annotationUUID}]`);
+
+                    annotationDivRef.current = elem;
+                    elem.removeEventListener("focusout", annotationDivFocusOUT);
+
+                    if (dockedMode) {
+                        console.log("elem.addEventListener('focusout', annotationDivFocusOUT)");
+                        elem.addEventListener("focusout", annotationDivFocusOUT);
+                    }
+
+                    elem.focus();
+
                 } else {
                     console.log(`annotationUUID=${annotationUUID} not found!`);
                 }
             }, 1);
-            if (dockedMode) {
-                setTimeout(() => {
-                    const annotationDiv = document.getElementById(annotationUUID);
-                    if (annotationDiv) {
-                        console.log(`annotationDiv found (${annotationDiv.tagName}) and Focus on ${annotationUUID}`);
-                        annotationDiv.focus();
-                    } else {
-                        console.log(`annotationUUID=${annotationUUID} not found!`);
-                    }
-                    resetAnnotationUUID();
-                }, 1000);
-            }
-        }
 
-    }, [annotationUUID]);
-
-    React.useEffect(() => {
-        console.log("readerMenu UPDATED");
-        console.log("FocusNumber", focus, prevValue.current);
-
-        if (focus !== prevValue.current) {
-            console.log("FOCUS FOCUS", tabValue, "REQUESTED");
-
-            prevValue.current = focus;
-            return () => { };
-        }
-
-        console.log("FOCUS DOCKING MODE CHANGED 1ms");
-        setTimeout(() => {
-            console.log("readerMenu FOCUS");
+        } else {
 
             if (dockedMode) {
+                
                 if (dockedModeRef.current) {
+
+                    dockedModeRef.current.removeEventListener("focusout", dockedModeComboboxFocusOUT);
+                    dockedModeRef.current.addEventListener("focusout", dockedModeComboboxFocusOUT);
+                    
+                    console.log("Focus on docked mode combobox");
                     dockedModeRef.current.focus();
                 } else {
                     console.error("!no dockedModeRef on combobox");
                 }
             } else {
                 if (tabModeRef.current) {
+
+                    // tabModeRef.current.removeEventListener('focusout',  tabmodeFocusOUT);
+                    // tabModeRef.current.addEventListener('focusout', tabmodeFocusOUT);
+
+                    console.log("Focus on tabmode");
                     tabModeRef.current.focus();
                 } else {
-                    console.error("!no tabModeRef on tabList");
+                    console.error("!no tabModeRef on tabmode");
                 }
             }
-        }, 1);
 
-        console.log("FOCUS DOCKING MODE CHANGED 1s");
-        const itv = setTimeout(() => {
-            console.log("readerMenu FOCUS");
+        }
 
-            if (dockedMode) {
-                if (dockedModeRef.current) {
-                    dockedModeRef.current?.focus();
-                } else {
-                    console.error("!no dockedModeRef on combobox");
-                }
-            } else {
-                if (tabModeRef.current) {
-                    tabModeRef.current?.focus();
-                } else {
-                    console.error("!no tabModeRef on tabList");
-                }
+        return () => {
+            if (annotationDivRef.current) {
+                annotationDivRef.current.removeEventListener("focusout", annotationDivFocusOUT);
             }
-        }, 1000); // force focus on tabList instead of webview
+            if (dockedModeRef.current) {
+                dockedModeRef.current.removeEventListener("focusout", dockedModeComboboxFocusOUT);
+            }
+            // if (tabModeRef.current) {
+            //     tabModeRef.current.removeEventListener('focusout', tabmodeFocusOUT);
+            // }
+        };
 
-        prevValue.current = focus;
-        return () => clearInterval(itv);
-    }, [dockingMode, focus]);
+    }, [annotationUUID, focus]);
 
     if (!r2Publication) {
         return <>Critical Error no R2Publication available</>;
