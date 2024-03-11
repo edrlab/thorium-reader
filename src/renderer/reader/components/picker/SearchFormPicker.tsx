@@ -123,7 +123,8 @@ class SearchFormPicker extends React.Component<IProps, IState> {
     
     private focusoutSearch = () =>  {
         this.inputRef?.current?.focus();
-    };
+        setTimeout(() => this.inputRef?.current?.removeEventListener("focusout", this.focusoutSearch), 1000);
+   };
 
     private registerAllKeyboardListeners() {
         registerKeyboardListener(
