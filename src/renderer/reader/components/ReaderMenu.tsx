@@ -504,9 +504,9 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
     </div>);
 };
 
-const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean, annotationUUIDFocused: string, focus: number} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
-    const {r2Publication, goToLocator} = props;
+    const {r2Publication, goToLocator, annotationUUIDFocused, focus} = props;
     const [__] = useTranslator();
     // const [bookmarkToUpdate, setBookmarkToUpdate] = React.useState(undefined);
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
@@ -518,7 +518,19 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     const MAX_MATCHES_PER_PAGE = 10;
 
     const pageTotal =  Math.floor(annotationsQueue.length / MAX_MATCHES_PER_PAGE) + ((annotationsQueue.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1);
-    const [pageNumber, setPageNumber] = React.useState(1);
+
+    const getStartPage = () => {
+        const annotationFocusItemIndex = annotationUUIDFocused ? annotationsQueue.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused) : 0;
+        const annotationFocusItemPageNumber = Math.floor(annotationFocusItemIndex / MAX_MATCHES_PER_PAGE) + 1;
+        const startPage = annotationUUIDFocused ? annotationFocusItemPageNumber : 1;
+        return startPage;
+    }
+
+    const [pageNumber, setPageNumber] = React.useState(getStartPage);
+
+    React.useEffect(() => {
+        setPageNumber(getStartPage());
+    }, [annotationUUIDFocused, focus]);
 
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
 
@@ -1168,7 +1180,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 } else {
                     console.log(`annotationUUID=${annotationUUID} not found!`);
                 }
-            }, 1);
+            }, 1000);
 
         } else {
 
@@ -1471,7 +1483,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 <label htmlFor="marginAnnotations"><h4>{__("reader.annotations.toggleMarginMarks")}</h4></label>
                             </div>
                             </details>
-                            <AnnotationList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} dockedMode={dockedMode} />
+                            <AnnotationList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} dockedMode={dockedMode} annotationUUIDFocused={annotationUUID} focus={focus}/>
                         </div>
                     </Tabs.Content>
 
