@@ -671,6 +671,7 @@ declare namespace typed_i18n {
     readonly "annotationTitle": string,
     readonly "currentPage": string,
     readonly "currentPageTotal": string,
+    readonly "page": string,
     readonly "detachWindowTitle": string,
     readonly "fullscreenTitle": string,
     readonly "goTo": string,
@@ -695,7 +696,8 @@ declare namespace typed_i18n {
       readonly "next": string,
       readonly "notFound": string,
       readonly "previous": string,
-      readonly "submit": string
+      readonly "submit": string,
+      readonly "results": string
     },
     readonly "searchTitle": string
   },
@@ -837,6 +839,7 @@ declare namespace typed_i18n {
   readonly "annotationTitle": string,
   readonly "currentPage": string,
   readonly "currentPageTotal": string,
+  readonly "page": string,
   readonly "detachWindowTitle": string,
   readonly "fullscreenTitle": string,
   readonly "goTo": string,
@@ -858,6 +861,7 @@ declare namespace typed_i18n {
   (_: "reader.navigation.annotationTitle", __?: {}): string;
   (_: "reader.navigation.currentPage", __?: {}): string;
   (_: "reader.navigation.currentPageTotal", __?: {}): string;
+  (_: "reader.navigation.page", __?: {}): string;
   (_: "reader.navigation.detachWindowTitle", __?: {}): string;
   (_: "reader.navigation.fullscreenTitle", __?: {}): string;
   (_: "reader.navigation.goTo", __?: {}): string;
@@ -881,7 +885,8 @@ declare namespace typed_i18n {
     readonly "next": string,
     readonly "notFound": string,
     readonly "previous": string,
-    readonly "submit": string
+    readonly "submit": string,
+    readonly "results": string
   },
   readonly "searchTitle": string
 };
@@ -892,7 +897,8 @@ declare namespace typed_i18n {
   readonly "next": string,
   readonly "notFound": string,
   readonly "previous": string,
-  readonly "submit": string
+  readonly "submit": string,
+  readonly "results": string
 };
   (_: "reader.picker.search.founds", __?: {}): string;
   (_: "reader.picker.search.input", __?: {}): string;
@@ -900,6 +906,7 @@ declare namespace typed_i18n {
   (_: "reader.picker.search.notFound", __?: {}): string;
   (_: "reader.picker.search.previous", __?: {}): string;
   (_: "reader.picker.search.submit", __?: {}): string;
+  (_: "reader.picker.search.results", __?: {}): string;
   (_: "reader.picker.searchTitle", __?: {}): string;
   (_: "reader.settings", __?: {}): {
   readonly "column": {

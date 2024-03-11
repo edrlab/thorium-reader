@@ -26,6 +26,7 @@ export declare const modal_dialog_full_full: string;
 export declare const modal_dialog_reader: string;
 export declare const my_combobox_container: string;
 export declare const navigation_container: string;
+export declare const pages: string;
 export declare const popover_dialog_reader: string;
 export declare const react_aria_ComboBox: string;
 export declare const react_aria_Input: string;

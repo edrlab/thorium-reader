@@ -479,6 +479,7 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
             </div>
             <div className={stylesAnnotations.annotation_actions_buttons}>
                 <button title={__("reader.marks.edit")}
+                    disabled={isEdited}
                     onClick={() => { setEdition(true); }
                     }>
                     <SVG ariaHidden={true} svg={EditIcon} />
@@ -577,13 +578,16 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                             disabled={begin === 1 ? true : false}>
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
-                        <span>
-                            {
-                                begin === end ?
-                                    `${end}` :
-                                    `${begin} - ${end}`
-                            }
-                        </span>
+                        <div className={stylesPopoverDialog.pages}>
+                            <p>{__("reader.picker.search.results")}</p>
+                            <span>
+                                {
+                                    begin === end ?
+                                        `${end}` :
+                                        `${begin} - ${end}`
+                                }
+                            </span>
+                        </div>
                         <button title={__("opds.next")}
                             onClick={() => onPageNext()}
                             disabled={end === _foundArray.length ? true : false}>

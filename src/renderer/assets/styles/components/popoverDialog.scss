@@ -76,10 +76,12 @@
 
     .my_combobox_container {
       width: fit-content;
-      height: 27px;
+      height: 28px;
       background-color: var(--color-light-blue);
       color: var(--color-blue);
       border-color: var(--color-blue) !important;
+      display: flex;
+      align-items: center;
 
       > button {
         color: var(--color-blue);
@@ -233,13 +235,29 @@
 
 .navigation_container {
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: end;
+
+  .pages {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    
+    p {
+      padding-left: 8px;
+      margin: 0;
+    }
+  }
 
   button svg {
     width: 20px;
     fill: var(--color-blue);
     color: var(--color-blue);
+  }
+
+  button:disabled {
+    visibility: hidden;
   }
 
   span {

@@ -117,13 +117,16 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                             disabled={begin === 1 ? true : false}>
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
-                        <span>
-                            {
-                                begin === end ?
-                                    `${end}` :
-                                    `${begin} - ${end}`
-                            }
-                        </span>
+                        <div className={stylesPopoverDialog.pages}>
+                            <p>{__("reader.picker.search.results")}</p>
+                            <span>
+                                {
+                                    begin === end ?
+                                        `${end}` :
+                                        `${begin} - ${end}`
+                                }
+                            </span>
+                        </div>
                         <button title={__("opds.next")}
                             onClick={() => this.onPageNext()}
                             disabled={end === _foundArray.length ? true : false}>

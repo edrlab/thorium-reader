@@ -112,13 +112,12 @@ class HeaderSearch extends React.Component<IProps> {
                         // ref={this.settingsMenuButtonRef}
                         title={__("reader.navigation.magnifyingGlassButton")}
                     >
-                        <SVG ariaHidden={true} svg={magnifyingGlass} className={this.props.isOnSearch ? stylesReaderHeader.active_svg : ""} />
+                        <SVG ariaHidden={true} svg={this.props.isOnSearch ? QuitIcon : magnifyingGlass} className={this.props.isOnSearch ? stylesReaderHeader.active_svg : ""} />
                     </button>
                 </Popover.Trigger>
                 <Popover.Portal>
                     <Popover.Content className={stylesReaderHeader.picker_container}
                         align="start"
-                        sideOffset={10}
                         onPointerDownOutside={(e) => { e.preventDefault(); console.log("SearchPopover onPointerDownOutside"); }}
                         onInteractOutside={(e) => { e.preventDefault(); console.log("SearchPopover onInteractOutside"); }}
                     >
@@ -128,7 +127,7 @@ class HeaderSearch extends React.Component<IProps> {
                                 isPdf={this.props.isPdf}
                             />
 
-                            <Popover.Close asChild>
+                            {/* <Popover.Close asChild>
                                 <button
                                     style={{
                                         width: "25px",
@@ -143,7 +142,7 @@ class HeaderSearch extends React.Component<IProps> {
                                 >
                                     <SVG ariaHidden={true} svg={QuitIcon} />
                                 </button>
-                            </Popover.Close>
+                            </Popover.Close> */}
                             </div>
                         {/* <Popover.Arrow /> */}
                     </Popover.Content>

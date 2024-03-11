@@ -14,7 +14,7 @@ import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/com
 // import * as ReactDOM from "react-dom";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
-import * as viewMode from "readium-desktop/renderer/assets/icons/aspect_ratio-black-18dp.svg";
+import * as viewMode from "readium-desktop/renderer/assets/icons/fullscreen-corners-icon.svg";
 import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
 import * as PauseIcon from "readium-desktop/renderer/assets/icons/audio-pause-icon.svg";
 import * as PlayIcon from "readium-desktop/renderer/assets/icons/audio-play-icon.svg";
@@ -442,7 +442,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         className={stylesReader.menu_button}
                                         ref={this.infoMenuButtonRef}
                                         title={__("reader.navigation.infoTitle")}
-                                        disabled={this.props.settingsOpen || this.props.menuOpen}
+                                        disabled={(this.props.settingsOpen || this.props.menuOpen) && !isDockedMode}
                                     >
                                         <SVG ariaHidden={true} svg={InfosIcon} />
                                     </button>
@@ -1079,6 +1079,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 </li>
                                 : <></>
                         }
+                        <span style={{width: "1px", height: "30px", backgroundColor: "var(--color-medium-grey)", margin: "auto 5px"}}></span>
                         <li className={classNames(stylesReader.blue)}>
                             <button
                                 className={classNames(stylesReader.menu_button)}

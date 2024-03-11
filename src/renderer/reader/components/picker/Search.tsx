@@ -22,6 +22,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 
 import { readerLocalActionSearch } from "../../redux/actions";
 import SearchFormPicker from "./SearchFormPicker";
+import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
 
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 
@@ -102,17 +103,8 @@ class SearchPicker extends React.Component<IProps, IState> {
         this.loadSeq = this.props.isPdf ? 999 : (this.loadSeq || 0) + 1;
 
         return (
-            <div style={{
-                // margin: "10px",
-                display: "flex",
-                alignItems: "center",
-                padding: "20px 0",
-                width: "400px",
-                // flexDirection: "row",
-                // width: "300px",
-
-                // paddingBlock: "20px",
-            }}>
+            <div 
+            className={stylesReaderHeader.searchHeader_container}>
                 <SearchFormPicker
                     isPdf={this.props.isPdf}
                     reset={() => this.setState({foundNumber: 0, notFound: true})}

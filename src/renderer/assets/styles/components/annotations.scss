@@ -88,6 +88,7 @@
         button {
           min-width: unset;
           width: fit-content;
+          height: 25px;
 
           svg {
             fill: var(--color-secondary);
@@ -120,7 +121,7 @@
   
       >div {
         display: flex;
-        gap: 5px;
+        // gap: 5px;
         align-items: center;
       }
   
@@ -131,13 +132,22 @@
       svg {
         width: 20px;
         height: 20px;
-        color: var(--color-blue);
       }
     }
   
-    &_buttons svg {
-      fill: var(--color-blue);
-      color: var(--color-blue);
+    &_buttons {
+      button:disabled {
+        border-radius: 5px;
+        background-color: var(--color-medium-grey);
+        svg {
+          fill: var(--color-primary);
+          color: var(--color-primary);
+        }
+      }
+      svg {
+        fill: var(--color-blue);
+        color: var(--color-blue);
+      }
     }
   }
   
@@ -227,6 +237,10 @@
           display: flex;
           align-items: center;
           justify-content: center;
+
+          svg {
+            color: var(--color-blue);
+          }
       }
   }
   }

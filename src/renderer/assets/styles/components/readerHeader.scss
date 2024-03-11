@@ -52,13 +52,23 @@
             border-radius: 5px;
 
             .menu_button {
-                height: 30px;
+                height: 42px;
+                width: 42px;
                 cursor: pointer;
                 padding: 5px;
                 box-sizing: border-box;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                border: 1px solid transparent;
+                transition: .2s;
+                border-radius: 5px;
+
+                &:not(:has(.active_svg)):hover, 
+                &:not(:has(.active_svg)):focus {
+                    border-color: var(--color-blue);
+                    background-color: var(--color-light-blue);
+                }
     
                 svg {
                     height: 20px;
@@ -81,7 +91,6 @@
             label {
                 position: absolute;
                 display: block;
-                width: 35px!important;
                 align-items: center;
 
 
@@ -237,4 +246,21 @@
 .annotationsIcon svg {
     width: 22px!important;
     height: 25px!important;
+}
+
+.searchHeader_container {
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+    width: 400px;
+
+    &:before {
+        content: "";
+        position: absolute;
+        right: 150px;
+        top: 48px;
+        height: 1px;
+        width: 260px;
+        border-bottom: 2px solid var(--color-blue);
+    }
 }
