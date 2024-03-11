@@ -102,6 +102,7 @@ class SearchFormPicker extends React.Component<IProps, IState> {
                 />
                     <button
                     disabled={!this.state.inputValue}
+                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                     style={{
                         width: "25px",
                         padding: "4px",

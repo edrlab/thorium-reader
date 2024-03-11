@@ -15,7 +15,8 @@
   z-index: 100;
   display: flex;
   flex-direction: column;
-  overflow: hidden auto;
+
+  // overflow: hidden auto;
   align-content: flex-start;
   color: var(--color-primary);
   position: fixed;
@@ -237,6 +238,7 @@
   display: flex;
   align-items: end;
   justify-content: end;
+  gap: 10px;
 
   .pages {
     display: flex;
@@ -244,10 +246,14 @@
     align-items: start;
     justify-content: center;
     
-    p {
-      padding-left: 8px;
+    .react_aria_ComboBox {
       margin: 0;
+      padding: 0;
     }
+  }
+
+  button {
+    transition: 100ms;
   }
 
   button svg {
@@ -260,12 +266,25 @@
     visibility: hidden;
   }
 
-  span {
-    padding: 5px;
-    border: 1px solid black;
-    border-radius: 6px;
-    margin: 0 5px;
+  .my_combobox_container {
+    width: fit-content!important;
+    padding-right: 0!important;
+    button {
+      width: fit-content;
+      padding: 0 10px;
+      
+      svg {
+        margin-left: unset;
+      }
+    }
   }
+
+  // span {
+  //   padding: 5px;
+  //   border: 1px solid black;
+  //   border-radius: 6px;
+  //   margin: 0 5px;
+  // }
 }
 
 .bookmarks_line {

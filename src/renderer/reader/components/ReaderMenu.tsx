@@ -545,7 +545,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     SelectRef.displayName = "ComboBox";
     
-    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `page ${v} on ${pageTotal}`}));
+    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} on ${pageTotal}`}));
     
     return (
         <>
@@ -566,16 +566,16 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
                         <div className={stylesPopoverDialog.pages}>
-                            <p>{__("reader.picker.search.results")}</p>
                             <SelectRef
                                 id="page"
-                                aria-label={""}
+                                aria-label={__("reader.navigation.page")}
                                 items={pageOptions}
                                 selectedKey={pageNumber}
                                 defaultSelectedKey={1}
                                 onSelectionChange={(id) => {
                                     setPageNumber(id as number);
                                 }}
+                                label={__("reader.navigation.page")}
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                             </SelectRef>

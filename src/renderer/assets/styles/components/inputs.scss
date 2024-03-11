@@ -95,7 +95,7 @@ select {
   //   background-color: #2D2D2D;
   // }
 
-  &:has(input:focus) {    
+  &:has(input:focus), &:has(button:focus) {    
     outline: blue solid 2px !important;
     outline-offset: -2px;
   }
