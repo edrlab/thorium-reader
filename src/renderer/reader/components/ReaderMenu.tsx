@@ -515,94 +515,73 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     if (!r2Publication || !annotationsQueue) {
         <></>;
     }
-
-    const [nMatchPage, setnMatchPage] = React.useState(0);
     const MAX_MATCHES_PER_PAGE = 10;
-    const startIndex = nMatchPage * MAX_MATCHES_PER_PAGE;
-    const begin = startIndex + 1;
-    let _foundArray = annotationsQueue;
-    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, _foundArray.length);
 
+    const pageTotal =  Math.floor(annotationsQueue.length / MAX_MATCHES_PER_PAGE) + ((annotationsQueue.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1);
+    const [pageNumber, setPageNumber] = React.useState(1);
 
+    const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
 
-    const onPageFirst = () => {
-        _foundArray = undefined;
-        setnMatchPage(0);
-    };
-    const onPageLast = () => {
-        if (_foundArray?.length) {
-            const nPages = Math.ceil(_foundArray.length / MAX_MATCHES_PER_PAGE);
+    const annotationsPagedArray = React.useMemo(() => {
+        return annotationsQueue.slice(startIndex, startIndex + 10); // catch the end of the array
+    }, [startIndex, annotationsQueue]);
 
-            _foundArray = undefined;
-            setnMatchPage(nPages - 1);
-        }
-    };
-    const onPagePrevious = () => {
-        if (nMatchPage <= 0) {
-            return;
-        }
+    const isLastPage = pageTotal === pageNumber;
+    const isFirstPage = pageNumber === 1;
+    const isPaginated = pageTotal > 1;
 
-        _foundArray = undefined;
-        setnMatchPage(nMatchPage - 1);
-    };
-    const onPageNext = () => {
-        let lastPage = true;
-
-        if (_foundArray?.length) {
-            const nPages = Math.ceil(_foundArray.length / MAX_MATCHES_PER_PAGE);
-            lastPage = nMatchPage >= (nPages - 1);
-        }
-
-        if (lastPage) {
-            return;
-        }
-
-        _foundArray = undefined;
-        setnMatchPage(nMatchPage + 1);
-    };
-
+    const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
+    SelectRef.displayName = "ComboBox";
+    
+    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `page ${v} on ${pageTotal}`}));
+    
     return (
         <>
-        {_foundArray.map((annotationQueueState, i) =>
-        <AnnotationCard key={i} timestamp={annotationQueueState[0]} annotation={annotationQueueState[1]} r2Publication={r2Publication} goToLocator={goToLocator} index={i} dockedMode={props.dockedMode}/>)}
-        <div className={stylesPopoverDialog.navigation_container}>
-                {(_foundArray && _foundArray?.length > MAX_MATCHES_PER_PAGE) &&
-                    <>
+            {annotationsPagedArray.map(([timestamp, annotationItem], i) =>
+                <AnnotationCard key={i} timestamp={timestamp} annotation={annotationItem} r2Publication={r2Publication} goToLocator={goToLocator} index={i} dockedMode={props.dockedMode} />)}
+            {
+                isPaginated ?
+                    <div className={stylesPopoverDialog.navigation_container}>
                         <button title={__("opds.firstPage")}
-                            onClick={() => onPageFirst()}
-                            disabled={begin === 1 ? true : false}>
+                            onClick={() => { setPageNumber(1); }}
+                            disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowFirstIcon} />
                         </button>
 
                         <button title={__("opds.previous")}
-                            onClick={() => onPagePrevious()}
-                            disabled={begin === 1 ? true : false}>
+                            onClick={() => { setPageNumber(pageNumber - 1); }}
+                            disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
                         <div className={stylesPopoverDialog.pages}>
                             <p>{__("reader.picker.search.results")}</p>
-                            <span>
-                                {
-                                    begin === end ?
-                                        `${end}` :
-                                        `${begin} - ${end}`
-                                }
-                            </span>
+                            <SelectRef
+                                id="page"
+                                aria-label={""}
+                                items={pageOptions}
+                                selectedKey={pageNumber}
+                                defaultSelectedKey={1}
+                                onSelectionChange={(id) => {
+                                    setPageNumber(id as number);
+                                }}
+                            >
+                                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                            </SelectRef>
                         </div>
                         <button title={__("opds.next")}
-                            onClick={() => onPageNext()}
-                            disabled={end === _foundArray.length ? true : false}>
+                            onClick={() => { setPageNumber(pageNumber + 1); }}
+                            disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                         </button>
 
                         <button title={__("opds.lastPage")}
-                            onClick={() => onPageLast()}
-                            disabled={end === _foundArray.length ? true : false}>
+                            onClick={() => { setPageNumber(pageTotal); }}
+                            disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowLastIcon} />
                         </button>
-                    </>
-                }
-            </div>
+                    </div>
+                    : <></>
+            }
         </>
         );
 };
