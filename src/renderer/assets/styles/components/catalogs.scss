@@ -221,7 +221,8 @@
 }
 
 .numberOfItems {
-    position: absolute;
+
+    // position: absolute;
     top: 5px;
     right: 5px;
     font-size: 12px;
@@ -253,6 +254,7 @@
     margin-top: 0;
     margin-bottom: 0.4em;
     position: absolute;
+    padding-right: 25px;
 
     .loader {
         margin: 20%;

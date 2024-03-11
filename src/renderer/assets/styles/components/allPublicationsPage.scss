@@ -5,6 +5,10 @@
 .allBooks {
     &_header {
         font-size: 18px;
+        max-width: 300px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
 
         &_navigation {
             background-color: var(--color-extralight-grey);

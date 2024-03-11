@@ -54,6 +54,7 @@ class Entry extends React.Component<IProps, undefined> {
         return (
             <Link
                 className={stylesButtons.button_transparency}
+                style={{justifyContent: "unset"}}
                 to={{
                     ...this.props.location,
                     pathname: route,

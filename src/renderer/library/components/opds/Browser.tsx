@@ -42,10 +42,14 @@ class Browser extends React.Component<IProps, undefined> {
         const secondaryHeader = <Header/>;
         const breadCrumb = <BreadCrumb breadcrumb={this.props.breadrumb} />;
         const search = <SearchForm />;
+        const catalogTitle = this.props.breadrumb[1]?.name;
+        console.log(catalogTitle);
+        
 
         return (
             <LibraryLayout
-                title={this.props.__("opds.breadcrumbRoot")}
+                page={this.props.__("opds.breadcrumbRoot")}
+                title={catalogTitle}
                 secondaryHeader={secondaryHeader}
                 breadCrumb={breadCrumb}
                 search={search}
