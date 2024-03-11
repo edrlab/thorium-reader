@@ -221,13 +221,13 @@
             width: 5px;
 
             &-thumb {
-                background-color: transparent;
+                background-color: var(--scrollbar-thumb);
                 border-radius: 6px;
 
             }
 
             &-track {
-                background-color: inherit;
+                background-color: var(--color-secondary);
                 }
         }
 
@@ -281,6 +281,23 @@
         margin-top: 0;
         margin-bottom: 0.4em;
         position: absolute;
+        background-color: var(--color-secondary);
+
+        &::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+            background-color: var(--color-secondary);
+
+            &-thumb {
+                background-color: var(--scrollbar-thumb);
+                border-radius: 6px;
+
+            }
+
+            &-track {
+                background-color: var(--color-secondary);
+                }
+        }
     }
 
     &_head {

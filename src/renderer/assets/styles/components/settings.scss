@@ -190,7 +190,7 @@ $setting_color: var(--color-blue);
     }
 
     &:hover::-webkit-scrollbar-thumb {
-        background-color: var(--color-medium-grey);
+        background-color: var(--scrollbar-thumb);
     }
 
     .button_transparency_icon {
@@ -519,13 +519,13 @@ div[data-radix-popper-content-wrapper] {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 100px;
+        width: 95px;
         padding-top: 5px;
         border: 1px solid transparent;
         border-radius: 6px;
         transition: 200ms linear;
         min-height: 70px;
-        background-color: #F5F5F5;
+        background-color: var(--color-extralight-grey);
 
         &:hover:not([disabled])  {
             border: 1px solid $setting_color;

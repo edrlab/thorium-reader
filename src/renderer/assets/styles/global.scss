@@ -70,6 +70,20 @@ section {
   box-sizing: border-box;
   position: relative;
   color: var(--color-primary);
+
+  &::-webkit-scrollbar {
+    width: 5px;
+
+    &-thumb {
+        background-color: var(--scrollbar-thumb);
+        border-radius: 6px;
+
+    }
+
+    &-track {
+        background-color: var(--color-secondary);
+        }
+}
 }
 
 nav + nav + .main {

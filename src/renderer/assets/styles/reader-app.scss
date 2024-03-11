@@ -117,7 +117,7 @@ button {
       height: 15px;
       width: 15px;
       border-radius: 10px;
-      background: #6b6b6b;
+      background: var(--scrollbar-thumb);
       cursor: pointer;
       appearance: none;
       margin-top: -6px;
@@ -139,8 +139,9 @@ button {
   height: 100%;
   display: flex;
   align-items: stretch;
-  margin-top: 1rem;
-  margin-bottom: 5rem;
+  margin-top: 0.5rem;
+
+  // margin-bottom: 5rem;
 
   &_fullscreen {
     margin-bottom: 60px;
@@ -181,6 +182,10 @@ button {
 
   &_right {
     right: 400px!important;
+
+    &_scrollable {
+      right: 350px!important;
+    }
   }
 }
 

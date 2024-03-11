@@ -147,7 +147,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
 
     return <Dialog.Root>
         <Dialog.Trigger asChild>
-        <button title={__("header.settings")} style={{minWidth: "unset"}}>
+        <button title={__("header.settings")}>
             <SVG ariaHidden svg={GearIcon} />
             <h3>{__("header.settings")}</h3>
         </button>

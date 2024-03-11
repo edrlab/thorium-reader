@@ -524,7 +524,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
         const annotationFocusItemPageNumber = Math.floor(annotationFocusItemIndex / MAX_MATCHES_PER_PAGE) + 1;
         const startPage = annotationUUIDFocused ? annotationFocusItemPageNumber : 1;
         return startPage;
-    }
+    };
 
     const [pageNumber, setPageNumber] = React.useState(getStartPage);
 
@@ -1447,7 +1447,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
 
                     <Tabs.Content value="tab-annotation" tabIndex={-1}>
                         <TabHeader />
-                        <div className={stylesSettings.settings_tab}>
+                        <div className={classNames(stylesSettings.settings_tab, stylesAnnotations.annotations_tab)}>
 
 
                             <details className={stylesAnnotations.annotations_options}>

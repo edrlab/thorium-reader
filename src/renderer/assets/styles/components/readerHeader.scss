@@ -254,7 +254,7 @@
     padding: 20px 0;
     width: 400px;
 
-    &:before {
+    &::before {
         content: "";
         position: absolute;
         right: 150px;

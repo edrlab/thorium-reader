@@ -17,6 +17,7 @@ export declare const annotation_name: string;
 export declare const annotations_checkbox: string;
 export declare const annotations_line: string;
 export declare const annotations_options: string;
+export declare const annotations_tab: string;
 export declare const body_element: string;
 export declare const colorPicker: string;
 export declare const docked_annotation_line: string;

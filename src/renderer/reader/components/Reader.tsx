@@ -809,7 +809,7 @@ class Reader extends React.Component<IProps, IState> {
                     }
 
                     <div 
-                    style={{marginBottom: this.state.zenMode ? "0" : "5rem"}}
+                    style={{marginBottom: this.state.zenMode ? "0" : "44px"}}
                     className={classNames(stylesReader.content_root,
                         this.state.fullscreen ? stylesReader.content_root_fullscreen : undefined,
                         this.props.isPdf ? stylesReader.content_root_skip_bottom_spacing : undefined)}>
@@ -854,9 +854,14 @@ class Reader extends React.Component<IProps, IState> {
                                 <div
                                     id="publication_viewport"
                                     // className={stylesReader.publication_viewport}
-                                    className={classNames(stylesReader.publication_viewport, (this.state.settingsOpen || this.state.menuOpen) ? (this.state.dockingMode === "left" ? stylesReader.docked_left : this.state.dockingMode === "right" ? stylesReader.docked_right : undefined) : undefined, this.props.searchEnable ? stylesReader.isOnSearch : undefined)}
+                                    className={classNames(stylesReader.publication_viewport, (!this.state.zenMode && (this.state.settingsOpen || this.state.menuOpen)) ?
+                                        (
+                                            this.state.dockingMode === "left" ? stylesReader.docked_left
+                                                : this.state.dockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right
+                                                        : ""
+                                        ) : undefined, this.props.searchEnable ? stylesReader.isOnSearch : undefined)}
                                     ref={this.mainElRef}
-                                    style={{inset: isAudioBook ||  !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : "0 50px"}}>
+                                    style={{ inset: isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : "0 50px" }}>
                                 </div>
                                 {
                                     this.props.isDivina && this.state.divinaArrowEnabled

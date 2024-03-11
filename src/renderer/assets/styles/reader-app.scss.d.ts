@@ -28,6 +28,7 @@ export declare const divina_grid_container: string;
 export declare const divina_grid_item: string;
 export declare const docked_left: string;
 export declare const docked_right: string;
+export declare const docked_right_scrollable: string;
 export declare const focus_element: string;
 export declare const go_to_page: string;
 export declare const hasTtsAudio: string;

@@ -1,5 +1,11 @@
 @import "src/renderer/assets/styles/focus";
 
+.annotations_tab {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .annotations_options {
   summary {
     display: flex;
@@ -139,11 +145,13 @@
       button:disabled {
         border-radius: 5px;
         background-color: var(--color-medium-grey);
+
         svg {
           fill: var(--color-primary);
           color: var(--color-primary);
         }
       }
+
       svg {
         fill: var(--color-blue);
         color: var(--color-blue);
