@@ -68,7 +68,7 @@
             "continueReadingPdf": "Fortsätt läsa PDF",
             "lastAdditions": "Nyligen tillagt"
         },
-        "export": "Exportera",
+        "export": "Spara som",
         "format": "Format",
         "lang": "Språk",
         "lastRead": "Senast läst",
@@ -357,8 +357,8 @@
             "lineSpacing": "Radavstånd",
             "margin": "Marginaler",
             "noFootnotes": "Avaktivera fotnoter",
-            "noRTLFlip": "",
-            "noRuby": "",
+            "noRTLFlip": "Avaktivera vänster-till-höger-gränssnitt",
+            "noRuby": "Dölj japanska ruby-tecken",
             "paginated": "Sidindelad",
             "paraSpacing": "Styckesavstånd",
             "pdfZoom": {
