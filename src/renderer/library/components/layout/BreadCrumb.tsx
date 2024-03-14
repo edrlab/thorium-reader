@@ -41,23 +41,17 @@ class BreadCrumb extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { breadcrumb, __ } = this.props;
+        const { breadcrumb } = this.props;
 
         return (
             <div className={classNames(stylesBreadcrumb.breadcrumb, this.props.className)}>
                 {
                     breadcrumb.length >= 2
-                        ? <Link
-                            to={{
-                                ...this.props.location,
-                                pathname: breadcrumb[0].path,
-                            }}
-                            state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
-                            title={__("opds.back")}
-                            className={stylesButtons.button_transparency_icon}
+                        ? <div
+                            className={stylesBreadcrumb.breadcrumb_icon}
                         >
                             <SVG ariaHidden={true} svg={BreacrmbsNavIcon} />
-                        </Link>
+                        </div>
                         : <></>
                 }
                 {

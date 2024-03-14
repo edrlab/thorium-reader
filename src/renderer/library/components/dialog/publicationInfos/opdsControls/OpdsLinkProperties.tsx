@@ -15,6 +15,9 @@ import {
 
 import { OPDSAvailabilityEnum } from "@r2-opds-js/opds/opds2/opds2-availability";
 import { findMimeTypeWithExtension, ADOBE_ADEPT_XML } from "readium-desktop/utils/mimeTypes";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as AvailableIcon from "readium-desktop/renderer/assets/icons/available-icon.svg";
+import * as UnvavailableIcon from "readium-desktop/renderer/assets/icons/stop-icon.svg";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -42,15 +45,15 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
             return (<></>);
         }
 
-        const metadataLineComponent = (text: string, property: string | number) =>
+        const metadataLineComponent = (text: string, property: any) =>
             property &&
-            <>
+            <div className={stylesBookDetailsDialog.opds_book_infos}>
                 <strong>{`${text}: `}</strong>
-                <i className={stylesBookDetailsDialog.allowUserSelect}>
+                <span className={stylesBookDetailsDialog.allowUserSelect}>
                     {property}
-                </i>
+                </span>
                 <br />
-            </>;
+            </div>;
 
         return (
             <>
@@ -86,9 +89,19 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
 
                                 switch (properties.availabilityState) {
                                     case OPDSAvailabilityEnum.Available:
-                                        return __("catalog.opds.info.availableState.available");
+                                        return (
+                                            <div className={stylesBookDetailsDialog.opds_book_state}>
+                                                <SVG ariaHidden svg={AvailableIcon} className={stylesBookDetailsDialog.opds_book_available} />
+                                                <p>{__("catalog.opds.info.availableState.available")}</p>
+                                            </div>
+                                            );
                                     case OPDSAvailabilityEnum.Unavailable:
-                                        return __("catalog.opds.info.availableState.unavailable");
+                                        return (
+                                            <div className={stylesBookDetailsDialog.opds_book_state}>
+                                                <SVG ariaHidden svg={UnvavailableIcon} className={stylesBookDetailsDialog.opds_book_unavailable}/>
+                                                <p>{__("catalog.opds.info.availableState.unavailable")}</p>
+                                            </div>
+                                            );
                                     case OPDSAvailabilityEnum.Ready:
                                         return __("catalog.opds.info.availableState.ready");
                                     case OPDSAvailabilityEnum.Reserved:

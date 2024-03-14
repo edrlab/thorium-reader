@@ -31,7 +31,7 @@
     text-wrap: nowrap;
   }
 
-  & .button_transparency_icon {
+  & .breadcrumb_icon {
     position: relative;
     height: 38px;
     width: 42px;
@@ -52,7 +52,8 @@
     font-size: inherit;
     white-space: nowrap;
     height: 32px;
-    padding: 0 15px;
+    padding: 0 5px;
+    margin: 0 10px;
 
     p {
       margin: auto;
