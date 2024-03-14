@@ -2436,7 +2436,7 @@ class Reader extends React.Component<IProps, IState> {
                 const l = visibleBookmarkList.length;
 
                 // reader.navigation.bookmarkTitle
-                const msg = `${this.props.__("catalog.delete")} - ${this.props.__("reader.marks.bookmarks")} [${this.props.bookmarks?.length ? this.props.bookmarks.length - l : 0}]`;
+                const msg = `${this.props.__("catalog.delete")} - ${this.props.__("reader.marks.bookmarks")} [${this.props.bookmarks?.length ? this.props.bookmarks.length + 1 - l : 0}]`;
                 // this.setState({bookmarkMessage: msg});
                 this.props.toasty(msg);
 

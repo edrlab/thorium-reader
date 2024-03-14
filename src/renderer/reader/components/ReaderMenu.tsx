@@ -722,6 +722,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
         <></>;
     }
 
+    // const sortedBookmarks = bookmarks;
     // WARNING: .sort() is in-place same-array mutation! (not a new array)
     const sortedBookmarks = React.useMemo(() => bookmarks.sort((a, b) => {
         // -1 : a < b
@@ -777,7 +778,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
                         key={i}
                         bookmark={bookmark}
                         r2Publication={r2Publication}
-                        i={i + ((pageNumber - 1) * MAX_MATCHES_PER_PAGE)}
+                        i={i + 1 + ((pageNumber - 1) * MAX_MATCHES_PER_PAGE)}
                         goToLocator={goToLocator}
                     />)
             }
