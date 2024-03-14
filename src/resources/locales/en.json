@@ -435,7 +435,8 @@
             "advancedModeDetails": "Serial annotator mode",
             "toggleMarginMarks": "Display note markers in the margin",
             "quickAnnotations": "Quick annotator mode",
-            "annotationsOptions": "Annotations options"
+            "annotationsOptions": "Annotations options",
+            "noSelectionToast": "No selection"
         },
         "fxl": {
             "fit": "Fit"
