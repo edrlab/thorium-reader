@@ -135,6 +135,7 @@
         "allBooks": "All books",
         "books": "My Books",
         "catalogs": "Catalogs",
+        "myCatalogs": "My catalogs",
         "downloads": "Downloads",
         "gridTitle": "Grid",
         "home": "Bookshelf menu",
@@ -144,6 +145,7 @@
         "refreshTitle": "reload",
         "searchPlaceholder": "Search",
         "searchTitle": "Start a search",
+        "fitlerTagTitle": "Filter by tag",
         "settings": "Settings",
         "viewMode": "View mode"
     },
@@ -296,7 +298,9 @@
             "landmarks": "Landmarks",
             "search": "Search",
             "searchResult": "Search - « {{- searchText}} »",
-            "toc": "Table of Contents"
+            "toc": "Table of Contents",
+            "saveMark": "Save the bookmark",
+            "noMark": "To add a bookmark, select the Bookmark toolbar button."
         },
         "media-overlays": {
             "activate": "Activate Readaloud",

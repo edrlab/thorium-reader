@@ -15,8 +15,8 @@
     }
 
     svg {
-        width: 16px;
-        height: 16px;
+        width: 14px;
+        height: 14px;
     }
 
     section {
@@ -25,9 +25,9 @@
 
     .button_primary {
         border: 1px solid var(--color-blue);
-        height: 20px;
+        height: 25px;
         border-radius: 4px;
-        padding: 2px;
+        padding: 4px;
         width: 100%;
         display: flex;
         align-items: center;
@@ -42,7 +42,7 @@
 
     .button_secondary, .button_transparency {
         border: 1px solid var(--color-blue);
-        height: 20px;
+        height: 25px;
         border-radius: 4px;
         padding: 2px;
         width: 100%;

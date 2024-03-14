@@ -12,11 +12,25 @@
     border-style: solid;
     border-radius: 10px;
     position: relative;
-    background-color: white;
+    background-color: var(--color-secondary);
     margin: 0;
-    padding: 5px;
+    padding: 10px;
     text-align: justify;
     line-height: 1.5em;
+  }
+
+  &_trigger {
+    width: 30px!important;
+    height: 30px!important;
+    padding: 0 5px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    transition: 200ms;
+
+    &:hover, &:focus {
+      border-color: var(--color-blue);
+      background-color: var(--color-light-blue);
+    }
   }
 
   &_menu {
@@ -76,11 +90,34 @@
         background-color: var(--color-medium-grey);
       }
     }
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      gap: 10px;
+
+      p {
+        font-size: inherit;
+      }
+
+      svg {
+      width: 15px;
+      height: 15px;
+    }
   }
+  }
+}
+
+.popover_open {
+  border-color: var(--color-blue);
+  background-color: var(--color-light-blue);
 }
 
 .PopoverArrow {
   fill: var(--color-blue);
+  width: 20px;
+  height: 12px;
 }
 
 .PopoverContent {
@@ -140,7 +177,7 @@
     }
 
     & input:focus + label {
-      outline: blue solid 2px !important;
+      outline: var(--color-blue) solid 2px !important;
       outline-offset: -2px;
     }
   }

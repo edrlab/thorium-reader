@@ -29,9 +29,9 @@
     height: 285px;
     object-fit: contain;
     box-sizing: border-box;
-    border: 1px solid #e2e2e2;
+    // border: 1px solid #e2e2e2;
     border-radius: 6px;
-    background-color: var(--color-extralight-grey);
+    background-color: var(--color-light-grey);
   }
 
   .no_img_wrapper {
@@ -104,7 +104,7 @@
     }
   }
 
-  &:hover {
+  &:hover, &:focus {
     border: 1px solid var(--color-blue);
     background-color: var(--color-light-blue);
   }
@@ -474,9 +474,9 @@
   max-height: 100%;
   object-fit: contain;
   box-sizing: border-box;
-  border: 1px solid #e2e2e2;
+  // border: 1px solid #e2e2e2;
   border-radius: 6px;
-  background-color: #f1f1f1;
+  background-color: var(--color-light-grey);
 }
 
 .___DEBUG___COMPONENTS_PUBLICATIONS_CSS {

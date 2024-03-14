@@ -308,6 +308,7 @@ declare namespace typed_i18n {
   readonly "allBooks": string,
   readonly "books": string,
   readonly "catalogs": string,
+  readonly "myCatalogs": string,
   readonly "downloads": string,
   readonly "gridTitle": string,
   readonly "home": string,
@@ -317,12 +318,14 @@ declare namespace typed_i18n {
   readonly "refreshTitle": string,
   readonly "searchPlaceholder": string,
   readonly "searchTitle": string,
+  readonly "fitlerTagTitle": string,
   readonly "settings": string,
   readonly "viewMode": string
 };
   (_: "header.allBooks", __?: {}): string;
   (_: "header.books", __?: {}): string;
   (_: "header.catalogs", __?: {}): string;
+  (_: "header.myCatalogs", __?: {}): string;
   (_: "header.downloads", __?: {}): string;
   (_: "header.gridTitle", __?: {}): string;
   (_: "header.home", __?: {}): string;
@@ -332,6 +335,7 @@ declare namespace typed_i18n {
   (_: "header.refreshTitle", __?: {}): string;
   (_: "header.searchPlaceholder", __?: {}): string;
   (_: "header.searchTitle", __?: {}): string;
+  (_: "header.fitlerTagTitle", __?: {}): string;
   (_: "header.settings", __?: {}): string;
   (_: "header.viewMode", __?: {}): string;
   (_: "library", __?: {}): {
@@ -651,7 +655,9 @@ declare namespace typed_i18n {
     readonly "landmarks": string,
     readonly "search": string,
     readonly "searchResult": string,
-    readonly "toc": string
+    readonly "toc": string,
+    readonly "saveMark": string,
+    readonly "noMark": string
   },
   readonly "media-overlays": {
     readonly "activate": string,
@@ -802,7 +808,9 @@ declare namespace typed_i18n {
   readonly "landmarks": string,
   readonly "search": string,
   readonly "searchResult": string,
-  readonly "toc": string
+  readonly "toc": string,
+  readonly "saveMark": string,
+  readonly "noMark": string
 };
   (_: "reader.marks.annotations", __?: {}): string;
   (_: "reader.marks.bookmarks", __?: {}): string;
@@ -812,6 +820,8 @@ declare namespace typed_i18n {
   (_: "reader.marks.search", __?: {}): string;
   (_: "reader.marks.searchResult", __?: {}): string;
   (_: "reader.marks.toc", __?: {}): string;
+  (_: "reader.marks.saveMark", __?: {}): string;
+  (_: "reader.marks.noMark", __?: {}): string;
   (_: "reader.media-overlays", __?: {}): {
   readonly "activate": string,
   readonly "captions": string,

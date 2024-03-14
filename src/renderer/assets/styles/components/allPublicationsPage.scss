@@ -30,7 +30,7 @@
                 }
 
                 &:has(input:focus) {
-                    outline: blue solid 2px !important;
+                    outline: var(--color-blue) solid 2px !important;
                     outline-offset: -2px;
                   }
 
@@ -40,7 +40,7 @@
 
                 label {
                     background-color: var(--color-extralight-grey);
-                    top: -10px;
+                    top: -18px;
                 }
 
                 i {
@@ -149,7 +149,7 @@
         align-items: center;
 
         .showColFilters_input {
-            border: 1px solid gray;
+            border: 1px solid var(--color-blue);
             border-radius: 4px;
             margin: 0;
             padding: 0.2em;
@@ -177,7 +177,7 @@
         margin: 0;
         text-align: center;
         min-height: 100px;
-        border: 1px solid #e2e2e2;
+        // border: 1px solid #e2e2e2;
         display: flex;
 
         img {
@@ -270,9 +270,10 @@
         button {
             position: absolute;
             right: 0;
-            bottom: 0;
+            bottom: -20px;
             color: var(--color-blue);
-            width: 16px;
+            width: 15px;
+            height: 15px;
         }
     }
 }
@@ -340,4 +341,45 @@
     border-spacing: 0;
     width: 100%;
     position: relative;
+}
+
+.filter_container {
+    .react_aria_ComboBox {
+        position: relative;
+        padding: 0;
+        margin: 0;
+
+        .react_aria_Label {
+            position: absolute;
+            top: -20px;
+        }
+
+        .react_aria_Input {
+            width: inherit;
+        }
+
+        .my_combobox_container {
+            width: fit-content;
+            min-width: 150px;
+            background-color: var(--color-secondary);
+            padding: 2px 0;
+
+            button span {
+                width: fit-content;
+                min-width: 100px;
+                padding: 0 10px;
+                text-align: left;
+            }
+
+            .react_aria_Button {
+                margin-left: unset;
+                margin-right: 5px;
+                height: 24px;
+                width: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
 }
