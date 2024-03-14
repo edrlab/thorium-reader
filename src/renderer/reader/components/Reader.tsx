@@ -377,6 +377,9 @@ class Reader extends React.Component<IProps, IState> {
     public async componentDidMount() {
         windowHistory._readerInstance = this;
 
+        const store = diReaderGet("store"); // diRendererSymbolTable.store
+        document.body.setAttribute("data-theme", store.getState().theme.name);
+
         const handleMouseKeyboard = (isKey: boolean) => {
 
             if (_mouseMoveTimeout) {

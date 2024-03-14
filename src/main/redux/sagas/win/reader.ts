@@ -37,6 +37,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const reader = yield* selectTyped((_state: RootState) => _state.win.session.reader[identifier]);
     const keyboard = yield* selectTyped((_state: RootState) => _state.keyboard);
     const mode = yield* selectTyped((state: RootState) => state.mode);
+    const theme = yield* selectTyped((state: RootState) => state.theme);
 
     webContents.send(readerIpc.CHANNEL, {
         type: readerIpc.EventType.request,
@@ -50,6 +51,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
             reader: reader?.reduxState,
             keyboard,
             mode,
+            theme,
         },
     } as readerIpc.EventPayload);
 }
