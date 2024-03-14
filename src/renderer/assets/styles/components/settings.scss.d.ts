@@ -36,6 +36,7 @@ export declare const settings_tab_container_reading: string;
 export declare const settings_tab_container_reading_spacing: string;
 export declare const settings_tab_title: string;
 export declare const settings_tabslist: string;
+export declare const settings_theme_container: string;
 export declare const size_range: string;
 export declare const spacing_heading: string;
 export declare const state: string;

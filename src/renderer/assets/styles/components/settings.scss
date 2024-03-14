@@ -715,3 +715,48 @@ div[data-radix-popper-content-wrapper] {
     background-color: white;
     }
 }
+
+
+.settings_theme_container {
+    border-radius: 6px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: var(--color-medium-grey);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 85px;
+    height: 45px!important;
+    min-height: 45px!important;
+    text-decoration: none;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0);
+    transition: all 0.3s;
+    padding: 0;
+    background-color: var(--color-secondary);
+    margin: 0!important;
+    display: flex!important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+
+    &::after {
+        content: "";
+        width: inherit;
+        height: inherit;
+        position: absolute;
+        top: -6px;
+        right: -8px;
+        border-radius: 6px;
+        border-right: 1px solid var(--color-medium-grey);
+        border-top: 1px solid var(--color-medium-grey);
+    }
+
+    svg {
+        width: 12px;
+        height: 12px;
+        position: absolute;
+        top: 2px;
+        right: 5px;
+    }
+}

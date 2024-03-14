@@ -15,7 +15,6 @@ import * as TextAreaIcon from "readium-desktop/renderer/assets/icons/textarea-ic
 import * as LayoutIcon from "readium-desktop/renderer/assets/icons/layout-icon.svg";
 import * as AlignLeftIcon from "readium-desktop/renderer/assets/icons/alignleft-icon.svg";
 import * as VolumeUpIcon from "readium-desktop/renderer/assets/icons/volume-icon.svg";
-import * as SwatchesIcon from "readium-desktop/renderer/assets/icons/swatches-icon.svg";
 import * as ScrollableIcon from "readium-desktop/renderer/assets/icons/scroll-icon.svg";
 import * as PaginatedIcon from "readium-desktop/renderer/assets/icons/page-icon.svg";
 import * as TwoColsIcon from "readium-desktop/renderer/assets/icons/2cols-icon.svg";
@@ -41,6 +40,7 @@ import { readerConfigInitialState, readerConfigInitialStateDefaultPublisher } fr
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import { createOrGetPdfEventBus } from "../pdf/driver";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps, IPopoverDialogProps {
@@ -86,35 +86,83 @@ const TabTitle = ({value}: {value: string}) => {
 
 const Theme = ({theme, set}: {theme: Pick<ReaderConfig, "night" | "sepia">, set: (a: Pick<ReaderConfig, "night" | "sepia">) => void}) => {
     const [__] = useTranslator();
-    const [options] = React.useState(() => [
-        {
-            id: 1,
-            name: `${__("reader.settings.theme.name.Neutral")}`,
-            value: "neutral",
-        },
-        {
-            id: 2,
-            name: `${__("reader.settings.theme.name.Sepia")}`,
-            value: "sepia",
-        },
-        {
-            id: 3,
-            name: `${__("reader.settings.theme.name.Night")}`,
-            value: "night",
-        },
-    ]);
+    // const [options] = React.useState(() => [
+    //     {
+    //         id: 1,
+    //         name: `${__("reader.settings.theme.name.Neutral")}`,
+    //         value: "neutral",
+    //     },
+    //     {
+    //         id: 2,
+    //         name: `${__("reader.settings.theme.name.Sepia")}`,
+    //         value: "sepia",
+    //     },
+    //     {
+    //         id: 3,
+    //         name: `${__("reader.settings.theme.name.Night")}`,
+    //         value: "night",
+    //     },
+    // ]);
+
 
     const defaultKey = theme.night ? 3 : theme.sepia ? 2 : 1;
 
     return (
-        <ComboBox style={{borderBottom: "3px solid var(--color-light-grey)"}} label={__("reader.settings.theme.title")} defaultItems={options} defaultSelectedKey={defaultKey} onSelectionChange={(key: React.Key) => {
+        <>
+        {/* <ComboBox style={{ borderBottom: "3px solid var(--color-light-grey)" }} label={__("reader.settings.theme.title")} defaultItems={options} defaultSelectedKey={defaultKey} onSelectionChange={(key: React.Key) => {
             set({
                 night: key === 3,
                 sepia: key === 2,
             });
         }} svg={SwatchesIcon}>
             {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-        </ComboBox>
+        </ComboBox> */}
+        <h4>{__("reader.settings.theme.title")}</h4>
+        {/* <div role="radiogroup" style={{display: "flex", alignItems: "center", gap: "20px", marginTop: "20px"}} tabIndex={0} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+        {
+        options.map((option) => (
+                <button type="button" role="radio" id={option.value} name="themepicker" value={option.value}
+                key={option.id}
+                className={stylesSettings.settings_theme_container} style={{backgroundColor: option.value === "sepia" ? "#faf4e8" : option.value === "night" ? "#2D2D2D" : "#fff", color: option.value === "night" ? "#fff" : "black"}}
+                    onClick={() => {
+                        set({
+                            night: option.id === 3,
+                            sepia: option.id === 2, 
+                        });
+                    }}
+                >
+                    {option.name}
+                    {defaultKey === option.id ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
+                </button>
+        ),
+        )}
+        </div> */}
+        <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px", marginTop: "20px" }} value={(defaultKey === 2) ? "sepia_option" : (defaultKey === 3) ? "night_option" : "neutral_option"}
+                onValueChange={(option) => set({ night: option === "night",sepia: option === "sepia",  })}
+            >
+                <RadioGroupItem 
+                value="neutral" 
+                description={`${__("reader.settings.theme.name.Neutral")}`}
+                className={stylesSettings.settings_theme_container} 
+                style={{backgroundColor: "#fff", color: "black"}}
+                svg={defaultKey === 1 ? CheckIcon : null}
+                />
+                <RadioGroupItem 
+                value="sepia" 
+                description={`${__("reader.settings.theme.name.Sepia")}`}
+                className={stylesSettings.settings_theme_container} 
+                style={{backgroundColor: "#faf4e8", color: "black"}}
+                svg={defaultKey === 2 ? CheckIcon : null}
+                />
+                <RadioGroupItem 
+                value="night" 
+                description={`${__("reader.settings.theme.name.Night")}`}
+                className={stylesSettings.settings_theme_container} 
+                style={{backgroundColor: "#2D2D2D", color: "#fff" }}
+                svg={defaultKey === 3 ? CheckIcon : null}
+                />
+            </RadioGroup.Root>
+        </>
     );
 };
 
@@ -398,15 +446,17 @@ const ReadingSpacing = ({config: {pageMargins, wordSpacing, letterSpacing, paraS
 
 interface IRadioGroupItemProps {
     value: string;
-    svg: ISVGProps;
+    svg?: ISVGProps;
     description: string;
-    disabled: boolean;
+    disabled?: boolean;
+    className?: string;
+    style?: any;
 };
 
 const RadioGroupItem = (props: IRadioGroupItemProps) => {
     return (
-        <RadioGroup.Item value={props.value} id={props.value} className={stylesSettings.display_options_item} disabled={props.disabled}>
-            <SVG ariaHidden svg={props.svg} />
+        <RadioGroup.Item value={props.value} id={props.value} className={classNames(stylesSettings.display_options_item, props.className)} disabled={props.disabled} style={props.style}>
+            {props.svg ? <SVG ariaHidden svg={props.svg} /> : <></>}
             {props.description}
         </RadioGroup.Item>
     );
