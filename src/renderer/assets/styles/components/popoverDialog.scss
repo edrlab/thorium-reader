@@ -52,7 +52,7 @@
   overflow: hidden;
 
   .settings_container {
-    height: calc(100dvh - 165px);
+    height: calc(100dvh - 200px);
     padding: 0;
     overflow: hidden auto;
 
@@ -303,12 +303,17 @@
     margin: 10px 0;
     width: 430px;
     min-width: 430px;
-    height: 100px;
-    min-height: 100px;
+    // height: 100px;
+    // min-height: 100px;
     max-width: 430px;
-    max-height: 100px;
+    // max-height: 100px;
     border: 1px solid rgb(118 118 118);
     border-radius: 3px;
+    font-family: Nunito, sans-serif;
+
+    &:focus {
+      border: 2px solid var(--color-blue);
+    }
   }
 
   .bookmark_name {
@@ -347,14 +352,25 @@
         }
 
         svg {
-          width: 20px;
-          height: 20px;
+          width: 16px;
+          height: 16px;
+          padding: 5px;
         }
       }
 
       &_buttons svg {
         fill: var(--color-blue);
         color: var(--color-blue);
+      }
+
+      button {
+        height: unset;
+
+        &:focus {
+          border: 1px solid var(--color-blue);
+          border-radius: 5px;
+          background-color: var(--color-light-blue);
+        }
       }
     }
   }
@@ -390,6 +406,7 @@
     display: inline-block;
     vertical-align: top;
     margin-top: 5px;
+    font-family: Nunito, sans-serif;
   }
 }
 
@@ -516,6 +533,6 @@
 }
 
 .react_aria_ComboBox [role="group"]:focus-within {
-  outline: blue solid 2px !important;
+  outline: var(--color-blue) solid 2px !important;
   outline-offset: -2px;
 }

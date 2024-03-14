@@ -8,6 +8,7 @@ export declare const body_element: string;
 export declare const bookmark_infos: string;
 export declare const bookmark_name: string;
 export declare const bookmarkButton: string;
+export declare const bookmarkList_button: string;
 export declare const bookmarks_line: string;
 export declare const button_audio: string;
 export declare const button_exitZen: string;

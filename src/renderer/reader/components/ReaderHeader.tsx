@@ -153,6 +153,7 @@ interface IState {
     divinaSoundEnabled: boolean;
     fxlZoomPercent: number;
     forceTTS: boolean;
+    ttsPopoverOpen: boolean;
 }
 
 export class ReaderHeader extends React.Component<IProps, IState> {
@@ -183,6 +184,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             divinaSoundEnabled: false,
             fxlZoomPercent: 0,
             forceTTS: false,
+            ttsPopoverOpen: false,
         };
 
         this.timerFXLZoomDebounce = undefined;
@@ -572,7 +574,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             this.props.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING ||
                                             !useMO &&
                                             this.props.ttsState === TTSStateEnum.PLAYING) ?
-                                            <li  style={{backgroundColor: "var(--color-blue" }}>
+                                            <li  style={{backgroundColor: "var(--color-blue)" }}>
                                                 <button
                                                     className={stylesReader.menu_button}
                                                     onClick={
@@ -645,14 +647,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             </button>
                                         </li>
                                         <li>
-                                            <Popover.Root>
+                                            <Popover.Root open={this.state.ttsPopoverOpen} onOpenChange={() => this.setState({ ttsPopoverOpen : !this.state.ttsPopoverOpen})}>
                                                 <Popover.Trigger asChild>
-                                                    <button className={stylesReader.menu_button}>
-                                                        <SVG ariaHidden svg={HeadphoneIcon} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""} />
+                                                    <button className={stylesReader.menu_button} style={{backgroundColor: this.state.ttsPopoverOpen ? "var(--color-blue)" : ""}}>
+                                                        <SVG ariaHidden svg={HeadphoneIcon} className={this.state.ttsPopoverOpen ? stylesReaderHeader.active_svg : ""} />
                                                     </button>
                                                 </Popover.Trigger>
                                                 <Popover.Portal>
-                                                    <Popover.Content sideOffset={10}>
+                                                    <Popover.Content>
                                                         <ul className={stylesReaderHeader.Tts_popover_container}>
                                                             <li className={stylesReader.ttsSelectRate}>
                                                                 <label>

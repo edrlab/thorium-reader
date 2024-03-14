@@ -87,6 +87,11 @@ button {
   &:hover {
     opacity: 1;
   }
+
+  &:disabled svg {
+    fill: var(--color-disabled)!important;
+    color: var(--color-disabled)!important;
+  }
 }
 
 .root {
@@ -1029,4 +1034,11 @@ input[type="radio"] + label {
       color: var(--color-blue);
     }
   }
+}
+
+.bookmarkList_button {
+  height: fit-content;
+  display: block;
+  text-align: left;
+  width: 100%;
 }

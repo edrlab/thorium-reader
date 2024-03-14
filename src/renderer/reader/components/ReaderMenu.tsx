@@ -635,6 +635,14 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Public
 
     const bname = (bookmark.name ? `${bookmark.name}` : `${__("reader.navigation.bookmarkTitle")} ${i}`);
 
+    React.useEffect(() => {
+        if (textearearef.current) {
+            textearearef.current.style.height = "auto";
+            textearearef.current.style.height = textearearef.current.scrollHeight + 3 + "px";
+            textearearef.current.focus();
+        }
+    }, [isEdited]);
+
     return (
         <div
             className={stylesPopoverDialog.bookmarks_line}
@@ -651,7 +659,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Public
                                 defaultValue={bname}
                                 className={stylesPopoverDialog.bookmark_textArea}
                             />
-                            <div>
+                            <div style={{display: "flex", gap: "10px"}}>
                                 <button className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={() => { setEdition(false); }}>{__("dialog.cancel")}</button>
                                 <button type="submit"
                                     className={stylesButtons.button_primary_blue}
@@ -659,12 +667,13 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Public
                                     onClick={(e) => { e.preventDefault(); submitBookmark(textearearef?.current?.value || ""); }}
                                 >
                                     <SVG ariaHidden svg={SaveIcon} />
-                                    {__("reader.annotations.saveNote")}
+                                    {__("reader.marks.saveMark")}
                                 </button>
                             </div>
                         </form>
                         :
                         <button
+                            className={stylesReader.bookmarkList_button}
                             onClick={(e) => {
                                 e.stopPropagation();
                                 const closeNavPanel = e.shiftKey && e.altKey ? false : true;
@@ -693,6 +702,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Public
                         <div className={stylesPopoverDialog.bookmark_actions_buttons}>
                             <button title={__("reader.marks.edit")}
                                 onClick={() => { setEdition(true); }}
+                                disabled={isEdited}
                             >
                                 <SVG ariaHidden={true} svg={EditIcon} />
                             </button>

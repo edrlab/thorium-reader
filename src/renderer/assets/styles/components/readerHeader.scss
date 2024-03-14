@@ -213,7 +213,7 @@
 }
 
 .bookmarkButton:focus + label {
-    outline: blue solid 2px !important;
+    outline: var(--color-blue) solid 2px !important;
     outline-offset: -2px;
 
 }
@@ -253,14 +253,30 @@
     align-items: center;
     padding: 20px 0;
     width: 400px;
+    margin-right: 10%;
 
-    &::before {
+    .searchActions {
+        display: flex;
+        align-items: center;
+
+        &::before {
+            content: "";
+            position: absolute;
+            margin-right: 10%;
+            top: 48px;
+            height: 1px;
+            width: 200px;
+            border-bottom: 2px solid var(--color-blue);
+        }
+    }
+
+    form::before {
         content: "";
         position: absolute;
-        right: 150px;
-        top: 48px;
+        margin-right: 10%;
+        top: 37px;
         height: 1px;
-        width: 260px;
+        width: 100%;
         border-bottom: 2px solid var(--color-blue);
     }
 }
