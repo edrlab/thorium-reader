@@ -14,6 +14,8 @@ $color-palette: (
     --reader-fontColor: #000,
     --scrollbar-thumb: #98989d,
     --color-disabled: #61646B,
+    --color-error: #fedbd8,
+    --color-success: #ECFEF7,
   ),
   dark: (
     --color-primary: #e7eaf8,
@@ -28,6 +30,8 @@ $color-palette: (
     --reader-fontColor: #000,
     --scrollbar-thumb: #98989d,
     --color-disabled: #61646B,
+    --color-error: #4f1d1d,
+    --color-success: #121d19,
 
   /*
     --color-primary: #fff,

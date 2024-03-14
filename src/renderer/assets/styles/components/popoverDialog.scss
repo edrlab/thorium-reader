@@ -333,14 +333,21 @@
     height: fit-content;
     padding: 0 10px;
 
-    @media (prefers-color-scheme: dark) {
-      background-color: #2D2D2D;
+    // @media (prefers-color-scheme: dark) {
+    //   background-color: #2D2D2D;
+    // }
+
+    .button_secondary_blue, .button_primary_blue {
+      min-width: unset;
+      width: fit-content;
+      height: 25px;
     }
 
     .bookmark_actions {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-top: 10px;
 
       > div {
         display: inherit;

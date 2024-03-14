@@ -29,13 +29,13 @@ input[type="search"] {
   color: var(--color-primary);
   font-size: 0.9rem;
 
-  @media (prefers-color-scheme: dark) {
-    background-color: #2D2D2D;
+  // @media (prefers-color-scheme: dark) {
+  //   background-color: #2D2D2D;
 
-    &::placeholder {
-      color: white;
-    }
-  }
+  //   &::placeholder {
+  //     color: white;
+  //   }
+  // }
 
   &::placeholder {
     color: var(--color-medium-grey);

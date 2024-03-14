@@ -23,21 +23,27 @@
   align-items: center;
   animation-name: start;
   animation-duration: 0.5s;
+  opacity: 0.9;
 
   &:focus-within {
     border-width: 4px;
   }
 
   &.error {
-    background: #fedbd8;
+    background: var(--color-error);
+    border-color: var(--color-primary);
+
+    .closeButton svg {
+      fill: var(--color-primary);
+    }
   }
 
   &.success {
-    background: #ECFEF7;
+    background: var(--color-success);
 
-    @media (prefers-color-scheme: dark){
-      background-color:  #111d19;
-    }
+    // @media (prefers-color-scheme: dark){
+    //   background-color:  #111d19;
+    // }
   }
 
   p {
@@ -52,6 +58,7 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
+    color: var(--color-primary);
   }
 
   .icon {
