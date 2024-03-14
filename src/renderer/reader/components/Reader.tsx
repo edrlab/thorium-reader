@@ -591,6 +591,13 @@ class Reader extends React.Component<IProps, IState> {
             console.log(`dispatchClick CLICK ACTION ... -- uuid: [${uuid}] handlerState: [${JSON.stringify(handlerState, null, 4)}]`);
 
             this.handleMenuButtonClick(true, "tab-annotation", true, uuid);
+
+            const locator: R2Locator = {
+                href: handlerState.href,
+                locations: handlerState.def.selectionInfo,
+            };
+
+            this.goToLocator(locator);
         });
 
         this.props.dispatchReaderTSXMountedAndPublicationIntoViewportLoaded();
