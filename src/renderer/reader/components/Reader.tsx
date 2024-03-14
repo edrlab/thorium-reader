@@ -592,12 +592,14 @@ class Reader extends React.Component<IProps, IState> {
 
             this.handleMenuButtonClick(true, "tab-annotation", true, uuid);
 
-            this.handleLinkLocator({
-                href,
-                locations: {
-                    cssSelector: handlerState.def.selectionInfo.rangeInfo.startContainerElementCssSelector,
-                },
-            });
+            if (href && handlerState.def.selectionInfo?.rangeInfo) {
+                this.handleLinkLocator({
+                    href,
+                    locations: {
+                        cssSelector: handlerState.def.selectionInfo.rangeInfo.startContainerElementCssSelector,
+                    },
+                });
+            }
         });
 
         this.props.dispatchReaderTSXMountedAndPublicationIntoViewportLoaded();
