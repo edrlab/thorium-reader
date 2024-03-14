@@ -2227,13 +2227,16 @@ class Reader extends React.Component<IProps, IState> {
                 this.state.mediaOverlaysState === MediaOverlaysStateEnum.PAUSED :
                 this.state.ttsState === TTSStateEnum.PAUSED;
 
+            const rtlIsOverridden = this.isRTL(this.isFixedLayout()) && this.props.disableRTLFlip;
+            const left_ = rtlIsOverridden ? !left : left;
+
             if (wasPaused || wasPlaying) {
-                navLeftOrRight(left, false);
+                navLeftOrRight(left_, false);
                 // if (!this.state.r2PublicationHasMediaOverlays) {
                 //     handleTTSPlayDebounced(this);
                 // }
             } else {
-                navLeftOrRight(left, spineNav);
+                navLeftOrRight(left_, spineNav);
             }
         }
     }
