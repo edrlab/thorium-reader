@@ -29,7 +29,7 @@
     }
 
     &:has(.react_aria_Input[data-focused]) {
-      outline: blue solid 2px !important;
+      outline: var(--color-blue) solid 2px !important;
       outline-offset: -2px;
     }
   }

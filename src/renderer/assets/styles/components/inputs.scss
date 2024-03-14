@@ -69,7 +69,7 @@ form[role="search"] {
   height: 30px !important;
 
   &:has(input:focus) {    
-    outline: blue solid 2px !important;
+    outline: var(--color-blue) solid 2px !important;
     outline-offset: -2px;
   }
 }
@@ -96,7 +96,7 @@ select {
   // }
 
   &:has(input:focus), &:has(button:focus) {    
-    outline: blue solid 2px !important;
+    outline: var(--color-blue) solid 2px !important;
     outline-offset: -2px;
   }
 
@@ -131,7 +131,7 @@ select {
   margin-top: 30px;
 
   &:has(input:focus) {    
-    outline: blue solid 2px !important;
+    outline: var(--color-blue) solid 2px !important;
     outline-offset: -2px;
   }
 
