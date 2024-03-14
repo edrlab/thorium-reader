@@ -162,6 +162,13 @@
   .annotation_edit_form {
     display: flex;
     flex-direction: column;
+
+    p {
+      background-color: var(--color-light-grey);
+      width: 95%!important;
+      border-radius: 5px;
+      margin-bottom: 10px!important;
+    }
   
     &_textarea{
       min-width: 95%;
@@ -285,9 +292,9 @@
       margin: 0;
     }
   
-    @media (prefers-color-scheme: dark) {
-      background-color: #2D2D2D;
-    }
+    // @media (prefers-color-scheme: dark) {
+    //   background-color: #2D2D2D;
+    // }
 
     .annnotation_container:has(.annotation_name:focus) {
       outline: 2px solid var(--color-blue);

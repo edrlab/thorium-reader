@@ -224,8 +224,9 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
+                    style={{width: "20px"}}
                     state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                    className={stylesButtons.button_nav_primary}
+                    className={stylesButtons.button_nav_tertiary}
                 >
                     <SVG svg={AvatarIcon} title={__("opds.shelf")} />
                 </Link>
@@ -263,6 +264,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
+                    style={{width: "20px"}}
                     state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                     className={stylesButtons.button_nav_tertiary}
                 >
@@ -299,12 +301,13 @@ class LibraryLayout extends React.Component<IProps, undefined> {
             );
 
             refreshComponet = (
-                <button className={stylesButtons.button_nav_tertiary}>
+                <button className={stylesButtons.button_nav_tertiary} style={{width: "20px", height: "20px"}}>
                     <Link
                         to={{
                             ...this.props.location,
                             pathname: route,
                         }}
+                        style={{height: "unset"}}
                         state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                         className={classNames(stylesButtons.button_refresh)}
                     >

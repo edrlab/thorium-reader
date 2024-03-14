@@ -9,6 +9,8 @@ import * as React from "react";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationInfoOpdsWithRadix, PublicationInfoOpdsWithRadixContent, PublicationInfoOpdsWithRadixTrigger } from "../../dialog/publicationInfos/PublicationInfo";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 
 const OpdsMenu: React.FC<{opdsPublicationView: IOpdsPublicationView}> = (props) => {
     const [__] = useTranslator();
@@ -20,6 +22,7 @@ const OpdsMenu: React.FC<{opdsPublicationView: IOpdsPublicationView}> = (props) 
             >
                 <PublicationInfoOpdsWithRadixTrigger asChild>
                     <button>
+                        <SVG ariaHidden svg={InfoIcon} />
                         {__("opds.menu.aboutBook")}
                     </button>
 

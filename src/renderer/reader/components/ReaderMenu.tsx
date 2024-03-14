@@ -659,7 +659,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Public
                                 defaultValue={bname}
                                 className={stylesPopoverDialog.bookmark_textArea}
                             />
-                            <div style={{display: "flex", gap: "10px"}}>
+                            <div style={{display: "flex", gap: "5px"}}>
                                 <button className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={() => { setEdition(false); }}>{__("dialog.cancel")}</button>
                                 <button type="submit"
                                     className={stylesButtons.button_primary_blue}
