@@ -138,7 +138,7 @@ const Theme = ({theme, set}: {theme: Pick<ReaderConfig, "night" | "sepia">, set:
         )}
         </div> */}
         <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px", marginTop: "20px" }} value={(defaultKey === 2) ? "sepia_option" : (defaultKey === 3) ? "night_option" : "neutral_option"}
-                onValueChange={(option) => set({ night: option === "night",sepia: option === "sepia",  })}
+                onValueChange={(option) => set({ night: option === "night",sepia: option === "sepia"  })}
             >
                 <RadioGroupItem 
                 value="neutral" 

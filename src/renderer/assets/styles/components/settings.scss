@@ -722,14 +722,11 @@ div[data-radix-popper-content-wrapper] {
     border-width: 2px;
     border-style: solid;
     border-color: var(--color-medium-grey);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     width: 85px;
     height: 45px!important;
     min-height: 45px!important;
     text-decoration: none;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0);
+    box-shadow: 0 2px 15px rgb(0 0 0 / 0%);
     transition: all 0.3s;
     padding: 0;
     background-color: var(--color-secondary);
