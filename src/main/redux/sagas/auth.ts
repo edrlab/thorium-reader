@@ -482,6 +482,8 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
                     auth.labels?.password,
                     auth.title,
                     auth.logo?.url,
+                    auth.register?.url,
+                    auth.help,
                     auth.nonce,
                     auth.qop,
                     auth.algorithm,
@@ -516,6 +518,10 @@ interface IOPDSAuthDocParsed {
     } | undefined;
 
     logo?: IOpdsLinkView | undefined;
+
+    register?: IOpdsLinkView | undefined;
+
+    help?: string[] | undefined;
 
     // digest authentication
     // see IWWWAuthenticateDataParsed
@@ -582,7 +588,7 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
     const logo = tryCatchSync(() => {
         const ln = Array.isArray(doc.Links)
             ? doc.Links.find((v) => {
-                debug(v);
+                // debug(v);
                 return (v.Rel || []).includes("logo");
             })
             : undefined;
@@ -594,6 +600,37 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
 
     }, filename_);
 
+    const register = tryCatchSync(() => {
+        const ln = Array.isArray(doc.Links)
+            ? doc.Links.find((v) => {
+                // debug(v);
+                return (v.Rel || []).includes("register");
+            })
+            : undefined;
+        if (ln) {
+            const linkView = viewConvert.convertLinkToView(ln, baseUrl);
+            return linkView;
+        }
+        return undefined;
+
+    }, filename_);
+
+    const helpLinkView = tryCatchSync(() => {
+        const ln = Array.isArray(doc.Links)
+            ? doc.Links.filter((v) => {
+                // debug(v);
+                return (v.Rel || []).includes("help");
+            })
+            : [];
+        if (ln) {
+            const linksView = ln.map((lnItem) => viewConvert.convertLinkToView(lnItem, baseUrl));
+            return linksView;
+        }
+        return undefined;
+
+    }, filename_);
+    const helpStringArray = helpLinkView.map((item) => item.url);
+
     return {
         title: doc.Title || "",
         id: doc.Id || "",
@@ -601,6 +638,8 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
         links,
         labels,
         logo,
+        register,
+        help: helpStringArray,
         nonce: typeof authentication.AdditionalJSON?.nonce === "string" ? authentication.AdditionalJSON.nonce : undefined,
         algorithm: typeof authentication.AdditionalJSON?.algorithm === "string" ? authentication.AdditionalJSON.algorithm : undefined,
         qop: typeof authentication.AdditionalJSON?.qop === "string" ? authentication.AdditionalJSON.qop : undefined,
@@ -759,6 +798,8 @@ const htmlLoginTemplate = (
     passLabel = "password",
     title: string | undefined,
     logoUrl?: string,
+    registerUrl?: string,
+    help?: string[],
     nonce?: string,
     qop?: string,
     algorithm?: string,
@@ -966,6 +1007,8 @@ const htmlLoginTemplate = (
         <h1>${title}</h1>
         <form method="post" action="${urlToSubmit}">
         ${logoUrl ? `<img src="${logoUrl}" alt="login logo">` : ""}
+        ${registerUrl ? `<a href="${registerUrl}">Register</a>` : ""}
+        ${help ? `${help.map((v) => `<p>${v}</p>`)}` : ""}
         <p><input type="text" name="login" value="" placeholder="${loginLabel}"></p>
         <p><input type="password" name="password" value="" placeholder="${passLabel}"></p>
         <p><input hidden type="text" name="nonce" value="${nonce}"></p>
