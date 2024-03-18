@@ -51,6 +51,10 @@
             justify-content: center;
             border-radius: 5px;
 
+            .my_combobox_container {
+                width: unset;
+            }
+
             .menu_button {
                 height: 42px;
                 width: 42px;

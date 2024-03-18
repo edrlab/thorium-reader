@@ -160,7 +160,7 @@
   align-items: center;
 
   &:nth-child(odd) {
-    background-color: #f3f3f3;
+    background-color: var(--color-light-grey);
   }
 }
 

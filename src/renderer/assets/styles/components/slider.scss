@@ -22,6 +22,13 @@
       margin-left: 15px;
     }
   }
+  
+  button:disabled {
+    svg {
+      fill: var(--color-disabled);
+      background-color: var(--color-light-grey);
+    }
+  }
 }
 
 .slider_button {

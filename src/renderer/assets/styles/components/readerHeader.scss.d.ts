@@ -9,6 +9,7 @@ export declare const button_close: string;
 export declare const form_group: string;
 export declare const menu_button: string;
 export declare const menu_option: string;
+export declare const my_combobox_container: string;
 export declare const pdf_options: string;
 export declare const picker_container: string;
 export declare const popover_arrow: string;

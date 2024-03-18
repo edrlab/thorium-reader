@@ -81,7 +81,7 @@ select {
 
 .form_group {
   width: 150px;
-  height: 19px;
+  height: 25px;
   padding:2px;
   border:1px solid var(--color-primary);
   margin: 0;
@@ -112,7 +112,7 @@ select {
   & >input{
       border:none;
       width: calc(100% - 35px);
-      height: 19px;
+      height: 25px;
       margin-left: 30px;
       background-color: var(--color-secondary);
   }
@@ -139,8 +139,8 @@ select {
     height: 14px;
     position: absolute;
     left: 20px;
-    // top: 17px;
     transform: translate(-50%, -50%);
+    top: 50%;
   }
 }
 

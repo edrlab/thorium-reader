@@ -4,6 +4,7 @@ export declare const allBook_table_head: string;
 export declare const allBook_table_wrapper: string;
 export declare const allBooks_header: string;
 export declare const allBooks_header_navigation: string;
+export declare const allBooks_header_navigation_inputs: string;
 export declare const allBooks_header_pagination_arrow: string;
 export declare const allBooks_header_pagination_container: string;
 export declare const allBooks_header_pagination_opds_currentPage: string;

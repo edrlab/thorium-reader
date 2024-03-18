@@ -21,13 +21,25 @@
             margin: 10px 0;
             width: inherit;
 
-            .form_group {
-                width: 370px!important;
-                height: 30px!important;
+            @media screen and (width <= 1024px) {
+                height: 125px;
+            }
+
+            &_inputs {
+                display: flex;
+                align-items: center; 
+                gap: 10px;
 
                 @media screen and (width <= 1024px) {
-                    width: 50%!important;
+                    gap: 30px;
+                    flex-direction: column;
+                    align-items: start;
                 }
+            }
+
+            .form_group { 
+                width: 260px!important;
+                height: 30px!important;
 
                 &:has(input:focus) {
                     outline: var(--color-blue) solid 2px !important;

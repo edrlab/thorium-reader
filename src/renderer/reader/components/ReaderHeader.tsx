@@ -465,7 +465,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         ) : (<></>)
                         } */}
                     </ul>
-
+                    {
+                    this.props.isPdf ? <></> : 
                     <ul className={classNames(stylesReader.tts_toolbar)}>
                         {
                             this.props.isDivina
@@ -740,6 +741,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     </>
                         }
                     </ul>
+                    }
 
                     {/* {
                             this.props.isPdf || this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed" ?

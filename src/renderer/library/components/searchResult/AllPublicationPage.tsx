@@ -1809,7 +1809,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             <div>
                 <h2 className={stylesPublication.allBooks_header}>{__("catalog.allBooks")}</h2>
                 <div className={stylesPublication.allBooks_header_navigation}>
-                    <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
+                    <div className={stylesPublication.allBooks_header_navigation_inputs}>
                         <CellGlobalFilter
                             accessibilitySupportEnabled={props.accessibilitySupportEnabled}
                             preGlobalFilteredRows={tableInstance.preGlobalFilteredRows}

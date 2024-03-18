@@ -68,15 +68,15 @@ class PublicationCard extends React.Component<IProps> {
         const pub = (publicationViewMaybeOpds as PublicationView);
 
         if (pub.isAudio) {
-            pubFormat = "AUDIO";
+            pubFormat = "Audio";
         } else if (pub.isDivina) {
-            pubFormat = "DIVINA";
+            pubFormat = "Divina";
         } else if (pub.isPDF) {
             pubFormat = "PDF";
         } else if (pub.isDaisy) {
             pubFormat = "DAISY";
         } else if (pub.isFixedLayoutPublication) {
-            pubFormat = "EPUB";
+            pubFormat = "EPUB (FXL)";
         } else {
             pubFormat = "EPUB";
         }

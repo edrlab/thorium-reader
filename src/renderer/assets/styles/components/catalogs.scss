@@ -11,6 +11,10 @@
     width: 100%;
     padding: 0;
 
+    @media screen and (width <= 800px) {
+        gap: 40px;
+    }
+
     .catalog_container {
         width: 260px;
         height: 175px;
@@ -90,16 +94,17 @@
         }
     }
 
-    .button_edit {
+    .button_edit, .button_delete {
         position: absolute;
         bottom: 10px;
-        right: 45px;
         color: var(--color-blue);
         transition: 200ms ease-in-out;
         border: 1px solid transparent;
         border-radius: 4px;
         height: 18px;
         width: 18px;
+        padding: 5px;
+        box-sizing: content-box;
 
         &:hover {
             border: 1px solid var(--color-blue);
@@ -107,22 +112,14 @@
         }
     }
 
-    .button_delete {
-        position: absolute;
-        bottom: 10px;
-        right: 15px;
-        fill: var(--color-blue);
-        color: var(--color-blue);
-        transition: 200ms ease-in-out;
-        border: 1px solid transparent;
-        border-radius: 4px;
-        height: 18px;
-        width: 18px;
+    .button_edit {
+        right: 45px;
+    }
 
-        &:hover {
-            border: 1px solid var(--color-blue);
-            background-color: var(--color-light-blue);
-        }
+    .button_delete {
+        right: 15px;
+        height: 16px;
+        width: 16px;
     }
 }
 
