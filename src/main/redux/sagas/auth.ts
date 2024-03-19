@@ -875,8 +875,7 @@ const htmlLoginTemplate = (
         }
 
         .logo {
-            max-width: 150px;
-            max-height: 150px;
+            max-height: 200px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -891,7 +890,7 @@ const htmlLoginTemplate = (
             gap: 10px;
             width: fit-content;
             position: absolute;
-            bottom: -30px;
+            bottom: 20px;
         }
 
         .help_links a {
@@ -915,7 +914,7 @@ const htmlLoginTemplate = (
         }
 
         .login input[type=text], .login input[type=password] {
-            width: 278px;
+            max-width: 350px;
             height: 35px;
         }
 
@@ -944,7 +943,7 @@ const htmlLoginTemplate = (
         input[type=text], input[type=password] {
             margin: 5px;
             padding: 0 10px;
-            width: 200px;
+            width: 300px;
             height: 34px;
             color: #404040;
             background: white;
@@ -1003,7 +1002,7 @@ const htmlLoginTemplate = (
             width: fit-content;
             text-decoration: none;
             color: #1053C8;
-            margin: 5px;
+            margin: 10px 5px 5px;
         }
 
         .lt-ie9 input[type=text], .lt-ie9 input[type=password] {
@@ -1031,7 +1030,7 @@ const htmlLoginTemplate = (
                 <form method="post" action="${urlToSubmit}">
                     <p><input type="text" name="login" value="" placeholder="${loginLabel}"></p>
                     <p><input type="password" name="password" value="" placeholder="${passLabel}"></p>
-                    ${registerUrl ? `<a href="${registerUrl}" target="_blank" class="register_button">Register</a>` : ""}
+                    ${registerUrl ? `<a href="${registerUrl}" target="_blank" class="register_button">${diMainGet("translator").translate("catalog.opds.auth.register")}</a>` : ""}
                     <p><input hidden type="text" name="nonce" value="${nonce}"></p>
                     <p><input hidden type="text" name="qop" value="${qop}"></p>
                     <p><input hidden type="text" name="algorithm" value="${algorithm}"></p>
