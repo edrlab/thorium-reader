@@ -823,58 +823,87 @@ const htmlLoginTemplate = (
     <!-- Custom styles for this template -->
     <style>
     body {
-            font: 13px/20px "Lucida Grande", Tahoma, Verdana, sans-serif;
+            font: 13px/20px Nunito, "Lucida Grande", Tahoma, Verdana, sans-serif;
+            font-weight: 400;
             color: #404040;
-            background: white;
+            background: #ECF2FD;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .login {
-            position: relative;
-            margin: 30px auto;
-            padding: 20px 20px 20px;
-            width: 310px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             background: white;
-            border-radius: 3px;
-            -webkit-box-shadow: 0 0 200px rgba(255, 255, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
-            box-shadow: 0 0 200px rgba(255, 255, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            margin: auto;
+            width: 60vw;
+            min-height: 45vh;
+            height: fit-content;
+            padding: 20px 40px;
+            position: relative;
+            gap: 50px;
+            flex-wrap: wrap;
+
+            @media only screen and (max-width: 700px) {
+                flex-direction: column;
+            }
         }
 
-        .login:before {
-            content: '';
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            bottom: -8px;
-            left: -8px;
-            z-index: -1;
-            background: rgba(0, 0, 0, 0.08);
-            border-radius: 4px;
+        .presentation {
+            display: flex;
+            flex-direction: column;
+            max-height: 45vh;
+            justify-content: start;
+
+            @media only screen and (max-width: 700px) {
+                flex-direction: row;
+                gap: 20px;
+            }
         }
 
-        .login h1 {
-            margin: -20px -20px 21px;
+        .presentation h1 {
             line-height: 40px;
-            font-size: 15px;
+            font-size: 30px;
             font-weight: bold;
             color: #555;
-            text-align: center;
-            text-shadow: 0 1px white;
-            background: #f3f3f3;
-            border-bottom: 1px solid #cfcfcf;
-            border-radius: 3px 3px 0 0;
-            background-image: -webkit-linear-gradient(top, whiteffd, #eef2f5);
-            background-image: -moz-linear-gradient(top, whiteffd, #eef2f5);
-            background-image: -o-linear-gradient(top, whiteffd, #eef2f5);
-            background-image: linear-gradient(to bottom, whiteffd, #eef2f5);
-            -webkit-box-shadow: 0 1px whitesmoke;
-            box-shadow: 0 1px whitesmoke;
+            max-width: 50%;
         }
 
-        .login img {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            width: 50%;
+        .logo {
+            max-width: 150px;
+            max-height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .help_links {
+            display: flex;
+            justify-content: center;
+            padding: 5px;
+            gap: 10px;
+            width: fit-content;
+            position: absolute;
+            bottom: -30px;
+        }
+
+        .help_links a {
+            color: #1053C8;
+        }
+        
+        .help_links a:visited {
+            color: #1053C8;
+        }
+
+        .login form {
+            max-width: 50%;
         }
 
         .login p {
@@ -887,45 +916,14 @@ const htmlLoginTemplate = (
 
         .login input[type=text], .login input[type=password] {
             width: 278px;
-        }
-
-        .login p.remember_me {
-            float: left;
-            line-height: 31px;
-        }
-
-        .login p.remember_me label {
-            font-size: 12px;
-            color: #777;
-            cursor: pointer;
-        }
-
-        .login p.remember_me input {
-            position: relative;
-            bottom: 1px;
-            margin-right: 4px;
-            vertical-align: middle;
+            height: 35px;
         }
 
         .login p.submit {
             text-align: right;
-        }
-
-        .login-help {
-            margin: 20px 0;
-            font-size: 11px;
-            color: white;
-            text-align: center;
-            text-shadow: 0 1px #2a85a1;
-        }
-
-        .login-help a {
-            color: #cce7fa;
-            text-decoration: none;
-        }
-
-        .login-help a:hover {
-            text-decoration: underline;
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
         }
 
         :-moz-placeholder {
@@ -953,73 +951,100 @@ const htmlLoginTemplate = (
             border: 1px solid;
             border-color: #c4c4c4 #d1d1d1 #d4d4d4;
             border-radius: 2px;
-            outline: 5px solid #eff4f7;
             -moz-outline-radius: 3px;
-            -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
         }
 
         input[type=text]:focus, input[type=password]:focus {
-            border-color: #7dc9e2;
-            outline-color: #dceefc;
+            border-color: #1053C8;
+            outline-color: #1053C8;
             outline-offset: 0;
         }
 
-        input[type=submit], input[type=button] {
+        input[type=submit] {
             padding: 0 18px;
             height: 29px;
-            font-size: 12px;
-            font-weight: bold;
-            color: #527881;
-            text-shadow: 0 1px #e3f1f1;
-            background: #cde5ef;
-            border: 1px solid;
-            border-color: #b4ccce #b3c0c8 #9eb9c2;
-            border-radius: 16px;
-            outline: 0;
+            font-size: 14px;
+            color: white;
+            background: #1053C8;
+            border-radius: 15px;
+            border: 1px solid transparent;
             -webkit-box-sizing: content-box;
             -moz-box-sizing: content-box;
             box-sizing: content-box;
-            background-image: -webkit-linear-gradient(top, #edf5f8, #cde5ef);
-            background-image: -moz-linear-gradient(top, #edf5f8, #cde5ef);
-            background-image: -o-linear-gradient(top, #edf5f8, #cde5ef);
-            background-image: linear-gradient(to bottom, #edf5f8, #cde5ef);
-            -webkit-box-shadow: inset 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.15);
-            box-shadow: inset 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.15);
-            padding-left: 1em;
+            padding: 0 1em;
+            transition: 200ms;
         }
 
-        input[type=submit]:active, input[type=button]:active {
-            background: #cde5ef;
-            border-color: #9eb9c2 #b3c0c8 #b4ccce;
-            -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
-            box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
+        input[type=button] {
+            padding: 0 18px;
+            height: 29px;
+            font-size: 14px;
+            color: #1053C8;
+            background: transparent;
+            border: none;
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+            padding: 0 1em;
+            transition: 200ms;
+        }
+
+        input[type=submit]:hover, {
+            background: #ECF2FD;
+            border-color: #1053C8;
+        }
+
+        input[type=button]:hover {
+            background: white;
+        }
+
+        .register_button {
+            display: block;
+            width: fit-content;
+            text-decoration: none;
+            color: #1053C8;
+            margin: 5px;
         }
 
         .lt-ie9 input[type=text], .lt-ie9 input[type=password] {
             line-height: 34px;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex: 1;
+            margin: 10px;
+            flex-wrap: wrap;
         }
     </style>
     </head>
 
     <body class="text-center">
         <div class="login">
-        <h1>${title}</h1>
-        <form method="post" action="${urlToSubmit}">
-        ${logoUrl ? `<img src="${logoUrl}" alt="login logo">` : ""}
-        ${registerUrl ? `<a href="${registerUrl}">Register</a>` : ""}
-        ${help ? `${help.map((v) => `<p>${v}</p>`)}` : ""}
-        <p><input type="text" name="login" value="" placeholder="${loginLabel}"></p>
-        <p><input type="password" name="password" value="" placeholder="${passLabel}"></p>
-        <p><input hidden type="text" name="nonce" value="${nonce}"></p>
-        <p><input hidden type="text" name="qop" value="${qop}"></p>
-        <p><input hidden type="text" name="algorithm" value="${algorithm}"></p>
-        <p><input hidden type="text" name="realm" value="${realm}"></p>
-        <p class="submit">
-        <input type="button" name="cancel" value="${diMainGet("translator").translate("catalog.opds.auth.cancel")}" onClick="window.location.href='${urlToSubmit}';">
-        <input type="submit" name="commit" value="${diMainGet("translator").translate("catalog.opds.auth.login")}">
-        </p>
-        </form>
+            <div class="container">
+                <div class="presentation">
+                    ${logoUrl ? `<img class="logo" src="${logoUrl}" alt="login logo">` : ""}
+                    <h1>${title}</h1>
+                </div>
+                <form method="post" action="${urlToSubmit}">
+                    <p><input type="text" name="login" value="" placeholder="${loginLabel}"></p>
+                    <p><input type="password" name="password" value="" placeholder="${passLabel}"></p>
+                    ${registerUrl ? `<a href="${registerUrl}" target="_blank" class="register_button">Register</a>` : ""}
+                    <p><input hidden type="text" name="nonce" value="${nonce}"></p>
+                    <p><input hidden type="text" name="qop" value="${qop}"></p>
+                    <p><input hidden type="text" name="algorithm" value="${algorithm}"></p>
+                    <p><input hidden type="text" name="realm" value="${realm}"></p>
+                    <p class="submit">
+                        <input type="button" name="cancel" value="${diMainGet("translator").translate("catalog.opds.auth.cancel")}" onClick="window.location.href='${urlToSubmit}';">
+                        <input type="submit" name="commit" value="${diMainGet("translator").translate("catalog.opds.auth.login")}">
+                    </p>
+                </form>
+            </div>
+            <div class="help_links">
+                ${help ? `${help.map((v) => `<a href=${v}>${v}</a>`).join("|")}` : ""}
+            </div>
         </div>
     </body>
 
