@@ -11,7 +11,10 @@
         "toolbar": "toolbar"
     },
     "apiapp": {
-        "noLibraryFound": "No library found ({{- name}})"
+        "noLibraryFound": "No library found ({{- name}})",
+        "howItWorks": "How does it works?",
+        "informations": "Many public libraries and bookstores are adopting OPDS as a standard format to display their catalog on the Web. Thorium can provide access to OPDS 1 and 2 catalogs. It also supports several identification formats associated with OPDS and can therefore provide users with access to their personal library, i.e. the digital books that the user has acquired or borrowed, allowing them to be downloaded and read immediately.",
+        "documentation": "Thorium Documentation"
     },
     "app": {
         "edit": {
@@ -216,7 +219,10 @@
             "title": "Edit an OPDS feed",
             "updateButton": "Edit",
             "url": "Link:"
-        }
+        },
+        "whatIsOpds": "What Is OPDS?",
+        "informations": "The Open Publication Distribution System (OPDS) catalogue format is a way to distribute, discover, and download electronic publications.",
+        "documentation": "OPDS official website"
     },
     "publication": {
         "accessibility": {

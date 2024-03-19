@@ -24,6 +24,7 @@
   animation-name: start;
   animation-duration: 0.5s;
   opacity: 0.9;
+  transition: 300ms ease-in-out;
 
   &:focus-within {
     border-width: 4px;
@@ -59,6 +60,10 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
     color: var(--color-primary);
+  }
+
+  .toast_open {
+    -webkit-line-clamp: unset;
   }
 
   .icon {

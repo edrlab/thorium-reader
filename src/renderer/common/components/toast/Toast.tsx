@@ -40,6 +40,7 @@ interface IProps extends IBaseProps {
 interface IState {
     willLeave: boolean;
     toRemove: boolean;
+    opened: boolean;
 }
 
 export class Toast extends React.Component<IProps, IState> {
@@ -55,6 +56,7 @@ export class Toast extends React.Component<IProps, IState> {
         this.state = {
             willLeave: false,
             toRemove: false,
+            opened: false,
         };
 
         this.handleTransitionEnd = this.handleTransitionEnd.bind(this);
@@ -133,8 +135,15 @@ export class Toast extends React.Component<IProps, IState> {
                 }}
                 onClick={() => {
                     this.cancelTimer(true);
+                    this.setState({ opened : !this.state.opened });
                 }}
                 onMouseOut={() => {
+                    this.triggerTimer(true);
+                    
+                }}
+                onBlur={() => {
+                    this.ignoreTimer = false;
+                    this.setState({ opened : false });
                     this.triggerTimer(true);
                 }}
                 className={classNames(
@@ -152,6 +161,7 @@ export class Toast extends React.Component<IProps, IState> {
                     aria-relevant="all"
                     role="alert"
                     tabIndex={0}
+                    className={ this.state.opened ? stylesToasts.toast_open : ""}
                     onFocus={() => {
                         this.cancelTimer(true);
                     }}

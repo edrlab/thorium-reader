@@ -583,7 +583,7 @@ const ReadingAudio = ({ config: { mediaOverlaysEnableCaptionsMode: captions, med
     ];
 
     return (
-        <div style={{display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px,1fr)", gap: "30px"}}>
+        <div style={{display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px,1fr)"}}>
             {options.map((option) => (
                 <section className={stylesSettings.section} key={option.id}>
                     <div>

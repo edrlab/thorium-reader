@@ -20,8 +20,16 @@ declare namespace typed_i18n {
   (_: "accessibility.searchBook", __?: {}): string;
   (_: "accessibility.skipLink", __?: {}): string;
   (_: "accessibility.toolbar", __?: {}): string;
-  (_: "apiapp", __?: {}): { readonly "noLibraryFound": string };
+  (_: "apiapp", __?: {}): {
+  readonly "noLibraryFound": string,
+  readonly "howItWorks": string,
+  readonly "informations": string,
+  readonly "documentation": string
+};
   (_: "apiapp.noLibraryFound", __?: {}): string;
+  (_: "apiapp.howItWorks", __?: {}): string;
+  (_: "apiapp.informations", __?: {}): string;
+  (_: "apiapp.documentation", __?: {}): string;
   (_: "app", __?: {}): {
   readonly "edit": {
     readonly "copy": string,
@@ -442,7 +450,10 @@ declare namespace typed_i18n {
     readonly "title": string,
     readonly "updateButton": string,
     readonly "url": string
-  }
+  },
+  readonly "whatIsOpds": string,
+  readonly "informations": string,
+  readonly "documentation": string
 };
   (_: "opds.addForm", __?: {}): {
   readonly "addButton": string,
@@ -502,6 +513,9 @@ declare namespace typed_i18n {
   (_: "opds.updateForm.title", __?: {}): string;
   (_: "opds.updateForm.updateButton", __?: {}): string;
   (_: "opds.updateForm.url", __?: {}): string;
+  (_: "opds.whatIsOpds", __?: {}): string;
+  (_: "opds.informations", __?: {}): string;
+  (_: "opds.documentation", __?: {}): string;
   (_: "publication", __?: {}): {
   readonly "accessibility": {
     readonly "accessModeSufficient": { readonly "textual": string },

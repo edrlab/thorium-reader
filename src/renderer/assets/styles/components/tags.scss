@@ -59,11 +59,11 @@
   }
 
   &:hover {
-    background-color: #d0e2f5;
+    background-color: var(--color-secondary);
   }
 
   &.no_hover:hover {
-    background-color: #e7f1fb;
+    background-color: var(--color-secondary);
     cursor: default;
   }
 
@@ -73,7 +73,7 @@
     margin: 0 0 0 5px;
 
     &:hover svg {
-      color: black;
+      color: var(--color-primary);
     }
   }
 
