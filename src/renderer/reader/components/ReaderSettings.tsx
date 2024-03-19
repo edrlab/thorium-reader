@@ -41,6 +41,9 @@ import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/com
 import { createOrGetPdfEventBus } from "../pdf/driver";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+import * as ResetIcon from "readium-desktop/renderer/assets/icons/clock-reverse-icon.svg";
+import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg";
+import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-Bold.svg";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps, IPopoverDialogProps {
@@ -341,10 +344,22 @@ const Slider = ({ option, set }: { option: ITable, set: (a: Pick<ReaderConfig, "
         <section className={stylesSettings.section} key={option.title}>
             <div className={stylesSettings.spacing_heading}>
                 <h4>{option.title}</h4>
-                <p>{currentSliderValue + (option.rem ? "rem" : "")}</p>
+                <p>
+                    {
+                        currentSliderValue === "0" ? "auto" :
+                            currentSliderValue.includes("rem") ?
+                                currentSliderValue :
+                                currentSliderValue + (option.rem ? "rem" : "")
+                    }</p>
             </div>
             <div className={stylesSettings.size_range}>
-                <button onClick={() => click("out")} className={stylesSettings.scale_button}>-</button>
+                <button onClick={() => {
+                    const newValue = "0";
+                    setCurrentSliderValue(newValue);
+                    set({ [option.parameter]: newValue } as Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">);
+                }
+                } className={stylesSettings.reset_button} title="default value"><SVG ariaHidden svg={ResetIcon} /></button>
+                <button onClick={() => click("out")} className={stylesSettings.scale_button}><SVG ariaHidden svg={MinusIcon} /></button>
                 <input
                     id={option.title}
                     type="range"
@@ -359,8 +374,9 @@ const Slider = ({ option, set }: { option: ITable, set: (a: Pick<ReaderConfig, "
                         setCurrentSliderValue(newValue);
                         set({ [option.parameter]: newValue + (option.rem ? "rem" : "") } as Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">);
                     }}
+                    className={currentSliderValue === "0" ? stylesSettings.range_inactive : ""}
                 />
-                <button onClick={() => click("in")} className={stylesSettings.scale_button}>+</button>
+                <button onClick={() => click("in")} className={stylesSettings.scale_button}><SVG ariaHidden svg={PlusIcon} /></button>
             </div>
         </section>
     );
