@@ -351,6 +351,7 @@ async function opdsSetAuthCredentials(
                         } else if (authenticationType === "http://opds-spec.org/auth/oauth/password/apiapp") {
                             payload.client_secret = await initClientSecretToken(authCredentials.id) || "";
                             payload.client_id = authCredentials.id;
+                            payload.grant_type = "password";
                         }
 
                         const { authenticateUrl } = authCredentials || {};
