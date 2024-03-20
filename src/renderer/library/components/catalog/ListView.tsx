@@ -8,7 +8,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.css";
@@ -25,8 +24,6 @@ import { DisplayType, IRouterLocationState } from "../../routing";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    catalogEntries: CatalogEntryView[];
-    tags?: string[];
 }
 
 // IProps may typically extend:
@@ -101,6 +98,8 @@ class CatalogListView extends React.Component<IProps, undefined> {
 
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
+    catalogEntries: state.publication.catalog.entries,
+    tags: state.publication.tag,
 });
 
 export default connect(mapStateToProps)(withTranslator(CatalogListView));

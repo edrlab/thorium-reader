@@ -17,10 +17,11 @@ import {
 import Menu from "readium-desktop/renderer/common/components/menu/Menu";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import GridTagButton from "readium-desktop/renderer/library/components/catalog/GridTagButton";
+import { connect } from "react-redux";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    tags: string[];
     content?: React.ReactElement<{}>;
 }
 // IProps may typically extend:
@@ -28,10 +29,45 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
-class GridTagLayout extends React.Component<IProps> {
+interface IState {
+    tabTags: string[];
+    status: SortStatus;
+}
+
+enum SortStatus {
+    Count,
+    Alpha,
+}
+
+class GridTagLayout extends React.Component<IProps, IState> {
+
+    constructor(props: IProps) {
+        super(props);
+
+        this.state = {
+            tabTags: this.props.tags ? this.props.tags.slice() : [],
+            status: SortStatus.Count,
+        };
+        this.sortByAlpha = this.sortByAlpha.bind(this);
+        this.sortbyCount = this.sortbyCount.bind(this);
+    }
+
+    public componentDidUpdate(oldProps: IProps) {
+        if (this.props.tags !== oldProps.tags) {
+            const { status } = this.state;
+            switch (status) {
+                case SortStatus.Count:
+                    this.sortbyCount();
+                    break;
+                case SortStatus.Alpha:
+                    this.sortByAlpha();
+                    break;
+            }
+        }
+    }
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
@@ -51,7 +87,18 @@ class GridTagLayout extends React.Component<IProps> {
                             }
                             content={
                                 <div className={classNames(stylesDropDown.dropdown_menu, stylesDropDown.dropdown_right)}>
-                                    {this.props.content}
+                                    <button
+                                        role="menuitem"
+                                        onClick={this.sortByAlpha}
+                                    >
+                                        A-Z
+                                    </button>
+                                    <button
+                                        role="menuitem"
+                                        onClick={this.sortbyCount}
+                                    >
+                                        {__("catalog.tagCount")}
+                                    </button>
                                 </div>
                             }
                             dir="right"
@@ -76,6 +123,45 @@ class GridTagLayout extends React.Component<IProps> {
             </section>
         );
     }
+
+    private sortbyCount() {
+        const { tags } = this.props;
+        // WARNING: .sort() is in-place same-array mutation! (not a new array)
+        const tabTags = tags.sort((a, b) => {
+            if (a < b) {
+                return (1);
+            } else if (a > b) {
+                return (-1);
+            }
+            return (0);
+        });
+        this.setState({
+            status: SortStatus.Count,
+            tabTags,
+        });
+    }
+
+    private sortByAlpha() {
+        const { tags } = this.props;
+        // WARNING: .sort() is in-place same-array mutation! (not a new array)
+        const tabTags = tags.sort((a, b) => {
+            if (a > b) {
+                return (1);
+            } else if (a < b) {
+                return (-1);
+            }
+            return (0);
+        });
+        this.setState({
+            status: SortStatus.Alpha,
+            tabTags,
+        });
+    }
 }
 
-export default withTranslator(GridTagLayout);
+const mapStateToProps = (state: ILibraryRootState) => ({
+    tags: state.publication.tag,
+});
+
+
+export default connect(mapStateToProps)(withTranslator(GridTagLayout));
