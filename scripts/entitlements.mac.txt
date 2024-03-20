@@ -1,24 +1,84 @@
+syspolicy_check distribution release/mac/Thorium.app
+
+spctl -a -vvv -t open --context context:primary-signature release/Thorium-2.4.0.dmg
+spctl -a -vvv -t install release/Thorium-2.4.0.dmg
+
+codesign -dv --verbose=4 release/Thorium-2.4.0.dmg
+codesign -dv --verbose=4 release/mac/Thorium.app
+
 <key>com.apple.security.network.client</key>
 <true/>
-<key>com.apple.security.files.user-selected.read-write</key>
-<true/>
-<key>com.apple.security.cs.allow-jit</key>
-<true/>
-<key>com.apple.security.cs.allow-dyld-environment-variables</key>
-<true/>
-<key>com.apple.security.cs.disable-library-validation</key>
-<true/>
-<key>com.apple.security.device.camera</key>
-<true/>
-<key>com.apple.security.device.audio-input</key>
-<true/>
-<key>com.apple.security.device.microphone</key>
-<true/>
+
 <key>com.apple.security.network.server</key>
 <true/>
-<key>com.apple.security.network.client</key>
-<true/>
-<key>com.apple.security.files.user-selected.read-only</key>
-<true/>
+
 <key>com.apple.security.files.user-selected.read-write</key>
 <true/>
+
+<key>com.apple.security.files.user-selected.read-only</key>
+<true/>
+
+<key>com.apple.security.device.microphone</key>
+<true/>
+
+https://developer.apple.com/documentation/security/hardened_runtime
+
+Runtime Exceptions
+
+Allow Execution of JIT-compiled Code Entitlement
+A Boolean value that indicates whether the app may create writable and executable memory using the MAP_JIT flag.
+Key: com.apple.security.cs.allow-jit
+
+Allow Unsigned Executable Memory Entitlement
+A Boolean value that indicates whether the app may create writable and executable memory without the restrictions imposed by using the MAP_JIT flag.
+Key: com.apple.security.cs.allow-unsigned-executable-memory
+
+Allow DYLD Environment Variables Entitlement
+A Boolean value that indicates whether the app may be affected by dynamic linker environment variables, which you can use to inject code into your app’s process.
+Key: com.apple.security.cs.allow-dyld-environment-variables
+
+Disable Library Validation Entitlement
+A Boolean value that indicates whether the app loads arbitrary plug-ins or frameworks, without requiring code signing.
+Key: com.apple.security.cs.disable-library-validation
+
+Disable Executable Memory Protection Entitlement
+A Boolean value that indicates whether to disable all code signing protections while launching an app, and during its execution.
+Key: com.apple.security.cs.disable-executable-page-protection
+
+Debugging Tool Entitlement
+A Boolean value that indicates whether the app is a debugger and may attach to other processes or get task ports.
+Key: com.apple.security.cs.debugger
+
+Resource Access
+
+Audio Input Entitlement
+A Boolean value that indicates whether the app may record audio using the built-in microphone and access audio input using Core Audio.
+Key: com.apple.security.device.audio-input
+
+Camera Entitlement
+A Boolean value that indicates whether the app may interact with the built-in and external cameras, and capture movies and still images.
+Key: com.apple.security.device.camera
+
+Location Entitlement
+A Boolean value that indicates whether the app may access location information from Location Services.
+Key: com.apple.security.personal-information.location
+
+Address Book Entitlement
+
+A Boolean value that indicates whether the app may have read-write access to contacts in the user's address book.
+Key: com.apple.security.personal-information.addressbook
+
+Calendars Entitlement
+
+A Boolean value that indicates whether the app may have read-write access to the user's calendar.
+Key: com.apple.security.personal-information.calendars
+
+Photos Library Entitlement
+
+A Boolean value that indicates whether the app has read-write access to the user's Photos library.
+Key: com.apple.security.personal-information.photos-library
+
+Apple Events Entitlement
+
+A Boolean value that indicates whether the app may prompt the user for permission to send Apple events to other apps.
+Key: com.apple.security.automation.apple-events

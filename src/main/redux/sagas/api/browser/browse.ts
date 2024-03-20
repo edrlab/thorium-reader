@@ -88,9 +88,6 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
                         contentType: ContentType.Opds2,
                         isFailure: false,
                         isSuccess: true,
-                        /**
-                         * Why do I need a ts-expect-error flag : That's a very good question !
-                        @ts-expect-error */
                         response: {
                             json: async () => {
                                 return {
@@ -120,9 +117,6 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
                         contentType: ContentType.Opds2Auth,
                         isFailure: false,
                         isSuccess: true,
-                        /**
-                         * I need it because I'm too lazy to complete the type
-                        @ts-expect-error */
                         response: {
                             json: async () => {
                                 return {
