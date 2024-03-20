@@ -176,6 +176,31 @@
     }
 }
 
+.col_filter .entryList_ul {
+    gap: unset;
+
+    .entryList_item {
+        height: 35px;
+        border-color: transparent;
+
+        a {
+            justify-content: unset;
+
+            &:hover {
+                background-color: unset;
+            }
+        }
+
+        &::after {
+            border: none;
+        }
+        
+        &:hover {
+            background-color: var(--color-light-blue)!important;
+        }
+    }
+}
+
 .catalog_infos_text {
     margin-bottom: 30px;
     font-size: 14px;

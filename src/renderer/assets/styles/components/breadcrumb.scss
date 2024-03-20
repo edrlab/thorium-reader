@@ -29,6 +29,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     text-wrap: nowrap;
+    margin: 0 10px;
   }
 
   & .breadcrumb_icon {
@@ -54,19 +55,33 @@
     height: 32px;
     padding: 0 5px;
     margin: 0 10px;
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    svg {
+      width: 20px;
+    }
+
+    &:hover {
+      background-color: var(--color-secondary);
+      border-color: var(--color-blue);
+    }
 
     p {
       margin: auto;
-    }
-    
-    & svg {
-      margin: 0 0 0 5px;
-      color: var(--color-blue);
     }
 
     & + .button_transparency {
       margin-left: -10px;
     }
+  }
+
+   svg {
+    height: 20px;
+    color: var(--color-blue);
   }
 }
 
