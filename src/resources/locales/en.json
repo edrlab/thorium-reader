@@ -334,7 +334,9 @@
             "skip": "Skippability",
             "speed": "Readaloud playback rate",
             "stop": "Stop Readaloud",
-            "title": "Readaloud"
+            "title": "Readaloud",
+            "captionsDescription": "Scroll through text, focusing on each paragraph automatically.",
+            "skipDescription": "Hide auxiliary contents authored as footnotes, endnotes, pagebreaks and asides."
         },
         "navigation": {
             "annotationTitle": "annotation",
@@ -450,7 +452,8 @@
             "sentenceDetect": "Split TTS text",
             "speed": "Text To Speech playback rate",
             "stop": "Stop Text To Speech",
-            "voice": "Text To Speech voice"
+            "voice": "Text To Speech voice",
+            "sentenceDetectDescription": "focuses phrase by phrase"
         }
     },
     "settings": {

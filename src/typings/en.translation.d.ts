@@ -710,7 +710,9 @@ declare namespace typed_i18n {
     readonly "skip": string,
     readonly "speed": string,
     readonly "stop": string,
-    readonly "title": string
+    readonly "title": string,
+    readonly "captionsDescription": string,
+    readonly "skipDescription": string
   },
   readonly "navigation": {
     readonly "annotationTitle": string,
@@ -819,7 +821,8 @@ declare namespace typed_i18n {
     readonly "sentenceDetect": string,
     readonly "speed": string,
     readonly "stop": string,
-    readonly "voice": string
+    readonly "voice": string,
+    readonly "sentenceDetectDescription": string
   }
 };
   (_: "reader.annotations", __?: {}): {
@@ -884,7 +887,9 @@ declare namespace typed_i18n {
   readonly "skip": string,
   readonly "speed": string,
   readonly "stop": string,
-  readonly "title": string
+  readonly "title": string,
+  readonly "captionsDescription": string,
+  readonly "skipDescription": string
 };
   (_: "reader.media-overlays.activate", __?: {}): string;
   (_: "reader.media-overlays.captions", __?: {}): string;
@@ -896,6 +901,8 @@ declare namespace typed_i18n {
   (_: "reader.media-overlays.speed", __?: {}): string;
   (_: "reader.media-overlays.stop", __?: {}): string;
   (_: "reader.media-overlays.title", __?: {}): string;
+  (_: "reader.media-overlays.captionsDescription", __?: {}): string;
+  (_: "reader.media-overlays.skipDescription", __?: {}): string;
   (_: "reader.navigation", __?: {}): {
   readonly "annotationTitle": string,
   readonly "backHomeTitle": string,
@@ -1140,7 +1147,8 @@ declare namespace typed_i18n {
   readonly "sentenceDetect": string,
   readonly "speed": string,
   readonly "stop": string,
-  readonly "voice": string
+  readonly "voice": string,
+  readonly "sentenceDetectDescription": string
 };
   (_: "reader.tts.activate", __?: {}): string;
   (_: "reader.tts.default", __?: {}): string;
@@ -1152,6 +1160,7 @@ declare namespace typed_i18n {
   (_: "reader.tts.speed", __?: {}): string;
   (_: "reader.tts.stop", __?: {}): string;
   (_: "reader.tts.voice", __?: {}): string;
+  (_: "reader.tts.sentenceDetectDescription", __?: {}): string;
   (_: "settings", __?: {}): {
   readonly "auth": { readonly "wipeData": string },
   readonly "keyboard": {

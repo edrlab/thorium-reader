@@ -554,7 +554,7 @@ const ReadingAudio = ({ config: { mediaOverlaysEnableCaptionsMode: captions, med
             id: "captions",
             name: "Captions",
             label: `${__("reader.media-overlays.captions")}`,
-            description: "Mauris aliquet ligula ac augue aliquet sollicitudin. Nunc eget hendrerit lectus.",
+            description: `${__("reader.media-overlays.captionsDescription")}`,
             checked: captions,
             onChange: () => {
                 set({ mediaOverlaysEnableCaptionsMode: !captions });
@@ -564,7 +564,7 @@ const ReadingAudio = ({ config: { mediaOverlaysEnableCaptionsMode: captions, med
             id: "skippability",
             name: "Skippability",
             label: `${__("reader.media-overlays.skip")}`,
-            description: "Ut ex justo, rhoncus vitae magna eget, fringilla ullamcorper ligula.",
+            description: `${__("reader.media-overlays.skipDescription")}`,
             checked: skippability,
             onChange: () => {
                 set({ mediaOverlaysEnableSkippability: !skippability });
@@ -574,7 +574,7 @@ const ReadingAudio = ({ config: { mediaOverlaysEnableCaptionsMode: captions, med
             id: "splitTTStext",
             name: "splitTTStext",
             label: `${__("reader.tts.sentenceDetect")}`,
-            description: "Nunc at purus ut mauris tincidunt egestas non at velit. In dolor massa, commodo at diam a, dictum faucibus sem.",
+            description: `${__("reader.tts.sentenceDetectDescription")}`,
             checked: splitTTStext,
             onChange: () => {
                 set({ ttsEnableSentenceDetection: !splitTTStext });
