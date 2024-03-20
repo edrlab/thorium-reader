@@ -2,7 +2,7 @@
 
 ## Summary
 
-Version `2.4.0` was released on **01 March 2024**.
+Version `2.4.0` was released on **20 March 2024**.
 
 This release includes the following (notable) new features, improvements and bug fixes:
 
@@ -27,6 +27,7 @@ This release includes the following (notable) new features, improvements and bug
 * Internal changes in preparation for a significant GUI refactoring which will improve styling, colour themes, etc. (PostCSS deprecation, introduction of SASS toolchain, new UI libraries for popup modals, etc.)
 * Fixed Windows filesystem bug (forbidden characters), improved "save as" file selector used for exporting publications.
 * Fixed occasional OPDS authentication bug, and display of navigation history / trail.
+* Fixed missing APIAPP authentication request header (grant_type=password)
 
 (previous [v2.3.0 changelog](./CHANGELOG-v2.3.0.md))
 
@@ -35,9 +36,18 @@ This release includes the following (notable) new features, improvements and bug
 Git commit diff since `v2.3.0`:
 https://github.com/edrlab/thorium-reader/compare/v2.3.0...v2.4.0
 
-=> **120** GitHub Git commits:
-
-* [(_)](https://github.com/edrlab/thorium-reader/commit/a2000cc065ed71eda5af177912cc003aa7d8e47b) __(HEAD -> develop, origin/develop, origin/HEAD) fix(UI):__ radio control label width
+=> **129** GitHub Git commits:
+* [(_)](https://github.com/edrlab/thorium-reader/commit/caa93255eaf51bd16769d27702fc5fc79b285b6c) __fix:__ missing grant_type=password in APIAPP authentication request header
+* [(_)](https://github.com/edrlab/thorium-reader/commit/ad41fc04a8a7a2debaa20a17ab979b210b59f2e8) __fix:__ RTL override (UI mirroring) left/right keyboard arrows and icon buttons were inversed
+* [(_)](https://github.com/edrlab/thorium-reader/commit/928649d8cb847017594b4eb7c868e03e188ccc58) __chore(NPM):__ package updates
+* [(_)](https://github.com/edrlab/thorium-reader/commit/2075a51c527e0ad113c9b6d1b71c5118ed09ff22) __fix(l10n):__ Swedish 'sv' locale translation updates (PR [#2074](https://github.com/edrlab/thorium-reader/pull/2074))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/4444e4d7154a0a53a82cb9cf74a9fbd309e7a397) __chore(NPM):__ package updates
+* [(_)](https://github.com/edrlab/thorium-reader/commit/67d3a5b290164de5682a25a66d02e08d9420f65b) __fix(CSS):__ Nunito font loading, works with production packaged app and with WebPack development server
+* [(_)](https://github.com/edrlab/thorium-reader/commit/82ff1d57abc5ca2120891d30a4b544d52accb55a) __fix(CSS):__ prevent overflow scroll when dragging video Media Overlays frame [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/9d6491b363b9480649872c69fc8a541ddaa061c1) __chore(dev):__ enable test highlights feature in DEV and CI modes.
+* [(_)](https://github.com/edrlab/thorium-reader/commit/cbc9ffc055a9b48beaf6b76a05aa84ad662b61e4) __chore(dev):__ fixed out of date Electron rebuild versions (non critical, as unused), fixed GitHub Actions Continuous Integration flag for debugger / web inspector mode (not quite like command line DEV, strictly-speaking this is production + packaged build which accesses the user's prod database, but we enable devtools), removed unused legacy database code (mkdir)
+* [(_)](https://github.com/edrlab/thorium-reader/commit/186ab00292dff7516bbff0cf81e2ae5d2e605f2e) __chore(release):__ v2.4.0 changelog
+* [(_)](https://github.com/edrlab/thorium-reader/commit/a2000cc065ed71eda5af177912cc003aa7d8e47b) __fix(UI):__ radio control label width
 * [(_)](https://github.com/edrlab/thorium-reader/commit/9601d5eda6128cce1593956f64b17bf4ba2ae879) __feat(l10n):__ Slovenian / Slovene locale, better doc. of language names (PR [#2071](https://github.com/edrlab/thorium-reader/pull/2071) )
 * [(_)](https://github.com/edrlab/thorium-reader/commit/d301da83f5f3222c2738e46a3c606c324bd2b97e) __fix(l10n):__ changed Japanese-related translations
 * [(_)](https://github.com/edrlab/thorium-reader/commit/f6eb6a4f102799f15438ee4692af5fea054c902e) __feat:__ option to hide Japanese Ruby superscript
