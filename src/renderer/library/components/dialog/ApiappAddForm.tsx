@@ -149,7 +149,7 @@ const ApiappAddForm = () => {
                         <p>
                         {__("apiapp.informations")}
                         </p>
-                        <a href="https://thorium.edrlab.org/docs/220_organizing/222_catalogs/">
+                        <a href="https://thorium.edrlab.org/docs/">
                         {__("apiapp.documentation")}
                             <SVG ariaHidden svg={FollowLinkIcon} />
                         </a>

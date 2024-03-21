@@ -241,9 +241,22 @@ nav + nav + .breadcrumb + .main {
   }
 }
 
+.heading_link:not(:has(+ .slider)) {
+  font-style: italic;
+
+  span {
+    color: var(--color-medium-grey);
+  }
+
+  a {
+    cursor: not-allowed;
+    background-color: unset;
+  }
+}
+
 .heading_link a {
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
   align-items: center;
   border-bottom: 3px solid var(--color-light-grey);
   position: relative;

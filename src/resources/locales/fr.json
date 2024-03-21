@@ -86,7 +86,9 @@
             "auth": {
                 "cancel": "Annuler",
                 "login": "Connexion",
-                "register": "Créer un compte"
+                "register": "Créer un compte",
+                "username": "Nom d'utilisateur / Adresse email",
+                "password": "Mot de passe"
             },
             "info": {
                 "availableSince": "Depuis le",

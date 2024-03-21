@@ -137,7 +137,9 @@ declare namespace typed_i18n {
     readonly "auth": {
       readonly "cancel": string,
       readonly "login": string,
-      readonly "register": string
+      readonly "register": string,
+      readonly "username": string,
+      readonly "password": string
     },
     readonly "info": {
       readonly "availableSince": string,
@@ -215,7 +217,9 @@ declare namespace typed_i18n {
   readonly "auth": {
     readonly "cancel": string,
     readonly "login": string,
-    readonly "register": string
+    readonly "register": string,
+    readonly "username": string,
+    readonly "password": string
   },
   readonly "info": {
     readonly "availableSince": string,
@@ -239,11 +243,15 @@ declare namespace typed_i18n {
   (_: "catalog.opds.auth", __?: {}): {
   readonly "cancel": string,
   readonly "login": string,
-  readonly "register": string
+  readonly "register": string,
+  readonly "username": string,
+  readonly "password": string
 };
   (_: "catalog.opds.auth.cancel", __?: {}): string;
   (_: "catalog.opds.auth.login", __?: {}): string;
   (_: "catalog.opds.auth.register", __?: {}): string;
+  (_: "catalog.opds.auth.username", __?: {}): string;
+  (_: "catalog.opds.auth.password", __?: {}): string;
   (_: "catalog.opds.info", __?: {}): {
   readonly "availableSince": string,
   readonly "availableState": {

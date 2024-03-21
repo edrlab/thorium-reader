@@ -86,7 +86,9 @@
             "auth": {
                 "cancel": "Cancel",
                 "login": "Login",
-                "register": "Register"
+                "register": "Register",
+                "username": "Username / Email Address",
+                "password": "Password"
             },
             "info": {
                 "availableSince": "Since",
