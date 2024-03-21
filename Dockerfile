@@ -1,10 +1,10 @@
 # Jammy Jellyfish
 # GLIBC 2.32
-FROM ubuntu:22.04
+# FROM ubuntu:22.04
 
 # Focal Fossa
 # GLIBC 2.31
-# FROM ubuntu:20.04
+FROM ubuntu:20.04
 
 # Bionic Beaver
 # GLIBC 2.27
@@ -99,7 +99,7 @@ USER notroot
 
 ARG BUST_CACHE
 RUN cd /THORIUM/ &&\
-    npm i
+    USE_HARD_LINKS=false npm i
 
 ARG BUST_CACHE
 RUN cd /THORIUM/ &&\
