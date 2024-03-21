@@ -22,11 +22,14 @@
       margin-left: 15px;
     }
   }
+
+  > button {
+    display: flex;
+  }
   
   button:disabled {
     svg {
       fill: var(--color-disabled);
-      background-color: var(--color-light-grey);
     }
   }
 }
@@ -35,6 +38,9 @@
   &_prev {
   right: 30px;
   transform: translateY(-50%) rotateY(180deg);
+  svg {
+    margin: auto;
+  }
   }
 
   &_next {

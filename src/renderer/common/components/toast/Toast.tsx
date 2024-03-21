@@ -187,22 +187,28 @@ export class Toast extends React.Component<IProps, IState> {
                         this.triggerTimer(true);
                     }}
                 */}
+                {!this.state.opened ? 
                 <button
                     onFocus={() => {
                         this.cancelTimer(true);
                     }}
-                    onClick={() => this.handleClose()}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        this.handleClose();
+                    }}
                     className={stylesToasts.closeButton}
                     title={this.props.__("accessibility.closeDialog")}
                 >
                     <SVG ariaHidden={true} svg={QuitIcon}/>
                 </button>
+                : <></>}
             </div>
         );
     }
 
     private handleClose() {
         this.setState({ willLeave: true });
+        this.setState({ opened : false });
     }
 
     private handleTransitionEnd() {

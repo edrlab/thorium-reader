@@ -886,15 +886,15 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
             // textAlign: props.displayType === DisplayType.Grid ? "justify" : "start",
             textAlign: "start",
         }}>
-        <p>{props.value}</p>
+        <p dangerouslySetInnerHTML={{ __html: props.value }}></p>
         {props.value ?
             <Popover.Root>
                 <Popover.Trigger>
                     <SVG ariaHidden svg={ChevronDown} />
                 </Popover.Trigger>
                 <Popover.Portal>
-                    <Popover.Content>
-                        <p className={stylesDropDown.dropdown_description}>{props.value}</p>
+                    <Popover.Content collisionPadding={50} avoidCollisions>
+                        <p className={stylesDropDown.dropdown_description} dangerouslySetInnerHTML={{ __html: props.value }}></p>
                         <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
                     </Popover.Content>
                 </Popover.Portal>

@@ -932,7 +932,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
                                             right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
                                             left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
-                                            height: isDockedMode && isOnSearch && "calc(100dvh - 144px)",
+                                            height: isDockedMode && isOnSearch && "calc(100dvh - 140px)",
+                                            marginTop: isDockedMode && isOnSearch ? "0" : "50px",
                                         }}
                                     >
                                         <ReaderMenu {...this.props.readerMenuProps}
@@ -973,7 +974,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
                                             right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
                                             left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
-                                            height: isDockedMode && isOnSearch && "calc(100dvh - 144px)",
+                                            height: isDockedMode && isOnSearch && "calc(100dvh - 140px)",
+                                            marginTop: isDockedMode && isOnSearch ? "0" : "50px",
                                         }}
                                     >
                                         <ReaderSettings {...this.props.ReaderSettingsProps} {...this.props.readerPopoverDialogContext} handleSettingsClick={this.props.handleSettingsClick} />
