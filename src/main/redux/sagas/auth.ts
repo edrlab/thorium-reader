@@ -857,6 +857,7 @@ const htmlLoginTemplate = (
                 border-radius: 20px;
                 margin: auto;
                 width: 60vw;
+                max-width: 700px;
                 min-height: 35vh;
                 height: fit-content;
                 padding: 20px 40px;
@@ -902,7 +903,7 @@ const htmlLoginTemplate = (
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                gap: 30px;
+                gap: 50px;
 
                 @media only screen and (max-width: 1000px) {
                     gap: unset;
@@ -939,17 +940,36 @@ const htmlLoginTemplate = (
                 flex: 2;
                 border-bottom: 1px solid #e5e5e5;
                 width: 100%;
+                align-items: end;
+                justify-content: center;
+                display: flex;
+                flex-direction: column;
 
                 @media only screen and (max-width: 1000px) {
                     border: none;
+                    align-items: start;
                 }
             }
     
             .login p {
-                margin: 20px 0 0;
+                margin: 0;
                 position: relative;
+                max-width: 400px;
+                width: 100%;
             }
-    
+
+            .login p:has(input[name=login]) {
+                margin: 20px 0 10px;
+            }
+
+            .login p:has(input[name=password]):has(+ .register_button) {
+                margin: 10px 0 0; 
+            }
+
+            .login p:has(input[name=password]) {
+                margin: 10px 0;
+            }
+
             .login p label {
                 position: absolute;
                 top: -8px;
@@ -1014,10 +1034,11 @@ const htmlLoginTemplate = (
                 display: flex;
                 align-items: center;
                 gap: 5px;
-                width: fit-content;
+                width: 100%;
+                max-width: 400px;
                 text-decoration: none;
                 color: #1053C8;
-                margin: 10px 5px 5px;
+                margin: 5px 5px 10px;
             }
     
             .register_button svg {
@@ -1151,13 +1172,15 @@ const htmlLoginTemplate = (
                         <h1>${title}</h1>
                     </div>
                     <div class="content_wrapper">
-                        <div class="content_informations">
+                    ${(logoUrl || help.length > 0) ? 
+                        `<div class="content_informations">
                             ${logoUrl ? `<img class="logo" src="${logoUrl}" alt="login logo">` : ""}
                             <div class="help_links">
                                 ${help ? `${help.map((v) => `<a href=${v}>${v}</a>`).join("")}` : ""}
                             </div>
-                        </div>
-                        <form method="post" action="${urlToSubmit}">
+                        </div>`
+                        : ""}
+                        <form method="post" action="${urlToSubmit}" style="align-items: ${!(logoUrl || help.length > 0) ? "center" : "end"}">
                             <p>
                                 <input type="text" name="login" value="" required>
                                     ${AvatarIcon}

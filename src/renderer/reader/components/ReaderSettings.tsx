@@ -43,7 +43,7 @@ import { MySelectProps, Select } from "readium-desktop/renderer/common/component
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as ResetIcon from "readium-desktop/renderer/assets/icons/clock-reverse-icon.svg";
 import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg";
-import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-Bold.svg";
+import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-bold.svg";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps, IPopoverDialogProps {
