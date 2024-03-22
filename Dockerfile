@@ -1,10 +1,10 @@
 # Jammy Jellyfish
 # GLIBC 2.32
-FROM ubuntu:22.04
+# FROM ubuntu:22.04
 
 # Focal Fossa
 # GLIBC 2.31
-# FROM ubuntu:20.04
+FROM ubuntu:20.04
 
 # Bionic Beaver
 # GLIBC 2.27
@@ -96,6 +96,12 @@ RUN chown -R notroot:notroot /THORIUM/ &&\
     ls -als /THORIUM
 
 USER notroot
+
+# use this only for dev/debug builds! (simulates CI)
+# ENV GITHUB_TOKEN_RELEASE_PUBLISH=xyz
+
+# Electron Builder workaround
+# ENV USE_HARD_LINKS="false"
 
 ARG BUST_CACHE
 RUN cd /THORIUM/ &&\
