@@ -42,6 +42,8 @@ import { OpdsService } from "./services/opds";
 // Logger
 const debug = debug_("readium-desktop:main:di");
 
+const FORCE_PROD_DB_IN_DEV = false;
+
 export const CONFIGREPOSITORY_REDUX_PERSISTENCE = "CONFIGREPOSITORY_REDUX_PERSISTENCE";
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -56,7 +58,7 @@ if (!fs.existsSync(userDataPath)) {
 
 const configDataFolderPath = path.join(
     userDataPath,
-    `config-data-json${(_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "-dev" : ""}`,
+    `config-data-json${!FORCE_PROD_DB_IN_DEV && (_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "-dev" : ""}`,
 );
 if (!fs.existsSync(configDataFolderPath)) {
     fs.mkdirSync(configDataFolderPath);
@@ -135,7 +137,7 @@ const opdsFeedRepository = new OpdsFeedRepository();
 // Create filesystem storage for publications
 const publicationRepositoryPath = path.join(
     userDataPath,
-    (_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "publications-dev" : "publications",
+    !FORCE_PROD_DB_IN_DEV && (_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "publications-dev" : "publications",
 );
 
 if (!fs.existsSync(publicationRepositoryPath)) {
