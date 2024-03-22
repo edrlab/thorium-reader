@@ -95,8 +95,11 @@ class Cover extends React.Component<IProps, IState> {
     public render() {
         const { publicationViewMaybeOpds, translator } = this.props;
 
+        console.log(this.props);
+
         if (this.state.imgUrl) {
             return (
+                <>
                 <img
                     tabIndex={(this.props.imgRadixProp || this.props.onKeyPress) ? 0 : -1}
                     className={stylesPublications.cover_img}
@@ -110,6 +113,11 @@ class Cover extends React.Component<IProps, IState> {
                     onError={this.imageOnError}
                     {...this.props.imgRadixProp}
                 />
+                {/* {!this.props.publicationViewMaybeOpds.lastReadTimeStamp ? 
+                <div className={stylesPublications.corner}></div> 
+                : <></>} */}
+                <div className={stylesPublications.gradient}></div>
+                </>
             );
         }
 
@@ -135,6 +143,10 @@ class Cover extends React.Component<IProps, IState> {
                     </p>
                     <p aria-hidden>{authors}</p>
                 </div>
+                {/* {!this.props.publicationViewMaybeOpds.lastReadTimeStamp ? 
+                <div className={stylesPublications.corner}></div> 
+                : <></>} */}
+                <div className={stylesPublications.gradient}></div>
             </div>
         );
 
