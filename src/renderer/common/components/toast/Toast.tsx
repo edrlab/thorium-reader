@@ -13,6 +13,7 @@ import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 
 import { TranslatorProps, withTranslator } from "../hoc/translator";
 
@@ -187,7 +188,6 @@ export class Toast extends React.Component<IProps, IState> {
                         this.triggerTimer(true);
                     }}
                 */}
-                {!this.state.opened ? 
                 <button
                     onFocus={() => {
                         this.cancelTimer(true);
@@ -199,9 +199,11 @@ export class Toast extends React.Component<IProps, IState> {
                     className={stylesToasts.closeButton}
                     title={this.props.__("accessibility.closeDialog")}
                 >
-                    <SVG ariaHidden={true} svg={QuitIcon}/>
+                    {this.state.opened ?
+                    <SVG ariaHidden={true} svg={ChevronDownIcon}/>
+                    :
+                    <SVG ariaHidden={true} svg={QuitIcon}/>}
                 </button>
-                : <></>}
             </div>
         );
     }

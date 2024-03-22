@@ -93,6 +93,7 @@ import { useSearchParams } from "react-router-dom";
 // import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+import AboutThoriumButton from "../catalog/AboutThoriumButton";
 // import GridTagButton from "../catalog/GridTagButton";
  
 // import {
@@ -2145,6 +2146,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                             );
                         })}</tbody>
                 </table>
+                <AboutThoriumButton />
             </div>
         </>
     );

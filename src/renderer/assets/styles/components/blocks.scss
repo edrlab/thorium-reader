@@ -43,12 +43,12 @@
   flex-direction: column;
   justify-content: center;
   text-align: center;
-  border: 1px #5c5c5c dashed;
+  border: 1px var(--color-disabled) dashed;
   min-height: 17rem;
   max-width: 43rem;
   margin: 2rem auto;
   box-sizing: border-box;
-  color: #5c5c5c;
+  color: var(--color-disabled);
 
   & p {
     font-size: 1.1rem;

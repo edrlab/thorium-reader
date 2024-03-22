@@ -36,8 +36,9 @@
 
 .slider_button {
   &_prev {
-  right: 30px;
+  right: 40px;
   transform: translateY(-50%) rotateY(180deg);
+
   svg {
     margin: auto;
   }

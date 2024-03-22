@@ -52,7 +52,7 @@ const LanguageSettings: React.FC<{}> = () => {
     const currentLanguageISO = locale as keyof typeof AvailableLanguages;
     const currentLanguageString = AvailableLanguages[currentLanguageISO];
     const dispatch = useDispatch();
-    const [options] = React.useState(() => Object.entries(AvailableLanguages).map(([k,v], i) => ({id: i, name: v, iso: k})));
+    const [options] = React.useState(() => Object.entries(AvailableLanguages).sort().map(([k,v], i) => ({id: i, name: v, iso: k})));
     const setLang = (localeSelected: React.Key) => {
 
         if (typeof localeSelected !== "number") return;

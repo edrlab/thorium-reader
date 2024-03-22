@@ -31,6 +31,7 @@ export declare const R2_CSS_CLASS__FORCE_NO_TARGET_OUTLINE: string;
 export declare const R2_CSS_CLASS__KEYBOARD_INTERACT: string;
 export declare const readium2ElectronAnimation_TARGET: string;
 export declare const rotate180: string;
+export declare const slider: string;
 export declare const text_center: string;
 export declare const text_right: string;
 export declare const visibility_hidden: string;
