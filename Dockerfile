@@ -97,9 +97,15 @@ RUN chown -R notroot:notroot /THORIUM/ &&\
 
 USER notroot
 
+# use this only for dev/debug builds! (simulates CI)
+# ENV GITHUB_TOKEN_RELEASE_PUBLISH=xyz
+
+# Electron Builder workaround
+# ENV USE_HARD_LINKS="false"
+
 ARG BUST_CACHE
 RUN cd /THORIUM/ &&\
-    USE_HARD_LINKS=false npm i
+    npm i
 
 ARG BUST_CACHE
 RUN cd /THORIUM/ &&\

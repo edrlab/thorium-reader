@@ -25,6 +25,7 @@ env:
 # secrets.GITHUB_TOKEN is restricted by default instead of permissive, so it does not allow release publishing. We can use a Personal Access Token with limited scope and expiration, or configure the token for this workflow using the 'permissions' key
 #  GITHUB_TOKEN_RELEASE_PUBLISH: ${{ secrets.RELEASE_PUBLISH }}
   GITHUB_TOKEN_RELEASE_PUBLISH: ${{ secrets.GITHUB_TOKEN }}
+# Electron Builder workaround
   USE_HARD_LINKS: 'false'
 jobs:
   build:
