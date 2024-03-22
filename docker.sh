@@ -59,9 +59,6 @@ docker run --name thorium-docker-container thorium-docker-image
 
 #(docker rm --force thorium-docker-container || echo ok_rm2) && echo _ok_rm2
 
-
-VERSION=cat package.json | grep 'version": ' | sed 's/  "version": "//' | sed 's/",//'
-
 # if [[ $(uname -m) == 'arm64' ]]; then
 # sed 's/x64/arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json
 # sed 's/linux-unpacked/linux-arm64-unpacked/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json
