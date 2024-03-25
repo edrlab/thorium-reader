@@ -14,6 +14,8 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
+import * as CloseIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -50,7 +52,7 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
                         progress = 0;
                     }
                     return <li key={id}>
-                        <span className={stylesApp.title}><a onClick={() => abortDownload(id)}>X</a></span>
+                        <span className={stylesApp.title}><a onClick={() => abortDownload(id)}><SVG ariaHidden svg={CloseIcon} /></a></span>
                         <span className={stylesApp.percent}>{progress}%</span>
                         <progress max="100" value={progress}>{progress}</progress>
                         <span className={stylesApp.title}>{dl.downloadUrl}</span>

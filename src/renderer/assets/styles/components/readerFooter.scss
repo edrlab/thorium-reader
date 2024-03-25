@@ -287,3 +287,15 @@ box-shadow: 0 3px 2px 0 var(--color-medium-grey);
     padding: 0 5px;
 }
 }
+
+.finishedIcon {
+    position: absolute;
+    right: 30px;
+    bottom: 10px;
+    width: 25px;
+
+    svg {
+        fill: #1BAF01;
+        color: #1BAF01;
+    }
+}
