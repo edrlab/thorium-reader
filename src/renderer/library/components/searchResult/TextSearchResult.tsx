@@ -5,130 +5,130 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
-import { connect } from "react-redux";
-import { matchPath } from "react-router-dom";
-import { PublicationView } from "readium-desktop/common/views/publication";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
-import { apiAction } from "readium-desktop/renderer/library/apiAction";
-import { apiSubscribe } from "readium-desktop/renderer/library/apiSubscribe";
-import BreadCrumb from "readium-desktop/renderer/library/components/layout/BreadCrumb";
-import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
-import { GridView } from "readium-desktop/renderer/library/components/utils/GridView";
-import { ListView } from "readium-desktop/renderer/library/components/utils/ListView";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { DisplayType, ILibrarySearchText, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
-import { Unsubscribe } from "redux";
+// import * as React from "react";
+// import { connect } from "react-redux";
+// import { matchPath } from "react-router-dom";
+// import { PublicationView } from "readium-desktop/common/views/publication";
+// import {
+//     TranslatorProps, withTranslator,
+// } from "readium-desktop/renderer/common/components/hoc/translator";
+// import { apiAction } from "readium-desktop/renderer/library/apiAction";
+// import { apiSubscribe } from "readium-desktop/renderer/library/apiSubscribe";
+// import BreadCrumb from "readium-desktop/renderer/library/components/layout/BreadCrumb";
+// import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
+// import { GridView } from "readium-desktop/renderer/library/components/utils/GridView";
+// import { ListView } from "readium-desktop/renderer/library/components/utils/ListView";
+// import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+// import { DisplayType, ILibrarySearchText, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
+// import { Unsubscribe } from "redux";
 
-import Header from "../catalog/Header";
+// import Header from "../catalog/Header";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
-}
-// IProps may typically extend:
-// RouteComponentProps
-// ReturnType<typeof mapStateToProps>
-// ReturnType<typeof mapDispatchToProps>
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
-}
+// // eslint-disable-next-line @typescript-eslint/no-empty-interface
+// interface IBaseProps extends TranslatorProps {
+// }
+// // IProps may typically extend:
+// // RouteComponentProps
+// // ReturnType<typeof mapStateToProps>
+// // ReturnType<typeof mapDispatchToProps>
+// // eslint-disable-next-line @typescript-eslint/no-empty-interface
+// interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+// }
 
-interface IState {
-    publicationViews: PublicationView[] | undefined;
-}
+// interface IState {
+//     publicationViews: PublicationView[] | undefined;
+// }
 
-export class TextSearchResult extends React.Component<IProps, IState> {
-    private unsubscribe: Unsubscribe;
+// export class TextSearchResult extends React.Component<IProps, IState> {
+//     private unsubscribe: Unsubscribe;
 
-    constructor(props: IProps) {
-        super(props);
+//     constructor(props: IProps) {
+//         super(props);
 
-        this.state = {
-            publicationViews: undefined,
-        };
-    }
+//         this.state = {
+//             publicationViews: undefined,
+//         };
+//     }
 
-    public componentDidMount() {
-        this.unsubscribe = apiSubscribe([
-            "publication/importFromFs",
-            "publication/delete",
-            // "catalog/addEntry",
-            "publication/updateTags",
-        ], this.searchPublications);
-    }
+//     public componentDidMount() {
+//         this.unsubscribe = apiSubscribe([
+//             "publication/importFromFs",
+//             "publication/delete",
+//             // "catalog/addEntry",
+//             "publication/updateTags",
+//         ], this.searchPublications);
+//     }
 
-    public componentDidUpdate(prevProps: IProps) {
+//     public componentDidUpdate(prevProps: IProps) {
 
-        const text = matchPath<keyof ILibrarySearchText, string>(
-            routes["/library/search/text"].path,
-            this.props.location.pathname,
-        ).params.value;
+//         const text = matchPath<keyof ILibrarySearchText, string>(
+//             routes["/library/search/text"].path,
+//             this.props.location.pathname,
+//         ).params.value;
 
-        const prevText = matchPath<keyof ILibrarySearchText, string>(
-            routes["/library/search/text"].path,
-            prevProps.location.pathname,
-        ).params.value;
+//         const prevText = matchPath<keyof ILibrarySearchText, string>(
+//             routes["/library/search/text"].path,
+//             prevProps.location.pathname,
+//         ).params.value;
 
-        if (text !== prevText) {
-            // Refresh searched pubs
-            this.searchPublications();
-        }
-    }
+//         if (text !== prevText) {
+//             // Refresh searched pubs
+//             this.searchPublications();
+//         }
+//     }
 
-    public componentWillUnmount() {
-        if (this.unsubscribe) {
-            this.unsubscribe();
-        }
-    }
+//     public componentWillUnmount() {
+//         if (this.unsubscribe) {
+//             this.unsubscribe();
+//         }
+//     }
 
-    public render(): React.ReactElement<{}> {
-        const displayType = (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid;
+//     public render(): React.ReactElement<{}> {
+//         const displayType = (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid;
 
-        const { __ } = this.props;
+//         const { __ } = this.props;
 
-        const title = matchPath<keyof ILibrarySearchText, string>(
-            routes["/library/search/text"].path,
-            this.props.location.pathname,
-        ).params.value;
+//         const title = matchPath<keyof ILibrarySearchText, string>(
+//             routes["/library/search/text"].path,
+//             this.props.location.pathname,
+//         ).params.value;
 
-        const secondaryHeader = <Header/>;
-        const breadCrumb = <BreadCrumb breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}/>;
+//         const secondaryHeader = <Header/>;
+//         const breadCrumb = <BreadCrumb breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}/>;
 
-        return (
-            <LibraryLayout
-                title={`${__("catalog.myBooks")} / ${title}`}
-                secondaryHeader={secondaryHeader}
-                breadCrumb={breadCrumb}
-            >
-                <div>
-                    {this.state.publicationViews ?
-                        (displayType === DisplayType.Grid ?
-                            <GridView normalOrOpdsPublicationViews={this.state.publicationViews} /> :
-                            <ListView normalOrOpdsPublicationViews={this.state.publicationViews} />)
-                        : <></>}
-                </div>
-            </LibraryLayout>
-        );
-    }
+//         return (
+//             <LibraryLayout
+//                 title={`${__("catalog.myBooks")} / ${title}`}
+//                 secondaryHeader={secondaryHeader}
+//                 breadCrumb={breadCrumb}
+//             >
+//                 <div>
+//                     {this.state.publicationViews ?
+//                         (displayType === DisplayType.Grid ?
+//                             <GridView normalOrOpdsPublicationViews={this.state.publicationViews} /> :
+//                             <ListView normalOrOpdsPublicationViews={this.state.publicationViews} />)
+//                         : <></>}
+//                 </div>
+//             </LibraryLayout>
+//         );
+//     }
 
-    private searchPublications = (text?: string) => {
-        if (!text) {
+//     private searchPublications = (text?: string) => {
+//         if (!text) {
 
-            text = matchPath<keyof ILibrarySearchText, string>(
-                routes["/library/search/text"].path,
-                this.props.location.pathname,
-            ).params.value;
-        }
-        apiAction("publication/search", text)
-            .then((publicationViews) => this.setState({ publicationViews }))
-            .catch((error) => console.error("Error to fetch api publication/search", error));
-    };
-}
+//             text = matchPath<keyof ILibrarySearchText, string>(
+//                 routes["/library/search/text"].path,
+//                 this.props.location.pathname,
+//             ).params.value;
+//         }
+//         apiAction("publication/search", text)
+//             .then((publicationViews) => this.setState({ publicationViews }))
+//             .catch((error) => console.error("Error to fetch api publication/search", error));
+//     };
+// }
 
-const mapStateToProps = (state: ILibraryRootState) => ({
-    location: state.router.location,
-});
+// const mapStateToProps = (state: ILibraryRootState) => ({
+//     location: state.router.location,
+// });
 
-export default connect(mapStateToProps)(withTranslator(TextSearchResult));
+// export default connect(mapStateToProps)(withTranslator(TextSearchResult));

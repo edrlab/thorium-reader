@@ -6,13 +6,15 @@
 // ==LICENSE-END==
 
 // import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
-import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
+// import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
-import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as GridIcon from "readium-desktop/renderer/assets/icons/grid-icon.svg";
+// import * as ListIcon from "readium-desktop/renderer/assets/icons/list-icon.svg";
+import * as TableIcon from "readium-desktop/renderer/assets/icons/table-icon.svg";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -23,7 +25,7 @@ import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/libr
 
 import PublicationAddButton from "./PublicationAddButton";
 
-import SearchForm from "./SearchForm";
+// import SearchForm from "./SearchForm";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -49,61 +51,76 @@ class Header extends React.Component<IProps, undefined> {
 
         return (
             <SecondaryHeader>
-                <Link
-                    to={this.props.location}
-                    state = {{displayType: DisplayType.Grid}}
-                    replace={true}
-                    className={(displayType === DisplayType.Grid) ?
-                        stylesButtons.button_transparency_icon :
-                        stylesButtons.button_transparency_icon_inactive
-                    }
-                    title={__("header.gridTitle")}
-                    aria-pressed={displayType === DisplayType.Grid}
-                    role={"button"}
-                >
-                    <SVG svg={GridIcon} ariaHidden/>
-                </Link>
-                <Link
-                    to={this.props.location}
-                    state = {{displayType: DisplayType.List}}
-                    replace={true}
-                    className={(displayType === DisplayType.List) ?
-                        stylesButtons.button_transparency_icon :
-                        stylesButtons.button_transparency_icon_inactive
-                    }
-                    title={__("header.listTitle")}
-                    aria-pressed={displayType === DisplayType.List}
-                    role={"button"}
-                >
-                    <SVG svg={ListIcon} ariaHidden/>
-                </Link>
-                {
+                <div>
+                    <p style={{fontWeight: "600", margin: "0 0 5px"}}>{__("header.viewMode")}</p>
+                    <div style={{ display: "flex", gap: "10px" }}>
+                        <Link
+                            to={this.props.location}
+                            state={{ displayType: DisplayType.Grid }}
+                            replace={true}
+                            className={(displayType === DisplayType.Grid) ?
+                                stylesButtons.button_nav_primary :
+                                stylesButtons.button_nav_secondary
+                            }
+                            title={__("header.gridTitle")}
+                            aria-pressed={displayType === DisplayType.Grid}
+                            role={"button"}
+                        >
+                            {(displayType === DisplayType.Grid) ?
+                                <SVG svg={CheckIcon} ariaHidden /> :
+                                <SVG svg={GridIcon} ariaHidden />
+                            }
+                            <h3>{__("header.gridTitle")}</h3>
+                        </Link>
+                        <Link
+                            to={this.props.location}
+                            state={{ displayType: DisplayType.List }}
+                            replace={true}
+                            className={(displayType === DisplayType.List) ?
+                                stylesButtons.button_nav_primary :
+                                stylesButtons.button_nav_secondary
+                            }
+                            title={__("header.listTitle")}
+                            aria-pressed={displayType === DisplayType.List}
+                            role={"button"}
+                        >
+                            {(displayType === DisplayType.List) ?
+                                <SVG svg={CheckIcon} ariaHidden /> :
+                                <SVG svg={TableIcon} ariaHidden />
+                            }
+                            <h3>{__("header.listTitle")}</h3>
+                        </Link>
+                    </div>
+                </div>
+                    <div style={{textAlign: "right", display: "flex", gap: "10px", position: "relative"}}>
+                    <PublicationAddButton />
+                    {/* {
                     window.location.hash.indexOf("search") === -1
                     ?
-                    <div style={{flex: "1", textAlign: "right"}}>
-                    <SearchForm />
-                    <Link
-                        style={{fontWeight: "bold"}}
-                        className={stylesButtons.button_primary_small}
-                        to={{
-                            ...this.props.location,
-                            pathname: "/library/search/all",
-                        }}
-                        state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                        title={`${this.props.__("header.searchPlaceholder")} (${this.props.__("header.allBooks")})`}
-                    >
-                        {
-                        <>
-                        <span>{this.props.__("header.searchPlaceholder")}</span>
-                        <SVG ariaHidden={true} svg={magnifyingGlass} />
-                        </>
-                        }
-                    </Link>
-                    <PublicationAddButton />
-                    </div>
+                    <>
+                        <SearchForm />
+                        <Link
+                            style={{fontWeight: "bold"}}
+                            className={stylesButtons.button_nav_secondary}
+                            to={{
+                                ...this.props.location,
+                                pathname: "/library/search/all",
+                            }}
+                            state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                            title={`${this.props.__("header.searchPlaceholder")} (${this.props.__("header.allBooks")})`}
+                        >
+                            {
+                            <>
+                            <SVG ariaHidden={true} svg={magnifyingGlass} />
+                            <h3>{this.props.__("header.searchPlaceholder")}</h3>
+                            </>
+                            }
+                        </Link>
+                    </>
                     :
                     <></>
-                }
+                    } */}
+                    </div>
             </SecondaryHeader>
         );
     }

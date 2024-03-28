@@ -25,9 +25,11 @@ import { readerRTLFlipReducer } from "../../../common/redux/reducers/reader/rtlF
 import { publicationDbReducers } from "./publication/db";
 import { opdsDbReducers } from "./opds/db";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
+import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 
 export const rootReducer = combineReducers({ // RootState
+    theme: themeReducer,
     session: sessionReducer,
     streamer: streamerReducer,
     i18n: i18nReducer,

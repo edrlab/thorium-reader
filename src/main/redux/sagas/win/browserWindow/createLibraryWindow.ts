@@ -22,6 +22,7 @@ import { put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { contextMenuSetup } from "@r2-navigator-js/electron/main/browser-window-tracker";
+import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
 
 // Logger
 const debug = debug_("readium-desktop:createLibraryWindow");
@@ -45,8 +46,8 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
 
     libWindow = new BrowserWindow({
         ...windowBound,
-        minWidth: 800,
-        minHeight: 600,
+        minWidth: WINDOW_MIN_WIDTH,
+        minHeight: WINDOW_MIN_HEIGHT,
         webPreferences: {
             // enableRemoteModule: false,
             allowRunningInsecureContent: false,

@@ -7,7 +7,7 @@
 
 import { ReaderConfig, ReaderConfigStringsAdjustables } from "readium-desktop/common/models/reader";
 import {
-    TChangeEventOnInput, TChangeEventOnSelect, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
+    TChangeEventOnInput, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
     TMouseEventOnSpan,
 } from "readium-desktop/typings/react";
 
@@ -110,6 +110,7 @@ export default optionsValues;
 
 export interface IReaderMenuProps {
     open: boolean;
+    focus: number;
     r2Publication: R2Publication;
     // tslint:disable-next-line: max-line-length
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeNavPanel?: boolean) => void;
@@ -120,21 +121,24 @@ export interface IReaderMenuProps {
     isPdf: boolean;
     pdfNumberOfPages: number;
 
-    openedSection: number | undefined;
+    openedSection: string;
+    annotationUUID: string;
+    resetAnnotationUUID: () => void;
+    setOpenedSection: (v: string) => void;
 }
 
 export const isDivinaReadingMode = (v: any): v is TdivinaReadingMode => {
     return ["single", "double", "scroll", "guided"].includes(v);
 };
 
-export interface IReaderOptionsProps {
+export interface IReaderSettingsProps {
     indexes: AdjustableSettingsNumber;
     open: boolean;
     readerConfig: ReaderConfig;
-    handleSettingChange: (
-        event: TChangeEventOnInput | TChangeEventOnSelect | undefined,
-        name: keyof ReaderConfig,
-        value?: string | boolean) => void;
+    // handleSettingChange: (
+    //     event: TChangeEventOnInput | TChangeEventOnSelect | undefined,
+    //     name: keyof ReaderConfig,
+    //     value?: string | boolean) => void;
     handleIndexChange: (
         event: TChangeEventOnInput,
         name: keyof ReaderConfigStringsAdjustables) => void;
@@ -147,9 +151,18 @@ export interface IReaderOptionsProps {
     divinaReadingModeSupported: TdivinaReadingMode[];
     isDivina: boolean;
     isPdf: boolean;
+    isFXL: boolean;
 
-    openedSection: number | undefined;
-
+    // openedSection: number | undefined;
     disableRTLFlip: boolean;
     setDisableRTLFlip: (disabled: boolean) => void;
+    zenMode: boolean;
+    setZenMode: (value : boolean) => void;
+    searchEnable: boolean;
+}
+
+export interface IPopoverDialogProps {
+    dockingMode: "full" | "left" | "right";
+    dockedMode: boolean;
+    setDockingMode: (m: "full" | "left" | "right") => void;
 }

@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
-import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
+import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.scss";
 
 import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
 

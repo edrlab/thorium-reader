@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
+import * as searchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -21,13 +21,16 @@ import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import { readerLocalActionSearch } from "../../redux/actions";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
+import LoaderSearch from "./LoaderSearch";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     isPdf: boolean;
     reset: () => void;
+    load: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -53,6 +56,7 @@ class SearchFormPicker extends React.Component<IProps, IState> {
         // this.onKeyboardFocusSearch = this.onKeyboardFocusSearch.bind(this);
         this.inputRef = React.createRef<HTMLInputElement>();
         this.search = this.search.bind(this);
+        this.focusoutSearch = this.focusoutSearch.bind(this);
 
         this.state = {
             inputValue: "",
@@ -65,10 +69,12 @@ class SearchFormPicker extends React.Component<IProps, IState> {
 
         // focus on input
         this.inputRef?.current?.focus();
+        this.inputRef?.current?.addEventListener("focusout", this.focusoutSearch);
     }
 
     public componentWillUnmount() {
         this.unregisterAllKeyboardListeners();
+        this.inputRef?.current?.removeEventListener("focusout", this.focusoutSearch);
     }
 
     public async componentDidUpdate(oldProps: IProps) {
@@ -81,36 +87,45 @@ class SearchFormPicker extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
-            <form onSubmit={this.search} role="search">
+            <form onSubmit={this.search} role="search" className={stylesInputs.form_group}>
+                {/* <label>
+                    {__("reader.picker.searchTitle")}
+                </label> */}
                 <input
                     ref={this.inputRef}
                     type="search"
                     id="menu_search"
                     aria-label={__("reader.navigation.magnifyingGlassButton")}
                     placeholder={__("reader.picker.search.input")}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.setState({inputValue: e.target.value})}
-                    style={{
-                        fontSize: "1em",
-                        verticalAlign: "text-bottom",
-                    }}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.setState({ inputValue: e.target.value })}
+                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                 />
-
-                <button
+                    <button
                     disabled={!this.state.inputValue}
+                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                     style={{
-                        width: "30px",
+                        width: "25px",
                         padding: "4px",
                         marginLeft: "0.4em",
-                        color: this.state.inputValue ? "black" : "grey",
-                        fill: this.state.inputValue ? "black" : "grey" }}
+                        position: "absolute",
+                        left: "0",
+                    }}
                     title={__("reader.picker.search.submit")}
-                >
-
-                    <SVG ariaHidden={true} svg={magnifyingGlass} />
+                >                {
+                        this.props.load ?
+                            <LoaderSearch />
+                            :
+                            <SVG ariaHidden={true} svg={searchIcon} />
+                    }
                 </button>
             </form>
         );
     }
+    
+    private focusoutSearch = () =>  {
+        this.inputRef?.current?.focus();
+        setTimeout(() => this.inputRef?.current?.removeEventListener("focusout", this.focusoutSearch), 1000);
+   };
 
     private registerAllKeyboardListeners() {
         registerKeyboardListener(

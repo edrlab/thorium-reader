@@ -16,7 +16,7 @@ import { ISearchDocument, ISearchResult } from "readium-desktop/utils/search/sea
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, cancel, join, put, take } from "redux-saga/effects";
 import {
-    all as allTyped, fork as forkTyped, select as selectTyped, takeEvery as takeEveryTyped,
+    all as allTyped, delay as delayTyped, fork as forkTyped, select as selectTyped, takeEvery as takeEveryTyped,
     takeLatest as takeLatestTyped,
 } from "typed-redux-saga/macro";
 
@@ -86,7 +86,6 @@ function converterSearchResultToHighlightHandlerState(v: ISearchResult, color = 
     return {
         uuid: v.uuid,
         href: v.href,
-        type: "search",
         def: {
             group: "search",
             color,
@@ -247,6 +246,8 @@ function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
         function*(action: readerLocalActionSearch.request.TAction) {
             yield join(taskRequest);
 
+            yield* delayTyped(100); // refresh load props in Search.tsx (Caused by React18 !?, the load spinner doesn't rotate now !)
+
             yield call(searchRequest, action);
         },
     );
@@ -265,11 +266,11 @@ function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
 }
 
 function* highlightClick(action: readerLocalActionHighlights.click.TAction) {
-    debug(`highlightClick ACTION (will focus) -- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
 
-    const { type, uuid } = action.payload;
+    const { uuid, def: {group} } = action.payload;
 
-    if (uuid && type === "search") {
+    if (uuid && group === "search") {
+        debug(`highlightClick ACTION (will focus) -- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
         yield put(readerLocalActionSearch.focus.build(uuid));
     }
 }
@@ -313,7 +314,7 @@ function* clearSearch() {
     }
 
     const uuids = handlerStateMap
-        .filter(([_uuid, handlerState]) => handlerState.type === "search")
+        .filter(([_uuid, handlerState]) => handlerState.def.group === "search")
         .map(([uuid, _handlerState]) => ({ uuid }));
 
     debug(`clearSearch (highlight pop) -- uuids: [${JSON.stringify(uuids, null, 4)}]`);

@@ -1,0 +1,11 @@
+export declare const ___DEBUG___COMPONENTS_TOASTS_CSS: string;
+export declare const closeButton: string;
+export declare const error: string;
+export declare const icon: string;
+export declare const leave: string;
+export declare const start: string;
+export declare const success: string;
+export declare const toast: string;
+export declare const toast_open: string;
+export declare const toasts_wrapper: string;
+export declare const toRemove: string;

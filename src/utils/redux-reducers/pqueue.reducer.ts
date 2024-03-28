@@ -70,7 +70,7 @@ export function priorityQueueReducer
                     if (index > -1) {
                         newQueue[index] = selectorItem;
                     } else {
-                        newQueue.push(selectorItem);
+                        newQueue.push([selectorItem[0], clone(selectorItem[1])]);
                     }
 
                     // WARNING: .sort() is in-place same-array mutation! (not a new array)

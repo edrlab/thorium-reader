@@ -9,7 +9,7 @@ import * as moment from "moment";
 import * as React from "react";
 import { I18nTyped } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
 
 export interface IProps {
     publicationViewMaybeOpds: TPublication;
@@ -27,7 +27,7 @@ export const FormatPublisherDate: React.FC<IProps> = (props) => {
         if (date) {
             formatedPublishedDateComponent = (
                 <div>
-                    <strong>{__("catalog.released")}</strong> <i className={stylesBookDetailsDialog.allowUserSelect}>{date}</i>
+                    <strong>{__("catalog.released")}: </strong> <span className={stylesBookDetailsDialog.allowUserSelect}>{date}</span>
                 </div>
             );
         }

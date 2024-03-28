@@ -9,10 +9,11 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link, matchPath } from "react-router-dom";
 import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -51,49 +52,34 @@ class Entry extends React.Component<IProps, undefined> {
         );
 
         return (
-            <>
-                <div>
-                    <Link
-                        className={stylesButtons.button_transparency}
-                        to={{
-                            ...this.props.location,
-                            pathname: route,
-                        }}
-                        state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                    >
-                        <span>
-                            <span title={entry.subtitle ? entry.subtitle : undefined}>{entry.title}</span>
-                            {
-                                (entry.subtitle && entry.subtitle !== entry.title) ?
-                                (<span title={entry.subtitle} aria-label={entry.subtitle}>
-                                    <br/>{entry.subtitle.substr(0, 40) + (entry.subtitle.length > 40 ? "..." : "")}
-                                </span>) :
-                                (<></>)
-                            }
-                        </span>
-                        {
-                            (entry.numberOfItems) ?
-                                (
-                                    <span>
-                                        {entry.numberOfItems}
-                                    </span>
-                                ) :
-                                (<></>)
-                        }
-                    </Link>
-                </div>
-                {/* <Slider
-                    content={
-                        opdsPublicationViews.map((pub) =>
-                            <PublicationCard
-                                key={pub.identifier}
-                                publicationViewMaybeOpds={pub}
-                            />,
-                        )
+            <Link
+                className={stylesButtons.button_transparency}
+                to={{
+                    ...this.props.location,
+                    pathname: route,
+                }}
+                state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+            >
+                <span>
+                    <span title={entry.subtitle ? entry.subtitle : undefined}>{entry.title}</span>
+                    {
+                        (entry.subtitle && entry.subtitle !== entry.title) ?
+                        (<span title={entry.subtitle} aria-label={entry.subtitle}>
+                            <br/>{entry.subtitle.substr(0, 40) + (entry.subtitle.length > 40 ? "..." : "")}
+                        </span>) :
+                        (<></>)
                     }
-                    className={styles.flux_slider}
-                /> */}
-            </>
+                </span>
+                {
+                    (entry.numberOfItems) ?
+                        (
+                            <span className={stylesCatalogs.numberOfItems}>
+                                ({entry.numberOfItems})
+                            </span>
+                        ) :
+                        (<></>)
+                }
+            </Link>
         );
     }
 }

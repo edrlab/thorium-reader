@@ -8,7 +8,7 @@
 import * as React from "react";
 import { AvailableLanguages, I18nTyped } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
 
 export interface IProps {
     publicationViewMaybeOpds: TPublication;
@@ -45,12 +45,12 @@ export const FormatPublicationLanguage: React.FC<IProps> = (props) => {
                 const note = (lang !== ll) ? ` (${lang})` : "";
                 const suffix = ((index < (publicationViewMaybeOpds.languages.length - 1)) ? ", " : "");
 
-                return (<i
+                return (<span
                     key={"lang-" + index}
                     className={stylesBookDetailsDialog.allowUserSelect}
                 >
                     {ll + note + suffix}
-                </i>);
+                </span>);
 
             });
 

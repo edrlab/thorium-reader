@@ -9,7 +9,6 @@ import * as debug_ from "debug";
 import { readerIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
-import { readerActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
@@ -38,6 +37,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const reader = yield* selectTyped((_state: RootState) => _state.win.session.reader[identifier]);
     const keyboard = yield* selectTyped((_state: RootState) => _state.keyboard);
     const mode = yield* selectTyped((state: RootState) => state.mode);
+    const theme = yield* selectTyped((state: RootState) => state.theme);
 
     webContents.send(readerIpc.CHANNEL, {
         type: readerIpc.EventType.request,
@@ -51,6 +51,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
             reader: reader?.reduxState,
             keyboard,
             mode,
+            theme,
         },
     } as readerIpc.EventPayload);
 }
@@ -92,7 +93,9 @@ function* winClose(action: winActions.reader.closed.TAction) {
 
                 const mode = yield* selectTyped((state: RootState) => state.mode);
                 if (mode === ReaderMode.Detached) {
-                    yield put(readerActions.attachModeRequest.build());
+                    
+                    // disabled for the new UI refactoring by choice of the designer 
+                    // yield put(readerActions.attachModeRequest.build());
 
                 } else {
                     const readerWin = yield* callTyped(() => getReaderWindowFromDi(identifier));

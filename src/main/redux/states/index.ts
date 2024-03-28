@@ -49,4 +49,4 @@ export interface RootState extends ICommonRootState {
 }
 
 
-export type PersistRootState = Pick<RootState, "win" | "publication" | "reader" | "session" | "i18n" | "opds" | "version">;
+export type PersistRootState = Pick<RootState, "win" | "publication" | "reader" | "session" | "i18n" | "opds" | "version" | "theme">;

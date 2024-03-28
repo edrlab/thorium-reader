@@ -22,6 +22,8 @@ import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 import { applyPatch } from "rfc6902";
 
 import { reduxPersistMiddleware } from "../middleware/persistence";
+import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
+import { defaultDisableRTLFLip } from "readium-desktop/common/redux/states/renderer/rtlFlip";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -203,9 +205,21 @@ export async function initStore()
     debug("REDUX STATE VALUE :: ", typeof reduxState, reduxState ? Object.keys(reduxState) : "nil");
     // debug(reduxState);
 
+    const forceDisableReaderDefaultConfigAndSessionForTheNewUI: Partial<PersistRootState> = {
+        reader: {
+            defaultConfig: readerConfigInitialState,
+            disableRTLFlip: reduxState?.reader?.disableRTLFlip || { disabled: defaultDisableRTLFLip },
+        },
+        session: {
+            state: true,
+        },
+    };
     const preloadedState = reduxState ? {
         ...reduxState,
-    } : {};
+        ...forceDisableReaderDefaultConfigAndSessionForTheNewUI,
+    } : {
+        ...forceDisableReaderDefaultConfigAndSessionForTheNewUI,
+    };
 
     const sagaMiddleware = createSagaMiddleware();
 
@@ -224,7 +238,7 @@ export async function initStore()
 
     const store = createStore(
         rootReducer,
-        preloadedState,
+        preloadedState as {},
         middleware,
     );
 

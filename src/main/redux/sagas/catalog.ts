@@ -32,7 +32,7 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 const filename_ = "readium-desktop:main:redux:sagas:catalog";
 const debug = debug_(filename_);
 
-const NB_PUB = 5;
+const NB_PUB = 10;
 
 // TODO: this memo-ization is very expensive (memory and CPU-wise) ...
 // and TaJsonDeserialize() is called in several other places in the library lifecycle
@@ -180,9 +180,6 @@ function* getPublicationView() {
 export function* getCatalog(): SagaGenerator<ILibraryRootState["publication"]> {
     debug("getCatalog");
 
-    const translator = diMainGet("translator");
-    const __ = translator.translate.bind(translator);
-
     const {
         audio: {
             readed: audiobookReaded,
@@ -198,13 +195,16 @@ export function* getCatalog(): SagaGenerator<ILibraryRootState["publication"]> {
         },
         all: {
             added: allAdded,
+            readed: allReaded,
         },
     } = yield* callTyped(getPublicationView);
 
     const _allAdded = aboutFiltered(allAdded);
+    const _allReaded = aboutFiltered(allReaded);
     const _epubReaded = aboutFiltered(epubReaded);
 
     const allAdded_ = _allAdded.slice(0, NB_PUB);
+    const allReaded_ = _allReaded.slice(0, NB_PUB);
     const epubReaded_ = _epubReaded.slice(0, NB_PUB);
     const audiobookReaded_ = audiobookReaded.slice(0, NB_PUB);
     const divinaReaded_ = divinaReaded.slice(0, NB_PUB);
@@ -213,27 +213,32 @@ export function* getCatalog(): SagaGenerator<ILibraryRootState["publication"]> {
     // Dynamic entries
     const entries: CatalogEntryView[] = [
         {
-            title: __("catalog.entry.lastAdditions"),
+            id: "continueReading",
+            totalCount: allReaded.length,
+            publicationViews: allReaded_,
+        },
+        {
+            id: "lastAdditions",
             totalCount: allAdded_.length,
             publicationViews: allAdded_,
         },
         {
-            title: __("catalog.entry.continueReading"),
+            id: "continueReading",
             totalCount: epubReaded_.length,
             publicationViews: epubReaded_,
         },
         {
-            title: __("catalog.entry.continueReadingAudioBooks"),
+            id: "continueReadingAudioBooks",
             totalCount: audiobookReaded_.length,
             publicationViews: audiobookReaded_,
         },
         {
-            title: __("catalog.entry.continueReadingDivina"),
+            id: "continueReadingDivina",
             totalCount: divinaReaded_.length,
             publicationViews: divinaReaded_,
         },
         {
-            title: __("catalog.entry.continueReadingPdf"),
+            id: "continueReadingPdf",
             totalCount: pdfReaded_.length,
             publicationViews: pdfReaded_,
         },

@@ -7,11 +7,9 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
-import * as stylesSlider from "readium-desktop/renderer/assets/styles/components/slider.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import * as stylesSlider from "readium-desktop/renderer/assets/styles/components/slider.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -21,9 +19,10 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 
 import AboutThoriumButton from "./AboutThoriumButton";
 import NoPublicationInfo from "./NoPublicationInfo";
-import SortMenu from "./SortMenu";
-import TagLayout from "./TagLayout";
-import { DisplayType, IRouterLocationState } from "../../routing";
+// import SortMenu from "./SortMenu";
+// import TagLayout from "./TagLayout";
+import classNames from "classnames";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -48,6 +47,47 @@ enum SortStatus {
     Count,
     Alpha,
 }
+
+const EntrySection = ({entry, entryIndex}: {entry: CatalogEntryView, entryIndex: number}) => {
+    const [__] = useTranslator();
+    let title;
+
+    switch (entry.id) {
+        case "lastAdditions":
+            title = __("catalog.entry.lastAdditions");
+            break;
+        case "continueReading":
+            title = __("catalog.entry.continueReading");
+            break;
+        case "continueReadingAudioBooks":
+            title = __("catalog.entry.continueReadingAudioBooks");
+            break;
+        case "continueReadingDivina":
+            title = __("catalog.entry.continueReadingDivina");
+            break;
+        case "continueReadingPdf":
+            title = __("catalog.entry.continueReadingPdf");
+            break;
+    }
+
+    return (
+        <section key={entryIndex} style={{marginBottom: "0", marginTop: entry.id === "continueReading" ? "0" : "64px"}} className={entry.id === "lastAdditions" ? stylesSlider.continue_reading : stylesSlider.home_section}>
+                <h2>{title}</h2>
+            {
+                <Slider
+                    className={classNames(stylesSlider.slider)}
+                    content={entry.publicationViews.map((pub: any) =>
+                        <PublicationCard
+                            key={pub.identifier}
+                            publicationViewMaybeOpds={pub}
+                        />,
+                    )}
+                />
+            }
+
+        </section>
+    );
+};
 
 class CatalogGridView extends React.Component<IProps, IState> {
 
@@ -84,40 +124,10 @@ class CatalogGridView extends React.Component<IProps, IState> {
         return (
             <>
                 {
-                    this.props.catalogEntries.map((entry, entryIndex: number) =>
+                    this.props.catalogEntries.slice(0, 2).map((entry, entryIndex: number) =>
                             entry.totalCount > 0
                                 ? (
-                                    <section key={entryIndex}>
-                                        {
-
-                                            <div className={stylesGlobal.heading}>
-                                                <h2>{entry.title}</h2>
-                                                <Link
-                                                    className={stylesButtons.button_primary_small}
-                                                    to={{
-                                                        ...this.props.location,
-                                                        pathname: "/library/search/all",
-                                                    }}
-                                                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                                                    title={`${this.props.__("header.allBooks")} (${entry.title})`}
-                                                >
-                                                    {this.props.__("header.allBooks")}
-                                                </Link>
-                                            </div>
-                                        }
-                                        {
-                                            <Slider
-                                                className={stylesSlider.slider}
-                                                content={entry.publicationViews.map((pub) =>
-                                                    <PublicationCard
-                                                        key={pub.identifier}
-                                                        publicationViewMaybeOpds={pub}
-                                                    />,
-                                                )}
-                                            />
-                                        }
-
-                                    </section>
+                                    <EntrySection entry={entry} entryIndex={entryIndex} key={entryIndex} />
                                 )
                                 : <div
                                     key={entryIndex}
@@ -127,7 +137,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
                                 </div>,
                     )
                 }
-                {
+                {/* {
                     this.state.tabTags.length > 0
                         ? <TagLayout
                             tags={this.state.tabTags}
@@ -138,7 +148,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
                                 />}
                         />
                         : <></>
-                }
+                } */}
                 {
                     this.state.tabTags.length === 0 && catalogEntriesIsEmpty
                         ? <NoPublicationInfo />

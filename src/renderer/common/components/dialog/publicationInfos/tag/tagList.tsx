@@ -8,7 +8,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { IOpdsTagView } from "readium-desktop/common/views/opds";
-import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.css";
+import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
 
 interface IProps {
     tagArray: string[] | IOpdsTagView[];
@@ -30,7 +30,7 @@ export const TagList: React.FC<IProps> = (props) => {
                     stylesTags.tag,
                     // pointer hover style for IOpdsTagView links
                     typeof tag === "string" || !tag.link?.length ? stylesTags.no_hover : undefined,
-                    )}>
+                )}>
                     {
                         children(tag, index)
                     }

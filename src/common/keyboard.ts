@@ -304,33 +304,40 @@ const _defaults_ = Object.freeze({
         shift: false,
         key: "Digit9",
     }),
-    AnnotationsTest1: Object.freeze<TKeyboardShortcut>({
+    // AnnotationsTest1: Object.freeze<TKeyboardShortcut>({
+    //     alt: true,
+    //     control: true,
+    //     shift: true,
+    //     // meta: true,
+    //     key: "Digit5",
+    // }),
+    // AnnotationsTest2: Object.freeze<TKeyboardShortcut>({
+    //     alt: true,
+    //     control: true,
+    //     shift: true,
+    //     // meta: true,
+    //     key: "Digit6",
+    // }),
+    // AnnotationsTest3: Object.freeze<TKeyboardShortcut>({
+    //     alt: true,
+    //     control: true,
+    //     shift: true,
+    //     // meta: true,
+    //     key: "Digit7",
+    // }),
+    // AnnotationsTest4: Object.freeze<TKeyboardShortcut>({
+    //     alt: true,
+    //     control: true,
+    //     shift: true,
+    //     // meta: true,
+    //     key: "Digit8",
+    // }),
+
+    AnnotationDrawMarginOrPlainAnnotationToggleSwitch: Object.freeze<TKeyboardShortcut>({
         alt: true,
         control: true,
-        shift: true,
-        // meta: true,
-        key: "Digit5",
-    }),
-    AnnotationsTest2: Object.freeze<TKeyboardShortcut>({
-        alt: true,
-        control: true,
-        shift: true,
-        // meta: true,
-        key: "Digit6",
-    }),
-    AnnotationsTest3: Object.freeze<TKeyboardShortcut>({
-        alt: true,
-        control: true,
-        shift: true,
-        // meta: true,
-        key: "Digit7",
-    }),
-    AnnotationsTest4: Object.freeze<TKeyboardShortcut>({
-        alt: true,
-        control: true,
-        shift: true,
-        // meta: true,
-        key: "Digit8",
+        shift: false,
+        key: "KeyM",
     }),
 });
 export const _defaults = sortObject(_defaults_);

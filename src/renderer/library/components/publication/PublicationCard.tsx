@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -14,8 +13,9 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.css";
-import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.css";
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 import Cover from "readium-desktop/renderer/common/components/Cover";
 import {
     TranslatorProps, withTranslator,
@@ -31,6 +31,7 @@ import CatalogMenu from "./menu/CatalogMenu";
 import OpdsMenu from "./menu/OpdsMenu";
 
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
+import { PublicationInfoOpdsWithRadix, PublicationInfoOpdsWithRadixContent, PublicationInfoOpdsWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -63,65 +64,101 @@ class PublicationCard extends React.Component<IProps> {
         const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
 
+        let pubFormat;
+        const pub = (publicationViewMaybeOpds as PublicationView);
+
+        if (pub.isAudio) {
+            pubFormat = "Audio";
+        } else if (pub.isDivina) {
+            pubFormat = "Divina";
+        } else if (pub.isPDF) {
+            pubFormat = "PDF";
+        } else if (pub.isDaisy) {
+            pubFormat = "DAISY";
+        } else if (pub.isFixedLayoutPublication) {
+            pubFormat = "EPUB (FXL)";
+        } else {
+            pubFormat = "EPUB";
+        }
+
         // aria-haspopup="dialog"
         // aria-controls="dialog"
         return (
             <div className={stylesPublications.publication_wrapper}>
-                <a
-                    onClick={(e) => this.handleBookClick(e)}
-                    onKeyPress={
-                        (e) =>
-                            (e.key === "Enter") && this.handleBookClick(e)
-                    }
-                    title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
-                    className={stylesPublications.publication_image_wrapper}
-                    tabIndex={0}
-                >
-                    <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
-                </a>
-                <div className={stylesPublications.publication_infos_wrapper}>
-                    <a aria-hidden onClick={(e) => this.handleBookClick(e)}
-                        className={stylesPublications.publication_infos}
+                {
+                    this.props.isOpds ?
+                        <PublicationInfoOpdsWithRadix
+                            opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
                         >
-                        <p aria-hidden className={stylesPublications.publication_title}
-                            dir={pubTitleIsRTL ? "rtl" : undefined}>
-                            {pubTitleStr}
-                        </p>
-                        <p aria-hidden className={stylesPublications.publication_description}>
-                            {this.truncateAuthors(authors)}
-                        </p>
-                    </a>
-                    <Menu
-                        button={(
-                            <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
-                        )}
-                        content={(
-                            <div className={classNames(stylesDropDown.dropdown_menu, stylesDropDown.dropdown_publication)}>
-                                {isOpds ?
-                                    <OpdsMenu
-                                        opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
-                                    /> :
-                                    <CatalogMenu
-                                        publicationView={publicationViewMaybeOpds as PublicationView}
-                                    />}
+                            <PublicationInfoOpdsWithRadixTrigger asChild>
+                                <a
+                                    className={stylesPublications.publication_main_container}
+                                    title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
+                                    tabIndex={0}
+                                >
+                                    <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
+                                    <div className={stylesPublications.publication_title_wrapper}>
+                                        <p aria-hidden className={stylesPublications.publication_title}
+                                            dir={pubTitleIsRTL ? "rtl" : undefined}>
+                                            {pubTitleStr}
+                                        </p>
+                                        <p aria-hidden className={stylesPublications.publication_authors}>
+                                            {this.truncateAuthors(authors)}
+                                        </p>
+                                    </div>
+                                </a>
+                            </PublicationInfoOpdsWithRadixTrigger>
+                            <PublicationInfoOpdsWithRadixContent />
+                        </PublicationInfoOpdsWithRadix>
+                        :
+                        <a
+                            onClick={(e) => this.handleLocalBookshelfBookClick(e)}
+                            onKeyPress={
+                                (e) =>
+                                    (e.key === "Enter") && this.handleLocalBookshelfBookClick(e)
+                            }
+                            title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
+                            className={stylesPublications.publication_main_container}
+                            tabIndex={0}
+                        >
+                            <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
+                            <div className={stylesPublications.publication_title_wrapper}>
+                                <p aria-hidden className={stylesPublications.publication_title}
+                                    dir={pubTitleIsRTL ? "rtl" : undefined}>
+                                    {pubTitleStr}
+                                </p>
+                                <p aria-hidden className={stylesPublications.publication_authors}>
+                                    {this.truncateAuthors(authors)}
+                                </p>
                             </div>
-                        )}
-                        dir="right"
-                    />
+                        </a>
+                }
+                <div className={stylesPublications.publication_infos_wrapper}>
+                    <div className={stylesPublications.publication_infos}>
+                        <span className={stylesButtons.button_secondary_blue}>{pubFormat}</span>
+                        <Menu
+                            button={(
+                                <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
+                            )}
+                        >
+                            {isOpds ?
+                                <OpdsMenu
+                                    opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
+                                /> :
+                                <CatalogMenu
+                                    publicationView={publicationViewMaybeOpds as PublicationView}
+                                />}
+                        </Menu>
+                    </div>
                 </div>
             </div>
         );
     }
 
-    private handleBookClick(e: React.SyntheticEvent) {
+    private handleLocalBookshelfBookClick(e: React.SyntheticEvent) {
         e.preventDefault();
         const { publicationViewMaybeOpds } = this.props;
-
-        if (this.props.isOpds) {
-            this.props.openInfosDialog(publicationViewMaybeOpds as IOpdsPublicationView);
-        } else {
-            this.props.openReader(publicationViewMaybeOpds as PublicationView);
-        }
+        this.props.openReader(publicationViewMaybeOpds as PublicationView);
     }
 
     /* function Truncate very long titles at 60 characters */

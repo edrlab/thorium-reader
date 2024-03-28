@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 
-import { IEventPayload_R2_EVENT_HIGHLIGHT_CLICK } from "@r2-navigator-js/electron/common/events";
+// import { IEventPayload_R2_EVENT_HIGHLIGHT_CLICK } from "@r2-navigator-js/electron/common/events";
 import { zipWith } from "ramda";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { eventChannel, SagaIterator } from "redux-saga";
@@ -17,7 +17,7 @@ import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro
 
 import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 import {
-    highlightsClickListen, highlightsCreate, highlightsRemove,
+    highlightsCreate, highlightsRemove,
 } from "@r2-navigator-js/electron/renderer";
 
 import { readerLocalActionHighlights } from "../../actions";
@@ -55,13 +55,12 @@ export function* mountHighlight(href: string, handlerState: IHighlightHandlerSta
 
     debug(`mountHighlight CREATED -- href: [${href}] createdHighlights: [${createdHighlights ? createdHighlights.length : JSON.stringify(createdHighlights, null, 4)}]`);
 
-    const arrayProps = handlerStateFiltered.map((v) => ({uuid: v.uuid, href: v.href, type: v.type}));
+    const arrayProps = handlerStateFiltered.map((v) => ({uuid: v.uuid, href: v.href, type: v.def.group}));
 
     const mounted = zipWith(
         (props, highlight) => ({
             uuid: props.uuid,
             href: props.href,
-            type: props.type,
             ref: highlight,
         } satisfies IHighlightMounterState),
         arrayProps,
@@ -102,17 +101,19 @@ export function* unmountHightlight(href: string, mountUUIDs: string[]): SagaIter
     yield put(readerLocalActionHighlights.mounter.unmount.build(uuids));
 }
 
-export type THighlightClick = [string, IHighlight, IEventPayload_R2_EVENT_HIGHLIGHT_CLICK["event"]];
+export type THighlightClick = [string, IHighlight/*, IEventPayload_R2_EVENT_HIGHLIGHT_CLICK["event"]*/];
 
 export function getHightlightClickChannel() {
     const channel = eventChannel<THighlightClick>(
         (emit) => {
 
-            const handler = (href: string, highlight: IHighlight, event: IEventPayload_R2_EVENT_HIGHLIGHT_CLICK["event"]) => {
-                emit([href, highlight, event]);
-            };
+            // const handler = (href: string, highlight: IHighlight/*, event: IEventPayload_R2_EVENT_HIGHLIGHT_CLICK["event"]*/) => {
+            //     emit([href, highlight/*, event*/]);
+            // };
 
-            highlightsClickListen(handler);
+            (window as any).__hightlightClickChannelEmitFn = emit;
+
+            // highlightsClickListen(handler);
 
             // eslint-disable-next-line @typescript-eslint/no-empty-function
             return () => {

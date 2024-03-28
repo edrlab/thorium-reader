@@ -57,9 +57,6 @@ export interface DialogType {
         feed: IOpdsFeedView;
     };
     [DialogTypeName.ApiappAddForm]: {};
-    [DialogTypeName.DeletePublicationConfirm]: {
-        publicationView: PublicationView;
-    };
     [DialogTypeName.DeleteOpdsFeedConfirm]: {
         feed: IOpdsFeedView;
     };

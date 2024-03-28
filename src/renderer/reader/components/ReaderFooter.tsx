@@ -9,16 +9,14 @@
 // import * as ForwardIcon from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
 // import * as BackIcon from "readium-desktop/renderer/assets/icons/double_arrow_left_black_24dp.svg";
 // import * as ForwardIcon from "readium-desktop/renderer/assets/icons/double_arrow_right_black_24dp.svg";
-import * as BackIcon from "readium-desktop/renderer/assets/icons/arrow-left.svg";
-import * as ForwardIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
+import * as BackIcon from "readium-desktop/renderer/assets/icons/backward-icon.svg";
+import * as ForwardIcon from "readium-desktop/renderer/assets/icons/forward-icon.svg";
 
 import classNames from "classnames";
 import * as React from "react";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { formatTime } from "readium-desktop/common/utils/time";
-import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -31,6 +29,11 @@ import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
+import * as Tooltip from "@radix-ui/react-tooltip";
+// import * as ValidatedIcon from "readium-desktop/renderer/assets/icons/validated-icon.svg";
+import { TDispatch } from "readium-desktop/typings/redux";
+// import { readerActions } from "readium-desktop/common/redux/actions";
+import { connect } from "react-redux";
 
 function throttle(callback: (...args: any) => void, limit: number) {
     let waiting = false;
@@ -47,7 +50,7 @@ function throttle(callback: (...args: any) => void, limit: number) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
+interface IBaseProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
     navLeftOrRight: (left: boolean) => void;
     gotoBegin: () => void;
     gotoEnd: () => void;
@@ -111,6 +114,19 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
         let spineTitle = currentLocation.locator?.title || currentLocation.locator.href;
 
+        // const isEnding = (isDivina
+        //     ? parseInt(spineTitle)
+        //     : isPdf ?
+        //         parseInt(currentLocation.locator?.href, 10).toString()
+        //         :
+        //         ((r2Publication.Spine.findIndex((spineLink) => spineLink.Href === currentLocation.locator?.href)) + 1).toString()
+        // ) ==
+        //     (isPdf ? (r2Publication.Metadata?.NumberOfPages ? r2Publication.Metadata.NumberOfPages : 0) :
+        //         (isDivina
+        //             ? (this.props.divinaContinousEqualTrue ? r2Publication.Spine.length : this.props.divinaNumberOfPages)
+        //             : r2Publication.Spine.length)
+        //     );
+
         if (isDivina) {
             try {
                 spineTitle = this.props.divinaContinousEqualTrue
@@ -126,8 +142,8 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         const isRTL = this.props.isRTLFlip();
 
         return (
-            <div className={classNames(stylesReader.reader_footer,
-                this.props.fullscreen ? stylesReader.reader_footer_fullscreen : undefined)}
+            <div className={classNames(stylesReaderFooter.reader_footer,
+                this.props.fullscreen ? stylesReaderFooter.reader_footer_fullscreen : undefined)}
                 onWheel={(ev) => {
                     if (ev.deltaY < 0 || ev.deltaX < 0) {
                         this.navLeftOrRightThrottled(true);
@@ -137,9 +153,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                 }}>
                 {
                 // !this.props.fullscreen &&
-                <div className={stylesReader.history}>
+                <div className={stylesReaderFooter.history}>
                             <button
-                                className={(isRTL ? this.props.historyCanGoForward : this.props.historyCanGoBack) ? undefined : stylesReader.disabled}
+                                className={(isRTL ? this.props.historyCanGoForward : this.props.historyCanGoBack) ? undefined : stylesReaderFooter.disabled}
                                 onClick={() => {
 
                                     // console.log("#+$%".repeat(5)  + " history back()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
@@ -156,7 +172,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                 <SVG ariaHidden={true} svg={BackIcon} />
                             </button>
                             <button
-                                className={(isRTL ? this.props.historyCanGoBack : this.props.historyCanGoForward) ? undefined : stylesReader.disabled}
+                                className={(isRTL ? this.props.historyCanGoBack : this.props.historyCanGoForward) ? undefined : stylesReaderFooter.disabled}
                                 onClick={() => {
 
                                     // console.log("#+$%".repeat(5)  + " history forward()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
@@ -174,8 +190,8 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                             </button>
                         </div>
                 }
-                {!isAudioBook &&
-                    <div className={stylesReader.arrows}>
+                {/* {!isAudioBook &&
+                    <div className={stylesReaderFooter.arrows}>
                         <button onClick={(ev) => {
                             if (ev.shiftKey) {
                                 if (isRTL) {
@@ -207,15 +223,15 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                         </button>
                     </div>
-                }
+                } */}
                 {!this.props.fullscreen &&
-                    <div aria-hidden="true" className={classNames(stylesReader.track_reading_wrapper,
-                        isAudioBook ? stylesReader.track_reading_wrapper_noArrows : undefined)}>
+                    <div aria-hidden="true" className={classNames(stylesReaderFooter.track_reading_wrapper,
+                        isAudioBook ? stylesReaderFooter.track_reading_wrapper_noArrows : undefined)}>
 
                         { // <div id={stylesReader.current}></div>
-                            <div id={stylesReader.track_reading}>
-                                <div id={stylesReader.chapters_markers}
-                                    className={classNames(isRTL ? stylesReader.RTL_FLIP : undefined, moreInfo ? stylesReader.more_information : undefined)}>
+                            <div id={stylesReaderFooter.track_reading}>
+                                <div id={stylesReaderFooter.chapters_markers}
+                                    className={classNames(isRTL ? stylesReaderFooter.RTL_FLIP : undefined, moreInfo ? stylesReaderFooter.more_information : undefined)}>
                                     {
                                         (isPdf
                                             // tslint:disable-next-line: max-line-length
@@ -239,69 +255,103 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                 afterCurrentLocation = true;
                                             }
                                             return (
-                                                <span
-                                                    onClick={(e) => {
+                                                <Tooltip.Provider key={index}>
+                                                    <Tooltip.Root>
+                                                        <Tooltip.Trigger asChild>
+                                                            <span
+                                                                onClick={(e) => {
 
-                                                        if (isDivina) {
-                                                            // const loc = {
-                                                            //     href: index.toString(),
-                                                            //     // progression generate in divina pagechange event
-                                                            // };
-                                                            // this.props.goToLocator(loc as any);
-                                                            if (link?.Href) {
-                                                                this.props.handleLinkClick(e, link.Href);
-                                                            }
+                                                                    if (isDivina) {
+                                                                        // const loc = {
+                                                                        //     href: index.toString(),
+                                                                        //     // progression generate in divina pagechange event
+                                                                        // };
+                                                                        // this.props.goToLocator(loc as any);
+                                                                        if (link?.Href) {
+                                                                            this.props.handleLinkClick(e, link.Href);
 
-                                                        } else {
+                                                                        }
+                                                                    } else {
 
-                                                            const el = e.nativeEvent.target as HTMLElement;
-                                                            const deltaX = e.nativeEvent.offsetX;
-                                                            let element = el;
-                                                            let w: number | undefined;
-                                                            while (element && element.classList) {
-                                                                if (
-                                                                    // tslint:disable-next-line: max-line-length
-                                                                    element.classList.contains("progressChunkSpineItem")
-                                                                ) {
-                                                                    w = element.offsetWidth;
-                                                                    break;
+                                                                        const el = e.nativeEvent.target as HTMLElement;
+                                                                        const deltaX = e.nativeEvent.offsetX;
+                                                                        let element = el;
+                                                                        let w: number | undefined;
+                                                                        while (element && element.classList) {
+                                                                            if (
+                                                                                // tslint:disable-next-line: max-line-length
+                                                                                element.classList.contains("progressChunkSpineItem")
+                                                                            ) {
+                                                                                w = element.offsetWidth;
+                                                                                break;
+                                                                            }
+                                                                            element = element.parentNode as HTMLElement;
+                                                                        }
+                                                                        if (!w) {
+                                                                            w = element.offsetWidth;
+                                                                        }
+                                                                        const percent = deltaX / w;
+                                                                        const loc: R2Locator = {
+                                                                            href: link.Href,
+                                                                            locations: {
+                                                                                progression: percent,
+                                                                            },
+                                                                        };
+                                                                        this.props.goToLocator(loc);
+                                                                        // this.props.handleLinkClick(e, link.Href);
+                                                                    }
+                                                                }}
+                                                                key={index}
+                                                                className={
+                                                                    classNames(
+                                                                        "progressChunkSpineItem",
+                                                                        atCurrentLocation ? stylesReaderFooter.currentSpineItem : undefined)
                                                                 }
-                                                                element = element.parentNode as HTMLElement;
+                                                            >
+                                                            {
+                                                                atCurrentLocation
+                                                                    ? <span style={this.getProgressionStyle()}></span>
+                                                                    : !afterCurrentLocation && <span></span>
                                                             }
-                                                            if (!w) {
-                                                                w = element.offsetWidth;
-                                                            }
-                                                            const percent = deltaX / w;
-
-                                                            const loc: R2Locator = {
-                                                                href: link.Href,
-                                                                locations: {
-                                                                    progression: percent,
-                                                                },
-                                                            };
-                                                            this.props.goToLocator(loc);
-                                                            // this.props.handleLinkClick(e, link.Href);
-                                                        }
-                                                    }}
-                                                    key={index}
-                                                    className={
-                                                        classNames(
-                                                            "progressChunkSpineItem",
-                                                            atCurrentLocation ? stylesReader.currentSpineItem : undefined)
-                                                    }
-                                                >
-                                                    {
-                                                        atCurrentLocation
-                                                            ? <span style={this.getProgressionStyle()}></span>
-                                                            : !afterCurrentLocation && <span></span>
-                                                    }
-                                                </span>
+                                                        </span>
+                                                    </Tooltip.Trigger>
+                                                    <Tooltip.Portal>
+                                                            <Tooltip.Content className={stylesReaderFooter.tooltip_content}>
+                                                                <div
+                                                                    id={stylesReaderFooter.arrow_box}
+                                                                    style={this.getStyle(this.getArrowBoxStyle)}
+                                                                >
+                                                                    <span title={spineTitle}><em>{`(${(isDivina)
+                                                                        ? spineTitle
+                                                                        : isPdf ?
+                                                                            parseInt(link.Href, 10).toString()
+                                                                            :
+                                                                            ((r2Publication.Spine.findIndex((spineLink) => spineLink.Href === link.Href)) + 1).toString()
+                                                                        }/${isPdf ? (r2Publication.Metadata?.NumberOfPages ? r2Publication.Metadata.NumberOfPages : 0) :
+                                                                            (isDivina
+                                                                                ? (this.props.divinaContinousEqualTrue ? r2Publication.Spine.length : this.props.divinaNumberOfPages)
+                                                                                : r2Publication.Spine.length)
+                                                                        }) `}</em> {` ${link.Title !== undefined ? link.Title : spineTitle}`}</span>
+                                                                    <p>
+                                                                        {this.getProgression()}
+                                                                    </p>
+                                                                    {/* <span
+                                                                        style={this.getStyle(this.getArrowStyle)}
+                                                                        className={stylesReaderFooter.after}
+                                                                    /> */}
+                                                                </div>
+                                                                <Tooltip.Arrow width={15} height={10} />
+                                                            </Tooltip.Content>
+                                                        </Tooltip.Portal>
+                                                    </Tooltip.Root>
+                                                </Tooltip.Provider>
                                             );
                                         })}
                                 </div>
-                                {moreInfo &&
+
+                                {/* {moreInfo &&
                                     <div
-                                        id={stylesReader.arrow_box}
+                                        id={stylesReaderFooter.arrow_box}
                                         style={this.getStyle(this.getArrowBoxStyle)}
                                     >
                                         <span title={spineTitle}><em>{`(${(isDivina)
@@ -320,18 +370,16 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                         </p>
                                         <span
                                             style={this.getStyle(this.getArrowStyle)}
-                                            className={stylesReader.after}
+                                            className={stylesReaderFooter.after}
                                         />
                                     </div>
-                                }
+                                } */}
                             </div>
                         }
-
-                        <span
-                            onClick={this.handleMoreInfoClick}
-                        >
-                            {moreInfo ? __("reader.footerInfo.lessInfo") : __("reader.footerInfo.moreInfo")}
-                        </span>
+                        {/* {isEnding ? <button className={stylesReaderFooter.finishedIcon}
+                             onClick={() => this.props.finishReading()}
+                             title="Mark as finished"
+                             ><SVG ariaHidden svg={ValidatedIcon} /></button> : <></>} */}
                     </div>
                 }
             </div>
@@ -424,12 +472,22 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         return `calc(${arrowBoxPosition}% + ${(multiplicator * (450 * (rest / 100) - 30 * rest / 100))}px)`;
     }
 
-    private getArrowStyle(arrowBoxPosition: number, multiplicator: number, rest: number) {
-        return `calc(${arrowBoxPosition}% + ${multiplicator * 30 * rest / 100}px)`;
-    }
+    // private getArrowStyle(arrowBoxPosition: number, multiplicator: number, rest: number) {
+    //     return `calc(${arrowBoxPosition}% + ${multiplicator * 30 * rest / 100}px)`;
+    // }
 
     private handleMoreInfoClick() {
         this.setState({ moreInfo: !this.state.moreInfo });
     }
 }
-export default withTranslator(ReaderFooter);
+
+const mapDispatchToProps = (_dispatch: TDispatch) => {
+    return {
+        // finishReading: () => {
+        //     // dispatch(readerActions.readingFinished.build(true));
+        //     dispatch(readerActions.closeRequest.build());
+        // },
+    };
+};
+
+export default connect(undefined, mapDispatchToProps)(withTranslator(ReaderFooter));

@@ -1,0 +1,210 @@
+/*
+=-=-= modals.scss
+*/
+
+.modal_dialog_overlay {
+  position: fixed;
+  z-index: 102;
+  inset: 0;
+  display: flex;
+  padding: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background-color: rgb(0 0 0 / 50%);
+  transition: 0.2s;
+  min-width: 700px;
+  align-items: center;
+  justify-content: center;
+
+  &_hidden {
+    position: fixed;
+    z-index: 101;
+    inset: 0;
+  }
+}
+
+.modal_dialog {
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  width: 776px;
+  min-height: 401px;
+  height: fit-content;
+  max-width: calc(100vw - 60px);
+  max-height: calc(100vh - 60px);
+  border-radius: 10px;
+  z-index: 102;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden auto;
+  align-content: flex-start;
+  position: fixed;
+  box-sizing: border-box;
+
+  &.modal_dialog_full {
+    position: relative;
+    box-sizing: border-box;
+
+    &_full {
+      width: calc(100vw - 60px);
+      height: calc(100vh - 100px);
+    }
+  }
+  
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+
+  &_reader {
+    .display_options_item {
+      color: var(--color-primary);
+    }
+
+    .settings_container {
+      background-color: var(--color-secondary);
+    }
+
+    color: var(--color-primary);
+
+    .react_aria_ComboBox {
+      .react_aria_Button {
+        background-color: var(--color-secondary);
+      }
+
+      .react_aria_Input {
+        background-color: var(--reader-secondaryColor);    
+        color: var(--color-primary);
+      }
+    }
+  }
+}
+
+.modal_dialog_body {
+  flex: 1;
+  padding: 0 20px 0 30px;
+  overflow: hidden auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &_centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.modal_dialog_body_cover > img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 570px;
+  max-height: calc(100vh - 200px);
+}
+
+.modal_dialog_header,
+.modal_dialog_footer {
+  display: flex;
+  flex: none;
+  margin: 0 20px 10px;
+  align-items: center;
+  height: 50px;
+}
+
+.modal_dialog_header {
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-medium-grey);
+
+  & h1 {
+    font-weight: bold;
+    margin: 10px 0;
+    margin-left: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 20px;
+  }
+}
+
+.modal_dialog_footer {
+  justify-content: end;
+  border-top: 1px solid var(--color-medium-grey);
+  position: sticky;
+  bottom: 0;
+  right: 0;
+  background-color: var(--color-secondary);
+  gap: 10px;
+
+  & [type="submit"] {
+    min-width: 100px;
+  }
+}
+
+.c_dialog__box {
+  & .close_button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    height: 50px;
+    display: block;
+    width: 50px;
+    cursor: pointer;
+    fill: #3b3b3b;
+    background-color: transparent;
+    border: none;
+  }
+
+  & button svg {
+    width: 80%;
+  }
+}
+
+#opds_form_dialog {
+  & .field {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    & label {
+      flex: 1;
+      max-width: 10rem;
+    }
+
+    & input {
+      padding-bottom: 4px;
+      padding-left: 0.3rem;
+      border: none;
+      border-bottom: 1px solid grey;
+      width: 20rem;
+    }
+  }
+}
+
+#add_dialog {
+  & ul {
+    padding: 0;
+
+    & li {
+      font-weight: bold;
+      list-style: none;
+    }
+  }
+}
+
+.lcp_hint {
+  color: var(--color-blue);
+  background-color: var(--color-light-blue);
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: fit-content;
+
+  svg {
+    height: 14px;
+  }
+}
+
+.urlHint {
+  font-size: 14px;
+  color: var(--color-blue);
+}
