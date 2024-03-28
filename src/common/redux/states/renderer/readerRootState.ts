@@ -19,7 +19,6 @@ import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 import { TBookmarkState } from "../bookmark";
 import { IRTLFlipState } from "./rtlFlip";
 import { IAnnotationModeState, TAnnotationState } from "./annotation";
-import { IReadingFinished } from "./readingFinished";
 
 export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
@@ -43,6 +42,4 @@ export interface IReaderStateReader {
 
     disableRTLFlip: IRTLFlipState;
     defaultConfig: ReaderConfig; // sync across all app
-
-    readingFinished: IReadingFinished;
 }

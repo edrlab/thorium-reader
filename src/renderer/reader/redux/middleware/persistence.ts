@@ -65,11 +65,6 @@ export const reduxPersistMiddleware: Middleware
                     readerState.annotation = nextState.reader.annotation;
                     dispatchFlag = true;
                 }
-                if (!ramda.equals(prevState.reader.readingFinished, nextState.reader.readingFinished)) {
-
-                    readerState.readingFinished = nextState.reader.readingFinished;
-                    dispatchFlag = true;
-                }
                 if (dispatchFlag) {
 
                     dispatchSetReduxState(store, readerState);

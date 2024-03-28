@@ -37,7 +37,6 @@ import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { annotationModeEnableReducer } from "./annotationModeEnable";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { readerReadingFinishedReducer } from "readium-desktop/common/redux/reducers/readingFinished";
 
 export const rootReducer = () => {
 
@@ -164,7 +163,6 @@ export const rootReducer = () => {
             }),
             divina: readerDivinaReducer,
             disableRTLFlip: readerRTLFlipReducer,
-            readingFinished: readerReadingFinishedReducer,
         }),
         search: searchReducer,
         annotation: annotationModeEnableReducer,

@@ -8,7 +8,6 @@
 import { ReaderConfig, ReaderInfo } from "readium-desktop/common/models/reader";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { IRTLFlipState } from "readium-desktop/common/redux/states/renderer/rtlFlip";
-import { IReadingFinished } from "readium-desktop/common/redux/states/renderer/readingFinished";
 
 export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
@@ -19,6 +18,5 @@ export interface IReaderStateReader {
     info: ReaderInfo;
 
     disableRTLFlip: IRTLFlipState;
-    readingFinished: IReadingFinished;
     defaultConfig: ReaderConfig;
 }
