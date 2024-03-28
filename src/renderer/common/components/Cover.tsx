@@ -19,6 +19,8 @@ import { TranslatorProps, withTranslator } from "./hoc/translator";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
 import { useTranslator } from "../hooks/useTranslator";
+// import * as ValidateIcon from "readium-desktop/renderer/assets/icons/validated-icon.svg";
+// import SVG from "./SVG";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -95,7 +97,14 @@ class Cover extends React.Component<IProps, IState> {
     public render() {
         const { publicationViewMaybeOpds, translator } = this.props;
 
-        console.log(this.props);
+        // let tagString = "";
+        // for (const tag of publicationViewMaybeOpds.tags) {
+        //     if (typeof tag === "string") {
+        //         tagString = tag;
+        //     } else {
+        //         tagString = tag.name;
+        //     }
+        // };
 
         if (this.state.imgUrl) {
             return (
@@ -113,8 +122,8 @@ class Cover extends React.Component<IProps, IState> {
                     onError={this.imageOnError}
                     {...this.props.imgRadixProp}
                 />
-                {/* {!this.props.publicationViewMaybeOpds.lastReadTimeStamp ? 
-                <div className={stylesPublications.corner}></div> 
+                {/* {tagString === "/finished/"  ? 
+                <div className={stylesPublications.corner}><SVG ariaHidden svg={ValidateIcon} /></div> 
                 : <></>} */}
                 <div className={stylesPublications.gradient}></div>
                 </>

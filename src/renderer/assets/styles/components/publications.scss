@@ -520,14 +520,29 @@
 }
 
 .corner {
-  width: 30px;
-  height: 30px;
-  transform:rotate(40deg);
+  // transform:rotate(40deg);
   position: absolute;
-  top: -15px;
-  right: -15px;
-  background-color: var(--color-blue);
+  // top: -15px;
+  // right: -15px;
+  // background-color: var(--color-blue);
+  display : inline-block;
+  height : 0;
+  width : 0;
+  border-top : 50px solid var(--color-secondary);
+  border-left : 50px solid transparent;
   opacity: 0.8;
+  right: 0;
+  top: 0;
+
+  svg {
+    width: 15px;
+    height: 15px;
+    color: var(--color-blue);
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: -32px;
+    right: 0;
+  }
 }
 
 .___DEBUG___COMPONENTS_PUBLICATIONS_CSS {
