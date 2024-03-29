@@ -163,25 +163,22 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                             : <></>
                                         }
                                         {
-                                            group.publications &&
-                                                (
-                                                    (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid
-                                                ) === DisplayType.Grid ?
-                                                group.publications.length > 1 ?
-                                                <Slider
-                                                    content={group.publications.map((pub, pubId) =>
-                                                        <PublicationCard
-                                                            key={`opds-group-${i}-${pubId}`}
-                                                            publicationViewMaybeOpds={pub}
-                                                            isOpds={true}
-                                                        />,
-                                                    )}
-                                                />
-                                                 :
-                                                <ListView
-                                                    normalOrOpdsPublicationViews={group.publications}
-                                                    isOpdsView={true}
-                                                />
+                                            group.publications?.length > 1 ? 
+                                            (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) === DisplayType.Grid ?
+                                                    <Slider
+                                                        content={group.publications.map((pub, pubId) =>
+                                                            <PublicationCard
+                                                                key={`opds-group-${i}-${pubId}`}
+                                                                publicationViewMaybeOpds={pub}
+                                                                isOpds={true}
+                                                            />,
+                                                        )}
+                                                    />
+                                                    :
+                                                    <ListView
+                                                        normalOrOpdsPublicationViews={group.publications}
+                                                        isOpdsView={true}
+                                                    />
                                                 : <></>
                                         }
                                     </section>,

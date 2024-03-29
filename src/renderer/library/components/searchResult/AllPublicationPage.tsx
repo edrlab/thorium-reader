@@ -95,7 +95,7 @@ import { MySelectProps, Select } from "readium-desktop/renderer/common/component
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import AboutThoriumButton from "../catalog/AboutThoriumButton";
 // import GridTagButton from "../catalog/GridTagButton";
- 
+
 // import {
 //     formatContributorToString,
 // } from "readium-desktop/renderer/common/logics/formatContributor";
@@ -234,6 +234,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
                         //     <ListView normalOrOpdsPublicationViews={this.state.publicationViews} />)
                         : <></>
                 }
+                <AboutThoriumButton />
             </LibraryLayout>
         );
     }
@@ -388,12 +389,12 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
             <label
                 id="globalSearchLabel"
                 htmlFor="globalSearchInput"
-                style={{display: "flex", gap: "5px"}}>
+                style={{ display: "flex", gap: "5px" }}>
                 {`${props.__("header.searchPlaceholder")}`}
                 <div
-                aria-live="assertive">
-                {props.globalFilteredRows.length !== props.preGlobalFilteredRows.length ? ` (${props.globalFilteredRows.length} / ${props.preGlobalFilteredRows.length})` : ` (${props.preGlobalFilteredRows.length})`}
-            </div>
+                    aria-live="assertive">
+                    {props.globalFilteredRows.length !== props.preGlobalFilteredRows.length ? ` (${props.globalFilteredRows.length} / ${props.preGlobalFilteredRows.length})` : ` (${props.preGlobalFilteredRows.length})`}
+                </div>
             </label>
             <i><SVG ariaHidden svg={SearchIcon} /></i>
             {/*
@@ -537,7 +538,7 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                         onInputChange((e.target.value || "").trim() || undefined);
                         if (props.column.id === "colTags") {
                             props.setSelectedTag(e.target.value.trim());
-                        }  
+                        }
                     }
                 }}
                 onKeyUp={(e) => {
@@ -546,10 +547,10 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                         // value
                         props.column.setFilter( // props.column.filterValue
                             (inputRef?.current?.value || "").trim() || undefined);
-                            if (props.column.id === "colTags") {
-                                props.setSelectedTag(inputRef?.current?.value.trim());
-                                console.log(inputRef.current.value);
-                            }
+                        if (props.column.id === "colTags") {
+                            props.setSelectedTag(inputRef?.current?.value.trim());
+                            console.log(inputRef.current.value);
+                        }
                     }
                 }}
                 aria-label={`${props.__("header.searchPlaceholder")} (${props.column.Header})`}
@@ -841,9 +842,9 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
                 props.setShowColumnFilters(true, props.column.id, t);
                 props.setSelectedTag(t);
             }}
-            className={stylesButtons.button_nav_primary} style={{padding: "2px" }}>
-                <p style={{ maxWidth:"100px", overflow: "hidden", textOverflow: "ellipsis", textWrap: "nowrap"}}>{t}</p>
-                </a>;
+            className={stylesButtons.button_nav_primary} style={{ padding: "2px" }}>
+            <p style={{ maxWidth: "100px", overflow: "hidden", textOverflow: "ellipsis", textWrap: "nowrap" }}>{t}</p>
+        </a>;
     };
 
     // props.value.label === props.value.tags.join(", ")
@@ -1148,8 +1149,8 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
         >
             <PublicationInfoLibWithRadixTrigger asChild>
                 <a
-                className={stylesPublication.cell_bookTitle}
-                title={`${pubTitleStr} (${props.__("catalog.bookInfo")})`}
+                    className={stylesPublication.cell_bookTitle}
+                    title={`${pubTitleStr} (${props.__("catalog.bookInfo")})`}
                 >
                     {pubTitleStr}
                 </a>
@@ -1285,7 +1286,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     // moment.locale(locale);
 
     const tableRows = React.useMemo(() => {
-        return props.publicationViews.map((publicationView) => {
+        return props.publicationViews.reverse().map((publicationView) => {
 
             // translator.translateContentField(author)
             // const authors = publicationView.authors ? formatContributorToString(publicationView.authors, props.translator) : "";
@@ -1798,11 +1799,11 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     //     ))}
     //     </select>
 
-    const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => 
-    <Select refButEl={forwardedRef} {...props}></Select>);
+    const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) =>
+        <Select refButEl={forwardedRef} {...props}></Select>);
     SelectRef.displayName = "ComboBox";
 
-    const tagsOptions = props.tags.map((v,i) => ({id: i, value: i, name: v}));
+    const tagsOptions = props.tags.map((v, i) => ({ id: i, value: i, name: v }));
 
 
     return (
@@ -1857,20 +1858,20 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                 // </div>
 
                                 <div className={stylesPublication.filter_container}>
-                                <ComboBox 
-                                label={__("header.fitlerTagTitle")} 
-                                defaultItems={tagsOptions} 
-                                defaultSelectedKey={tagsOptions.find((tag) => tag.name?.toLowerCase().includes(selectedTag?.toLowerCase()))?.id || undefined}
-                                onSelectionChange={(i) => {
-                                    setSelectedTag(tagsOptions.find((tag) => tag.id === i)?.name);
-                                    tableInstance.setFilter("colTags",tagsOptions.find((tag) => tag.id === i)?.name);
-                                    // console.log(tableInstance.columns.find((element) => element.Header === "Tags"))
-                                    }}
-                                svg={TagIcon}
-                                allowsCustomValue
-                                >
-                                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                                </ComboBox>
+                                    <ComboBox
+                                        label={__("header.fitlerTagTitle")}
+                                        defaultItems={tagsOptions}
+                                        defaultSelectedKey={tagsOptions.find((tag) => tag.name?.toLowerCase().includes(selectedTag?.toLowerCase()))?.id || undefined}
+                                        onSelectionChange={(i) => {
+                                            setSelectedTag(tagsOptions.find((tag) => tag.id === i)?.name);
+                                            tableInstance.setFilter("colTags", tagsOptions.find((tag) => tag.id === i)?.name);
+                                            // console.log(tableInstance.columns.find((element) => element.Header === "Tags"))
+                                        }}
+                                        svg={TagIcon}
+                                        allowsCustomValue
+                                    >
+                                        {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                                    </ComboBox>
                                 </div>
 
                                 // <Popover.Root>
@@ -1998,11 +1999,11 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                             "100px" :
                                             column.id === "colDuration" ?
                                                 "100px" :
-                                                column.id === "col_a11y_accessibilitySummary"  ?
+                                                column.id === "col_a11y_accessibilitySummary" ?
                                                     "160px" :
                                                     column.id === "colAuthors" ?
-                                                    "160px":
-                                                    "100px";
+                                                        "160px" :
+                                                        "100px";
 
                                 return (<th
                                     key={`headtrth_${i}`}
@@ -2072,7 +2073,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
                                                     // const show = showColumnFilters;
                                                     setShowColumnFilters(!showColumnFilters);
-                                                    
+
                                                     // setTimeout(() => {
                                                     //     if (!show) {
                                                     //         tableInstance.setGlobalFilter("");
@@ -2146,7 +2147,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                             );
                         })}</tbody>
                 </table>
-                <AboutThoriumButton />
+                {/* <AboutThoriumButton /> */}
             </div>
         </>
     );
