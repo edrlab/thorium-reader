@@ -71,6 +71,10 @@ section {
   position: relative;
   color: var(--color-primary);
 
+  &:has(.footer_wrapper) {
+    padding-bottom: 40px;
+  }
+
   &::-webkit-scrollbar {
     width: 5px;
 

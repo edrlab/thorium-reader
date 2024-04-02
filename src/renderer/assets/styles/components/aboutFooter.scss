@@ -18,7 +18,7 @@
 // }
 
 .footer_wrapper {
-    position: absolute;
+    position: fixed;
     bottom: -10px;
     right: 10px;
     border-top: 1px solid var(--color-extralight-grey);
@@ -29,8 +29,12 @@
     justify-content: end;
     gap: 10px;
     height: 30px;
-    width: 100%;
+    width: calc(100% - 215px);
     background-color: var(--color-secondary);
+
+    @media screen and (width <= 800px) {
+        width: calc(100% - 82px);
+    }
 
     a {
         font-style: italic;
