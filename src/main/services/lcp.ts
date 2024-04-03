@@ -1003,10 +1003,11 @@ export class LcpManager {
                 debug(r2LCPStr);
 
                 // r2Publication.LCP.LSD.Status !== StatusEnum.Active && r2Publication.LCP.LSD.Status !== StatusEnum.Ready
-                if (r2Publication.LCP.LSD.Status === StatusEnum.Revoked
+                if (r2Publication.LCP.LSD &&
+                    (r2Publication.LCP.LSD.Status === StatusEnum.Revoked
                     || r2Publication.LCP.LSD.Status === StatusEnum.Returned
                     || r2Publication.LCP.LSD.Status === StatusEnum.Cancelled
-                    || r2Publication.LCP.LSD.Status === StatusEnum.Expired) {
+                    || r2Publication.LCP.LSD.Status === StatusEnum.Expired)) {
                     // TODO anything here just in case the LCP license end date is still "open" in the future? We assume it is now closed (subsequent attempts to load book will fail).
                     // The license is supposed to be the source of truth, so it should have been correspondingly updated by server...maybe too optimistic assumption?
                 }
