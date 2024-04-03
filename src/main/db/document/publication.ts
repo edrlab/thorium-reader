@@ -29,7 +29,7 @@ import { Timestampable } from "readium-desktop/common/models/timestampable";
 
 export interface PublicationDocument extends Identifiable, Timestampable {
     // resources: Resources;
-    title: string;
+    title?: string; // some publications do not have a title :(
     tags?: string[];
     files?: File[];
     coverFile?: File;

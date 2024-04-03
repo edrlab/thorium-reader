@@ -14,7 +14,7 @@ const isDev = nodeEnv === "development";
 
 const isVisualStudioCodeLaunch = process.env.VSCODE_LAUNCH || "false";
 
-const isContinuousIntegrationDeploy = process.env.TRAVIS_OS_NAME_ ? true : false;
+const isContinuousIntegrationDeploy = process.env.GITHUB_TOKEN_RELEASE_PUBLISH ? true : false;
 
 const rendererLibraryBaseUrl = isDev ? "http://localhost:" + portApp + "/" : "file://";
 

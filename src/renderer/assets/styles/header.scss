@@ -9,7 +9,7 @@
   height: 100vh;
   background-color: var(--color-extralight-grey);
   max-width: 204px;
-  border-right: 2px solid var(--color-medium-grey);
+  border-right: 2px solid var(--color-light-grey);
   flex: 1;
   transition: 200ms linear;
 
@@ -26,7 +26,7 @@
       display: none;
     }
 
-    ul a {
+    ul a, ul button {
       min-width: unset!important;
     }
 
@@ -81,6 +81,10 @@
       display: flex;
       align-items: center;
       justify-content: start;
+
+      @media screen and (width <= 800px) {
+        justify-content: center;
+      }
     
       svg {
         width: 15px;

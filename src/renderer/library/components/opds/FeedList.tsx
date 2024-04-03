@@ -75,6 +75,7 @@ class FeedList extends React.Component<IProps, IState> {
         const { __ } = this.props;
         return (
             <section>
+                <h2>{__("header.myCatalogs")}</h2>
                 <ul className={stylesCatalogs.catalog_wrapper}>
                     {this.state.feedsResult.map((item, index) => {
                         return (

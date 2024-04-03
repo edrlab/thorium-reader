@@ -16,8 +16,12 @@ import {
 import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
-import Nunito from "readium-desktop/renderer/assets/fonts/nunito.ttf";
-import NunitoBold from "readium-desktop/renderer/assets/fonts/nunitoBold.ttf";
+
+// TODO: remove from folder too? Why different than App.tsx for library window?
+// import Nunito from "readium-desktop/renderer/assets/fonts/nunito.ttf";
+// import NunitoBold from "readium-desktop/renderer/assets/fonts/nunitoBold.ttf";
+import Nunito from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-Regular.ttf";
+import NunitoBold from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-SemiBold.ttf";
 
 import * as globalScssStyle from "readium-desktop/renderer/assets/styles/global.scss";
 globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
@@ -120,6 +124,7 @@ url("${rcssPath}/fonts/iAWriterDuospace-Regular.ttf") format("truetype");
 
                 `;
                 const el = document.createElement("style");
+                el.setAttribute("id", nunitoFontStyleID);
                 el.setAttribute("type", "text/css");
                 el.appendChild(document.createTextNode(css));
                 document.head.appendChild(el);

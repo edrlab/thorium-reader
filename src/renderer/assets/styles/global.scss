@@ -70,6 +70,24 @@ section {
   box-sizing: border-box;
   position: relative;
   color: var(--color-primary);
+
+  &:has(.footer_wrapper) {
+    padding-bottom: 40px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 5px;
+
+    &-thumb {
+        background-color: var(--scrollbar-thumb);
+        border-radius: 6px;
+
+    }
+
+    &-track {
+        background-color: var(--color-secondary);
+        }
+}
 }
 
 nav + nav + .main {
@@ -202,6 +220,7 @@ nav + nav + .breadcrumb + .main {
   padding-bottom: 5px;
   margin-bottom: 15px;
   border-bottom: 3px solid var(--color-light-grey);
+  max-width: 250px;
 
   & h2 {
     position: relative;
@@ -226,14 +245,27 @@ nav + nav + .breadcrumb + .main {
   }
 }
 
+.heading_link:only-child {
+  font-style: italic;
+
+  span {
+    color: var(--color-medium-grey);
+  }
+
+  a {
+    cursor: not-allowed;
+    background-color: unset;
+  }
+}
+
 .heading_link a {
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
   align-items: center;
   border-bottom: 3px solid var(--color-light-grey);
   position: relative;
   font-weight: 700;
-  margin: 0 0 20px;
+  margin: 0 0 10px;
   font-size: 20px;
   border-radius: 5px 5px 0 0;
   padding: 10px 0 5px;

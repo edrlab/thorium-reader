@@ -29,13 +29,13 @@ input[type="search"] {
   color: var(--color-primary);
   font-size: 0.9rem;
 
-  @media (prefers-color-scheme: dark) {
-    background-color: #2D2D2D;
+  // @media (prefers-color-scheme: dark) {
+  //   background-color: #2D2D2D;
 
-    &::placeholder {
-      color: white;
-    }
-  }
+  //   &::placeholder {
+  //     color: white;
+  //   }
+  // }
 
   &::placeholder {
     color: var(--color-medium-grey);
@@ -69,7 +69,7 @@ form[role="search"] {
   height: 30px !important;
 
   &:has(input:focus) {    
-    outline: blue solid 2px !important;
+    outline: var(--color-blue) solid 2px !important;
     outline-offset: -2px;
   }
 }
@@ -81,7 +81,7 @@ select {
 
 .form_group {
   width: 150px;
-  height: 19px;
+  height: 25px;
   padding:2px;
   border:1px solid var(--color-primary);
   margin: 0;
@@ -95,8 +95,8 @@ select {
   //   background-color: #2D2D2D;
   // }
 
-  &:has(input:focus) {    
-    outline: blue solid 2px !important;
+  &:has(input:focus), &:has(button:focus) {    
+    outline: var(--color-blue) solid 2px !important;
     outline-offset: -2px;
   }
 
@@ -112,7 +112,7 @@ select {
   & >input{
       border:none;
       width: calc(100% - 35px);
-      height: 19px;
+      height: 25px;
       margin-left: 30px;
       background-color: var(--color-secondary);
   }
@@ -131,7 +131,7 @@ select {
   margin-top: 30px;
 
   &:has(input:focus) {    
-    outline: blue solid 2px !important;
+    outline: var(--color-blue) solid 2px !important;
     outline-offset: -2px;
   }
 
@@ -139,8 +139,8 @@ select {
     height: 14px;
     position: absolute;
     left: 20px;
-    // top: 17px;
     transform: translate(-50%, -50%);
+    top: 50%;
   }
 }
 

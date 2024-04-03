@@ -5,14 +5,15 @@
 .downloadsPanel {
   display: block;
   position: absolute;
-  left: 10px;
-  right: 10px;
+  left: 20px;
+  right: 20px;
+  border-radius: 5px;
   bottom: 0;
   height: auto;
   overflow: hidden;
   overflow-y: auto;
-  background: white;
-  border: 2px solid black;
+  background: var(--color-light-grey);
+  border: 2px solid var(--color-light-blue);
   margin: 0;
   padding: 10px;
   z-index: 110;
@@ -50,7 +51,7 @@
     }
 
     progress::-webkit-progress-value {
-      background-color: black;
+      background-color: var(--color-blue);
       border-radius: 0;
     }
 
@@ -59,6 +60,20 @@
       width: auto;
       margin: 0;
       padding: 3px;
+      color: var(--color-primary);
+
+      svg {
+        width: 12px;
+        height: 12px;
+        fill: var(--color-primary);
+        color: var(--color-primary);
+        transition: 200ms;
+
+        &:hover {
+          fill: red;
+          color: red;
+        }
+      }
     }
   }
 }

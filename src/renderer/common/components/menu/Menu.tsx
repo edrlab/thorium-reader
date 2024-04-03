@@ -9,6 +9,7 @@ import * as React from "react";
 
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import * as Popover from "@radix-ui/react-popover";
+import classNames from "classnames";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -16,15 +17,18 @@ interface IBaseProps {
 }
 
 const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
+
+    const [triggerOpen, setTriggerOpen] = React.useState(false);
+
     return (
-        <Popover.Root>
+        <Popover.Root onOpenChange={() => setTriggerOpen(!triggerOpen)}>
             <Popover.Trigger asChild>
-                <button>
+                <button className={classNames(stylesDropDown.dropdown_trigger, triggerOpen ? "popover_open" : "")}>
                     {props.button}
                 </button>
             </Popover.Trigger>
             <Popover.Portal>
-                <Popover.Content sideOffset={5}>
+                <Popover.Content sideOffset={5} align="end" alignOffset={-10}>
                     <div className={stylesDropDown.dropdown_menu}>
                         {props.children}
                     </div>

@@ -16,6 +16,7 @@ import { type Store } from "redux";
 import { IReaderRootState } from "../../common/redux/states/renderer/readerRootState";
 import App from "./components/App";
 import { diReaderSymbolTable } from "./diSymbolTable";
+import { readerLocalActionSetConfig } from "./redux/actions";
 
 // Create container used for dependency injection
 const container = new Container();
@@ -29,6 +30,42 @@ const createStoreFromDi = async (preloadedState: Partial<IReaderRootState>) => {
     const locale = store.getState().i18n.locale;
     await translator.setLocale(locale);
 
+    // migration from defaultConfig to config if new keyValue added
+    const defaultConfig = store.getState().reader.defaultConfig;
+    const newConfig = { ...store.getState().reader.config };
+    let flag = false;
+
+    // Migrate new entry for annotation in READER config 
+    if (newConfig.annotation_defaultColor === undefined) {
+
+        console.log("ANNOTATION MIGRATION !! defaultColor not set migrate from defaultConfig value=", newConfig.annotation_defaultColor);
+        newConfig.annotation_defaultColor = defaultConfig.annotation_defaultColor;
+        flag = true;
+    }
+    if (newConfig.annotation_defaultDrawType === undefined) {
+
+        console.log("ANNOTATION MIGRATION !! defaultDrawType not set migrate from defaultConfig value=", newConfig.annotation_defaultDrawType);
+        newConfig.annotation_defaultDrawType = defaultConfig.annotation_defaultDrawType;
+        flag = true;
+    }
+    if (newConfig.annotation_popoverNotOpenOnNoteTaking === undefined) {
+
+        console.log("ANNOTATION MIGRATION !! popoverNotOpenOnNoteTaking (quick annotation mode) not set migrate from defaultConfig value=", newConfig.annotation_popoverNotOpenOnNoteTaking);
+        newConfig.annotation_popoverNotOpenOnNoteTaking = defaultConfig.annotation_popoverNotOpenOnNoteTaking;
+        flag = true;
+    }
+    if (newConfig.annotation_defaultDrawView === undefined) {
+
+        console.log("ANNOTATION MIGRATION !! defaultDrawView not set migrate from defaultConfig value=", newConfig.annotation_defaultDrawView);
+        newConfig.annotation_defaultDrawView = defaultConfig.annotation_defaultDrawView;
+        flag = true;
+    }
+
+    if (flag) {
+        console.log(`ANNOTATION MIGRATION : There are a data need to be migrated from defaultConfig to config OLD=${JSON.stringify(store.getState().reader.config, null, 4)} NEW=${JSON.stringify(newConfig, null, 4)}`);
+        store.dispatch(readerLocalActionSetConfig.build(newConfig));
+        console.log(`ANNOTATION MIGRATION : Data migrated after the dispatch so this is the new data : ${JSON.stringify(store.getState().reader.config, null, 4)}`);
+    }
     return store;
 };
 

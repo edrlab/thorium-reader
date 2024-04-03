@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
+import * as searchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -56,6 +56,7 @@ class SearchFormPicker extends React.Component<IProps, IState> {
         // this.onKeyboardFocusSearch = this.onKeyboardFocusSearch.bind(this);
         this.inputRef = React.createRef<HTMLInputElement>();
         this.search = this.search.bind(this);
+        this.focusoutSearch = this.focusoutSearch.bind(this);
 
         this.state = {
             inputValue: "",
@@ -68,10 +69,12 @@ class SearchFormPicker extends React.Component<IProps, IState> {
 
         // focus on input
         this.inputRef?.current?.focus();
+        this.inputRef?.current?.addEventListener("focusout", this.focusoutSearch);
     }
 
     public componentWillUnmount() {
         this.unregisterAllKeyboardListeners();
+        this.inputRef?.current?.removeEventListener("focusout", this.focusoutSearch);
     }
 
     public async componentDidUpdate(oldProps: IProps) {
@@ -99,6 +102,7 @@ class SearchFormPicker extends React.Component<IProps, IState> {
                 />
                     <button
                     disabled={!this.state.inputValue}
+                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                     style={{
                         width: "25px",
                         padding: "4px",
@@ -111,12 +115,17 @@ class SearchFormPicker extends React.Component<IProps, IState> {
                         this.props.load ?
                             <LoaderSearch />
                             :
-                            <SVG ariaHidden={true} svg={magnifyingGlass} />
+                            <SVG ariaHidden={true} svg={searchIcon} />
                     }
                 </button>
             </form>
         );
     }
+    
+    private focusoutSearch = () =>  {
+        this.inputRef?.current?.focus();
+        setTimeout(() => this.inputRef?.current?.removeEventListener("focusout", this.focusoutSearch), 1000);
+   };
 
     private registerAllKeyboardListeners() {
         registerKeyboardListener(

@@ -43,6 +43,7 @@
     },
     "catalog": {
         "about": {
+            "button": "Mer information",
             "title": "Om {{- appName}}"
         },
         "addBookToLib": "Importera",
@@ -67,7 +68,7 @@
             "continueReadingPdf": "Fortsätt läsa PDF",
             "lastAdditions": "Nyligen tillagt"
         },
-        "export": "Exportera",
+        "export": "Spara som",
         "format": "Format",
         "lang": "Språk",
         "lastRead": "Senast läst",
@@ -106,7 +107,6 @@
         "readBook": "Läs",
         "released": "Publicerad den",
         "sort": "Sortera efter",
-        "tag": "",
         "tagCount": "Antal taggar",
         "tags": "Taggar",
         "update": "Redigera"
@@ -131,6 +131,8 @@
     },
     "header": {
         "allBooks": "Alla böcker",
+        "books": "Mina böcker",
+        "catalogs": "Kataloger",
         "downloads": "Nedladdningar",
         "gridTitle": "Gallerivy",
         "home": "Huvudmeny",
@@ -140,18 +142,15 @@
         "refreshTitle": "uppdatera",
         "searchPlaceholder": "Sök",
         "searchTitle": "Påbörja en sökning",
-        "settings": "Inställningar",
-        "viewMode": ""
+        "settings": "Inställningar"
     },
     "library": {
         "lcp": {
             "hint": "(Tips: {{- hint}})",
             "password": "Lösenord",
             "sentence": "Den här publikationer behöver ett LCP-lösenord för att kunna öppnas: ",
-            "urlHint": "Har du glömt ditt lösenord? Här kan du få hjälp",
-            "whatIsLcp?": "",
-            "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": ""
+            "submit": "Skicka",
+            "urlHint": "Har du glömt ditt lösenord? Här kan du få hjälp"
         }
     },
     "message": {
@@ -172,6 +171,7 @@
             "addButton": "Lägg till",
             "name": "Namn:",
             "namePlaceholder": "Namn",
+            "title": "Lägg till ett OPDS-flöde",
             "url": "Länk:",
             "urlPlaceholder": "Länk"
         },
@@ -274,16 +274,13 @@
         "userKeyCheckInvalid": "Lösenordet är felaktigt"
     },
     "reader": {
-        "annotations": {
-            "addNote": "",
-            "highlight": ""
-        },
         "divina": {
             "mute": "stäng av ljud",
             "unmute": "slå på ljud"
         },
-        "fxl": {
-            "fit": ""
+        "footerInfo": {
+            "lessInfo": "mindre information",
+            "moreInfo": "mer information"
         },
         "marks": {
             "annotations": "Anteckningar",
@@ -292,7 +289,6 @@
             "edit": "Redigera",
             "landmarks": "Landmärken",
             "search": "Sök",
-            "searchResult": "",
             "toc": "Innehållsförteckning"
         },
         "media-overlays": {
@@ -308,7 +304,6 @@
             "title": "Uppläsning"
         },
         "navigation": {
-            "annotationTitle": "",
             "backHomeTitle": "tillbaka till bokhyllan",
             "bookmarkTitle": "bokmärke",
             "currentPage": "Aktuell sida: {{- current}}",
@@ -325,6 +320,8 @@
             "magnifyingGlassButton": "sök i publikationen",
             "openTableOfContentsTitle": "navigation",
             "pdfscalemode": "Anpassa till hel sida eller sidbredd",
+            "quitFullscreenTitle": "avsluta helskärmsläge",
+            "readBookTitle": "Börja läsa boken",
             "settingsTitle": "inställningar"
         },
         "picker": {
@@ -343,11 +340,11 @@
             "column": {
                 "auto": "Standard",
                 "one": "1 kol",
+                "oneTitle": "en kolumn",
                 "title": "Kolumner",
-                "two": "2 kol"
+                "two": "2 kol",
+                "twoTitle": "två kolumner"
             },
-            "customizeReader": "",
-            "disabled": "",
             "display": "Visning",
             "disposition": {
                 "title": "Layout"
@@ -360,6 +357,8 @@
             "lineSpacing": "Radavstånd",
             "margin": "Marginaler",
             "noFootnotes": "Avaktivera fotnoter",
+            "noRTLFlip": "Avaktivera vänster-till-höger-gränssnitt",
+            "noRuby": "Dölj japanska ruby-tecken",
             "paginated": "Sidindelad",
             "paraSpacing": "Styckesavstånd",
             "pdfZoom": {
@@ -375,8 +374,12 @@
                 },
                 "title": "Zooma"
             },
-            "preview": "",
             "reduceMotion": "Minska rörelser",
+            "save": {
+                "apply": "spara",
+                "reset": "återställ",
+                "title": "Konfiguration"
+            },
             "scrolled": "Scrollbar",
             "spacing": "Avstånd",
             "text": "Text",
@@ -417,12 +420,14 @@
         "keyboard": {
             "advancedMenu": "Meny",
             "cancel": "Avbryt",
-            "disclaimer": "",
+            "edit": "Redigera",
             "editUserJson": "Redigera användarfil...",
+            "hide": "Dölj",
             "keyboardShortcuts": "Kortkommandon",
             "loadUserJson": "Läs in från användarfil",
             "resetDefaults": "Återställ (läs in standard)",
-            "save": "Spara"
+            "save": "Spara",
+            "show": "Visa"
         },
         "language": {
             "languageChoice": "Språkval"
@@ -431,18 +436,6 @@
             "no": "Avaktivera",
             "title": "Spara session",
             "yes": "Aktivera"
-        },
-        "tabs": {
-            "appearance": "",
-            "general": "",
-            "keyboardShortcuts": ""
-        },
-        "theme": {
-            "auto": "",
-            "dark": "",
-            "description": "",
-            "light": "",
-            "title": ""
         }
     }
 }

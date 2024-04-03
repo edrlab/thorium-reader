@@ -102,18 +102,16 @@ export const ApiappAddFormDialog = () => {
                         <div>
                             <button className={stylesButtons.button_catalog_infos} onClick={(e) => openInfo(e)}>
                                 <SVG ariaHidden svg={InfoIcon} />
-                                What is OPDS?
+                                {__("opds.whatIsOpds")}
                                 <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
                             </button>
                             {infoOpen ?
                                 <div className={stylesCatalogs.catalog_infos_text}>
                                     <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                        Phasellus elit libero, pharetra vitae cursus sed, tincidunt et elit.
-                                        Morbi laoreet iaculis nibh, non condimentum nulla euismod sed.
+                                    {__("opds.informations")}
                                     </p>
-                                    <a href="#">
-                                        Vivamus quis pharetra eros.
+                                    <a href="https://opds.io/">
+                                    {__("opds.documentation")}
                                         <SVG ariaHidden svg={FollowLinkIcon} />
                                     </a>
                                 </div>

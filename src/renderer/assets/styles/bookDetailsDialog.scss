@@ -312,3 +312,29 @@
 .___DEBUG___BOOK_DETAILS_DIALOG_CSS {
   display: none;
 }
+
+
+.opds_book{
+  &_infos {
+    margin-left: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 5px;
+  }
+
+  &_state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+
+  &_available {
+    color: green;
+  }
+
+  &_unavailable {
+    color: red;
+  }
+}

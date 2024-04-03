@@ -31,6 +31,7 @@ import elCatalog from "readium-desktop/resources/locales/el.json";
 import bgCatalog from "readium-desktop/resources/locales/bg.json";
 import hrCatalog from "readium-desktop/resources/locales/hr.json";
 import daCatalog from "readium-desktop/resources/locales/da.json";
+import slCatalog from "readium-desktop/resources/locales/sl.json";
 
 import { TFunction } from "readium-desktop/typings/en.translation";
 
@@ -131,6 +132,9 @@ i18nextInstance.init({
         "da": {
             translation: daCatalog,
         },
+        "sl": {
+            translation: slCatalog,
+        },
     },
     // lng: undefined,
     fallbackLng: "en",
@@ -162,29 +166,30 @@ i18nextInstanceEN.changeLanguage("en").then((_t) => {
 // to benefit from compile-type TypeScript typesafe key enum
 export const AvailableLanguages = {
     "en": "English",
-    "fr": "Français",
-    "fi": "Suomi",
-    "de": "Deutsch",
-    "es": "Español",
-    "nl": "Dutch",
-    "ja": "日本語",
-    "ka": "ქართული",
-    "lt": "Lietuvių",
-    "pt-BR": "Português Brasileiro",
-    "pt-PT": "Português",
-    "zh-CN": "中文 - 中国", // "中文 - 中國"
-    "zh-TW": "中文 - 台灣", // "中文 - 台湾"
-    "it": "Italiano",
-    "ru": "Русский",
-    "ko": "한국어",
-    "sv": "Svenska",
+    "fr": "Français (French)",
+    "fi": "Suomi (Finish)",
+    "de": "Deutsch (German)",
+    "es": "Español (Spanish)",
+    "nl": "Nederlands (Dutch)",
+    "ja": "日本語 (Japanese)",
+    "ka": "ქართული (Georgian)",
+    "lt": "Lietuvių (Lithuanian)",
+    "pt-BR": "Português Brasileiro (Portuguese - Brazil)",
+    "pt-PT": "Português (Portuguese - Portugal)",
+    "zh-CN": "中文 - 中國/国 (Chinese trad.)",
+    "zh-TW": "中文 - 台湾/灣 (Chinese simp.)",
+    "it": "Italiano (Italian)",
+    "ru": "Русский (Russian)",
+    "ko": "한국어 (Korean)",
+    "sv": "Svenska (Swedish)",
     "ca": "Catalan",
     "gl": "Galician",
-    "eu": "Basque (Euskadi)",
-    "el": "ελληνικός",
-    "bg": "български",
-    "hr": "Hrvatski",
-    "da": "Danish",
+    "eu": "Euskadi (Basque)",
+    "el": "ελληνικός (Greek)",
+    "bg": "български (Bulgarian)",
+    "hr": "Hrvatski (Croatian)",
+    "da": "Dansk (Danish)",
+    "sl": "Slovenščina (Slovene)",
 };
 
 interface LocalizedContent {

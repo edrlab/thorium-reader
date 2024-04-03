@@ -178,7 +178,7 @@ $setting_color: var(--color-blue);
 .settings_content {
     flex: 2;
     overflow: hidden scroll;
-    margin-top: 30px;
+    margin-top: 50px;
 
     &::-webkit-scrollbar-thumb {
         border-radius: 5px;
@@ -190,14 +190,14 @@ $setting_color: var(--color-blue);
     }
 
     &:hover::-webkit-scrollbar-thumb {
-        background-color: var(--color-medium-grey);
+        background-color: var(--scrollbar-thumb);
     }
 
     .button_transparency_icon {
         position: relative;
 
         svg {
-            position: fixed;
+            position: absolute;
             transform: translate(-50%,-50%);
             left: 50%;
             top: 50%;
@@ -212,11 +212,30 @@ $setting_color: var(--color-blue);
     right: 20px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 10px;
+    background-color: var(--color-secondary);
+    padding: 10px;
+    width: 60%;
+    z-index: 10;
+
+    div {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .settings_tab_title {
+        margin: 0;
+
+        h2 {
+            margin: 0;
+        }
+    }
 }
 
 .settings_tab {
-    margin: 0 25px!important;
+    margin: 15px 25px 0!important;
 
     &_container {
     margin: 35px;
@@ -259,8 +278,41 @@ $setting_color: var(--color-blue);
                 .size_range {
                     display: flex;
                     align-items: center;
-                    gap: 10px;
+                    gap: 5px;
                     height: 30px;
+
+                    .range_inactive {
+                            accent-color: grey;
+
+                            &::-webkit-slider-thumb {
+                                width: 2em;
+                                padding: 0.25em;
+                                border: 1px solid var(--color-disabled);
+                                border-radius: 50%;
+                                box-shadow: 0 0 .5em #FFF inset;
+                                background: linear-gradient(#888, #FFF) content-box,
+                                    linear-gradient(-90deg, #888, #DDD) border-box;
+                            }
+                        }
+
+                    .reset_button {
+                        width: 20px;
+                        height: 20px;
+                        padding: 5px;
+                        border-radius: 5px;
+                        transition: 200ms;
+                        box-sizing: content-box;
+                        border: 1px solid transparent;
+
+                        &:active, &:hover {
+                            border: 1px solid var(--color-blue);
+                            background-color: var(--color-light-blue)!important;
+                        }
+
+                        svg {
+                            color: var(--color-blue);
+                        }
+                    }
 
                     input[type="range"] {
                         width: 150px;
@@ -278,6 +330,7 @@ $setting_color: var(--color-blue);
 
                 h4 {
                     margin: 0;
+                    max-width: 120px;
                 }
             }
 
@@ -413,13 +466,17 @@ div[data-radix-popper-content-wrapper] {
 }
 
 .scale_button {
-    scale: 2;
+    scale: 1.3;
     color: var(--color-blue);
     border-radius: 4px;
     width: 15px;
+    height: 15px;
     text-align: center;
     border: 1px solid transparent;
     position: relative;
+    padding: 3px;
+    box-sizing: content-box;
+    transition: 200ms;
 
     span {
         position: absolute;
@@ -428,7 +485,7 @@ div[data-radix-popper-content-wrapper] {
         top: 50%;
     }
 
-    &:active {
+    &:active, &:hover {
         border: 1px solid var(--color-blue);
         background-color: var(--color-light-blue)!important;
     }
@@ -438,6 +495,7 @@ div[data-radix-popper-content-wrapper] {
     display: flex;
     align-items: center;
     gap: 10px;
+    justify-content: space-between;
 
     p {
         width: fit-content;
@@ -500,13 +558,13 @@ div[data-radix-popper-content-wrapper] {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 100px;
+        width: 95px;
         padding-top: 5px;
         border: 1px solid transparent;
         border-radius: 6px;
         transition: 200ms linear;
         min-height: 70px;
-        background-color: #F5F5F5;
+        background-color: var(--color-extralight-grey);
 
         &:hover:not([disabled])  {
             border: 1px solid $setting_color;
@@ -694,5 +752,47 @@ div[data-radix-popper-content-wrapper] {
     &.focus span.container,
     &:hover span.container {
     background-color: white;
+    }
+}
+
+
+.settings_theme_container {
+    border-radius: 6px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: var(--color-medium-grey);
+    width: 85px;
+    height: 45px!important;
+    min-height: 45px!important;
+    text-decoration: none;
+    box-shadow: 0 2px 15px rgb(0 0 0 / 0%);
+    transition: all 0.3s;
+    padding: 0;
+    background-color: var(--color-secondary);
+    margin: 0!important;
+    display: flex!important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+
+    &::after {
+        content: "";
+        width: inherit;
+        height: inherit;
+        position: absolute;
+        top: -6px;
+        right: -8px;
+        border-radius: 6px;
+        border-right: 1px solid var(--color-medium-grey);
+        border-top: 1px solid var(--color-medium-grey);
+    }
+
+    svg {
+        width: 12px;
+        height: 12px;
+        position: absolute;
+        top: 2px;
+        right: 5px;
     }
 }

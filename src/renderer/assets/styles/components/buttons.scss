@@ -65,6 +65,7 @@ button {
 
   &:hover {
     color: var(--color-blue);
+    background-color: var(--color-light-blue)
   }
 }
 
@@ -148,6 +149,11 @@ button {
   align-items: center;
   justify-content: center;
 
+  &:hover {
+    color: var(--color-blue);
+    background-color: var(--color-secondary)
+  }
+
   svg {
     width: 12px;
     height: 12px;
@@ -222,8 +228,8 @@ button {
 
 .button_transparency_icon,
 .button_transparency_icon_inactive {
-  height: 20px;
-  width: 20px;
+  height: 30px;
+  width: 30px;
   transition-duration: 0ms;
   fill: var(--color-blue);
 
@@ -245,6 +251,10 @@ button {
 
   &:hover {
     background: rgb(0 0 0 / 10%);
+  }
+
+  &:disabled {
+    background-color: var(--color-medium-grey);
   }
 }
 

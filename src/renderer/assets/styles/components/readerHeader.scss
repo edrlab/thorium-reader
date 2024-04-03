@@ -51,14 +51,28 @@
             justify-content: center;
             border-radius: 5px;
 
+            .my_combobox_container {
+                width: unset;
+            }
+
             .menu_button {
-                height: 30px;
+                height: 42px;
+                width: 42px;
                 cursor: pointer;
                 padding: 5px;
                 box-sizing: border-box;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                border: 1px solid transparent;
+                transition: .2s;
+                border-radius: 5px;
+
+                &:not(:has(.active_svg)):hover, 
+                &:not(:has(.active_svg)):focus {
+                    border-color: var(--color-blue);
+                    background-color: var(--color-light-blue);
+                }
     
                 svg {
                     height: 20px;
@@ -66,10 +80,10 @@
                     fill: var(--color-blue);
                     color: var(--color-blue);
 
-                    @media (prefers-color-scheme: dark) {
-                        fill: #FEFEFE;
-                        color: #FEFEFE;
-                    }
+                    // @media (prefers-color-scheme: dark) {
+                    //     fill: #FEFEFE;
+                    //     color: #FEFEFE;
+                    // }
                 }
             }
 
@@ -81,7 +95,6 @@
             label {
                 position: absolute;
                 display: block;
-                width: 35px!important;
                 align-items: center;
 
 
@@ -105,37 +118,25 @@
     fill: white!important;
     color: white!important;
 
-    @media (prefers-color-scheme: dark) {
-        fill: black!important;
-        color: black!important;
-    }
+    // @media (prefers-color-scheme: dark) {
+    //     fill: black!important;
+    //     color: black!important;
+    // }
 }
 
 .picker_container {
     display: flex;
     align-items: center;
-    padding: 0 10px;
-    width: 600px;
-    height: 40px;
+    padding: 0;
+    width: 100vw;
+    height: 48px;
     background-color: var(--color-extralight-grey);
-    box-shadow: 0 6px 10px 0 var(--color-medium-grey);
     margin-right: 5px;
     z-index: 100;
     top: 65px;
     right: 10px;
     left: unset;
-    border-radius: 6px;
     border: 1px solid var(--color-medium-grey);
-
-    @media screen and (width <= 930px) {
-        width: 600px;
-        left: 20px;
-        right: unset;
-
-        > span {
-            display: none;
-        }
-    }
 
     button[title="Close"] {
         width: 15px;
@@ -149,7 +150,8 @@
     }
 
     .form_group {
-        width: 300px!important;
+        width: 200px!important;
+        height: 24px!important;
 
         label {
         top: -18px;
@@ -215,7 +217,7 @@
 }
 
 .bookmarkButton:focus + label {
-    outline: blue solid 2px !important;
+    outline: var(--color-blue) solid 2px !important;
     outline-offset: -2px;
 
 }
@@ -248,4 +250,38 @@
 .annotationsIcon svg {
     width: 22px!important;
     height: 25px!important;
+}
+
+.searchHeader_container {
+    display: flex;
+    align-items: center;
+    
+    // padding: 20px 0;
+    width: 400px;
+    margin-right: 10%;
+
+    .searchActions {
+        display: flex;
+        align-items: center;
+
+        &::before {
+            content: "";
+            position: absolute;
+            margin-right: 10%;
+            top: 48px;
+            height: 1px;
+            width: 200px;
+            border-bottom: 2px solid var(--color-blue);
+        }
+    }
+
+    form::before {
+        content: "";
+        position: absolute;
+        margin-right: 10%;
+        top: 37px;
+        height: 1px;
+        width: 100%;
+        border-bottom: 2px solid var(--color-blue);
+    }
 }

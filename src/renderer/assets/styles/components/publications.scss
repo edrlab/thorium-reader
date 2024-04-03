@@ -13,7 +13,6 @@
 
 .publication_main_container {
   transition: 200ms linear;
-  border-radius: 4px;
   border: 1px solid transparent;
   width: calc(100% - 14px);
   display: flex;
@@ -21,18 +20,57 @@
   gap: 10px;
   cursor: pointer;
   padding: 6px;
+	border-radius: 2px;
+  perspective: 1000px;
+  overflow: hidden;
+
+    &:hover {
+      img, .no_img_wrapper {
+			transform: rotateX(10deg);
+      }
+
+			.gradient {
+				height: 90%;
+				opacity: 0.8;
+			}
+  }
 
   & img {
+    transform-origin: 100% 0;
+    transition: transform 0.3s ease-in-out;
     display: flex;
     align-items: flex-end;
     justify-content: center;
     height: 285px;
     object-fit: contain;
     box-sizing: border-box;
-    border: 1px solid #e2e2e2;
+    // border: 1px solid #e2e2e2;
     border-radius: 6px;
-    background-color: var(--color-extralight-grey);
+    background-color: var(--color-light-grey);
   }
+
+  .gradient {
+		position: absolute;
+		content: "";
+		top: -50px;
+		left: 0;
+		z-index: 1;
+		transform: rotate(30deg);
+		transform-origin: top right;
+		width: 200%;
+		height: 65%;
+		opacity: 0.3;
+		background: linear-gradient(
+			0turn,
+			transparent 0%,
+			rgb(200 200 200 / 40%) 5%,
+			rgb(255 255 255 / 20%) 15%,
+			rgb(255 255 255 / 10%) 100%
+		);
+		transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+	}
+
+
 
   .no_img_wrapper {
     height: 285px;
@@ -44,6 +82,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transform-origin: 100% 0;
+    transition: transform 0.3s ease-in-out;
 
     & .no_img {
       border: 1px black solid;
@@ -104,7 +144,7 @@
     }
   }
 
-  &:hover {
+  &:hover, &:focus {
     border: 1px solid var(--color-blue);
     background-color: var(--color-light-blue);
   }
@@ -160,7 +200,7 @@
   align-items: center;
 
   &:nth-child(odd) {
-    background-color: #f3f3f3;
+    background-color: var(--color-light-grey);
   }
 }
 
@@ -474,9 +514,35 @@
   max-height: 100%;
   object-fit: contain;
   box-sizing: border-box;
-  border: 1px solid #e2e2e2;
+  // border: 1px solid #e2e2e2;
   border-radius: 6px;
-  background-color: #f1f1f1;
+  background-color: var(--color-light-grey);
+}
+
+.corner {
+  // transform:rotate(40deg);
+  position: absolute;
+  // top: -15px;
+  // right: -15px;
+  // background-color: var(--color-blue);
+  display : inline-block;
+  height : 0;
+  width : 0;
+  border-top : 50px solid var(--color-secondary);
+  border-left : 50px solid transparent;
+  opacity: 0.8;
+  right: 0;
+  top: 0;
+
+  svg {
+    width: 15px;
+    height: 15px;
+    color: var(--color-blue);
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: -32px;
+    right: 0;
+  }
 }
 
 .___DEBUG___COMPONENTS_PUBLICATIONS_CSS {

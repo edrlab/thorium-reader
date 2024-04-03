@@ -185,7 +185,7 @@ export async function importPublicationFromFS(
 
         // see documentTitle vs. publicationTitle (and publicationSubTitle) in PublicationView
         // (and IOpdsPublicationView too, due to polymorphic NormalOrOpdsPublicationView / publicationViewMaybeOpds)
-        title: convertMultiLangStringToString(r2Publication.Metadata.Title),
+        title: convertMultiLangStringToString(r2Publication.Metadata.Title) || "-", // some publications do not have a title :( ... we patch here, but in previous versions of Thorium this was not done so we must still check for possible empty title edge-cases in previously-created database entries (we do not change the DB on load+save, we just normalise erroneous values at consumption time)
 
         tags: [],
         files: [],

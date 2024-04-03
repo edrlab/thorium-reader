@@ -15,7 +15,6 @@ import * as TextAreaIcon from "readium-desktop/renderer/assets/icons/textarea-ic
 import * as LayoutIcon from "readium-desktop/renderer/assets/icons/layout-icon.svg";
 import * as AlignLeftIcon from "readium-desktop/renderer/assets/icons/alignleft-icon.svg";
 import * as VolumeUpIcon from "readium-desktop/renderer/assets/icons/volume-icon.svg";
-import * as SwatchesIcon from "readium-desktop/renderer/assets/icons/swatches-icon.svg";
 import * as ScrollableIcon from "readium-desktop/renderer/assets/icons/scroll-icon.svg";
 import * as PaginatedIcon from "readium-desktop/renderer/assets/icons/page-icon.svg";
 import * as TwoColsIcon from "readium-desktop/renderer/assets/icons/2cols-icon.svg";
@@ -41,6 +40,10 @@ import { readerConfigInitialState, readerConfigInitialStateDefaultPublisher } fr
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import { createOrGetPdfEventBus } from "../pdf/driver";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+import * as ResetIcon from "readium-desktop/renderer/assets/icons/clock-reverse-icon.svg";
+import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg";
+import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-bold.svg";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps, IPopoverDialogProps {
@@ -53,7 +56,30 @@ interface IState {
     pdfCol?: IPdfPlayerColumn | undefined;
 }
 
-const TabTitle = ({title}: {title: string}) => {
+const TabTitle = ({value}: {value: string}) => {
+    let title: string;
+    const [__] = useTranslator();
+
+    switch (value) {
+        case "tab-divina":
+        title=__("reader.settings.disposition.title");
+        break;
+        case "tab-pdfZoom":
+            title=__("reader.settings.disposition.title");
+            break;
+        case "tab-text":
+            title=__("reader.settings.text");
+            break;
+        case "tab-spacing":
+            title=__("reader.settings.spacing");
+            break;
+        case "tab-display":
+            title=__("reader.settings.display");
+            break;
+        case "tab-audio":
+            title=__("reader.media-overlays.title");
+            break;
+    }
     return (
         <div className={stylesSettings.settings_tab_title}>
             <h2>{title}</h2>
@@ -63,35 +89,83 @@ const TabTitle = ({title}: {title: string}) => {
 
 const Theme = ({theme, set}: {theme: Pick<ReaderConfig, "night" | "sepia">, set: (a: Pick<ReaderConfig, "night" | "sepia">) => void}) => {
     const [__] = useTranslator();
-    const [options] = React.useState(() => [
-        {
-            id: 1,
-            name: `${__("reader.settings.theme.name.Neutral")}`,
-            value: "neutral",
-        },
-        {
-            id: 2,
-            name: `${__("reader.settings.theme.name.Sepia")}`,
-            value: "sepia",
-        },
-        {
-            id: 3,
-            name: `${__("reader.settings.theme.name.Night")}`,
-            value: "night",
-        },
-    ]);
+    // const [options] = React.useState(() => [
+    //     {
+    //         id: 1,
+    //         name: `${__("reader.settings.theme.name.Neutral")}`,
+    //         value: "neutral",
+    //     },
+    //     {
+    //         id: 2,
+    //         name: `${__("reader.settings.theme.name.Sepia")}`,
+    //         value: "sepia",
+    //     },
+    //     {
+    //         id: 3,
+    //         name: `${__("reader.settings.theme.name.Night")}`,
+    //         value: "night",
+    //     },
+    // ]);
+
 
     const defaultKey = theme.night ? 3 : theme.sepia ? 2 : 1;
 
     return (
-        <ComboBox style={{borderBottom: "3px solid var(--color-light-grey)"}} label={__("reader.settings.theme.title")} defaultItems={options} defaultSelectedKey={defaultKey} onSelectionChange={(key: React.Key) => {
+        <>
+        {/* <ComboBox style={{ borderBottom: "3px solid var(--color-light-grey)" }} label={__("reader.settings.theme.title")} defaultItems={options} defaultSelectedKey={defaultKey} onSelectionChange={(key: React.Key) => {
             set({
                 night: key === 3,
                 sepia: key === 2,
             });
         }} svg={SwatchesIcon}>
             {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-        </ComboBox>
+        </ComboBox> */}
+        <h4>{__("reader.settings.theme.title")}</h4>
+        {/* <div role="radiogroup" style={{display: "flex", alignItems: "center", gap: "20px", marginTop: "20px"}} tabIndex={0} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+        {
+        options.map((option) => (
+                <button type="button" role="radio" id={option.value} name="themepicker" value={option.value}
+                key={option.id}
+                className={stylesSettings.settings_theme_container} style={{backgroundColor: option.value === "sepia" ? "#faf4e8" : option.value === "night" ? "#2D2D2D" : "#fff", color: option.value === "night" ? "#fff" : "black"}}
+                    onClick={() => {
+                        set({
+                            night: option.id === 3,
+                            sepia: option.id === 2, 
+                        });
+                    }}
+                >
+                    {option.name}
+                    {defaultKey === option.id ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
+                </button>
+        ),
+        )}
+        </div> */}
+        <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px", marginTop: "20px" }} value={(defaultKey === 2) ? "sepia_option" : (defaultKey === 3) ? "night_option" : "neutral_option"}
+                onValueChange={(option) => set({ night: option === "night",sepia: option === "sepia"  })}
+            >
+                <RadioGroupItem 
+                value="neutral" 
+                description={`${__("reader.settings.theme.name.Neutral")}`}
+                className={stylesSettings.settings_theme_container} 
+                style={{backgroundColor: "#fff", color: "black"}}
+                svg={defaultKey === 1 ? CheckIcon : null}
+                />
+                <RadioGroupItem 
+                value="sepia" 
+                description={`${__("reader.settings.theme.name.Sepia")}`}
+                className={stylesSettings.settings_theme_container} 
+                style={{backgroundColor: "#faf4e8", color: "black"}}
+                svg={defaultKey === 2 ? CheckIcon : null}
+                />
+                <RadioGroupItem 
+                value="night" 
+                description={`${__("reader.settings.theme.name.Night")}`}
+                className={stylesSettings.settings_theme_container} 
+                style={{backgroundColor: "#2D2D2D", color: "#fff" }}
+                svg={defaultKey === 3 ? CheckIcon : null}
+                />
+            </RadioGroup.Root>
+        </>
     );
 };
 
@@ -270,10 +344,22 @@ const Slider = ({ option, set }: { option: ITable, set: (a: Pick<ReaderConfig, "
         <section className={stylesSettings.section} key={option.title}>
             <div className={stylesSettings.spacing_heading}>
                 <h4>{option.title}</h4>
-                <p>{currentSliderValue + (option.rem ? "rem" : "")}</p>
+                <p>
+                    {
+                        currentSliderValue === "0" ? "auto" :
+                            currentSliderValue.includes("rem") ?
+                                currentSliderValue :
+                                currentSliderValue + (option.rem ? "rem" : "")
+                    }</p>
             </div>
             <div className={stylesSettings.size_range}>
-                <button onClick={() => click("out")} className={stylesSettings.scale_button}>-</button>
+                <button onClick={() => {
+                    const newValue = "0";
+                    setCurrentSliderValue(newValue);
+                    set({ [option.parameter]: newValue } as Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">);
+                }
+                } className={stylesSettings.reset_button} title="default value"><SVG ariaHidden svg={ResetIcon} /></button>
+                <button onClick={() => click("out")} className={stylesSettings.scale_button}><SVG ariaHidden svg={MinusIcon} /></button>
                 <input
                     id={option.title}
                     type="range"
@@ -288,8 +374,9 @@ const Slider = ({ option, set }: { option: ITable, set: (a: Pick<ReaderConfig, "
                         setCurrentSliderValue(newValue);
                         set({ [option.parameter]: newValue + (option.rem ? "rem" : "") } as Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">);
                     }}
+                    className={currentSliderValue === "0" ? stylesSettings.range_inactive : ""}
                 />
-                <button onClick={() => click("in")} className={stylesSettings.scale_button}>+</button>
+                <button onClick={() => click("in")} className={stylesSettings.scale_button}><SVG ariaHidden svg={PlusIcon} /></button>
             </div>
         </section>
     );
@@ -375,15 +462,17 @@ const ReadingSpacing = ({config: {pageMargins, wordSpacing, letterSpacing, paraS
 
 interface IRadioGroupItemProps {
     value: string;
-    svg: ISVGProps;
+    svg?: ISVGProps;
     description: string;
-    disabled: boolean;
+    disabled?: boolean;
+    className?: string;
+    style?: any;
 };
 
 const RadioGroupItem = (props: IRadioGroupItemProps) => {
     return (
-        <RadioGroup.Item value={props.value} id={props.value} className={stylesSettings.display_options_item} disabled={props.disabled}>
-            <SVG ariaHidden svg={props.svg} />
+        <RadioGroup.Item value={props.value} id={props.value} className={classNames(stylesSettings.display_options_item, props.className)} disabled={props.disabled} style={props.style}>
+            {props.svg ? <SVG ariaHidden svg={props.svg} /> : <></>}
             {props.description}
         </RadioGroup.Item>
     );
@@ -395,7 +484,7 @@ const ReadingDisplayLayout = ({isFXL, config: {paged: layout}, set}: { isFXL: bo
         <div className={stylesSettings.section}>
             <h4>{__("reader.settings.disposition.title")}</h4>
             <div className={stylesSettings.display_options}>
-                <RadioGroup.Root orientation="horizontal" style={{ display: "flex" }} value={(layout || isFXL) ? "page_option" : "scroll_option"}
+                <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={(layout || isFXL) ? "page_option" : "scroll_option"}
                     onValueChange={(v) => set({ paged: v === "page_option" })}
                 >
                     <RadioGroupItem value="scroll_option" description={`${__("reader.settings.scrolled")}`} svg={ScrollableIcon} disabled={isFXL}/>
@@ -421,7 +510,7 @@ const ReadingDisplayCol = ({ config: { paged, colCount }, set, isPdf, pdfCol }: 
                 <h4>{__("reader.settings.column.title")}</h4>
             </div>
             <div className={stylesSettings.display_options}>
-                <RadioGroup.Root orientation="horizontal" style={{ display: "flex" }} value={isPdf ? pdfCol : state}
+                <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={isPdf ? pdfCol : state}
                     onValueChange={(v) => {
                         isPdf ? createOrGetPdfEventBus().dispatch("column", v === "auto" ? "1" : v === "1" ? "1" : "2") : set({ colCount: v });}}
                     >
@@ -443,7 +532,7 @@ const ReadingDisplayAlign = ({ config: { align }, set }: { config: Pick<ReaderCo
                 <h4>{__("reader.settings.justification")}</h4>
             </div>
             <div className={stylesSettings.display_options}>
-            <RadioGroup.Root orientation="horizontal" style={{ display: "flex" }} value={align}
+            <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={align}
                     onValueChange={(v) => set({align: v})}
                 >
                     <RadioGroupItem value="auto" description={`${__("reader.settings.column.auto")}`} svg={AlignAutoIcon} disabled={false} />
@@ -465,7 +554,7 @@ const ReadingAudio = ({ config: { mediaOverlaysEnableCaptionsMode: captions, med
             id: "captions",
             name: "Captions",
             label: `${__("reader.media-overlays.captions")}`,
-            description: "Mauris aliquet ligula ac augue aliquet sollicitudin. Nunc eget hendrerit lectus.",
+            description: `${__("reader.media-overlays.captionsDescription")}`,
             checked: captions,
             onChange: () => {
                 set({ mediaOverlaysEnableCaptionsMode: !captions });
@@ -475,7 +564,7 @@ const ReadingAudio = ({ config: { mediaOverlaysEnableCaptionsMode: captions, med
             id: "skippability",
             name: "Skippability",
             label: `${__("reader.media-overlays.skip")}`,
-            description: "Ut ex justo, rhoncus vitae magna eget, fringilla ullamcorper ligula.",
+            description: `${__("reader.media-overlays.skipDescription")}`,
             checked: skippability,
             onChange: () => {
                 set({ mediaOverlaysEnableSkippability: !skippability });
@@ -485,7 +574,7 @@ const ReadingAudio = ({ config: { mediaOverlaysEnableCaptionsMode: captions, med
             id: "splitTTStext",
             name: "splitTTStext",
             label: `${__("reader.tts.sentenceDetect")}`,
-            description: "Nunc at purus ut mauris tincidunt egestas non at velit. In dolor massa, commodo at diam a, dictum faucibus sem.",
+            description: `${__("reader.tts.sentenceDetectDescription")}`,
             checked: splitTTStext,
             onChange: () => {
                 set({ ttsEnableSentenceDetection: !splitTTStext });
@@ -494,7 +583,7 @@ const ReadingAudio = ({ config: { mediaOverlaysEnableCaptionsMode: captions, med
     ];
 
     return (
-        <div style={{display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px,1fr)", gap: "30px"}}>
+        <div style={{display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px,1fr)"}}>
             {options.map((option) => (
                 <section className={stylesSettings.section} key={option.id}>
                     <div>
@@ -515,9 +604,19 @@ const ReadingAudio = ({ config: { mediaOverlaysEnableCaptionsMode: captions, med
     );
 };
 
-const ReadingDisplayMathJax = ({ config: { enableMathJax, reduceMotion, noFootnotes }, set }:
-    { config: Pick<ReaderConfig, "enableMathJax" | "reduceMotion" | "noFootnotes">,
-    set: (a: Partial<Pick<ReaderConfig, "enableMathJax" | "reduceMotion" | "noFootnotes" | "paged">>) => void }) => {
+const ReadingDisplayMathJax = ({
+    config: { enableMathJax, reduceMotion, noFootnotes, noRuby },
+    set,
+    disableRTLFlip,
+    setDisableRTLFlip,
+}:
+{
+    config: Pick<ReaderConfig, "enableMathJax" | "reduceMotion" | "noFootnotes" | "noRuby">,
+    set: (a: Partial<Pick<ReaderConfig, "enableMathJax" | "reduceMotion" | "noFootnotes" | "noRuby" | "paged">>) => void,
+    disableRTLFlip: IReaderSettingsProps["disableRTLFlip"],
+    setDisableRTLFlip: IReaderSettingsProps["setDisableRTLFlip"],
+},
+) => {
     const [__] = useTranslator();
 
     const options = [
@@ -552,13 +651,22 @@ const ReadingDisplayMathJax = ({ config: { enableMathJax, reduceMotion, noFootno
                 set({ noFootnotes: !noFootnotes });
             },
         },
+        {
+            id: "noRubyCheckBox",
+            name: "noRubyCheckBox",
+            label: __("reader.settings.noRuby"),
+            checked: noRuby,
+            onChange: () => {
+                set({ noRuby: !noRuby });
+            },
+        },
     ];
 
     return (
         <div>
             {options.map((option) => (
-                <section className={stylesSettings.section} key={option.id}>
-                    <div>
+                <section key={option.id}>
+                    <div style={{display: "flex", alignItems: "center"}}>
                         <input
                             id={option.id}
                             type="checkbox"
@@ -566,11 +674,24 @@ const ReadingDisplayMathJax = ({ config: { enableMathJax, reduceMotion, noFootno
                             onChange={option.onChange}
                             defaultChecked={option.checked}
                         />
-                        <label htmlFor={option.id}>{option.label}</label>
+                        <label htmlFor={option.id} style={{margin: "0 5px", height: "unset"}}>{option.label}</label>
                     </div>
                 </section>
 
             ))}
+
+            <section>
+                <div>
+                    <input
+                        id="noRTLFlipCheckBox"
+                        type="checkbox"
+
+                        checked={disableRTLFlip}
+                        onChange={() => setDisableRTLFlip(!disableRTLFlip)}
+                    />
+                    <label htmlFor="noRTLFlipCheckBox" style={{margin: "0 5px", height: "unset"}}>{__("reader.settings.noRTLFlip")}</label>
+                </div>
+            </section>
         </div>
     );
 };
@@ -885,18 +1006,18 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
     const SpacingTrigger =
         <Tabs.Trigger value="tab-spacing" disabled={overridePublisherDefault ? false : true} key={"tab-spacing"} data-value={"tab-spacing"}>
-            <SVG ariaHidden svg={AlignLeftIcon} />
+            <SVG ariaHidden svg={LayoutIcon} />
             <h3>{__("reader.settings.spacing")}</h3>
             {overridePublisherDefault ? <></> : <i>{__("reader.settings.disabled")}</i>}
         </Tabs.Trigger>;
-    const optionSpacingItem = { id: 2, value: "tab-spacing", name: __("reader.settings.spacing"), disabled: overridePublisherDefault ? false : true, svg: AlignLeftIcon };
+    const optionSpacingItem = { id: 2, value: "tab-spacing", name: __("reader.settings.spacing"), disabled: overridePublisherDefault ? false : true, svg: LayoutIcon };
 
     const DisplayTrigger =
         <Tabs.Trigger value="tab-display" key={"tab-display"}>
-            <SVG ariaHidden svg={LayoutIcon} />
+            <SVG ariaHidden svg={AlignLeftIcon} />
             <h3>{__("reader.settings.display")}</h3>
         </Tabs.Trigger>;
-    const optionDisplayItem = { id: 3, value: "tab-display", name: __("reader.settings.display"), disabled: false, svg: LayoutIcon };
+    const optionDisplayItem = { id: 3, value: "tab-display", name: __("reader.settings.display"), disabled: false, svg: AlignLeftIcon };
 
     const AudioTrigger =
         <Tabs.Trigger value="tab-audio" key={"tab-audio"}>
@@ -952,6 +1073,31 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
     const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     SelectRef.displayName = "ComboBox";
+
+    const TabHeader = () => {
+        return (
+            dockedMode ? <></> :
+                <div key="modal-header" className={stylesSettings.close_button_div}>
+                    <TabTitle value={tabValue}/>
+                    <div>
+                    <button className={stylesButtons.button_transparency_icon} aria-label="left" onClick={setDockingModeLeftSide}>
+                        <SVG ariaHidden={true} svg={DockLeftIcon} />
+                    </button>
+                    <button className={stylesButtons.button_transparency_icon} aria-label="right" onClick={setDockingModeRightSide}>
+                        <SVG ariaHidden={true} svg={DockRightIcon} />
+                    </button>
+                    <button className={stylesButtons.button_transparency_icon} disabled aria-label="full" onClick={setDockingModeFull}>
+                        <SVG ariaHidden={true} svg={DockModalIcon} />
+                    </button>
+                    <Dialog.Close asChild>
+                        <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                            <SVG ariaHidden={true} svg={QuitIcon} />
+                        </button>
+                    </Dialog.Close>
+                    </div>
+                </div>
+        );
+    };
     return (
         <div>
             {
@@ -984,6 +1130,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                         //         console.error("Combobox No value !!!");
                         //     }
                         // }}
+                        style={{paddingBottom: "0", margin: "0"}}
                         ref={dockedModeRef}
                     >
                         {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
@@ -1018,69 +1165,51 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             {sections}
                         </Tabs.List>
                 }
-                <div className={stylesSettings.settings_content}>
+                <div className={stylesSettings.settings_content}
+                style={{marginTop: dockedMode && "0"}}>
                     <Tabs.Content value="tab-divina" tabIndex={-1}>
-                        <TabTitle title={__("reader.settings.disposition.title")} />
+                        <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <DivinaSetReadingMode handleDivinaReadingMode={handleDivinaReadingMode} divinaReadingMode={divinaReadingMode} divinaReadingModeSupported={divinaReadingModeSupported} />
                         </div>
                     </Tabs.Content>
                     <Tabs.Content value="tab-pdfzoom" tabIndex={-1}>
-                        <TabTitle title={__("reader.settings.disposition.title")} />
+                    <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <PdfZoom pdfScale={pdfState.pdfScale} pdfView={pdfState.pdfView} />
                         </div>
                     </Tabs.Content>
                     <Tabs.Content value="tab-text" tabIndex={-1}>
-                        <TabTitle title={__("reader.settings.text")} />
+                    <TabHeader />
                         <div className={classNames(stylesSettings.settings_tab, stylesSettings.settings_reading_text, stylesSettings.section)}>
                             <FontSize config={readerConfig} set={setPartialSettingsDebounced} />
                             <FontFamily config={readerConfig} set={setPartialSettingsDebounced} />
                         </div>
                     </Tabs.Content>
                     <Tabs.Content value="tab-spacing" tabIndex={-1}>
-                        <TabTitle title={__("reader.settings.spacing")} />
+                    <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <ReadingSpacing config={readerConfig} set={setPartialSettingsDebounced} />
                         </div>
                     </Tabs.Content>
                     <Tabs.Content value="tab-display" tabIndex={-1}>
-                        <TabTitle title={__("reader.settings.display")} />
+                    <TabHeader />
                         <section className={stylesSettings.settings_tab}>
                             {isPdf ? <></> : <Theme theme={readerConfig} set={setPartialSettingsDebounced} />}
                             {isPdf ? <></> : <ReadingDisplayLayout config={readerConfig} set={setPartialSettingsDebounced} isFXL={props.isFXL} />}
                             {isPdf ? <></> : <ReadingDisplayAlign config={readerConfig} set={setPartialSettingsDebounced} />}
                             <ReadingDisplayCol config={readerConfig} set={setPartialSettingsDebounced} isPdf={props.isPdf} pdfCol={pdfState.pdfCol} />
-                            {isPdf ? <></> : <ReadingDisplayMathJax config={readerConfig} set={setPartialSettingsDebounced} />}
+                            {isPdf ? <></> : <ReadingDisplayMathJax config={readerConfig} set={setPartialSettingsDebounced} disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />}
                         </section>
                     </Tabs.Content>
                     <Tabs.Content value="tab-audio" tabIndex={-1}>
-                        <TabTitle title={__("reader.media-overlays.title")} />
+                    <TabHeader />
                         <section className={stylesSettings.settings_tab}>
                             <ReadingAudio config={readerConfig} set={setPartialSettingsDebounced} />
                         </section>
                     </Tabs.Content>
                 </div>
             </Tabs.Root>
-            {
-                dockedMode ? <></> :
-                    <div key="modal-header" className={stylesSettings.close_button_div}>
-                        <button className={stylesButtons.button_transparency_icon} aria-label="left" onClick={setDockingModeLeftSide}>
-                            <SVG ariaHidden={true} svg={DockLeftIcon} />
-                        </button>
-                        <button className={stylesButtons.button_transparency_icon} aria-label="right" onClick={setDockingModeRightSide}>
-                            <SVG ariaHidden={true} svg={DockRightIcon} />
-                        </button>
-                        <button className={stylesButtons.button_transparency_icon} disabled aria-label="full" onClick={setDockingModeFull}>
-                            <SVG ariaHidden={true} svg={DockModalIcon} />
-                        </button>
-                        <Dialog.Close asChild>
-                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
-                                <SVG ariaHidden={true} svg={QuitIcon} />
-                            </button>
-                        </Dialog.Close>
-                    </div>
-            }
         </div>
     );
 };

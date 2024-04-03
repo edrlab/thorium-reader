@@ -11,15 +11,15 @@ import { IAnnotationModeState } from "readium-desktop/common/redux/states/render
 export const ID = "READER_ANNOTATIONS_MODE_ENABLE";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload extends Partial<IAnnotationModeState["mode"]> {
+interface IPayload extends Partial<IAnnotationModeState> {
 }
 
-export function build(enable: boolean):
+export function build(enable: boolean, cleanText: string):
     Action<typeof ID, IPayload> {
 
     return {
         type: ID,
-        payload: { enable },
+        payload: { enable, cleanText },
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

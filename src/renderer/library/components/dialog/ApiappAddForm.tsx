@@ -141,18 +141,16 @@ const ApiappAddForm = () => {
                 <div>
                     <button className="button_catalog_infos" onClick={(e) => openInfo(e)}>
                         <SVG ariaHidden svg={InfoIcon} />
-                        How does it work?
+                        {__("apiapp.howItWorks")}
                         <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
                     </button>
                     { infoOpen ?
                     <div className="catalog_infos_text">
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Phasellus elit libero, pharetra vitae cursus sed, tincidunt et elit.
-                            Morbi laoreet iaculis nibh, non condimentum nulla euismod sed.
+                        {__("apiapp.informations")}
                         </p>
-                        <a href="#">
-                            Vivamus quis pharetra eros.
+                        <a href="https://thorium.edrlab.org/docs/">
+                        {__("apiapp.documentation")}
                             <SVG ariaHidden svg={FollowLinkIcon} />
                         </a>
                     </div>

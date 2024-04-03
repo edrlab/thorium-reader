@@ -3,6 +3,7 @@ export declare const arrows: string;
 export declare const chapters_markers: string;
 export declare const currentSpineItem: string;
 export declare const disabled: string;
+export declare const finishedIcon: string;
 export declare const HIDE_CURSOR_CLASS_foot: string;
 export declare const history: string;
 export declare const more_information: string;

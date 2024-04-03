@@ -40,6 +40,7 @@ interface IBaseProps extends TranslatorProps {
     secondaryHeader?: React.ReactElement;
     breadCrumb?: React.ReactElement;
     title?: string;
+    page?: string;
     mainClassName?: string;
     search?: React.ReactElement;
 
@@ -93,12 +94,12 @@ class LibraryLayout extends React.Component<IProps, undefined> {
     }
 
     public render() {
-        const { title } = this.props;
+        const { page } = this.props;
         const { __ } = this.props;
 
         let helmetTitle = capitalizedAppName;
-        if (title) {
-            helmetTitle += " - " + title;
+        if (page) {
+            helmetTitle += " - " + page;
         }
         window.document.title = helmetTitle;
 
@@ -123,9 +124,9 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         className={classNames(stylesGlobal.main, this.props.mainClassName)}
                     >
                         {this.props.secondaryHeader}
-                        {(title === __("opds.breadcrumbRoot")) ?
+                        {(page === __("opds.breadcrumbRoot")) ?
                             <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
-                                <h2 className={stylesAllBooks.allBooks_header}>{title}</h2>
+                                <h2 className={stylesAllBooks.allBooks_header}>{this.props.title}</h2>
                                 {this.props.breadCrumb &&
                                     <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
                                         {
@@ -223,8 +224,9 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
+                    style={{width: "20px"}}
                     state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                    className={stylesButtons.button_nav_primary}
+                    className={stylesButtons.button_nav_tertiary}
                 >
                     <SVG svg={AvatarIcon} title={__("opds.shelf")} />
                 </Link>
@@ -262,6 +264,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
+                    style={{width: "20px"}}
                     state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                     className={stylesButtons.button_nav_tertiary}
                 >
@@ -298,12 +301,13 @@ class LibraryLayout extends React.Component<IProps, undefined> {
             );
 
             refreshComponet = (
-                <button className={stylesButtons.button_nav_tertiary}>
+                <button className={stylesButtons.button_nav_tertiary} style={{width: "20px", height: "20px"}}>
                     <Link
                         to={{
                             ...this.props.location,
                             pathname: route,
                         }}
+                        style={{height: "unset"}}
                         state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                         className={classNames(stylesButtons.button_refresh)}
                     >

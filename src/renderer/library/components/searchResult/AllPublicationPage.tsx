@@ -24,6 +24,7 @@ import * as SearchIcon from "readium-desktop/renderer/assets/icons/search-icon.s
 import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
 import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-right.svg";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
 import { matchSorter } from "match-sorter";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -87,11 +88,14 @@ import * as Popover from "@radix-ui/react-popover";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
 import { useSearchParams } from "react-router-dom";
-import * as FilterIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
-import * as DeletFilter from "readium-desktop/renderer/assets/icons/deleteFilter-icon.svg";
-import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
+// import * as FilterIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
+// import * as DeleteFilter from "readium-desktop/renderer/assets/icons/deleteFilter-icon.svg";
+// import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
+import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
+import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+import AboutThoriumButton from "../catalog/AboutThoriumButton";
 // import GridTagButton from "../catalog/GridTagButton";
- 
+
 // import {
 //     formatContributorToString,
 // } from "readium-desktop/renderer/common/logics/formatContributor";
@@ -230,6 +234,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
                         //     <ListView normalOrOpdsPublicationViews={this.state.publicationViews} />)
                         : <></>
                 }
+                <AboutThoriumButton />
             </LibraryLayout>
         );
     }
@@ -384,12 +389,12 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
             <label
                 id="globalSearchLabel"
                 htmlFor="globalSearchInput"
-                style={{display: "flex", gap: "5px"}}>
+                style={{ display: "flex", gap: "5px" }}>
                 {`${props.__("header.searchPlaceholder")}`}
                 <div
-                aria-live="assertive">
-                {props.globalFilteredRows.length !== props.preGlobalFilteredRows.length ? ` (${props.globalFilteredRows.length} / ${props.preGlobalFilteredRows.length})` : ` (${props.preGlobalFilteredRows.length})`}
-            </div>
+                    aria-live="assertive">
+                    {props.globalFilteredRows.length !== props.preGlobalFilteredRows.length ? ` (${props.globalFilteredRows.length} / ${props.preGlobalFilteredRows.length})` : ` (${props.preGlobalFilteredRows.length})`}
+                </div>
             </label>
             <i><SVG ariaHidden svg={SearchIcon} /></i>
             {/*
@@ -435,6 +440,9 @@ interface ITableCellProps_Filter {
 
     showColumnFilters: boolean,
     accessibilitySupportEnabled: boolean,
+
+    selectedTag: string,
+    setSelectedTag: React.Dispatch<React.SetStateAction<string>>,
 }
 interface ITableCellProps_Column {
     column: ColumnWithLooseAccessor<IColumns> & UseFiltersColumnProps<IColumns>,
@@ -528,6 +536,9 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                     // forceReRender(NaN);
                     if (!props.accessibilitySupportEnabled) {
                         onInputChange((e.target.value || "").trim() || undefined);
+                        if (props.column.id === "colTags") {
+                            props.setSelectedTag(e.target.value.trim());
+                        }
                     }
                 }}
                 onKeyUp={(e) => {
@@ -536,6 +547,10 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                         // value
                         props.column.setFilter( // props.column.filterValue
                             (inputRef?.current?.value || "").trim() || undefined);
+                        if (props.column.id === "colTags") {
+                            props.setSelectedTag(inputRef?.current?.value.trim());
+                            console.log(inputRef.current.value);
+                        }
                     }
                 }}
                 aria-label={`${props.__("header.searchPlaceholder")} (${props.column.Header})`}
@@ -561,6 +576,9 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
 
 interface ITableCellProps_GenericCell extends ITableCellProps_Common {
     setShowColumnFilters: (show: boolean, columnId: string, filterValue: string) => void;
+
+    selectedTag: string,
+    setSelectedTag: React.Dispatch<React.SetStateAction<string>>,
 }
 
 interface IColumnValue_Cover extends IColumnValue_BaseString {
@@ -814,6 +832,7 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
                     e.preventDefault();
                     // props.column.setFilter(t);
                     props.setShowColumnFilters(true, props.column.id, t);
+                    props.setSelectedTag(t);
                 }
             }}
 
@@ -821,10 +840,11 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
                 e.preventDefault();
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
+                props.setSelectedTag(t);
             }}
-            className={stylesButtons.button_nav_primary} style={{padding: "2px" }}>
-                <p style={{ maxWidth:"100px", overflow: "hidden", textOverflow: "ellipsis", textWrap: "nowrap"}}>{t}</p>
-                </a>;
+            className={stylesButtons.button_nav_primary} style={{ padding: "2px" }}>
+            <p style={{ maxWidth: "100px", overflow: "hidden", textOverflow: "ellipsis", textWrap: "nowrap" }}>{t}</p>
+        </a>;
     };
 
     // props.value.label === props.value.tags.join(", ")
@@ -868,15 +888,15 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
             // textAlign: props.displayType === DisplayType.Grid ? "justify" : "start",
             textAlign: "start",
         }}>
-        <p>{props.value}</p>
+        <p dangerouslySetInnerHTML={{ __html: props.value }}></p>
         {props.value ?
             <Popover.Root>
                 <Popover.Trigger>
                     <SVG ariaHidden svg={ChevronDown} />
                 </Popover.Trigger>
                 <Popover.Portal>
-                    <Popover.Content>
-                        <p className={stylesDropDown.dropdown_description}>{props.value}</p>
+                    <Popover.Content collisionPadding={50} avoidCollisions>
+                        <p className={stylesDropDown.dropdown_description} dangerouslySetInnerHTML={{ __html: props.value }}></p>
                         <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
                     </Popover.Content>
                 </Popover.Portal>
@@ -1129,8 +1149,8 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
         >
             <PublicationInfoLibWithRadixTrigger asChild>
                 <a
-                className={stylesPublication.cell_bookTitle}
-                title={`${pubTitleStr} (${props.__("catalog.bookInfo")})`}
+                    className={stylesPublication.cell_bookTitle}
+                    title={`${pubTitleStr} (${props.__("catalog.bookInfo")})`}
                 >
                     {pubTitleStr}
                 </a>
@@ -1217,6 +1237,7 @@ interface ITableCellProps_TableView {
 export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Common> = (props) => {
 
     const [showColumnFilters, setShowColumnFilters] = React.useState(true);
+    const [selectedTag, setSelectedTag] = React.useState("");
 
     const scrollToViewRef = React.useRef(null);
 
@@ -1230,6 +1251,9 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
         showColumnFilters,
         accessibilitySupportEnabled: props.accessibilitySupportEnabled,
+
+        selectedTag: selectedTag,
+        setSelectedTag: setSelectedTag,
     };
 
     const renderProps_Cell: ITableCellProps_GenericCell =
@@ -1237,6 +1261,9 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         __: props.__,
         translator: props.translator,
         displayType: props.displayType,
+
+        selectedTag: selectedTag,
+        setSelectedTag: setSelectedTag,
 
         displayPublicationInfo: props.displayPublicationInfo,
         openReader: props.openReader,
@@ -1259,7 +1286,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     // moment.locale(locale);
 
     const tableRows = React.useMemo(() => {
-        return props.publicationViews.map((publicationView) => {
+        return props.publicationViews.reverse().map((publicationView) => {
 
             // translator.translateContentField(author)
             // const authors = publicationView.authors ? formatContributorToString(publicationView.authors, props.translator) : "";
@@ -1772,12 +1799,19 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     //     ))}
     //     </select>
 
+    const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) =>
+        <Select refButEl={forwardedRef} {...props}></Select>);
+    SelectRef.displayName = "ComboBox";
+
+    const tagsOptions = props.tags.map((v, i) => ({ id: i, value: i, name: v }));
+
+
     return (
         <>
             <div>
                 <h2 className={stylesPublication.allBooks_header}>{__("catalog.allBooks")}</h2>
                 <div className={stylesPublication.allBooks_header_navigation}>
-                    <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
+                    <div className={stylesPublication.allBooks_header_navigation_inputs}>
                         <CellGlobalFilter
                             accessibilitySupportEnabled={props.accessibilitySupportEnabled}
                             preGlobalFilteredRows={tableInstance.preGlobalFilteredRows}
@@ -1803,40 +1837,75 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                         />
                         {/* TODO : Filter */}
                         {
-                            props.tags.length > 0
+                            (props.tags.length > 0) && (props.displayType === DisplayType.Grid)
                                 ?
-                                <Popover.Root>
-                                    <Popover.Trigger asChild>
-                                        <button className={stylesTags.allPub_tagsTrigger}>
-                                            <SVG ariaHidden={true} svg={FilterIcon} />
-                                        </button>
-                                    </Popover.Trigger>
-                                    <Popover.Portal>
-                                        <Popover.Content sideOffset={5} className={stylesTags.Popover_filter_container}>
-                                            <button
-                                                className={stylesTags.resetFilter}
-                                                onClick={() => tableInstance.setGlobalFilter("")}
-                                                title="Reset Filter"
-                                            >
-                                                <SVG ariaHidden svg={DeletFilter} />
-                                            </button>
-                                            <div>
-                                                {props.tags.map((tag, i: number) => {
-                                                    return (
-                                                        <span
-                                                            key={i + 1000}
-                                                            onClick={() => tableInstance.setGlobalFilter(tag)}
-                                                            className={stylesTags.tag_item}
-                                                        >
-                                                            {tag}
-                                                        </span>
-                                                    );
-                                                })}
-                                            </div>
-                                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                                        </Popover.Content>
-                                    </Popover.Portal>
-                                </Popover.Root>
+                                // <div className={stylesPublication.filter_container}>
+                                // <SelectRef
+                                //     id="tagFilter"
+                                //     aria-label={__("reader.navigation.page")}
+                                //     items={tagsOptions}
+                                //     selectedKey={selectedTag}
+                                //     onSelectionChange={(i) => {
+                                //         setSelectedTag(i as number);
+                                //         // tableInstance.setGlobalFilter(tagsOptions.find((tag) => tag.id === i).name);
+                                //         tableInstance.setFilter("colTags",tagsOptions.find((tag) => tag.id === i).name);
+                                //     }}
+                                //     label={__("reader.navigation.page")}
+                                //     className={stylesPublication.form_group}
+                                // >
+                                //     {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                                // </SelectRef>
+                                // </div>
+
+                                <div className={stylesPublication.filter_container}>
+                                    <ComboBox
+                                        label={__("header.fitlerTagTitle")}
+                                        defaultItems={tagsOptions}
+                                        defaultSelectedKey={tagsOptions.find((tag) => tag.name?.toLowerCase().includes(selectedTag?.toLowerCase()))?.id || undefined}
+                                        onSelectionChange={(i) => {
+                                            setSelectedTag(tagsOptions.find((tag) => tag.id === i)?.name);
+                                            tableInstance.setFilter("colTags", tagsOptions.find((tag) => tag.id === i)?.name);
+                                            // console.log(tableInstance.columns.find((element) => element.Header === "Tags"))
+                                        }}
+                                        svg={TagIcon}
+                                        allowsCustomValue
+                                    >
+                                        {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                                    </ComboBox>
+                                </div>
+
+                                // <Popover.Root>
+                                //     <Popover.Trigger asChild>
+                                //         <button className={stylesTags.allPub_tagsTrigger}>
+                                //             <SVG ariaHidden={true} svg={FilterIcon} />
+                                //         </button>
+                                //     </Popover.Trigger>
+                                //     <Popover.Portal>
+                                //         <Popover.Content sideOffset={5} className={stylesTags.Popover_filter_container}>
+                                //             <button
+                                //                 className={stylesTags.resetFilter}
+                                //                 onClick={() => tableInstance.setGlobalFilter("")}
+                                //                 title="Reset Filter"
+                                //             >
+                                //                 <SVG ariaHidden svg={DeleteFilter} />
+                                //             </button>
+                                //             <div>
+                                //                 {props.tags.map((tag, i: number) => {
+                                //                     return (
+                                //                         <span
+                                //                             key={i + 1000}
+                                //                             onClick={() => tableInstance.setGlobalFilter(tag)}
+                                //                             className={stylesTags.tag_item}
+                                //                         >
+                                //                             {tag}
+                                //                         </span>
+                                //                     );
+                                //                 })}
+                                //             </div>
+                                //             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                                //         </Popover.Content>
+                                //     </Popover.Portal>
+                                // </Popover.Root>
                                 : <></>
                         }
                     </div>
@@ -1930,11 +1999,11 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                             "100px" :
                                             column.id === "colDuration" ?
                                                 "100px" :
-                                                column.id === "col_a11y_accessibilitySummary"  ?
+                                                column.id === "col_a11y_accessibilitySummary" ?
                                                     "160px" :
                                                     column.id === "colAuthors" ?
-                                                    "160px":
-                                                    "100px";
+                                                        "160px" :
+                                                        "100px";
 
                                 return (<th
                                     key={`headtrth_${i}`}
@@ -1948,6 +2017,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                         width: W,
                                         minWidth: W,
                                         maxWidth: W,
+                                        borderBottom: "2px solid var(--color-blue)",
                                     }}
                                     className={stylesPublication.allBook_table_head}
                                 >
@@ -2000,18 +2070,20 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                                 type="checkbox"
                                                 checked={showColumnFilters ? true : false}
                                                 onChange={() => {
-                                                    const show = showColumnFilters;
+
+                                                    // const show = showColumnFilters;
                                                     setShowColumnFilters(!showColumnFilters);
-                                                    setTimeout(() => {
-                                                        if (!show) {
-                                                            tableInstance.setGlobalFilter("");
-                                                        }
-                                                        if (show) {
-                                                            for (const col of tableInstance.allColumns) {
-                                                                tableInstance.setFilter(col.id, "");
-                                                            }
-                                                        }
-                                                    }, 200);
+
+                                                    // setTimeout(() => {
+                                                    //     if (!show) {
+                                                    //         tableInstance.setGlobalFilter("");
+                                                    //     }
+                                                    //     if (show) {
+                                                    //         for (const col of tableInstance.allColumns) {
+                                                    //             tableInstance.setFilter(col.id, "");
+                                                    //         }
+                                                    //     }
+                                                    // }, 200);
                                                 }}
                                                 style={{ position: "absolute", left: "-999px" }}
                                             /><label
@@ -2063,7 +2135,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
                                     <tr key={`bodytr_${index}`} {...row.getRowProps()}
                                         style={{
-                                            backgroundColor: index % 2 ? "var(--color-extralight-grey)" : undefined,
+                                            backgroundColor: index % 2 ? "var(--color-light-grey)" : undefined,
                                         }}>{row.cells.map((cell, i) => {
                                             return (<td key={`bodytrtd_${i}`} {...cell.getCellProps()}
                                             >{
@@ -2075,6 +2147,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                             );
                         })}</tbody>
                 </table>
+                {/* <AboutThoriumButton /> */}
             </div>
         </>
     );

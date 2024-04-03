@@ -86,6 +86,15 @@ function* errorDeletePub(doc: PublicationDocument | undefined, e: Error) {
 
 function* getPublicationView() {
 
+    // uncomment this in case of DB corruption, will allow Thorium to launch library bookshelf (empty)
+    // return {
+    // audio: {readed: [], added:[]},
+    // epub: {readed: [], added:[]},
+    // divina: {readed: [], added:[]},
+    // pdf: {readed: [], added:[]},
+    // all: {readed: [], added:[]},
+    // };
+
     const publicationRepository = diMainGet("publication-repository");
     const publicationViewConverter = diMainGet("publication-view-converter");
     const lastAddedPublicationsDocumentRaw = yield* callTyped(getLastAddedPublicationDocument, publicationRepository);

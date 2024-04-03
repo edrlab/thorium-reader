@@ -122,6 +122,8 @@ export interface IReaderMenuProps {
     pdfNumberOfPages: number;
 
     openedSection: string;
+    annotationUUID: string;
+    resetAnnotationUUID: () => void;
     setOpenedSection: (v: string) => void;
 }
 
@@ -156,6 +158,7 @@ export interface IReaderSettingsProps {
     setDisableRTLFlip: (disabled: boolean) => void;
     zenMode: boolean;
     setZenMode: (value : boolean) => void;
+    searchEnable: boolean;
 }
 
 export interface IPopoverDialogProps {

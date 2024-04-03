@@ -30,6 +30,10 @@ import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 import * as Tooltip from "@radix-ui/react-tooltip";
+// import * as ValidatedIcon from "readium-desktop/renderer/assets/icons/validated-icon.svg";
+import { TDispatch } from "readium-desktop/typings/redux";
+// import { readerActions } from "readium-desktop/common/redux/actions";
+import { connect } from "react-redux";
 
 function throttle(callback: (...args: any) => void, limit: number) {
     let waiting = false;
@@ -46,7 +50,7 @@ function throttle(callback: (...args: any) => void, limit: number) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
+interface IBaseProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
     navLeftOrRight: (left: boolean) => void;
     gotoBegin: () => void;
     gotoEnd: () => void;
@@ -109,6 +113,19 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         const { moreInfo } = this.state;
 
         let spineTitle = currentLocation.locator?.title || currentLocation.locator.href;
+
+        // const isEnding = (isDivina
+        //     ? parseInt(spineTitle)
+        //     : isPdf ?
+        //         parseInt(currentLocation.locator?.href, 10).toString()
+        //         :
+        //         ((r2Publication.Spine.findIndex((spineLink) => spineLink.Href === currentLocation.locator?.href)) + 1).toString()
+        // ) ==
+        //     (isPdf ? (r2Publication.Metadata?.NumberOfPages ? r2Publication.Metadata.NumberOfPages : 0) :
+        //         (isDivina
+        //             ? (this.props.divinaContinousEqualTrue ? r2Publication.Spine.length : this.props.divinaNumberOfPages)
+        //             : r2Publication.Spine.length)
+        //     );
 
         if (isDivina) {
             try {
@@ -331,6 +348,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                             );
                                         })}
                                 </div>
+
                                 {/* {moreInfo &&
                                     <div
                                         id={stylesReaderFooter.arrow_box}
@@ -358,6 +376,10 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                 } */}
                             </div>
                         }
+                        {/* {isEnding ? <button className={stylesReaderFooter.finishedIcon}
+                             onClick={() => this.props.finishReading()}
+                             title="Mark as finished"
+                             ><SVG ariaHidden svg={ValidatedIcon} /></button> : <></>} */}
                     </div>
                 }
             </div>
@@ -458,4 +480,14 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         this.setState({ moreInfo: !this.state.moreInfo });
     }
 }
-export default withTranslator(ReaderFooter);
+
+const mapDispatchToProps = (_dispatch: TDispatch) => {
+    return {
+        // finishReading: () => {
+        //     // dispatch(readerActions.readingFinished.build(true));
+        //     dispatch(readerActions.closeRequest.build());
+        // },
+    };
+};
+
+export default connect(undefined, mapDispatchToProps)(withTranslator(ReaderFooter));

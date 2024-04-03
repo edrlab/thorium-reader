@@ -43,6 +43,7 @@
     },
     "catalog": {
         "about": {
+            "button": "Més información",
             "title": "Sobre {{appName}}"
         },
         "addBookToLib": "Importar",
@@ -106,7 +107,6 @@
         "readBook": "Llegir",
         "released": "Publicat en",
         "sort": "Ordenar per",
-        "tag": "",
         "tagCount": "Número d'etiquetes",
         "tags": "Etiquetes",
         "update": ""
@@ -131,6 +131,8 @@
     },
     "header": {
         "allBooks": "Tots els llibres",
+        "books": "Els meus llibres",
+        "catalogs": "Catàlegs",
         "downloads": "Descàrregues",
         "gridTitle": "Presentació en quadrícula",
         "home": "Menú biblioteca",
@@ -140,18 +142,15 @@
         "refreshTitle": "Recarregar",
         "searchPlaceholder": "Cercar",
         "searchTitle": "Iniciar cerca",
-        "settings": "Opcions de configuració",
-        "viewMode": ""
+        "settings": "Opcions de configuració"
     },
     "library": {
         "lcp": {
             "hint": "(Pista : {{- hint}})",
             "password": "Contrassenya",
             "sentence": "Aquesta publicació requereix una contrassenya LCP per obrir-se: ",
-            "urlHint": "Has olvidat la contrassenya? Clica si necessites ajuda",
-            "whatIsLcp?": "",
-            "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": ""
+            "submit": "Enviar",
+            "urlHint": "Has olvidat la contrassenya? Clica si necessites ajuda"
         }
     },
     "message": {
@@ -172,6 +171,7 @@
             "addButton": "Afegir",
             "name": "Nom:",
             "namePlaceholder": "Nom",
+            "title": "Afegir catàleg OPDS",
             "url": "Enllaç:",
             "urlPlaceholder": "Enllaç"
         },
@@ -274,16 +274,13 @@
         "userKeyCheckInvalid": "Contrasenya incorrecta"
     },
     "reader": {
-        "annotations": {
-            "addNote": "",
-            "highlight": ""
-        },
         "divina": {
             "mute": "silenciar",
             "unmute": "deixar de silenciar"
         },
-        "fxl": {
-            "fit": ""
+        "footerInfo": {
+            "lessInfo": "menys informació",
+            "moreInfo": "més informació"
         },
         "marks": {
             "annotations": "Anotacions",
@@ -292,7 +289,6 @@
             "edit": "Editar",
             "landmarks": "Punts de referència",
             "search": "Cercar",
-            "searchResult": "",
             "toc": "Taula de contingut"
         },
         "media-overlays": {
@@ -308,7 +304,6 @@
             "title": "Lectura en veu alta"
         },
         "navigation": {
-            "annotationTitle": "",
             "backHomeTitle": "Tornar a la biblioteca",
             "bookmarkTitle": "Marcador",
             "currentPage": "Pàgina actual: {{- current}}",
@@ -325,6 +320,8 @@
             "magnifyingGlassButton": "cercar a la publicació",
             "openTableOfContentsTitle": "Navegació",
             "pdfscalemode": "Ajust o ample de pàgina",
+            "quitFullscreenTitle": "Sortir del mode pantalla completa",
+            "readBookTitle": "Començar a llegir el llibre",
             "settingsTitle": "Opcions de configuració"
         },
         "picker": {
@@ -343,11 +340,11 @@
             "column": {
                 "auto": "Automàtic",
                 "one": "1 col.",
+                "oneTitle": "Una columna",
                 "title": "Columnes",
-                "two": "2 cols."
+                "two": "2 cols.",
+                "twoTitle": "Dos columnes"
             },
-            "customizeReader": "",
-            "disabled": "",
             "display": "Visualització",
             "disposition": {
                 "title": "Disposició"
@@ -360,6 +357,8 @@
             "lineSpacing": "Interlineat",
             "margin": "Marge",
             "noFootnotes": "Desactivar notes al peu",
+            "noRTLFlip": "",
+            "noRuby": "",
             "paginated": "Paginat",
             "paraSpacing": "Espaiat de paràgrafs",
             "pdfZoom": {
@@ -375,8 +374,12 @@
                 },
                 "title": "Zoom"
             },
-            "preview": "",
             "reduceMotion": "Disminuir moviment",
+            "save": {
+                "apply": "Guardar",
+                "reset": "Restablir",
+                "title": "Configuració"
+            },
             "scrolled": "Desplaçable",
             "spacing": "Espaiat",
             "text": "Text",
@@ -417,12 +420,14 @@
         "keyboard": {
             "advancedMenu": "Menú",
             "cancel": "Cancel·lar",
-            "disclaimer": "",
+            "edit": "Editar",
             "editUserJson": "Editar arxiu d'usuari",
+            "hide": "Ocultar",
             "keyboardShortcuts": "Dreceres de teclat",
             "loadUserJson": "Cargar arxiu d'usuari",
             "resetDefaults": "Restablir valors predeterminats",
-            "save": "Guardar"
+            "save": "Guardar",
+            "show": "Mostrar"
         },
         "language": {
             "languageChoice": "Selecció d'idioma"
@@ -431,18 +436,6 @@
             "no": "Deshabilitar",
             "title": "Guardar sessió",
             "yes": "Habilitar"
-        },
-        "tabs": {
-            "appearance": "",
-            "general": "",
-            "keyboardShortcuts": ""
-        },
-        "theme": {
-            "auto": "",
-            "dark": "",
-            "description": "",
-            "light": "",
-            "title": ""
         }
     }
 }

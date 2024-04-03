@@ -27,7 +27,7 @@ export interface IHttpGetResult<TData> {
     contentType?: string;
     // cookies?: string;
     body?: NodeJS.ReadableStream;
-    response?: THttpResponse;
+    response?: Partial<THttpResponse>;
     data?: TData;
 }
 

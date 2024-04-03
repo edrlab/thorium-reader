@@ -11,6 +11,9 @@ import PublicationExportButton from "./PublicationExportButton";
 import DeletePublicationConfirm from "../../dialog/DeletePublicationConfirm";
 import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../../dialog/publicationInfos/PublicationInfo";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 
 const CatalogMenu: React.FC<{publicationView: PublicationView}> = (props) => {
     const [__] = useTranslator();
@@ -23,7 +26,8 @@ const CatalogMenu: React.FC<{publicationView: PublicationView}> = (props) => {
                 <PublicationInfoLibWithRadixTrigger asChild>
                     <button
                     >
-                        {__("catalog.bookInfo")}
+                        <SVG ariaHidden svg={InfoIcon} />
+                        <p>{__("catalog.bookInfo")}</p>
                     </button>
                 </PublicationInfoLibWithRadixTrigger>
                 <PublicationInfoLibWithRadixContent />
@@ -32,7 +36,8 @@ const CatalogMenu: React.FC<{publicationView: PublicationView}> = (props) => {
                 trigger={(
                     <button
                     >
-                        {__("catalog.delete")}
+                        <SVG ariaHidden svg={TrashIcon} />
+                        <p>{__("catalog.delete")}</p>
                     </button>
                 )}
                 publicationView={props.publicationView}

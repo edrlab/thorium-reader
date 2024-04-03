@@ -6,17 +6,15 @@
 // ==LICENSE-END==
 
 import classNames from "classnames";
-import { GithubPicker } from "react-color";
 import * as debug_ from "debug";
 import * as React from "react";
 import * as Popover from "@radix-ui/react-popover";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as ReactDOM from "react-dom";
+// import * as ReactDOM from "react-dom";
 import { ReaderMode } from "readium-desktop/common/models/reader";
-import * as BackIcon from "readium-desktop/renderer/assets/icons/outline-exit_to_app-24px.svg";
-import * as viewMode from "readium-desktop/renderer/assets/icons/aspect_ratio-black-18dp.svg";
+import * as BackIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
+import * as viewMode from "readium-desktop/renderer/assets/icons/fullscreen-corners-icon.svg";
 import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
 import * as PauseIcon from "readium-desktop/renderer/assets/icons/audio-pause-icon.svg";
 import * as PlayIcon from "readium-desktop/renderer/assets/icons/audio-play-icon.svg";
@@ -28,9 +26,9 @@ import * as HeadphoneIcon from "readium-desktop/renderer/assets/icons/headphone-
 import * as SettingsIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
 import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
 import * as MarkIcon from "readium-desktop/renderer/assets/icons/bookmarkSingle-icon.svg";
-import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/comment-icon.svg";
+import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
 import * as RemoveBookMarkIcon from "readium-desktop/renderer/assets/icons/BookmarkRemove-icon.svg";
-import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
+// import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
 import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
 import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreen-icon.svg";
 import * as ExitFullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreenExit-icon.svg";
@@ -67,7 +65,8 @@ import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driv
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { readerLocalActionAnnotations } from "../redux/actions";
-import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
+import { AnnotationEdit } from "./AnnotationEdit";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -154,6 +153,7 @@ interface IState {
     divinaSoundEnabled: boolean;
     fxlZoomPercent: number;
     forceTTS: boolean;
+    ttsPopoverOpen: boolean;
 }
 
 export class ReaderHeader extends React.Component<IProps, IState> {
@@ -173,7 +173,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         this.navigationMenuButtonRef = React.createRef<HTMLButtonElement>();
         this.infoMenuButtonRef = React.createRef<HTMLButtonElement>();
 
-        this.focusNaviguationMenuButton = this.focusNaviguationMenuButton.bind(this);
+        // this.focusNaviguationMenuButton = this.focusNaviguationMenuButton.bind(this);
 
         this.onKeyboardFixedLayoutZoomReset = this.onKeyboardFixedLayoutZoomReset.bind(this);
         this.onKeyboardFixedLayoutZoomIn = this.onKeyboardFixedLayoutZoomIn.bind(this);
@@ -184,6 +184,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             divinaSoundEnabled: false,
             fxlZoomPercent: 0,
             forceTTS: false,
+            ttsPopoverOpen: false,
         };
 
         this.timerFXLZoomDebounce = undefined;
@@ -244,10 +245,10 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             this.infoMenuButtonRef.current.focus();
         }
 
-        if (this.props.menuOpen !== oldProps.menuOpen &&
-            this.props.menuOpen === true) {
-            this.focusNaviguationMenuButton();
-        }
+        // if (this.props.menuOpen !== oldProps.menuOpen &&
+        //     this.props.menuOpen === true) {
+        //     this.focusNaviguationMenuButton();
+        // }
 
         if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
             console.log("READER HEADER RELOAD KEYBOARD SHORTCUTS");
@@ -369,13 +370,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
         const useMO = !this.state.forceTTS && this.props.publicationHasMediaOverlays;
 
-        let annotationItem: IAnnotationState | undefined = undefined;
-        if (this.props.annotationCurrentFocusUUID) {
-            const annotationItemQueueState = this.props.annotationsDataArray.find(([_, annotationState]) => annotationState.uuid === this.props.annotationCurrentFocusUUID);
-            if (annotationItemQueueState) {
-                annotationItem = annotationItemQueueState[1]; 
-            }
-        }
 
         const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
         SelectRef.displayName = "ComboBox";
@@ -403,15 +397,20 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             },
         ];
 
-        const annotationsColors = [
-            "#B80000",
-            "#DB3E00", 
-            "#FCCB00", 
-            "#008B02", 
-            "#006B76", 
-            "#1273DE", 
-            "#004DCF", 
-            "#5300EB"];
+        const isDockedMode = this.props.readerPopoverDialogContext.dockedMode;
+        const isOnSearch = this.props.isOnSearch;
+        const isNightMode = this.props.ReaderSettingsProps.readerConfig.night;
+        const isSepiaMode = this.props.ReaderSettingsProps.readerConfig.sepia;
+
+        const containerClassName = classNames(
+            isDockedMode && isOnSearch && stylesReader.isOnSearch,
+            isDockedMode && isOnSearch && stylesPopoverDialog.popover_dialog_reader,
+            isDockedMode && !isOnSearch && stylesPopoverDialog.popover_dialog_reader,
+            !isDockedMode && !isOnSearch && stylesPopoverDialog.modal_dialog_reader,
+            !isDockedMode && isOnSearch && stylesPopoverDialog.modal_dialog_reader,          
+            isNightMode && stylesReader.nightMode,
+            isSepiaMode && stylesReader.sepiaMode,
+          );
 
         return (
             <nav
@@ -429,19 +428,15 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             >
                 <ul>
                     <ul>
-                        {(this.props.mode === ReaderMode.Attached) ? (
-                            <li >
-                                <button
-                                    className={stylesReader.menu_button}
-                                    style={{transform:"rotate(-90deg)"}}
-                                    onClick={this.props.handleReaderClose}
-                                    title={__("reader.navigation.backHomeTitle")}
-                                >
-                                    <SVG ariaHidden={true} svg={BackIcon} />
-                                </button>
-                            </li>
-                        ) : (<></>)
-                        }
+                        <li >
+                            <button
+                                className={stylesReader.menu_button}
+                                onClick={this.props.handleReaderClose}
+                                title={__("reader.navigation.backHomeTitle")}
+                            >
+                                <SVG ariaHidden={true} svg={BackIcon} />
+                            </button>
+                        </li>
                         <li>
                             <PublicationInfoReaderWithRadix handlePublicationInfo={this.props.handlePublicationInfo}>
                                 <PublicationInfoReaderWithRadixTrigger asChild>
@@ -449,7 +444,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         className={stylesReader.menu_button}
                                         ref={this.infoMenuButtonRef}
                                         title={__("reader.navigation.infoTitle")}
-                                        disabled={this.props.settingsOpen || this.props.menuOpen}
+                                        disabled={(this.props.settingsOpen || this.props.menuOpen) && !isDockedMode}
                                     >
                                         <SVG ariaHidden={true} svg={InfosIcon} />
                                     </button>
@@ -457,7 +452,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 <PublicationInfoReaderWithRadixContent />
                             </PublicationInfoReaderWithRadix>
                         </li>
-                        {(this.props.mode === ReaderMode.Attached) ? (
+                        {/* {(this.props.mode === ReaderMode.Attached) ? (
                             <li>
                                 <button
                                     className={stylesReader.menu_button}
@@ -468,9 +463,10 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 </button>
                             </li>
                         ) : (<></>)
-                        }
+                        } */}
                     </ul>
-
+                    {
+                    this.props.isPdf ? <></> : 
                     <ul className={classNames(stylesReader.tts_toolbar)}>
                         {
                             this.props.isDivina
@@ -579,7 +575,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             this.props.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING ||
                                             !useMO &&
                                             this.props.ttsState === TTSStateEnum.PLAYING) ?
-                                            <li  style={{backgroundColor: "var(--color-blue" }}>
+                                            <li  style={{backgroundColor: "var(--color-blue)" }}>
                                                 <button
                                                     className={stylesReader.menu_button}
                                                     onClick={
@@ -652,14 +648,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             </button>
                                         </li>
                                         <li>
-                                            <Popover.Root>
+                                            <Popover.Root open={this.state.ttsPopoverOpen} onOpenChange={() => this.setState({ ttsPopoverOpen : !this.state.ttsPopoverOpen})}>
                                                 <Popover.Trigger asChild>
-                                                    <button className={stylesReader.menu_button}>
-                                                        <SVG ariaHidden svg={HeadphoneIcon} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""} />
+                                                    <button className={stylesReader.menu_button} style={{backgroundColor: this.state.ttsPopoverOpen ? "var(--color-blue)" : ""}}>
+                                                        <SVG ariaHidden svg={HeadphoneIcon} className={this.state.ttsPopoverOpen ? stylesReaderHeader.active_svg : ""} />
                                                     </button>
                                                 </Popover.Trigger>
                                                 <Popover.Portal>
-                                                    <Popover.Content sideOffset={10}>
+                                                    <Popover.Content>
                                                         <ul className={stylesReaderHeader.Tts_popover_container}>
                                                             <li className={stylesReader.ttsSelectRate}>
                                                                 <label>
@@ -745,6 +741,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     </>
                         }
                     </ul>
+                    }
 
                     {/* {
                             this.props.isPdf || this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed" ?
@@ -822,7 +819,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         <li
                             {...(this.props.isOnSearch && { style: { backgroundColor: "var(--color-blue" } })}
                         >
-                            <HeaderSearch shortcutEnable={this.props.shortcutEnable} isPdf={this.props.isPdf} showSearchResults={this.props.showSearchResults}></HeaderSearch>
+                               <HeaderSearch shortcutEnable={this.props.shortcutEnable} isPdf={this.props.isPdf} showSearchResults={this.props.showSearchResults}></HeaderSearch>
                         </li>
                         <li
                             {...(this.props.isOnBookmark &&
@@ -854,9 +851,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             </label>
                         </li>
 
-                        <Popover.Root open={this.props.isAnnotationEditionFocusEnabled && !!annotationItem} onOpenChange={(open) => {
+                        <Popover.Root open={this.props.isAnnotationModeEnabled} onOpenChange={(open) => {
                             if (open === false) {
-                                setTimeout(() => this.props.closeAnnotationEditionMode(this.props.annotationCurrentFocusUUID), 1); // trigger input onChange before the popover trigger
+                                setTimeout(() => this.props.closeAnnotationEditionMode(), 1); // trigger input onChange before the popover trigger
                             }
                         }}>
                             <Popover.Trigger asChild>
@@ -871,19 +868,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         checked={this.props.isAnnotationModeEnabled}
                                         onKeyDown={(e) => {
                                             if (e.key === "Enter") {
-                                                if (this.props.isAnnotationEditionFocusEnabled) {
-                                                    // nothing
-                                                } else {
-                                                    this.props.triggerAnnotationBtn();
-                                                }
+                                                this.props.triggerAnnotationBtn();
                                             }
                                         }}
                                         onChange={() => {
-                                            if (this.props.isAnnotationEditionFocusEnabled) {
-                                                // nothing
-                                            } else {
-                                                this.props.triggerAnnotationBtn();
-                                            }
+                                            this.props.triggerAnnotationBtn();
                                         }}
                                     // aria-label={__("reader.navigation.bookmarkTitle")}
                                     // title={__("reader.navigation.bookmarkTitle")}
@@ -903,42 +892,10 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             </Popover.Trigger>
                             <Popover.Portal>
                                 <Popover.Content sideOffset={this.props.isOnSearch ? 50 : 5} align="end" style={{ zIndex: 101 }}
-                                        onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
-                                        onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}>
-                                    <form
-                                        className={stylesReader.annotation_form}
-                                        onSubmit={(e) => {
-                                            e.preventDefault();
-                                            const txt = (e.target as any)?.addNote?.value || "";
-                                            this.props.saveAnnotation({ ...annotationItem, comment: txt });
-                                        }}
-                                    >
-                                        {annotationItem?.locatorExtended?.selectionInfo?.cleanText ?
-                                            <>
-                                                <div>
-                                                    <label>{__("reader.annotations.highlight")}</label>
-                                                    <p>Text : {annotationItem.locatorExtended.selectionInfo.cleanText.slice(0, 10)} ...</p>
-                                                    <GithubPicker
-                                                        colors={annotationsColors}
-                                                        color={{ r: annotationItem.color.red, g: annotationItem.color.green, b: annotationItem.color.blue }}
-                                                        onChangeComplete={(colorValue) => {
-                                                            this.props.saveAnnotation({ ...annotationItem, color: { blue: colorValue.rgb.b, green: colorValue.rgb.g, red: colorValue.rgb.r } });
-                                                        }}
-                                                        triangle="hide"
-                                                    />
-                                                </div>
-                                                <div className={stylesReader.annotation_form_textarea_container}>
-                                                    <label htmlFor="addNote">{__("reader.annotations.addNote")}</label>
-                                                    <textarea id="addNote" name="addNote" className={stylesReader.annotation_form_textarea} defaultValue={annotationItem.comment}></textarea>
-                                                    <div className={stylesReader.annotation_form_textarea_buttons}>
-                                                        <Popover.Close className={stylesButtons.button_secondary_blue} aria-label="cancel">Cancel</Popover.Close>
-                                                        <Popover.Close className={stylesButtons.button_secondary_blue} aria-label="delete" onClick={() => this.props.deleteAnnotation(annotationItem)}>Delete</Popover.Close>
-                                                        <Popover.Close type="submit" className={stylesButtons.button_secondary_blue} aria-label="save" onClick={() => this.props.saveAnnotation(annotationItem)}>Save</Popover.Close>
-                                                    </div>
-                                                </div>
-                                            </>
-                                            : <p>Error to display this annotation !!</p>}
-                                    </form>
+                                        // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
+                                        // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
+                                        >
+                                            <AnnotationEdit save={this.props.saveAnnotation} cancel={this.props.closeAnnotationEditionMode} dockedMode={isDockedMode}/>
                                     <Popover.Arrow style={{ fill: "var(--color-light-grey)" }} width={15} height={10} />
                                 </Popover.Content>
                             </Popover.Portal>
@@ -969,13 +926,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     <Dialog.Content
                                         onPointerDownOutside={(e) => { e.preventDefault(); console.log("MenuModal onPointerDownOutside"); }}
                                         onInteractOutside={(e) => { e.preventDefault(); console.log("MenuModal onInteractOutside"); }}
-                                        className={classNames(this.props.readerPopoverDialogContext.dockedMode ? stylesPopoverDialog.popover_dialog_reader : stylesPopoverDialog.modal_dialog_reader,
-                                            this.props.ReaderSettingsProps.readerConfig.night ? stylesReader.nightMode : this.props.ReaderSettingsProps.readerConfig.sepia ? stylesReader.sepiaMode : "")}
+                                        className={containerClassName}
                                         style={{
                                             borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
                                             borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
                                             right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
                                             left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
+                                            height: isDockedMode && isOnSearch && "calc(100dvh - 140px)",
+                                            marginTop: isDockedMode && isOnSearch ? "0" : "50px",
                                         }}
                                     >
                                         <ReaderMenu {...this.props.readerMenuProps}
@@ -983,7 +941,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             isDivina={this.props.isDivina}
                                             isPdf={this.props.isPdf}
                                             currentLocation={this.props.currentLocation}
-                                            focusNaviguationMenu={this.focusNaviguationMenuButton}
+                                            // focusNaviguationMenu={this.focusNaviguationMenuButton}
                                             handleMenuClick={this.props.handleMenuClick} />
                                     </Dialog.Content>
                                 </Dialog.Portal>
@@ -1010,13 +968,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     <Dialog.Content
                                         onPointerDownOutside={(e) => { e.preventDefault(); console.log("settingsModal onPointerDownOutside"); }}
                                         onInteractOutside={(e) => { e.preventDefault(); console.log("SettingsModal onInteractOutside"); }}
-                                        className={classNames(this.props.readerPopoverDialogContext.dockedMode ? stylesPopoverDialog.popover_dialog_reader : stylesPopoverDialog.modal_dialog_reader,
-                                            this.props.ReaderSettingsProps.readerConfig.night ? stylesReader.nightMode : this.props.ReaderSettingsProps.readerConfig.sepia ? stylesReader.sepiaMode : "")}
+                                        className={containerClassName}
                                         style={{
                                             borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
                                             borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
                                             right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
                                             left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
+                                            height: isDockedMode && isOnSearch && "calc(100dvh - 140px)",
+                                            marginTop: isDockedMode && isOnSearch ? "0" : "50px",
                                         }}
                                     >
                                         <ReaderSettings {...this.props.ReaderSettingsProps} {...this.props.readerPopoverDialogContext} handleSettingsClick={this.props.handleSettingsClick} />
@@ -1126,6 +1085,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 </li>
                                 : <></>
                         }
+                        <span style={{width: "1px", height: "30px", backgroundColor: "var(--color-medium-grey)", margin: "auto 5px"}}></span>
                         <li className={classNames(stylesReader.blue)}>
                             <button
                                 className={classNames(stylesReader.menu_button)}
@@ -1148,23 +1108,21 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         this.setState({ pdfScaleMode: mode });
     };
 
-    private focusNaviguationMenuButton() {
-        if (!this.navigationMenuButtonRef?.current) {
-            return;
-        }
-        const button = ReactDOM.findDOMNode(this.navigationMenuButtonRef.current) as HTMLButtonElement;
+    // private focusNaviguationMenuButton() {
+    //     if (!this.navigationMenuButtonRef?.current) {
+    //         return;
+    //     }
+    //     const button = ReactDOM.findDOMNode(this.navigationMenuButtonRef.current) as HTMLButtonElement;
 
-        button.focus();
-    }
+    //     button.focus();
+    // }
 }
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         keyboardShortcuts: state.keyboard.shortcuts,
-        isAnnotationModeEnabled: state.annotationControlMode.mode.enable,
-        isAnnotationEditionFocusEnabled: state.annotationControlMode.focus.editionEnable,
-        annotationCurrentFocusUUID: state.annotationControlMode.focus.currentFocusUuid,
         annotationsDataArray: state.reader.annotation,
+        isAnnotationModeEnabled: state.annotation.enable,
     };
 };
 
@@ -1173,14 +1131,11 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         triggerAnnotationBtn: () => {
             dispatch(readerLocalActionAnnotations.trigger.build());
         },
-        closeAnnotationEditionMode: (currentFocusUuid: string) => {
-            dispatch(readerLocalActionAnnotations.focusMode.build({editionEnable: false, previousFocusUuid: currentFocusUuid, currentFocusUuid: ""}));
+        closeAnnotationEditionMode: () => {
+            dispatch(readerLocalActionAnnotations.enableMode.build(false, ""));
         },
-        deleteAnnotation: (item: IAnnotationState) => {
-            dispatch(readerLocalActionAnnotations.pop.build(item));
-        },
-        saveAnnotation: (item: IAnnotationState) => {
-            dispatch(readerLocalActionAnnotations.update.build(item));
+        saveAnnotation: (color: IColor, comment: string, drawType: TDrawType) => {
+            dispatch(readerLocalActionAnnotations.createNote.build(color, comment, drawType));
         },
     };
 };

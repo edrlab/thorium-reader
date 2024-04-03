@@ -67,6 +67,8 @@ export const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayl
         reduceMotion: settings.reduceMotion,
 
         noFootnotes: settings.noFootnotes,
+
+        noRuby: settings.noRuby,
     };
 
     const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };

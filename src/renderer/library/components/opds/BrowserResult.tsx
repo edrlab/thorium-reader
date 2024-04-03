@@ -85,6 +85,8 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                 const { data: { opds } } = browserResult;
                 console.log(browserData);
 
+                console.log(opds.groups);
+
                 if (opds.navigation &&
                     !opds.publications &&
                     !opds.groups) {
@@ -150,33 +152,34 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                             {
                                 opds.groups?.map((group, i) =>
                                     <section key={i}>
-
+                                        { group.publications.length > 1 ?
                                         <div className={stylesGlobal.heading_link}>
                                             <Entry level={this.props.level} entry={group.selfLink}></Entry>
                                         </div>
+                                        : <></>}
                                         {
                                             group.navigation ?
                                             <EntryList entries={group.navigation} />
                                             : <></>
                                         }
                                         {
-                                            group.publications &&
-                                                (
-                                                    (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid
-                                                ) === DisplayType.Grid ?
-                                                <Slider
-                                                    content={group.publications.map((pub, pubId) =>
-                                                        <PublicationCard
-                                                            key={`opds-group-${i}-${pubId}`}
-                                                            publicationViewMaybeOpds={pub}
-                                                            isOpds={true}
-                                                        />,
-                                                    )}
-                                                /> :
-                                                <ListView
-                                                    normalOrOpdsPublicationViews={group.publications}
-                                                    isOpdsView={true}
-                                                />
+                                            group.publications?.length > 1 ? 
+                                            (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) === DisplayType.Grid ?
+                                                    <Slider
+                                                        content={group.publications.map((pub, pubId) =>
+                                                            <PublicationCard
+                                                                key={`opds-group-${i}-${pubId}`}
+                                                                publicationViewMaybeOpds={pub}
+                                                                isOpds={true}
+                                                            />,
+                                                        )}
+                                                    />
+                                                    :
+                                                    <ListView
+                                                        normalOrOpdsPublicationViews={group.publications}
+                                                        isOpdsView={true}
+                                                    />
+                                                : <></>
                                         }
                                     </section>,
                                 )

@@ -91,7 +91,7 @@ declare namespace typed_i18n {
   (_: "app.window", __?: {}): { readonly "showLibrary": string };
   (_: "app.window.showLibrary", __?: {}): string;
   (_: "catalog", __?: {}): {
-  readonly "about": { readonly "title": string },
+  readonly "about": { readonly "button": string, readonly "title": string },
   readonly "addBookToLib": string,
   readonly "addTags": string,
   readonly "addTagsButton": string,
@@ -150,12 +150,12 @@ declare namespace typed_i18n {
   readonly "readBook": string,
   readonly "released": string,
   readonly "sort": string,
-  readonly "tag": string,
   readonly "tagCount": string,
   readonly "tags": string,
   readonly "update": string
 };
-  (_: "catalog.about", __?: {}): { readonly "title": string };
+  (_: "catalog.about", __?: {}): { readonly "button": string, readonly "title": string };
+  (_: "catalog.about.button", __?: {}): string;
   (_: "catalog.about.title", __?: {}): string;
   (_: "catalog.addBookToLib", __?: {}): string;
   (_: "catalog.addTags", __?: {}): string;
@@ -264,7 +264,7 @@ declare namespace typed_i18n {
   (_: "catalog.publisher", __?: {}): string;
   (_: "catalog.readBook", __?: {}): string;
   (_: "catalog.released", __?: {}): string;
-  (_: "catalog.sort", __?: {}): string; (_: "catalog.tag", __?: {}): string;
+  (_: "catalog.sort", __?: {}): string;
   (_: "catalog.tagCount", __?: {}): string;
   (_: "catalog.tags", __?: {}): string;
   (_: "catalog.update", __?: {}): string;
@@ -304,6 +304,8 @@ declare namespace typed_i18n {
   (_: "error.errorBox.title", __?: {}): string;
   (_: "header", __?: {}): {
   readonly "allBooks": string,
+  readonly "books": string,
+  readonly "catalogs": string,
   readonly "downloads": string,
   readonly "gridTitle": string,
   readonly "home": string,
@@ -313,10 +315,11 @@ declare namespace typed_i18n {
   readonly "refreshTitle": string,
   readonly "searchPlaceholder": string,
   readonly "searchTitle": string,
-  readonly "settings": string,
-  readonly "viewMode": string
+  readonly "settings": string
 };
   (_: "header.allBooks", __?: {}): string;
+  (_: "header.books", __?: {}): string;
+  (_: "header.catalogs", __?: {}): string;
   (_: "header.downloads", __?: {}): string;
   (_: "header.gridTitle", __?: {}): string;
   (_: "header.home", __?: {}): string;
@@ -327,34 +330,27 @@ declare namespace typed_i18n {
   (_: "header.searchPlaceholder", __?: {}): string;
   (_: "header.searchTitle", __?: {}): string;
   (_: "header.settings", __?: {}): string;
-  (_: "header.viewMode", __?: {}): string;
   (_: "library", __?: {}): {
   readonly "lcp": {
     readonly "hint": string,
     readonly "password": string,
     readonly "sentence": string,
-    readonly "urlHint": string,
-    readonly "whatIsLcp?": string,
-    readonly "whatIsLcpInfoDetails": string,
-    readonly "whatIsLcpInfoDetailsLink": string
+    readonly "submit": string,
+    readonly "urlHint": string
   }
 };
   (_: "library.lcp", __?: {}): {
   readonly "hint": string,
   readonly "password": string,
   readonly "sentence": string,
-  readonly "urlHint": string,
-  readonly "whatIsLcp?": string,
-  readonly "whatIsLcpInfoDetails": string,
-  readonly "whatIsLcpInfoDetailsLink": string
+  readonly "submit": string,
+  readonly "urlHint": string
 };
   (_: "library.lcp.hint", __?: {}): string;
   (_: "library.lcp.password", __?: {}): string;
   (_: "library.lcp.sentence", __?: {}): string;
+  (_: "library.lcp.submit", __?: {}): string;
   (_: "library.lcp.urlHint", __?: {}): string;
-  (_: "library.lcp.whatIsLcp?", __?: {}): string;
-  (_: "library.lcp.whatIsLcpInfoDetails", __?: {}): string;
-  (_: "library.lcp.whatIsLcpInfoDetailsLink", __?: {}): string;
   (_: "message", __?: {}): {
   readonly "download": { readonly "error": string },
   readonly "import": {
@@ -381,6 +377,7 @@ declare namespace typed_i18n {
     readonly "addButton": string,
     readonly "name": string,
     readonly "namePlaceholder": string,
+    readonly "title": string,
     readonly "url": string,
     readonly "urlPlaceholder": string
   },
@@ -420,12 +417,14 @@ declare namespace typed_i18n {
   readonly "addButton": string,
   readonly "name": string,
   readonly "namePlaceholder": string,
+  readonly "title": string,
   readonly "url": string,
   readonly "urlPlaceholder": string
 };
   (_: "opds.addForm.addButton", __?: {}): string;
   (_: "opds.addForm.name", __?: {}): string;
   (_: "opds.addForm.namePlaceholder", __?: {}): string;
+  (_: "opds.addForm.title", __?: {}): string;
   (_: "opds.addForm.url", __?: {}): string;
   (_: "opds.addForm.urlPlaceholder", __?: {}): string;
   (_: "opds.addFormApiapp", __?: {}): { readonly "title": string };
@@ -626,12 +625,11 @@ declare namespace typed_i18n {
   (_: "publication.title", __?: {}): string;
   (_: "publication.userKeyCheckInvalid", __?: {}): string;
   (_: "reader", __?: {}): {
-  readonly "annotations": {
-    readonly "addNote": string,
-    readonly "highlight": string
-  },
   readonly "divina": { readonly "mute": string, readonly "unmute": string },
-  readonly "fxl": { readonly "fit": string },
+  readonly "footerInfo": {
+    readonly "lessInfo": string,
+    readonly "moreInfo": string
+  },
   readonly "marks": {
     readonly "annotations": string,
     readonly "bookmarks": string,
@@ -639,7 +637,6 @@ declare namespace typed_i18n {
     readonly "edit": string,
     readonly "landmarks": string,
     readonly "search": string,
-    readonly "searchResult": string,
     readonly "toc": string
   },
   readonly "media-overlays": {
@@ -655,7 +652,6 @@ declare namespace typed_i18n {
     readonly "title": string
   },
   readonly "navigation": {
-    readonly "annotationTitle": string,
     readonly "backHomeTitle": string,
     readonly "bookmarkTitle": string,
     readonly "currentPage": string,
@@ -672,6 +668,8 @@ declare namespace typed_i18n {
     readonly "magnifyingGlassButton": string,
     readonly "openTableOfContentsTitle": string,
     readonly "pdfscalemode": string,
+    readonly "quitFullscreenTitle": string,
+    readonly "readBookTitle": string,
     readonly "settingsTitle": string
   },
   readonly "picker": {
@@ -690,11 +688,11 @@ declare namespace typed_i18n {
     readonly "column": {
       readonly "auto": string,
       readonly "one": string,
+      readonly "oneTitle": string,
       readonly "title": string,
-      readonly "two": string
+      readonly "two": string,
+      readonly "twoTitle": string
     },
-    readonly "customizeReader": string,
-    readonly "disabled": string,
     readonly "display": string,
     readonly "disposition": { readonly "title": string },
     readonly "font": string,
@@ -705,6 +703,8 @@ declare namespace typed_i18n {
     readonly "lineSpacing": string,
     readonly "margin": string,
     readonly "noFootnotes": string,
+    readonly "noRTLFlip": string,
+    readonly "noRuby": string,
     readonly "paginated": string,
     readonly "paraSpacing": string,
     readonly "pdfZoom": {
@@ -720,8 +720,12 @@ declare namespace typed_i18n {
       },
       readonly "title": string
     },
-    readonly "preview": string,
     readonly "reduceMotion": string,
+    readonly "save": {
+      readonly "apply": string,
+      readonly "reset": string,
+      readonly "title": string
+    },
     readonly "scrolled": string,
     readonly "spacing": string,
     readonly "text": string,
@@ -750,14 +754,12 @@ declare namespace typed_i18n {
     readonly "voice": string
   }
 };
-  (_: "reader.annotations", __?: {}): { readonly "addNote": string, readonly "highlight": string };
-  (_: "reader.annotations.addNote", __?: {}): string;
-  (_: "reader.annotations.highlight", __?: {}): string;
   (_: "reader.divina", __?: {}): { readonly "mute": string, readonly "unmute": string };
   (_: "reader.divina.mute", __?: {}): string;
   (_: "reader.divina.unmute", __?: {}): string;
-  (_: "reader.fxl", __?: {}): { readonly "fit": string };
-  (_: "reader.fxl.fit", __?: {}): string;
+  (_: "reader.footerInfo", __?: {}): { readonly "lessInfo": string, readonly "moreInfo": string };
+  (_: "reader.footerInfo.lessInfo", __?: {}): string;
+  (_: "reader.footerInfo.moreInfo", __?: {}): string;
   (_: "reader.marks", __?: {}): {
   readonly "annotations": string,
   readonly "bookmarks": string,
@@ -765,7 +767,6 @@ declare namespace typed_i18n {
   readonly "edit": string,
   readonly "landmarks": string,
   readonly "search": string,
-  readonly "searchResult": string,
   readonly "toc": string
 };
   (_: "reader.marks.annotations", __?: {}): string;
@@ -774,7 +775,6 @@ declare namespace typed_i18n {
   (_: "reader.marks.edit", __?: {}): string;
   (_: "reader.marks.landmarks", __?: {}): string;
   (_: "reader.marks.search", __?: {}): string;
-  (_: "reader.marks.searchResult", __?: {}): string;
   (_: "reader.marks.toc", __?: {}): string;
   (_: "reader.media-overlays", __?: {}): {
   readonly "activate": string,
@@ -799,7 +799,6 @@ declare namespace typed_i18n {
   (_: "reader.media-overlays.stop", __?: {}): string;
   (_: "reader.media-overlays.title", __?: {}): string;
   (_: "reader.navigation", __?: {}): {
-  readonly "annotationTitle": string,
   readonly "backHomeTitle": string,
   readonly "bookmarkTitle": string,
   readonly "currentPage": string,
@@ -816,9 +815,10 @@ declare namespace typed_i18n {
   readonly "magnifyingGlassButton": string,
   readonly "openTableOfContentsTitle": string,
   readonly "pdfscalemode": string,
+  readonly "quitFullscreenTitle": string,
+  readonly "readBookTitle": string,
   readonly "settingsTitle": string
 };
-  (_: "reader.navigation.annotationTitle", __?: {}): string;
   (_: "reader.navigation.backHomeTitle", __?: {}): string;
   (_: "reader.navigation.bookmarkTitle", __?: {}): string;
   (_: "reader.navigation.currentPage", __?: {}): string;
@@ -835,6 +835,8 @@ declare namespace typed_i18n {
   (_: "reader.navigation.magnifyingGlassButton", __?: {}): string;
   (_: "reader.navigation.openTableOfContentsTitle", __?: {}): string;
   (_: "reader.navigation.pdfscalemode", __?: {}): string;
+  (_: "reader.navigation.quitFullscreenTitle", __?: {}): string;
+  (_: "reader.navigation.readBookTitle", __?: {}): string;
   (_: "reader.navigation.settingsTitle", __?: {}): string;
   (_: "reader.picker", __?: {}): {
   readonly "annotationTitle": string,
@@ -868,11 +870,11 @@ declare namespace typed_i18n {
   readonly "column": {
     readonly "auto": string,
     readonly "one": string,
+    readonly "oneTitle": string,
     readonly "title": string,
-    readonly "two": string
+    readonly "two": string,
+    readonly "twoTitle": string
   },
-  readonly "customizeReader": string,
-  readonly "disabled": string,
   readonly "display": string,
   readonly "disposition": { readonly "title": string },
   readonly "font": string,
@@ -883,6 +885,8 @@ declare namespace typed_i18n {
   readonly "lineSpacing": string,
   readonly "margin": string,
   readonly "noFootnotes": string,
+  readonly "noRTLFlip": string,
+  readonly "noRuby": string,
   readonly "paginated": string,
   readonly "paraSpacing": string,
   readonly "pdfZoom": {
@@ -898,8 +902,12 @@ declare namespace typed_i18n {
     },
     readonly "title": string
   },
-  readonly "preview": string,
   readonly "reduceMotion": string,
+  readonly "save": {
+    readonly "apply": string,
+    readonly "reset": string,
+    readonly "title": string
+  },
   readonly "scrolled": string,
   readonly "spacing": string,
   readonly "text": string,
@@ -916,15 +924,17 @@ declare namespace typed_i18n {
   (_: "reader.settings.column", __?: {}): {
   readonly "auto": string,
   readonly "one": string,
+  readonly "oneTitle": string,
   readonly "title": string,
-  readonly "two": string
+  readonly "two": string,
+  readonly "twoTitle": string
 };
   (_: "reader.settings.column.auto", __?: {}): string;
   (_: "reader.settings.column.one", __?: {}): string;
+  (_: "reader.settings.column.oneTitle", __?: {}): string;
   (_: "reader.settings.column.title", __?: {}): string;
   (_: "reader.settings.column.two", __?: {}): string;
-  (_: "reader.settings.customizeReader", __?: {}): string;
-  (_: "reader.settings.disabled", __?: {}): string;
+  (_: "reader.settings.column.twoTitle", __?: {}): string;
   (_: "reader.settings.display", __?: {}): string;
   (_: "reader.settings.disposition", __?: {}): { readonly "title": string };
   (_: "reader.settings.disposition.title", __?: {}): string;
@@ -936,6 +946,8 @@ declare namespace typed_i18n {
   (_: "reader.settings.lineSpacing", __?: {}): string;
   (_: "reader.settings.margin", __?: {}): string;
   (_: "reader.settings.noFootnotes", __?: {}): string;
+  (_: "reader.settings.noRTLFlip", __?: {}): string;
+  (_: "reader.settings.noRuby", __?: {}): string;
   (_: "reader.settings.paginated", __?: {}): string;
   (_: "reader.settings.paraSpacing", __?: {}): string;
   (_: "reader.settings.pdfZoom", __?: {}): {
@@ -970,8 +982,15 @@ declare namespace typed_i18n {
   (_: "reader.settings.pdfZoom.name.fit", __?: {}): string;
   (_: "reader.settings.pdfZoom.name.width", __?: {}): string;
   (_: "reader.settings.pdfZoom.title", __?: {}): string;
-  (_: "reader.settings.preview", __?: {}): string;
   (_: "reader.settings.reduceMotion", __?: {}): string;
+  (_: "reader.settings.save", __?: {}): {
+  readonly "apply": string,
+  readonly "reset": string,
+  readonly "title": string
+};
+  (_: "reader.settings.save.apply", __?: {}): string;
+  (_: "reader.settings.save.reset", __?: {}): string;
+  (_: "reader.settings.save.title", __?: {}): string;
   (_: "reader.settings.scrolled", __?: {}): string;
   (_: "reader.settings.spacing", __?: {}): string;
   (_: "reader.settings.text", __?: {}): string;
@@ -1025,30 +1044,20 @@ declare namespace typed_i18n {
   readonly "keyboard": {
     readonly "advancedMenu": string,
     readonly "cancel": string,
-    readonly "disclaimer": string,
+    readonly "edit": string,
     readonly "editUserJson": string,
+    readonly "hide": string,
     readonly "keyboardShortcuts": string,
     readonly "loadUserJson": string,
     readonly "resetDefaults": string,
-    readonly "save": string
+    readonly "save": string,
+    readonly "show": string
   },
   readonly "language": { readonly "languageChoice": string },
   readonly "session": {
     readonly "no": string,
     readonly "title": string,
     readonly "yes": string
-  },
-  readonly "tabs": {
-    readonly "appearance": string,
-    readonly "general": string,
-    readonly "keyboardShortcuts": string
-  },
-  readonly "theme": {
-    readonly "auto": string,
-    readonly "dark": string,
-    readonly "description": string,
-    readonly "light": string,
-    readonly "title": string
   }
 };
   (_: "settings.auth", __?: {}): { readonly "wipeData": string };
@@ -1056,47 +1065,31 @@ declare namespace typed_i18n {
   (_: "settings.keyboard", __?: {}): {
   readonly "advancedMenu": string,
   readonly "cancel": string,
-  readonly "disclaimer": string,
+  readonly "edit": string,
   readonly "editUserJson": string,
+  readonly "hide": string,
   readonly "keyboardShortcuts": string,
   readonly "loadUserJson": string,
   readonly "resetDefaults": string,
-  readonly "save": string
+  readonly "save": string,
+  readonly "show": string
 };
   (_: "settings.keyboard.advancedMenu", __?: {}): string;
   (_: "settings.keyboard.cancel", __?: {}): string;
-  (_: "settings.keyboard.disclaimer", __?: {}): string;
+  (_: "settings.keyboard.edit", __?: {}): string;
   (_: "settings.keyboard.editUserJson", __?: {}): string;
+  (_: "settings.keyboard.hide", __?: {}): string;
   (_: "settings.keyboard.keyboardShortcuts", __?: {}): string;
   (_: "settings.keyboard.loadUserJson", __?: {}): string;
   (_: "settings.keyboard.resetDefaults", __?: {}): string;
   (_: "settings.keyboard.save", __?: {}): string;
+  (_: "settings.keyboard.show", __?: {}): string;
   (_: "settings.language", __?: {}): { readonly "languageChoice": string };
   (_: "settings.language.languageChoice", __?: {}): string;
   (_: "settings.session", __?: {}): { readonly "no": string, readonly "title": string, readonly "yes": string };
   (_: "settings.session.no", __?: {}): string;
   (_: "settings.session.title", __?: {}): string;
-  (_: "settings.session.yes", __?: {}): string;
-  (_: "settings.tabs", __?: {}): {
-  readonly "appearance": string,
-  readonly "general": string,
-  readonly "keyboardShortcuts": string
-};
-  (_: "settings.tabs.appearance", __?: {}): string;
-  (_: "settings.tabs.general", __?: {}): string;
-  (_: "settings.tabs.keyboardShortcuts", __?: {}): string;
-  (_: "settings.theme", __?: {}): {
-  readonly "auto": string,
-  readonly "dark": string,
-  readonly "description": string,
-  readonly "light": string,
-  readonly "title": string
-};
-  (_: "settings.theme.auto", __?: {}): string;
-  (_: "settings.theme.dark", __?: {}): string;
-  (_: "settings.theme.description", __?: {}): string;
-  (_: "settings.theme.light", __?: {}): string;
-  (_: "settings.theme.title", __?: {}): string
+  (_: "settings.session.yes", __?: {}): string
 }
 }
 export = typed_i18n;

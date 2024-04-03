@@ -10,10 +10,10 @@ import { connect } from "react-redux";
 import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { readerLocalActionBookmarks } from "../redux/actions";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import { TextArea } from "react-aria-components";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import { readerActions } from "readium-desktop/common/redux/actions";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     close: () => void;
@@ -99,7 +99,7 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
 
     return {
         updateBookmark: (bookmark: IBookmarkState) => {
-            dispatch(readerLocalActionBookmarks.update.build(bookmark));
+            dispatch(readerActions.bookmark.update.build(bookmark));
         },
     };
 };

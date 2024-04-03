@@ -18,7 +18,9 @@ import { all, call, put } from "redux-saga/effects";
 import { select as selectTyped } from "typed-redux-saga/macro";
 import { readerLocalActionHighlights, readerLocalActionLocatorHrefChanged } from "../../actions";
 import {
-    getHightlightClickChannel, mountHighlight, THighlightClick, unmountHightlight,
+    THighlightClick,
+    getHightlightClickChannel,
+    mountHighlight, unmountHightlight,
 } from "./mounter";
 // import { handleLinkLocator } from "@r2-navigator-js/electron/renderer";
 // import debounce from "debounce";
@@ -117,9 +119,9 @@ function* hrefChanged(action: readerLocalActionLocatorHrefChanged.TAction) {
     }
 }
 
-// TODO HIGHLIGHTS-MARGIN: really naive implementation, doesn't survive in application state (good enough for early testing)
-// let _drawMargin: boolean | string[] = false;
-// const GROUPS = ["search", "annotations"];
+// // TODO HIGHLIGHTS-MARGIN: really naive implementation, doesn't survive in application state (good enough for early testing)
+// // let _drawMargin: boolean | string[] = false;
+// // const GROUPS = ["search", "annotations"];
 
 function* dispatchClick(data: THighlightClick) {
 
@@ -166,6 +168,14 @@ function* dispatchClick(data: THighlightClick) {
     //       }
     //   }
 
+    // Not used in annotation
+    // if (ref.group === "annotation") {
+    //     return ;
+
+    //     // NOT USED FOR ANNOTATION JUST SEARCH!
+    // }
+    //
+
     const mounterStateMap = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.mounter);
     if (!mounterStateMap?.length) {
         debug(`dispatchClick MOUNTER STATE EMPTY -- mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
@@ -198,6 +208,7 @@ function* dispatchClick(data: THighlightClick) {
 
     debug(`dispatchClick CLICK ACTION ... -- uuid: [${uuid}] handlerState: [${JSON.stringify(handlerState, null, 4)}]`);
 
+    // used for search not annotation
     yield put(readerLocalActionHighlights.click.build(handlerState));
 }
 

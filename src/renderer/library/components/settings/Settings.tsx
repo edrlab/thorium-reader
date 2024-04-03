@@ -52,7 +52,7 @@ const LanguageSettings: React.FC<{}> = () => {
     const currentLanguageISO = locale as keyof typeof AvailableLanguages;
     const currentLanguageString = AvailableLanguages[currentLanguageISO];
     const dispatch = useDispatch();
-    const [options] = React.useState(() => Object.entries(AvailableLanguages).map(([k,v], i) => ({id: i, name: v, iso: k})));
+    const [options] = React.useState(() => Object.entries(AvailableLanguages).sort().map(([k,v], i) => ({id: i, name: v, iso: k})));
     const setLang = (localeSelected: React.Key) => {
 
         if (typeof localeSelected !== "number") return;
@@ -128,13 +128,26 @@ const Themes = () => {
     );
 };
 
+const TabHeader = (props: React.PropsWithChildren<{title: string}>) => {
+    return (
+        <div key="modal-header" className={stylesSettings.close_button_div}>
+            <TabTitle title={props.title} />
+            <Dialog.Close asChild>
+                <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                    <SVG ariaHidden={true} svg={QuitIcon} />
+                </button>
+            </Dialog.Close>
+        </div>
+    );
+};
+
 
 export const Settings: React.FC<ISettingsProps> = () => {
     const [__] = useTranslator();
 
     return <Dialog.Root>
         <Dialog.Trigger asChild>
-        <button title={__("header.settings")} style={{minWidth: "unset"}}>
+        <button title={__("header.settings")}>
             <SVG ariaHidden svg={GearIcon} />
             <h3>{__("header.settings")}</h3>
         </button>
@@ -157,37 +170,38 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <h4>{__("settings.tabs.keyboardShortcuts")}</h4>
                         </Tabs.Trigger>
                     </Tabs.List>
-                    <div className={stylesSettings.settings_content}>
+                    <div className={stylesSettings.settings_content} style={{marginTop: "70px"}}>
                         <Tabs.Content value="tab1" title="General" tabIndex={-1}>
-                            <TabTitle title={__("settings.tabs.general")} />
+                            <TabHeader title={__("settings.tabs.general")} />
                             <div className={stylesSettings.settings_tab}>
                                 <LanguageSettings />
                                 <ConnectionSettings />
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab2" tabIndex={-1}>
-                            <TabTitle title={__("settings.tabs.appearance")} />
+                            <TabHeader title={__("settings.tabs.appearance")} />
                             <div className={stylesSettings.settings_tab}>
                                 <Themes />
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab4" tabIndex={-1}>
-                            <TabTitle title={__("settings.tabs.keyboardShortcuts")}>
+                            <TabHeader title={__("settings.tabs.keyboardShortcuts")}>
                                 <AdvancedTrigger />
-                            </TabTitle>
+                            </TabHeader>
                             <div className={stylesSettings.settings_tab}>
                                 <KeyboardSettings />
                             </div>
                         </Tabs.Content>
                     </div>
                 </Tabs.Root>
-                <div className={stylesSettings.close_button_div}>
+
+                {/* <div className={stylesSettings.close_button_div}>
                     <Dialog.Close asChild>
                         <button className={stylesButtons.button_transparency_icon} aria-label="Close">
                             <SVG ariaHidden={true} svg={QuitIcon} />
                         </button>
                     </Dialog.Close>
-                </div>
+                </div> */}
             </Dialog.Content>
         </Dialog.Portal>
     </Dialog.Root>;

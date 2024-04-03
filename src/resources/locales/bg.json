@@ -43,6 +43,7 @@
     },
     "catalog": {
         "about": {
+            "button": "Още информация",
             "title": "Относно {{- appName}}"
         },
         "addBookToLib": "Добави",
@@ -106,7 +107,6 @@
         "readBook": "Прочети",
         "released": "Публикувано на",
         "sort": "Сортирай по",
-        "tag": "",
         "tagCount": "Брой маркери",
         "tags": "Маркери",
         "update": "Редактирай"
@@ -131,6 +131,8 @@
     },
     "header": {
         "allBooks": "Всички книги",
+        "books": "Моите книги",
+        "catalogs": "Каталози",
         "downloads": "Сваляния",
         "gridTitle": "Мрежов изглед",
         "home": "Меню на лавицата",
@@ -140,18 +142,15 @@
         "refreshTitle": "презареди",
         "searchPlaceholder": "Търси",
         "searchTitle": "Започни търсене",
-        "settings": "Настройки",
-        "viewMode": ""
+        "settings": "Настройки"
     },
     "library": {
         "lcp": {
             "hint": "(Подсказка: {{- hint}})",
             "password": "Парола",
             "sentence": "Тази публикация се нуждае от LCP парола, за да бъде отворена: ",
-            "urlHint": "Забравили сте паролата си? Намерете помощ тук",
-            "whatIsLcp?": "",
-            "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": ""
+            "submit": "Изпрати",
+            "urlHint": "Забравили сте паролата си? Намерете помощ тук"
         }
     },
     "message": {
@@ -172,6 +171,7 @@
             "addButton": "Добави",
             "name": "Име:",
             "namePlaceholder": "Име",
+            "title": "Добавяне на OPDS канал",
             "url": "Връзка:",
             "urlPlaceholder": "Връзка"
         },
@@ -274,16 +274,13 @@
         "userKeyCheckInvalid": "Паролата е невалидна"
     },
     "reader": {
-        "annotations": {
-            "addNote": "",
-            "highlight": ""
-        },
         "divina": {
             "mute": "заглуши звука",
             "unmute": "включване на звука"
         },
-        "fxl": {
-            "fit": ""
+        "footerInfo": {
+            "lessInfo": "по-малко информация",
+            "moreInfo": "повече информация"
         },
         "marks": {
             "annotations": "Анотации",
@@ -292,7 +289,6 @@
             "edit": "Edit",
             "landmarks": "Landmarks",
             "search": "Търси",
-            "searchResult": "",
             "toc": "Съдържание"
         },
         "media-overlays": {
@@ -308,7 +304,6 @@
             "title": "Четене на глас"
         },
         "navigation": {
-            "annotationTitle": "",
             "backHomeTitle": "обратно към лавицата с книги",
             "bookmarkTitle": "отметка",
             "currentPage": "Текуща страница: {{- current}}",
@@ -325,6 +320,8 @@
             "magnifyingGlassButton": "търси в публикациите",
             "openTableOfContentsTitle": "навигация",
             "pdfscalemode": "Побиране в екрана или в ширината му",
+            "quitFullscreenTitle": "излезте от режим на цял екран",
+            "readBookTitle": "започнете да четете книгата",
             "settingsTitle": "настройки"
         },
         "picker": {
@@ -343,11 +340,11 @@
             "column": {
                 "auto": "Автоматично",
                 "one": "1 кол.",
+                "oneTitle": "една колона",
                 "title": "Колони",
-                "two": "2 кол."
+                "two": "2 кол.",
+                "twoTitle": "две колони"
             },
-            "customizeReader": "",
-            "disabled": "",
             "display": "Екран",
             "disposition": {
                 "title": "Оформление"
@@ -360,6 +357,8 @@
             "lineSpacing": "Разстояние между редовете",
             "margin": "Отстъпи",
             "noFootnotes": "Деактивирайте бележките под линия",
+            "noRTLFlip": "",
+            "noRuby": "",
             "paginated": "Страниран",
             "paraSpacing": "Разстояние между параграфите",
             "pdfZoom": {
@@ -375,8 +374,12 @@
                 },
                 "title": "Мащабиране"
             },
-            "preview": "",
             "reduceMotion": "Намали движението",
+            "save": {
+                "apply": "запиши",
+                "reset": "нулирай",
+                "title": "Конфигурация"
+            },
             "scrolled": "Скролируем",
             "spacing": "Интервал",
             "text": "Текст",
@@ -417,12 +420,14 @@
         "keyboard": {
             "advancedMenu": "Меню",
             "cancel": "Отказ",
-            "disclaimer": "",
+            "edit": "Редактирай",
             "editUserJson": "Редактиране на потребителски файл...",
+            "hide": "Скрий",
             "keyboardShortcuts": "Бързи клавиши",
             "loadUserJson": "Зареждане от потребителски файл",
             "resetDefaults": "Нулирай (Зареди по подразбиране)",
-            "save": "Запис"
+            "save": "Запис",
+            "show": "Покажи"
         },
         "language": {
             "languageChoice": "Избор на език"
@@ -431,18 +436,6 @@
             "no": "Деактивирай",
             "title": "Запиши сесията",
             "yes": "Активирай"
-        },
-        "tabs": {
-            "appearance": "",
-            "general": "",
-            "keyboardShortcuts": ""
-        },
-        "theme": {
-            "auto": "",
-            "dark": "",
-            "description": "",
-            "light": "",
-            "title": ""
         }
     }
 }

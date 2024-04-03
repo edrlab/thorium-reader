@@ -55,6 +55,7 @@ class Slider extends React.Component<IProps, IState> {
 
     public componentDidMount() {
         this.setState({refreshVisible: true});
+        window.addEventListener("resize", this.update);
     }
 
     public componentWillUnmount() {

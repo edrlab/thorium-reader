@@ -11,6 +11,8 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
+import * as SaveIcon from "readium-desktop/renderer/assets/icons/SaveAs-icon.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -37,7 +39,8 @@ class PublicationExportButton extends React.Component<IProps, undefined> {
             <button
                 onClick={this.onExport}
             >
-                { __("catalog.export")}
+                <SVG ariaHidden svg={SaveIcon} />
+                <p>{ __("catalog.export")}</p>
             </button>
         );
     }

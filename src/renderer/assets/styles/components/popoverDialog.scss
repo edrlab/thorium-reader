@@ -15,7 +15,8 @@
   z-index: 100;
   display: flex;
   flex-direction: column;
-  overflow: hidden auto;
+
+  // overflow: hidden auto;
   align-content: flex-start;
   color: var(--color-primary);
   position: fixed;
@@ -40,7 +41,7 @@
 
 .popover_dialog_reader {
   width: 350px;
-  height: calc(100dvh - 110px);
+  height: calc(100dvh - 94px);
   display: flex;
   margin-top: 50px;
   flex-direction: column;
@@ -51,7 +52,7 @@
   overflow: hidden;
 
   .settings_container {
-    height: calc(100dvh - 165px);
+    height: calc(100dvh - 235px);
     padding: 0;
     overflow: hidden auto;
 
@@ -70,16 +71,19 @@
   }
 
   .react_aria_ComboBox {
-    margin: 0;
-    padding: 0;
+    // margin: 0;
+    // padding: 0;
     padding-bottom: 15px;
 
     .my_combobox_container {
       width: fit-content;
-      height: 27px;
+      min-width: 110px;
+      height: 28px;
       background-color: var(--color-light-blue);
       color: var(--color-blue);
       border-color: var(--color-blue) !important;
+      display: flex;
+      align-items: center;
 
       > button {
         color: var(--color-blue);
@@ -117,7 +121,9 @@
   justify-content: space-between;
   padding: 10px;
 
-  
+  .my_combobox_container button {
+    min-width: 110px;
+  }  
 
   &_controls {
     width: 135px;
@@ -229,25 +235,61 @@
     margin: 5px 0;
     background-color: var(--color-light-grey);
   }
+}
 
-  .search_navigation {
+.navigation_container {
+  display: flex;
+  align-items: end;
+  justify-content: end;
+  gap: 10px;
+  margin-bottom: 10px;
+
+  .pages {
     display: flex;
-    align-items: center;
-    justify-content: end;
-
-    button svg {
-      width: 20px;
-      fill: var(--color-blue);
-      color: var(--color-blue);
-    }
-
-    span {
-      padding: 5px;
-      border: 1px solid black;
-      border-radius: 6px;
-      margin: 0 5px;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    
+    .react_aria_ComboBox {
+      margin: 0;
+      padding: 0;
     }
   }
+
+  button {
+    transition: 100ms;
+  }
+
+  button svg {
+    width: 20px;
+    fill: var(--color-blue);
+    color: var(--color-blue);
+  }
+
+  button:disabled {
+    visibility: hidden;
+  }
+
+  .my_combobox_container {
+    width: fit-content!important;
+    padding-right: 0!important;
+
+    button {
+      width: fit-content;
+      padding: 0 10px;
+      
+      svg {
+        margin-left: unset;
+      }
+    }
+  }
+
+  // span {
+  //   padding: 5px;
+  //   border: 1px solid black;
+  //   border-radius: 6px;
+  //   margin: 0 5px;
+  // }
 }
 
 .bookmarks_line {
@@ -258,12 +300,20 @@
   font-size: 1rem;
 
   .bookmark_textArea {
-    font-family:  Nunito, sans-serif;
-    width: 100%;
-    max-width: 100%;
-    height: 100px;
-    max-height: 100px;
     margin: 10px 0;
+    width: 430px;
+    min-width: 430px;
+    // height: 100px;
+    // min-height: 100px;
+    max-width: 430px;
+    // max-height: 100px;
+    border: 1px solid rgb(118 118 118);
+    border-radius: 3px;
+    font-family: Nunito, sans-serif;
+
+    &:focus {
+      border: 2px solid var(--color-blue);
+    }
   }
 
   .bookmark_name {
@@ -283,14 +333,21 @@
     height: fit-content;
     padding: 0 10px;
 
-    @media (prefers-color-scheme: dark) {
-      background-color: #2D2D2D;
+    // @media (prefers-color-scheme: dark) {
+    //   background-color: #2D2D2D;
+    // }
+
+    .button_secondary_blue, .button_primary_blue {
+      min-width: unset;
+      width: fit-content;
+      height: 25px;
     }
 
     .bookmark_actions {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-top: 10px;
 
       > div {
         display: inherit;
@@ -302,14 +359,25 @@
         }
 
         svg {
-          width: 20px;
-          height: 20px;
+          width: 16px;
+          height: 16px;
+          padding: 5px;
         }
       }
 
       &_buttons svg {
         fill: var(--color-blue);
         color: var(--color-blue);
+      }
+
+      button {
+        height: unset;
+
+        &:focus {
+          border: 1px solid var(--color-blue);
+          border-radius: 5px;
+          background-color: var(--color-light-blue);
+        }
       }
     }
   }
@@ -345,6 +413,7 @@
     display: inline-block;
     vertical-align: top;
     margin-top: 5px;
+    font-family: Nunito, sans-serif;
   }
 }
 
@@ -422,8 +491,9 @@
       border-radius: 6px;
       display: flex;
       flex-wrap: nowrap;
-      padding: 0 5px;
+      padding: 3px 5px;
       text-wrap: nowrap;
+      box-sizing: content-box;
 
       svg {
         width: 15px;
@@ -448,6 +518,8 @@
   width: 100%;
   height: 100%;
   padding: 0;
+  background-color: inherit;
+  color: inherit;
 
   &:has(.react_aria_Input[data-focused]) {
   outline: none!important;
@@ -468,111 +540,6 @@
 }
 
 .react_aria_ComboBox [role="group"]:focus-within {
-  outline: blue solid 2px !important;
+  outline: var(--color-blue) solid 2px !important;
   outline-offset: -2px;
-}
-
-.annotations_line {
-  width: calc(100% - 10px);
-  position: relative;
-  text-align: left;
-  padding: 20px 0;
-  font-size: 1rem;
-
-  .annotation_name {
-    text-align: left;
-    background-color: var(--color-light-grey);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4;
-    margin: 0;
-    padding: 8px;
-    padding-bottom: 0;
-    border-bottom: 8px solid var(--color-light-grey);
-  }
-
-  .update_form input {
-    width: 100%;
-    border-radius: 6px;
-  }
-
-  .annotation_infos {
-    width: 100%;
-    display: flex;
-    border-left: 2px solid var(--color-blue);
-    height: fit-content;
-    padding: 0 10px;
-
-    @media (prefers-color-scheme: dark) {
-      background-color: #2D2D2D;
-    }
-
-    .annotation_actions {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      >div {
-        display: inherit;
-        align-items: center;
-        gap: 10px;
-
-        >div {
-          display: flex;
-          gap: 5px;
-          align-items: center;
-        }
-
-        p {
-          margin: 0;
-        }
-
-        svg {
-          width: 20px;
-          height: 20px;
-        }
-      }
-
-      &_buttons svg {
-        fill: var(--color-blue);
-        color: var(--color-blue);
-      }
-    }
-  }
-
-  & > button {
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    padding: 0;
-
-    & svg {
-      width: 24px;
-    }
-  }
-
-  & img {
-    width: 30px;
-    height: 30px;
-    display: inline-block;
-    vertical-align: top;
-  }
-
-  & .chapter_marker {
-    vertical-align: top;
-    position: relative;
-    display: inline-block;
-    flex: 1;
-    font-size: 0.9rem;
-    margin-right: 0.5rem;
-  }
-
-  & span {
-    display: inline-block;
-    vertical-align: top;
-    margin-top: 5px;
-  }
 }

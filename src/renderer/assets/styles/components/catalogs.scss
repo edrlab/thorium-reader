@@ -11,6 +11,10 @@
     width: 100%;
     padding: 0;
 
+    @media screen and (width <= 800px) {
+        gap: 40px;
+    }
+
     .catalog_container {
         width: 260px;
         height: 175px;
@@ -90,16 +94,17 @@
         }
     }
 
-    .button_edit {
+    .button_edit, .button_delete {
         position: absolute;
         bottom: 10px;
-        right: 45px;
         color: var(--color-blue);
         transition: 200ms ease-in-out;
         border: 1px solid transparent;
         border-radius: 4px;
         height: 18px;
         width: 18px;
+        padding: 5px;
+        box-sizing: content-box;
 
         &:hover {
             border: 1px solid var(--color-blue);
@@ -107,22 +112,14 @@
         }
     }
 
-    .button_delete {
-        position: absolute;
-        bottom: 10px;
-        right: 15px;
-        fill: var(--color-blue);
-        color: var(--color-blue);
-        transition: 200ms ease-in-out;
-        border: 1px solid transparent;
-        border-radius: 4px;
-        height: 18px;
-        width: 18px;
+    .button_edit {
+        right: 45px;
+    }
 
-        &:hover {
-            border: 1px solid var(--color-blue);
-            background-color: var(--color-light-blue);
-        }
+    .button_delete {
+        right: 15px;
+        height: 16px;
+        width: 16px;
     }
 }
 
@@ -179,6 +176,31 @@
     }
 }
 
+.col_filter .entryList_ul {
+    gap: unset;
+
+    .entryList_item {
+        height: 35px;
+        border-color: transparent;
+
+        a {
+            justify-content: unset;
+
+            &:hover {
+                background-color: unset;
+            }
+        }
+
+        &::after {
+            border: none;
+        }
+        
+        &:hover {
+            background-color: var(--color-light-blue)!important;
+        }
+    }
+}
+
 .catalog_infos_text {
     margin-bottom: 30px;
     font-size: 14px;
@@ -211,26 +233,32 @@
 
     @media screen and (width <= 1024px) {
         flex-direction: column;
-        align-items: start;
+        align-items: end;
 
         .breadcrumb {
             width: 100%;
-            padding-bottom: 10px;
+            padding-bottom: 20px;
+        }
+
+        form[role="search"] {
+            width: 290px!important;
         }
     }
 }
 
 .numberOfItems {
-    position: absolute;
+
+    // position: absolute;
     top: 5px;
     right: 5px;
     font-size: 12px;
     font-weight: 400;
-    margin-left: 2px;
+    margin-left: 5px;
 }
 
 .noPublication {
-    width: 100%;
+    
+    // width: 100%;
     border: 1px solid var(--color-blue);
     background-color: var(--color-light-blue);
     font-size: 16px;
@@ -253,6 +281,7 @@
     margin-top: 0;
     margin-bottom: 0.4em;
     position: absolute;
+    padding-right: 25px;
 
     .loader {
         margin: 20%;

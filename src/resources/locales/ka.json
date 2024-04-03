@@ -43,6 +43,7 @@
     },
     "catalog": {
         "about": {
+            "button": "მეტი ინფორმაცია",
             "title": "თორიუმის შესახებ"
         },
         "addBookToLib": "შემოტანა",
@@ -106,7 +107,6 @@
         "readBook": "წაკითხვა",
         "released": "გამოცემის თარიღი",
         "sort": "დალაგება",
-        "tag": "",
         "tagCount": "იარლიყების რაოდენობა",
         "tags": "იარლიყები",
         "update": ""
@@ -131,6 +131,8 @@
     },
     "header": {
         "allBooks": "ყველა წიგნი",
+        "books": "ჩემი წიგნები",
+        "catalogs": "კატალოგები",
         "downloads": "გადმოტვირთვები",
         "gridTitle": "ბადისებრი ხედი",
         "home": "წიგნების კარადის მენიუ",
@@ -140,18 +142,15 @@
         "refreshTitle": "გადატვირთვა",
         "searchPlaceholder": "ძიება",
         "searchTitle": "ძიების დაწყება",
-        "settings": "პარამეტრები",
-        "viewMode": ""
+        "settings": "პარამეტრები"
     },
     "library": {
         "lcp": {
             "hint": "(მინიშნება: {{- hint}})",
             "password": "კოდური ფრაზა",
             "sentence": "ეს პუბლიკაცია საჭიროებს LCP კოდურ ფრაზას გასახსნელად: ",
-            "urlHint": "დაგავიწყდა კოდური ფრაზა? აქ მოიძიე დახმარება",
-            "whatIsLcp?": "",
-            "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": ""
+            "submit": "წარდგენა",
+            "urlHint": "დაგავიწყდა კოდური ფრაზა? აქ მოიძიე დახმარება"
         }
     },
     "message": {
@@ -172,6 +171,7 @@
             "addButton": "დამატება",
             "name": "სახელწოდება:",
             "namePlaceholder": "დასახელება",
+            "title": "დაამატე OPDS წყარო",
             "url": "მისამართი:",
             "urlPlaceholder": "ბმული"
         },
@@ -274,16 +274,13 @@
         "userKeyCheckInvalid": "კოდური ფრაზა არასწორია"
     },
     "reader": {
-        "annotations": {
-            "addNote": "",
-            "highlight": ""
-        },
         "divina": {
             "mute": "გაჩუმება",
             "unmute": "ხმის ჩართვა"
         },
-        "fxl": {
-            "fit": ""
+        "footerInfo": {
+            "lessInfo": "ნაკლები ინფორმაცია",
+            "moreInfo": "მეტი ინფორმაცია"
         },
         "marks": {
             "annotations": "ანოტაციები",
@@ -292,7 +289,6 @@
             "edit": "გადაკეთება",
             "landmarks": "ორიენტირები",
             "search": "ძიება",
-            "searchResult": "",
             "toc": "სარჩევი"
         },
         "media-overlays": {
@@ -308,7 +304,6 @@
             "title": "ტექსტის მეტყველება"
         },
         "navigation": {
-            "annotationTitle": "",
             "backHomeTitle": "წიგნების თაროში დაბრუნება",
             "bookmarkTitle": "სანიშნე",
             "currentPage": "წინა გვერდი: {{- current}}",
@@ -325,6 +320,8 @@
             "magnifyingGlassButton": "პუბლიკაციაში ძიება",
             "openTableOfContentsTitle": "ნავიგაცია",
             "pdfscalemode": "გვერდზე მორგება ან სიგანე",
+            "quitFullscreenTitle": "სრული ეკრანის გამორთვა",
+            "readBookTitle": "წიგნის კითხვის დაწყება",
             "settingsTitle": "პარამეტრები"
         },
         "picker": {
@@ -343,11 +340,11 @@
             "column": {
                 "auto": "ავტომატური",
                 "one": "1 სვეტი",
+                "oneTitle": "ერთი სვეტი",
                 "title": "სვეტები",
-                "two": "2 სვეტი"
+                "two": "2 სვეტი",
+                "twoTitle": "ორი სვეტი"
             },
-            "customizeReader": "",
-            "disabled": "",
             "display": "გამოსახულება",
             "disposition": {
                 "title": "განლაგება"
@@ -360,6 +357,8 @@
             "lineSpacing": "ხაზების დაშორება",
             "margin": "მინდორი",
             "noFootnotes": "სქოლიოს გათიშვა",
+            "noRTLFlip": "",
+            "noRuby": "",
             "paginated": "დანომრილი",
             "paraSpacing": "პარაგრაფების დაშორება",
             "pdfZoom": {
@@ -375,8 +374,12 @@
                 },
                 "title": "მოახლოება"
             },
-            "preview": "",
             "reduceMotion": "მოძრაობის შემცირება",
+            "save": {
+                "apply": "შენახვა",
+                "reset": "გადაყენება",
+                "title": "კონფიგურაცია"
+            },
             "scrolled": "ბრუნვადი",
             "spacing": "დაშორება",
             "text": "ტექსტი",
@@ -417,12 +420,14 @@
         "keyboard": {
             "advancedMenu": "მენიუ",
             "cancel": "გადაფიქრება",
-            "disclaimer": "",
+            "edit": "შერჩევა",
             "editUserJson": "მომხმარებლის ფაილის რედაქტირება...",
+            "hide": "დამალვა",
             "keyboardShortcuts": "კლავიატურით სწრაფი გამოძახება",
             "loadUserJson": "მომხმარებლის ფაილიდან ჩატვირთვა",
             "resetDefaults": "გადაყენება (ნაგულისხმევის თავიდან ჩატვირთვა)",
-            "save": "შენახვა"
+            "save": "შენახვა",
+            "show": "ჩვენება"
         },
         "language": {
             "languageChoice": "ენის არჩევანი"
@@ -431,18 +436,6 @@
             "no": "გამორთულია",
             "title": "სესიის შენახვა",
             "yes": "ჩართულია"
-        },
-        "tabs": {
-            "appearance": "",
-            "general": "",
-            "keyboardShortcuts": ""
-        },
-        "theme": {
-            "auto": "",
-            "dark": "",
-            "description": "",
-            "light": "",
-            "title": ""
         }
     }
 }

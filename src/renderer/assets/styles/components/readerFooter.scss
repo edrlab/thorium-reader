@@ -9,12 +9,10 @@
 .navigation_arrow {
     &_left {
         left: 10px;
-        height: 50px;
     }
 
     &_right {
         right: 10px;
-        height: 50px;
     }
 
     &_docked_left {
@@ -28,6 +26,7 @@
 
 .arrows button {
     width: 50px;
+    height: 50px;
     position: absolute;
     top: calc(50dvh - 100px);
     z-index: 10;
@@ -73,9 +72,13 @@
     }
 
     .history {
-        float: left;
-        margin-top: 1.5rem;
-        margin-left: 1rem;
+        // float: left;
+        // margin-top: 1.5rem;
+        // margin-left: 1rem;
+
+        position: absolute;
+        bottom: 7px;
+        left: 10px;
 
         & button {
         display: inline;
@@ -91,10 +94,10 @@
         svg {
             color: var(--color-blue);
 
-            @media (prefers-color-scheme: dark) {
-                fill: #FEFEFE;
-                color: #FEFEFE;
-            }
+            // @media (prefers-color-scheme: dark) {
+            //     fill: #FEFEFE;
+            //     color: #FEFEFE;
+            // }
         }
 
         &.disabled {
@@ -134,7 +137,8 @@
     & .track_reading_wrapper {
         padding: 1rem 5rem 1rem 8rem;
         bottom: 0;
-        margin-top: 1rem;
+        
+        // margin-top: 1rem;
         color: var(--color-primary);
         background-color: var(--color-secondary);
     }
@@ -282,4 +286,16 @@ box-shadow: 0 3px 2px 0 var(--color-medium-grey);
     font-size: 0.8rem;
     padding: 0 5px;
 }
+}
+
+.finishedIcon {
+    position: absolute;
+    right: 30px;
+    bottom: 10px;
+    width: 25px;
+
+    svg {
+        fill: #1BAF01;
+        color: #1BAF01;
+    }
 }

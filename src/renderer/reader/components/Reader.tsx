@@ -73,7 +73,7 @@ import {
     readiumCssUpdate, setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
     setReadingLocationSaver, ttsClickEnable, ttsListen, ttsNext, ttsOverlayEnable, ttsPause,
     ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
-    ttsStop, ttsVoice,
+    ttsStop, ttsVoice, highlightsClickListen,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
@@ -81,7 +81,7 @@ import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 import { TToc } from "../pdf/common/pdfReader.type";
 import { pdfMount } from "../pdf/driver";
 import {
-    readerLocalActionBookmarks, readerLocalActionDivina, readerLocalActionSetConfig,
+    readerLocalActionDivina, readerLocalActionSetConfig,
     readerLocalActionSetLocator,
 } from "../redux/actions";
 import { TdivinaReadingMode, defaultReadingMode } from "readium-desktop/common/redux/states/renderer/divina";
@@ -95,7 +95,9 @@ import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-a
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
+
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
+import { diReaderGet } from "../di";
 
 // main process code!
 // thoriumhttps
@@ -223,6 +225,7 @@ interface IState {
 
     // openedSectionSettings: number | undefined;
     openedSectionMenu: string;
+    annotationUUID: string;
 
     historyCanGoBack: boolean;
     historyCanGoForward: boolean;
@@ -269,6 +272,7 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardInfoWhereAmISpeak = this.onKeyboardInfoWhereAmISpeak.bind(this);
         this.onKeyboardFocusSettings = this.onKeyboardFocusSettings.bind(this);
         this.onKeyboardFocusNav = this.onKeyboardFocusNav.bind(this);
+        this.annotationDrawMarginOrPlainAnnotationToggleSwitch = this.annotationDrawMarginOrPlainAnnotationToggleSwitch.bind(this);
         this.navLeftOrRight_.bind(this);
         this.onKeyboardNavigationToBegin.bind(this);
         this.onKeyboardNavigationToEnd.bind(this);
@@ -312,6 +316,7 @@ class Reader extends React.Component<IProps, IState> {
 
             // openedSectionSettings: undefined,
             openedSectionMenu: "tab-toc",
+            annotationUUID: "",
 
             divinaArrowEnabled: true,
             divinaContinousEqualTrue: false,
@@ -371,6 +376,9 @@ class Reader extends React.Component<IProps, IState> {
 
     public async componentDidMount() {
         windowHistory._readerInstance = this;
+
+        const store = diReaderGet("store"); // diRendererSymbolTable.store
+        document.body.setAttribute("data-theme", store.getState().theme.name);
 
         const handleMouseKeyboard = (isKey: boolean) => {
 
@@ -536,6 +544,64 @@ class Reader extends React.Component<IProps, IState> {
         // sets state visibleBookmarkList
         await this.updateVisibleBookmarks();
 
+
+        highlightsClickListen((href, highlight, event) => {
+
+            if (highlight.group !== "annotation") {
+                if (typeof (window as any).__hightlightClickChannelEmitFn === "function") {
+                    (window as any).__hightlightClickChannelEmitFn([href, highlight, event]);
+                }
+                return ;
+            }
+
+            console.log("HIGHLIGHT Click from Reader.tsx");
+            console.log(`href: ${href} | highlight: ${JSON.stringify(highlight, null, 4)} | event : ${JSON.stringify(event)}`);
+
+            const store = diReaderGet("store");
+            const mounterStateMap = store.getState()?.reader.highlight.mounter;
+            if (!mounterStateMap?.length) {
+                console.log(`highlightsClickListen MOUNTER STATE EMPTY -- mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
+                return;
+            }
+        
+            const mounterStateItem = mounterStateMap.find(([_uuid, mounterState]) => mounterState.ref.id === highlight.id && mounterState.href === href);
+        
+            if (!mounterStateItem) {
+                console.log(`highlightsClickListen CANNOT FIND MOUNTER -- href: [${href}] ref.id: [${highlight.id}] mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
+                return;
+            }
+        
+            const [mounterStateItemUuid] = mounterStateItem; // mounterStateItem[0]
+        
+            const handlerStateMap = store.getState()?.reader.highlight.handler;
+            if (!handlerStateMap?.length) {
+                console.log(`highlightsClickListen HANDLER STATE EMPTY -- handlerStateMap: [${JSON.stringify(handlerStateMap, null, 4)}]`);
+                return;
+            }
+        
+            const handlerStateItem = handlerStateMap.find(([uuid, _handlerState]) => uuid === mounterStateItemUuid);
+        
+            if (!handlerStateItem) {
+                console.log(`dispatchClick CANNOT FIND HANDLER -- uuid: [${mounterStateItemUuid}] handlerStateMap: [${JSON.stringify(handlerStateMap, null, 4)}]`);
+                return;
+            }
+        
+            const [uuid, handlerState] = handlerStateItem;
+        
+            console.log(`dispatchClick CLICK ACTION ... -- uuid: [${uuid}] handlerState: [${JSON.stringify(handlerState, null, 4)}]`);
+
+            this.handleMenuButtonClick(true, "tab-annotation", true, uuid);
+
+            if (href && handlerState.def.selectionInfo?.rangeInfo) {
+                this.handleLinkLocator({
+                    href,
+                    locations: {
+                        cssSelector: handlerState.def.selectionInfo.rangeInfo.startContainerElementCssSelector,
+                    },
+                });
+            }
+        });
+
         this.props.dispatchReaderTSXMountedAndPublicationIntoViewportLoaded();
     }
 
@@ -609,6 +675,8 @@ class Reader extends React.Component<IProps, IState> {
             pdfToc: this.state.pdfPlayerToc,
             isPdf: this.props.isPdf,
             openedSection: this.state.openedSectionMenu,
+            annotationUUID: this.state.annotationUUID,
+            resetAnnotationUUID: () => { this.setState({ annotationUUID: "" }); },
             pdfNumberOfPages: this.state.pdfPlayerNumberOfPages,
             setOpenedSection: (v: string) => this.setState({ openedSectionMenu: v }),
         };
@@ -636,6 +704,7 @@ class Reader extends React.Component<IProps, IState> {
             // openedSection: this.state.openedSectionSettings,
             zenMode: this.state.zenMode,
             setZenMode : () => this.setState({ zenMode : !this.state.zenMode}),
+            searchEnable: this.props.searchEnable,
         };
 
         const readerPopoverDialogContext: IPopoverDialogProps = {
@@ -752,7 +821,7 @@ class Reader extends React.Component<IProps, IState> {
                     }
 
                     <div 
-                    style={{marginBottom: this.state.zenMode ? "0" : "5rem"}}
+                    style={{marginBottom: this.state.zenMode ? "0" : "44px"}}
                     className={classNames(stylesReader.content_root,
                         this.state.fullscreen ? stylesReader.content_root_fullscreen : undefined,
                         this.props.isPdf ? stylesReader.content_root_skip_bottom_spacing : undefined)}>
@@ -797,9 +866,14 @@ class Reader extends React.Component<IProps, IState> {
                                 <div
                                     id="publication_viewport"
                                     // className={stylesReader.publication_viewport}
-                                    className={classNames(stylesReader.publication_viewport, (this.state.settingsOpen || this.state.menuOpen) ? (this.state.dockingMode === "left" ? stylesReader.docked_left : this.state.dockingMode === "right" ? stylesReader.docked_right : undefined) : undefined)}
+                                    className={classNames(stylesReader.publication_viewport, (!this.state.zenMode && (this.state.settingsOpen || this.state.menuOpen)) ?
+                                        (
+                                            this.state.dockingMode === "left" ? stylesReader.docked_left
+                                                : this.state.dockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right
+                                                        : ""
+                                        ) : undefined, this.props.searchEnable ? stylesReader.isOnSearch : undefined)}
                                     ref={this.mainElRef}
-                                    style={{inset: isAudioBook ||  !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : "0 50px"}}>
+                                    style={{ inset: isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : "100px 50px" }}>
                                 </div>
                                 {
                                     this.props.isDivina && this.state.divinaArrowEnabled
@@ -1047,25 +1121,10 @@ class Reader extends React.Component<IProps, IState> {
             this.props.keyboardShortcuts.AudioStop,
             this.onKeyboardAudioStop);
 
-        // TODO HIGHLIGHTS-ANNOTATIONS: just for testing!
-        // if (IS_DEV) {
-        //   registerKeyboardListener(
-        //       true, // listen for key up (not key down)
-        //       this.props.keyboardShortcuts.AnnotationsTest1,
-        //       this.onKeyboardAnnotationsTest1);
-        //   registerKeyboardListener(
-        //       true, // listen for key up (not key down)
-        //       this.props.keyboardShortcuts.AnnotationsTest2,
-        //       this.onKeyboardAnnotationsTest2);
-        //   registerKeyboardListener(
-        //       true, // listen for key up (not key down)
-        //       this.props.keyboardShortcuts.AnnotationsTest3,
-        //       this.onKeyboardAnnotationsTest3);
-        //   registerKeyboardListener(
-        //       true, // listen for key up (not key down)
-        //       this.props.keyboardShortcuts.AnnotationsTest4,
-        //       this.onKeyboardAnnotationsTest4);
-        // }
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.AnnotationDrawMarginOrPlainAnnotationToggleSwitch,
+            this.annotationDrawMarginOrPlainAnnotationToggleSwitch);
     }
 
     private unregisterAllKeyboardListeners() {
@@ -1093,14 +1152,7 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardAudioPreviousAlt);
         unregisterKeyboardListener(this.onKeyboardAudioNextAlt);
         unregisterKeyboardListener(this.onKeyboardAudioStop);
-
-        // TODO HIGHLIGHTS-ANNOTATIONS: just for testing!
-        // if (IS_DEV) {
-        //     unregisterKeyboardListener(this.onKeyboardAnnotationsTest1);
-        //     unregisterKeyboardListener(this.onKeyboardAnnotationsTest2);
-        //     unregisterKeyboardListener(this.onKeyboardAnnotationsTest3);
-        //     unregisterKeyboardListener(this.onKeyboardAnnotationsTest4);
-        // }
+        unregisterKeyboardListener(this.annotationDrawMarginOrPlainAnnotationToggleSwitch);
     }
 
     private handleLinkLocator = (locator: R2Locator, isFromOnPopState = false) => {
@@ -1129,84 +1181,20 @@ class Reader extends React.Component<IProps, IState> {
         r2HandleLinkUrl(url);
     };
 
-    // TODO HIGHLIGHTS-ANNOTATIONS: just for testing!
-    // private onKeyboardAnnotationsTest = (type: number) => {
+    private annotationDrawMarginOrPlainAnnotationToggleSwitch = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (AnnotationDrawMarginOrPlainAnnotationToggleSwitch)");
+            }
+            return;
+        }
 
-    //     if (IS_DEV) {
-    //         if (this.props.isDivina || this.props.isPdf) {
-    //             return;
-    //         }
+        const newReaderConfig = {...this.props.readerConfig};
+        newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "annotation" ? "margin" : "annotation";
 
-    //         // navigator loc has updated selectionInfo (may have been invalidated / cleared since last notified here ... so takes precedence over local state)
-    //         const loc = getCurrentReadingLocation() || this.state.currentLocation;
-
-    //         if (!loc?.locator?.href || !loc?.selectionInfo) { // loc?.selectionIsNew
-    //             return;
-    //         }
-
-    //         // TODO: define a preset of colours that work well in both light (aka. neutral) and dark (aka.night) modes.
-    //         // CSS mix-blend-mode is multiply for light, hard-light for dark.
-    //         const colors = [{
-    //             red: 210,
-    //             green: 137,
-    //             blue: 156,
-    //         },
-    //         {
-    //             red: 6,
-    //             green: 202,
-    //             blue: 56,
-    //         },
-    //         {
-    //             red: 57,
-    //             green: 153,
-    //             blue: 208,
-    //         },
-    //         {
-    //             red: 213,
-    //             green: 180,
-    //             blue: 120,
-    //         },
-    //         {
-    //             red: 61,
-    //             green: 181,
-    //             blue: 172,
-    //         }];
-    //         const color = false ? colors[Math.floor(Math.random() * colors.length)] : {
-    //             red: Math.floor(Math.random() * 256),
-    //             green: Math.floor(Math.random() * 256),
-    //             blue: Math.floor(Math.random() * 256),
-    //         };
-    //         console.log("DEV HIGHLIGHT CREATE: " + type, JSON.stringify(color, null, 4));
-
-    //         highlightsCreate(loc.locator.href, [
-    //             {
-    //                 selectionInfo: loc.selectionInfo,
-    //                 // range: Range,
-
-    //                 color,
-
-    //                 // 0 is full background (default), 1 is underline, 2 is strikethrough, 3 is outline
-    //                 drawType: type,
-
-    //                 expand: 3,
-
-    //                 group: "annotations",
-    //             },
-    //         ]);
-    //     }
-    // };
-    // private onKeyboardAnnotationsTest1 = () => {
-    //     this.onKeyboardAnnotationsTest(0);
-    // };
-    // private onKeyboardAnnotationsTest2 = () => {
-    //     this.onKeyboardAnnotationsTest(1);
-    // };
-    // private onKeyboardAnnotationsTest3 = () => {
-    //     this.onKeyboardAnnotationsTest(2);
-    // };
-    // private onKeyboardAnnotationsTest4 = () => {
-    //     this.onKeyboardAnnotationsTest(3);
-    // };
+        console.log(`AnnotationDrawMarginOrPlainAnnotationToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
+        this.props.setConfig(newReaderConfig, this.props.session);
+    };
 
     private onKeyboardAudioStop = () => {
         if (!this.state.shortcutEnable) {
@@ -2198,7 +2186,7 @@ class Reader extends React.Component<IProps, IState> {
         this.handleMenuButtonClick(true, "tab-search", true);
     }
 
-    private handleMenuButtonClick(open?: boolean, openedSectionMenu?: string, focused?: boolean) {
+    private handleMenuButtonClick(open?: boolean, openedSectionMenu?: string, focused?: boolean, annotationUUID?: string) {
         console.log("handleMenuButtonClick", "menuOpen=", this.state.menuOpen ? "closeMenu" : "openMenu", open !== undefined ? `openFromParam=${open ? "openMenu" : "closeMenu"}` : "");
 
         const openToggle = !this.state.menuOpen;
@@ -2210,6 +2198,7 @@ class Reader extends React.Component<IProps, IState> {
             settingsOpen: false,
             openedSectionMenu: openedSectionMenu ? openedSectionMenu : this.state.openedSectionMenu,
             focusMenuOpen: focused ? (this.state.focusMenuOpen + 1) : this.state.focusMenuOpen,
+            annotationUUID: annotationUUID ? annotationUUID : "",
         });
     }
 
@@ -2331,13 +2320,16 @@ class Reader extends React.Component<IProps, IState> {
                 this.state.mediaOverlaysState === MediaOverlaysStateEnum.PAUSED :
                 this.state.ttsState === TTSStateEnum.PAUSED;
 
+            const rtlIsOverridden = this.isRTL(this.isFixedLayout()) && this.props.disableRTLFlip;
+            const left_ = rtlIsOverridden ? !left : left;
+
             if (wasPaused || wasPlaying) {
-                navLeftOrRight(left, false);
+                navLeftOrRight(left_, false);
                 // if (!this.state.r2PublicationHasMediaOverlays) {
                 //     handleTTSPlayDebounced(this);
                 // }
             } else {
-                navLeftOrRight(left, spineNav);
+                navLeftOrRight(left_, spineNav);
             }
         }
     }
@@ -2456,7 +2448,7 @@ class Reader extends React.Component<IProps, IState> {
                 const l = visibleBookmarkList.length;
 
                 // reader.navigation.bookmarkTitle
-                const msg = `${this.props.__("catalog.delete")} - ${this.props.__("reader.marks.bookmarks")} [${this.props.bookmarks?.length ? this.props.bookmarks.length - l : 0}]`;
+                const msg = `${this.props.__("catalog.delete")} - ${this.props.__("reader.marks.bookmarks")} [${this.props.bookmarks?.length ? this.props.bookmarks.length + 1 - l : 0}]`;
                 // this.setState({bookmarkMessage: msg});
                 this.props.toasty(msg);
 
@@ -2832,10 +2824,10 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             }
         },
         addBookmark: (bookmark: IBookmarkStateWithoutUUID) => {
-            dispatch(readerLocalActionBookmarks.push.build(bookmark));
+            dispatch(readerActions.bookmark.push.build(bookmark));
         },
         deleteBookmark: (bookmark: IBookmarkState) => {
-            dispatch(readerLocalActionBookmarks.pop.build(bookmark));
+            dispatch(readerActions.bookmark.pop.build(bookmark));
         },
         setDisableRTLFlip: (disable: boolean) => {
             dispatch(readerActions.disableRTLFlip.build(disable));

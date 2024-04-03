@@ -73,7 +73,7 @@
                     }
 
                     &:focus + label {
-                        outline: 2px solid blue;
+                        outline: 2px solid var(--color--blue);
                     }
                 }
 
@@ -93,7 +93,7 @@
                     }
 
                     &:focus {
-                        outline-color: blue!important;
+                        outline-color: var(--color--blue)!important;
                     }
                 }
 

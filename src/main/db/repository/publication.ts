@@ -136,6 +136,11 @@ export class PublicationRepository {
         const store = diMainGet("store");
         const state = store.getState();
 
+        // use this to troubleshoot corrupted DB from filesystem dump
+        // import * as fs from "fs";
+        // import * as path from "path";
+        // fs.writeFileSync(path.join(process.cwd(), "db.json"), JSON.stringify(state.publication.db, null, 4), { encoding: "utf8" });
+
         return Object.values(state.publication.db)
             .filter((v) => !v.removedButPreservedToAvoidReMigration);
     }

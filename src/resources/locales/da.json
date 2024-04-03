@@ -43,6 +43,7 @@
     },
     "catalog": {
         "about": {
+            "button": "Mere information",
             "title": "Om {{- appName}}"
         },
         "addBookToLib": "Importer",
@@ -106,7 +107,6 @@
         "readBook": "Læs bog",
         "released": "Udgivelsesdato",
         "sort": "Sorter efter",
-        "tag": "",
         "tagCount": "Antal tags",
         "tags": "Tags",
         "update": "Rediger"
@@ -131,6 +131,8 @@
     },
     "header": {
         "allBooks": "Alle bøger",
+        "books": "Mine Bøger",
+        "catalogs": "Kataloger",
         "downloads": "Downloads",
         "gridTitle": "Gittervisning",
         "home": "Boghylde menu",
@@ -140,18 +142,15 @@
         "refreshTitle": "genindlæs",
         "searchPlaceholder": "Søg",
         "searchTitle": "Påbegynd søgning",
-        "settings": "Indstillinger",
-        "viewMode": ""
+        "settings": "Indstillinger"
     },
     "library": {
         "lcp": {
             "hint": "(Hjælp til nøgleord: {{- hint}})",
             "password": "Nøgleord",
             "sentence": "Denne bog kræver et LCP nøgleord for at åbne: ",
-            "urlHint": "Har du glemt dit nøgleord? Få hjælp her",
-            "whatIsLcp?": "",
-            "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": ""
+            "submit": "Send",
+            "urlHint": "Har du glemt dit nøgleord? Få hjælp her"
         }
     },
     "message": {
@@ -172,6 +171,7 @@
             "addButton": "Tilføj",
             "name": "Navn:",
             "namePlaceholder": "Navn",
+            "title": "Tilføj et OPDS feed",
             "url": "Link:",
             "urlPlaceholder": "Link"
         },
@@ -274,16 +274,13 @@
         "userKeyCheckInvalid": "Forkert nøgleord"
     },
     "reader": {
-        "annotations": {
-            "addNote": "",
-            "highlight": ""
-        },
         "divina": {
             "mute": "slå lyd fra",
             "unmute": "slå lyd til"
         },
-        "fxl": {
-            "fit": ""
+        "footerInfo": {
+            "lessInfo": "mindre information",
+            "moreInfo": "mere information"
         },
         "marks": {
             "annotations": "Noter",
@@ -292,7 +289,6 @@
             "edit": "Rediger",
             "landmarks": "Regioner",
             "search": "Søg",
-            "searchResult": "",
             "toc": "Indholdsfortegnelse"
         },
         "media-overlays": {
@@ -308,7 +304,6 @@
             "title": "Oplæsning"
         },
         "navigation": {
-            "annotationTitle": "",
             "backHomeTitle": "tilbage til boghylden",
             "bookmarkTitle": "bogmærke",
             "currentPage": "Nuværende side: {{- current}}",
@@ -325,6 +320,8 @@
             "magnifyingGlassButton": "søg i bogen",
             "openTableOfContentsTitle": "indholdsfortegnelse",
             "pdfscalemode": "Tilpas til side eller skærmbredde",
+            "quitFullscreenTitle": "forlad fuldskærmstilstand",
+            "readBookTitle": "begynd at læse bogen",
             "settingsTitle": "indstillinger"
         },
         "picker": {
@@ -343,11 +340,11 @@
             "column": {
                 "auto": "Standard",
                 "one": "1 kol",
+                "oneTitle": "en kolonne",
                 "title": "Kolonner",
-                "two": "2 kol"
+                "two": "2 kol",
+                "twoTitle": "to kolonner"
             },
-            "customizeReader": "",
-            "disabled": "",
             "display": "Visning",
             "disposition": {
                 "title": "Layout"
@@ -360,6 +357,8 @@
             "lineSpacing": "Linje-mellemrum",
             "margin": "Margin",
             "noFootnotes": "Slå fodnoter fra",
+            "noRTLFlip": "",
+            "noRuby": "",
             "paginated": "Sideinddelt",
             "paraSpacing": "Paragraf-mellemrum",
             "pdfZoom": {
@@ -375,8 +374,12 @@
                 },
                 "title": "Zoom"
             },
-            "preview": "",
             "reduceMotion": "Reducer bevægelser",
+            "save": {
+                "apply": "gem",
+                "reset": "nulstil",
+                "title": "Indstillinger"
+            },
             "scrolled": "Scrollbart",
             "spacing": "Mellemrum",
             "text": "Tekst",
@@ -417,12 +420,14 @@
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Annuller",
-            "disclaimer": "",
+            "edit": "Rediger",
             "editUserJson": "Rediger brugerfilen...",
+            "hide": "Skjul",
             "keyboardShortcuts": "Tastaturgenveje",
             "loadUserJson": "Indlæs fra brugerfil",
             "resetDefaults": "Nulstil (standardindstillinger)",
-            "save": "Gem"
+            "save": "Gem",
+            "show": "Vis"
         },
         "language": {
             "languageChoice": "Valg af sprog"
@@ -431,18 +436,6 @@
             "no": "Fra",
             "title": "Gem session",
             "yes": "Til"
-        },
-        "tabs": {
-            "appearance": "",
-            "general": "",
-            "keyboardShortcuts": ""
-        },
-        "theme": {
-            "auto": "",
-            "dark": "",
-            "description": "",
-            "light": "",
-            "title": ""
         }
     }
 }

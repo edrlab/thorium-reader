@@ -6,20 +6,20 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IAnnotationModeState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 
-export const ID = "READER_ANNOTATIONS_MODE_FOCUS";
+export const ID = "READER_ANNOTATIONS_CREATE_NOTE";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload extends Partial<IAnnotationModeState["focus"]> {
+interface IPayload extends Pick<IAnnotationState, "color"|"comment"|"drawType"> {
 }
 
-export function build(param: Partial<IAnnotationModeState["focus"]>):
+export function build(color: IColor, comment: string, drawType: TDrawType):
     Action<typeof ID, IPayload> {
 
     return {
         type: ID,
-        payload: { ...param },
+        payload: { color, comment, drawType},
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

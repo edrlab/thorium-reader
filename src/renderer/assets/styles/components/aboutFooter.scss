@@ -2,13 +2,39 @@
 =-=-= aboutFooter.scss
 */
 
-.footer_wrapper{
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    gap: 10px;
+// .footer_wrapper{
+//     display: flex;
+//     justify-content: end;
+//     align-items: center;
+//     gap: 10px;
+//     border-top: 1px solid var(--color-extralight-grey);
+//     margin: 0;
+
+//     a {
+//         font-style: italic;
+//         text-decoration: underline;
+//         cursor: pointer;
+//     }
+// }
+
+.footer_wrapper {
+    position: fixed;
+    bottom: -10px;
+    right: 10px;
     border-top: 1px solid var(--color-extralight-grey);
     margin: 0;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 10px;
+    height: 30px;
+    width: calc(100% - 215px);
+    background-color: var(--color-secondary);
+
+    @media screen and (width <= 800px) {
+        width: calc(100% - 82px);
+    }
 
     a {
         font-style: italic;

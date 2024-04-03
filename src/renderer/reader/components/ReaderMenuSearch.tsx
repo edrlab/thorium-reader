@@ -103,7 +103,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
             {
                 _searchJsx
             }
-            <div className={stylesPopoverDialog.search_navigation}>
+            <div className={stylesPopoverDialog.navigation_container}>
                 {(_foundArray && _foundArray?.length > MAX_MATCHES_PER_PAGE) &&
                     <>
                         <button title={__("opds.firstPage")}
@@ -117,13 +117,16 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                             disabled={begin === 1 ? true : false}>
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
-                        <span>
-                            {
-                                begin === end ?
-                                    `${end}` :
-                                    `${begin} - ${end}`
-                            }
-                        </span>
+                        <div className={stylesPopoverDialog.pages}>
+                            <p>{__("reader.picker.search.results")}</p>
+                            <span>
+                                {
+                                    begin === end ?
+                                        `${end}` :
+                                        `${begin} - ${end}`
+                                }
+                            </span>
+                        </div>
                         <button title={__("opds.next")}
                             onClick={() => this.onPageNext()}
                             disabled={end === _foundArray.length ? true : false}>

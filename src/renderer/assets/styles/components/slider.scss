@@ -22,12 +22,26 @@
       margin-left: 15px;
     }
   }
+
+  > button {
+    display: flex;
+  }
+  
+  button:disabled {
+    svg {
+      fill: var(--color-disabled);
+    }
+  }
 }
 
 .slider_button {
   &_prev {
-  right: 20px;
+  right: 40px;
   transform: translateY(-50%) rotateY(180deg);
+
+  svg {
+    margin: auto;
+  }
   }
 
   &_next {
