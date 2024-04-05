@@ -131,7 +131,9 @@ const Themes = () => {
 const TabHeader = (props: React.PropsWithChildren<{title: string}>) => {
     return (
         <div key="modal-header" className={stylesSettings.close_button_div}>
-            <TabTitle title={props.title} />
+            <TabTitle title={props.title}>
+            {props.children}
+            </TabTitle>
             <Dialog.Close asChild>
                 <button className={stylesButtons.button_transparency_icon} aria-label="Close">
                     <SVG ariaHidden={true} svg={QuitIcon} />

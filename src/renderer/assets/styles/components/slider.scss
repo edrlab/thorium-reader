@@ -47,6 +47,10 @@
   &_next {
     right: 0;
     transform: translateY(-50%);
+    
+    svg {
+      margin: auto;
+    }
   }
 
   &_prev,

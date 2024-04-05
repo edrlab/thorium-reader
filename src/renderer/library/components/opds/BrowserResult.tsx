@@ -152,7 +152,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                             {
                                 opds.groups?.map((group, i) =>
                                     <section key={i}>
-                                        { group.publications.length > 1 ?
+                                        { group.publications?.length > 1 ?
                                         <div className={stylesGlobal.heading_link}>
                                             <Entry level={this.props.level} entry={group.selfLink}></Entry>
                                         </div>
