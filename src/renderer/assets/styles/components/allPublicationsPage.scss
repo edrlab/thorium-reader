@@ -234,12 +234,18 @@
         }
 
         &::-webkit-scrollbar {
-            width: 5px;
+            width: 12px;
 
             &-thumb {
                 background-color: var(--scrollbar-thumb);
                 border-radius: 6px;
+                border-left: 2px solid transparent;
+                background-clip: padding-box;
+                cursor: pointer;
 
+                &:hover {
+                  border: 0;
+                }
             }
 
             &-track {
@@ -302,14 +308,20 @@
         background-color: var(--color-secondary);
 
         &::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
+            width: 10px;
+            height: 10px;
             background-color: var(--color-secondary);
 
             &-thumb {
                 background-color: var(--scrollbar-thumb);
                 border-radius: 6px;
+                border-left: 2px solid transparent;
+                background-clip: padding-box;
+                cursor: pointer;
 
+                &:hover {
+                    border-left: 0;
+                }
             }
 
             &-track {

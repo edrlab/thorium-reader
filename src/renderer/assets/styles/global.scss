@@ -64,7 +64,7 @@ section {
 .main {
   width: calc(100% - 120px);
   padding: 10px 30px;
-  overflow-y: auto;
+  overflow-y: scroll;
   flex: 6;
   height: 100vh;
   box-sizing: border-box;
@@ -76,18 +76,26 @@ section {
   }
 
   &::-webkit-scrollbar {
-    width: 5px;
+    width: 12px;
+    transition: 200ms;
 
     &-thumb {
         background-color: var(--scrollbar-thumb);
         border-radius: 6px;
+        border-left: 2px solid transparent;
+        background-clip: padding-box;
+        cursor: pointer;
+
+        &:hover {
+          border: 0;
+        }
 
     }
 
     &-track {
         background-color: var(--color-secondary);
         }
-}
+  }
 }
 
 nav + nav + .main {
