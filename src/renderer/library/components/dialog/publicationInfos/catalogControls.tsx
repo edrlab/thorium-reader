@@ -22,6 +22,8 @@ import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import DeletePublicationConfirm from "../DeletePublicationConfirm";
+import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -56,6 +58,10 @@ export class CatalogControls extends React.Component<IProps, undefined> {
                 <button onClick={this.handleRead} className={stylesButtons.button_primary}>
                     <SVG svg={ReadBook} ariaHidden />
                     {__("catalog.readBook")}
+                </button>
+                <button disabled>
+                    <SVG ariaHidden svg={DoubleCheckIcon} />
+                    {__("publication.markAsRead")}
                 </button>
                 <DeletePublicationConfirm
                     trigger={(

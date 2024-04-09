@@ -80,6 +80,7 @@ const EntrySection = ({entry, entryIndex}: {entry: CatalogEntryView, entryIndex:
                         <PublicationCard
                             key={pub.identifier}
                             publicationViewMaybeOpds={pub}
+                            isReading={entry.id === "continueReading" ? true : false}
                         />,
                     )}
                 />

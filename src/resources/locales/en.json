@@ -288,7 +288,11 @@
         "seeLess": "See less",
         "seeMore": "See more",
         "title": "Title",
-        "userKeyCheckInvalid": "Passphrase is incorrect"
+        "userKeyCheckInvalid": "Passphrase is incorrect",
+        "markAsRead": "Mark as read",
+        "day": "day",
+        "days": "days",
+        "expired": "loan expired"
     },
     "reader": {
         "annotations": {
@@ -418,6 +422,7 @@
                 "title": "Zoom"
             },
             "preview": "Preview",
+            "infoCustomFont": "You can add a custom font from your system by typing its name in the input",
             "reduceMotion": "Reduce motion",
             "save": {
                 "apply": "save",

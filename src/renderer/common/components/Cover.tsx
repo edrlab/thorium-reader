@@ -22,6 +22,9 @@ import { useTranslator } from "../hooks/useTranslator";
 // import * as ValidateIcon from "readium-desktop/renderer/assets/icons/validated-icon.svg";
 // import SVG from "./SVG";
 
+// import * as ValidateIcon from "readium-desktop/renderer/assets/icons/validated-icon.svg";
+// import SVG from "./SVG";
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationViewMaybeOpds: TPublication;
@@ -30,6 +33,7 @@ interface IBaseProps extends TranslatorProps {
     onKeyPress?: (e: React.KeyboardEvent<HTMLImageElement>) => void;
     forwardedRef?:  React.ForwardedRef<HTMLImageElement>;
     imgRadixProp?: any;
+    hasEnded?: boolean;
 }
 
 // IProps may typically extend:
@@ -125,7 +129,9 @@ class Cover extends React.Component<IProps, IState> {
                 {/* {tagString === "/finished/"  ? 
                 <div className={stylesPublications.corner}><SVG ariaHidden svg={ValidateIcon} /></div> 
                 : <></>} */}
+                {!this.props.hasEnded ? 
                 <div className={stylesPublications.gradient}></div>
+                : <></>}
                 </>
             );
         }
@@ -184,6 +190,7 @@ export const CoverWithForwardedRef = React.forwardRef<HTMLImageElement, IProps>(
             coverType={coverType}
             forwardedRef={forwardedRef}
             imgRadixProp={props}
+            hasEnded={props.hasEnded}
         />
     );
 });

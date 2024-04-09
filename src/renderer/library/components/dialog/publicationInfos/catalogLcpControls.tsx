@@ -29,10 +29,13 @@ import * as SaveAsIcon from "readium-desktop/renderer/assets/icons/SaveAs-icon.s
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as ReadBook from "readium-desktop/renderer/assets/icons/readBook-icon.svg";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
+import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationView: PublicationView;
+    isReading?: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -88,6 +91,10 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
                     </button>
                     : <></>
                 }
+                <button disabled>
+                    <SVG ariaHidden svg={DoubleCheckIcon} />
+                    {__("publication.markAsRead")}
+                </button>
                 {
                     // lsdStatus === StatusEnum.Expired &&
                     lsdRenewLink ?

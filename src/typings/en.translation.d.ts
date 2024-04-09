@@ -576,7 +576,11 @@ declare namespace typed_i18n {
   readonly "seeLess": string,
   readonly "seeMore": string,
   readonly "title": string,
-  readonly "userKeyCheckInvalid": string
+  readonly "userKeyCheckInvalid": string,
+  readonly "markAsRead": string,
+  readonly "day": string,
+  readonly "days": string,
+  readonly "expired": string
 };
   (_: "publication.accessibility", __?: {}): {
   readonly "accessModeSufficient": { readonly "textual": string },
@@ -677,6 +681,10 @@ declare namespace typed_i18n {
   (_: "publication.seeMore", __?: {}): string;
   (_: "publication.title", __?: {}): string;
   (_: "publication.userKeyCheckInvalid", __?: {}): string;
+  (_: "publication.markAsRead", __?: {}): string;
+  (_: "publication.day", __?: {}): string;
+  (_: "publication.days", __?: {}): string;
+  (_: "publication.expired", __?: {}): string;
   (_: "reader", __?: {}): {
   readonly "annotations": {
     readonly "Color": string,
@@ -798,6 +806,7 @@ declare namespace typed_i18n {
       readonly "title": string
     },
     readonly "preview": string,
+    readonly "infoCustomFont": string,
     readonly "reduceMotion": string,
     readonly "save": {
       readonly "apply": string,
@@ -1026,6 +1035,7 @@ declare namespace typed_i18n {
     readonly "title": string
   },
   readonly "preview": string,
+  readonly "infoCustomFont": string,
   readonly "reduceMotion": string,
   readonly "save": {
     readonly "apply": string,
@@ -1110,6 +1120,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.pdfZoom.name.width", __?: {}): string;
   (_: "reader.settings.pdfZoom.title", __?: {}): string;
   (_: "reader.settings.preview", __?: {}): string;
+  (_: "reader.settings.infoCustomFont", __?: {}): string;
   (_: "reader.settings.reduceMotion", __?: {}): string;
   (_: "reader.settings.save", __?: {}): {
   readonly "apply": string,

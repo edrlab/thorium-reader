@@ -14,8 +14,9 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
+import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 
-const CatalogMenu: React.FC<{publicationView: PublicationView}> = (props) => {
+const CatalogMenu: React.FC<{publicationView: PublicationView, isReading?: boolean}> = (props) => {
     const [__] = useTranslator();
 
     return (
@@ -32,6 +33,13 @@ const CatalogMenu: React.FC<{publicationView: PublicationView}> = (props) => {
                 </PublicationInfoLibWithRadixTrigger>
                 <PublicationInfoLibWithRadixContent />
             </PublicationInfoLibWithRadix>
+            {props.isReading ? 
+            <button disabled>
+                <SVG ariaHidden svg={DoubleCheckIcon} />
+                {__("publication.markAsRead")}
+            </button>
+            : <></>
+            }
             <DeletePublicationConfirm
                 trigger={(
                     <button

@@ -23,6 +23,7 @@
 	border-radius: 2px;
   perspective: 1000px;
   overflow: hidden;
+  position: relative;
 
     &:hover {
       img, .no_img_wrapper {
@@ -33,6 +34,17 @@
 				height: 90%;
 				opacity: 0.8;
 			}
+  }
+
+  &:has(.hasEnded) {
+    perspective: unset;
+    cursor: not-allowed;
+
+    &:hover {
+      img, .no_img_wrapper {
+			transform: unset;
+      }
+    }
   }
 
   & img {
@@ -184,6 +196,20 @@
       color: var(--color-blue);
       border-radius: 4px;
       transition: 200ms linear;
+    }
+
+    .lcpIndicator {
+      width: fit-content;
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      font-size: 12px;
+
+      svg {
+        width: 13px;
+        height: 13px;
+        color: var(--color-primary)
+      }
     }
   }
 }
@@ -531,8 +557,8 @@
   border-top : 50px solid var(--color-secondary);
   border-left : 50px solid transparent;
   opacity: 0.8;
-  right: 0;
-  top: 0;
+  right: 5px;
+  top: 5px;
 
   svg {
     width: 15px;

@@ -32,11 +32,15 @@ import OpdsMenu from "./menu/OpdsMenu";
 
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
 import { PublicationInfoOpdsWithRadix, PublicationInfoOpdsWithRadixContent, PublicationInfoOpdsWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
+import { TPublication } from "readium-desktop/common/type/publication.type";
+import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-icon.svg";
+import * as CalendarExpiredIcon from "readium-desktop/renderer/assets/icons/calendarExpired-icon.svg";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationViewMaybeOpds: PublicationView | IOpdsPublicationView;
     isOpds?: boolean;
+    isReading?: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -81,6 +85,31 @@ class PublicationCard extends React.Component<IProps> {
             pubFormat = "EPUB";
         }
 
+        const publication = publicationViewMaybeOpds as TPublication;
+        // const isLcp = publication.lcp != (undefined || null);
+        const date = new Date();
+        const hasEnded = publication.lcp?.rights.end < date.toISOString();
+        const pubEndRights = publication.lcp?.rights.end;
+        let hasTimer: boolean;
+        let remainingDays: string;
+
+        const findRemainingTime = () => {
+            const differenceInMs = new Date(pubEndRights).getTime() - date.getTime();
+            const differenceInDays = Math.ceil(differenceInMs / (1000 * 60 * 60 * 24));
+            if (differenceInDays > 1) {
+                remainingDays = `${differenceInDays} ${__("publication.days")}`;
+            } else if (differenceInDays === 1) {
+                remainingDays = `${differenceInDays} ${__("publication.day")}`;
+            } else {
+                remainingDays = `${__("publication.expired")}`;
+            }
+        };
+
+        if (pubEndRights != undefined) {
+            hasTimer = true;
+            findRemainingTime();
+        }
+
         // aria-haspopup="dialog"
         // aria-controls="dialog"
         return (
@@ -96,7 +125,7 @@ class PublicationCard extends React.Component<IProps> {
                                     title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
                                     tabIndex={0}
                                 >
-                                    <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
+                                    <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} hasEnded={hasEnded} />
                                     <div className={stylesPublications.publication_title_wrapper}>
                                         <p aria-hidden className={stylesPublications.publication_title}
                                             dir={pubTitleIsRTL ? "rtl" : undefined}>
@@ -121,7 +150,7 @@ class PublicationCard extends React.Component<IProps> {
                             className={stylesPublications.publication_main_container}
                             tabIndex={0}
                         >
-                            <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
+                            <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} hasEnded={hasEnded} />
                             <div className={stylesPublications.publication_title_wrapper}>
                                 <p aria-hidden className={stylesPublications.publication_title}
                                     dir={pubTitleIsRTL ? "rtl" : undefined}>
@@ -135,7 +164,13 @@ class PublicationCard extends React.Component<IProps> {
                 }
                 <div className={stylesPublications.publication_infos_wrapper}>
                     <div className={stylesPublications.publication_infos}>
+                        <div style={{display: "flex", flexDirection: "column", alignItems: "start", gap: "10px"}}>
+                        {
+                            hasTimer ? <div className={stylesPublications.lcpIndicator}><SVG ariaHidden svg={hasEnded ? CalendarExpiredIcon : CalendarIcon} />{remainingDays}</div>
+                            : <></>
+                        }
                         <span className={stylesButtons.button_secondary_blue}>{pubFormat}</span>
+                        </div>
                         <Menu
                             button={(
                                 <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
@@ -147,6 +182,7 @@ class PublicationCard extends React.Component<IProps> {
                                 /> :
                                 <CatalogMenu
                                     publicationView={publicationViewMaybeOpds as PublicationView}
+                                    isReading={this.props.isReading}
                                 />}
                         </Menu>
                     </div>

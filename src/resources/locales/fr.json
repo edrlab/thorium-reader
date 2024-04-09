@@ -288,7 +288,11 @@
         "seeLess": "Voir moins",
         "seeMore": "Voir plus",
         "title": "Titre",
-        "userKeyCheckInvalid": "Mot de passe incorrect"
+        "userKeyCheckInvalid": "Mot de passe incorrect",
+        "markAsRead": "Marquer comme lu",
+        "day": "jour",
+        "days": "jours",
+        "expired": "Prêt expiré"
     },
     "reader": {
         "annotations": {
