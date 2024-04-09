@@ -16,7 +16,7 @@ import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 
-const CatalogMenu: React.FC<{publicationView: PublicationView, isReading?: boolean}> = (props) => {
+const CatalogMenu: React.FC<{publicationView: PublicationView, isReading?: boolean, hasEnded?: boolean, hasTimer?: boolean, remainingDays?: string}> = (props) => {
     const [__] = useTranslator();
 
     return (
@@ -31,7 +31,12 @@ const CatalogMenu: React.FC<{publicationView: PublicationView, isReading?: boole
                         <p>{__("catalog.bookInfo")}</p>
                     </button>
                 </PublicationInfoLibWithRadixTrigger>
-                <PublicationInfoLibWithRadixContent />
+                <PublicationInfoLibWithRadixContent
+                    isReading={props.isReading}
+                    hasEnded={props.hasEnded}
+                    hasTimer={props.hasTimer}
+                    remainingDays={props.remainingDays}
+                 />
             </PublicationInfoLibWithRadix>
             {props.isReading ? 
             <button disabled>

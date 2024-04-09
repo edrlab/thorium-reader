@@ -16,6 +16,7 @@ import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
 import SVG from "../../../SVG";
 import * as AddTagIcon from "readium-desktop/renderer/assets/icons/addTag-icon.svg";
 import classNames from "classnames";
+import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -52,6 +53,7 @@ export default class AddTag extends React.Component<IProps, IState> {
                 ? <form onSubmit={this.addTag}>
                     <div className={stylesInputs.form_group}>
                         <label>{__("catalog.tag")}</label>
+                        <SVG ariaHidden svg={TagIcon} />
                         <input
                             type="text"
                             className={classNames(stylesTags.tag_inputs, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}

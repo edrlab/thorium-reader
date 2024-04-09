@@ -28,6 +28,7 @@ import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCh
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationView: PublicationView;
+    isReading?: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -59,10 +60,13 @@ export class CatalogControls extends React.Component<IProps, undefined> {
                     <SVG svg={ReadBook} ariaHidden />
                     {__("catalog.readBook")}
                 </button>
+                {this.props.isReading ?
                 <button disabled>
                     <SVG ariaHidden svg={DoubleCheckIcon} />
                     {__("publication.markAsRead")}
                 </button>
+                : <></>
+                }
                 <DeletePublicationConfirm
                     trigger={(
                         <button className={stylesButtons.button_secondary}>

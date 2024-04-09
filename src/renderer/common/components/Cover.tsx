@@ -22,9 +22,6 @@ import { useTranslator } from "../hooks/useTranslator";
 // import * as ValidateIcon from "readium-desktop/renderer/assets/icons/validated-icon.svg";
 // import SVG from "./SVG";
 
-// import * as ValidateIcon from "readium-desktop/renderer/assets/icons/validated-icon.svg";
-// import SVG from "./SVG";
-
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationViewMaybeOpds: TPublication;

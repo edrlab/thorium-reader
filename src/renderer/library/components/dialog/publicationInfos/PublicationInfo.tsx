@@ -33,6 +33,14 @@ import Loader from "readium-desktop/renderer/common/components/Loader";
 import { useLocation } from "react-router";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface IProps {
+    isReading?: boolean;
+    hasEnded?: boolean;
+    hasTimer?: boolean;
+    remainingDays?: string;
+}
+
 const PublicationInfoLibContext = React.createContext<DialogType[DialogTypeName.PublicationInfoLib] | undefined>(undefined);
 export const PublicationInfoLibWithRadix: React.FC<React.PropsWithChildren<{publicationView: Pick<PublicationView, "identifier">}>> = (props) => {
     const defaultOpen = false;
@@ -75,8 +83,8 @@ export const PublicationInfoLibWithRadix: React.FC<React.PropsWithChildren<{publ
 
 export const PublicationInfoLibWithRadixTrigger = Dialog.Trigger;
 PublicationInfoLibWithRadixTrigger.displayName = Dialog.Trigger.displayName;
-export const PublicationInfoLibWithRadixContent = React.forwardRef<HTMLDivElement>(
-    ({ ...props }, forwardRef) => {
+export const PublicationInfoLibWithRadixContent = React.forwardRef<HTMLDivElement, IProps>(
+    ({ hasEnded, hasTimer, isReading, remainingDays,...props }, forwardRef) => {
         const [__] = useTranslator();
         const dispatch = useDispatch();
         return (
@@ -97,7 +105,12 @@ export const PublicationInfoLibWithRadixContent = React.forwardRef<HTMLDivElemen
                         <PublicationInfoLibContext.Consumer>
                             {
                                 (data) =>
-                                    <PublicationInfoWithRadixContent publicationViewMaybeOpds={data?.publication} closeDialog={() => dispatch(dialogActions.closeRequest.build())} />
+                                    <PublicationInfoWithRadixContent publicationViewMaybeOpds={data?.publication} closeDialog={() => dispatch(dialogActions.closeRequest.build())}
+                                    isReading={isReading}
+                                    hasEnded={hasEnded}
+                                    hasTimer={hasTimer}
+                                    remainingDays={remainingDays}
+                                     />
                             }
                         </PublicationInfoLibContext.Consumer>
                     </div>
@@ -145,8 +158,8 @@ export const PublicationInfoOpdsWithRadix: React.FC<React.PropsWithChildren<{opd
 };
 export const PublicationInfoOpdsWithRadixTrigger = Dialog.Trigger;
 PublicationInfoOpdsWithRadixTrigger.displayName = Dialog.Trigger.displayName;
-export const PublicationInfoOpdsWithRadixContent = React.forwardRef<HTMLDivElement>(
-    ({ ...props }, forwardRef) => {
+export const PublicationInfoOpdsWithRadixContent = React.forwardRef<HTMLDivElement, IProps>(
+    ({ hasEnded, hasTimer, isReading, remainingDays,...props }, forwardRef) => {
         const [__] = useTranslator();
         const dispatch = useDispatch();
         return (
@@ -167,7 +180,12 @@ export const PublicationInfoOpdsWithRadixContent = React.forwardRef<HTMLDivEleme
                         <PublicationInfoOpdsContext.Consumer>
                             {
                                 (opdsPublicationView) =>
-                                    <PublicationInfoWithRadixContent publicationViewMaybeOpds={opdsPublicationView} closeDialog={() => dispatch(dialogActions.closeRequest.build())} isOpds={true}/>
+                                    <PublicationInfoWithRadixContent publicationViewMaybeOpds={opdsPublicationView} closeDialog={() => dispatch(dialogActions.closeRequest.build())} isOpds={true}
+                                    isReading={isReading}
+                                    hasEnded={hasEnded}
+                                    hasTimer={hasTimer}
+                                    remainingDays={remainingDays}
+                                     />
                             }
                         </PublicationInfoOpdsContext.Consumer>
                     </div>
@@ -178,7 +196,7 @@ export const PublicationInfoOpdsWithRadixContent = React.forwardRef<HTMLDivEleme
 );
 PublicationInfoOpdsWithRadixContent.displayName = "PublicationInfoOpdsWithRadixContent";
 
-const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPublication | undefined, closeDialog: () => void, isOpds?: boolean}) => {
+const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPublication | undefined, closeDialog: () => void, isOpds?: boolean, hasTimer?: boolean, hasEnded?: boolean, remainingDays?: string, isReading?: boolean}) => {
     const [, translator] = useTranslator(); // FIXME in reader.tsx
     const dispatch = useDispatch();
     const link = dispatchOpdsLink(dispatch);
@@ -194,9 +212,14 @@ const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPubl
         controlsComponent = () => (<OpdsControls opdsPublicationView={props.publicationViewMaybeOpds as IOpdsPublicationView} />);
     } else {
         if (props.publicationViewMaybeOpds?.lcp) {
-            controlsComponent = () => (<CatalogLcpControls publicationView={props.publicationViewMaybeOpds as PublicationView} />);
+            controlsComponent = () => (<CatalogLcpControls publicationView={props.publicationViewMaybeOpds as PublicationView}
+                isReading={props.isReading}
+                hasEnded={props.hasEnded}
+                hasTimer={props.hasTimer}
+                remainingDays={props.remainingDays}
+                 />);
         } else {
-            controlsComponent = () => (<CatalogControls publicationView={props.publicationViewMaybeOpds as PublicationView} />);
+            controlsComponent = () => (<CatalogControls publicationView={props.publicationViewMaybeOpds as PublicationView} isReading={props.isReading} />);
         }
     }
 

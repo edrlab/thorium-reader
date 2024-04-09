@@ -179,7 +179,7 @@
 
   & .publication_infos {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     width: 100%;
 
@@ -197,21 +197,25 @@
       border-radius: 4px;
       transition: 200ms linear;
     }
-
-    .lcpIndicator {
-      width: fit-content;
-      display: flex;
-      justify-content: center;
-      gap: 5px;
-      font-size: 12px;
-
-      svg {
-        width: 13px;
-        height: 13px;
-        color: var(--color-primary)
-      }
-    }
   }
+}
+
+.lcpIndicator {
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  font-size: 12px;
+
+  svg {
+    width: 13px;
+    height: 13px;
+    color: var(--color-primary)!important;
+  }
+}
+
+.lcp_over svg {
+  color: red!important;
 }
 
 /* 2. list */

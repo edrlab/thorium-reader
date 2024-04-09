@@ -28,6 +28,13 @@
 
     section {
         margin-bottom: 20px;
+
+        .form_group svg {
+            position: absolute;
+            left: 10px;
+            width: 16px;
+            top: 8px;
+        }
     }
 
     .button_primary {

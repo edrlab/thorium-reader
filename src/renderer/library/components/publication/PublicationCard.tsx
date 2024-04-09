@@ -35,6 +35,7 @@ import { PublicationInfoOpdsWithRadix, PublicationInfoOpdsWithRadixContent, Publ
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-icon.svg";
 import * as CalendarExpiredIcon from "readium-desktop/renderer/assets/icons/calendarExpired-icon.svg";
+import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -110,6 +111,15 @@ class PublicationCard extends React.Component<IProps> {
             findRemainingTime();
         }
 
+        let tagString = "";
+        for (const tag of publicationViewMaybeOpds.tags) {
+            if (typeof tag === "string") {
+                tagString = tag;
+            } else {
+                tagString = tag.name;
+            }
+        };
+
         // aria-haspopup="dialog"
         // aria-controls="dialog"
         return (
@@ -164,12 +174,17 @@ class PublicationCard extends React.Component<IProps> {
                 }
                 <div className={stylesPublications.publication_infos_wrapper}>
                     <div className={stylesPublications.publication_infos}>
-                        <div style={{display: "flex", flexDirection: "column", alignItems: "start", gap: "10px"}}>
-                        {
-                            hasTimer ? <div className={stylesPublications.lcpIndicator}><SVG ariaHidden svg={hasEnded ? CalendarExpiredIcon : CalendarIcon} />{remainingDays}</div>
-                            : <></>
-                        }
-                        <span className={stylesButtons.button_secondary_blue}>{pubFormat}</span>
+                        <div style={{ display: "flex", flexDirection: "column", alignItems: "start", gap: "10px" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px"}}>
+                            {tagString === "/finished/" ?
+                                    <div className={stylesPublications.lcpIndicator}><SVG ariaHidden svg={DoubleCheckIcon} />Lu</div>
+                                    : <></>}
+                                {
+                                    hasTimer ? <div className={stylesPublications.lcpIndicator}><SVG ariaHidden svg={hasEnded ? CalendarExpiredIcon : CalendarIcon} />{remainingDays}</div>
+                                        : <></>
+                                }
+                            </div>
+                            <span className={stylesButtons.button_secondary_blue}>{pubFormat}</span>
                         </div>
                         <Menu
                             button={(
@@ -179,10 +194,17 @@ class PublicationCard extends React.Component<IProps> {
                             {isOpds ?
                                 <OpdsMenu
                                     opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
+                                    isReading={this.props.isReading}
+                                    hasEnded={hasEnded}
+                                    hasTimer={hasTimer}
+                                    remainingDays={remainingDays}
                                 /> :
                                 <CatalogMenu
                                     publicationView={publicationViewMaybeOpds as PublicationView}
                                     isReading={this.props.isReading}
+                                    hasEnded={hasEnded}
+                                    hasTimer={hasTimer}
+                                    remainingDays={remainingDays}
                                 />}
                         </Menu>
                     </div>
