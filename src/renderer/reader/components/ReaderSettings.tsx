@@ -44,6 +44,7 @@ import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-ic
 import * as ResetIcon from "readium-desktop/renderer/assets/icons/clock-reverse-icon.svg";
 import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-bold.svg";
+import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps, IPopoverDialogProps {
@@ -293,6 +294,10 @@ export const FontFamily = ({config: {font}, set}: {config: Pick<ReaderConfig, "f
             >
                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
             </ComboBox>
+            <div className={stylesSettings.session_text} style={{ marginTop: "0"}}>
+                <SVG ariaHidden svg={InfoIcon} />
+                <p>{__("reader.settings.infoCustomFont")}</p>
+            </div>
             <h4>{__("reader.settings.preview")}</h4>
             <span
                 aria-hidden
