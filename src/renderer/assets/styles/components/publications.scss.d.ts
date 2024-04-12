@@ -8,6 +8,7 @@ export declare const box: string;
 export declare const corner: string;
 export declare const cover: string;
 export declare const cover_img: string;
+export declare const expired: string;
 export declare const gradient: string;
 export declare const hasEnded: string;
 export declare const icon_seemore: string;

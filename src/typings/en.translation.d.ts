@@ -580,7 +580,9 @@ declare namespace typed_i18n {
   readonly "markAsRead": string,
   readonly "day": string,
   readonly "days": string,
-  readonly "expired": string
+  readonly "expired": string,
+  readonly "read": string,
+  readonly "licensed": string
 };
   (_: "publication.accessibility", __?: {}): {
   readonly "accessModeSufficient": { readonly "textual": string },
@@ -685,6 +687,8 @@ declare namespace typed_i18n {
   (_: "publication.day", __?: {}): string;
   (_: "publication.days", __?: {}): string;
   (_: "publication.expired", __?: {}): string;
+  (_: "publication.read", __?: {}): string;
+  (_: "publication.licensed", __?: {}): string;
   (_: "reader", __?: {}): {
   readonly "annotations": {
     readonly "Color": string,

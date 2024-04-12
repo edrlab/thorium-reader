@@ -6,7 +6,7 @@
         "leftSlideButton": "Faire défiler la liste vers la gauche",
         "mainContent": "contenu principal",
         "rightSlideButton": "Faire défiler la liste vers la droite",
-        "searchBook": "Rechercher un livre, un tag, ou un type de littérature",
+        "searchBook": "Rechercher un livre, un mot-clef, ou un type de littérature",
         "skipLink": "Aller au contenu",
         "toolbar": "barre d'outils"
     },
@@ -50,7 +50,7 @@
             "title": "À propos de {{appName}}"
         },
         "addBookToLib": "Ajouter",
-        "addTags": "Ajouter un tag",
+        "addTags": "Ajouter un mot-clef",
         "addTagsButton": "Ajouter",
         "allBooks": "Tous mes livres",
         "bookInfo": "A propos du livre",
@@ -61,9 +61,9 @@
         },
         "delete": "Supprimer",
         "deleteBook": "Supprimer",
-        "deleteTag": "Supprimer le tag",
+        "deleteTag": "Supprimer le mot-clef",
         "description": "Description",
-        "emptyTagList": "Les livres ne contiennent pas de tags.",
+        "emptyTagList": "Les livres ne contiennent pas de mots-clefs.",
         "entry": {
             "continueReading": "Reprendre la lecture",
             "continueReadingAudioBooks": "Reprendre l'écoute",
@@ -113,9 +113,9 @@
         "readBook": "Lire",
         "released": "Publié le",
         "sort": "trier par",
-        "tag": "Tag",
-        "tagCount": "Nombre de tags",
-        "tags": "Tags",
+        "tag": "Mot-clef",
+        "tagCount": "Nombre de mots-clefs",
+        "tags": "Mots-clefs",
         "update": "Éditer"
     },
     "dialog": {
@@ -142,7 +142,7 @@
         "books": "Mes Livres",
         "catalogs": "Catalogues",
         "downloads": "Téléchargements",
-        "fitlerTagTitle": "Filtrer par tag",
+        "fitlerTagTitle": "Filtrer par mot-clef",
         "gridTitle": "Grille",
         "home": "Menu Principal",
         "homeTitle": "Accueil",
@@ -292,7 +292,9 @@
         "markAsRead": "Marquer comme lu",
         "day": "jour",
         "days": "jours",
-        "expired": "Prêt expiré"
+        "expired": "Prêt expiré",
+        "read": "Lu",
+        "licensed": "Sous licence"
     },
     "reader": {
         "annotations": {

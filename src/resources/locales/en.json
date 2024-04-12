@@ -292,7 +292,9 @@
         "markAsRead": "Mark as read",
         "day": "day",
         "days": "days",
-        "expired": "loan expired"
+        "expired": "Loan expired",
+        "read": "Read",
+        "licensed": "Licensed"
     },
     "reader": {
         "annotations": {

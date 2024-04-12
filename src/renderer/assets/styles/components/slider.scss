@@ -65,8 +65,23 @@
   border: 1px solid var(--color-medium-grey);
   background-color: var(--color-extralight-grey);
   border-radius: 6px;
-  margin: 20px 0;
+  margin: 20px;
   padding: 20px;
+
+  .slider_wrapper {
+    min-height: 380px;
+    height: fit-content;
+    padding-bottom: 10px;
+  }
+
+  .publication_wrapper {
+    width: 170px;
+    height: 360px;
+
+    img, .no_img_wrapper {
+      height: 225px;
+    }
+  }
 
   .cover_img {
     background-color: var(--color-secondary);

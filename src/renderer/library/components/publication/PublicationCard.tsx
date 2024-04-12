@@ -36,6 +36,9 @@ import { TPublication } from "readium-desktop/common/type/publication.type";
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-icon.svg";
 import * as CalendarExpiredIcon from "readium-desktop/renderer/assets/icons/calendarExpired-icon.svg";
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
+import classNames from "classnames";
+
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -87,7 +90,7 @@ class PublicationCard extends React.Component<IProps> {
         }
 
         const publication = publicationViewMaybeOpds as TPublication;
-        // const isLcp = publication.lcp != (undefined || null);
+        const isLcp = publication.lcp != (undefined || null);
         const date = new Date();
         const hasEnded = publication.lcp?.rights.end < date.toISOString();
         const pubEndRights = publication.lcp?.rights.end;
@@ -112,13 +115,15 @@ class PublicationCard extends React.Component<IProps> {
         }
 
         let tagString = "";
-        for (const tag of publicationViewMaybeOpds.tags) {
-            if (typeof tag === "string") {
-                tagString = tag;
-            } else {
-                tagString = tag.name;
-            }
-        };
+        if (publicationViewMaybeOpds.tags) {
+            for (const tag of publicationViewMaybeOpds.tags) {
+                if (typeof tag === "string") {
+                    tagString = tag;
+                } else {
+                    tagString = tag.name;
+                }
+            };
+        }
 
         // aria-haspopup="dialog"
         // aria-controls="dialog"
@@ -131,7 +136,7 @@ class PublicationCard extends React.Component<IProps> {
                         >
                             <PublicationInfoOpdsWithRadixTrigger asChild>
                                 <a
-                                    className={stylesPublications.publication_main_container}
+                                    className={classNames(stylesPublications.publication_main_container, hasEnded ? stylesPublications.expired : "")}
                                     title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
                                     tabIndex={0}
                                 >
@@ -157,7 +162,7 @@ class PublicationCard extends React.Component<IProps> {
                                     (e.key === "Enter") && this.handleLocalBookshelfBookClick(e)
                             }
                             title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
-                            className={stylesPublications.publication_main_container}
+                            className={classNames(stylesPublications.publication_main_container, hasEnded ? stylesPublications.expired : "")}
                             tabIndex={0}
                         >
                             <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} hasEnded={hasEnded} />
@@ -174,19 +179,27 @@ class PublicationCard extends React.Component<IProps> {
                 }
                 <div className={stylesPublications.publication_infos_wrapper}>
                     <div className={stylesPublications.publication_infos}>
-                        <div style={{ display: "flex", flexDirection: "column", alignItems: "start", gap: "10px" }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: "10px"}}>
-                            {tagString === "/finished/" ?
-                                    <div className={stylesPublications.lcpIndicator}><SVG ariaHidden svg={DoubleCheckIcon} />Lu</div>
-                                    : <></>}
-                                {
-                                    hasTimer ? <div className={stylesPublications.lcpIndicator}><SVG ariaHidden svg={hasEnded ? CalendarExpiredIcon : CalendarIcon} />{remainingDays}</div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap"}}>
+                                {tagString === "/finished/" ?
+                                        <div className={stylesPublications.lcpIndicator}><SVG ariaHidden svg={DoubleCheckIcon} />{__("publication.read")}</div>
+                                        : <></>}
+                                    {
+                                        hasTimer ? 
+                                        <div className={stylesPublications.lcpIndicator}>
+                                            <SVG ariaHidden svg={hasEnded ? CalendarExpiredIcon : CalendarIcon} />
+                                            {remainingDays}
+                                        </div>
+                                        : (isLcp && !pubEndRights) ?
+                                        <div className={stylesPublications.lcpIndicator}>
+                                            <SVG ariaHidden svg={KeyIcon} />
+                                            {__("publication.licensed")}
+                                        </div>
                                         : <></>
-                                }
-                            </div>
+                                    }
+                                </div>
+                        <div style={{ display: "flex", alignItems: "end", height: "50px", width: "100%", justifyContent: "space-between" }}>
                             <span className={stylesButtons.button_secondary_blue}>{pubFormat}</span>
-                        </div>
-                        <Menu
+                            <Menu
                             button={(
                                 <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
                             )}
@@ -207,6 +220,7 @@ class PublicationCard extends React.Component<IProps> {
                                     remainingDays={remainingDays}
                                 />}
                         </Menu>
+                        </div>
                     </div>
                 </div>
             </div>
