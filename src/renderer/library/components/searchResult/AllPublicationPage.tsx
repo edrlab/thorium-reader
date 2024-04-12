@@ -346,7 +346,6 @@ const commonCellStyles = (props: ITableCellProps_Column & ITableCellProps_Generi
         padding: "0.4em",
         textAlign: "left",
         userSelect: "text",
-        overflow: "hidden",
     };
 };
 

@@ -71,6 +71,10 @@
                     width: 100%;
                     padding: 0.2em;
                     height: 30px;
+
+                    &::placeholder {
+                        color: #aaa8a8;
+                    }
                 }
 
                 > div {

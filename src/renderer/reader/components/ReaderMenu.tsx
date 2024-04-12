@@ -1172,6 +1172,10 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const annotations = useSelector((state: IReaderRootState) => state.reader.annotation).map(([, v]) => v);
     const readerConfig = useSelector((state: IReaderRootState) => state.reader.config);
 
+    const isFixedLayoutPublication = r2Publication.Metadata?.Rendition?.Layout === "fixed";
+    const isFixedLayoutWithPageList = isFixedLayoutPublication && r2Publication.PageList;
+    const isFixedLayoutNoPageList = isFixedLayoutPublication && !isFixedLayoutWithPageList;
+
     const dispatch = useDispatch();
 
     const [serialAnnotator, setSerialAnnotatorMode] = React.useState(false);
@@ -1347,7 +1351,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
 
     const GoToPageTrigger =
-        <Tabs.Trigger value="tab-gotopage" key={"tab-gotopage"} data-value={"tab-gotopage"} disabled={false}>
+        <Tabs.Trigger value="tab-gotopage" key={"tab-gotopage"} data-value={"tab-gotopage"} disabled={!(isFixedLayoutNoPageList || r2Publication?.PageList)}>
             <SVG ariaHidden svg={TargetIcon} />
             <h3>Go To Page</h3>
         </Tabs.Trigger>;

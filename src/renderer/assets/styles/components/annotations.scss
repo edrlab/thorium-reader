@@ -97,6 +97,14 @@
           width: fit-content;
           height: 25px;
 
+          &.button_primary_blue {
+            color: var(--color-secondary);
+
+            &:hover {
+              color: var(--color-blue);
+            }
+          }
+
           svg {
             fill: var(--color-secondary);
             color: var(--color-secondary);

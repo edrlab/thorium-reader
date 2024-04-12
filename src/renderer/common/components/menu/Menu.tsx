@@ -20,6 +20,9 @@ const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
 
     const [triggerOpen, setTriggerOpen] = React.useState(false);
 
+    const collisionValue = location.hash === "#/home" ? 10 : 280;
+    const collision: Partial<Record<"top", number>> = {top : collisionValue};
+    
     return (
         <Popover.Root onOpenChange={() => setTriggerOpen(!triggerOpen)}>
             <Popover.Trigger asChild>
@@ -28,7 +31,7 @@ const Menu = (props: React.PropsWithChildren<IBaseProps>) => {
                 </button>
             </Popover.Trigger>
             <Popover.Portal>
-                <Popover.Content sideOffset={5} align="end" alignOffset={-10}>
+                <Popover.Content sideOffset={5} align="end" alignOffset={-10} hideWhenDetached collisionPadding={collision}>
                     <div className={stylesDropDown.dropdown_menu}>
                         {props.children}
                     </div>

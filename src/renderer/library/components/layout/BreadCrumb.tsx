@@ -110,7 +110,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                                 {breadcrumb.slice(1).map(
                                     (item, index) =>
                                         item.path && index !== breadcrumb.length - 2 ?
-                                            <>
+                                            <React.Fragment key={index}>
                                                 <Link
                                                     key={index}
                                                     to={{
@@ -124,7 +124,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                                                     <p title={item.name}>{item.name}</p>
                                                 </Link>
                                                 <SVG ariaHidden svg={ChevronRight} />
-                                            </>
+                                            </React.Fragment>
                                             :
                                         <strong key={index} title={item.name}>
                                             {item.name}
