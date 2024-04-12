@@ -9,8 +9,8 @@ const preloadConfig = require("./webpack.config.preload");
 // console.log("-------------------- MAIN config:");
 // console.log(util.inspect(mainConfig, { colors: true, depth: null, compact: false, customInspect: true }));
 
-console.log("-------------------- LIBRARY config:");
-console.log(util.inspect(libraryConfig, { colors: true, depth: null, compact: false, customInspect: true }));
+// console.log("-------------------- LIBRARY config:");
+// console.log(util.inspect(libraryConfig, { colors: true, depth: null, compact: false, customInspect: true }));
 
 // console.log("-------------------- READER config:");
 // console.log(util.inspect(readerConfig, { colors: true, depth: null, compact: false, customInspect: true }));
