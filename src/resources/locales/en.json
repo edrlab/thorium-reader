@@ -261,7 +261,7 @@
             "tracks": "Tracks"
         },
         "author": "Author",
-        "cancelledLcp": "This book can't be read because the LCP license has been cancelled.",
+        "cancelledLcp": "This book can't be read because the LCP licence has been cancelled.",
         "certificateRevoked": "Certificate is revoked",
         "certificateSignatureInvalid": "Certificate signature is invalid",
         "cover": {
@@ -270,31 +270,33 @@
         "duration": {
             "title": "Duration"
         },
-        "expiredLcp": "This book can't be read because the LCP license has expired.",
+        "expiredLcp": "This book can't be read because the LCP licence has expired.",
         "lcpEnd": "End",
         "lcpRightsCopy": "Copied characters",
         "lcpRightsPrint": "Printed pages",
         "lcpStart": "Start",
-        "licenseOutOfDate": "License is out of date",
-        "licenseSignatureDateInvalid": "License signature date is invalid",
-        "licenseSignatureInvalid": "License signature is invalid",
+        "licenseOutOfDate": "Licence is out of date",
+        "licenseSignatureDateInvalid": "Licence signature date is invalid",
+        "licenseSignatureInvalid": "Licence signature is invalid",
         "progression": {
             "title": "Progression"
         },
         "renewButton": "Renew",
         "returnButton": "Return",
-        "returnedLcp": "This book can't be read because the LCP license has been returned.",
-        "revokedLcp": "This book can't be read because the LCP license has been revoked.",
+        "returnedLcp": "This book can't be read because the LCP licence has been returned.",
+        "revokedLcp": "This book can't be read because the LCP licence has been revoked.",
         "seeLess": "See less",
         "seeMore": "See more",
         "title": "Title",
         "userKeyCheckInvalid": "Passphrase is incorrect",
         "markAsRead": "Mark as read",
+        "licenceLCP": "Licence (LCP)",
         "day": "day",
         "days": "days",
         "expired": "Loan expired",
         "read": "Read",
-        "licensed": "Licensed"
+        "licensed": "Licensed",
+        "timeLeft": "Left"
     },
     "reader": {
         "annotations": {

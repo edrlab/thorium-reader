@@ -23,6 +23,7 @@ import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationLcp: Partial<Pick<PublicationView, "lcp" | "lcpRightsCopies">>;
+    remainingDays?: string;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -59,16 +60,16 @@ class LcpInfo extends React.Component<IProps, undefined> {
         const lcpRightsCopy = (lcp?.rights?.copy) ? lcp.rights.copy : 0;
         const lcpRightsCopies = publicationLcp.lcpRightsCopies ?? 0;
 
-        const lcpRightsStartDate = (lcp?.rights?.start) ? lcp.rights.start : undefined;
-        let lcpRightsStartDateStr: string | undefined;
-        if (lcpRightsStartDate) {
-            try {
-                lcpRightsStartDateStr = moment(lcpRightsStartDate).format("LLL");
-            } catch (err) {
-                debug(err);
-                lcpRightsStartDateStr = lcpRightsStartDate;
-            }
-        }
+        // const lcpRightsStartDate = (lcp?.rights?.start) ? lcp.rights.start : undefined;
+        // let lcpRightsStartDateStr: string | undefined;
+        // if (lcpRightsStartDate) {
+        //     try {
+        //         lcpRightsStartDateStr = moment(lcpRightsStartDate).format("LLL");
+        //     } catch (err) {
+        //         debug(err);
+        //         lcpRightsStartDateStr = lcpRightsStartDate;
+        //     }
+        // }
 
         const lcpRightsEndDate = (lcp?.rights?.end) ? lcp.rights.end : undefined;
         let lcpRightsEndDateStr: string | undefined;
@@ -105,7 +106,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
         return (
             <>
                 <div className={stylePublication.publicationInfo_heading}>
-                    <h4>LCP</h4>
+                    <h4>{__("publication.licenceLCP")}</h4>
                 </div>
                 <div className={classNames(stylesBookDetailsDialog.allowUserSelect)}>
                     {(lsdStatus &&
@@ -134,8 +135,16 @@ class LcpInfo extends React.Component<IProps, undefined> {
                             <br /><br />
                         </>
                     }
+                    {lcpRightsEndDateStr ? 
+                    <>
+                        <strong>{__("publication.timeLeft")}: </strong>
+                        <span>{this.props.remainingDays} ({lcpRightsEndDateStr})</span>
+                        <br />
+                    </>
+                    : <></>
+                    }
 
-                    {lcpRightsStartDateStr && <>
+                    {/* {lcpRightsStartDateStr && <>
                         <strong>{__("publication.lcpStart")}: </strong><span>{lcpRightsStartDateStr}</span>
                         <br />
                     </>}
@@ -144,7 +153,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
                         <strong>{__("publication.lcpEnd")}: </strong><span>{lcpRightsEndDateStr}</span>
                         <br />
                         <br />
-                    </>}
+                    </>} */}
 
                     {lcpRightsCopy ? <>
                         <strong>{__("publication.lcpRightsCopy")}: </strong>

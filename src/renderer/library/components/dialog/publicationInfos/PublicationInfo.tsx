@@ -214,9 +214,6 @@ const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPubl
         if (props.publicationViewMaybeOpds?.lcp) {
             controlsComponent = () => (<CatalogLcpControls publicationView={props.publicationViewMaybeOpds as PublicationView}
                 isReading={props.isReading}
-                hasEnded={props.hasEnded}
-                hasTimer={props.hasTimer}
-                remainingDays={props.remainingDays}
                  />);
         } else {
             controlsComponent = () => (<CatalogControls publicationView={props.publicationViewMaybeOpds as PublicationView} isReading={props.isReading} />);
@@ -244,6 +241,7 @@ const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPubl
             divinaContinousEqualTrue={undefined}
             readerReadingLocation={undefined}
             closeDialogCb={props.closeDialog}
+            remainingDays={props.remainingDays}
         >
         </PublicationInfoContent>
     );

@@ -56,6 +56,7 @@ export interface IProps {
     translator: Translator;
     onClikLinkCb?: (tag: IOpdsBaseLinkView) => () => void | undefined;
     closeDialogCb: () => void;
+    remainingDays?: string;
 }
 
 const Duration = (props: {
@@ -361,7 +362,7 @@ const ProgressionDetails = (props: any) => {
 export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> = (props) => {
 
     // tslint:disable-next-line: max-line-length
-    const { closeDialogCb, readerReadingLocation, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication: r2Publication_, manifestUrlR2Protocol, handleLinkUrl, publicationViewMaybeOpds, ControlComponent, TagManagerComponent, translator, onClikLinkCb, focusWhereAmI } = props;
+    const { closeDialogCb, readerReadingLocation, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication: r2Publication_, manifestUrlR2Protocol, handleLinkUrl, publicationViewMaybeOpds, ControlComponent, TagManagerComponent, translator, onClikLinkCb, focusWhereAmI, remainingDays } = props;
     const __ = translator.translate;
 
     const r2Publication = React.useMemo(() => {
@@ -510,7 +511,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                         </div>
                     </section>
                     {(publicationViewMaybeOpds.lcp ? <section className={stylePublication.publicationInfo_lcpInfo_content}>
-                        <LcpInfo publicationLcp={publicationViewMaybeOpds} />
+                        <LcpInfo publicationLcp={publicationViewMaybeOpds} remainingDays={remainingDays} />
                     </section> : <></>)}
                     <TagManagerComponent />
                     <Progression

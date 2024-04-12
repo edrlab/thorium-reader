@@ -30,19 +30,12 @@ import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg
 import * as ReadBook from "readium-desktop/renderer/assets/icons/readBook-icon.svg";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
-import classNames from "classnames";
-import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-icon.svg";
-import * as CalendarExpiredIcon from "readium-desktop/renderer/assets/icons/calendarExpired-icon.svg";
-import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationView: PublicationView;
     isReading?: boolean;
-    hasEnded?: boolean;
-    hasTimer?: boolean;
-    remainingDays?: string;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -127,10 +120,6 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
                                 {__("publication.returnButton")}
                             </button>
                         )} /> : <></>
-                }
-                {
-                    this.props.hasTimer ? <div className={classNames(stylesPublications.lcpIndicator, this.props.hasEnded ? stylesPublications.lcp_over : "")}><SVG ariaHidden svg={this.props.hasEnded ? CalendarExpiredIcon : CalendarIcon} />{this.props.remainingDays}</div>
-                        : <></>
                 }
                 <DeletePublicationConfirm
                     trigger={(

@@ -578,11 +578,13 @@ declare namespace typed_i18n {
   readonly "title": string,
   readonly "userKeyCheckInvalid": string,
   readonly "markAsRead": string,
+  readonly "licenceLCP": string,
   readonly "day": string,
   readonly "days": string,
   readonly "expired": string,
   readonly "read": string,
-  readonly "licensed": string
+  readonly "licensed": string,
+  readonly "timeLeft": string
 };
   (_: "publication.accessibility", __?: {}): {
   readonly "accessModeSufficient": { readonly "textual": string },
@@ -684,11 +686,13 @@ declare namespace typed_i18n {
   (_: "publication.title", __?: {}): string;
   (_: "publication.userKeyCheckInvalid", __?: {}): string;
   (_: "publication.markAsRead", __?: {}): string;
+  (_: "publication.licenceLCP", __?: {}): string;
   (_: "publication.day", __?: {}): string;
   (_: "publication.days", __?: {}): string;
   (_: "publication.expired", __?: {}): string;
   (_: "publication.read", __?: {}): string;
   (_: "publication.licensed", __?: {}): string;
+  (_: "publication.timeLeft", __?: {}): string;
   (_: "reader", __?: {}): {
   readonly "annotations": {
     readonly "Color": string,
