@@ -129,6 +129,8 @@ console.log(JSON.stringify(externals, null, "  "));
 //                 // mode: "local",
 //                 // exportOnlyLocals: true,
 //                 // exportGlobals: true,
+//                 namedExport: false,
+//                 exportLocalsConvention: 'as-is',
 //                 localIdentName: "[local]",
 //             },
 //             // modules: nodeEnv !== "production" && false ? { // MUST USE STRICT BASE64, NO PATH DEPENDENT (OTHERWISE BREAK CROSS-FILE CSS CLASSES WITH IDENTICAL NAMES, E.G. SUBCLASSES IN NESTED STATEMENTS)
@@ -183,6 +185,8 @@ const scssLoaderConfig = [
                 // mode: "local",
                 // exportOnlyLocals: true,
                 // exportGlobals: true,
+                namedExport: false,
+                exportLocalsConvention: 'as-is',
                 localIdentName: "[local]",
             },
             // modules: nodeEnv !== "production" && false ? { // MUST USE STRICT BASE64, NO PATH DEPENDENT (OTHERWISE BREAK CROSS-FILE CSS CLASSES WITH IDENTICAL NAMES, E.G. SUBCLASSES IN NESTED STATEMENTS)
