@@ -1,4 +1,22 @@
 module.exports = {
+    ignorePatterns: [
+        ".vscode/*",
+        ".history/*",
+        ".github/*",
+        ".git/*",
+        "dist/*",
+        "docs/*",
+        "img/*",
+        "node_modules/*",
+        "resources/*",
+        "external-assets/*",
+        "scripts/*",
+        "src/typings/*",
+        "src/resources/*",
+        "src/renderer/assets/*",
+        "src/renderer/reader/pdf/*"
+    ],
+    // ignorePatterns: [ "*.*" ],
     parser: "@typescript-eslint/parser",
     env: {
         node: true,
@@ -6,7 +24,6 @@ module.exports = {
         es6: true,
         es2020: true,
     },
-    // ignorePatterns: [ "*.*" ],
     parserOptions: {
         project: true,
         tsconfigRootDir: __dirname,
