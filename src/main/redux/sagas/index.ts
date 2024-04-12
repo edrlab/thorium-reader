@@ -24,7 +24,7 @@ import * as persist from "./persist";
 import * as reader from "./reader";
 import * as streamer from "./streamer";
 import * as win from "./win";
-import * as telemetry from "./telemetry";
+// import * as telemetry from "./telemetry";
 import * as lcp from "./lcp";
 import * as catalog from "./catalog";
 
@@ -111,7 +111,7 @@ export function* rootSaga() {
 
     // call telemetry before app init state
     // need to track the previous state version before update in initSuccess.build
-    yield call(telemetry.collectSaveAndSend);
+    //yield call(telemetry.collectSaveAndSend);
 
     // app initialized
     yield put(appActions.initSuccess.build());
