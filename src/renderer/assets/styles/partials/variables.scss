@@ -15,6 +15,7 @@ $color-palette: (
     --scrollbar-thumb: #98989d,
     --color-disabled: #61646B,
     --color-error: #fedbd8,
+    --color-error-dark: red,
     --color-success: #ECFEF7,
   ),
   dark: (
@@ -31,6 +32,7 @@ $color-palette: (
     --scrollbar-thumb: #98989d,
     --color-disabled: #a7a9b3,
     --color-error: #4f1d1d,
+    --color-error-dark: #F590A9,
     --color-success: #121d19,
 
   /*

@@ -173,7 +173,7 @@ nav + nav + .breadcrumb + .main {
 }
 
 .color_red {
-  color: red;
+  color: var(--color-error-dark);
 }
 
 .d_none {

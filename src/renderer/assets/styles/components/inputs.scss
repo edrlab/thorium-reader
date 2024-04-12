@@ -170,14 +170,14 @@ select {
 
 
 .passphrase_error {
-  color: red;
+  color: var(--color-error-dark);
   display: flex;
   align-items: center;
   gap: 5px;
   margin: 0;
 
   svg {
-    fill: red;
+    fill: var(--color-error-dark);
     height: 12px;
   }
 }

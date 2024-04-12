@@ -70,8 +70,8 @@
         transition: 200ms;
 
         &:hover {
-          fill: red;
-          color: red;
+          fill: var(--color-error-dark);
+          color: var(--color-error-dark);
         }
       }
     }

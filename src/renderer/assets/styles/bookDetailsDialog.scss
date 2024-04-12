@@ -335,6 +335,6 @@
   }
 
   &_unavailable {
-    color: red;
+    color: var(--color-error-dark);
   }
 }

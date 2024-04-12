@@ -181,8 +181,8 @@
     }
 
     &:hover svg {
-      color: red;
-      fill: red;
+      color: var(--color-error-dark);
+      fill: var(--color-error-dark);
     }
   }
 }
