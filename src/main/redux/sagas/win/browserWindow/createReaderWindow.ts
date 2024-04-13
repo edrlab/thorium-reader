@@ -43,7 +43,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
             devTools: ENABLE_DEV_TOOLS, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
             nodeIntegration: true,
             contextIsolation: false,
-            nodeIntegrationInWorker: false,
+            nodeIntegrationInWorker: true,
             sandbox: false,
             webSecurity: true,
             webviewTag: true,

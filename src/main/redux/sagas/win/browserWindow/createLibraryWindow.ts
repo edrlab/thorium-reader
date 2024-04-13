@@ -54,7 +54,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
             devTools: ENABLE_DEV_TOOLS, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
             nodeIntegration: true,
             contextIsolation: false,
-            nodeIntegrationInWorker: false,
+            nodeIntegrationInWorker: true,
             sandbox: false,
             webSecurity: true,
             webviewTag: false,
