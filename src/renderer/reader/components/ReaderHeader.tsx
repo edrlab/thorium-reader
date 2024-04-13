@@ -137,6 +137,8 @@ interface IState {
     forceTTS: boolean;
 }
 
+const LANG_DIVIDER_PREFIX = "------------";
+
 export class ReaderHeader extends React.Component<IProps, IState> {
 
     private enableFullscreenRef: React.RefObject<HTMLButtonElement>;
@@ -147,6 +149,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
     private onwheel: React.WheelEventHandler<HTMLButtonElement>;
     private timerFXLZoomDebounce: number | undefined;
+
+    private orderedVoices: SpeechSynthesisVoice[];
+    private languages: string[];
 
     constructor(props: IProps) {
         super(props);
@@ -191,6 +196,10 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                 fixedLayoutZoomPercent(this.state.fxlZoomPercent);
             }, 600);
         }, 200).bind(this);
+
+        // DEBUG: TTS testing
+        this.orderedVoices = [];
+        this.getVoices();
     }
 
     public componentDidMount() {
@@ -243,6 +252,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();
         }
+
+        this.getVoices();
     }
 
     private registerAllKeyboardListeners() {
@@ -326,37 +337,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
-        const LANG_DIVIDER_PREFIX = "------------";
-        let prevLang: string | undefined;
-        // WARNING: .sort() is in-place same-array mutation! (not a new array)
-        const _orderedVoices = speechSynthesis.getVoices().sort((a: SpeechSynthesisVoice, b: SpeechSynthesisVoice) => {
-            if(a.lang < b.lang) { return -1; }
-            if(a.lang > b.lang) { return 1; }
-            // a.lang === b.lang ...
-            if(a.name < b.name) { return -1; }
-            if(a.name > b.name) { return 1; }
-            return 0;
-        }).reduce((acc, curr) => {
-            if (!prevLang || prevLang !== curr.lang) {
-                acc.push({
-                    default: false,
-                    lang: curr.lang,
-                    localService: false,
-                    name: LANG_DIVIDER_PREFIX,
-                    voiceURI: "",
-                });
-            }
-            prevLang = curr.lang;
-            acc.push(curr);
-            return acc;
-        }, [] as SpeechSynthesisVoice[]);
-
         const isRTL = this.props.isRTLFlip();
 
         const showAudioTTSToolbar = (this.props.currentLocation && !this.props.currentLocation.audioPlaybackInfo) &&
             !this.props.isDivina && !this.props.isPdf;
 
         const useMO = !this.state.forceTTS && this.props.publicationHasMediaOverlays;
+
+        let currentLanguage = this.props.ttsVoice ? this.props.ttsVoice.lang : "en-us";
 
         return (
             <nav
@@ -628,20 +616,32 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         </li>
                                         {!useMO && (
                                             <li className={stylesReader.ttsSelectVoice}>
+                                                <select title={__("settings.language.languageChoice") }
+                                                    onChange={(ev) => {
+                                                        currentLanguage = ev.target.value;
+                                                    }}
+                                                >
+                                                    {                                                        
+                                                        this.languages.map((lang, i) => {
+                                                            return (<option key={`lang${i}`} value={lang}>{lang}</option>);
+                                                        })
+                                                    }
+                                                </select>
+
                                                 <select title={__("reader.tts.voice")}
                                                     onChange={(ev) => {
                                                         const i = parseInt(ev.target.value.toString(), 10);
-                                                        let voice = i === 0 ? null : _orderedVoices[i - 1];
+                                                        let voice = i === 0 ? null : this.orderedVoices.filter((voice) => voice.lang.localeCompare(currentLanguage) == 0)[i - 1];
                                                         // alert(`${i} ${voice.name} ${voice.lang} ${voice.default} ${voice.voiceURI} ${voice.localService}`);
                                                         if (voice && voice.name === LANG_DIVIDER_PREFIX) {
                                                             // voice = null;
-                                                            voice = _orderedVoices[i];
+                                                            voice = this.orderedVoices.filter((voice) => voice.lang.localeCompare(currentLanguage) == 0)[i];
                                                         }
                                                         this.props.handleTTSVoice(voice ? voice : null);
                                                     }}
                                                     value={
                                                         this.props.ttsVoice ?
-                                                            _orderedVoices.findIndex((voice) => {
+                                                            this.orderedVoices.filter((voice) => voice.lang.localeCompare(currentLanguage) == 0).findIndex((voice) => {
                                                                 // exact match
                                                                 return voice.name === this.props.ttsVoice.name && voice.lang === this.props.ttsVoice.lang && voice.voiceURI === this.props.ttsVoice.voiceURI && voice.default === this.props.ttsVoice.default && voice.localService === this.props.ttsVoice.localService;
                                                             }) + 1 : 0
@@ -649,9 +649,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 >
                                                     {
                                                         [].concat((<option key={"tts0"} value="{i}">{`${__("reader.tts.default")}`}</option>),
-                                                            _orderedVoices.map((voice, i) => {
+                                                            this.orderedVoices.filter((voice) => voice.lang.localeCompare(currentLanguage) == 0).map((voice, i) => {
                                                                 // SpeechSynthesisVoice
-                                                                return (<option key={`tts${i + 1}`} value={i + 1}>{`${voice.name}${voice.name === LANG_DIVIDER_PREFIX ? ` [${voice.lang}]` : ""}${voice.default ? " *" : ""}`}</option>);
+                                                                if (voice.name === LANG_DIVIDER_PREFIX) {
+                                                                    return (<optgroup key={`tts${i + 1}`} label={voice.lang} hidden />);
+                                                                } else {
+                                                                    return (<option key={`tts${i + 1}`} value={i + 1}>{`${voice.name} (${voice.lang})`}</option>);
+                                                                }
                                                             }))
                                                     }
                                                 </select>
@@ -859,6 +863,35 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
         button.focus();
     }
+
+    // These functions should probably find a better home
+    private getVoices = () => {
+        let prevLang: string | undefined;
+        
+        this.orderedVoices = speechSynthesis.getVoices().sort((a: SpeechSynthesisVoice, b: SpeechSynthesisVoice) => {
+            if(a.lang < b.lang) { return -1; }
+            if(a.lang > b.lang) { return 1; }
+            // a.lang === b.lang ...
+            if(a.name < b.name) { return -1; }
+            if(a.name > b.name) { return 1; }
+            return 0;
+        }).reduce((acc, curr) => {
+            if (!prevLang || prevLang !== curr.lang) {
+                acc.push({
+                    default: false,
+                    lang: curr.lang.trim().toLocaleLowerCase(),
+                    localService: false,
+                    name: LANG_DIVIDER_PREFIX,
+                    voiceURI: "",
+                });
+            }
+            prevLang = curr.lang;
+            acc.push(curr);
+            return acc;
+        }, [] as SpeechSynthesisVoice[]);
+
+        this.languages = this.orderedVoices.filter((voice) => voice.name === LANG_DIVIDER_PREFIX).map((voice) => voice.lang);
+    };
 }
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
