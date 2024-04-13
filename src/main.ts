@@ -5,6 +5,26 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    require("electron-reloader")(module, {
+        debug: true,
+        watchRenderer: false,
+        ignore: [
+            // /\.map$/,
+            /[/\\]\./,
+            /node_modules[/\\](?!@r2-lcp-js)/,
+            /[/\\]external-assets[/\\]/,
+            /[/\\]test[/\\]/,
+            /[/\\]src[/\\](preload|renderer|main)[/\\]/,
+            /[/\\]src[/\\]main[/\\]pdf[/\\]extract[/\\]/,
+            /[/\\]src[/\\]main[/\\]redux[/\\]sagas[/\\]win[/\\]browserWindow[/\\]createLibraryWindow[/\\]/,
+            /[/\\]src[/\\]main[/\\]redux[/\\]sagas[/\\]win[/\\]browserWindow[/\\]createReaderWindow[/\\]/,
+            /[/\\]src[/\\]main[/\\]redux[/\\]sagas[/\\]index[/\\]/,
+        ],
+    });
+} catch (_) {}
+
 import * as debug_ from "debug";
 import * as path from "path";
 import { commandLineMainEntry } from "readium-desktop/main/cli";
