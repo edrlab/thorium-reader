@@ -21,9 +21,9 @@
             margin: 10px 0;
             width: inherit;
 
-            @media screen and (width <= 1024px) {
-                height: 125px;
-            }
+            // @media screen and (width <= 1024px) {
+            //     height: 125px;
+            // }
 
             &_inputs {
                 display: flex;
@@ -195,6 +195,7 @@
         min-height: 100px;
         // border: 1px solid #e2e2e2;
         display: flex;
+        cursor: pointer;
 
         img {
             object-fit: contain;
@@ -233,7 +234,7 @@
         height: 100px;
         margin-right: 2px;
 
-        &:has(.button_nav_primary) {
+        &:has(.button_nav_primary), &:has(.dropdown_trigger) {
             justify-content: center;
         }
 

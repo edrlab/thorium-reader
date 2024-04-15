@@ -13,6 +13,10 @@ $setting_color: var(--color-blue);
         accent-color: $setting_color;
     }
 
+    @media screen and (width <= 800px) {
+        height: 512px;
+    }
+
     .section {
         padding-bottom: 15px ;
         border-bottom: 3px solid var(--color-light-grey);
@@ -24,6 +28,20 @@ $setting_color: var(--color-blue);
 
         input[type="range"] {
             width: 150px;
+
+            &.range_inactive {
+                accent-color: grey;
+            
+                &::-webkit-slider-thumb {
+                    width: 2em;
+                    padding: 0.25em;
+                    border: 1px solid var(--color-disabled);
+                    border-radius: 50%;
+                    box-shadow: 0 0 .5em #FFF inset;
+                    background: linear-gradient(#888, #FFF) content-box,
+                        linear-gradient(-90deg, #888, #DDD) border-box;
+                }
+            }
         }
         
         .btn_primary {
@@ -70,7 +88,7 @@ $setting_color: var(--color-blue);
     button {
         height: 30px;
         transition: 200ms;
-        width: 80%;
+        // width: 80%;
         display: flex;
         align-items: center;
         justify-content: left;
@@ -234,13 +252,32 @@ $setting_color: var(--color-blue);
     }
 }
 
+.reset_button {
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    border-radius: 5px;
+    transition: 200ms;
+    box-sizing: content-box;
+    border: 1px solid transparent;
+
+    &:active, &:hover {
+        border: 1px solid var(--color-blue);
+        background-color: var(--color-light-blue)!important;
+    }
+
+    svg {
+        color: var(--color-blue);
+    }
+}
+
 .settings_tab {
     margin: 20px 25px 0!important;
 
     &_container {
     margin: 35px;
 
-    &_reading{
+    &_reading {
         margin: 0 25px;
 
         .size_range {
@@ -294,25 +331,6 @@ $setting_color: var(--color-blue);
                                     linear-gradient(-90deg, #888, #DDD) border-box;
                             }
                         }
-
-                    .reset_button {
-                        width: 20px;
-                        height: 20px;
-                        padding: 5px;
-                        border-radius: 5px;
-                        transition: 200ms;
-                        box-sizing: content-box;
-                        border: 1px solid transparent;
-
-                        &:active, &:hover {
-                            border: 1px solid var(--color-blue);
-                            background-color: var(--color-light-blue)!important;
-                        }
-
-                        svg {
-                            color: var(--color-blue);
-                        }
-                    }
 
                     input[type="range"] {
                         width: 150px;
@@ -509,10 +527,6 @@ div[data-radix-popper-content-wrapper] {
 
 .settings_reading {
     &_text {
-        h4 {
-        margin-bottom: 10px;
-        }
-
         input[type="range"] {
             width: 200px;
             height: 5px;

@@ -31,6 +31,18 @@ body {
   width: 100%;
   font: 12px Nunito, sans-serif;
   background: var(--color-secondary);
+
+  &[data-theme="dark"] {
+    .modal_dialog {
+      box-shadow: 0 0 5px 2px black;
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .modal_dialog {
+      box-shadow: 0 0 5px 2px black;
+    }
+  }
 }
 
 input {
