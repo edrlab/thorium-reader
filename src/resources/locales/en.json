@@ -291,12 +291,14 @@
         "userKeyCheckInvalid": "Passphrase is incorrect",
         "markAsRead": "Mark as read",
         "licenceLCP": "Licence (LCP)",
+        "remainingTime": "Loans (remaining days)",
         "day": "day",
         "days": "days",
         "expired": "Loan expired",
         "read": "Read",
         "licensed": "Licensed",
-        "timeLeft": "Left"
+        "timeLeft": "Left",
+        "actions": "Actions"
     },
     "reader": {
         "annotations": {

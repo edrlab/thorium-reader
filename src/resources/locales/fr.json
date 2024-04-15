@@ -291,11 +291,13 @@
         "userKeyCheckInvalid": "Mot de passe incorrect",
         "markAsRead": "Marquer comme lu",
         "licenceLCP": "Licence (LCP)",
+        "remainingTime": "Prêts (jours restant)",
         "day": "jour",
         "days": "jours",
         "expired": "Prêt expiré",
         "read": "Lu",
-        "licensed": "Sous licence"
+        "licensed": "Sous licence",
+        "actions": "Actions"
     },
     "reader": {
         "annotations": {
@@ -429,7 +431,7 @@
                 "reset": "Réinitialiser",
                 "title": "Configuration"
             },
-            "scrolled": "Défilé",
+            "scrolled": "Défilement vertical",
             "spacing": "Espacement",
             "text": "Texte",
             "theme": {

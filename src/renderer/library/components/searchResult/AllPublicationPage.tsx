@@ -86,14 +86,25 @@ import PublicationCard from "../publication/PublicationCard";
 import classNames from "classnames";
 import * as Popover from "@radix-ui/react-popover";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
-import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
+// import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
 import { useSearchParams } from "react-router-dom";
 // import * as FilterIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
 // import * as DeleteFilter from "readium-desktop/renderer/assets/icons/deleteFilter-icon.svg";
 // import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-icon.svg";
+import * as CalendarExpiredIcon from "readium-desktop/renderer/assets/icons/calendarExpired-icon.svg";
+// import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
 import AboutThoriumButton from "../catalog/AboutThoriumButton";
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
+import Menu from "readium-desktop/renderer/common/components/menu/Menu";
+import CatalogMenu from "../publication/menu/CatalogMenu";
+import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
+
+
 // import GridTagButton from "../catalog/GridTagButton";
 
 // import {
@@ -591,12 +602,9 @@ interface ITableCellProps_Value_Cover {
 }
 const CellCoverImage: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Cover> = (props) => {
     return (<div className={stylesPublication.cell_coverImg}>
-        <PublicationInfoLibWithRadix
-            publicationView={{ identifier: props.value.publicationViewIdentifier }}
-        >
-            <PublicationInfoLibWithRadixTrigger asChild>
                 <a
                     title={`${props.value.title} (${props.__("catalog.bookInfo")})`}
+                    onClick={() => props.openReader(props.value.publicationViewIdentifier)}
                 >
                     <img
                         src={
@@ -610,10 +618,6 @@ const CellCoverImage: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
                         alt={""}
                         role="presentation" />
                 </a>
-            </PublicationInfoLibWithRadixTrigger>
-            <PublicationInfoLibWithRadixContent />
-        </PublicationInfoLibWithRadix>
-
     </div>);
 };
 
@@ -1128,6 +1132,15 @@ interface IColumnValue_Title extends IColumnValue_BaseString {
 interface ITableCellProps_Value_Title {
     value: IColumnValue_Title;
 }
+
+interface ITableCellProps_Value_Remaining {
+    value: IColumnValue_Remain;
+}
+
+interface ITableCellProps_Value_Actions {
+    value: IColumnValue_Actions;
+}
+
 const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Title> = (props) => {
 
     // props.value.label
@@ -1144,20 +1157,85 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
     }}
         dir={pubTitleIsRTL ? "rtl" : undefined}
     >
-        <PublicationInfoLibWithRadix
-            publicationView={{ identifier: props.value.publicationViewIdentifier }}
-        >
-            <PublicationInfoLibWithRadixTrigger asChild>
                 <a
                     className={stylesPublication.cell_bookTitle}
                     title={`${pubTitleStr} (${props.__("catalog.bookInfo")})`}
+                    onClick={() => props.openReader(props.value.publicationViewIdentifier)}
                 >
                     {pubTitleStr}
                 </a>
-            </PublicationInfoLibWithRadixTrigger>
-            <PublicationInfoLibWithRadixContent />
-        </PublicationInfoLibWithRadix>
     </div>);
+};
+
+const CellRemainingDays: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Remaining> = (props) => {
+    const remainingDays = props.value.remaining;
+    const hasEnded = props.value.hasEnded;
+    const hasTimer = props.value.hasTimer;
+    const isLcp = props.value.isLcp;
+    const pubEndRights = props.value.pubEndRights;
+    
+    const link = (t: string) => {
+        return <a
+            title={`${t} (${props.__("header.searchPlaceholder")})`}
+            tabIndex={0}
+            onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    // props.column.setFilter(t);
+                    props.setShowColumnFilters(true, props.column.id, t);
+                }
+            }}
+
+            onClick={(e) => {
+                e.preventDefault();
+                // props.column.setFilter(t);
+                props.setShowColumnFilters(true, props.column.id, t);
+            }}>{t}</a>;
+    };
+
+    return (<div className={stylesPublication.cell_wrapper}>
+         {
+            hasTimer ?
+            <div className={stylesPublications.lcpIndicator}>
+                <SVG ariaHidden svg={hasEnded ? CalendarExpiredIcon : CalendarIcon} />
+                {link(remainingDays)}
+            </div>
+            : (isLcp && !pubEndRights) ?
+            <div className={stylesPublications.lcpIndicator}>
+                <SVG ariaHidden svg={KeyIcon} />
+                {props.__("publication.licensed")}
+            </div>
+            : <></>}
+    </div>);
+};
+
+const CellActions: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Actions> = (props) => {
+    const isReading = props.value.isReading;
+    const remainingDays = props.value.remaining;
+    const hasEnded = props.value.hasEnded;
+    const hasTimer = props.value.hasTimer;
+    const label = props.value.label;
+    const publication = props.value.publication;
+
+    return (
+        <div className={stylesPublication.cell_wrapper}
+        >
+            <Menu
+                button={(
+                    <SVG title={`${props.__("publication.actions")} (${label})`} svg={MenuIcon} />
+                )}
+            >
+                <CatalogMenu
+                    publicationView={publication as PublicationView}
+                    isReading={isReading}
+                    hasEnded={hasEnded}
+                    hasTimer={hasTimer}
+                    remainingDays={remainingDays}
+                />
+            </Menu>
+        </div>
+
+    );
 };
 
 const TableCell: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_StringValue> = (props) => {
@@ -1176,11 +1254,31 @@ interface ITableCellProps_StringValue {
     value: string;
 }
 
+interface IColumnValue_Remain {
+    remaining: string;
+    hasEnded: boolean;
+    isLcp: boolean;
+    pubEndRights: string;
+    hasTimer: boolean;
+}
+
+interface IColumnValue_Actions {
+    isReading: boolean;
+    label: string;
+    publication: PublicationView | IOpdsPublicationView;
+    remaining: string;
+    hasEnded: boolean;
+    isLcp: boolean;
+    pubEndRights: string;
+    hasTimer: boolean;
+}
+
 interface IColumns {
     colCover: IColumnValue_Cover,
     colTitle: IColumnValue_Title;
     colAuthors: IColumnValue_Authors;
     colPublishers: IColumnValue_Publishers;
+    colRemainingDays: IColumnValue_Remain;
     colLanguages: IColumnValue_Langs;
     colPublishedDate: IColumnValue_Date;
     colDescription: string;
@@ -1189,6 +1287,7 @@ interface IColumns {
     colLastReadTimestamp: IColumnValue_Date;
     colTags: IColumnValue_Tags;
     colDuration: string;
+    colActions: IColumnValue_Actions;
 
     col_a11y_accessibilitySummary: string; // string | IStringMap => convertMultiLangStringToString()
     // col_a11y_accessMode: IColumnValue_A11y_StringArray; // string[]
@@ -1321,6 +1420,33 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 }
             }
 
+            const isLcp = publicationView.lcp != (undefined || null);
+            const date = new Date();
+            const hasEnded = publicationView.lcp?.rights.end < date.toISOString();
+            const pubEndRights = publicationView.lcp?.rights.end;
+            let hasTimer: boolean;
+
+            const findRemainingTime = () => {
+                const differenceInMs = new Date(pubEndRights).getTime() - date.getTime();
+                const differenceInDays = Math.ceil(differenceInMs / (1000 * 60 * 60 * 24));
+                let remainingDays: string;
+
+                pubEndRights != undefined ? hasTimer = true : false;
+
+                if (differenceInDays > 1) {
+                    remainingDays = `${differenceInDays} ${__("publication.days")}`;
+                } else if (differenceInDays === 1) {
+                    remainingDays = `${differenceInDays} ${__("publication.day")}`;
+                } else if (differenceInDays < 1) {
+                    remainingDays = `${__("publication.expired")}`;
+                } else {
+                    remainingDays = null;
+                }
+                return remainingDays;
+            };
+
+            const findRemainingDays = findRemainingTime();
+
             const langsArray = publicationView.languages ? publicationView.languages.map((lang) => {
 
                 // See FormatPublicationLanguage
@@ -1384,6 +1510,13 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     label: publicationView.authors ? publicationView.authors.join(", ") : "",
                     authors: publicationView.authors,
                 },
+                colRemainingDays: { // IColumnValue_Remain
+                    remaining: findRemainingDays,
+                    hasEnded: hasEnded,
+                    isLcp: isLcp,
+                    pubEndRights: pubEndRights,
+                    hasTimer: hasTimer,
+                },
                 colPublishers: { // IColumnValue_Publishers
                     label: publicationView.publishers ? publicationView.publishers.join(", ") : "",
                     publishers: publicationView.publishers,
@@ -1410,6 +1543,17 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 colDescription: description,
 
                 col_a11y_accessibilitySummary: strA11Summary,
+                colActions: { // IColumnValue_Actions
+                    isReading: publicationView.lastReadingLocation ? true : false,
+                    label: publicationView.documentTitle,
+                    publication: publicationView,
+                    remaining: findRemainingDays,
+                    hasEnded: hasEnded,
+                    isLcp: isLcp,
+                    pubEndRights: pubEndRights,
+                    hasTimer: hasTimer,
+
+                },
                 // col_a11y_accessMode: { // IColumnValue_A11y_StringArray
                 //     label: publicationView.a11y_accessMode?.length ? [].concat(publicationView.a11y_accessMode).sort().join(", ") : "",
                 //     strings: publicationView.a11y_accessMode,
@@ -1520,6 +1664,15 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
+                    Header: props.__("publication.remainingTime"),
+                    accessor: "colRemainingDays",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellRemainingDays,
+                    filter: "text", // because IColumnValue_BaseString instead of plain string
+                    sortType: sortFunction,
+                },
+                {
                     Header: props.__("catalog.lang"),
                     accessor: "colLanguages",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -1598,6 +1751,15 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     // @ts-expect-error
                     Cell: CellDescription,
                     sortType: sortFunction,
+                },
+                {
+                    Header: props.__("publication.actions"),
+                    accessor: "colActions",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellActions,
+                    disableFilters: true,
+                    disableSortBy: true,
                 },
                 // {
                 //     Header: "accessMode",
@@ -2003,6 +2165,10 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                                     "160px" :
                                                     column.id === "colAuthors" ?
                                                         "160px" :
+                                                        column.id === "colRemainingDays" ?
+                                                        "150px" :
+                                                        column.id === "colActions" ?
+                                                        "60px" :
                                                         "100px";
 
                                 return (<th
@@ -2018,10 +2184,17 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                         minWidth: W,
                                         maxWidth: W,
                                         borderBottom: "2px solid var(--color-blue)",
+                                        position: "relative",
                                     }}
                                     className={stylesPublication.allBook_table_head}
                                 >
                                     {
+                                        !column.canSort ? 
+                                        <button style={{position: "absolute", top: "8px", left: "5px"}} onClick={(e) => e.preventDefault()}>
+                                        {
+                                            column.render("Header")
+                                        }</button>
+                                        :
                                         columnIsSortable ?
                                             <><button
                                                 onClick={() => {
