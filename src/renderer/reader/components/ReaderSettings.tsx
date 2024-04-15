@@ -18,12 +18,10 @@ import * as VolumeUpIcon from "readium-desktop/renderer/assets/icons/volume-icon
 import * as ScrollableIcon from "readium-desktop/renderer/assets/icons/scroll-icon.svg";
 import * as PaginatedIcon from "readium-desktop/renderer/assets/icons/page-icon.svg";
 import * as TwoColsIcon from "readium-desktop/renderer/assets/icons/2cols-icon.svg";
-import * as AlignAutoIcon from "readium-desktop/renderer/assets/icons/align-auto-icon.svg";
 import * as AlignJustifyIcon from "readium-desktop/renderer/assets/icons/align-justify-icon.svg";
 import * as DockLeftIcon from "readium-desktop/renderer/assets/icons/dockleft-icon.svg";
 import * as DockRightIcon from "readium-desktop/renderer/assets/icons/dockright-icon.svg";
 import * as DockModalIcon from "readium-desktop/renderer/assets/icons/dockmodal-icon.svg";
-// import * as AlignLefttIcon from "readium-desktop/renderer/assets/icons/alignleft-icon.svg";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import { IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../pdf/common/pdfReader.type";
@@ -45,6 +43,7 @@ import * as ResetIcon from "readium-desktop/renderer/assets/icons/clock-reverse-
 import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-bold.svg";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import * as DefaultPageIcon from "readium-desktop/renderer/assets/icons/defaultPage-icon.svg";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps, IPopoverDialogProps {
@@ -190,11 +189,19 @@ export const FontSize = ({config: {fontSize}, set}: {config: Pick<ReaderConfig, 
         set({ fontSize: valueToString + "%" });
     };
 
+    console.log(currentSliderValue);
+
     return (
         <section>
             <h4>{__("reader.settings.fontSize")} ({fontSize})</h4>
             <div className={stylesSettings.size_range}>
-                <button onClick={() => click("out")} className={stylesSettings.scale_button}><span>-</span></button>
+            <button onClick={() => {
+                    const newValue = "100%";
+                    setCurrentSliderValue(newValue.replace(/%/g, ""));
+                    set({ fontSize: newValue });
+                }
+                } className={stylesSettings.reset_button} title="default value"><SVG ariaHidden svg={ResetIcon} /></button>
+                <button onClick={() => click("out")} className={stylesSettings.scale_button}><SVG ariaHidden svg={MinusIcon} /></button>
                 <input
                     type="range"
                     aria-labelledby="label_fontSize"
@@ -209,8 +216,9 @@ export const FontSize = ({config: {fontSize}, set}: {config: Pick<ReaderConfig, 
                         set({ fontSize: newValue + "%" });
                     }
                     }
+                    className={currentSliderValue === "100" ? stylesSettings.range_inactive : ""}
                 />
-                <button onClick={() => click("in")} className={stylesSettings.scale_button}><span>+</span></button>
+                <button onClick={() => click("in")} className={stylesSettings.scale_button}><SVG ariaHidden svg={PlusIcon} /></button>
             </div>
         </section>
     );
@@ -298,18 +306,18 @@ export const FontFamily = ({config: {font}, set}: {config: Pick<ReaderConfig, "f
                 <SVG ariaHidden svg={InfoIcon} />
                 <p>{__("reader.settings.infoCustomFont")}</p>
             </div>
-            <h4>{__("reader.settings.preview")}</h4>
-            <span
-                aria-hidden
-                style={{
-                    fontSize: "1.4em",
-                    lineHeight: "1.2em",
-                    display: "block",
-                    marginTop: "0.84em",
-                    marginBottom: "0.5em",
-                    fontFamily,
-                }}>{fontName}
-            </span>
+            <div style={{display: "flex", alignItems: "center", gap: "10px", marginTop: "20px"}}>
+                <h4>{__("reader.settings.preview")}:</h4>
+                <span
+                    aria-hidden
+                    style={{
+                        fontSize: "1.4em",
+                        lineHeight: "1.2em",
+                        display: "block",
+                        fontFamily,
+                    }}>{fontName}
+                </span>
+            </div>
         </div>
     );
 };
@@ -519,7 +527,7 @@ const ReadingDisplayCol = ({ config: { paged, colCount }, set, isPdf, pdfCol }: 
                     onValueChange={(v) => {
                         isPdf ? createOrGetPdfEventBus().dispatch("column", v === "auto" ? "1" : v === "1" ? "1" : "2") : set({ colCount: v });}}
                     >
-                        {isPdf ? <></> : <RadioGroupItem value="auto" description={`${__("reader.settings.column.auto")}`} svg={AlignJustifyIcon} disabled={false} />}
+                        {isPdf ? <></> : <RadioGroupItem value="auto" description={`${__("reader.settings.column.auto")}`} svg={DefaultPageIcon} disabled={false} />}
                         <RadioGroupItem value="1" description={`${__("reader.settings.column.one")}`} svg={AlignJustifyIcon} disabled={isPdf ? false : scrollable} />
                         <RadioGroupItem value="2" description={`${__("reader.settings.column.two")}`} svg={TwoColsIcon} disabled={isPdf ? false : scrollable} />
                 </RadioGroup.Root>
@@ -540,7 +548,7 @@ const ReadingDisplayAlign = ({ config: { align }, set }: { config: Pick<ReaderCo
             <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={align}
                     onValueChange={(v) => set({align: v})}
                 >
-                    <RadioGroupItem value="auto" description={`${__("reader.settings.column.auto")}`} svg={AlignAutoIcon} disabled={false} />
+                    <RadioGroupItem value="auto" description={`${__("reader.settings.column.auto")}`} svg={DefaultPageIcon} disabled={false} />
                     <RadioGroupItem value="justify" description={`${__("reader.settings.justify")}`} svg={AlignJustifyIcon} disabled={false} />
                     <RadioGroupItem value="start" description={`${__("reader.svg.left")}`} svg={AlignLeftIcon} disabled={false} />
             </RadioGroup.Root>
