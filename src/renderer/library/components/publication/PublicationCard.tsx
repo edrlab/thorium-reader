@@ -34,7 +34,7 @@ import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop
 import { PublicationInfoOpdsWithRadix, PublicationInfoOpdsWithRadixContent, PublicationInfoOpdsWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-icon.svg";
-import * as CalendarExpiredIcon from "readium-desktop/renderer/assets/icons/calendarExpired-icon.svg";
+// import * as CalendarExpiredIcon from "readium-desktop/renderer/assets/icons/calendarExpired-icon.svg";
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
 import classNames from "classnames";
@@ -186,7 +186,7 @@ class PublicationCard extends React.Component<IProps> {
                                     {
                                         hasTimer ? 
                                         <div className={stylesPublications.lcpIndicator}>
-                                            <SVG ariaHidden svg={hasEnded ? CalendarExpiredIcon : CalendarIcon} />
+                                            <SVG ariaHidden svg={hasEnded ? KeyIcon : CalendarIcon} />
                                             {remainingDays}
                                         </div>
                                         : (isLcp && !pubEndRights) ?

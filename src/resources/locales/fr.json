@@ -297,6 +297,7 @@
         "expired": "Prêt expiré",
         "read": "Lu",
         "licensed": "Sous licence",
+        "timeLeft": "Temps restant",
         "actions": "Actions"
     },
     "reader": {

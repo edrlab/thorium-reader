@@ -94,7 +94,7 @@ import { useSearchParams } from "react-router-dom";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-icon.svg";
-import * as CalendarExpiredIcon from "readium-desktop/renderer/assets/icons/calendarExpired-icon.svg";
+// import * as CalendarExpiredIcon from "readium-desktop/renderer/assets/icons/calendarExpired-icon.svg";
 // import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
 import AboutThoriumButton from "../catalog/AboutThoriumButton";
@@ -1197,7 +1197,7 @@ const CellRemainingDays: React.FC<ITableCellProps_Column & ITableCellProps_Gener
          {
             hasTimer ?
             <div className={stylesPublications.lcpIndicator}>
-                <SVG ariaHidden svg={hasEnded ? CalendarExpiredIcon : CalendarIcon} />
+                <SVG ariaHidden svg={hasEnded ? KeyIcon : CalendarIcon} />
                 {link(remainingDays)}
             </div>
             : (isLcp && !pubEndRights) ?
