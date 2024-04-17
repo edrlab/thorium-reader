@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import classNames from "classnames";
-import * as debug_ from "debug";
 import * as moment from "moment";
 import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -31,9 +30,6 @@ interface IBaseProps extends TranslatorProps {
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
-
-// Logger
-const debug = debug_("readium-desktop:renderer:publication-info:lcp-info");
 
 class LcpInfo extends React.Component<IProps, undefined> {
 

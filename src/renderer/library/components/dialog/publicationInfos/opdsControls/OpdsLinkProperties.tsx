@@ -52,7 +52,7 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
                     {children}
                 </span>
                 <br />
-            </div>
+            </div>;
 
         const stateInfo = (
             () => {
