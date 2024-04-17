@@ -13,8 +13,8 @@ $setting_color: var(--color-blue);
         accent-color: $setting_color;
     }
 
-    @media screen and (width <= 800px) {
-        height: 512px;
+    @media screen and (height <= 700px) {
+        height: 450px;
     }
 
     .section {

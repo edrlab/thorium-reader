@@ -1075,7 +1075,7 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
                     defaultSelectedKey={defaultKey}
                     refInputEl={goToRef}
                     allowsCustomValue
-                    isDisabled={!(isFixedLayoutNoPageList || r2Publication?.PageList)}
+                    isDisabled={!(isFixedLayoutNoPageList || r2Publication.PageList || isDivina || isPdf)}
                     onSelectionChange={(ev) => {
                         const val = ev?.toString();
                         if (!val || !goToRef?.current) {
@@ -1172,9 +1172,9 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const annotations = useSelector((state: IReaderRootState) => state.reader.annotation).map(([, v]) => v);
     const readerConfig = useSelector((state: IReaderRootState) => state.reader.config);
 
-    const isFixedLayoutPublication = r2Publication.Metadata?.Rendition?.Layout === "fixed";
-    const isFixedLayoutWithPageList = isFixedLayoutPublication && r2Publication.PageList;
-    const isFixedLayoutNoPageList = isFixedLayoutPublication && !isFixedLayoutWithPageList;
+    // const isFixedLayoutPublication = r2Publication.Metadata?.Rendition?.Layout === "fixed";
+    // const isFixedLayoutWithPageList = isFixedLayoutPublication && r2Publication.PageList;
+    // const isFixedLayoutNoPageList = isFixedLayoutPublication && !isFixedLayoutWithPageList;
 
     const dispatch = useDispatch();
 
@@ -1351,7 +1351,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
 
     const GoToPageTrigger =
-        <Tabs.Trigger value="tab-gotopage" key={"tab-gotopage"} data-value={"tab-gotopage"} disabled={!(isFixedLayoutNoPageList || r2Publication?.PageList)}>
+        <Tabs.Trigger value="tab-gotopage" key={"tab-gotopage"} data-value={"tab-gotopage"}>
             <SVG ariaHidden svg={TargetIcon} />
             <h3>Go To Page</h3>
         </Tabs.Trigger>;

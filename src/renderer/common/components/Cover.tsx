@@ -126,9 +126,7 @@ class Cover extends React.Component<IProps, IState> {
                 {/* {tagString === "/finished/"  ? 
                 <div className={stylesPublications.corner}><SVG ariaHidden svg={ValidateIcon} /></div> 
                 : <></>} */}
-                {!this.props.hasEnded ? 
                 <div className={stylesPublications.gradient}></div>
-                : <></>}
                 </>
             );
         }

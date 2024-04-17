@@ -200,6 +200,11 @@
         height: 50px;
         padding: 0 20px;
 
+        .react_aria_Input {
+            background-color: var(--color-secondary)!important;
+            color: var(--color-primary)!important;
+        }
+
         select {
             width: fit-content;
             height: 30px;

@@ -37,6 +37,10 @@
       height: calc(100vh - 100px);
     }
   }
+
+  @media screen and (height <= 700px) {
+    height: 450px;
+}
 }
 
 .popover_dialog_reader {

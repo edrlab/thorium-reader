@@ -60,27 +60,52 @@ class LcpInfo extends React.Component<IProps, undefined> {
         const lcpRightsCopy = (lcp?.rights?.copy) ? lcp.rights.copy : 0;
         const lcpRightsCopies = publicationLcp.lcpRightsCopies ?? 0;
 
-        // const lcpRightsStartDate = (lcp?.rights?.start) ? lcp.rights.start : undefined;
-        // let lcpRightsStartDateStr: string | undefined;
-        // if (lcpRightsStartDate) {
-        //     try {
-        //         lcpRightsStartDateStr = moment(lcpRightsStartDate).format("LLL");
-        //     } catch (err) {
-        //         debug(err);
-        //         lcpRightsStartDateStr = lcpRightsStartDate;
-        //     }
-        // }
+        const now = moment();
+
+        const lcpRightsStartDate = (lcp?.rights?.start) ? lcp.rights.start : undefined;
+        let lcpRightsStartDateStr: string | undefined;
+        let timeStartDif = null;
+        let timeEndDif = null;
+        let remainingDays= "";
+        let futureDays=  "";
+
+        if (lcpRightsStartDate) {
+            try {
+                const momentStart = moment(lcpRightsStartDate);
+                lcpRightsStartDateStr = momentStart.format("LLL");
+                timeStartDif = momentStart.diff(now, "days");
+                if (timeStartDif > 1) {
+                    futureDays = `${timeStartDif} ${__("publication.days")}`;
+                } else if (timeEndDif === 1) {
+                    futureDays = `${timeStartDif} ${__("publication.day")}`;
+                }
+            } catch (err) {
+                debug(err);
+                lcpRightsStartDateStr = lcpRightsStartDate;
+            }
+        }
 
         const lcpRightsEndDate = (lcp?.rights?.end) ? lcp.rights.end : undefined;
         let lcpRightsEndDateStr: string | undefined;
         if (lcpRightsEndDate) {
             try {
-                lcpRightsEndDateStr = moment(lcpRightsEndDate).format("LLL");
+                const momentEnd = moment(lcpRightsEndDate);
+                lcpRightsEndDateStr = momentEnd.format("LLL");
+                timeEndDif = momentEnd.diff(now, "days");
+                if (timeEndDif > 1) {
+                    remainingDays = `${timeEndDif} ${__("publication.days")}`;
+                } else if (timeEndDif === 1) {
+                    remainingDays = `${timeEndDif} ${__("publication.day")}`;
+                } else {
+                    remainingDays = `${__("publication.expired")}`;
+                }
             } catch (err) {
                 debug(err);
                 lcpRightsEndDateStr = lcpRightsEndDate;
             }
         }
+
+        
 
         // TODO: fix r2-lcp-js to handle encrypted fields
         // (need lcp.node with userkey decrypt, not contentkey):
@@ -135,21 +160,25 @@ class LcpInfo extends React.Component<IProps, undefined> {
                             <br /><br />
                         </>
                     }
+                    {
+                    futureDays ? 
+                        <>
+                            <strong>{__("publication.lcpStart")}: </strong>
+                            <span>{futureDays} ({lcpRightsStartDateStr})</span>
+                             <br />
+                        </>
+                        : <></>
+                    }
                     {lcpRightsEndDateStr ? 
                     <>
                         <strong>{__("publication.timeLeft")}: </strong>
-                        <span>{this.props.remainingDays} ({lcpRightsEndDateStr})</span>
+                        <span>{remainingDays} ({lcpRightsEndDateStr})</span>
                         <br />
                     </>
                     : <></>
                     }
 
-                    {/* {lcpRightsStartDateStr && <>
-                        <strong>{__("publication.lcpStart")}: </strong><span>{lcpRightsStartDateStr}</span>
-                        <br />
-                    </>}
-
-                    {lcpRightsEndDateStr && <>
+                    {/*{lcpRightsEndDateStr && <>
                         <strong>{__("publication.lcpEnd")}: </strong><span>{lcpRightsEndDateStr}</span>
                         <br />
                         <br />

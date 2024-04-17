@@ -38,6 +38,7 @@ import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-i
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
 import classNames from "classnames";
+import * as moment from "moment";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -90,29 +91,30 @@ class PublicationCard extends React.Component<IProps> {
         }
 
         const publication = publicationViewMaybeOpds as TPublication;
-        const isLcp = publication.lcp != (undefined || null);
-        const date = new Date();
-        const hasEnded = publication.lcp?.rights.end < date.toISOString();
-        const pubEndRights = publication.lcp?.rights.end;
-        let hasTimer: boolean;
-        let remainingDays: string;
+        const lcpRightsEndDate = (publication.lcp?.rights?.end) ? publication.lcp.rights.end : undefined;
+        let remainingDays= "";
+        const now = moment();
+        let hasEnded = false;
+        const isLcp = publication.lcp?.rights ? true : false;
 
-        const findRemainingTime = () => {
-            const differenceInMs = new Date(pubEndRights).getTime() - date.getTime();
-            const differenceInDays = Math.ceil(differenceInMs / (1000 * 60 * 60 * 24));
-            if (differenceInDays > 1) {
-                remainingDays = `${differenceInDays} ${__("publication.days")}`;
-            } else if (differenceInDays === 1) {
-                remainingDays = `${differenceInDays} ${__("publication.day")}`;
-            } else {
-                remainingDays = `${__("publication.expired")}`;
+        if (lcpRightsEndDate) {
+            try {
+                const momentEnd = moment(lcpRightsEndDate);
+                const timeEndDif = momentEnd.diff(now, "days");
+                if (timeEndDif > 1) {
+                    remainingDays = `${timeEndDif} ${__("publication.days")}`;
+                } else if (timeEndDif === 1) {
+                    remainingDays = `${timeEndDif} ${__("publication.day")}`;
+                } else {
+                    remainingDays = `${__("publication.expired")}`;
+                    hasEnded = true;
+                }
+            } catch (err) {
+                console.error(err);
             }
-        };
-
-        if (pubEndRights != undefined) {
-            hasTimer = true;
-            findRemainingTime();
         }
+
+
 
         let tagString = "";
         if (publicationViewMaybeOpds.tags) {
@@ -184,12 +186,12 @@ class PublicationCard extends React.Component<IProps> {
                                         <div className={stylesPublications.lcpIndicator}><SVG ariaHidden svg={DoubleCheckIcon} />{__("publication.read")}</div>
                                         : <></>}
                                     {
-                                        hasTimer ? 
+                                        remainingDays ? 
                                         <div className={stylesPublications.lcpIndicator}>
                                             <SVG ariaHidden svg={hasEnded ? KeyIcon : CalendarIcon} />
                                             {remainingDays}
                                         </div>
-                                        : (isLcp && !pubEndRights) ?
+                                        : (isLcp && !remainingDays) ?
                                         <div className={stylesPublications.lcpIndicator}>
                                             <SVG ariaHidden svg={KeyIcon} />
                                             {__("publication.licensed")}
@@ -209,14 +211,12 @@ class PublicationCard extends React.Component<IProps> {
                                     opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
                                     isReading={this.props.isReading}
                                     hasEnded={hasEnded}
-                                    hasTimer={hasTimer}
                                     remainingDays={remainingDays}
                                 /> :
                                 <CatalogMenu
                                     publicationView={publicationViewMaybeOpds as PublicationView}
                                     isReading={this.props.isReading}
                                     hasEnded={hasEnded}
-                                    hasTimer={hasTimer}
                                     remainingDays={remainingDays}
                                 />}
                         </Menu>
