@@ -45,86 +45,104 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
             return (<></>);
         }
 
-        const metadataLineComponent = (text: string, property: any) =>
-            property &&
+        const MetadataLineComponent: React.FC<React.PropsWithChildren & {text: string}> = ({text, children}) =>
             <div className={stylesBookDetailsDialog.opds_book_infos}>
                 <strong>{`${text}: `}</strong>
                 <span className={stylesBookDetailsDialog.allowUserSelect}>
-                    {property}
+                    {children}
                 </span>
                 <br />
-            </div>;
+            </div>
+
+        const stateInfo = (
+            () => {
+                if (properties.availabilityState) {
+
+                    switch (properties.availabilityState) {
+                        case OPDSAvailabilityEnum.Available:
+                            return (
+                                <div className={stylesBookDetailsDialog.opds_book_state}>
+                                    <SVG ariaHidden svg={AvailableIcon} className={stylesBookDetailsDialog.opds_book_available} />
+                                    <p>{__("catalog.opds.info.availableState.available")}</p>
+                                </div>
+                            );
+                        case OPDSAvailabilityEnum.Unavailable:
+                            return (
+                                <div className={stylesBookDetailsDialog.opds_book_state}>
+                                    <SVG ariaHidden svg={UnvavailableIcon} className={stylesBookDetailsDialog.opds_book_unavailable} />
+                                    <p>{__("catalog.opds.info.availableState.unavailable")}</p>
+                                </div>
+                            );
+                        case OPDSAvailabilityEnum.Ready:
+                            return <>{__("catalog.opds.info.availableState.ready")}</>;
+                        case OPDSAvailabilityEnum.Reserved:
+                            return <>{__("catalog.opds.info.availableState.reserved")}</>;
+                        default:
+                            return <>{__("catalog.opds.info.availableState.unknown")}</>;
+                    }
+                }
+                return undefined;
+            }
+        )();
 
         return (
             <>
                 {
                     properties.indirectAcquisitionTypes?.top === findMimeTypeWithExtension(ADOBE_ADEPT_XML) ?
-                    <><span title={properties.indirectAcquisitionTypes.top.replace(/application\//, "")} style={{textDecoration: "line-through"}}>(Adobe Adept)</span><br /><br /></> : <></>
+                        <><span title={properties.indirectAcquisitionTypes.top.replace(/application\//, "")} style={{ textDecoration: "line-through" }}>(Adobe Adept)</span><br /><br /></> : <></>
+                }
+                {properties.numberOfItems ?
+                    <MetadataLineComponent text={__("catalog.opds.info.numberOfItems")}>
+                        <>{properties.numberOfItems}</>
+                    </MetadataLineComponent> : <></>
                 }
                 {
-                    metadataLineComponent(__("catalog.opds.info.numberOfItems"), properties.numberOfItems)
+                    (properties.priceValue && properties.priceCurrency) ?
+                        <MetadataLineComponent text={__("catalog.opds.info.priveValue")}>
+                            <>{`${properties.priceValue} ${properties.priceCurrency}`}</>
+                        </MetadataLineComponent> : <></>
                 }
                 {
-                    properties.priceValue && properties.priceCurrency &&
-                    metadataLineComponent(
-                        __("catalog.opds.info.priveValue"),
-                        `${properties.priceValue} ${properties.priceCurrency}`)
+                    properties.copyTotal ?
+                        <MetadataLineComponent text={__("catalog.opds.info.copyTotal")}>
+                            <>{properties.copyTotal}</>
+                        </MetadataLineComponent> : <></>
                 }
                 {
-                    metadataLineComponent(__("catalog.opds.info.copyTotal"), properties.copyTotal)
+                    properties.copyAvailable ?
+                        <MetadataLineComponent text={__("catalog.opds.info.copyAvalaible")}>
+                            <>{properties.copyAvailable}</>
+                        </MetadataLineComponent> : <></>
                 }
                 {
-                    metadataLineComponent(__("catalog.opds.info.copyAvalaible"), properties.copyAvailable)
+                    properties.holdTotal ?
+                        <MetadataLineComponent text={__("catalog.opds.info.holdTotal")}>
+                            <>{properties.holdTotal}</>
+                        </MetadataLineComponent> : <></>
                 }
                 {
-                    metadataLineComponent(__("catalog.opds.info.holdTotal"), properties.holdTotal)
+                    properties.holdPosition ?
+                        <MetadataLineComponent text={__("catalog.opds.info.holdPosition")}>
+                            <>{properties.holdPosition}</>
+                        </MetadataLineComponent> : <></>
                 }
                 {
-                    metadataLineComponent(__("catalog.opds.info.holdPosition"), properties.holdPosition)
+                    stateInfo ?
+                        <MetadataLineComponent text={__("catalog.opds.info.state")}>
+                            {stateInfo}
+                        </MetadataLineComponent> : <></>
                 }
                 {
-                    metadataLineComponent(__("catalog.opds.info.state"), (
-                        () => {
-                            if (properties.availabilityState) {
-
-                                switch (properties.availabilityState) {
-                                    case OPDSAvailabilityEnum.Available:
-                                        return (
-                                            <div className={stylesBookDetailsDialog.opds_book_state}>
-                                                <SVG ariaHidden svg={AvailableIcon} className={stylesBookDetailsDialog.opds_book_available} />
-                                                <p>{__("catalog.opds.info.availableState.available")}</p>
-                                            </div>
-                                            );
-                                    case OPDSAvailabilityEnum.Unavailable:
-                                        return (
-                                            <div className={stylesBookDetailsDialog.opds_book_state}>
-                                                <SVG ariaHidden svg={UnvavailableIcon} className={stylesBookDetailsDialog.opds_book_unavailable}/>
-                                                <p>{__("catalog.opds.info.availableState.unavailable")}</p>
-                                            </div>
-                                            );
-                                    case OPDSAvailabilityEnum.Ready:
-                                        return __("catalog.opds.info.availableState.ready");
-                                    case OPDSAvailabilityEnum.Reserved:
-                                        return __("catalog.opds.info.availableState.reserved");
-                                    default:
-                                        return __("catalog.opds.info.availableState.unknown");
-                                }
-                            }
-                            return undefined;
-                        }
-                    )())
+                    properties.availabilitySince ?
+                        <MetadataLineComponent text={__("catalog.opds.info.availableSince")}>
+                            <>{moment(properties.availabilitySince).format("LLL")}</>
+                        </MetadataLineComponent> : <></>
                 }
                 {
-                    properties.availabilitySince &&
-                        metadataLineComponent(
-                            __("catalog.opds.info.availableSince"),
-                            moment(properties.availabilitySince).format("LLL"))
-                }
-                {
-                    properties.availabilityUntil &&
-                        metadataLineComponent(
-                            __("catalog.opds.info.availableUntil"),
-                            moment(properties.availabilityUntil).format("LLL"))
+                    properties.availabilityUntil ?
+                        <MetadataLineComponent text={__("catalog.opds.info.availableUntil")}>
+                            <>{moment(properties.availabilityUntil).format("LLL")}</>
+                        </MetadataLineComponent> : <></>
                 }
             </>
         );
