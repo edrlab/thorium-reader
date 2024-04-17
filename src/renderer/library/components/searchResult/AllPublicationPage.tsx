@@ -876,6 +876,7 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
 };
 
 const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_StringValue> = (props) => {
+    const textSanitize = DOMPurify.sanitize(props.value);
     return (<div
         className={stylesPublication.cell_description}
         style={{
@@ -892,7 +893,7 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
             // textAlign: props.displayType === DisplayType.Grid ? "justify" : "start",
             textAlign: "start",
         }}>
-        <p dangerouslySetInnerHTML={{ __html: props.value }}></p>
+        <p dangerouslySetInnerHTML={{ __html: textSanitize }}></p>
         {props.value ?
             <Popover.Root>
                 <Popover.Trigger>
@@ -900,7 +901,7 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
                 </Popover.Trigger>
                 <Popover.Portal>
                     <Popover.Content collisionPadding={50} avoidCollisions>
-                        <p className={stylesDropDown.dropdown_description} dangerouslySetInnerHTML={{ __html: props.value }}></p>
+                        <p className={stylesDropDown.dropdown_description} dangerouslySetInnerHTML={{ __html: textSanitize }}></p>
                         <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
                     </Popover.Content>
                 </Popover.Portal>
