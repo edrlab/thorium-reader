@@ -42,6 +42,8 @@ declare namespace typed_i18n {
   },
   readonly "hide": string,
   readonly "quit": string,
+  readonly "newVersion": string,
+  readonly "downloadVersion": string,
   readonly "session": {
     readonly "exit": {
       readonly "askBox": {
@@ -69,7 +71,8 @@ declare namespace typed_i18n {
   (_: "app.edit.selectAll", __?: {}): string;
   (_: "app.edit.title", __?: {}): string;
   (_: "app.edit.undo", __?: {}): string; (_: "app.hide", __?: {}): string;
-  (_: "app.quit", __?: {}): string;
+  (_: "app.quit", __?: {}): string; (_: "app.newVersion", __?: {}): string;
+  (_: "app.downloadVersion", __?: {}): string;
   (_: "app.session", __?: {}): {
   readonly "exit": {
     readonly "askBox": {

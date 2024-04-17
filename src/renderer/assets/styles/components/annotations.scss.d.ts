@@ -19,6 +19,7 @@ export declare const annotations_line: string;
 export declare const annotations_options: string;
 export declare const annotations_tab: string;
 export declare const body_element: string;
+export declare const button_primary_blue: string;
 export declare const colorPicker: string;
 export declare const docked_annotation_line: string;
 export declare const drawType_active: string;

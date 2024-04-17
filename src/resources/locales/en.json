@@ -28,6 +28,8 @@
         },
         "hide": "Hide {{- appName}}",
         "quit": "Quit {{- appName}}",
+        "newVersion": "A new version of Thorium is available.",
+        "downloadVersion": "Download {{- appName}}",
         "session": {
             "exit": {
                 "askBox": {

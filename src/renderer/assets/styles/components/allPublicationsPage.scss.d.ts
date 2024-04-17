@@ -18,6 +18,7 @@ export declare const cell_description: string;
 export declare const cell_link: string;
 export declare const cell_multi_langs: string;
 export declare const cell_wrapper: string;
+export declare const dropdown_trigger: string;
 export declare const filter_container: string;
 export declare const form_group: string;
 export declare const globalSearchInput: string;
