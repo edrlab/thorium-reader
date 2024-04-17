@@ -1561,6 +1561,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                             {searchEnable
                                 ? <ReaderMenuSearch
                                     focusMainAreaLandmarkAndCloseMenu={focusMainAreaLandmarkAndCloseMenu}
+                                    dockedMode={dockedMode}
                                 ></ReaderMenuSearch>
                                 : <></>}
                         </div>

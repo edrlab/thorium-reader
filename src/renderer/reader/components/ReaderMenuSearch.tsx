@@ -30,6 +30,7 @@ import { readerLocalActionSearch } from "../redux/actions";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     focusMainAreaLandmarkAndCloseMenu: () => void;
+    dockedMode: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -225,7 +226,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                                         }}
                                         onClick=
                                             {(e) => {
-                                                const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                                const closeNavPanel = !this.props.dockedMode; // e.shiftKey && e.altKey ? false : true;
                                                 this.handleSearchClickDebounced(e, v.uuid, closeNavPanel);
                                             }}
                                         onDoubleClick=
@@ -235,7 +236,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                                             {
                                                 (e) => {
                                                     if (e.key === "Enter") {
-                                                        const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                                        const closeNavPanel = !this.props.dockedMode; // e.shiftKey && e.altKey ? false : true;
                                                         this.handleSearchClick(e, v.uuid, closeNavPanel);
                                                     }
                                                 }
