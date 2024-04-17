@@ -12,7 +12,7 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
-const OpdsMenu: React.FC<{opdsPublicationView: IOpdsPublicationView, isReading?: boolean, hasEnded?: boolean, hasTimer?: boolean, remainingDays?: string}> = (props) => {
+const OpdsMenu: React.FC<{opdsPublicationView: IOpdsPublicationView}> = (props) => {
     const [__] = useTranslator();
 
     return (
@@ -28,10 +28,6 @@ const OpdsMenu: React.FC<{opdsPublicationView: IOpdsPublicationView, isReading?:
 
                 </PublicationInfoOpdsWithRadixTrigger>
                 <PublicationInfoOpdsWithRadixContent
-                    isReading={props.isReading}
-                    hasEnded={props.hasEnded}
-                    hasTimer={props.hasTimer}
-                    remainingDays={props.remainingDays}
                  />
             </PublicationInfoOpdsWithRadix>
         </>

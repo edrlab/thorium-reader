@@ -1168,12 +1168,7 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
 };
 
 const CellRemainingDays: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Remaining> = (props) => {
-    const remainingDays = props.value.remaining;
-    const hasEnded = props.value.hasEnded;
-    const hasTimer = props.value.hasTimer;
-    const isLcp = props.value.isLcp;
-    const pubEndRights = props.value.pubEndRights;
-    
+
     const link = (t: string) => {
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
@@ -1195,12 +1190,12 @@ const CellRemainingDays: React.FC<ITableCellProps_Column & ITableCellProps_Gener
 
     return (<div className={stylesPublication.cell_wrapper}>
          {
-            hasTimer ?
+            props.value.label ?
             <div className={stylesPublications.lcpIndicator}>
-                <SVG ariaHidden svg={hasEnded ? KeyIcon : CalendarIcon} />
-                {link(remainingDays)}
+                <SVG ariaHidden svg={props.value.hasEnded ? KeyIcon : CalendarIcon} />
+                {link(props.value.label)}
             </div>
-            : (isLcp && !pubEndRights) ?
+            : props.value.isLcp ?
             <div className={stylesPublications.lcpIndicator}>
                 <SVG ariaHidden svg={KeyIcon} />
                 {props.__("publication.licensed")}
@@ -1210,10 +1205,6 @@ const CellRemainingDays: React.FC<ITableCellProps_Column & ITableCellProps_Gener
 };
 
 const CellActions: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Actions> = (props) => {
-    const isReading = props.value.isReading;
-    const remainingDays = props.value.remaining;
-    const hasEnded = props.value.hasEnded;
-    const hasTimer = props.value.hasTimer;
     const label = props.value.label;
     const publication = props.value.publication;
 
@@ -1227,10 +1218,6 @@ const CellActions: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell
             >
                 <CatalogMenu
                     publicationView={publication as PublicationView}
-                    isReading={isReading}
-                    hasEnded={hasEnded}
-                    hasTimer={hasTimer}
-                    remainingDays={remainingDays}
                 />
             </Menu>
         </div>
@@ -1255,22 +1242,15 @@ interface ITableCellProps_StringValue {
 }
 
 interface IColumnValue_Remain {
-    remaining: string;
+    label: string;
     hasEnded: boolean;
     isLcp: boolean;
-    pubEndRights: string;
-    hasTimer: boolean;
 }
 
 interface IColumnValue_Actions {
     isReading: boolean;
     label: string;
     publication: PublicationView | IOpdsPublicationView;
-    remaining: string;
-    hasEnded: boolean;
-    isLcp: boolean;
-    pubEndRights: string;
-    hasTimer: boolean;
 }
 
 interface IColumns {
@@ -1420,32 +1400,24 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 }
             }
 
-            const isLcp = publicationView.lcp != (undefined || null);
-            const date = new Date();
-            const hasEnded = publicationView.lcp?.rights.end < date.toISOString();
-            const pubEndRights = publicationView.lcp?.rights.end;
-            let hasTimer: boolean;
-
-            const findRemainingTime = () => {
-                const differenceInMs = new Date(pubEndRights).getTime() - date.getTime();
-                const differenceInDays = Math.ceil(differenceInMs / (1000 * 60 * 60 * 24));
-                let remainingDays: string;
-
-                pubEndRights != undefined ? hasTimer = true : false;
-
-                if (differenceInDays > 1) {
-                    remainingDays = `${differenceInDays} ${__("publication.days")}`;
-                } else if (differenceInDays === 1) {
-                    remainingDays = `${differenceInDays} ${__("publication.day")}`;
-                } else if (differenceInDays < 1) {
-                    remainingDays = `${__("publication.expired")}`;
+            const isLcp = !!publicationView.lcp?.rights;
+            const lcpRightsEndDate = (publicationView.lcp?.rights?.end) ? publicationView.lcp.rights.end : undefined;
+            let remainingDays= "";
+            const now = moment();
+            let hasEnded = false;
+    
+            if (lcpRightsEndDate) {
+                const momentEnd = moment(lcpRightsEndDate);
+                const timeEndDif = momentEnd.diff(now, "days");
+                if (timeEndDif > 1) {
+                    remainingDays = `${timeEndDif} ${__("publication.days")}`;
+                } else if (timeEndDif === 1) {
+                    remainingDays = `${timeEndDif} ${__("publication.day")}`;
                 } else {
-                    remainingDays = null;
+                    remainingDays = `${__("publication.expired")}`;
+                    hasEnded = true;
                 }
-                return remainingDays;
-            };
-
-            const findRemainingDays = findRemainingTime();
+            }
 
             const langsArray = publicationView.languages ? publicationView.languages.map((lang) => {
 
@@ -1511,11 +1483,9 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     authors: publicationView.authors,
                 },
                 colRemainingDays: { // IColumnValue_Remain
-                    remaining: findRemainingDays,
+                    label: remainingDays,
                     hasEnded: hasEnded,
                     isLcp: isLcp,
-                    pubEndRights: pubEndRights,
-                    hasTimer: hasTimer,
                 },
                 colPublishers: { // IColumnValue_Publishers
                     label: publicationView.publishers ? publicationView.publishers.join(", ") : "",
@@ -1547,12 +1517,6 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     isReading: publicationView.lastReadingLocation ? true : false,
                     label: publicationView.documentTitle,
                     publication: publicationView,
-                    remaining: findRemainingDays,
-                    hasEnded: hasEnded,
-                    isLcp: isLcp,
-                    pubEndRights: pubEndRights,
-                    hasTimer: hasTimer,
-
                 },
                 // col_a11y_accessMode: { // IColumnValue_A11y_StringArray
                 //     label: publicationView.a11y_accessMode?.length ? [].concat(publicationView.a11y_accessMode).sort().join(", ") : "",

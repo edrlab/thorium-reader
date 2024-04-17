@@ -98,19 +98,15 @@ class PublicationCard extends React.Component<IProps> {
         const isLcp = publication.lcp?.rights ? true : false;
 
         if (lcpRightsEndDate) {
-            try {
-                const momentEnd = moment(lcpRightsEndDate);
-                const timeEndDif = momentEnd.diff(now, "days");
-                if (timeEndDif > 1) {
-                    remainingDays = `${timeEndDif} ${__("publication.days")}`;
-                } else if (timeEndDif === 1) {
-                    remainingDays = `${timeEndDif} ${__("publication.day")}`;
-                } else {
-                    remainingDays = `${__("publication.expired")}`;
-                    hasEnded = true;
-                }
-            } catch (err) {
-                console.error(err);
+            const momentEnd = moment(lcpRightsEndDate);
+            const timeEndDif = momentEnd.diff(now, "days");
+            if (timeEndDif > 1) {
+                remainingDays = `${timeEndDif} ${__("publication.days")}`;
+            } else if (timeEndDif === 1) {
+                remainingDays = `${timeEndDif} ${__("publication.day")}`;
+            } else {
+                remainingDays = `${__("publication.expired")}`;
+                hasEnded = true;
             }
         }
 
@@ -209,15 +205,9 @@ class PublicationCard extends React.Component<IProps> {
                             {isOpds ?
                                 <OpdsMenu
                                     opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
-                                    isReading={this.props.isReading}
-                                    hasEnded={hasEnded}
-                                    remainingDays={remainingDays}
                                 /> :
                                 <CatalogMenu
                                     publicationView={publicationViewMaybeOpds as PublicationView}
-                                    isReading={this.props.isReading}
-                                    hasEnded={hasEnded}
-                                    remainingDays={remainingDays}
                                 />}
                         </Menu>
                         </div>

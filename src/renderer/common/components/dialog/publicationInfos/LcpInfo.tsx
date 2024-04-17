@@ -23,7 +23,6 @@ import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationLcp: Partial<Pick<PublicationView, "lcp" | "lcpRightsCopies">>;
-    remainingDays?: string;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -63,46 +62,37 @@ class LcpInfo extends React.Component<IProps, undefined> {
         const now = moment();
 
         const lcpRightsStartDate = (lcp?.rights?.start) ? lcp.rights.start : undefined;
-        let lcpRightsStartDateStr: string | undefined;
+        let lcpRightsStartDateStr = "";
         let timeStartDif = null;
         let timeEndDif = null;
         let remainingDays= "";
         let futureDays=  "";
 
         if (lcpRightsStartDate) {
-            try {
-                const momentStart = moment(lcpRightsStartDate);
-                lcpRightsStartDateStr = momentStart.format("LLL");
-                timeStartDif = momentStart.diff(now, "days");
-                if (timeStartDif > 1) {
-                    futureDays = `${timeStartDif} ${__("publication.days")}`;
-                } else if (timeEndDif === 1) {
-                    futureDays = `${timeStartDif} ${__("publication.day")}`;
-                }
-            } catch (err) {
-                debug(err);
-                lcpRightsStartDateStr = lcpRightsStartDate;
+            const momentStart = moment(lcpRightsStartDate);
+            lcpRightsStartDateStr = momentStart.format("LLL");
+            timeStartDif = momentStart.diff(now, "days");
+            if (timeStartDif > 1) {
+                futureDays = `${timeStartDif} ${__("publication.days")}`;
+            } else if (timeEndDif === 1) {
+                futureDays = `${timeStartDif} ${__("publication.day")}`;
             }
         }
 
         const lcpRightsEndDate = (lcp?.rights?.end) ? lcp.rights.end : undefined;
-        let lcpRightsEndDateStr: string | undefined;
+        let lcpRightsEndDateStr = "";
         if (lcpRightsEndDate) {
-            try {
-                const momentEnd = moment(lcpRightsEndDate);
-                lcpRightsEndDateStr = momentEnd.format("LLL");
-                timeEndDif = momentEnd.diff(now, "days");
-                if (timeEndDif > 1) {
-                    remainingDays = `${timeEndDif} ${__("publication.days")}`;
-                } else if (timeEndDif === 1) {
-                    remainingDays = `${timeEndDif} ${__("publication.day")}`;
-                } else {
-                    remainingDays = `${__("publication.expired")}`;
-                }
-            } catch (err) {
-                debug(err);
-                lcpRightsEndDateStr = lcpRightsEndDate;
+            const momentEnd = moment(lcpRightsEndDate);
+            lcpRightsEndDateStr = momentEnd.format("LLL");
+            timeEndDif = momentEnd.diff(now, "days");
+            if (timeEndDif > 1) {
+                remainingDays = `${timeEndDif} ${__("publication.days")}`;
+            } else if (timeEndDif === 1) {
+                remainingDays = `${timeEndDif} ${__("publication.day")}`;
+            } else {
+                remainingDays = `${__("publication.expired")}`;
             }
+
         }
 
         
