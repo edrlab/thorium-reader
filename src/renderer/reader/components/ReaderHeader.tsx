@@ -1034,9 +1034,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
                                             borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
                                             right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
-                                            left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
-                                            height: isDockedMode && isOnSearch && "calc(100dvh - 140px)",
-                                            marginTop: isDockedMode && !isOnSearch ? "50px" : "0",
+                                            left: (this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left") ? "0" : "",
+                                            height: (isDockedMode && isOnSearch) ? "calc(100dvh - 140px)" : "unset",
+                                            marginTop: (isDockedMode && !isOnSearch) ? "50px" : "unset",
                                         }}
                                     >
                                         <ReaderMenu {...this.props.readerMenuProps}
