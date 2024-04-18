@@ -133,7 +133,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
         return (
             <>
                 {
-                    this.props.catalogEntries.slice(0, 2).map((entry, entryIndex: number) =>
+                    this.props.catalogEntries.map((entry, entryIndex: number) =>
                             entry.totalCount > 0
                                 ? (
                                     <EntrySection entry={entry} entryIndex={entryIndex} key={entryIndex} />
