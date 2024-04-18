@@ -1366,7 +1366,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     // moment.locale(locale);
 
     const tableRows = React.useMemo(() => {
-        return props.publicationViews.reverse().map((publicationView) => {
+        return props.publicationViews.slice().reverse().map((publicationView) => {
 
             // translator.translateContentField(author)
             // const authors = publicationView.authors ? formatContributorToString(publicationView.authors, props.translator) : "";
@@ -1962,7 +1962,6 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                 }, 200);
                             }}
                         />
-                        {/* TODO : Filter */}
                         {
                             (props.tags.length > 0) && (props.displayType === DisplayType.Grid)
                                 ?
