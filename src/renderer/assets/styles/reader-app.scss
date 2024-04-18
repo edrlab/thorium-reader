@@ -183,10 +183,18 @@ button {
 .docked {
   &_left {
     left: 400px!important;
+
+    &_pdf {
+      left: 350px!important;
+    }
   }
 
   &_right {
     right: 400px!important;
+    
+    &_pdf {
+      right: 350px!important;
+    }
 
     &_scrollable {
       right: 350px!important;

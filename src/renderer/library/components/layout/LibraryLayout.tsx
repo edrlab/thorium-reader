@@ -127,7 +127,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         {(page === __("opds.breadcrumbRoot")) ?
                             <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
                                 <h2 className={stylesAllBooks.allBooks_header}>{this.props.title}</h2>
-                                {this.props.breadCrumb &&
+                                {this.props.breadCrumb ?
                                     <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
                                         {
                                             this.home()
@@ -139,6 +139,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                                             this.refresh()
                                         }
                                     </div>
+                                    : <></>
                                 }
                             </div>
 

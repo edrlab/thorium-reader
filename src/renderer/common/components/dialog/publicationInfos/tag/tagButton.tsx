@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { I18nTyped } from "readium-desktop/common/services/translator";
 import { IOpdsTagView } from "readium-desktop/common/views/opds";
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
@@ -18,11 +17,11 @@ import { Link } from "react-router-dom";
 import { encodeURIComponent_RFC3986 } from "r2-utils-js/dist/es8-es2017/src/_utils/http/UrlUtils";
 // import { DisplayType } from "readium-desktop/renderer/library/routing";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 
 interface IBaseProps {
     tag: string | IOpdsTagView;
     index?: number;
-    __?: I18nTyped;
     pubId?: string;
     onClickDeleteCb?: (index: number) => () => void | undefined;
     onClickLinkCb?: (tag: IOpdsTagView) => () => void | undefined;
@@ -32,8 +31,10 @@ export interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
-    const { tag, index, __, pubId, onClickDeleteCb, onClickLinkCb, location } = props;
+    const { tag, index, pubId, onClickDeleteCb, onClickLinkCb, location } = props;
     let button = <></>;
+
+    const [__] = useTranslator();
 
     let tagString = "";
     if (typeof tag === "string") {
@@ -42,7 +43,7 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
         tagString = tag.name;
     }
 
-    if (pubId && onClickDeleteCb && __) {
+    if (pubId && onClickDeleteCb) {
         button = (
             <>
                 <Link

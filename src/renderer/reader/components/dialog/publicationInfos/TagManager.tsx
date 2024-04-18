@@ -80,7 +80,6 @@ export class TagManager extends React.Component<IProps> {
                             (tag) =>
                                 <TagReaderButton
                                     tag={tag}
-                                    __={__}
                                     pubId={this.props.pubId}
                                     onClickDeleteCb={ updateTagsCb }
                                 >

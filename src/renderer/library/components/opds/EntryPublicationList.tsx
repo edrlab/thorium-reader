@@ -22,7 +22,7 @@ import {
 import PageNavigation from "./PageNavigation";
 
 interface IBaseProps extends TranslatorProps {
-    opdsPublicationView: IOpdsPublicationView[] | undefined;
+    opdsPublicationView?: IOpdsPublicationView[] | undefined;
     links: IOpdsResultView["links"];
     pageInfo?: IOpdsResultView["metadata"];
 }
@@ -46,7 +46,7 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
 
         return (
             <>
-                {this.props.opdsPublicationView.length > 0
+                {this.props.opdsPublicationView?.length > 0
                     ? <>
                         {displayType === DisplayType.Grid ?
                             <GridView

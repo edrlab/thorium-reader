@@ -39,11 +39,6 @@ export const ApiappAddFormDialog = () => {
         apiAddFeedAction({ title, url });
     };
 
-    const openInfo = (e: any) => {
-        e.preventDefault();
-        setInfoOpen(!infoOpen);
-    };
-
     return <Dialog.Root>
         <Dialog.Trigger asChild>
             <button
@@ -100,7 +95,7 @@ export const ApiappAddFormDialog = () => {
                             />
                         </div>
                         <div>
-                            <button className={stylesButtons.button_catalog_infos} onClick={(e) => openInfo(e)}>
+                            <button className={stylesButtons.button_catalog_infos} onClick={(e) => {e.preventDefault(); setInfoOpen(!infoOpen);}}>
                                 <SVG ariaHidden svg={InfoIcon} />
                                 {__("opds.whatIsOpds")}
                                 <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />

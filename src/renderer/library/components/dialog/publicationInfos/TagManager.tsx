@@ -79,7 +79,6 @@ class TagManager extends React.Component<IProps> {
                                 <TagButton
                                     tag={tag}
                                     index={index}
-                                    __={__}
                                     pubId={this.props.pubId}
                                     onClickDeleteCb={updateTagsCb}
                                     onClickLinkCb={

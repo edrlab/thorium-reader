@@ -253,7 +253,7 @@ const Progression = (props: {
                         // ...but we're chaining with .filter() so that locatorExt.headings is not modified
 
                             let k = 0;
-                            const summary = hs.reduce((arr, h, i) => {
+                            const summary = hs.reduce<React.ReactElement[]>((arr, h, i) => {
                                 return arr.concat(
                                     <div style={{ display: "flex", gap: "5px", flex: "1",overflow: "hidden", textWrap: "nowrap", paddingRight: "2px", width: Math.ceil(100 / (arr.length + 1)) + "%"}}>
                                         <span key={`_h${k++}`}>{i === 0 ? " " : " / "}</span>
@@ -271,7 +271,7 @@ const Progression = (props: {
                             // filter((h, i) => {
                             //     return h.id || i === 0;
                             // }).
-                            reduce((arr, h, i) => {
+                            reduce<React.ReactElement[]>((arr, h, i) => {
                                 return arr.concat(
                                     <li key={`_li${i}`}>
                                         <span style={{ fontWeight: "bold" }}>h{h.level} </span>
@@ -341,7 +341,7 @@ const Progression = (props: {
     return (<></>);
 };
 
-const ProgressionDetails = (props: any) => {
+const ProgressionDetails: React.FC<{summary: React.ReactElement[], details: React.ReactElement[]}> = (props) => {
     const { summary, details } = props;
     const [open, setOpen] = React.useState(false);
     return (
@@ -425,7 +425,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                         </Dialog.Root>
                     </div>
                     <div className={stylePublication.publicationInfo_leftSide_buttonsWrapper}>
-                        {ControlComponent && <ControlComponent />}
+                        {ControlComponent ? <ControlComponent /> : <></>}
                     </div>
                 </div>
                 <div className={stylePublication.publicationInfo_rightSide}>

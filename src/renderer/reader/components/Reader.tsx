@@ -867,10 +867,14 @@ class Reader extends React.Component<IProps, IState> {
                                     id="publication_viewport"
                                     // className={stylesReader.publication_viewport}
                                     className={classNames(stylesReader.publication_viewport, (!this.state.zenMode && (this.state.settingsOpen || this.state.menuOpen)) ?
-                                        (
-                                            this.state.dockingMode === "left" ? stylesReader.docked_left
-                                                : this.state.dockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right
-                                                        : ""
+                                        (!this.props.isPdf ?
+                                           this.state.dockingMode === "left" ? stylesReader.docked_left
+                                            : this.state.dockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right
+                                            : ""
+                                        :
+                                            this.state.dockingMode === "left" ? stylesReader.docked_left_pdf
+                                            : this.state.dockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right_pdf
+                                            : ""
                                         ) : undefined, 
                                         (this.props.searchEnable && !this.props.isPdf) ? stylesReader.isOnSearch 
                                         : (this.props.searchEnable && this.props.isPdf) ? stylesReader.isOnSearchPdf 

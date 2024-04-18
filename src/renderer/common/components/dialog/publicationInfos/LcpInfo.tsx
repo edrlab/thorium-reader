@@ -59,18 +59,16 @@ class LcpInfo extends React.Component<IProps, undefined> {
 
         const lcpRightsStartDate = (lcp?.rights?.start) ? lcp.rights.start : undefined;
         let lcpRightsStartDateStr = "";
-        let timeStartDif = null;
-        let timeEndDif = null;
         let remainingDays= "";
         let futureDays=  "";
 
         if (lcpRightsStartDate) {
             const momentStart = moment(lcpRightsStartDate);
             lcpRightsStartDateStr = momentStart.format("LLL");
-            timeStartDif = momentStart.diff(now, "days");
+            const timeStartDif = momentStart.diff(now, "days");
             if (timeStartDif > 1) {
                 futureDays = `${timeStartDif} ${__("publication.days")}`;
-            } else if (timeEndDif === 1) {
+            } else if (timeStartDif === 1) {
                 futureDays = `${timeStartDif} ${__("publication.day")}`;
             }
         }
@@ -80,7 +78,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
         if (lcpRightsEndDate) {
             const momentEnd = moment(lcpRightsEndDate);
             lcpRightsEndDateStr = momentEnd.format("LLL");
-            timeEndDif = momentEnd.diff(now, "days");
+            const timeEndDif = momentEnd.diff(now, "days");
             if (timeEndDif > 1) {
                 remainingDays = `${timeEndDif} ${__("publication.days")}`;
             } else if (timeEndDif === 1) {

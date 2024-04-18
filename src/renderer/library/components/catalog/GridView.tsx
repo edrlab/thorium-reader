@@ -57,7 +57,7 @@ enum SortStatus {
 
 const EntrySection = ({entry, entryIndex}: {entry: CatalogEntryView, entryIndex: number}) => {
     const [__] = useTranslator();
-    let title;
+    let title = "";
 
     switch (entry.id) {
         case "lastAdditions":
@@ -154,8 +154,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
                             <p>{this.props.__("app.newVersion")}</p>
                             <a href="">{this.props.__("app.downloadVersion", { appName: capitalizedAppName })}  {`v${_APP_VERSION}`}</a>
                         </div>
-                        <button onClick={(e) => {
-                            e.preventDefault();
+                        <button onClick={() => {
                             this.setState({ versionInfo : false });
                         }}>
                             <SVG ariaHidden svg={CloseIcon} />  

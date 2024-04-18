@@ -13,9 +13,6 @@ import { I18nTyped, Translator } from "readium-desktop/common/services/translato
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
-// import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
-// import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
-// import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
 import SVG from "../../SVG";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";

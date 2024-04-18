@@ -43,7 +43,6 @@ class Browser extends React.Component<IProps, undefined> {
         const breadCrumb = <BreadCrumb breadcrumb={this.props.breadrumb} />;
         const search = <SearchForm />;
         const catalogTitle = this.props.breadrumb[1]?.name;
-        console.log(catalogTitle);
         
 
         return (
