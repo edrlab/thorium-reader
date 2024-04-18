@@ -32,7 +32,6 @@ import OpdsMenu from "./menu/OpdsMenu";
 
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
 import { PublicationInfoOpdsWithRadix, PublicationInfoOpdsWithRadixContent, PublicationInfoOpdsWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
-import { TPublication } from "readium-desktop/common/type/publication.type";
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-icon.svg";
 // import * as CalendarExpiredIcon from "readium-desktop/renderer/assets/icons/calendarExpired-icon.svg";
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
@@ -73,29 +72,26 @@ class PublicationCard extends React.Component<IProps> {
         const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
 
-        let pubFormat;
-        const pub = (publicationViewMaybeOpds as PublicationView);
+        const publicationView = publicationViewMaybeOpds as PublicationView;
 
-        if (pub.isAudio) {
+        let pubFormat = "EPUB";
+        if (publicationView.isAudio) {
             pubFormat = "Audio";
-        } else if (pub.isDivina) {
+        } else if (publicationView.isDivina) {
             pubFormat = "Divina";
-        } else if (pub.isPDF) {
+        } else if (publicationView.isPDF) {
             pubFormat = "PDF";
-        } else if (pub.isDaisy) {
+        } else if (publicationView.isDaisy) {
             pubFormat = "DAISY";
-        } else if (pub.isFixedLayoutPublication) {
+        } else if (publicationView.isFixedLayoutPublication) {
             pubFormat = "EPUB (FXL)";
-        } else {
-            pubFormat = "EPUB";
         }
 
-        const publication = publicationViewMaybeOpds as TPublication;
-        const lcpRightsEndDate = (publication.lcp?.rights?.end) ? publication.lcp.rights.end : undefined;
+        const lcpRightsEndDate = (publicationView.lcp?.rights?.end) ? publicationView.lcp.rights.end : undefined;
         let remainingDays= "";
         const now = moment();
         let hasEnded = false;
-        const isLcp = publication.lcp?.rights ? true : false;
+        const isLcp = publicationView.lcp?.rights ? true : false;
 
         if (lcpRightsEndDate) {
             const momentEnd = moment(lcpRightsEndDate);
@@ -109,8 +105,6 @@ class PublicationCard extends React.Component<IProps> {
                 hasEnded = true;
             }
         }
-
-
 
         let tagString = "";
         if (publicationViewMaybeOpds.tags) {
@@ -128,7 +122,7 @@ class PublicationCard extends React.Component<IProps> {
         return (
             <div className={stylesPublications.publication_wrapper}>
                 {
-                    this.props.isOpds ?
+                    isOpds ?
                         <PublicationInfoOpdsWithRadix
                             opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
                         >
