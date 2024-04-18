@@ -79,7 +79,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                     <button
                         className={stylesPublication.allBooks_header_pagination_arrow}
                         aria-label={`${__("opds.firstPage")}`}
-                        disabled={!pageLinks?.first[0]?.url || pageInfo.currentPage === 0}
+                        disabled={!pageLinks?.first[0]?.url || pageInfo?.currentPage === 0}
                     >
                         {pageLinks?.first[0]?.url ?
                             <Link
@@ -99,7 +99,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                             transform: "rotate(180deg)",
                         }}
                         aria-label={`${__("opds.previous")}`}
-                        disabled={!pageLinks?.previous[0]?.url || pageInfo.currentPage === 0}>
+                        disabled={!pageLinks?.previous[0]?.url || pageInfo?.currentPage === 0}>
                         {
                             pageLinks?.previous[0]?.url ?
                                 <Link
@@ -138,7 +138,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                     <button
                         className={stylesPublication.allBooks_header_pagination_arrow}
                         aria-label={`${__("opds.next")}`}
-                        disabled={!pageLinks?.next[0]?.url || pageInfo?.currentPage === Math.ceil(pageInfo.numberOfItems / pageInfo.itemsPerPage)}>
+                        disabled={!pageLinks?.next[0]?.url || pageInfo?.currentPage === Math.ceil(pageInfo?.numberOfItems / (pageInfo?.itemsPerPage || 1))}>
                         {pageLinks?.next[0]?.url ?
                             <Link
                                 to={{
@@ -154,7 +154,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                     <button
                         className={stylesPublication.allBooks_header_pagination_arrow}
                         aria-label={`${__("opds.lastPage")}`}
-                        disabled={!pageLinks?.last[0]?.url || pageInfo?.currentPage === Math.ceil(pageInfo.numberOfItems / pageInfo.itemsPerPage)}>
+                        disabled={!pageLinks?.last[0]?.url || pageInfo?.currentPage === Math.ceil(pageInfo?.numberOfItems / (pageInfo?.itemsPerPage || 1))}>
                         {
                             pageLinks?.last[0]?.url ?
                                 <Link
