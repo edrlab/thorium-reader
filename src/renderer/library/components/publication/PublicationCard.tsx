@@ -177,39 +177,41 @@ class PublicationCard extends React.Component<IProps> {
                 }
                 <div className={stylesPublications.publication_infos_wrapper}>
                     <div className={stylesPublications.publication_infos}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap"}}>
+                        {isOpds ? <></>
+                            : <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
                                 {tagString === "/finished/" ?
-                                        <div className={stylesPublications.lcpIndicator}><SVG ariaHidden svg={DoubleCheckIcon} />{__("publication.read")}</div>
-                                        : <></>}
-                                    {
-                                        remainingDays ? 
+                                    <div className={stylesPublications.lcpIndicator}><SVG ariaHidden svg={DoubleCheckIcon} />{__("publication.read")}</div>
+                                    : <></>}
+                                {
+                                    remainingDays ?
                                         <div className={stylesPublications.lcpIndicator}>
                                             <SVG ariaHidden svg={hasEnded ? KeyIcon : CalendarIcon} />
                                             {remainingDays}
                                         </div>
                                         : (isLcp && !remainingDays) ?
-                                        <div className={stylesPublications.lcpIndicator}>
-                                            <SVG ariaHidden svg={KeyIcon} />
-                                            {__("publication.licensed")}
-                                        </div>
-                                        : <></>
-                                    }
-                                </div>
-                        <div style={{ display: "flex", alignItems: "end", height: "50px", width: "100%", justifyContent: "space-between" }}>
-                            <span className={stylesButtons.button_secondary_blue}>{pubFormat}</span>
+                                            <div className={stylesPublications.lcpIndicator}>
+                                                <SVG ariaHidden svg={KeyIcon} />
+                                                {__("publication.licensed")}
+                                            </div>
+                                            : <></>
+                                }
+                            </div>}
+                        <div style={{ display: "flex", alignItems: "end", height: "50px", width: "100%", justifyContent: isOpds ? "flex-end" : "space-between" }}>
+                            {isOpds ? <></>
+                                : <span className={stylesButtons.button_secondary_blue}>{pubFormat}</span>}
                             <Menu
-                            button={(
-                                <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
-                            )}
-                        >
-                            {isOpds ?
-                                <OpdsMenu
-                                    opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
-                                /> :
-                                <CatalogMenu
-                                    publicationView={publicationViewMaybeOpds as PublicationView}
-                                />}
-                        </Menu>
+                                button={(
+                                    <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
+                                )}
+                            >
+                                {isOpds ?
+                                    <OpdsMenu
+                                        opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
+                                    /> :
+                                    <CatalogMenu
+                                        publicationView={publicationViewMaybeOpds as PublicationView}
+                                    />}
+                            </Menu>
                         </div>
                     </div>
                 </div>
