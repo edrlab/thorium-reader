@@ -53,7 +53,12 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
         const { __ } = this.props;
         return (
             <section className={stylesFooter.footer_wrapper}>
-                <a onClick={this.about}>{__("catalog.about.title", { appName: capitalizedAppName })}</a>
+                <a onClick={this.about} onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        this.about();
+                    }
+                }}
+                tabIndex={0}>{__("catalog.about.title", { appName: capitalizedAppName })}</a>
                 <p>- {`v${_APP_VERSION}`}</p>
             </section>
         );

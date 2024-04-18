@@ -337,6 +337,91 @@ nav + nav + .breadcrumb + .main {
   }
 }
 
+.noPublications{
+  &_container {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    width: 500px;
+    height: 500px;
+
+    @media screen and (width <= 1000px) {
+      width: 400px;
+      height: 400px;
+    }
+
+    svg {
+      position: absolute;
+      top: 0;
+    }
+
+    .emptyLibraryIcon {
+      top: 20px;
+      left: -20px;
+    }
+  }
+
+  &_text {
+    transform: translateX(-50%);
+    position: absolute;
+    top: 320px;
+    left: 50%;
+    width: 100%;
+    text-align: center;
+
+    @media screen and (width <= 1000px) {
+      top: 250px;
+
+      details {
+        margin-bottom: 50px;
+      }
+    }
+
+    .acceptedExtension {
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 500px;
+      align-items: center;
+      justify-content: center;
+
+      span {
+        display: flex;
+        align-items: center;
+        margin: 0 5px;
+        height: 30px;
+      }
+    }
+
+    p {
+      font-size: 16px;
+    }
+
+    strong {
+      font-size: 30px;
+    } 
+
+    details {
+      .summary_content {
+        border: 1px solid var(--color-blue);
+        border-radius: 10px;
+        background-color: var(--color-secondary);
+        padding: 20px;
+      }
+
+      summary {
+        color: var(--color-blue);
+        margin-bottom: 40px;
+      }
+  
+      p {
+        font-size: 14px;
+        width: fit-content;
+      }
+    }
+  }
+}
+
 /* List: ul / ol / li */
 
 li.no_list_style {

@@ -146,18 +146,6 @@ class CatalogGridView extends React.Component<IProps, IState> {
                                 </div>,
                     )
                 }
-                {/* {
-                    this.state.tabTags.length > 0
-                        ? <TagLayout
-                            tags={this.state.tabTags}
-                            content={
-                                <SortMenu
-                                    onClickAlphaSort={this.sortByAlpha}
-                                    onClickCountSort={this.sortbyCount}
-                                />}
-                        />
-                        : <></>
-                } */}Ò
                 {
                     this.state.versionInfo ?
                     <div className={stylesGlobal.new_version}>
@@ -168,7 +156,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
                         </div>
                         <button onClick={(e) => {
                             e.preventDefault();
-                            this.setState({ versionInfo : false })
+                            this.setState({ versionInfo : false });
                         }}>
                             <SVG ariaHidden svg={CloseIcon} />  
                         </button>
