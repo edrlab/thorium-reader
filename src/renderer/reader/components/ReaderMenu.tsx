@@ -598,7 +598,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
         );
 };
 
-const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Publication; i: number } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Publication; i: number} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
     const { bookmark, r2Publication, i, goToLocator } = props;
     const [__] = useTranslator();
@@ -1069,8 +1069,9 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
         >
 
             <div className={classNames(stylesInputs.form_group, stylesPopoverDialog.gotopage_combobox)} style={{width: "80%"}}>
-                <label style={{position: "absolute"}}> {__("reader.navigation.goToPlaceHolder")}</label>
+                {/* <label style={{position: "absolute"}}> {__("reader.navigation.goToPlaceHolder")}</label> */}
                 <ComboBox
+                    label={__("reader.navigation.goToPlaceHolder")}
                     defaultItems={options}
                     defaultSelectedKey={defaultKey}
                     refInputEl={goToRef}
@@ -1305,6 +1306,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
 
     const TocTrigger =
         <Tabs.Trigger value="tab-toc" key={"tab-toc"} data-value={"tab-toc"}
+        title={__("reader.marks.toc")}
             disabled={
                 (!r2Publication.TOC || r2Publication.TOC.length === 0) &&
                 (!r2Publication.Spine || r2Publication.Spine.length === 0)
@@ -1320,7 +1322,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
 
     const LandMarksTrigger =
-        <Tabs.Trigger value="tab-landmark" key={"tab-landmark"} data-value={"tab-landmark"} disabled={!r2Publication.Landmarks || r2Publication.Landmarks.length === 0}>
+        <Tabs.Trigger value="tab-landmark" key={"tab-landmark"} data-value={"tab-landmark"} title={__("reader.marks.landmarks")} disabled={!r2Publication.Landmarks || r2Publication.Landmarks.length === 0}>
             <SVG ariaHidden svg={LandmarkIcon} />
             <h3>{__("reader.marks.landmarks")}</h3>
         </Tabs.Trigger>;
@@ -1331,7 +1333,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
 
     const BookmarksTrigger =
-        <Tabs.Trigger value="tab-bookmark" key={"tab-bookmark"} data-value={"tab-bookmark"} disabled={!bookmarks || bookmarks.length === 0}>
+        <Tabs.Trigger value="tab-bookmark" key={"tab-bookmark"} data-value={"tab-bookmark"} title={__("reader.marks.bookmarks")} disabled={!bookmarks || bookmarks.length === 0}>
             <SVG ariaHidden svg={BookmarkIcon} />
             <h3>{__("reader.marks.bookmarks")}</h3>
         </Tabs.Trigger>;
@@ -1341,7 +1343,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
 
     const SearchTrigger =
-        <Tabs.Trigger value="tab-search" key={"tab-search"} data-value={"tab-search"} disabled={/*!searchEnable ||*/ isPdf}>
+        <Tabs.Trigger value="tab-search" key={"tab-search"} data-value={"tab-search"} title={__("reader.marks.search")} disabled={/*!searchEnable ||*/ isPdf}>
             <SVG ariaHidden svg={SearchIcon} />
             <h3>{__("reader.marks.search")}</h3>
         </Tabs.Trigger>;
@@ -1351,9 +1353,9 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
 
     const GoToPageTrigger =
-        <Tabs.Trigger value="tab-gotopage" key={"tab-gotopage"} data-value={"tab-gotopage"}>
+        <Tabs.Trigger value="tab-gotopage" key={"tab-gotopage"} title={__("reader.marks.goTo")} data-value={"tab-gotopage"}>
             <SVG ariaHidden svg={TargetIcon} />
-            <h3>Go To Page</h3>
+            <h3>{__("reader.marks.goTo")}</h3>
         </Tabs.Trigger>;
     const optionGoToPageItem = {
         id: 4, value: "tab-gotopage", name: "Go To Page", disabled: false,
@@ -1361,7 +1363,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
 
     const AnnotationTrigger =
-        <Tabs.Trigger value="tab-annotation" key={"tab-annotation"} data-value={"tab-annotation"} disabled={!annotations || annotations.length === 0}>
+        <Tabs.Trigger value="tab-annotation" key={"tab-annotation"} data-value={"tab-annotation"} title={__("reader.marks.annotations")} disabled={!annotations || annotations.length === 0}>
             <SVG ariaHidden svg={AnnotationIcon} />
             <h3>{__("reader.marks.annotations")}</h3>
         </Tabs.Trigger>;

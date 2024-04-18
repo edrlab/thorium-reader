@@ -101,6 +101,10 @@ $setting_color: var(--color-blue);
 
         h3 {
             font-size: 14px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            max-width: 120px;
+            white-space: nowrap;
         }
 
         &:hover {
@@ -272,7 +276,7 @@ $setting_color: var(--color-blue);
 }
 
 .settings_tab {
-    margin: 20px 25px 0!important;
+    margin: 30px 25px 0!important;
 
     &_container {
     margin: 35px;

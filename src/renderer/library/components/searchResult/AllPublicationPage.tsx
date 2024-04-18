@@ -2209,19 +2209,19 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                                 checked={showColumnFilters ? true : false}
                                                 onChange={() => {
 
-                                                    // const show = showColumnFilters;
+                                                    const show = showColumnFilters;
                                                     setShowColumnFilters(!showColumnFilters);
 
-                                                    // setTimeout(() => {
-                                                    //     if (!show) {
-                                                    //         tableInstance.setGlobalFilter("");
-                                                    //     }
-                                                    //     if (show) {
-                                                    //         for (const col of tableInstance.allColumns) {
-                                                    //             tableInstance.setFilter(col.id, "");
-                                                    //         }
-                                                    //     }
-                                                    // }, 200);
+                                                    setTimeout(() => {
+                                                        if (!show) {
+                                                            tableInstance.setGlobalFilter("");
+                                                        }
+                                                        if (show) {
+                                                            for (const col of tableInstance.allColumns) {
+                                                                tableInstance.setFilter(col.id, "");
+                                                            }
+                                                        }
+                                                    }, 200);
                                                 }}
                                                 style={{ position: "absolute", left: "-999px" }}
                                             /><label

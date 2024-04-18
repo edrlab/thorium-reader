@@ -33,6 +33,7 @@ export declare const popover_dialog_reader: string;
 export declare const react_aria_Button: string;
 export declare const react_aria_ComboBox: string;
 export declare const react_aria_Input: string;
+export declare const react_aria_Label: string;
 export declare const react_aria_ListBox: string;
 export declare const search_container: string;
 export declare const section: string;

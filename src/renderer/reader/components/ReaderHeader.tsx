@@ -68,6 +68,7 @@ import { readerLocalActionAnnotations } from "../redux/actions";
 import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { AnnotationEdit } from "./AnnotationEdit";
 import { Collection, Header as ReactAriaHeader, Section } from "react-aria-components";
+import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 // import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 
@@ -446,6 +447,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             isNightMode && stylesReader.nightMode,
             isSepiaMode && stylesReader.sepiaMode,
           );
+
+          const isAudioBook = isAudiobookFn(this.props.r2Publication);
 
         return (
             <nav
@@ -922,7 +925,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         <li
                             {...(this.props.isOnSearch && { style: { backgroundColor: "var(--color-blue" } })}
                         >
-                               <HeaderSearch shortcutEnable={this.props.shortcutEnable} isPdf={this.props.isPdf} showSearchResults={this.props.showSearchResults}></HeaderSearch>
+                               <HeaderSearch shortcutEnable={this.props.shortcutEnable} isPdf={this.props.isPdf} showSearchResults={this.props.showSearchResults} isAudiobook={isAudioBook} isDivina={this.props.isDivina}></HeaderSearch>
                         </li>
                         <li
                             {...(this.props.isOnBookmark &&
@@ -965,6 +968,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         { style: { backgroundColor: "var(--color-blue" } })}
                                 >
                                     <input
+                                    disabled={this.props.isPdf || this.props.isDivina || isAudioBook}
                                         id="annotationButton"
                                         className={stylesReader.bookmarkButton}
                                         type="checkbox"
@@ -1035,8 +1039,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
                                             right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
                                             left: (this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left") ? "0" : "",
-                                            height: (isDockedMode && isOnSearch) ? "calc(100dvh - 140px)" : "unset",
-                                            marginTop: (isDockedMode && !isOnSearch) ? "50px" : "unset",
+                                            height: (isDockedMode && isOnSearch) ? "calc(100dvh - 140px)" : "",
+                                            marginTop: (isDockedMode && !isOnSearch) ? "50px" : "0",
                                         }}
                                     >
                                         <ReaderMenu {...this.props.readerMenuProps}

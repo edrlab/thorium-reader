@@ -871,7 +871,10 @@ class Reader extends React.Component<IProps, IState> {
                                             this.state.dockingMode === "left" ? stylesReader.docked_left
                                                 : this.state.dockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right
                                                         : ""
-                                        ) : undefined, this.props.searchEnable ? stylesReader.isOnSearch : undefined)}
+                                        ) : undefined, 
+                                        (this.props.searchEnable && !this.props.isPdf) ? stylesReader.isOnSearch 
+                                        : (this.props.searchEnable && this.props.isPdf) ? stylesReader.isOnSearchPdf 
+                                        : "")}
                                     ref={this.mainElRef}
                                     style={{ inset: isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : "100px 50px" }}>
                                 </div>

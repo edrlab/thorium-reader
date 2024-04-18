@@ -729,7 +729,8 @@ declare namespace typed_i18n {
     readonly "saveMark": string,
     readonly "search": string,
     readonly "searchResult": string,
-    readonly "toc": string
+    readonly "toc": string,
+    readonly "goTo": string
   },
   readonly "media-overlays": {
     readonly "activate": string,
@@ -897,7 +898,8 @@ declare namespace typed_i18n {
   readonly "saveMark": string,
   readonly "search": string,
   readonly "searchResult": string,
-  readonly "toc": string
+  readonly "toc": string,
+  readonly "goTo": string
 };
   (_: "reader.marks.annotations", __?: {}): string;
   (_: "reader.marks.bookmarks", __?: {}): string;
@@ -909,6 +911,7 @@ declare namespace typed_i18n {
   (_: "reader.marks.search", __?: {}): string;
   (_: "reader.marks.searchResult", __?: {}): string;
   (_: "reader.marks.toc", __?: {}): string;
+  (_: "reader.marks.goTo", __?: {}): string;
   (_: "reader.media-overlays", __?: {}): {
   readonly "activate": string,
   readonly "captions": string,

@@ -51,6 +51,24 @@
             justify-content: center;
             border-radius: 5px;
 
+            &:has(input:disabled) {
+                .menu_button {
+                    background-color: transparent;
+                    cursor:auto;
+
+                    &:not(:has(.active_svg)):hover, 
+                    &:not(:has(.active_svg)):focus {
+                        border-color: transparent;
+                        background-color: transparent;
+                    }
+                    
+                    svg {
+                    fill: var(--color-medium-grey);
+                    color: var(--color-medium-grey);
+                    }
+                }
+            }
+
             .my_combobox_container {
                 width: unset;
             }

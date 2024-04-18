@@ -336,7 +336,8 @@
             "saveMark": "Save the bookmark",
             "search": "Search",
             "searchResult": "Search - « {{- searchText}} »",
-            "toc": "Table of Contents"
+            "toc": "Table of Contents",
+            "goTo": "Go to page"
         },
         "media-overlays": {
             "activate": "Activate Readaloud",

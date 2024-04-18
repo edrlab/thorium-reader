@@ -92,6 +92,13 @@
       > button {
         color: var(--color-blue);
 
+        > span {
+          text-overflow: ellipsis;
+          overflow: hidden;
+          max-width: 120px;
+          white-space: nowrap;
+        }
+
         svg {
           fill: var(--color-blue);
         }
@@ -116,6 +123,11 @@
         }
       }
     }
+  }
+
+  .bookmarks_line .bookmark_textArea {
+    min-width: unset;
+    width: 270px;
   }
 }
 
@@ -461,6 +473,17 @@
     .form_group {
       height: 30px;
       width: 375px;
+
+      .react_aria_Label {
+        position: absolute;
+        left: 10px;
+        // top: -20px;
+        background-color: var(--color-secondary);
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 250px;
+        white-space: nowrap;
+    }
 
       & input {
         margin: 0;

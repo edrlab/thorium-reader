@@ -31,6 +31,8 @@ interface IBaseProps extends TranslatorProps {
     shortcutEnable: boolean;
     showSearchResults: () => void;
     isPdf: boolean;
+    isAudiobook: boolean;
+    isDivina: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -105,6 +107,7 @@ class HeaderSearch extends React.Component<IProps> {
             <Popover.Root open={this.props.isOnSearch} onOpenChange={(v) => { console.log("SearchPopoverMenu enabled=", v); this.enableSearch(v);}}>
                 <Popover.Trigger asChild>
                     <button
+                        disabled={this.props.isAudiobook || this.props.isDivina}
                         aria-pressed={this.props.isOnSearch}
                         aria-label={__("reader.navigation.magnifyingGlassButton")}
                         className={stylesReader.menu_button}
