@@ -271,8 +271,6 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 
     private onKeyboardFocusSearch = () => {
-        console.log("FOCUS SEARCH REQUESTED");
-
         if (!this.focusInputRef?.current) {
             return;
         }
@@ -876,7 +874,9 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
 };
 
 const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_StringValue> = (props) => {
-    const textSanitize = DOMPurify.sanitize(props.value);
+
+    const textNeedToBeSanitized = props.value || "";
+    const textSanitize = DOMPurify.sanitize(textNeedToBeSanitized).replace(/font-size:/g, "font-sizexx:");
     return (<div
         className={stylesPublication.cell_description}
         style={{
