@@ -96,6 +96,7 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
     const state = yield* selectTyped((_state: RootState) => _state);
 
     const payload: Partial<ILibraryRootState> = {
+        theme: state.theme,
         win: {
             identifier,
         },

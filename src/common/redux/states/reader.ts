@@ -7,15 +7,32 @@
 
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { FONT_ID_DEFAULT } from "readium-desktop/utils/fontList";
+import { IAnnotationReaderConfigState, IColor } from "./renderer/annotation";
+
+export const DEFAULT_COLOR_ANNOTATION: IColor = {red: 235, green: 150, blue: 148};
+
+export const readerConfigInitialStateDefaultPublisher = {
+    font: FONT_ID_DEFAULT,
+    fontSize: "100%",
+    pageMargins: "0.5",
+    wordSpacing: "0",
+    letterSpacing: "0",
+    paraSpacing: "0",
+    lineHeight: "0",
+};
+
+export const readerConfigInitialStateAnnotation: IAnnotationReaderConfigState = {
+    annotation_defaultColor: DEFAULT_COLOR_ANNOTATION,
+    annotation_defaultDrawType: "solid_background",
+    annotation_popoverNotOpenOnNoteTaking: false,
+    annotation_defaultDrawView: "annotation",
+};
 
 export const readerConfigInitialState: ReaderConfig = {
     align: "auto",
     colCount: "auto",
     dark: false,
-    font: FONT_ID_DEFAULT,
-    fontSize: "100%",
     invert: false,
-    lineHeight: "0",
     night: false,
     paged: true, // https://github.com/edrlab/thorium-reader/issues/1222
     readiumcss: true,
@@ -24,13 +41,11 @@ export const readerConfigInitialState: ReaderConfig = {
     reduceMotion: false,
     noFootnotes: false,
     noRuby: false,
-    pageMargins: "0.5",
-    wordSpacing: "0",
-    letterSpacing: "0",
-    paraSpacing: "0",
     darken: undefined,
     mediaOverlaysEnableSkippability: true,
     ttsEnableSentenceDetection: true,
     mediaOverlaysEnableCaptionsMode: false,
     ttsEnableOverlayMode: false,
+    ...readerConfigInitialStateDefaultPublisher,
+    ...readerConfigInitialStateAnnotation,
 };

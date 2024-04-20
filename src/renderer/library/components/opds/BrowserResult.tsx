@@ -7,8 +7,9 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import * as stylesColumns from "readium-desktop/renderer/assets/styles/components/columns.css";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesColumns from "readium-desktop/renderer/assets/styles/components/columns.scss";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -127,52 +128,55 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                 } else if (opds.groups ||
                     opds.publications ||
                     opds.navigation) {
-
                     content = (
                         <>
                             {
-                                opds.navigation &&
+                                opds.navigation ?
                                 <EntryList entries={opds.navigation} />
+                                : <></>
                             }
 
                             {
-                                opds.publications &&
+                                opds.publications ?
                                 <EntryPublicationList
                                     opdsPublicationView={opds.publications}
                                     links={opds.links}
                                     pageInfo={opds.metadata}
                                 />
+                                : <></>
                             }
 
                             {
                                 opds.groups?.map((group, i) =>
                                     <section key={i}>
-
+                                        { group.publications?.length > 1 ?
                                         <div className={stylesGlobal.heading_link}>
                                             <Entry level={this.props.level} entry={group.selfLink}></Entry>
                                         </div>
+                                        : <></>}
                                         {
-                                            group.navigation &&
+                                            group.navigation ?
                                             <EntryList entries={group.navigation} />
+                                            : <></>
                                         }
                                         {
-                                            group.publications &&
-                                                (
-                                                    (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid
-                                                ) === DisplayType.Grid ?
-                                                <Slider
-                                                    content={group.publications.map((pub, pubId) =>
-                                                        <PublicationCard
-                                                            key={`opds-group-${i}-${pubId}`}
-                                                            publicationViewMaybeOpds={pub}
-                                                            isOpds={true}
-                                                        />,
-                                                    )}
-                                                /> :
-                                                <ListView
-                                                    normalOrOpdsPublicationViews={group.publications}
-                                                    isOpdsView={true}
-                                                />
+                                            group.publications?.length > 1 ? 
+                                            (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) === DisplayType.Grid ?
+                                                    <Slider
+                                                        content={group.publications.map((pub, pubId) =>
+                                                            <PublicationCard
+                                                                key={`opds-group-${i}-${pubId}`}
+                                                                publicationViewMaybeOpds={pub}
+                                                                isOpds={true}
+                                                            />,
+                                                        )}
+                                                    />
+                                                    :
+                                                    <ListView
+                                                        normalOrOpdsPublicationViews={group.publications}
+                                                        isOpdsView={true}
+                                                    />
+                                                : <></>
                                         }
                                     </section>,
                                 )
@@ -198,7 +202,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
             }
         }
 
-        return <div>
+        return <div className={stylesCatalogs.opds_browserResults}>
             {content}
         </div>;
     }

@@ -1,0 +1,183 @@
+/*
+=-=-= inouts.scss
+*/
+
+@import 'src/renderer/assets/styles/partials/mixin';
+
+
+input[type="text"],
+input[type="number"],
+input[type="phone"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+input[type="week"],
+input[type="color"],
+input[type="url"],
+input[type="search"] {
+  display: inline-block;
+  position: relative;
+  width: auto;
+  height: 35px;
+  background-color: transparent;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: 1px solid var(--color-medium-grey);
+  border-radius: 0;
+  color: var(--color-primary);
+  font-size: 0.9rem;
+
+  // @media (prefers-color-scheme: dark) {
+  //   background-color: #2D2D2D;
+
+  //   &::placeholder {
+  //     color: white;
+  //   }
+  // }
+
+  &::placeholder {
+    color: var(--color-medium-grey);
+  }
+
+  &.outline {
+    border: 1px solid var(--color-medium-grey);
+  }
+}
+
+input[type="text"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="number"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="phone"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="email"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="password"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="date"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="time"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="week"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="color"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="url"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
+input[type="search"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE) {
+  &:focus {
+    @include R2_MIXIN_FOCUS_OUTLINE;
+  }
+}
+
+form[role="search"] {
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+  width: 370px !important;
+  height: 30px !important;
+
+  &:has(input:focus) {    
+    outline: var(--color-blue) solid 2px !important;
+    outline-offset: -2px;
+  }
+}
+
+select {
+  appearance: none;
+}
+
+
+.form_group {
+  width: 150px;
+  height: 25px;
+  padding:2px;
+  border:1px solid var(--color-primary);
+  margin: 0;
+  border-radius: 6px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: var(--color-secondary);
+
+  // @media (prefers-color-scheme: dark) {
+  //   background-color: #2D2D2D;
+  // }
+
+  &:has(input:focus), &:has(button:focus) {    
+    outline: var(--color-blue) solid 2px !important;
+    outline-offset: -2px;
+  }
+
+  & >label{
+      position:absolute;
+      top:-10px;
+      left:10px;
+      background-color: var(--color-secondary);
+      padding: 0 5px;
+      z-index: 1;
+  }
+
+  & >input{
+      border:none;
+      width: calc(100% - 35px);
+      height: 25px;
+      margin-left: 30px;
+      background-color: var(--color-secondary);
+  }
+
+  & i {
+    width: 15px;
+    padding: 5px;
+    position: absolute;
+  }
+      
+}
+
+.form_group_catalog {
+  width: 100%;
+  height: 30px;
+  margin-top: 30px;
+
+  &:has(input:focus) {    
+    outline: var(--color-blue) solid 2px !important;
+    outline-offset: -2px;
+  }
+
+  svg {
+    height: 14px;
+    position: absolute;
+    left: 20px;
+    transform: translate(-50%, -50%);
+    top: 50%;
+  }
+}
+
+.form_group_wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: end;
+  gap: 10px;
+
+  & button {
+    min-width: 100px;
+    height: 35px;
+  }
+}
+
+/* 6. dropzone */
+
+.dropzone {
+  position: absolute;
+  overflow: hidden;
+  inset: 0;
+}
+
+.___DEBUG___COMPONENTS_INPUTS_CSS {
+  display: none;
+}
+
+
+.passphrase_error {
+  color: var(--color-error-dark);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0;
+
+  svg {
+    fill: var(--color-error-dark);
+    height: 12px;
+  }
+}

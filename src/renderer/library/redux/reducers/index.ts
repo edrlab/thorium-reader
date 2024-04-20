@@ -27,11 +27,14 @@ import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { catalogViewReducer } from "./catalog";
 import { tagReducer } from "./tag";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
+import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
+
 // import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { readerRTLFlipReducer } from "readium-desktop/common/redux/reducers/reader/rtlFlip";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
     return combineReducers({ // ILibraryRootState
+        theme: themeReducer,
         reader: combineReducers({
             defaultConfig: readerDefaultConfigReducer,
             disableRTLFlip: readerRTLFlipReducer,

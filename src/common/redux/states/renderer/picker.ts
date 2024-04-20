@@ -7,5 +7,5 @@
 
 export interface IPickerState {
     open: boolean;
-    type: "search" | "annotation";
+    type: "search";
 }

@@ -1,0 +1,83 @@
+/*
+=-=-= app.scss
+*/
+
+.downloadsPanel {
+  display: block;
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  border-radius: 5px;
+  bottom: 0;
+  height: auto;
+  overflow: hidden;
+  overflow-y: auto;
+  background: var(--color-light-grey);
+  border: 2px solid var(--color-light-blue);
+  margin: 0;
+  padding: 10px;
+  z-index: 110;
+
+  li {
+    display: inline-block;
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    span.percent {
+      display: inline-block;
+      width: 40px;
+      margin: 0;
+      margin-right: 5px;
+      padding: 3px;
+    }
+
+    progress {
+      background-color: green;
+      border-radius: 0;
+      height: 20px;
+      display: inline-block;
+      border: 0;
+      width: 120px;
+      margin: 0;
+      margin-right: 7px;
+      padding: 0;
+    }
+
+    progress::-webkit-progress-bar {
+      background-color: silver;
+      border-radius: 0;
+    }
+
+    progress::-webkit-progress-value {
+      background-color: var(--color-blue);
+      border-radius: 0;
+    }
+
+    span.title {
+      display: inline-block;
+      width: auto;
+      margin: 0;
+      padding: 3px;
+      color: var(--color-primary);
+
+      svg {
+        width: 12px;
+        height: 12px;
+        fill: var(--color-primary);
+        color: var(--color-primary);
+        transition: 200ms;
+
+        &:hover {
+          fill: var(--color-error-dark);
+          color: var(--color-error-dark);
+        }
+      }
+    }
+  }
+}
+
+.___DEBUG___APP_CSS {
+  display: none;
+}

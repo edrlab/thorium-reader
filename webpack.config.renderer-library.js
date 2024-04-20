@@ -103,61 +103,61 @@ console.log(JSON.stringify(externals, null, "  "));
 ////// EXTERNALS
 ////// ================================
 
-const cssLoaderConfig = [
-    {
-        loader: nodeEnv !== "production" ? "style-loader" : MiniCssExtractPlugin.loader,
-        options: {
-            // publicPath: "./styling", // preprocessorDirectives.rendererReaderBaseUrl,
-            // hmr: _enableHot,
-            // reloadAll: true,
-            esModule: false,
-        },
-    },
-    {
-        loader: "css-loader",
-        options: {
-            url: false,
-            import: {
-                filter: (url, media, resourcePath) => {
-                    console.log("css-loader IMPORT (LIBRARY): ", url, media, resourcePath);
-                    return true;
-                },
-            },
-            importLoaders: 1,
-            modules: {
-                // auto: false,
-                // mode: "local",
-                // exportOnlyLocals: true,
-                // exportGlobals: true,
-                namedExport: false,
-                exportLocalsConvention: 'as-is',
-                localIdentName: "[local]",
-            },
-            // modules: nodeEnv !== "production" && false ? { // MUST USE STRICT BASE64, NO PATH DEPENDENT (OTHERWISE BREAK CROSS-FILE CSS CLASSES WITH IDENTICAL NAMES, E.G. SUBCLASSES IN NESTED STATEMENTS)
-            //     localIdentName: "[path][name]__[local]--[contenthash:base64:5]",
-            // } : {
-            //     getLocalIdent: (context, localIdentName, localName, options) => {
-            //         // const checkSum = crypto.createHash("sha256");
-            //         // checkSum.update(localName);
-            //         // const hexStr = checkSum.digest("hex");
-            //         // const b64Str = Buffer.from(hexStr, "hex").toString("base64");
-            //         // const h = "z_" + b64Str;
-            //         // console.log("getLocalIdent LIBRARY: ", h, context.resourcePath, localName);
-            //         // return h;
-            //         return localName;
-            //     },
-            //     // localIdentName: "[contenthash:base64]",
-            //     // localIdentHashPrefix: "contenthash",
-            //     // localIdentHashSalt: "_",
-            //     // localIdentHashFunction: "md4", // sha256
-            //     // localIdentHashDigest: "hex", // base64
-            //     // localIdentHashDigestLength: 20,
-            // },
-            esModule: false,
-        },
-    },
-    "postcss-loader",
-];
+// const cssLoaderConfig = [
+//     {
+//         loader: nodeEnv !== "production" ? "style-loader" : MiniCssExtractPlugin.loader,
+//         options: {
+//             // publicPath: "./styling", // preprocessorDirectives.rendererReaderBaseUrl,
+//             // hmr: _enableHot,
+//             // reloadAll: true,
+//             esModule: false,
+//         },
+//     },
+//     {
+//         loader: "css-loader",
+//         options: {
+//             url: false,
+//             import: {
+//                 filter: (url, media, resourcePath) => {
+//                     console.log("css-loader IMPORT (LIBRARY): ", url, media, resourcePath);
+//                     return true;
+//                 },
+//             },
+//             importLoaders: 1,
+//             modules: {
+//                 // auto: false,
+//                 // mode: "local",
+//                 // exportOnlyLocals: true,
+//                 // exportGlobals: true,
+//                 namedExport: false,
+//                 exportLocalsConvention: 'as-is',
+//                 localIdentName: "[local]",
+//             },
+//             // modules: nodeEnv !== "production" && false ? { // MUST USE STRICT BASE64, NO PATH DEPENDENT (OTHERWISE BREAK CROSS-FILE CSS CLASSES WITH IDENTICAL NAMES, E.G. SUBCLASSES IN NESTED STATEMENTS)
+//             //     localIdentName: "[path][name]__[local]--[contenthash:base64:5]",
+//             // } : {
+//             //     getLocalIdent: (context, localIdentName, localName, options) => {
+//             //         // const checkSum = crypto.createHash("sha256");
+//             //         // checkSum.update(localName);
+//             //         // const hexStr = checkSum.digest("hex");
+//             //         // const b64Str = Buffer.from(hexStr, "hex").toString("base64");
+//             //         // const h = "z_" + b64Str;
+//             //         // console.log("getLocalIdent LIBRARY: ", h, context.resourcePath, localName);
+//             //         // return h;
+//             //         return localName;
+//             //     },
+//             //     // localIdentName: "[contenthash:base64]",
+//             //     // localIdentHashPrefix: "contenthash",
+//             //     // localIdentHashSalt: "_",
+//             //     // localIdentHashFunction: "md4", // sha256
+//             //     // localIdentHashDigest: "hex", // base64
+//             //     // localIdentHashDigestLength: 20,
+//             // },
+//             esModule: false,
+//         },
+//     },
+//     "postcss-loader",
+// ];
 
 const scssLoaderConfig = [
     {
@@ -432,10 +432,10 @@ if (nodeEnv !== "production") {
     // if (_enableHot) {
     //     cssLoaderConfig.unshift("css-hot-loader");
     // }
-    config.module.rules.push({
-        test: /\.css$/,
-        use: cssLoaderConfig,
-    });
+    // config.module.rules.push({
+    //     test: /\.css$/,
+    //     use: cssLoaderConfig,
+    // });
     config.module.rules.push({
         test: /\.scss$/,
         use: scssLoaderConfig,
@@ -480,10 +480,10 @@ if (nodeEnv !== "production") {
 
     // Minify and uglify in production environment
     //config.plugins.push(new UglifyJsPlugin());
-    config.module.rules.push({
-        test: /\.css$/,
-        use: cssLoaderConfig,
-    });
+    // config.module.rules.push({
+    //     test: /\.css$/,
+    //     use: cssLoaderConfig,
+    // });
     config.module.rules.push({
         test: /\.scss$/,
         use: scssLoaderConfig,

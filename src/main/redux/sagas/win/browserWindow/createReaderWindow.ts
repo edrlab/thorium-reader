@@ -21,6 +21,7 @@ import {
 } from "@r2-navigator-js/electron/main/browser-window-tracker";
 
 import { getPublication } from "../../api/publication/getPublication";
+import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
 
 // Logger
 const debug = debug_("readium-desktop:createReaderWindow");
@@ -34,8 +35,8 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
     const readerWindow = new BrowserWindow({
         ...winBound,
-        minWidth: 600,
-        minHeight: 400,
+        minWidth: WINDOW_MIN_WIDTH,
+        minHeight: WINDOW_MIN_HEIGHT,
         webPreferences: {
             // enableRemoteModule: false,
             allowRunningInsecureContent: false,

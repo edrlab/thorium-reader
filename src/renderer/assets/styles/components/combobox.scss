@@ -1,0 +1,138 @@
+/*
+=-=-= combobox.scss
+*/
+
+.react_aria_ComboBox {
+  color: var(--text-color);
+  padding-bottom: 15px;
+  margin: 10px 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  .my_combobox_container {
+    border: 1px solid var(--color-primary);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    width: 320px;
+    padding-right: 10px;
+    position: relative;
+
+    > svg {
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      left: 5px;
+      fill: var(--color-primary);
+    }
+
+    &:has(.react_aria_Input[data-focused]) {
+      outline: var(--color-blue) solid 2px !important;
+      outline-offset: -2px;
+    }
+  }
+
+  .react_aria_Label {
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .react_aria_Input {
+    margin: 2px;
+    font-size: 14px;
+    background: transparent!important;
+    color: var(--field-text-color);
+    height: 24px;
+    padding: 0 5px 0 40px;
+    vertical-align: middle;
+    border: none;
+    width: 320px;
+  }
+
+  .react_aria_Button {
+    
+    // display: inline-block;
+    background: var(--color-secondary);
+    color: var(--highlight-foreground);
+    forced-color-adjust: none;
+    border-radius: 4px;
+    border: none;
+    margin-left: -1.714rem;
+    width: 1.429rem;
+    height: 1.429rem;
+    padding: 0;
+    font-size: 0.857rem;
+    cursor: pointer;
+    position: relative;
+
+    &[data-pressed] {
+      box-shadow: none;
+      background: var(--color-secondary);
+    }
+
+    svg {
+      width: 20px;
+    }
+  }
+}
+
+.react_aria_Popover[data-trigger="ComboBox"], .react_aria_Popover[data-trigger="Select"]  {
+  width: var(--trigger-width);
+  background-color: var(--color-secondary);
+  pointer-events: auto;
+  border: 1px solid var(--color-primary);
+  border-radius: 6px;
+  height: fit-content;
+  max-height: 350px!important;
+  overflow: auto;
+
+  .react_aria_ListBox {
+    display: block;
+    max-height: inherit;
+    min-height: unset;
+    border: none;
+
+    .react_aria_Header {
+      padding-left: 1.571rem;
+    }
+  }
+}
+
+.my_item {
+    margin: 2px;
+    padding: 4px 8px 4px 22px;
+    border-radius: 6px;
+    outline: none;
+    cursor: pointer;
+    color: var(--color-primary);
+    position: relative;
+    transition: 100ms;
+  
+    &.selected {
+      font-weight: 600;
+      background: none;
+  
+      &::before {
+        content: '✓';
+        content: '✓' / '';
+        alt: ' ';
+        position: absolute;
+        top: 4px;
+        left: 4px;
+      }
+    }
+  
+    &.focused {
+      background: var(--color-blue);
+      color: white;
+    }
+  }
+  
+  @media (forced-colors: active) {
+    .my_item.focused {
+      background: Highlight;
+      color: HighlightText;
+    }
+  }

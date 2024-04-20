@@ -6,93 +6,56 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { connect } from "react-redux";
-import { DialogTypeName } from "readium-desktop/common/models/dialog";
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
-import { TDispatch } from "readium-desktop/typings/redux";
-
 import PublicationExportButton from "./PublicationExportButton";
+import DeletePublicationConfirm from "../../dialog/DeletePublicationConfirm";
+import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../../dialog/publicationInfos/PublicationInfo";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
+import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
-    publicationView: PublicationView;
-}
-// IProps may typically extend:
-// RouteComponentProps
-// ReturnType<typeof mapStateToProps>
-// ReturnType<typeof mapDispatchToProps>
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
-}
+const CatalogMenu: React.FC<{publicationView: PublicationView}> = (props) => {
+    const [__] = useTranslator();
 
-interface IState {
-    menuOpen: boolean;
-}
-
-export class CatalogMenu extends React.Component<IProps, IState> {
-
-    constructor(props: IProps) {
-        super(props);
-
-        this.state = {
-            menuOpen: false,
-        };
-
-        this.deletePublication = this.deletePublication.bind(this);
-        this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
-    }
-
-    public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
-        return (
-            <>
-                <button role="menuitem"
-                    onClick={this.displayPublicationInfo}
-                >
-                    {__("catalog.bookInfo")}
-                </button>
-                <button role="menuitem"
-                    onClick={this.deletePublication}
-                >
-                    {__("catalog.delete")}
-                </button>
-                <PublicationExportButton
-                    publicationView={this.props.publicationView}
+    return (
+        <>
+            <PublicationInfoLibWithRadix
+                publicationView={props.publicationView}
+            >
+                <PublicationInfoLibWithRadixTrigger asChild>
+                    <button
+                    >
+                        <SVG ariaHidden svg={InfoIcon} />
+                        <p>{__("catalog.bookInfo")}</p>
+                    </button>
+                </PublicationInfoLibWithRadixTrigger>
+                <PublicationInfoLibWithRadixContent
                 />
-            </>
-        );
-    }
-
-    private deletePublication() {
-        this.props.openDeleteDialog();
-    }
-
-    private displayPublicationInfo() {
-        this.props.displayPublicationInfo();
-    }
-}
-
-const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
-    return {
-        displayPublicationInfo: () => {
-            dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoLib,
-                {
-                    publicationIdentifier: props.publicationView.identifier,
-                },
-            ));
-        },
-        openDeleteDialog: () => {
-            dispatch(dialogActions.openRequest.build(DialogTypeName.DeletePublicationConfirm,
-                {
-                    publicationView: props.publicationView,
-                },
-            ));
-        },
-    };
+            </PublicationInfoLibWithRadix>
+            {props.publicationView.lastReadTimeStamp ?
+                <button disabled>
+                    <SVG ariaHidden svg={DoubleCheckIcon} />
+                    {__("publication.markAsRead")}
+                </button>
+                : <></>
+            }
+            <DeletePublicationConfirm
+                trigger={(
+                    <button
+                    >
+                        <SVG ariaHidden svg={TrashIcon} />
+                        <p>{__("catalog.delete")}</p>
+                    </button>
+                )}
+                publicationView={props.publicationView}
+            />
+            <PublicationExportButton
+                publicationView={props.publicationView}
+            />
+        </>
+    );
 };
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(CatalogMenu));
+export default (CatalogMenu);

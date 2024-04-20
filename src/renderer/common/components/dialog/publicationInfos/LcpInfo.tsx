@@ -6,12 +6,13 @@
 // ==LICENSE-END==
 
 import classNames from "classnames";
-import * as debug_ from "debug";
 import * as moment from "moment";
 import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
+
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -29,9 +30,6 @@ interface IBaseProps extends TranslatorProps {
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps {
 }
-
-// Logger
-const debug = debug_("readium-desktop:renderer:publication-info:lcp-info");
 
 class LcpInfo extends React.Component<IProps, undefined> {
 
@@ -57,27 +55,41 @@ class LcpInfo extends React.Component<IProps, undefined> {
         const lcpRightsCopy = (lcp?.rights?.copy) ? lcp.rights.copy : 0;
         const lcpRightsCopies = publicationLcp.lcpRightsCopies ?? 0;
 
+        const now = moment();
+
         const lcpRightsStartDate = (lcp?.rights?.start) ? lcp.rights.start : undefined;
-        let lcpRightsStartDateStr: string | undefined;
+        let lcpRightsStartDateStr = "";
+        let remainingDays= "";
+        let futureDays=  "";
+
         if (lcpRightsStartDate) {
-            try {
-                lcpRightsStartDateStr = moment(lcpRightsStartDate).format("LLL");
-            } catch (err) {
-                debug(err);
-                lcpRightsStartDateStr = lcpRightsStartDate;
+            const momentStart = moment(lcpRightsStartDate);
+            lcpRightsStartDateStr = momentStart.format("LLL");
+            const timeStartDif = momentStart.diff(now, "days");
+            if (timeStartDif > 1) {
+                futureDays = `${timeStartDif} ${__("publication.days")}`;
+            } else if (timeStartDif === 1) {
+                futureDays = `${timeStartDif} ${__("publication.day")}`;
             }
         }
 
         const lcpRightsEndDate = (lcp?.rights?.end) ? lcp.rights.end : undefined;
-        let lcpRightsEndDateStr: string | undefined;
+        let lcpRightsEndDateStr = "";
         if (lcpRightsEndDate) {
-            try {
-                lcpRightsEndDateStr = moment(lcpRightsEndDate).format("LLL");
-            } catch (err) {
-                debug(err);
-                lcpRightsEndDateStr = lcpRightsEndDate;
+            const momentEnd = moment(lcpRightsEndDate);
+            lcpRightsEndDateStr = momentEnd.format("LLL");
+            const timeEndDif = momentEnd.diff(now, "days");
+            if (timeEndDif > 1) {
+                remainingDays = `${timeEndDif} ${__("publication.days")}`;
+            } else if (timeEndDif === 1) {
+                remainingDays = `${timeEndDif} ${__("publication.day")}`;
+            } else {
+                remainingDays = `${__("publication.expired")}`;
             }
+
         }
+
+        
 
         // TODO: fix r2-lcp-js to handle encrypted fields
         // (need lcp.node with userkey decrypt, not contentkey):
@@ -102,8 +114,8 @@ class LcpInfo extends React.Component<IProps, undefined> {
 
         return (
             <>
-                <div className={stylesGlobal.heading}>
-                    <h3>LCP</h3>
+                <div className={stylePublication.publicationInfo_heading}>
+                    <h4>{__("publication.licenceLCP")}</h4>
                 </div>
                 <div className={classNames(stylesBookDetailsDialog.allowUserSelect)}>
                     {(lsdStatus &&
@@ -112,16 +124,16 @@ class LcpInfo extends React.Component<IProps, undefined> {
                                 {
                                     (lsdStatus === StatusEnum.Expired ?
                                         __("publication.expiredLcp")
-                                    :
+                                        :
                                         ((lsdStatus === StatusEnum.Cancelled) ?
                                             __("publication.cancelledLcp")
-                                        :
+                                            :
                                             ((lsdStatus === StatusEnum.Revoked) ?
                                                 __("publication.revokedLcp")
-                                            :
+                                                :
                                                 (lsdStatus === StatusEnum.Returned ?
                                                     __("publication.returnedLcp")
-                                                :
+                                                    :
                                                     `LCP LSD: ${lsdStatus}`
                                                 )
                                             )
@@ -132,26 +144,38 @@ class LcpInfo extends React.Component<IProps, undefined> {
                             <br /><br />
                         </>
                     }
+                    {
+                    futureDays ? 
+                        <>
+                            <strong>{__("publication.lcpStart")}: </strong>
+                            <span>{futureDays} ({lcpRightsStartDateStr})</span>
+                             <br />
+                        </>
+                        : <></>
+                    }
+                    {lcpRightsEndDateStr ? 
+                    <>
+                        <strong>{__("publication.timeLeft")}: </strong>
+                        <span>{remainingDays} ({lcpRightsEndDateStr})</span>
+                        <br />
+                    </>
+                    : <></>
+                    }
 
-                    {lcpRightsStartDateStr && <>
-                        <strong>{__("publication.lcpStart")}: </strong><i>{lcpRightsStartDateStr}</i>
-                        <br />
-                    </>}
-
-                    {lcpRightsEndDateStr && <>
-                        <strong>{__("publication.lcpEnd")}: </strong><i>{lcpRightsEndDateStr}</i>
+                    {/*{lcpRightsEndDateStr && <>
+                        <strong>{__("publication.lcpEnd")}: </strong><span>{lcpRightsEndDateStr}</span>
                         <br />
                         <br />
-                    </>}
+                    </>} */}
 
                     {lcpRightsCopy ? <>
                         <strong>{__("publication.lcpRightsCopy")}: </strong>
-                        <i>{lcpRightsCopies} / {lcpRightsCopy}</i><br />
+                        <span>{lcpRightsCopies} / {lcpRightsCopy}</span><br />
                     </> : undefined}
 
                     {lcpRightsPrint ? <>
                         <strong>{__("publication.lcpRightsPrint")}: </strong>
-                        <i>0 / {lcpRightsPrint}</i><br />
+                        <span>0 / {lcpRightsPrint}</span><br />
                     </> : undefined}
                 </div>
             </>

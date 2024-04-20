@@ -6,117 +6,128 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { connect } from "react-redux";
-import { DialogTypeName } from "readium-desktop/common/models/dialog";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
-import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.css";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.css";
-import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
-import { apiAction } from "readium-desktop/renderer/library/apiAction";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import * as Dialog from "@radix-ui/react-dialog";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
+import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import classNames from "classnames";
+import * as InfoIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
+import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
+import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLink-icon.svg";
+import * as penIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
+import * as linkIcon from "readium-desktop/renderer/assets/icons/link-icon.svg";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
+import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
-}
-// IProps may typically extend:
-// RouteComponentProps
-// ReturnType<typeof mapStateToProps>
-// ReturnType<typeof mapDispatchToProps>
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
-}
+export const ApiappAddFormDialog = () => {
+    const [__] = useTranslator();
+    const [, apiAddFeedAction] = useApi(undefined, "opds/addFeed");
 
-interface IState {
-    name: string | undefined;
-    url: string | undefined;
-}
-
-class OpdsFeedAddForm extends React.Component<IProps, IState> {
-    private focusRef: React.RefObject<HTMLInputElement>;
-
-    constructor(props: IProps) {
-        super(props);
-
-        this.focusRef = React.createRef<HTMLInputElement>();
-
-        this.state = {
-            name: undefined,
-            url: undefined,
-        };
-
-    }
-
-    public componentDidMount() {
-        if (this.focusRef?.current) {
-            this.focusRef.current.focus();
-        }
-    }
-
-    public render(): React.ReactElement<{}> {
-        if (!this.props.open) {
-            return (<></>);
-        }
-
-        const { __ } = this.props;
-        const { name, url } = this.state;
-        return (
-            <Dialog
-                id={stylesModals.opds_form_dialog}
-                title={__("opds.addMenu")}
-                onSubmitButton={this.add}
-                submitButtonTitle={
-                    __("opds.addForm.addButton")
-                }
-                submitButtonDisabled={!(name && url)}
-            >
-                <div className={stylesGlobal.w_50}>
-                    <div className={stylesInputs.form_group}>
-                        <label>{__("opds.addForm.name")}</label>
-                        <input
-                            onChange={(e) => this.setState({
-                                name: e.target.value,
-                            })}
-                            type="text"
-                            aria-label={__("opds.addForm.name")}
-                            placeholder={__("opds.addForm.namePlaceholder")}
-                            defaultValue={name}
-                            ref={this.focusRef}
-                        />
-                    </div>
-                    <div className={stylesInputs.form_group}>
-                        <label>{__("opds.addForm.url")}</label>
-                        <input
-                            onChange={(e) => this.setState({
-                                url: e.target.value,
-                            })}
-                            type="text"
-                            aria-label={__("opds.addForm.url")}
-                            placeholder={__("opds.addForm.urlPlaceholder")}
-                            defaultValue={url}
-                        />
-                    </div>
-                </div>
-            </Dialog>
-        );
-    }
-
-    public add = () => {
-        const title = this.state.name;
-        const url = this.state.url;
+    const [title, setTitle] = React.useState("");
+    const [url, setUrl] = React.useState("");
+    const [infoOpen, setInfoOpen] = React.useState(false);
+    const addAction = () => {
         if (!title || !url) {
             return;
         }
-        apiAction("opds/addFeed", { title, url }).catch((err) => {
-            console.error("Error to fetch api opds/addFeed", err);
-        });
+        apiAddFeedAction({ title, url });
     };
 
-}
-const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
-    open: state.dialog.type === DialogTypeName.OpdsFeedAddForm,
-});
+    return <Dialog.Root>
+        <Dialog.Trigger asChild>
+            <button
+                className={stylesButtons.button_nav_primary}
+            >
+                <SVG ariaHidden={true} svg={GlobeIcon} />
+                <span>{__("opds.addMenu")}</span>
+            </button>
+        </Dialog.Trigger>
+        <Dialog.Portal>
+            <div className={stylesModals.modal_dialog_overlay}></div>
+            <Dialog.Content className={stylesModals.modal_dialog} >
+                <div className={stylesModals.modal_dialog_header}>
+                    <Dialog.Title>
+                        {__("opds.addMenu")}
+                    </Dialog.Title>
+                    <div>
+                        <Dialog.Close asChild>
+                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                                <SVG ariaHidden={true} svg={QuitIcon} />
+                            </button>
+                        </Dialog.Close>
+                    </div>
+                </div>
+                <form className={stylesModals.modal_dialog_body}>
+                    <div>
+                        <div className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)}>
+                            <label htmlFor="title">{__("opds.addForm.name")}</label>
+                            <i><SVG ariaHidden svg={penIcon} /></i>
+                            <input
+                                id="title"
+                                value={title}
+                                onChange={(e) => setTitle(e?.target?.value)}
+                                type="text"
+                                aria-label={__("opds.addForm.name")}
+                                className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                                // placeholder={__("opds.addForm.namePlaceholder")}
+                                required
+                            />
+                        </div>
+                        <div className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)}>
+                            <label htmlFor="url">{__("opds.addForm.url")}</label>
+                            {/* <Form.Control asChild> */}
+                            <i><SVG ariaHidden svg={linkIcon} /></i>
+                            <input
+                                id="url"
+                                value={url}
+                                onChange={(e) => setUrl(e?.target?.value)}
+                                type="text"
+                                aria-label={__("opds.addForm.url")}
+                                className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                                // placeholder={__("opds.addForm.urlPlaceholder")}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <button className={stylesButtons.button_catalog_infos} onClick={(e) => {e.preventDefault(); setInfoOpen(!infoOpen);}}>
+                                <SVG ariaHidden svg={InfoIcon} />
+                                {__("opds.whatIsOpds")}
+                                <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
+                            </button>
+                            {infoOpen ?
+                                <div className={stylesCatalogs.catalog_infos_text}>
+                                    <p>
+                                    {__("opds.informations")}
+                                    </p>
+                                    <a href="https://opds.io/">
+                                    {__("opds.documentation")}
+                                        <SVG ariaHidden svg={FollowLinkIcon} />
+                                    </a>
+                                </div>
+                                : <></>}
+                        </div>
+                    </div>
+                    <div className={stylesModals.modal_dialog_footer}>
+                        <Dialog.Close asChild>
+                            <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                        </Dialog.Close>
+                        <Dialog.Close asChild>
+                            <button type="submit" disabled={!title || !url} className={stylesButtons.button_primary_blue} onClick={() => addAction()}>
+                                <SVG ariaHidden svg={AddIcon} />
+                                {__("opds.addForm.addButton")}
+                            </button>
+                        </Dialog.Close>
+                    </div>
+                </form>
+            </Dialog.Content>
+        </Dialog.Portal>
+    </Dialog.Root>;
+};
 
-export default connect(mapStateToProps)(withTranslator(OpdsFeedAddForm));
+export default ApiappAddFormDialog;

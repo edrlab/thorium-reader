@@ -8,6 +8,7 @@
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { IAnnotationReaderConfigState } from "../redux/states/renderer/annotation";
 
 export enum ReaderMode {
     Attached = "attached",
@@ -49,7 +50,10 @@ export interface ReaderConfigStrings extends ReaderConfigStringsAdjustables {
 }
 
 export interface ReaderConfigBooleans {
+
+    // not used ?
     dark: boolean;
+
     invert: boolean;
     night: boolean;
     paged: boolean;
@@ -66,7 +70,7 @@ export interface ReaderConfigBooleans {
     ttsEnableOverlayMode: boolean;
 }
 
-export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans {
+export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans, IAnnotationReaderConfigState {
 }
 
 // export interface BookmarkCollection {

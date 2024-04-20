@@ -12,9 +12,10 @@ import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
-import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
-import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
+import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -29,6 +30,7 @@ import { readerLocalActionSearch } from "../redux/actions";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     focusMainAreaLandmarkAndCloseMenu: () => void;
+    dockedMode: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -98,68 +100,48 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
         const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, _foundArray.length);
 
         return (<>
-            <p style={{
-                padding: "0",
-                margin: "0",
-                paddingBottom: "0.4em",
-                marginBottom: "0.4em",
-                borderBottom: "1px solid black",
-            }}>{`${label}`}</p>
-            <div style={{
-                padding: "0",
-                margin: "0",
-                marginBottom: "1em",
-                textAlign: "center",
-            }}>
-                {(_foundArray && _foundArray?.length > MAX_MATCHES_PER_PAGE) &&
-                <>
-                <button title={__("opds.firstPage")}
-                onClick={() => this.onPageFirst()}
-                style={{
-                    width: "30px",
-                }}>
-                    <SVG ariaHidden={true} svg={ArrowFirstIcon} />
-                </button>
-
-                <button title={__("opds.previous")}
-                onClick={() => this.onPagePrevious()}
-                style={{
-                    width: "30px",
-                }}>
-                    <SVG ariaHidden={true} svg={ArrowLeftIcon} />
-                </button>
-                <span style={{
-                    marginLeft: "0.5em",
-                    marginRight: "1em",
-                    verticalAlign: "super",
-                }}>
-                {
-                    begin === end ?
-                    `${end}` :
-                    `${begin} - ${end}`
-                }
-                </span>
-                <button title={__("opds.next")}
-                onClick={() => this.onPageNext()}
-                style={{
-                    width: "30px",
-                }}>
-                    <SVG ariaHidden={true} svg={ArrowRightIcon} />
-                </button>
-
-                <button title={__("opds.lastPage")}
-                onClick={() => this.onPageLast()}
-                style={{
-                    width: "30px",
-                }}>
-                    <SVG ariaHidden={true} svg={ArrowLastIcon} />
-                </button>
-                </>
-                }
-            </div>
+            <p className={stylesPopoverDialog.correspondances}>{`${label}`}</p>
             {
                 _searchJsx
             }
+            <div className={stylesPopoverDialog.navigation_container}>
+                {(_foundArray && _foundArray?.length > MAX_MATCHES_PER_PAGE) &&
+                    <>
+                        <button title={__("opds.firstPage")}
+                            onClick={() => this.onPageFirst()}
+                            disabled={begin === 1 ? true : false}>
+                            <SVG ariaHidden={true} svg={ArrowFirstIcon} />
+                        </button>
+
+                        <button title={__("opds.previous")}
+                            onClick={() => this.onPagePrevious()}
+                            disabled={begin === 1 ? true : false}>
+                            <SVG ariaHidden={true} svg={ArrowLeftIcon} />
+                        </button>
+                        <div className={stylesPopoverDialog.pages}>
+                            <p>{__("reader.picker.search.results")}</p>
+                            <span>
+                                {
+                                    begin === end ?
+                                        `${end}` :
+                                        `${begin} - ${end}`
+                                }
+                            </span>
+                        </div>
+                        <button title={__("opds.next")}
+                            onClick={() => this.onPageNext()}
+                            disabled={end === _foundArray.length ? true : false}>
+                            <SVG ariaHidden={true} svg={ArrowRightIcon} />
+                        </button>
+
+                        <button title={__("opds.lastPage")}
+                            onClick={() => this.onPageLast()}
+                            disabled={end === _foundArray.length ? true : false}>
+                            <SVG ariaHidden={true} svg={ArrowLastIcon} />
+                        </button>
+                    </>
+                }
+            </div>
         </>);
     }
 
@@ -213,7 +195,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
         let iMatch = -1;
         return <ul
             aria-label={label}
-            className={stylesReader.chapters_content}
+            className={stylesPopoverDialog.chapters_content}
             role={"list"}
         >{
             (this.props.readingOrder || []).reduce((pv, spineLink, j) => {
@@ -244,7 +226,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                                         }}
                                         onClick=
                                             {(e) => {
-                                                const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                                const closeNavPanel = !this.props.dockedMode; // e.shiftKey && e.altKey ? false : true;
                                                 this.handleSearchClickDebounced(e, v.uuid, closeNavPanel);
                                             }}
                                         onDoubleClick=
@@ -254,7 +236,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                                             {
                                                 (e) => {
                                                     if (e.key === "Enter") {
-                                                        const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                                                        const closeNavPanel = !this.props.dockedMode; // e.shiftKey && e.altKey ? false : true;
                                                         this.handleSearchClick(e, v.uuid, closeNavPanel);
                                                     }
                                                 }
@@ -263,7 +245,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                                     >
                                         <span dir={isRTL ? "rtl" : "ltr"}>{
                                         `...${v.cleanBefore}`
-                                        }<span style={{backgroundColor: "coral"}}>{
+                                        }<span style={{backgroundColor: "var(--color-blue)", color: "white", padding: "0 2px"}}>{
                                         `${v.cleanText}`
                                         }</span>{
                                         `${v.cleanAfter}...`
@@ -289,12 +271,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                     }
                     const jsxHead = (
                     <li
-                        style={{
-                            padding: "0.7em",
-                            border: "1px solid #333333",
-                            borderRadius: "1em",
-                            lineHeight: "1.3",
-                        }}
+                        className={stylesPopoverDialog.subheading}
                         key={`found_${k}`}>
                         <span>{title ? title : `#${j} ${spineLink.Href}`}</span>
                     </li>

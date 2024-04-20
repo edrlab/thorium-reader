@@ -10,12 +10,15 @@ import { connect } from "react-redux";
 import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { readerLocalActionBookmarks } from "../redux/actions";
-
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
+import { TextArea } from "react-aria-components";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import { readerActions } from "readium-desktop/common/redux/actions";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     close: () => void;
     bookmark: IBookmarkState;
+    name: string;
 }
 
 // IProps may typically extend:
@@ -31,12 +34,12 @@ interface IState {
 }
 
 export class UpdateBookmarkForm extends React.Component<IProps, IState> {
-    private inputRef: React.RefObject<HTMLInputElement>;
+    private inputRef: React.RefObject<HTMLTextAreaElement>;
 
     constructor(props: IProps) {
         super(props);
 
-        this.inputRef = React.createRef<HTMLInputElement>();
+        this.inputRef = React.createRef<HTMLTextAreaElement>();
 
         this.state = {
             bookmarkToUpdate: undefined,
@@ -52,23 +55,28 @@ export class UpdateBookmarkForm extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { bookmark } = this.props;
-        const defaultName = bookmark.name ? bookmark.name : "";
+        // const { bookmark } = this.props;
+        // const defaultName = bookmark.name ? bookmark.name : "";
 
         return (
-            <form onSubmit={this.submitBookmark}>
-                <input
-                    onBlur={this.props.close}
+            <form onSubmit={() => this.submitBookmark} className={stylesPopoverDialog.update_form}>
+                <TextArea
                     ref={this.inputRef}
-                    defaultValue={defaultName}
-                    type="text"
+                    defaultValue={this.props.name}
+                    className={stylesPopoverDialog.bookmark_textArea}
                 />
+                <div style={{ display: "flex", gap: "5px" }}>
+                    <button onClick={this.props.close}
+                        className={stylesButtons.button_secondary_blue}>Cancel</button>
+                    <button type="submit" className={stylesButtons.button_primary_blue}>Save</button>
+                </div>
             </form>
         );
     }
 
     private submitBookmark(e: TFormEvent) {
         e.preventDefault();
+        console.log("submitted", this.inputRef?.current);
         if (!this.inputRef?.current) {
             return;
         }
@@ -91,7 +99,7 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
 
     return {
         updateBookmark: (bookmark: IBookmarkState) => {
-            dispatch(readerLocalActionBookmarks.update.build(bookmark));
+            dispatch(readerActions.bookmark.update.build(bookmark));
         },
     };
 };

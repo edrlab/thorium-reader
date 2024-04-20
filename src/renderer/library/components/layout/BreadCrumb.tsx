@@ -9,9 +9,10 @@ import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-left.svg";
-import * as stylesBreadcrumb from "readium-desktop/renderer/assets/styles/components/breadcrumb.css";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
+import * as BreacrmbsNavIcon from "readium-desktop/renderer/assets/icons/breadcrumbsNav-icon.svg";
+import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-right.svg";
+import * as stylesBreadcrumb from "readium-desktop/renderer/assets/styles/components/breadcrumb.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -40,47 +41,98 @@ class BreadCrumb extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { breadcrumb, __ } = this.props;
+        const { breadcrumb } = this.props;
 
         return (
             <div className={classNames(stylesBreadcrumb.breadcrumb, this.props.className)}>
                 {
-                    breadcrumb.length >= 2
-                    && <Link
-                        to={{
-                            ...this.props.location,
-                            pathname: breadcrumb[breadcrumb.length - 2].path,
-                        }}
-                        state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                        title={__("opds.back")}
-                        className={stylesButtons.button_transparency_icon}
-                    >
-                        <SVG ariaHidden={true} svg={ArrowIcon} />
-                    </Link>
-                }
-                {
                     breadcrumb
-                    && breadcrumb.map(
-                        (item, index) =>
-                            item.path && index !== breadcrumb.length - 1 ?
+                        ?
+                        breadcrumb.length > 5 ?
+                            <>
                                 <Link
-                                    key={index}
                                     to={{
                                         ...this.props.location,
-                                        pathname: item.path,
+                                        pathname: breadcrumb[0].path,
                                     }}
-                                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                                    title={item.name}
+                                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                                    title={breadcrumb[0].name}
                                     className={stylesButtons.button_transparency}
                                 >
-                                    {item.name}
+                                     <SVG ariaHidden={true} svg={BreacrmbsNavIcon} />
+                                    <p>{breadcrumb[0].name}</p>
                                 </Link>
-                            :
-                                <strong key={index}>
-                                    {item.name}
-                                </strong>,
-                    )
-                }
+                                <SVG ariaHidden svg={ChevronRight} />
+                                <Link
+                                    to={{
+                                        ...this.props.location,
+                                        pathname: breadcrumb[breadcrumb.length - 3].path,
+                                    }}
+                                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                                    title={breadcrumb[breadcrumb.length - 3].name}
+                                    className={stylesButtons.button_transparency}
+                                >
+                                    <p>...</p>
+                                </Link>
+                                <SVG ariaHidden svg={ChevronRight} />
+                                <Link
+                                    to={{
+                                        ...this.props.location,
+                                        pathname: breadcrumb[breadcrumb.length - 2].path,
+                                    }}
+                                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                                    title={breadcrumb[breadcrumb.length - 2].name}
+                                    className={stylesButtons.button_transparency}
+                                >
+                                    <p>{breadcrumb[breadcrumb.length - 2].name}</p>
+                                </Link>
+                                <SVG ariaHidden svg={ChevronRight} />
+                                <strong>
+                                    {breadcrumb[breadcrumb.length - 1].name}
+                                </strong>
+                            </>
+                        :
+                        breadcrumb.length >= 2 && breadcrumb.length <= 5 ?
+                            <>
+                                <Link
+                                    to={{
+                                        ...this.props.location,
+                                        pathname: breadcrumb[0].path,
+                                    }}
+                                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                                    title={breadcrumb[0].name}
+                                    className={stylesButtons.button_transparency}
+                                >
+                                    <SVG ariaHidden={true} svg={BreacrmbsNavIcon} />
+                                    <p>{breadcrumb[0].name}</p>
+                                </Link>
+                                <SVG ariaHidden svg={ChevronRight} />
+                                {breadcrumb.slice(1).map(
+                                    (item, index) =>
+                                        item.path && index !== breadcrumb.length - 2 ?
+                                            <React.Fragment key={index}>
+                                                <Link
+                                                    key={index}
+                                                    to={{
+                                                        ...this.props.location,
+                                                        pathname: item.path,
+                                                    }}
+                                                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                                                    title={item.name}
+                                                    className={stylesButtons.button_transparency}
+                                                >
+                                                    <p title={item.name}>{item.name}</p>
+                                                </Link>
+                                                <SVG ariaHidden svg={ChevronRight} />
+                                            </React.Fragment>
+                                            :
+                                        <strong key={index} title={item.name}>
+                                            {item.name}
+                                        </strong>,
+                                )}
+                            </>
+                        : <></> : <></>
+                } 
             </div>
         );
     }

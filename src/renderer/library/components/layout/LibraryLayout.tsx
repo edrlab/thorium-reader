@@ -11,7 +11,9 @@ import { connect } from "react-redux";
 
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
+import * as stylesAllBooks from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -22,6 +24,15 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 
 import LibraryHeader from "./LibraryHeader";
 
+import * as RefreshIcon from "readium-desktop/renderer/assets/icons/refresh-icon.svg";
+import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
+import * as AvatarIcon from "readium-desktop/renderer/assets/icons/person-fill.svg";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
+import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
+import { Link, matchPath } from "react-router-dom";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -29,7 +40,9 @@ interface IBaseProps extends TranslatorProps {
     secondaryHeader?: React.ReactElement;
     breadCrumb?: React.ReactElement;
     title?: string;
+    page?: string;
     mainClassName?: string;
+    search?: React.ReactElement;
 
     // since React 16.10.0 (was not needed in 16.9.0)
     children?: React.ReactNode; // JSX.Element[] | JSX.Element
@@ -81,12 +94,12 @@ class LibraryLayout extends React.Component<IProps, undefined> {
     }
 
     public render() {
-        const { title } = this.props;
+        const { page } = this.props;
         const { __ } = this.props;
 
         let helmetTitle = capitalizedAppName;
-        if (title) {
-            helmetTitle += " - " + title;
+        if (page) {
+            helmetTitle += " - " + page;
         }
         window.document.title = helmetTitle;
 
@@ -103,27 +116,55 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                 >
                     {__("accessibility.toolbar")}
                 </a>
-                <LibraryHeader />
-                { this.props.secondaryHeader }
-                { this.props.breadCrumb }
-                <main
-                    id="main"
-                    aria-label={__("accessibility.mainContent")}
-                    className={classNames(stylesGlobal.main, this.props.mainClassName)}
-                >
-                    <a
-                        role="heading"
-                        className={stylesGlobal.anchor_link}
-                        ref={this.fastLinkRef}
-                        id="main-content"
-                        title={__("accessibility.mainContent")}
+                <div style={{display: "flex"}}>
+                    <LibraryHeader />
+                    <main
+                        id="main"
                         aria-label={__("accessibility.mainContent")}
-                        tabIndex={-1}
+                        className={classNames(stylesGlobal.main, this.props.mainClassName)}
                     >
-                        {__("accessibility.mainContent")}
-                    </a>
-                    { this.props.children }
-                </main>
+                        {this.props.secondaryHeader}
+                        {(page === __("opds.breadcrumbRoot")) ?
+                            <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
+                                <h2 className={stylesAllBooks.allBooks_header}>{this.props.title}</h2>
+                                {this.props.breadCrumb ?
+                                    <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                                        {
+                                            this.home()
+                                        }
+                                        {
+                                            this.bookshelf()
+                                        }
+                                        {
+                                            this.refresh()
+                                        }
+                                    </div>
+                                    : <></>
+                                }
+                            </div>
+
+                            : <></>
+                        }
+                        {this.props.breadCrumb ?
+                        <div className={stylesCatalogs.catalog_breadcrumbSearch_Wrapper}>
+                            { this.props.breadCrumb }
+                            { this.props.search }
+                        </div>
+                        : <></>}
+                        <a
+                            role="heading"
+                            className={stylesGlobal.anchor_link}
+                            ref={this.fastLinkRef}
+                            id="main-content"
+                            title={__("accessibility.mainContent")}
+                            aria-label={__("accessibility.mainContent")}
+                            tabIndex={-1}
+                        >
+                            {__("accessibility.mainContent")}
+                        </a>
+                        { this.props.children }
+                    </main>
+                </div>
             </div>
         );
     }
@@ -155,11 +196,152 @@ class LibraryLayout extends React.Component<IProps, undefined> {
             this.refToolbar.current.focus();
         }
     };
+
+    private bookshelf = () => {
+        const { bookshelf } = this.props.headerLinks;
+
+        let bookshelfComponent = <></>;
+        if (bookshelf) {
+
+            const { __ } = this.props;
+
+            const param = matchPath<keyof IOpdsBrowse, string>(
+                routes["/opds/browse"].path,
+                this.props.location.pathname,
+            ).params;
+
+            const lvl = parseInt(param.level, 10);
+
+            const route = buildOpdsBrowserRoute(
+                param.opdsId,
+                __("opds.shelf"),
+                bookshelf,
+                lvl === 1 ? 3 : (lvl + 1),
+            );
+
+            bookshelfComponent = (
+                <Link
+                    to={{
+                        ...this.props.location,
+                        pathname: route,
+                    }}
+                    style={{width: "20px"}}
+                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                    className={stylesButtons.button_nav_tertiary}
+                >
+                    <SVG svg={AvatarIcon} title={__("opds.shelf")} />
+                </Link>
+            );
+        }
+
+        return bookshelfComponent;
+    };
+
+    private home = () => {
+        const { start } = this.props.headerLinks;
+
+        let homeComponent = <></>;
+        if (start) {
+
+            const { __ } = this.props;
+
+            const param = matchPath<keyof IOpdsBrowse, string>(
+                routes["/opds/browse"].path,
+                this.props.location.pathname,
+            ).params;
+
+            const home = this.props.breadcrumb[1];
+
+            const route = buildOpdsBrowserRoute(
+                param.opdsId,
+                home.name || "",
+                start,
+                1,
+            );
+
+            homeComponent = (
+                <Link
+                    to={{
+                        ...this.props.location,
+                        pathname: route,
+                    }}
+                    style={{width: "20px"}}
+                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                    className={stylesButtons.button_nav_tertiary}
+                >
+                    <SVG svg={HomeIcon} title={__("header.homeTitle")} />
+                </Link>
+            );
+        }
+
+        return homeComponent;
+    };
+
+    private refresh = () => {
+        const { self } = this.props.headerLinks;
+        const { __ } = this.props;
+
+        let refreshComponet = <></>;
+        if (self) {
+
+            const param = matchPath<keyof IOpdsBrowse, string>(
+                routes["/opds/browse"].path,
+                this.props.location.pathname,
+            ).params;
+
+            const lvl = parseInt(param.level, 10);
+
+            const i = (lvl > 1) ? (lvl - 1) : lvl;
+            const name = this.props.breadcrumb[i]?.name;
+
+            const route = buildOpdsBrowserRoute(
+                param.opdsId,
+                name,
+                self,
+                lvl,
+            );
+
+            refreshComponet = (
+                <button className={stylesButtons.button_nav_tertiary} style={{width: "20px", height: "20px"}}>
+                    <Link
+                        to={{
+                            ...this.props.location,
+                            pathname: route,
+                        }}
+                        style={{height: "unset"}}
+                        state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                        className={classNames(stylesButtons.button_refresh)}
+                    >
+                        <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
+                    </Link>
+                </button>
+            );
+        } else {
+            refreshComponet = (
+                <button className={stylesButtons.button_nav_tertiary}>
+                    <Link
+                        to={{
+                            ...this.props.location,
+                        }}
+                        state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                        className={classNames(stylesButtons.button_refresh)}
+                    >
+                        <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
+                    </Link>
+                </button>
+            );
+        }
+
+        return refreshComponet;
+    };
 }
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     // dialogOpen: state.dialog.open, // unused ?
     keyboardShortcuts: state.keyboard.shortcuts,
+    location: state.router.location,
+    headerLinks: state.opds.browser.header,
+    breadcrumb: state.opds.browser.breadcrumb,
 });
 
 export default connect(mapStateToProps)(withTranslator(LibraryLayout));

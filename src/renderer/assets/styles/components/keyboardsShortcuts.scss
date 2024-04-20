@@ -1,0 +1,140 @@
+/*
+=-=-= keyboardsShortcuts.scss
+*/
+
+.keyshortElement {
+    &_container {
+        display: flex;
+        flex-direction: column;
+        margin: 10px 0;
+        border-bottom: 1px solid var(--color-light-grey);
+    }
+
+    &_title {
+        font-size: 16px;
+        margin: 5px;
+        font-weight: bold;
+    }
+
+    &_shortcut {
+        display: flex;
+        place-items: center center;
+        color: var(--color-blue);
+        background-color: var(--color-light-blue);
+        padding: 3px;
+        gap: 5px;
+        width: fit-content;
+        font-size: 16px;
+
+        &_container {
+            margin-bottom: 10px;
+
+            svg {
+                color: var(--color-blue)!important;
+                width: 15px;
+                height: 15px;
+                padding-bottom: 5px;
+                padding-left: 5px;
+                transition: 200ms;
+
+                &:hover {
+                    scale: 1.2;
+                }
+            }
+
+            &_edit {
+                border-left: 2px solid var(--color-blue);
+                width: 100%;
+                color: var(--color--primary);
+                background-color: var(--color-light-blue);
+                padding: 5px;
+
+                .keyshortElement_shortcut {
+                    color: var(--color--primary);
+                    background-color: transparent;
+                }
+
+                > * {
+                    margin-left: 5px;
+                }
+
+                &_input {
+                    position: absolute;
+                    left: -2000px;
+
+                    &:checked + label {
+                        border: 1px solid var(--color-blue);
+                        background-color: var(--color-secondary);
+                        color: var(--color-blue);
+
+                        svg {
+                            fill: var(--color-blue);
+                        }
+                    }
+
+                    &:focus + label {
+                        outline: 2px solid var(--color--blue);
+                    }
+                }
+
+                label {
+                    border: 1px solid transparent;
+                    border-radius: 6px;
+                    color: var(--color--primary);
+                    padding: 3px;
+                    background-color: var(--color-light-grey);
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+
+                    svg {
+                        width: 30px;
+                        height: 30px;
+                    }
+
+                    &:focus {
+                        outline-color: var(--color--blue)!important;
+                    }
+                }
+
+                .form_group {
+                    width: 100px;
+                    height: 30px;
+                    margin-bottom: 0!important;
+                    color: var(--color--primary);
+                }
+
+                .outline {
+                    background-color: var(--color-secondary);
+                    width: 50px;
+                }
+            }
+        }
+    }
+
+    &_description {
+        font-size: 14px;
+    }
+}
+
+.action_buttons_container {
+    display: flex;
+    gap: 10px;
+}
+
+.advanced_trigger {
+    min-width: 20px!important;
+    height: 20px;
+    width: fit-content!important;
+    border: 1px solid;
+    border-color: transparent;
+    background-color: transparent;
+    transition: 200ms linear;
+    padding: 3px;
+
+    &:hover{
+        background-color: var(--color-light-blue);
+        border-color: var(--color-blue);
+    }
+}

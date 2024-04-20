@@ -26,6 +26,10 @@ import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
+import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
+import classNames from "classnames";
+// import GridTagButton from "../../catalog/GridTagButton";
+
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:dialog:pubInfo:tagManager");
@@ -66,31 +70,35 @@ class TagManager extends React.Component<IProps> {
                     deleteTag(this.props.tagArray, setTagsCb)(index);
 
         return (
-            <div>
-                <TagList tagArray={this.props.tagArray}>
-                    {
-                        (tag, index) =>
-                            <TagButton
-                                tag={tag}
-                                index={index}
-                                __={__}
-                                pubId={this.props.pubId}
-                                onClickDeleteCb={updateTagsCb}
-                                onClickLinkCb={
-                                    (_tag) => () => this.props.link(
-                                        _tag.link[0], this.props.location, _tag.name)
-                                }
-                            >
-                            </TagButton>
-                    }
-                </TagList>
+            <section className={stylePublication.publicationInfo_tagContainer}>
+                <div className={classNames(stylePublication.publicationInfo_heading,stylePublication.tag_list )}>
+                    <h4>{__("catalog.tags")} {this.props.tagArray?.length > 0 ? ":" : ""}</h4>
+                    <TagList tagArray={this.props.tagArray}>
+                        {
+                            (tag, index) =>
+                                <TagButton
+                                    tag={tag}
+                                    index={index}
+                                    pubId={this.props.pubId}
+                                    onClickDeleteCb={updateTagsCb}
+                                    onClickLinkCb={
+                                        (_tag) => () => this.props.link(
+                                            _tag.link[0], this.props.location, _tag.name)
+                                    }
+                                    location={this.props.location}
+                                >
+                                </TagButton>
+                                // <GridTagButton name={tag as string} key={index} />
+                        }
+                    </TagList>
+                </div>
                 <AddTag
                     pubId={this.props.pubId}
                     tagArray={this.props.tagArray}
                     __={__}
                     setTags={setTagsCb}
                 />
-            </div>
+            </section>
         );
     }
 }

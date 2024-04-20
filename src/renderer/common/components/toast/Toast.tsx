@@ -11,8 +11,9 @@ import * as React from "react";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.css";
+import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 
 import { TranslatorProps, withTranslator } from "../hoc/translator";
 
@@ -40,6 +41,7 @@ interface IProps extends IBaseProps {
 interface IState {
     willLeave: boolean;
     toRemove: boolean;
+    opened: boolean;
 }
 
 export class Toast extends React.Component<IProps, IState> {
@@ -55,6 +57,7 @@ export class Toast extends React.Component<IProps, IState> {
         this.state = {
             willLeave: false,
             toRemove: false,
+            opened: false,
         };
 
         this.handleTransitionEnd = this.handleTransitionEnd.bind(this);
@@ -133,8 +136,15 @@ export class Toast extends React.Component<IProps, IState> {
                 }}
                 onClick={() => {
                     this.cancelTimer(true);
+                    this.setState({ opened : !this.state.opened });
                 }}
                 onMouseOut={() => {
+                    this.triggerTimer(true);
+                    
+                }}
+                onBlur={() => {
+                    this.ignoreTimer = false;
+                    this.setState({ opened : false });
                     this.triggerTimer(true);
                 }}
                 className={classNames(
@@ -152,6 +162,7 @@ export class Toast extends React.Component<IProps, IState> {
                     aria-relevant="all"
                     role="alert"
                     tabIndex={0}
+                    className={ this.state.opened ? stylesToasts.toast_open : ""}
                     onFocus={() => {
                         this.cancelTimer(true);
                     }}
@@ -181,11 +192,17 @@ export class Toast extends React.Component<IProps, IState> {
                     onFocus={() => {
                         this.cancelTimer(true);
                     }}
-                    onClick={() => this.handleClose()}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        this.handleClose();
+                    }}
                     className={stylesToasts.closeButton}
                     title={this.props.__("accessibility.closeDialog")}
                 >
-                    <SVG ariaHidden={true} svg={QuitIcon}/>
+                    {this.state.opened ?
+                    <SVG ariaHidden={true} svg={ChevronDownIcon}/>
+                    :
+                    <SVG ariaHidden={true} svg={QuitIcon}/>}
                 </button>
             </div>
         );
@@ -193,6 +210,7 @@ export class Toast extends React.Component<IProps, IState> {
 
     private handleClose() {
         this.setState({ willLeave: true });
+        this.setState({ opened : false });
     }
 
     private handleTransitionEnd() {

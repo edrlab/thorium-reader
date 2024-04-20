@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -14,8 +13,9 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.css";
-import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.css";
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 import Cover from "readium-desktop/renderer/common/components/Cover";
 import {
     TranslatorProps, withTranslator,
@@ -31,11 +31,20 @@ import CatalogMenu from "./menu/CatalogMenu";
 import OpdsMenu from "./menu/OpdsMenu";
 
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
+import { PublicationInfoOpdsWithRadix, PublicationInfoOpdsWithRadixContent, PublicationInfoOpdsWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
+import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-icon.svg";
+// import * as CalendarExpiredIcon from "readium-desktop/renderer/assets/icons/calendarExpired-icon.svg";
+import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
+import classNames from "classnames";
+import * as moment from "moment";
+
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationViewMaybeOpds: PublicationView | IOpdsPublicationView;
     isOpds?: boolean;
+    isReading?: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -63,40 +72,132 @@ class PublicationCard extends React.Component<IProps> {
         const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
 
+        const publicationView = publicationViewMaybeOpds as PublicationView;
+
+        let pubFormat = "EPUB";
+        if (publicationView.isAudio) {
+            pubFormat = "Audio";
+        } else if (publicationView.isDivina) {
+            pubFormat = "Divina";
+        } else if (publicationView.isPDF) {
+            pubFormat = "PDF";
+        } else if (publicationView.isDaisy) {
+            pubFormat = "DAISY";
+        } else if (publicationView.isFixedLayoutPublication) {
+            pubFormat = "EPUB (FXL)";
+        }
+
+        const lcpRightsEndDate = (publicationView.lcp?.rights?.end) ? publicationView.lcp.rights.end : undefined;
+        let remainingDays= "";
+        const now = moment();
+        let hasEnded = false;
+        const isLcp = publicationView.lcp?.rights ? true : false;
+
+        if (lcpRightsEndDate) {
+            const momentEnd = moment(lcpRightsEndDate);
+            const timeEndDif = momentEnd.diff(now, "days");
+            if (timeEndDif > 1) {
+                remainingDays = `${timeEndDif} ${__("publication.days")}`;
+            } else if (timeEndDif === 1) {
+                remainingDays = `${timeEndDif} ${__("publication.day")}`;
+            } else {
+                remainingDays = `${__("publication.expired")}`;
+                hasEnded = true;
+            }
+        }
+
+        let tagString = "";
+        if (publicationViewMaybeOpds.tags) {
+            for (const tag of publicationViewMaybeOpds.tags) {
+                if (typeof tag === "string") {
+                    tagString = tag;
+                } else {
+                    tagString = tag.name;
+                }
+            };
+        }
+
         // aria-haspopup="dialog"
         // aria-controls="dialog"
         return (
             <div className={stylesPublications.publication_wrapper}>
-                <a
-                    onClick={(e) => this.handleBookClick(e)}
-                    onKeyPress={
-                        (e) =>
-                            (e.key === "Enter") && this.handleBookClick(e)
-                    }
-                    title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
-                    className={stylesPublications.publication_image_wrapper}
-                    tabIndex={0}
-                >
-                    <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
-                </a>
-                <div className={stylesPublications.publication_infos_wrapper}>
-                    <a aria-hidden onClick={(e) => this.handleBookClick(e)}
-                        className={stylesPublications.publication_infos}
+                {
+                    isOpds ?
+                        <PublicationInfoOpdsWithRadix
+                            opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
                         >
-                        <p aria-hidden className={stylesPublications.publication_title}
-                            dir={pubTitleIsRTL ? "rtl" : undefined}>
-                            {pubTitleStr}
-                        </p>
-                        <p aria-hidden className={stylesPublications.publication_description}>
-                            {this.truncateAuthors(authors)}
-                        </p>
-                    </a>
-                    <Menu
-                        button={(
-                            <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
-                        )}
-                        content={(
-                            <div className={classNames(stylesDropDown.dropdown_menu, stylesDropDown.dropdown_publication)}>
+                            <PublicationInfoOpdsWithRadixTrigger asChild>
+                                <a
+                                    className={classNames(stylesPublications.publication_main_container, hasEnded ? stylesPublications.expired : "")}
+                                    title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
+                                    tabIndex={0}
+                                >
+                                    <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} hasEnded={hasEnded} />
+                                    <div className={stylesPublications.publication_title_wrapper}>
+                                        <p aria-hidden className={stylesPublications.publication_title}
+                                            dir={pubTitleIsRTL ? "rtl" : undefined}>
+                                            {pubTitleStr}
+                                        </p>
+                                        <p aria-hidden className={stylesPublications.publication_authors}>
+                                            {this.truncateAuthors(authors)}
+                                        </p>
+                                    </div>
+                                </a>
+                            </PublicationInfoOpdsWithRadixTrigger>
+                            <PublicationInfoOpdsWithRadixContent />
+                        </PublicationInfoOpdsWithRadix>
+                        :
+                        <a
+                            onClick={(e) => this.handleLocalBookshelfBookClick(e)}
+                            onKeyPress={
+                                (e) =>
+                                    (e.key === "Enter") && this.handleLocalBookshelfBookClick(e)
+                            }
+                            title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
+                            className={classNames(stylesPublications.publication_main_container, hasEnded ? stylesPublications.expired : "")}
+                            tabIndex={0}
+                        >
+                            <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} hasEnded={hasEnded} />
+                            <div className={stylesPublications.publication_title_wrapper}>
+                                <p aria-hidden className={stylesPublications.publication_title}
+                                    dir={pubTitleIsRTL ? "rtl" : undefined}>
+                                    {pubTitleStr}
+                                </p>
+                                <p aria-hidden className={stylesPublications.publication_authors}>
+                                    {this.truncateAuthors(authors)}
+                                </p>
+                            </div>
+                        </a>
+                }
+                <div className={stylesPublications.publication_infos_wrapper}>
+                    <div className={stylesPublications.publication_infos}>
+                        {isOpds ? <></>
+                            : <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+                                {tagString === "/finished/" ?
+                                    <div className={stylesPublications.lcpIndicator}><SVG ariaHidden svg={DoubleCheckIcon} />{__("publication.read")}</div>
+                                    : <></>}
+                                {
+                                    remainingDays ?
+                                        <div className={stylesPublications.lcpIndicator}>
+                                            <SVG ariaHidden svg={hasEnded ? KeyIcon : CalendarIcon} />
+                                            {remainingDays}
+                                        </div>
+                                        : (isLcp && !remainingDays) ?
+                                            <div className={stylesPublications.lcpIndicator}>
+                                                <SVG ariaHidden svg={KeyIcon} />
+                                                {__("publication.licensed")}
+                                            </div>
+                                            : <></>
+                                }
+                            </div>}
+                        <div style={{ display: "flex", alignItems: "end", height: "50px", width: "100%", justifyContent: isOpds ? "flex-end" : "space-between" }}>
+                            {isOpds ? <></>
+                                : <span className={stylesButtons.button_secondary_blue}>{pubFormat}</span>}
+                            <Menu
+                                button={(
+                                    <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
+                                )}
+                            >
                                 {isOpds ?
                                     <OpdsMenu
                                         opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
@@ -104,24 +205,18 @@ class PublicationCard extends React.Component<IProps> {
                                     <CatalogMenu
                                         publicationView={publicationViewMaybeOpds as PublicationView}
                                     />}
-                            </div>
-                        )}
-                        dir="right"
-                    />
+                            </Menu>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
     }
 
-    private handleBookClick(e: React.SyntheticEvent) {
+    private handleLocalBookshelfBookClick(e: React.SyntheticEvent) {
         e.preventDefault();
         const { publicationViewMaybeOpds } = this.props;
-
-        if (this.props.isOpds) {
-            this.props.openInfosDialog(publicationViewMaybeOpds as IOpdsPublicationView);
-        } else {
-            this.props.openReader(publicationViewMaybeOpds as PublicationView);
-        }
+        this.props.openReader(publicationViewMaybeOpds as PublicationView);
     }
 
     /* function Truncate very long titles at 60 characters */

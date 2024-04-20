@@ -13,12 +13,12 @@ export interface IHighlightBaseState {
 
 export interface IHighlightHandlerState extends IHighlightBaseState {
     href: string;
-    type: "search" | "annotation";
+    // type: "search" | "annotation";
     def: IHighlightDefinition;
 }
 
 export interface IHighlightMounterState extends IHighlightBaseState {
   href: string;
-  type: IHighlightHandlerState["type"];
+  // type: IHighlightHandlerState["type"];
   ref: IHighlight;
 }
