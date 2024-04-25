@@ -23,6 +23,7 @@ import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-ic
 import * as ShelfIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { Settings } from "../settings/Settings";
+import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 
 interface NavigationHeader {
     route: string;
@@ -85,6 +86,8 @@ class Header extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
+        const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
+
         return (<>
             <SkipLink
                 className={stylesHeader.skip_link}
@@ -92,7 +95,8 @@ class Header extends React.Component<IProps, undefined> {
                 label={__("accessibility.skipLink")}
             />
             <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
-                <ul>
+                <h1 style={{textAlign: "center", color: "#AFB1B6", fontSize: "30px", marginBottom: "10px"}}>{capitalizedAppName}</h1>
+                <ul style={{paddingTop: "10px"}}>
                     <div>
                     {
                         headerNav.map(
