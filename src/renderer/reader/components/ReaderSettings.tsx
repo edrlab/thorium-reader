@@ -195,12 +195,14 @@ export const FontSize = ({config: {fontSize}, set}: {config: Pick<ReaderConfig, 
         <section>
             <h4>{__("reader.settings.fontSize")} ({fontSize})</h4>
             <div className={stylesSettings.size_range}>
-            <button onClick={() => {
+                <button onClick={() => {
                     const newValue = "100%";
                     setCurrentSliderValue(newValue.replace(/%/g, ""));
                     set({ fontSize: newValue });
                 }
-                } className={stylesSettings.reset_button} title="default value"><SVG ariaHidden svg={ResetIcon} /></button>
+                } className={stylesSettings.reset_button} title="default value">
+                    <SVG ariaHidden svg={ResetIcon} />
+                </button>
                 <button onClick={() => click("out")} className={stylesSettings.scale_button}><SVG ariaHidden svg={MinusIcon} /></button>
                 <input
                     type="range"
@@ -557,7 +559,7 @@ const ReadingDisplayAlign = ({ config: { align }, set }: { config: Pick<ReaderCo
     );
 };
 
-const ReadingAudio = ({ config: { mediaOverlaysEnableCaptionsMode: captions, mediaOverlaysEnableSkippability: skippability, ttsEnableSentenceDetection: splitTTStext }, set }:
+export const ReadingAudio = ({ config: { mediaOverlaysEnableCaptionsMode: captions, mediaOverlaysEnableSkippability: skippability, ttsEnableSentenceDetection: splitTTStext }, set }:
     { config: Pick<ReaderConfig, "mediaOverlaysEnableCaptionsMode" | "mediaOverlaysEnableSkippability" | "ttsEnableSentenceDetection">,
     set: (a: Partial<Pick<ReaderConfig, "mediaOverlaysEnableCaptionsMode" | "mediaOverlaysEnableSkippability" | "ttsEnableSentenceDetection">>) => void }) => {
     const [__] = useTranslator();
@@ -598,19 +600,17 @@ const ReadingAudio = ({ config: { mediaOverlaysEnableCaptionsMode: captions, med
     return (
         <div style={{display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px,1fr)"}}>
             {options.map((option) => (
-                <section className={stylesSettings.section} key={option.id}>
-                    <div>
-                        <input
-                            id={option.id}
-                            type="checkbox"
-                            name={option.name}
-                            onChange={option.onChange}
-                            defaultChecked={option.checked}
-                        />
-                        <label htmlFor={option.id}>{option.label}</label>
-                        <p className={stylesSettings.session_text}>{option.description}</p>
-                    </div>
-                </section>
+                <div style={{padding: "10px 0"}} key={option.id}>
+                    <input
+                        id={option.id}
+                        type="checkbox"
+                        name={option.name}
+                        onChange={option.onChange}
+                        defaultChecked={option.checked}
+                    />
+                    <label htmlFor={option.id}>{option.label}</label>
+                    {/* <p className={stylesSettings.session_text}>{option.description}</p> */}
+                </div>
 
             ))}
         </div>
@@ -1032,12 +1032,12 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         </Tabs.Trigger>;
     const optionDisplayItem = { id: 3, value: "tab-display", name: __("reader.settings.display"), disabled: false, svg: AlignLeftIcon };
 
-    const AudioTrigger =
-        <Tabs.Trigger value="tab-audio" key={"tab-audio"} title={__("reader.media-overlays.title")}>
-            <SVG ariaHidden svg={VolumeUpIcon} />
-            <h3>{__("reader.media-overlays.title")}</h3>
-        </Tabs.Trigger>;
-    const optionAudioItem = { id: 4, value: "tab-audio", name: __("reader.media-overlays.title"), disabled: false, svg: VolumeUpIcon };
+    // const AudioTrigger =
+    //     <Tabs.Trigger value="tab-audio" key={"tab-audio"} title={__("reader.media-overlays.title")}>
+    //         <SVG ariaHidden svg={VolumeUpIcon} />
+    //         <h3>{__("reader.media-overlays.title")}</h3>
+    //     </Tabs.Trigger>;
+    // const optionAudioItem = { id: 4, value: "tab-audio", name: __("reader.media-overlays.title"), disabled: false, svg: VolumeUpIcon };
 
     const PdfZoomTrigger =
         <Tabs.Trigger value="tab-pdfzoom" key={"tab-pdfzoom"} title={__("reader.settings.pdfZoom.title")}>
@@ -1065,8 +1065,8 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         options.push(optionDisplayItem);
     }
     if (isEpub) {
-        sections.push(AudioTrigger);
-        options.push(optionAudioItem);
+        // sections.push(AudioTrigger);
+        // options.push(optionAudioItem);
         sections.push(AllowCustomContainer());
         sections.push(TextTrigger);
         options.push(optionTextItem);
@@ -1215,12 +1215,12 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             {isPdf ? <></> : <ReadingDisplayMathJax config={readerConfig} set={setPartialSettingsDebounced} disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />}
                         </section>
                     </Tabs.Content>
-                    <Tabs.Content value="tab-audio" tabIndex={-1}>
+                    {/* <Tabs.Content value="tab-audio" tabIndex={-1}>
                     <TabHeader />
                         <section className={stylesSettings.settings_tab}>
                             <ReadingAudio config={readerConfig} set={setPartialSettingsDebounced}/>
                         </section>
-                    </Tabs.Content>
+                    </Tabs.Content> */}
                 </div>
             </Tabs.Root>
         </div>

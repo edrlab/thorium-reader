@@ -193,6 +193,8 @@ class PublicationCard extends React.Component<IProps> {
                         <div style={{ display: "flex", alignItems: "end", height: "50px", width: "100%", justifyContent: isOpds ? "flex-end" : "space-between" }}>
                             {isOpds ? <></>
                                 : <span className={stylesButtons.button_secondary_blue}>{pubFormat}</span>}
+                                {isOpds ? <></>
+                            :
                             <Menu
                                 button={(
                                     <SVG title={`${__("accessibility.bookMenu")} (${publicationViewMaybeOpds.documentTitle})`} svg={MenuIcon} />
@@ -205,7 +207,7 @@ class PublicationCard extends React.Component<IProps> {
                                     <CatalogMenu
                                         publicationView={publicationViewMaybeOpds as PublicationView}
                                     />}
-                            </Menu>
+                            </Menu>}
                         </div>
                     </div>
                 </div>

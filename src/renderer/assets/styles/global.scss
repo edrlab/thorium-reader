@@ -84,7 +84,7 @@ section {
   color: var(--color-primary);
 
   &:has(.footer_wrapper) {
-    padding-bottom: 40px;
+    padding-bottom: 100px;
   }
 
   &::-webkit-scrollbar {
@@ -297,7 +297,7 @@ nav + nav + .breadcrumb + .main {
   color: var(--color-primary);
   font-size: 14px;
   position: fixed;
-  bottom: 50px;
+  bottom: 100px;
   right: 55px;
   width: calc(100% - 320px);
   display: flex;

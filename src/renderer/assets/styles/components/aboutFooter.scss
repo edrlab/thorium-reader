@@ -28,9 +28,17 @@
     align-items: center;
     justify-content: end;
     gap: 10px;
-    height: 30px;
+    height: 75px;
     width: calc(100% - 247px);
     background-color: var(--color-secondary);
+
+    svg {
+        width: 45px;
+    }
+
+    p {
+        margin: 0;
+    }
 
     @media screen and (width <= 800px) {
         width: calc(100% - 112px);

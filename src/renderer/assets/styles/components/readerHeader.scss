@@ -200,24 +200,18 @@
 .Tts_popover_container {
     display: flex;
     align-items: center;
-    height: 75px;
+    height: fit-content;
     background-color: var(--color-extralight-grey);
     box-shadow: 0 6px 10px 0 var(--color-medium-grey);
     border-radius: 6px;
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    padding: 10px;
     border: 1px solid var(--color-medium-grey);
+    gap: 20px;
 
-    li {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: start;
-        border-right: 1px solid var(--color-medium-grey);
-        height: 50px;
-        padding: 0 20px;
 
+    .react_aria_ComboBox{
         .react_aria_Input {
             background-color: var(--color-secondary)!important;
             color: var(--color-primary)!important;
@@ -230,6 +224,27 @@
             padding: 0 10px;
             background-color: var(--color-secondary);
             color: var(--color-primary);
+        }
+
+        .react_aria_ComboBox {
+            margin: 0;
+        }
+    }
+
+    .ttsSelectRate {
+        .react_aria_ComboBox {
+            margin-bottom: 5px;
+            padding: 0;
+        }
+    }
+
+    .ttsSelectRate, .ttsSelectVoice {
+        input {
+            padding-left: 10px;
+        }
+
+        .my_combobox_container {
+            width: 280px;
         }
     }
 }

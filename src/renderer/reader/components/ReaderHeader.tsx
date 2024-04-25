@@ -12,7 +12,7 @@ import * as Popover from "@radix-ui/react-popover";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 // import * as ReactDOM from "react-dom";
-import { ReaderMode } from "readium-desktop/common/models/reader";
+import { ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
 import * as viewMode from "readium-desktop/renderer/assets/icons/fullscreen-corners-icon.svg";
 import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
@@ -60,7 +60,7 @@ import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { PublicationInfoReaderWithRadix, PublicationInfoReaderWithRadixContent, PublicationInfoReaderWithRadixTrigger } from "./dialog/publicationInfos/PublicationInfo";
-import { ReaderSettings } from "./ReaderSettings";
+import { ReaderSettings, ReadingAudio } from "./ReaderSettings";
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
@@ -397,6 +397,20 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             children: groupedVoices[lang].map((voice, i) => ({ id: i, name: voice.name, default: voice.default, lang: voice.lang, localService: voice.localService, voiceURI: voice.voiceURI })),
         }));
 
+        const playbackRate = [
+            { id: 0, value: 0.5, name: "0.5x" },
+            { id: 1, value: 0.75, name: "0.75x" },
+            { id: 2, value: 1, name: "1x" },
+            { id: 3, value: 1.25, name: "1.25x" },
+            { id: 4, value: 1.5, name: "1.5x" },
+            { id: 5, value: 1.75, name: "1.75x" },
+            { id: 6, value: 2, name: "2x" },
+            { id: 7, value: 2.25, name: "2.25x" },
+            { id: 8, value: 2.5, name: "2.5x" },
+            { id: 9, value: 2.75, name: "2.75x" },
+            { id: 10, value: 3, name: "3x" },
+        ];
+
         const isRTL = this.props.isRTLFlip();
 
         const showAudioTTSToolbar = (this.props.currentLocation && !this.props.currentLocation.audioPlaybackInfo) &&
@@ -694,155 +708,73 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 </Popover.Trigger>
                                                 <Popover.Portal>
                                                     <Popover.Content>
-                                                        <ul className={stylesReaderHeader.Tts_popover_container}>
-                                                            <li className={stylesReader.ttsSelectRate}>
-                                                                <label>
-                                                                    {
-                                                                        this.props.publicationHasMediaOverlays ?
-                                                                            __("reader.media-overlays.speed") :
-                                                                            __("reader.tts.speed")
-                                                                    }
-                                                                </label>
-                                                                <select title={
-                                                                    this.props.publicationHasMediaOverlays ?
-                                                                        __("reader.media-overlays.speed") :
-                                                                        __("reader.tts.speed")
-                                                                }
-                                                                    onChange={(ev) => {
-                                                                        if (this.props.publicationHasMediaOverlays) {
-                                                                            this.props.handleMediaOverlaysPlaybackRate(
-                                                                                ev.target.value.toString(),
-                                                                            );
-                                                                        } else {
-                                                                            this.props.handleTTSPlaybackRate(
-                                                                                ev.target.value.toString(),
-                                                                            );
-                                                                        }
-                                                                    }}
-                                                                    value={
-                                                                        this.props.publicationHasMediaOverlays ?
-                                                                            this.props.mediaOverlaysPlaybackRate :
-                                                                            this.props.ttsPlaybackRate
-                                                                    }
-                                                                >
-                                                                    <option value="3">3x</option>
-                                                                    <option value="2.75">2.75x</option>
-                                                                    <option value="2.5">2.5x</option>
-                                                                    <option value="2.25">2.25x</option>
-                                                                    <option value="2">2x</option>
-                                                                    <option value="1.75">1.75x</option>
-                                                                    <option value="1.5">1.5x</option>
-                                                                    <option value="1.25">1.25x</option>
-                                                                    <option value="1">1x</option>
-                                                                    <option value="0.75">0.75x</option>
-                                                                    <option value="0.5">0.5x</option>
-                                                                </select>
-                                                            </li>
-                                                            {!useMO && (
-                                                                <li className={stylesReader.ttsSelectVoice}>
-                                                                    {/* <label>{__("reader.tts.voice")}</label> */}
-                                                                    {/* <select title={__("reader.tts.voice")}
-                                                                        onChange={(ev) => {
-                                                                            const i = parseInt(ev.target.value.toString(), 10);
-                                                                            let voice = i === 0 ? null : _orderedVoices[i - 1];
-                                                                            // alert(`${i} ${voice.name} ${voice.lang} ${voice.default} ${voice.voiceURI} ${voice.localService}`);
-                                                                            if (voice && voice.name === LANG_DIVIDER_PREFIX) {
-                                                                                // voice = null;
-                                                                                voice = _orderedVoices[i];
-                                                                            }
-                                                                            this.props.handleTTSVoice(voice ? voice : null);
-                                                                            console.log(i)
-                                                                        }}
-                                                                        value={
-                                                                            this.props.ttsVoice ?
-                                                                                _orderedVoices.findIndex((voice) => {
-                                                                                    // exact match
-                                                                                    return voice.name === this.props.ttsVoice.name && voice.lang === this.props.ttsVoice.lang && voice.voiceURI === this.props.ttsVoice.voiceURI && voice.default === this.props.ttsVoice.default && voice.localService === this.props.ttsVoice.localService;
-                                                                                }) + 1 : 0
-                                                                        }
-                                                                    >
-                                                                        {
-                                                                            [].concat((<option key={"tts0"} value="{i}">{`${__("reader.tts.default")}`}</option>),
-                                                                                _orderedVoices.map((voice, i) => {
-                                                                                    // SpeechSynthesisVoice
-                                                                                    return (<option key={`tts${i + 1}`} value={i + 1}>{`${voice.name}${voice.name === LANG_DIVIDER_PREFIX ? ` [${voice.lang}]` : ""}${voice.default ? " *" : ""}`}</option>);
-                                                                                }))
-                                                                        }
-                                                                    </select> */}
-
-                                                                    {/* <SelectTts
-                                                                items={_orderedVoices}
-                                                                selectedKey={
-                                                                    this.props.ttsVoice ?
-                                                                        _orderedVoices.findIndex((voice) => {
-                                                                            // exact match
-                                                                            return voice.name === this.props.ttsVoice.name &&
-                                                                                voice.lang === this.props.ttsVoice.lang &&
-                                                                                voice.voiceURI === this.props.ttsVoice.voiceURI &&
-                                                                                voice.default === this.props.ttsVoice.default &&
-                                                                                voice.localService === this.props.ttsVoice.localService;
-                                                                        }) + 1 : 0
-                                                                }
-                                                                onSelectionChange={(ev) => {
-                                                                    const i = parseInt(ev.toString(), 10);
-                                                                    let voice = i === 0 ? null : _orderedVoices[i - 1];
-                                                                    if (voice && voice.name === LANG_DIVIDER_PREFIX) {
-                                                                        voice = _orderedVoices[i];
-                                                                    }
-                                                                    this.props.handleTTSVoice(voice ? voice : null);
-                                                                }}
-                                                                style={{ paddingBottom: "0", margin: "0" }}
-                                                            >
-                                                                {
-                                                            [].concat((<ComboBoxItem key={"tts0"} value="{i}">{`${__("reader.tts.default")}`}</ComboBoxItem>),
-                                                                _orderedVoices.map((voice, i) => {
-                                                                    // SpeechSynthesisVoice
-                                                                    return (
-                                                                        voice.name === LANG_DIVIDER_PREFIX ?
-                                                                            <ReactAriaHeader>{voice.lang}</ReactAriaHeader> :
-                                                                            <ComboBoxItem key={`tts${i + 1}`} value={i + 1}>{`${voice.name}${voice.name === LANG_DIVIDER_PREFIX ? ` [${voice.lang}]` : ""}${voice.default ? " *" : ""}`}</ComboBoxItem>
-
-                                                                    );
-                                                                }))
-                                                                        }
-                                                                    </SelectTts> */}
-
-                                                                    <ComboBox
-                                                                        label={__("reader.tts.voice")}
-                                                                        defaultItems={options}
-                                                                        defaultInputValue={
-                                                                            this.props.ttsVoice ?
-                                                                            this.props.ttsVoice.name : voicesMapping[0].name}
-                                                                        selectedKey={
-                                                                            this.props.ttsVoice ?
-                                                                                voicesMapping.find((voice) => voice.name === this.props.ttsVoice.name).id :
-                                                                                -1
-                                                                        }
-                                                                        onSelectionChange={(ev) => {
-                                                                            console.log(ev);
-                                                                            const i = _orderedVoices.find((voice) => voice.name === ev || null);
-                                                                            this.props.handleTTSVoice(i);
-                                                                        }}
-                                                                        style={{ paddingBottom: "0", margin: "0" }}
-                                                                    >
-                                                                        {section => (
-                                                                            <Section id={section.name} key={`section-${section.name}`}>
-                                                                                <ReactAriaHeader style={{ paddingLeft: "5px", fontSize: "16px", color: "var(--color-blue)", borderBottom: "1px solid var(--color-light-blue)"}}>
-                                                                                        {section.name}
-                                                                                    </ReactAriaHeader>
-                                                                                <Collection items={section.children} key={`collection-${section.name}`}>
-                                                                                    {item => <ComboBoxItem id={item.name} key={`tts${item.id + 1}`} value={item.id + 1}>{item.name}</ComboBoxItem>}
-                                                                                </Collection>
-                                                                            </Section>)}
-                                                                    </ComboBox>
-                                                                </li>
-                                                            )}
-                                                        </ul>
-                                                        <Popover.Arrow className={stylesReaderHeader.popover_arrow} />
-                                                    </Popover.Content>
-                                                </Popover.Portal>
-                                            </Popover.Root>
-                                        </li>
+                                                        <div className={stylesReaderHeader.Tts_popover_container}>
+                                                            <div style={{paddingRight: "25px", borderRight: "1px solid var(--color-medium-grey)"}}>
+                                                            <div className={stylesReader.ttsSelectRate}>
+                                                                            <ComboBox label={this.props.publicationHasMediaOverlays ?
+                                                                                __("reader.media-overlays.speed")
+                                                                                : __("reader.tts.speed")}
+                                                                                defaultItems={playbackRate}
+                                                                                // defaultSelectedKey={2}
+                                                                                selectedKey={
+                                                                                    this.props.ttsPlaybackRate ?
+                                                                                    playbackRate.find((rate) => rate.value.toString() === this.props.ttsPlaybackRate).id :
+                                                                                        2
+                                                                                }
+                                                                                onSelectionChange={(ev) => {
+                                                                                    const v = playbackRate.find((option) => option.id === ev).value;
+                                                                                    if (this.props.publicationHasMediaOverlays) {
+                                                                                        this.props.handleMediaOverlaysPlaybackRate(
+                                                                                            v.toString(),
+                                                                                        );
+                                                                                    } else {
+                                                                                        this.props.handleTTSPlaybackRate(
+                                                                                            v.toString(),
+                                                                                        );
+                                                                                    }
+                                                                                }}>
+                                                                                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                                                                            </ComboBox>
+                                                                        </div>
+                                                                        {!useMO && (
+                                                                            <div className={stylesReader.ttsSelectVoice}>
+                                                                                <ComboBox
+                                                                                    label={__("reader.tts.voice")}
+                                                                                    defaultItems={options}
+                                                                                    defaultInputValue={
+                                                                                        this.props.ttsVoice ?
+                                                                                            this.props.ttsVoice.name : voicesMapping[0].name}
+                                                                                    selectedKey={
+                                                                                        this.props.ttsVoice ?
+                                                                                            voicesMapping.find((voice) => voice.name === this.props.ttsVoice.name).id :
+                                                                                            -1
+                                                                                    }
+                                                                                    onSelectionChange={(ev) => {
+                                                                                        const i = _orderedVoices.find((voice) => voice.name === ev || null);
+                                                                                        this.props.handleTTSVoice(i);
+                                                                                    }}
+                                                                                    style={{ paddingBottom: "0", margin: "0" }}
+                                                                                >
+                                                                                    {section => (
+                                                                                        <Section id={section.name} key={`section-${section.name}`}>
+                                                                                            <ReactAriaHeader style={{ paddingLeft: "5px", fontSize: "16px", color: "var(--color-blue)", borderBottom: "1px solid var(--color-light-blue)" }}>
+                                                                                                {section.name}
+                                                                                            </ReactAriaHeader>
+                                                                                            <Collection items={section.children} key={`collection-${section.name}`}>
+                                                                                                {item => <ComboBoxItem id={item.name} key={`tts${item.id + 1}`} value={item.id + 1}>{item.name}</ComboBoxItem>}
+                                                                                            </Collection>
+                                                                                        </Section>)}
+                                                                                </ComboBox>
+                                                                            </div>
+                                                                        )}
+                                                                    </div>
+                                                                    <ReadingAudio config={this.props.ReaderSettingsProps.readerConfig} set={(config: Partial<ReaderConfig>) => { this.props.ReaderSettingsProps.setSettings({ ...this.props.ReaderSettingsProps.readerConfig, ...config }); }} />
+                                                                </div>
+                                                                <Popover.Arrow className={stylesReaderHeader.popover_arrow} />
+                                                            </Popover.Content>
+                                                        </Popover.Portal>
+                                                    </Popover.Root>
+                                                </li>
                                     </>
                         }
                     </ul>

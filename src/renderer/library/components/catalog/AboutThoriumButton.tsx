@@ -27,6 +27,8 @@ import { Link } from "@r2-shared-js/models/publication-link";
 
 import { apiAction } from "../../apiAction";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import * as EdrlabLogo from "readium-desktop/renderer/assets/icons/logo_edrlab.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -53,13 +55,16 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
         const { __ } = this.props;
         return (
             <section className={stylesFooter.footer_wrapper}>
-                <a onClick={this.about} onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                        this.about();
-                    }
-                }}
-                tabIndex={0}>{__("catalog.about.title", { appName: capitalizedAppName })}</a>
-                <p>- {`v${_APP_VERSION}`}</p>
+ <div>
+                   <p>{`v${_APP_VERSION}`}</p>
+                   <a onClick={this.about} onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            this.about();
+                        }
+                    }}
+                    tabIndex={0}>{__("catalog.about.title", { appName: capitalizedAppName })}</a>
+                </div>
+                <SVG ariaHidden svg={EdrlabLogo} />
             </section>
         );
     }
