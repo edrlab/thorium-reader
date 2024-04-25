@@ -934,6 +934,10 @@ const htmlLoginTemplate = (
                     max-height: 75px;
                     max-width: 150px;
                 }
+
+                @media only screen and (max-width: 600px) {
+                    display: none;
+                }
             }
     
             .login form {
@@ -1006,6 +1010,12 @@ const htmlLoginTemplate = (
                 display: flex;
                 align-items: center;
                 gap: 10px;
+
+                @media only screen and (max-width: 1000px) {
+                    position: unset;
+                    width: 100%;
+                    justify-content: end;
+                }
             }
 
             .submit_button {
