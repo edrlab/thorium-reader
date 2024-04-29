@@ -57,10 +57,10 @@ export interface ReaderConfigBooleans {
     dark: boolean;
 
     invert: boolean;
-    night: boolean;
+    night: boolean; // Not used anymore, keeped for the migration
     paged: boolean;
     readiumcss: boolean;
-    sepia: boolean;
+    sepia: boolean; // Not used anymore, keeped for the migration
     enableMathJax: boolean;
     reduceMotion: boolean;
     noFootnotes: boolean;
