@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import {
-    apiActions, i18nActions, keyboardActions, lcpActions, publicationActions, readerActions, sessionActions, themeActions
+    apiActions, i18nActions, keyboardActions, lcpActions, publicationActions, readerActions, sessionActions, themeActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
