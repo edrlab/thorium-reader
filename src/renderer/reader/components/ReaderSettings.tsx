@@ -30,7 +30,7 @@ import * as stylesSettings from "readium-desktop/renderer/assets/styles/componen
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
-import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { ReaderConfig, TTheme } from "readium-desktop/common/models/reader";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import debounce from "debounce";
 import { FONT_LIST, FONT_LIST_WITH_JA } from "readium-desktop/utils/fontList";
@@ -87,63 +87,89 @@ const TabTitle = ({value}: {value: string}) => {
     );
 };
 
-const Theme = ({theme, set}: {theme: Pick<ReaderConfig, "night" | "sepia">, set: (a: Pick<ReaderConfig, "night" | "sepia">) => void}) => {
+const Theme = ({theme, set}: {theme: Pick<ReaderConfig, "theme">, set: (a: Pick<ReaderConfig, "theme">) => void}) => {
     const [__] = useTranslator();
-    // const [options] = React.useState(() => [
-    //     {
-    //         id: 1,
-    //         name: `${__("reader.settings.theme.name.Neutral")}`,
-    //         value: "neutral",
-    //     },
-    //     {
-    //         id: 2,
-    //         name: `${__("reader.settings.theme.name.Sepia")}`,
-    //         value: "sepia",
-    //     },
-    //     {
-    //         id: 3,
-    //         name: `${__("reader.settings.theme.name.Night")}`,
-    //         value: "night",
-    //     },
-    // ]);
+    const [themeOptions] = React.useState(() => [
+        {
+            id: 1,
+            name: `${__("reader.settings.theme.name.Neutral")}`,
+            value: "neutral",
+            style: {backgroundColor: "#fff", color: "black"},
+        },
+        {
+            id: 2,
+            name: `${__("reader.settings.theme.name.Sepia")}`,
+            value: "sepia",
+            style: {backgroundColor: "#faf4e8", color: "black"},
+        },
+        {
+            id: 3,
+            name: `${__("reader.settings.theme.name.Night")}`,
+            value: "night",
+            style: {backgroundColor: "#121212", color: "#fff" },
+        },
+        {
+            id: 4,
+            name: `${__("reader.settings.theme.name.Contrast1")}`,
+            value: "contrast1",
+            style: {backgroundColor: "#000000", color: "#fff" },
+        },
+        {
+            id: 5,
+            name: `${__("reader.settings.theme.name.Paper")}`,
+            value: "paper",
+            style: {backgroundColor: "#F8EDDF", color: "#000000" },
+        },
+        {
+            id: 6,
+            name: `${__("reader.settings.theme.name.Contrast2")}`,
+            value: "contrast2",
+            style: {backgroundColor: "#000000", color: "#FFFF00" },
+        },
+        {
+            id: 7,
+            name: `${__("reader.settings.theme.name.Contrast3")}`,
+            value: "contrast3",
+            style: {backgroundColor: "#181842", color: "#FFFF" },
+        },
+        {
+            id: 8,
+            name: `${__("reader.settings.theme.name.Contrast4")}`,
+            value: "contrast4",
+            style: {backgroundColor: "#C5E7CD", color: "#000000" },
+        },
+    ]);
 
 
-    const defaultKey = theme.night ? 3 : theme.sepia ? 2 : 1;
+    const defaultKey = 
+    theme.theme === "neutral" ? 1 
+    : theme.theme === "night" ? 3 
+    : theme.theme === "sepia" ? 2 
+    : theme.theme === "contrast1" ? 4
+    : theme.theme === "paper" ? 5
+    : theme.theme === "contrast2" ? 6
+    : theme.theme === "contrast3" ? 7
+    : theme.theme === "contrast4" ? 8
+    : 1;
 
     return (
         <>
-        {/* <ComboBox style={{ borderBottom: "3px solid var(--color-light-grey)" }} label={__("reader.settings.theme.title")} defaultItems={options} defaultSelectedKey={defaultKey} onSelectionChange={(key: React.Key) => {
-            set({
-                night: key === 3,
-                sepia: key === 2,
-            });
-        }} svg={SwatchesIcon}>
-            {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-        </ComboBox> */}
         <h4>{__("reader.settings.theme.title")}</h4>
-        {/* <div role="radiogroup" style={{display: "flex", alignItems: "center", gap: "20px", marginTop: "20px"}} tabIndex={0} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-        {
-        options.map((option) => (
-                <button type="button" role="radio" id={option.value} name="themepicker" value={option.value}
-                key={option.id}
-                className={stylesSettings.settings_theme_container} style={{backgroundColor: option.value === "sepia" ? "#faf4e8" : option.value === "night" ? "#2D2D2D" : "#fff", color: option.value === "night" ? "#fff" : "black"}}
-                    onClick={() => {
-                        set({
-                            night: option.id === 3,
-                            sepia: option.id === 2, 
-                        });
-                    }}
-                >
-                    {option.name}
-                    {defaultKey === option.id ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
-                </button>
-        ),
-        )}
-        </div> */}
-        <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px", marginTop: "20px" }} value={(defaultKey === 2) ? "sepia_option" : (defaultKey === 3) ? "night_option" : "neutral_option"}
-                onValueChange={(option) => set({ night: option === "night",sepia: option === "sepia"  })}
+        <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px", marginTop: "20px", flexWrap: "wrap"}}
+        value={themeOptions.find((theme) => theme.id === defaultKey).name}
+                onValueChange={(option) => set({ theme: option as TTheme  })}
             >
-                <RadioGroupItem 
+                {themeOptions.map((theme) => 
+                                <RadioGroupItem 
+                                key={theme.value}
+                                value={theme.value} 
+                                description={theme.name}
+                                className={stylesSettings.settings_theme_container} 
+                                style={theme.style}
+                                svg={defaultKey === theme.id ? CheckIcon : null}
+                                />,
+                )}
+                {/* <RadioGroupItem 
                 value="neutral" 
                 description={`${__("reader.settings.theme.name.Neutral")}`}
                 className={stylesSettings.settings_theme_container} 
@@ -163,7 +189,7 @@ const Theme = ({theme, set}: {theme: Pick<ReaderConfig, "night" | "sepia">, set:
                 className={stylesSettings.settings_theme_container} 
                 style={{backgroundColor: "#2D2D2D", color: "#fff" }}
                 svg={defaultKey === 3 ? CheckIcon : null}
-                />
+                /> */}
             </RadioGroup.Root>
         </>
     );

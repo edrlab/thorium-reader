@@ -445,7 +445,12 @@
                 "name": {
                     "Neutral": "Neutral",
                     "Night": "Night",
-                    "Sepia": "Sepia"
+                    "Sepia": "Sepia",
+                    "Contrast1": "Contrast",
+                    "Contrast2": "Contrast 2",
+                    "Contrast3": "Contrast 3",
+                    "Contrast4": "Contrast 4",
+                    "Paper": "Paper"
                 },
                 "title": "Theme"
             },

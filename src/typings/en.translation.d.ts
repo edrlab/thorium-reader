@@ -836,7 +836,12 @@ declare namespace typed_i18n {
       readonly "name": {
         readonly "Neutral": string,
         readonly "Night": string,
-        readonly "Sepia": string
+        readonly "Sepia": string,
+        readonly "Contrast1": string,
+        readonly "Contrast2": string,
+        readonly "Contrast3": string,
+        readonly "Contrast4": string,
+        readonly "Paper": string
       },
       readonly "title": string
     },
@@ -1067,7 +1072,12 @@ declare namespace typed_i18n {
     readonly "name": {
       readonly "Neutral": string,
       readonly "Night": string,
-      readonly "Sepia": string
+      readonly "Sepia": string,
+      readonly "Contrast1": string,
+      readonly "Contrast2": string,
+      readonly "Contrast3": string,
+      readonly "Contrast4": string,
+      readonly "Paper": string
     },
     readonly "title": string
   },
@@ -1155,18 +1165,33 @@ declare namespace typed_i18n {
   readonly "name": {
     readonly "Neutral": string,
     readonly "Night": string,
-    readonly "Sepia": string
+    readonly "Sepia": string,
+    readonly "Contrast1": string,
+    readonly "Contrast2": string,
+    readonly "Contrast3": string,
+    readonly "Contrast4": string,
+    readonly "Paper": string
   },
   readonly "title": string
 };
   (_: "reader.settings.theme.name", __?: {}): {
   readonly "Neutral": string,
   readonly "Night": string,
-  readonly "Sepia": string
+  readonly "Sepia": string,
+  readonly "Contrast1": string,
+  readonly "Contrast2": string,
+  readonly "Contrast3": string,
+  readonly "Contrast4": string,
+  readonly "Paper": string
 };
   (_: "reader.settings.theme.name.Neutral", __?: {}): string;
   (_: "reader.settings.theme.name.Night", __?: {}): string;
   (_: "reader.settings.theme.name.Sepia", __?: {}): string;
+  (_: "reader.settings.theme.name.Contrast1", __?: {}): string;
+  (_: "reader.settings.theme.name.Contrast2", __?: {}): string;
+  (_: "reader.settings.theme.name.Contrast3", __?: {}): string;
+  (_: "reader.settings.theme.name.Contrast4", __?: {}): string;
+  (_: "reader.settings.theme.name.Paper", __?: {}): string;
   (_: "reader.settings.theme.title", __?: {}): string;
   (_: "reader.settings.wordSpacing", __?: {}): string;
   (_: "reader.svg", __?: {}): { readonly "left": string, readonly "right": string };

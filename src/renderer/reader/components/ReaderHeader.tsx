@@ -449,8 +449,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
         const isDockedMode = this.props.readerPopoverDialogContext.dockedMode;
         const isOnSearch = this.props.isOnSearch;
-        const isNightMode = this.props.ReaderSettingsProps.readerConfig.night;
-        const isSepiaMode = this.props.ReaderSettingsProps.readerConfig.sepia;
+        const isNightMode = this.props.ReaderSettingsProps.readerConfig.theme === "night";
+        const isSepiaMode = this.props.ReaderSettingsProps.readerConfig.theme === "sepia";
 
         const containerClassName = classNames(
             isDockedMode && isOnSearch && stylesReader.isOnSearch,

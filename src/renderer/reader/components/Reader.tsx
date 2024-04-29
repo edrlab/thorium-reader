@@ -742,8 +742,14 @@ class Reader extends React.Component<IProps, IState> {
         
         return (
             <div className={classNames(
-                this.props.readerConfig.night && stylesReader.nightMode,
-                this.props.readerConfig.sepia && stylesReader.sepiaMode,
+                this.props.readerConfig.theme === "night" ? stylesReader.nightMode :
+                this.props.readerConfig.theme === "sepia" ? stylesReader.sepiaMode :
+                this.props.readerConfig.theme === "contrast1" ? stylesReader.contrast1Mode :
+                this.props.readerConfig.theme === "contrast2" ? stylesReader.contrast2Mode :
+                this.props.readerConfig.theme === "contrast3" ? stylesReader.contrast3Mode :
+                this.props.readerConfig.theme === "contrast4" ? stylesReader.contrast4Mode :
+                this.props.readerConfig.theme === "paper" ? stylesReader.paperMode :
+                "",
             )}>
                 <a
                     role="heading"

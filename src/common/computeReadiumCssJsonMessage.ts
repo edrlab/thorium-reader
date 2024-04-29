@@ -39,7 +39,7 @@ export const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayl
 
         lineHeight: settings.lineHeight,
 
-        night: settings.night,
+        // night: settings.night,
 
         pageMargins: settings.pageMargins,
 
@@ -49,7 +49,9 @@ export const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayl
 
         paraSpacing: settings.paraSpacing,
 
-        sepia: settings.sepia,
+        // sepia: settings.sepia,
+
+        theme: settings.theme,
 
         textAlign: settings.align === textAlignEnum.left ? textAlignEnum.left :
             (settings.align === textAlignEnum.right ? textAlignEnum.right :
