@@ -80,7 +80,6 @@ export function priorityQueueReducer
                         // console.log(`PUSH with index ${index} ${selectorItem[1]}`);
                         newQueue[index] = selectorItem;
                     } else {
-                        // console.log(`PUSH new index ${selectorItem[1]}`);
                         newQueue.push([selectorItem[0], clone(selectorItem[1])]);
                     }
                     

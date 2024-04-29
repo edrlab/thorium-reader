@@ -9,40 +9,61 @@ import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.css";
+import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IRouterLocationState } from "../../routing";
+import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
+import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-icon.svg";
+import * as ShelfIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import { Settings } from "../settings/Settings";
+import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 
 interface NavigationHeader {
     route: string;
     label: string;
     matchRoutes: string[];
+    searchEnable?: boolean;
     styles: string[];
+    svg: any;
 }
 
 const headerNav: NavigationHeader[] = [
     {
-        route: "/library",
-        label: "books",
-        matchRoutes: ["/", "/library"],
+        route: "/home",
+        label: "homeTitle",
+        matchRoutes: ["/", "/home"],
         styles: [],
+        svg: HomeIcon,
+    },
+    {
+        route: "/library",
+        label: "allBooks",
+        matchRoutes: ["/library"],
+        searchEnable: false,
+        styles: [],
+        svg: ShelfIcon,
     },
     {
         route: "/opds",
         label: "catalogs",
         matchRoutes: ["/opds"],
         styles: [],
+        svg: CatalogsIcon,
     },
-    {
-        route: "/settings",
-        label: "settings",
-        matchRoutes: ["/settings"],
-        styles: [],
-    },
+    // {
+    //     route: "/settings",
+    //     label: "settings",
+    //     matchRoutes: ["/settings"],
+    //     styles: [],
+    //     svg: GearIcon,
+    // },
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -65,6 +86,8 @@ class Header extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
+        const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
+
         return (<>
             <SkipLink
                 className={stylesHeader.skip_link}
@@ -72,13 +95,19 @@ class Header extends React.Component<IProps, undefined> {
                 label={__("accessibility.skipLink")}
             />
             <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
-                <ul>
+                <h1 style={{textAlign: "center", color: "#AFB1B6", fontSize: "30px", marginBottom: "10px"}}>{capitalizedAppName}</h1>
+                <ul style={{paddingTop: "10px"}}>
+                    <div>
                     {
                         headerNav.map(
                             (item, index) =>
                                 this.buildNavItem(item, index),
                         )
                     }
+                    </div>
+                    <li /* style={{position: "absolute", bottom: "10px" }} */>
+                        <Settings />
+                    </li>
                 </ul>
             </nav>
         </>);
@@ -114,9 +143,10 @@ class Header extends React.Component<IProps, undefined> {
 
         const nextLocation = this.props.history.reduce(
             (pv, cv) =>
-                cv?.pathname?.startsWith(item.route)
+                cv?.pathname.startsWith(item.route)
                     ? {
                         ...this.props.location,
+                        search: item.searchEnable ? this.props.location?.search : "",
                         pathname: cv.pathname,
                     }
                     : pv,
@@ -131,15 +161,18 @@ class Header extends React.Component<IProps, undefined> {
                 <Link
                     to={nextLocation}
                     state = {{displayType: (nextLocation.state && (nextLocation.state as IRouterLocationState).displayType) ? (nextLocation.state as IRouterLocationState).displayType : DisplayType.Grid}}
-
                     replace={true}
-
                     aria-pressed={active}
                     role={"button"}
-                >
-                    {
+                    className={active ? stylesButtons.button_nav_primary : ""}
+                    title={
                         translate("header." + item.label)
                     }
+                >
+                    <SVG ariaHidden svg={item.svg} />
+                    <h3>{
+                        translate("header." + item.label)
+                    }</h3>
                 </Link>
             </li>
         );

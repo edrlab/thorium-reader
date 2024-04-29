@@ -6,65 +6,58 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { connect } from "react-redux";
-import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
-import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
-import { apiAction } from "readium-desktop/renderer/library/apiAction";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { dialogActions } from "readium-desktop/common/redux/actions";
+import SVG from "../../../common/components/SVG";
+import * as Trash from "readium-desktop/renderer/assets/icons/trash-icon.svg";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
-}
-// IProps may typically extend:
-// RouteComponentProps
-// ReturnType<typeof mapStateToProps>
-// ReturnType<typeof mapDispatchToProps>
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
-}
 
-class DeletePublicationConfirm extends React.Component<IProps, undefined> {
+const DeletePublicationConfirm = (props: { publicationView: PublicationView, trigger: React.ReactNode } & AlertDialog.AlertDialogProps) => {
+    const [__] = useTranslator();
+    const [_, remove] = useApi(undefined, "publication/delete");
+    const dispatch = useDispatch();
+    const removeAction = React.useCallback(() => {
+        dispatch(dialogActions.closeRequest.build());
+        remove(props.publicationView.identifier);
+    }, [remove, props.publicationView.identifier]);
 
-    constructor(props: IProps) {
-        super(props);
+    return (
+        <AlertDialog.Root {...props}>
+            <AlertDialog.Trigger asChild>
+                {props.trigger}
+            </AlertDialog.Trigger>
+            <AlertDialog.Portal>
 
-    }
+                {/** Overlay Component doesn't work */}
+                {/* <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay}/> */}
+                <div className={stylesAlertModals.AlertDialogOverlay}></div>
+                <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
+                    <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deletePublication")}</AlertDialog.Title>
+                    <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
+                        {props.publicationView.documentTitle}
+                    </AlertDialog.Description>
+                    <div className={stylesAlertModals.AlertDialogButtonContainer}>
+                        <AlertDialog.Cancel asChild>
+                            <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                        </AlertDialog.Cancel>
+                        <AlertDialog.Action asChild>
+                            <button className={stylesButtons.button_primary_blue} onClick={removeAction} type="button">
+                                <SVG ariaHidden svg={Trash} />
+                                {__("dialog.yes")}
+                            </button>
+                        </AlertDialog.Action>
+                    </div>
+                </AlertDialog.Content>
+            </AlertDialog.Portal>
+        </AlertDialog.Root>
+    );
 
-    public render(): React.ReactElement<{}> {
-        if (!this.props.open || !this.props.publicationView) {
-            return <></>;
-        }
+};
 
-        const { __ } = this.props;
-        return (
-            <Dialog
-                title={__("dialog.deletePublication")}
-                onSubmitButton={this.remove}
-                submitButtonDisabled={false}
-                submitButtonTitle={this.props.__("dialog.yes")}
-                shouldOkRefEnabled={true}
-                size={"small"}
-            >
-                <p>
-                    <span>{this.props.publicationView.documentTitle}</span>
-                </p>
-            </Dialog>
-        );
-    }
-
-    private remove = () => {
-        apiAction("publication/delete", this.props.publicationView.identifier).catch((error) => {
-            console.error("Error to fetch publication/delete", error);
-        });
-    };
-}
-
-const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
-    open: state.dialog.type === DialogTypeName.DeletePublicationConfirm,
-    publicationView: (state.dialog.data as DialogType[DialogTypeName.DeletePublicationConfirm]).publicationView,
-});
-
-export default connect(mapStateToProps)(withTranslator(DeletePublicationConfirm));
+export default DeletePublicationConfirm;

@@ -1,0 +1,582 @@
+/*
+=-=-= popoverDialog.scss
+*/
+
+.modal_dialog_reader {
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  width: 776px;
+  min-height: 401px;
+  height: 597px;
+  max-width: calc(100vw - 60px);
+  max-height: calc(100vh - 60px);
+  border-radius: 10px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+
+  // overflow: hidden auto;
+  align-content: flex-start;
+  color: var(--color-primary);
+  position: fixed;
+  box-sizing: border-box;
+  box-shadow: 0 2px 10px 5px var(--color-medium-grey);
+
+  > .settings_container {
+    padding: 0 20px 0 30px;
+    overflow: hidden auto;
+  }
+
+  &.modal_dialog_full {
+    position: relative;
+    box-sizing: border-box;
+
+    &_full {
+      width: calc(100vw - 60px);
+      height: calc(100vh - 100px);
+    }
+  }
+
+  @media screen and (height <= 700px) {
+    height: 450px;
+}
+}
+
+.popover_dialog_reader {
+  width: 350px;
+  height: calc(100dvh - 94px);
+  display: flex;
+  margin-top: 50px;
+  flex-direction: column;
+  box-sizing: border-box;
+  z-index: 100;
+  background-color: var(--color-secondary);
+  position: absolute;
+  overflow: hidden;
+
+  .settings_container {
+    height: calc(100dvh - 235px);
+    padding: 0;
+    overflow: hidden auto;
+
+    .settings_tab_container_reading_spacing {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+
+  .settings_tab .settings_reading_text .section {
+    width: 90%;
+  }
+
+  .display_options_item {
+    background-color: transparent;
+    color: var(--color-primary);
+  }
+
+  .react_aria_ComboBox {
+    // margin: 0;
+    // padding: 0;
+    padding-bottom: 15px;
+
+    .my_combobox_container {
+      width: fit-content;
+      min-width: 110px;
+      height: 28px;
+      background-color: var(--color-light-blue);
+      color: var(--color-blue);
+      border-color: var(--color-blue) !important;
+      display: flex;
+      align-items: center;
+
+      > button {
+        color: var(--color-blue);
+
+        > span {
+          text-overflow: ellipsis;
+          overflow: hidden;
+          max-width: 120px;
+          white-space: nowrap;
+        }
+
+        svg {
+          fill: var(--color-blue);
+        }
+      }
+
+      input, > button {
+        width: fit-content;
+        height: 25px;
+        background-color: inherit;
+        font-size: 14px;
+        margin-left: 10px;
+        padding: 0 !important;
+        padding-left: 30px!important;
+      }
+
+      button {
+        background-color: inherit;
+
+        svg {
+          margin-left: unset;
+          background-color: unset;
+        }
+      }
+    }
+  }
+
+  .bookmarks_line .bookmark_textArea {
+    min-width: unset;
+    width: 270px;
+  }
+}
+
+.docked_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+
+  .my_combobox_container button {
+    min-width: 110px;
+  }  
+
+  &_controls {
+    width: 135px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    flex-wrap: nowrap;
+
+    .button_transparency_icon {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+}
+
+.toc_container {
+  padding: 0;
+  height: auto;
+  list-style-type: none;
+  font-size: 12px;
+  font-weight: 400;
+
+  >li > div[aria-level="1"] {
+    font-weight: 600;
+    font-size: 14px;
+  }
+}
+
+.chapters_content {
+  padding: 0;
+  height: auto;
+  list-style: none;
+
+  & > li > div > a > span, & .line span {
+    line-height: 1.5em;
+  }
+
+  .line, .subheading:not(.inert) {
+    color: var(--color-primary);
+    border-left: 2px solid transparent;
+    transition: 200ms;
+    width: fit-content;
+    text-align: left;
+    display: block;
+    padding: 5px 40px 5px 5px;
+    margin: 5px 0;
+    
+    &.active:not(.inert) {
+      &:hover {
+        background-color: var(--color-light-blue);
+      }
+    }
+  }
+
+  & .chapters_content {
+    padding: 0 0 0 10px;
+  }
+
+  & .subheading:not(.inert) {
+    &:hover {
+      background-color: var(--color-light-blue) !important;
+    }
+  }
+
+  .line {
+    &:not(.inert) {
+      cursor: pointer;
+    }
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+}
+
+.search_container {
+  display: flex;
+  flex-direction: column;
+
+  .correspondances {
+    padding: 0;
+    margin: 0;
+    padding-bottom: 0.4em;
+    margin-bottom: 0.4em;
+  }
+
+  .subheading {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  li[aria-level="1"] {
+    color: var(--color-primary);
+    border-left: 2px solid var(--color-blue);
+    transition: 200ms;
+    width: 90%;
+    text-align: left;
+    display: block;
+    padding: 5px 40px 5px 5px;
+    margin: 5px 0;
+    background-color: var(--color-light-grey);
+  }
+}
+
+.navigation_container {
+  display: flex;
+  align-items: end;
+  justify-content: end;
+  gap: 10px;
+  margin-bottom: 10px;
+
+  .pages {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    
+    .react_aria_ComboBox {
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  button {
+    transition: 100ms;
+  }
+
+  button svg {
+    width: 20px;
+    fill: var(--color-blue);
+    color: var(--color-blue);
+  }
+
+  button:disabled {
+    visibility: hidden;
+  }
+
+  .my_combobox_container {
+    width: fit-content!important;
+    padding-right: 0!important;
+
+    button {
+      width: fit-content;
+      padding: 0 10px;
+      
+      svg {
+        margin-left: unset;
+      }
+    }
+  }
+
+  // span {
+  //   padding: 5px;
+  //   border: 1px solid black;
+  //   border-radius: 6px;
+  //   margin: 0 5px;
+  // }
+}
+
+.bookmarks_line {
+  width: calc(100% - 10px);
+  position: relative;
+  text-align: left;
+  padding: 20px 0;
+  font-size: 1rem;
+
+  .bookmark_textArea {
+    margin: 10px 0;
+    width: 430px;
+    min-width: 430px;
+    // height: 100px;
+    // min-height: 100px;
+    max-width: 430px;
+    // max-height: 100px;
+    border: 1px solid rgb(118 118 118);
+    border-radius: 3px;
+    font-family: Nunito, sans-serif;
+
+    &:focus {
+      border: 2px solid var(--color-blue);
+    }
+  }
+
+  .bookmark_name {
+    text-align: left;
+  }
+
+  .update_form input {
+    width: 100%;
+    border-radius: 6px;
+  }
+
+  .bookmark_infos {
+    width: 100%;
+    display: flex;
+    background-color: var(--color-light-grey);
+    border-left: 2px solid var(--color-blue);
+    height: fit-content;
+    padding: 0 10px;
+
+    // @media (prefers-color-scheme: dark) {
+    //   background-color: #2D2D2D;
+    // }
+
+    .button_secondary_blue, .button_primary_blue {
+      min-width: unset;
+      width: fit-content;
+      height: 25px;
+    }
+
+    .bookmark_actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+
+      > div {
+        display: inherit;
+        align-items: center;
+        gap: 5px;
+
+        p {
+          margin: 0;
+        }
+
+        svg {
+          width: 16px;
+          height: 16px;
+          padding: 5px;
+        }
+      }
+
+      &_buttons svg {
+        fill: var(--color-blue);
+        color: var(--color-blue);
+      }
+
+      button {
+        height: unset;
+
+        &:focus {
+          border: 1px solid var(--color-blue);
+          border-radius: 5px;
+          background-color: var(--color-light-blue);
+        }
+      }
+    }
+  }
+
+  & > button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0;
+
+    & svg {
+      width: 24px;
+    }
+  }
+
+  & img {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  & .chapter_marker {
+    vertical-align: top;
+    position: relative;
+    display: inline-block;
+    flex: 1;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+  }
+
+  & span {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 5px;
+    font-family: Nunito, sans-serif;
+  }
+}
+
+.bookmarks_line:last-child {
+  border-bottom: 0;
+}
+
+.chapter_marker .gauge {
+  width: 100%;
+  margin-top: 2px;
+  height: 4px;
+  background-color: #ececec;
+
+  & .fill {
+    height: 100%;
+    position: relative;
+    width: 63%;
+    background-color: #3b3b3b;
+  }
+}
+
+.goToPage {
+  text-align: center;
+
+  .currentPage {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 20px 0 30px;
+
+    svg {
+      width: 20px;
+    }
+  }
+
+  form {
+    display: flex;
+    align-items: start;
+    gap: 20px;
+
+    .form_group {
+      height: 30px;
+      width: 375px;
+
+      .react_aria_Label {
+        position: absolute;
+        left: 10px;
+        // top: -20px;
+        background-color: var(--color-secondary);
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 250px;
+        white-space: nowrap;
+    }
+
+      & input {
+        margin: 0;
+      }
+
+      label {
+        margin: 0;
+        top: -12px;
+        position: absolute;
+      }
+
+      & *:disabled {
+        cursor: not-allowed;
+      }
+    }
+
+    select {
+      width: 375px;
+      height: 36px;
+      padding: 2px;
+      border-radius: 6px;
+      border: 1px solid black;
+      appearance: auto;
+      box-sizing: border-box;
+      margin: 0;
+      margin-right: 5px;
+    }
+
+    button {
+      background-color: var(--color-blue);
+      color: white;
+      width: fit-content;
+      border-radius: 6px;
+      display: flex;
+      flex-wrap: nowrap;
+      padding: 3px 5px;
+      text-wrap: nowrap;
+      box-sizing: content-box;
+
+      svg {
+        width: 15px;
+        fill: white!important;
+        color: white!important;
+      }
+    }
+  }
+
+  & .title {
+    color: var(--reader-fontColor);
+    font-size: 1.1rem;
+  }
+
+  & .goToErrorMessage {
+    color: var(--color-error-dark);
+  }
+}
+
+.gotopage_combobox {
+  .react_aria_ComboBox .my_combobox_container {
+    border: none;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    background-color: inherit;
+    color: inherit;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    &:has(.react_aria_Input[data-focused]) {
+    outline: none!important;
+    }
+
+    input {
+      width: calc(100% - 45px);
+      outline: none!important;
+    }
+
+    .react_aria_Button svg {
+      width: 15px;
+      color: var(--color-primary)!important;
+    }
+  }
+}
+
+
+.react_aria_ListBox {
+  width: inherit;
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+}
+
+.react_aria_ComboBox [role="group"]:focus-within {
+  outline: var(--color-blue) solid 2px !important;
+  outline-offset: -2px;
+}

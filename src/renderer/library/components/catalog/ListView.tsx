@@ -9,9 +9,9 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
-import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -55,16 +55,16 @@ class CatalogListView extends React.Component<IProps, undefined> {
                         <section key={ entryIndex }>
                         {
                             <div className={stylesGlobal.heading}>
-                                <h2>{ entry.title }</h2>
+                                <h2>{ entry.id }</h2>
 
                                 <Link
                                     className={stylesButtons.button_primary_small}
                                     to={{
                                         ...this.props.location,
-                                        pathname: "/library/search/all",
+                                        pathname: "/library",
                                     }}
                                     state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                                    title={`${this.props.__("header.allBooks")} (${entry.title})`}
+                                    title={`${this.props.__("header.allBooks")} (${entry.id})`}
                                 >
                                     {this.props.__("header.allBooks")}
                                 </Link>

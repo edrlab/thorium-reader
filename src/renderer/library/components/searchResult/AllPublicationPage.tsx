@@ -7,19 +7,19 @@
 
 import "regenerator-runtime/runtime"; // for react-table (useAsyncDebounce()) see: https://github.com/TanStack/react-table/issues/2071#issuecomment-679999096
 
-// import { classThemeExample, classStyleExample } from "./AllPublicationPage.css";
-// import classNames from "classnames";
-
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Location } from "history";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-// import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
-import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
-import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-play_arrow-24px.svg"; // baseline-arrow_forward_ios-24px -- arrow
-// import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
-import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
-import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
+import * as stylesPublication from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
+import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
+import * as SearchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
+import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
+import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-right.svg";
+import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
 import { matchSorter } from "match-sorter";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -54,7 +54,7 @@ import {
 } from "react-table";
 import { Column, useTable, useFilters, useSortBy, usePagination, useGlobalFilter, useAsyncDebounce } from "react-table";
 import { formatTime } from "readium-desktop/common/utils/time";
-import DOMPurify from "dompurify";
+import * as DOMPurify from "dompurify";
 import * as moment from "moment";
 import { AvailableLanguages, I18nTyped, Translator } from "readium-desktop/common/services/translator";
 import * as React from "react";
@@ -65,7 +65,6 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/library/apiSubscribe";
-import BreadCrumb from "readium-desktop/renderer/library/components/layout/BreadCrumb";
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { Unsubscribe } from "redux";
@@ -78,6 +77,30 @@ import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
 import { ipcRenderer } from "electron";
+import PublicationCard from "../publication/PublicationCard";
+import classNames from "classnames";
+import * as Popover from "@radix-ui/react-popover";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+// import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
+import { useSearchParams } from "react-router-dom";
+// import * as FilterIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
+// import * as DeleteFilter from "readium-desktop/renderer/assets/icons/deleteFilter-icon.svg";
+// import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
+import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
+import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-icon.svg";
+// import * as CalendarExpiredIcon from "readium-desktop/renderer/assets/icons/calendarExpired-icon.svg";
+// import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
+import AboutThoriumButton from "../catalog/AboutThoriumButton";
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
+import Menu from "readium-desktop/renderer/common/components/menu/Menu";
+import CatalogMenu from "../publication/menu/CatalogMenu";
+import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
+
+
+// import GridTagButton from "../catalog/GridTagButton";
 
 // import {
 //     formatContributorToString,
@@ -102,6 +125,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 interface IState {
     publicationViews: PublicationView[] | undefined;
     accessibilitySupportEnabled: boolean;
+    tags: string[];
 }
 
 export class AllPublicationPage extends React.Component<IProps, IState> {
@@ -117,6 +141,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
         this.state = {
             publicationViews: undefined,
             accessibilitySupportEnabled: false,
+            tags: this.props.tags ? this.props.tags.slice() : [],
         };
     }
 
@@ -142,13 +167,20 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
         ], () => {
             apiAction("publication/findAll")
                 .then((publicationViews) => {
-                    this.setState({publicationViews});
+                    this.setState({ publicationViews });
                     setTimeout(() => {
-                        this.onKeyboardFocusSearch();
+                        // this.onKeyboardFocusSearch();
                     }, 400);
                 })
                 .catch((error) => console.error("Error to fetch api publication/findAll", error));
         });
+
+        if (this.props.location.search.indexOf("focus=search") > -1) {
+            console.log("focus=search");
+            setTimeout(() => {
+                this.onKeyboardFocusSearch();
+            }, 400);
+        }
     }
 
     public componentWillUnmount() {
@@ -179,16 +211,15 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
         const displayType = (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid;
 
         const { __ } = this.props;
-        const title = __("catalog.allBooks");
 
         const secondaryHeader = <Header />;
-        const breadCrumb = <BreadCrumb breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}/>;
+        // const breadCrumb = <BreadCrumb breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}/>;
 
         return (
             <LibraryLayout
-                title={`${__("catalog.myBooks")} / ${title}`}
+                title={__("header.allBooks")}
                 secondaryHeader={secondaryHeader}
-                breadCrumb={breadCrumb}
+            // breadCrumb={breadCrumb}
             >
                 {
                     this.state.publicationViews ?
@@ -202,12 +233,14 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
                             displayPublicationInfo={this.props.displayPublicationInfo}
                             openReader={this.props.openReader}
                             focusInputRef={this.focusInputRef}
+                            tags={this.props.tags}
                         />
                         // (displayType === DisplayType.Grid ?
                         //     <GridView normalOrOpdsPublicationViews={this.state.publicationViews} /> :
                         //     <ListView normalOrOpdsPublicationViews={this.state.publicationViews} />)
-                    : <></>
+                        : <></>
                 }
+                <AboutThoriumButton />
             </LibraryLayout>
         );
     }
@@ -288,6 +321,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
     keyboardShortcuts: state.keyboard.shortcuts,
+    tags: state.publication.tag,
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
@@ -305,17 +339,16 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-const commonCellStyles =  (props: ITableCellProps_Column & ITableCellProps_GenericCell): React.CSSProperties => {
+const commonCellStyles = (props: ITableCellProps_Column & ITableCellProps_GenericCell): React.CSSProperties => {
     return {
         // minHeight: props.displayType === DisplayType.Grid ? "150px" : "80px",
-        maxHeight: props.displayType === DisplayType.Grid ? "150px" : "80px",
+        maxHeight: props.displayType === DisplayType.Grid ? "150px" : "100px",
 
         // minWidth: props.displayType === DisplayType.Grid ? "150px" : "100px",
         // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "50px",
 
         padding: "0.4em",
-        overflowY: "auto",
-        textAlign: "center",
+        textAlign: "left",
         userSelect: "text",
     };
 };
@@ -347,7 +380,7 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
     const onInputChange = useAsyncDebounce((v) => {
 
         // if (v) {}
-        props.setShowColumnFilters(false);
+        props.setShowColumnFilters(true);
 
         props.setGlobalFilter(v);
     }, 500);
@@ -356,38 +389,23 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
     // className={classNames(classStyleExample)}
 
     return (
-        <div
-            style={{
-                // border: "1px solid blue",
-                textAlign: "left",
-            }}>
-
+        <div className={stylesInput.form_group}>
             <label
                 id="globalSearchLabel"
                 htmlFor="globalSearchInput"
-                style={{
-                    fontSize: "90%",
-                    fontWeight: "bold",
-                }}>
+                style={{ display: "flex", gap: "5px" }}>
                 {`${props.__("header.searchPlaceholder")}`}
+                <div
+                    aria-live="assertive">
+                    {props.globalFilteredRows.length !== props.preGlobalFilteredRows.length ? ` (${props.globalFilteredRows.length} / ${props.preGlobalFilteredRows.length})` : ` (${props.preGlobalFilteredRows.length})`}
+                </div>
             </label>
-            <div
-                    aria-live="assertive"
-                    style={{
-                        // border: "1px solid red",
-                        marginLeft: "0.4em",
-                        display: "inline-block",
-                        fontSize: "90%",
-                        // width: "4em",
-                        overflow: "visible",
-                        whiteSpace: "nowrap",
-                    }}>
-                {props.globalFilteredRows.length !== props.preGlobalFilteredRows.length ? ` (${props.globalFilteredRows.length} / ${props.preGlobalFilteredRows.length})` : ` (${props.preGlobalFilteredRows.length})`}
-            </div>
+            <i><SVG ariaHidden svg={SearchIcon} /></i>
             {/*
             value={value || ""}
             */}
             <input
+                className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                 id="globalSearchInput"
                 aria-labelledby="globalSearchLabel"
                 ref={props.focusInputRef}
@@ -401,31 +419,16 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
                 }}
                 onKeyUp={(e) => {
                     if (props.accessibilitySupportEnabled && e.key === "Enter") {
-                        props.setShowColumnFilters(false);
+                        props.setShowColumnFilters(true);
                         props.setGlobalFilter( // value
                             (props.focusInputRef?.current?.value || "").trim() || undefined);
                     }
                 }}
                 placeholder={`${props.__("header.searchTitle")}`}
-                style={{
-                    border: "1px solid gray",
-                    borderRadius: "4px",
-                    margin: "0",
-                    marginLeft: "0.4em",
-                    width: "10em",
-                    padding: "0.2em",
-                }}
-                />
+            />
             {props.accessibilitySupportEnabled ? <button
-                style={{
-                    border: "1px solid gray",
-                    borderRadius: "4px",
-                    margin: "0",
-                    marginLeft: "0.4em",
-                    padding: "0.6em",
-                }}
                 onClick={() => {
-                    props.setShowColumnFilters(false);
+                    props.setShowColumnFilters(true);
                     props.setGlobalFilter( // value
                         (props.focusInputRef?.current?.value || "").trim() || undefined);
                 }}
@@ -441,6 +444,9 @@ interface ITableCellProps_Filter {
 
     showColumnFilters: boolean,
     accessibilitySupportEnabled: boolean,
+
+    selectedTag: string,
+    setSelectedTag: React.Dispatch<React.SetStateAction<string>>,
 }
 interface ITableCellProps_Column {
     column: ColumnWithLooseAccessor<IColumns> & UseFiltersColumnProps<IColumns>,
@@ -454,33 +460,33 @@ interface ITableCellProps_Column {
 }
 const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column> = (props) => {
 
-// <span
-// style={{
-//     fontSize: "90%",
-//     fontWeight: "bold",
-// }}>
-// {`${props.__("header.searchPlaceholder")}`}
-// </span>
+    // <span
+    // style={{
+    //     fontSize: "90%",
+    //     fontWeight: "bold",
+    // }}>
+    // {`${props.__("header.searchPlaceholder")}`}
+    // </span>
 
-// <div
-// aria-live="polite"
-// style={{
-//     // border: "1px solid red",
-//     marginLeft: "0.4em",
-//     display: "inline-block",
-//     fontSize: "90%",
-//     // width: "4em",
-//     overflow: "visible",
-//     whiteSpace: "nowrap",
-// }}>
-// {props.column.filteredRows.length !== props.column.preFilteredRows.length ? ` (${props.column.filteredRows.length} / ${props.column.preFilteredRows.length})` : ` (${props.column.preFilteredRows.length})`}
-// </div>
+    // <div
+    // aria-live="polite"
+    // style={{
+    //     // border: "1px solid red",
+    //     marginLeft: "0.4em",
+    //     display: "inline-block",
+    //     fontSize: "90%",
+    //     // width: "4em",
+    //     overflow: "visible",
+    //     whiteSpace: "nowrap",
+    // }}>
+    // {props.column.filteredRows.length !== props.column.preFilteredRows.length ? ` (${props.column.filteredRows.length} / ${props.column.preFilteredRows.length})` : ` (${props.column.preFilteredRows.length})`}
+    // </div>
 
     const inputRef = React.useRef<HTMLInputElement>(null);
     React.useEffect(() => {
         if (inputRef?.current &&
             inputRef.current.value !== props.column.filterValue) {
-                inputRef.current.value = props.column.filterValue || "";
+            inputRef.current.value = props.column.filterValue || "";
         }
     }, [props.column.filterValue]);
     // const [value, setValue] = React.useState(props.column.filterValue); // props.columnFilter
@@ -491,75 +497,92 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
     //     return <></>;
     // }
 
-    const onInputChange = useAsyncDebounce((v) => {
-        props.column.setFilter(v);
-    }, 500);
+    const [searchParams] = useSearchParams();
+    React.useEffect(() => {
+        if (searchParams.get("focus") === "tags" && props.column.id === "colTags") {
+            console.log("focus=tags");
+            if (!inputRef.current) {
+                console.log("NO REF!");
+                return;
 
-    return props.showColumnFilters ?
-    <div style={{
-        display: "flex",
-        alignItems: "center",
-    }}>
-        {
-            /*
-        value={ // props.column.filterValue
-            value || ""}
-             */
-        }
-    <input
-        ref={inputRef}
-        type="search"
-        onChange={(e) => {
-            // setValue(e.target.value);
-            // forceReRender(NaN);
-            if (!props.accessibilitySupportEnabled) {
-                onInputChange((e.target.value || "").trim() || undefined);
             }
-        }}
-        onKeyUp={(e) => {
-            if (props.accessibilitySupportEnabled && e.key === "Enter") {
+            inputRef.current.focus();
+            inputRef.current.value = decodeURIComponent(searchParams.get("value") || "");
+            if (!props.accessibilitySupportEnabled) {
+                onInputChange((inputRef.current.value || "").trim() || undefined);
+            }
+            if (props.accessibilitySupportEnabled) {
                 // (e.target as EventTarget & HTMLInputElement).value
                 // value
                 props.column.setFilter( // props.column.filterValue
                     (inputRef?.current?.value || "").trim() || undefined);
             }
-        }}
-        aria-label={`${props.__("header.searchPlaceholder")} (${props.column.Header})`}
-        placeholder={`${props.__("header.searchPlaceholder")} (${props.column.Header})`}
-        style={{
-            border: "1px solid gray",
-            borderRadius: "4px",
-            margin: "0",
-            width: props.accessibilitySupportEnabled ? "calc(100% - 30px)" : "100%",
-            padding: "0.2em",
-            backgroundColor: "white",
-        }}
-    />
-    {
-    props.accessibilitySupportEnabled ? <button
-        aria-label={`${props.__("header.searchPlaceholder")}`}
-        style={{
-            border: "1px solid gray",
-            borderRadius: "4px",
-            margin: "0",
-            marginLeft: "0.4em",
-            width: "24px",
-            height: "24px",
-            padding: "0.2em",
-        }}
-        onClick={() => {
-            // value
-            props.column.setFilter( // props.column.filterValue
-                (inputRef?.current?.value || "").trim() || undefined);
-        }}
-    ><SVG ariaHidden svg={magnifyingGlass} /></button> : <></>
-    }
-    </div>
-    : <></>;
+        }
+    }, []);
+
+    const onInputChange = useAsyncDebounce((v) => {
+        props.column.setFilter(v);
+    }, 500);
+
+    return props.showColumnFilters ?
+        <div className={stylesPublication.showColFilters_wrapper}>
+            {
+                /*
+            value={ // props.column.filterValue
+                value || ""}
+                 */
+            }
+            <input
+                ref={inputRef}
+                type="search"
+                onChange={(e) => {
+                    // setValue(e.target.value);
+                    // forceReRender(NaN);
+                    if (!props.accessibilitySupportEnabled) {
+                        onInputChange((e.target.value || "").trim() || undefined);
+                        if (props.column.id === "colTags") {
+                            props.setSelectedTag(e.target.value.trim());
+                        }
+                    }
+                }}
+                onKeyUp={(e) => {
+                    if (props.accessibilitySupportEnabled && e.key === "Enter") {
+                        // (e.target as EventTarget & HTMLInputElement).value
+                        // value
+                        props.column.setFilter( // props.column.filterValue
+                            (inputRef?.current?.value || "").trim() || undefined);
+                        if (props.column.id === "colTags") {
+                            props.setSelectedTag(inputRef?.current?.value.trim());
+                            console.log(inputRef.current.value);
+                        }
+                    }
+                }}
+                aria-label={`${props.__("header.searchPlaceholder")} (${props.column.Header})`}
+                placeholder={`${props.__("header.searchPlaceholder")} (${props.column.Header})`}
+                className={stylesPublication.showColFilters_input}
+                style={{
+                    width: props.accessibilitySupportEnabled ? "calc(100% - 30px)" : "100%",
+                }}
+            />
+            {
+                props.accessibilitySupportEnabled ? <button
+                    aria-label={`${props.__("header.searchPlaceholder")}`}
+                    onClick={() => {
+                        // value
+                        props.column.setFilter( // props.column.filterValue
+                            (inputRef?.current?.value || "").trim() || undefined);
+                    }}
+                ><SVG ariaHidden svg={SearchIcon} /></button> : <></>
+            }
+        </div>
+        : <></>;
 };
 
 interface ITableCellProps_GenericCell extends ITableCellProps_Common {
     setShowColumnFilters: (show: boolean, columnId: string, filterValue: string) => void;
+
+    selectedTag: string,
+    setSelectedTag: React.Dispatch<React.SetStateAction<string>>,
 }
 
 interface IColumnValue_Cover extends IColumnValue_BaseString {
@@ -571,58 +594,23 @@ interface ITableCellProps_Value_Cover {
     value: IColumnValue_Cover;
 }
 const CellCoverImage: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Cover> = (props) => {
-    return (<div style={{
-        padding: "0",
-        margin: "0",
-        textAlign: "center",
-    }}>
-        <a
-            style={{
-                cursor: "pointer",
-            }}
-            tabIndex={0}
-            onClick={(e) => {
-                e.preventDefault();
-
-                props.displayPublicationInfo(props.value.publicationViewIdentifier);
-                // props.openReader(props.value.publicationViewIdentifier);
-            }}
-            onKeyPress={
-                (e) => {
-                    if (e.key === "Enter") {
-                        e.preventDefault();
-
-                        props.displayPublicationInfo(props.value.publicationViewIdentifier);
-                        // props.openReader(props.value.publicationViewIdentifier);
-                    }
-                }
-            }
-            title={`${props.value.title} (${props.__("catalog.bookInfo")})`}
-        >
-        <img
-            src={
-                // NOTE! empty string doesn't work with `??` operator, must use ternary!
-                props.value.label
-                ?
-                props.value.label
-                :
-                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAGUUlEQVR4Xu3UAQ0AIAwDQfCvBx9zBAk2/uag16X7zNzlCBBICmwDkOxdaAJfwAB4BAJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJPOMbVS78Q2ATAAAAAElFTkSuQmCC"
-            }
-            alt={""}
-            role="presentation"
-            style={{
-
-            objectFit: "contain",
-            width: "100%",
-            height: "100%",
-
-            // minHeight: props.displayType === DisplayType.Grid ? "150px" : "80px",
-            // maxHeight: props.displayType === DisplayType.Grid ? "150px" : "50px",
-
-            // minWidth: props.displayType === DisplayType.Grid ? "150px" : "100px",
-            // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "50px",
-        }} />
-        </a>
+    return (<div className={stylesPublication.cell_coverImg}>
+                <a
+                    title={`${props.value.title} (${props.__("catalog.bookInfo")})`}
+                    onClick={() => props.openReader(props.value.publicationViewIdentifier)}
+                >
+                    <img
+                        src={
+                            // NOTE! empty string doesn't work with `??` operator, must use ternary!
+                            props.value.label
+                                ?
+                                props.value.label
+                                :
+                                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAGUUlEQVR4Xu3UAQ0AIAwDQfCvBx9zBAk2/uag16X7zNzlCBBICmwDkOxdaAJfwAB4BAJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJGAA/QCAsYADC5YtOwAD4AQJhAQMQLl90AgbADxAICxiAcPmiEzAAfoBAWMAAhMsXnYAB8AMEwgIGIFy+6AQMgB8gEBYwAOHyRSdgAPwAgbCAAQiXLzoBA+AHCIQFDEC4fNEJPOMbVS78Q2ATAAAAAElFTkSuQmCC"
+                        }
+                        alt={""}
+                        role="presentation" />
+                </a>
     </div>);
 };
 
@@ -632,51 +620,27 @@ const CellFormat: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell 
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => { if (e.key === "Enter") {
-                e.preventDefault();
-                // props.column.setFilter(t);
-                props.setShowColumnFilters(true, props.column.id, t);
-            }}}
+            onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    // props.column.setFilter(t);
+                    props.setShowColumnFilters(true, props.column.id, t);
+                }
+            }}
 
             onClick={(e) => {
                 e.preventDefault();
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
             }}
-            style={{
-                display: "flex",
-                alignItems: "center",
-                textAlign: "center",
-                padding: "2px 6px",
-                fontSize: "1rem",
-                // backgroundColor: "#e7f1fb",
-                // borderRadius: "5px",
-                // border: "1px solid var(--color-tertiary)",
-                // color: "var(--color-tertiary)",
-                cursor: "pointer",
-                // textDecoration: "none",
-                textDecoration: "underline",
-                textDecorationColor: "var(--color-tertiary)",
-                textDecorationSkip: "ink",
-                marginRight: "6px",
-                marginBottom: "6px",
-        }}>{t}</a>;
+            className={stylesButtons.button_nav_primary} style={{ padding: "2px" }}>{t}</a>;
     };
 
-    const flexStyle: React.CSSProperties = {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        flexWrap: "wrap",
-        paddingTop: "0.2em",
-    };
-
-    return (<div style={{...flexStyle}}>
+    return (<div className={stylesPublication.cell_wrapper}>
         {
-        link(props.value)
+            link(props.value)
         }
-        </div>);
+    </div>);
 };
 
 interface IColumnValue_Langs extends IColumnValue_BaseString {
@@ -691,79 +655,44 @@ const CellLangs: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => { if (e.key === "Enter") {
-                e.preventDefault();
-                // props.column.setFilter(t);
-                props.setShowColumnFilters(true, props.column.id, t);
-            }}}
+            onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    // props.column.setFilter(t);
+                    props.setShowColumnFilters(true, props.column.id, t);
+                }
+            }}
 
             onClick={(e) => {
                 e.preventDefault();
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
             }}
-            style={{
-                display: "flex",
-                alignItems: "center",
-                textAlign: "center",
-                padding: "2px 6px",
-                fontSize: "1rem",
-                // backgroundColor: "#e7f1fb",
-                // borderRadius: "5px",
-                // border: "1px solid var(--color-tertiary)",
-                // color: "var(--color-tertiary)",
-                cursor: "pointer",
-                // textDecoration: "none",
-                textDecoration: "underline",
-                textDecorationColor: "var(--color-tertiary)",
-                textDecorationSkip: "ink",
-                marginRight: "6px",
-                marginBottom: "6px",
-        }}>{t}</a>;
+            className={stylesPublication.cell_link}>{t}</a>;
     };
 
     // props.value.label === props.value.tags.join(", ")
 
-    const flexStyle: React.CSSProperties = {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        flexWrap: "wrap",
-        paddingTop: "0.2em",
-    };
-
     return props.value.langs?.length ?
-    (
-    props.value.langs.length === 1 ? (
-        <div style={{...flexStyle}}>
-        {
-        link(props.value.langs[0])
-        }
-        </div>
-    ) : (
-        <ul style={{
-            listStyleType: "none",
-            margin: "0",
-            padding: "0",
-            ...flexStyle,
-        }}>
-        {
-        props.value.langs.map((t, i) => {
-            return <li
-                key={`k${i}`}
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    margin: "0",
-                    padding: "0",
-                }}
-            >{link(t)}</li>;
-        })
-        }
-        </ul>
-    ))
-    : <></>;
+        (
+            props.value.langs.length === 1 ? (
+                <div className={stylesPublication.cell_wrapper}>
+                    {
+                        link(props.value.langs[0])
+                    }
+                </div>
+            ) : (
+                <ul className={classNames(stylesPublication.cell_wrapper, stylesPublication.cell_multi_langs)}>
+                    {
+                        props.value.langs.map((t, i) => {
+                            return <li
+                                key={`k${i}`}
+                            >{link(t)}</li>;
+                        })
+                    }
+                </ul>
+            ))
+        : <></>;
 };
 
 interface IColumnValue_Publishers extends IColumnValue_BaseString {
@@ -778,79 +707,44 @@ const CellPublishers: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => { if (e.key === "Enter") {
-                e.preventDefault();
-                // props.column.setFilter(t);
-                props.setShowColumnFilters(true, props.column.id, t);
-            }}}
+            onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    // props.column.setFilter(t);
+                    props.setShowColumnFilters(true, props.column.id, t);
+                }
+            }}
 
             onClick={(e) => {
                 e.preventDefault();
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
             }}
-            style={{
-                display: "flex",
-                alignItems: "center",
-                textAlign: "center",
-                padding: "2px 6px",
-                fontSize: "1rem",
-                // backgroundColor: "#e7f1fb",
-                // borderRadius: "5px",
-                // border: "1px solid var(--color-tertiary)",
-                // color: "var(--color-tertiary)",
-                cursor: "pointer",
-                // textDecoration: "none",
-                textDecoration: "underline",
-                textDecorationColor: "var(--color-tertiary)",
-                textDecorationSkip: "ink",
-                marginRight: "6px",
-                marginBottom: "6px",
-        }}>{t}</a>;
+            className={stylesPublication.cell_link}>{t}</a>;
     };
 
     // props.value.label === props.value.tags.join(", ")
 
-    const flexStyle: React.CSSProperties = {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        flexWrap: "wrap",
-        paddingTop: "0.2em",
-    };
-
     return props.value.publishers?.length ?
-    (
-    props.value.publishers.length === 1 ? (
-        <div style={{...flexStyle}}>
-        {
-        link(props.value.publishers[0])
-        }
-        </div>
-    ) : (
-        <ul style={{
-            listStyleType: "none",
-            margin: "0",
-            padding: "0",
-            ...flexStyle,
-        }}>
-        {
-        props.value.publishers.map((t, i) => {
-            return <li
-                key={`k${i}`}
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    margin: "0",
-                    padding: "0",
-                }}
-            >{link(t)}</li>;
-        })
-        }
-        </ul>
-    ))
-    : <></>;
+        (
+            props.value.publishers.length === 1 ? (
+                <div className={stylesPublication.cell_wrapper}>
+                    {
+                        link(props.value.publishers[0])
+                    }
+                </div>
+            ) : (
+                <ul className={classNames(stylesPublication.cell_wrapper, stylesPublication.cell_multi_langs)}>
+                    {
+                        props.value.publishers.map((t, i) => {
+                            return <li
+                                key={`k${i}`}
+                            >{link(t)}</li>;
+                        })
+                    }
+                </ul>
+            ))
+        : <></>;
 };
 
 interface IColumnValue_Authors extends IColumnValue_BaseString {
@@ -865,89 +759,54 @@ const CellAuthors: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => { if (e.key === "Enter") {
-                e.preventDefault();
-                // props.column.setFilter(t);
-                props.setShowColumnFilters(true, props.column.id, t);
-            }}}
+            onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    // props.column.setFilter(t);
+                    props.setShowColumnFilters(true, props.column.id, t);
+                }
+            }}
 
             onClick={(e) => {
                 e.preventDefault();
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
             }}
-            style={{
-                display: "flex",
-                alignItems: "center",
-                textAlign: "center",
-                padding: "2px 6px",
-                fontSize: "1rem",
-                // backgroundColor: "#e7f1fb",
-                // borderRadius: "5px",
-                // border: "1px solid var(--color-tertiary)",
-                // color: "var(--color-tertiary)",
-                cursor: "pointer",
-                // textDecoration: "none",
-                textDecoration: "underline",
-                textDecorationColor: "var(--color-tertiary)",
-                textDecorationSkip: "ink",
-                marginRight: "6px",
-                marginBottom: "6px",
-        }}>{t}</a>;
+            className={stylesPublication.cell_link}>{t}</a>;
     };
 
     // props.value.label === props.value.tags.join(", ")
 
-    const flexStyle: React.CSSProperties = {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        flexWrap: "wrap",
-        paddingTop: "0.2em",
-    };
-
     return props.value.authors?.length ?
-    (
-        <div style={{
-            ...commonCellStyles(props),
-            // minWidth: props.displayType === DisplayType.Grid ? "200px" : undefined,
-            // maxWidth: props.displayType === DisplayType.Grid ? "300px" : undefined,
-            // width: props.displayType === DisplayType.Grid ? "250px" : undefined,
-        }}>
-        {
-    props.value.authors.length === 1 ? (
-        <div style={{...flexStyle}}>
-        {
-        link(props.value.authors[0])
-        }
-        </div>
-    ) : (
-        <ul style={{
-            listStyleType: "none",
-            margin: "0",
-            padding: "0",
-            ...flexStyle,
-        }}>
-        {
-        props.value.authors.map((t, i) => {
-            return <li
-                key={`k${i}`}
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    margin: "0",
-                    padding: "0",
-                }}
-            >{link(t)}</li>;
-        })
-        }
-        </ul>
-    )
-        }
-        </div>
-    )
-    : <></>;
+        (
+            <div style={{
+                ...commonCellStyles(props),
+                // minWidth: props.displayType === DisplayType.Grid ? "200px" : undefined,
+                // maxWidth: props.displayType === DisplayType.Grid ? "300px" : undefined,
+                // width: props.displayType === DisplayType.Grid ? "250px" : undefined,
+            }}>
+                {
+                    props.value.authors.length === 1 ? (
+                        <div className={stylesPublication.cell_wrapper}>
+                            {
+                                link(props.value.authors[0])
+                            }
+                        </div>
+                    ) : (
+                        <ul className={classNames(stylesPublication.cell_wrapper, stylesPublication.cell_multi_langs)}>
+                            {
+                                props.value.authors.map((t, i) => {
+                                    return <li
+                                        key={`k${i}`}
+                                    >{link(t)}</li>;
+                                })
+                            }
+                        </ul>
+                    )
+                }
+            </div>
+        )
+        : <></>;
 };
 
 interface IColumnValue_Tags extends IColumnValue_BaseString {
@@ -965,93 +824,85 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => { if (e.key === "Enter") {
-                e.preventDefault();
-                // props.column.setFilter(t);
-                props.setShowColumnFilters(true, props.column.id, t);
-            }}}
+            onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    // props.column.setFilter(t);
+                    props.setShowColumnFilters(true, props.column.id, t);
+                    props.setSelectedTag(t);
+                }
+            }}
 
             onClick={(e) => {
                 e.preventDefault();
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
+                props.setSelectedTag(t);
             }}
-            style={{
-            display: "flex",
-            alignItems: "center",
-            textAlign: "center",
-            backgroundColor: "#e7f1fb",
-            padding: "2px 6px",
-            fontSize: "1rem",
-            borderRadius: "5px",
-            border: "1px solid var(--color-tertiary)",
-            color: "var(--color-tertiary)",
-            cursor: "pointer",
-            textDecoration: "none",
-            marginRight: "6px",
-            marginBottom: "6px",
-        }}>{t}</a>;
+            className={stylesButtons.button_nav_primary} style={{ padding: "2px" }}>
+            <p style={{ maxWidth: "100px", overflow: "hidden", textOverflow: "ellipsis", textWrap: "nowrap" }}>{t}</p>
+        </a>;
     };
 
     // props.value.label === props.value.tags.join(", ")
 
-    const flexStyle: React.CSSProperties = {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        flexWrap: "wrap",
-        paddingTop: "0.2em",
-    };
-
     return props.value.tags?.length ?
-    (
-    props.value.tags.length === 1 ? (
-        <div style={{...flexStyle}}>
-        {
-        link(props.value.tags[0])
-        }
-        </div>
-    ) : (
-        <ul style={{
-            listStyleType: "none",
-            margin: "0",
-            padding: "0",
-            ...flexStyle,
-        }}>
-        {
-        props.value.tags.map((t, i) => {
-            return <li
-                key={`k${i}`}
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    margin: "0",
-                    padding: "0",
-                }}
-            >{link(t)}</li>;
-        })
-        }
-        </ul>
-    ))
-    : <></>;
+        (
+            props.value.tags.length === 1 ? (
+                <div className={stylesPublication.cell_wrapper}>
+                    {
+                        link(props.value.tags[0])
+                    }
+                </div>
+            ) : (
+                <ul className={classNames(stylesPublication.cell_wrapper, stylesPublication.cell_multi_langs)}>
+                    {
+                        props.value.tags.map((t, i) => {
+                            return <li
+                                key={`k${i}`}
+                            >{link(t)}</li>;
+                        })
+                    }
+                </ul>
+            ))
+        : <></>;
 };
 
 const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_StringValue> = (props) => {
-    return (<div style={{
-        ...commonCellStyles(props),
-        paddingBottom: "0",
-        // marginBottom: "0.4em",
 
-        // minHeight: props.displayType === DisplayType.Grid ? "150px" : "80px",
-        // maxHeight: props.displayType === DisplayType.Grid ? "150px" : "100px",
+    const textNeedToBeSanitized = props.value || "";
+    const textSanitize = DOMPurify.sanitize(textNeedToBeSanitized).replace(/font-size:/g, "font-sizexx:");
+    return (<div
+        className={stylesPublication.cell_description}
+        style={{
+            ...commonCellStyles(props),
+            paddingBottom: "0",
+            // marginBottom: "0.4em",
 
-        // minWidth: props.displayType === DisplayType.Grid ? "150px" : "100px",
-        // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "50px",
+            // minHeight: props.displayType === DisplayType.Grid ? "150px" : "80px",
+            // maxHeight: props.displayType === DisplayType.Grid ? "150px" : "100px",
 
-        // textAlign: props.displayType === DisplayType.Grid ? "justify" : "start",
-        textAlign: "start",
-    }} dangerouslySetInnerHTML={{__html: props.value}} />);
+            // minWidth: props.displayType === DisplayType.Grid ? "150px" : "100px",
+            // maxWidth: props.displayType === DisplayType.Grid ? "150px" : "50px",
+
+            // textAlign: props.displayType === DisplayType.Grid ? "justify" : "start",
+            textAlign: "start",
+        }}>
+        <p dangerouslySetInnerHTML={{ __html: textSanitize }}></p>
+        {props.value ?
+            <Popover.Root>
+                <Popover.Trigger>
+                    <SVG ariaHidden svg={ChevronDown} />
+                </Popover.Trigger>
+                <Popover.Portal>
+                    <Popover.Content collisionPadding={50} avoidCollisions>
+                        <p className={stylesDropDown.dropdown_description} dangerouslySetInnerHTML={{ __html: textSanitize }}></p>
+                        <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                    </Popover.Content>
+                </Popover.Portal>
+            </Popover.Root>
+            : ""}
+    </div>);
 };
 
 // interface IColumnValue_A11y_StringArrayArray extends IColumnValue_BaseString {
@@ -1240,47 +1091,32 @@ interface ITableCellProps_Value_Date {
 }
 const CellDate: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Date> = (props) => {
     return (
-    props.value.label ?
-    <div style={{
-        ...commonCellStyles(props),
-    }}
-    >
-        <a
-            title={`${props.value.label} (${props.__("header.searchPlaceholder")})`}
-            tabIndex={0}
-            onKeyPress={(e) => { if (e.key === "Enter") {
-                e.preventDefault();
-                const t = props.value.label.substring(0, props.column.id === "colLastReadTimestamp" ? 7 : 4); // YYYY or YYYY-MM
-                // props.column.setFilter(t);
-                props.setShowColumnFilters(true, props.column.id, t);
-            }}}
-
-            onClick={(e) => {
-                e.preventDefault();
-                const t = props.value.label.substring(0, props.column.id === "colLastReadTimestamp" ? 7 : 4); // YYYY or YYYY-MM
-                // props.column.setFilter(t);
-                props.setShowColumnFilters(true, props.column.id, t);
+        props.value.label ?
+            <div style={{
+                ...commonCellStyles(props),
             }}
-            style={{
-                display: "flex",
-                alignItems: "center",
-                textAlign: "center",
-                padding: "2px 6px",
-                fontSize: "1rem",
-                // backgroundColor: "#e7f1fb",
-                // borderRadius: "5px",
-                // border: "1px solid var(--color-tertiary)",
-                // color: "var(--color-tertiary)",
-                cursor: "pointer",
-                // textDecoration: "none",
-                textDecoration: "underline",
-                textDecorationColor: "var(--color-tertiary)",
-                textDecorationSkip: "ink",
-                marginRight: "6px",
-                marginBottom: "6px",
-        }}>{props.value.date}</a>
-    </div>
-    : <></>
+            >
+                <a
+                    title={`${props.value.label} (${props.__("header.searchPlaceholder")})`}
+                    tabIndex={0}
+                    onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                            e.preventDefault();
+                            const t = props.value.label.substring(0, props.column.id === "colLastReadTimestamp" ? 7 : 4); // YYYY or YYYY-MM
+                            // props.column.setFilter(t);
+                            props.setShowColumnFilters(true, props.column.id, t);
+                        }
+                    }}
+
+                    onClick={(e) => {
+                        e.preventDefault();
+                        const t = props.value.label.substring(0, props.column.id === "colLastReadTimestamp" ? 7 : 4); // YYYY or YYYY-MM
+                        // props.column.setFilter(t);
+                        props.setShowColumnFilters(true, props.column.id, t);
+                    }}
+                    className={stylesPublication.cell_link}>{props.value.date}</a>
+            </div>
+            : <></>
     );
 };
 
@@ -1292,6 +1128,15 @@ interface IColumnValue_Title extends IColumnValue_BaseString {
 interface ITableCellProps_Value_Title {
     value: IColumnValue_Title;
 }
+
+interface ITableCellProps_Value_Remaining {
+    value: IColumnValue_Remain;
+}
+
+interface ITableCellProps_Value_Actions {
+    value: IColumnValue_Actions;
+}
+
 const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Title> = (props) => {
 
     // props.value.label
@@ -1302,36 +1147,78 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
 
     return (<div style={{
         ...commonCellStyles(props),
-        fontWeight: "bold",
         // minWidth: props.displayType === DisplayType.Grid ? "200px" : undefined,
         // maxWidth: props.displayType === DisplayType.Grid ? "300px" : undefined,
         // width: props.displayType === DisplayType.Grid ? "250px" : undefined,
     }}
-    dir={pubTitleIsRTL ? "rtl" : undefined}
-    ><a
-        style={{ cursor: "pointer", paddingTop: "0.4em", paddingBottom: "0.4em" }}
-        tabIndex={0}
-        onClick={(e) => {
-            e.preventDefault();
+        dir={pubTitleIsRTL ? "rtl" : undefined}
+    >
+                <a
+                    className={stylesPublication.cell_bookTitle}
+                    title={`${pubTitleStr} (${props.__("catalog.bookInfo")})`}
+                    onClick={() => props.openReader(props.value.publicationViewIdentifier)}
+                >
+                    {pubTitleStr}
+                </a>
+    </div>);
+};
 
-            props.displayPublicationInfo(props.value.publicationViewIdentifier);
-            // props.openReader(props.value.publicationViewIdentifier);
-        }}
-        onKeyPress={
-            (e) => {
+const CellRemainingDays: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Remaining> = (props) => {
+
+    const link = (t: string) => {
+        return <a
+            title={`${t} (${props.__("header.searchPlaceholder")})`}
+            tabIndex={0}
+            onKeyPress={(e) => {
                 if (e.key === "Enter") {
                     e.preventDefault();
-
-                    props.displayPublicationInfo(props.value.publicationViewIdentifier);
-                    // props.openReader(props.value.publicationViewIdentifier);
+                    // props.column.setFilter(t);
+                    props.setShowColumnFilters(true, props.column.id, t);
                 }
-            }
-        }
-        title={`${pubTitleStr} (${props.__("catalog.bookInfo")})`}
-    >
-        {pubTitleStr}
-        </a>
+            }}
+
+            onClick={(e) => {
+                e.preventDefault();
+                // props.column.setFilter(t);
+                props.setShowColumnFilters(true, props.column.id, t);
+            }}>{t}</a>;
+    };
+
+    return (<div className={stylesPublication.cell_wrapper}>
+         {
+            props.value.label ?
+            <div className={stylesPublications.lcpIndicator}>
+                <SVG ariaHidden svg={props.value.hasEnded ? KeyIcon : CalendarIcon} />
+                {link(props.value.label)}
+            </div>
+            : props.value.isLcp ?
+            <div className={stylesPublications.lcpIndicator}>
+                <SVG ariaHidden svg={KeyIcon} />
+                {props.__("publication.licensed")}
+            </div>
+            : <></>}
     </div>);
+};
+
+const CellActions: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Actions> = (props) => {
+    const label = props.value.label;
+    const publication = props.value.publication;
+
+    return (
+        <div className={stylesPublication.cell_wrapper}
+        >
+            <Menu
+                button={(
+                    <SVG title={`${props.__("publication.actions")} (${label})`} svg={MenuIcon} />
+                )}
+            >
+                <CatalogMenu
+                    publicationView={publication as PublicationView}
+                />
+            </Menu>
+        </div>
+
+    );
 };
 
 const TableCell: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_StringValue> = (props) => {
@@ -1350,11 +1237,24 @@ interface ITableCellProps_StringValue {
     value: string;
 }
 
+interface IColumnValue_Remain {
+    label: string;
+    hasEnded: boolean;
+    isLcp: boolean;
+}
+
+interface IColumnValue_Actions {
+    isReading: boolean;
+    label: string;
+    publication: PublicationView | IOpdsPublicationView;
+}
+
 interface IColumns {
     colCover: IColumnValue_Cover,
     colTitle: IColumnValue_Title;
     colAuthors: IColumnValue_Authors;
     colPublishers: IColumnValue_Publishers;
+    colRemainingDays: IColumnValue_Remain;
     colLanguages: IColumnValue_Langs;
     colPublishedDate: IColumnValue_Date;
     colDescription: string;
@@ -1363,6 +1263,7 @@ interface IColumns {
     colLastReadTimestamp: IColumnValue_Date;
     colTags: IColumnValue_Tags;
     colDuration: string;
+    colActions: IColumnValue_Actions;
 
     col_a11y_accessibilitySummary: string; // string | IStringMap => convertMultiLangStringToString()
     // col_a11y_accessMode: IColumnValue_A11y_StringArray; // string[]
@@ -1405,12 +1306,17 @@ interface ITableCellProps_TableView {
     focusInputRef: React.RefObject<HTMLInputElement>;
     location: Location;
     accessibilitySupportEnabled: boolean;
+    tags: string[];
 }
+
 export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Common> = (props) => {
 
-    const [showColumnFilters, setShowColumnFilters] = React.useState(false);
+    const [showColumnFilters, setShowColumnFilters] = React.useState(true);
+    const [selectedTag, setSelectedTag] = React.useState("");
 
     const scrollToViewRef = React.useRef(null);
+
+    const { __ } = props;
 
     const renderProps_Filter: ITableCellProps_Filter =
     {
@@ -1420,6 +1326,9 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
         showColumnFilters,
         accessibilitySupportEnabled: props.accessibilitySupportEnabled,
+
+        selectedTag: selectedTag,
+        setSelectedTag: setSelectedTag,
     };
 
     const renderProps_Cell: ITableCellProps_GenericCell =
@@ -1427,6 +1336,9 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         __: props.__,
         translator: props.translator,
         displayType: props.displayType,
+
+        selectedTag: selectedTag,
+        setSelectedTag: setSelectedTag,
 
         displayPublicationInfo: props.displayPublicationInfo,
         openReader: props.openReader,
@@ -1449,7 +1361,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     // moment.locale(locale);
 
     const tableRows = React.useMemo(() => {
-        return props.publicationViews.map((publicationView) => {
+        return props.publicationViews.slice().reverse().map((publicationView) => {
 
             // translator.translateContentField(author)
             // const authors = publicationView.authors ? formatContributorToString(publicationView.authors, props.translator) : "";
@@ -1481,6 +1393,25 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     lastReadDateVisual = new Intl.DateTimeFormat(props.translator.getLocale(), { dateStyle: "medium", timeStyle: "short" }).format(new Date(lastReadDateCanonical));
                 } catch (err) {
                     console.log(err);
+                }
+            }
+
+            const isLcp = !!publicationView.lcp?.rights;
+            const lcpRightsEndDate = (publicationView.lcp?.rights?.end) ? publicationView.lcp.rights.end : undefined;
+            let remainingDays= "";
+            const now = moment();
+            let hasEnded = false;
+    
+            if (lcpRightsEndDate) {
+                const momentEnd = moment(lcpRightsEndDate);
+                const timeEndDif = momentEnd.diff(now, "days");
+                if (timeEndDif > 1) {
+                    remainingDays = `${timeEndDif} ${__("publication.days")}`;
+                } else if (timeEndDif === 1) {
+                    remainingDays = `${timeEndDif} ${__("publication.day")}`;
+                } else {
+                    remainingDays = `${__("publication.expired")}`;
+                    hasEnded = true;
                 }
             }
 
@@ -1547,6 +1478,11 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     label: publicationView.authors ? publicationView.authors.join(", ") : "",
                     authors: publicationView.authors,
                 },
+                colRemainingDays: { // IColumnValue_Remain
+                    label: remainingDays,
+                    hasEnded: hasEnded,
+                    isLcp: isLcp,
+                },
                 colPublishers: { // IColumnValue_Publishers
                     label: publicationView.publishers ? publicationView.publishers.join(", ") : "",
                     publishers: publicationView.publishers,
@@ -1573,6 +1509,11 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 colDescription: description,
 
                 col_a11y_accessibilitySummary: strA11Summary,
+                colActions: { // IColumnValue_Actions
+                    isReading: publicationView.lastReadingLocation ? true : false,
+                    label: publicationView.documentTitle,
+                    publication: publicationView,
+                },
                 // col_a11y_accessMode: { // IColumnValue_A11y_StringArray
                 //     label: publicationView.a11y_accessMode?.length ? [].concat(publicationView.a11y_accessMode).sort().join(", ") : "",
                 //     strings: publicationView.a11y_accessMode,
@@ -1651,190 +1592,208 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
     const tableColumns = React.useMemo(() => {
         const arr: (Column<IColumns> &
-            UseTableColumnOptions<IColumns>  &
-            UseSortByColumnOptions<IColumns>  &
-            UseGlobalFiltersColumnOptions<IColumns>  &
+            UseTableColumnOptions<IColumns> &
+            UseSortByColumnOptions<IColumns> &
+            UseGlobalFiltersColumnOptions<IColumns> &
             UseFiltersColumnOptions<IColumns>)[] = [
-            {
-                Header: props.__("publication.cover.img"),
-                accessor: "colCover",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellCoverImage,
-                // filter: "text", // because IColumnValue_BaseString instead of plain string
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("publication.title"),
-                accessor: "colTitle",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellTitle,
-                filter: "text", // because IColumnValue_BaseString instead of plain string
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("publication.author"),
-                accessor: "colAuthors",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellAuthors,
-                filter: "text", // because IColumnValue_BaseString instead of plain string
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("catalog.lang"),
-                accessor: "colLanguages",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellLangs,
-                filter: "text", // because IColumnValue_BaseString instead of plain string
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("catalog.tags"),
-                accessor: "colTags",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellTags,
-                filter: "text", // because IColumnValue_BaseString instead of plain string
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("catalog.format"),
-                accessor: "colFormat",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellFormat,
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("catalog.lastRead"),
-                accessor: "colLastReadTimestamp",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellDate,
-                filter: "text", // because IColumnValue_BaseString instead of plain string
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("catalog.publisher"),
-                accessor: "colPublishers",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellPublishers,
-                filter: "text", // because IColumnValue_BaseString instead of plain string
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("catalog.released"),
-                accessor: "colPublishedDate",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellDate,
-                filter: "text", // because IColumnValue_BaseString instead of plain string
-                sortType: sortFunction,
-            },
-            {
-                Header: "DRM",
-                accessor: "colLCP",
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("publication.duration.title"),
-                accessor: "colDuration",
-                sortType: sortFunction,
-            },
-            {
-                Header: props.__("catalog.description"),
-                accessor: "colDescription",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellDescription,
-                sortType: sortFunction,
-            },
+                {
+                    Header: props.__("publication.cover.img"),
+                    accessor: "colCover",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellCoverImage,
+                    // filter: "text", // because IColumnValue_BaseString instead of plain string
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("publication.title"),
+                    accessor: "colTitle",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellTitle,
+                    filter: "text", // because IColumnValue_BaseString instead of plain string
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("publication.author"),
+                    accessor: "colAuthors",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellAuthors,
+                    filter: "text", // because IColumnValue_BaseString instead of plain string
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("publication.remainingTime"),
+                    accessor: "colRemainingDays",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellRemainingDays,
+                    filter: "text", // because IColumnValue_BaseString instead of plain string
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("catalog.lang"),
+                    accessor: "colLanguages",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellLangs,
+                    filter: "text", // because IColumnValue_BaseString instead of plain string
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("catalog.tags"),
+                    accessor: "colTags",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellTags,
+                    filter: "text", // because IColumnValue_BaseString instead of plain string
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("catalog.format"),
+                    accessor: "colFormat",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellFormat,
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("catalog.lastRead"),
+                    accessor: "colLastReadTimestamp",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellDate,
+                    filter: "text", // because IColumnValue_BaseString instead of plain string
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("catalog.publisher"),
+                    accessor: "colPublishers",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellPublishers,
+                    filter: "text", // because IColumnValue_BaseString instead of plain string
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("catalog.released"),
+                    accessor: "colPublishedDate",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellDate,
+                    filter: "text", // because IColumnValue_BaseString instead of plain string
+                    sortType: sortFunction,
+                },
+                {
+                    Header: "DRM",
+                    accessor: "colLCP",
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("publication.duration.title"),
+                    accessor: "colDuration",
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("catalog.description"),
+                    accessor: "colDescription",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellDescription,
+                    sortType: sortFunction,
+                },
 
-            {
-                Header: props.__("catalog.about.button"),
-                accessor: "col_a11y_accessibilitySummary",
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error
-                Cell: CellDescription,
-                sortType: sortFunction,
-            },
-            // {
-            //     Header: "accessMode",
-            //     accessor: "col_a11y_accessMode",
-            //     Cell: CellStringArray,
-            //     filter: "text", // because IColumnValue_BaseString instead of plain string
-            //     sortType: sortFunction,
-            // },
-            // {
-            //     Header: "accessModeSufficient",
-            //     accessor: "col_a11y_accessModeSufficient",
-            //     Cell: CellStringArrayArray,
-            //     filter: "text", // because IColumnValue_BaseString instead of plain string
-            //     sortType: sortFunction,
-            // },
-            // {
-            //     Header: "accessibilityFeature",
-            //     accessor: "col_a11y_accessibilityFeature",
-            //     Cell: CellStringArray,
-            //     filter: "text", // because IColumnValue_BaseString instead of plain string
-            //     sortType: sortFunction,
-            // },
-            // {
-            //     Header: "accessibilityHazard",
-            //     accessor: "col_a11y_accessibilityHazard",
-            //     Cell: CellStringArray,
-            //     filter: "text", // because IColumnValue_BaseString instead of plain string
-            //     sortType: sortFunction,
-            // },
-            // {
-            //     Header: "certifiedBy",
-            //     accessor: "col_a11y_certifiedBy",
-            //     Cell: CellStringArray,
-            //     filter: "text", // because IColumnValue_BaseString instead of plain string
-            //     sortType: sortFunction,
-            // },
-            // {
-            //     Header: "certifierCredential",
-            //     accessor: "col_a11y_certifierCredential",
-            //     Cell: CellStringArray,
-            //     filter: "text", // because IColumnValue_BaseString instead of plain string
-            //     sortType: sortFunction,
-            // },
-            // {
-            //     Header: "certifierReport",
-            //     accessor: "col_a11y_certifierReport",
-            //     Cell: CellStringArray,
-            //     filter: "text", // because IColumnValue_BaseString instead of plain string
-            //     sortType: sortFunction,
-            // },
-            // {
-            //     Header: "conformsTo",
-            //     accessor: "col_a11y_conformsTo",
-            //     Cell: CellStringArray,
-            //     filter: "text", // because IColumnValue_BaseString instead of plain string
-            //     sortType: sortFunction,
-            // },
+                {
+                    Header: props.__("publication.accessibility.name"),
+                    accessor: "col_a11y_accessibilitySummary",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellDescription,
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("publication.actions"),
+                    accessor: "colActions",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellActions,
+                    disableFilters: true,
+                    disableSortBy: true,
+                },
+                // {
+                //     Header: "accessMode",
+                //     accessor: "col_a11y_accessMode",
+                //     Cell: CellStringArray,
+                //     filter: "text", // because IColumnValue_BaseString instead of plain string
+                //     sortType: sortFunction,
+                // },
+                // {
+                //     Header: "accessModeSufficient",
+                //     accessor: "col_a11y_accessModeSufficient",
+                //     Cell: CellStringArrayArray,
+                //     filter: "text", // because IColumnValue_BaseString instead of plain string
+                //     sortType: sortFunction,
+                // },
+                // {
+                //     Header: "accessibilityFeature",
+                //     accessor: "col_a11y_accessibilityFeature",
+                //     Cell: CellStringArray,
+                //     filter: "text", // because IColumnValue_BaseString instead of plain string
+                //     sortType: sortFunction,
+                // },
+                // {
+                //     Header: "accessibilityHazard",
+                //     accessor: "col_a11y_accessibilityHazard",
+                //     Cell: CellStringArray,
+                //     filter: "text", // because IColumnValue_BaseString instead of plain string
+                //     sortType: sortFunction,
+                // },
+                // {
+                //     Header: "certifiedBy",
+                //     accessor: "col_a11y_certifiedBy",
+                //     Cell: CellStringArray,
+                //     filter: "text", // because IColumnValue_BaseString instead of plain string
+                //     sortType: sortFunction,
+                // },
+                // {
+                //     Header: "certifierCredential",
+                //     accessor: "col_a11y_certifierCredential",
+                //     Cell: CellStringArray,
+                //     filter: "text", // because IColumnValue_BaseString instead of plain string
+                //     sortType: sortFunction,
+                // },
+                // {
+                //     Header: "certifierReport",
+                //     accessor: "col_a11y_certifierReport",
+                //     Cell: CellStringArray,
+                //     filter: "text", // because IColumnValue_BaseString instead of plain string
+                //     sortType: sortFunction,
+                // },
+                // {
+                //     Header: "conformsTo",
+                //     accessor: "col_a11y_conformsTo",
+                //     Cell: CellStringArray,
+                //     filter: "text", // because IColumnValue_BaseString instead of plain string
+                //     sortType: sortFunction,
+                // },
 
-            // {
-            //     Header: props.__("publication.progression.title"),
-            //     accessor: "colProgression",
-            // sortType: sortFunction,
-            // },
-            // {
-            //     Header: "Identifier",
-            //     accessor: "colIdentifier",
-            // sortType: sortFunction,
-            // },
-            // {
-            //     Header: "Type",
-            //     accessor: "colPublicationType",
-            // sortType: sortFunction,
-            // },
-        ];
+                // {
+                //     Header: props.__("publication.progression.title"),
+                //     accessor: "colProgression",
+                // sortType: sortFunction,
+                // },
+                // {
+                //     Header: "Identifier",
+                //     accessor: "colIdentifier",
+                // sortType: sortFunction,
+                // },
+                // {
+                //     Header: "Type",
+                //     accessor: "colPublicationType",
+                // sortType: sortFunction,
+                // },
+            ];
         return arr;
     }, [props.displayType]);
 
@@ -1848,29 +1807,30 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
     const filterTypes = React.useMemo(() => ({
 
-            globalFilter: (rows: Row<IColumns>[], columnIds: string[], filterValue: string) => {
-                const set = new Set<Row<IColumns>>();
-                columnIds.forEach((columnId) => {
-                    const subRes = filterTypes.text(rows, columnId, filterValue);
-                    subRes.forEach((r) => {
-                        set.add(r);
-                    });
+        globalFilter: (rows: Row<IColumns>[], columnIds: string[], filterValue: string) => {
+            const set = new Set<Row<IColumns>>();
+            columnIds.forEach((columnId) => {
+                const subRes = filterTypes.text(rows, columnId, filterValue);
+                subRes.forEach((r) => {
+                    set.add(r);
                 });
-                const res = Array.from(set);
-                // console.log(`filterTypes.globalFilter ======= ${rows.length} ${JSON.stringify(columnIds)} ${typeof filterValue} ${res.length}`);
-                return res;
-            },
-            text: (rows: Row<IColumns>[], columnId: string, filterValue: string) => {
-                // const res = rows.filter((row) => {
-                //     let rowValue = row.values[columnId];
-                //     if (typeof rowValue !== "string") {
-                //         rowValue = (rowValue as IColumnValue).label;
-                //     }
-                //     return rowValue
-                //         ? String(rowValue).toLowerCase().startsWith(String(filterValue).toLowerCase())
-                //         : true; // keep (filter in, not out)
-                // });
-                const res = matchSorter<Row<IColumns>>(rows, filterValue, { keys: [(row) => {
+            });
+            const res = Array.from(set);
+            // console.log(`filterTypes.globalFilter ======= ${rows.length} ${JSON.stringify(columnIds)} ${typeof filterValue} ${res.length}`);
+            return res;
+        },
+        text: (rows: Row<IColumns>[], columnId: string, filterValue: string) => {
+            // const res = rows.filter((row) => {
+            //     let rowValue = row.values[columnId];
+            //     if (typeof rowValue !== "string") {
+            //         rowValue = (rowValue as IColumnValue).label;
+            //     }
+            //     return rowValue
+            //         ? String(rowValue).toLowerCase().startsWith(String(filterValue).toLowerCase())
+            //         : true; // keep (filter in, not out)
+            // });
+            const res = matchSorter<Row<IColumns>>(rows, filterValue, {
+                keys: [(row) => {
                     let rowValue = row.values[columnId];
                     if (typeof rowValue !== "string") {
                         rowValue = (rowValue as IColumnValue_BaseString).label;
@@ -1878,12 +1838,13 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     return rowValue;
                 }],
                 // https://github.com/kentcdodds/match-sorter#threshold-number
-                threshold: matchSorter.rankings.CONTAINS});
-                // console.log(`filterTypes.text ======= ${rows.length} ${columnId} ${typeof filterValue} ${res.length}`);
-                return res;
-            },
-        }),
-    []);
+                threshold: matchSorter.rankings.CONTAINS,
+            });
+            // console.log(`filterTypes.text ======= ${rows.length} ${columnId} ${typeof filterValue} ${res.length}`);
+            return res;
+        },
+    }),
+        []);
 
     // for (const col of tableInstance.allColumns) {
     //     tableInstance.setFilter(col.id, "");
@@ -1892,7 +1853,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     // infinite render loop
     // tableInstance.setPageSize(pageSize);
     const initialState: UsePaginationState<IColumns> & TableState<IColumns> = {
-        pageSize: 20, // props.displayType === DisplayType.List ? 20 : 10;
+        pageSize: 50, // props.displayType === DisplayType.List ? 20 : 10;
         pageIndex: 0,
         hiddenColumns: props.displayType === DisplayType.Grid ? ["colLanguages", "colPublishers", "colPublishedDate", "colLCP", "colDuration", "colDescription", "col_a11y_accessibilitySummary"] : [],
     };
@@ -1959,360 +1920,367 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     //         </option>
     //     ))}
     //     </select>
+
+    const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) =>
+        <Select refButEl={forwardedRef} {...props}></Select>);
+    SelectRef.displayName = "ComboBox";
+
+    const tagsOptions = props.tags.map((v, i) => ({ id: i, value: i, name: v }));
+
+
     return (
         <>
-        <div style={{
-            // border: "1px solid red",
-            position: "fixed",
-            // width: "calc(100% - 50px)",
-            zIndex: "101",
-            // position: "absolute",
-            // top: "-5px",
-            // bottom: "0",
-            // left: "0",
-            right: "0",
-            padding: "0",
-            // paddingBottom: "0.1em",
-            margin: "0",
-            marginTop: "-138px",
-            marginRight: "30px",
-            // display: "flex",
-            // flexDirection: "row",
-            // alignItems: "center",
-            // justifyContent: "flex-end",
-            // pointerEvents: "none",
-        }}>
-        <div style={{
-            // pointerEvents: "all",
-            display: "inline-block",
-            fontSize: "90%",
-        }}>
-            {
-            // ${props.__("catalog.opds.info.numberOfItems")}
-            // `(${tableRows.length})`
-            }
-            <CellGlobalFilter
-                    accessibilitySupportEnabled={props.accessibilitySupportEnabled}
-                    preGlobalFilteredRows={tableInstance.preGlobalFilteredRows}
-                    globalFilteredRows={tableInstance.globalFilteredRows}
-                    globalFilter={tableInstance.state.globalFilter}
-                    setGlobalFilter={tableInstance.setGlobalFilter}
-                    __={props.__}
-                    translator={props.translator}
-                    displayType={props.displayType}
-                    focusInputRef={props.focusInputRef}
+            <div>
+                <h2 className={stylesPublication.allBooks_header}>{__("catalog.allBooks")}</h2>
+                <div className={stylesPublication.allBooks_header_navigation}>
+                    <div className={stylesPublication.allBooks_header_navigation_inputs}>
+                        <CellGlobalFilter
+                            accessibilitySupportEnabled={props.accessibilitySupportEnabled}
+                            preGlobalFilteredRows={tableInstance.preGlobalFilteredRows}
+                            globalFilteredRows={tableInstance.globalFilteredRows}
+                            globalFilter={tableInstance.state.globalFilter}
+                            setGlobalFilter={tableInstance.setGlobalFilter}
+                            __={props.__}
+                            translator={props.translator}
+                            displayType={props.displayType}
+                            focusInputRef={props.focusInputRef}
 
-                    setShowColumnFilters={(show: boolean) => {
-                        const currentShow = showColumnFilters;
-                        setShowColumnFilters(show);
-                        setTimeout(() => {
-                            if (currentShow && !show) {
-                                for (const col of tableInstance.allColumns) {
-                                    tableInstance.setFilter(col.id, "");
-                                }
-                            }
-                        }, 200);
-                    }}
-                />
-        </div></div>
-
-        <div style={{
-            // border: "1px solid red",
-            position: "fixed",
-            // width: "calc(100% - 50px)",
-            // zIndex: "9999",
-            // position: "absolute",
-            // top: "-5px",
-            // bottom: "0",
-            // left: "0",
-            right: "0",
-            padding: "0",
-            // paddingBottom: "0.1em",
-            margin: "0",
-            marginTop: "-74px",
-            marginRight: "30px",
-            // display: "flex",
-            // flexDirection: "row",
-            // alignItems: "center",
-            // justifyContent: "flex-end",
-            // pointerEvents: "none",
-        }}>
-            <div style={{
-                // pointerEvents: "all",
-                display: "flex",
-                alignItems: "center",
-            }}>
-            <button
-            style={{
-                margin:"0",
-                padding: "0em",
-                width: "30px",
-                fill: tableInstance.canPreviousPage ? "#333333" : "gray",
-            }}
-            aria-label={`${props.__("opds.firstPage")}`}
-            onClick={() => tableInstance.gotoPage(0)}
-            disabled={!tableInstance.canPreviousPage}>
-                <SVG ariaHidden={true} svg={ArrowFirstIcon} />
-            </button>
-            <button
-            style={{
-                margin:"0",
-                padding: "0",
-                transform: "rotate(180deg)",
-                width: "30px",
-                fill: tableInstance.canPreviousPage ? "#333333" : "gray",
-            }}
-            aria-label={`${props.__("opds.previous")}`}
-            onClick={() => tableInstance.previousPage()}
-            disabled={!tableInstance.canPreviousPage}>
-                <SVG ariaHidden={true} svg={ArrowRightIcon} />
-            </button>
-            <select
-                aria-label={`${props.__("reader.navigation.currentPageTotal", {current: tableInstance.state.pageIndex + 1, total: tableInstance.pageOptions.length})}`}
-                style={{cursor: "pointer", minWidth: "5em", textAlign: "center", padding: "0.2em", margin: "0", marginLeft: "0em", marginRight: "0em", border: "1px solid gray", borderRadius: "4px"}}
-                value={tableInstance.state.pageIndex}
-                onChange={(e) => {
-                    const pageIndex = e.target.value ? Number(e.target.value) : 0;
-                    tableInstance.gotoPage(pageIndex);
-                }}
-            >
-                {
-                ".".repeat(tableInstance.pageOptions.length).split("").map((_s, i) => (
-                    <option
-                        key={`page${i}`}
-                        value={i}>
-                        {i + 1} / {tableInstance.pageOptions.length}
-                    </option>
-                ))
-                }
-            </select>
-            <button
-            style={{
-                margin:"0",
-                padding: "0",
-                width: "30px",
-                fill: tableInstance.canNextPage ? "#333333" : "gray",
-            }}
-            aria-label={`${props.__("opds.next")}`}
-            onClick={() => tableInstance.nextPage()}
-            disabled={!tableInstance.canNextPage}>
-                <SVG ariaHidden={true} svg={ArrowRightIcon} />
-            </button>
-            <button
-            style={{
-                margin:"0",
-                padding: "0em",
-                width: "30px",
-                fill: tableInstance.canNextPage ? "#333333" : "gray",
-            }}
-            aria-label={`${props.__("opds.lastPage")}`}
-            onClick={() => tableInstance.gotoPage(tableInstance.pageCount - 1)}
-            disabled={!tableInstance.canNextPage}>
-                <SVG ariaHidden={true} svg={ArrowLastIcon} />
-            </button>
-            </div>
-        </div>
-
-        <div
-            style={{
-                overflow: "auto",
-                position: "absolute",
-                top: "0",
-                bottom: "0",
-                left: "0",
-                right: "0",
-                padding: "0",
-                marginLeft: "30px",
-                marginRight: "30px",
-                marginTop: "0em",
-                marginBottom: "0.4em",
-            }}>
-        <span
-            ref={scrollToViewRef}
-            style={{visibility: "hidden"}}>{" "}</span>
-        <table {...tableInstance.getTableProps()}
-            style={{
-                fontSize: "90%",
-                border: "solid 1px gray",
-                borderRadius: "8px",
-                padding: "4px",
-                margin: "0",
-                // marginRight: "1em",
-                borderSpacing: "0",
-                // minWidth: "calc(100% - 30px)",
-                width: "100%",
-            }}>
-            <thead>{tableInstance.headerGroups.map((headerGroup, index) =>
-                (<tr key={`headtr_${index}`} {...headerGroup.getHeaderGroupProps()}>{
-                headerGroup.headers.map((col, i) => {
-
-                    const column = col as unknown as (
-                        ColumnWithLooseAccessor<IColumns> & // { Header: string } &
-                        UseTableColumnProps<IColumns> &
-                        UseSortByColumnProps<IColumns> &
-                        UseFiltersColumnProps<IColumns>
-                    );
-
-                    const columnIsSortable = column.id !== "colCover";
-
-                    const W = column.id === "colCover" ?
-                        (props.displayType === DisplayType.Grid ? "100px" : "40px") :
-                        column.id === "colLCP" ?
-                        "60px" :
-                        column.id === "colPublishedDate" ?
-                        "120px" :
-                        column.id === "colProgression" ?
-                        "100px" :
-                        column.id === "colDuration" ?
-                        "100px" :
-                        column.id === "col_a11y_accessibilitySummary" ?
-                        "180px" :
-                        "160px";
-
-                    return (<th
-                        key={`headtrth_${i}`}
-                        {...column.getHeaderProps(columnIsSortable ? ({...column.getSortByToggleProps(),
-                            // @ts-expect-error TS2322
-                            title: undefined,
-                            onClick: undefined,
-                        }) : undefined)}
-                        style={{
-                            width: W,
-                            minWidth: W,
-                            maxWidth: W,
-                            borderBottom: "1px solid #bcbcbc",
-                            borderLeft: "1px solid #bcbcbc",
-                            padding: "0.7em",
-                            margin: "0",
-                            background: "#eeeeee", // columnIsSortable ? "#eeeeee" : "white",
-                            color: "black",
-                            whiteSpace: "nowrap",
-                            // ...{ cursor: columnIsSortable ? "pointer" : undefined },
-                        }}
-                        >
-                        {
-                        columnIsSortable ?
-                        <><button
-                        style={{height: "auto", padding: "0.2em", margin: "0", fontWeight: "bold", fontSize: "100%"}}
-                        onClick={() => {
-                            column.toggleSortBy();
-                        }}
-                        aria-label={
-                            `${column.Header}${
-                            column.isSorted ? (column.isSortedDesc ?
-                            ` (${props.__("catalog.column.descending")})`
-                            :
-                            ` (${props.__("catalog.column.ascending")})`)
-                            :
-                            ` (${props.__("catalog.column.unsorted")})`
-                            }`
-                            }
-                            >
-                            {
-                            column.render("Header")
-                            }
-                            <span>
-                            {
-                            (column.isSorted ? (column.isSortedDesc ? " ↓" : " ↑") : "")
-                            }
-                            </span>
-                        </button>
-                        {
-                        column.canFilter ?
-                        (<div style={{display: "block"}}>{ column.render("Filter", {
-                            ...renderProps_Filter,
-                            // columnFilter: column.filterValue,
-                        }) }</div>)
-                        : <></>
-                        }
-                        </>
-                        :
-                        // <span
-                        // aria-label={`${column.Header}`}
-                        //     >
-                        //     {
-                        //     // props.displayType === DisplayType.List ? "" : column.render("Header")
-                        //     // column.render("Header")
-                        //     }
-                        // </span>
-                        <><input
-                            aria-label={props.__("header.searchPlaceholder")}
-                            id="setShowColumnFiltersCheckbox"
-                            type="checkbox"
-                            checked={showColumnFilters ? true : false}
-                            onChange={() => {
-                                const show = showColumnFilters;
-                                setShowColumnFilters(!showColumnFilters);
+                            setShowColumnFilters={(show: boolean) => {
+                                const currentShow = showColumnFilters;
+                                setShowColumnFilters(show);
                                 setTimeout(() => {
-                                    if (!show) {
-                                        tableInstance.setGlobalFilter("");
-                                    }
-                                    if (show) {
+                                    if (currentShow && !show) {
                                         for (const col of tableInstance.allColumns) {
                                             tableInstance.setFilter(col.id, "");
                                         }
                                     }
                                 }, 200);
                             }}
-                            style={{position: "absolute", left: "-999px"}}
-                        /><label
-                            aria-hidden="true"
-                            htmlFor="setShowColumnFiltersCheckbox"
-                            style={{cursor: "pointer", padding: "0.2em", paddingBottom: "0", fill: "black", display: "inline-block", width: "16px", border: showColumnFilters ? "2px solid black" : "1px solid gray", borderRadius: "4px"}}>
-                            <SVG ariaHidden svg={magnifyingGlass} />
-                        </label></>
+                        />
+                        {
+                            (props.tags.length > 0) && (props.displayType === DisplayType.Grid)
+                                ?
+                                // <div className={stylesPublication.filter_container}>
+                                // <SelectRef
+                                //     id="tagFilter"
+                                //     aria-label={__("reader.navigation.page")}
+                                //     items={tagsOptions}
+                                //     selectedKey={selectedTag}
+                                //     onSelectionChange={(i) => {
+                                //         setSelectedTag(i as number);
+                                //         // tableInstance.setGlobalFilter(tagsOptions.find((tag) => tag.id === i).name);
+                                //         tableInstance.setFilter("colTags",tagsOptions.find((tag) => tag.id === i).name);
+                                //     }}
+                                //     label={__("reader.navigation.page")}
+                                //     className={stylesPublication.form_group}
+                                // >
+                                //     {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                                // </SelectRef>
+                                // </div>
+
+                                <div className={stylesPublication.filter_container}>
+                                    <ComboBox
+                                        label={__("header.fitlerTagTitle")}
+                                        defaultItems={tagsOptions}
+                                        defaultSelectedKey={tagsOptions.find((tag) => tag.name?.toLowerCase().includes(selectedTag?.toLowerCase()))?.id || undefined}
+                                        onSelectionChange={(i) => {
+                                            setSelectedTag(tagsOptions.find((tag) => tag.id === i)?.name);
+                                            tableInstance.setFilter("colTags", tagsOptions.find((tag) => tag.id === i)?.name);
+                                            // console.log(tableInstance.columns.find((element) => element.Header === "Tags"))
+                                        }}
+                                        svg={TagIcon}
+                                        allowsCustomValue
+                                    >
+                                        {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                                    </ComboBox>
+                                </div>
+
+                                // <Popover.Root>
+                                //     <Popover.Trigger asChild>
+                                //         <button className={stylesTags.allPub_tagsTrigger}>
+                                //             <SVG ariaHidden={true} svg={FilterIcon} />
+                                //         </button>
+                                //     </Popover.Trigger>
+                                //     <Popover.Portal>
+                                //         <Popover.Content sideOffset={5} className={stylesTags.Popover_filter_container}>
+                                //             <button
+                                //                 className={stylesTags.resetFilter}
+                                //                 onClick={() => tableInstance.setGlobalFilter("")}
+                                //                 title="Reset Filter"
+                                //             >
+                                //                 <SVG ariaHidden svg={DeleteFilter} />
+                                //             </button>
+                                //             <div>
+                                //                 {props.tags.map((tag, i: number) => {
+                                //                     return (
+                                //                         <span
+                                //                             key={i + 1000}
+                                //                             onClick={() => tableInstance.setGlobalFilter(tag)}
+                                //                             className={stylesTags.tag_item}
+                                //                         >
+                                //                             {tag}
+                                //                         </span>
+                                //                     );
+                                //                 })}
+                                //             </div>
+                                //             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                                //         </Popover.Content>
+                                //     </Popover.Portal>
+                                // </Popover.Root>
+                                : <></>
                         }
-                        </th>);
-                    },
-                )}</tr>),
-            )}
-            {
-            // <tr>
-            // <th
-            //     colSpan={tableInstance.visibleColumns.length}
-            //     >
-            //     <CellGlobalFilter
-            //         preGlobalFilteredRows={tableInstance.preGlobalFilteredRows}
-            //         globalFilteredRows={tableInstance.globalFilteredRows}
-            //         globalFilter={tableInstance.state.globalFilter}
-            //         setGlobalFilter={tableInstance.setGlobalFilter}
-            //         __={props.__}
-            //         translator={props.translator}
-            //         displayType={props.displayType}
-            //     />
-            // </th>
-            // </tr>
-            }
+                    </div>
+                    <div style={{ position: "relative" }}>
+                        <label htmlFor="pageSelect" className={stylesPublication.allBooks_header_pagination_title}>{__("catalog.numberOfPages")}</label>
+                        <div className={stylesPublication.allBooks_header_pagination_container}>
+                            <button
+                                className={stylesPublication.allBooks_header_pagination_arrow}
+                                aria-label={`${props.__("opds.firstPage")}`}
+                                onClick={() => tableInstance.gotoPage(0)}
+                                disabled={!tableInstance.canPreviousPage}>
+                                <SVG ariaHidden={true} svg={ArrowFirstIcon} />
+                            </button>
+                            <button
+                                className={stylesPublication.allBooks_header_pagination_arrow}
+                                style={{
+                                    transform: "rotate(180deg)",
+                                }}
+                                aria-label={`${props.__("opds.previous")}`}
+                                onClick={() => tableInstance.previousPage()}
+                                disabled={!tableInstance.canPreviousPage}>
+                                <SVG ariaHidden={true} svg={ChevronRight} />
+                            </button>
+                            <select
+                                id="pageSelect"
+                                aria-label={`${props.__("reader.navigation.currentPageTotal", { current: tableInstance.state.pageIndex + 1, total: tableInstance.pageOptions.length })}`}
+                                className={stylesPublication.allBooks_header_pagination_select}
+                                value={tableInstance.state.pageIndex}
+                                onChange={(e) => {
+                                    const pageIndex = e.target.value ? Number(e.target.value) : 0;
+                                    tableInstance.gotoPage(pageIndex);
+                                }}
+                            >
+                                {
+                                    ".".repeat(tableInstance.pageOptions.length).split("").map((_s, i) => (
+                                        <option
+                                            key={`page${i}`}
+                                            value={i}>
+                                            {i + 1} / {tableInstance.pageOptions.length}
+                                        </option>
+                                    ))
+                                }
+                            </select>
+                            <button
+                                className={stylesPublication.allBooks_header_pagination_arrow}
+                                aria-label={`${props.__("opds.next")}`}
+                                onClick={() => tableInstance.nextPage()}
+                                disabled={!tableInstance.canNextPage}>
+                                <SVG ariaHidden={true} svg={ChevronRight} />
+                            </button>
+                            <button
+                                className={stylesPublication.allBooks_header_pagination_arrow}
+                                aria-label={`${props.__("opds.lastPage")}`}
+                                onClick={() => tableInstance.gotoPage(tableInstance.pageCount - 1)}
+                                disabled={!tableInstance.canNextPage}>
+                                <SVG ariaHidden={true} svg={ArrowLastIcon} />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className={stylesPublication.allBook_table_wrapper}>
+                <span
+                    ref={scrollToViewRef}
+                    style={{ visibility: "hidden" }}>{" "}</span>
+                <table {...tableInstance.getTableProps()}
+                    className={stylesPublication.allBook_table}
+                    style={{
+                        display: "table",
+                    }}>
+                    {props.displayType === DisplayType.Grid ? ""
+                        :
+                        <thead>{tableInstance.headerGroups.map((headerGroup, index) =>
+                        (<tr key={`headtr_${index}`} {...headerGroup.getHeaderGroupProps()}>{
+                            headerGroup.headers.map((col, i) => {
 
-            </thead>
-            <tbody {...tableInstance.getTableBodyProps()}>{tableInstance.page.map((row, index) => {
-                tableInstance.prepareRow(row);
+                                const column = col as unknown as (
+                                    ColumnWithLooseAccessor<IColumns> & // { Header: string } &
+                                    UseTableColumnProps<IColumns> &
+                                    UseSortByColumnProps<IColumns> &
+                                    UseFiltersColumnProps<IColumns>
+                                );
 
-                return (<tr key={`bodytr_${index}`} {...row.getRowProps()}
-                style={{
-                    // outlineColor: "#cccccc",
-                    // outlineOffset: "0px",
-                    // outlineStyle: "solid",
-                    // outlineWidth: "1px",
-                    backgroundColor: index % 2 ? "#efefef" : undefined,
-                }}>{row.cells.map((cell, i) =>
-                    {
-                        return (<td key={`bodytrtd_${i}`} {...cell.getCellProps()}
+                                const columnIsSortable = column.id !== "colCover";
+
+                                const W = column.id === "colCover" ?
+                                    "60px" :
+                                    column.id === "colPublishedDate" ?
+                                        "100px" :
+                                        column.id === "colProgression" ?
+                                            "100px" :
+                                            column.id === "colDuration" ?
+                                                "100px" :
+                                                column.id === "col_a11y_accessibilitySummary" ?
+                                                    "160px" :
+                                                    column.id === "colAuthors" ?
+                                                        "160px" :
+                                                        column.id === "colRemainingDays" ?
+                                                        "150px" :
+                                                        column.id === "colActions" ?
+                                                        "60px" :
+                                                        "100px";
+
+                                return (<th
+                                    key={`headtrth_${i}`}
+                                    {...column.getHeaderProps(columnIsSortable ? ({
+                                        ...column.getSortByToggleProps(),
+                                        // @ts-expect-error TS2322
+                                        title: undefined,
+                                        onClick: undefined,
+                                    }) : undefined)}
+                                    style={{
+                                        width: W,
+                                        minWidth: W,
+                                        maxWidth: W,
+                                        borderBottom: "2px solid var(--color-blue)",
+                                        position: "relative",
+                                    }}
+                                    className={stylesPublication.allBook_table_head}
+                                >
+                                    {
+                                        !column.canSort ? 
+                                        <button style={{position: "absolute", top: "8px", left: "5px"}} onClick={(e) => e.preventDefault()}>
+                                        {
+                                            column.render("Header")
+                                        }</button>
+                                        :
+                                        columnIsSortable ?
+                                            <><button
+                                                onClick={() => {
+                                                    column.toggleSortBy();
+                                                }}
+                                                aria-label={
+                                                    `${column.Header}${column.isSorted ? (column.isSortedDesc ?
+                                                        ` (${props.__("catalog.column.descending")})`
+                                                        :
+                                                        ` (${props.__("catalog.column.ascending")})`)
+                                                        :
+                                                        ` (${props.__("catalog.column.unsorted")})`
+                                                    }`
+                                                }
+                                            >
+                                                {
+                                                    column.render("Header")
+                                                }
+                                                <span>
+                                                    {
+                                                        (column.isSorted ? (column.isSortedDesc ? " ↓" : " ↑") : "")
+                                                    }
+                                                </span>
+                                            </button>
+                                                {
+                                                    column.canFilter ?
+                                                        (<div style={{ display: "block" }}>{column.render("Filter", {
+                                                            ...renderProps_Filter,
+                                                            // columnFilter: column.filterValue,
+                                                        })}</div>)
+                                                        : <></>
+                                                }
+                                            </>
+                                            :
+                                            // <span
+                                            // aria-label={`${column.Header}`}
+                                            //     >
+                                            //     {
+                                            //     // props.displayType === DisplayType.List ? "" : column.render("Header")
+                                            //     // column.render("Header")
+                                            //     }
+                                            // </span>
+                                            <><input
+                                                aria-label={props.__("header.searchPlaceholder")}
+                                                id="setShowColumnFiltersCheckbox"
+                                                type="checkbox"
+                                                checked={showColumnFilters ? true : false}
+                                                onChange={() => {
+
+                                                    const show = showColumnFilters;
+                                                    setShowColumnFilters(!showColumnFilters);
+
+                                                    setTimeout(() => {
+                                                        if (!show) {
+                                                            tableInstance.setGlobalFilter("");
+                                                        }
+                                                        if (show) {
+                                                            for (const col of tableInstance.allColumns) {
+                                                                tableInstance.setFilter(col.id, "");
+                                                            }
+                                                        }
+                                                    }, 200);
+                                                }}
+                                                style={{ position: "absolute", left: "-999px" }}
+                                            /><label
+                                                aria-hidden="true"
+                                                htmlFor="setShowColumnFiltersCheckbox"
+                                                style={{ cursor: "pointer", padding: "0.2em", color: "var(--color-blue)", paddingBottom: "0", display: "inline-block", width: "20px" }}>
+                                                    <SVG ariaHidden svg={SearchIcon} />
+                                                </label></>
+                                    }
+                                </th>);
+                            },
+                            )}</tr>),
+                        )}
+                            {
+                                // <tr>
+                                // <th
+                                //     colSpan={tableInstance.visibleColumns.length}
+                                //     >
+                                //     <CellGlobalFilter
+                                //         preGlobalFilteredRows={tableInstance.preGlobalFilteredRows}
+                                //         globalFilteredRows={tableInstance.globalFilteredRows}
+                                //         globalFilter={tableInstance.state.globalFilter}
+                                //         setGlobalFilter={tableInstance.setGlobalFilter}
+                                //         __={props.__}
+                                //         translator={props.translator}
+                                //         displayType={props.displayType}
+                                //     />
+                                // </th>
+                                // </tr>
+                            }
+
+                        </thead>}
+                    <tbody {...tableInstance.getTableBodyProps()}
+                        className={stylesPublication.allBook_table_body}
                         style={{
-                            padding: "0",
-                            margin: "0",
-                            // border: "solid 1px #eeeeee",
+                            display: props.displayType === DisplayType.Grid ? "grid" : "",
                         }}
-                        >{
-                            cell.render("Cell", renderProps_Cell)
-                        }</td>);
-                    },
-                    )}
-                    </tr>
-                );
-            })}</tbody>
-        </table>
-        </div>
+                    >
+                        {tableInstance.page.map((row, index) => {
+                            const id = parseInt(row.id, 10);
+
+                            tableInstance.prepareRow(row);
+                            return (
+                                props.displayType === DisplayType.Grid ?
+                                    <tr key={index}>
+                                        <td><PublicationCard publicationViewMaybeOpds={props.publicationViews[id]} isReading={props.publicationViews[id].lastReadingLocation ? true : false} /></td>
+                                    </tr>
+                                    :
+
+                                    <tr key={`bodytr_${index}`} {...row.getRowProps()}
+                                        style={{
+                                            backgroundColor: index % 2 ? "var(--color-light-grey)" : undefined,
+                                        }}>{row.cells.map((cell, i) => {
+                                            return (<td key={`bodytrtd_${i}`} {...cell.getCellProps()}
+                                            >{
+                                                    cell.render("Cell", renderProps_Cell)
+                                                }</td>);
+                                        },
+                                        )}
+                                    </tr>
+                            );
+                        })}</tbody>
+                </table>
+                {/* <AboutThoriumButton /> */}
+            </div>
         </>
     );
 };

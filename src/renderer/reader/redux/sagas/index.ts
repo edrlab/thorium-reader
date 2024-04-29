@@ -10,7 +10,7 @@ import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoReaderAndLib from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
 import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, call, put, take } from "redux-saga/effects";
+import { all, call, take } from "redux-saga/effects";
 
 import * as cssUpdate from "./cssUpdate";
 import * as highlightHandler from "./highlight/handler";
@@ -18,6 +18,9 @@ import * as i18n from "./i18n";
 import * as ipc from "./ipc";
 import * as search from "./search";
 import * as winInit from "./win";
+import * as annotation from "./annotation";
+import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { setTheme } from "readium-desktop/common/redux/actions/theme";
 
 // Logger
 const filename_ = "readium-desktop:renderer:reader:saga:index";
@@ -27,8 +30,6 @@ debug("_");
 export function* rootSaga() {
 
     yield take(winActions.initRequest.ID);
-
-    yield put(winActions.initSuccess.build());
 
     yield call(winInit.render);
 
@@ -44,5 +45,17 @@ export function* rootSaga() {
         highlightHandler.saga(),
 
         search.saga(),
+
+        annotation.saga(),
+
+        takeSpawnEvery(
+            setTheme.ID,
+            (action: setTheme.TAction) => {
+                const {payload: {name}} = action;
+                document.body.setAttribute("data-theme", name);
+            },
+        ),
     ]);
+    // initSuccess triggered in reader.tsx didmount and publication loaded
+    // yield put(winActions.initSuccess.build());
 }

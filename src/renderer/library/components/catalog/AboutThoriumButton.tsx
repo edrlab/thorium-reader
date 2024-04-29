@@ -13,8 +13,7 @@ import { ABOUT_BOOK_TITLE_PREFIX } from "readium-desktop/common/constant";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as stylesFooter from "readium-desktop/renderer/assets/styles/components/aboutFooter.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -28,6 +27,8 @@ import { Link } from "@r2-shared-js/models/publication-link";
 
 import { apiAction } from "../../apiAction";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import * as EdrlabLogo from "readium-desktop/renderer/assets/icons/logo_edrlab.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -53,17 +54,17 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
     public render() {
         const { __ } = this.props;
         return (
-            <section>
-                <div className={stylesGlobal.heading}>
-                    <h2>{__("catalog.about.title", { appName: capitalizedAppName })}</h2>
-                    <button
-                        onClick={this.about}
-                        className={stylesButtons.button_primary_small}
-                    >
-                        {__("catalog.about.button")}
-                    </button>
+            <section className={stylesFooter.footer_wrapper}>
+ <div>
+                   <p>{`v${_APP_VERSION}`}</p>
+                   <a onClick={this.about} onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            this.about();
+                        }
+                    }}
+                    tabIndex={0}>{__("catalog.about.title", { appName: capitalizedAppName })}</a>
                 </div>
-                <p>{`v${_APP_VERSION}`}</p>
+                <SVG ariaHidden svg={EdrlabLogo} />
             </section>
         );
     }

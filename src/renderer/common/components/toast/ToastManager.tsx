@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
-import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.css";
+import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.scss";
 import { v4 as uuidv4 } from "uuid";
 
 import { TranslatorProps, withTranslator } from "../hoc/translator";

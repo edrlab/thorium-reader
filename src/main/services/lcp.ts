@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import * as debug_ from "debug";
 import { shell } from "electron";
 import * as fs from "fs";
@@ -1001,8 +1002,17 @@ export class LcpManager {
                 debug("launchStatusDocumentProcessing DONE.");
                 debug(r2LCPStr);
 
-                if (r2LCPStr) {
+                // r2Publication.LCP.LSD.Status !== StatusEnum.Active && r2Publication.LCP.LSD.Status !== StatusEnum.Ready
+                if (r2Publication.LCP.LSD &&
+                    (r2Publication.LCP.LSD.Status === StatusEnum.Revoked
+                    || r2Publication.LCP.LSD.Status === StatusEnum.Returned
+                    || r2Publication.LCP.LSD.Status === StatusEnum.Cancelled
+                    || r2Publication.LCP.LSD.Status === StatusEnum.Expired)) {
+                    // TODO anything here just in case the LCP license end date is still "open" in the future? We assume it is now closed (subsequent attempts to load book will fail).
+                    // The license is supposed to be the source of truth, so it should have been correspondingly updated by server...maybe too optimistic assumption?
+                }
 
+                if (r2LCPStr) {
                     let atLeastOneReaderIsOpen = false;
                     const readers = this.store.getState().win.session.reader;
                     if (readers) {
@@ -1025,7 +1035,10 @@ export class LcpManager {
                     }
 
                     try {
+                        // --------- This LSD was set in launchStatusDocumentProcessing() so it is up to date in the context of r2Publication.LCP,
+                        // but we are receiving a new LCP license so need to reassign later...
                         const prevLSD = r2Publication.LCP.LSD;
+
                         // const epubPath_ = await lsdLcpUpdateInject(
                         //     licenseUpdateJson,
                         //     r2Publication,
@@ -1052,7 +1065,7 @@ export class LcpManager {
                         r2LCP.JsonSource = r2LCPStr;
                         r2Publication.LCP = r2LCP;
 
-                        // will be updated below via another round of processStatusDocument_()
+                        // --------- will be updated below via another round of processStatusDocument_() UPDATE: no, see below ...
                         r2Publication.LCP.LSD = prevLSD;
 
                         const epubPath = this.publicationStorage.getPublicationEpubPath(
@@ -1060,32 +1073,39 @@ export class LcpManager {
                         );
                         await this.injectLcplIntoZip_(epubPath, r2LCPStr);
 
-                        // Protect against infinite loop due to incorrect LCP / LSD server dates
+                        // --------- see the prevLSD assignment above, and the processStatusDocument_() call below
+                        // ... we avoid the second LSD network request which is deemed unnecessary in the real world
                         if (!(r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
-                            (r2Publication as any).__LCP_LSD_UPDATE_COUNT = 1;
-                        } else {
-                            (r2Publication as any).__LCP_LSD_UPDATE_COUNT++;
+                            (r2Publication as any).__LCP_LSD_UPDATE_COUNT = 1; // TODO: this is used elsewhere to trigger the recalculation of the pub hash, should really be a proper typed flag, not "any"
                         }
-                        if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT > 2) {
-                            debug("__LCP_LSD_UPDATE_COUNT!?");
-                            resolve();
-                        } else {
-                            try {
-                                // loop to re-init LSD in updated LCP
-                                await this.processStatusDocument_(
-                                    publicationDocumentIdentifier,
-                                    r2Publication);
+                        resolve();
+                        // --------- below is the commented code that used to create the second LSD network request:
+                        // // Protect against infinite loop due to incorrect LCP / LSD server dates
+                        // if (!(r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
+                        //     (r2Publication as any).__LCP_LSD_UPDATE_COUNT = 1;
+                        // } else {
+                        //     (r2Publication as any).__LCP_LSD_UPDATE_COUNT++;
+                        // }
+                        // if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT > 2) {
+                        //     debug("__LCP_LSD_UPDATE_COUNT!?");
+                        //     resolve();
+                        // } else {
+                        //     try {
+                        //         // loop to re-init LSD in updated LCP
+                        //         await this.processStatusDocument_(
+                        //             publicationDocumentIdentifier,
+                        //             r2Publication);
 
-                                // TODO: publicationFileLock by checkPublicationLicenseUpdate(), so does not work
-                                if (atLeastOneReaderIsOpen) {
-                                    this.store.dispatch(readerActions.openRequest.build(publicationDocumentIdentifier));
-                                }
-                                resolve();
-                            } catch (err) {
-                                debug(err);
-                                reject(err);
-                            }
-                        }
+                        //         // TODO: publicationFileLock by checkPublicationLicenseUpdate(), so does not work
+                        //         if (atLeastOneReaderIsOpen) {
+                        //             this.store.dispatch(readerActions.openRequest.build(publicationDocumentIdentifier));
+                        //         }
+                        //         resolve();
+                        //     } catch (err) {
+                        //         debug(err);
+                        //         reject(err);
+                        //     }
+                        // }
                     } catch (err) {
                         debug(err);
                         reject(err);

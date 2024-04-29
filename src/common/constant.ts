@@ -6,3 +6,6 @@
 // ==LICENSE-END==
 
 export const ABOUT_BOOK_TITLE_PREFIX = "EDRLAB.ThoriumReader-";
+
+export const WINDOW_MIN_WIDTH = 700;
+export const WINDOW_MIN_HEIGHT = 600;

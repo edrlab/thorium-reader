@@ -21,8 +21,8 @@ import {
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import { readerLocalActionSearch } from "../../redux/actions";
-import LoaderSearch from "./LoaderSearch";
 import SearchFormPicker from "./SearchFormPicker";
+import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
 
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 
@@ -103,78 +103,78 @@ class SearchPicker extends React.Component<IProps, IState> {
         this.loadSeq = this.props.isPdf ? 999 : (this.loadSeq || 0) + 1;
 
         return (
-            <div style={{
-                // margin: "10px",
-                display: "flex",
-                // flexDirection: "row",
-                // width: "300px",
-
-                // paddingBlock: "20px",
-            }}>
+            <div
+                className={stylesReaderHeader.searchHeader_container}>
                 <SearchFormPicker
                     isPdf={this.props.isPdf}
-                    reset={() => this.setState({foundNumber: 0, notFound: true})}
+                    reset={() => this.setState({ foundNumber: 0, notFound: true })}
+                    load={load}
                 ></SearchFormPicker>
-                <button
-                    disabled={notFound}
-                    onClick={previous}
-                    aria-label={__("reader.picker.search.previous")}
-                    title={__("opds.previous")}
-                    style={{
-                        width: "30px",
-                        padding: "4px",
-                        margin: 0,
-                        color: notFound ? "grey" : "black",
-                        fill: notFound ? "grey" : "black",
-                    }}
-                >
-                    <SVG ariaHidden={true} svg={ArrowLeftIcon} />
-                </button>
-                <button
-                    disabled={notFound}
-                    onClick={next}
-                    aria-label={__("reader.picker.search.next")}
-                    title={__("opds.next")}
-                    style={{
-                        width: "30px",
-                        padding: "4px",
-                        margin: 0,
-                        color: notFound ? "grey" : "black",
-                        fill: notFound ? "grey" : "black",
-                    }}
-                >
-                    <SVG ariaHidden={true} svg={ArrowRightIcon} />
-                </button>
+
                 {
-                    load &&
-                    <LoaderSearch></LoaderSearch>
-                }
-                {
-                (this.loadSeq > 2 && found) &&
-                (
-                <button
-                    disabled={notFound}
-                    onClick={() => {
-                        if (!this.props.isPdf) {
-                            this.props.showSearchResults();
-                        }
-                    }}
-                    aria-label={found}
-                    title={found}
-                    style={{
-                        width: "auto",
-                        padding: "4px",
-                        margin: 0,
-                        fontSize: "1em",
-                        color: notFound ? "grey" : "black",
-                        fill: notFound ? "grey" : "black",
-                    }}
-                >
-                    <span aria-live="polite">
-                        {found}
-                    </span>
-                </button>
-                )
+                    (this.loadSeq > 2 && found) &&
+                    (
+                        <div className={stylesReaderHeader.searchActions}>
+                            <span style={{ width: "1px", height: "30px", backgroundColor: "var(--color-medium-grey)", margin: "auto 20px" }}></span>
+                            <button
+                                disabled={notFound}
+                                onClick={() => {
+                                    if (!this.props.isPdf) {
+                                        this.props.showSearchResults();
+                                    }
+                                }}
+                                aria-label={found}
+                                title={found}
+                                style={{
+                                    width: "auto",
+                                    padding: "4px",
+                                    margin: "0",
+                                    fontSize: "1em",
+                                    // color: notFound ? "grey" : "black",
+                                    fill: notFound ? "grey" : "black",
+                                    background: "var(--color-light-blue)",
+                                    border: "1px solid var(--color-blue)",
+                                    borderRadius: "6px",
+                                    color: "var(--color-blue)",
+                                    textWrap: "nowrap",
+                                }}
+                            >
+                                <span aria-live="polite">
+                                    {found}
+                                </span>
+                            </button>
+                            <button
+                                disabled={notFound}
+                                onClick={previous}
+                                aria-label={__("reader.picker.search.previous")}
+                                title={__("opds.previous")}
+                                style={{
+                                    width: "30px",
+                                    padding: "4px",
+                                    margin: 0,
+                                    color: notFound ? "grey" : "var(--color-blue)",
+                                    fill: notFound ? "grey" : "var(--color-blue)",
+                                }}
+                            >
+                                <SVG ariaHidden={true} svg={ArrowLeftIcon} />
+                            </button>
+                            <button
+                                disabled={notFound}
+                                onClick={next}
+                                aria-label={__("reader.picker.search.next")}
+                                title={__("opds.next")}
+                                style={{
+                                    width: "30px",
+                                    padding: "4px",
+                                    margin: 0,
+                                    color: notFound ? "grey" : "var(--color-blue)",
+                                    fill: notFound ? "grey" : "var(--color-blue)",
+                                }}
+                            >
+                                <SVG ariaHidden={true} svg={ArrowRightIcon} />
+                            </button>
+                        </div>
+                    )
                 }
             </div>
         );

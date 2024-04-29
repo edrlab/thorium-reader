@@ -8,8 +8,8 @@
 import classNames from "classnames";
 import * as React from "react";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
-import * as stylesSlider from "readium-desktop/renderer/assets/styles/components/slider.css";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesSlider from "readium-desktop/renderer/assets/styles/components/slider.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
@@ -104,34 +104,54 @@ class Slider extends React.Component<IProps, IState> {
 
         return (
             <div className={(className ? className + " " : "") + stylesSlider.slider}>
-                {this.state.position < 0 ?
                     <button
                         aria-label={__("accessibility.leftSlideButton")}
                         className={classNames(stylesSlider.slider_button_prev, stylesButtons.button_transparency_icon)}
                         onClick={this.handleMove.bind(this, false)}
+                        disabled={this.state.position < 0 ? false : true}
                     >
-                        <SVG ariaHidden={true} svg={ArrowRightIcon}/>
-                    </button>
-                : <></>
-                }
-                <div ref={this.wrapperRef} className={stylesSlider.slider_wrapper}>
+                    <SVG ariaHidden={true} svg={ArrowRightIcon} />
+                </button>
+                <div ref={this.wrapperRef} className={stylesSlider.slider_wrapper}
+                    /* onScroll={(e) => {this.handleScroll(e)}} */>
                     <div ref={this.contentRef} className={stylesSlider.slider_items} style={varStyle}>
                         {list}
                     </div>
                 </div>
-                {this.state.position > max ?
                     <button
                         onClick={this.handleMove.bind(this, true)}
                         aria-label={__("accessibility.rightSlideButton")}
                         className={classNames(stylesSlider.slider_button_next, stylesButtons.button_transparency_icon)}
+                        disabled={this.state.position > max ? false : true}
                     >
                         <SVG ariaHidden={true} svg={ArrowRightIcon}/>
                     </button>
-                : <></>
-                }
             </div>
         );
     }
+
+    // private handleScroll(e: React.UIEvent<HTMLDivElement>): void {
+    //     if (!this.wrapperRef?.current || !this.contentRef?.current) {
+    //         return;
+    //     }
+    //     const max = - this.wrapperRef.current.scrollWidth + this.wrapperRef.current.offsetWidth;
+    //     let step = - e.currentTarget.scrollLeft;
+    
+    //     if (this.state.position === max) {
+    //         step = - step;
+    //     }
+    
+    //     let position =  Math.round((this.state.position + step) / 10) * 10;
+    
+    //     if (position > 0) {
+    //         position = 0;
+    //     } else if (position < max) {
+    //         position = max;
+    //     }
+    
+    //     this.setState({ position, refreshVisible: true });
+    //     console.log(position, step);
+    // }
 
     private handleMove(moveRight: number) {
         if (!this.wrapperRef?.current || !this.contentRef?.current) {
@@ -148,7 +168,6 @@ class Slider extends React.Component<IProps, IState> {
         } else if (position < max) {
             position = max;
         }
-
         this.setState({position, refreshVisible: true});
     }
 

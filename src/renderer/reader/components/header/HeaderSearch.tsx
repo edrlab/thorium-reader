@@ -6,11 +6,13 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import * as Popover from "@radix-ui/react-popover";
 import { connect } from "react-redux";
 import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
+import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -21,10 +23,16 @@ import {
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import { readerLocalActionPicker, readerLocalActionSearch } from "../../redux/actions";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
+import SearchPicker from "../picker/Search";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     shortcutEnable: boolean;
+    showSearchResults: () => void;
+    isPdf: boolean;
+    isAudiobook: boolean;
+    isDivina: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -36,7 +44,7 @@ interface IProps extends IBaseProps,
     ReturnType<typeof mapDispatchToProps> {
 }
 
-class HeaderSearch extends React.Component<IProps, undefined> {
+class HeaderSearch extends React.Component<IProps> {
 
     constructor(props: IProps) {
         super(props);
@@ -96,16 +104,53 @@ class HeaderSearch extends React.Component<IProps, undefined> {
     public render() {
         const { __ } = this.props;
         return (
-            <button
-                aria-pressed={this.props.isOnSearch}
-                aria-label={__("reader.navigation.magnifyingGlassButton")}
-                className={stylesReader.menu_button}
-                onClick={this.enableSearch}
-            // ref={this.settingsMenuButtonRef}
-                title={__("reader.navigation.magnifyingGlassButton")}
-            >
-                <SVG ariaHidden={true} svg={magnifyingGlass} />
-            </button>
+            <Popover.Root open={this.props.isOnSearch} onOpenChange={(v) => { console.log("SearchPopoverMenu enabled=", v); this.enableSearch(v);}}>
+                <Popover.Trigger asChild>
+                    <button
+                        disabled={this.props.isAudiobook || this.props.isDivina}
+                        aria-pressed={this.props.isOnSearch}
+                        aria-label={__("reader.navigation.magnifyingGlassButton")}
+                        className={stylesReader.menu_button}
+                        // onClick={this.enableSearch}
+                        // ref={this.settingsMenuButtonRef}
+                        title={__("reader.navigation.magnifyingGlassButton")}
+                    >
+                        <SVG ariaHidden={true} svg={this.props.isOnSearch ? QuitIcon : magnifyingGlass} className={this.props.isOnSearch ? stylesReaderHeader.active_svg : ""} />
+                    </button>
+                </Popover.Trigger>
+                <Popover.Portal>
+                    <Popover.Content className={stylesReaderHeader.picker_container}
+                        align="start"
+                        onPointerDownOutside={(e) => { e.preventDefault(); console.log("SearchPopover onPointerDownOutside"); }}
+                        onInteractOutside={(e) => { e.preventDefault(); console.log("SearchPopover onInteractOutside"); }}
+                    >
+                        <div style={{display: "flex", gap:"10%", alignItems: "center", height: "50px", width: "100vw", justifyContent: "end"}}>
+                            <SearchPicker
+                                showSearchResults={this.props.showSearchResults}
+                                isPdf={this.props.isPdf}
+                            />
+
+                            {/* <Popover.Close asChild>
+                                <button
+                                    style={{
+                                        width: "25px",
+                                        marginRight: "0.4em",
+                                        backgroundColor: "transparent",
+                                        color: "var(--color-blue)",
+                                        fill: "var(--color-blue)",
+                                    }}
+                                    type="button"
+                                    aria-label={__("accessibility.closeDialog")}
+                                    title={__("accessibility.closeDialog")}
+                                >
+                                    <SVG ariaHidden={true} svg={QuitIcon} />
+                                </button>
+                            </Popover.Close> */}
+                            </div>
+                        {/* <Popover.Arrow /> */}
+                    </Popover.Content>
+                </Popover.Portal>
+            </Popover.Root>
         );
     }
 
@@ -121,7 +166,7 @@ class HeaderSearch extends React.Component<IProps, undefined> {
         unregisterKeyboardListener(this.enableSearch);
     };
 
-    private enableSearch = () => {
+    private enableSearch = (v?: boolean) => {
 
         if (!this.props.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
@@ -129,7 +174,7 @@ class HeaderSearch extends React.Component<IProps, undefined> {
             }
             return;
         }
-        this.props.enableSearch(!this.props.isOnSearch);
+        this.props.enableSearch(v || !this.props.isOnSearch);
     };
 
 }

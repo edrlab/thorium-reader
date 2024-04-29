@@ -17,7 +17,8 @@ export const FONT_ID_VOID = "VOID";
 export const FONT_LIST: Font[] =
 [{
     id: FONT_ID_DEFAULT,
-    label: "Default font",
+    label: "Original font",
+    fontFamily: "",
 }, {
     id: "OLD",
     label: "Old Style",
@@ -47,11 +48,13 @@ export const FONT_LIST: Font[] =
     id: "MONO",
     label: "Monospace",
     fontFamily: "\"Andale Mono\", Consolas, monospace",
-}, {
-    id: FONT_ID_VOID,
-    label: "...",
-    fontFamily: "Consolas, monospace",
-}];
+},
+// {
+//     id: FONT_ID_VOID,
+//     label: "...",
+//     fontFamily: "Consolas, monospace",
+// }
+];
 const FONT_LIST_JA: Font[] =
 [{
     id: "JA",
@@ -74,5 +77,4 @@ const FONT_LIST_JA: Font[] =
     // eslint-disable-next-line quotes
     fontFamily: `"ＭＳ ゴシック", "MS Gothic", "Hiragino Kaku Gothic Pro W3", "ヒラギノ角ゴ Pro W3", "Hiragino Sans GB", "ヒラギノ角ゴシック W3", "游ゴシック", "YuGothic", "ＭＳ Ｐゴシック", "MS PGothic", "Hiragino Sans", sans-serif`,
 }];
-const FONT_LIST_WITH_JA_ = [].concat(...FONT_LIST);
-export const FONT_LIST_WITH_JA = FONT_LIST_WITH_JA_.push(...FONT_LIST_WITH_JA_.splice(FONT_LIST_WITH_JA_.length - 1, 1, ...FONT_LIST_JA)) && FONT_LIST_WITH_JA_;
+export const FONT_LIST_WITH_JA = FONT_LIST.concat(...FONT_LIST_JA);
