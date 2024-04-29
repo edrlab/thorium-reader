@@ -63,7 +63,7 @@ export function priorityQueueReducer
                 const newQueue = queue.slice();
 
                 const selectorItem = data.push.selector(action as unknown as TPushAction, queue);
-                if (selectorItem[1]) {
+                if (Array.isArray(selectorItem) && selectorItem[1]) {
 
                     // find same value
                     const index = newQueue.findIndex((item) => item[1] === selectorItem[1]);
@@ -83,7 +83,7 @@ export function priorityQueueReducer
             } else if (action.type === data.pop.type) {
 
                 const selectorItem = data.pop.selector(action as unknown as TPopAction, queue);
-                const index = queue.findIndex((item) => item[1] === selectorItem[1]);
+                const index = Array.isArray(selectorItem) ? queue.findIndex((item) => item[1] === selectorItem[1]) : -1;
                 if (index > -1) {
 
                     const newQueue = queue.slice();
