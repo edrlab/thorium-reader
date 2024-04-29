@@ -261,6 +261,9 @@ export class PublicationViewConverter {
                 }
             }
         }
+
+        const readingFinished = tryCatchSync(() => state.publication.readingFinishedQueue.findIndex(([, pubIndentifier]) => pubIndentifier === document.identifier) > -1, "") || false;
+
         // console.log(`=-=-==-=-${document.title}---${JSON.stringify(r2Publication.Metadata.Title)}---${JSON.stringify(r2Publication.Metadata.SubTitle)}`);
         return {
             isAudio,
@@ -269,6 +272,7 @@ export class PublicationViewConverter {
             isDaisy,
             isFixedLayoutPublication,
             lastReadTimeStamp,
+            readingFinished,
 
             // legacy vs. modern a11y metadata structure
             a11y_accessMode: r2Publication.Metadata.Accessibility?.AccessMode || r2Publication.Metadata.AccessMode, // string[]

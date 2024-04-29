@@ -167,6 +167,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
         ], () => {
             apiAction("publication/findAll")
                 .then((publicationViews) => {
+                    console.log(publicationViews);
                     this.setState({ publicationViews });
                     setTimeout(() => {
                         // this.onKeyboardFocusSearch();

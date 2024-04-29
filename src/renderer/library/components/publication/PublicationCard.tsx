@@ -39,7 +39,6 @@ import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
 import classNames from "classnames";
 import * as moment from "moment";
 
-
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationViewMaybeOpds: PublicationView | IOpdsPublicationView;
@@ -106,16 +105,18 @@ class PublicationCard extends React.Component<IProps> {
             }
         }
 
-        let tagString = "";
-        if (publicationViewMaybeOpds.tags) {
-            for (const tag of publicationViewMaybeOpds.tags) {
-                if (typeof tag === "string") {
-                    tagString = tag;
-                } else {
-                    tagString = tag.name;
-                }
-            };
-        }
+        // let tagString = "";
+        // if (publicationViewMaybeOpds.tags) {
+        //     for (const tag of publicationViewMaybeOpds.tags) {
+        //         if (typeof tag === "string") {
+        //             tagString = tag;
+        //         } else {
+        //             tagString = tag.name;
+        //         }
+        //     };
+        // }
+
+        // console.log(publicationView.documentTitle, publicationView.readingFinished)
 
         // aria-haspopup="dialog"
         // aria-controls="dialog"
@@ -173,7 +174,7 @@ class PublicationCard extends React.Component<IProps> {
                     <div className={stylesPublications.publication_infos}>
                         {isOpds ? <></>
                             : <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-                                {tagString === "/finished/" ?
+                                {/* (tagString === "/finished/") || */ publicationView.readingFinished ?
                                     <div className={stylesPublications.lcpIndicator}><SVG ariaHidden svg={DoubleCheckIcon} />{__("publication.read")}</div>
                                     : <></>}
                                 {
