@@ -648,3 +648,19 @@ export const httpPost: typeof httpFetchFormattedResponse =
 
         return httpFetchFormattedResponse(...arg);
     };
+
+export const httpPut: typeof httpFetchFormattedResponse =
+    async (...arg) => {
+
+        let [, options] = arg;
+
+        options = options || {};
+        options.method = "put";
+        arg[1] = options;
+
+        // do not risk showing plaintext password in console / command line shell
+        // debug("Body:");
+        // debug(options.body);
+
+        return httpFetchFormattedResponse(...arg);
+    };

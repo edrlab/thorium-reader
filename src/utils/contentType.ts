@@ -76,3 +76,12 @@ export const contentTypeisOpdsAuth = (contentType: ContentType | undefined) =>
 export const contentTypeisApiProblem = (contentType: ContentType | undefined) =>
     contentType === ContentType.problemDetails ||
     contentType === ContentType.ApiProblem;
+
+export const contentTypeisLsd = (contentType: ContentType | undefined) =>
+    contentType === ContentType.Lsd ||
+    contentType === ContentType.Json;
+
+export const contentTypeisLcp = (contentType: ContentType | undefined) =>
+    contentType === ContentType.Lcp ||
+    contentType === ContentType.Json;
+    

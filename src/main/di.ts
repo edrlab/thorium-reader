@@ -35,6 +35,7 @@ import { opdsApi } from "./redux/sagas/api/opds";
 import { apiappApi } from "./redux/sagas/api";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
+import { LSDManager } from "./services/lsd";
 
 // import { streamer } from "readium-desktop/main/streamerHttp";
 // import { Server } from "@r2-streamer-js/http/server";
@@ -216,6 +217,7 @@ container.bind<DeviceIdManager>(diSymbolTable["device-id-manager"]).toConstantVa
 
 // Create lcp manager
 container.bind<LcpManager>(diSymbolTable["lcp-manager"]).to(LcpManager).inSingletonScope();
+container.bind<LSDManager>(diSymbolTable["lsd-manager"]).to(LSDManager).inSingletonScope();
 container.bind<OpdsService>(diSymbolTable["opds-service"]).to(OpdsService).inSingletonScope();
 
 // API
