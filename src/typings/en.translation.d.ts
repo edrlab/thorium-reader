@@ -589,7 +589,8 @@ declare namespace typed_i18n {
   readonly "read": string,
   readonly "licensed": string,
   readonly "timeLeft": string,
-  readonly "actions": string
+  readonly "actions": string,
+  readonly "onGoing": string
 };
   (_: "publication.accessibility", __?: {}): {
   readonly "accessModeSufficient": { readonly "textual": string },
@@ -700,6 +701,7 @@ declare namespace typed_i18n {
   (_: "publication.licensed", __?: {}): string;
   (_: "publication.timeLeft", __?: {}): string;
   (_: "publication.actions", __?: {}): string;
+  (_: "publication.onGoing", __?: {}): string;
   (_: "reader", __?: {}): {
   readonly "annotations": {
     readonly "Color": string,

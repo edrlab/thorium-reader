@@ -300,7 +300,8 @@
         "read": "Read",
         "licensed": "Licensed",
         "timeLeft": "Left",
-        "actions": "Actions"
+        "actions": "Actions",
+        "onGoing": "On Going"
     },
     "reader": {
         "annotations": {

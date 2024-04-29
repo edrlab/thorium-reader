@@ -298,7 +298,8 @@
         "read": "Lu",
         "licensed": "Sous licence",
         "timeLeft": "Temps restant",
-        "actions": "Actions"
+        "actions": "Actions",
+        "onGoing": "En cours de lecture"
     },
     "reader": {
         "annotations": {
