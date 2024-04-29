@@ -59,7 +59,8 @@ export function priorityQueueReducer
                 queue = [];
             }
 
-            if ((Array.isArray(data.push.type) && data.push.type.includes(action.type)) || action.type === data.push.type) {
+            // if ((Array.isArray(data.push.type) && data.push.type.includes(action.type)) || action.type === data.push.type) {
+            if (action.type === data.push.type) {
                 const newQueue = queue.slice();
 
                 // console.log("$$$$");
@@ -67,7 +68,7 @@ export function priorityQueueReducer
                 // console.log("$$$$");
 
                 const selectorItem = data.push.selector(action as unknown as TPushAction, queue);
-                if (selectorItem[1]) {
+                if (Array.isArray(selectorItem) && selectorItem[1]) {
 
 
                     // console.log("$$$$");
@@ -92,6 +93,7 @@ export function priorityQueueReducer
                     return newQueue;
                 }
 
+                // array used by the readingFinishedQueue to pop pubId from deletePublication and setReduxState action
             } else if ((Array.isArray(data.pop.type) && data.pop.type.includes(action.type)) || action.type === data.pop.type) {
 
                 // console.log("$$$$");
@@ -100,7 +102,7 @@ export function priorityQueueReducer
                 
 
                 const selectorItem = data.pop.selector(action as unknown as TPopAction, queue);
-                const index = queue.findIndex((item) => item[1] === selectorItem[1]);
+                const index = Array.isArray(selectorItem) ? queue.findIndex((item) => item[1] === selectorItem[1]) : -1;
                 if (index > -1) {
                     // console.log("$$$$");
                     // console.log(`POP ${index} !! ${selectorItem[1]}`);
@@ -114,7 +116,8 @@ export function priorityQueueReducer
                     return left.concat(right);
                 }
 
-            } else if ((Array.isArray(data.update?.type) && data.update.type.includes(action.type)) || action.type === data.update?.type) {
+            // } else if ((Array.isArray(data.update?.type) && data.update.type.includes(action.type)) || action.type === data.update?.type) {
+            } else if (action.type === data.update?.type) {
 
                 const [k,v] = data.update.selector(action as unknown as TUpdateAction, queue);
                 const index = queue.findIndex(([_k]) => _k === k);
