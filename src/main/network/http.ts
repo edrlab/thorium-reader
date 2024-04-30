@@ -21,6 +21,7 @@ import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { diMainGet, opdsAuthFilePath } from "../di";
 import { fetchWithCookie } from "./fetch";
 import { digestAuthentication, parseDigestString} from "readium-desktop/utils/digest";
+import { ProxyAgent } from "proxy-agent";
 
 // Logger
 const filename_ = "readium-desktop:main/http";
@@ -198,6 +199,7 @@ export async function httpFetchRawResponse(
     //
     // options.redirect = "manual"; // handle cookies
 
+
     // https://github.com/node-fetch/node-fetch#custom-agent
     // httpAgent doesn't works // err: Protocol "http:" not supported. Expected "https:
     // https://github.com/edrlab/thorium-reader/issues/1323#issuecomment-911772951
@@ -208,13 +210,23 @@ export async function httpFetchRawResponse(
     const httpAgent = new http.Agent({
         timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
     });
-    options.agent = (parsedURL: URL) => {
-        if (parsedURL.protocol === "http:") {
-            return httpAgent;
-        } else {
-            return httpsAgent;
-        }
-    };
+
+    const proxyAgent = new ProxyAgent({
+        httpAgent: httpAgent,
+        httpsAgent: httpsAgent,
+        // getProxyForUrl: (url) => {
+        //     debug("need to proxify this URL: ", url);
+        //     return "http://127.0.0.1:8888"
+        // }
+    });
+    // options.agent = (parsedURL: URL) => {
+    //     if (parsedURL.protocol === "http:") {
+    //         return httpAgent;
+    //     } else {
+    //         return httpsAgent;
+    //     }
+    // };
+    options.agent = proxyAgent;
 
     // if (!options.agent && url.toString().startsWith("https:")) {
     //     const httpsAgent = new https.Agent({
