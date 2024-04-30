@@ -219,6 +219,10 @@ export async function httpFetchRawResponse(
         //     return "http://127.0.0.1:8888"
         // }
     });
+
+    // seems already implemented in the ProxyAgent package: 
+    // https://github.com/TooTallNate/proxy-agents/blob/70023c12abe0d014004af6309ff7d0fdbaa60875/packages/proxy-agent/src/index.ts#L122
+    // so not used anymore
     // options.agent = (parsedURL: URL) => {
     //     if (parsedURL.protocol === "http:") {
     //         return httpAgent;
@@ -226,6 +230,7 @@ export async function httpFetchRawResponse(
     //         return httpsAgent;
     //     }
     // };
+
     options.agent = proxyAgent;
 
     // if (!options.agent && url.toString().startsWith("https:")) {
