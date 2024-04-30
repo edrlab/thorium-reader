@@ -208,3 +208,40 @@
   font-size: 14px;
   color: var(--color-blue);
 }
+
+.guidedTour_content {
+  margin-top: 30px!important;
+
+  .guidedTour_tab {
+    margin-top: 0;
+
+    h3 {
+      font-size: 25px;
+      margin-top: 0;
+    }
+
+    p {
+      font-size: 14px;
+      font-weight: 400;
+      margin-bottom: 10px;
+    }
+
+    img {
+      max-width: 100%;
+      width: 100%;
+      margin: 0;
+      max-height: 350px;
+      height: 100%;
+    }
+
+    .guidedTour_buttons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 20px;
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+    }
+  }
+}

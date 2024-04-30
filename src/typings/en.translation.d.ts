@@ -1293,7 +1293,76 @@ declare namespace typed_i18n {
   (_: "settings.theme.dark", __?: {}): string;
   (_: "settings.theme.description", __?: {}): string;
   (_: "settings.theme.light", __?: {}): string;
-  (_: "settings.theme.title", __?: {}): string
+  (_: "settings.theme.title", __?: {}): string;
+  (_: "tour", __?: {}): {
+  readonly "tab": {
+    readonly "home": string,
+    readonly "yourBooks": string,
+    readonly "catalogs": string,
+    readonly "readingView": string,
+    readonly "annotations": string
+  },
+  readonly "title": {
+    readonly "welcome": string,
+    readonly "allBooks": string,
+    readonly "newFeature": string
+  },
+  readonly "description": {
+    readonly "home": string,
+    readonly "yourBooks": string,
+    readonly "catalogs": string,
+    readonly "readingView1": string,
+    readonly "readingView2": string,
+    readonly "annotations": string
+  },
+  readonly "buttons": {
+    readonly "goToBooks": string,
+    readonly "discover": string,
+    readonly "next": string
+  }
+};
+  (_: "tour.tab", __?: {}): {
+  readonly "home": string,
+  readonly "yourBooks": string,
+  readonly "catalogs": string,
+  readonly "readingView": string,
+  readonly "annotations": string
+};
+  (_: "tour.tab.home", __?: {}): string;
+  (_: "tour.tab.yourBooks", __?: {}): string;
+  (_: "tour.tab.catalogs", __?: {}): string;
+  (_: "tour.tab.readingView", __?: {}): string;
+  (_: "tour.tab.annotations", __?: {}): string;
+  (_: "tour.title", __?: {}): {
+  readonly "welcome": string,
+  readonly "allBooks": string,
+  readonly "newFeature": string
+};
+  (_: "tour.title.welcome", __?: {}): string;
+  (_: "tour.title.allBooks", __?: {}): string;
+  (_: "tour.title.newFeature", __?: {}): string;
+  (_: "tour.description", __?: {}): {
+  readonly "home": string,
+  readonly "yourBooks": string,
+  readonly "catalogs": string,
+  readonly "readingView1": string,
+  readonly "readingView2": string,
+  readonly "annotations": string
+};
+  (_: "tour.description.home", __?: {}): string;
+  (_: "tour.description.yourBooks", __?: {}): string;
+  (_: "tour.description.catalogs", __?: {}): string;
+  (_: "tour.description.readingView1", __?: {}): string;
+  (_: "tour.description.readingView2", __?: {}): string;
+  (_: "tour.description.annotations", __?: {}): string;
+  (_: "tour.buttons", __?: {}): {
+  readonly "goToBooks": string,
+  readonly "discover": string,
+  readonly "next": string
+};
+  (_: "tour.buttons.goToBooks", __?: {}): string;
+  (_: "tour.buttons.discover", __?: {}): string;
+  (_: "tour.buttons.next", __?: {}): string
 }
 }
 export = typed_i18n;
