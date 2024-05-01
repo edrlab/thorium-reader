@@ -11,9 +11,13 @@
         "toolbar": "工具栏"
     },
     "apiapp": {
+        "documentation": "",
+        "howItWorks": "",
+        "informations": "",
         "noLibraryFound": "未发现图书馆 ({{- name}})"
     },
     "app": {
+        "downloadVersion": "",
         "edit": {
             "copy": "复制",
             "cut": "剪切",
@@ -24,6 +28,7 @@
             "undo": "撤销"
         },
         "hide": "隐藏 {{- appName}}",
+        "newVersion": "",
         "quit": "退出 {{- appName}}",
         "session": {
             "exit": {
@@ -43,7 +48,6 @@
     },
     "catalog": {
         "about": {
-            "button": "更多信息",
             "title": "关于{{appName}}"
         },
         "addBookToLib": "导入",
@@ -82,7 +86,10 @@
         "opds": {
             "auth": {
                 "cancel": "取消",
-                "login": "登录"
+                "login": "登录",
+                "password": "",
+                "register": "",
+                "username": ""
             },
             "info": {
                 "availableSince": "开始时间",
@@ -107,13 +114,13 @@
         "readBook": "阅读",
         "released": "出版日期",
         "sort": "排序方式",
+        "tag": "",
         "tagCount": "标签数",
         "tags": "标签",
         "update": "编辑"
     },
     "dialog": {
         "cancel": "取消",
-        "closeModalWindow": "关闭此模式窗口",
         "deleteFeed": "你真的要删除此出版目录吗？",
         "deletePublication": "你真的要删除此出版物吗?",
         "import": "你真的要导入这些文件吗:",
@@ -131,26 +138,29 @@
     },
     "header": {
         "allBooks": "全部图书",
-        "books": "我的图书",
-        "catalogs": "出版目录",
         "downloads": "下载",
+        "fitlerTagTitle": "",
         "gridTitle": "网格视图",
         "home": "书架菜单",
         "homeTitle": "主页",
         "importTitle": "导入出版物",
         "listTitle": "列表视图",
+        "myCatalogs": "",
         "refreshTitle": "重载",
         "searchPlaceholder": "搜索",
         "searchTitle": "开始搜索",
-        "settings": "设置"
+        "settings": "设置",
+        "viewMode": ""
     },
     "library": {
         "lcp": {
             "hint": "(提示: {{- hint}})",
             "password": "密码",
             "sentence": "打开此出版物需要 LCP 密码: ",
-            "submit": "提交",
-            "urlHint": "忘记密码？在此获取帮助"
+            "urlHint": "忘记密码？在此获取帮助",
+            "whatIsLcp?": "",
+            "whatIsLcpInfoDetails": "",
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -171,7 +181,6 @@
             "addButton": "添加",
             "name": "名称：",
             "namePlaceholder": "名称",
-            "title": "添加 OPDS 订阅源",
             "url": "链接：",
             "urlPlaceholder": "链接"
         },
@@ -179,10 +188,11 @@
             "title": "添加图书馆账户"
         },
         "addMenu": "添加 OPDS 订阅源",
-        "back": "返回",
         "breadcrumbRoot": "出版目录",
+        "documentation": "",
         "empty": "未找到出版物",
         "firstPage": "首页",
+        "informations": "",
         "lastPage": "尾页",
         "menu": {
             "aboutBook": "关于此书",
@@ -207,7 +217,8 @@
             "title": "编辑 OPDS 订阅源",
             "updateButton": "编辑",
             "url": "链接"
-        }
+        },
+        "whatIsOpds": ""
     },
     "publication": {
         "accessibility": {
@@ -240,6 +251,7 @@
             "name": "可访问性",
             "noA11y": "无可用的可访问性信息"
         },
+        "actions": "",
         "audio": {
             "tracks": "音轨"
         },
@@ -250,60 +262,88 @@
         "cover": {
             "img": "封面图像"
         },
+        "day": "",
+        "days": "",
         "duration": {
             "title": "播放时长"
         },
+        "expired": "",
         "expiredLcp": "此书无法阅读，因为LCP许可证已到期。",
         "lcpEnd": "结束",
         "lcpRightsCopy": "许可证拷贝",
         "lcpRightsPrint": "许可证打印",
         "lcpStart": "开始",
+        "licenceLCP": "",
         "licenseOutOfDate": "许可证过期",
         "licenseSignatureDateInvalid": "许可证签名日期无效",
         "licenseSignatureInvalid": "许可证签名无效",
+        "licensed": "",
+        "markAsRead": "",
+        "notStarted": "",
+        "onGoing": "",
         "progression": {
             "title": "进展"
         },
+        "read": "",
+        "remainingTime": "",
         "renewButton": "更新",
         "returnButton": "归还",
         "returnedLcp": "此书无法阅读，因为LCP许可证已被归还。",
         "revokedLcp": "此书无法阅读，因为LCP许可证已被撤销。",
         "seeLess": "察看更少",
         "seeMore": "查看更多",
+        "timeLeft": "",
         "title": "标题",
         "userKeyCheckInvalid": "密码不正确"
     },
     "reader": {
+        "annotations": {
+            "Color": "",
+            "addNote": "",
+            "advancedMode": "",
+            "advancedModeDetails": "",
+            "annotationsOptions": "",
+            "highlight": "",
+            "noSelectionToast": "",
+            "quickAnnotations": "",
+            "saveNote": "",
+            "toggleMarginMarks": ""
+        },
         "divina": {
             "mute": "静音",
             "unmute": "取消静音"
         },
-        "footerInfo": {
-            "lessInfo": "不显示阅读位置",
-            "moreInfo": "显示阅读位置"
+        "fxl": {
+            "fit": ""
         },
         "marks": {
             "annotations": "笔记",
             "bookmarks": "书签",
             "delete": "删除",
             "edit": "编辑",
+            "goTo": "",
             "landmarks": "结构",
+            "saveMark": "",
             "search": "检索",
+            "searchResult": "",
             "toc": "目录"
         },
         "media-overlays": {
             "activate": "激活语音朗读",
             "captions": "字幕 / 简明视图",
+            "captionsDescription": "",
             "next": "朗读下一段",
             "pause": "暂停朗读",
             "play": "开始朗读",
             "previous": "朗读上一段",
             "skip": "自动跳过功能",
+            "skipDescription": "",
             "speed": "语音朗读速度",
             "stop": "停止朗读",
             "title": "语音朗读"
         },
         "navigation": {
+            "annotationTitle": "",
             "backHomeTitle": "返回书架",
             "bookmarkTitle": "书签",
             "currentPage": "当前页面: {{- current}}",
@@ -319,19 +359,18 @@
             "infoTitle": "信息",
             "magnifyingGlassButton": "在出版物中搜索",
             "openTableOfContentsTitle": "导航",
+            "page": "",
             "pdfscalemode": "适合页面宽度",
-            "quitFullscreenTitle": "退出全屏模式",
-            "readBookTitle": "开始阅读图书",
             "settingsTitle": "设置"
         },
         "picker": {
-            "annotationTitle": "笔记：",
             "search": {
                 "founds": "{{- nResults}}个匹配",
                 "input": "输入搜索文本",
                 "next": "后一个",
                 "notFound": "无匹配",
                 "previous": "前一个",
+                "results": "",
                 "submit": "查找"
             },
             "searchTitle": "搜索："
@@ -340,17 +379,18 @@
             "column": {
                 "auto": "自动",
                 "one": "1栏",
-                "oneTitle": "一栏",
                 "title": "栏",
-                "two": "2栏",
-                "twoTitle": "两栏"
+                "two": "2栏"
             },
+            "customizeReader": "",
+            "disabled": "",
             "display": "显示",
             "disposition": {
                 "title": "布局"
             },
             "font": "字体",
             "fontSize": "字体大小",
+            "infoCustomFont": "",
             "justification": "排版",
             "justify": "两端对齐",
             "letterSpacing": "字符间距",
@@ -374,12 +414,8 @@
                 },
                 "title": "放大"
             },
+            "preview": "",
             "reduceMotion": "减少动态效果",
-            "save": {
-                "apply": "保存",
-                "reset": "重置",
-                "title": "配置"
-            },
             "scrolled": "滚屏",
             "spacing": "间距",
             "text": "文字",
@@ -408,6 +444,7 @@
             "play": "播放",
             "previous": "上一段",
             "sentenceDetect": "句子检测",
+            "sentenceDetectDescription": "",
             "speed": "语速",
             "stop": "停止",
             "voice": "声音"
@@ -420,14 +457,12 @@
         "keyboard": {
             "advancedMenu": "菜单",
             "cancel": "取消",
-            "edit": "编辑",
+            "disclaimer": "",
             "editUserJson": "编辑用户文件...",
-            "hide": "隐藏",
             "keyboardShortcuts": "键盘快捷键",
             "loadUserJson": "从用户文件加载",
             "resetDefaults": "重置 (加载初始设置)",
-            "save": "保存",
-            "show": "显示"
+            "save": "保存"
         },
         "language": {
             "languageChoice": "选择语言"
@@ -436,6 +471,18 @@
             "no": "禁用",
             "title": "保存登录状态",
             "yes": "启用"
+        },
+        "tabs": {
+            "appearance": "",
+            "general": "",
+            "keyboardShortcuts": ""
+        },
+        "theme": {
+            "auto": "",
+            "dark": "",
+            "description": "",
+            "light": "",
+            "title": ""
         }
     }
 }

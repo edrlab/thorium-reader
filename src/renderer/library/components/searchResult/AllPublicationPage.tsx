@@ -1519,7 +1519,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     authors: publicationView.authors,
                 },
                 colReadingState: { // IColumnValue_Authors
-                    label: publicationView.readingFinished ? `${props.__("publication.read")}` : publicationView.lastReadingLocation ? `${props.__("publication.onGoing")}` : "",
+                    label: publicationView.readingFinished ? `${props.__("publication.read")}` : publicationView.lastReadingLocation ? `${props.__("publication.onGoing")}` : `${props.__("publication.notStarted")}`,
                 },
                 colRemainingDays: { // IColumnValue_Remain
                     label: remainingDays,

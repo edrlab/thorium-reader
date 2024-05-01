@@ -11,9 +11,13 @@
         "toolbar": "įrankių juosta"
     },
     "apiapp": {
+        "documentation": "",
+        "howItWorks": "",
+        "informations": "",
         "noLibraryFound": "Biblioteka „({{- name}})“ nerasta"
     },
     "app": {
+        "downloadVersion": "",
         "edit": {
             "copy": "Kopijuoti",
             "cut": "Iškirpti",
@@ -24,6 +28,7 @@
             "undo": "Atšaukti"
         },
         "hide": "Slėpti {{- appName}}",
+        "newVersion": "",
         "quit": "Uždaryti {{- appName}}",
         "session": {
             "exit": {
@@ -43,7 +48,6 @@
     },
     "catalog": {
         "about": {
-            "button": "Daugiau informacijos",
             "title": "Apie {{- appName}}"
         },
         "addBookToLib": "Importuoti",
@@ -82,7 +86,10 @@
         "opds": {
             "auth": {
                 "cancel": "Atšaukti",
-                "login": "Prisijungimas"
+                "login": "Prisijungimas",
+                "password": "",
+                "register": "",
+                "username": ""
             },
             "info": {
                 "availableSince": "Prieinama nuo",
@@ -107,13 +114,13 @@
         "readBook": "Skaityti",
         "released": "Išleidimo data",
         "sort": "Rikiuoti pagal",
+        "tag": "",
         "tagCount": "Žymių skaičius",
         "tags": "Žymės",
         "update": "Keisti"
     },
     "dialog": {
         "cancel": "Nutraukti",
-        "closeModalWindow": "Užverti šį modalinį langą",
         "deleteFeed": "Ar tikrai norite pašalinti šį sklaidos kanalą?",
         "deletePublication": "Ar tikrai norite pašalinti šį leidinį?",
         "import": "Ar tikrai norite importuoti šiuos failus:",
@@ -131,26 +138,29 @@
     },
     "header": {
         "allBooks": "Visos knygos",
-        "books": "Mano knygos",
-        "catalogs": "Katalogai",
         "downloads": "Atsiuntimai",
+        "fitlerTagTitle": "",
         "gridTitle": "Tinkelio rodinys",
         "home": "Knygų lentynos meniu",
         "homeTitle": "pradžia",
         "importTitle": "Importuoti leidinį",
         "listTitle": "Sąrašo rodinys",
+        "myCatalogs": "",
         "refreshTitle": "įkelti iš naujo",
         "searchPlaceholder": "Paieška",
         "searchTitle": "Ieškoti",
-        "settings": "Nuostatos"
+        "settings": "Nuostatos",
+        "viewMode": ""
     },
     "library": {
         "lcp": {
             "hint": "(Užuomina : {{- hint}})",
             "password": "Slaptažodis",
             "sentence": "Šiam leidiniui atverti reikalingas LCP slaptažodis: ",
-            "submit": "Pateikti",
-            "urlHint": "Pamiršote slaptažodį? Pagalbos ieškokite čia"
+            "urlHint": "Pamiršote slaptažodį? Pagalbos ieškokite čia",
+            "whatIsLcp?": "",
+            "whatIsLcpInfoDetails": "",
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -171,7 +181,6 @@
             "addButton": "Pridėti",
             "name": "Pavadinimas :",
             "namePlaceholder": "Pavadinimas",
-            "title": "Pridėti OPDS sklaidos kanalą",
             "url": "Nuoroda :",
             "urlPlaceholder": "Nuoroda"
         },
@@ -179,10 +188,11 @@
             "title": "Pridėti bibliotekos paskyrą"
         },
         "addMenu": "Pridėti OPDS sklaidos kanalą",
-        "back": "Atgal",
         "breadcrumbRoot": "Katalogai",
+        "documentation": "",
         "empty": "Leidinių nerasta",
         "firstPage": "Pirmas",
+        "informations": "",
         "lastPage": "Paskutinis",
         "menu": {
             "aboutBook": "Apie knygą",
@@ -207,7 +217,8 @@
             "title": "Keisti OPDS sklaidos kanalą",
             "updateButton": "Keisti",
             "url": "Nuoroda:"
-        }
+        },
+        "whatIsOpds": ""
     },
     "publication": {
         "accessibility": {
@@ -240,6 +251,7 @@
             "name": "Prieinamumas",
             "noA11y": "Nėra informacijos apie prieinamumą"
         },
+        "actions": "",
         "audio": {
             "tracks": "Takeliai"
         },
@@ -250,60 +262,88 @@
         "cover": {
             "img": "viršelio paveikslas"
         },
+        "day": "",
+        "days": "",
         "duration": {
             "title": "Trukmė"
         },
+        "expired": "",
         "expiredLcp": "Šios knygos negalima skaityti, nes baigėsi LCP licencijos galiojimo laikas.",
         "lcpEnd": "Pabaiga",
         "lcpRightsCopy": "Ženklų kopijos",
         "lcpRightsPrint": "Spausdintos kopijos",
         "lcpStart": "Pradžia",
+        "licenceLCP": "",
         "licenseOutOfDate": "Licencijos galiojimas pasibaigęs",
         "licenseSignatureDateInvalid": "Negaliojanti licencijos parašo data",
         "licenseSignatureInvalid": "Negaliojantis licencijos parašas",
+        "licensed": "",
+        "markAsRead": "",
+        "notStarted": "",
+        "onGoing": "",
         "progression": {
             "title": "Eiga"
         },
+        "read": "",
+        "remainingTime": "",
         "renewButton": "Atnaujinti",
         "returnButton": "Grąžinti",
         "returnedLcp": "Šios knygos negalima skaityti, nes LCP licencija buvo grąžinta.",
         "revokedLcp": "Šios knygos negalima skaityti, nes LCP licencijos galiojimas buvo sustabdytas.",
         "seeLess": "Rodyti mažiau",
         "seeMore": "Rodyti daugiau",
+        "timeLeft": "",
         "title": "Pavadinimas",
         "userKeyCheckInvalid": "Neteisingas slaptažodis"
     },
     "reader": {
+        "annotations": {
+            "Color": "",
+            "addNote": "",
+            "advancedMode": "",
+            "advancedModeDetails": "",
+            "annotationsOptions": "",
+            "highlight": "",
+            "noSelectionToast": "",
+            "quickAnnotations": "",
+            "saveNote": "",
+            "toggleMarginMarks": ""
+        },
         "divina": {
             "mute": "išjungti garsą",
             "unmute": "įjungti garsą"
         },
-        "footerInfo": {
-            "lessInfo": "mažiau informacijos",
-            "moreInfo": "daugiau informacijos"
+        "fxl": {
+            "fit": ""
         },
         "marks": {
             "annotations": "Pastabos",
             "bookmarks": "Žymės",
             "delete": "Šalinti",
             "edit": "Keisti",
+            "goTo": "",
             "landmarks": "Gairės",
+            "saveMark": "",
             "search": "Paieška",
+            "searchResult": "",
             "toc": "Turinys"
         },
         "media-overlays": {
             "activate": "Aktyvuoti „Readaloud“",
             "captions": "Titrai / paprastas rodinys",
+            "captionsDescription": "",
             "next": "Tolesnis „Readaloud“",
             "pause": "Pristabdyti „Readaloud“",
             "play": "Atkurti „Readaloud“",
             "previous": "Ankstesnis „Readaloud“",
             "skip": "Prašokimas",
+            "skipDescription": "",
             "speed": "„Readaloud“ atkūrimo sparta",
             "stop": "Sustabdyti „Readaloud“",
             "title": "Readaloud"
         },
         "navigation": {
+            "annotationTitle": "",
             "backHomeTitle": "grįžti į knygų lentyną",
             "bookmarkTitle": "sukurti žymę",
             "currentPage": "Dabartinis puslapis: {{- current}}",
@@ -319,19 +359,18 @@
             "infoTitle": "informacija",
             "magnifyingGlassButton": "ieškoti leidinyje",
             "openTableOfContentsTitle": "naršymas",
+            "page": "",
             "pdfscalemode": "talpinti pritaikant prie puslapio aukščio/pločio",
-            "quitFullscreenTitle": "išjungti viso ekrano režimą",
-            "readBookTitle": "pradėti skaityti knygą",
             "settingsTitle": "nuostatos"
         },
         "picker": {
-            "annotationTitle": "Pastabos:",
             "search": {
                 "founds": "{{- nResults}} atitikmuo(-ys, -ų)",
                 "input": "ieškomas tekstas",
                 "next": "Kitas",
                 "notFound": "atitikmenų nėra",
                 "previous": "Ankstesnis",
+                "results": "",
                 "submit": "Ieškoti"
             },
             "searchTitle": "Paieška:"
@@ -340,17 +379,18 @@
             "column": {
                 "auto": "Automatinis",
                 "one": "1 stulpelis",
-                "oneTitle": "Vienas stulpelis",
                 "title": "Stulpeliai",
-                "two": "2 stulpeliai",
-                "twoTitle": "Du stulpeliai"
+                "two": "2 stulpeliai"
             },
+            "customizeReader": "",
+            "disabled": "",
             "display": "Atvaizdavimas",
             "disposition": {
                 "title": "Išdėstymas"
             },
             "font": "Šriftas",
             "fontSize": "Šrifto dydis",
+            "infoCustomFont": "",
             "justification": "Lygiavimas",
             "justify": "Lygiuoti abi puses",
             "letterSpacing": "Raidžių išretinimas",
@@ -374,12 +414,8 @@
                 },
                 "title": "Mastelis"
             },
+            "preview": "",
             "reduceMotion": "Mažinti judesių kiekį",
-            "save": {
-                "apply": "įrašyti",
-                "reset": "grįžti į pradinę būseną",
-                "title": "Sąranka"
-            },
             "scrolled": "Slenkantis",
             "spacing": "Išretinimas",
             "text": "Tekstas",
@@ -408,6 +444,7 @@
             "play": "Atkurti teksto įgarsinimą",
             "previous": "Ankstesnis teksto įgarsinimas",
             "sentenceDetect": "Skaidyti įgarsinamą tekstą",
+            "sentenceDetectDescription": "",
             "speed": "Teksto įgarsinimo atkūrimo sparta",
             "stop": "Sustabdyti teksto įgarsinimą",
             "voice": "Įgarsinimo balsas"
@@ -420,14 +457,12 @@
         "keyboard": {
             "advancedMenu": "Meniu",
             "cancel": "Nutraukti",
-            "edit": "Keisti",
+            "disclaimer": "",
             "editUserJson": "Keisti naudotojo failą...",
-            "hide": "Slėpti",
             "keyboardShortcuts": "Spartieji klavišai",
             "loadUserJson": "Įkelti iš naudotojo failo",
             "resetDefaults": "Atkurti numatytąsias reikšmes",
-            "save": "Įrašyti",
-            "show": "Rodyti"
+            "save": "Įrašyti"
         },
         "language": {
             "languageChoice": "Kalbos pasirinkimas"
@@ -436,6 +471,18 @@
             "no": "Išjungti",
             "title": "Sesijos išsaugojimas",
             "yes": "Įjungti"
+        },
+        "tabs": {
+            "appearance": "",
+            "general": "",
+            "keyboardShortcuts": ""
+        },
+        "theme": {
+            "auto": "",
+            "dark": "",
+            "description": "",
+            "light": "",
+            "title": ""
         }
     }
 }
