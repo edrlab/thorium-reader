@@ -15,6 +15,10 @@ import {
 export const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayload_R2_EVENT_READIUMCSS => {
 
     const cssJson: IReadiumCSS = {
+        selectionBackgroundColor: readiumCSSDefaults.selectionBackgroundColor,
+        selectionTextColor: readiumCSSDefaults.selectionTextColor,
+        linkColor: readiumCSSDefaults.linkColor,
+        linkVisitedColor: readiumCSSDefaults.linkVisitedColor,
 
         a11yNormalize: readiumCSSDefaults.a11yNormalize,
 
