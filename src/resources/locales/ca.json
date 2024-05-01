@@ -11,9 +11,13 @@
         "toolbar": "Barra d'eines"
     },
     "apiapp": {
+        "documentation": "",
+        "howItWorks": "",
+        "informations": "",
         "noLibraryFound": ""
     },
     "app": {
+        "downloadVersion": "",
         "edit": {
             "copy": "Copiar",
             "cut": "Tallar",
@@ -24,6 +28,7 @@
             "undo": "Desfer"
         },
         "hide": "Ocultar {{- appName}}",
+        "newVersion": "",
         "quit": "Sortir de {{- appName}}",
         "session": {
             "exit": {
@@ -43,7 +48,6 @@
     },
     "catalog": {
         "about": {
-            "button": "Més información",
             "title": "Sobre {{appName}}"
         },
         "addBookToLib": "Importar",
@@ -82,7 +86,10 @@
         "opds": {
             "auth": {
                 "cancel": "Cancel·lar",
-                "login": "Iniciar sessió"
+                "login": "Iniciar sessió",
+                "password": "",
+                "register": "",
+                "username": ""
             },
             "info": {
                 "availableSince": "Des de",
@@ -107,13 +114,13 @@
         "readBook": "Llegir",
         "released": "Publicat en",
         "sort": "Ordenar per",
+        "tag": "",
         "tagCount": "Número d'etiquetes",
         "tags": "Etiquetes",
         "update": ""
     },
     "dialog": {
         "cancel": "Cancel·lar",
-        "closeModalWindow": "Tancar aquesta finestra modal",
         "deleteFeed": "Segur que vols eliminar aquest catàleg?",
         "deletePublication": "Segur que vols eliminar aquesta publicació?",
         "import": "Segur que vols importar aquests fitxers?",
@@ -131,26 +138,29 @@
     },
     "header": {
         "allBooks": "Tots els llibres",
-        "books": "Els meus llibres",
-        "catalogs": "Catàlegs",
         "downloads": "Descàrregues",
+        "fitlerTagTitle": "",
         "gridTitle": "Presentació en quadrícula",
         "home": "Menú biblioteca",
         "homeTitle": "Inici",
         "importTitle": "Importar publicació",
         "listTitle": "Presentació en llista",
+        "myCatalogs": "",
         "refreshTitle": "Recarregar",
         "searchPlaceholder": "Cercar",
         "searchTitle": "Iniciar cerca",
-        "settings": "Opcions de configuració"
+        "settings": "Opcions de configuració",
+        "viewMode": ""
     },
     "library": {
         "lcp": {
             "hint": "(Pista : {{- hint}})",
             "password": "Contrassenya",
             "sentence": "Aquesta publicació requereix una contrassenya LCP per obrir-se: ",
-            "submit": "Enviar",
-            "urlHint": "Has olvidat la contrassenya? Clica si necessites ajuda"
+            "urlHint": "Has olvidat la contrassenya? Clica si necessites ajuda",
+            "whatIsLcp?": "",
+            "whatIsLcpInfoDetails": "",
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -171,7 +181,6 @@
             "addButton": "Afegir",
             "name": "Nom:",
             "namePlaceholder": "Nom",
-            "title": "Afegir catàleg OPDS",
             "url": "Enllaç:",
             "urlPlaceholder": "Enllaç"
         },
@@ -179,10 +188,11 @@
             "title": ""
         },
         "addMenu": "Afegir catàleg OPDS",
-        "back": "Enrere",
         "breadcrumbRoot": "Catàlegs",
+        "documentation": "",
         "empty": "No s'han trovat publicacions",
         "firstPage": "Primera",
+        "informations": "",
         "lastPage": "Última",
         "menu": {
             "aboutBook": "Sobre aquest llibre",
@@ -207,7 +217,8 @@
             "title": "",
             "updateButton": "",
             "url": ""
-        }
+        },
+        "whatIsOpds": ""
     },
     "publication": {
         "accessibility": {
@@ -240,6 +251,7 @@
             "name": "",
             "noA11y": ""
         },
+        "actions": "",
         "audio": {
             "tracks": "Pistes"
         },
@@ -250,60 +262,88 @@
         "cover": {
             "img": "Imatge de portada"
         },
+        "day": "",
+        "days": "",
         "duration": {
             "title": "Duració"
         },
+        "expired": "",
         "expiredLcp": "Aquest llibre no es pot llegir perquè la llicència LCP ha expirat.",
         "lcpEnd": "Fi",
         "lcpRightsCopy": "Còpia de personatges",
         "lcpRightsPrint": "Còpia d'impressora",
         "lcpStart": "Inici",
+        "licenceLCP": "",
         "licenseOutOfDate": "La llicència està desactualitzada",
         "licenseSignatureDateInvalid": "La data de la firma de la llicència no és vàlida",
         "licenseSignatureInvalid": "La firma de la llicència no és vàlida",
+        "licensed": "",
+        "markAsRead": "",
+        "notStarted": "",
+        "onGoing": "",
         "progression": {
             "title": "Progrés"
         },
+        "read": "",
+        "remainingTime": "",
         "renewButton": "Renovar",
         "returnButton": "Tornar",
         "returnedLcp": "Aquest llibre no es pot llegir perquè la llicència LCP s'ha retornat.",
         "revokedLcp": "Aquest llibre no es pot llegir perquè la llicència LCP s'ha cancel·lat.",
         "seeLess": "Veure menys",
         "seeMore": "Veure més",
+        "timeLeft": "",
         "title": "Títol",
         "userKeyCheckInvalid": "Contrasenya incorrecta"
     },
     "reader": {
+        "annotations": {
+            "Color": "",
+            "addNote": "",
+            "advancedMode": "",
+            "advancedModeDetails": "",
+            "annotationsOptions": "",
+            "highlight": "",
+            "noSelectionToast": "",
+            "quickAnnotations": "",
+            "saveNote": "",
+            "toggleMarginMarks": ""
+        },
         "divina": {
             "mute": "silenciar",
             "unmute": "deixar de silenciar"
         },
-        "footerInfo": {
-            "lessInfo": "menys informació",
-            "moreInfo": "més informació"
+        "fxl": {
+            "fit": ""
         },
         "marks": {
             "annotations": "Anotacions",
             "bookmarks": "Marcadors",
             "delete": "Eliminar",
             "edit": "Editar",
+            "goTo": "",
             "landmarks": "Punts de referència",
+            "saveMark": "",
             "search": "Cercar",
+            "searchResult": "",
             "toc": "Taula de contingut"
         },
         "media-overlays": {
             "activate": "Activar lectura en veu alta",
             "captions": "Text sincronitzat/presentació diàfana",
+            "captionsDescription": "",
             "next": "Sigüent (Lectura en veu alta)",
             "pause": "Pausar (Lectura en veu alta)",
             "play": "Reproduir (Lectura en veu alta)",
             "previous": "Anterior (Lectura en veu alta)",
             "skip": "Ometre informació auxiliar",
+            "skipDescription": "",
             "speed": "Velocitat de reproducció per la lectura en veu alta",
             "stop": "Detendre lectura en veu alta",
             "title": "Lectura en veu alta"
         },
         "navigation": {
+            "annotationTitle": "",
             "backHomeTitle": "Tornar a la biblioteca",
             "bookmarkTitle": "Marcador",
             "currentPage": "Pàgina actual: {{- current}}",
@@ -319,19 +359,18 @@
             "infoTitle": "Informació",
             "magnifyingGlassButton": "cercar a la publicació",
             "openTableOfContentsTitle": "Navegació",
+            "page": "",
             "pdfscalemode": "Ajust o ample de pàgina",
-            "quitFullscreenTitle": "Sortir del mode pantalla completa",
-            "readBookTitle": "Començar a llegir el llibre",
             "settingsTitle": "Opcions de configuració"
         },
         "picker": {
-            "annotationTitle": "Anotacions:",
             "search": {
                 "founds": "{{- nResults}} trobat/s",
                 "input": "text de cerca",
                 "next": "Següent",
                 "notFound": "no hi ha coincidències",
                 "previous": "Anterior",
+                "results": "",
                 "submit": "Trobar"
             },
             "searchTitle": "Cercar:"
@@ -340,17 +379,18 @@
             "column": {
                 "auto": "Automàtic",
                 "one": "1 col.",
-                "oneTitle": "Una columna",
                 "title": "Columnes",
-                "two": "2 cols.",
-                "twoTitle": "Dos columnes"
+                "two": "2 cols."
             },
+            "customizeReader": "",
+            "disabled": "",
             "display": "Visualització",
             "disposition": {
                 "title": "Disposició"
             },
             "font": "Font",
             "fontSize": "Grandària de font",
+            "infoCustomFont": "",
             "justification": "Alineació",
             "justify": "Justificar",
             "letterSpacing": "Espaiat de lletres",
@@ -374,12 +414,8 @@
                 },
                 "title": "Zoom"
             },
+            "preview": "",
             "reduceMotion": "Disminuir moviment",
-            "save": {
-                "apply": "Guardar",
-                "reset": "Restablir",
-                "title": "Configuració"
-            },
             "scrolled": "Desplaçable",
             "spacing": "Espaiat",
             "text": "Text",
@@ -408,6 +444,7 @@
             "play": "Reproduir (Text a veu)",
             "previous": "Anterior (Text a veu)",
             "sentenceDetect": "Dividir (Text a veu)",
+            "sentenceDetectDescription": "",
             "speed": "Velocitat de reproducció per a text a veu",
             "stop": "Detenir text a veu",
             "voice": "Veu per a TTS"
@@ -420,14 +457,12 @@
         "keyboard": {
             "advancedMenu": "Menú",
             "cancel": "Cancel·lar",
-            "edit": "Editar",
+            "disclaimer": "",
             "editUserJson": "Editar arxiu d'usuari",
-            "hide": "Ocultar",
             "keyboardShortcuts": "Dreceres de teclat",
             "loadUserJson": "Cargar arxiu d'usuari",
             "resetDefaults": "Restablir valors predeterminats",
-            "save": "Guardar",
-            "show": "Mostrar"
+            "save": "Guardar"
         },
         "language": {
             "languageChoice": "Selecció d'idioma"
@@ -436,6 +471,18 @@
             "no": "Deshabilitar",
             "title": "Guardar sessió",
             "yes": "Habilitar"
+        },
+        "tabs": {
+            "appearance": "",
+            "general": "",
+            "keyboardShortcuts": ""
+        },
+        "theme": {
+            "auto": "",
+            "dark": "",
+            "description": "",
+            "light": "",
+            "title": ""
         }
     }
 }

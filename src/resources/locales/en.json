@@ -11,12 +11,13 @@
         "toolbar": "toolbar"
     },
     "apiapp": {
-        "noLibraryFound": "No library found ({{- name}})",
+        "documentation": "Thorium Documentation",
         "howItWorks": "How does it works?",
         "informations": "Many public libraries and bookstores are adopting OPDS as a standard format to display their catalog on the Web. Thorium can provide access to OPDS 1 and 2 catalogs. It also supports several identification formats associated with OPDS and can therefore provide users with access to their personal library, i.e. the digital books that the user has acquired or borrowed, allowing them to be downloaded and read immediately.",
-        "documentation": "Thorium Documentation"
+        "noLibraryFound": "No library found ({{- name}})"
     },
     "app": {
+        "downloadVersion": "Download {{- appName}}",
         "edit": {
             "copy": "Copy",
             "cut": "Cut",
@@ -27,9 +28,8 @@
             "undo": "Undo"
         },
         "hide": "Hide {{- appName}}",
-        "quit": "Quit {{- appName}}",
         "newVersion": "A new version of Thorium is available.",
-        "downloadVersion": "Download {{- appName}}",
+        "quit": "Quit {{- appName}}",
         "session": {
             "exit": {
                 "askBox": {
@@ -48,7 +48,6 @@
     },
     "catalog": {
         "about": {
-            "button": "More information",
             "title": "About {{- appName}}"
         },
         "addBookToLib": "Import",
@@ -88,9 +87,9 @@
             "auth": {
                 "cancel": "Cancel",
                 "login": "Login",
+                "password": "Password",
                 "register": "Register",
-                "username": "Username / Email Address",
-                "password": "Password"
+                "username": "Username / Email Address"
             },
             "info": {
                 "availableSince": "Since",
@@ -122,14 +121,12 @@
     },
     "dialog": {
         "cancel": "Cancel",
-        "closeModalWindow": "Close this modal window",
         "deleteFeed": "Do you really want to delete this catalog ?",
         "deletePublication": "Do you really want to delete this publication ?",
         "import": "Do you really want to import these files:",
         "importError": "an error occurred, verify your file extension ({{acceptedExtension}})",
         "renew": "Do you really want to renew the licence for this publication?",
         "return": "Do you really want to return the licence for this publication?",
-        "save": "Save",
         "yes": "Yes"
     },
     "error": {
@@ -141,8 +138,6 @@
     },
     "header": {
         "allBooks": "All books",
-        "books": "My Books",
-        "catalogs": "Catalogs",
         "downloads": "Downloads",
         "fitlerTagTitle": "Filter by tag",
         "gridTitle": "Grid",
@@ -162,7 +157,6 @@
             "hint": "Hint: {{- hint}}",
             "password": "Passphrase",
             "sentence": "This publication needs an LCP passphrase to be opened: ",
-            "submit": "Submit",
             "urlHint": "Forgot your passphrase? Find some help here",
             "whatIsLcp?": "What is LCP?",
             "whatIsLcpInfoDetails": "EDRLab rocks !!!",
@@ -187,7 +181,6 @@
             "addButton": "Add",
             "name": "Name:",
             "namePlaceholder": "Name",
-            "title": "Add an OPDS feed",
             "url": "Link:",
             "urlPlaceholder": "Link"
         },
@@ -195,10 +188,11 @@
             "title": "Add a library account"
         },
         "addMenu": "Add OPDS feed",
-        "back": "Back",
         "breadcrumbRoot": "Catalogs",
+        "documentation": "OPDS official website",
         "empty": "No publication found",
         "firstPage": "First",
+        "informations": "The Open Publication Distribution System (OPDS) catalogue format is a way to distribute, discover, and download electronic publications.",
         "lastPage": "Last",
         "menu": {
             "aboutBook": "About this book",
@@ -224,9 +218,7 @@
             "updateButton": "Edit",
             "url": "Link:"
         },
-        "whatIsOpds": "What Is OPDS?",
-        "informations": "The Open Publication Distribution System (OPDS) catalogue format is a way to distribute, discover, and download electronic publications.",
-        "documentation": "OPDS official website"
+        "whatIsOpds": "What Is OPDS?"
     },
     "publication": {
         "accessibility": {
@@ -259,6 +251,7 @@
             "name": "Accessibility",
             "noA11y": "No accessibility information available"
         },
+        "actions": "Actions",
         "audio": {
             "tracks": "Tracks"
         },
@@ -269,38 +262,39 @@
         "cover": {
             "img": "cover image"
         },
+        "day": "day",
+        "days": "days",
         "duration": {
             "title": "Duration"
         },
+        "expired": "Loan expired",
         "expiredLcp": "This book can't be read because the LCP licence has expired.",
         "lcpEnd": "End",
         "lcpRightsCopy": "Copied characters",
         "lcpRightsPrint": "Printed pages",
         "lcpStart": "Start",
+        "licenceLCP": "Licence (LCP)",
         "licenseOutOfDate": "Licence is out of date",
         "licenseSignatureDateInvalid": "Licence signature date is invalid",
         "licenseSignatureInvalid": "Licence signature is invalid",
+        "licensed": "Licensed",
+        "markAsRead": "Mark as read",
+        "notStarted": "Not Started",
+        "onGoing": "In Progress",
         "progression": {
             "title": "Progression"
         },
+        "read": "Finished",
+        "remainingTime": "Loans (remaining days)",
         "renewButton": "Renew",
         "returnButton": "Return",
         "returnedLcp": "This book can't be read because the LCP licence has been returned.",
         "revokedLcp": "This book can't be read because the LCP licence has been revoked.",
         "seeLess": "See less",
         "seeMore": "See more",
-        "title": "Title",
-        "userKeyCheckInvalid": "Passphrase is incorrect",
-        "markAsRead": "Mark as read",
-        "licenceLCP": "Licence (LCP)",
-        "remainingTime": "Loans (remaining days)",
-        "day": "day",
-        "days": "days",
-        "expired": "Loan expired",
-        "read": "Read",
-        "licensed": "Licensed",
         "timeLeft": "Left",
-        "actions": "Actions"
+        "title": "Title",
+        "userKeyCheckInvalid": "Passphrase is incorrect"
     },
     "reader": {
         "annotations": {
@@ -319,10 +313,6 @@
             "mute": "mute audio",
             "unmute": "unmute audio"
         },
-        "footerInfo": {
-            "lessInfo": "less information",
-            "moreInfo": "more information"
-        },
         "fxl": {
             "fit": "Fit"
         },
@@ -331,27 +321,26 @@
             "bookmarks": "Bookmarks",
             "delete": "Delete",
             "edit": "Edit",
+            "goTo": "Go to page",
             "landmarks": "Landmarks",
-            "noMark": "To add a bookmark, select the Bookmark toolbar button.",
             "saveMark": "Save the bookmark",
             "search": "Search",
             "searchResult": "Search - « {{- searchText}} »",
-            "toc": "Table of Contents",
-            "goTo": "Go to page"
+            "toc": "Table of Contents"
         },
         "media-overlays": {
             "activate": "Activate Readaloud",
             "captions": "Captions / clean view",
+            "captionsDescription": "Scroll through text, focusing on each paragraph automatically.",
             "next": "Next Readaloud",
             "pause": "Pause Readaloud",
             "play": "Play Readaloud",
             "previous": "Previous Readaloud",
             "skip": "Skippability",
+            "skipDescription": "Hide auxiliary contents authored as footnotes, endnotes, pagebreaks and asides.",
             "speed": "Readaloud playback rate",
             "stop": "Stop Readaloud",
-            "title": "Readaloud",
-            "captionsDescription": "Scroll through text, focusing on each paragraph automatically.",
-            "skipDescription": "Hide auxiliary contents authored as footnotes, endnotes, pagebreaks and asides."
+            "title": "Readaloud"
         },
         "navigation": {
             "annotationTitle": "annotation",
@@ -372,12 +361,9 @@
             "openTableOfContentsTitle": "navigation",
             "page": "Page",
             "pdfscalemode": "Page fit or width",
-            "quitFullscreenTitle": "quit fullscreen mode",
-            "readBookTitle": "start reading the book",
             "settingsTitle": "settings"
         },
         "picker": {
-            "annotationTitle": "Annotations:",
             "search": {
                 "founds": "{{- nResults}} match(es)",
                 "input": "text to match",
@@ -393,10 +379,8 @@
             "column": {
                 "auto": "Default",
                 "one": "1 col",
-                "oneTitle": "one column",
                 "title": "Columns",
-                "two": "2 cols",
-                "twoTitle": "two columns"
+                "two": "2 cols"
             },
             "customizeReader": "Customise text formatting",
             "disabled": "disabled",
@@ -406,6 +390,7 @@
             },
             "font": "Font",
             "fontSize": "Font size",
+            "infoCustomFont": "You can add a custom font from your system by typing its name in the input",
             "justification": "Alignment",
             "justify": "Justify",
             "letterSpacing": "Letter spacing",
@@ -414,7 +399,6 @@
             "noFootnotes": "Disable footnotes",
             "noRTLFlip": "Disable Right-To-Left UI",
             "noRuby": "Hide Japanese Ruby",
-            "options": "Options",
             "paginated": "Paginated",
             "paraSpacing": "Paragraph spacing",
             "pdfZoom": {
@@ -431,13 +415,7 @@
                 "title": "Zoom"
             },
             "preview": "Preview",
-            "infoCustomFont": "You can add a custom font from your system by typing its name in the input",
             "reduceMotion": "Reduce motion",
-            "save": {
-                "apply": "save",
-                "reset": "reset",
-                "title": "Configuration"
-            },
             "scrolled": "Scrollable",
             "spacing": "Spacing",
             "text": "Text",
@@ -466,10 +444,10 @@
             "play": "Play Text To Speech",
             "previous": "Previous Text To Speech",
             "sentenceDetect": "Split TTS text",
+            "sentenceDetectDescription": "focuses phrase by phrase",
             "speed": "Text To Speech playback rate",
             "stop": "Stop Text To Speech",
-            "voice": "Text To Speech voice",
-            "sentenceDetectDescription": "focuses phrase by phrase"
+            "voice": "Text To Speech voice"
         }
     },
     "settings": {
@@ -480,20 +458,16 @@
             "advancedMenu": "Menu",
             "cancel": "Cancel",
             "disclaimer": "Keyboard shortcuts are currently based on a QWERTY layout.",
-            "edit": "Edit",
             "editUserJson": "Edit user file...",
-            "hide": "Hide",
             "keyboardShortcuts": "Keyboard shortcuts",
             "loadUserJson": "Load from user file",
             "resetDefaults": "Reset (load defaults)",
-            "save": "Save",
-            "show": "Show"
+            "save": "Save"
         },
         "language": {
             "languageChoice": "Language choice"
         },
         "session": {
-            "description": "Automatically save your session when you exit the application.",
             "no": "Disable",
             "title": "Save session",
             "yes": "Enable"
@@ -501,8 +475,7 @@
         "tabs": {
             "appearance": "Appearance",
             "general": "General",
-            "keyboardShortcuts": "Keyboard shortcuts",
-            "reading": "Reading"
+            "keyboardShortcuts": "Keyboard shortcuts"
         },
         "theme": {
             "auto": "Automatic",

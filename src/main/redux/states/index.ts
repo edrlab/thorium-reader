@@ -39,6 +39,7 @@ export interface RootState extends ICommonRootState {
     lcp: ILcpState;
     publication: {
         lastReadingQueue: TPQueueState;
+        readingFinishedQueue: TPQueueState;
         db: IDictPublicationState;
     };
     keyboard: IKeyboardState;

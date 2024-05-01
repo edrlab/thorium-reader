@@ -98,7 +98,8 @@ import Menu from "readium-desktop/renderer/common/components/menu/Menu";
 import CatalogMenu from "../publication/menu/CatalogMenu";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
-
+import * as ValidatedIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+import * as OnGoingBookIcon from "readium-desktop/renderer/assets/icons/ongoingBook-icon.svg";
 
 // import GridTagButton from "../catalog/GridTagButton";
 
@@ -1200,6 +1201,44 @@ const CellRemainingDays: React.FC<ITableCellProps_Column & ITableCellProps_Gener
     </div>);
 };
 
+const CellReadingState: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Remaining> = (props) => {
+
+    const link = (t: string) => {
+        return <a
+            title={`${t} (${props.__("header.searchPlaceholder")})`}
+            tabIndex={0}
+            onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    // props.column.setFilter(t);
+                    props.setShowColumnFilters(true, props.column.id, t);
+                }
+            }}
+
+            onClick={(e) => {
+                e.preventDefault();
+                // props.column.setFilter(t);
+                props.setShowColumnFilters(true, props.column.id, t);
+            }}>{t}</a>;
+    };
+
+    return (<div className={stylesPublication.cell_wrapper}>
+         {
+            props.value.label ?
+            <div className={stylesPublications.lcpIndicator}>
+                {props.value.label === props.__("publication.read") ?
+                <SVG ariaHidden svg={ValidatedIcon} />
+                :
+                <SVG ariaHidden svg={OnGoingBookIcon} />
+                }
+
+                {link(props.value.label)}
+            </div>
+            : <></>}
+    </div>);
+};
+
+
 const CellActions: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Actions> = (props) => {
     const label = props.value.label;
     const publication = props.value.publication;
@@ -1253,6 +1292,7 @@ interface IColumns {
     colCover: IColumnValue_Cover,
     colTitle: IColumnValue_Title;
     colAuthors: IColumnValue_Authors;
+    colReadingState: IColumnValue_BaseString;
     colPublishers: IColumnValue_Publishers;
     colRemainingDays: IColumnValue_Remain;
     colLanguages: IColumnValue_Langs;
@@ -1401,7 +1441,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             let remainingDays= "";
             const now = moment();
             let hasEnded = false;
-    
+
             if (lcpRightsEndDate) {
                 const momentEnd = moment(lcpRightsEndDate);
                 const timeEndDif = momentEnd.diff(now, "days");
@@ -1477,6 +1517,9 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 colAuthors: { // IColumnValue_Authors
                     label: publicationView.authors ? publicationView.authors.join(", ") : "",
                     authors: publicationView.authors,
+                },
+                colReadingState: { // IColumnValue_Authors
+                    label: publicationView.readingFinished ? `${props.__("publication.read")}` : publicationView.lastReadingLocation ? `${props.__("publication.onGoing")}` : `${props.__("publication.notStarted")}`,
                 },
                 colRemainingDays: { // IColumnValue_Remain
                     label: remainingDays,
@@ -1620,6 +1663,15 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
                     Cell: CellAuthors,
+                    filter: "text", // because IColumnValue_BaseString instead of plain string
+                    sortType: sortFunction,
+                },
+                {
+                    Header: props.__("publication.progression.title"),
+                    accessor: "colReadingState",
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    Cell: CellReadingState,
                     filter: "text", // because IColumnValue_BaseString instead of plain string
                     sortType: sortFunction,
                 },
@@ -2148,7 +2200,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                     className={stylesPublication.allBook_table_head}
                                 >
                                     {
-                                        !column.canSort ? 
+                                        !column.canSort ?
                                         <button style={{position: "absolute", top: "8px", left: "5px"}} onClick={(e) => e.preventDefault()}>
                                         {
                                             column.render("Header")
