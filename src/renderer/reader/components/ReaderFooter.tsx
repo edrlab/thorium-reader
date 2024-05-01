@@ -380,7 +380,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                         }
                         {isEnding ? <button className={stylesReaderFooter.finishedIcon}
                              onClick={() => this.props.finishReading(this.props.publicationView.identifier)}
-                             title="Mark as finished"
+                             title={__("publication.markAsRead")}
                              ><SVG ariaHidden svg={ValidatedIcon} /></button> : <></>}
                     </div>
                 }
