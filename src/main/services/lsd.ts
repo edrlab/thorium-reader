@@ -11,7 +11,6 @@ import { diSymbolTable } from "../diSymbolTable";
 import { DeviceIdManager } from "./device";
 import { LSD, StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { httpGet, httpPost, httpPut } from "../network/http";
 import { contentTypeisApiProblem, contentTypeisLcp, contentTypeisLsd, parseContentType } from "readium-desktop/utils/contentType";
 import { TaJsonDeserialize } from "r2-lcp-js/dist/es8-es2017/src/serializable";
@@ -23,7 +22,7 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { ok } from "readium-desktop/common/utils/assert";
 import { parseProblemDetails } from "readium-desktop/common/utils/http";
 
-const debug = debug_("readium-desktop:main#services/lcp");
+const debug = debug_("readium-desktop:main#services/lsd");
 
 @injectable()
 export class LSDManager {
@@ -45,7 +44,7 @@ export class LSDManager {
         if (!linkStatus) {
             return undefined;
         }
-        debug(linkStatus);
+        debug("Link Status FOUND: ", linkStatus);
 
         const locale = this.store.getState().i18n.locale;
         const httpDataReceived = await httpGet(linkStatus.Href, undefined, undefined, locale);
@@ -121,15 +120,14 @@ export class LSDManager {
         const registerResponse = await this.lsdRegister(lcp.LSD);
         if (registerResponse) {
             lcp.LSD = registerResponse;
-            if (IS_DEV) {
-                debug(lcp.LSD);
-            }
+            debug("registered response :");
+            debug(lcp.LSD);
         }
 
         return undefined;
     }
 
-    private async lsdLcpUpdate(lcp: LCP): Promise<string> {
+    private async lsdLcpUpdate(lcp: LCP): Promise<string | undefined> {
     
         if (!lcp.LSD) {
             throw new Error("LCP LSD data is missing.");
@@ -152,9 +150,7 @@ export class LSDManager {
                 // && (lcp.LSD.Status !== StatusEnum.Cancelled && lcp.LSD.Status !== StatusEnum.Expired && lcp.LSD.Status !== StatusEnum.Returned && lcp.LSD.Status !== StatusEnum.Revoked)
                 // && (lcp.LSD.Status === StatusEnum.Active || lcp.LSD.Status === StatusEnum.Ready)
             )) {
-            if (IS_DEV) {
-                debug("LSD license updating...");
-            }
+            debug("LSD license updating...");
             if (!lcp.LSD.Links) {
                 throw new Error("LSD License links missing");
             }
@@ -165,9 +161,7 @@ export class LSDManager {
                 throw new Error("LSD license link is missing.");
             }
 
-            if (IS_DEV) {
-                debug("OLD LCP LICENSE, FETCHING LSD UPDATE ... " + licenseLink.Href);
-            }
+            debug("OLD LCP LICENSE, FETCHING LSD UPDATE ... " + licenseLink.Href);
 
             const locale = this.store.getState().i18n.locale;
             const httpDataReceived = await httpGet(licenseLink.Href, undefined, undefined, locale);
@@ -240,10 +234,8 @@ export class LSDManager {
             if (!deviceIDForStatusDoc) {
                 doRegister = true;
             } else if (deviceIDForStatusDoc !== deviceID) {
-                if (IS_DEV) {
-                    debug("LSD registered device ID is different? ",
-                        lsd.ID, ": ", deviceIDForStatusDoc, " --- ", deviceID);
-                }
+                debug("LSD registered device ID is different? ",
+                    lsd.ID, ": ", deviceIDForStatusDoc, " --- ", deviceID);
                 // this should really never happen ... but let's ensure anyway.
                 doRegister = true;
             }
@@ -320,7 +312,6 @@ export class LSDManager {
         }
     
         const deviceID = await this.deviceIdManager.getDeviceID();
-    
         const deviceNAME = await this.deviceIdManager.getDeviceNAME();
     
         let renewURL: string = licenseRenew.Href;
