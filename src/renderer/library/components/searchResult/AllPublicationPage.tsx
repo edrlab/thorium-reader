@@ -168,7 +168,6 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
         ], () => {
             apiAction("publication/findAll")
                 .then((publicationViews) => {
-                    console.log(publicationViews);
                     this.setState({ publicationViews });
                     setTimeout(() => {
                         // this.onKeyboardFocusSearch();
@@ -1228,11 +1227,11 @@ const CellReadingState: React.FC<ITableCellProps_Column & ITableCellProps_Generi
             props.value.label ?
             <div className={stylesPublications.lcpIndicator}>
                 {props.value.label === props.__("publication.read") ?
-                <SVG ariaHidden svg={ValidatedIcon} /> 
+                <SVG ariaHidden svg={ValidatedIcon} />
                 :
                 <SVG ariaHidden svg={OnGoingBookIcon} />
                 }
-                
+
                 {link(props.value.label)}
             </div>
             : <></>}
@@ -1442,7 +1441,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             let remainingDays= "";
             const now = moment();
             let hasEnded = false;
-    
+
             if (lcpRightsEndDate) {
                 const momentEnd = moment(lcpRightsEndDate);
                 const timeEndDif = momentEnd.diff(now, "days");
@@ -2201,7 +2200,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                     className={stylesPublication.allBook_table_head}
                                 >
                                     {
-                                        !column.canSort ? 
+                                        !column.canSort ?
                                         <button style={{position: "absolute", top: "8px", left: "5px"}} onClick={(e) => e.preventDefault()}>
                                         {
                                             column.render("Header")
