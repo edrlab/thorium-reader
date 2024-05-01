@@ -391,7 +391,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             acc[voice.lang].push(voice);
             return acc;
         }, {});
-        
+
         const options = Object.keys(groupedVoices).map(lang => ({
             name: lang,
             children: groupedVoices[lang].map((voice, i) => ({ id: i, name: voice.name, default: voice.default, lang: voice.lang, localService: voice.localService, voiceURI: voice.voiceURI })),
@@ -449,15 +449,15 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
         const isDockedMode = this.props.readerPopoverDialogContext.dockedMode;
         const isOnSearch = this.props.isOnSearch;
-        const isNightMode = this.props.ReaderSettingsProps.readerConfig.theme === "night";
-        const isSepiaMode = this.props.ReaderSettingsProps.readerConfig.theme === "sepia";
+        const isNightMode = this.props.ReaderSettingsProps.readerConfig.night || this.props.ReaderSettingsProps.readerConfig.theme === "night";
+        const isSepiaMode = this.props.ReaderSettingsProps.readerConfig.sepia || this.props.ReaderSettingsProps.readerConfig.theme === "sepia";
 
         const containerClassName = classNames(
             isDockedMode && isOnSearch && stylesReader.isOnSearch,
             isDockedMode && isOnSearch && stylesPopoverDialog.popover_dialog_reader,
             isDockedMode && !isOnSearch && stylesPopoverDialog.popover_dialog_reader,
             !isDockedMode && !isOnSearch && stylesPopoverDialog.modal_dialog_reader,
-            !isDockedMode && isOnSearch && stylesPopoverDialog.modal_dialog_reader,          
+            !isDockedMode && isOnSearch && stylesPopoverDialog.modal_dialog_reader,
             isNightMode && stylesReader.nightMode,
             isSepiaMode && stylesReader.sepiaMode,
           );
@@ -518,7 +518,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         } */}
                     </ul>
                     {
-                    this.props.isPdf ? <></> : 
+                    this.props.isPdf ? <></> :
                     <ul className={classNames(stylesReader.tts_toolbar)}>
                         {
                             this.props.isDivina
@@ -778,7 +778,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     </>
                         }
                     </ul>
-        
+
                     }
 
                     {/* {
@@ -803,7 +803,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         htmlFor="pdfScaleButton"
                                         className={stylesReader.menu_button}
                                     >
-                                        { this.state.pdfScaleMode === "page-width" ? 
+                                        { this.state.pdfScaleMode === "page-width" ?
                                         <SVG ariaHidden svg={FullscreenIcon} title={__("reader.navigation.pdfscalemode")} />
                                         :
                                         <SVG ariaHidden svg={ExitFullscreenIcon} title={__("reader.navigation.pdfscalemode")}className={stylesReaderHeader.active_svg} />
