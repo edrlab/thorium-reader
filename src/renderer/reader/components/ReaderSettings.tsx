@@ -94,7 +94,7 @@ const Theme = ({theme, set}: {theme: Pick<ReaderConfig, "theme">, set: (a: Pick<
             id: 1,
             name: `${__("reader.settings.theme.name.Neutral")}`,
             value: "neutral",
-            style: {backgroundColor: "#fff", color: "black"},
+            style: {backgroundColor: "#fefefe", color: "black"},
         },
         {
             id: 2,

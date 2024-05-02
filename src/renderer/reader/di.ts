@@ -63,7 +63,9 @@ const createStoreFromDi = async (preloadedState: Partial<IReaderRootState>) => {
     if (newConfig.theme === undefined) {
 
         console.log("ANNOTATION MIGRATION !! theme not set migrate from defaultConfig value=", newConfig.theme);
-        newConfig.theme = defaultConfig.theme;
+        newConfig.theme = newConfig.night ? "night" : newConfig.sepia ? "sepia" : defaultConfig.theme;
+        newConfig.night = false;
+        newConfig.sepia = false;
         flag = true;
     }
 
