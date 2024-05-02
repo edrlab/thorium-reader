@@ -20,6 +20,7 @@ import * as readerActions from "./reader/";
 import * as toastActions from "./toast/";
 import * as sessionActions from "./session/";
 import * as catalogActions from "./catalog";
+import * as publicationActions from "./publication";
 import * as themeActions from "./theme";
 import * as wizardActions from "./wizard";
 
@@ -39,6 +40,7 @@ export {
     loadActions,
     sessionActions,
     catalogActions,
+    publicationActions,
     themeActions,
     wizardActions,
 };

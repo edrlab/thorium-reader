@@ -32,6 +32,7 @@ export interface PublicationView extends Identifiable {
     isFixedLayoutPublication?: boolean;
 
     lastReadTimeStamp?: number;
+    readingFinished: boolean;
 
     a11y_accessMode?: string[];
     a11y_accessibilityFeature?: string[];

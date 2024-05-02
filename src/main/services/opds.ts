@@ -88,6 +88,8 @@ export class OpdsService {
 
         if (contentTypeisXml(contentType)) {
 
+
+            // TODO response.buffer deprecated by node-fetch
             const buffer = await httpGetData.response.buffer();
             const result = await this.opdsRequestXmlTransformer(buffer, baseUrl);
 
@@ -106,7 +108,7 @@ export class OpdsService {
         }
 
         {
-            const wwwAuthenticate = httpGetData.response.headers.get("WWW-Authenticate");
+            const wwwAuthenticate = httpGetData.response?.headers.get("WWW-Authenticate");
             if (wwwAuthenticate) {
                 const isValid = this.wwwAuthenticateIsValid(wwwAuthenticate);
                 if (isValid) {

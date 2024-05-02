@@ -6,8 +6,7 @@
 // ==LICENSE-END==
 
 import {
-    apiActions, authActions, catalogActions, downloadActions, i18nActions, keyboardActions, lcpActions, readerActions, sessionActions, themeActions,
-    wizardActions,
+    apiActions, authActions, catalogActions, downloadActions, i18nActions, keyboardActions, lcpActions, readerActions, sessionActions, themeActions, publicationActions, wizardActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
@@ -45,6 +44,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     readerActions.configSetDefault.ID, // readerConfig
 
+    publicationActions.readingFinished.ID,
     themeActions.setTheme.ID,
 
     readerActions.bookmark.pop.ID,

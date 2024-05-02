@@ -77,6 +77,20 @@ See: https://github.com/edrlab/thorium-reader/wiki/Localization-(l10n)-language-
 
 Code Signing information: https://github.com/edrlab/thorium-reader/wiki/Code-Signing
 
+## Proxy server support
+
+The `HTTPS_PROXY`, `HTTP_PROXY`, and `NO_PROXY` environment variables are used to configure the behavior of a client application when making HTTP or HTTPS requests through a proxy server.
+
+- `HTTPS_PROXY`: Specifies the proxy server to use for HTTPS requests. The value should be in the format http://proxy.example.com:8080.
+- `HTTP_PROXY`: Specifies the proxy server to use for HTTP requests. The value should be in the format http://proxy.example.com:8080.
+- `NO_PROXY`: Specifies a comma-separated list of hostnames or IP addresses that should not be proxied. This is useful for excluding local or intranet addresses from being proxied.
+
+When these environment variables are set, the client application will automatically use the specified proxy server for HTTP or HTTPS requests, unless the request is for a hostname or IP address listed in the NO_PROXY variable.
+
+we used `proxy-agent` package from `TooTallNate` (https://github.com/TooTallNate/proxy-agents/tree/main/packages/proxy-agent)
+
+see https://www.npmjs.com/package/proxy-from-env#environment-variables for more information.
+
 ## Command line
 
 ```
