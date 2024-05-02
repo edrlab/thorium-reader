@@ -138,6 +138,7 @@
     },
     "header": {
         "allBooks": "Todos os libros",
+        "catalogs": "",
         "downloads": "Descargas",
         "fitlerTagTitle": "",
         "gridTitle": "Presentación en cuadrícula",

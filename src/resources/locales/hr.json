@@ -138,6 +138,7 @@
     },
     "header": {
         "allBooks": "Sve knjige",
+        "catalogs": "",
         "downloads": "Preuzimanja",
         "fitlerTagTitle": "",
         "gridTitle": "Prikaži u tablici",

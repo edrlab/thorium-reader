@@ -138,6 +138,7 @@
     },
     "header": {
         "allBooks": "Tous mes livres",
+        "catalogs": "Catalogues",
         "downloads": "Téléchargements",
         "fitlerTagTitle": "Filtrer par mot-clef",
         "gridTitle": "Grille",

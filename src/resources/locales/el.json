@@ -138,6 +138,7 @@
     },
     "header": {
         "allBooks": "Όλα τα βιβλία",
+        "catalogs": "",
         "downloads": "Λήψεις",
         "fitlerTagTitle": "",
         "gridTitle": "Προβολή πλέγματος",

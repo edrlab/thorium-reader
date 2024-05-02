@@ -138,6 +138,7 @@
     },
     "header": {
         "allBooks": "全部書籍",
+        "catalogs": "",
         "downloads": "下載",
         "fitlerTagTitle": "",
         "gridTitle": "網格視圖",

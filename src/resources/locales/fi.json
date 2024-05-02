@@ -138,6 +138,7 @@
     },
     "header": {
         "allBooks": "Kaikki kirjat",
+        "catalogs": "",
         "downloads": "Lataukset",
         "fitlerTagTitle": "",
         "gridTitle": "Ruudukkonäkymä",

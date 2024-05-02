@@ -138,6 +138,7 @@
     },
     "header": {
         "allBooks": "全部图书",
+        "catalogs": "",
         "downloads": "下载",
         "fitlerTagTitle": "",
         "gridTitle": "网格视图",

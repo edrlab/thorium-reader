@@ -138,6 +138,7 @@
     },
     "header": {
         "allBooks": "Tutti i libri",
+        "catalogs": "",
         "downloads": "Downloads",
         "fitlerTagTitle": "",
         "gridTitle": "Vista a griglia",
