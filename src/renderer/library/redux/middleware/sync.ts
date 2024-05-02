@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import {
-    apiActions, authActions, catalogActions, downloadActions, i18nActions, keyboardActions, lcpActions, publicationActions, readerActions, sessionActions, themeActions,
+    apiActions, authActions, catalogActions, downloadActions, i18nActions, keyboardActions, lcpActions, readerActions, sessionActions, themeActions, publicationActions, wizardActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
@@ -50,6 +50,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.bookmark.pop.ID,
     readerActions.bookmark.push.ID,
     readerActions.bookmark.update.ID,
+
+    wizardActions.setWizard.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

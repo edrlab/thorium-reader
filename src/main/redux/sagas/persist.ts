@@ -40,6 +40,7 @@ const persistStateToFs = async (nextState: RootState) => {
         i18n: nextState.i18n,
         opds: nextState.opds,
         version: nextState.version,
+        wizard: nextState.wizard,
     };
 
     await fsp.writeFile(stateFilePath, JSON.stringify(value), {encoding: "utf8"});

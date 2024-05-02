@@ -38,6 +38,7 @@ export const reduxPersistMiddleware: Middleware
                     },
                     opds: prevState.opds,
                     version: prevState.version,
+                    wizard: prevState.wizard,
                 };
 
                 const persistNextState: PersistRootState = {
@@ -53,6 +54,7 @@ export const reduxPersistMiddleware: Middleware
                     },
                     opds: nextState.opds,
                     version: nextState.version,
+                    wizard: nextState.wizard,
                 };
 
                 // RangeError: Maximum call stack size exceeded
