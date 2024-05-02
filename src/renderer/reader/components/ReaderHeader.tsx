@@ -948,7 +948,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                             {/* { this.props.menuOpen ? */}
 
-                            <Dialog.Root open={this.props.menuOpen} onOpenChange={(v) => { console.log("MENU DialogOnOpenChange", v); this.props.handleMenuClick(v); }} modal={false}>
+                            <Dialog.Root open={this.props.menuOpen} onOpenChange={(v) => { console.log("MENU DialogOnOpenChange", v); this.props.handleMenuClick(v); }} modal={this.props.readerPopoverDialogContext.dockedMode ? false : true}>
                                 <Dialog.Trigger asChild>
                                     <button
                                         aria-pressed={this.props.menuOpen}
@@ -990,7 +990,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             {...(this.props.settingsOpen &&
                                 { style: { backgroundColor: "var(--color-blue" } })}
                         >
-                            <Dialog.Root open={this.props.settingsOpen} onOpenChange={(v) => { console.log("SETTINGS DialogOnOpenChange", v); this.props.handleSettingsClick(v); }} modal={false}>
+                            <Dialog.Root open={this.props.settingsOpen} onOpenChange={(v) => { console.log("SETTINGS DialogOnOpenChange", v); this.props.handleSettingsClick(v); }} modal={this.props.readerPopoverDialogContext.dockedMode ? false : true}>
                                 <Dialog.Trigger asChild>
                                     <button
                                         aria-pressed={this.props.settingsOpen}
