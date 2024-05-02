@@ -280,12 +280,12 @@
         "licenseSignatureInvalid": "Licence signature is invalid",
         "licensed": "Licensed",
         "markAsRead": "Mark as read",
-        "notStarted": "",
-        "onGoing": "",
+        "notStarted": "Not Started",
+        "onGoing": "In Progress",
         "progression": {
             "title": "Progression"
         },
-        "read": "Read",
+        "read": "Finished",
         "remainingTime": "Loans (remaining days)",
         "renewButton": "Renew",
         "returnButton": "Return",

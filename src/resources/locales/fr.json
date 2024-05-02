@@ -280,12 +280,12 @@
         "licenseSignatureInvalid": "Signature de license invalide",
         "licensed": "Sous licence",
         "markAsRead": "Marquer comme lu",
-        "notStarted": "",
-        "onGoing": "",
+        "notStarted": "Non Demarré",
+        "onGoing": "En Cours",
         "progression": {
             "title": "Progression"
         },
-        "read": "Lu",
+        "read": "Terminé",
         "remainingTime": "Prêts (jours restant)",
         "renewButton": "Renouveler",
         "returnButton": "Retourner",
