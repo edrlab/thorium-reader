@@ -44,8 +44,8 @@ export const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayl
 
         paraSpacing: settings.paraSpacing,
 
-        night: settings.night || settings.theme === "night",
-        sepia: settings.sepia || settings.theme !== "neutral" && settings.theme !== "night", // settings.theme === "sepia", ReadiumCSS hack to enforce links and headings
+        night: settings.night && !settings.theme || settings.theme === "night",
+        sepia: settings.sepia && !settings.theme || settings.theme !== "neutral" && settings.theme !== "night", // settings.theme === "sepia", ReadiumCSS hack to enforce links and headings
 
         backgroundColor: (!settings.theme || settings.theme === "neutral") ? readiumCSSDefaults.backgroundColor :
             settings.theme === "sepia" ? "#faf4e8" :
