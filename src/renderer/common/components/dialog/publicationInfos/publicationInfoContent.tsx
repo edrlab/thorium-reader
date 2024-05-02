@@ -469,7 +469,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                                 publicationViewMaybeOpds.languages?.length ?
                                     <div>
                                         <strong>{`${__("catalog.lang")}: `}</strong>
-                                        <FormatPublicationLanguage publicationViewMaybeOpds={publicationViewMaybeOpds} __={__} />
+                                        <FormatPublicationLanguage publicationViewMaybeOpds={publicationViewMaybeOpds} />
                                         <br />
                                     </div> : undefined
                             }

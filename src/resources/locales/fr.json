@@ -138,6 +138,7 @@
     },
     "header": {
         "allBooks": "Tous mes livres",
+        "catalogs": "Catalogues",
         "downloads": "Téléchargements",
         "fitlerTagTitle": "Filtrer par mot-clef",
         "gridTitle": "Grille",
@@ -279,12 +280,12 @@
         "licenseSignatureInvalid": "Signature de license invalide",
         "licensed": "Sous licence",
         "markAsRead": "Marquer comme lu",
-        "notStarted": "Non Demarré",
-        "onGoing": "En Cours",
+        "notStarted": "",
+        "onGoing": "",
         "progression": {
             "title": "Progression"
         },
-        "read": "Fini",
+        "read": "Lu",
         "remainingTime": "Prêts (jours restant)",
         "renewButton": "Renouveler",
         "returnButton": "Retourner",

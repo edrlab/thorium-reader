@@ -138,6 +138,7 @@
     },
     "header": {
         "allBooks": "All books",
+        "catalogs": "Catalogs",
         "downloads": "Downloads",
         "fitlerTagTitle": "Filter by tag",
         "gridTitle": "Grid",
@@ -279,12 +280,12 @@
         "licenseSignatureInvalid": "Licence signature is invalid",
         "licensed": "Licensed",
         "markAsRead": "Mark as read",
-        "notStarted": "Not Started",
-        "onGoing": "In Progress",
+        "notStarted": "",
+        "onGoing": "",
         "progression": {
             "title": "Progression"
         },
-        "read": "Finished",
+        "read": "Read",
         "remainingTime": "Loans (remaining days)",
         "renewButton": "Renew",
         "returnButton": "Return",

@@ -138,6 +138,7 @@
     },
     "header": {
         "allBooks": "모든 도서",
+        "catalogs": "카탈로그",
         "downloads": "다운로드",
         "fitlerTagTitle": "",
         "gridTitle": "그리드보기",
