@@ -37,12 +37,6 @@ body {
       box-shadow: 0 0 5px 2px black;
     }
   }
-
-  @media (prefers-color-scheme: dark) {
-    .modal_dialog {
-      box-shadow: 0 0 5px 2px black;
-    }
-  }
 }
 
 input {
