@@ -11,9 +11,13 @@
         "toolbar": "лента с инструменти"
     },
     "apiapp": {
+        "documentation": "",
+        "howItWorks": "",
+        "informations": "",
         "noLibraryFound": "Няма намерена библиотека ({{- name}})"
     },
     "app": {
+        "downloadVersion": "",
         "edit": {
             "copy": "Копиране",
             "cut": "Изрязване",
@@ -24,6 +28,7 @@
             "undo": "Отмяна"
         },
         "hide": "Скрий {{- appName}}",
+        "newVersion": "",
         "quit": "Напусни {{- appName}}",
         "session": {
             "exit": {
@@ -82,7 +87,10 @@
         "opds": {
             "auth": {
                 "cancel": "Откажи",
-                "login": "Влез"
+                "login": "Влез",
+                "password": "",
+                "register": "",
+                "username": ""
             },
             "info": {
                 "availableSince": "от",
@@ -107,6 +115,7 @@
         "readBook": "Прочети",
         "released": "Публикувано на",
         "sort": "Сортирай по",
+        "tag": "",
         "tagCount": "Брой маркери",
         "tags": "Маркери",
         "update": "Редактирай"
@@ -120,6 +129,7 @@
         "importError": "възникна грешка, проверете файловото разширение ({{acceptedExtension}})",
         "renew": "Наистина ли искате да подновите лиценза за тази книга?",
         "return": "Наистина ли искате да върнете лиценза за тази книга?",
+        "save": "",
         "yes": "Да"
     },
     "error": {
@@ -134,15 +144,18 @@
         "books": "Моите книги",
         "catalogs": "Каталози",
         "downloads": "Сваляния",
+        "fitlerTagTitle": "",
         "gridTitle": "Мрежов изглед",
         "home": "Меню на лавицата",
         "homeTitle": "начало",
         "importTitle": "Добави книга",
         "listTitle": "Списъчен изглед",
+        "myCatalogs": "",
         "refreshTitle": "презареди",
         "searchPlaceholder": "Търси",
         "searchTitle": "Започни търсене",
-        "settings": "Настройки"
+        "settings": "Настройки",
+        "viewMode": ""
     },
     "library": {
         "lcp": {
@@ -150,7 +163,10 @@
             "password": "Парола",
             "sentence": "Тази публикация се нуждае от LCP парола, за да бъде отворена: ",
             "submit": "Изпрати",
-            "urlHint": "Забравили сте паролата си? Намерете помощ тук"
+            "urlHint": "Забравили сте паролата си? Намерете помощ тук",
+            "whatIsLcp?": "",
+            "whatIsLcpInfoDetails": "",
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -181,8 +197,10 @@
         "addMenu": "Добави OPDS канал",
         "back": "Назад",
         "breadcrumbRoot": "Каталози",
+        "documentation": "",
         "empty": "Няма намерени публикации",
         "firstPage": "Първа",
+        "informations": "",
         "lastPage": "Последна",
         "menu": {
             "aboutBook": "Относно тази книга",
@@ -207,7 +225,8 @@
             "title": "Редактиране на OPDS канал",
             "updateButton": "Редакция",
             "url": "Връзка:"
-        }
+        },
+        "whatIsOpds": ""
     },
     "publication": {
         "accessibility": {
@@ -240,6 +259,7 @@
             "name": "Достъпност",
             "noA11y": "Няма налична информация за достъпност"
         },
+        "actions": "",
         "audio": {
             "tracks": "Писти"
         },
@@ -250,30 +270,51 @@
         "cover": {
             "img": "корица"
         },
+        "day": "",
+        "days": "",
         "duration": {
             "title": "Продължителност"
         },
+        "expired": "",
         "expiredLcp": "Тази книга не може да бъде прочетена, защото лицензът за LCP е изтекъл.",
         "lcpEnd": "Край",
         "lcpRightsCopy": "Копиране на символи",
         "lcpRightsPrint": "Печат на страници",
         "lcpStart": "Начало",
+        "licenceLCP": "",
         "licenseOutOfDate": "Изтекъл срок на лиценза",
         "licenseSignatureDateInvalid": "Датата на ключа за лиценза е невалидна",
         "licenseSignatureInvalid": "Ключа за лиценза е невалиден",
+        "licensed": "",
+        "markAsRead": "",
         "progression": {
             "title": "Напредък"
         },
+        "read": "",
+        "remainingTime": "",
         "renewButton": "Поднови",
         "returnButton": "Върни",
         "returnedLcp": "Тази книга не може да бъде прочетена, защото лицензът за LCP е върнат.",
         "revokedLcp": "Тази книга не може да бъде прочетена, защото лицензът за LCP е отменен.",
         "seeLess": "Виж по-малко",
         "seeMore": "Виж повече",
+        "timeLeft": "",
         "title": "Title",
         "userKeyCheckInvalid": "Паролата е невалидна"
     },
     "reader": {
+        "annotations": {
+            "Color": "",
+            "addNote": "",
+            "advancedMode": "",
+            "advancedModeDetails": "",
+            "annotationsOptions": "",
+            "highlight": "",
+            "noSelectionToast": "",
+            "quickAnnotations": "",
+            "saveNote": "",
+            "toggleMarginMarks": ""
+        },
         "divina": {
             "mute": "заглуши звука",
             "unmute": "включване на звука"
@@ -282,28 +323,38 @@
             "lessInfo": "по-малко информация",
             "moreInfo": "повече информация"
         },
+        "fxl": {
+            "fit": ""
+        },
         "marks": {
             "annotations": "Анотации",
             "bookmarks": "Отметки",
             "delete": "Изтрий",
             "edit": "Edit",
+            "goTo": "",
             "landmarks": "Landmarks",
+            "noMark": "",
+            "saveMark": "",
             "search": "Търси",
+            "searchResult": "",
             "toc": "Съдържание"
         },
         "media-overlays": {
             "activate": "Активирай Четене на глас",
             "captions": "Надписи / чист изглед",
+            "captionsDescription": "",
             "next": "Следващ",
             "pause": "Пауза",
             "play": "Пусни Четене на глас",
             "previous": "Предишен",
             "skip": "Пропусни",
+            "skipDescription": "",
             "speed": "Скорост на възпроизвеждане",
             "stop": "Спри Четене на глас",
             "title": "Четене на глас"
         },
         "navigation": {
+            "annotationTitle": "",
             "backHomeTitle": "обратно към лавицата с книги",
             "bookmarkTitle": "отметка",
             "currentPage": "Текуща страница: {{- current}}",
@@ -319,6 +370,7 @@
             "infoTitle": "Информация",
             "magnifyingGlassButton": "търси в публикациите",
             "openTableOfContentsTitle": "навигация",
+            "page": "",
             "pdfscalemode": "Побиране в екрана или в ширината му",
             "quitFullscreenTitle": "излезте от режим на цял екран",
             "readBookTitle": "започнете да четете книгата",
@@ -332,6 +384,7 @@
                 "next": "Следващ",
                 "notFound": "няма съвпадения",
                 "previous": "Предишен",
+                "results": "",
                 "submit": "Намери"
             },
             "searchTitle": "Търси:"
@@ -345,12 +398,15 @@
                 "two": "2 кол.",
                 "twoTitle": "две колони"
             },
+            "customizeReader": "",
+            "disabled": "",
             "display": "Екран",
             "disposition": {
                 "title": "Оформление"
             },
             "font": "Шрифт",
             "fontSize": "Размер на шрифта",
+            "infoCustomFont": "",
             "justification": "Подравняване",
             "justify": "Двустранно",
             "letterSpacing": "Разстояние между буквите",
@@ -359,6 +415,7 @@
             "noFootnotes": "Деактивирайте бележките под линия",
             "noRTLFlip": "",
             "noRuby": "",
+            "options": "",
             "paginated": "Страниран",
             "paraSpacing": "Разстояние между параграфите",
             "pdfZoom": {
@@ -374,6 +431,7 @@
                 },
                 "title": "Мащабиране"
             },
+            "preview": "",
             "reduceMotion": "Намали движението",
             "save": {
                 "apply": "запиши",
@@ -408,6 +466,7 @@
             "play": "Стартирай",
             "previous": "Предишен",
             "sentenceDetect": "Разделен TTS текст",
+            "sentenceDetectDescription": "",
             "speed": "Скорост на възпроизвеждане",
             "stop": "Спри",
             "voice": "Глас"
@@ -420,6 +479,7 @@
         "keyboard": {
             "advancedMenu": "Меню",
             "cancel": "Отказ",
+            "disclaimer": "",
             "edit": "Редактирай",
             "editUserJson": "Редактиране на потребителски файл...",
             "hide": "Скрий",
@@ -433,9 +493,51 @@
             "languageChoice": "Избор на език"
         },
         "session": {
+            "description": "",
             "no": "Деактивирай",
             "title": "Запиши сесията",
             "yes": "Активирай"
+        },
+        "tabs": {
+            "appearance": "",
+            "general": "",
+            "keyboardShortcuts": "",
+            "reading": ""
+        },
+        "theme": {
+            "auto": "",
+            "dark": "",
+            "description": "",
+            "light": "",
+            "title": ""
+        }
+    },
+    "wizard": {
+        "buttons": {
+            "discover": "",
+            "goToBooks": "",
+            "next": ""
+        },
+        "description": {
+            "annotations": "",
+            "catalogs": "",
+            "home": "",
+            "readingView1": "",
+            "readingView2": "",
+            "yourBooks": ""
+        },
+        "dontShow": "",
+        "tab": {
+            "annotations": "",
+            "catalogs": "",
+            "home": "",
+            "readingView": "",
+            "yourBooks": ""
+        },
+        "title": {
+            "allBooks": "",
+            "newFeature": "",
+            "welcome": ""
         }
     }
 }

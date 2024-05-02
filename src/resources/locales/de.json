@@ -11,9 +11,13 @@
         "toolbar": "symbolleiste"
     },
     "apiapp": {
+        "documentation": "",
+        "howItWorks": "",
+        "informations": "",
         "noLibraryFound": ""
     },
     "app": {
+        "downloadVersion": "",
         "edit": {
             "copy": "Kopieren",
             "cut": "Ausschneiden",
@@ -24,6 +28,7 @@
             "undo": "Rückgängig"
         },
         "hide": "Ausblenden {{- appName}}",
+        "newVersion": "",
         "quit": "Beenden {{- appName}}",
         "session": {
             "exit": {
@@ -82,7 +87,10 @@
         "opds": {
             "auth": {
                 "cancel": "Abbrechen",
-                "login": ""
+                "login": "",
+                "password": "",
+                "register": "",
+                "username": ""
             },
             "info": {
                 "availableSince": "Verfügbar seit",
@@ -107,6 +115,7 @@
         "readBook": "Lesen",
         "released": "Veröffentlicht am",
         "sort": "Sortieren nach",
+        "tag": "",
         "tagCount": "Anzahl der Tags",
         "tags": "Tags",
         "update": ""
@@ -120,6 +129,7 @@
         "importError": "Ein Fehler ist aufgetreten, überprüfen Sie die Dateiendung ({{acceptedExtension}})",
         "renew": "",
         "return": "",
+        "save": "",
         "yes": "Ja"
     },
     "error": {
@@ -134,15 +144,18 @@
         "books": "Meine Bücher",
         "catalogs": "Kataloge",
         "downloads": "Downloads",
+        "fitlerTagTitle": "",
         "gridTitle": "Bücher in einem Raster präsentieren",
         "home": "Hauptmenü",
         "homeTitle": "home",
         "importTitle": "ein Buch importieren",
         "listTitle": "Bücher in einer Liste präsentieren",
+        "myCatalogs": "",
         "refreshTitle": "Feeds neu laden",
         "searchPlaceholder": "Suche",
         "searchTitle": "Suche starten",
-        "settings": "Einstellungen"
+        "settings": "Einstellungen",
+        "viewMode": ""
     },
     "library": {
         "lcp": {
@@ -150,7 +163,10 @@
             "password": "",
             "sentence": "Diese LCP-geschütze Publikation benötigt zum Öffnen ein Password: ",
             "submit": "Absenden",
-            "urlHint": ""
+            "urlHint": "",
+            "whatIsLcp?": "",
+            "whatIsLcpInfoDetails": "",
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -181,8 +197,10 @@
         "addMenu": "OPDS-Feed hinzufügen",
         "back": "Zurück",
         "breadcrumbRoot": "",
+        "documentation": "",
         "empty": "Keine Publikation gefunden",
         "firstPage": "Zuerst",
+        "informations": "",
         "lastPage": "Zuletzt",
         "menu": {
             "aboutBook": "Über dieses Buch",
@@ -207,7 +225,8 @@
             "title": "",
             "updateButton": "",
             "url": ""
-        }
+        },
+        "whatIsOpds": ""
     },
     "publication": {
         "accessibility": {
@@ -240,6 +259,7 @@
             "name": "",
             "noA11y": ""
         },
+        "actions": "",
         "audio": {
             "tracks": "Spuren"
         },
@@ -250,30 +270,51 @@
         "cover": {
             "img": "Titelbild"
         },
+        "day": "",
+        "days": "",
         "duration": {
             "title": "Dauer"
         },
+        "expired": "",
         "expiredLcp": "",
         "lcpEnd": "",
         "lcpRightsCopy": "Kopierte Zeichen",
         "lcpRightsPrint": "Gedruckte Seiten",
         "lcpStart": "",
+        "licenceLCP": "",
         "licenseOutOfDate": "",
         "licenseSignatureDateInvalid": "",
         "licenseSignatureInvalid": "",
+        "licensed": "",
+        "markAsRead": "",
         "progression": {
             "title": "Fortschreiten"
         },
+        "read": "",
+        "remainingTime": "",
         "renewButton": "Verlängern",
         "returnButton": "Zurückgeben",
         "returnedLcp": "",
         "revokedLcp": "",
         "seeLess": "Weniger Infos",
         "seeMore": "Mehr Infos",
+        "timeLeft": "",
         "title": "",
         "userKeyCheckInvalid": ""
     },
     "reader": {
+        "annotations": {
+            "Color": "",
+            "addNote": "",
+            "advancedMode": "",
+            "advancedModeDetails": "",
+            "annotationsOptions": "",
+            "highlight": "",
+            "noSelectionToast": "",
+            "quickAnnotations": "",
+            "saveNote": "",
+            "toggleMarginMarks": ""
+        },
         "divina": {
             "mute": "",
             "unmute": ""
@@ -282,28 +323,38 @@
             "lessInfo": "Weniger Informationen",
             "moreInfo": "Mehr Informationen"
         },
+        "fxl": {
+            "fit": ""
+        },
         "marks": {
             "annotations": "Meine Anmerkungen",
             "bookmarks": "Meine Lesezeichen",
             "delete": "Löschen",
             "edit": "Bearbeiten",
+            "goTo": "",
             "landmarks": "Navigationspunkte",
+            "noMark": "",
+            "saveMark": "",
             "search": "",
+            "searchResult": "",
             "toc": "Inhaltsverzeichnis"
         },
         "media-overlays": {
             "activate": "",
             "captions": "",
+            "captionsDescription": "",
             "next": "",
             "pause": "",
             "play": "",
             "previous": "",
             "skip": "",
+            "skipDescription": "",
             "speed": "",
             "stop": "",
             "title": ""
         },
         "navigation": {
+            "annotationTitle": "",
             "backHomeTitle": "Zurück zum Bücherregal",
             "bookmarkTitle": "Lesezeichen setzen",
             "currentPage": "",
@@ -319,6 +370,7 @@
             "infoTitle": "Informationen",
             "magnifyingGlassButton": "",
             "openTableOfContentsTitle": "Navigation",
+            "page": "",
             "pdfscalemode": "",
             "quitFullscreenTitle": "Vollbildmodus beenden",
             "readBookTitle": "Mit dem Lesen des Buches beginnen",
@@ -332,6 +384,7 @@
                 "next": "",
                 "notFound": "",
                 "previous": "",
+                "results": "",
                 "submit": ""
             },
             "searchTitle": ""
@@ -345,12 +398,15 @@
                 "two": "2 Spalten",
                 "twoTitle": "2 Spalten"
             },
+            "customizeReader": "",
+            "disabled": "",
             "display": "Lesefluss",
             "disposition": {
                 "title": ""
             },
             "font": "Schriftart",
             "fontSize": "Schriftgröße:",
+            "infoCustomFont": "",
             "justification": "Textausrichtung",
             "justify": "Blocksatz",
             "letterSpacing": "Buchstabenabstand",
@@ -359,6 +415,7 @@
             "noFootnotes": "",
             "noRTLFlip": "",
             "noRuby": "",
+            "options": "",
             "paginated": "Seitendarstellung",
             "paraSpacing": "",
             "pdfZoom": {
@@ -374,6 +431,7 @@
                 },
                 "title": ""
             },
+            "preview": "",
             "reduceMotion": "",
             "save": {
                 "apply": "Speichern",
@@ -408,6 +466,7 @@
             "play": "",
             "previous": "",
             "sentenceDetect": "",
+            "sentenceDetectDescription": "",
             "speed": "",
             "stop": "",
             "voice": ""
@@ -420,6 +479,7 @@
         "keyboard": {
             "advancedMenu": "Menü",
             "cancel": "Stornieren",
+            "disclaimer": "",
             "edit": "Bearbeiten",
             "editUserJson": "Benutzerdatei bearbeiten ...",
             "hide": "Ausblenden",
@@ -433,9 +493,51 @@
             "languageChoice": "Sprachauswahl"
         },
         "session": {
+            "description": "",
             "no": "Deaktivieren",
             "title": "Sitzung speichern",
             "yes": "aktivieren"
+        },
+        "tabs": {
+            "appearance": "",
+            "general": "",
+            "keyboardShortcuts": "",
+            "reading": ""
+        },
+        "theme": {
+            "auto": "",
+            "dark": "",
+            "description": "",
+            "light": "",
+            "title": ""
+        }
+    },
+    "wizard": {
+        "buttons": {
+            "discover": "",
+            "goToBooks": "",
+            "next": ""
+        },
+        "description": {
+            "annotations": "",
+            "catalogs": "",
+            "home": "",
+            "readingView1": "",
+            "readingView2": "",
+            "yourBooks": ""
+        },
+        "dontShow": "",
+        "tab": {
+            "annotations": "",
+            "catalogs": "",
+            "home": "",
+            "readingView": "",
+            "yourBooks": ""
+        },
+        "title": {
+            "allBooks": "",
+            "newFeature": "",
+            "welcome": ""
         }
     }
 }

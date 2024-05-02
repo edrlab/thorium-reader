@@ -11,9 +11,13 @@
         "toolbar": "Панель инструментов"
     },
     "apiapp": {
+        "documentation": "",
+        "howItWorks": "",
+        "informations": "",
         "noLibraryFound": ""
     },
     "app": {
+        "downloadVersion": "",
         "edit": {
             "copy": "Копировать",
             "cut": "Вырезать",
@@ -24,6 +28,7 @@
             "undo": "Отменить"
         },
         "hide": "Скрыть {{- appName}}",
+        "newVersion": "",
         "quit": "Выйти {{- appName}}",
         "session": {
             "exit": {
@@ -82,7 +87,10 @@
         "opds": {
             "auth": {
                 "cancel": "Отменить",
-                "login": ""
+                "login": "",
+                "password": "",
+                "register": "",
+                "username": ""
             },
             "info": {
                 "availableSince": "C",
@@ -107,6 +115,7 @@
         "readBook": "Читать",
         "released": "Дата издания",
         "sort": "Сортировать по",
+        "tag": "",
         "tagCount": "Количество тегов",
         "tags": "Теги",
         "update": ""
@@ -120,6 +129,7 @@
         "importError": "произошла ошибка, проверьте расширение вашего файла ({{acceptedExtension}})",
         "renew": "Вы действительно хотите продлить лицензию на эту книгу?",
         "return": "Вы действительно хотите вернуть лицензию на эту книгу?",
+        "save": "",
         "yes": "Да"
     },
     "error": {
@@ -134,15 +144,18 @@
         "books": "Мои книги",
         "catalogs": "Каталоги",
         "downloads": "Загрузки",
+        "fitlerTagTitle": "",
         "gridTitle": "Вид сетки",
         "home": "Меню книжной полки",
         "homeTitle": "Начало",
         "importTitle": "Импорт книги",
         "listTitle": "Вид списка",
+        "myCatalogs": "",
         "refreshTitle": "Перезагрузить",
         "searchPlaceholder": "Поиск",
         "searchTitle": "Начать поиск",
-        "settings": "Настройки"
+        "settings": "Настройки",
+        "viewMode": ""
     },
     "library": {
         "lcp": {
@@ -150,7 +163,10 @@
             "password": "Пароль",
             "sentence": "Для открытия этой книги требуется пароль LCP: ",
             "submit": "Отправить",
-            "urlHint": ""
+            "urlHint": "",
+            "whatIsLcp?": "",
+            "whatIsLcpInfoDetails": "",
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -181,8 +197,10 @@
         "addMenu": "Добавить OPDS каталог",
         "back": "Назад",
         "breadcrumbRoot": "Каталоги",
+        "documentation": "",
         "empty": "Книга не найдена",
         "firstPage": "Первая",
+        "informations": "",
         "lastPage": "Последняя",
         "menu": {
             "aboutBook": "Об этой книге",
@@ -207,7 +225,8 @@
             "title": "",
             "updateButton": "",
             "url": ""
-        }
+        },
+        "whatIsOpds": ""
     },
     "publication": {
         "accessibility": {
@@ -240,6 +259,7 @@
             "name": "",
             "noA11y": ""
         },
+        "actions": "",
         "audio": {
             "tracks": "Треки"
         },
@@ -250,30 +270,51 @@
         "cover": {
             "img": "обложка"
         },
+        "day": "",
+        "days": "",
         "duration": {
             "title": "Продолжительность"
         },
+        "expired": "",
         "expiredLcp": "Эту книгу нельзя прочитать, потому что срок действия лицензии LCP истек.",
         "lcpEnd": "Конец",
         "lcpRightsCopy": "Количество символов для копирования",
         "lcpRightsPrint": "Количество страниц, разрешенных для печати",
         "lcpStart": "Начать",
+        "licenceLCP": "",
         "licenseOutOfDate": "Лицензия устарела",
         "licenseSignatureDateInvalid": "Дата подписания лицензии недействительна",
         "licenseSignatureInvalid": "Лицензионная подпись недействительна",
+        "licensed": "",
+        "markAsRead": "",
         "progression": {
             "title": "Прогресс"
         },
+        "read": "",
+        "remainingTime": "",
         "renewButton": "Продлить",
         "returnButton": "Вернуть",
         "returnedLcp": "Эту книгу невозможно прочитать, поскольку была возвращена лицензия LCP.",
         "revokedLcp": "Эту книгу нельзя прочитать, потому что лицензия LCP была отозвана.",
         "seeLess": "Скрыть",
         "seeMore": "Подробнее",
+        "timeLeft": "",
         "title": "",
         "userKeyCheckInvalid": "Пароль неверен"
     },
     "reader": {
+        "annotations": {
+            "Color": "",
+            "addNote": "",
+            "advancedMode": "",
+            "advancedModeDetails": "",
+            "annotationsOptions": "",
+            "highlight": "",
+            "noSelectionToast": "",
+            "quickAnnotations": "",
+            "saveNote": "",
+            "toggleMarginMarks": ""
+        },
         "divina": {
             "mute": "",
             "unmute": ""
@@ -282,28 +323,38 @@
             "lessInfo": "подробнее",
             "moreInfo": "скрыть"
         },
+        "fxl": {
+            "fit": ""
+        },
         "marks": {
             "annotations": "Аннотации",
             "bookmarks": "Закладки",
             "delete": "Удалить",
             "edit": "Редактировать",
+            "goTo": "",
             "landmarks": "Ориентиры",
+            "noMark": "",
+            "saveMark": "",
             "search": "Поиск",
+            "searchResult": "",
             "toc": "Содержание"
         },
         "media-overlays": {
             "activate": "Активировать Readaloud",
             "captions": "Подписи / чистый вид",
+            "captionsDescription": "",
             "next": "Далее Readaloud",
             "pause": "Пауза Readaloud",
             "play": "Играть Readaloud",
             "previous": "Предыдущий Readaloud",
             "skip": "Возможность пропуска",
+            "skipDescription": "",
             "speed": "Readaloud скорость воспроизведения",
             "stop": "Остановить Readaloud",
             "title": "Readaloud"
         },
         "navigation": {
+            "annotationTitle": "",
             "backHomeTitle": "назад к книжной полке",
             "bookmarkTitle": "закладка",
             "currentPage": "",
@@ -319,6 +370,7 @@
             "infoTitle": "информация",
             "magnifyingGlassButton": "искать в книге",
             "openTableOfContentsTitle": "навигация",
+            "page": "",
             "pdfscalemode": "",
             "quitFullscreenTitle": "выйти из полноэкранного режима",
             "readBookTitle": "начать читать книгу",
@@ -332,6 +384,7 @@
                 "next": "Далее",
                 "notFound": "нет совпадений",
                 "previous": "Назад",
+                "results": "",
                 "submit": "Найти"
             },
             "searchTitle": "Поиск:"
@@ -345,12 +398,15 @@
                 "two": "2 столбца",
                 "twoTitle": "два столбца"
             },
+            "customizeReader": "",
+            "disabled": "",
             "display": "Отображение",
             "disposition": {
                 "title": "Разметка"
             },
             "font": "Шрифт",
             "fontSize": "Размер шрифта",
+            "infoCustomFont": "",
             "justification": "Выравнивание",
             "justify": "Простое",
             "letterSpacing": "Межбуквенное расстояние",
@@ -359,6 +415,7 @@
             "noFootnotes": "",
             "noRTLFlip": "",
             "noRuby": "",
+            "options": "",
             "paginated": "Страничная",
             "paraSpacing": "Интервал между абзацами",
             "pdfZoom": {
@@ -374,6 +431,7 @@
                 },
                 "title": "Увеличить"
             },
+            "preview": "",
             "reduceMotion": "",
             "save": {
                 "apply": "сохрнить",
@@ -408,6 +466,7 @@
             "play": "Воспроизвести текст в речь",
             "previous": "Предыдущий текст в речь",
             "sentenceDetect": "",
+            "sentenceDetectDescription": "",
             "speed": "Скорость воспроизведения текста в речь",
             "stop": "Прекратить преобразование текста в речь",
             "voice": ""
@@ -420,6 +479,7 @@
         "keyboard": {
             "advancedMenu": "Меню",
             "cancel": "Отменить",
+            "disclaimer": "",
             "edit": "Редактировать",
             "editUserJson": "Редактировать файл пользователя...",
             "hide": "Скрыть",
@@ -433,9 +493,51 @@
             "languageChoice": "Выбор языка"
         },
         "session": {
+            "description": "",
             "no": "Отключить",
             "title": "Сохранение сеанса",
             "yes": "Включить"
+        },
+        "tabs": {
+            "appearance": "",
+            "general": "",
+            "keyboardShortcuts": "",
+            "reading": ""
+        },
+        "theme": {
+            "auto": "",
+            "dark": "",
+            "description": "",
+            "light": "",
+            "title": ""
+        }
+    },
+    "wizard": {
+        "buttons": {
+            "discover": "",
+            "goToBooks": "",
+            "next": ""
+        },
+        "description": {
+            "annotations": "",
+            "catalogs": "",
+            "home": "",
+            "readingView1": "",
+            "readingView2": "",
+            "yourBooks": ""
+        },
+        "dontShow": "",
+        "tab": {
+            "annotations": "",
+            "catalogs": "",
+            "home": "",
+            "readingView": "",
+            "yourBooks": ""
+        },
+        "title": {
+            "allBooks": "",
+            "newFeature": "",
+            "welcome": ""
         }
     }
 }

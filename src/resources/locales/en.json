@@ -11,12 +11,13 @@
         "toolbar": "toolbar"
     },
     "apiapp": {
-        "noLibraryFound": "No library found ({{- name}})",
+        "documentation": "Thorium Documentation",
         "howItWorks": "How does it works?",
         "informations": "Many public libraries and bookstores are adopting OPDS as a standard format to display their catalog on the Web. Thorium can provide access to OPDS 1 and 2 catalogs. It also supports several identification formats associated with OPDS and can therefore provide users with access to their personal library, i.e. the digital books that the user has acquired or borrowed, allowing them to be downloaded and read immediately.",
-        "documentation": "Thorium Documentation"
+        "noLibraryFound": "No library found ({{- name}})"
     },
     "app": {
+        "downloadVersion": "Download {{- appName}}",
         "edit": {
             "copy": "Copy",
             "cut": "Cut",
@@ -27,9 +28,8 @@
             "undo": "Undo"
         },
         "hide": "Hide {{- appName}}",
-        "quit": "Quit {{- appName}}",
         "newVersion": "A new version of Thorium is available.",
-        "downloadVersion": "Download {{- appName}}",
+        "quit": "Quit {{- appName}}",
         "session": {
             "exit": {
                 "askBox": {
@@ -88,9 +88,9 @@
             "auth": {
                 "cancel": "Cancel",
                 "login": "Login",
+                "password": "Password",
                 "register": "Register",
-                "username": "Username / Email Address",
-                "password": "Password"
+                "username": "Username / Email Address"
             },
             "info": {
                 "availableSince": "Since",
@@ -197,8 +197,10 @@
         "addMenu": "Add OPDS feed",
         "back": "Back",
         "breadcrumbRoot": "Catalogs",
+        "documentation": "OPDS official website",
         "empty": "No publication found",
         "firstPage": "First",
+        "informations": "The Open Publication Distribution System (OPDS) catalogue format is a way to distribute, discover, and download electronic publications.",
         "lastPage": "Last",
         "menu": {
             "aboutBook": "About this book",
@@ -224,9 +226,7 @@
             "updateButton": "Edit",
             "url": "Link:"
         },
-        "whatIsOpds": "What Is OPDS?",
-        "informations": "The Open Publication Distribution System (OPDS) catalogue format is a way to distribute, discover, and download electronic publications.",
-        "documentation": "OPDS official website"
+        "whatIsOpds": "What Is OPDS?"
     },
     "publication": {
         "accessibility": {
@@ -259,6 +259,7 @@
             "name": "Accessibility",
             "noA11y": "No accessibility information available"
         },
+        "actions": "Actions",
         "audio": {
             "tracks": "Tracks"
         },
@@ -269,38 +270,37 @@
         "cover": {
             "img": "cover image"
         },
+        "day": "day",
+        "days": "days",
         "duration": {
             "title": "Duration"
         },
+        "expired": "Loan expired",
         "expiredLcp": "This book can't be read because the LCP licence has expired.",
         "lcpEnd": "End",
         "lcpRightsCopy": "Copied characters",
         "lcpRightsPrint": "Printed pages",
         "lcpStart": "Start",
+        "licenceLCP": "Licence (LCP)",
         "licenseOutOfDate": "Licence is out of date",
         "licenseSignatureDateInvalid": "Licence signature date is invalid",
         "licenseSignatureInvalid": "Licence signature is invalid",
+        "licensed": "Licensed",
+        "markAsRead": "Mark as read",
         "progression": {
             "title": "Progression"
         },
+        "read": "Read",
+        "remainingTime": "Loans (remaining days)",
         "renewButton": "Renew",
         "returnButton": "Return",
         "returnedLcp": "This book can't be read because the LCP licence has been returned.",
         "revokedLcp": "This book can't be read because the LCP licence has been revoked.",
         "seeLess": "See less",
         "seeMore": "See more",
-        "title": "Title",
-        "userKeyCheckInvalid": "Passphrase is incorrect",
-        "markAsRead": "Mark as read",
-        "licenceLCP": "Licence (LCP)",
-        "remainingTime": "Loans (remaining days)",
-        "day": "day",
-        "days": "days",
-        "expired": "Loan expired",
-        "read": "Read",
-        "licensed": "Licensed",
         "timeLeft": "Left",
-        "actions": "Actions"
+        "title": "Title",
+        "userKeyCheckInvalid": "Passphrase is incorrect"
     },
     "reader": {
         "annotations": {
@@ -331,27 +331,27 @@
             "bookmarks": "Bookmarks",
             "delete": "Delete",
             "edit": "Edit",
+            "goTo": "Go to page",
             "landmarks": "Landmarks",
             "noMark": "To add a bookmark, select the Bookmark toolbar button.",
             "saveMark": "Save the bookmark",
             "search": "Search",
             "searchResult": "Search - « {{- searchText}} »",
-            "toc": "Table of Contents",
-            "goTo": "Go to page"
+            "toc": "Table of Contents"
         },
         "media-overlays": {
             "activate": "Activate Readaloud",
             "captions": "Captions / clean view",
+            "captionsDescription": "Scroll through text, focusing on each paragraph automatically.",
             "next": "Next Readaloud",
             "pause": "Pause Readaloud",
             "play": "Play Readaloud",
             "previous": "Previous Readaloud",
             "skip": "Skippability",
+            "skipDescription": "Hide auxiliary contents authored as footnotes, endnotes, pagebreaks and asides.",
             "speed": "Readaloud playback rate",
             "stop": "Stop Readaloud",
-            "title": "Readaloud",
-            "captionsDescription": "Scroll through text, focusing on each paragraph automatically.",
-            "skipDescription": "Hide auxiliary contents authored as footnotes, endnotes, pagebreaks and asides."
+            "title": "Readaloud"
         },
         "navigation": {
             "annotationTitle": "annotation",
@@ -406,6 +406,7 @@
             },
             "font": "Font",
             "fontSize": "Font size",
+            "infoCustomFont": "You can add a custom font from your system by typing its name in the input",
             "justification": "Alignment",
             "justify": "Justify",
             "letterSpacing": "Letter spacing",
@@ -431,7 +432,6 @@
                 "title": "Zoom"
             },
             "preview": "Preview",
-            "infoCustomFont": "You can add a custom font from your system by typing its name in the input",
             "reduceMotion": "Reduce motion",
             "save": {
                 "apply": "save",
@@ -466,10 +466,10 @@
             "play": "Play Text To Speech",
             "previous": "Previous Text To Speech",
             "sentenceDetect": "Split TTS text",
+            "sentenceDetectDescription": "focuses phrase by phrase",
             "speed": "Text To Speech playback rate",
             "stop": "Stop Text To Speech",
-            "voice": "Text To Speech voice",
-            "sentenceDetectDescription": "focuses phrase by phrase"
+            "voice": "Text To Speech voice"
         }
     },
     "settings": {
@@ -513,31 +513,31 @@
         }
     },
     "wizard": {
-        "dontShow": "Don't show anymore",
-        "tab": {
-            "home": "Home",
-            "yourBooks": "Your books",
-            "catalogs": "Catalogs",
-            "readingView": "Reading view",
-            "annotations": "Annotations"
-        },
-        "title": {
-            "welcome": "Welcome in Thorium 3.0",
-            "allBooks": "All my books",
-            "newFeature": "New feature : Annotations"
+        "buttons": {
+            "discover": "Discover what's new",
+            "goToBooks": "Go to my books",
+            "next": "Next"
         },
         "description": {
-            "home": "Thorium gets a makeover, let's discover what's new!",
-            "yourBooks": "Welcome in your personnal bookshelf: filter and easily find a book in the grid view or do a advanced search in the table view.",
+            "annotations": "Highlight important passages, take notes. Thanks to the advanced mode you can even make annotations on the fly.",
             "catalogs": "Borrow books from your local library or discover new books with the OPDS catalogs -- It works like an online catalog and allow you to access a variety of publications from multiple sources.",
+            "home": "Thorium gets a makeover, let's discover what's new!",
             "readingView1": "Thorium adapts itself to your reading preferences: choose amongst various themes, adjust text parameters or use readaloud while folllowing the text in the screen.",
             "readingView2": "Search, navigate to a precise location, add bookmarks or enjoy the full screen mode for distraction-free reading sessions.",
-            "annotations": "Highlight important passages, take notes. Thanks to the advanced mode you can even make annotations on the fly."
+            "yourBooks": "Welcome in your personnal bookshelf: filter and easily find a book in the grid view or do a advanced search in the table view."
         },
-        "buttons": {
-            "goToBooks": "Go to my books",
-            "discover": "Discover what's new",
-            "next": "Next"
+        "dontShow": "Don't show anymore",
+        "tab": {
+            "annotations": "Annotations",
+            "catalogs": "Catalogs",
+            "home": "Home",
+            "readingView": "Reading view",
+            "yourBooks": "Your books"
+        },
+        "title": {
+            "allBooks": "All my books",
+            "newFeature": "New feature : Annotations",
+            "welcome": "Welcome in Thorium 3.0"
         }
     }
 }

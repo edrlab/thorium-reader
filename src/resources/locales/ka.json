@@ -11,9 +11,13 @@
         "toolbar": "ინსტრუმენტთა პანელი"
     },
     "apiapp": {
+        "documentation": "",
+        "howItWorks": "",
+        "informations": "",
         "noLibraryFound": ""
     },
     "app": {
+        "downloadVersion": "",
         "edit": {
             "copy": "ასლი",
             "cut": "ამოჭრა",
@@ -24,6 +28,7 @@
             "undo": "დაბრუნება"
         },
         "hide": "დამალვა {{- appName}}",
+        "newVersion": "",
         "quit": "დახურვა {{- appName}}",
         "session": {
             "exit": {
@@ -82,7 +87,10 @@
         "opds": {
             "auth": {
                 "cancel": "გადაფიქრება",
-                "login": "შესვლა"
+                "login": "შესვლა",
+                "password": "",
+                "register": "",
+                "username": ""
             },
             "info": {
                 "availableSince": "თარიღიდან",
@@ -107,6 +115,7 @@
         "readBook": "წაკითხვა",
         "released": "გამოცემის თარიღი",
         "sort": "დალაგება",
+        "tag": "",
         "tagCount": "იარლიყების რაოდენობა",
         "tags": "იარლიყები",
         "update": ""
@@ -120,6 +129,7 @@
         "importError": "მოხდა შეცდომა, გადაამოწმეთ ფაილის გაფართოება ({{acceptedExtension}})",
         "renew": "ნამდვილად გსურთ ამ პუბლიკაციის ლიცენზიის განახლება?",
         "return": "ნამდვილად გსურთ ამ პუბლიკაციის ლიცენზიის დაბრუნება?",
+        "save": "",
         "yes": "დიახ"
     },
     "error": {
@@ -134,15 +144,18 @@
         "books": "ჩემი წიგნები",
         "catalogs": "კატალოგები",
         "downloads": "გადმოტვირთვები",
+        "fitlerTagTitle": "",
         "gridTitle": "ბადისებრი ხედი",
         "home": "წიგნების კარადის მენიუ",
         "homeTitle": "შინ",
         "importTitle": "პუბლიკაციის შემოტანა",
         "listTitle": "სიისებრი ხედი",
+        "myCatalogs": "",
         "refreshTitle": "გადატვირთვა",
         "searchPlaceholder": "ძიება",
         "searchTitle": "ძიების დაწყება",
-        "settings": "პარამეტრები"
+        "settings": "პარამეტრები",
+        "viewMode": ""
     },
     "library": {
         "lcp": {
@@ -150,7 +163,10 @@
             "password": "კოდური ფრაზა",
             "sentence": "ეს პუბლიკაცია საჭიროებს LCP კოდურ ფრაზას გასახსნელად: ",
             "submit": "წარდგენა",
-            "urlHint": "დაგავიწყდა კოდური ფრაზა? აქ მოიძიე დახმარება"
+            "urlHint": "დაგავიწყდა კოდური ფრაზა? აქ მოიძიე დახმარება",
+            "whatIsLcp?": "",
+            "whatIsLcpInfoDetails": "",
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -181,8 +197,10 @@
         "addMenu": "OPDS წყაროს დამატება",
         "back": "უკან",
         "breadcrumbRoot": "კატალოგები",
+        "documentation": "",
         "empty": "პუბლიკაცია არაა ნაპოვნი",
         "firstPage": "პირველი",
+        "informations": "",
         "lastPage": "უკანასკნელი",
         "menu": {
             "aboutBook": "ამ წიგნის შესახებ",
@@ -207,7 +225,8 @@
             "title": "",
             "updateButton": "",
             "url": ""
-        }
+        },
+        "whatIsOpds": ""
     },
     "publication": {
         "accessibility": {
@@ -240,6 +259,7 @@
             "name": "",
             "noA11y": ""
         },
+        "actions": "",
         "audio": {
             "tracks": "აუდიო ნაკვალევები"
         },
@@ -250,30 +270,51 @@
         "cover": {
             "img": "ყდის სურათი"
         },
+        "day": "",
+        "days": "",
         "duration": {
             "title": "ხანგრძლივობა"
         },
+        "expired": "",
         "expiredLcp": "ამ წიგნის წაკითხვა შეუძლებელია რადგან LCP ლიცენზიას ვადა გაუვიდა.",
         "lcpEnd": "დასასრული",
         "lcpRightsCopy": "ასლისთვის სიმბოლოების რაოდენობა",
         "lcpRightsPrint": "ბეჭდისთვის ნებადართული გვერდების რაოდენობა",
         "lcpStart": "დაწყება",
+        "licenceLCP": "",
         "licenseOutOfDate": "ლიცენზია მოძველდა",
         "licenseSignatureDateInvalid": "ლიცენზიის ხელმოწერის თარიღი არასწორია",
         "licenseSignatureInvalid": "ლიცენზიის ხელმოწერა არასწორია",
+        "licensed": "",
+        "markAsRead": "",
         "progression": {
             "title": "პროგრესია"
         },
+        "read": "",
+        "remainingTime": "",
         "renewButton": "განახლება",
         "returnButton": "დაბრუნება",
         "returnedLcp": "ამ წიგნის წაკითხვა შეუძლებელია რადგან LCP ლიცენზია დაბრუნებულია.",
         "revokedLcp": "ამ წიგნის წაკითხვა შეუძლებელია რადგან LCP ლიცენზია ანულირებულია.",
         "seeLess": "ნაკლების ნახვა",
         "seeMore": "მეტის ნახვა",
+        "timeLeft": "",
         "title": "",
         "userKeyCheckInvalid": "კოდური ფრაზა არასწორია"
     },
     "reader": {
+        "annotations": {
+            "Color": "",
+            "addNote": "",
+            "advancedMode": "",
+            "advancedModeDetails": "",
+            "annotationsOptions": "",
+            "highlight": "",
+            "noSelectionToast": "",
+            "quickAnnotations": "",
+            "saveNote": "",
+            "toggleMarginMarks": ""
+        },
         "divina": {
             "mute": "გაჩუმება",
             "unmute": "ხმის ჩართვა"
@@ -282,28 +323,38 @@
             "lessInfo": "ნაკლები ინფორმაცია",
             "moreInfo": "მეტი ინფორმაცია"
         },
+        "fxl": {
+            "fit": ""
+        },
         "marks": {
             "annotations": "ანოტაციები",
             "bookmarks": "სანიშნეები",
             "delete": "წაშლა",
             "edit": "გადაკეთება",
+            "goTo": "",
             "landmarks": "ორიენტირები",
+            "noMark": "",
+            "saveMark": "",
             "search": "ძიება",
+            "searchResult": "",
             "toc": "სარჩევი"
         },
         "media-overlays": {
             "activate": "ხმამაღლა კითხვის გააქტიურება",
             "captions": "სუბტიტრები / სუფთა ხედი",
+            "captionsDescription": "",
             "next": "მომდევნო ტექსტის ამოკითხვა",
             "pause": "ტექსტის მეტყველების დაპაუზება",
             "play": "ტექსტის მეტყველების ჩართვა",
             "previous": "წინა ტექსტის ამოკითხვა",
             "skip": "გამოტოვების შესაძლებლობა",
+            "skipDescription": "",
             "speed": "ტექსტის მეტყველების დაკვრის სისწრაფე",
             "stop": "ტექსტის მეტყველების შეჩერება",
             "title": "ტექსტის მეტყველება"
         },
         "navigation": {
+            "annotationTitle": "",
             "backHomeTitle": "წიგნების თაროში დაბრუნება",
             "bookmarkTitle": "სანიშნე",
             "currentPage": "წინა გვერდი: {{- current}}",
@@ -319,6 +370,7 @@
             "infoTitle": "ინფორმაცია",
             "magnifyingGlassButton": "პუბლიკაციაში ძიება",
             "openTableOfContentsTitle": "ნავიგაცია",
+            "page": "",
             "pdfscalemode": "გვერდზე მორგება ან სიგანე",
             "quitFullscreenTitle": "სრული ეკრანის გამორთვა",
             "readBookTitle": "წიგნის კითხვის დაწყება",
@@ -332,6 +384,7 @@
                 "next": "მომდევნო",
                 "notFound": "არაფერია ნაპოვნი",
                 "previous": "წინა",
+                "results": "",
                 "submit": "პოვნა"
             },
             "searchTitle": "ძიება:"
@@ -345,12 +398,15 @@
                 "two": "2 სვეტი",
                 "twoTitle": "ორი სვეტი"
             },
+            "customizeReader": "",
+            "disabled": "",
             "display": "გამოსახულება",
             "disposition": {
                 "title": "განლაგება"
             },
             "font": "ფონტი",
             "fontSize": "ფონტის ზომა",
+            "infoCustomFont": "",
             "justification": "გასწორება",
             "justify": "გამართვა",
             "letterSpacing": "ასოების დაშორება",
@@ -359,6 +415,7 @@
             "noFootnotes": "სქოლიოს გათიშვა",
             "noRTLFlip": "",
             "noRuby": "",
+            "options": "",
             "paginated": "დანომრილი",
             "paraSpacing": "პარაგრაფების დაშორება",
             "pdfZoom": {
@@ -374,6 +431,7 @@
                 },
                 "title": "მოახლოება"
             },
+            "preview": "",
             "reduceMotion": "მოძრაობის შემცირება",
             "save": {
                 "apply": "შენახვა",
@@ -408,6 +466,7 @@
             "play": "ტექსტის მეტყველების დაკვრა",
             "previous": "წინა ტექსტის წარმოთქმა",
             "sentenceDetect": "ტექსტის გაყოფა",
+            "sentenceDetectDescription": "",
             "speed": "ტექსტის მეტყველების სისწრაფე",
             "stop": "ტექსტის მეტყველების შეჩერება",
             "voice": "ტექსტის მეტყველების ხმა"
@@ -420,6 +479,7 @@
         "keyboard": {
             "advancedMenu": "მენიუ",
             "cancel": "გადაფიქრება",
+            "disclaimer": "",
             "edit": "შერჩევა",
             "editUserJson": "მომხმარებლის ფაილის რედაქტირება...",
             "hide": "დამალვა",
@@ -433,9 +493,51 @@
             "languageChoice": "ენის არჩევანი"
         },
         "session": {
+            "description": "",
             "no": "გამორთულია",
             "title": "სესიის შენახვა",
             "yes": "ჩართულია"
+        },
+        "tabs": {
+            "appearance": "",
+            "general": "",
+            "keyboardShortcuts": "",
+            "reading": ""
+        },
+        "theme": {
+            "auto": "",
+            "dark": "",
+            "description": "",
+            "light": "",
+            "title": ""
+        }
+    },
+    "wizard": {
+        "buttons": {
+            "discover": "",
+            "goToBooks": "",
+            "next": ""
+        },
+        "description": {
+            "annotations": "",
+            "catalogs": "",
+            "home": "",
+            "readingView1": "",
+            "readingView2": "",
+            "yourBooks": ""
+        },
+        "dontShow": "",
+        "tab": {
+            "annotations": "",
+            "catalogs": "",
+            "home": "",
+            "readingView": "",
+            "yourBooks": ""
+        },
+        "title": {
+            "allBooks": "",
+            "newFeature": "",
+            "welcome": ""
         }
     }
 }

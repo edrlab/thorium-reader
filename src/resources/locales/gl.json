@@ -11,9 +11,13 @@
         "toolbar": "Barra de ferramentas"
     },
     "apiapp": {
+        "documentation": "",
+        "howItWorks": "",
+        "informations": "",
         "noLibraryFound": ""
     },
     "app": {
+        "downloadVersion": "",
         "edit": {
             "copy": "Copiar",
             "cut": "Cortar",
@@ -24,6 +28,7 @@
             "undo": "Desfacer"
         },
         "hide": "Ocultar {{- appName}}",
+        "newVersion": "",
         "quit": "Saír de {{- appName}}",
         "session": {
             "exit": {
@@ -82,7 +87,10 @@
         "opds": {
             "auth": {
                 "cancel": "Cancelar",
-                "login": "Iniciar sesión"
+                "login": "Iniciar sesión",
+                "password": "",
+                "register": "",
+                "username": ""
             },
             "info": {
                 "availableSince": "Desde",
@@ -107,6 +115,7 @@
         "readBook": "Ler",
         "released": "Publicado en",
         "sort": "Ordenar por",
+        "tag": "",
         "tagCount": "Número de etiquetas",
         "tags": "Etiquetas",
         "update": ""
@@ -120,6 +129,7 @@
         "importError": "Produciuse un erro, comproba a extensión do teu ficheiro ({{acceptedExtension}})",
         "renew": "Seguro que queres renovar a licenza para esta publicación?",
         "return": "Seguro que queres devolver a licenza para esta publicación?",
+        "save": "",
         "yes": "Sí"
     },
     "error": {
@@ -134,15 +144,18 @@
         "books": "Os meus libros",
         "catalogs": "Catálogos",
         "downloads": "Descargas",
+        "fitlerTagTitle": "",
         "gridTitle": "Presentación en cuadrícula",
         "home": "Menú biblioteca",
         "homeTitle": "Inicio",
         "importTitle": "Importar publicación",
         "listTitle": "Presentación en lista",
+        "myCatalogs": "",
         "refreshTitle": "Recargar",
         "searchPlaceholder": "Buscar",
         "searchTitle": "Iniciar procura",
-        "settings": "Opcións de configuración"
+        "settings": "Opcións de configuración",
+        "viewMode": ""
     },
     "library": {
         "lcp": {
@@ -150,7 +163,10 @@
             "password": "Contrasinal",
             "sentence": "Esta publicación require un contrasinal LCP para abrirse: ",
             "submit": "Enviar",
-            "urlHint": "Esqueciches o teu contrasinal? Atopa axuda aquí"
+            "urlHint": "Esqueciches o teu contrasinal? Atopa axuda aquí",
+            "whatIsLcp?": "",
+            "whatIsLcpInfoDetails": "",
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -181,8 +197,10 @@
         "addMenu": "Engadir catálogo OPDS",
         "back": "Atrás",
         "breadcrumbRoot": "Catálogos",
+        "documentation": "",
         "empty": "Non se atoparon publicacións",
         "firstPage": "Primeira",
+        "informations": "",
         "lastPage": "Última",
         "menu": {
             "aboutBook": "Acerca deste libro",
@@ -207,7 +225,8 @@
             "title": "",
             "updateButton": "",
             "url": ""
-        }
+        },
+        "whatIsOpds": ""
     },
     "publication": {
         "accessibility": {
@@ -240,6 +259,7 @@
             "name": "",
             "noA11y": ""
         },
+        "actions": "",
         "audio": {
             "tracks": "Pistas"
         },
@@ -250,30 +270,51 @@
         "cover": {
             "img": "Imaxe de portada"
         },
+        "day": "",
+        "days": "",
         "duration": {
             "title": "Duración"
         },
+        "expired": "",
         "expiredLcp": "Este libro non se pode ler porque a licenza  LCP expirou.",
         "lcpEnd": "Fin",
         "lcpRightsCopy": "Copia de personaxes",
         "lcpRightsPrint": "Copia de impresora",
         "lcpStart": "Inicio",
+        "licenceLCP": "",
         "licenseOutOfDate": "A licenza está  desactualizada",
         "licenseSignatureDateInvalid": "A data da firma da licenza non é válida",
         "licenseSignatureInvalid": "A firma da licenza non é válida",
+        "licensed": "",
+        "markAsRead": "",
         "progression": {
             "title": "Progreso"
         },
+        "read": "",
+        "remainingTime": "",
         "renewButton": "Renovar",
         "returnButton": "Devolver",
         "returnedLcp": "Este libro non se pode ler porque a licenza LCP devolveuse.",
         "revokedLcp": "Este libro non se pode ler porque a licenza LCP cancelouse.",
         "seeLess": "Ver menos",
         "seeMore": "Ver máis",
+        "timeLeft": "",
         "title": "Título",
         "userKeyCheckInvalid": "Contrasinal incorrecto"
     },
     "reader": {
+        "annotations": {
+            "Color": "",
+            "addNote": "",
+            "advancedMode": "",
+            "advancedModeDetails": "",
+            "annotationsOptions": "",
+            "highlight": "",
+            "noSelectionToast": "",
+            "quickAnnotations": "",
+            "saveNote": "",
+            "toggleMarginMarks": ""
+        },
         "divina": {
             "mute": "silenciar",
             "unmute": "deixar de silenciar"
@@ -282,28 +323,38 @@
             "lessInfo": "menos información",
             "moreInfo": "máis información"
         },
+        "fxl": {
+            "fit": ""
+        },
         "marks": {
             "annotations": "Anotacións",
             "bookmarks": "Marcadores",
             "delete": "Eliminar",
             "edit": "Editar",
+            "goTo": "",
             "landmarks": "Puntos de referencia",
+            "noMark": "",
+            "saveMark": "",
             "search": "Buscar",
+            "searchResult": "",
             "toc": "Táboa de contido"
         },
         "media-overlays": {
             "activate": "Activar lectura en voz alta",
             "captions": "Texto sincronizado/presentación diáfana",
+            "captionsDescription": "",
             "next": "Seguinte (Lectura en voz alta)",
             "pause": "Pausar (Lectura en voz alta)",
             "play": "Reproducir (Lectura en voz alta)",
             "previous": "Anterior (Lectura en voz alta)",
             "skip": "Omitir información auxiliar",
+            "skipDescription": "",
             "speed": "Velocidade de reprodución para lectura en voz alta",
             "stop": "Deter lectura en voz alta",
             "title": "Lectura en voz alta"
         },
         "navigation": {
+            "annotationTitle": "",
             "backHomeTitle": "Volver á biblioteca",
             "bookmarkTitle": "Marcador",
             "currentPage": "Páxina actual: {{- current}}",
@@ -319,6 +370,7 @@
             "infoTitle": "Información",
             "magnifyingGlassButton": "buscar na publicación",
             "openTableOfContentsTitle": "Navegación",
+            "page": "",
             "pdfscalemode": "Axuste ou ancho de páxina",
             "quitFullscreenTitle": "Saír do modo pantalla completa",
             "readBookTitle": "Empezar a ler o libro",
@@ -332,6 +384,7 @@
                 "next": "Seguinte",
                 "notFound": "non hai coincidencias",
                 "previous": "Anterior",
+                "results": "",
                 "submit": "Atopar"
             },
             "searchTitle": "Buscar:"
@@ -345,12 +398,15 @@
                 "two": "2 cols.",
                 "twoTitle": "Dos columnas"
             },
+            "customizeReader": "",
+            "disabled": "",
             "display": "Visualización",
             "disposition": {
                 "title": "Disposición"
             },
             "font": "Fonte",
             "fontSize": "Tamaño de fonte",
+            "infoCustomFont": "",
             "justification": "Aliñación",
             "justify": "Xustificar",
             "letterSpacing": "Espazado de letras",
@@ -359,6 +415,7 @@
             "noFootnotes": "Desactivar notas ao pé",
             "noRTLFlip": "",
             "noRuby": "",
+            "options": "",
             "paginated": "Paginado",
             "paraSpacing": "Espazado de parágrafos",
             "pdfZoom": {
@@ -374,6 +431,7 @@
                 },
                 "title": "Zoom"
             },
+            "preview": "",
             "reduceMotion": "Diminuír movemento",
             "save": {
                 "apply": "Gardar",
@@ -408,6 +466,7 @@
             "play": "Reproducir (Texto a voz)",
             "previous": "Anterior (Texto a voz)",
             "sentenceDetect": "Dividir (Texto a voz)",
+            "sentenceDetectDescription": "",
             "speed": "Velocidade de reproducción para texto a voz",
             "stop": "Deter texto a voz",
             "voice": "Voz para TTS"
@@ -420,6 +479,7 @@
         "keyboard": {
             "advancedMenu": "Menú",
             "cancel": "Cancelar",
+            "disclaimer": "",
             "edit": "Editar",
             "editUserJson": "Editar arquivo de usuario",
             "hide": "Ocultar",
@@ -433,9 +493,51 @@
             "languageChoice": "Selección de idioma"
         },
         "session": {
+            "description": "",
             "no": "Deshabilitar",
             "title": "Gardar sesión",
             "yes": "Habilitar"
+        },
+        "tabs": {
+            "appearance": "",
+            "general": "",
+            "keyboardShortcuts": "",
+            "reading": ""
+        },
+        "theme": {
+            "auto": "",
+            "dark": "",
+            "description": "",
+            "light": "",
+            "title": ""
+        }
+    },
+    "wizard": {
+        "buttons": {
+            "discover": "",
+            "goToBooks": "",
+            "next": ""
+        },
+        "description": {
+            "annotations": "",
+            "catalogs": "",
+            "home": "",
+            "readingView1": "",
+            "readingView2": "",
+            "yourBooks": ""
+        },
+        "dontShow": "",
+        "tab": {
+            "annotations": "",
+            "catalogs": "",
+            "home": "",
+            "readingView": "",
+            "yourBooks": ""
+        },
+        "title": {
+            "allBooks": "",
+            "newFeature": "",
+            "welcome": ""
         }
     }
 }

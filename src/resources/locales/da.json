@@ -11,9 +11,13 @@
         "toolbar": "værktøjslinje"
     },
     "apiapp": {
+        "documentation": "",
+        "howItWorks": "",
+        "informations": "",
         "noLibraryFound": "Intet bibliotek fundet ({{- name}})"
     },
     "app": {
+        "downloadVersion": "",
         "edit": {
             "copy": "Kopier",
             "cut": "Klip",
@@ -24,6 +28,7 @@
             "undo": "Fortryd"
         },
         "hide": "Skjul {{- appName}}",
+        "newVersion": "",
         "quit": "Luk {{- appName}}",
         "session": {
             "exit": {
@@ -82,7 +87,10 @@
         "opds": {
             "auth": {
                 "cancel": "Annuller",
-                "login": "Log ind"
+                "login": "Log ind",
+                "password": "",
+                "register": "",
+                "username": ""
             },
             "info": {
                 "availableSince": "Siden",
@@ -107,6 +115,7 @@
         "readBook": "Læs bog",
         "released": "Udgivelsesdato",
         "sort": "Sorter efter",
+        "tag": "",
         "tagCount": "Antal tags",
         "tags": "Tags",
         "update": "Rediger"
@@ -120,6 +129,7 @@
         "importError": "der skete en fejl, tjek at filernes type er en af ({{acceptedExtension}})",
         "renew": "Bekræft at du ønsker at forlænge licensen til bogen",
         "return": "Bekræft at du ønsker at aflevere bogen",
+        "save": "",
         "yes": "Bekræft"
     },
     "error": {
@@ -134,15 +144,18 @@
         "books": "Mine Bøger",
         "catalogs": "Kataloger",
         "downloads": "Downloads",
+        "fitlerTagTitle": "",
         "gridTitle": "Gittervisning",
         "home": "Boghylde menu",
         "homeTitle": "hjem",
         "importTitle": "Importer en bog",
         "listTitle": "Listevisning",
+        "myCatalogs": "",
         "refreshTitle": "genindlæs",
         "searchPlaceholder": "Søg",
         "searchTitle": "Påbegynd søgning",
-        "settings": "Indstillinger"
+        "settings": "Indstillinger",
+        "viewMode": ""
     },
     "library": {
         "lcp": {
@@ -150,7 +163,10 @@
             "password": "Nøgleord",
             "sentence": "Denne bog kræver et LCP nøgleord for at åbne: ",
             "submit": "Send",
-            "urlHint": "Har du glemt dit nøgleord? Få hjælp her"
+            "urlHint": "Har du glemt dit nøgleord? Få hjælp her",
+            "whatIsLcp?": "",
+            "whatIsLcpInfoDetails": "",
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -181,8 +197,10 @@
         "addMenu": "Tilføj OPDS feed",
         "back": "Tilbage",
         "breadcrumbRoot": "Kataloger",
+        "documentation": "",
         "empty": "Ingen bøger fundet",
         "firstPage": "Første",
+        "informations": "",
         "lastPage": "Sidste",
         "menu": {
             "aboutBook": "Om denne bog",
@@ -207,7 +225,8 @@
             "title": "Rediger et OPDS feed",
             "updateButton": "Rediger",
             "url": "Link:"
-        }
+        },
+        "whatIsOpds": ""
     },
     "publication": {
         "accessibility": {
@@ -240,6 +259,7 @@
             "name": "Tilgængelighed",
             "noA11y": "Ingen tilgængelighedsinformation angivet"
         },
+        "actions": "",
         "audio": {
             "tracks": "Spor"
         },
@@ -250,30 +270,51 @@
         "cover": {
             "img": "forsidebillede"
         },
+        "day": "",
+        "days": "",
         "duration": {
             "title": "Spilletid"
         },
+        "expired": "",
         "expiredLcp": "Denne bog kan ikke læses, da LCP licensen er udløbet.",
         "lcpEnd": "Slut",
         "lcpRightsCopy": "Kopierede bogstaver",
         "lcpRightsPrint": "Printede sider",
         "lcpStart": "Start",
+        "licenceLCP": "",
         "licenseOutOfDate": "Licensen er udløbet",
         "licenseSignatureDateInvalid": "Licensens signatur-dato er ugyldig",
         "licenseSignatureInvalid": "Licensens signatur er ugyldig",
+        "licensed": "",
+        "markAsRead": "",
         "progression": {
             "title": "Læst"
         },
+        "read": "",
+        "remainingTime": "",
         "renewButton": "Forny",
         "returnButton": "Aflever",
         "returnedLcp": "Denne bog kan ikke åbnes, da LCP licensen er leveret tilbage.",
         "revokedLcp": "Denne bog kan ikke åbnes, da LCP licensen er kaldt tilbage.",
         "seeLess": "Se mindre",
         "seeMore": "Se mere",
+        "timeLeft": "",
         "title": "Titel",
         "userKeyCheckInvalid": "Forkert nøgleord"
     },
     "reader": {
+        "annotations": {
+            "Color": "",
+            "addNote": "",
+            "advancedMode": "",
+            "advancedModeDetails": "",
+            "annotationsOptions": "",
+            "highlight": "",
+            "noSelectionToast": "",
+            "quickAnnotations": "",
+            "saveNote": "",
+            "toggleMarginMarks": ""
+        },
         "divina": {
             "mute": "slå lyd fra",
             "unmute": "slå lyd til"
@@ -282,28 +323,38 @@
             "lessInfo": "mindre information",
             "moreInfo": "mere information"
         },
+        "fxl": {
+            "fit": ""
+        },
         "marks": {
             "annotations": "Noter",
             "bookmarks": "Bogmærker",
             "delete": "Slet",
             "edit": "Rediger",
+            "goTo": "",
             "landmarks": "Regioner",
+            "noMark": "",
+            "saveMark": "",
             "search": "Søg",
+            "searchResult": "",
             "toc": "Indholdsfortegnelse"
         },
         "media-overlays": {
             "activate": "Start oplæsning",
             "captions": "Undertekster",
+            "captionsDescription": "",
             "next": "Næste oplæsnings-stykke",
             "pause": "Pause oplæsning",
             "play": "Start oplæsning",
             "previous": "Forrige oplæsnings-stykke",
             "skip": "Overspringsmuligheder",
+            "skipDescription": "",
             "speed": "Oplæsningshastighed",
             "stop": "Stop oplæsning",
             "title": "Oplæsning"
         },
         "navigation": {
+            "annotationTitle": "",
             "backHomeTitle": "tilbage til boghylden",
             "bookmarkTitle": "bogmærke",
             "currentPage": "Nuværende side: {{- current}}",
@@ -319,6 +370,7 @@
             "infoTitle": "information",
             "magnifyingGlassButton": "søg i bogen",
             "openTableOfContentsTitle": "indholdsfortegnelse",
+            "page": "",
             "pdfscalemode": "Tilpas til side eller skærmbredde",
             "quitFullscreenTitle": "forlad fuldskærmstilstand",
             "readBookTitle": "begynd at læse bogen",
@@ -332,6 +384,7 @@
                 "next": "Næste",
                 "notFound": "ingen resultater",
                 "previous": "Forrige",
+                "results": "",
                 "submit": "Find"
             },
             "searchTitle": "Søg:"
@@ -345,12 +398,15 @@
                 "two": "2 kol",
                 "twoTitle": "to kolonner"
             },
+            "customizeReader": "",
+            "disabled": "",
             "display": "Visning",
             "disposition": {
                 "title": "Layout"
             },
             "font": "Skrifttype",
             "fontSize": "Skriftstørrelse",
+            "infoCustomFont": "",
             "justification": "Marginjustering",
             "justify": "Lige margener",
             "letterSpacing": "Bogstav-mellemrum",
@@ -359,6 +415,7 @@
             "noFootnotes": "Slå fodnoter fra",
             "noRTLFlip": "",
             "noRuby": "",
+            "options": "",
             "paginated": "Sideinddelt",
             "paraSpacing": "Paragraf-mellemrum",
             "pdfZoom": {
@@ -374,6 +431,7 @@
                 },
                 "title": "Zoom"
             },
+            "preview": "",
             "reduceMotion": "Reducer bevægelser",
             "save": {
                 "apply": "gem",
@@ -408,6 +466,7 @@
             "play": "Afspil TTS",
             "previous": "Forrige TTS segment",
             "sentenceDetect": "Opdel TTS på sætninger",
+            "sentenceDetectDescription": "",
             "speed": "TTS afspilningshastighed",
             "stop": "Stop TTS",
             "voice": "TTS stemme"
@@ -420,6 +479,7 @@
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Annuller",
+            "disclaimer": "",
             "edit": "Rediger",
             "editUserJson": "Rediger brugerfilen...",
             "hide": "Skjul",
@@ -433,9 +493,51 @@
             "languageChoice": "Valg af sprog"
         },
         "session": {
+            "description": "",
             "no": "Fra",
             "title": "Gem session",
             "yes": "Til"
+        },
+        "tabs": {
+            "appearance": "",
+            "general": "",
+            "keyboardShortcuts": "",
+            "reading": ""
+        },
+        "theme": {
+            "auto": "",
+            "dark": "",
+            "description": "",
+            "light": "",
+            "title": ""
+        }
+    },
+    "wizard": {
+        "buttons": {
+            "discover": "",
+            "goToBooks": "",
+            "next": ""
+        },
+        "description": {
+            "annotations": "",
+            "catalogs": "",
+            "home": "",
+            "readingView1": "",
+            "readingView2": "",
+            "yourBooks": ""
+        },
+        "dontShow": "",
+        "tab": {
+            "annotations": "",
+            "catalogs": "",
+            "home": "",
+            "readingView": "",
+            "yourBooks": ""
+        },
+        "title": {
+            "allBooks": "",
+            "newFeature": "",
+            "welcome": ""
         }
     }
 }
