@@ -97,6 +97,7 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
 
     const payload: Partial<ILibraryRootState> = {
         theme: state.theme,
+        wizard: state.wizard,
         win: {
             identifier,
         },

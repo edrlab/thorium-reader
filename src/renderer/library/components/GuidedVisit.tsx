@@ -26,8 +26,12 @@ import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-ic
 import * as OpenBookIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
 import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/annotation-icon.svg";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { wizardActions } from "readium-desktop/common/redux/actions";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
-const TabTitle = (props: React.PropsWithChildren<{title: string}>) => {
+const TabTitle = (props: React.PropsWithChildren<{ title: string }>) => {
     return (
         <div className={stylesSettings.settings_tab_title}>
             <h2>{props.title}</h2>
@@ -36,15 +40,15 @@ const TabTitle = (props: React.PropsWithChildren<{title: string}>) => {
     );
 };
 
-const TabHeader = (props: React.PropsWithChildren<{title: string}>) => {
+const TabHeader = (props: React.PropsWithChildren<{ title: string }>) => {
 
     return (
         <div key="modal-header" className={stylesSettings.close_button_div}>
             <TabTitle title={props.title}>
-            {props.children}
+                {props.children}
             </TabTitle>
             <Dialog.Close asChild>
-                <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                <button className={stylesButtons.button_transparency_icon} aria-label="Close" >
                     <SVG ariaHidden={true} svg={QuitIcon} />
                 </button>
             </Dialog.Close>
@@ -54,8 +58,18 @@ const TabHeader = (props: React.PropsWithChildren<{title: string}>) => {
 
 export const GuidedVisitModal = () => {
     const [__] = useTranslator();
+    const dispatch = useDispatch();
+    const opened = useSelector((state: ILibraryRootState) => state.wizard.opened);
+    console.log(opened);
 
-    return <Dialog.Root defaultOpen>
+    const [checked, setChecked] = React.useState(true);
+
+    return <Dialog.Root defaultOpen={!opened} onOpenChange={(openState: boolean) => {
+        if (checked && openState == false) {
+            dispatch(wizardActions.setWizard.build(true));
+        }
+    }}
+    >
         {/* <Dialog.Trigger asChild>
         <button title={__("header.settings")}>
             <h3>Visite Guidée</h3>
@@ -86,10 +100,12 @@ export const GuidedVisitModal = () => {
                             <SVG ariaHidden svg={AnnotationsIcon} />
                             <h4>{__("tour.tab.annotations")}</h4>
                         </Tabs.Trigger>
+                        <input type="checkbox" checked={checked} onChange={() => setChecked(!checked)} name="wizardCheckbox" />
+                        <label htmlFor="wizardCheckbox">Ne plus afficher</label>
                     </Tabs.List>
-                    <div className={classNames(stylesSettings.settings_content, stylesModals.guidedTour_content)} style={{marginTop: "70px"}}>
+                    <div className={classNames(stylesSettings.settings_content, stylesModals.guidedTour_content)} style={{ marginTop: "70px" }}>
                         <Tabs.Content value="tab1" title="Home" tabIndex={-1}>
-                        <TabHeader title={""} />
+                            <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("tour.title.welcome")}</h3>
                                 <p>{__("tour.description.home")}</p>
@@ -100,11 +116,9 @@ export const GuidedVisitModal = () => {
                                         {__("tour.buttons.goToBooks")}
                                     </Dialog.Close>
                                     <Tabs.List>
-                                        <Tabs.Trigger value="tab2">
-                                            <button className={stylesButtons.button_primary_blue}>
-                                                <SVG ariaHidden svg={ArrowRightIcon} />
-                                                {__("tour.buttons.discover")}
-                                            </button>
+                                        <Tabs.Trigger value="tab2" className={stylesButtons.button_primary_blue}>
+                                            <SVG ariaHidden svg={ArrowRightIcon} />
+                                            {__("tour.buttons.discover")}
                                         </Tabs.Trigger>
                                     </Tabs.List>
 
@@ -112,71 +126,65 @@ export const GuidedVisitModal = () => {
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab2" title="Your Books" tabIndex={-1}>
-                        <TabHeader title={""} />
+                            <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
-                            <h3>{__("tour.title.allBooks")}</h3>
+                                <h3>{__("tour.title.allBooks")}</h3>
                                 <p>
-                                {__("tour.description.yourBooks")}
+                                    {__("tour.description.yourBooks")}
                                 </p>
-                                <img src={BooksImage}/>
+                                <img src={BooksImage} />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Tabs.List>
-                                            <Tabs.Trigger value="tab3">
-                                        <button className={stylesButtons.button_primary_blue}>
+                                        <Tabs.Trigger value="tab3" className={stylesButtons.button_primary_blue}>
                                             <SVG ariaHidden svg={ArrowRightIcon} />
                                             {__("tour.buttons.next")}
-                                        </button>
                                         </Tabs.Trigger>
                                     </Tabs.List>
                                 </div>
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab3" title="Catalogs" tabIndex={-1}>
-                        <TabHeader title={""} />
+                            <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
-                            <h3>{__("tour.tab.catalogs")}</h3>
+                                <h3>{__("tour.tab.catalogs")}</h3>
                                 <p>
-                                {__("tour.description.catalogs")}
+                                    {__("tour.description.catalogs")}
                                 </p>
-                                <img src={CatalogsImage}/>
+                                <img src={CatalogsImage} />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Tabs.List>
-                                        <Tabs.Trigger value="tab4">
-                                            <button className={stylesButtons.button_primary_blue}>
-                                                <SVG ariaHidden svg={ArrowRightIcon} />
-                                                {__("tour.buttons.next")}
-                                            </button>
+                                        <Tabs.Trigger value="tab4" className={stylesButtons.button_primary_blue} >
+                                            <SVG ariaHidden svg={ArrowRightIcon} />
+                                            {__("tour.buttons.next")}
                                         </Tabs.Trigger>
                                     </Tabs.List>
                                 </div>
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab4" title="Reading" tabIndex={-1}>
-                        <TabHeader title={""} />
+                            <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
-                            <h3>{__("tour.tab.readingView")}</h3>
+                                <h3>{__("tour.tab.readingView")}</h3>
                                 <p>
-                                {__("tour.description.readingView1")}<br/>{__("tour.description.readingView2")}</p>
-                                <img src={ReadingImage}/>
+                                    {__("tour.description.readingView1")}<br />{__("tour.description.readingView2")}</p>
+                                <img src={ReadingImage} />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Tabs.List>
-                                        <Tabs.Trigger value="tab5">
-                                            <button className={stylesButtons.button_primary_blue}>
-                                                <SVG ariaHidden svg={ArrowRightIcon} />
-                                                {__("tour.buttons.next")}
-                                            </button>
+                                        <Tabs.Trigger value="tab5" className={stylesButtons.button_primary_blue}>
+                                            <SVG ariaHidden svg={ArrowRightIcon} />
+                                            {__("tour.buttons.next")}
                                         </Tabs.Trigger>
                                     </Tabs.List>
                                 </div>
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab5" title="Annotations" tabIndex={-1}>
-                        <TabHeader title={""} />
+                            <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
-                            <h3>{__("tour.title.newFeature")}</h3>
+                                <h3>{__("tour.title.newFeature")}</h3>
                                 <p>
-                                {__("tour.description.annotations")}</p>
-                                <img src={AnnotationsImage}/>
+                                    {__("tour.description.annotations")}</p>
+                                <img src={AnnotationsImage} />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Dialog.Close className={stylesButtons.button_primary_blue}>
                                         <SVG ariaHidden svg={ShelfIcon} />

@@ -21,6 +21,7 @@ import * as toastActions from "./toast/";
 import * as sessionActions from "./session/";
 import * as catalogActions from "./catalog";
 import * as themeActions from "./theme";
+import * as wizardActions from "./wizard";
 
 export {
     historyActions,
@@ -39,4 +40,5 @@ export {
     sessionActions,
     catalogActions,
     themeActions,
+    wizardActions,
 };

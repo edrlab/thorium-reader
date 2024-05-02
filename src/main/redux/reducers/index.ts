@@ -27,6 +27,7 @@ import { opdsDbReducers } from "./opds/db";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
+import { wizardReducer } from "readium-desktop/common/redux/reducers/wizard";
 
 export const rootReducer = combineReducers({ // RootState
     theme: themeReducer,
@@ -77,4 +78,5 @@ export const rootReducer = combineReducers({ // RootState
         catalog: opdsDbReducers,
     }),
     version: (state: RootState, action: ActionWithSender) => action.type === appActions.initSuccess.ID ? _APP_VERSION : (state?.version ? state.version : null),
+    wizard: wizardReducer,
 });
