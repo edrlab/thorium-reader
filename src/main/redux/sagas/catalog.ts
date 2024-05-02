@@ -24,7 +24,8 @@ import { diMainGet } from "readium-desktop/main/di";
 // import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import { aboutFiltered } from "readium-desktop/main/tools/filter";
-import { publicationActions } from "../actions";
+import { publicationActions as publicationActionsFromMainAction } from "../actions";
+import { publicationActions as publicationActionsFromCommonAction } from "readium-desktop/common/redux/actions";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
@@ -69,6 +70,13 @@ function* getLastReadingPublicationId() {
     return pubIdArray;
 }
 
+function* getReadingFinishedPublicationId() {
+
+    const lastReading = yield* selectTyped((state: RootState) => state.publication.readingFinishedQueue);
+    const pubIdArray = lastReading.map(([, pubId]) => pubId);
+    return pubIdArray;
+}
+
 function* errorDeletePub(doc: PublicationDocument | undefined, e: Error) {
     debug("Error in convertDocumentToView doc=", doc);
 
@@ -99,15 +107,22 @@ function* getPublicationView() {
     const publicationViewConverter = diMainGet("publication-view-converter");
     const lastAddedPublicationsDocumentRaw = yield* callTyped(getLastAddedPublicationDocument, publicationRepository);
     const lastReadingPubArray = yield* callTyped(getLastReadingPublicationId);
+    const lastReadingFinishedPubArray = yield* callTyped(getReadingFinishedPublicationId);
 
     const lastAddedPublicationsDocument =
-        lastAddedPublicationsDocumentRaw.filter(({ identifier }) => !lastReadingPubArray.includes(identifier));
+        lastAddedPublicationsDocumentRaw.filter(({ identifier }) => !lastReadingPubArray.includes(identifier) && !lastReadingFinishedPubArray.includes(identifier));
     const lastReadedPublicationDocument =
         lastReadingPubArray
             .map(
                 (identifier) => lastAddedPublicationsDocumentRaw.find((v) => v.identifier === identifier),
             )
             .filter((v) => !!v);
+    // const readingFinishedPublicationDocument =
+    //     lastReadingFinishedPubArray
+    //         .map(
+    //             (identifier) => lastAddedPublicationsDocumentRaw.find((v) => v.identifier === identifier),
+    //         )
+    //         .filter((v) => !!v);
 
     const lastAddedPublicationsView = [];
     for (const doc of lastAddedPublicationsDocument) {
@@ -272,7 +287,7 @@ function* updateResumePosition() {
     };
 
     let prevState = yield* selectTyped((state: RootState) => state.publication.lastReadingQueue);
-    yield* debounceTyped(500, readerActions.setReduxState.build, function* worker(){
+    yield* debounceTyped(500, [readerActions.setReduxState.build, publicationActionsFromCommonAction.readingFinished.build], function* worker() {
         const nextState = yield* selectTyped((state: RootState) => state.publication.lastReadingQueue);
 
         const prevId = prevState.map(([_,v]) => v);
@@ -287,7 +302,9 @@ function* updateResumePosition() {
 export function saga() {
     return all([
         takeSpawnLatest(
-            [catalogActions.getCatalog.ID, publicationActions.addPublication.ID, publicationActions.deletePublication.ID],
+            [catalogActions.getCatalog.ID
+                , publicationActionsFromMainAction.addPublication.ID
+                , publicationActionsFromMainAction.deletePublication.ID],
             getCatalogAndDispatchIt,
             (e) => error(filename_ + ":getCatalogAndDispatchIt", e),
         ),

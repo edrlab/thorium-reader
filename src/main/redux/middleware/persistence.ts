@@ -34,6 +34,7 @@ export const reduxPersistMiddleware: Middleware
                     publication: {
                         db: prevState.publication.db,
                         lastReadingQueue: prevState.publication.lastReadingQueue,
+                        readingFinishedQueue: prevState.publication.readingFinishedQueue,
                     },
                     opds: prevState.opds,
                     version: prevState.version,
@@ -48,6 +49,7 @@ export const reduxPersistMiddleware: Middleware
                     publication: {
                         db: nextState.publication.db,
                         lastReadingQueue: nextState.publication.lastReadingQueue,
+                        readingFinishedQueue: nextState.publication.readingFinishedQueue,
                     },
                     opds: nextState.opds,
                     version: nextState.version,

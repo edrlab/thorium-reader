@@ -974,6 +974,7 @@ class Reader extends React.Component<IProps, IState> {
 
                     disableRTLFlip={this.props.disableRTLFlip}
                     isRTLFlip={this.isRTLFlip}
+                    publicationView={this.props.publicationView}
                 />
                 : <></>
     }
