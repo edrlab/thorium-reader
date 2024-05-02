@@ -100,7 +100,7 @@ export const WizardModal = () => {
                             <h4>{__("wizard.tab.annotations")}</h4>
                         </Tabs.Trigger>
                         <div style={{display: "flex", alignItems: "center", gap: "10px", position: "absolute", bottom: "30px", left: "30px"}}>
-                            <input type="checkbox" checked={checked} onChange={() => setChecked(!checked)} name="wizardCheckbox" />
+                            <input type="checkbox" checked={checked} onChange={() => setChecked(!checked)} id="wizardCheckbox" name="wizardCheckbox" />
                             <label htmlFor="wizardCheckbox">{__("wizard.dontShow")}</label>
                         </div>
                     </Tabs.List>

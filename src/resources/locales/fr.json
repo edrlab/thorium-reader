@@ -487,30 +487,30 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "",
-            "goToBooks": "",
-            "next": ""
+            "discover": "Découvrir les nouveautés",
+            "goToBooks": "Accéder à mes livres",
+            "next": "Suivant"
         },
         "description": {
-            "annotations": "",
-            "catalogs": "",
-            "home": "",
-            "readingView1": "",
-            "readingView2": "",
-            "yourBooks": ""
+            "annotations": "Mettez en évidence les passages importants et prenez des notes. Grâce au mode avancé, vous pouvez même annoter vos livres à la volée.",
+            "catalogs": "Empruntez des livres auprès de votre bibliothèque locale ou découvrez de nouveaux titres grâce aux catalogues OPDS -- ils fonctionnent comme des catalogues en ligne, et vous permettent d'accéder à une variété de publications provenant de différentes sources.",
+            "home": "Thorium fait peau neuve, découvrons ensemble les nouveautés !",
+            "readingView1": "Thorium s'adapte à vos préférences de lecture : choisissez parmi différents thèmes, ajustez les paramètres du texte ou lancez la lecture vocale tout en suivant le texte à l'écran.",
+            "readingView2": "Recherchez, naviguez jusqu'à un point précis, ajoutez des marques-pages ou profitez du mode plein écran pour des sessions de lecture sans distractions.",
+            "yourBooks": "Bienvenue dans votre collection personnelle : filtrez et trouvez rapidement un ouvrage dans la vue grille ou lancez une recherche plus poussée dans la vue tableau."
         },
-        "dontShow": "",
+        "dontShow": "Ne plus afficher",
         "tab": {
-            "annotations": "",
-            "catalogs": "",
-            "home": "",
-            "readingView": "",
-            "yourBooks": ""
+            "annotations": "Annotations",
+            "catalogs": "Catalogues",
+            "home": "Accueil",
+            "readingView": "Vue lecture",
+            "yourBooks": "Vos livres"
         },
         "title": {
-            "allBooks": "",
-            "newFeature": "",
-            "welcome": ""
+            "allBooks": "Tous mes livres",
+            "newFeature": "Nouveauté : Les annotations",
+            "welcome": "Bienvenue dans Thorium 3.0"
         }
     }
 }
