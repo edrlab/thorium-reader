@@ -104,21 +104,21 @@ const Theme = ({theme, set}: {theme: Pick<ReaderConfig, "theme">, set: (a: Pick<
         },
         {
             id: 3,
+            name: `${__("reader.settings.theme.name.Paper")}`,
+            value: "paper",
+            style: {backgroundColor: "#E9DDC8", color: "#000000" },
+        },
+        {
+            id: 4,
             name: `${__("reader.settings.theme.name.Night")}`,
             value: "night",
             style: {backgroundColor: "#121212", color: "#fff" },
         },
         {
-            id: 4,
+            id: 5,
             name: `${__("reader.settings.theme.name.Contrast1")}`,
             value: "contrast1",
             style: {backgroundColor: "#000000", color: "#fff" },
-        },
-        {
-            id: 5,
-            name: `${__("reader.settings.theme.name.Paper")}`,
-            value: "paper",
-            style: {backgroundColor: "#F8EDDF", color: "#000000" },
         },
         {
             id: 6,
@@ -143,10 +143,10 @@ const Theme = ({theme, set}: {theme: Pick<ReaderConfig, "theme">, set: (a: Pick<
 
     const defaultKey = 
     theme.theme === "neutral" ? 1 
-    : theme.theme === "night" ? 3 
+    : theme.theme === "night" ? 4 
     : theme.theme === "sepia" ? 2 
-    : theme.theme === "contrast1" ? 4
-    : theme.theme === "paper" ? 5
+    : theme.theme === "contrast1" ? 5
+    : theme.theme === "paper" ? 3
     : theme.theme === "contrast2" ? 6
     : theme.theme === "contrast3" ? 7
     : theme.theme === "contrast4" ? 8
