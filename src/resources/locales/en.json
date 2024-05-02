@@ -44,7 +44,8 @@
         },
         "window": {
             "showLibrary": "Show library / bookshelf"
-        }
+        },
+        "dontShow": "Don't show anymore"
     },
     "catalog": {
         "about": {

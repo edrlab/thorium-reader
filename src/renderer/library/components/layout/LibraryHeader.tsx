@@ -24,7 +24,7 @@ import * as ShelfIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { Settings } from "../settings/Settings";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
-import { GuidedVisitModal } from "../GuidedVisit";
+import { WizardModal } from "../Wizard";
 
 interface NavigationHeader {
     route: string;
@@ -109,7 +109,7 @@ class Header extends React.Component<IProps, undefined> {
                     <li /* style={{position: "absolute", bottom: "10px" }} */>
                         <Settings />
                     </li>
-                    <GuidedVisitModal />
+                    <WizardModal />
                 </ul>
             </nav>
         </>);

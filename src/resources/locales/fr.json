@@ -42,7 +42,8 @@
         },
         "window": {
             "showLibrary": "Afficher la bibliothèque"
-        }
+        },
+        "dontShow": "Ne plus afficher"
     },
     "catalog": {
         "about": {

@@ -53,7 +53,8 @@ declare namespace typed_i18n {
       }
     }
   },
-  readonly "window": { readonly "showLibrary": string }
+  readonly "window": { readonly "showLibrary": string },
+  readonly "dontShow": string
 };
   (_: "app.edit", __?: {}): {
   readonly "copy": string,
@@ -101,6 +102,7 @@ declare namespace typed_i18n {
   (_: "app.session.exit.askBox.title", __?: {}): string;
   (_: "app.window", __?: {}): { readonly "showLibrary": string };
   (_: "app.window.showLibrary", __?: {}): string;
+  (_: "app.dontShow", __?: {}): string;
   (_: "catalog", __?: {}): {
   readonly "about": { readonly "button": string, readonly "title": string },
   readonly "addBookToLib": string,

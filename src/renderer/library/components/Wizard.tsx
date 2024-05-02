@@ -56,11 +56,10 @@ const TabHeader = (props: React.PropsWithChildren<{ title: string }>) => {
     );
 };
 
-export const GuidedVisitModal = () => {
+export const WizardModal = () => {
     const [__] = useTranslator();
     const dispatch = useDispatch();
     const opened = useSelector((state: ILibraryRootState) => state.wizard.opened);
-    console.log(opened);
 
     const [checked, setChecked] = React.useState(true);
 
@@ -100,8 +99,10 @@ export const GuidedVisitModal = () => {
                             <SVG ariaHidden svg={AnnotationsIcon} />
                             <h4>{__("tour.tab.annotations")}</h4>
                         </Tabs.Trigger>
-                        <input type="checkbox" checked={checked} onChange={() => setChecked(!checked)} name="wizardCheckbox" />
-                        <label htmlFor="wizardCheckbox">Ne plus afficher</label>
+                        <div style={{display: "flex", alignItems: "center", gap: "10px", position: "absolute", bottom: "30px", left: "30px"}}>
+                            <input type="checkbox" checked={checked} onChange={() => setChecked(!checked)} name="wizardCheckbox" />
+                            <label htmlFor="wizardCheckbox">{__("app.dontShow")}</label>
+                        </div>
                     </Tabs.List>
                     <div className={classNames(stylesSettings.settings_content, stylesModals.guidedTour_content)} style={{ marginTop: "70px" }}>
                         <Tabs.Content value="tab1" title="Home" tabIndex={-1}>
