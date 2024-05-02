@@ -886,7 +886,7 @@ class Reader extends React.Component<IProps, IState> {
                                         : (this.props.searchEnable && this.props.isPdf) ? stylesReader.isOnSearchPdf 
                                         : "")}
                                     ref={this.mainElRef}
-                                    style={{ inset: isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : "100px 50px" }}>
+                                    style={{ inset: isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : "75px 50px" }}>
                                 </div>
                                 {
                                     this.props.isDivina && this.state.divinaArrowEnabled

@@ -24,6 +24,7 @@ import * as ShelfIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { Settings } from "../settings/Settings";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
+import { WizardModal } from "../Wizard";
 
 interface NavigationHeader {
     route: string;
@@ -95,7 +96,7 @@ class Header extends React.Component<IProps, undefined> {
                 label={__("accessibility.skipLink")}
             />
             <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
-                <h1 style={{textAlign: "center", color: "#AFB1B6", fontSize: "30px", marginBottom: "10px"}}>{capitalizedAppName}</h1>
+                <h1 style={{marginLeft: "20px", color: "#AFB1B6", fontSize: "30px", marginBottom: "10px"}}>{capitalizedAppName}</h1>
                 <ul style={{paddingTop: "10px"}}>
                     <div>
                     {
@@ -108,6 +109,7 @@ class Header extends React.Component<IProps, undefined> {
                     <li /* style={{position: "absolute", bottom: "10px" }} */>
                         <Settings />
                     </li>
+                    <WizardModal />
                 </ul>
             </nav>
         </>);

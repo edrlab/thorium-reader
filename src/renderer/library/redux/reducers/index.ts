@@ -31,6 +31,7 @@ import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 
 // import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { readerRTLFlipReducer } from "readium-desktop/common/redux/reducers/reader/rtlFlip";
+import { wizardReducer } from "readium-desktop/common/redux/reducers/wizard";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
     return combineReducers({ // ILibraryRootState
@@ -82,5 +83,6 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
             catalog: catalogViewReducer,
             tag: tagReducer,
         }),
+        wizard: wizardReducer,
     });
 };

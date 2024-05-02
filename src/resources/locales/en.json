@@ -489,5 +489,33 @@
             "light": "Light",
             "title": "Application Theme"
         }
+    },
+    "wizard": {
+        "buttons": {
+            "discover": "Discover what's new",
+            "goToBooks": "Go to my books",
+            "next": "Next"
+        },
+        "description": {
+            "annotations": "Highlight important passages, take notes. Thanks to the advanced mode you can even make annotations on the fly.",
+            "catalogs": "Borrow books from your local library or discover new books with the OPDS catalogs -- It works like an online catalog and allow you to access a variety of publications from multiple sources.",
+            "home": "Thorium gets a makeover, let's discover what's new!",
+            "readingView1": "Thorium adapts itself to your reading preferences: choose amongst various themes, adjust text parameters or use readaloud while folllowing the text in the screen.",
+            "readingView2": "Search, navigate to a precise location, add bookmarks or enjoy the full screen mode for distraction-free reading sessions.",
+            "yourBooks": "Welcome in your personnal bookshelf: filter and easily find a book in the grid view or do a advanced search in the table view."
+        },
+        "dontShow": "Don't show anymore",
+        "tab": {
+            "annotations": "Annotations",
+            "catalogs": "Catalogs",
+            "home": "Home",
+            "readingView": "Reading view",
+            "yourBooks": "Your books"
+        },
+        "title": {
+            "allBooks": "All my books",
+            "newFeature": "New feature : Annotations",
+            "welcome": "Welcome in Thorium 3.0"
+        }
     }
 }
