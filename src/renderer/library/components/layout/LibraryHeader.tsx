@@ -48,16 +48,36 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
-class Header extends React.Component<IProps, undefined> {
+interface IState {
+    width: number,
+}
+
+class Header extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+        this.state = { width: 0 };
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
+
+    componentDidMount() {
+        this.updateWindowDimensions();
+        window.addEventListener("resize", this.updateWindowDimensions);
+      }
+      
+      componentWillUnmount() {
+        window.removeEventListener("resize", this.updateWindowDimensions);
+      }
+      
+      updateWindowDimensions() {
+        this.setState({ width: window.innerWidth});
+      }
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
         const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
+        const minimizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.charAt(1);
 
         const headerNav: NavigationHeader[] = [
             {
@@ -98,7 +118,7 @@ class Header extends React.Component<IProps, undefined> {
                 label={__("accessibility.skipLink")}
             />
             <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
-                <h1 style={{marginLeft: "20px", color: "#AFB1B6", fontSize: "30px", marginBottom: "10px"}}>{capitalizedAppName}</h1>
+                <h1 style={{marginLeft: "20px", color: "#AFB1B6", fontSize: "30px", marginBottom: "10px"}}>{this.state.width < 800 ? minimizedAppName : capitalizedAppName}</h1>
                 <ul style={{paddingTop: "10px"}}>
                     <div>
                     {
