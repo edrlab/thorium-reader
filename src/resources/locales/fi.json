@@ -11,13 +11,9 @@
         "toolbar": "Työkalurivi"
     },
     "apiapp": {
-        "documentation": "",
-        "howItWorks": "",
-        "informations": "",
         "noLibraryFound": ""
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Kopioi",
             "cut": "Leikkaa",
@@ -28,7 +24,6 @@
             "undo": "Peru"
         },
         "hide": "Piilota {{- appName}}",
-        "newVersion": "",
         "quit": "Lopeta {{- appName}}",
         "session": {
             "exit": {
@@ -87,10 +82,7 @@
         "opds": {
             "auth": {
                 "cancel": "Peru",
-                "login": "Kirjaudu",
-                "password": "",
-                "register": "",
-                "username": ""
+                "login": "Kirjaudu"
             },
             "info": {
                 "availableSince": "Lähtien",
@@ -115,7 +107,6 @@
         "readBook": "Lue",
         "released": "Julkaistu",
         "sort": "Järjestä",
-        "tag": "",
         "tagCount": "Tunnistemäärä",
         "tags": "Tunnisteet",
         "update": ""
@@ -129,7 +120,6 @@
         "importError": "Virhe on havaittu, varmista tiedostopääte ({{acceptedExtension}})",
         "renew": "Haluatko todella uusia tämän julkaisun käyttöoikeuden?",
         "return": "Haluatko todella palauttaa tämän julkaisun käyttöoikeuden?",
-        "save": "",
         "yes": "Kyllä"
     },
     "error": {
@@ -144,18 +134,15 @@
         "books": "Minun kirjani",
         "catalogs": "Luettelot",
         "downloads": "Lataukset",
-        "fitlerTagTitle": "",
         "gridTitle": "Ruudukkonäkymä",
         "home": "Kirjahyllyn näkymä",
         "homeTitle": "Koti",
         "importTitle": "Tuo julkaisu",
         "listTitle": "Listanäkymä",
-        "myCatalogs": "",
         "refreshTitle": "Lataa uudestaan",
         "searchPlaceholder": "Hae",
         "searchTitle": "Aloita haku",
-        "settings": "Asetukset",
-        "viewMode": ""
+        "settings": "Asetukset"
     },
     "library": {
         "lcp": {
@@ -163,10 +150,7 @@
             "password": "Salasana",
             "sentence": "Julkaisun avaamiseen tarvitaan LCP-salasana: ",
             "submit": "Lähetä",
-            "urlHint": "Unohtuiko salasana? Lisätietoja",
-            "whatIsLcp?": "",
-            "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": ""
+            "urlHint": "Unohtuiko salasana? Lisätietoja"
         }
     },
     "message": {
@@ -197,10 +181,8 @@
         "addMenu": "Lisää OPDS-syöte",
         "back": "Takaisin",
         "breadcrumbRoot": "Luettelot",
-        "documentation": "",
         "empty": "Julkaisuja ei löytynyt",
         "firstPage": "Ensimmäinen",
-        "informations": "",
         "lastPage": "Viimeinen",
         "menu": {
             "aboutBook": "Tietoja tästä kirjasta",
@@ -225,8 +207,7 @@
             "title": "",
             "updateButton": "",
             "url": ""
-        },
-        "whatIsOpds": ""
+        }
     },
     "publication": {
         "accessibility": {
@@ -259,7 +240,6 @@
             "name": "",
             "noA11y": ""
         },
-        "actions": "",
         "audio": {
             "tracks": "Osat"
         },
@@ -270,51 +250,30 @@
         "cover": {
             "img": "kansikuva"
         },
-        "day": "",
-        "days": "",
         "duration": {
             "title": "Kesto"
         },
-        "expired": "",
         "expiredLcp": "Kirjaa ei voi lukea: LCP-käyttöoikeus on erääntynyt.",
         "lcpEnd": "Loppu",
         "lcpRightsCopy": "Käyttäjäkopio",
         "lcpRightsPrint": "Tulostinkopio",
         "lcpStart": "Aloita",
-        "licenceLCP": "",
         "licenseOutOfDate": "Käyttöoikeus on vanhentunut",
         "licenseSignatureDateInvalid": "Käyttöoikeuden allekirjoituksen päiväys ei kelpaa",
         "licenseSignatureInvalid": "Käyttöoikeuden allekirjoitus ei kelpaa",
-        "licensed": "",
-        "markAsRead": "",
         "progression": {
             "title": "Eteneminen"
         },
-        "read": "",
-        "remainingTime": "",
         "renewButton": "Uudista",
         "returnButton": "Palauta",
         "returnedLcp": "Kirjaa ei voi lukea: LCP-käyttöoikeus on palautettu",
         "revokedLcp": "Kirjaa ei voi lukea: LCP-käyttöoikeus on kumottu",
         "seeLess": "Näytä vähemmän",
         "seeMore": "Näytä enemmän",
-        "timeLeft": "",
         "title": "",
         "userKeyCheckInvalid": "Salasana on väärin"
     },
     "reader": {
-        "annotations": {
-            "Color": "",
-            "addNote": "",
-            "advancedMode": "",
-            "advancedModeDetails": "",
-            "annotationsOptions": "",
-            "highlight": "",
-            "noSelectionToast": "",
-            "quickAnnotations": "",
-            "saveNote": "",
-            "toggleMarginMarks": ""
-        },
         "divina": {
             "mute": "",
             "unmute": ""
@@ -323,38 +282,28 @@
             "lessInfo": "vähemmän tietoja",
             "moreInfo": "enemmän tietoja"
         },
-        "fxl": {
-            "fit": ""
-        },
         "marks": {
             "annotations": "Huomautukset",
             "bookmarks": "Kirjanmerkit",
             "delete": "Poista",
             "edit": "Muokkaa",
-            "goTo": "",
             "landmarks": "Kiintopisteet",
-            "noMark": "",
-            "saveMark": "",
             "search": "Hae",
-            "searchResult": "",
             "toc": "Sisällysluettelo"
         },
         "media-overlays": {
             "activate": "Käynnistä ääneenluku",
             "captions": "Synkronoitu teksti / Pelkistetty",
-            "captionsDescription": "",
             "next": "Seuraava",
             "pause": "Pysäytä",
             "play": "Jatka",
             "previous": "Edellinen",
             "skip": "Ohita lisäosat",
-            "skipDescription": "",
             "speed": "Ääneenluennan nopeus",
             "stop": "Lopeta ääneenluku",
             "title": "Ääneenluku"
         },
         "navigation": {
-            "annotationTitle": "",
             "backHomeTitle": "Takaisin kirjahyllyyn",
             "bookmarkTitle": "Kirjanmerkki",
             "currentPage": "Nykyinen sivu : {{- current}}",
@@ -370,7 +319,6 @@
             "infoTitle": "tiedot",
             "magnifyingGlassButton": "Hae julkaisusta",
             "openTableOfContentsTitle": "navigaatio",
-            "page": "",
             "pdfscalemode": "Sovita sivu tai leveyteen",
             "quitFullscreenTitle": "Poistu kokonäytön tilasta",
             "readBookTitle": "Aloita kirjan lukeminen",
@@ -384,7 +332,6 @@
                 "next": "Seuraava",
                 "notFound": "ei osumia",
                 "previous": "Edellinen",
-                "results": "",
                 "submit": "Etsi"
             },
             "searchTitle": "Hae:"
@@ -398,15 +345,12 @@
                 "two": "2 palstaa",
                 "twoTitle": "kaksi palstaa"
             },
-            "customizeReader": "",
-            "disabled": "",
             "display": "Näyttö",
             "disposition": {
                 "title": "Asettelu"
             },
             "font": "Fontti",
             "fontSize": "Fonttikoko",
-            "infoCustomFont": "",
             "justification": "Tasaus",
             "justify": "Tasareunainen",
             "letterSpacing": "Kirjainvälistys",
@@ -415,7 +359,6 @@
             "noFootnotes": "Alaviitteet pois käytöstä",
             "noRTLFlip": "",
             "noRuby": "",
-            "options": "",
             "paginated": "Sivuiksi jaettu",
             "paraSpacing": "Kappaleiden väli",
             "pdfZoom": {
@@ -431,7 +374,6 @@
                 },
                 "title": "Zoomaus"
             },
-            "preview": "",
             "reduceMotion": "Vähennä liikettä",
             "save": {
                 "apply": "Tallenna",
@@ -466,7 +408,6 @@
             "play": "Jatka",
             "previous": "Edellinen",
             "sentenceDetect": "",
-            "sentenceDetectDescription": "",
             "speed": "Tekstistä puheeksi nopeuden säätö",
             "stop": "Lopeta tekstistä puheeksi",
             "voice": ""
@@ -479,7 +420,6 @@
         "keyboard": {
             "advancedMenu": "Valikko",
             "cancel": "Peruuta",
-            "disclaimer": "",
             "edit": "Muokkaa",
             "editUserJson": "Muokkaa käyttäjän tiedostoa...",
             "hide": "Piilota",
@@ -493,51 +433,9 @@
             "languageChoice": "Kielen valinta"
         },
         "session": {
-            "description": "",
             "no": "Keskeytä",
             "title": "Tallenna istunto",
             "yes": "Jatka"
-        },
-        "tabs": {
-            "appearance": "",
-            "general": "",
-            "keyboardShortcuts": "",
-            "reading": ""
-        },
-        "theme": {
-            "auto": "",
-            "dark": "",
-            "description": "",
-            "light": "",
-            "title": ""
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "",
-            "goToBooks": "",
-            "next": ""
-        },
-        "description": {
-            "annotations": "",
-            "catalogs": "",
-            "home": "",
-            "readingView1": "",
-            "readingView2": "",
-            "yourBooks": ""
-        },
-        "dontShow": "",
-        "tab": {
-            "annotations": "",
-            "catalogs": "",
-            "home": "",
-            "readingView": "",
-            "yourBooks": ""
-        },
-        "title": {
-            "allBooks": "",
-            "newFeature": "",
-            "welcome": ""
         }
     }
 }

@@ -11,13 +11,9 @@
         "toolbar": "ツールバー"
     },
     "apiapp": {
-        "documentation": "",
-        "howItWorks": "",
-        "informations": "",
         "noLibraryFound": "蔵書は見つかりませんでした（{{- name}}）"
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "コピー",
             "cut": "切り取り",
@@ -28,7 +24,6 @@
             "undo": "元に戻す"
         },
         "hide": "隠す {{appName}}",
-        "newVersion": "",
         "quit": "終了 {{appName}}",
         "session": {
             "exit": {
@@ -87,10 +82,7 @@
         "opds": {
             "auth": {
                 "cancel": "取り消し",
-                "login": "ログイン",
-                "password": "",
-                "register": "",
-                "username": ""
+                "login": "ログイン"
             },
             "info": {
                 "availableSince": "始まり",
@@ -115,7 +107,6 @@
         "readBook": "本を読む",
         "released": "出版日",
         "sort": "並び替え",
-        "tag": "",
         "tagCount": "タグの数",
         "tags": "タグ",
         "update": "編集"
@@ -129,7 +120,6 @@
         "importError": "エラーが発生しました。拡張子を確認してください（{{acceptedExtension}}）",
         "renew": "この本のライセンスを本当に新しくしますか？",
         "return": "この本のライセンスを本当に返しますか？",
-        "save": "",
         "yes": "はい"
     },
     "error": {
@@ -144,18 +134,15 @@
         "books": "わたしの本",
         "catalogs": "図書目録",
         "downloads": "ダウンロード",
-        "fitlerTagTitle": "",
         "gridTitle": "格子状に本を表示",
         "home": "本棚の機能選択",
         "homeTitle": "ホーム",
         "importTitle": "本を追加",
         "listTitle": "一覧表で本を表示",
-        "myCatalogs": "",
         "refreshTitle": "再読み込み",
         "searchPlaceholder": "検索",
         "searchTitle": "検索を開始",
-        "settings": "設定",
-        "viewMode": ""
+        "settings": "設定"
     },
     "library": {
         "lcp": {
@@ -163,10 +150,7 @@
             "password": "パスワード",
             "sentence": "この本を読むためにはLCP解除のパスワードが必要です: ",
             "submit": "送信",
-            "urlHint": "パスワードを忘れた場合に役に立つかもしれません",
-            "whatIsLcp?": "",
-            "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": ""
+            "urlHint": "パスワードを忘れた場合に役に立つかもしれません"
         }
     },
     "message": {
@@ -197,10 +181,8 @@
         "addMenu": "OPDSフィードを追加",
         "back": "戻る",
         "breadcrumbRoot": "図書目録",
-        "documentation": "",
         "empty": "出版物が見つかりません",
         "firstPage": "最初",
-        "informations": "",
         "lastPage": "最後",
         "menu": {
             "aboutBook": "この本の情報",
@@ -225,8 +207,7 @@
             "title": "OPDSフィードの編集",
             "updateButton": "編集",
             "url": "URL："
-        },
-        "whatIsOpds": ""
+        }
     },
     "publication": {
         "accessibility": {
@@ -259,7 +240,6 @@
             "name": "アクセシビリティ",
             "noA11y": "アクセシビリティ情報はありません"
         },
-        "actions": "",
         "audio": {
             "tracks": "トラック"
         },
@@ -270,51 +250,30 @@
         "cover": {
             "img": "カバー画像"
         },
-        "day": "",
-        "days": "",
         "duration": {
             "title": "再生時間"
         },
-        "expired": "",
         "expiredLcp": "LCPライセンスの有効期限が切れているため、この本は読めません。",
         "lcpEnd": "終了",
         "lcpRightsCopy": "文字列のコピー",
         "lcpRightsPrint": "プリンターで印刷",
         "lcpStart": "開始",
-        "licenceLCP": "",
         "licenseOutOfDate": "ライセンスは期限切れです",
         "licenseSignatureDateInvalid": "ライセンス署名の日付が無効です",
         "licenseSignatureInvalid": "ライセンス署名が無効です",
-        "licensed": "",
-        "markAsRead": "",
         "progression": {
             "title": "読み進めた位置"
         },
-        "read": "",
-        "remainingTime": "",
         "renewButton": "更新",
         "returnButton": "返却",
         "returnedLcp": "LCPライセンスが返却されたため、この本は読めません。",
         "revokedLcp": "LCPライセンスが取り消されているため、この本は読めません。",
         "seeLess": "続きを見ない",
         "seeMore": "続きを見る",
-        "timeLeft": "",
         "title": "書名",
         "userKeyCheckInvalid": "パスワードが間違っています"
     },
     "reader": {
-        "annotations": {
-            "Color": "",
-            "addNote": "",
-            "advancedMode": "",
-            "advancedModeDetails": "",
-            "annotationsOptions": "",
-            "highlight": "",
-            "noSelectionToast": "",
-            "quickAnnotations": "",
-            "saveNote": "",
-            "toggleMarginMarks": ""
-        },
         "divina": {
             "mute": "音を鳴らさない",
             "unmute": "音を鳴らす"
@@ -323,38 +282,28 @@
             "lessInfo": "読書位置を非表示",
             "moreInfo": "読書位置を表示"
         },
-        "fxl": {
-            "fit": ""
-        },
         "marks": {
             "annotations": "注釈",
             "bookmarks": "しおり",
             "delete": "削除",
             "edit": "編集",
-            "goTo": "",
             "landmarks": "構成",
-            "noMark": "",
-            "saveMark": "",
             "search": "検索",
-            "searchResult": "",
             "toc": "目次"
         },
         "media-overlays": {
             "activate": "本文の読み上げ機能を起動",
             "captions": "字幕 / 明確な表示",
-            "captionsDescription": "",
             "next": "次の文に進み、読み上げる",
             "pause": "本文の読み上げを一時停止",
             "play": "本文の読み上げを再生",
             "previous": "前の文に戻り、読み上げる",
             "skip": "二次情報の読み飛ばし",
-            "skipDescription": "",
             "speed": "本文の読み上げの再生速度",
             "stop": "本文の読み上げを停止",
             "title": "本文の読み上げ"
         },
         "navigation": {
-            "annotationTitle": "",
             "backHomeTitle": "本棚に戻る",
             "bookmarkTitle": "しおりを挟む",
             "currentPage": "現在のページ：{{- current}}",
@@ -370,7 +319,6 @@
             "infoTitle": "本の情報",
             "magnifyingGlassButton": "この本の中で検索",
             "openTableOfContentsTitle": "ナビゲーション",
-            "page": "",
             "pdfscalemode": "画面にページを収める/画面横幅にページを合わせる",
             "quitFullscreenTitle": "全画面表示の終了",
             "readBookTitle": "本を読み始める",
@@ -384,7 +332,6 @@
                 "next": "次へ",
                 "notFound": "一致しませんでした",
                 "previous": "前へ",
-                "results": "",
                 "submit": "検索"
             },
             "searchTitle": "検索："
@@ -398,15 +345,12 @@
                 "two": "2列",
                 "twoTitle": "2列"
             },
-            "customizeReader": "",
-            "disabled": "",
             "display": "画面表示",
             "disposition": {
                 "title": "割り付け"
             },
             "font": "書体",
             "fontSize": "文字の大きさ",
-            "infoCustomFont": "",
             "justification": "位置揃え",
             "justify": "両端揃え",
             "letterSpacing": "文字の間隔",
@@ -415,7 +359,6 @@
             "noFootnotes": "脚注を表示しない",
             "noRTLFlip": "縦書きでUIを変更しない",
             "noRuby": "ルビを表示しない",
-            "options": "",
             "paginated": "ページ型",
             "paraSpacing": "段落の間隔",
             "pdfZoom": {
@@ -431,7 +374,6 @@
                 },
                 "title": "拡大"
             },
-            "preview": "",
             "reduceMotion": "視差効果を減らす",
             "save": {
                 "apply": "保存",
@@ -466,7 +408,6 @@
             "play": "音声合成による読み上げを実行",
             "previous": "前の文に戻り、音声合成による読み上げを実行",
             "sentenceDetect": "音声合成読み上げ語句の分割",
-            "sentenceDetectDescription": "",
             "speed": "音声合成による読み上げの速度",
             "stop": "音声合成による読み上げを停止",
             "voice": "音声合成による読み上げ用の音声"
@@ -479,7 +420,6 @@
         "keyboard": {
             "advancedMenu": "メニュー",
             "cancel": "キャンセル",
-            "disclaimer": "",
             "edit": "編集",
             "editUserJson": "編集：ユーザーファイル",
             "hide": "隠す",
@@ -493,51 +433,9 @@
             "languageChoice": "言語の選択"
         },
         "session": {
-            "description": "",
             "no": "無効",
             "title": "セッションの保存",
             "yes": "有効"
-        },
-        "tabs": {
-            "appearance": "",
-            "general": "",
-            "keyboardShortcuts": "",
-            "reading": ""
-        },
-        "theme": {
-            "auto": "",
-            "dark": "",
-            "description": "",
-            "light": "",
-            "title": ""
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "",
-            "goToBooks": "",
-            "next": ""
-        },
-        "description": {
-            "annotations": "",
-            "catalogs": "",
-            "home": "",
-            "readingView1": "",
-            "readingView2": "",
-            "yourBooks": ""
-        },
-        "dontShow": "",
-        "tab": {
-            "annotations": "",
-            "catalogs": "",
-            "home": "",
-            "readingView": "",
-            "yourBooks": ""
-        },
-        "title": {
-            "allBooks": "",
-            "newFeature": "",
-            "welcome": ""
         }
     }
 }

@@ -11,13 +11,9 @@
         "toolbar": "툴바"
     },
     "apiapp": {
-        "documentation": "",
-        "howItWorks": "",
-        "informations": "",
         "noLibraryFound": "({{- name}}) 라이브러리가 없습니다"
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "복사",
             "cut": "잘라내기",
@@ -28,7 +24,6 @@
             "undo": "실행 취소"
         },
         "hide": "{{- appName}} 숨기기",
-        "newVersion": "",
         "quit": "{{- appName}} 종료",
         "session": {
             "exit": {
@@ -87,10 +82,7 @@
         "opds": {
             "auth": {
                 "cancel": "취소",
-                "login": "로그인",
-                "password": "",
-                "register": "",
-                "username": ""
+                "login": "로그인"
             },
             "info": {
                 "availableSince": "이후 사용가능",
@@ -115,7 +107,6 @@
         "readBook": "읽기",
         "released": "발행일",
         "sort": "정렬 기준",
-        "tag": "",
         "tagCount": "태그 개수",
         "tags": "태그",
         "update": "편집"
@@ -129,7 +120,6 @@
         "importError": "오류가 발생했습니다. 파일 확장자를 확인하십시오. ({{acceptedExtension}})",
         "renew": "출판물의 라이선스를 갱신하겠습니까?",
         "return": "출판물의 라이선스를 반납하겠습니까?",
-        "save": "",
         "yes": "확인"
     },
     "error": {
@@ -144,18 +134,15 @@
         "books": "내 도서",
         "catalogs": "카탈로그",
         "downloads": "다운로드",
-        "fitlerTagTitle": "",
         "gridTitle": "그리드보기",
         "home": "내서재 메뉴",
         "homeTitle": "홈",
         "importTitle": "출판물 열기",
         "listTitle": "목록 보기",
-        "myCatalogs": "",
         "refreshTitle": "페이지 새로고침",
         "searchPlaceholder": "검색어 입력",
         "searchTitle": "검색",
-        "settings": "설정",
-        "viewMode": ""
+        "settings": "설정"
     },
     "library": {
         "lcp": {
@@ -163,10 +150,7 @@
             "password": "암호",
             "sentence": "이 출판물을 열기 위해서는 LCP 암호가 필요합니다: ",
             "submit": "제출",
-            "urlHint": "암호를 잊으셨습니까? 여기서 도움말을 확인하십시오",
-            "whatIsLcp?": "",
-            "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": ""
+            "urlHint": "암호를 잊으셨습니까? 여기서 도움말을 확인하십시오"
         }
     },
     "message": {
@@ -197,10 +181,8 @@
         "addMenu": "OPDS feed 추가",
         "back": "뒤로",
         "breadcrumbRoot": "카탈로그",
-        "documentation": "",
         "empty": "항목을 찾을 수 없습니다",
         "firstPage": "처음으로",
-        "informations": "",
         "lastPage": "마지막으로",
         "menu": {
             "aboutBook": "상세 정보",
@@ -225,8 +207,7 @@
             "title": "OPDS feed 편집",
             "updateButton": "편집",
             "url": "링크"
-        },
-        "whatIsOpds": ""
+        }
     },
     "publication": {
         "accessibility": {
@@ -259,7 +240,6 @@
             "name": "접근성",
             "noA11y": "접근성 정보 없음"
         },
-        "actions": "",
         "audio": {
             "tracks": "오디오 트랙"
         },
@@ -270,51 +250,30 @@
         "cover": {
             "img": "표지"
         },
-        "day": "",
-        "days": "",
         "duration": {
             "title": "트랙 시간"
         },
-        "expired": "",
         "expiredLcp": "이 책은 LCP 라이선스가 만료되어서 읽을 수 없습니다",
         "lcpEnd": "종료",
         "lcpRightsCopy": "복사된 문자",
         "lcpRightsPrint": "인쇄된 페이지",
         "lcpStart": "시작",
-        "licenceLCP": "",
         "licenseOutOfDate": "라이선스가 만료되었습니다",
         "licenseSignatureDateInvalid": "라이선스 서명날짜가 유효하지 않습니다",
         "licenseSignatureInvalid": "라이선스 서명이 유효하지 않습니다",
-        "licensed": "",
-        "markAsRead": "",
         "progression": {
             "title": "진행"
         },
-        "read": "",
-        "remainingTime": "",
         "renewButton": "갱신",
         "returnButton": "반납",
         "returnedLcp": "LCP 라이선스가 반납되어 이 책을 읽을 수 없습니다.",
         "revokedLcp": "LCP 라이선스가 취소되어서 이 책을 읽을 수 없습니다.",
         "seeLess": "접기",
         "seeMore": "더 보기",
-        "timeLeft": "",
         "title": "",
         "userKeyCheckInvalid": "잘못된 암호입니다."
     },
     "reader": {
-        "annotations": {
-            "Color": "",
-            "addNote": "",
-            "advancedMode": "",
-            "advancedModeDetails": "",
-            "annotationsOptions": "",
-            "highlight": "",
-            "noSelectionToast": "",
-            "quickAnnotations": "",
-            "saveNote": "",
-            "toggleMarginMarks": ""
-        },
         "divina": {
             "mute": "오디오 음소거",
             "unmute": "오디오 음소거 해제"
@@ -323,38 +282,28 @@
             "lessInfo": "간략정보",
             "moreInfo": "상세정보"
         },
-        "fxl": {
-            "fit": ""
-        },
         "marks": {
             "annotations": "주석",
             "bookmarks": "북마크",
             "delete": "삭제",
             "edit": "수정",
-            "goTo": "",
             "landmarks": "랜드마크",
-            "noMark": "",
-            "saveMark": "",
             "search": "검색",
-            "searchResult": "",
             "toc": "목차"
         },
         "media-overlays": {
             "activate": "소리내어 읽기 활성화",
             "captions": "캡션/클린 뷰",
-            "captionsDescription": "",
             "next": "다음 읽기",
             "pause": "읽기 멈춤",
             "play": "읽기 재생",
             "previous": "이전 읽기",
             "skip": "건너뛰기",
-            "skipDescription": "",
             "speed": "음성 속도",
             "stop": "읽기 종료",
             "title": "소리내어 읽기"
         },
         "navigation": {
-            "annotationTitle": "",
             "backHomeTitle": "내서재로 돌아가기",
             "bookmarkTitle": "북마크",
             "currentPage": "현재 페이지: {{- current}}",
@@ -370,7 +319,6 @@
             "infoTitle": "정보",
             "magnifyingGlassButton": "도서에서 검색",
             "openTableOfContentsTitle": "탐색",
-            "page": "",
             "pdfscalemode": "페이지 또는 너비 맞춤",
             "quitFullscreenTitle": "전체 화면모드 종료",
             "readBookTitle": "읽기 시작",
@@ -384,7 +332,6 @@
                 "next": "다음",
                 "notFound": "일치하는 내용이 없습니다.",
                 "previous": "이전",
-                "results": "",
                 "submit": "찾기"
             },
             "searchTitle": "검색:"
@@ -398,15 +345,12 @@
                 "two": "2단",
                 "twoTitle": "2단"
             },
-            "customizeReader": "",
-            "disabled": "",
             "display": "디스플레이",
             "disposition": {
                 "title": "레이아웃"
             },
             "font": "폰트",
             "fontSize": "폰트 크기",
-            "infoCustomFont": "",
             "justification": "정렬",
             "justify": "양쪽 정렬",
             "letterSpacing": "문자 간격",
@@ -415,7 +359,6 @@
             "noFootnotes": "각주 비활성화",
             "noRTLFlip": "",
             "noRuby": "",
-            "options": "",
             "paginated": "페이지 매김",
             "paraSpacing": "단락 간격",
             "pdfZoom": {
@@ -431,7 +374,6 @@
                 },
                 "title": "확대/축소"
             },
-            "preview": "",
             "reduceMotion": "모션 줄이기",
             "save": {
                 "apply": "저장",
@@ -466,7 +408,6 @@
             "play": "재생",
             "previous": "이전",
             "sentenceDetect": "TTS 텍스트 분할",
-            "sentenceDetectDescription": "",
             "speed": "음성변환 재생 속도",
             "stop": "종료",
             "voice": "텍스트 음성 변환 음성"
@@ -479,7 +420,6 @@
         "keyboard": {
             "advancedMenu": "메뉴",
             "cancel": "취소",
-            "disclaimer": "",
             "edit": "수정",
             "editUserJson": "사용자 파일 편집...",
             "hide": "숨기기",
@@ -493,51 +433,9 @@
             "languageChoice": "언어 선택"
         },
         "session": {
-            "description": "",
             "no": "비활성화",
             "title": "세션 저장",
             "yes": "활성화"
-        },
-        "tabs": {
-            "appearance": "",
-            "general": "",
-            "keyboardShortcuts": "",
-            "reading": ""
-        },
-        "theme": {
-            "auto": "",
-            "dark": "",
-            "description": "",
-            "light": "",
-            "title": ""
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "",
-            "goToBooks": "",
-            "next": ""
-        },
-        "description": {
-            "annotations": "",
-            "catalogs": "",
-            "home": "",
-            "readingView1": "",
-            "readingView2": "",
-            "yourBooks": ""
-        },
-        "dontShow": "",
-        "tab": {
-            "annotations": "",
-            "catalogs": "",
-            "home": "",
-            "readingView": "",
-            "yourBooks": ""
-        },
-        "title": {
-            "allBooks": "",
-            "newFeature": "",
-            "welcome": ""
         }
     }
 }

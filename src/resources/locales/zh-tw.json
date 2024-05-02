@@ -11,13 +11,9 @@
         "toolbar": "工具欄"
     },
     "apiapp": {
-        "documentation": "",
-        "howItWorks": "",
-        "informations": "",
         "noLibraryFound": "未找到套件庫 ({{- name}})"
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "複製",
             "cut": "剪下",
@@ -28,7 +24,6 @@
             "undo": "復原"
         },
         "hide": "隱藏 {{- appName}}",
-        "newVersion": "",
         "quit": "退出 {{- appName}}",
         "session": {
             "exit": {
@@ -87,10 +82,7 @@
         "opds": {
             "auth": {
                 "cancel": "取消",
-                "login": "登入",
-                "password": "",
-                "register": "",
-                "username": ""
+                "login": "登入"
             },
             "info": {
                 "availableSince": "開始時間",
@@ -115,7 +107,6 @@
         "readBook": "閱讀",
         "released": "出版日期",
         "sort": "排序方式",
-        "tag": "",
         "tagCount": "標籤數",
         "tags": "標籤",
         "update": "編輯"
@@ -129,7 +120,6 @@
         "importError": "出現錯誤，請確認文件的副檔名({{acceptedExtension}})",
         "renew": "你真的要更新此出版物的許可證嗎？",
         "return": "你真的要歸還此出版物的許可證嗎？",
-        "save": "",
         "yes": "是"
     },
     "error": {
@@ -144,18 +134,15 @@
         "books": "我的書籍",
         "catalogs": "出版目錄",
         "downloads": "下載",
-        "fitlerTagTitle": "",
         "gridTitle": "網格視圖",
         "home": "書架菜單",
         "homeTitle": "主頁",
         "importTitle": "匯入出版物",
         "listTitle": "列表視圖",
-        "myCatalogs": "",
         "refreshTitle": "重新載入",
         "searchPlaceholder": "搜索",
         "searchTitle": "開始搜索",
-        "settings": "設置",
-        "viewMode": ""
+        "settings": "設置"
     },
     "library": {
         "lcp": {
@@ -163,10 +150,7 @@
             "password": "密碼",
             "sentence": "打開此出版物需要 LCP 密碼: ",
             "submit": "提交",
-            "urlHint": "忘記密碼？在此取得幫助",
-            "whatIsLcp?": "",
-            "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": ""
+            "urlHint": "忘記密碼？在此取得幫助"
         }
     },
     "message": {
@@ -197,10 +181,8 @@
         "addMenu": "添加 OPDS 訂閱來源",
         "back": "返回",
         "breadcrumbRoot": "出版目錄",
-        "documentation": "",
         "empty": "未找到出版物",
         "firstPage": "首頁",
-        "informations": "",
         "lastPage": "尾頁",
         "menu": {
             "aboutBook": "關於此書",
@@ -225,8 +207,7 @@
             "title": "編輯 OPDS 的 feed",
             "updateButton": "編輯",
             "url": "連結："
-        },
-        "whatIsOpds": ""
+        }
     },
     "publication": {
         "accessibility": {
@@ -259,7 +240,6 @@
             "name": "無障礙",
             "noA11y": "沒有可用的無障礙資訊"
         },
-        "actions": "",
         "audio": {
             "tracks": "音軌"
         },
@@ -270,51 +250,30 @@
         "cover": {
             "img": "封面圖像"
         },
-        "day": "",
-        "days": "",
         "duration": {
             "title": "播放時長"
         },
-        "expired": "",
         "expiredLcp": "此書無法閱讀，因為 LCP 許可證已到期。",
         "lcpEnd": "結束",
         "lcpRightsCopy": "許可證複製",
         "lcpRightsPrint": "許可證列印",
         "lcpStart": "開始",
-        "licenceLCP": "",
         "licenseOutOfDate": "許可證過期",
         "licenseSignatureDateInvalid": "許可證簽名日期無效",
         "licenseSignatureInvalid": "許可證簽名無效",
-        "licensed": "",
-        "markAsRead": "",
         "progression": {
             "title": "進展"
         },
-        "read": "",
-        "remainingTime": "",
         "renewButton": "更新",
         "returnButton": "歸還",
         "returnedLcp": "此書無法閱讀，因為 LCP 許可證已被歸還。",
         "revokedLcp": "此書無法閱讀，因為 LCP 許可證已被撤銷。",
         "seeLess": "查看更少",
         "seeMore": "查看更多",
-        "timeLeft": "",
         "title": "標題",
         "userKeyCheckInvalid": "密碼不正確"
     },
     "reader": {
-        "annotations": {
-            "Color": "",
-            "addNote": "",
-            "advancedMode": "",
-            "advancedModeDetails": "",
-            "annotationsOptions": "",
-            "highlight": "",
-            "noSelectionToast": "",
-            "quickAnnotations": "",
-            "saveNote": "",
-            "toggleMarginMarks": ""
-        },
         "divina": {
             "mute": "靜音",
             "unmute": "取消靜音"
@@ -323,38 +282,28 @@
             "lessInfo": "顯示更少資訊",
             "moreInfo": "查看更多資訊"
         },
-        "fxl": {
-            "fit": ""
-        },
         "marks": {
             "annotations": "筆記",
             "bookmarks": "書籤",
             "delete": "刪除",
             "edit": "編輯",
-            "goTo": "",
             "landmarks": "結構",
-            "noMark": "",
-            "saveMark": "",
             "search": "搜尋",
-            "searchResult": "",
             "toc": "目錄"
         },
         "media-overlays": {
             "activate": "啟動語音朗讀",
             "captions": "字幕 / 簡明視圖",
-            "captionsDescription": "",
             "next": "朗讀下一段",
             "pause": "暫停朗讀",
             "play": "開始朗讀",
             "previous": "朗讀上一段",
             "skip": "自動跳過功能",
-            "skipDescription": "",
             "speed": "語音朗讀速度",
             "stop": "停止朗讀",
             "title": "語音朗讀"
         },
         "navigation": {
-            "annotationTitle": "",
             "backHomeTitle": "返回書架",
             "bookmarkTitle": "書籤",
             "currentPage": "當前頁面: {{- current}}",
@@ -370,7 +319,6 @@
             "infoTitle": "訊息",
             "magnifyingGlassButton": "在出版物中搜索",
             "openTableOfContentsTitle": "導航",
-            "page": "",
             "pdfscalemode": "適合頁面寬度",
             "quitFullscreenTitle": "退出全屏模式",
             "readBookTitle": "開始閱讀書籍",
@@ -384,7 +332,6 @@
                 "next": "後一個",
                 "notFound": "無匹配",
                 "previous": "前一個",
-                "results": "",
                 "submit": "尋找"
             },
             "searchTitle": "搜索："
@@ -398,15 +345,12 @@
                 "two": "2欄",
                 "twoTitle": "兩欄"
             },
-            "customizeReader": "",
-            "disabled": "",
             "display": "顯示",
             "disposition": {
                 "title": "布局"
             },
             "font": "字體",
             "fontSize": "字體大小",
-            "infoCustomFont": "",
             "justification": "排版",
             "justify": "左右對齊",
             "letterSpacing": "字符間距",
@@ -415,7 +359,6 @@
             "noFootnotes": "沒有附註",
             "noRTLFlip": "",
             "noRuby": "",
-            "options": "",
             "paginated": "分頁",
             "paraSpacing": "段落間距",
             "pdfZoom": {
@@ -431,7 +374,6 @@
                 },
                 "title": "放大"
             },
-            "preview": "",
             "reduceMotion": "減少動態效果",
             "save": {
                 "apply": "套用",
@@ -466,7 +408,6 @@
             "play": "播放",
             "previous": "上一段",
             "sentenceDetect": "句子檢測",
-            "sentenceDetectDescription": "",
             "speed": "語速",
             "stop": "停止",
             "voice": "聲音"
@@ -479,7 +420,6 @@
         "keyboard": {
             "advancedMenu": "菜單",
             "cancel": "取消",
-            "disclaimer": "",
             "edit": "編輯",
             "editUserJson": "編輯使用者文件...",
             "hide": "隱藏",
@@ -493,51 +433,9 @@
             "languageChoice": "選擇語言"
         },
         "session": {
-            "description": "",
             "no": "禁用",
             "title": "保存登入狀態",
             "yes": "啟用"
-        },
-        "tabs": {
-            "appearance": "",
-            "general": "",
-            "keyboardShortcuts": "",
-            "reading": ""
-        },
-        "theme": {
-            "auto": "",
-            "dark": "",
-            "description": "",
-            "light": "",
-            "title": ""
-        }
-    },
-    "wizard": {
-        "buttons": {
-            "discover": "",
-            "goToBooks": "",
-            "next": ""
-        },
-        "description": {
-            "annotations": "",
-            "catalogs": "",
-            "home": "",
-            "readingView1": "",
-            "readingView2": "",
-            "yourBooks": ""
-        },
-        "dontShow": "",
-        "tab": {
-            "annotations": "",
-            "catalogs": "",
-            "home": "",
-            "readingView": "",
-            "yourBooks": ""
-        },
-        "title": {
-            "allBooks": "",
-            "newFeature": "",
-            "welcome": ""
         }
     }
 }

@@ -11,13 +11,12 @@
         "toolbar": "barre d'outils"
     },
     "apiapp": {
-        "documentation": "Documentation Thorium",
+        "noLibraryFound": "aucune bibliothèque trouvée ({{- name}})",
         "howItWorks": "Comment ça marche ?",
         "informations": "Beaucoup de bibliothèques publiques et vendeurs adoptent OPDS comme format standard pour afficher leur catalogue sur Internet. Thorium permet l'accès aux catalogues OPDS 1 et 2. Il supporte également plusieurs formats d'identification associés à OPDS ce qui permet aux utilisateurs d'accéder à leur bibliothèque personnelle, i.e. les livres numériques que l'utilisateur à acquis ou emprunté, leur permettant ainsi de les télécharger et les lire immédiatement.",
-        "noLibraryFound": "aucune bibliothèque trouvée ({{- name}})"
+        "documentation": "Documentation Thorium"
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Copier",
             "cut": "Couper",
@@ -28,7 +27,6 @@
             "undo": "Annuler"
         },
         "hide": "Masquer {{- appName}}",
-        "newVersion": "",
         "quit": "Quitter {{- appName}}",
         "session": {
             "exit": {
@@ -44,7 +42,8 @@
         },
         "window": {
             "showLibrary": "Afficher la bibliothèque"
-        }
+        },
+        "dontShow": "Ne plus afficher"
     },
     "catalog": {
         "about": {
@@ -88,9 +87,9 @@
             "auth": {
                 "cancel": "Annuler",
                 "login": "Connexion",
-                "password": "Mot de passe",
                 "register": "Créer un compte",
-                "username": "Nom d'utilisateur / Adresse email"
+                "username": "Nom d'utilisateur / Adresse email",
+                "password": "Mot de passe"
             },
             "info": {
                 "availableSince": "Depuis le",
@@ -197,10 +196,8 @@
         "addMenu": "Ajouter un flux OPDS",
         "back": "Retour",
         "breadcrumbRoot": "Mes catalogues",
-        "documentation": "Site web officiel d'OPDS",
         "empty": "Aucune publication trouvée",
         "firstPage": "Première",
-        "informations": "Le format de catalogue Open Publication Distribution System (OPDS) est un moyen de distribuer, de découvrir et de télécharger des publications électroniques.",
         "lastPage": "Dernière",
         "menu": {
             "aboutBook": "Fiche livre",
@@ -226,7 +223,9 @@
             "updateButton": "Éditer",
             "url": "Adresse :"
         },
-        "whatIsOpds": "Qu'est-ce que OPDS?"
+        "whatIsOpds": "Qu'est-ce que OPDS?",
+        "informations": "Le format de catalogue Open Publication Distribution System (OPDS) est un moyen de distribuer, de découvrir et de télécharger des publications électroniques.",
+        "documentation": "Site web officiel d'OPDS"
     },
     "publication": {
         "accessibility": {
@@ -259,7 +258,6 @@
             "name": "Accessibilité",
             "noA11y": "Aucune information d'accessibilité disponible"
         },
-        "actions": "Actions",
         "audio": {
             "tracks": "Pistes"
         },
@@ -270,37 +268,38 @@
         "cover": {
             "img": "image de couverture"
         },
-        "day": "jour",
-        "days": "jours",
         "duration": {
             "title": "Durée"
         },
-        "expired": "Prêt expiré",
         "expiredLcp": "Ce livre ne peut être lu car la licence lcp a expiré.",
         "lcpEnd": "Fin",
         "lcpRightsCopy": "Caractères copiés",
         "lcpRightsPrint": "Pages imprimées",
         "lcpStart": "Début",
-        "licenceLCP": "Licence (LCP)",
         "licenseOutOfDate": "License inutilisable à cette date",
         "licenseSignatureDateInvalid": "Date de signature de license invalide",
         "licenseSignatureInvalid": "Signature de license invalide",
-        "licensed": "Sous licence",
-        "markAsRead": "Marquer comme lu",
         "progression": {
             "title": "Progression"
         },
-        "read": "Lu",
-        "remainingTime": "Prêts (jours restant)",
         "renewButton": "Renouveler",
         "returnButton": "Retourner",
         "returnedLcp": "Ce livre ne peut être lu car la licence lcp a été retournée.",
         "revokedLcp": "Ce livre ne peut être lu car la licence lcp a été révoquée.",
         "seeLess": "Voir moins",
         "seeMore": "Voir plus",
-        "timeLeft": "Temps restant",
         "title": "Titre",
-        "userKeyCheckInvalid": "Mot de passe incorrect"
+        "userKeyCheckInvalid": "Mot de passe incorrect",
+        "markAsRead": "Marquer comme lu",
+        "licenceLCP": "Licence (LCP)",
+        "remainingTime": "Prêts (jours restant)",
+        "day": "jour",
+        "days": "jours",
+        "expired": "Prêt expiré",
+        "read": "Lu",
+        "licensed": "Sous licence",
+        "timeLeft": "Temps restant",
+        "actions": "Actions"
     },
     "reader": {
         "annotations": {
@@ -331,7 +330,6 @@
             "bookmarks": "Marque-pages",
             "delete": "Supprimer",
             "edit": "Éditer",
-            "goTo": "",
             "landmarks": "Repères",
             "noMark": "Pour ajouter un marque-page, sélectionner le bouton de marque-page dans la barre d'outils",
             "saveMark": "Sauvegarder le marque-page",
@@ -342,13 +340,11 @@
         "media-overlays": {
             "activate": "Activer la lecture en voix de synthèse",
             "captions": "Vue simplifiée, style sous-titres",
-            "captionsDescription": "",
             "next": "Suivant",
             "pause": "Mettre en pause",
             "play": "Lire",
             "previous": "Précédent",
             "skip": "Omettre les informations auxiliaires",
-            "skipDescription": "",
             "speed": "Vitesse",
             "stop": "Arrêt",
             "title": "Lire en voix de synthèse"
@@ -406,7 +402,6 @@
             },
             "font": "Police de caractères",
             "fontSize": "Taille du texte",
-            "infoCustomFont": "",
             "justification": "Alignement",
             "justify": "Justifié",
             "letterSpacing": "Espacement des lettres",
@@ -466,7 +461,6 @@
             "play": "Lire",
             "previous": "Précédent",
             "sentenceDetect": "Découper à la phrase",
-            "sentenceDetectDescription": "",
             "speed": "Vitesse",
             "stop": "Arrêter",
             "voice": "Voix"
@@ -512,32 +506,31 @@
             "title": "Thème de l'application"
         }
     },
-    "wizard": {
-        "buttons": {
-            "discover": "Découvrir les nouveautés",
-            "goToBooks": "Accéder à mes livres",
-            "next": "Suivant"
-        },
-        "description": {
-            "annotations": "Mettez en évidence les passages importants et prenez des notes. Grâce au mode avancé, vous pouvez même annoter vos livres à la volée.",
-            "catalogs": "Empruntez des livres auprès de votre bibliothèque locale ou découvrez de nouveaux titres grâce aux catalogues OPDS -- ils fonctionnent comme des catalogues en ligne, et vous permettent d'accéder à une variété de publications provenant de différentes sources.",
-            "home": "Thorium fait peau neuve, découvrons ensemble les nouveautés !",
-            "readingView1": "Thorium s'adapte à vos préférences de lecture : choisissez parmi différents thèmes, ajustez les paramètres du texte ou lancez la lecture vocale tout en suivant le texte à l'écran.",
-            "readingView2": "Recherchez, naviguez jusqu'à un point précis, ajoutez des marques-pages ou profitez du mode plein écran pour des sessions de lecture sans distractions.",
-            "yourBooks": "Bienvenue dans votre collection personnelle : filtrez et trouvez rapidement un ouvrage dans la vue grille ou lancez une recherche plus poussée dans la vue tableau."
-        },
-        "dontShow": "Ne plus afficher",
+    "tour": {
         "tab": {
-            "annotations": "Annotations",
-            "catalogs": "Catalogues",
             "home": "Accueil",
+            "yourBooks": "Vos livres",
+            "catalogs": "Catalogues",
             "readingView": "Vue lecture",
-            "yourBooks": "Vos livres"
+            "annotations": "Annotations"
         },
         "title": {
+            "welcome": "Bienvenue dans Thorium 3.0",
             "allBooks": "Tous mes livres",
-            "newFeature": "Nouveauté : Les annotations",
-            "welcome": "Bienvenue dans Thorium 3.0"
+            "newFeature": "Nouveauté : Les annotations"
+        },
+        "description": {
+            "home": "Thorium fait peau neuve, découvrons ensemble les nouveautés !",
+            "yourBooks": "Bienvenue dans votre collection personnelle : filtrez et trouvez rapidement un ouvrage dans la vue grille ou lancez une recherche plus poussée dans la vue tableau.",
+            "catalogs": "Empruntez des livres auprès de votre bibliothèque locale ou découvrez de nouveaux titres grâce aux catalogues OPDS -- ils fonctionnent comme des catalogues en ligne, et vous permettent d'accéder à une variété de publications provenant de différentes sources.",
+            "readingView1": "Thorium s'adapte à vos préférences de lecture : choisissez parmi différents thèmes, ajustez les paramètres du texte ou lancez la lecture vocale tout en suivant le texte à l'écran.",
+            "readingView2": "Recherchez, naviguez jusqu'à un point précis, ajoutez des marques-pages ou profitez du mode plein écran pour des sessions de lecture sans distractions.",
+            "annotations": "Mettez en évidence les passages importants et prenez des notes. Grâce au mode avancé, vous pouvez même annoter vos livres à la volée."
+        },
+        "buttons": {
+            "goToBooks": "Accéder à mes livres",
+            "discover": "Découvrir les nouveautés",
+            "next": "Suivant"
         }
     }
 }
