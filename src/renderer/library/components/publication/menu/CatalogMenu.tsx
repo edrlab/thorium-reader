@@ -14,13 +14,13 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
-import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
-import { publicationActions } from "readium-desktop/common/redux/actions";
-import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+// import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+// import { publicationActions } from "readium-desktop/common/redux/actions";
+// import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 
 const CatalogMenu: React.FC<{publicationView: PublicationView}> = (props) => {
     const [__] = useTranslator();
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
     return (
         <>
@@ -37,15 +37,18 @@ const CatalogMenu: React.FC<{publicationView: PublicationView}> = (props) => {
                 <PublicationInfoLibWithRadixContent
                 />
             </PublicationInfoLibWithRadix>
-            {props.publicationView.lastReadTimeStamp ?
+            {/* {props.publicationView.lastReadTimeStamp ?
                 <button
-                onClick={() => dispatch(publicationActions.readingFinished.build(props.publicationView.identifier))}
+                onClick={() => {
+                    dispatch(publicationActions.readingFinished.build(props.publicationView.identifier));
+
+                }}
                 >
                     <SVG ariaHidden svg={DoubleCheckIcon} />
                     {__("publication.markAsRead")}
                 </button>
                 : <></>
-            }
+            } */}
             <DeletePublicationConfirm
                 trigger={(
                     <button
