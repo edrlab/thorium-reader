@@ -81,45 +81,45 @@ export const WizardModal = () => {
                     <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
                         <Tabs.Trigger value="tab1">
                             <SVG ariaHidden svg={HomeIcon} />
-                            <h4>{__("tour.tab.home")}</h4>
+                            <h4>{__("wizard.tab.home")}</h4>
                         </Tabs.Trigger>
                         <Tabs.Trigger value="tab2">
                             <SVG ariaHidden svg={ShelfIcon} />
-                            <h4>{__("tour.tab.yourBooks")}</h4>
+                            <h4>{__("wizard.tab.yourBooks")}</h4>
                         </Tabs.Trigger>
                         <Tabs.Trigger value="tab3">
                             <SVG ariaHidden svg={CatalogsIcon} />
-                            <h4>{__("tour.tab.catalogs")}</h4>
+                            <h4>{__("wizard.tab.catalogs")}</h4>
                         </Tabs.Trigger>
                         <Tabs.Trigger value="tab4">
                             <SVG ariaHidden svg={OpenBookIcon} />
-                            <h4>{__("tour.tab.readingView")}</h4>
+                            <h4>{__("wizard.tab.readingView")}</h4>
                         </Tabs.Trigger>
                         <Tabs.Trigger value="tab5">
                             <SVG ariaHidden svg={AnnotationsIcon} />
-                            <h4>{__("tour.tab.annotations")}</h4>
+                            <h4>{__("wizard.tab.annotations")}</h4>
                         </Tabs.Trigger>
                         <div style={{display: "flex", alignItems: "center", gap: "10px", position: "absolute", bottom: "30px", left: "30px"}}>
                             <input type="checkbox" checked={checked} onChange={() => setChecked(!checked)} name="wizardCheckbox" />
-                            <label htmlFor="wizardCheckbox">{__("app.dontShow")}</label>
+                            <label htmlFor="wizardCheckbox">{__("wizard.dontShow")}</label>
                         </div>
                     </Tabs.List>
                     <div className={classNames(stylesSettings.settings_content, stylesModals.guidedTour_content)} style={{ marginTop: "70px" }}>
                         <Tabs.Content value="tab1" title="Home" tabIndex={-1}>
                             <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
-                                <h3>{__("tour.title.welcome")}</h3>
-                                <p>{__("tour.description.home")}</p>
+                                <h3>{__("wizard.title.welcome")}</h3>
+                                <p>{__("wizard.description.home")}</p>
                                 <img src={HomeImage} />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Dialog.Close className={stylesButtons.button_nav_primary}>
                                         <SVG ariaHidden svg={ShelfIcon} />
-                                        {__("tour.buttons.goToBooks")}
+                                        {__("wizard.buttons.goToBooks")}
                                     </Dialog.Close>
                                     <Tabs.List>
                                         <Tabs.Trigger value="tab2" className={stylesButtons.button_primary_blue}>
                                             <SVG ariaHidden svg={ArrowRightIcon} />
-                                            {__("tour.buttons.discover")}
+                                            {__("wizard.buttons.discover")}
                                         </Tabs.Trigger>
                                     </Tabs.List>
 
@@ -129,16 +129,16 @@ export const WizardModal = () => {
                         <Tabs.Content value="tab2" title="Your Books" tabIndex={-1}>
                             <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
-                                <h3>{__("tour.title.allBooks")}</h3>
+                                <h3>{__("wizard.title.allBooks")}</h3>
                                 <p>
-                                    {__("tour.description.yourBooks")}
+                                    {__("wizard.description.yourBooks")}
                                 </p>
                                 <img src={BooksImage} />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Tabs.List>
                                         <Tabs.Trigger value="tab3" className={stylesButtons.button_primary_blue}>
                                             <SVG ariaHidden svg={ArrowRightIcon} />
-                                            {__("tour.buttons.next")}
+                                            {__("wizard.buttons.next")}
                                         </Tabs.Trigger>
                                     </Tabs.List>
                                 </div>
@@ -147,16 +147,16 @@ export const WizardModal = () => {
                         <Tabs.Content value="tab3" title="Catalogs" tabIndex={-1}>
                             <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
-                                <h3>{__("tour.tab.catalogs")}</h3>
+                                <h3>{__("wizard.tab.catalogs")}</h3>
                                 <p>
-                                    {__("tour.description.catalogs")}
+                                    {__("wizard.description.catalogs")}
                                 </p>
                                 <img src={CatalogsImage} />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Tabs.List>
                                         <Tabs.Trigger value="tab4" className={stylesButtons.button_primary_blue} >
                                             <SVG ariaHidden svg={ArrowRightIcon} />
-                                            {__("tour.buttons.next")}
+                                            {__("wizard.buttons.next")}
                                         </Tabs.Trigger>
                                     </Tabs.List>
                                 </div>
@@ -165,15 +165,15 @@ export const WizardModal = () => {
                         <Tabs.Content value="tab4" title="Reading" tabIndex={-1}>
                             <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
-                                <h3>{__("tour.tab.readingView")}</h3>
+                                <h3>{__("wizard.tab.readingView")}</h3>
                                 <p>
-                                    {__("tour.description.readingView1")}<br />{__("tour.description.readingView2")}</p>
+                                    {__("wizard.description.readingView1")}<br />{__("wizard.description.readingView2")}</p>
                                 <img src={ReadingImage} />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Tabs.List>
                                         <Tabs.Trigger value="tab5" className={stylesButtons.button_primary_blue}>
                                             <SVG ariaHidden svg={ArrowRightIcon} />
-                                            {__("tour.buttons.next")}
+                                            {__("wizard.buttons.next")}
                                         </Tabs.Trigger>
                                     </Tabs.List>
                                 </div>
@@ -182,14 +182,14 @@ export const WizardModal = () => {
                         <Tabs.Content value="tab5" title="Annotations" tabIndex={-1}>
                             <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
-                                <h3>{__("tour.title.newFeature")}</h3>
+                                <h3>{__("wizard.title.newFeature")}</h3>
                                 <p>
-                                    {__("tour.description.annotations")}</p>
+                                    {__("wizard.description.annotations")}</p>
                                 <img src={AnnotationsImage} />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Dialog.Close className={stylesButtons.button_primary_blue}>
                                         <SVG ariaHidden svg={ShelfIcon} />
-                                        {__("tour.buttons.goToBooks")}
+                                        {__("wizard.buttons.goToBooks")}
                                     </Dialog.Close>
                                 </div>
                             </div>

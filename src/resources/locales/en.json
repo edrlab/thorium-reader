@@ -44,8 +44,7 @@
         },
         "window": {
             "showLibrary": "Show library / bookshelf"
-        },
-        "dontShow": "Don't show anymore"
+        }
     },
     "catalog": {
         "about": {
@@ -513,7 +512,8 @@
             "title": "Application Theme"
         }
     },
-    "tour": {
+    "wizard": {
+        "dontShow": "Don't show anymore",
         "tab": {
             "home": "Home",
             "yourBooks": "Your books",
