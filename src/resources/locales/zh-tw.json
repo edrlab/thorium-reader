@@ -421,8 +421,13 @@
             "text": "文字",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "無色",
                     "Night": "夜間",
+                    "Paper": "",
                     "Sepia": "茶色"
                 },
                 "title": "主題"

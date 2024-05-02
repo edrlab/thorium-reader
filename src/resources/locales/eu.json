@@ -421,8 +421,13 @@
             "text": "Testua",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "Neutrala",
                     "Night": "Gauez",
+                    "Paper": "",
                     "Sepia": "Sepia"
                 },
                 "title": "Antolamendu"

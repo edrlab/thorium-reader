@@ -421,8 +421,13 @@
             "text": "Tekstas",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "Neutrali",
                     "Night": "Naktis",
+                    "Paper": "",
                     "Sepia": "Sepija"
                 },
                 "title": "Tema"
