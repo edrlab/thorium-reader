@@ -138,6 +138,7 @@
     },
     "header": {
         "allBooks": "Alle Bücher",
+        "catalogs": "Kataloge",
         "downloads": "Downloads",
         "fitlerTagTitle": "",
         "gridTitle": "Bücher in einem Raster präsentieren",

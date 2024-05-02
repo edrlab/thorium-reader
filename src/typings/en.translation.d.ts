@@ -334,6 +334,7 @@ declare namespace typed_i18n {
   (_: "error.errorBox.title", __?: {}): string;
   (_: "header", __?: {}): {
   readonly "allBooks": string,
+  readonly "catalogs": string,
   readonly "downloads": string,
   readonly "fitlerTagTitle": string,
   readonly "gridTitle": string,
@@ -349,6 +350,7 @@ declare namespace typed_i18n {
   readonly "viewMode": string
 };
   (_: "header.allBooks", __?: {}): string;
+  (_: "header.catalogs", __?: {}): string;
   (_: "header.downloads", __?: {}): string;
   (_: "header.fitlerTagTitle", __?: {}): string;
   (_: "header.gridTitle", __?: {}): string;
@@ -1241,76 +1243,76 @@ declare namespace typed_i18n {
   (_: "settings.theme.light", __?: {}): string;
   (_: "settings.theme.title", __?: {}): string;
   (_: "wizard", __?: {}): {
-  readonly "dontShow": string,
-  readonly "tab": {
-    readonly "home": string,
-    readonly "yourBooks": string,
-    readonly "catalogs": string,
-    readonly "readingView": string,
-    readonly "annotations": string
-  },
-  readonly "title": {
-    readonly "welcome": string,
-    readonly "allBooks": string,
-    readonly "newFeature": string
+  readonly "buttons": {
+    readonly "discover": string,
+    readonly "goToBooks": string,
+    readonly "next": string
   },
   readonly "description": {
-    readonly "home": string,
-    readonly "yourBooks": string,
+    readonly "annotations": string,
     readonly "catalogs": string,
+    readonly "home": string,
     readonly "readingView1": string,
     readonly "readingView2": string,
-    readonly "annotations": string
+    readonly "yourBooks": string
   },
-  readonly "buttons": {
-    readonly "goToBooks": string,
-    readonly "discover": string,
-    readonly "next": string
+  readonly "dontShow": string,
+  readonly "tab": {
+    readonly "annotations": string,
+    readonly "catalogs": string,
+    readonly "home": string,
+    readonly "readingView": string,
+    readonly "yourBooks": string
+  },
+  readonly "title": {
+    readonly "allBooks": string,
+    readonly "newFeature": string,
+    readonly "welcome": string
   }
 };
-  (_: "wizard.dontShow", __?: {}): string;
-  (_: "wizard.tab", __?: {}): {
-  readonly "home": string,
-  readonly "yourBooks": string,
-  readonly "catalogs": string,
-  readonly "readingView": string,
-  readonly "annotations": string
-};
-  (_: "wizard.tab.home", __?: {}): string;
-  (_: "wizard.tab.yourBooks", __?: {}): string;
-  (_: "wizard.tab.catalogs", __?: {}): string;
-  (_: "wizard.tab.readingView", __?: {}): string;
-  (_: "wizard.tab.annotations", __?: {}): string;
-  (_: "wizard.title", __?: {}): {
-  readonly "welcome": string,
-  readonly "allBooks": string,
-  readonly "newFeature": string
-};
-  (_: "wizard.title.welcome", __?: {}): string;
-  (_: "wizard.title.allBooks", __?: {}): string;
-  (_: "wizard.title.newFeature", __?: {}): string;
-  (_: "wizard.description", __?: {}): {
-  readonly "home": string,
-  readonly "yourBooks": string,
-  readonly "catalogs": string,
-  readonly "readingView1": string,
-  readonly "readingView2": string,
-  readonly "annotations": string
-};
-  (_: "wizard.description.home", __?: {}): string;
-  (_: "wizard.description.yourBooks", __?: {}): string;
-  (_: "wizard.description.catalogs", __?: {}): string;
-  (_: "wizard.description.readingView1", __?: {}): string;
-  (_: "wizard.description.readingView2", __?: {}): string;
-  (_: "wizard.description.annotations", __?: {}): string;
   (_: "wizard.buttons", __?: {}): {
-  readonly "goToBooks": string,
   readonly "discover": string,
+  readonly "goToBooks": string,
   readonly "next": string
 };
-  (_: "wizard.buttons.goToBooks", __?: {}): string;
   (_: "wizard.buttons.discover", __?: {}): string;
-  (_: "wizard.buttons.next", __?: {}): string
+  (_: "wizard.buttons.goToBooks", __?: {}): string;
+  (_: "wizard.buttons.next", __?: {}): string;
+  (_: "wizard.description", __?: {}): {
+  readonly "annotations": string,
+  readonly "catalogs": string,
+  readonly "home": string,
+  readonly "readingView1": string,
+  readonly "readingView2": string,
+  readonly "yourBooks": string
+};
+  (_: "wizard.description.annotations", __?: {}): string;
+  (_: "wizard.description.catalogs", __?: {}): string;
+  (_: "wizard.description.home", __?: {}): string;
+  (_: "wizard.description.readingView1", __?: {}): string;
+  (_: "wizard.description.readingView2", __?: {}): string;
+  (_: "wizard.description.yourBooks", __?: {}): string;
+  (_: "wizard.dontShow", __?: {}): string;
+  (_: "wizard.tab", __?: {}): {
+  readonly "annotations": string,
+  readonly "catalogs": string,
+  readonly "home": string,
+  readonly "readingView": string,
+  readonly "yourBooks": string
+};
+  (_: "wizard.tab.annotations", __?: {}): string;
+  (_: "wizard.tab.catalogs", __?: {}): string;
+  (_: "wizard.tab.home", __?: {}): string;
+  (_: "wizard.tab.readingView", __?: {}): string;
+  (_: "wizard.tab.yourBooks", __?: {}): string;
+  (_: "wizard.title", __?: {}): {
+  readonly "allBooks": string,
+  readonly "newFeature": string,
+  readonly "welcome": string
+};
+  (_: "wizard.title.allBooks", __?: {}): string;
+  (_: "wizard.title.newFeature", __?: {}): string;
+  (_: "wizard.title.welcome", __?: {}): string
 }
 }
 export = typed_i18n;

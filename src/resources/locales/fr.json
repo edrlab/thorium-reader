@@ -138,6 +138,7 @@
     },
     "header": {
         "allBooks": "Tous mes livres",
+        "catalogs": "Catalogues",
         "downloads": "Téléchargements",
         "fitlerTagTitle": "Filtrer par mot-clef",
         "gridTitle": "Grille",
@@ -284,7 +285,7 @@
         "progression": {
             "title": "Progression"
         },
-        "read": "Fini",
+        "read": "Terminé",
         "remainingTime": "Prêts (jours restant)",
         "renewButton": "Renouveler",
         "returnButton": "Retourner",
