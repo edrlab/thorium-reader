@@ -13,9 +13,24 @@
   flex: 1;
   transition: 200ms linear;
 
+  .appName {
+    margin-left: 20px;
+    color: #AFB1B6;
+    font-size: 30px; 
+    margin-bottom: 10px;
+
+    &::before {
+      content: "Thorium"
+    }
+  }
+
   @media screen and (width <= 800px) {
     width: fit-content;
     flex: unset;
+
+    .appName::before {
+      content: "Th"
+    }
 
     ul {
       padding: 10px!important;
