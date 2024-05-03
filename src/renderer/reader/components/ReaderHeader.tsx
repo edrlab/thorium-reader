@@ -367,9 +367,44 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             return acc;
         }, [] as SpeechSynthesisVoice[]);
 
-        const voicesMapping = _orderedVoices.map((voice, i) => (
-            {id: i, name: voice.name, default: voice.default, lang: voice.lang, localService: voice.localService, voiceURI: voice.voiceURI}
-        ));
+        // const voicesMapping = _orderedVoices.map((voice, i) => (
+        //     {id: i, name: voice.name, default: voice.default, lang: voice.lang, localService: voice.localService, voiceURI: voice.voiceURI}
+        // ));
+
+
+        const voicesMapping: {
+            id: number;
+            name: string;
+            default: boolean;
+            lang: string;
+            localService: boolean;
+            voiceURI: string;
+        }[] = [];
+
+        const checkForDuplicates = (voice: SpeechSynthesisVoice): boolean => {
+            const exists = voicesMapping.find(
+                (existingVoice) =>
+                    existingVoice.name === voice.name &&
+                    existingVoice.voiceURI === voice.voiceURI &&
+                    existingVoice.lang === voice.lang,
+            );
+            return exists ? true : false;
+        };
+
+        _orderedVoices.forEach((voice, i) => {
+            const voiceToAdd = {
+                id: i,
+                name: voice.name,
+                default: voice.default,
+                lang: voice.lang,
+                localService: voice.localService,
+                voiceURI: voice.voiceURI,
+            };
+        
+            if (!checkForDuplicates(voiceToAdd)) {
+                voicesMapping.push(voiceToAdd);
+            }
+        });
 
         voicesMapping.unshift({
             id: -1,
