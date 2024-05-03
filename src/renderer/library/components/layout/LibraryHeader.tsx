@@ -55,8 +55,6 @@ class Header extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
-        const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
-
         const headerNav: NavigationHeader[] = [
             {
                 route: "/home",
@@ -96,7 +94,7 @@ class Header extends React.Component<IProps, undefined> {
                 label={__("accessibility.skipLink")}
             />
             <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
-                <h1 style={{marginLeft: "20px", color: "#AFB1B6", fontSize: "30px", marginBottom: "10px"}}>{capitalizedAppName}</h1>
+                <h1 className={stylesHeader.appName}></h1>
                 <ul style={{paddingTop: "10px"}}>
                     <div>
                     {
