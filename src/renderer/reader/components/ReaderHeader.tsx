@@ -342,36 +342,34 @@ export class ReaderHeader extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
-        // const LANG_DIVIDER_PREFIX = "------------";
-        // let prevLang: string | undefined;
-        // WARNING: .sort() is in-place same-array mutation! (not a new array)
-        const _orderedVoices = speechSynthesis.getVoices().sort((a: SpeechSynthesisVoice, b: SpeechSynthesisVoice) => {
-            if(a.lang < b.lang) { return -1; }
-            if(a.lang > b.lang) { return 1; }
-            // a.lang === b.lang ...
-            if(a.name < b.name) { return -1; }
-            if(a.name > b.name) { return 1; }
-            return 0;
-        }).reduce((acc, curr) => {
-            // if (!prevLang || prevLang !== curr.lang) {
-            //     acc.push({
-            //         default: false,
-            //         lang: curr.lang,
-            //         localService: false,
-            //         name: LANG_DIVIDER_PREFIX,
-            //         voiceURI: "",
-            //     });
-            // }
-            // prevLang = curr.lang;
-            acc.push(curr);
+        type VoiceWithIndex = SpeechSynthesisVoice & { id: number };
+        const voicesWithIndex = speechSynthesis.getVoices()
+        .reduce((acc, curr) => {
+            const found = acc.find((voice) => {
+                return voice.lang === curr.lang &&
+                    voice.name === curr.name &&
+                    voice.localService === curr.localService &&
+                    voice.voiceURI === curr.voiceURI
+                    // voice.default === curr.default
+                ;
+            });
+            if (!found) {
+                acc.push(curr);
+            }
             return acc;
-        }, [] as SpeechSynthesisVoice[]);
-
-        const voicesMapping = _orderedVoices.map((voice, i) => (
+        }, [] as SpeechSynthesisVoice[])
+        // WARNING: .sort() is in-place same-array mutation! (not a new array)
+        .sort((voice1, voice2) => {
+            if(voice1.lang < voice2.lang) { return -1; }
+            if(voice1.lang > voice2.lang) { return 1; }
+            // a.lang === b.lang ...
+            if(voice1.name < voice2.name) { return -1; }
+            if(voice1.name > voice2.name) { return 1; }
+            return 0;
+        }).map<VoiceWithIndex>((voice, i) => (
             {id: i, name: voice.name, default: voice.default, lang: voice.lang, localService: voice.localService, voiceURI: voice.voiceURI}
         ));
-
-        voicesMapping.unshift({
+        voicesWithIndex.unshift({
             id: -1,
             name: __("reader.tts.default"),
             default: false,
@@ -380,21 +378,20 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             voiceURI: "",
         });
 
-        interface GroupedVoices {
-            [key: string]: { id: number; name: string; default: boolean; lang: string; localService: boolean; voiceURI: string }[];
+        interface ILangToVoicesMap {
+            [key: string]: VoiceWithIndex[];
         }
-
-        const groupedVoices = voicesMapping.reduce((acc: GroupedVoices, voice) => {
+        const langToVoicesMap = voicesWithIndex.reduce((acc, voice) => {
             if (!acc[voice.lang]) {
-                acc[voice.lang] = [];
+                acc[voice.lang] = [] as Array<VoiceWithIndex>;
             }
             acc[voice.lang].push(voice);
             return acc;
-        }, {});
+        }, {} as ILangToVoicesMap);
 
-        const options = Object.keys(groupedVoices).map(lang => ({
-            name: lang,
-            children: groupedVoices[lang].map((voice, i) => ({ id: i, name: voice.name, default: voice.default, lang: voice.lang, localService: voice.localService, voiceURI: voice.voiceURI })),
+        const voiceComboBoxDefaultItems = Object.keys(langToVoicesMap).map(lang => ({
+            lang,
+            voices: langToVoicesMap[lang], // .map<VoiceWithIndex>((voice, i) => ({ id: i, name: voice.name, default: voice.default, lang: voice.lang, localService: voice.localService, voiceURI: voice.voiceURI })),
         }));
 
         const playbackRate = [
@@ -740,28 +737,36 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                             <div className={stylesReader.ttsSelectVoice}>
                                                                                 <ComboBox
                                                                                     label={__("reader.tts.voice")}
-                                                                                    defaultItems={options}
+                                                                                    defaultItems={voiceComboBoxDefaultItems}
                                                                                     defaultInputValue={
                                                                                         this.props.ttsVoice ?
-                                                                                            this.props.ttsVoice.name : voicesMapping[0].name}
+                                                                                            this.props.ttsVoice.name : voicesWithIndex[0].name}
                                                                                     selectedKey={
                                                                                         this.props.ttsVoice ?
-                                                                                            voicesMapping.find((voice) => voice.name === this.props.ttsVoice.name).id :
-                                                                                            -1
+                                                                                            `TTSID${(voicesWithIndex.find((voice) =>
+                                                                                                voice.name === this.props.ttsVoice.name
+                                                                                                && voice.lang === this.props.ttsVoice.lang
+                                                                                                && voice.voiceURI === this.props.ttsVoice.voiceURI,
+                                                                                            ) || { id: -1 }).id}` :
+                                                                                            "TTSID-1"
                                                                                     }
-                                                                                    onSelectionChange={(ev) => {
-                                                                                        const i = _orderedVoices.find((voice) => voice.name === ev || null);
-                                                                                        this.props.handleTTSVoice(i);
+                                                                                    onSelectionChange={(key) => {
+                                                                                        if (!key) return;
+
+                                                                                        key = key.toString();
+                                                                                        const id = parseInt(key.replace("TTSID", ""), 10);
+                                                                                        const v = id === -1 ? null : (voicesWithIndex.find((voice) => voice.id === id)  || null);
+                                                                                        this.props.handleTTSVoice(v);
                                                                                     }}
                                                                                     style={{ paddingBottom: "0", margin: "0" }}
                                                                                 >
                                                                                     {section => (
-                                                                                        <Section id={section.name} key={`section-${section.name}`}>
+                                                                                        <Section id={section.lang} key={`section-${section.lang}`}>
                                                                                             <ReactAriaHeader style={{ paddingLeft: "5px", fontSize: "16px", color: "var(--color-blue)", borderBottom: "1px solid var(--color-light-blue)" }}>
-                                                                                                {section.name}
+                                                                                                {section.lang}
                                                                                             </ReactAriaHeader>
-                                                                                            <Collection items={section.children} key={`collection-${section.name}`}>
-                                                                                                {item => <ComboBoxItem id={item.name} key={`tts${item.id + 1}`} value={item.id + 1}>{item.name}</ComboBoxItem>}
+                                                                                            <Collection items={section.voices} key={`collection-${section.lang}`}>
+                                                                                                {voice => <ComboBoxItem id={`TTSID${voice.id}`} key={`TTSKEY${voice.id}`} value={`TTSVAL${voice.id}`}>{`${voice.name}${voice.default ? " *" : ""}`}</ComboBoxItem>}
                                                                                             </Collection>
                                                                                         </Section>)}
                                                                                 </ComboBox>
