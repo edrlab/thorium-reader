@@ -138,6 +138,7 @@
     },
     "header": {
         "allBooks": "Все книги",
+        "catalogs": "Каталоги",
         "downloads": "Загрузки",
         "fitlerTagTitle": "",
         "gridTitle": "Вид сетки",

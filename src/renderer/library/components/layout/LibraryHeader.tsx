@@ -35,38 +35,6 @@ interface NavigationHeader {
     svg: any;
 }
 
-const headerNav: NavigationHeader[] = [
-    {
-        route: "/home",
-        label: "homeTitle",
-        matchRoutes: ["/", "/home"],
-        styles: [],
-        svg: HomeIcon,
-    },
-    {
-        route: "/library",
-        label: "allBooks",
-        matchRoutes: ["/library"],
-        searchEnable: false,
-        styles: [],
-        svg: ShelfIcon,
-    },
-    {
-        route: "/opds",
-        label: "catalogs",
-        matchRoutes: ["/opds"],
-        styles: [],
-        svg: CatalogsIcon,
-    },
-    // {
-    //     route: "/settings",
-    //     label: "settings",
-    //     matchRoutes: ["/settings"],
-    //     styles: [],
-    //     svg: GearIcon,
-    // },
-];
-
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
@@ -87,7 +55,37 @@ class Header extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
-        const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
+        const headerNav: NavigationHeader[] = [
+            {
+                route: "/home",
+                label: this.props.__("header.homeTitle"),
+                matchRoutes: ["/", "/home"],
+                styles: [],
+                svg: HomeIcon,
+            },
+            {
+                route: "/library",
+                label: this.props.__("header.allBooks"),
+                matchRoutes: ["/library"],
+                searchEnable: false,
+                styles: [],
+                svg: ShelfIcon,
+            },
+            {
+                route: "/opds",
+                label: this.props.__("header.catalogs"),
+                matchRoutes: ["/opds"],
+                styles: [],
+                svg: CatalogsIcon,
+            },
+            // {
+            //     route: "/settings",
+            //     label: "settings",
+            //     matchRoutes: ["/settings"],
+            //     styles: [],
+            //     svg: GearIcon,
+            // },
+        ];
 
         return (<>
             <SkipLink
@@ -96,7 +94,7 @@ class Header extends React.Component<IProps, undefined> {
                 label={__("accessibility.skipLink")}
             />
             <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
-                <h1 style={{marginLeft: "20px", color: "#AFB1B6", fontSize: "30px", marginBottom: "10px"}}>{capitalizedAppName}</h1>
+                <h1 className={stylesHeader.appName}></h1>
                 <ul style={{paddingTop: "10px"}}>
                     <div>
                     {
@@ -120,9 +118,6 @@ class Header extends React.Component<IProps, undefined> {
         if (!this.props.location) {
             return (<></>);
         }
-
-        // because dynamic label does not pass typed i18n compilation
-        const translate = this.props.__ as (str: string) => string;
 
         let styleClasses = [];
         const pathname = this.props.location.pathname;
@@ -167,14 +162,10 @@ class Header extends React.Component<IProps, undefined> {
                     aria-pressed={active}
                     role={"button"}
                     className={active ? stylesButtons.button_nav_primary : ""}
-                    title={
-                        translate("header." + item.label)
-                    }
+                    title={item.label}
                 >
                     <SVG ariaHidden svg={item.svg} />
-                    <h3>{
-                        translate("header." + item.label)
-                    }</h3>
+                    <h3>{item.label}</h3>
                 </Link>
             </li>
         );

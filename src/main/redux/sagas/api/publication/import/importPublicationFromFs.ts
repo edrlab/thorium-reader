@@ -80,12 +80,32 @@ export async function importPublicationFromFS(
 
             r2Publication = await DaisyParsePromise(filePath);
 
-            const pathFile = await createTempDir(nanoid(8), "misc");
-            const packagePath = await convertDaisyToReadiumWebPub(pathFile, r2Publication);
+            const outputDirPath = await createTempDir(nanoid(8), "misc");
+            let packagePath = await convertDaisyToReadiumWebPub(outputDirPath, r2Publication, undefined);
 
-            // after PublicationParsePromise, cleanup zip handler
-            // (no need to fetch ZIP data beyond this point)
-            r2Publication.freeDestroy();
+            const isFullTextAudio = r2Publication.Metadata?.AdditionalJSON &&
+                // dtb:multimediaContent ==> audio,text
+                (r2Publication.Metadata.AdditionalJSON["dtb:multimediaType"] === "audioFullText" ||
+                r2Publication.Metadata.AdditionalJSON["ncc:multimediaType"] === "audioFullText" || (
+                    !r2Publication.Metadata.AdditionalJSON["dtb:multimediaType"] &&
+                    !r2Publication.Metadata.AdditionalJSON["ncc:multimediaType"]
+                ));
+            if (isFullTextAudio && !r2Publication.Spine?.length) {
+                debug("%%%%% FAILED audio+text DAISY convert, trying again as audio-only ...");
+
+                // after PublicationParsePromise, cleanup zip handler
+                // (no need to fetch ZIP data beyond this point)
+                r2Publication.freeDestroy();
+
+                r2Publication = await DaisyParsePromise(filePath);
+
+                // TODO: delete file contents (webpub zip) inside pathFile? shouldn't be necessary as fs.createWriteStream() by default overrides, so does fs.writeFileSync() in the case of generateDaisyAudioManifestOnly
+                packagePath = await new Promise((reso) => {
+                    setTimeout(async () => {
+                        reso(await convertDaisyToReadiumWebPub(outputDirPath, r2Publication, undefined, true));
+                    }, 500);
+                });
+            }
 
             if (packagePath) {
                 return await importPublicationFromFS(packagePath);

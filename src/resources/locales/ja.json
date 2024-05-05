@@ -138,6 +138,7 @@
     },
     "header": {
         "allBooks": "すべての本",
+        "catalogs": "図書目録",
         "downloads": "ダウンロード",
         "fitlerTagTitle": "",
         "gridTitle": "格子状に本を表示",
