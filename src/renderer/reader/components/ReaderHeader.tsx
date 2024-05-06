@@ -42,7 +42,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
-import { fixedLayoutZoomPercent } from "@r2-navigator-js/electron/renderer/dom";
+import { fixedLayoutZoomPercent, stealFocusDisable } from "@r2-navigator-js/electron/renderer/dom";
 import {
     LocatorExtended, MediaOverlaysStateEnum, TTSStateEnum,
 } from "@r2-navigator-js/electron/renderer/index";
@@ -953,7 +953,19 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                             {/* { this.props.menuOpen ? */}
 
-                            <Dialog.Root open={this.props.menuOpen} onOpenChange={(v) => { console.log("MENU DialogOnOpenChange", v); this.props.handleMenuClick(v); }} modal={this.props.readerPopoverDialogContext.dockedMode ? false : true}>
+                            <Dialog.Root
+                                open={this.props.menuOpen}
+                                onOpenChange={(open) => {
+                                    console.log("MENU DialogOnOpenChange", open);
+                                    this.props.handleMenuClick(open);
+                                    if (open) {
+                                        stealFocusDisable(true);
+                                    } else {
+                                        stealFocusDisable(false);
+                                    }
+                                }}
+                                modal={this.props.readerPopoverDialogContext.dockedMode ? false : true}
+                            >
                                 <Dialog.Trigger asChild>
                                     <button
                                         aria-pressed={this.props.menuOpen}
@@ -967,27 +979,63 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     </button>
                                 </Dialog.Trigger>
                                 <Dialog.Portal>
-                                    <Dialog.Content
-                                        onPointerDownOutside={(e) => { e.preventDefault(); console.log("MenuModal onPointerDownOutside"); }}
-                                        onInteractOutside={(e) => { e.preventDefault(); console.log("MenuModal onInteractOutside"); }}
-                                        className={containerClassName}
-                                        style={{
-                                            borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
-                                            borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
-                                            right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
-                                            left: (this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left") ? "0" : "",
-                                            height: (isDockedMode && isOnSearch) ? "calc(100dvh - 140px)" : "",
-                                            marginTop: (isDockedMode && !isOnSearch) ? "50px" : "0",
-                                        }}
-                                    >
-                                        <ReaderMenu {...this.props.readerMenuProps}
-                                            {...this.props.readerPopoverDialogContext}
-                                            isDivina={this.props.isDivina}
-                                            isPdf={this.props.isPdf}
-                                            currentLocation={this.props.currentLocation}
-                                            // focusNaviguationMenu={this.focusNaviguationMenuButton}
-                                            handleMenuClick={this.props.handleMenuClick} />
-                                    </Dialog.Content>
+                                    {
+                                        this.props.readerPopoverDialogContext.dockedMode ?
+                                            <div
+                                                className={containerClassName}
+                                                style={{
+                                                    borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
+                                                    borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
+                                                    right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
+                                                    left: (this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left") ? "0" : "",
+                                                    height: (isDockedMode && isOnSearch) ? "calc(100dvh - 140px)" : "",
+                                                    marginTop: (isDockedMode && !isOnSearch) ? "50px" : "0",
+                                                }}
+                                            >
+                                                <ReaderMenu {...this.props.readerMenuProps}
+                                                    {...this.props.readerPopoverDialogContext}
+                                                    isDivina={this.props.isDivina}
+                                                    isPdf={this.props.isPdf}
+                                                    currentLocation={this.props.currentLocation}
+                                                    // focusNaviguationMenu={this.focusNaviguationMenuButton}
+                                                    handleMenuClick={this.props.handleMenuClick} />
+                                            </div>
+                                            :
+                                            <Dialog.Content
+                                                // onFocusOutside={(e) => {
+                                                // console.log(e);
+                                                // }}
+                                                // onPointerDownOutside={(e) => { 
+                                                //     if (this.props.readerPopoverDialogContext.dockedMode) {
+                                                //         e.preventDefault();
+                                                //     }
+                                                //     console.log("MenuModal onPointerDownOutside");
+                                                // }}
+                                                // onInteractOutside={(e) => {
+                                                //     if (this.props.readerPopoverDialogContext.dockedMode) {
+                                                //         e.preventDefault();
+                                                //     }
+                                                //     console.log("MenuModal onInteractOutside");
+                                                // }}
+                                                className={containerClassName}
+                                                style={{
+                                                    borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
+                                                    borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
+                                                    right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
+                                                    left: (this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left") ? "0" : "",
+                                                    height: (isDockedMode && isOnSearch) ? "calc(100dvh - 140px)" : "",
+                                                    marginTop: (isDockedMode && !isOnSearch) ? "50px" : "0",
+                                                }}
+                                            >
+                                                <ReaderMenu {...this.props.readerMenuProps}
+                                                    {...this.props.readerPopoverDialogContext}
+                                                    isDivina={this.props.isDivina}
+                                                    isPdf={this.props.isPdf}
+                                                    currentLocation={this.props.currentLocation}
+                                                    // focusNaviguationMenu={this.focusNaviguationMenuButton}
+                                                    handleMenuClick={this.props.handleMenuClick} />
+                                            </Dialog.Content>
+                                    }
                                 </Dialog.Portal>
                             </Dialog.Root>
                         </li>
