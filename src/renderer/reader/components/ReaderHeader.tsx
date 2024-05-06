@@ -708,19 +708,19 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                         <div className={stylesReaderHeader.Tts_popover_container}>
                                                             <div style={{paddingRight: "25px", borderRight: "1px solid var(--color-medium-grey)"}}>
                                                             <div className={stylesReader.ttsSelectRate}>
-                                                                            <ComboBox label={this.props.publicationHasMediaOverlays ?
+                                                                            <ComboBox label={useMO ?
                                                                                 __("reader.media-overlays.speed")
                                                                                 : __("reader.tts.speed")}
                                                                                 defaultItems={playbackRate}
                                                                                 // defaultSelectedKey={2}
                                                                                 selectedKey={
                                                                                     this.props.ttsPlaybackRate ?
-                                                                                    playbackRate.find((rate) => rate.value.toString() === (this.props.publicationHasMediaOverlays ? this.props.mediaOverlaysPlaybackRate : this.props.ttsPlaybackRate)).id :
+                                                                                    playbackRate.find((rate) => rate.value.toString() === (useMO ? this.props.mediaOverlaysPlaybackRate : this.props.ttsPlaybackRate)).id :
                                                                                         2
                                                                                 }
                                                                                 onSelectionChange={(ev) => {
                                                                                     const v = playbackRate.find((option) => option.id === ev).value;
-                                                                                    if (this.props.publicationHasMediaOverlays) {
+                                                                                    if (useMO) {
                                                                                         this.props.handleMediaOverlaysPlaybackRate(
                                                                                             v.toString(),
                                                                                         );
