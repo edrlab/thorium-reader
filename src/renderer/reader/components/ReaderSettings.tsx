@@ -695,11 +695,11 @@ const ReadingDisplayMathJax = ({
             ))}
 
             <section>
-                <div>
+                <div className={stylesReader.display_checkbox_section}>
                     <input
                         id="noRTLFlipCheckBox"
                         type="checkbox"
-
+                        className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                         checked={disableRTLFlip}
                         onChange={() => setDisableRTLFlip(!disableRTLFlip)}
                     />
