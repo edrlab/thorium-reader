@@ -153,7 +153,7 @@ const Theme = ({theme, set}: {theme: Pick<ReaderConfig, "theme">, set: (a: Pick<
     : 1;
 
     return (
-        <>
+        <section className={stylesSettings.section}>
         <h4>{__("reader.settings.theme.title")}</h4>
         <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px", marginTop: "20px", flexWrap: "wrap"}}
         value={themeOptions.find((theme) => theme.id === defaultKey).name}
@@ -191,7 +191,7 @@ const Theme = ({theme, set}: {theme: Pick<ReaderConfig, "theme">, set: (a: Pick<
                 svg={defaultKey === 3 ? CheckIcon : null}
                 /> */}
             </RadioGroup.Root>
-        </>
+        </section>
     );
 };
 
