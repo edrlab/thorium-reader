@@ -679,13 +679,14 @@ const ReadingDisplayMathJax = ({
         <div>
             {options.map((option) => (
                 <section key={option.id}>
-                    <div style={{display: "flex", alignItems: "center"}}>
+                    <div className={stylesReader.display_checkbox_section}>
                         <input
                             id={option.id}
                             type="checkbox"
                             name={option.name}
                             onChange={option.onChange}
                             defaultChecked={option.checked}
+                            className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                         />
                         <label htmlFor={option.id} style={{margin: "0 5px", height: "unset"}}>{option.label}</label>
                     </div>
@@ -1008,14 +1009,14 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
             <h3>{__("reader.settings.text")}</h3>
             {overridePublisherDefault ? <></> : <i>{__("reader.settings.disabled")}</i>}
         </Tabs.Trigger>;
-    const optionTextItem = { id: 0, value: "tab-text", name: __("reader.settings.text"), disabled: overridePublisherDefault ? false : true, svg: TextAreaIcon };
+    const optionTextItem = { id: 1, value: "tab-text", name: __("reader.settings.text"), disabled: overridePublisherDefault ? false : true, svg: TextAreaIcon };
 
     const DivinaTrigger =
         <Tabs.Trigger value="tab-divina" disabled={overridePublisherDefault ? false : true} title={__("reader.settings.disposition.title")} key={"tab-divina"}>
             <SVG ariaHidden svg={TextAreaIcon} />
             <h3>{__("reader.settings.disposition.title")}</h3>
         </Tabs.Trigger>;
-    const optionDivinaItem = { id: 1, value: "tab-divina", name: __("reader.settings.disposition.title"), disabled: overridePublisherDefault ? false : true, svg: TextAreaIcon };
+    const optionDivinaItem = { id: 2, value: "tab-divina", name: __("reader.settings.disposition.title"), disabled: overridePublisherDefault ? false : true, svg: TextAreaIcon };
 
     const SpacingTrigger =
         <Tabs.Trigger value="tab-spacing" disabled={overridePublisherDefault ? false : true} key={"tab-spacing"} title={__("reader.settings.spacing")} data-value={"tab-spacing"}>
@@ -1023,28 +1024,28 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
             <h3>{__("reader.settings.spacing")}</h3>
             {overridePublisherDefault ? <></> : <i>{__("reader.settings.disabled")}</i>}
         </Tabs.Trigger>;
-    const optionSpacingItem = { id: 2, value: "tab-spacing", name: __("reader.settings.spacing"), disabled: overridePublisherDefault ? false : true, svg: LayoutIcon };
+    const optionSpacingItem = { id: 3, value: "tab-spacing", name: __("reader.settings.spacing"), disabled: overridePublisherDefault ? false : true, svg: LayoutIcon };
 
     const DisplayTrigger =
         <Tabs.Trigger value="tab-display" key={"tab-display"} title={__("reader.settings.display")}>
             <SVG ariaHidden svg={AlignLeftIcon} />
             <h3>{__("reader.settings.display")}</h3>
         </Tabs.Trigger>;
-    const optionDisplayItem = { id: 3, value: "tab-display", name: __("reader.settings.display"), disabled: false, svg: AlignLeftIcon };
+    const optionDisplayItem = { id: 4, value: "tab-display", name: __("reader.settings.display"), disabled: false, svg: AlignLeftIcon };
 
     // const AudioTrigger =
     //     <Tabs.Trigger value="tab-audio" key={"tab-audio"} title={__("reader.media-overlays.title")}>
     //         <SVG ariaHidden svg={VolumeUpIcon} />
     //         <h3>{__("reader.media-overlays.title")}</h3>
     //     </Tabs.Trigger>;
-    // const optionAudioItem = { id: 4, value: "tab-audio", name: __("reader.media-overlays.title"), disabled: false, svg: VolumeUpIcon };
+    // const optionAudioItem = { id: 5, value: "tab-audio", name: __("reader.media-overlays.title"), disabled: false, svg: VolumeUpIcon };
 
     const PdfZoomTrigger =
         <Tabs.Trigger value="tab-pdfzoom" key={"tab-pdfzoom"} title={__("reader.settings.pdfZoom.title")}>
             <SVG ariaHidden svg={VolumeUpIcon} />
             <h3>{__("reader.settings.pdfZoom.title")}</h3>
         </Tabs.Trigger>;
-    const optionPdfZoomItem = { id: 5, value: "tab-pdfzoom", name: __("reader.settings.pdfZoom.title"), disabled: false, svg: VolumeUpIcon };
+    const optionPdfZoomItem = { id: 6, value: "tab-pdfzoom", name: __("reader.settings.pdfZoom.title"), disabled: false, svg: VolumeUpIcon };
 
     const AllowCustomContainer = () =>
         <div className={stylesSettings.allowCustom} key={"allowCustom"}>
@@ -1114,62 +1115,63 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     return (
         <div>
             {
-                dockedMode ? <div key="docked-header" className={stylesPopoverDialog.docked_header}>
-                    <SelectRef
-                        items={options}
-                        selectedKey={optionSelected}
-                        disabledKeys={optionDisabled}
-                        svg={options.find(({ value }) => value === tabValue)?.svg}
-                        onSelectionChange={(id) => {
-                            console.log("selectionchange: ", id);
-                            const value = options.find(({ id: _id }) => _id === id)?.value;
-                            if (value) {
-                                setTabValue(value);
-                                console.log("set Tab Value = ", value);
-
-                            } else {
-                                // console.error("Combobox No value !!!");
-                            }
-                        }}
-                        // onInputChange={(v) => {
-                        //     console.log("inputchange: ", v);
-
-                        //     const value = options.find(({ name }) => name === v)?.value;
-                        //     if (value) {
-                        //         setTabValue(value);
-                        //         console.log("set Tab Value = ", value);
-
-                        //     } else {
-                        //         console.error("Combobox No value !!!");
-                        //     }
-                        // }}
-                        style={{paddingBottom: "0", margin: "0"}}
-                        ref={dockedModeRef}
-                    >
-                        {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                    </SelectRef>
-
-                    <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls}>
-                        <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label="left" onClick={setDockingModeLeftSide}>
-                            <SVG ariaHidden={true} svg={DockLeftIcon} />
-                        </button>
-                        <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label="right" onClick={setDockingModeRightSide}>
-                            <SVG ariaHidden={true} svg={DockRightIcon} />
-                        </button>
-                        <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "full" ? true : false} aria-label="full" onClick={setDockingModeFull}>
-                            <SVG ariaHidden={true} svg={DockModalIcon} />
-                        </button>
-
-                        <Dialog.Close asChild>
-                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
-                                <SVG ariaHidden={true} svg={QuitIcon} />
+                dockedMode ?
+                    <><div key="docked-header" className={stylesPopoverDialog.docked_header}>
+                        {
+                            (dockedMode && isEpub) ? <AllowCustomContainer /> : <></>
+                        }
+                        <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls}>
+                            <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label="left" onClick={setDockingModeLeftSide}>
+                                <SVG ariaHidden={true} svg={DockLeftIcon} />
                             </button>
-                        </Dialog.Close>
+                            <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label="right" onClick={setDockingModeRightSide}>
+                                <SVG ariaHidden={true} svg={DockRightIcon} />
+                            </button>
+                            <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "full" ? true : false} aria-label="full" onClick={setDockingModeFull}>
+                                <SVG ariaHidden={true} svg={DockModalIcon} />
+                            </button>
+
+                            <Dialog.Close asChild>
+                                <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                                    <SVG ariaHidden={true} svg={QuitIcon} />
+                                </button>
+                            </Dialog.Close>
+                        </div>
                     </div>
-                </div> : <></>
-            }
-            {
-                (dockedMode && isEpub) ? <AllowCustomContainer /> : <></>
+                        <SelectRef
+                            items={options}
+                            selectedKey={optionSelected}
+                            disabledKeys={optionDisabled}
+                            svg={options.find(({ value }) => value === tabValue)?.svg}
+                            onSelectionChange={(id) => {
+                                console.log("selectionchange: ", id);
+                                const value = options.find(({ id: _id }) => _id === id)?.value;
+                                if (value) {
+                                    setTabValue(value);
+                                    console.log("set Tab Value = ", value);
+                                } else {
+                                    // console.error("Combobox No value !!!");
+                                }
+                            }}
+                            // onInputChange={(v) => {
+                            //     console.log("inputchange: ", v);
+
+                            //     const value = options.find(({ name }) => name === v)?.value;
+                            //     if (value) {
+                            //         setTabValue(value);
+                            //         console.log("set Tab Value = ", value);
+
+                            //     } else {
+                            //         console.error("Combobox No value !!!");
+                            //     }
+                            // }}
+                            style={{ paddingBottom: "0", margin: "0" }}
+                            ref={dockedModeRef}
+                        >
+                            {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                        </SelectRef>
+                    </>
+                    : <></>
             }
             <Tabs.Root value={tabValue} defaultValue={tabValue} onValueChange={dockedMode ? null : setTabValue} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {

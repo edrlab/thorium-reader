@@ -1054,3 +1054,14 @@ input[type="radio"] + label {
   text-align: left;
   width: 100%;
 }
+
+.display_checkbox_section {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+
+  &:has(input:focus) {
+    outline: var(--color-blue) solid 2px !important;
+    outline-offset: -2px;
+  }
+}

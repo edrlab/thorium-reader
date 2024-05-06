@@ -54,6 +54,7 @@
   background-color: var(--color-secondary);
   position: absolute;
   overflow: hidden;
+  color: var(--color-primary);
 
   .settings_container {
     height: calc(100dvh - 235px);
@@ -72,6 +73,21 @@
   .display_options_item {
     background-color: transparent;
     color: var(--color-primary);
+  }
+
+  .docked_header + .react_aria_ComboBox {
+    padding: 15px 20px!important;
+    width: calc(100% - 40px);
+    background-color: var(--color-light-grey);
+    border-bottom: 1px solid var(--color-medium-grey);
+
+    .my_combobox_container {
+      width: calc(100% - 10px);
+
+      > button {
+        width: 100%!important;
+      }
+    }
   }
 
   .react_aria_ComboBox {
@@ -136,6 +152,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px;
+  background-color: var(--color-light-grey);
+  border-bottom: 1px solid var(--color-medium-grey);
 
   .my_combobox_container button {
     min-width: 110px;

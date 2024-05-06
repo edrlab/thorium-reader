@@ -145,6 +145,16 @@ $setting_color: var(--color-blue);
     display: flex;
     accent-color: var(--color-blue);
     margin: 10px;
+    gap: 5px;
+
+
+    input {
+        height: 12px;
+    }
+
+    label {
+        font-size: 12px;
+    }
 }
 
 .tablist_reading {

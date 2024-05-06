@@ -25,6 +25,7 @@ export declare const content_root_skip_bottom_spacing: string;
 export declare const content_table: string;
 export declare const content_table_open: string;
 export declare const disable: string;
+export declare const display_checkbox_section: string;
 export declare const divina_grid_container: string;
 export declare const divina_grid_item: string;
 export declare const docked_left: string;
