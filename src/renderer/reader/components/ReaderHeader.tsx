@@ -715,7 +715,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                                 // defaultSelectedKey={2}
                                                                                 selectedKey={
                                                                                     this.props.ttsPlaybackRate ?
-                                                                                    playbackRate.find((rate) => rate.value.toString() === this.props.ttsPlaybackRate).id :
+                                                                                    playbackRate.find((rate) => rate.value.toString() === (this.props.publicationHasMediaOverlays ? this.props.mediaOverlaysPlaybackRate : this.props.ttsPlaybackRate)).id :
                                                                                         2
                                                                                 }
                                                                                 onSelectionChange={(ev) => {
