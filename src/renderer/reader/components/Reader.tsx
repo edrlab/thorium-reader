@@ -81,6 +81,7 @@ import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 import { TToc } from "../pdf/common/pdfReader.type";
 import { pdfMount } from "../pdf/driver";
 import {
+    readerLocalActionAnnotations,
     readerLocalActionDivina, readerLocalActionSetConfig,
     readerLocalActionSetLocator,
 } from "../redux/actions";
@@ -273,7 +274,9 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardInfoWhereAmISpeak = this.onKeyboardInfoWhereAmISpeak.bind(this);
         this.onKeyboardFocusSettings = this.onKeyboardFocusSettings.bind(this);
         this.onKeyboardFocusNav = this.onKeyboardFocusNav.bind(this);
-        this.annotationDrawMarginOrPlainAnnotationToggleSwitch = this.annotationDrawMarginOrPlainAnnotationToggleSwitch.bind(this);
+        this.onKeyboardAnnotationMargin = this.onKeyboardAnnotationMargin.bind(this);
+        this.onKeyboardAnnotation = this.onKeyboardAnnotation.bind(this);
+        this.onKeyboardQuickAnnotation = this.onKeyboardQuickAnnotation.bind(this);
         this.navLeftOrRight_.bind(this);
         this.onKeyboardNavigationToBegin.bind(this);
         this.onKeyboardNavigationToEnd.bind(this);
@@ -1138,8 +1141,16 @@ class Reader extends React.Component<IProps, IState> {
 
         registerKeyboardListener(
             true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.AnnotationDrawMarginOrPlainAnnotationToggleSwitch,
-            this.annotationDrawMarginOrPlainAnnotationToggleSwitch);
+            this.props.keyboardShortcuts.onKeyboardAnnotationMargin,
+            this.onKeyboardAnnotationMargin);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.onKeyboardAnnotation,
+            this.onKeyboardAnnotation);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.onKeyboardQuickAnnotation,
+            this.onKeyboardQuickAnnotation);
     }
 
     private unregisterAllKeyboardListeners() {
@@ -1167,7 +1178,9 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardAudioPreviousAlt);
         unregisterKeyboardListener(this.onKeyboardAudioNextAlt);
         unregisterKeyboardListener(this.onKeyboardAudioStop);
-        unregisterKeyboardListener(this.annotationDrawMarginOrPlainAnnotationToggleSwitch);
+        unregisterKeyboardListener(this.onKeyboardAnnotationMargin);
+        unregisterKeyboardListener(this.onKeyboardAnnotation);
+        unregisterKeyboardListener(this.onKeyboardQuickAnnotation);
     }
 
     private handleLinkLocator = (locator: R2Locator, isFromOnPopState = false) => {
@@ -1196,10 +1209,10 @@ class Reader extends React.Component<IProps, IState> {
         r2HandleLinkUrl(url);
     };
 
-    private annotationDrawMarginOrPlainAnnotationToggleSwitch = () => {
+    private onKeyboardAnnotationMargin = () => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
-                console.log("!shortcutEnable (AnnotationDrawMarginOrPlainAnnotationToggleSwitch)");
+                console.log("!shortcutEnable (onKeyboardAnnotationMargin)");
             }
             return;
         }
@@ -1207,7 +1220,45 @@ class Reader extends React.Component<IProps, IState> {
         const newReaderConfig = {...this.props.readerConfig};
         newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "annotation" ? "margin" : "annotation";
 
-        console.log(`AnnotationDrawMarginOrPlainAnnotationToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
+        console.log(`onKeyboardAnnotationMargin : highlight=${newReaderConfig.annotation_defaultDrawView}`);
+        this.props.setConfig(newReaderConfig, this.props.session);
+    };
+
+    private onKeyboardAnnotation = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardAnnotate)");
+            }
+            return;
+        }
+
+        this.props.triggerAnnotationBtn();
+    };
+
+    private onKeyboardQuickAnnotation = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardQuickAnnotation)");
+            }
+            return;
+        }
+
+        if (this.props.readerConfig.annotation_popoverNotOpenOnNoteTaking) {
+            this.props.triggerAnnotationBtn();
+            return ;
+        }
+
+        let newReaderConfig = {...this.props.readerConfig};
+        const { annotation_popoverNotOpenOnNoteTaking } = newReaderConfig;
+        newReaderConfig.annotation_popoverNotOpenOnNoteTaking = true;
+
+        console.log(`onKeyboardQuickAnnotation : popoverNotOpenOnNoteTaking=${annotation_popoverNotOpenOnNoteTaking}`);
+        this.props.setConfig(newReaderConfig, this.props.session);
+
+        this.props.triggerAnnotationBtn();
+
+        newReaderConfig = {...this.props.readerConfig};
+        newReaderConfig.annotation_popoverNotOpenOnNoteTaking = annotation_popoverNotOpenOnNoteTaking;
         this.props.setConfig(newReaderConfig, this.props.session);
     };
 
@@ -2862,6 +2913,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         dispatchReaderTSXMountedAndPublicationIntoViewportLoaded: () => {
             dispatch(winActions.initSuccess.build());
+        },
+        triggerAnnotationBtn: () => {
+            dispatch(readerLocalActionAnnotations.trigger.build());
         },
     };
 };

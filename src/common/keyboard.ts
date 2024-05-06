@@ -333,11 +333,23 @@ const _defaults_ = Object.freeze({
     //     key: "Digit8",
     // }),
 
-    AnnotationDrawMarginOrPlainAnnotationToggleSwitch: Object.freeze<TKeyboardShortcut>({
+    onKeyboardAnnotationMargin: Object.freeze<TKeyboardShortcut>({
         alt: true,
         control: true,
         shift: false,
         key: "KeyM",
+    }),
+    onKeyboardAnnotation: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "KeyA",
+    }),
+    onKeyboardQuickAnnotation: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "KeyA",
     }),
 });
 export const _defaults = sortObject(_defaults_);
