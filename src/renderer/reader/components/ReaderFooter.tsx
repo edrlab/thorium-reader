@@ -35,6 +35,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { publicationActions, readerActions } from "readium-desktop/common/redux/actions";
 import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 
 function throttle(callback: (...args: any) => void, limit: number) {
     let waiting = false;
@@ -488,6 +489,9 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
         finishReading: (pubId: string) => {
             dispatch(publicationActions.readingFinished.build(pubId));
             dispatch(readerActions.closeRequest.build());
+
+            // just to refresh allPublicationPage.tsx
+            apiDispatch(dispatch)()("publication/readingFinishedRefresh")();
         },
     };
 };

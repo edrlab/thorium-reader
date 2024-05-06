@@ -17,6 +17,7 @@ import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import { publicationActions } from "readium-desktop/common/redux/actions";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 
 const CatalogMenu: React.FC<{publicationView: PublicationView}> = (props) => {
     const [__] = useTranslator();
@@ -39,8 +40,13 @@ const CatalogMenu: React.FC<{publicationView: PublicationView}> = (props) => {
             </PublicationInfoLibWithRadix>
             {props.publicationView.lastReadTimeStamp ?
                 <button
-                onClick={() => dispatch(publicationActions.readingFinished.build(props.publicationView.identifier))}
-                >
+                onClick={() => {
+                    const pubId = props.publicationView.identifier;
+                    dispatch(publicationActions.readingFinished.build(pubId));
+
+                    // just to refresh allPublicationPage.tsx
+                    apiDispatch(dispatch)()("publication/readingFinishedRefresh")();
+                }}>
                     <SVG ariaHidden svg={DoubleCheckIcon} />
                     {__("publication.markAsRead")}
                 </button>
