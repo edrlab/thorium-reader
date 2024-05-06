@@ -1043,7 +1043,19 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             {...(this.props.settingsOpen &&
                                 { style: { backgroundColor: "var(--color-blue" } })}
                         >
-                            <Dialog.Root open={this.props.settingsOpen} onOpenChange={(v) => { console.log("SETTINGS DialogOnOpenChange", v); this.props.handleSettingsClick(v); }} modal={this.props.readerPopoverDialogContext.dockedMode ? false : true}>
+                            <Dialog.Root
+                                open={this.props.settingsOpen}
+                                onOpenChange={(open) => {
+                                    console.log("SETTINGS DialogOnOpenChange", open);
+                                    this.props.handleSettingsClick(open);
+                                    if (open) {
+                                        stealFocusDisable(true);
+                                    } else {
+                                        stealFocusDisable(false);
+                                    }
+                                }}
+                                modal={this.props.readerPopoverDialogContext.dockedMode ? false : true}
+                            >
                                 <Dialog.Trigger asChild>
                                     <button
                                         aria-pressed={this.props.settingsOpen}
@@ -1057,21 +1069,43 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     </button>
                                 </Dialog.Trigger>
                                 <Dialog.Portal>
-                                    <Dialog.Content
-                                        onPointerDownOutside={(e) => { e.preventDefault(); console.log("settingsModal onPointerDownOutside"); }}
-                                        onInteractOutside={(e) => { e.preventDefault(); console.log("SettingsModal onInteractOutside"); }}
-                                        className={containerClassName}
-                                        style={{
-                                            borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
-                                            borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
-                                            right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
-                                            left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
-                                            height: isDockedMode && isOnSearch && "calc(100dvh - 140px)",
-                                            marginTop: isDockedMode && !isOnSearch ? "50px" : "0",
-                                        }}
-                                    >
-                                        <ReaderSettings {...this.props.ReaderSettingsProps} {...this.props.readerPopoverDialogContext} handleSettingsClick={this.props.handleSettingsClick} />
-                                    </Dialog.Content>
+
+                                    {this.props.readerPopoverDialogContext.dockedMode ?
+                                        <div
+                                            className={containerClassName}
+                                            style={{
+                                                borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
+                                                borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
+                                                right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
+                                                left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
+                                                height: isDockedMode && isOnSearch && "calc(100dvh - 140px)",
+                                                marginTop: isDockedMode && !isOnSearch ? "50px" : "0",
+                                            }}
+                                        >
+                                            <ReaderSettings {...this.props.ReaderSettingsProps}
+                                                {...this.props.readerPopoverDialogContext}
+                                                handleSettingsClick={this.props.handleSettingsClick} />
+                                        </div>
+                                        :
+                                        <Dialog.Content
+                                            // onPointerDownOutside={(e) => { e.preventDefault(); console.log("settingsModal onPointerDownOutside"); }}
+                                            // onInteractOutside={(e) => { e.preventDefault(); console.log("SettingsModal onInteractOutside"); }}
+                                            className={containerClassName}
+                                            style={{
+                                                borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
+                                                borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
+                                                right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
+                                                left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
+                                                height: isDockedMode && isOnSearch && "calc(100dvh - 140px)",
+                                                marginTop: isDockedMode && !isOnSearch ? "50px" : "0",
+                                            }}
+                                        >
+                                            <ReaderSettings {...this.props.ReaderSettingsProps}
+                                                {...this.props.readerPopoverDialogContext}
+                                                handleSettingsClick={this.props.handleSettingsClick} />
+                                        </Dialog.Content>
+
+                                    }
                                 </Dialog.Portal>
                             </Dialog.Root>
                         </li>

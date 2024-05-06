@@ -952,43 +952,20 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     React.useEffect(() => {
         console.log("ReaderSettings UPDATED");
 
-        setTimeout(() => {
-            console.log("readerSettings FOCUS");
+        if (dockingMode !== "full") {
 
-            if (dockedMode) {
-                if (dockedModeRef) {
-                    dockedModeRef.current?.focus();
+            setTimeout(() => {
+                if (dockedModeRef.current) {
+    
+                    console.log("Focus on docked mode combobox");
+                    dockedModeRef.current.focus();
                 } else {
                     console.error("!no dockedModeRef on combobox");
                 }
-            } else {
-                if (tabModeRef) {
-                    tabModeRef.current?.focus();
-                } else {
-                    console.error("!no tabModeRef on tabList");
-                }
-            }
-        }, 1);
+            }, 1000);
 
-        const itv = setTimeout(() => {
-            console.log("readerSettings FOCUS");
+        }
 
-            if (dockedMode) {
-                if (dockedModeRef) {
-                    dockedModeRef.current?.focus();
-                } else {
-                    console.error("!no dockedModeRef on combobox");
-                }
-            } else {
-                if (tabModeRef) {
-                    tabModeRef.current?.focus();
-                } else {
-                    console.error("!no tabModeRef on tabList");
-                }
-            }
-        }, 1000); // force focus on tabList instead of webview
-
-        return () => clearInterval(itv);
     }, [dockingMode]);
 
     if (!readerConfig) {
