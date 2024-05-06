@@ -2849,6 +2849,8 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     };
 };
 
+let __READING_FINISHED_CALL_COUNTER = 0;
+
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         toasty: (msg: string) => {
@@ -2885,7 +2887,10 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(readerLocalActionSetLocator.build(locator));
 
             // just to refresh allPublicationPage.tsx
-            apiDispatch(dispatch)()("publication/readingFinishedRefresh")();
+            if (__READING_FINISHED_CALL_COUNTER < 2) {
+                __READING_FINISHED_CALL_COUNTER++;
+                apiDispatch(dispatch)()("publication/readingFinishedRefresh")();
+            }
         },
         setConfig: (config: ReaderConfig, sessionEnabled: boolean) => {
             dispatch(readerLocalActionSetConfig.build(config));
