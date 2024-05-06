@@ -773,7 +773,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                             </div>
                                                                         )}
                                                                     </div>
-                                                                    <ReadingAudio config={this.props.ReaderSettingsProps.readerConfig} set={(config: Partial<ReaderConfig>) => { this.props.ReaderSettingsProps.setSettings({ ...this.props.ReaderSettingsProps.readerConfig, ...config }); }} />
+                                                                    <ReadingAudio useMO={useMO} config={this.props.ReaderSettingsProps.readerConfig} set={(config: Partial<ReaderConfig>) => { this.props.ReaderSettingsProps.setSettings({ ...this.props.ReaderSettingsProps.readerConfig, ...config }); }} />
                                                                 </div>
                                                                 <Popover.Arrow className={stylesReaderHeader.popover_arrow} />
                                                             </Popover.Content>

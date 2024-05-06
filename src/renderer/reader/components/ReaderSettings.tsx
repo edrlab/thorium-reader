@@ -559,9 +559,9 @@ const ReadingDisplayAlign = ({ config: { align }, set }: { config: Pick<ReaderCo
     );
 };
 
-export const ReadingAudio = ({ config: { mediaOverlaysEnableCaptionsMode: captions, mediaOverlaysEnableSkippability: skippability, ttsEnableSentenceDetection: splitTTStext }, set }:
-    { config: Pick<ReaderConfig, "mediaOverlaysEnableCaptionsMode" | "mediaOverlaysEnableSkippability" | "ttsEnableSentenceDetection">,
-    set: (a: Partial<Pick<ReaderConfig, "mediaOverlaysEnableCaptionsMode" | "mediaOverlaysEnableSkippability" | "ttsEnableSentenceDetection">>) => void }) => {
+export const ReadingAudio = ({ useMO, config: { mediaOverlaysEnableCaptionsMode: moCaptions, ttsEnableOverlayMode: ttsCaptions, mediaOverlaysEnableSkippability: skippability, ttsEnableSentenceDetection: splitTTStext }, set }:
+    { useMO: boolean, config: Pick<ReaderConfig, "ttsEnableOverlayMode" | "mediaOverlaysEnableCaptionsMode" | "mediaOverlaysEnableSkippability" | "ttsEnableSentenceDetection">,
+    set: (a: Partial<Pick<ReaderConfig, "ttsEnableOverlayMode" | "mediaOverlaysEnableCaptionsMode" | "mediaOverlaysEnableSkippability" | "ttsEnableSentenceDetection">>) => void }) => {
     const [__] = useTranslator();
 
     const options = [
@@ -570,9 +570,9 @@ export const ReadingAudio = ({ config: { mediaOverlaysEnableCaptionsMode: captio
             name: "Captions",
             label: `${__("reader.media-overlays.captions")}`,
             description: `${__("reader.media-overlays.captionsDescription")}`,
-            checked: captions,
+            checked: useMO ? moCaptions : ttsCaptions,
             onChange: () => {
-                set({ mediaOverlaysEnableCaptionsMode: !captions });
+                useMO ? set({ mediaOverlaysEnableCaptionsMode: !moCaptions }) : set({ ttsEnableOverlayMode: !ttsCaptions });
             },
         },
         {
@@ -582,10 +582,14 @@ export const ReadingAudio = ({ config: { mediaOverlaysEnableCaptionsMode: captio
             description: `${__("reader.media-overlays.skipDescription")}`,
             checked: skippability,
             onChange: () => {
+                // This is shared with TTS
                 set({ mediaOverlaysEnableSkippability: !skippability });
             },
         },
-        {
+    ];
+
+    if (!useMO) {
+        options.push({
             id: "splitTTStext",
             name: "splitTTStext",
             label: `${__("reader.tts.sentenceDetect")}`,
@@ -594,8 +598,8 @@ export const ReadingAudio = ({ config: { mediaOverlaysEnableCaptionsMode: captio
             onChange: () => {
                 set({ ttsEnableSentenceDetection: !splitTTStext });
             },
-        },
-    ];
+        });
+    }
 
     return (
         <div style={{display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px,1fr)"}}>
