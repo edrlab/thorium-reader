@@ -98,6 +98,7 @@ import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driv
 
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { diReaderGet } from "../di";
+import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 
 // main process code!
 // thoriumhttps
@@ -2829,6 +2830,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         setLocator: (locator: LocatorExtended) => {
             dispatch(readerLocalActionSetLocator.build(locator));
+
+            // just to refresh allPublicationPage.tsx
+            apiDispatch(dispatch)()("publication/readingFinishedRefresh")();
         },
         setConfig: (config: ReaderConfig, sessionEnabled: boolean) => {
             dispatch(readerLocalActionSetConfig.build(config));

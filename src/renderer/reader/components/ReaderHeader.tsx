@@ -708,19 +708,19 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                         <div className={stylesReaderHeader.Tts_popover_container}>
                                                             <div style={{paddingRight: "25px", borderRight: "1px solid var(--color-medium-grey)"}}>
                                                             <div className={stylesReader.ttsSelectRate}>
-                                                                            <ComboBox label={this.props.publicationHasMediaOverlays ?
+                                                                            <ComboBox label={useMO ?
                                                                                 __("reader.media-overlays.speed")
                                                                                 : __("reader.tts.speed")}
                                                                                 defaultItems={playbackRate}
                                                                                 // defaultSelectedKey={2}
                                                                                 selectedKey={
                                                                                     this.props.ttsPlaybackRate ?
-                                                                                    playbackRate.find((rate) => rate.value.toString() === this.props.ttsPlaybackRate).id :
+                                                                                    playbackRate.find((rate) => rate.value.toString() === (useMO ? this.props.mediaOverlaysPlaybackRate : this.props.ttsPlaybackRate)).id :
                                                                                         2
                                                                                 }
                                                                                 onSelectionChange={(ev) => {
                                                                                     const v = playbackRate.find((option) => option.id === ev).value;
-                                                                                    if (this.props.publicationHasMediaOverlays) {
+                                                                                    if (useMO) {
                                                                                         this.props.handleMediaOverlaysPlaybackRate(
                                                                                             v.toString(),
                                                                                         );
@@ -953,7 +953,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                             {/* { this.props.menuOpen ? */}
 
-                            <Dialog.Root open={this.props.menuOpen} onOpenChange={(v) => { console.log("MENU DialogOnOpenChange", v); this.props.handleMenuClick(v); }} modal={false}>
+                            <Dialog.Root open={this.props.menuOpen} onOpenChange={(v) => { console.log("MENU DialogOnOpenChange", v); this.props.handleMenuClick(v); }} modal={this.props.readerPopoverDialogContext.dockedMode ? false : true}>
                                 <Dialog.Trigger asChild>
                                     <button
                                         aria-pressed={this.props.menuOpen}
@@ -995,7 +995,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             {...(this.props.settingsOpen &&
                                 { style: { backgroundColor: "var(--color-blue" } })}
                         >
-                            <Dialog.Root open={this.props.settingsOpen} onOpenChange={(v) => { console.log("SETTINGS DialogOnOpenChange", v); this.props.handleSettingsClick(v); }} modal={false}>
+                            <Dialog.Root open={this.props.settingsOpen} onOpenChange={(v) => { console.log("SETTINGS DialogOnOpenChange", v); this.props.handleSettingsClick(v); }} modal={this.props.readerPopoverDialogContext.dockedMode ? false : true}>
                                 <Dialog.Trigger asChild>
                                     <button
                                         aria-pressed={this.props.settingsOpen}
