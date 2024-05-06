@@ -621,6 +621,12 @@ class Reader extends React.Component<IProps, IState> {
             this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();
         }
+        if (oldState.dockingMode !== "full" && this.state.dockingMode === "full") {
+            this.setState({shortcutEnable: false});
+        }
+        if (oldState.dockingMode === "full" && this.state.dockingMode !== "full") {
+            this.setState({shortcutEnable: true});
+        }
     }
 
     public componentWillUnmount() {
@@ -2200,10 +2206,11 @@ class Reader extends React.Component<IProps, IState> {
 
         const openToggle = !this.state.menuOpen;
         const menuOpen = open !== undefined ? open : openToggle;
+        const shortcutEnable = (menuOpen && this.state.dockingMode === "full") ? false : true;
 
         this.setState({
             menuOpen: menuOpen,
-            shortcutEnable: true,//!menuOpen,
+            shortcutEnable: shortcutEnable,
             settingsOpen: false,
             openedSectionMenu: openedSectionMenu ? openedSectionMenu : this.state.openedSectionMenu,
             focusMenuOpen: focused ? (this.state.focusMenuOpen + 1) : this.state.focusMenuOpen,
@@ -2552,10 +2559,11 @@ class Reader extends React.Component<IProps, IState> {
 
         const openToggle = !this.state.settingsOpen;
         const settingsOpen = open !== undefined ? open : openToggle;
+        const shortcutEnable = (settingsOpen && this.state.dockingMode === "full") ? false : true;
 
         this.setState({
             settingsOpen,
-            shortcutEnable: true,//!settingsOpen,
+            shortcutEnable: shortcutEnable,
             menuOpen: false,
             // openedSectionSettings,
         });
