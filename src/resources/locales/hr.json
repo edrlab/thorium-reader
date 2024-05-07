@@ -30,18 +30,6 @@
         "hide": "Sakrij {{- appName}}",
         "newVersion": "",
         "quit": "Ugasi {{- appName}}",
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "Ne",
-                        "yes": "Da"
-                    },
-                    "message": "Želite li spremiti sesiju ?",
-                    "title": "Spremi sesiju"
-                }
-            }
-        },
         "window": {
             "showLibrary": "Prikaži knjižnicu / policu"
         }

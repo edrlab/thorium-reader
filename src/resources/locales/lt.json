@@ -30,18 +30,6 @@
         "hide": "Slėpti {{- appName}}",
         "newVersion": "",
         "quit": "Uždaryti {{- appName}}",
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "Ne",
-                        "yes": "Taip"
-                    },
-                    "message": "Ar norite išsaugoti sesiją?",
-                    "title": "Sesijos išsaugojimas"
-                }
-            }
-        },
         "window": {
             "showLibrary": "Rodyti biblioteką / knygų lentyną"
         }

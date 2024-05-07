@@ -30,18 +30,6 @@
         "hide": "{{- appName}} 숨기기",
         "newVersion": "",
         "quit": "{{- appName}} 종료",
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "취소",
-                        "yes": "확인"
-                    },
-                    "message": "세션을 저장하시겠습니까?",
-                    "title": "세션 저장"
-                }
-            }
-        },
         "window": {
             "showLibrary": "라이브러리 / 내서재 보기"
         }

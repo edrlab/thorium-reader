@@ -30,18 +30,6 @@
         "hide": "Скрий {{- appName}}",
         "newVersion": "",
         "quit": "Напусни {{- appName}}",
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "Не",
-                        "yes": "Да"
-                    },
-                    "message": "Искате ли да запазите сесията ?",
-                    "title": "Запази сесията"
-                }
-            }
-        },
         "window": {
             "showLibrary": "Покажи библиотека / лавица за книги"
         }

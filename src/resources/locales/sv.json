@@ -30,18 +30,6 @@
         "hide": "Dölj {{- appName}}",
         "newVersion": "",
         "quit": "Avsluta {{- appName}}",
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "Nej",
-                        "yes": "Ja"
-                    },
-                    "message": "Vill du spara sessionen ?",
-                    "title": "Spara session"
-                }
-            }
-        },
         "window": {
             "showLibrary": "Visa bibliotek / bokhylla"
         }

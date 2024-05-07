@@ -30,18 +30,6 @@
         "hide": "Verbergen {{- appName}}",
         "newVersion": "",
         "quit": "Verlaat {{- appName}}",
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "Nee",
-                        "yes": "Ja"
-                    },
-                    "message": "Wil je deze sessie bewaren?",
-                    "title": "Bewaar sessie"
-                }
-            }
-        },
         "window": {
             "showLibrary": "Toon bibliotheek / boekenplank"
         }

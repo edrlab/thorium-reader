@@ -30,18 +30,6 @@
         "hide": "隠す {{appName}}",
         "newVersion": "",
         "quit": "終了 {{appName}}",
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "いいえ",
-                        "yes": "はい"
-                    },
-                    "message": "セッションを保存しますか？",
-                    "title": "セッションを保存"
-                }
-            }
-        },
         "window": {
             "showLibrary": "蔵書/本棚を表示"
         }

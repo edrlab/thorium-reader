@@ -30,18 +30,6 @@
         "hide": "Ocultar {{- appName}}",
         "newVersion": "",
         "quit": "Saír de {{- appName}}",
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "No",
-                        "yes": "Sí"
-                    },
-                    "message": "Queres gardar a sesión?",
-                    "title": "Gardar sesión"
-                }
-            }
-        },
         "window": {
             "showLibrary": "Mostrar biblioteca"
         }

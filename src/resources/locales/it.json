@@ -30,18 +30,6 @@
         "hide": "Nascondi {{- appName}}",
         "newVersion": "",
         "quit": "Esci da {{- appName}}",
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "No",
-                        "yes": "Sì"
-                    },
-                    "message": "Vuoi salvare la sessione ?",
-                    "title": "Salva la sessione"
-                }
-            }
-        },
         "window": {
             "showLibrary": "Mostra libreria"
         }
