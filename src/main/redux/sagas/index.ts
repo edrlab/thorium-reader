@@ -139,11 +139,14 @@ function* checkAppVersionUpdate() {
     // Correct HTTP header content-type, but reliance on GitHack servers:
     // const JSON_URL = `https://raw.githack.com/edrlab/thorium-reader/${BRANCH}/latest.json`;
     try {
-        const version = yield* select((state: RootState) => state.version);
+        let version = yield* select((state: RootState) => state.version);
         // src/main/redux/reducers/index.ts
         // version: (state: RootState, action: ActionWithSender) => action.type === appActions.initSuccess.ID ? _APP_VERSION : (state?.version ? state.version : null),
         if (_APP_VERSION !== version) {
             debug("VERSION MISMATCH (checkAppVersionUpdate): ", _APP_VERSION, " !== ", version);
+        }
+        if (!version) {
+            version = _APP_VERSION;
         }
         // yield* call from "typed-redux-saga"
         // yield call from "redux-saga/effects"
