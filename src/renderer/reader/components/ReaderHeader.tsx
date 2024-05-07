@@ -339,6 +339,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         }, 600);
     }
 
+
+    private __closeNavPanel = false;
+
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
@@ -960,6 +963,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     this.props.handleMenuClick(open);
                                     if (open) {
                                         stealFocusDisable(true);
+                                        this.__closeNavPanel = false;
                                     } else {
                                         stealFocusDisable(false);
                                     }
@@ -1017,6 +1021,12 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 //     }
                                                 //     console.log("MenuModal onInteractOutside");
                                                 // }}
+                                                onCloseAutoFocus={(e) => {
+                                                    if (this.__closeNavPanel) {
+                                                        e.preventDefault();
+                                                    }
+                                                    console.log("MenuModal onCloseAutoFocus");
+                                                }}
                                                 className={containerClassName}
                                                 style={{
                                                     borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
@@ -1027,7 +1037,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     marginTop: (isDockedMode && !isOnSearch) ? "50px" : "0",
                                                 }}
                                             >
-                                                <ReaderMenu {...this.props.readerMenuProps}
+                                                <ReaderMenu
+                                                    {...this.props.readerMenuProps}
+                                                    handleLinkClick={(event, url, closeNavPanel) => {
+                                                        this.props.readerMenuProps.handleLinkClick(event, url, closeNavPanel);
+                                                        if (closeNavPanel) {
+                                                            this.__closeNavPanel = true;
+                                                        }
+                                                    }}
                                                     {...this.props.readerPopoverDialogContext}
                                                     isDivina={this.props.isDivina}
                                                     isPdf={this.props.isPdf}
