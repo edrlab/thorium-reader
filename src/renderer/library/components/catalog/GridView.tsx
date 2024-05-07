@@ -25,7 +25,7 @@ import NoPublicationInfo from "./NoPublicationInfo";
 import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
-import * as CloseIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
+// import * as CloseIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 
