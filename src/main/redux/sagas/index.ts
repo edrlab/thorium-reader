@@ -181,15 +181,21 @@ function* checkAppVersionUpdate() {
             return undefined;
         }, JSON_URL);
         if (json) {
-            if (json.id === "io.github.edrlab.thorium") {
-                debug(json);
-                try {
-                    const date = Date.parse(json.date);
-                    debug((new Date(date)).toUTCString());
-                    debug((new Date(date)).toString());
-                } catch (e) {
-                    debug(e);
-                }
+            debug(json);
+            try {
+                const date = Date.parse(json.date);
+                debug((new Date(date)).toUTCString());
+                debug((new Date(date)).toString());
+            } catch (e) {
+                debug(e);
+            }
+            if (json.id === "io.github.edrlab.thorium" && json.version && json.url) {
+
+                // Uncomment below to test cases:
+                // json.version = "2.4.0";
+                // json.version = "3.0.0-alpha.1";
+                // json.version = "3.0.0-beta.1";
+                // if (json.version) throw new Error("TESTING...");
 
                 if (semver.gt(json.version, version)) {
 
