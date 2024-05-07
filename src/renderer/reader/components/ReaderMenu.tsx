@@ -1210,7 +1210,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 } else {
                     console.log(`annotationUUID=${annotationUUID} not found!`);
                 }
-            }, 1000);
+            }, 1);
 
         } else if (dockingMode !== "full") {
 
@@ -1222,7 +1222,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 } else {
                     console.error("!no dockedModeRef on combobox");
                 }
-            }, 1000);
+            }, 1);
 
         }
 

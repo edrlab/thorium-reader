@@ -964,7 +964,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         stealFocusDisable(false);
                                     }
                                 }}
-                                modal={this.props.readerPopoverDialogContext.dockedMode ? false : true}
+                                modal={!isDockedMode}
                             >
                                 <Dialog.Trigger asChild>
                                     <button
@@ -980,7 +980,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 </Dialog.Trigger>
                                 <Dialog.Portal>
                                     {
-                                        this.props.readerPopoverDialogContext.dockedMode ?
+                                        isDockedMode ?
                                             <div
                                                 className={containerClassName}
                                                 style={{
@@ -1054,7 +1054,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         stealFocusDisable(false);
                                     }
                                 }}
-                                modal={this.props.readerPopoverDialogContext.dockedMode ? false : true}
+                                modal={!isDockedMode}
                             >
                                 <Dialog.Trigger asChild>
                                     <button
@@ -1070,7 +1070,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 </Dialog.Trigger>
                                 <Dialog.Portal>
 
-                                    {this.props.readerPopoverDialogContext.dockedMode ?
+                                    {isDockedMode ?
                                         <div
                                             className={containerClassName}
                                             style={{

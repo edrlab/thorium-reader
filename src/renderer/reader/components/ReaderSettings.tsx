@@ -966,7 +966,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                 } else {
                     console.error("!no dockedModeRef on combobox");
                 }
-            }, 1000);
+            }, 1);
 
         }
 
