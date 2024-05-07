@@ -130,7 +130,9 @@ export function* rootSaga() {
     // wait library window fully opened before to throw events
     yield take(winActions.library.openSucess.build);
 
-    yield call(checkAppVersionUpdate);
+    if (!process.windowsStore) {
+        yield call(checkAppVersionUpdate);
+    }
 
     // open reader from CLI or open-file event on MACOS
     yield events.saga();
