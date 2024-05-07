@@ -310,7 +310,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         }}
                         style={{height: "unset"}}
                         state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                        className={classNames(stylesButtons.button_refresh)}
+                        className={classNames(stylesButtons.button_refresh, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
                     >
                         <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
                     </Link>
@@ -324,7 +324,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                             ...this.props.location,
                         }}
                         state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                        className={classNames(stylesButtons.button_refresh)}
+                        className={classNames(stylesButtons.button_refresh, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
                     >
                         <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
                     </Link>

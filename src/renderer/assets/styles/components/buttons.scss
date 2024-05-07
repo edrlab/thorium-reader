@@ -60,7 +60,7 @@ button {
 
   svg {
     width: 14px;
-    fill: white;
+    fill: var(--color-secondary);
   }
 
   &:hover {
@@ -288,7 +288,16 @@ button {
   position: relative;
   
   &:focus-within {
-    @include R2_MIXIN_FOCUS_OUTLINE;
+    outline: var(--color-blue) solid 1px !important;
+    outline-offset: 2px;
+    border-radius: 5px;
+    background-color: var(--color-blue);
+    color: var(--color-secondary)!important;
+
+    svg {
+      fill: var(--color-secondary)!important;
+      color: var(--color-secondary)!important;
+    }
   }
 
   svg {
@@ -358,6 +367,10 @@ button {
   
   &:focus-within {
     @include R2_MIXIN_FOCUS_OUTLINE;
+
+    outline: var(--color-blue) solid 1px !important;
+    outline-offset: 2px;
+    border-radius: 5px;
   }
 
   a {

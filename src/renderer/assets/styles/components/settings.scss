@@ -108,7 +108,7 @@ $setting_color: var(--color-blue);
         }
 
         &:hover {
-            background-color: var(--color-medium-grey);
+            background-color: var(--color-verylight-grey-alt);
         }
 
         &[data-state="active"]{ 
@@ -424,7 +424,7 @@ $setting_color: var(--color-blue);
         gap: 10px;
         width: 320px;
         font-size: 14px;
-        background-color: var(--color-light-grey);
+        background-color: var(--color-extralight-grey);
         color: var(--color-primary);
         padding: 5px 10px;
         border-radius: 5px;

@@ -88,7 +88,11 @@
       }
 
       &:hover {
-        background-color: var(--color-extralight-grey);
+        background-color: var(--color-blue);
+        border: 2px solid var(--color-light-blue);
+        color: var(--color-secondary);
+        outline: var(--color-blue) solid 1px !important;
+        border-radius: 5px;
       }
     }
 
@@ -97,6 +101,7 @@
       align-items: center;
       justify-content: start;
       gap: 10px;
+      padding: 4px;
 
       p {
         font-size: inherit;

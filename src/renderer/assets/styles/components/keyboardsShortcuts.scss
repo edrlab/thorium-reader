@@ -62,6 +62,14 @@
                     position: absolute;
                     left: -2000px;
 
+                    &:focus + label {
+                        outline: var(--color-blue) solid 1px !important;
+                        outline-offset: 2px;
+                        border-radius: 5px;
+                        background-color: var(--color-blue);
+                        color: var(--color-secondary);
+                    }
+
                     &:checked + label {
                         border: 1px solid var(--color-blue);
                         background-color: var(--color-secondary);
@@ -71,10 +79,6 @@
                             fill: var(--color-blue);
                         }
                     }
-
-                    &:focus + label {
-                        outline: 2px solid var(--color--blue);
-                    }
                 }
 
                 label {
@@ -82,7 +86,7 @@
                     border-radius: 6px;
                     color: var(--color--primary);
                     padding: 3px;
-                    background-color: var(--color-light-grey);
+                    background-color: var(--color-verylight-grey);
 
                     &:hover {
                         cursor: pointer;
