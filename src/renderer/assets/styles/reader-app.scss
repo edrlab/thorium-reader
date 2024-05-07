@@ -210,6 +210,10 @@ button {
   top: 48px!important;
 }
 
+.isOnSearch.popover_dialog_reader .settings_container {
+  height: calc(100dvh - 235px);
+}
+
 
 .side_button {
   z-index: 3;

@@ -80,7 +80,7 @@ $setting_color: var(--color-blue);
     flex-direction: column;
     width: 100%;
     flex: 1;
-    border-right: 1px solid var(--color-medium-grey);
+    border-right: 2px solid var(--color-verylight-grey-alt);
     padding-top: 50px;
     background-color: var(--color-extralight-grey);
     gap: 10px;
@@ -103,7 +103,7 @@ $setting_color: var(--color-blue);
             font-size: 14px;
             text-overflow: ellipsis;
             overflow: hidden;
-            max-width: 120px;
+            max-width: 180px;
             white-space: nowrap;
         }
 
@@ -224,6 +224,23 @@ $setting_color: var(--color-blue);
             left: 50%;
             top: 50%;
             fill: $setting_color;
+        }
+    }
+}
+
+[data-theme="dark"] {
+    .button_transparency_icon:not([aria-label= "Close"]) svg {
+        color: var(--color-primary);
+        fill: var(--color-primary);
+    }
+}
+
+[data-theme="system"] {
+    @media (prefers-color-scheme: dark) {
+
+        .button_transparency_icon:not([aria-label= "Close"]) svg {
+            color: var(--color-primary);
+            fill: var(--color-primary);
         }
     }
 }
@@ -776,9 +793,9 @@ div[data-radix-popper-content-wrapper] {
 
 .settings_theme_container {
     border-radius: 6px;
-    border-width: 2px;
+    border-width: 1px;
     border-style: solid;
-    border-color: var(--color-medium-grey);
+    border-color: var(--color-light-grey);
     width: 85px;
     height: 45px!important;
     min-height: 45px!important;
@@ -802,8 +819,8 @@ div[data-radix-popper-content-wrapper] {
         top: -6px;
         right: -8px;
         border-radius: 6px;
-        border-right: 1px solid var(--color-medium-grey);
-        border-top: 1px solid var(--color-medium-grey);
+        border-right: 1px solid var(--color-light-grey);
+        border-top: 1px solid var(--color-light-grey);
     }
 
     svg {

@@ -2,12 +2,37 @@
 =-=-= readerHeader.scss
 */
 
+[data-theme="dark"] {
+    .toolbar_navigation {
+        background-color: var(--color-secondary);
+        border-bottom: 2px solid var(--color-mediumdark-grey);
+    }
+    .menu_button svg {
+        color: var(--color-primary)!important;
+        fill: var(--color-primary)!important;
+    }
+}
+
+[data-theme="system"] {
+    @media (prefers-color-scheme: dark) {
+        .toolbar_navigation {
+        background-color: var(--color-secondary);
+        border-bottom: 2px solid var(--color-mediumdark-grey);
+        }
+        .menu_button:not(:has(.active_svg)) svg {
+            color: var(--color-primary)!important;
+            fill: var(--color-primary)!important;
+        }
+    }
+}
+
 .toolbar_navigation {
     height: 50px;
     width: 100%;
     padding: 0;
+    box-sizing: border-box;
     background-color: var(--color-extralight-grey);
-    border-bottom: 2px solid var(--color-medium-grey);
+    border-bottom: 2px solid var(--color-verylight-grey);
     box-sizing: border-box;
 
     &.ttsAudioActivated .tts_toolbar::before {
@@ -133,8 +158,8 @@
 }
 
 .active_svg {
-    fill: white!important;
-    color: white!important;
+    fill: var(--color-secondary)!important;
+    color: var(--color-secondary)!important;
 
     // @media (prefers-color-scheme: dark) {
     //     fill: black!important;

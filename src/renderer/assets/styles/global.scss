@@ -233,7 +233,7 @@ nav + nav + .breadcrumb + .main {
   align-items: center;
   padding-bottom: 5px;
   margin-bottom: 15px;
-  border-bottom: 3px solid var(--color-light-grey);
+  border-bottom: 3px solid var(--color-verylight-grey-alt);
   max-width: 250px;
 
   & h2 {
@@ -276,13 +276,13 @@ nav + nav + .breadcrumb + .main {
   display: flex;
   // justify-content: space-between;
   align-items: center;
-  border-bottom: 3px solid var(--color-light-grey);
+  border-bottom: 2px solid var(--color-verylight-grey);
   position: relative;
   font-weight: 700;
   margin: 0 0 10px;
   font-size: 20px;
   border-radius: 5px 5px 0 0;
-  padding: 10px 0 5px;
+  padding: 10px 0 10px;
   text-decoration: none;
 }
 

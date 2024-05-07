@@ -125,7 +125,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                     >
                         {this.props.secondaryHeader}
                         {(page === __("opds.breadcrumbRoot")) ?
-                            <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
+                            <div style={{display: "flex", alignItems: "center", gap: "10px", padding: "10px 0"}}>
                                 <h2 className={stylesAllBooks.allBooks_header}>{this.props.title}</h2>
                                 {this.props.breadCrumb ?
                                     <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>

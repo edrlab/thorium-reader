@@ -1129,7 +1129,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 </li>
                                 : <></>
                         }
-                        <span style={{width: "1px", height: "30px", backgroundColor: "var(--color-medium-grey)", margin: "auto 5px"}}></span>
+                        <span style={{width: "1px", height: "30px", backgroundColor: "var(--color-verylight-grey)", margin: "auto 5px"}}></span>
                         <li className={classNames(stylesReader.blue)}>
                             <button
                                 className={classNames(stylesReader.menu_button)}

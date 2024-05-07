@@ -52,7 +52,7 @@ button {
   padding: 5px;
   min-width: 100px;
   background-color: var(--color-blue);
-  color: white;
+  color: var(--color-secondary);
   transition: 200ms linear;
   display: inline-flex;
   align-items: center;
@@ -254,7 +254,7 @@ button {
   }
 
   &:disabled {
-    background-color: var(--color-medium-grey);
+    background-color: var(--color-verylight-grey);
   }
 }
 

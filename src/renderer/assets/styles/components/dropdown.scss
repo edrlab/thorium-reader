@@ -40,7 +40,7 @@
     display: flex;
     flex-direction: column;
     font-size: 0.9rem;
-    box-shadow: 0 0 10px 0 var(--color-medium-grey);
+    // box-shadow: 0 0 10px 0 var(--color-medium-grey);
     border-width: 1px;
     border-color: var(--color-blue);
     border-style: solid;
@@ -84,7 +84,7 @@
       }
 
       &:not(:last-child) {
-        border-bottom: 1px solid var(--color-medium-grey);
+        border-bottom: 1px solid var(--color-blue);
       }
 
       &:hover {

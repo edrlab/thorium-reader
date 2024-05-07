@@ -52,7 +52,7 @@
 }
 
 .annotation_form {
-    background-color: var(--color-light-grey);
+    background-color: var(--color-extralight-grey);
     max-width: 400px;
     border-radius: 6px;
     border: 1px solid var(--color-medium-grey);
@@ -80,6 +80,8 @@
       border: 1px solid rgb(118 118 118);
       border-radius: 3px;
       font-family: Nunito, sans-serif;
+      background-color: var(--color-secondary);
+      color: var(--color-primary);
   
   
       &_container {
@@ -153,7 +155,7 @@
     &_buttons {
       button:disabled {
         border-radius: 5px;
-        background-color: var(--color-medium-grey);
+        background-color: var(--color-verylight-grey-alt);
 
         svg {
           fill: var(--color-primary);
@@ -173,7 +175,7 @@
     flex-direction: column;
 
     p {
-      background-color: var(--color-light-grey);
+      background-color: var(--color-extralight-grey);
       width: 95%!important;
       border-radius: 5px;
       margin-bottom: 10px!important;
@@ -187,6 +189,8 @@
       border-radius: 3px;
       font-family: Nunito, sans-serif;
       overflow: hidden;
+      color: var(--color-primary);
+      background-color: var(--color-secondary);
   
       &_container {
       display: flex;
@@ -296,13 +300,13 @@
 
       // overflow: hidden;
       // text-overflow: ellipsis;
-      width: 100%;
+      width: calc(100% - 15px);
 
       // display: -webkit-box;
       // -webkit-box-orient: vertical;
       // -webkit-line-clamp: 3;
       padding: 5px;
-      margin: 0;
+      margin: 5px 0;
     }
   
     // @media (prefers-color-scheme: dark) {
@@ -315,8 +319,8 @@
     }
   
     .annotation_name {
-      background-color: var(--color-light-grey);
-      border-bottom: 8px solid var(--color-light-grey);
+      background-color: var(--color-extralight-grey);
+      border-bottom: 8px solid var(--color-extralight-grey);
       height: unset;
       font-family: Nunito, sans-serif;
   
