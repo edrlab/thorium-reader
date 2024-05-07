@@ -30,18 +30,6 @@
         "hide": "Hide {{- appName}}",
         "newVersion": "A new version of Thorium is available.",
         "quit": "Quit {{- appName}}",
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "No",
-                        "yes": "Yes"
-                    },
-                    "message": "Do you want to save the session ?",
-                    "title": "Save session"
-                }
-            }
-        },
         "window": {
             "showLibrary": "Show library / bookshelf"
         }
