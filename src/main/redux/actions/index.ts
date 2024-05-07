@@ -13,7 +13,6 @@ import * as publicationActions from "./publication";
 import * as streamerActions from "./streamer/";
 import * as winActions from "./win";
 import * as opdsActions from "./opds";
-import * as versionUpdateActions from "./version-update";
 
 export {
     opdsActions,
@@ -23,5 +22,4 @@ export {
     streamerActions,
     winActions,
     publicationActions,
-    versionUpdateActions,
 };

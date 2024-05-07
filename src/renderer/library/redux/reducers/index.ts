@@ -32,9 +32,11 @@ import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 // import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { readerRTLFlipReducer } from "readium-desktop/common/redux/reducers/reader/rtlFlip";
 import { wizardReducer } from "readium-desktop/common/redux/reducers/wizard";
+import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/version-update";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
     return combineReducers({ // ILibraryRootState
+        versionUpdate: versionUpdateReducer,
         theme: themeReducer,
         reader: combineReducers({
             defaultConfig: readerDefaultConfigReducer,

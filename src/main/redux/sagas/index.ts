@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import { app, dialog, shell } from "electron";
-import { keyboardActions } from "readium-desktop/common/redux/actions";
+import { keyboardActions, versionUpdateActions } from "readium-desktop/common/redux/actions";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
@@ -20,7 +20,7 @@ import { httpGet } from "readium-desktop/main/network/http";
 import * as semver from "semver";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 import { diMainGet } from "readium-desktop/main/di";
-import { appActions, versionUpdateActions, winActions } from "../actions";
+import { appActions, winActions } from "../actions";
 import * as api from "./api";
 import * as appSaga from "./app";
 import * as auth from "./auth";
@@ -36,6 +36,7 @@ import * as telemetry from "./telemetry";
 import * as lcp from "./lcp";
 import * as catalog from "./catalog";
 
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
 const debug = debug_(filename_);
@@ -142,15 +143,16 @@ function* checkAppVersionUpdate() {
     // Correct HTTP header content-type, but reliance on GitHack servers:
     // const JSON_URL = `https://raw.githack.com/edrlab/thorium-reader/${BRANCH}/latest.json`;
     try {
-        let version = yield* select((state: RootState) => state.version);
+        let version = IS_DEV ? yield* select((state: RootState) => state.version) : null;
         // src/main/redux/reducers/index.ts
         // version: (state: RootState, action: ActionWithSender) => action.type === appActions.initSuccess.ID ? _APP_VERSION : (state?.version ? state.version : null),
-        if (_APP_VERSION !== version) {
+        if (IS_DEV && _APP_VERSION !== version) {
             debug("VERSION MISMATCH (checkAppVersionUpdate): ", _APP_VERSION, " !== ", version);
         }
         if (!version) {
             version = _APP_VERSION;
         }
+
         // yield* call from "typed-redux-saga"
         // yield call from "redux-saga/effects"
         const json = yield* callTyped(async (url: string) => {
@@ -191,28 +193,30 @@ function* checkAppVersionUpdate() {
 
                     yield put(versionUpdateActions.notify.build(json.version, json.url));
 
-                    yield call(async () => {
+                    if (IS_DEV) {
+                        yield call(async () => {
 
-                        const translate = diMainGet("translator").translate;
-                        const res = await dialog.showMessageBox(// browserWindow,
-                            {
-                            type: "question",
-                            buttons: [
-                                translate("app.session.exit.askBox.button.yes"),
-                                translate("app.session.exit.askBox.button.no"),
-                            ],
-                            defaultId: 0,
-                            cancelId: 1,
-                            title: translate("app.update.title", { appName: capitalizedAppName }),
-                            message: translate("app.update.message"),
-                            detail: `[${version}] ... [${json.version}]`,
-                            noLink: true,
-                            normalizeAccessKeys: false,
+                            const translate = diMainGet("translator").translate;
+                            const res = await dialog.showMessageBox(// browserWindow,
+                                {
+                                type: "question",
+                                buttons: [
+                                    translate("app.session.exit.askBox.button.yes"),
+                                    translate("app.session.exit.askBox.button.no"),
+                                ],
+                                defaultId: 0,
+                                cancelId: 1,
+                                title: translate("app.update.title", { appName: capitalizedAppName }),
+                                message: `${translate("app.update.title", { appName: capitalizedAppName })} ${translate("app.update.message")}`,
+                                detail: `v${version} ... v${json.version}`,
+                                noLink: true,
+                                normalizeAccessKeys: false,
+                            });
+                            if (res.response === 0) {
+                                await shell.openExternal(json.url);
+                            }
                         });
-                        if (res.response === 0) {
-                            shell.openExternal(json.url);
-                        }
-                    });
+                    }
                 }
             }
         }

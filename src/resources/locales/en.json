@@ -41,7 +41,7 @@
             }
         },
         "update": {
-            "message": "New version available, would you like to download it?",
+            "message": "A new is version available, would you like to learn more?",
             "title": "{{- appName}} software update."
         },
         "window": {

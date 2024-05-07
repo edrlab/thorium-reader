@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { shell } from "electron";
 import * as React from "react";
 import { connect } from "react-redux";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
@@ -148,16 +149,23 @@ class CatalogGridView extends React.Component<IProps, IState> {
                 }
                 {
                     this.state.versionInfo && this.props.newVersionURL && this.props.newVersion ?
-                    <div className={stylesGlobal.new_version}>
+                    <div className={stylesGlobal.new_version}
+                    aria-live="polite"
+                    role="alert">
                         <div>
                             <SVG ariaHidden svg={InfoIcon} />
-                            <p>{`${this.props.__("app.update.title", { appName: capitalizedAppName })} ${this.props.__("app.update.message")}`}</p>
-                            <a href={`${this.props.newVersionURL}`}>{`[${this.props.newVersion}]`} ... {`[${_APP_VERSION}]`}</a>
+                            <p>{`${this.props.__("app.update.title", { appName: capitalizedAppName })} ${this.props.__("app.update.message")} (v${this.props.newVersion} ... v${_APP_VERSION})`}</p>
                         </div>
+                        <button onClick={async () => {
+                            this.setState({ versionInfo : false });
+                            await shell.openExternal(this.props.newVersionURL);
+                        }}>
+                            {this.props.__("app.session.exit.askBox.button.yes")}
+                        </button>
                         <button onClick={() => {
                             this.setState({ versionInfo : false });
                         }}>
-                            <SVG ariaHidden svg={CloseIcon} />  
+                            {this.props.__("app.session.exit.askBox.button.no")}
                         </button>
                     </div>
                     : <></>
@@ -210,8 +218,8 @@ class CatalogGridView extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
-    newVersionURL: state.version.newVersionURL,
-    newVersion: state.version.newVersion,
+    newVersionURL: state.versionUpdate.newVersionURL,
+    newVersion: state.versionUpdate.newVersion,
 });
 
 export default connect(mapStateToProps)(withTranslator(CatalogGridView));
