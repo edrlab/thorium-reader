@@ -2298,13 +2298,21 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                         }}
                     >
                         {tableInstance.page.map((row, index) => {
-                            const id = parseInt(row.id, 10);
 
                             tableInstance.prepareRow(row);
+
+                            const pubView: PublicationView = row.values?.colActions?.publication || undefined;
+                            if (props.displayType === DisplayType.Grid && !pubView) {
+                                console.log("#### pubView !! not defined for row :");
+                                console.log(row);
+                                console.log("####");
+                                return (<tr key={index}></tr>);
+                            }
+                        
                             return (
                                 props.displayType === DisplayType.Grid ?
                                     <tr key={index}>
-                                        <td><PublicationCard publicationViewMaybeOpds={props.publicationViews[id]} isReading={props.publicationViews[id].lastReadingLocation ? true : false} /></td>
+                                        <td><PublicationCard publicationViewMaybeOpds={pubView} isReading={pubView.lastReadingLocation ? true : false} /></td>
                                     </tr>
                                     :
 
