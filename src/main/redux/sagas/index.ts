@@ -6,12 +6,19 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app, dialog } from "electron";
+import { app, dialog, shell } from "electron";
 import { keyboardActions } from "readium-desktop/common/redux/actions";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
-
+import { select, call as callTyped } from "typed-redux-saga";
+import { RootState } from "../states";
+import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
+// import { THttpGetCallback } from "readium-desktop/common/utils/http";
+// import { Headers } from "node-fetch";
+import { httpGet } from "readium-desktop/main/network/http";
+import * as semver from "semver";
+import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 import { appActions, winActions } from "../actions";
 import * as api from "./api";
 import * as appSaga from "./app";
@@ -119,6 +126,87 @@ export function* rootSaga() {
     // wait library window fully opened before to throw events
     yield take(winActions.library.openSucess.build);
 
+    yield call(checkAppVersionUpdate);
+
     // open reader from CLI or open-file event on MACOS
     yield events.saga();
 }
+
+function* checkAppVersionUpdate() {
+    // const BRANCH = "develop"; // TODO switch to master preferably (Thorium3)
+    const BRANCH = "feat/version-check";
+    const JSON_URL = `https://raw.githubusercontent.com/edrlab/thorium-reader/${BRANCH}/latest.json`;
+    // Correct HTTP header content-type, but reliance on GitHack servers:
+    // const JSON_URL = `https://raw.githack.com/edrlab/thorium-reader/${BRANCH}/latest.json`;
+    try {
+        const version = yield* select((state: RootState) => state.version);
+        // src/main/redux/reducers/index.ts
+        // version: (state: RootState, action: ActionWithSender) => action.type === appActions.initSuccess.ID ? _APP_VERSION : (state?.version ? state.version : null),
+        if (_APP_VERSION !== version) {
+            debug("VERSION MISMATCH (checkAppVersionUpdate): ", _APP_VERSION, " !== ", version);
+        }
+        // yield* call from "typed-redux-saga"
+        // yield call from "redux-saga/effects"
+        const json = yield* callTyped(async (url: string) => {
+
+            // const headers = new Headers();
+            // headers.append("user-agent", "readium-desktop");
+            // headers.append("accept-language", `${locale},en-US;q=0.7,en;q=0.5`);
+
+            const res = await httpGet(url,
+                // { headers },
+            );
+            const ct = parseContentType(res.contentType);
+            if (res.isSuccess) {
+                if (ct === ContentType.Json) {
+                    return await res.response.json();
+                } else if (ct === ContentType.TextPlain) {
+                    try {
+                        return JSON.parse(await res.response.text());
+                    } catch (e) {
+                        debug(e);
+                    }
+                }
+            }
+            return undefined;
+        }, JSON_URL);
+        if (json) {
+            if (json.id === "io.github.edrlab.thorium") {
+                debug(json);
+                try {
+                    const date = Date.parse(json.date);
+                    debug((new Date(date)).toUTCString());
+                    debug((new Date(date)).toString());
+                } catch (e) {
+                    debug(e);
+                }
+
+                if (semver.gt(json.version, version)) {
+                    yield call(async () => {
+                        const res = await dialog.showMessageBox(// browserWindow,
+                            {
+                            type: "question",
+                            buttons: [
+                               "yes",
+                                "no",
+                            ],
+                            defaultId: 0,
+                            cancelId: 1,
+                            title: "Thorium software update",
+                            message: "New version available, would you like to update?",
+                            detail: `[${version}] ... [${json.version}]`,
+                            noLink: true,
+                            normalizeAccessKeys: false,
+                        });
+                        if (res.response === 0) {
+                            shell.openExternal(json.url);
+                        }
+                    });
+                }
+            }
+        }
+    } catch (err) {
+        debug(err);
+    }
+}
+
