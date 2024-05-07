@@ -7,6 +7,7 @@
         background-color: var(--color-secondary);
         border-bottom: 2px solid var(--color-mediumdark-grey);
     }
+
     .menu_button svg {
         color: var(--color-primary)!important;
         fill: var(--color-primary)!important;
@@ -19,6 +20,7 @@
         background-color: var(--color-secondary);
         border-bottom: 2px solid var(--color-mediumdark-grey);
         }
+
         .menu_button:not(:has(.active_svg)) svg {
             color: var(--color-primary)!important;
             fill: var(--color-primary)!important;
@@ -30,7 +32,6 @@
     height: 50px;
     width: 100%;
     padding: 0;
-    box-sizing: border-box;
     background-color: var(--color-extralight-grey);
     border-bottom: 2px solid var(--color-verylight-grey);
     box-sizing: border-box;

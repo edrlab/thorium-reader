@@ -1,4 +1,5 @@
 @use "sass:map";
+@use 'sass:color';
 
 $color-palette: (
   light: (
@@ -30,7 +31,7 @@ $color-palette: (
     --color-blue: #99A9E3,
     --color-light-blue: #2D2D2D,
     --color-extralight-grey: #27272a,
-    --color-verylight-grey: lighten(#EAEAEA, 25%),
+    --color-verylight-grey: color.adjust(#61646B, $lightness: 25%),
     --color-verylight-grey-alt: #7c7d86,
     --color-light-grey: #48484b,
     --color-medium-grey: #7c7d86,

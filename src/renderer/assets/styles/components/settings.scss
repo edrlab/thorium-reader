@@ -19,7 +19,7 @@ $setting_color: var(--color-blue);
 
     .section {
         padding-bottom: 15px ;
-        border-bottom: 3px solid var(--color-light-grey);
+        border-bottom: 2px solid var(--color-extralight-grey);
         margin: 10px 0 20px;
         width: 100%;
         display: flex;
@@ -237,7 +237,6 @@ $setting_color: var(--color-blue);
 
 [data-theme="system"] {
     @media (prefers-color-scheme: dark) {
-
         .button_transparency_icon:not([aria-label= "Close"]) svg {
             color: var(--color-primary);
             fill: var(--color-primary);
