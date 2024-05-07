@@ -57,13 +57,13 @@ $color-palette: (
 );
 
 @function color($color, $value) {
-  @return map-get(map-get($color-palette, $color), $value);
+  @return map.get(map.get($color-palette, $color), $value);
 }
 
 @media (prefers-color-scheme: light) {
   :root {
     /* Colors */
-    @each $key, $value in map-get($color-palette, light) {
+    @each $key, $value in map.get($color-palette, light) {
       #{$key}: color(light, #{$key});
     }
   }
@@ -72,7 +72,7 @@ $color-palette: (
 @media (prefers-color-scheme: dark) {
   :root {
     /* Colors */
-    @each $key, $value in map-get($color-palette, dark) {
+    @each $key, $value in map.get($color-palette, dark) {
       #{$key}: color(dark, #{$key});
     }
   }
@@ -81,7 +81,7 @@ $color-palette: (
 [data-theme="light"] {
 
   /* Colors */
-  @each $key, $value in map-get($color-palette, light) {
+  @each $key, $value in map.get($color-palette, light) {
     #{$key}: color(light, #{$key});
   }
 }
@@ -89,7 +89,7 @@ $color-palette: (
 [data-theme="dark"] {
 
   /* Colors */
-  @each $key, $value in map-get($color-palette, dark) {
+  @each $key, $value in map.get($color-palette, dark) {
     #{$key}: color(dark, #{$key});
   }
 }
