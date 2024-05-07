@@ -13,13 +13,14 @@ import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 import { all, call, put, take } from "redux-saga/effects";
 import { select, call as callTyped } from "typed-redux-saga";
 import { RootState } from "../states";
-import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
+import { _APP_VERSION, _APP_NAME } from "readium-desktop/preprocessor-directives";
 // import { THttpGetCallback } from "readium-desktop/common/utils/http";
 // import { Headers } from "node-fetch";
 import { httpGet } from "readium-desktop/main/network/http";
 import * as semver from "semver";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
-import { appActions, winActions } from "../actions";
+import { diMainGet } from "readium-desktop/main/di";
+import { appActions, versionUpdateActions, winActions } from "../actions";
 import * as api from "./api";
 import * as appSaga from "./app";
 import * as auth from "./auth";
@@ -38,6 +39,8 @@ import * as catalog from "./catalog";
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
 const debug = debug_(filename_);
+
+const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
 export function* rootSaga() {
 
@@ -185,18 +188,23 @@ function* checkAppVersionUpdate() {
                 }
 
                 if (semver.gt(json.version, version)) {
+
+                    yield put(versionUpdateActions.notify.build(json.version, json.url));
+
                     yield call(async () => {
+
+                        const translate = diMainGet("translator").translate;
                         const res = await dialog.showMessageBox(// browserWindow,
                             {
                             type: "question",
                             buttons: [
-                               "yes",
-                                "no",
+                                translate("app.session.exit.askBox.button.yes"),
+                                translate("app.session.exit.askBox.button.no"),
                             ],
                             defaultId: 0,
                             cancelId: 1,
-                            title: "Thorium software update",
-                            message: "New version available, would you like to update?",
+                            title: translate("app.update.title", { appName: capitalizedAppName }),
+                            message: translate("app.update.message"),
                             detail: `[${version}] ... [${json.version}]`,
                             noLink: true,
                             normalizeAccessKeys: false,
@@ -212,4 +220,3 @@ function* checkAppVersionUpdate() {
         debug(err);
     }
 }
-

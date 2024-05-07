@@ -105,7 +105,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
         this.state = {
             tabTags: this.props.tags ? this.props.tags.slice() : [],
             status: SortStatus.Count,
-            versionInfo: false,
+            versionInfo: true,
         };
         this.sortByAlpha = this.sortByAlpha.bind(this);
         this.sortbyCount = this.sortbyCount.bind(this);
@@ -147,12 +147,12 @@ class CatalogGridView extends React.Component<IProps, IState> {
                     )
                 }
                 {
-                    this.state.versionInfo ?
+                    this.state.versionInfo && this.props.newVersionURL && this.props.newVersion ?
                     <div className={stylesGlobal.new_version}>
                         <div>
                             <SVG ariaHidden svg={InfoIcon} />
-                            <p>{this.props.__("app.newVersion")}</p>
-                            <a href="">{this.props.__("app.downloadVersion", { appName: capitalizedAppName })}  {`v${_APP_VERSION}`}</a>
+                            <p>{`${this.props.__("app.update.title", { appName: capitalizedAppName })} ${this.props.__("app.update.message")}`}</p>
+                            <a href={`${this.props.newVersionURL}`}>{`[${this.props.newVersion}]`} ... {`[${_APP_VERSION}]`}</a>
                         </div>
                         <button onClick={() => {
                             this.setState({ versionInfo : false });
@@ -210,6 +210,8 @@ class CatalogGridView extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
+    newVersionURL: state.version.newVersionURL,
+    newVersion: state.version.newVersion,
 });
 
 export default connect(mapStateToProps)(withTranslator(CatalogGridView));

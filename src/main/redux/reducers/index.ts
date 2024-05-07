@@ -17,6 +17,7 @@ import { combineReducers } from "redux";
 import { appActions, publicationActions, winActions } from "../actions";
 import { publicationActions as publicationActionsFromCommonAction } from "readium-desktop/common/redux/actions";
 import { lcpReducer } from "./lcp";
+import { versionUpdateReducer } from "./version-update";
 import { readerDefaultConfigReducer } from "../../../common/redux/reducers/reader/defaultConfig";
 import { winRegistryReaderReducer } from "./win/registry/reader";
 import { winSessionLibraryReducer } from "./win/session/library";
@@ -53,6 +54,7 @@ export const rootReducer = combineReducers({ // RootState
     }),
     mode: winModeReducer,
     lcp: lcpReducer,
+    versionUpdate: versionUpdateReducer,
     publication: combineReducers({
         lastReadingQueue: priorityQueueReducer
             <
