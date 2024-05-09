@@ -156,7 +156,7 @@ const Theme = ({theme, set}: {theme: Pick<ReaderConfig, "theme">, set: (a: Pick<
         <section className={stylesSettings.section}>
         <h4>{__("reader.settings.theme.title")}</h4>
         <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px", marginTop: "20px", flexWrap: "wrap"}}
-        value={themeOptions.find((theme) => theme.id === defaultKey).name}
+        value={themeOptions.find((theme) => theme.id === defaultKey).value}
                 onValueChange={(option) => set({ theme: option as TTheme  })}
             >
                 {themeOptions.map((theme) => 
