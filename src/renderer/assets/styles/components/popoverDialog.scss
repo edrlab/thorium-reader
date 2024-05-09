@@ -71,6 +71,7 @@
   background-color: var(--color-secondary);
   position: absolute;
   overflow: hidden;
+  color: var(--color-primary);
 
   .settings_container {
     height: calc(100dvh - 185px);
