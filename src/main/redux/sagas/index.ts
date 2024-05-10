@@ -6,12 +6,20 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app, dialog } from "electron";
-import { keyboardActions } from "readium-desktop/common/redux/actions";
+import { app, dialog, shell } from "electron";
+import { keyboardActions, versionUpdateActions } from "readium-desktop/common/redux/actions";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
-
+import { select, call as callTyped } from "typed-redux-saga";
+import { RootState } from "../states";
+import { _APP_VERSION, _APP_NAME, _PACK_NAME } from "readium-desktop/preprocessor-directives";
+// import { THttpGetCallback } from "readium-desktop/common/utils/http";
+// import { Headers } from "node-fetch";
+import { httpGet } from "readium-desktop/main/network/http";
+import * as semver from "semver";
+import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
+import { diMainGet } from "readium-desktop/main/di";
 import { appActions, winActions } from "../actions";
 import * as api from "./api";
 import * as appSaga from "./app";
@@ -28,9 +36,12 @@ import * as telemetry from "./telemetry";
 import * as lcp from "./lcp";
 import * as catalog from "./catalog";
 
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
 const debug = debug_(filename_);
+
+const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
 export function* rootSaga() {
 
@@ -119,6 +130,104 @@ export function* rootSaga() {
     // wait library window fully opened before to throw events
     yield take(winActions.library.openSucess.build);
 
+    if (!process.windowsStore && _APP_NAME === "Thorium" && _PACK_NAME === "EDRLab.ThoriumReader") {
+        yield call(checkAppVersionUpdate);
+    }
+
     // open reader from CLI or open-file event on MACOS
     yield events.saga();
+}
+
+function* checkAppVersionUpdate() {
+    const BRANCH = "master";
+    const JSON_URL = `https://raw.githubusercontent.com/edrlab/thorium-reader/${BRANCH}/latest.json`;
+    // Correct HTTP header content-type, but reliance on GitHack servers:
+    // const JSON_URL = `https://raw.githack.com/edrlab/thorium-reader/${BRANCH}/latest.json`;
+    try {
+        let version = IS_DEV ? yield* select((state: RootState) => state.version) : null;
+        // src/main/redux/reducers/index.ts
+        // version: (state: RootState, action: ActionWithSender) => action.type === appActions.initSuccess.ID ? _APP_VERSION : (state?.version ? state.version : null),
+        if (IS_DEV && _APP_VERSION !== version) {
+            debug("VERSION MISMATCH (checkAppVersionUpdate): ", _APP_VERSION, " !== ", version);
+        }
+        if (!version) {
+            version = _APP_VERSION;
+        }
+
+        // yield* call from "typed-redux-saga"
+        // yield call from "redux-saga/effects"
+        const json = yield* callTyped(async (url: string) => {
+
+            // const headers = new Headers();
+            // headers.append("user-agent", "readium-desktop");
+            // headers.append("accept-language", `${locale},en-US;q=0.7,en;q=0.5`);
+
+            const res = await httpGet(url,
+                // { headers },
+            );
+            const ct = parseContentType(res.contentType);
+            if (res.isSuccess) {
+                if (ct === ContentType.Json) {
+                    return await res.response.json();
+                } else if (ct === ContentType.TextPlain) {
+                    try {
+                        return JSON.parse(await res.response.text());
+                    } catch (e) {
+                        debug(e);
+                    }
+                }
+            }
+            return undefined;
+        }, JSON_URL);
+        if (json) {
+            debug(json);
+            try {
+                const date = Date.parse(json.date);
+                debug((new Date(date)).toUTCString());
+                debug((new Date(date)).toString());
+            } catch (e) {
+                debug(e);
+            }
+            if (json.id === "io.github.edrlab.thorium" && json.version && json.url) {
+
+                // Uncomment below to test cases:
+                // json.version = "2.4.0";
+                // json.version = "3.0.0-alpha.1";
+                // json.version = "3.0.0-beta.1";
+                // if (json.version) throw new Error("TESTING...");
+
+                if (semver.gt(json.version, version)) {
+
+                    yield put(versionUpdateActions.notify.build(json.version, json.url));
+
+                    if (IS_DEV) {
+                        yield call(async () => {
+
+                            const translate = diMainGet("translator").translate;
+                            const res = await dialog.showMessageBox(// browserWindow,
+                                {
+                                type: "question",
+                                buttons: [
+                                    translate("app.session.exit.askBox.button.yes"),
+                                    translate("app.session.exit.askBox.button.no"),
+                                ],
+                                defaultId: 0,
+                                cancelId: 1,
+                                title: translate("app.update.title", { appName: capitalizedAppName }),
+                                message: `${translate("app.update.title", { appName: capitalizedAppName })} ${translate("app.update.message")}`,
+                                detail: `v${version} >> v${json.version}`,
+                                noLink: true,
+                                normalizeAccessKeys: false,
+                            });
+                            if (res.response === 0) {
+                                await shell.openExternal(json.url);
+                            }
+                        });
+                    }
+                }
+            }
+        }
+    } catch (err) {
+        debug(err);
+    }
 }

@@ -22,6 +22,7 @@ export enum ContentType {
     FormUrlEncoded = "application/x-www-form-urlencoded",
     Xhtml = "application/xhtml+xml",
     Html = "text/html",
+    TextPlain = "text/plain",
     Epub = "application/epub+zip",
     Lpf = "application/lpf+zip",
     AudioBook = "application/audiobook+json",

@@ -17,7 +17,6 @@
         "noLibraryFound": "aucune bibliothèque trouvée ({{- name}})"
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Copier",
             "cut": "Couper",
@@ -28,7 +27,6 @@
             "undo": "Annuler"
         },
         "hide": "Masquer {{- appName}}",
-        "newVersion": "",
         "quit": "Quitter {{- appName}}",
         "session": {
             "exit": {
@@ -41,6 +39,10 @@
                     "title": "Sauvegarder la session"
                 }
             }
+        },
+        "update": {
+            "message": "",
+            "title": ""
         },
         "window": {
             "showLibrary": "Afficher la bibliothèque"
