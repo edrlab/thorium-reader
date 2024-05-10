@@ -294,6 +294,7 @@
     border-left: 2px solid var(--color-blue);
     padding-left: 10px;
     margin: 10px 0;
+    background-color: var(--color-annotations-bg);
   
     p {
       text-align: left;
@@ -313,14 +314,20 @@
     //   background-color: #2D2D2D;
     // }
 
+    .annnotation_container {
+      margin-top: 10px;
+      margin-right: 10px;
+      
+    }
+
     .annnotation_container:has(.annotation_name:focus) {
       outline: 2px solid var(--color-blue);
       border-radius: 5px;
     }
   
     .annotation_name {
-      background-color: var(--color-extralight-grey);
-      border-bottom: 8px solid var(--color-extralight-grey);
+      background-color: var(--color-annotations-txt);
+      border-bottom: 8px solid var(--color-annotations-txt);
       height: unset;
       font-family: Nunito, sans-serif;
   
