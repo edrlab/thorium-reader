@@ -362,7 +362,7 @@
   .bookmark_infos {
     width: 100%;
     display: flex;
-    background-color: var(--color-light-grey);
+    background-color: var(--color-extralight-grey);
     border-left: 2px solid var(--color-blue);
     height: fit-content;
     padding: 0 10px;
@@ -459,13 +459,13 @@
   width: 100%;
   margin-top: 2px;
   height: 4px;
-  background-color: #ececec;
+  background-color: var(--color-verylight-grey-alt);
 
   & .fill {
     height: 100%;
     position: relative;
     width: 63%;
-    background-color: #3b3b3b;
+    background-color: var(--color-mediumdark-grey-alt);
   }
 }
 
