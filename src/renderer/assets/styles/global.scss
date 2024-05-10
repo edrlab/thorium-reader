@@ -41,6 +41,23 @@ body {
 
 input {
   font-family: Nunito, sans-serif;
+
+  &[type="search"]::-webkit-search-cancel-button{
+    appearance: none;
+  }
+}
+
+.button_clear {
+  position: absolute;
+  right: 10px;
+  height: 14px;
+  width: 14px;
+  color: var(--color-blue);
+  padding: 0!important;
+
+  svg {
+    height: 14px;
+  }
 }
 
 p, input, select {

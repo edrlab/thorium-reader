@@ -25,6 +25,8 @@ import * as stylesInputs from "readium-desktop/renderer/assets/styles/components
 
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 import LoaderSearch from "./LoaderSearch";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import * as CloseIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -118,6 +120,19 @@ class SearchFormPicker extends React.Component<IProps, IState> {
                             <SVG ariaHidden={true} svg={searchIcon} />
                     }
                 </button>
+                {this.state.inputValue ?
+                <button
+                    className={stylesGlobal.button_clear}
+                    type="reset"
+                    onClick={() => {
+                        this.inputRef.current.value = "";
+                        console.log(this.inputRef.current.value);
+                    }}
+                >
+                    <SVG ariaHidden svg={CloseIcon} />
+                </button>
+                : <></>
+            }
             </form>
         );
     }

@@ -12,10 +12,12 @@ import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Location } from "history";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as stylesPublication from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
+import * as CloseIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
 import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-right.svg";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
@@ -428,6 +430,17 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
                 }}
                 placeholder={`${props.__("header.searchTitle")}`}
             />
+            {props.focusInputRef?.current?.value ?
+            <button 
+            className={stylesGlobal.button_clear}
+            onClick={() => {
+                  props.setGlobalFilter(undefined);
+              }}
+            >
+                <SVG ariaHidden svg={CloseIcon} />
+            </button>
+            : <></>
+            }
             {props.accessibilitySupportEnabled ? <button
                 onClick={() => {
                     props.setShowColumnFilters(true);

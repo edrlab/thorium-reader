@@ -25,6 +25,9 @@ import { dispatchHistoryPush, IOpdsBrowse, IRouterLocationState, routes } from "
 import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import * as CloseIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
+
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
@@ -95,11 +98,23 @@ class SearchForm extends React.Component<IProps, undefined> {
                     className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                 />
                 {/* <button
-                    disabled={!this.props.search?.url}
-                    title={__("header.searchTitle")}
+                disabled={!this.props.search?.url}
+                title={__("header.searchTitle")}
+            >
+                <SVG ariaHidden={true} svg={SearchIcon} />
+            </button> */}
+                {this.props.search?.url ?
+                <button
+                    className={stylesGlobal.button_clear}
+                    type="reset"
+                    onClick={() => {
+                        this.inputRef.current.value = null;
+                    }}
                 >
-                    <SVG ariaHidden={true} svg={SearchIcon} />
-                </button> */}
+                    <SVG ariaHidden svg={CloseIcon} />
+                </button>
+                : <></>
+            }
             </form>
         );
     }

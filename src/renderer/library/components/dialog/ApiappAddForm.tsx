@@ -24,6 +24,8 @@ import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg
 import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLink-icon.svg";
 import classNames from "classnames";
 import * as LibraryIcon from "readium-desktop/renderer/assets/icons/library-icon.svg";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import * as CloseIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 
 const context = React.createContext<{
     selectSearchResult: IApiappSearchResultView;
@@ -108,7 +110,7 @@ const ApiappAddForm = () => {
                 <div
                     style={{ marginBottom: "0" }}
                     className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)}>
-                        <label htmlFor="apiapp-search">{__("header.searchPlaceholder")}</label>
+                    <label htmlFor="apiapp-search">{__("header.searchPlaceholder")}</label>
                     <input
                         className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                         ref={searchInputRef}
@@ -120,13 +122,26 @@ const ApiappAddForm = () => {
                                 e.stopPropagation();
                                 e.preventDefault();
                                 const v = searchInputRef.current?.value;
-                                if (!v) return ;
+                                if (!v) return;
                                 apiAppSearchAction(v);
                                 // e.preventDefault();
                                 // e.stopPropagation();
                             }
                         }}
                     />
+                    {searchInputRef ?
+                        <button
+                            className={stylesGlobal.button_clear}
+                            type="reset"
+                            onClick={() => {
+                                searchInputRef.current.value = "";
+                            }}
+                            style={{minWidth: "35px"}}
+                        >
+                            <SVG ariaHidden svg={CloseIcon} />
+                        </button>
+                        : <></>
+                    }
                 </div>
                 <button
                         onClick={() => searchInputRef.current?.value ? apiAppSearchAction(searchInputRef.current.value) : ""}

@@ -7,6 +7,7 @@ export declare const align_items_center: string;
 export declare const anchor_link: string;
 export declare const body_element: string;
 export declare const breadcrumb: string;
+export declare const button_clear: string;
 export declare const color_red: string;
 export declare const d_flex: string;
 export declare const d_none: string;
