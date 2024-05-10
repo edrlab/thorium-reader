@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { shell } from "electron";
 import * as React from "react";
 import { connect } from "react-redux";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
@@ -24,12 +23,9 @@ import NoPublicationInfo from "./NoPublicationInfo";
 // import TagLayout from "./TagLayout";
 import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
-// import * as CloseIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
-import SVG from "readium-desktop/renderer/common/components/SVG";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 
-const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
+// const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -146,29 +142,6 @@ class CatalogGridView extends React.Component<IProps, IState> {
                                 >
                                 </div>,
                     )
-                }
-                {
-                    this.state.versionInfo && this.props.newVersionURL && this.props.newVersion ?
-                    <div className={stylesGlobal.new_version}
-                    aria-live="polite"
-                    role="alert">
-                        <div>
-                            <SVG ariaHidden svg={InfoIcon} />
-                            <p>{`${this.props.__("app.update.title", { appName: capitalizedAppName })} ${this.props.__("app.update.message")} (v${this.props.newVersion} ... v${_APP_VERSION})`}</p>
-                        </div>
-                        <button onClick={async () => {
-                            this.setState({ versionInfo : false });
-                            await shell.openExternal(this.props.newVersionURL);
-                        }}>
-                            {this.props.__("app.session.exit.askBox.button.yes")}
-                        </button>
-                        <button onClick={() => {
-                            this.setState({ versionInfo : false });
-                        }}>
-                            {this.props.__("app.session.exit.askBox.button.no")}
-                        </button>
-                    </div>
-                    : <></>
                 }
                 {
                     this.state.tabTags.length === 0 && catalogEntriesIsEmpty
