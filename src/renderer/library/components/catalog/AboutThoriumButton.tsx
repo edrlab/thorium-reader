@@ -65,7 +65,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
 
     public render() {
         const { __ } = this.props;
-        const displayVersionToast = this.state.versionInfo && this.props.newVersionURL && this.props.newVersion ? true : false;
+        const displayVersionToast = !!(this.state.versionInfo && this.props.newVersionURL && this.props.newVersion);
         
         return (
             <section className={stylesFooter.footer_wrapper} style={{justifyContent: displayVersionToast ? "space-between" : "end"}}>
@@ -77,11 +77,12 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                         <div>
                             <SVG ariaHidden svg={InfoIcon} />
                             <p
-                            onClick={async () => {
+                            ><a href=""
+                            onClick={async (ev) => {
                                 this.setState({ versionInfo : false });
+                                ev.preventDefault();
                                 await shell.openExternal(this.props.newVersionURL);
-                            }}
-                            >{`${this.props.__("app.update.title", { appName: capitalizedAppName })} ${this.props.__("app.update.message")} (v${this.props.newVersion} ... v${_APP_VERSION})`}</p>
+                            }}>{`${this.props.__("app.update.message")}`}</a> <span>(v{this.props.newVersion})</span></p>
                         </div>
                         {/* <button onClick={async () => {
                             this.setState({ versionInfo : false });

@@ -216,7 +216,7 @@ function* checkAppVersionUpdate() {
                                 cancelId: 1,
                                 title: translate("app.update.title", { appName: capitalizedAppName }),
                                 message: `${translate("app.update.title", { appName: capitalizedAppName })} ${translate("app.update.message")}`,
-                                detail: `v${version} ... v${json.version}`,
+                                detail: `v${version} >> v${json.version}`,
                                 noLink: true,
                                 normalizeAccessKeys: false,
                             });

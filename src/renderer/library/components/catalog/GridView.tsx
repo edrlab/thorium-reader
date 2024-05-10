@@ -25,8 +25,6 @@ import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 
-// const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
-
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     catalogEntries: CatalogEntryView[];
@@ -191,8 +189,6 @@ class CatalogGridView extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
-    newVersionURL: state.versionUpdate.newVersionURL,
-    newVersion: state.versionUpdate.newVersion,
 });
 
 export default connect(mapStateToProps)(withTranslator(CatalogGridView));
