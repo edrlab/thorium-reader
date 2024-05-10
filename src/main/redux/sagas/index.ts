@@ -179,6 +179,20 @@ function* checkAppVersionUpdate() {
             }
             return undefined;
         }, JSON_URL);
+
+        // Uncomment below to test cases:
+        // json = {
+        //     id: "io.github.edrlab.thorium",
+        //     version: "3.0.0",
+        //     url: "https://github.com/edrlab/thorium-reader",
+        // };
+        // json.version = "2.4.0";
+        // json.version = "3.0.0-alpha.1";
+        // json.version = "3.0.0-alpha.2";
+        // json.version = "3.0.0-beta.1";
+        // json.version = "3.0.0";
+        // throw new Error("TESTING...");
+
         if (json) {
             debug(json);
             try {
@@ -189,12 +203,6 @@ function* checkAppVersionUpdate() {
                 debug(e);
             }
             if (json.id === "io.github.edrlab.thorium" && json.version && json.url) {
-
-                // Uncomment below to test cases:
-                // json.version = "2.4.0";
-                // json.version = "3.0.0-alpha.1";
-                // json.version = "3.0.0-beta.1";
-                // if (json.version) throw new Error("TESTING...");
 
                 if (semver.gt(json.version, version)) {
 

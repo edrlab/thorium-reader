@@ -79,8 +79,8 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                             <p
                             ><a href=""
                             onClick={async (ev) => {
-                                this.setState({ versionInfo : false });
                                 ev.preventDefault();
+                                this.setState({ versionInfo : false });
                                 await shell.openExternal(this.props.newVersionURL);
                             }}>{`${this.props.__("app.update.message")}`}</a> <span>(v{this.props.newVersion})</span></p>
                         </div>
@@ -101,11 +101,10 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                 <div className={stylesFooter.footer_about}>
                     <div>
                     <p>{`v${_APP_VERSION}`}</p>
-                    <a onClick={this.about} onKeyDown={(e) => {
-                            if (e.key === "Enter") {
+                    <a href="" onClick={(ev) => {
+                                ev.preventDefault();
                                 this.about();
-                            }
-                        }}
+                            }}
                         tabIndex={0}>{__("catalog.about.title", { appName: capitalizedAppName })}</a>
                     </div>
                     <SVG ariaHidden svg={EdrlabLogo} />
