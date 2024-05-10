@@ -162,8 +162,8 @@
             "sentence": "This publication needs an LCP passphrase to be opened: ",
             "urlHint": "Forgot your passphrase? Find some help here",
             "whatIsLcp?": "What is LCP?",
-            "whatIsLcpInfoDetails": "EDRLab rocks !!!",
-            "whatIsLcpInfoDetailsLink": "EDRLab thorium documentation link"
+            "whatIsLcpInfoDetails": "LCP stands for 'Licensed Content Protection'.",
+            "whatIsLcpInfoDetailsLink": "To learn more, click this link to the EDRLab website."
         }
     },
     "message": {

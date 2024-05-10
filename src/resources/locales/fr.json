@@ -162,8 +162,8 @@
             "sentence": "Cette publication a besoin d'un mot de passe : ",
             "urlHint": "Vous avez oublié votre phrase d'accès ? Trouvez de l'aide avec ce lien",
             "whatIsLcp?": "Qu'est-ce que LCP ?",
-            "whatIsLcpInfoDetails": "EDRLab rocks !!!",
-            "whatIsLcpInfoDetailsLink": "Lien de documentation EDRLab de Thorium"
+            "whatIsLcpInfoDetails": "LCP signifie 'Licensed Content Protection'.",
+            "whatIsLcpInfoDetailsLink": "Pour en savoir plus, cliquez ce lien vers le site web de EDRLab."
         }
     },
     "message": {
