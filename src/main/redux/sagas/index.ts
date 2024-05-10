@@ -13,7 +13,7 @@ import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 import { all, call, put, take } from "redux-saga/effects";
 import { select, call as callTyped } from "typed-redux-saga";
 import { RootState } from "../states";
-import { _APP_VERSION, _APP_NAME } from "readium-desktop/preprocessor-directives";
+import { _APP_VERSION, _APP_NAME, _PACK_NAME } from "readium-desktop/preprocessor-directives";
 // import { THttpGetCallback } from "readium-desktop/common/utils/http";
 // import { Headers } from "node-fetch";
 import { httpGet } from "readium-desktop/main/network/http";
@@ -130,7 +130,7 @@ export function* rootSaga() {
     // wait library window fully opened before to throw events
     yield take(winActions.library.openSucess.build);
 
-    if (!process.windowsStore) {
+    if (!process.windowsStore && _APP_NAME === "Thorium" && _PACK_NAME === "EDRLab.ThoriumReader") {
         yield call(checkAppVersionUpdate);
     }
 
@@ -139,8 +139,7 @@ export function* rootSaga() {
 }
 
 function* checkAppVersionUpdate() {
-    // const BRANCH = "develop"; // TODO switch to master preferably (Thorium3)
-    const BRANCH = "feat/version-check";
+    const BRANCH = "master";
     const JSON_URL = `https://raw.githubusercontent.com/edrlab/thorium-reader/${BRANCH}/latest.json`;
     // Correct HTTP header content-type, but reliance on GitHack servers:
     // const JSON_URL = `https://raw.githack.com/edrlab/thorium-reader/${BRANCH}/latest.json`;
