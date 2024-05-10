@@ -305,6 +305,7 @@ nav + nav + .breadcrumb + .main {
 
   p {
     font-size: 14px;
+
     > a {
       font-style: normal;
       padding: 0;
@@ -316,6 +317,7 @@ nav + nav + .breadcrumb + .main {
         color: var(--color-primary);
       }
     }
+
     > span {
       font-weight: bolder;
     }
