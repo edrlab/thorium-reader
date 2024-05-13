@@ -42,7 +42,7 @@ export const ApiappAddFormDialog = () => {
     return <Dialog.Root>
         <Dialog.Trigger asChild>
             <button
-                className={stylesButtons.button_nav_primary}
+                className={classNames(stylesButtons.button_nav_primary)}
             >
                 <SVG ariaHidden={true} svg={GlobeIcon} />
                 <span>{__("opds.addMenu")}</span>

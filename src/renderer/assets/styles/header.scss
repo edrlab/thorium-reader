@@ -84,21 +84,42 @@
     }
 
     & li {
-      padding-bottom: 10px;
-      padding-top: 10px;
+      margin: 10px 0;
+      padding: 1px 0;
       font-weight: 600;
       color: var(--color-disabled);
       cursor: pointer;
       border: 1px solid transparent;
       height: 30px;
-      border-radius: 4px;
       background-color: transparent;
       display: flex;
       align-items: center;
       justify-content: start;
+      border-radius: 5px;
+
+      &:not(.active):focus-within {
+        background-color: var(--color-extralight-grey);
+        border: 2px solid var(--color-blue);
+      }
+
+      &:hover {
+        background-color: var(--color-secondary)!important;
+        border: 1px solid var(--color-blue)!important;
+
+        a {
+          color: var(--color-blue);
+        }
+
+        svg {
+          fill: var(--color-blue);
+          color: var(--color-blue);
+        }
+      }
+
 
       @media screen and (width <= 800px) {
         justify-content: center;
+        width: 37px;
       }
     
       svg {
@@ -110,6 +131,19 @@
 
       &.active {
         color: var(--color-blue);
+
+        a:focus-within {
+          background-color: var(--color-blue);
+          color: var(--color-secondary)!important;
+
+          svg {
+            color: var(--color-secondary)!important;
+          }
+        }
+
+        a:hover {
+          border-color: transparent;
+        }
 
         svg {
           fill: var(--color-blue);

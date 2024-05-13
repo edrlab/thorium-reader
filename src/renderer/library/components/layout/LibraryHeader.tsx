@@ -154,14 +154,14 @@ class Header extends React.Component<IProps, undefined> {
         );
 
         return (
-            <li className={classNames(...styleClasses)} key={index}>
+            <li className={classNames(...styleClasses, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={index}>
                 <Link
                     to={nextLocation}
                     state = {{displayType: (nextLocation.state && (nextLocation.state as IRouterLocationState).displayType) ? (nextLocation.state as IRouterLocationState).displayType : DisplayType.Grid}}
                     replace={true}
                     aria-pressed={active}
                     role={"button"}
-                    className={active ? stylesButtons.button_nav_primary : ""}
+                    className={classNames(active ? stylesButtons.button_nav_primary : "", !active ? "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" : "")}
                     title={item.label}
                 >
                     <SVG ariaHidden svg={item.svg} />

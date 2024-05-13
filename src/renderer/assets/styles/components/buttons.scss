@@ -58,6 +58,19 @@ button {
   align-items: center;
   justify-content: center;
 
+  &:focus-within, &:focus {
+    outline: var(--color-blue) solid 1px !important;
+    outline-offset: 2px;
+    border-radius: 5px;
+    background-color: var(--color-blue);
+    color: var(--color-secondary)!important;
+
+    svg {
+      fill: var(--color-secondary)!important;
+      color: var(--color-secondary)!important;
+    }
+  }
+
   svg {
     width: 14px;
     fill: var(--color-secondary);
@@ -287,7 +300,7 @@ button {
   box-sizing: content-box;
   position: relative;
   
-  &:focus-within {
+  &:focus-within, &:focus {
     outline: var(--color-blue) solid 1px !important;
     outline-offset: 2px;
     border-radius: 5px;

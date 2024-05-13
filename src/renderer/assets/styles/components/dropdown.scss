@@ -28,7 +28,12 @@
     border-radius: 5px;
     transition: 200ms;
 
-    &:hover, &:focus {
+    &:hover{
+      border-color: var(--color-blue);
+      background-color: var(--color-secondary);
+    }
+
+    &:focus {
       border-color: var(--color-blue);
       background-color: var(--color-light-blue);
     }
