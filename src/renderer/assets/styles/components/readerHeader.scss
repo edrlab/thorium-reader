@@ -5,7 +5,7 @@
 [data-theme="dark"] {
     .toolbar_navigation {
         background-color: var(--color-secondary);
-        border-bottom: 2px solid var(--color-mediumdark-grey);
+        // border-bottom: 2px solid var(--color-mediumdark-grey);
     }
 
     .menu_button svg {
@@ -18,7 +18,7 @@
     @media (prefers-color-scheme: dark) {
         .toolbar_navigation {
         background-color: var(--color-secondary);
-        border-bottom: 2px solid var(--color-mediumdark-grey);
+        // border-bottom: 2px solid var(--color-mediumdark-grey);
         }
 
         .menu_button:not(:has(.active_svg)) svg {
@@ -33,7 +33,7 @@
     width: 100%;
     padding: 0;
     background-color: var(--color-extralight-grey);
-    border-bottom: 2px solid var(--color-verylight-grey);
+    border-bottom: 3px solid var(--color-extralight-grey-alt);
     box-sizing: border-box;
 
     &.ttsAudioActivated .tts_toolbar::before {
@@ -112,8 +112,7 @@
                 transition: .2s;
                 border-radius: 5px;
 
-                &:not(:has(.active_svg)):hover, 
-                &:not(:has(.active_svg)):focus {
+                &:not(:has(.active_svg)):hover {
                     border-color: var(--color-blue);
                     background-color: var(--color-light-blue);
                 }

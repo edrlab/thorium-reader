@@ -198,6 +198,10 @@
       width: fit-content;
       min-width: 30px;
       font-size: 12px;
+
+      &:hover {
+        background-color: var(--color-light-blue);
+      }
     }
 
     & svg {
