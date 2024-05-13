@@ -327,6 +327,7 @@
     .searchActions {
         display: flex;
         align-items: center;
+        gap: 10px;
 
         &::before {
             content: "";
