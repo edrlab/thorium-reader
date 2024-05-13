@@ -17,7 +17,6 @@
         "noLibraryFound": "({{- name}}) 라이브러리가 없습니다"
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "복사",
             "cut": "잘라내기",
@@ -28,7 +27,6 @@
             "undo": "실행 취소"
         },
         "hide": "{{- appName}} 숨기기",
-        "newVersion": "",
         "quit": "{{- appName}} 종료",
         "session": {
             "exit": {
@@ -41,6 +39,10 @@
                     "title": "세션 저장"
                 }
             }
+        },
+        "update": {
+            "message": "",
+            "title": ""
         },
         "window": {
             "showLibrary": "라이브러리 / 내서재 보기"

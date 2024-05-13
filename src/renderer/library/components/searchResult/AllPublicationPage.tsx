@@ -2205,10 +2205,10 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                 >
                                     {
                                         !column.canSort ?
-                                        <button style={{position: "absolute", top: "8px", left: "5px"}} onClick={(e) => e.preventDefault()}>
+                                        <h4 style={{position: "absolute", top: "8px", left: "5px"}}>
                                         {
                                             column.render("Header")
-                                        }</button>
+                                        }</h4>
                                         :
                                         columnIsSortable ?
                                             <><button
@@ -2331,7 +2331,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
                                     <tr key={`bodytr_${index}`} {...row.getRowProps()}
                                         style={{
-                                            backgroundColor: index % 2 ? "var(--color-light-grey)" : undefined,
+                                            backgroundColor: index % 2 ? "var(--color-extralight-grey)" : undefined,
                                         }}>{row.cells.map((cell, i) => {
                                             return (<td key={`bodytrtd_${i}`} {...cell.getCellProps()}
                                             >{

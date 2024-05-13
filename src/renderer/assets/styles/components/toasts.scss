@@ -14,7 +14,7 @@
   margin-bottom: 1rem;
   position: relative;
   padding: 1rem;
-  border: 1px #0B8454 solid;
+  border: 1px var(--color-success) solid;
   border-radius: 6px;
   width: 15rem;
   height: fit-content;
@@ -40,11 +40,7 @@
   }
 
   &.success {
-    background: var(--color-success);
-
-    // @media (prefers-color-scheme: dark){
-    //   background-color:  #111d19;
-    // }
+    background: var(--color-success-light);
   }
 
   p {
@@ -83,7 +79,7 @@
     svg {
       height: 20px;
       width: 20px;
-      fill: #0B8454;
+      fill: var(--color-success);
     }
   }
 }
