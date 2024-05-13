@@ -130,12 +130,12 @@ const ApiappAddForm = () => {
                             }
                         }}
                     />
-                    {searchInputRef ?
+                    {searchInputRef.current ?
                         <button
                             className={stylesGlobal.button_clear}
                             type="reset"
                             onClick={() => {
-                                searchInputRef.current.value = "";
+                                if (searchInputRef.current) searchInputRef.current.value = "";
                             }}
                             style={{minWidth: "35px"}}
                         >

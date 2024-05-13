@@ -108,7 +108,7 @@ class SearchForm extends React.Component<IProps, undefined> {
                     className={stylesGlobal.button_clear}
                     type="reset"
                     onClick={() => {
-                        this.inputRef.current.value = null;
+                        if (this.inputRef.current) this.inputRef.current.value = null;
                     }}
                 >
                     <SVG ariaHidden svg={CloseIcon} />

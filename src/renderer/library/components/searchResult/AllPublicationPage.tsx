@@ -432,6 +432,7 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
             />
             {props.focusInputRef?.current?.value ?
             <button 
+            type="reset"
             className={stylesGlobal.button_clear}
             onClick={() => {
                   props.setGlobalFilter(undefined);
