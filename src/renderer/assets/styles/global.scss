@@ -287,7 +287,8 @@ nav + nav + .breadcrumb + .main {
 }
 
 .new_version {
-  background-color: var(--color-light-blue);
+  // background-color: var(--color-light-blue);
+  text-decoration: underline;
   color: var(--color-blue);
   right: 400px;
   display: flex;
@@ -295,7 +296,7 @@ nav + nav + .breadcrumb + .main {
   align-items: center;
   justify-content: start;
   padding: 5px 20px 5px 5px;
-  border: 1px solid var(--color-blue);
+  // border: 1px solid var(--color-blue);
   border-radius: 5px;
   margin-left: 40px;
   // cursor: pointer;
@@ -311,10 +312,10 @@ nav + nav + .breadcrumb + .main {
       padding: 0;
       margin: 0;
       font-size: 14px;
-      color: var(--color-primary);
+      color: var(--color-blue);
   
       &:visited {
-        color: var(--color-primary);
+        color: var(--color-blue);
       }
     }
 
