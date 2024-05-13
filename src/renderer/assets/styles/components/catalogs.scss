@@ -25,9 +25,9 @@
 
     .catalog_content {
         border-radius: 6px;
-        border-width: 2px;
+        border-width: 1px;
         border-style: solid;
-        border-color: var(--color-medium-grey);
+        border-color: var(--color-light-grey);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -47,8 +47,8 @@
             top: -8px;
             right: -10px;
             border-radius: 6px;
-            border-right: 1px solid var(--color-medium-grey);
-            border-top: 1px solid var(--color-medium-grey);
+            border-right: 1px solid var(--color-light-grey);
+            border-top: 1px solid var(--color-light-grey);
         }
 
         svg {
@@ -136,9 +136,9 @@
 
     &_item {
         border-radius: 6px;
-        border-width: 2px;
+        border-width: 1px;
         border-style: solid;
-        border-color: var(--color-medium-grey);
+        border-color: var(--color-light-grey);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -158,8 +158,8 @@
             top: -8px;
             right: -10px;
             border-radius: 6px;
-            border-right: 1px solid var(--color-medium-grey);
-            border-top: 1px solid var(--color-medium-grey);
+            border-right: 1px solid var(--color-light-grey);
+            border-top: 1px solid var(--color-light-grey);
         }
 
         a {

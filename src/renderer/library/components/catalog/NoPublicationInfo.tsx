@@ -10,30 +10,18 @@ import { acceptedExtensionArray } from "readium-desktop/common/extension";
 // import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 
-import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as EmptyLibraryIcon from "readium-desktop/renderer/assets/icons/emptylibrary-icon.svg";
 import * as EmptyLibraryBgIcon from "readium-desktop/renderer/assets/icons/emptylibrary-background-icon.svg";
+import * as DocumentsIcon from "readium-desktop/renderer/assets/icons/documents-icon.svg";
+import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
+import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
-}
-// IProps may typically extend:
-// RouteComponentProps
-// ReturnType<typeof mapStateToProps>
-// ReturnType<typeof mapDispatchToProps>
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps {
-}
 
-class NoPublicationInfo extends React.Component<IProps, undefined> {
-
-    constructor(props: IProps) {
-        super(props);
-    }
-
-    public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
+const NoPublicationInfo = () => {
+        const [ __ ]= useTranslator();
+        const [detailOpen, setDetailOpen] = React.useState(false);
         return (
             <>
                 {/* <div className={stylesBlocks.block_dashed}>
@@ -61,9 +49,15 @@ class NoPublicationInfo extends React.Component<IProps, undefined> {
                         <p><strong>{__("catalog.noPublicationHelpL1")}</strong></p>
                         <p>{__("catalog.noPublicationHelpL2")}</p>
                         {/* <p>{__("catalog.noPublicationHelpL3")}</p> */}
-                        <details>
+                        <details onClick={() => setDetailOpen(!detailOpen)}>
                             <summary>
+                                <SVG ariaHidden svg={DocumentsIcon} />
                                 {__("catalog.noPublicationHelpL4")}
+                                {detailOpen ?
+                                <SVG ariaHidden svg={ChevronDown} />
+                                :
+                                <SVG ariaHidden svg={ChevronUp} />
+                                }
                             </summary>
                             <div className={stylesGlobal.summary_content}>
                                 {__("catalog.noPublicationHelpL3")}
@@ -84,7 +78,6 @@ class NoPublicationInfo extends React.Component<IProps, undefined> {
                 </div>
             </>
         );
-    }
-}
+    };
 
-export default withTranslator(NoPublicationInfo);
+export default NoPublicationInfo;

@@ -101,9 +101,7 @@
 }
 
 .my_item {
-    margin: 2px;
     padding: 4px 8px 4px 22px;
-    border-radius: 6px;
     outline: none;
     cursor: pointer;
     color: var(--color-primary);
@@ -125,8 +123,8 @@
     }
   
     &.focused {
-      background: var(--color-blue);
-      color: white;
+      background: var(--color-light-blue);
+      color: var(--color-blue);
     }
   }
   

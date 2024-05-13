@@ -2332,7 +2332,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
                                     <tr key={`bodytr_${index}`} {...row.getRowProps()}
                                         style={{
-                                            backgroundColor: index % 2 ? "var(--color-light-grey)" : undefined,
+                                            backgroundColor: index % 2 ? "var(--color-extralight-grey)" : undefined,
                                         }}>{row.cells.map((cell, i) => {
                                             return (<td key={`bodytrtd_${i}`} {...cell.getCellProps()}
                                             >{

@@ -271,7 +271,7 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
                 let emphasis = undefined;
                 let flag = false;
                 if (link === headingTrailLink) {
-                    emphasis = { backgroundColor: "var(--color-light-grey)", borderLeft: "2px solid var(--color-blue)" };
+                    emphasis = { backgroundColor: "var(--color-extralight-grey)", borderLeft: "2px solid var(--color-blue)" };
                     flag = true;
                 } else if ((link as any).__inHeadingsTrail) {
                     emphasis = { border: "1px dashed silver" };
@@ -1373,7 +1373,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
 
     const Separator =
-        <span key={"separator"} style={{ borderBottom: "1px solid var(--color-medium-grey)", width: "80%", margin: "0 10%" }}></span>;
+        <span key={"separator"} style={{ borderBottom: "1px solid var(--color-extralight-grey-alt)", width: "80%", margin: "0 10%" }}></span>;
 
     sectionsArray.push(TocTrigger);
     options.push(optionTocItem);

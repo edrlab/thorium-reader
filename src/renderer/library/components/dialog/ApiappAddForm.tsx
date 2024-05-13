@@ -145,7 +145,12 @@ const ApiappAddForm = () => {
                     }
                 </div>
                 <button
-                        onClick={() => searchInputRef.current?.value ? apiAppSearchAction(searchInputRef.current.value) : ""}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            if (searchInputRef.current?.value) {
+                                apiAppSearchAction(searchInputRef.current.value);
+                            }
+                        }}
                         className={stylesButtons.button_secondary_blue}
                         title={__("header.searchTitle")}
                     >
