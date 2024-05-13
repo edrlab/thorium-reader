@@ -1057,4 +1057,8 @@ input[type="radio"] + label {
   display: block;
   text-align: left;
   width: 100%;
+
+  p {
+    padding: 5px;
+  }
 }
