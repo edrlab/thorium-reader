@@ -2206,10 +2206,10 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                 >
                                     {
                                         !column.canSort ?
-                                        <button style={{position: "absolute", top: "8px", left: "5px"}} onClick={(e) => e.preventDefault()}>
+                                        <h4 style={{position: "absolute", top: "8px", left: "5px"}}>
                                         {
                                             column.render("Header")
-                                        }</button>
+                                        }</h4>
                                         :
                                         columnIsSortable ?
                                             <><button

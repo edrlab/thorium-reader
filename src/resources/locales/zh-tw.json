@@ -17,7 +17,6 @@
         "noLibraryFound": "未找到套件庫 ({{- name}})"
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "複製",
             "cut": "剪下",
@@ -28,7 +27,6 @@
             "undo": "復原"
         },
         "hide": "隱藏 {{- appName}}",
-        "newVersion": "",
         "quit": "退出 {{- appName}}",
         "session": {
             "exit": {
@@ -41,6 +39,10 @@
                     "title": "保存連線"
                 }
             }
+        },
+        "update": {
+            "message": "",
+            "title": ""
         },
         "window": {
             "showLibrary": "顯示 書庫/書架"
