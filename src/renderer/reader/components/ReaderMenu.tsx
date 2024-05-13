@@ -1373,7 +1373,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
 
     const Separator =
-        <span key={"separator"} style={{ borderBottom: "1px solid var(--color-medium-grey)", width: "80%", margin: "0 10%" }}></span>;
+        <span key={"separator"} style={{ borderBottom: "1px solid var(--color-extralight-grey-alt)", width: "80%", margin: "0 10%" }}></span>;
 
     sectionsArray.push(TocTrigger);
     options.push(optionTocItem);
