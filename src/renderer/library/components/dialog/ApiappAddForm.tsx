@@ -129,7 +129,7 @@ const ApiappAddForm = () => {
                             }
                         }}
                     />
-                    {searchInputRef ?
+                    {searchInputRef.current ?
                         <button
                             className={stylesGlobal.button_clear}
                             type="reset"

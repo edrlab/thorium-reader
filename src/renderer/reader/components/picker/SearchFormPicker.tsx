@@ -126,7 +126,6 @@ class SearchFormPicker extends React.Component<IProps, IState> {
                     type="reset"
                     onClick={() => {
                         this.inputRef.current.value = "";
-                        console.log(this.inputRef.current.value);
                     }}
                 >
                     <SVG ariaHidden svg={CloseIcon} />
