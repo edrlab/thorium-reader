@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { shell } from "electron";
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
@@ -42,7 +43,7 @@ export const ApiappAddFormDialog = () => {
     return <Dialog.Root>
         <Dialog.Trigger asChild>
             <button
-                className={stylesButtons.button_nav_primary}
+                className={classNames(stylesButtons.button_nav_primary)}
             >
                 <SVG ariaHidden={true} svg={GlobeIcon} />
                 <span>{__("opds.addMenu")}</span>
@@ -105,7 +106,11 @@ export const ApiappAddFormDialog = () => {
                                     <p>
                                     {__("opds.informations")}
                                     </p>
-                                    <a href="https://opds.io/">
+                                    <a href=""
+                                        onClick={async (ev) => {
+                                            ev.preventDefault();
+                                            await shell.openExternal("https://opds.io/");
+                                        }}>
                                     {__("opds.documentation")}
                                         <SVG ariaHidden svg={FollowLinkIcon} />
                                     </a>

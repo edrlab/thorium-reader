@@ -17,7 +17,6 @@
         "noLibraryFound": "Δεν βρέθηκε βιβλιοθήκη ({{- name}})"
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Αντιγραφή",
             "cut": "Αποκοπή",
@@ -28,7 +27,6 @@
             "undo": "Αναίρεση"
         },
         "hide": "Απόκρυψη {{- appName}}",
-        "newVersion": "",
         "quit": "Εγκατάληψη {{- appName}}",
         "session": {
             "exit": {
@@ -41,6 +39,10 @@
                     "title": "Αποθήκευση συνεδρίας"
                 }
             }
+        },
+        "update": {
+            "message": "",
+            "title": ""
         },
         "window": {
             "showLibrary": "Εμφάνιση βιβλιοθήκης"

@@ -2,12 +2,38 @@
 =-=-= readerHeader.scss
 */
 
+[data-theme="dark"] {
+    .toolbar_navigation {
+        background-color: var(--color-secondary);
+        // border-bottom: 2px solid var(--color-mediumdark-grey);
+    }
+
+    .menu_button svg {
+        color: var(--color-primary)!important;
+        fill: var(--color-primary)!important;
+    }
+}
+
+[data-theme="system"] {
+    @media (prefers-color-scheme: dark) {
+        .toolbar_navigation {
+        background-color: var(--color-secondary);
+        // border-bottom: 2px solid var(--color-mediumdark-grey);
+        }
+
+        .menu_button:not(:has(.active_svg)) svg {
+            color: var(--color-primary)!important;
+            fill: var(--color-primary)!important;
+        }
+    }
+}
+
 .toolbar_navigation {
     height: 50px;
     width: 100%;
     padding: 0;
     background-color: var(--color-extralight-grey);
-    border-bottom: 2px solid var(--color-medium-grey);
+    border-bottom: 3px solid var(--color-extralight-grey-alt);
     box-sizing: border-box;
 
     &.ttsAudioActivated .tts_toolbar::before {
@@ -86,8 +112,7 @@
                 transition: .2s;
                 border-radius: 5px;
 
-                &:not(:has(.active_svg)):hover, 
-                &:not(:has(.active_svg)):focus {
+                &:not(:has(.active_svg)):hover {
                     border-color: var(--color-blue);
                     background-color: var(--color-light-blue);
                 }
@@ -133,8 +158,8 @@
 }
 
 .active_svg {
-    fill: white!important;
-    color: white!important;
+    fill: var(--color-secondary)!important;
+    color: var(--color-secondary)!important;
 
     // @media (prefers-color-scheme: dark) {
     //     fill: black!important;
@@ -202,12 +227,11 @@
     align-items: center;
     height: fit-content;
     background-color: var(--color-extralight-grey);
-    box-shadow: 0 6px 10px 0 var(--color-medium-grey);
     border-radius: 6px;
     list-style-type: none;
     margin: 0;
     padding: 10px;
-    border: 1px solid var(--color-medium-grey);
+    border: 1px solid var(--color-verylight-grey-alt);
     gap: 20px;
 
 

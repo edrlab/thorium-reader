@@ -25,46 +25,52 @@ const CatalogMenu: React.FC<{publicationView: PublicationView}> = (props) => {
 
     return (
         <>
-            <PublicationInfoLibWithRadix
-                publicationView={props.publicationView}
-            >
-                <PublicationInfoLibWithRadixTrigger asChild>
+                <PublicationInfoLibWithRadix
+                    publicationView={props.publicationView}
+                >
+                    <PublicationInfoLibWithRadixTrigger asChild>
+                        <button
+                        className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                        >
+                            <SVG ariaHidden svg={InfoIcon} />
+                            <p>{__("catalog.bookInfo")}</p>
+                        </button>
+                    </PublicationInfoLibWithRadixTrigger>
+                    <PublicationInfoLibWithRadixContent
+                    />
+                </PublicationInfoLibWithRadix>
+                <div style={{borderBottom: "1px solid var(--color-blue)"}}></div>
+                {props.publicationView.lastReadTimeStamp ?
                     <button
-                    >
-                        <SVG ariaHidden svg={InfoIcon} />
-                        <p>{__("catalog.bookInfo")}</p>
-                    </button>
-                </PublicationInfoLibWithRadixTrigger>
-                <PublicationInfoLibWithRadixContent
-                />
-            </PublicationInfoLibWithRadix>
-            {props.publicationView.lastReadTimeStamp ?
-                <button
-                onClick={() => {
-                    const pubId = props.publicationView.identifier;
-                    dispatch(publicationActions.readingFinished.build(pubId));
+                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                    onClick={() => {
+                        const pubId = props.publicationView.identifier;
+                        dispatch(publicationActions.readingFinished.build(pubId));
 
-                    // just to refresh allPublicationPage.tsx
-                    apiDispatch(dispatch)()("publication/readingFinishedRefresh")();
-                }}>
-                    <SVG ariaHidden svg={DoubleCheckIcon} />
-                    {__("publication.markAsRead")}
-                </button>
-                : <></>
-            }
-            <DeletePublicationConfirm
-                trigger={(
-                    <button
-                    >
-                        <SVG ariaHidden svg={TrashIcon} />
-                        <p>{__("catalog.delete")}</p>
+                        // just to refresh allPublicationPage.tsx
+                        apiDispatch(dispatch)()("publication/readingFinishedRefresh")();
+                    }}>
+                        <SVG ariaHidden svg={DoubleCheckIcon} />
+                        {__("publication.markAsRead")}
                     </button>
-                )}
-                publicationView={props.publicationView}
-            />
-            <PublicationExportButton
-                publicationView={props.publicationView}
-            />
+                    : <></>
+                }
+            <div style={{borderBottom: "1px solid var(--color-blue)"}}></div>
+                <DeletePublicationConfirm
+                    trigger={(
+                        <button
+                        className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                        >
+                            <SVG ariaHidden svg={TrashIcon} />
+                            <p>{__("catalog.delete")}</p>
+                        </button>
+                    )}
+                    publicationView={props.publicationView}
+                />
+            <div style={{borderBottom: "1px solid var(--color-blue)"}}></div>
+                <PublicationExportButton
+                    publicationView={props.publicationView}
+                />
         </>
     );
 };

@@ -17,7 +17,6 @@
         "noLibraryFound": ""
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Копировать",
             "cut": "Вырезать",
@@ -28,7 +27,6 @@
             "undo": "Отменить"
         },
         "hide": "Скрыть {{- appName}}",
-        "newVersion": "",
         "quit": "Выйти {{- appName}}",
         "session": {
             "exit": {
@@ -41,6 +39,10 @@
                     "title": "Сохранить сеанс"
                 }
             }
+        },
+        "update": {
+            "message": "",
+            "title": ""
         },
         "window": {
             "showLibrary": "Показать библиотеку / книжную полку"

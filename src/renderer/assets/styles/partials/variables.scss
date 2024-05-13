@@ -1,4 +1,5 @@
 @use "sass:map";
+@use 'sass:color';
 
 $color-palette: (
   light: (
@@ -7,26 +8,41 @@ $color-palette: (
     --color-blue: #1053C8,
     --color-light-blue: #ECF2FD,
     --color-extralight-grey: #f5f5f5,
-    --color-light-grey: #f1f1f1,
-    --color-medium-grey: #e5e5e5,
+    --color-extralight-grey-alt: color.adjust(#f5f5f5, $lightness: -5%),
+    --color-verylight-grey: #d9d9d9,
+    --color-verylight-grey-alt: #d9d9d9,
+    --color-light-grey: #afb1b6,
+    --color-medium-grey: #61646B,
+    --color-mediumdark-grey: #2D2D2D,
+    --color-mediumdark-grey-alt: #2D2D2D,
+    --color-dark-grey: #1E1E1E,
     --color-accent: #00BCD4,
     --color-accent-contrast: #fff,
     --reader-fontColor: #000,
     --scrollbar-thumb: #98989d,
     --color-disabled: #61646B,
-    --color-error: #fedbd8,
-    --color-error-dark: red,
-    --color-success: #ECFEF7,
+    --color-error: #FCEEF1,
+    --color-error-dark: #D52A54,
+    --color-success: #0B8454,
+    --color-success-light: #ECFEF7,
     --color-appName: #AFB1B6,
+    --color-annotations-txt: #f5f5f5,
+    --color-annotations-bg: #fff,
   ),
   dark: (
     --color-primary: #e7eaf8,
-    --color-secondary: #121212,
+    --color-secondary: #1D1D1E,
     --color-blue: #99A9E3,
     --color-light-blue: #2D2D2D,
     --color-extralight-grey: #27272a,
+    --color-extralight-grey-alt: color.adjust(#27272a, $lightness: 5%),
+    --color-verylight-grey: color.adjust(#61646B, $lightness: 25%),
+    --color-verylight-grey-alt: #7c7d86,
     --color-light-grey: #48484b,
     --color-medium-grey: #7c7d86,
+    --color-mediumdark-grey: #2D2D2D,
+    --color-mediumdark-grey-alt: #d9d9d9,
+    --color-dark-grey: #1E1E1E,
     --color-accent: #00BCD4,
     --color-accent-contrast: #fff,
     --reader-fontColor: #000,
@@ -34,8 +50,11 @@ $color-palette: (
     --color-disabled: #a7a9b3,
     --color-error: #4f1d1d,
     --color-error-dark: #F590A9,
-    --color-success: #121d19,
+    --color-success: #303936,
+    --color-success-light: #121d19,
     --color-appName: #EAEAEA,
+    --color-annotations-txt: #3b3c3f,
+    --color-annotations-bg: #2D2D2D,
 
   /*
     --color-primary: #fff,
@@ -57,13 +76,13 @@ $color-palette: (
 );
 
 @function color($color, $value) {
-  @return map-get(map-get($color-palette, $color), $value);
+  @return map.get(map.get($color-palette, $color), $value);
 }
 
 @media (prefers-color-scheme: light) {
   :root {
     /* Colors */
-    @each $key, $value in map-get($color-palette, light) {
+    @each $key, $value in map.get($color-palette, light) {
       #{$key}: color(light, #{$key});
     }
   }
@@ -72,7 +91,7 @@ $color-palette: (
 @media (prefers-color-scheme: dark) {
   :root {
     /* Colors */
-    @each $key, $value in map-get($color-palette, dark) {
+    @each $key, $value in map.get($color-palette, dark) {
       #{$key}: color(dark, #{$key});
     }
   }
@@ -81,7 +100,7 @@ $color-palette: (
 [data-theme="light"] {
 
   /* Colors */
-  @each $key, $value in map-get($color-palette, light) {
+  @each $key, $value in map.get($color-palette, light) {
     #{$key}: color(light, #{$key});
   }
 }
@@ -89,7 +108,7 @@ $color-palette: (
 [data-theme="dark"] {
 
   /* Colors */
-  @each $key, $value in map-get($color-palette, dark) {
+  @each $key, $value in map.get($color-palette, dark) {
     #{$key}: color(dark, #{$key});
   }
 }

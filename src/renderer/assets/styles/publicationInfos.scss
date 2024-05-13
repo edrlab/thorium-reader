@@ -47,7 +47,7 @@
         align-items: center;
         justify-content: center;
         background-color: var(--color-blue);
-        color: white;
+        color: var(--color-secondary);
 
         svg {
             fill: var(--color-secondary);
@@ -88,8 +88,8 @@
         position: relative;
         display: flex;
         align-items: center;
-        background-color: var(--color-light-grey);
-        border: 1px solid var(--color-medium-grey);
+        background-color: var(--color-extralight-grey);
+        border: 1px solid var(--color-light-grey);
         border-radius: 6px;
         
           .no_img_wrapper {

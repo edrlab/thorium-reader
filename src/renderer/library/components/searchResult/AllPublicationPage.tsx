@@ -2192,10 +2192,10 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                 >
                                     {
                                         !column.canSort ?
-                                        <button style={{position: "absolute", top: "8px", left: "5px"}} onClick={(e) => e.preventDefault()}>
+                                        <h4 style={{position: "absolute", top: "8px", left: "5px"}}>
                                         {
                                             column.render("Header")
-                                        }</button>
+                                        }</h4>
                                         :
                                         columnIsSortable ?
                                             <><button
@@ -2298,19 +2298,27 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                         }}
                     >
                         {tableInstance.page.map((row, index) => {
-                            const id = parseInt(row.id, 10);
 
                             tableInstance.prepareRow(row);
+
+                            const pubView: PublicationView = row.values?.colActions?.publication || undefined;
+                            if (props.displayType === DisplayType.Grid && !pubView) {
+                                console.log("#### pubView !! not defined for row :");
+                                console.log(row);
+                                console.log("####");
+                                return (<tr key={index}></tr>);
+                            }
+                        
                             return (
                                 props.displayType === DisplayType.Grid ?
                                     <tr key={index}>
-                                        <td><PublicationCard publicationViewMaybeOpds={props.publicationViews[id]} isReading={props.publicationViews[id].lastReadingLocation ? true : false} /></td>
+                                        <td><PublicationCard publicationViewMaybeOpds={pubView} isReading={pubView.lastReadingLocation ? true : false} /></td>
                                     </tr>
                                     :
 
                                     <tr key={`bodytr_${index}`} {...row.getRowProps()}
                                         style={{
-                                            backgroundColor: index % 2 ? "var(--color-light-grey)" : undefined,
+                                            backgroundColor: index % 2 ? "var(--color-extralight-grey)" : undefined,
                                         }}>{row.cells.map((cell, i) => {
                                             return (<td key={`bodytrtd_${i}`} {...cell.getCellProps()}
                                             >{

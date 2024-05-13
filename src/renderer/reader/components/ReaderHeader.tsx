@@ -706,7 +706,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 <Popover.Portal>
                                                     <Popover.Content>
                                                         <div className={stylesReaderHeader.Tts_popover_container}>
-                                                            <div style={{paddingRight: "25px", borderRight: "1px solid var(--color-medium-grey)"}}>
+                                                            <div style={{paddingRight: "25px", borderRight: "1px solid var(--color-verylight-grey-alt)"}}>
                                                             <div className={stylesReader.ttsSelectRate}>
                                                                             <ComboBox label={useMO ?
                                                                                 __("reader.media-overlays.speed")
@@ -773,7 +773,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                             </div>
                                                                         )}
                                                                     </div>
-                                                                    <ReadingAudio config={this.props.ReaderSettingsProps.readerConfig} set={(config: Partial<ReaderConfig>) => { this.props.ReaderSettingsProps.setSettings({ ...this.props.ReaderSettingsProps.readerConfig, ...config }); }} />
+                                                                    <ReadingAudio useMO={useMO} config={this.props.ReaderSettingsProps.readerConfig} set={(config: Partial<ReaderConfig>) => { this.props.ReaderSettingsProps.setSettings({ ...this.props.ReaderSettingsProps.readerConfig, ...config }); }} />
                                                                 </div>
                                                                 <Popover.Arrow className={stylesReaderHeader.popover_arrow} />
                                                             </Popover.Content>
@@ -972,8 +972,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         onInteractOutside={(e) => { e.preventDefault(); console.log("MenuModal onInteractOutside"); }}
                                         className={containerClassName}
                                         style={{
-                                            borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
-                                            borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
+                                            borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "2px solid var(--color-extralight-grey)" : "",
+                                            borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "2px solid var(--color-extralight-grey)" : "",
                                             right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
                                             left: (this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left") ? "0" : "",
                                             height: (isDockedMode && isOnSearch) ? "calc(100dvh - 140px)" : "",
@@ -1014,8 +1014,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         onInteractOutside={(e) => { e.preventDefault(); console.log("SettingsModal onInteractOutside"); }}
                                         className={containerClassName}
                                         style={{
-                                            borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-medium-grey)" : "",
-                                            borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-medium-grey)" : "",
+                                            borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "1px solid var(--color-verylight-grey-alt)" : "",
+                                            borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "1px solid var(--color-verylight-grey-alt)" : "",
                                             right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
                                             left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
                                             height: isDockedMode && isOnSearch && "calc(100dvh - 140px)",
@@ -1129,7 +1129,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 </li>
                                 : <></>
                         }
-                        <span style={{width: "1px", height: "30px", backgroundColor: "var(--color-medium-grey)", margin: "auto 5px"}}></span>
+                        <span style={{width: "1px", height: "30px", backgroundColor: "var(--color-verylight-grey)", margin: "auto 5px"}}></span>
                         <li className={classNames(stylesReader.blue)}>
                             <button
                                 className={classNames(stylesReader.menu_button)}
