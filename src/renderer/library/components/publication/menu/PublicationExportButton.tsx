@@ -37,6 +37,7 @@ class PublicationExportButton extends React.Component<IProps, undefined> {
         const { __ } = this.props;
         return (
             <button
+                className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                 onClick={this.onExport}
             >
                 <SVG ariaHidden svg={SaveIcon} />

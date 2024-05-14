@@ -17,7 +17,6 @@
         "noLibraryFound": "Inget bibliotek hittades ({{- name}})"
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Kopiera",
             "cut": "Klipp ut",
@@ -28,7 +27,6 @@
             "undo": "Ångra"
         },
         "hide": "Dölj {{- appName}}",
-        "newVersion": "",
         "quit": "Avsluta {{- appName}}",
         "session": {
             "exit": {
@@ -41,6 +39,10 @@
                     "title": "Spara session"
                 }
             }
+        },
+        "update": {
+            "message": "",
+            "title": ""
         },
         "window": {
             "showLibrary": "Visa bibliotek / bokhylla"
@@ -422,8 +424,13 @@
             "text": "Text",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "Neutral",
                     "Night": "Natt",
+                    "Paper": "",
                     "Sepia": "Sepia"
                 },
                 "title": "Tema"

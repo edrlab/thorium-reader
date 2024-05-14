@@ -17,7 +17,6 @@
         "noLibraryFound": "Knjižnica nije pronađena ({{- name}})"
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Kopiraj",
             "cut": "Izreži",
@@ -28,7 +27,6 @@
             "undo": "Poništi"
         },
         "hide": "Sakrij {{- appName}}",
-        "newVersion": "",
         "quit": "Ugasi {{- appName}}",
         "session": {
             "exit": {
@@ -41,6 +39,10 @@
                     "title": "Spremi sesiju"
                 }
             }
+        },
+        "update": {
+            "message": "",
+            "title": ""
         },
         "window": {
             "showLibrary": "Prikaži knjižnicu / policu"
@@ -422,8 +424,13 @@
             "text": "Tekst",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "Neutralno",
                     "Night": "Noćno",
+                    "Paper": "",
                     "Sepia": "Sepia"
                 },
                 "title": "Tema"

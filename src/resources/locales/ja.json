@@ -17,7 +17,6 @@
         "noLibraryFound": "蔵書は見つかりませんでした（{{- name}}）"
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "コピー",
             "cut": "切り取り",
@@ -28,7 +27,6 @@
             "undo": "元に戻す"
         },
         "hide": "隠す {{appName}}",
-        "newVersion": "",
         "quit": "終了 {{appName}}",
         "session": {
             "exit": {
@@ -41,6 +39,10 @@
                     "title": "セッションを保存"
                 }
             }
+        },
+        "update": {
+            "message": "",
+            "title": ""
         },
         "window": {
             "showLibrary": "蔵書/本棚を表示"
@@ -422,8 +424,13 @@
             "text": "文字",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "無彩",
                     "Night": "夜間",
+                    "Paper": "",
                     "Sepia": "セピア"
                 },
                 "title": "テーマ"

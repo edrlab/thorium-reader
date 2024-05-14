@@ -17,7 +17,6 @@
         "noLibraryFound": "No library found ({{- name}})"
     },
     "app": {
-        "downloadVersion": "Download {{- appName}}",
         "edit": {
             "copy": "Copy",
             "cut": "Cut",
@@ -28,7 +27,6 @@
             "undo": "Undo"
         },
         "hide": "Hide {{- appName}}",
-        "newVersion": "A new version of Thorium is available.",
         "quit": "Quit {{- appName}}",
         "session": {
             "exit": {
@@ -41,6 +39,10 @@
                     "title": "Save session"
                 }
             }
+        },
+        "update": {
+            "message": "New version available, click to learn more.",
+            "title": "{{- appName}} software update."
         },
         "window": {
             "showLibrary": "Show library / bookshelf"
@@ -160,8 +162,8 @@
             "sentence": "This publication needs an LCP passphrase to be opened: ",
             "urlHint": "Forgot your passphrase? Find some help here",
             "whatIsLcp?": "What is LCP?",
-            "whatIsLcpInfoDetails": "EDRLab rocks !!!",
-            "whatIsLcpInfoDetailsLink": "EDRLab thorium documentation link"
+            "whatIsLcpInfoDetails": "LCP stands for 'Licensed Content Protection'.",
+            "whatIsLcpInfoDetailsLink": "To learn more, click this link to the EDRLab website."
         }
     },
     "message": {
@@ -422,8 +424,13 @@
             "text": "Text",
             "theme": {
                 "name": {
+                    "Contrast1": "Contrast 1",
+                    "Contrast2": "Contrast 2",
+                    "Contrast3": "Contrast 3",
+                    "Contrast4": "Contrast 4",
                     "Neutral": "Neutral",
                     "Night": "Night",
+                    "Paper": "Paper",
                     "Sepia": "Sepia"
                 },
                 "title": "Theme"

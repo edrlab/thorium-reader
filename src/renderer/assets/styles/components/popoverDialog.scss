@@ -21,7 +21,8 @@
   color: var(--color-primary);
   position: fixed;
   box-sizing: border-box;
-  box-shadow: 0 2px 10px 5px var(--color-medium-grey);
+  overflow: hidden;
+  border: 1px solid var(--color-verylight-grey-alt);
 
   > .settings_container {
     padding: 0 20px 0 30px;
@@ -43,6 +44,22 @@
 }
 }
 
+[data-theme="light"] {
+  .modal_dialog_reader {
+    box-shadow: 0 1px 10px 2px var(--color-verylight-grey-alt);
+    border: none;
+  }
+}
+
+[data-theme="system"] {
+  @media (prefers-color-scheme: light) {
+    .modal_dialog_reader {
+      box-shadow: 0 1px 10px 2px var(--color-verylight-grey-alt);
+      border: none;
+    }
+  }
+}
+
 .popover_dialog_reader {
   width: 350px;
   height: calc(100dvh - 94px);
@@ -57,7 +74,7 @@
   color: var(--color-primary);
 
   .settings_container {
-    height: calc(100dvh - 235px);
+    height: calc(100dvh - 185px);
     padding: 0;
     overflow: hidden auto;
 
@@ -363,7 +380,7 @@
   .bookmark_infos {
     width: 100%;
     display: flex;
-    background-color: var(--color-light-grey);
+    background-color: var(--color-extralight-grey);
     border-left: 2px solid var(--color-blue);
     height: fit-content;
     padding: 0 10px;
@@ -460,13 +477,13 @@
   width: 100%;
   margin-top: 2px;
   height: 4px;
-  background-color: #ececec;
+  background-color: var(--color-verylight-grey-alt);
 
   & .fill {
     height: 100%;
     position: relative;
     width: 63%;
-    background-color: #3b3b3b;
+    background-color: var(--color-mediumdark-grey-alt);
   }
 }
 

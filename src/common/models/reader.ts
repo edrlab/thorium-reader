@@ -40,11 +40,13 @@ export interface ReaderConfigStringsAdjustables {
     lineHeight: string;
 }
 
+export type TTheme = "neutral" | "sepia" | "night" | "contrast1" | "contrast2" | "contrast3"   | "contrast4" | "paper";
+
 export interface ReaderConfigStrings extends ReaderConfigStringsAdjustables {
     // using string instead of enum here, because values provided dynamically in code (mapped types)
     // textAlignEnum.justify | textAlignEnum.left | textAlignEnum.right | textAlignEnum.start
     align: string; // textAlignEnum | "auto";
-
+    theme: TTheme;
     colCount: string;
     font: string;
 }
@@ -54,11 +56,12 @@ export interface ReaderConfigBooleans {
     // not used ?
     dark: boolean;
 
-    invert: boolean;
+    sepia: boolean;
     night: boolean;
+
+    invert: boolean;
     paged: boolean;
     readiumcss: boolean;
-    sepia: boolean;
     enableMathJax: boolean;
     reduceMotion: boolean;
     noFootnotes: boolean;

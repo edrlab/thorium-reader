@@ -17,7 +17,6 @@
         "noLibraryFound": "Ne najdem knjižnice ({{- ime}})"
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Kopiraj",
             "cut": "Izreži",
@@ -28,7 +27,6 @@
             "undo": "Razveljavi"
         },
         "hide": "Skrij {{- appName}}",
-        "newVersion": "",
         "quit": "Zapri {{- appName}}",
         "session": {
             "exit": {
@@ -41,6 +39,10 @@
                     "title": "Shrani sejo"
                 }
             }
+        },
+        "update": {
+            "message": "",
+            "title": ""
         },
         "window": {
             "showLibrary": "Prikaži knjižnico / knjižna polica"
@@ -422,8 +424,13 @@
             "text": "Besedilo",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "Nevtralno",
                     "Night": "Temno",
+                    "Paper": "",
                     "Sepia": "Sepija"
                 },
                 "title": "Tema"

@@ -17,7 +17,6 @@
         "noLibraryFound": ""
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Kopiatu",
             "cut": "Moztu",
@@ -28,7 +27,6 @@
             "undo": "Desegin"
         },
         "hide": "Ezkutatu {{- appName}}",
-        "newVersion": "",
         "quit": "Irten {{- appName}}",
         "session": {
             "exit": {
@@ -41,6 +39,10 @@
                     "title": "Gorde saioa"
                 }
             }
+        },
+        "update": {
+            "message": "",
+            "title": ""
         },
         "window": {
             "showLibrary": "Erakutsi liburutegia"
@@ -422,8 +424,13 @@
             "text": "Testua",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "Neutrala",
                     "Night": "Gauez",
+                    "Paper": "",
                     "Sepia": "Sepia"
                 },
                 "title": "Antolamendu"

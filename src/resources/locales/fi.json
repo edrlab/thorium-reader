@@ -17,7 +17,6 @@
         "noLibraryFound": ""
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Kopioi",
             "cut": "Leikkaa",
@@ -28,7 +27,6 @@
             "undo": "Peru"
         },
         "hide": "Piilota {{- appName}}",
-        "newVersion": "",
         "quit": "Lopeta {{- appName}}",
         "session": {
             "exit": {
@@ -41,6 +39,10 @@
                     "title": "Tallenna istunto"
                 }
             }
+        },
+        "update": {
+            "message": "",
+            "title": ""
         },
         "window": {
             "showLibrary": "Näytä kirjasto / kirjahylly"
@@ -422,8 +424,13 @@
             "text": "Teksti",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "Neutraali",
                     "Night": "Yö",
+                    "Paper": "",
                     "Sepia": "Seepia"
                 },
                 "title": "Teema"

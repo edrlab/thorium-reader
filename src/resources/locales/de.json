@@ -17,7 +17,6 @@
         "noLibraryFound": ""
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Kopieren",
             "cut": "Ausschneiden",
@@ -28,7 +27,6 @@
             "undo": "Rückgängig"
         },
         "hide": "Ausblenden {{- appName}}",
-        "newVersion": "",
         "quit": "Beenden {{- appName}}",
         "session": {
             "exit": {
@@ -41,6 +39,10 @@
                     "title": "Sitzung sichern"
                 }
             }
+        },
+        "update": {
+            "message": "",
+            "title": ""
         },
         "window": {
             "showLibrary": ""
@@ -422,8 +424,13 @@
             "text": "Text",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "Neutral",
                     "Night": "Nachtzeit",
+                    "Paper": "",
                     "Sepia": "Sepia"
                 },
                 "title": "Motiv"

@@ -17,7 +17,6 @@
         "noLibraryFound": "Nessuna libreria trovata ({{- name}})"
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Copia",
             "cut": "Taglia",
@@ -28,7 +27,6 @@
             "undo": "Annulla"
         },
         "hide": "Nascondi {{- appName}}",
-        "newVersion": "",
         "quit": "Esci da {{- appName}}",
         "session": {
             "exit": {
@@ -41,6 +39,10 @@
                     "title": "Salva la sessione"
                 }
             }
+        },
+        "update": {
+            "message": "",
+            "title": ""
         },
         "window": {
             "showLibrary": "Mostra libreria"
@@ -422,8 +424,13 @@
             "text": "Testo",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "Neutrale",
                     "Night": "Notte",
+                    "Paper": "",
                     "Sepia": "Seppia"
                 },
                 "title": "Tema"

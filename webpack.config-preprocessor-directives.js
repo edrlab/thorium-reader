@@ -1,6 +1,6 @@
 const webpack = require("webpack");
 
-const { version, build } = require("./package.json");
+const { version, build, name } = require("./package.json");
 // var git = require("git-rev-sync");
 
 const portApp = process.env.PORT_APP || "8090";
@@ -41,7 +41,8 @@ const telemetrySecret = process.env.THORIUM_TELEMETRY_SECRET || "";
 
 const data = {
     __APP_VERSION__: JSON.stringify(version),
-    __APP_NAME__: JSON.stringify(build.productName),
+    __PACK_NAME__: JSON.stringify(name), // EDRLab.ThoriumReader
+    __APP_NAME__: JSON.stringify(build.productName), // Thorium
     // __GIT_BRANCH__: JSON.stringify(git.branch()),
     // __GIT_DATE__: JSON.stringify(git.date()),
     // __GIT_SHORT__: JSON.stringify(git.short()),

@@ -17,7 +17,6 @@
         "noLibraryFound": ""
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Copiar",
             "cut": "Cortar",
@@ -28,7 +27,6 @@
             "undo": "Desfacer"
         },
         "hide": "Ocultar {{- appName}}",
-        "newVersion": "",
         "quit": "Saír de {{- appName}}",
         "session": {
             "exit": {
@@ -41,6 +39,10 @@
                     "title": "Gardar sesión"
                 }
             }
+        },
+        "update": {
+            "message": "",
+            "title": ""
         },
         "window": {
             "showLibrary": "Mostrar biblioteca"
@@ -422,8 +424,13 @@
             "text": "Texto",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "Neutral",
                     "Night": "Noite",
+                    "Paper": "",
                     "Sepia": "Sepia"
                 },
                 "title": "Disposición"

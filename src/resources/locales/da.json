@@ -17,7 +17,6 @@
         "noLibraryFound": "Intet bibliotek fundet ({{- name}})"
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Kopier",
             "cut": "Klip",
@@ -28,7 +27,6 @@
             "undo": "Fortryd"
         },
         "hide": "Skjul {{- appName}}",
-        "newVersion": "",
         "quit": "Luk {{- appName}}",
         "session": {
             "exit": {
@@ -41,6 +39,10 @@
                     "title": "Gem session"
                 }
             }
+        },
+        "update": {
+            "message": "",
+            "title": ""
         },
         "window": {
             "showLibrary": "Vis bibliotek / boghylde"
@@ -422,8 +424,13 @@
             "text": "Tekst",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "Neutralt",
                     "Night": "Nat",
+                    "Paper": "",
                     "Sepia": "Sepia"
                 },
                 "title": "Tema"

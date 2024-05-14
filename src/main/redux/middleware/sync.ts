@@ -11,7 +11,7 @@ import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync
 import {
     apiActions, authActions, catalogActions, dialogActions, downloadActions, historyActions, i18nActions, keyboardActions, lcpActions,
     publicationActions, themeActions,
-    readerActions, sessionActions, toastActions,
+    readerActions, sessionActions, toastActions, versionUpdateActions,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
@@ -68,6 +68,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     publicationActions.readingFinished.ID,
     themeActions.setTheme.ID,
+    versionUpdateActions.notify.ID,
 
     readerActions.bookmark.pop.ID,
     readerActions.bookmark.push.ID,

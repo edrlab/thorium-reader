@@ -92,7 +92,7 @@ class FeedList extends React.Component<IProps, IState> {
                                     state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
                                     className={stylesCatalogs.catalog_content}
                                 >
-                                    <div style={{ width: "100%", height: "50px", backgroundColor: "var(--color-light-grey)", borderBottom: "1px solid var(--color-medium-grey)", position: "absolute", top: "2px" }}></div>
+                                    <div style={{ width: "100%", height: "50px", backgroundColor: "var(--color-extralight-grey)", borderBottom: "1px solid var(--color-light-grey)", position: "absolute", top: "2px" }}></div>
                                     <div className={stylesCatalogs.catalog_title}>
                                         <SVG ariaHidden svg={GlobeIcon} />
                                         <p title={`${item.title} --- ${item.url}`}>{item.title}</p>
