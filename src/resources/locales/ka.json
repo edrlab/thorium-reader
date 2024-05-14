@@ -424,8 +424,13 @@
             "text": "ტექსტი",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "ნეიტრალური",
                     "Night": "ღამე",
+                    "Paper": "",
                     "Sepia": "სეპია"
                 },
                 "title": "თემა"
