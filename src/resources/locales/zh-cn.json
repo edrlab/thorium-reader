@@ -17,7 +17,6 @@
         "noLibraryFound": "未发现图书馆 ({{- name}})"
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "复制",
             "cut": "剪切",
@@ -28,7 +27,6 @@
             "undo": "撤销"
         },
         "hide": "隐藏 {{- appName}}",
-        "newVersion": "",
         "quit": "退出 {{- appName}}",
         "session": {
             "exit": {
@@ -41,6 +39,10 @@
                     "title": "保存会话"
                 }
             }
+        },
+        "update": {
+            "message": "",
+            "title": ""
         },
         "window": {
             "showLibrary": "显示 书库/书架"

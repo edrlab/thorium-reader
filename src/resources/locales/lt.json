@@ -17,7 +17,6 @@
         "noLibraryFound": "Biblioteka „({{- name}})“ nerasta"
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Kopijuoti",
             "cut": "Iškirpti",
@@ -28,7 +27,6 @@
             "undo": "Atšaukti"
         },
         "hide": "Slėpti {{- appName}}",
-        "newVersion": "",
         "quit": "Uždaryti {{- appName}}",
         "session": {
             "exit": {
@@ -41,6 +39,10 @@
                     "title": "Sesijos išsaugojimas"
                 }
             }
+        },
+        "update": {
+            "message": "",
+            "title": ""
         },
         "window": {
             "showLibrary": "Rodyti biblioteką / knygų lentyną"

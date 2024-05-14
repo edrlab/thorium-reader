@@ -1,6 +1,6 @@
 @mixin R2_MIXIN_FOCUS_OUTLINE {
   outline: var(--color-blue) solid 2px !important;
-  outline-offset: -2px;
+  // outline-offset: 2px;
 }
 
 .___DEBUG___FOCUS_MIXIN_CSS {

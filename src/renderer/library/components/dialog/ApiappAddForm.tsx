@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { shell } from "electron";
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
@@ -129,7 +130,12 @@ const ApiappAddForm = () => {
                     />
                 </div>
                 <button
-                        onClick={() => searchInputRef.current?.value ? apiAppSearchAction(searchInputRef.current.value) : ""}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            if (searchInputRef.current?.value) {
+                                apiAppSearchAction(searchInputRef.current.value);
+                            }
+                        }}
                         className={stylesButtons.button_secondary_blue}
                         title={__("header.searchTitle")}
                     >
@@ -149,7 +155,11 @@ const ApiappAddForm = () => {
                         <p>
                         {__("apiapp.informations")}
                         </p>
-                        <a href="https://thorium.edrlab.org/docs/">
+                        <a href=""
+                            onClick={async (ev) => {
+                                ev.preventDefault();
+                                await shell.openExternal("https://thorium.edrlab.org/docs/");
+                            }}>
                         {__("apiapp.documentation")}
                             <SVG ariaHidden svg={FollowLinkIcon} />
                         </a>

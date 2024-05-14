@@ -158,7 +158,7 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
             <h4>{__("reader.annotations.addNote")}</h4>
         }
         <div
-            className={classNames(displayFromReaderMenu ? "" : stylesAnnotations.annotations_line, dockedMode ? stylesAnnotations.docked_annotation_line : "")}>
+            className={classNames(displayFromReaderMenu ? "" : stylesAnnotations.annotations_line, dockedMode ? stylesAnnotations.docked_annotation_line : "")} style={{backgroundColor: !displayFromReaderMenu ? "var(--color-extralight-grey)" : ""}}>
             <p>{annotationState.locatorExtended.selectionInfo.cleanText}</p>
             <textarea id="addNote" name="addNote" wrap="hard" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef}
             ></textarea>

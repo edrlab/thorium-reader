@@ -23,12 +23,7 @@ import NoPublicationInfo from "./NoPublicationInfo";
 // import TagLayout from "./TagLayout";
 import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
-import * as CloseIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
-import SVG from "readium-desktop/renderer/common/components/SVG";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
-
-const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -105,7 +100,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
         this.state = {
             tabTags: this.props.tags ? this.props.tags.slice() : [],
             status: SortStatus.Count,
-            versionInfo: false,
+            versionInfo: true,
         };
         this.sortByAlpha = this.sortByAlpha.bind(this);
         this.sortbyCount = this.sortbyCount.bind(this);
@@ -145,22 +140,6 @@ class CatalogGridView extends React.Component<IProps, IState> {
                                 >
                                 </div>,
                     )
-                }
-                {
-                    this.state.versionInfo ?
-                    <div className={stylesGlobal.new_version}>
-                        <div>
-                            <SVG ariaHidden svg={InfoIcon} />
-                            <p>{this.props.__("app.newVersion")}</p>
-                            <a href="">{this.props.__("app.downloadVersion", { appName: capitalizedAppName })}  {`v${_APP_VERSION}`}</a>
-                        </div>
-                        <button onClick={() => {
-                            this.setState({ versionInfo : false });
-                        }}>
-                            <SVG ariaHidden svg={CloseIcon} />  
-                        </button>
-                    </div>
-                    : <></>
                 }
                 {
                     this.state.tabTags.length === 0 && catalogEntriesIsEmpty
