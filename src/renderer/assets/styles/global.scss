@@ -36,6 +36,18 @@ body {
     .modal_dialog {
       box-shadow: 0 0 5px 2px black;
     }
+    
+    .docked_header {
+      background-color: #121212;
+    }
+  }
+
+  &[data-theme="system"] {
+    @media (prefers-color-scheme: dark) {
+      .docked_header,.docked_header + .react_aria_ComboBox {
+        background-color: #121212;
+      }
+    }
   }
 }
 

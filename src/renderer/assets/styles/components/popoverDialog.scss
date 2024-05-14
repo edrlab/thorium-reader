@@ -147,19 +147,6 @@
   }
 }
 
-[data-theme="dark"] {
-  .docked_header,.docked_header + .react_aria_ComboBox {
-    background-color: #121212;
-  }
-}
-
-[data-theme="system"] {
-  @media (prefers-color-scheme: dark) {
-    .docked_header,.docked_header + .react_aria_ComboBox {
-      background-color: #121212;
-    }
-  }
-}
 
 .docked_header {
   display: flex;
