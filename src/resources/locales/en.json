@@ -17,7 +17,6 @@
         "noLibraryFound": "No library found ({{- name}})"
     },
     "app": {
-        "downloadVersion": "Download {{- appName}}",
         "edit": {
             "copy": "Copy",
             "cut": "Cut",
@@ -28,7 +27,6 @@
             "undo": "Undo"
         },
         "hide": "Hide {{- appName}}",
-        "newVersion": "A new version of Thorium is available.",
         "quit": "Quit {{- appName}}",
         "session": {
             "exit": {
@@ -41,6 +39,10 @@
                     "title": "Save session"
                 }
             }
+        },
+        "update": {
+            "message": "New version available, click to learn more.",
+            "title": "{{- appName}} software update."
         },
         "window": {
             "showLibrary": "Show library / bookshelf"
@@ -160,8 +162,8 @@
             "sentence": "This publication needs an LCP passphrase to be opened: ",
             "urlHint": "Forgot your passphrase? Find some help here",
             "whatIsLcp?": "What is LCP?",
-            "whatIsLcpInfoDetails": "EDRLab rocks !!!",
-            "whatIsLcpInfoDetailsLink": "EDRLab thorium documentation link"
+            "whatIsLcpInfoDetails": "LCP stands for 'Licensed Content Protection'.",
+            "whatIsLcpInfoDetailsLink": "To learn more, click this link to the EDRLab website."
         }
     },
     "message": {
@@ -332,13 +334,13 @@
         "media-overlays": {
             "activate": "Activate Readaloud",
             "captions": "Captions / clean view",
-            "captionsDescription": "Scroll through text, focusing on each paragraph automatically.",
+            "captionsDescription": "Simplified text view with minimal captions styling.",
             "next": "Next Readaloud",
             "pause": "Pause Readaloud",
             "play": "Play Readaloud",
             "previous": "Previous Readaloud",
             "skip": "Skippability",
-            "skipDescription": "Hide auxiliary contents authored as footnotes, endnotes, pagebreaks and asides.",
+            "skipDescription": "Jump over / ignore auxiliary content such as pagebreaks, footnotes/endnotes, etc.",
             "speed": "Readaloud playback rate",
             "stop": "Stop Readaloud",
             "title": "Readaloud"
@@ -445,7 +447,7 @@
             "play": "Play Text To Speech",
             "previous": "Previous Text To Speech",
             "sentenceDetect": "Split TTS text",
-            "sentenceDetectDescription": "focuses phrase by phrase",
+            "sentenceDetectDescription": "Break long paragraphs into sentences.",
             "speed": "Text To Speech playback rate",
             "stop": "Stop Text To Speech",
             "voice": "Text To Speech voice"

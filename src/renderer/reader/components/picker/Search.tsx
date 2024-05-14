@@ -115,7 +115,7 @@ class SearchPicker extends React.Component<IProps, IState> {
                     (this.loadSeq > 2 && found) &&
                     (
                         <div className={stylesReaderHeader.searchActions}>
-                            <span style={{ width: "1px", height: "30px", backgroundColor: "var(--color-medium-grey)", margin: "auto 20px" }}></span>
+                            <span style={{ width: "1px", height: "30px", backgroundColor: "var(--color-verylight-grey)", margin: "auto 20px" }}></span>
                             <button
                                 disabled={notFound}
                                 onClick={() => {

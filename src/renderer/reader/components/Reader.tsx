@@ -1141,15 +1141,15 @@ class Reader extends React.Component<IProps, IState> {
 
         registerKeyboardListener(
             true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.onKeyboardAnnotationMargin,
+            this.props.keyboardShortcuts.AnnotationsToggleMargin,
             this.onKeyboardAnnotationMargin);
         registerKeyboardListener(
             true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.onKeyboardAnnotation,
+            this.props.keyboardShortcuts.AnnotationsCreate,
             this.onKeyboardAnnotation);
         registerKeyboardListener(
             true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.onKeyboardQuickAnnotation,
+            this.props.keyboardShortcuts.AnnotationsCreateQuick,
             this.onKeyboardQuickAnnotation);
     }
 

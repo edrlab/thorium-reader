@@ -271,7 +271,7 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
                 let emphasis = undefined;
                 let flag = false;
                 if (link === headingTrailLink) {
-                    emphasis = { backgroundColor: "var(--color-light-grey)", borderLeft: "2px solid var(--color-blue)" };
+                    emphasis = { backgroundColor: "var(--color-extralight-grey)", borderLeft: "2px solid var(--color-blue)" };
                     flag = true;
                 } else if ((link as any).__inHeadingsTrail) {
                     emphasis = { border: "1px dashed silver" };
@@ -1189,39 +1189,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const dockedModeRef = React.useRef<HTMLButtonElement>();
     const tabModeRef = React.useRef<HTMLDivElement>();
 
-    const annotationDivRef = React.useRef<HTMLDivElement>();
-
-    const annotationDivFocusOUT = React.useMemo(() => () => {
-
-        console.log("##### AnnotationDivFocusOUT #####");
-        
-        // if (annotationDivRef.current) {
-        //     console.log("AnnotationDivFocusOUT APPLY FOCUS TO ANNOTATION DIV ELEM");
-        //     annotationDivRef.current.focus();
-        // }
-    }, []);
-
-    const dockedModeComboboxFocusOUT = React.useMemo(() => () => {
-
-        console.log("##### dockedModeRefFocusOUT #####");
-        
-        if (dockedModeRef.current) {
-            console.log("dockedModeRef APPLY FOCUS TO DIV ELEM");
-            dockedModeRef.current.focus();
-            // dockedModeRef.current.removeEventListener('focusout', dockedModeComboboxFocusOUT);
-        }
-    }, []);
-
-    // const tabmodeFocusOUT = React.useMemo(() => () => {
-
-    //     console.log("##### tabModeRefFocusOUT #####");
-        
-    //     if (tabModeRef.current) {
-    //         console.log("tabModeRef APPLY FOCUS TO DIV ELEM");
-    //         tabModeRef.current.focus();
-    //         tabModeRef.current.removeEventListener('focusout', tabmodeFocusOUT);
-    //     }
-    // }, []);
+    // const annotationDivRef = React.useRef<HTMLDivElement>();
 
     React.useEffect(() => {
 
@@ -1236,61 +1204,27 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 if (elem) {
                     console.log(`annotationDiv found "(${elem.tagName})" and Focus on [${annotationUUID}]`);
 
-                    annotationDivRef.current = elem;
-                    elem.removeEventListener("focusout", annotationDivFocusOUT);
-
-                    if (dockedMode) {
-                        console.log("elem.addEventListener('focusout', annotationDivFocusOUT)");
-                        elem.addEventListener("focusout", annotationDivFocusOUT);
-                    }
-
+                    // annotationDivRef.current = elem;
                     elem.focus();
 
                 } else {
                     console.log(`annotationUUID=${annotationUUID} not found!`);
                 }
-            }, 1000);
+            }, 1);
 
-        } else {
+        } else if (dockingMode !== "full") {
 
-            if (dockedMode) {
-                
+            setTimeout(() => {
                 if (dockedModeRef.current) {
-
-                    dockedModeRef.current.removeEventListener("focusout", dockedModeComboboxFocusOUT);
-                    dockedModeRef.current.addEventListener("focusout", dockedModeComboboxFocusOUT);
-                    
+    
                     console.log("Focus on docked mode combobox");
                     dockedModeRef.current.focus();
                 } else {
                     console.error("!no dockedModeRef on combobox");
                 }
-            } else {
-                if (tabModeRef.current) {
-
-                    // tabModeRef.current.removeEventListener('focusout',  tabmodeFocusOUT);
-                    // tabModeRef.current.addEventListener('focusout', tabmodeFocusOUT);
-
-                    console.log("Focus on tabmode");
-                    tabModeRef.current.focus();
-                } else {
-                    console.error("!no tabModeRef on tabmode");
-                }
-            }
+            }, 1);
 
         }
-
-        return () => {
-            if (annotationDivRef.current) {
-                annotationDivRef.current.removeEventListener("focusout", annotationDivFocusOUT);
-            }
-            if (dockedModeRef.current) {
-                dockedModeRef.current.removeEventListener("focusout", dockedModeComboboxFocusOUT);
-            }
-            // if (tabModeRef.current) {
-            //     tabModeRef.current.removeEventListener('focusout', tabmodeFocusOUT);
-            // }
-        };
 
     }, [annotationUUID, focus]);
 
@@ -1373,7 +1307,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
 
     const Separator =
-        <span key={"separator"} style={{ borderBottom: "1px solid var(--color-medium-grey)", width: "80%", margin: "0 10%" }}></span>;
+        <span key={"separator"} style={{ borderBottom: "1px solid var(--color-extralight-grey-alt)", width: "80%", margin: "0 10%" }}></span>;
 
     sectionsArray.push(TocTrigger);
     options.push(optionTocItem);
