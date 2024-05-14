@@ -95,8 +95,8 @@
   .docked_header + .react_aria_ComboBox {
     padding: 15px 20px!important;
     width: calc(100% - 40px);
-    background-color: var(--color-light-grey);
-    border-bottom: 1px solid var(--color-medium-grey);
+    background-color: var(--color-docked-header);
+    border-bottom: 1px solid var(--color-extralight-grey-alt);
 
     .my_combobox_container {
       width: calc(100% - 10px);
@@ -170,8 +170,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px;
-  background-color: var(--color-light-grey);
-  border-bottom: 1px solid var(--color-medium-grey);
+  background-color: var(--color-docked-header);
+  border-bottom: 1px solid var(--color-extralight-grey-alt);
 
   .my_combobox_container button {
     min-width: 110px;
