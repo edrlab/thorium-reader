@@ -99,7 +99,7 @@
 
       &:not(.active):focus-within {
         background-color: var(--color-extralight-grey);
-        border: 2px solid var(--color-blue);
+        outline: 2px solid var(--color-blue);
       }
 
       &:hover {
