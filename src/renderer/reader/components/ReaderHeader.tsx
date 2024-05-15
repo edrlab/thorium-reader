@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { HoverEvent } from "@react-types/shared";
 import classNames from "classnames";
 import * as debug_ from "debug";
 import * as React from "react";
@@ -769,7 +770,16 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                                                 {section.lang}
                                                                                             </ReactAriaHeader>
                                                                                             <Collection items={section.voices} key={`collection-${section.lang}`}>
-                                                                                                {voice => <ComboBoxItem id={`TTSID${voice.id}`} key={`TTSKEY${voice.id}`} value={`TTSVAL${voice.id}`}>{`${voice.name}${voice.default ? " *" : ""}`}</ComboBoxItem>}
+                                                                                                {voice => <ComboBoxItem
+                                                                                                    onHoverStart={(e: HoverEvent) => {
+                                                                                                        if (!e.target.getAttribute("title")) {
+                                                                                                            e.target.setAttribute("title", voice.name);
+                                                                                                        }
+                                                                                                    }}
+                                                                                                    // aria-label={item.name}
+                                                                                                
+                                                                                                    id={`TTSID${voice.id}`} key={`TTSKEY${voice.id}`}>{`${voice.name}${voice.default ? " *" : ""}`}
+                                                                                                    </ComboBoxItem>}
                                                                                             </Collection>
                                                                                         </Section>)}
                                                                                 </ComboBox>
