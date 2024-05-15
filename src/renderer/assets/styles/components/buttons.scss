@@ -299,6 +299,11 @@ button {
   gap: 5px;
   box-sizing: content-box;
   position: relative;
+  transition: 200ms;
+
+  &:hover {
+    background-color: var(--color-button-hover);
+  }
   
   &:focus-within, &:focus {
     outline: var(--color-blue) solid 1px !important;
