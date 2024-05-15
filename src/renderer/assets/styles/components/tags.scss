@@ -29,6 +29,9 @@
     align-items: center;
     text-decoration: none!important;
     color: var(--color-blue)!important;
+    word-break: break-all;
+    white-space: normal;
+
 
     &:visited {
       color: var(--color-blue);
