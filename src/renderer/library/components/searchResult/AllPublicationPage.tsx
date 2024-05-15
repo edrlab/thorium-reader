@@ -21,6 +21,7 @@ import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirs
 import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-right.svg";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
+import * as CloseIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import { matchSorter } from "match-sorter";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -875,6 +876,8 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
 
     const textNeedToBeSanitized = props.value || "";
     const textSanitize = DOMPurify.sanitize(textNeedToBeSanitized).replace(/font-size:/g, "font-sizexx:");
+    const [isOpen, setIsOpen] = React.useState(false);
+
     return (<div
         className={stylesPublication.cell_description}
         style={{
@@ -893,12 +896,16 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
         }}>
         <p dangerouslySetInnerHTML={{ __html: textSanitize }}></p>
         {props.value ?
-            <Popover.Root>
-                <Popover.Trigger>
+            <Popover.Root onOpenChange={() => setIsOpen(!isOpen)}>
+                <Popover.Trigger style={{maxWidth: "15px"}}>
+                    {isOpen ?
+                    <SVG ariaHidden svg={CloseIcon} />
+                    :
                     <SVG ariaHidden svg={ChevronDown} />
+                    }
                 </Popover.Trigger>
                 <Popover.Portal>
-                    <Popover.Content collisionPadding={50} avoidCollisions>
+                    <Popover.Content collisionPadding={{top : 280}} avoidCollisions sideOffset={5} align="end" alignOffset={-10} hideWhenDetached>
                         <p className={stylesDropDown.dropdown_description} dangerouslySetInnerHTML={{ __html: textSanitize }}></p>
                         <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
                     </Popover.Content>
