@@ -302,15 +302,15 @@
     "reader": {
         "annotations": {
             "Color": "Color",
-            "addNote": "Add a note",
-            "advancedMode": "Advanced Mode",
-            "advancedModeDetails": "Serial annotator mode",
-            "annotationsOptions": "Annotation options",
+            "addNote": "Annotate",
+            "advancedMode": "Instant mode",
+            "advancedModeDetails": "(auto create when select text)",
+            "annotationsOptions": "Options",
             "highlight": "Highlight",
             "noSelectionToast": "No selection",
-            "quickAnnotations": "Quick annotator mode",
-            "saveNote": "Save note",
-            "toggleMarginMarks": "Margin annotations"
+            "quickAnnotations": "Quick create (skip editor)",
+            "saveNote": "Save",
+            "toggleMarginMarks": "Display in margins"
         },
         "divina": {
             "mute": "mute audio",
