@@ -13,7 +13,7 @@
     "apiapp": {
         "documentation": "Thorium Documentation",
         "howItWorks": "How does it work?",
-        "informations": "Many public libraries and bookstores use the OPDS format to expose their publication catalog on the Web. Thorium supports OPDS standards v1 as well as v2, and handles several identification/authentication methods. Thorium users can therefore access their online personal library and download the digital publications that they purchased or borrowed.",
+        "informations": "In France, many public libraries provide a machine-readable catalog (similar to OPDS but not identical), letting patrons download digital publications from their personal bookshelf. Integrating this technology in Thorium Reader allows you to download an ebook or audiobook directly into Thorium Reader for instant reading.\nHow do you connect your French public library account to Thorium Reader? It's simple. Enter a French city ('Paris') or part of the library name in the Search field and hit the Search button. A list of public libraries corresponding to your search will appear. Select a library and hit Add. In the updated list of catalogs, select this library: an authentication form is displayed. Enter your username/email address and password, and hit Login. You can now see the content of your personal bookshelf, from which you can download and read the ebooks and audiobooks you previously borrowed.",
         "noLibraryFound": "No library found ({{- name}})"
     },
     "app": {
@@ -195,7 +195,7 @@
         "documentation": "OPDS official website",
         "empty": "No publication found",
         "firstPage": "First",
-        "informations": "The Open Publication Distribution System (OPDS) catalog format is a way to distribute, discover, and download electronic publications.",
+        "informations": "Imagine a world where you can explore and download digital publications from public libraries and digital booksellers with just a few clicks. That's exactly what the Open Publication Distribution System (OPDS) catalog format offers. With OPDS, you can navigate through catalogs from various ebook providers, sign up, borrow, buy a publication, or visit your personal bookshelf. You can even download an ebook or audiobook directly into Thorium Reader for instant reading.\nSo, how do you find an OPDS catalog? It's simple. Look for a hyperlink (URL) leading to the catalog. Copy this URL into the Link field above. Keep in mind that there's no one-stop shop for all active OPDS catalogs. You'll need to contact your preferred library or bookseller and ask for their OPDS catalog URL. If you're not sure where to start, Wikipedia has a few registries of OPDS catalogs in various languages that might be helpful.\nThe Name field is left at your convenience; it provides an easy way to identify the feed in Thorium Reader.",
         "lastPage": "Last",
         "menu": {
             "aboutBook": "About publication",
