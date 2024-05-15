@@ -37,6 +37,7 @@ export const readerConfigInitialState: ReaderConfig = {
     paged: true, // https://github.com/edrlab/thorium-reader/issues/1222
     readiumcss: true,
     sepia: false,
+    theme: "neutral",
     enableMathJax: false,
     reduceMotion: false,
     noFootnotes: false,

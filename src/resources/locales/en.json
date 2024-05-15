@@ -424,8 +424,13 @@
             "text": "Text",
             "theme": {
                 "name": {
+                    "Contrast1": "Contrast 1",
+                    "Contrast2": "Contrast 2",
+                    "Contrast3": "Contrast 3",
+                    "Contrast4": "Contrast 4",
                     "Neutral": "Neutral",
                     "Night": "Night",
+                    "Paper": "Paper",
                     "Sepia": "Sepia"
                 },
                 "title": "Theme"
