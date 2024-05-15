@@ -215,7 +215,14 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
                 ? <button type="submit"
                     className={stylesButtons.button_primary_blue}
                     aria-label="save"
-                    onClick={(e) => { e.preventDefault(); save(colorObj, textAreaRef?.current?.value || "", drawTypeSelected); saveConfig(); }}
+                    onClick={(e) => {
+                        e.preventDefault();
+
+                        const textareaValue = textAreaRef?.current?.value || "";
+                        const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
+                        save(colorObj, textareaNormalize, drawTypeSelected);
+                        saveConfig();
+                    }}
                 >
                     <SVG ariaHidden svg={SaveIcon} />
                     {__("reader.annotations.saveNote")}
@@ -225,7 +232,14 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
                     type="submit"
                     className={stylesButtons.button_primary_blue}
                     aria-label="save"
-                    onClick={(e) => { e.preventDefault(); save(colorObj, textAreaRef?.current?.value || "", drawTypeSelected); saveConfig(); }}
+                    onClick={(e) => {
+                        e.preventDefault();
+
+                        const textareaValue = textAreaRef?.current?.value || "";
+                        const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
+                        save(colorObj, textareaNormalize, drawTypeSelected);
+                        saveConfig();
+                    }}
                 >
                     <SVG ariaHidden svg={SaveIcon} />
                     {__("reader.annotations.saveNote")}
