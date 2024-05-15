@@ -58,7 +58,7 @@
                     color: var(--color--primary);
                     background-color: transparent;
 
-                    #keyEditButt_AnnotationsCreate {
+                    > button {
                         display: none;
                     }
                 }
