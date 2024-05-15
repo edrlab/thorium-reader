@@ -172,6 +172,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            box-sizing: border-box;
+
+            span {
+                // display: block;
+                max-height: 55px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 3; /* number of lines to show */
+                        line-clamp: 3; 
+                -webkit-box-orient: vertical;
+            }
         }
     }
 }
