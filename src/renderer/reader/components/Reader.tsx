@@ -985,6 +985,8 @@ class Reader extends React.Component<IProps, IState> {
                     disableRTLFlip={this.props.disableRTLFlip}
                     isRTLFlip={this.isRTLFlip}
                     publicationView={this.props.publicationView}
+
+                    readerPopoverDialogContext={readerPopoverDialogContext}
                 />
                 : <></>
     }
@@ -1763,14 +1765,16 @@ class Reader extends React.Component<IProps, IState> {
 
         // windowHistory._readerInstance === this
 
+        const isDocked = this.state.dockingMode !== "full";
+
         if (popState.state?.data) {
             if (typeof popState.state.data === "object") {
-                this.goToLocator(popState.state.data, true, true);
+                this.goToLocator(popState.state.data, !isDocked, true);
             } else if (typeof popState.state.data === "string") {
                 // if (!/https?:\/\//.test(popState.state.data)) {
                 if (popState.state.data.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") ||
                     popState.state.data.startsWith("thoriumhttps://")) {
-                    this.handleLinkClick(undefined, popState.state.data, true, true);
+                    this.handleLinkClick(undefined, popState.state.data, !isDocked, true);
                 } else {
                     console.log(">> HISTORY POP STATE SKIP URL (2)", popState.state.data);
                 }
