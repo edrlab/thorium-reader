@@ -27,6 +27,7 @@ import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import { IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../pdf/common/pdfReader.type";
 import { IPopoverDialogProps, IReaderSettingsProps } from "./options-values";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
@@ -38,7 +39,8 @@ import { readerConfigInitialState, readerConfigInitialStateDefaultPublisher } fr
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import { createOrGetPdfEventBus } from "../pdf/driver";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
-import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import * as ResetIcon from "readium-desktop/renderer/assets/icons/clock-reverse-icon.svg";
 import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-bold.svg";
@@ -166,7 +168,7 @@ const Theme = ({theme, set}: {theme: Pick<ReaderConfig, "theme">, set: (a: Pick<
                                 description={theme.name}
                                 className={stylesSettings.settings_theme_container} 
                                 style={theme.style}
-                                svg={defaultKey === theme.id ? CheckIcon : null}
+                                svg={defaultKey === theme.id ? DoubleCheckIcon : null}
                                 />,
                 )}
                 {/* <RadioGroupItem 
@@ -637,8 +639,18 @@ export const ReadingAudio = ({ useMO, config: { mediaOverlaysEnableCaptionsMode:
                         name={option.name}
                         onChange={option.onChange}
                         defaultChecked={option.checked}
+                        className={stylesGlobal.checkbox_custom_input}
                     />
-                    <label htmlFor={option.id}>{option.label}</label>
+                    <label htmlFor={option.id} className={stylesGlobal.checkbox_custom_label}>
+                        <div className={stylesGlobal.checkbox_custom} style={{border: option.checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: option.checked ? "var(--color-blue)" : "transparent"}}>
+                            {option.checked ?
+                                <SVG ariaHidden svg={CheckIcon} />
+                                :
+                                <></>
+                            }
+                        </div>
+                        {option.label}
+                    </label>
                     {/* <p className={stylesSettings.session_text}>{option.description}</p> */}
                 </div>
 
@@ -716,8 +728,17 @@ const ReadingDisplayMathJax = ({
                             name={option.name}
                             onChange={option.onChange}
                             defaultChecked={option.checked}
+                            className={stylesGlobal.checkbox_custom_input}
                         />
-                        <label htmlFor={option.id} style={{margin: "0 5px", height: "unset"}}>{option.label}</label>
+                        <label htmlFor={option.id} style={{margin: "0 5px", height: "unset"}} className={stylesGlobal.checkbox_custom_label}>
+                        <div className={stylesGlobal.checkbox_custom} style={{ border: option.checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: option.checked ? "var(--color-blue)" : "transparent" }}>
+                                            {option.checked ?
+                                                <SVG ariaHidden svg={CheckIcon} />
+                                                :
+                                                <></>
+                                            }
+                                        </div>
+                            {option.label}</label>
                     </div>
                 </section>
 
@@ -731,8 +752,17 @@ const ReadingDisplayMathJax = ({
 
                         checked={disableRTLFlip}
                         onChange={() => setDisableRTLFlip(!disableRTLFlip)}
+                        className={stylesGlobal.checkbox_custom_input}
                     />
-                    <label htmlFor="noRTLFlipCheckBox" style={{margin: "0 5px", height: "unset"}}>{__("reader.settings.noRTLFlip")}</label>
+                    <label htmlFor="noRTLFlipCheckBox" style={{margin: "0 5px", height: "unset"}} className={stylesGlobal.checkbox_custom_label}>
+                    <div className={stylesGlobal.checkbox_custom} style={{ border: disableRTLFlip ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: disableRTLFlip ? "var(--color-blue)" : "transparent" }}>
+                                            {disableRTLFlip ?
+                                                <SVG ariaHidden svg={CheckIcon} />
+                                                :
+                                                <></>
+                                            }
+                                        </div>
+                        {__("reader.settings.noRTLFlip")}</label>
                 </div>
             </section>
         </div>
@@ -877,10 +907,18 @@ const AllowCustom = ({ overridePublisherDefault, set }:
     const [__] = useTranslator();
         return(
             <>
-                <input id="allow-custom" type="checkbox" checked={overridePublisherDefault} onChange={() => {set();}
+                <input id="allow-custom" className={stylesGlobal.checkbox_custom_input} type="checkbox" checked={overridePublisherDefault} onChange={() => {set();}
             }/>
-
-                <label htmlFor="allow-custom">{__("reader.settings.customizeReader")}</label>
+                <label htmlFor="allow-custom" className={stylesGlobal.checkbox_custom_label}>
+                    <div className={stylesGlobal.checkbox_custom} style={{border: overridePublisherDefault ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: overridePublisherDefault ? "var(--color-blue)" : "transparent"}}>
+                        {overridePublisherDefault ?
+                            <SVG ariaHidden svg={CheckIcon} />
+                            :
+                            <></>
+                        }
+                    </div>
+                    {__("reader.settings.customizeReader")}
+                </label>
             </>
         );
 };

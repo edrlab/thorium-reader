@@ -70,6 +70,9 @@ import { AnnotationEdit } from "./AnnotationEdit";
 import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionAnnotations, readerLocalActionSetConfig } from "../redux/actions";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -1465,29 +1468,53 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                     </span>
                                 </summary>
                                 {dockedMode ? <div className={stylesAnnotations.annotations_checkbox}>
-                                <input type="checkbox" id="advancedAnnotations" name="advancedAnnotations" checked={serialAnnotator} onChange={() => { setSerialAnnotatorMode(!serialAnnotator); }} />
-                                <label htmlFor="advancedAnnotations">
-                                    <h4>{__("reader.annotations.advancedMode")}</h4>
-                                    {__("reader.annotations.advancedModeDetails")}
-                                </label>
-                            </div> : <></>
-                            }
-                            <div className={stylesAnnotations.annotations_checkbox}>
-                                <input type="checkbox" id="quickAnnotations" name="quickAnnotations" checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
-                                    onChange={() => { dispatch(readerLocalActionSetConfig.build({ ...readerConfig, annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking })); }}
-                                />
-                                <label htmlFor="quickAnnotations"><h4>{__("reader.annotations.quickAnnotations")}</h4></label>
-                            </div>
-                            <div className={stylesAnnotations.annotations_checkbox}>
-                                <input type="checkbox" id="marginAnnotations" name="marginAnnotations" checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={() => {
-                                    const newReaderConfig = { ...readerConfig };
-                                    newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "annotation" ? "margin" : "annotation";
+                                    <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={serialAnnotator} onChange={() => { setSerialAnnotatorMode(!serialAnnotator); }} />
+                                    <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
+                                        <div className={stylesGlobal.checkbox_custom} style={{ border: serialAnnotator ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: serialAnnotator ? "var(--color-blue)" : "transparent" }}>
+                                            {serialAnnotator ?
+                                                <SVG ariaHidden svg={CheckIcon} />
+                                                :
+                                                <></>
+                                            }
+                                        </div>
+                                        <div>
+                                            <h4>{__("reader.annotations.advancedMode")}</h4>
+                                            {__("reader.annotations.advancedModeDetails")}
+                                        </div>
+                                    </label>
+                                </div> : <></>
+                                }
+                                <div className={stylesAnnotations.annotations_checkbox}>
+                                    <input type="checkbox" id="quickAnnotations" name="quickAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
+                                        onChange={() => { dispatch(readerLocalActionSetConfig.build({ ...readerConfig, annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking })); }}
+                                    />
+                                    <label htmlFor="quickAnnotations" className={stylesGlobal.checkbox_custom_label}>
+                                        <div className={stylesGlobal.checkbox_custom} style={{ border: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "var(--color-blue)" : "transparent" }}>
+                                            {readerConfig.annotation_popoverNotOpenOnNoteTaking ?
+                                                <SVG ariaHidden svg={CheckIcon} />
+                                                :
+                                                <></>
+                                            } </div>
+                                        <h4>{__("reader.annotations.quickAnnotations")}</h4></label>
+                                </div>
+                                <div className={stylesAnnotations.annotations_checkbox}>
+                                    <input type="checkbox" id="marginAnnotations" name="marginAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={() => {
+                                        const newReaderConfig = { ...readerConfig };
+                                        newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "annotation" ? "margin" : "annotation";
 
-                                    console.log(`marginAnnotationsToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
-                                    dispatch(readerLocalActionSetConfig.build(newReaderConfig));
-                                }} />
-                                <label htmlFor="marginAnnotations"><h4>{__("reader.annotations.toggleMarginMarks")}</h4></label>
-                            </div>
+                                        console.log(`marginAnnotationsToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
+                                        dispatch(readerLocalActionSetConfig.build(newReaderConfig));
+                                    }} />
+                                    <label htmlFor="marginAnnotations" className={stylesGlobal.checkbox_custom_label}>
+                                        <div className={stylesGlobal.checkbox_custom} style={{ border: readerConfig.annotation_defaultDrawView === "margin" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "margin" ? "var(--color-blue)" : "transparent" }}>
+                                            {readerConfig.annotation_defaultDrawView === "margin" ?
+                                                <SVG ariaHidden svg={CheckIcon} />
+                                                :
+                                                <></>
+                                            }
+                                        </div>
+                                        <h4>{__("reader.annotations.toggleMarginMarks")}</h4></label>
+                                </div>
                             </details>
                             <AnnotationList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} dockedMode={dockedMode} annotationUUIDFocused={annotationUUID} focus={focus}/>
                         </div>
