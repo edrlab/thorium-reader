@@ -136,7 +136,8 @@ const ApiappAddForm = () => {
                                 apiAppSearchAction(searchInputRef.current.value);
                             }
                         }}
-                        className={stylesButtons.button_secondary_blue}
+                        className={stylesButtons.button_nav_primary}
+                        style={{height: "24px"}}
                         title={__("header.searchTitle")}
                     >
                         <SVG ariaHidden={true} svg={magnifyingGlass} />
