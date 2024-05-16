@@ -1172,7 +1172,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     // const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     const searchEnable = useSelector((state: IReaderRootState) => state.search.enable);
     const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
-    const annotations = useSelector((state: IReaderRootState) => state.reader.annotation).map(([, v]) => v);
+    // const annotations = useSelector((state: IReaderRootState) => state.reader.annotation).map(([, v]) => v);
     const readerConfig = useSelector((state: IReaderRootState) => state.reader.config);
 
     // const isFixedLayoutPublication = r2Publication.Metadata?.Rendition?.Layout === "fixed";
