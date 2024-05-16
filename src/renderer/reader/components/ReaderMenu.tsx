@@ -547,7 +547,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     SelectRef.displayName = "ComboBox";
     
-    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} on ${pageTotal}`}));
+    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} / ${pageTotal}`}));
     
     return (
         <>
@@ -780,7 +780,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
     const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     SelectRef.displayName = "ComboBox";
     
-    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} on ${pageTotal}`}));
+    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} / ${pageTotal}`}));
 
     return (
         <>
