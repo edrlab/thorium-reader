@@ -53,9 +53,9 @@
 
 .annotation_form {
     background-color: var(--color-extralight-grey);
-    max-width: 400px;
+    max-width: 450px;
     border-radius: 6px;
-    border: 1px solid var(--color-medium-grey);
+    // border: 1px solid var(--color-medium-grey);
     display: flex;
     flex-direction: column;
     padding: 5px 10px;
@@ -72,15 +72,15 @@
     }
   
     &_textarea{
-      width: 380px;
-      min-width: 380px;
+      width: 420px;
+      min-width: 420px;
       height: 100px;
       min-height: 100px;
-      max-width: 380px;
+      max-width: 420px;
       border: 1px solid rgb(118 118 118);
       border-radius: 3px;
       font-family: Nunito, sans-serif;
-      background-color: var(--color-secondary);
+      background-color: var(--color-annotations-txt-area);
       color: var(--color-primary);
   
   
@@ -125,7 +125,8 @@
     display: flex;
     align-items: center;
     gap: 30px;
-    margin: 10px 0;
+    margin: 0;
+    margin-bottom: 10px;
   
     &_container {
       display: flex;
@@ -210,7 +211,7 @@
     background-color: var(--color-button-hover);
     padding: 2px;
     gap: 1px;
-    border: 1px solid var(--color-dark-grey-alt);
+    border: 1px solid var(--color-dark-grey);
     border-radius: 6px;
 
     &:has(input:focus) {
@@ -287,17 +288,19 @@
   }
   
   .annotations_line {
-    width: calc(100% - 10px);
+    width: calc(100% - 20px);
     position: relative;
     text-align: left;
     font-size: 1rem;
     border-left: 2px solid var(--color-blue);
     padding-left: 10px;
-    margin: 10px 0;
+    margin: 0;
+    margin-bottom: 10px;
     background-color: var(--color-annotations-bg);
   
     p {
       text-align: left;
+      background-color: var(--color-annotations-txt);
 
       // overflow: hidden;
       // text-overflow: ellipsis;
