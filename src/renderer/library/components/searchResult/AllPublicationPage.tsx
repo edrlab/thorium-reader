@@ -7,6 +7,7 @@
 
 import "regenerator-runtime/runtime"; // for react-table (useAsyncDebounce()) see: https://github.com/TanStack/react-table/issues/2071#issuecomment-679999096
 
+import { HoverEvent } from "@react-types/shared";
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Location } from "history";
@@ -2034,7 +2035,14 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                         svg={TagIcon}
                                         allowsCustomValue
                                     >
-                                        {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                                        {item => <ComboBoxItem
+                                            onHoverStart={(e: HoverEvent) => {
+                                                if (!e.target.getAttribute("title")) {
+                                                    e.target.setAttribute("title", item.name);
+                                                }
+                                            }}
+                                            // aria-label={item.name}
+                                        >{item.name}</ComboBoxItem>}
                                     </ComboBox>
                                 </div>
 

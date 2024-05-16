@@ -172,6 +172,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            box-sizing: border-box;
+
+            span {
+                // display: block;
+                max-height: 55px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 3; /* number of lines to show */
+                        line-clamp: 3; 
+                -webkit-box-orient: vertical;
+            }
         }
     }
 }
@@ -282,6 +294,28 @@
     margin-bottom: 0.4em;
     position: absolute;
     padding-right: 25px;
+
+    &::-webkit-scrollbar {
+        width: 12px;
+        transition: 200ms;
+    
+        &-thumb {
+            background-color: var(--scrollbar-thumb);
+            border-radius: 6px;
+            border-left: 2px solid transparent;
+            background-clip: padding-box;
+            cursor: pointer;
+    
+            &:hover {
+              border: 0;
+            }
+    
+        }
+    
+        &-track {
+            background-color: var(--color-secondary);
+            }
+      }
 
     .loader {
         margin: 20%;
