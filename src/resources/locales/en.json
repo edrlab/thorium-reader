@@ -259,7 +259,7 @@
             "tracks": "Tracks"
         },
         "author": "Author",
-        "cancelledLcp": "Cancelled LCP license.",
+        "cancelledLcp": "This publication's LCP license is cancelled.",
         "certificateRevoked": "Revoked LCP license certificate.",
         "certificateSignatureInvalid": "Invalid LCP license certificate signature.",
         "cover": {
