@@ -303,8 +303,7 @@
         "annotations": {
             "Color": "Color",
             "addNote": "Annotate",
-            "advancedMode": "Instant mode",
-            "advancedModeDetails": "(auto create when select text)",
+            "advancedMode": "Instant mode (auto create after select)",
             "annotationsOptions": "Options",
             "highlight": "Highlight",
             "noSelectionToast": "No selection",
