@@ -500,12 +500,12 @@
             "next": "Next"
         },
         "description": {
-            "annotations": "Highlight important passages, take notes. Thanks to the advanced mode you can even make annotations on the fly.",
-            "catalogs": "Borrow publications from your local library or discover publications via OPDS feeds. Online catalogs allow you to access a variety of publications from multiple sources.",
+            "annotations": "Highlight document text, choose the style and color, attach personal notes. Create annotations in 'quick' mode to bypass the editor (automatically select the last color / style), attach notes later. Use the 'instant' mode to create annotations immediately after highlighting document text.",
+            "catalogs": "Borrow publications from your local library or discover publications via OPDS feeds. Access a variety of publications from multiple sources thanks to online catalogs.",
             "home": "Thorium gets a makeover, let's discover what's new!",
-            "readingView1": "Thorium adapts itself to your reading preferences: choose amongst various themes, adjust text parameters or use readaloud while folllowing the text in the screen.",
-            "readingView2": "Search, navigate to a precise location, add bookmarks or enjoy the full screen mode for distraction-free reading sessions.",
-            "yourBooks": "Welcome to your personal bookshelf: easily filter and find a publication in the grid view, or perform an advanced search in the table view."
+            "readingView1": "Configure your reading preferences: in addition to font styles, text sizing and spacing, Thorium now offers multiple color themes for both the user interface and publication documents. Listen to your ebooks with synchronized text highlights, using synthetic speech readaloud or pre-recorded human voices (DAISY / EPUB Media Overlays).",
+            "readingView2": "Search publication text, navigate to precise document locations (including print-equivalent page breaks), store bookmarks. Thorium's fullscreen mode offers a distraction-free reading environment.",
+            "yourBooks": "Welcome to your personal bookshelf: in the grid view, easily filter by tags or find publications by keywords. In the advanced table view, filter and sort publications using more specific criteria."
         },
         "dontShow": "Don't show anymore",
         "tab": {
@@ -517,7 +517,7 @@
         },
         "title": {
             "allBooks": "All my publications",
-            "newFeature": "New feature : Annotations",
+            "newFeature": "New feature: Annotations",
             "welcome": "Welcome to Thorium 3.0"
         }
     }
