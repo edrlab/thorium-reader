@@ -532,7 +532,7 @@
 
     button {
       background-color: var(--color-blue);
-      color: white;
+      color: var(--color-secondary);
       width: fit-content;
       border-radius: 6px;
       display: flex;
@@ -543,8 +543,8 @@
 
       svg {
         width: 15px;
-        fill: white!important;
-        color: white!important;
+        fill: var(--color-secondary)!important;
+        color: var(--color-secondary)!important;
       }
     }
   }

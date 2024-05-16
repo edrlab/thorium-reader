@@ -7,11 +7,6 @@
         background-color: var(--color-secondary);
         // border-bottom: 2px solid var(--color-mediumdark-grey);
     }
-
-    .menu_button svg {
-        color: var(--color-primary)!important;
-        fill: var(--color-primary)!important;
-    }
 }
 
 [data-theme="system"] {
@@ -19,11 +14,6 @@
         .toolbar_navigation {
         background-color: var(--color-secondary);
         // border-bottom: 2px solid var(--color-mediumdark-grey);
-        }
-
-        .menu_button:not(:has(.active_svg)) svg {
-            color: var(--color-primary)!important;
-            fill: var(--color-primary)!important;
         }
     }
 }
@@ -120,8 +110,8 @@
                 svg {
                     height: 20px;
                     width: 30px;
-                    fill: var(--color-blue);
-                    color: var(--color-blue);
+                    fill: var(--color-blue-alt);
+                    color: var(--color-blue-alt);
 
                     // @media (prefers-color-scheme: dark) {
                     //     fill: #FEFEFE;
