@@ -424,8 +424,13 @@
             "text": "Texto",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "Neutro",
                     "Night": "Escuro",
+                    "Paper": "",
                     "Sepia": "Sépia"
                 },
                 "title": "Tema"

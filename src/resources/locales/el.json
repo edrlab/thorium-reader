@@ -424,8 +424,13 @@
             "text": "Κείμενο",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "Ουδέτερο",
                     "Night": "Νυχτερινό",
+                    "Paper": "",
                     "Sepia": "Sepia"
                 },
                 "title": "Θέμα (theme)"
