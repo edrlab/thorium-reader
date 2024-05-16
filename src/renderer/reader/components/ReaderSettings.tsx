@@ -1087,7 +1087,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const setDockingModeLeftSide = () => setDockingMode("left");
     const setDockingModeRightSide = () => setDockingMode("right");
 
-    const optionSelected = options.find(({ value }) => value === tabValue)?.id || 3;
+    const optionSelected = options.find(({ value }) => value === tabValue)?.id;
     const optionDisabled = options.map(({ id, disabled }) => disabled ? id : -1).filter((v) => v > -1);
 
     // console.log("RENDER");
