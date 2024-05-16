@@ -19,7 +19,7 @@
 }
 
 .toolbar_navigation {
-    height: 50px;
+    height: 70px;
     width: 100%;
     padding: 0;
     background-color: var(--color-extralight-grey);
@@ -170,8 +170,7 @@
     top: 65px;
     right: 10px;
     left: unset;
-    border-bottom: 1px solid var(--color-medium-grey);
-    border-top: 1px solid var(--color-light-grey);
+    border-bottom: 2px solid var(--color-medium-grey);
 
     button[title="Close"] {
         width: 15px;
@@ -326,7 +325,7 @@
             content: "";
             position: absolute;
             margin-right: 10%;
-            top: 48px;
+            top: 47px;
             height: 1px;
             width: 200px;
             border-bottom: 2px solid var(--color-blue);
