@@ -87,7 +87,7 @@
   height: fit-content;
   max-height: 350px!important;
   overflow: hidden auto;
-
+  
   &::-webkit-scrollbar {
     width: 10px;
     transition: 200ms;
@@ -102,12 +102,11 @@
         &:hover {
           border: 0;
         }
-
     }
 
     &-track {
-        background-color: var(--color-secondary);
-        }
+      background-color: var(--color-secondary);
+      }
   }
 
   .react_aria_ListBox {

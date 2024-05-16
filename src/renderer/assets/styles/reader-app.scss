@@ -253,7 +253,7 @@ button {
 }
 
 .isOnSearch {
-  top: 100px!important;
+  top: 96px!important;
 }
 
 .isOnSearchPdf {
@@ -1110,5 +1110,16 @@ input[type="radio"] + label {
 
   p {
     padding: 5px;
+  }
+}
+
+.display_checkbox_section {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+
+  &:has(input:focus) {
+    outline: var(--color-blue) solid 2px !important;
+    outline-offset: -2px;
   }
 }

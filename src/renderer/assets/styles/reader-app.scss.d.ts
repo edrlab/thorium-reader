@@ -29,6 +29,7 @@ export declare const contrast2Mode: string;
 export declare const contrast3Mode: string;
 export declare const contrast4Mode: string;
 export declare const disable: string;
+export declare const display_checkbox_section: string;
 export declare const divina_grid_container: string;
 export declare const divina_grid_item: string;
 export declare const docked_left: string;
