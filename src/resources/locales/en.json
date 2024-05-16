@@ -271,7 +271,7 @@
             "title": "Duration"
         },
         "expired": "Loan expired",
-        "expiredLcp": "Expired LCP license.",
+        "expiredLcp": "This publication's LCP license is expired.",
         "lcpEnd": "End",
         "lcpRightsCopy": "Copied characters",
         "lcpRightsPrint": "Printed pages",
