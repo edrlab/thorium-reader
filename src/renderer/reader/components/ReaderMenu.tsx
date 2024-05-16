@@ -1172,7 +1172,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     // const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     const searchEnable = useSelector((state: IReaderRootState) => state.search.enable);
     const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
-    const annotations = useSelector((state: IReaderRootState) => state.reader.annotation).map(([, v]) => v);
+    // const annotations = useSelector((state: IReaderRootState) => state.reader.annotation).map(([, v]) => v);
     const readerConfig = useSelector((state: IReaderRootState) => state.reader.config);
 
     // const isFixedLayoutPublication = r2Publication.Metadata?.Rendition?.Layout === "fixed";
@@ -1298,8 +1298,9 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         svg: TargetIcon,
     };
 
+    // disabled={!annotations || annotations.length === 0}
     const AnnotationTrigger =
-        <Tabs.Trigger value="tab-annotation" key={"tab-annotation"} data-value={"tab-annotation"} title={__("reader.marks.annotations")} disabled={!annotations || annotations.length === 0}>
+        <Tabs.Trigger value="tab-annotation" key={"tab-annotation"} data-value={"tab-annotation"} title={__("reader.marks.annotations")} >
             <SVG ariaHidden svg={AnnotationIcon} />
             <h3>{__("reader.marks.annotations")}</h3>
         </Tabs.Trigger>;
@@ -1467,14 +1468,14 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         <SVG ariaHidden svg={ChevronIcon} />
                                     </span>
                                 </summary>
-                                {dockedMode ? <div className={stylesAnnotations.annotations_checkbox}>
-                                <input type="checkbox" id="advancedAnnotations" name="advancedAnnotations" checked={serialAnnotator} onChange={() => { setSerialAnnotatorMode(!serialAnnotator); }} />
-                                <label htmlFor="advancedAnnotations">
-                                    <h4>{__("reader.annotations.advancedMode")}</h4>
-                                    {__("reader.annotations.advancedModeDetails")}
-                                </label>
-                            </div> : <></>
-                            }
+                            {/* {dockedMode ? */}
+                            <div className={stylesAnnotations.annotations_checkbox}>
+                            <input type="checkbox" id="advancedAnnotations" name="advancedAnnotations" checked={serialAnnotator} onChange={() => { setSerialAnnotatorMode(!serialAnnotator); }} />
+                            <label htmlFor="advancedAnnotations">
+                                <h4>{__("reader.annotations.advancedMode")}</h4>
+                            </label>
+                            </div>
+                            {/* : <></>} */}
                             <div className={stylesAnnotations.annotations_checkbox}>
                                 <input type="checkbox" id="quickAnnotations" name="quickAnnotations" checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
                                     onChange={() => { dispatch(readerLocalActionSetConfig.build({ ...readerConfig, annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking })); }}

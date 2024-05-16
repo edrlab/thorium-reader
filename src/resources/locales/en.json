@@ -276,7 +276,7 @@
         "lcpRightsCopy": "Copied characters",
         "lcpRightsPrint": "Printed pages",
         "lcpStart": "Start",
-        "LicenseLCP": "License (LCP)",
+        "licenceLCP": "License (LCP)",
         "licenseOutOfDate": "Out of date LCP License.",
         "licenseSignatureDateInvalid": "Invalid LCP license signature date.",
         "licenseSignatureInvalid": "Invalid LCP license signature.",
@@ -303,8 +303,7 @@
         "annotations": {
             "Color": "Color",
             "addNote": "Annotate",
-            "advancedMode": "Instant mode",
-            "advancedModeDetails": "(auto create when select text)",
+            "advancedMode": "Instant mode (auto create after select)",
             "annotationsOptions": "Options",
             "highlight": "Highlight",
             "noSelectionToast": "No selection",
