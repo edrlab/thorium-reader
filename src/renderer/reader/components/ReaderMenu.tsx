@@ -1363,7 +1363,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 dockedMode ?
                     <><div key="docked-header" className={stylesPopoverDialog.docked_header} style={{borderBottom: "unset"}}>
                         <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls} style={{justifyContent: "space-between", width: "100%", padding: "0 10px"}}>
-                            <div style={{display: "flex"}}>
+                            <div style={{display: "flex", gap: "5px"}}>
                             <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label="left" onClick={setDockingModeLeftSide}>
                                 <SVG ariaHidden={true} svg={DockLeftIcon} />
                             </button>
