@@ -500,12 +500,12 @@
             "next": "Next"
         },
         "description": {
-            "annotations": "Highlight document text, choose the style and color, attach personal notes. Create annotations in 'quick' mode to bypass the editor (automatically select the last color / style), attach notes later. Use the 'instant' mode to create annotations immediately after highlighting document text.",
+            "annotations": "Highlight document text, choose style and color, attach personal notes. Create annotations in 'quick' mode to bypass the editor (you can enter text and customize styles later). For extra speed, use the 'instant' mode which creates annotations immediately after highlighting document text!",
             "catalogs": "Borrow publications from your local library or discover publications via OPDS feeds. Access a variety of publications from multiple sources thanks to online catalogs.",
-            "home": "Thorium gets a makeover, let's discover what's new!",
-            "readingView1": "Configure your reading preferences: in addition to font styles, text sizing and spacing, Thorium now offers multiple color themes for both the user interface and publication documents. Listen to your ebooks with synchronized text highlights, using synthetic speech readaloud or pre-recorded human voices (DAISY / EPUB Media Overlays).",
-            "readingView2": "Search publication text, navigate to precise document locations (including print-equivalent page breaks), store bookmarks. Thorium's fullscreen mode offers a distraction-free reading environment.",
-            "yourBooks": "Welcome to your personal bookshelf: in the grid view, easily filter by tags or find publications by keywords. In the advanced table view, filter and sort publications using more specific criteria."
+            "home": "Thorium looks different! Let's discover what's new...",
+            "readingView1": "Customize your reading and listening preferences: Thorium now offers multiple color themes for both the user interface and publication documents. It is now also easier to configure 'readaloud' ebooks with synthetic speech and synchronized text/audio narration.",
+            "readingView2": "Thorium's improved user interface makes it easier to find text in publications, explore search results, go to specific pages, browse the table of contents, create bookmarks, etc. thanks to the new 'docked' panels. The fullscreen reading mode continues to offer a distraction-free environment.",
+            "yourBooks": "Welcome to your redesigned personal bookshelf! In the 'grid' view, easily filter by tags or find publications by keywords. In the advanced 'table' view, select and sort publications by specific authors, title, date, format, etc."
         },
         "dontShow": "Don't show anymore",
         "tab": {
