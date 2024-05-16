@@ -276,7 +276,7 @@
         "lcpRightsCopy": "Copied characters",
         "lcpRightsPrint": "Printed pages",
         "lcpStart": "Start",
-        "LicenseLCP": "License (LCP)",
+        "licenceLCP": "",
         "licenseOutOfDate": "Out of date LCP License.",
         "licenseSignatureDateInvalid": "Invalid LCP license signature date.",
         "licenseSignatureInvalid": "Invalid LCP license signature.",
