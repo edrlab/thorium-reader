@@ -230,8 +230,12 @@
       max-width: 100%;
       width: 100%;
       margin: 0;
-      max-height: 350px;
+      max-height: 320px;
       height: 100%;
+
+      @media screen and (height <= 650px) {
+        max-height: 230px;
+      }
     }
 
     .guidedTour_buttons {
