@@ -81,7 +81,7 @@
         "moreInfo": "Mer information",
         "myBooks": "Mina böcker",
         "noPublicationHelpL1": "Släpp en publikation här",
-        "noPublicationHelpL2": "eller använd \"+\"-knappen ovanför.",
+        "noPublicationHelpL2": "eller använd \"{{- importTitle }}\"-knappen ovanför.",
         "noPublicationHelpL3": "LCP-skyddade filer stöds.",
         "noPublicationHelpL4": "Filtyper som stöds:",
         "numberOfPages": "Antal sidor",

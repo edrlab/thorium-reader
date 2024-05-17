@@ -81,7 +81,7 @@
         "moreInfo": "Λεπτομέρειες βιβλίου",
         "myBooks": "Τα βιβλία μου",
         "noPublicationHelpL1": "Εναπόθεση δημοσίευσης εδώ",
-        "noPublicationHelpL2": "ή χρήση του \"+\" παραπάνω κουμπιού (button).",
+        "noPublicationHelpL2": "ή χρήση του \"{{- importTitle }}\" παραπάνω κουμπιού (button).",
         "noPublicationHelpL3": "Υποστηρίζεται LCP προστασία αρχείων.",
         "noPublicationHelpL4": "Συνεργαζόμενες επεκτάσεις αρχείων:",
         "numberOfPages": "Σύνολο σελίδων",
