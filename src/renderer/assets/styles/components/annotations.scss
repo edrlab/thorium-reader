@@ -127,6 +127,11 @@
     gap: 30px;
     margin: 0;
     margin-bottom: 10px;
+
+    @media screen and (max-width: 800px) {
+      flex-direction: column!important;
+      align-items: start!important;
+    }
   
     &_container {
       display: flex;
@@ -300,7 +305,7 @@
   
     p {
       text-align: left;
-      background-color: var(--color-annotations-txt);
+      // background-color: var(--color-annotations-txt);
 
       // overflow: hidden;
       // text-overflow: ellipsis;
