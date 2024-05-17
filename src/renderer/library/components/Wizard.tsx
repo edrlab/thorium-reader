@@ -105,7 +105,7 @@ export const WizardModal = () => {
                         </div>
                     </Tabs.List>
                     <div className={classNames(stylesSettings.settings_content, stylesModals.guidedTour_content)} style={{ marginTop: "70px" }}>
-                        <Tabs.Content value="tab1" title="Home" tabIndex={-1}>
+                        <Tabs.Content value="tab1" tabIndex={-1}>
                             <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("wizard.title.welcome")}</h3>
@@ -126,7 +126,7 @@ export const WizardModal = () => {
                                 </div>
                             </div>
                         </Tabs.Content>
-                        <Tabs.Content value="tab2" title="Your Books" tabIndex={-1}>
+                        <Tabs.Content value="tab2" tabIndex={-1}>
                             <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("wizard.title.allBooks")}</h3>
@@ -144,7 +144,7 @@ export const WizardModal = () => {
                                 </div>
                             </div>
                         </Tabs.Content>
-                        <Tabs.Content value="tab3" title="Catalogs" tabIndex={-1}>
+                        <Tabs.Content value="tab3" tabIndex={-1}>
                             <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("wizard.tab.catalogs")}</h3>
@@ -162,7 +162,7 @@ export const WizardModal = () => {
                                 </div>
                             </div>
                         </Tabs.Content>
-                        <Tabs.Content value="tab4" title="Reading" tabIndex={-1}>
+                        <Tabs.Content value="tab4" tabIndex={-1}>
                             <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("wizard.tab.readingView")}</h3>
@@ -179,7 +179,7 @@ export const WizardModal = () => {
                                 </div>
                             </div>
                         </Tabs.Content>
-                        <Tabs.Content value="tab5" title="Annotations" tabIndex={-1}>
+                        <Tabs.Content value="tab5" tabIndex={-1}>
                             <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("wizard.title.newFeature")}</h3>

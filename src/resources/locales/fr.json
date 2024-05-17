@@ -81,7 +81,7 @@
         "moreInfo": "Plus d'informations",
         "myBooks": "Mes livres",
         "noPublicationHelpL1": "Déposez la publication",
-        "noPublicationHelpL2": "ou bien utilisez le bouton \"+\" ci-dessus.",
+        "noPublicationHelpL2": "ou bien utilisez le bouton \"{{- importTitle }}\" ci-dessus.",
         "noPublicationHelpL3": "Les fichiers protégés par LCP sont pris en charge.",
         "noPublicationHelpL4": "Extensions prises en charge :",
         "numberOfPages": "Nombre de pages",
@@ -302,15 +302,14 @@
     "reader": {
         "annotations": {
             "Color": "Couleur",
-            "addNote": "Ajouter une note",
-            "advancedMode": "Mode avancé",
-            "advancedModeDetails": "Mode serial annotateur",
-            "annotationsOptions": "Options d'annotation",
+            "addNote": "Annoter",
+            "advancedMode": "Mode instantané (création automatique après sélection)",
+            "annotationsOptions": "Options",
             "highlight": "Surligner",
             "noSelectionToast": "Aucune sélection",
-            "quickAnnotations": "Annotation rapide",
-            "saveNote": "Sauvegarder la note",
-            "toggleMarginMarks": "Afficher les marqueurs de note dans la marge"
+            "quickAnnotations": "Annotation rapide (sans éditeur)",
+            "saveNote": "Sauvegarder",
+            "toggleMarginMarks": "Afficher dans la marge"
         },
         "divina": {
             "mute": "desactiver le son",

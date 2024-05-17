@@ -117,6 +117,17 @@
     }
   }
 
+  .goToPage {
+    .react_aria_ComboBox .my_combobox_container input {
+      padding-left: 10px!important;
+    }
+
+    .react_aria_ComboBox .my_combobox_container button {
+      padding-left: 0!important; 
+      margin: 0!important;
+    }
+  }
+
   .react_aria_ComboBox {
     // margin: 0;
     // padding: 0;
@@ -524,7 +535,8 @@
       .react_aria_Label {
         position: absolute;
         left: 10px;
-        // top: -20px;
+        top: -15px;
+        padding: 0 5px;
         background-color: var(--color-secondary);
         text-overflow: ellipsis;
         overflow: hidden;

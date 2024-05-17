@@ -358,13 +358,17 @@ nav + nav + .breadcrumb + .main {
     position: absolute;
     transform: translate(-50%, -50%);
     left: 50%;
-    top: 50%;
+    top: 45%;
     width: 500px;
     height: 500px;
 
     @media screen and (width <= 1000px) {
       width: 400px;
       height: 400px;
+    }
+
+    @media screen and (width <= 800px) {
+      height: 300px;
     }
 
     svg {
@@ -425,6 +429,7 @@ nav + nav + .breadcrumb + .main {
         border-radius: 10px;
         background-color: var(--color-secondary);
         padding: 20px;
+        margin-bottom: 80px;
       }
 
       summary {
