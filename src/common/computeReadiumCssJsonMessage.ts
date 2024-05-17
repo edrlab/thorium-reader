@@ -18,8 +18,6 @@ export const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayl
 
         a11yNormalize: readiumCSSDefaults.a11yNormalize,
 
-        backgroundColor: readiumCSSDefaults.backgroundColor,
-
         bodyHyphens: readiumCSSDefaults.bodyHyphens,
 
         colCount: settings.colCount === "1" ? colCountEnum.one :
@@ -39,8 +37,6 @@ export const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayl
 
         lineHeight: settings.lineHeight,
 
-        night: settings.night,
-
         pageMargins: settings.pageMargins,
 
         paged: settings.paged,
@@ -49,14 +45,22 @@ export const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayl
 
         paraSpacing: settings.paraSpacing,
 
+        night: settings.night,
         sepia: settings.sepia,
+
+        backgroundColor: readiumCSSDefaults.backgroundColor,
+        textColor: readiumCSSDefaults.textColor,
+
+        selectionBackgroundColor: readiumCSSDefaults.selectionBackgroundColor,
+        selectionTextColor: readiumCSSDefaults.selectionTextColor,
+
+        linkColor: readiumCSSDefaults.linkColor,
+        linkVisitedColor: readiumCSSDefaults.linkVisitedColor,
 
         textAlign: settings.align === textAlignEnum.left ? textAlignEnum.left :
             (settings.align === textAlignEnum.right ? textAlignEnum.right :
             (settings.align === textAlignEnum.justify ? textAlignEnum.justify :
             (settings.align === textAlignEnum.start ? textAlignEnum.start : undefined))),
-
-        textColor: readiumCSSDefaults.textColor,
 
         typeScale: readiumCSSDefaults.typeScale,
 

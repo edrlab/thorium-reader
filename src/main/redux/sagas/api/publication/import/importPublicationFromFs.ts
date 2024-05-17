@@ -81,7 +81,7 @@ export async function importPublicationFromFS(
             r2Publication = await DaisyParsePromise(filePath);
 
             const pathFile = await createTempDir(nanoid(8), "misc");
-            const packagePath = await convertDaisyToReadiumWebPub(pathFile, r2Publication);
+            const packagePath = await convertDaisyToReadiumWebPub(pathFile, r2Publication, undefined);
 
             // after PublicationParsePromise, cleanup zip handler
             // (no need to fetch ZIP data beyond this point)
