@@ -1003,7 +1003,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
                                                     left: (this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left") ? "0" : "",
                                                     height: (isDockedMode && isOnSearch) ? "calc(100dvh - 139px)" : "",
-                                                    marginTop: (isDockedMode && !isOnSearch) ? "50px" : "0",
+                                                    marginTop: (isDockedMode && !isOnSearch) ? "70px" : "0",
                                                 }}
                                             >
                                                 <ReaderMenu {...this.props.readerMenuProps}
@@ -1044,7 +1044,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
                                                     left: (this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left") ? "0" : "",
                                                     height: (isDockedMode && isOnSearch) ? "calc(100dvh - 139px)" : "",
-                                                    marginTop: (isDockedMode && !isOnSearch) ? "50px" : "0",
+                                                    marginTop: (isDockedMode && !isOnSearch) ? "70px" : "0",
                                                 }}
                                             >
                                                 <ReaderMenu
@@ -1106,7 +1106,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
                                                 left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
                                                 height: isDockedMode && isOnSearch && "calc(100dvh - 139px)",
-                                                marginTop: isDockedMode && !isOnSearch ? "50px" : "0",
+                                                marginTop: isDockedMode && !isOnSearch ? "70px" : "0",
                                             }}
                                         >
                                             <ReaderSettings {...this.props.ReaderSettingsProps}

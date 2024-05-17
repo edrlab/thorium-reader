@@ -547,8 +547,8 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     const isFirstPage = pageNumber === 1;
     const isPaginated = pageTotal > 1;
 
-    const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
-    SelectRef.displayName = "ComboBox";
+    // const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
+    // SelectRef.displayName = "ComboBox";
     
     const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} on ${pageTotal}`}));
     
@@ -571,7 +571,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
                         <div className={stylesPopoverDialog.pages}>
-                            <SelectRef
+                            {/* <SelectRef
                                 id="page"
                                 aria-label={__("reader.navigation.page")}
                                 items={pageOptions}
@@ -583,7 +583,18 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                                 label={__("reader.navigation.page")}
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                            </SelectRef>
+                            </SelectRef> */}
+                            <ComboBox
+                                aria-label={__("reader.navigation.page")}
+                                items={pageOptions}
+                                selectedKey={pageNumber}
+                                defaultSelectedKey={1}
+                                onSelectionChange={(id) => {
+                                    setPageNumber(id as number);
+                                }}
+                            >
+                                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                            </ComboBox>
                         </div>
                         <button title={__("opds.next")}
                             onClick={() => { setPageNumber(pageNumber + 1); }}
@@ -780,8 +791,8 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
     const isFirstPage = pageNumber === 1;
     const isPaginated = pageTotal > 1;
 
-    const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
-    SelectRef.displayName = "ComboBox";
+    // const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
+    // SelectRef.displayName = "ComboBox";
     
     const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} on ${pageTotal}`}));
 
@@ -812,7 +823,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
                         <div className={stylesPopoverDialog.pages}>
-                            <SelectRef
+                            {/* <SelectRef
                                 id="page"
                                 aria-label={__("reader.navigation.page")}
                                 items={pageOptions}
@@ -824,7 +835,18 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
                                 label={__("reader.navigation.page")}
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                            </SelectRef>
+                            </SelectRef> */}
+                            <ComboBox
+                                aria-label={__("reader.navigation.page")}
+                                items={pageOptions}
+                                selectedKey={pageNumber}
+                                defaultSelectedKey={1}
+                                onSelectionChange={(id) => {
+                                    setPageNumber(id as number);
+                                }}
+                            >
+                                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                            </ComboBox>
                         </div>
                         <button title={__("opds.next")}
                             onClick={() => { setPageNumber(pageNumber + 1); }}
