@@ -70,6 +70,9 @@ import { AnnotationEdit } from "./AnnotationEdit";
 import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionAnnotations, readerLocalActionSetConfig } from "../redux/actions";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -544,8 +547,8 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     const isFirstPage = pageNumber === 1;
     const isPaginated = pageTotal > 1;
 
-    const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
-    SelectRef.displayName = "ComboBox";
+    // const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
+    // SelectRef.displayName = "ComboBox";
     
     const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} / ${pageTotal}`}));
     
@@ -568,7 +571,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
                         <div className={stylesPopoverDialog.pages}>
-                            <SelectRef
+                            {/* <SelectRef
                                 id="page"
                                 aria-label={__("reader.navigation.page")}
                                 items={pageOptions}
@@ -580,7 +583,18 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                                 label={__("reader.navigation.page")}
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                            </SelectRef>
+                            </SelectRef> */}
+                            <ComboBox
+                                aria-label={__("reader.navigation.page")}
+                                items={pageOptions}
+                                selectedKey={pageNumber}
+                                defaultSelectedKey={1}
+                                onSelectionChange={(id) => {
+                                    setPageNumber(id as number);
+                                }}
+                            >
+                                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                            </ComboBox>
                         </div>
                         <button title={__("opds.next")}
                             onClick={() => { setPageNumber(pageNumber + 1); }}
@@ -777,8 +791,8 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
     const isFirstPage = pageNumber === 1;
     const isPaginated = pageTotal > 1;
 
-    const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
-    SelectRef.displayName = "ComboBox";
+    // const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
+    // SelectRef.displayName = "ComboBox";
     
     const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} / ${pageTotal}`}));
 
@@ -809,7 +823,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
                         <div className={stylesPopoverDialog.pages}>
-                            <SelectRef
+                            {/* <SelectRef
                                 id="page"
                                 aria-label={__("reader.navigation.page")}
                                 items={pageOptions}
@@ -821,7 +835,18 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
                                 label={__("reader.navigation.page")}
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                            </SelectRef>
+                            </SelectRef> */}
+                            <ComboBox
+                                aria-label={__("reader.navigation.page")}
+                                items={pageOptions}
+                                selectedKey={pageNumber}
+                                defaultSelectedKey={1}
+                                onSelectionChange={(id) => {
+                                    setPageNumber(id as number);
+                                }}
+                            >
+                                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                            </ComboBox>
                         </div>
                         <button title={__("opds.next")}
                             onClick={() => { setPageNumber(pageNumber + 1); }}
@@ -1468,30 +1493,54 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         <SVG ariaHidden svg={ChevronIcon} />
                                     </span>
                                 </summary>
-                            {/* {dockedMode ? */}
-                            <div className={stylesAnnotations.annotations_checkbox}>
-                            <input type="checkbox" id="advancedAnnotations" name="advancedAnnotations" checked={serialAnnotator} onChange={() => { setSerialAnnotatorMode(!serialAnnotator); }} />
-                            <label htmlFor="advancedAnnotations">
-                                <h4>{__("reader.annotations.advancedMode")}</h4>
-                            </label>
-                            </div>
-                            {/* : <></>} */}
-                            <div className={stylesAnnotations.annotations_checkbox}>
-                                <input type="checkbox" id="quickAnnotations" name="quickAnnotations" checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
-                                    onChange={() => { dispatch(readerLocalActionSetConfig.build({ ...readerConfig, annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking })); }}
-                                />
-                                <label htmlFor="quickAnnotations"><h4>{__("reader.annotations.quickAnnotations")}</h4></label>
-                            </div>
-                            <div className={stylesAnnotations.annotations_checkbox}>
-                                <input type="checkbox" id="marginAnnotations" name="marginAnnotations" checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={() => {
-                                    const newReaderConfig = { ...readerConfig };
-                                    newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "annotation" ? "margin" : "annotation";
+                                {/* {dockedMode ? */}
+                                <div className={stylesAnnotations.annotations_checkbox}>
+                                    <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={serialAnnotator} onChange={() => { setSerialAnnotatorMode(!serialAnnotator); }} />
+                                    <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
+                                        <div className={stylesGlobal.checkbox_custom} style={{ border: serialAnnotator ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: serialAnnotator ? "var(--color-blue)" : "transparent" }}>
+                                            {serialAnnotator ?
+                                                <SVG ariaHidden svg={CheckIcon} />
+                                                :
+                                                <></>
+                                            }
+                                        </div>
+                                        <div>
+                                            <h4>{__("reader.annotations.advancedMode")}</h4>
+                                        </div>
+                                    </label>
+                                </div>
+                                {/* : <></>} */}
+                                <div className={stylesAnnotations.annotations_checkbox}>
+                                    <input type="checkbox" id="quickAnnotations" name="quickAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
+                                        onChange={() => { dispatch(readerLocalActionSetConfig.build({ ...readerConfig, annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking })); }}
+                                    />
+                                    <label htmlFor="quickAnnotations" className={stylesGlobal.checkbox_custom_label}>
+                                        <div className={stylesGlobal.checkbox_custom} style={{ border: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "var(--color-blue)" : "transparent" }}>
+                                            {readerConfig.annotation_popoverNotOpenOnNoteTaking ?
+                                                <SVG ariaHidden svg={CheckIcon} />
+                                                :
+                                                <></>
+                                            } </div>
+                                        <h4>{__("reader.annotations.quickAnnotations")}</h4></label>
+                                </div>
+                                <div className={stylesAnnotations.annotations_checkbox}>
+                                    <input type="checkbox" id="marginAnnotations" name="marginAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={() => {
+                                        const newReaderConfig = { ...readerConfig };
+                                        newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "annotation" ? "margin" : "annotation";
 
-                                    console.log(`marginAnnotationsToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
-                                    dispatch(readerLocalActionSetConfig.build(newReaderConfig));
-                                }} />
-                                <label htmlFor="marginAnnotations"><h4>{__("reader.annotations.toggleMarginMarks")}</h4></label>
-                            </div>
+                                        console.log(`marginAnnotationsToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
+                                        dispatch(readerLocalActionSetConfig.build(newReaderConfig));
+                                    }} />
+                                    <label htmlFor="marginAnnotations" className={stylesGlobal.checkbox_custom_label}>
+                                        <div className={stylesGlobal.checkbox_custom} style={{ border: readerConfig.annotation_defaultDrawView === "margin" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "margin" ? "var(--color-blue)" : "transparent" }}>
+                                            {readerConfig.annotation_defaultDrawView === "margin" ?
+                                                <SVG ariaHidden svg={CheckIcon} />
+                                                :
+                                                <></>
+                                            }
+                                        </div>
+                                        <h4>{__("reader.annotations.toggleMarginMarks")}</h4></label>
+                                </div>
                             </details>
                             <AnnotationList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} dockedMode={dockedMode} annotationUUIDFocused={annotationUUID} focus={focus}/>
                         </div>

@@ -24,7 +24,7 @@ import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLin
 import * as penIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as linkIcon from "readium-desktop/renderer/assets/icons/link-icon.svg";
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
-import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
+import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon-bold.svg";
 
 export const ApiappAddFormDialog = () => {
     const [__] = useTranslator();

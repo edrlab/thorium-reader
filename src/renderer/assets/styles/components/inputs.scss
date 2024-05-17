@@ -63,7 +63,7 @@ input[type="search"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE) {
 }
 
 form[role="search"] {
-  background-color: var(--color-secondary);
+  background-color: var(--color-annotations-bg);
   color: var(--color-primary);
   width: 370px !important;
   height: 30px !important;
@@ -83,13 +83,13 @@ select {
   width: 150px;
   height: 25px;
   padding:2px;
-  border:1px solid var(--color-primary);
+  border:1px solid var(--color-dark-grey-alt);
   margin: 0;
   border-radius: 6px;
   position: relative;
   display: flex;
   align-items: center;
-  background-color: var(--color-secondary);
+  background-color: var(--color-annotations-bg);
 
   // @media (prefers-color-scheme: dark) {
   //   background-color: #2D2D2D;
@@ -104,7 +104,7 @@ select {
       position:absolute;
       top:-10px;
       left:10px;
-      background-color: var(--color-secondary);
+      background-color: var(--color-annotations-bg);
       padding: 0 5px;
       z-index: 1;
   }
@@ -114,7 +114,7 @@ select {
       width: calc(100% - 35px);
       height: 25px;
       margin-left: 30px;
-      background-color: var(--color-secondary);
+      background-color: var(--color-annotations-bg);
   }
 
   & i {

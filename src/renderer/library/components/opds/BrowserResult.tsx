@@ -17,10 +17,10 @@ import Loader from "readium-desktop/renderer/common/components/Loader";
 import { apiState } from "readium-desktop/renderer/common/redux/api/api";
 import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/library/redux/sagas/opds";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
+// import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 
 import PublicationCard from "../publication/PublicationCard";
-import { ListView } from "../utils/ListView";
+// import { ListView } from "../utils/ListView";
 import Slider from "../utils/Slider";
 import Entry from "./Entry";
 import EntryList from "./EntryList";
@@ -161,7 +161,6 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                         }
                                         {
                                             group.publications?.length > 1 ? 
-                                            (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) === DisplayType.Grid ?
                                                     <Slider
                                                         content={group.publications.map((pub, pubId) =>
                                                             <PublicationCard
@@ -170,11 +169,6 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                                                 isOpds={true}
                                                             />,
                                                         )}
-                                                    />
-                                                    :
-                                                    <ListView
-                                                        normalOrOpdsPublicationViews={group.publications}
-                                                        isOpdsView={true}
                                                     />
                                                 : <></>
                                         }

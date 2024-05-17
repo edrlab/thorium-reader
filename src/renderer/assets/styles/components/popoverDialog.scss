@@ -62,7 +62,7 @@
 
 .popover_dialog_reader {
   width: 350px;
-  height: calc(100dvh - 94px);
+  height: calc(100dvh - 114px);
   display: flex;
   margin-top: 50px;
   flex-direction: column;
@@ -73,8 +73,18 @@
   overflow: hidden;
   color: var(--color-primary);
 
+  .pages .react_aria_ComboBox .my_combobox_container { 
+    > * {
+    margin: 0!important;
+    }
+
+    input {
+      max-width: 70px!important;
+    }
+  } 
+
   .settings_container {
-    height: calc(100dvh - 185px);
+    height: calc(100dvh - 230px);
     padding: 0;
     overflow: hidden auto;
 
@@ -172,7 +182,7 @@
   .bookmarks_line .bookmark_textArea {
     min-width: unset;
     width: 270px;
-  }
+  } 
 }
 
 
@@ -305,7 +315,7 @@
   align-items: end;
   justify-content: end;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 
   .pages {
     display: flex;
@@ -321,6 +331,7 @@
 
   button {
     transition: 100ms;
+    min-width: 24px
   }
 
   button svg {
@@ -562,7 +573,7 @@
 
     button {
       background-color: var(--color-blue);
-      color: white;
+      color: var(--color-secondary);
       width: fit-content;
       border-radius: 6px;
       display: flex;
@@ -573,8 +584,8 @@
 
       svg {
         width: 15px;
-        fill: white!important;
-        color: white!important;
+        fill: var(--color-secondary)!important;
+        color: var(--color-secondary)!important;
       }
     }
   }
@@ -617,6 +628,43 @@
   }
 }
 
+// .pages {
+//   input {
+//     width: fit-content!important;
+//     max-width: 80px;
+//     padding: 0!important;
+//     padding-left: 10px!important;
+//   }
+//   .react_aria_ComboBox .my_combobox_container {
+//     background-color: var(--color-secondary)!important;
+//     color: var(--color-primary)!important;
+//     border-color: var(--color-primary)!important;
+//     max-width: 100px!important;
+//     button {
+//       padding: 0 5px;
+//     }
+//   }
+// }
+
+.modal_dialog_reader, .popover_dialog_reader {
+  .pages .react_aria_ComboBox .my_combobox_container {
+    background-color: var(--color-secondary)!important;
+    color: var(--color-primary)!important;
+    border-color: var(--color-primary)!important;
+    max-width: 100px!important;
+    
+    input {
+      width: fit-content!important;
+      max-width: 80px;
+      padding: 0!important;
+      padding-left: 10px!important;
+    }
+
+    button {
+      padding: 0 5px!important;
+    }
+  } 
+} 
 
 .react_aria_ListBox {
   width: inherit;
