@@ -81,7 +81,7 @@
         "moreInfo": "Detalji građe",
         "myBooks": "Moje knjige",
         "noPublicationHelpL1": "Ispusti građu ovdje",
-        "noPublicationHelpL2": "ili koristi \"+\" gumb iznad.",
+        "noPublicationHelpL2": "ili koristi \"{{- importTitle }}\" gumb iznad.",
         "noPublicationHelpL3": "Dokumenti zaštićeni LCP-om su podržani.",
         "noPublicationHelpL4": "Podržane ekstenzije:",
         "numberOfPages": "Broj stranica",

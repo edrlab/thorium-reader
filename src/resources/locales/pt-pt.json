@@ -81,7 +81,7 @@
         "moreInfo": "Mais informações",
         "myBooks": "Meus livros",
         "noPublicationHelpL1": "Solte aqui uma publicação",
-        "noPublicationHelpL2": "ou use o botão \"+\" acima.",
+        "noPublicationHelpL2": "ou use o botão \"{{- importTitle }}\" acima.",
         "noPublicationHelpL3": "Ficheiros protegidos por LCP são suportados.",
         "noPublicationHelpL4": "Extensões suportadas:",
         "numberOfPages": "Número de páginas",

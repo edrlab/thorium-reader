@@ -81,7 +81,7 @@
         "moreInfo": "更多信息",
         "myBooks": "我的图书",
         "noPublicationHelpL1": "拖放 EPUB 至此处。",
-        "noPublicationHelpL2": "或者使用上面的\"+\"按钮。",
+        "noPublicationHelpL2": "或者使用上面的\"{{- importTitle }}\"按钮。",
         "noPublicationHelpL3": "支持受 LCP 保护的文件。",
         "noPublicationHelpL4": "支持的扩展名：",
         "numberOfPages": "页码",

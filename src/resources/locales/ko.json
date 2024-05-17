@@ -81,7 +81,7 @@
         "moreInfo": "상세정보",
         "myBooks": "내 도서",
         "noPublicationHelpL1": "출판물을 여기로 가져오십시오.",
-        "noPublicationHelpL2": "또는 위의 \"+\" 버튼을 눌러서 추가하십시오.",
+        "noPublicationHelpL2": "또는 위의 \"{{- importTitle }}\" 버튼을 눌러서 추가하십시오.",
         "noPublicationHelpL3": "LCP로 보호된 파일을 지원합니다.",
         "noPublicationHelpL4": "지원되는 확장자:",
         "numberOfPages": "페이지 수",

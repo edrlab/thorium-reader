@@ -81,7 +81,7 @@
         "moreInfo": "Подробности за книгата",
         "myBooks": "Моите книги",
         "noPublicationHelpL1": "Пусни книгата тук",
-        "noPublicationHelpL2": "или използвай \"+\" бутона горе.",
+        "noPublicationHelpL2": "или използвай \"{{- importTitle }}\" бутона горе.",
         "noPublicationHelpL3": "Поддържат се LCP защитени файлове.",
         "noPublicationHelpL4": "Поддържани разширения:",
         "numberOfPages": "Брой страници",
