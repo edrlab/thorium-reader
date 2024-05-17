@@ -38,24 +38,29 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-13, macos-latest, ubuntu-20.04]
+        # os: [windows-latest, macos-13, macos-latest, ubuntu-20.04]
+        os: [ubuntu-20.04]
         include:
-          - os: windows-latest
-            osname: windows
-            packname: win
-            release_tag: latest-windows
-          - os: macos-13
-            osname: macos-intel
-            packname: 'mac:skip-notarize'
-            release_tag: latest-macos-intel
-          - os: macos-latest
-            osname: macos-arm
-            packname: 'mac:skip-notarize'
-            release_tag: latest-macos-arm
+          # - os: windows-latest
+          #   osname: windows
+          #   packname: win
+          #   release_tag: latest-windows
+          # - os: macos-13
+          #   osname: macos-intel
+          #   packname: 'mac:skip-notarize'
+          #   release_tag: latest-macos-intel
+          # - os: macos-latest
+          #   osname: macos-arm
+          #   packname: 'mac:skip-notarize'
+          #   release_tag: latest-macos-arm
+          # - os: ubuntu-20.04
+          #   osname: linux-intel
+          #   packname: linux
+          #   release_tag: latest-linux-intel
           - os: ubuntu-20.04
-            osname: linux
+            osname: linux-arm
             packname: linux
-            release_tag: latest-linux
+            release_tag: latest-linux-arm
     env:
 #      OS_NAME_: ${{ matrix.osname }}
       RELEASE_TAG: ${{ matrix.release_tag }}
@@ -142,7 +147,7 @@ jobs:
       run: npm run package:${{ matrix.packname }}
     - name: non-PR action, non-Windows (build and package)
       if: ${{ github.event_name != 'pull_request' && matrix.osname != 'windows' }}
-      run: echo "${{ matrix.osname }}" && (if [[ ${{ matrix.osname }} == 'macos-arm' ]]; then uname -m && arch && sed 's/x64/arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json && npm run package:${{ matrix.packname }} && sed 's/arm64/x64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json; else npm run package:${{ matrix.packname }}; fi)
+      run: echo "${{ matrix.osname }}" && (if [[ ${{ matrix.osname }} == 'macos-arm' || ${{ matrix.osname }} == 'linux-arm' ]]; then uname -m && arch && sed 's/x64/arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json && npm run package:${{ matrix.packname }} && sed 's/arm64/x64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json; else npm run package:${{ matrix.packname }}; fi)
     #- run: ls -alsR release
     #- run: npm install @octokit/rest
     - name: GitHub Tagged Release Delete/ReCreate and Upload Build Artefacts
