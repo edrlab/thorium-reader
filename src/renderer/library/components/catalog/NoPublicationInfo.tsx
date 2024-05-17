@@ -47,7 +47,7 @@ const NoPublicationInfo = () => {
                     <SVG ariaHidden svg={EmptyLibraryIcon} className={stylesGlobal.emptyLibraryIcon} />
                     <div className={stylesGlobal.noPublications_text}>
                         <p><strong>{__("catalog.noPublicationHelpL1")}</strong></p>
-                        <p>{__("catalog.noPublicationHelpL2")}</p>
+                        <p>{__("catalog.noPublicationHelpL2", { importTitle: __("header.importTitle")})}</p>
                         {/* <p>{__("catalog.noPublicationHelpL3")}</p> */}
                         <details onClick={() => setDetailOpen(!detailOpen)}>
                             <summary>
