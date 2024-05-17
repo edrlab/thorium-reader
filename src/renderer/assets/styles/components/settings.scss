@@ -13,8 +13,10 @@ $setting_color: var(--color-blue);
         accent-color: $setting_color;
     }
 
-    @media screen and (height <= 700px) {
-        height: 450px;
+    &:not(:has(.guidedTour_content)) {
+        @media screen and (height <= 700px) {
+            height: 450px;
+        }
     }
 
     .section {
