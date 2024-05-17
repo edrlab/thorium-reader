@@ -30,7 +30,7 @@
 
     &:hover{
       border-color: var(--color-blue);
-      background-color: var(--color-secondary);
+      background-color: var(--color-button-hover);
     }
 
     &:focus {
@@ -115,7 +115,7 @@
       }
 
       &:hover {
-        background-color: var(--color-secondary);
+        background-color: var(--color-button-hover);
         color: var(--color-blue);
       }
 
@@ -133,7 +133,11 @@
 
 .popover_open {
   border-color: var(--color-blue);
-  background-color: var(--color-light-blue);
+  background-color: var(--color-blue);
+
+  svg {
+    color: var(--color-secondary)!important;
+  }
 }
 
 .PopoverArrow {

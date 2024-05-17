@@ -177,7 +177,7 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
                                 checked={colorSelected === color}
                             />
                             <label htmlFor={`anno_color_${uuid}_${color}`}
-                                style={{ backgroundColor: color, border: colorSelected === color ? "1px solid var(--color-primary)" : "" }}
+                                style={{ backgroundColor: color, border: colorSelected === color ? "1px solid var(--color-dark-grey)" : "" }}
                             >
                                 {colorSelected === color ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
                             </label>

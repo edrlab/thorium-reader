@@ -379,6 +379,7 @@ nav + nav + .breadcrumb + .main {
     .emptyLibraryIcon {
       top: 20px;
       left: -20px;
+      color: var(--color-blue);
     }
   }
 
@@ -452,6 +453,27 @@ nav + nav + .breadcrumb + .main {
     }
   }
 }
+
+.checkbox_custom {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  color: var(--color-secondary);
+
+  &_label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+
+  &_input {
+    display: none;
+  }
+}
+
 
 /* List: ul / ol / li */
 
