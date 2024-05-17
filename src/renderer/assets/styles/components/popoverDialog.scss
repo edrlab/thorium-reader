@@ -92,6 +92,32 @@
     color: var(--color-primary);
   }
 
+  .docked_header + .react_aria_ComboBox {
+    padding: 15px 20px!important;
+    width: calc(100% - 40px);
+    background-color: var(--color-docked-header);
+    border-bottom: 1px solid var(--color-extralight-grey-alt);
+
+    .my_combobox_container {
+      width: calc(100% - 10px);
+
+      > button {
+        width: 100%!important;
+      }
+    }
+  }
+
+  .goToPage {
+    .react_aria_ComboBox .my_combobox_container input {
+      padding-left: 10px!important;
+    }
+
+    .react_aria_ComboBox .my_combobox_container button {
+      padding-left: 0!important; 
+      margin: 0!important;
+    }
+  }
+
   .react_aria_ComboBox {
     // margin: 0;
     // padding: 0;
@@ -149,11 +175,14 @@
   }
 }
 
+
 .docked_header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px;
+  background-color: var(--color-docked-header);
+  border-bottom: 1px solid var(--color-extralight-grey-alt);
 
   .my_combobox_container button {
     min-width: 110px;
@@ -267,7 +296,7 @@
     display: block;
     padding: 5px 40px 5px 5px;
     margin: 5px 0;
-    background-color: var(--color-light-grey);
+    background-color: var(--color-extralight-grey);
   }
 }
 
@@ -495,7 +524,8 @@
       .react_aria_Label {
         position: absolute;
         left: 10px;
-        // top: -20px;
+        top: -15px;
+        padding: 0 5px;
         background-color: var(--color-secondary);
         text-overflow: ellipsis;
         overflow: hidden;

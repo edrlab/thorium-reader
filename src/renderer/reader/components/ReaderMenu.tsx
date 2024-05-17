@@ -547,7 +547,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     SelectRef.displayName = "ComboBox";
     
-    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} on ${pageTotal}`}));
+    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} / ${pageTotal}`}));
     
     return (
         <>
@@ -780,7 +780,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
     const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     SelectRef.displayName = "ComboBox";
     
-    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} on ${pageTotal}`}));
+    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} / ${pageTotal}`}));
 
     return (
         <>
@@ -1172,7 +1172,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     // const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     const searchEnable = useSelector((state: IReaderRootState) => state.search.enable);
     const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
-    const annotations = useSelector((state: IReaderRootState) => state.reader.annotation).map(([, v]) => v);
+    // const annotations = useSelector((state: IReaderRootState) => state.reader.annotation).map(([, v]) => v);
     const readerConfig = useSelector((state: IReaderRootState) => state.reader.config);
 
     // const isFixedLayoutPublication = r2Publication.Metadata?.Rendition?.Layout === "fixed";
@@ -1298,8 +1298,9 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         svg: TargetIcon,
     };
 
+    // disabled={!annotations || annotations.length === 0}
     const AnnotationTrigger =
-        <Tabs.Trigger value="tab-annotation" key={"tab-annotation"} data-value={"tab-annotation"} title={__("reader.marks.annotations")} disabled={!annotations || annotations.length === 0}>
+        <Tabs.Trigger value="tab-annotation" key={"tab-annotation"} data-value={"tab-annotation"} title={__("reader.marks.annotations")} >
             <SVG ariaHidden svg={AnnotationIcon} />
             <h3>{__("reader.marks.annotations")}</h3>
         </Tabs.Trigger>;
@@ -1362,7 +1363,27 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     return (
         <div>
             {
-                dockedMode ? <div key="docked-header" className={stylesPopoverDialog.docked_header}>
+                dockedMode ?
+                    <><div key="docked-header" className={stylesPopoverDialog.docked_header} style={{borderBottom: "unset"}}>
+                        <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls} style={{justifyContent: "space-between", width: "100%", padding: "0 10px"}}>
+                            <div style={{display: "flex", gap: "5px"}}>
+                            <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label="left" onClick={setDockingModeLeftSide}>
+                                <SVG ariaHidden={true} svg={DockLeftIcon} />
+                            </button>
+                            <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label="right" onClick={setDockingModeRightSide}>
+                                <SVG ariaHidden={true} svg={DockRightIcon} />
+                            </button>
+                            <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "full" ? true : false} aria-label="full" onClick={setDockingModeFull}>
+                                <SVG ariaHidden={true} svg={DockModalIcon} />
+                            </button>
+                            </div>
+                            <Dialog.Close asChild>
+                                <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                                    <SVG ariaHidden={true} svg={QuitIcon} />
+                                </button>
+                            </Dialog.Close>
+                        </div>
+                    </div>
                     <SelectRef
                         items={options}
                         selectedKey={optionSelected}
@@ -1396,25 +1417,8 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     >
                         {item => <SelectItem>{item.name}</SelectItem>}
                     </SelectRef>
-
-                    <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls}>
-                        <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label="left" onClick={setDockingModeLeftSide}>
-                            <SVG ariaHidden={true} svg={DockLeftIcon} />
-                        </button>
-                        <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label="right" onClick={setDockingModeRightSide}>
-                            <SVG ariaHidden={true} svg={DockRightIcon} />
-                        </button>
-                        <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "full" ? true : false} aria-label="full" onClick={setDockingModeFull}>
-                            <SVG ariaHidden={true} svg={DockModalIcon} />
-                        </button>
-
-                        <Dialog.Close asChild>
-                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
-                                <SVG ariaHidden={true} svg={QuitIcon} />
-                            </button>
-                        </Dialog.Close>
-                    </div>
-                </div> : <></>
+                    </>
+                    : <></>
             }
             <Tabs.Root value={tabValue} onValueChange={(value) => dockedMode ? null : setTabValue(value)} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {
@@ -1464,14 +1468,14 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         <SVG ariaHidden svg={ChevronIcon} />
                                     </span>
                                 </summary>
-                                {dockedMode ? <div className={stylesAnnotations.annotations_checkbox}>
-                                <input type="checkbox" id="advancedAnnotations" name="advancedAnnotations" checked={serialAnnotator} onChange={() => { setSerialAnnotatorMode(!serialAnnotator); }} />
-                                <label htmlFor="advancedAnnotations">
-                                    <h4>{__("reader.annotations.advancedMode")}</h4>
-                                    {__("reader.annotations.advancedModeDetails")}
-                                </label>
-                            </div> : <></>
-                            }
+                            {/* {dockedMode ? */}
+                            <div className={stylesAnnotations.annotations_checkbox}>
+                            <input type="checkbox" id="advancedAnnotations" name="advancedAnnotations" checked={serialAnnotator} onChange={() => { setSerialAnnotatorMode(!serialAnnotator); }} />
+                            <label htmlFor="advancedAnnotations">
+                                <h4>{__("reader.annotations.advancedMode")}</h4>
+                            </label>
+                            </div>
+                            {/* : <></>} */}
                             <div className={stylesAnnotations.annotations_checkbox}>
                                 <input type="checkbox" id="quickAnnotations" name="quickAnnotations" checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
                                     onChange={() => { dispatch(readerLocalActionSetConfig.build({ ...readerConfig, annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking })); }}

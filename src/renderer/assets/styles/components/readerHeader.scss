@@ -3,7 +3,7 @@
 */
 
 [data-theme="dark"] {
-    .toolbar_navigation {
+    .toolbar_navigation, .picker_container {
         background-color: var(--color-secondary);
         // border-bottom: 2px solid var(--color-mediumdark-grey);
     }
@@ -16,7 +16,7 @@
 
 [data-theme="system"] {
     @media (prefers-color-scheme: dark) {
-        .toolbar_navigation {
+        .toolbar_navigation, .picker_container {
         background-color: var(--color-secondary);
         // border-bottom: 2px solid var(--color-mediumdark-grey);
         }
@@ -175,11 +175,12 @@
     height: 48px;
     background-color: var(--color-extralight-grey);
     margin-right: 5px;
-    z-index: 100;
+    z-index: 200;
     top: 65px;
     right: 10px;
     left: unset;
-    border: 1px solid var(--color-medium-grey);
+    border-bottom: 1px solid var(--color-medium-grey);
+    border-top: 1px solid var(--color-light-grey);
 
     button[title="Close"] {
         width: 15px;
@@ -327,6 +328,7 @@
     .searchActions {
         display: flex;
         align-items: center;
+        gap: 10px;
 
         &::before {
             content: "";

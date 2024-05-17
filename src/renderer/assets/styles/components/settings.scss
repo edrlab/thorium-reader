@@ -13,8 +13,10 @@ $setting_color: var(--color-blue);
         accent-color: $setting_color;
     }
 
-    @media screen and (height <= 700px) {
-        height: 450px;
+    &:not(:has(.guidedTour_content)) {
+        @media screen and (height <= 700px) {
+            height: 450px;
+        }
     }
 
     .section {
@@ -164,7 +166,17 @@ $setting_color: var(--color-blue);
 .allowCustom {
     display: flex;
     accent-color: var(--color-blue);
-    margin: 10px;
+    // margin: 10px;
+    gap: 5px;
+
+
+    input {
+        height: 12px;
+    }
+
+    label {
+        font-size: 12px;
+    }
 }
 
 .tablist_reading {

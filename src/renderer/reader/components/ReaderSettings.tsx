@@ -709,13 +709,14 @@ const ReadingDisplayMathJax = ({
         <div>
             {options.map((option) => (
                 <section key={option.id}>
-                    <div style={{display: "flex", alignItems: "center"}}>
+                    <div className={stylesReader.display_checkbox_section}>
                         <input
                             id={option.id}
                             type="checkbox"
                             name={option.name}
                             onChange={option.onChange}
                             defaultChecked={option.checked}
+                            className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                         />
                         <label htmlFor={option.id} style={{margin: "0 5px", height: "unset"}}>{option.label}</label>
                     </div>
@@ -724,11 +725,11 @@ const ReadingDisplayMathJax = ({
             ))}
 
             <section>
-                <div>
+                <div className={stylesReader.display_checkbox_section}>
                     <input
                         id="noRTLFlipCheckBox"
                         type="checkbox"
-
+                        className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                         checked={disableRTLFlip}
                         onChange={() => setDisableRTLFlip(!disableRTLFlip)}
                     />
@@ -1086,10 +1087,10 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const setDockingModeLeftSide = () => setDockingMode("left");
     const setDockingModeRightSide = () => setDockingMode("right");
 
-    const optionSelected = options.find(({ value }) => value === tabValue)?.id || 0;
-    const optionDisabled = options.map(({ id, disabled }) => disabled ? id : "").filter((v) => !!v) as number[];
+    const optionSelected = options.find(({ value }) => value === tabValue)?.id;
+    const optionDisabled = options.map(({ id, disabled }) => disabled ? id : -1).filter((v) => v > -1);
 
-    console.log("RENDER");
+    // console.log("RENDER");
 
     const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     SelectRef.displayName = "ComboBox";
@@ -1121,62 +1122,64 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     return (
         <div>
             {
-                dockedMode ? <div key="docked-header" className={stylesPopoverDialog.docked_header}>
-                    <SelectRef
-                        items={options}
-                        selectedKey={optionSelected}
-                        disabledKeys={optionDisabled}
-                        svg={options.find(({ value }) => value === tabValue)?.svg}
-                        onSelectionChange={(id) => {
-                            console.log("selectionchange: ", id);
-                            const value = options.find(({ id: _id }) => _id === id)?.value;
-                            if (value) {
-                                setTabValue(value);
-                                console.log("set Tab Value = ", value);
-
-                            } else {
-                                // console.error("Combobox No value !!!");
+                dockedMode ?
+                    <>
+                        <div key="docked-header" className={stylesPopoverDialog.docked_header}>
+                            {
+                                (dockedMode && isEpub) ? <AllowCustomContainer /> : <></>
                             }
-                        }}
-                        // onInputChange={(v) => {
-                        //     console.log("inputchange: ", v);
+                            <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls}>
+                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label="left" onClick={setDockingModeLeftSide}>
+                                    <SVG ariaHidden={true} svg={DockLeftIcon} />
+                                </button>
+                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label="right" onClick={setDockingModeRightSide}>
+                                    <SVG ariaHidden={true} svg={DockRightIcon} />
+                                </button>
+                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "full" ? true : false} aria-label="full" onClick={setDockingModeFull}>
+                                    <SVG ariaHidden={true} svg={DockModalIcon} />
+                                </button>
 
-                        //     const value = options.find(({ name }) => name === v)?.value;
-                        //     if (value) {
-                        //         setTabValue(value);
-                        //         console.log("set Tab Value = ", value);
+                                <Dialog.Close asChild>
+                                    <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                                        <SVG ariaHidden={true} svg={QuitIcon} />
+                                    </button>
+                                </Dialog.Close>
+                            </div>
+                        </div>
+                        <SelectRef
+                            items={options}
+                            selectedKey={optionSelected}
+                            disabledKeys={optionDisabled}
+                            svg={options.find(({ value }) => value === tabValue)?.svg}
+                            onSelectionChange={(id) => {
+                                // console.log("selectionchange: ", id);
+                                const value = options.find(({ id: _id }) => _id === id)?.value;
+                                if (value) {
+                                    setTabValue(value);
+                                    // console.log("set Tab Value = ", value);
+                                } else {
+                                    // console.error("Combobox No value !!!");
+                                }
+                            }}
+                            // onInputChange={(v) => {
+                            //     console.log("inputchange: ", v);
 
-                        //     } else {
-                        //         console.error("Combobox No value !!!");
-                        //     }
-                        // }}
-                        style={{paddingBottom: "0", margin: "0"}}
-                        ref={dockedModeRef}
-                    >
-                        {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                    </SelectRef>
+                            //     const value = options.find(({ name }) => name === v)?.value;
+                            //     if (value) {
+                            //         setTabValue(value);
+                            //         console.log("set Tab Value = ", value);
 
-                    <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls}>
-                        <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label="left" onClick={setDockingModeLeftSide}>
-                            <SVG ariaHidden={true} svg={DockLeftIcon} />
-                        </button>
-                        <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label="right" onClick={setDockingModeRightSide}>
-                            <SVG ariaHidden={true} svg={DockRightIcon} />
-                        </button>
-                        <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "full" ? true : false} aria-label="full" onClick={setDockingModeFull}>
-                            <SVG ariaHidden={true} svg={DockModalIcon} />
-                        </button>
-
-                        <Dialog.Close asChild>
-                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
-                                <SVG ariaHidden={true} svg={QuitIcon} />
-                            </button>
-                        </Dialog.Close>
-                    </div>
-                </div> : <></>
-            }
-            {
-                (dockedMode && isEpub) ? <AllowCustomContainer /> : <></>
+                            //     } else {
+                            //         console.error("Combobox No value !!!");
+                            //     }
+                            // }}
+                            style={{ paddingBottom: "0", margin: "0" }}
+                            ref={dockedModeRef}
+                        >
+                            {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                        </SelectRef>
+                    </>
+                    : <></>
             }
             <Tabs.Root value={tabValue} defaultValue={tabValue} onValueChange={dockedMode ? null : setTabValue} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {

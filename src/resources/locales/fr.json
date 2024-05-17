@@ -302,15 +302,14 @@
     "reader": {
         "annotations": {
             "Color": "Couleur",
-            "addNote": "Ajouter une note",
-            "advancedMode": "Mode avancé",
-            "advancedModeDetails": "Mode serial annotateur",
-            "annotationsOptions": "Options d'annotation",
+            "addNote": "Annoter",
+            "advancedMode": "Mode instantané (création automatique après sélection)",
+            "annotationsOptions": "Options",
             "highlight": "Surligner",
             "noSelectionToast": "Aucune sélection",
-            "quickAnnotations": "Annotation rapide",
-            "saveNote": "Sauvegarder la note",
-            "toggleMarginMarks": "Afficher les marqueurs de note dans la marge"
+            "quickAnnotations": "Annotation rapide (sans éditeur)",
+            "saveNote": "Sauvegarder",
+            "toggleMarginMarks": "Afficher dans la marge"
         },
         "divina": {
             "mute": "desactiver le son",
