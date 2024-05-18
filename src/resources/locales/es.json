@@ -195,6 +195,7 @@
     "documentation": "Sitio web oficial de OPDS",
     "empty": "No se han encontrado publicaciones",
     "firstPage": "Primera",
+    "informations": "Imagina un mundo en el que puedas explorar y descargar publicaciones digitales de bibliotecas públicas y librerías digitales con sólo unos pocos clics. Eso es exactamente lo que ofrece el formato de catálogo del Sistema Abierto de Distribución de Publicaciones (OPDS). Con OPDS, puedes navegar por catálogos de varios proveedores de libros electrónicos, registrarte, pedir en préstamo, comprar una publicación o visitar tu biblioteca personal. Incluso puedes descargar un libro electrónico o un audiolibro directamente en Thorium Reader para una lectura al instante.\nEntonces, ¿cómo se encuentra un catálogo OPDS? Es sencillo. Busca un enlace (URL) que lleve al catálogo. Copia esta URL en el campo Enlace de arriba. Ten en cuenta que no existe una ventanilla única para todos los catálogos OPDS activos. Deberás ponerte en contacto con tu biblioteca o librero preferido y solicitar la URL del catálogo OPDS. Si no estás seguro de por dónde empezar, Wikipedia tiene algunos registros de catálogos OPDS en varios idiomas que pueden resultar útiles.\nEl campo Nombre se deja a tu conveniencia; proporciona una manera fácil de identificar la fuente en Thorium Reader.",
     "lastPage": "Última",
     "menu": {
       "aboutBook": "Acerca de este libro",
@@ -207,6 +208,7 @@
     "network": {
       "error": "No se puede acceder al catálogo OPDS",
       "noInternet": "No hay internet",
+      "noInternetMessage": "Intenta comprobar el cable de red, módem, router o wifi",
       "reject": "Lo sentimos, se ha producido un error inesperado al intentar procesar el catálogo OPDS",
       "timeout": "Finalizó el tiempo de espera de la red; por favor, vuelve a intentarlo más tarde"
     },
@@ -214,10 +216,12 @@
     "previous": "Anterior",
     "shelf": "Estante",
     "updateForm": {
+      "name": "Nombre:",
       "title": "Editar catálogo OPDS",
       "updateButton": "Editar",
       "url": "Enlace"
-    }
+    },
+    "whatIsOpds": "¿Qué es OPDS?"
   },
   "publication": {
     "accessibility": {
@@ -225,6 +229,7 @@
         "textual": "Amigable con síntesis de voz y lectores de pantalla"
       },
       "accessibilityFeature": {
+        "alternativeText": "Contiene texto alternativo",
         "displayTransformability": "Texto y diseño adaptables",
         "longDescription": "Descripciones completas para recursos gráficos",
         "printPageNumbers": "Referencia a la paginación del libro impreso",
@@ -255,6 +260,8 @@
     },
     "author": "Autor",
     "cancelledLcp": "Este libro no se puede leer porque la licencia LCP se ha cancelado.",
+    "certificateRevoked": "El certificado de la licencia LCP está cancelado",
+    "certificateSignatureInvalid": "La firma del certificado de la licencia LCP no es válida",
     "cover": {
       "img": "Imagen de portada"
     },
@@ -270,8 +277,12 @@
     "lcpRightsPrint": "Páginas impresas",
     "lcpStart": "Inicio",
     "licenceLCP": "Licencia (LCP)",
+    "licenseOutOfDate": "La licencia está desactualizada.",
+    "licenseSignatureDateInvalid": "La fecha de la firma de la licencia LCP no es válida",
+    "licenseSignatureInvalid": "La firma de la licencia LCP no es válida",
     "licensed": "Con licencia",
     "markAsRead": "Marcar como leído",
+    "notStarted": "No iniciado",
     "onGoing": "En curso",
     "progression": {
       "title": "Progreso"
@@ -297,6 +308,7 @@
       "highlight": "Destacar",
       "noSelectionToast": "Sin selección",
       "quickAnnotations": "Creación rápida (omitir editor)",
+      "saveNote": "Guardar",
       "toggleMarginMarks": "Mostrar en márgenes"
     },
     "divina": {
@@ -304,12 +316,14 @@
       "unmute": "dejar de silenciar"
     },
     "fxl": {
+      "fit": "Ajustar"
     },
     "marks": {
       "annotations": "Anotaciones",
       "bookmarks": "Marcadores",
       "delete": "Eliminar",
       "edit": "Editar",
+      "goTo": "ir a página",
       "landmarks": "Puntos de referencia",
       "saveMark": "Guardar marcador",
       "search": "Buscar",
@@ -324,6 +338,7 @@
       "pause": "Pausar (Lectura en voz alta)",
       "play": "Reproducir (Lectura en voz alta)",
       "previous": "Anterior (Lectura en voz alta)",
+      "skip": "Omisión de información auxiliar",
       "skipDescription": "Saltar/ignorar contenido auxiliar como saltos de página, notas al pie/notas finales, etc.",
       "speed": "Velocidad de reproducción para lectura en voz alta",
       "stop": "Detener lectura en voz alta",
@@ -335,6 +350,7 @@
       "bookmarkTitle": "Marcador",
       "currentPage": "Página actual: {{- current}}",
       "currentPageTotal": "Página actual: {{- current}}/{{- total}}",
+      "detachWindowTitle": "mostrar ventana de biblioteca",
       "fullscreenTitle": "Abrir modo pantalla completa",
       "goTo": "Ir a",
       "goToError": "Este salto de página no existe",
@@ -344,6 +360,7 @@
       "historyPrevious": "Retroceder",
       "infoTitle": "Información",
       "magnifyingGlassButton": "buscar en la publicación",
+      "openTableOfContentsTitle": "navegación",
       "page": "Página",
       "pdfscalemode": "Ajuste o ancho de página",
       "settingsTitle": "Opciones de configuración"
@@ -375,6 +392,7 @@
       },
       "font": "Fuente",
       "fontSize": "Tamaño de fuente",
+      "infoCustomFont": "Selecciona una fuente personalizada del sistema operativo escribiendo su nombre",
       "justification": "Alineación",
       "justify": "Justificar",
       "letterSpacing": "Espaciado de letras",
@@ -382,6 +400,7 @@
       "margin": "Margen",
       "noFootnotes": "Desactivar notas al pie",
       "noRTLFlip": "Deshabilitar la interfaz de usuario de derecha a izquierda",
+      "noRuby": "Ocultar Ruby japonés",
       "paginated": "Paginado",
       "paraSpacing": "Espaciado de párrafos",
       "pdfZoom": {
@@ -397,6 +416,7 @@
         },
         "title": "Zoom"
       },
+      "preview": "Previsualizar",
       "reduceMotion": "Disminuir movimiento",
       "scrolled": "Desplazable",
       "spacing": "Espaciado",
@@ -411,7 +431,8 @@
           "Night": "Noche",
           "Paper": "Papel",
           "Sepia": "Sepia"
-        }
+        },
+        "title": "Diseño"
       },
       "wordSpacing": "Espaciado de palabras"
     },
@@ -423,11 +444,14 @@
       "publicationNoToc": "esta publicación no proporciona tabla de contenido"
     },
     "tts": {
+      "activate": "Activar texto a voz (TTS)",
+      "default": "Voz: predeterminada del sistema",
       "next": "Siguiente (Texto a voz)",
       "pause": "Pausar texto a voz",
       "play": "Reproducir (Texto a voz)",
       "previous": "Anterior (Texto a voz)",
       "sentenceDetect": "Dividir (Texto a voz)",
+      "sentenceDetectDescription": "Dividir párrafos largos en frases.",
       "speed": "Velocidad de reproducción para texto a voz",
       "stop": "Detener texto a voz",
       "voice": "Voz para TTS"
@@ -435,11 +459,15 @@
   },
   "settings": {
     "auth": {
+      "wipeData": "Borrar datos de autenticación"
     },
     "keyboard": {
       "advancedMenu": "Menú",
       "cancel": "Cancelar",
+      "disclaimer": "Los atajos se definieron a partir de la distribución del teclado QWERTY.",
+      "editUserJson": "Editar archivo de usuario...",
       "keyboardShortcuts": "Atajos de teclado",
+      "loadUserJson": "Cargar desde archivo de usuario",
       "resetDefaults": "Restablecer valores predeterminados",
       "save": "Guardar"
     },
@@ -452,26 +480,44 @@
       "yes": "Habilitar"
     },
     "tabs": {
+      "appearance": "Aspecto visual",
       "general": "General",
       "keyboardShortcuts": "Atajos de teclado"
     },
     "theme": {
       "auto": "Automático",
-      "dark": "Oscuro"
+      "dark": "Oscuro",
+      "description": "El diseño de la aplicación coincide con el sistema operativo.",
+      "light": "Claro",
+      "title": "Diseño de la aplicación"
     }
   },
   "wizard": {
     "buttons": {
-      "discover": "Descubre las novedades"
+      "discover": "Descubre las novedades",
+      "goToBooks": "Ir a mis libros",
+      "next": "Siguiente"
     },
     "description": {
+      "annotations": "Resalta texto del documento, elige estilo y color, adjunta notas personales. Crea anotaciones en modo \"rápido\" para omitir el editor (puedes introducir texto y personalizar estilos posteriormente). Para mayor velocidad, utiliza el \"modo 'instantáneo\", que crea anotaciones inmediatamente después de resaltar texto del documento.",
+      "catalogs": "Pide prestadas publicaciones de tu biblioteca local o descubre publicaciones mediante canales OPDS. Accede a una variedad de publicaciones de múltiples fuentes gracias a los catálogos en línea.",
+      "home": "¡Thorium se ve diferente! Descubramos las novedades...",
+      "readingView1": "Personaliza tus preferencias de lectura y reproducción: Thorium ahora ofrece múltiples diseños de color, tanto para la interfaz de usuario como para los documentos de publicaciones. Ahora también es más fácil configurar libros electrónicos para lectura en voz alta con síntesis de voz y narración mediante texto/audio sincronizados.",
+      "readingView2": "La interfaz de usuario mejorada de Thorium hace que sea más fácil encontrar texto en publicaciones, explorar resultados de búsqueda, ir a páginas específicas, explorar la tabla de contenido, crear marcadores, etc., gracias a los nuevos paneles \"acoplados\". El modo de lectura en pantalla completa sigue ofreciendo un entorno libre de distracciones.",
+      "yourBooks": "¡Bienvenido a tu biblioteca personal rediseñada! En la vista de \"cuadrícula\", filtra fácilmente por etiquetas o busca publicaciones por palabras clave. En la vista avanzada de 'tabla', selecciona y ordena publicaciones por autores, título, fecha, formato, etc."
     },
+    "dontShow": "no volver a mostrar",
     "tab": {
       "annotations": "Anotaciones",
       "catalogs": "Catálogos",
-      "readingView": "Vista de lectura"
+      "home": "Inicio",
+      "readingView": "Vista de lectura",
+      "yourBooks": "Tus libros"
     },
     "title": {
+      "allBooks": "Todos mis libros",
+      "newFeature": "Nueva función: Anotaciones",
+      "welcome": "Bienvenido a Thorium 3.0"
     }
   }
 }
