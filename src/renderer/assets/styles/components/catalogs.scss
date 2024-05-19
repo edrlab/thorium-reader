@@ -2,6 +2,9 @@
 =-=-= catalogs.scss
 */
 
+@import 'src/renderer/assets/styles/partials/mixin';
+
+
 .catalog_wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -299,27 +302,7 @@
         inset: 310px 20px 30px 30px;
     }
 
-    &::-webkit-scrollbar {
-        width: 12px;
-        transition: 200ms;
-    
-        &-thumb {
-            background-color: var(--scrollbar-thumb);
-            border-radius: 6px;
-            border-left: 2px solid transparent;
-            background-clip: padding-box;
-            cursor: pointer;
-    
-            &:hover {
-              border: 0;
-            }
-    
-        }
-    
-        &-track {
-            background-color: var(--color-secondary);
-            }
-      }
+    @include scrollbar_styling;
 
     .loader {
         margin: 20%;
