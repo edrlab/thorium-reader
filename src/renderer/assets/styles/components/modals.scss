@@ -67,7 +67,8 @@
 
     .react_aria_ComboBox {
       .react_aria_Button {
-        background-color: var(--color-secondary);
+        // background-color: var(--color-secondary);
+        background-color: inherit;
       }
 
       .react_aria_Input {
