@@ -34,21 +34,54 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
-class BreadCrumb extends React.Component<IProps, undefined> {
+interface IState {
+    width: number;
+    height: number;
+}
+
+class BreadCrumb extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+        this.state = { width: 0, height: 0 };
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
+
+    componentDidMount() {
+        this.updateWindowDimensions();
+        window.addEventListener("resize", this.updateWindowDimensions);
+      }
+      
+      componentWillUnmount() {
+        window.removeEventListener("resize", this.updateWindowDimensions);
+      }
+      
+      updateWindowDimensions() {
+        this.setState({ width: window.innerWidth, height: window.innerHeight });
+      }
 
     public render(): React.ReactElement<{}> {
         const { breadcrumb } = this.props;
+        const windowWidth = this.state.width;
+
+        let breadItems: number;
+
+        if (windowWidth <= 1400) {
+            breadItems = 5;
+        } else if (windowWidth <= 1800) {
+            breadItems = 8;
+        } else if (windowWidth <= 2400) {
+            breadItems = 10;
+        } else {
+            breadItems = 13;
+        };
 
         return (
             <div className={classNames(stylesBreadcrumb.breadcrumb, this.props.className)}>
                 {
                     breadcrumb
                         ?
-                        breadcrumb.length > 5 ?
+                        breadcrumb.length > breadItems ?
                             <>
                                 <Link
                                     to={{
@@ -92,7 +125,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                                 </strong>
                             </>
                         :
-                        breadcrumb.length >= 2 && breadcrumb.length <= 5 ?
+                        breadcrumb.length >= 2 && breadcrumb.length <= breadItems ?
                             <>
                                 <Link
                                     to={{
