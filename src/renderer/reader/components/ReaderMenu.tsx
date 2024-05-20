@@ -1515,6 +1515,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                     <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={serialAnnotator} onChange={advancedAnnotationsOnChange} />
                                     <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
                                         <div 
+                                        aria-checked={serialAnnotator}
                                         tabIndex={0}
                                         role="checkbox"
                                         onKeyDown={(e) => {
@@ -1543,6 +1544,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                     />
                                     <label htmlFor="quickAnnotations" className={stylesGlobal.checkbox_custom_label}>
                                         <div 
+                                        aria-checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
                                         tabIndex={0}
                                         role="checkbox"
                                         onKeyDown={(e) => {
@@ -1563,7 +1565,8 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 <div className={stylesAnnotations.annotations_checkbox}>
                                     <input type="checkbox" id="marginAnnotations" name="marginAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={marginAnnotationsOnChange} />
                                     <label htmlFor="marginAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div 
+                                        <div
+                                        aria-checked={readerConfig.annotation_defaultDrawView === "margin"}
                                         tabIndex={0}
                                         role="checkbox"
                                         onKeyDown={(e) => {

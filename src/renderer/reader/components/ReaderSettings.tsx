@@ -661,6 +661,7 @@ export const ReadingAudio = ({ useMO, config: { mediaOverlaysEnableCaptionsMode:
                     />
                     <label htmlFor={option.id} className={stylesGlobal.checkbox_custom_label}>
                         <div 
+                            aria-checked={option.checked}
                             tabIndex={0}
                             role="checkbox"
                             onKeyDown={(e) => {
@@ -770,6 +771,7 @@ const ReadingDisplayCheckboxSettings = ({
                         />
                         <label htmlFor={option.id} style={{margin: "0 5px", height: "unset"}} className={stylesGlobal.checkbox_custom_label}>
                         <div
+                            aria-checked={option.checked}
                             tabIndex={0}
                             role="checkbox"
                             onKeyDown={(e) => {
@@ -937,6 +939,7 @@ const AllowCustom = ({ overridePublisherDefault, set }:
             }/>
                 <label htmlFor="allow-custom" className={stylesGlobal.checkbox_custom_label}>
                     <div 
+                    aria-checked={overridePublisherDefault}
                     tabIndex={0}
                     role="checkbox"
                     onKeyDown={(e) => {
