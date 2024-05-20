@@ -1497,7 +1497,17 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 <div className={stylesAnnotations.annotations_checkbox}>
                                     <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={serialAnnotator} onChange={() => { setSerialAnnotatorMode(!serialAnnotator); }} />
                                     <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div className={stylesGlobal.checkbox_custom} style={{ border: serialAnnotator ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: serialAnnotator ? "var(--color-blue)" : "transparent" }}>
+                                        <div 
+                                        tabIndex={0}
+                                        role="checkbox"
+                                        onKeyDown={(e) => {
+                                            if (e.key === " ") {
+                                                e.preventDefault();
+                                                setSerialAnnotatorMode(!serialAnnotator);
+                                            }
+                                        }}
+                                        className={stylesGlobal.checkbox_custom} 
+                                        style={{ border: serialAnnotator ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: serialAnnotator ? "var(--color-blue)" : "transparent" }}>
                                             {serialAnnotator ?
                                                 <SVG ariaHidden svg={CheckIcon} />
                                                 :
@@ -1515,7 +1525,17 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         onChange={() => { dispatch(readerLocalActionSetConfig.build({ ...readerConfig, annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking })); }}
                                     />
                                     <label htmlFor="quickAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div className={stylesGlobal.checkbox_custom} style={{ border: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "var(--color-blue)" : "transparent" }}>
+                                        <div 
+                                        tabIndex={0}
+                                        role="checkbox"
+                                        onKeyDown={(e) => {
+                                            if (e.key === " ") {
+                                                e.preventDefault();
+                                                dispatch(readerLocalActionSetConfig.build({ ...readerConfig, annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking }));
+                                            }
+                                        }}
+                                        className={stylesGlobal.checkbox_custom} 
+                                        style={{ border: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "var(--color-blue)" : "transparent" }}>
                                             {readerConfig.annotation_popoverNotOpenOnNoteTaking ?
                                                 <SVG ariaHidden svg={CheckIcon} />
                                                 :
@@ -1532,7 +1552,21 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         dispatch(readerLocalActionSetConfig.build(newReaderConfig));
                                     }} />
                                     <label htmlFor="marginAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div className={stylesGlobal.checkbox_custom} style={{ border: readerConfig.annotation_defaultDrawView === "margin" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "margin" ? "var(--color-blue)" : "transparent" }}>
+                                        <div 
+                                        tabIndex={0}
+                                        role="checkbox"
+                                        onKeyDown={(e) => {
+                                            if (e.key === " ") {
+                                                e.preventDefault();
+                                                const newReaderConfig = { ...readerConfig };
+                                                newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "annotation" ? "margin" : "annotation";
+        
+                                                console.log(`marginAnnotationsToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
+                                                dispatch(readerLocalActionSetConfig.build(newReaderConfig)); 
+                                            }
+                                        }}                                       
+                                        className={stylesGlobal.checkbox_custom} 
+                                        style={{ border: readerConfig.annotation_defaultDrawView === "margin" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "margin" ? "var(--color-blue)" : "transparent" }}>
                                             {readerConfig.annotation_defaultDrawView === "margin" ?
                                                 <SVG ariaHidden svg={CheckIcon} />
                                                 :

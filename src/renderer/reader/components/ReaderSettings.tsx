@@ -642,7 +642,17 @@ export const ReadingAudio = ({ useMO, config: { mediaOverlaysEnableCaptionsMode:
                         className={stylesGlobal.checkbox_custom_input}
                     />
                     <label htmlFor={option.id} className={stylesGlobal.checkbox_custom_label}>
-                        <div className={stylesGlobal.checkbox_custom} style={{border: option.checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: option.checked ? "var(--color-blue)" : "transparent"}}>
+                        <div 
+                            tabIndex={0}
+                            role="checkbox"
+                            onKeyDown={(e) => {
+                                if (e.key === " ") {
+                                    e.preventDefault();
+                                    option.onChange();
+                                }
+                            }}
+                        className={stylesGlobal.checkbox_custom} 
+                        style={{border: option.checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: option.checked ? "var(--color-blue)" : "transparent"}}>
                             {option.checked ?
                                 <SVG ariaHidden svg={CheckIcon} />
                                 :
@@ -745,7 +755,8 @@ const ReadingDisplayCheckboxSettings = ({
                             tabIndex={0}
                             role="checkbox"
                             onKeyDown={(e) => {
-                                if (e.key === "Enter") {
+                                if (e.key === " ") {
+                                    e.preventDefault();
                                     option.onChange();
                                 }
                             }}
@@ -907,7 +918,17 @@ const AllowCustom = ({ overridePublisherDefault, set }:
                 <input id="allow-custom" className={stylesGlobal.checkbox_custom_input} type="checkbox" checked={overridePublisherDefault} onChange={() => {set();}
             }/>
                 <label htmlFor="allow-custom" className={stylesGlobal.checkbox_custom_label}>
-                    <div className={stylesGlobal.checkbox_custom} style={{border: overridePublisherDefault ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: overridePublisherDefault ? "var(--color-blue)" : "transparent"}}>
+                    <div 
+                    tabIndex={0}
+                    role="checkbox"
+                    onKeyDown={(e) => {
+                        if (e.key === " ") {
+                            e.preventDefault();
+                            set();
+                        }
+                    }}
+                    className={stylesGlobal.checkbox_custom} 
+                    style={{border: overridePublisherDefault ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: overridePublisherDefault ? "var(--color-blue)" : "transparent"}}>
                         {overridePublisherDefault ?
                             <SVG ariaHidden svg={CheckIcon} />
                             :
