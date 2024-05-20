@@ -386,12 +386,13 @@ const HardWrapComment: React.FC<{comment: string}> = (props) => {
     );
 };
 
-const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timestamp: number, annotation: IAnnotationState, r2Publication: R2Publication, index: number, dockedMode: boolean }> = (props) => {
+const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, index: number }> = (props) => {
 
-    const { goToLocator, timestamp, annotation, r2Publication, index } = props;
+    const { goToLocator, r2Publication, setItemToEdit, itemEdited, dockedMode } = React.useContext(annotationCardContext);
+    const { timestamp, annotation, index } = props;
     const { uuid, locatorExtended, comment } = annotation;
+    const isEdited = itemEdited === index;
 
-    const [isEdited, setEdition] = React.useState(false);
     const dispatch = useDispatch();
     const [__] = useTranslator();
     const save = (color: IColor, comment: string, drawType: TDrawType) => {
@@ -402,7 +403,7 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
             comment,
             drawType,
         }));
-        setEdition(false);
+        setItemToEdit(-1);
         console.log(JSON.stringify(comment));
     };
 
@@ -429,7 +430,7 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
 
     const bprogression = (p >= 0 ? `${p}% ` : "");
 
-    const dockedEditAnnotation = (isEdited && props.dockedMode);
+    const dockedEditAnnotation = (isEdited && dockedMode);
 
     return (<div
         className={stylesAnnotations.annotations_line}
@@ -437,7 +438,7 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
     >
         {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
         <div className={stylesAnnotations.annnotation_container}>
-        {((!isEdited && props.dockedMode) || (!props.dockedMode && !isEdited)) &&
+        {((!isEdited &&dockedMode) || (!dockedMode && !isEdited)) &&
             <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
             // title={bname}
             aria-label="goToLocator"
@@ -467,14 +468,14 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
         {
                 isEdited
                     ?
-                    <FocusLock disabled={false} autoFocus={true}>
-                        <AnnotationEdit uuid={uuid} save={save} cancel={() => setEdition(false)} dockedMode={props.dockedMode} btext={dockedEditAnnotation && btext} />
+                    <FocusLock disabled={dockedMode} autoFocus={true} returnFocus={true}>
+                        <AnnotationEdit uuid={uuid} save={save} cancel={() => setItemToEdit(-1)} dockedMode={dockedMode} btext={dockedEditAnnotation && btext} />
                     </FocusLock>
                     :
                     <HardWrapComment comment={comment} />
         }
         </div>
-        {((!isEdited && props.dockedMode) || !props.dockedMode) &&
+        {((!isEdited && dockedMode) || !dockedMode) &&
         <div className={stylesAnnotations.annotation_edit}>
             <div>
                 <div>
@@ -489,7 +490,7 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
             <div className={stylesAnnotations.annotation_actions_buttons}>
                 <button title={__("reader.marks.edit")}
                     disabled={isEdited}
-                    onClick={() => { setEdition(true); }
+                    onClick={() => { setItemToEdit(index); }
                     }>
                     <SVG ariaHidden={true} svg={EditIcon} />
                 </button>
@@ -512,9 +513,17 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
     </div>);
 };
 
+const annotationCardContext = React.createContext<{
+    itemEdited: number;
+    setItemToEdit: (i: number) => void;
+    goToLocator: (locator: Locator, closeNavPanel?: boolean) => void;
+    dockedMode: boolean;
+    r2Publication: R2Publication;
+}>(undefined);
+
 const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean, annotationUUIDFocused: string, focus: number} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
-    const {r2Publication, goToLocator, annotationUUIDFocused, focus} = props;
+    const {r2Publication, goToLocator, annotationUUIDFocused, focus, dockedMode} = props;
     const [__] = useTranslator();
     // const [bookmarkToUpdate, setBookmarkToUpdate] = React.useState(undefined);
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
@@ -554,11 +563,29 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     // SelectRef.displayName = "ComboBox";
     
     const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} / ${pageTotal}`}));
+
+    const [itemEdited, setItemToEdit] = React.useState<number>(-1);
+
+    const isSearchEnable = useSelector((state: IReaderRootState) => state.search.enable);
+    React.useEffect(() => {
+        if (isSearchEnable) {
+            setItemToEdit(-1);
+        }
+    }, [isSearchEnable]);
     
     return (
         <>
-            {annotationsPagedArray.map(([timestamp, annotationItem], i) =>
-                <AnnotationCard key={i} timestamp={timestamp} annotation={annotationItem} r2Publication={r2Publication} goToLocator={goToLocator} index={i} dockedMode={props.dockedMode} />)}
+            <annotationCardContext.Provider value={{
+                itemEdited,
+                setItemToEdit ,
+                goToLocator,
+                dockedMode,
+                r2Publication,
+            }}>
+                {annotationsPagedArray.map(([timestamp, annotationItem], i) =>
+                    <AnnotationCard key={`annotation-card_${i}`} timestamp={timestamp} annotation={annotationItem} index={i} />)
+                }
+            </annotationCardContext.Provider>
             {
                 isPaginated ?
                     <div className={stylesPopoverDialog.navigation_container}>

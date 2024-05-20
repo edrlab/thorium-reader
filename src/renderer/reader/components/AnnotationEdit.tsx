@@ -26,7 +26,7 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { readerLocalActionSetConfig } from "../redux/actions";
 import classNames from "classnames";
 
-interface IPros {
+interface IProps {
     save: (color: IColor, comment: string, drawType: TDrawType) => void;
     cancel: () => void;
     uuid?: string;
@@ -62,7 +62,7 @@ const drawType: TDrawType[] = [
     "outline",
 ];
 
-export const AnnotationEdit: React.FC<IPros> = (props) => {
+export const AnnotationEdit: React.FC<IProps> = (props) => {
 
     const { save, cancel, uuid, dockedMode} = props;
 
