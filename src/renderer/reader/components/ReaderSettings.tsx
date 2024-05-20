@@ -663,8 +663,8 @@ export const ReadingAudio = ({ useMO, config: { mediaOverlaysEnableCaptionsMode:
                         <div 
                             tabIndex={0}
                             role="checkbox"
-                            onKeyDown={(e) => {
-                                if (e.key === " ") {
+                            onKeyUp={(e) => {
+                                if (e.key === "Space") {
                                     e.preventDefault();
                                     option.onChange();
                                 }
@@ -772,8 +772,8 @@ const ReadingDisplayCheckboxSettings = ({
                         <div
                             tabIndex={0}
                             role="checkbox"
-                            onKeyDown={(e) => {
-                                if (e.key === " ") {
+                            onKeyUp={(e) => {
+                                if (e.key === "Space") {
                                     e.preventDefault();
                                     option.onChange();
                                 }
@@ -939,8 +939,8 @@ const AllowCustom = ({ overridePublisherDefault, set }:
                     <div 
                     tabIndex={0}
                     role="checkbox"
-                    onKeyDown={(e) => {
-                        if (e.key === " ") {
+                    onKeyUp={(e) => {
+                        if (e.key === "Space") {
                             e.preventDefault();
                             set();
                         }
