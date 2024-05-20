@@ -661,9 +661,10 @@ export const ReadingAudio = ({ useMO, config: { mediaOverlaysEnableCaptionsMode:
                     />
                     <label htmlFor={option.id} className={stylesGlobal.checkbox_custom_label}>
                         <div 
-                            aria-checked={option.checked}
                             tabIndex={0}
                             role="checkbox"
+                            aria-checked={option.checked}
+                            aria-label={option.label}
                             onKeyDown={(e) => {
                                 if (e.key === " ") {
                                     e.preventDefault();
@@ -678,7 +679,9 @@ export const ReadingAudio = ({ useMO, config: { mediaOverlaysEnableCaptionsMode:
                                 <></>
                             }
                         </div>
+                        <span aria-hidden>
                         {option.label}
+                        </span>
                     </label>
                     {/* <p className={stylesSettings.session_text}>{option.description}</p> */}
                 </div>
@@ -771,9 +774,10 @@ const ReadingDisplayCheckboxSettings = ({
                         />
                         <label htmlFor={option.id} style={{margin: "0 5px", height: "unset"}} className={stylesGlobal.checkbox_custom_label}>
                         <div
-                            aria-checked={option.checked}
                             tabIndex={0}
                             role="checkbox"
+                            aria-checked={option.checked}
+                            aria-label={option.label}
                             onKeyDown={(e) => {
                                 if (e.key === " ") {
                                     e.preventDefault();
@@ -787,8 +791,11 @@ const ReadingDisplayCheckboxSettings = ({
                                                 :
                                                 <></>
                                             }
-                                        </div>
-                            {option.label}</label>
+                        </div>
+                        <span aria-hidden>
+                        {option.label}
+                        </span>
+                    </label>
                     </div>
                 </section>
 
@@ -939,9 +946,10 @@ const AllowCustom = ({ overridePublisherDefault, set }:
             }/>
                 <label htmlFor="allow-custom" className={stylesGlobal.checkbox_custom_label}>
                     <div 
-                    aria-checked={overridePublisherDefault}
                     tabIndex={0}
                     role="checkbox"
+                    aria-checked={overridePublisherDefault}
+                    aria-label={__("reader.settings.customizeReader")}
                     onKeyDown={(e) => {
                         if (e.key === " ") {
                             e.preventDefault();
@@ -956,7 +964,9 @@ const AllowCustom = ({ overridePublisherDefault, set }:
                             <></>
                         }
                     </div>
+                    <span aria-hidden>
                     {__("reader.settings.customizeReader")}
+                    </span>
                 </label>
             </>
         );
