@@ -153,7 +153,7 @@ const renderLinkList = (isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBa
                             onDoubleClick=
                             {link.Href ? (e) => handleLinkClick(e, link.Href, false) : undefined}
                             tabIndex={0}
-                            onKeyPress=
+                            onKeyUp=
                             {
                                 (e) => {
                                     if (link.Href && e.key === "Enter") {
@@ -304,7 +304,7 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
                                         onDoubleClick=
                                         {link.Href ? (e) => handleLinkClick(e, link.Href, false) : undefined}
                                         tabIndex={0}
-                                        onKeyPress=
+                                        onKeyUp=
                                         {
                                             (e) => {
                                                 if (link.Href && e.key === "Enter") {
@@ -342,7 +342,7 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
                                     onDoubleClick=
                                     {link.Href ? (e) => handleLinkClick(e, link.Href, false) : undefined}
                                     tabIndex={0}
-                                    onKeyPress=
+                                    onKeyUp=
                                     {
                                         (e) => {
                                             if (link.Href && e.key === "Enter") {
@@ -449,7 +449,7 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
                 onDoubleClick={(_e) => {
                     goToLocator(annotation.locatorExtended.locator, false);
                 }}
-                onKeyPress=
+                onKeyUp=
                 {
                     (e) => {
                         if (e.key === "Enter" || e.key === "Space") {
@@ -699,7 +699,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Public
                                 goToLocator(bookmark.locator, closeNavPanel);
                             }}
                             onDoubleClick={(_e) => goToLocator(bookmark.locator, false)}
-                            onKeyPress=
+                            onKeyUp=
                             {
                                 (e) => {
                                     if (e.key === "Enter" || e.key === "Space") {
@@ -1086,7 +1086,7 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
                 e.preventDefault();
             }
             }
-            onKeyPress=
+            onKeyUp=
                 {
                     (e) => {
                         if (e.key === "Enter" || e.key === "Space") {
@@ -1519,7 +1519,8 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         role="checkbox"
                                         aria-checked={serialAnnotator}
                                         aria-label={__("reader.annotations.advancedMode")}
-                                        onKeyDown={(e) => {
+                                        onKeyUp={(e) => {
+                                            // if (e.code === "Space") {
                                             if (e.key === " ") {
                                                 e.preventDefault();
                                                 advancedAnnotationsOnChange();
@@ -1549,7 +1550,8 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         role="checkbox"
                                         aria-checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
                                         aria-label={__("reader.annotations.quickAnnotations")}
-                                        onKeyDown={(e) => {
+                                        onKeyUp={(e) => {
+                                            // if (e.code === "Space") {
                                             if (e.key === " ") {
                                                 e.preventDefault();
                                                 quickAnnotationsOnChange();
@@ -1572,7 +1574,8 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         role="checkbox"
                                         aria-checked={readerConfig.annotation_defaultDrawView === "margin"}
                                         aria-label={__("reader.annotations.toggleMarginMarks")}
-                                        onKeyDown={(e) => {
+                                        onKeyUp={(e) => {
+                                            // if (e.code === "Space") {
                                             if (e.key === " ") {
                                                 e.preventDefault();
                                                 marginAnnotationsOnChange();

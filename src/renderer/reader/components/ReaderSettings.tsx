@@ -665,7 +665,8 @@ export const ReadingAudio = ({ useMO, config: { mediaOverlaysEnableCaptionsMode:
                             role="checkbox"
                             aria-checked={option.checked}
                             aria-label={option.label}
-                            onKeyDown={(e) => {
+                            onKeyUp={(e) => {
+                                // if (e.code === "Space") {
                                 if (e.key === " ") {
                                     e.preventDefault();
                                     option.onChange();
@@ -778,7 +779,8 @@ const ReadingDisplayCheckboxSettings = ({
                             role="checkbox"
                             aria-checked={option.checked}
                             aria-label={option.label}
-                            onKeyDown={(e) => {
+                            onKeyUp={(e) => {
+                                // if (e.code === "Space") {
                                 if (e.key === " ") {
                                     e.preventDefault();
                                     option.onChange();
@@ -950,7 +952,8 @@ const AllowCustom = ({ overridePublisherDefault, set }:
                     role="checkbox"
                     aria-checked={overridePublisherDefault}
                     aria-label={__("reader.settings.customizeReader")}
-                    onKeyDown={(e) => {
+                    onKeyUp={(e) => {
+                        // if (e.code === "Space") {
                         if (e.key === " ") {
                             e.preventDefault();
                             set();

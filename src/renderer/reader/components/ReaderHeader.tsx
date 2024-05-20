@@ -886,7 +886,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 className={stylesReader.bookmarkButton}
                                 type="checkbox"
                                 checked={this.props.isOnBookmark}
-                                onKeyDown={(e) => {
+                                onKeyUp={(e) => {
                                     if (e.key === "Enter") { this.props.toggleBookmark(); }
                                 }}
                                 onChange={this.props.toggleBookmark}
@@ -923,7 +923,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         className={stylesReader.bookmarkButton}
                                         type="checkbox"
                                         checked={this.props.isAnnotationModeEnabled}
-                                        onKeyDown={(e) => {
+                                        onKeyUp={(e) => {
                                             if (e.key === "Enter") {
                                                 this.props.triggerAnnotationBtn();
                                             }

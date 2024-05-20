@@ -123,7 +123,7 @@ export class PublicationListElement extends React.Component<IProps> {
                     className={stylesPublications.publication_list_infos}
                     tabIndex={0}
                     onClick={(e) => this.handleBookClick(e)}
-                    onKeyPress={
+                    onKeyUp={
                         (e) =>
                             e.key === "Enter" && this.handleBookClick(e)
                     }

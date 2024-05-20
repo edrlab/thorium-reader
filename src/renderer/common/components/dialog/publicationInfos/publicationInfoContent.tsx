@@ -394,7 +394,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                                 <CoverWithForwardedRef
                                     publicationViewMaybeOpds={props.publicationViewMaybeOpds}
                                     coverType="cover"
-                                    onKeyPress={
+                                    onKeyUp={
                                         (e) => {
                                             if (e.key === "Enter") {
                                                 setOpenCoverDialog(true);
@@ -411,7 +411,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                                             publicationViewMaybeOpds={props.publicationViewMaybeOpds}
                                             coverType="cover"
                                             onClick={() => setOpenCoverDialog(false)}
-                                            onKeyPress={
+                                            onKeyUp={
                                                 (e) => {
                                                     if (e.key === "Enter") {
                                                         setOpenCoverDialog(false);

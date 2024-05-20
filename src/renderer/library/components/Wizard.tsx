@@ -112,7 +112,11 @@ export const WizardModal = () => {
                                     aria-checked={checked}
                                     aria-label={__("wizard.dontShow")}
                                     onKeyUp={(e) => {
-                                        if (e.code === "Space") {
+                                        // Includes screen reader tests:
+                                        // if (e.code === "Space") { WORKS
+                                        // if (e.key === "Space") { DOES NOT WORK
+                                        // if (e.key === "Enter") { WORKS
+                                        if (e.key === " ") { // WORKS
                                             e.preventDefault();
                                             setChecked(!checked);
                                         }
