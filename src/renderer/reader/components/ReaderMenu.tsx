@@ -1516,6 +1516,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         role="checkbox"
                                         onKeyDown={(e) => {
                                             if (e.key === " ") {
+                                                e.preventDefault();
                                                 advancedAnnotationsOnChange();
                                             }
                                         }}
@@ -1543,6 +1544,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         role="checkbox"
                                         onKeyDown={(e) => {
                                             if (e.key === " ") {
+                                                e.preventDefault();
                                                 quickAnnotationsOnChange();
                                             }
                                         }}
@@ -1563,6 +1565,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         role="checkbox"
                                         onKeyDown={(e) => {
                                             if (e.key === " ") {
+                                                e.preventDefault();
                                                 marginAnnotationsOnChange();
                                             }
                                         }}                                       
