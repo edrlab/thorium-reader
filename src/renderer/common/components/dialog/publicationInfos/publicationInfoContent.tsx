@@ -255,7 +255,7 @@ const Progression = (props: {
                             let k = 0;
                             const summary = hs.reduce<React.ReactElement[]>((arr, h, i) => {
                                 return arr.concat(
-                                    <div style={{ display: "flex", gap: "5px", flex: "1",overflow: "hidden", textWrap: "nowrap", paddingRight: "2px", width: Math.ceil(100 / (arr.length + 1)) + "%"}}>
+                                    <div style={{ display: "flex", gap: "5px",overflow: "hidden", textWrap: "nowrap", paddingRight: "2px"}}>
                                         <span key={`_h${k++}`}>{i === 0 ? " " : " / "}</span>
                                         <span key={`_h${k++}`} style={{ fontWeight: "bold" }}>h{h.level} </span>
                                         <span key={`_h${k++}`} style={{overflow: "hidden", textOverflow: "ellipsis"}}>{h.txt ? `${h.txt}` : `${h.id ? `[${h.id}]` : "_"}`}</span>
