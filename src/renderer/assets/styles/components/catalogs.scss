@@ -293,10 +293,13 @@
     overflow: auto;
     inset: 260px 20px 30px 30px;
     padding: 0;
-    margin-top: 0;
-    margin-bottom: 0.4em;
     position: absolute;
     padding-right: 25px;
+    margin: 2px;
+
+    .button_transparency {
+        margin: 4px;
+    }
 
     @media only screen and (width <= 1024px) {
         inset: 310px 20px 30px 30px;

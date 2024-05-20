@@ -9,6 +9,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
+  margin: 2px;
 }
 
 .publication_main_container {
@@ -184,6 +185,7 @@
   font-size: 15px;
   gap: 10px;
   padding: 0 6px;
+  margin-bottom: 4px;
 
   & button {
     width: 20px;
