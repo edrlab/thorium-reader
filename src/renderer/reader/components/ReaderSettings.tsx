@@ -665,7 +665,6 @@ export const ReadingAudio = ({ useMO, config: { mediaOverlaysEnableCaptionsMode:
                             role="checkbox"
                             onKeyDown={(e) => {
                                 if (e.key === " ") {
-                                    e.preventDefault();
                                     option.onChange();
                                 }
                             }}
@@ -774,7 +773,6 @@ const ReadingDisplayCheckboxSettings = ({
                             role="checkbox"
                             onKeyDown={(e) => {
                                 if (e.key === " ") {
-                                    e.preventDefault();
                                     option.onChange();
                                 }
                             }}

@@ -1385,6 +1385,20 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         );
     };
 
+    const advancedAnnotationsOnChange = () => {
+        setSerialAnnotatorMode(!serialAnnotator);
+    };
+    const quickAnnotationsOnChange = () => {
+        dispatch(readerLocalActionSetConfig.build({ ...readerConfig, annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking }));
+    };
+    const marginAnnotationsOnChange = () => {
+        const newReaderConfig = { ...readerConfig };
+        newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "annotation" ? "margin" : "annotation";
+
+        console.log(`marginAnnotationsToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
+        dispatch(readerLocalActionSetConfig.build(newReaderConfig));
+    };
+
     return (
         <div>
             {
@@ -1495,15 +1509,14 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 </summary>
                                 {/* {dockedMode ? */}
                                 <div className={stylesAnnotations.annotations_checkbox}>
-                                    <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={serialAnnotator} onChange={() => { setSerialAnnotatorMode(!serialAnnotator); }} />
+                                    <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={serialAnnotator} onChange={advancedAnnotationsOnChange} />
                                     <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
                                         <div 
                                         tabIndex={0}
                                         role="checkbox"
                                         onKeyDown={(e) => {
                                             if (e.key === " ") {
-                                                e.preventDefault();
-                                                setSerialAnnotatorMode(!serialAnnotator);
+                                                advancedAnnotationsOnChange();
                                             }
                                         }}
                                         className={stylesGlobal.checkbox_custom} 
@@ -1522,7 +1535,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 {/* : <></>} */}
                                 <div className={stylesAnnotations.annotations_checkbox}>
                                     <input type="checkbox" id="quickAnnotations" name="quickAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
-                                        onChange={() => { dispatch(readerLocalActionSetConfig.build({ ...readerConfig, annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking })); }}
+                                        onChange={quickAnnotationsOnChange}
                                     />
                                     <label htmlFor="quickAnnotations" className={stylesGlobal.checkbox_custom_label}>
                                         <div 
@@ -1530,8 +1543,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         role="checkbox"
                                         onKeyDown={(e) => {
                                             if (e.key === " ") {
-                                                e.preventDefault();
-                                                dispatch(readerLocalActionSetConfig.build({ ...readerConfig, annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking }));
+                                                quickAnnotationsOnChange();
                                             }
                                         }}
                                         className={stylesGlobal.checkbox_custom} 
@@ -1544,25 +1556,14 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         <h4>{__("reader.annotations.quickAnnotations")}</h4></label>
                                 </div>
                                 <div className={stylesAnnotations.annotations_checkbox}>
-                                    <input type="checkbox" id="marginAnnotations" name="marginAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={() => {
-                                        const newReaderConfig = { ...readerConfig };
-                                        newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "annotation" ? "margin" : "annotation";
-
-                                        console.log(`marginAnnotationsToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
-                                        dispatch(readerLocalActionSetConfig.build(newReaderConfig));
-                                    }} />
+                                    <input type="checkbox" id="marginAnnotations" name="marginAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={marginAnnotationsOnChange} />
                                     <label htmlFor="marginAnnotations" className={stylesGlobal.checkbox_custom_label}>
                                         <div 
                                         tabIndex={0}
                                         role="checkbox"
                                         onKeyDown={(e) => {
                                             if (e.key === " ") {
-                                                e.preventDefault();
-                                                const newReaderConfig = { ...readerConfig };
-                                                newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "annotation" ? "margin" : "annotation";
-        
-                                                console.log(`marginAnnotationsToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
-                                                dispatch(readerLocalActionSetConfig.build(newReaderConfig)); 
+                                                marginAnnotationsOnChange();
                                             }
                                         }}                                       
                                         className={stylesGlobal.checkbox_custom} 
