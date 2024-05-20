@@ -108,8 +108,8 @@ export const WizardModal = () => {
                                 <div
                                     tabIndex={0}
                                     role="checkbox"
-                                    onKeyDown={(e) => {
-                                        if (e.key === " ") {
+                                    onKeyUp={(e) => {
+                                        if (e.code === "Space") {
                                             e.preventDefault();
                                             setChecked(!checked);
                                         }
