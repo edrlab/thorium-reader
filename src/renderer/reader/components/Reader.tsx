@@ -736,8 +736,8 @@ class Reader extends React.Component<IProps, IState> {
         
         const isAudioBook = isAudiobookFn(this.props.r2Publication);
         const arrowDisabledNotEpub = isAudioBook || this.props.isPdf || this.props.isDivina;
-        const isFXL = this.isFixedLayout();
-        const isPaginated = this.props.readerConfig.paged;
+        // const isFXL = this.isFixedLayout();
+        // const isPaginated = this.props.readerConfig.paged;
 
         // console.log(arrowDisabledNotEpub, isFXL, isPaginated);
         // epub non fxl (page)      : false false true  : true
@@ -748,12 +748,18 @@ class Reader extends React.Component<IProps, IState> {
         // audiobook                : true false true :   false
         // divina                   : true false true :   false
 
-        const arrowEnabled = !arrowDisabledNotEpub && (isFXL || isPaginated);
+        const arrowEnabled = !arrowDisabledNotEpub /* && (isFXL || isPaginated) */;
         
         return (
             <div className={classNames(
-                this.props.readerConfig.night && stylesReader.nightMode,
-                this.props.readerConfig.sepia && stylesReader.sepiaMode,
+                this.props.readerConfig.theme === "night" ? stylesReader.nightMode :
+                this.props.readerConfig.theme === "sepia" ? stylesReader.sepiaMode :
+                this.props.readerConfig.theme === "contrast1" ? stylesReader.contrast1Mode :
+                this.props.readerConfig.theme === "contrast2" ? stylesReader.contrast2Mode :
+                this.props.readerConfig.theme === "contrast3" ? stylesReader.contrast3Mode :
+                this.props.readerConfig.theme === "contrast4" ? stylesReader.contrast4Mode :
+                this.props.readerConfig.theme === "paper" ? stylesReader.paperMode :
+                "",
             )}>
                 <a
                     role="heading"
@@ -979,6 +985,8 @@ class Reader extends React.Component<IProps, IState> {
                     disableRTLFlip={this.props.disableRTLFlip}
                     isRTLFlip={this.isRTLFlip}
                     publicationView={this.props.publicationView}
+
+                    readerPopoverDialogContext={readerPopoverDialogContext}
                 />
                 : <></>
     }
@@ -1757,14 +1765,16 @@ class Reader extends React.Component<IProps, IState> {
 
         // windowHistory._readerInstance === this
 
+        const isDocked = this.state.dockingMode !== "full";
+
         if (popState.state?.data) {
             if (typeof popState.state.data === "object") {
-                this.goToLocator(popState.state.data, true, true);
+                this.goToLocator(popState.state.data, !isDocked, true);
             } else if (typeof popState.state.data === "string") {
                 // if (!/https?:\/\//.test(popState.state.data)) {
                 if (popState.state.data.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") ||
                     popState.state.data.startsWith("thoriumhttps://")) {
-                    this.handleLinkClick(undefined, popState.state.data, true, true);
+                    this.handleLinkClick(undefined, popState.state.data, !isDocked, true);
                 } else {
                     console.log(">> HISTORY POP STATE SKIP URL (2)", popState.state.data);
                 }
@@ -2849,6 +2859,8 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     };
 };
 
+let __READING_FINISHED_CALL_COUNTER = 0;
+
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         toasty: (msg: string) => {
@@ -2885,7 +2897,28 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(readerLocalActionSetLocator.build(locator));
 
             // just to refresh allPublicationPage.tsx
-            apiDispatch(dispatch)()("publication/readingFinishedRefresh")();
+
+            // TODO: quick fix to refresh AllPublication component grid view
+            // when a book is set as finished and then open / readed
+            // 
+            // dispatch a stub api endpoint "readingFinishedRefresh" just to trigger
+            // AllPublication grid view, this is a legacy usage of the ReduxApi
+            // originaly developped. Now we should use the react/redux data update mechanism
+            // instead to call a fake IPC API
+            //
+            // So call readingFinishedRefresh API at each call of setLocator function
+            // trigger too often the refresh, needed only at start or when the book is 
+            // check as set as finished in library/AllPublication compoment during the reading
+            // setLocator is heavealy called with tts enabled or in an audiobook
+            // so we just called readingFinishedRefresh 2 times at start
+            // (first time is not handled by the library, second time is it)
+            //
+            // It's not a good practice to do that, but it works!
+            //
+            if (__READING_FINISHED_CALL_COUNTER < 2) {
+                __READING_FINISHED_CALL_COUNTER++;
+                apiDispatch(dispatch)()("publication/readingFinishedRefresh")();
+            }
         },
         setConfig: (config: ReaderConfig, sessionEnabled: boolean) => {
             dispatch(readerLocalActionSetConfig.build(config));

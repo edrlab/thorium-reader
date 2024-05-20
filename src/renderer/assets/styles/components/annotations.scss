@@ -52,10 +52,10 @@
 }
 
 .annotation_form {
-    background-color: var(--color-light-grey);
-    max-width: 400px;
+    background-color: var(--color-extralight-grey);
+    max-width: 450px;
     border-radius: 6px;
-    border: 1px solid var(--color-medium-grey);
+    // border: 1px solid var(--color-medium-grey);
     display: flex;
     flex-direction: column;
     padding: 5px 10px;
@@ -72,14 +72,16 @@
     }
   
     &_textarea{
-      width: 380px;
-      min-width: 380px;
+      width: 420px;
+      min-width: 420px;
       height: 100px;
       min-height: 100px;
-      max-width: 380px;
+      max-width: 420px;
       border: 1px solid rgb(118 118 118);
       border-radius: 3px;
       font-family: Nunito, sans-serif;
+      background-color: var(--color-annotations-txt-area);
+      color: var(--color-primary);
   
   
       &_container {
@@ -123,7 +125,13 @@
     display: flex;
     align-items: center;
     gap: 30px;
-    margin: 10px 0;
+    margin: 0;
+    margin-bottom: 10px;
+
+    @media screen and (max-width <= 800px) {
+      flex-direction: column!important;
+      align-items: start!important;
+    }
   
     &_container {
       display: flex;
@@ -153,7 +161,7 @@
     &_buttons {
       button:disabled {
         border-radius: 5px;
-        background-color: var(--color-medium-grey);
+        background-color: var(--color-verylight-grey-alt);
 
         svg {
           fill: var(--color-primary);
@@ -173,7 +181,7 @@
     flex-direction: column;
 
     p {
-      background-color: var(--color-light-grey);
+      background-color: var(--color-extralight-grey);
       width: 95%!important;
       border-radius: 5px;
       margin-bottom: 10px!important;
@@ -187,6 +195,8 @@
       border-radius: 3px;
       font-family: Nunito, sans-serif;
       overflow: hidden;
+      color: var(--color-primary);
+      background-color: var(--color-secondary);
   
       &_container {
       display: flex;
@@ -203,10 +213,10 @@
   
   .colorPicker {
     display: flex;
-    background-color: var(--color-secondary);
+    background-color: var(--color-button-hover);
     padding: 2px;
     gap: 1px;
-    border: 1px solid var(--color-primary);
+    border: 1px solid var(--color-dark-grey);
     border-radius: 6px;
 
     &:has(input:focus) {
@@ -224,7 +234,7 @@
             width: 25px;
             height: 25px;
             margin: 0;
-            border: 1px solid white;
+            border: 1px solid var(--color-secondary);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -267,7 +277,7 @@
           justify-content: center;
 
           svg {
-            color: var(--color-blue);
+            color: var(--color-blue-alt);
           }
       }
   }
@@ -283,31 +293,40 @@
   }
   
   .annotations_line {
-    width: calc(100% - 10px);
+    width: calc(100% - 20px);
     position: relative;
     text-align: left;
     font-size: 1rem;
     border-left: 2px solid var(--color-blue);
     padding-left: 10px;
-    margin: 10px 0;
+    margin: 0;
+    margin-bottom: 10px;
+    background-color: var(--color-annotations-bg);
   
     p {
       text-align: left;
+      // background-color: var(--color-annotations-txt);
 
       // overflow: hidden;
       // text-overflow: ellipsis;
-      width: 100%;
+      width: calc(100% - 15px);
 
       // display: -webkit-box;
       // -webkit-box-orient: vertical;
       // -webkit-line-clamp: 3;
       padding: 5px;
-      margin: 0;
+      margin: 5px 0;
     }
   
     // @media (prefers-color-scheme: dark) {
     //   background-color: #2D2D2D;
     // }
+
+    .annnotation_container {
+      margin-top: 10px;
+      margin-right: 10px;
+      
+    }
 
     .annnotation_container:has(.annotation_name:focus) {
       outline: 2px solid var(--color-blue);
@@ -315,8 +334,8 @@
     }
   
     .annotation_name {
-      background-color: var(--color-light-grey);
-      border-bottom: 8px solid var(--color-light-grey);
+      background-color: var(--color-annotations-txt);
+      border-bottom: 8px solid var(--color-annotations-txt);
       height: unset;
       font-family: Nunito, sans-serif;
   

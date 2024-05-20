@@ -17,7 +17,6 @@
         "noLibraryFound": ""
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Kopieren",
             "cut": "Ausschneiden",
@@ -28,8 +27,26 @@
             "undo": "Rückgängig"
         },
         "hide": "Ausblenden {{- appName}}",
-        "newVersion": "",
         "quit": "Beenden {{- appName}}",
+<<<<<<< HEAD
+=======
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Nein",
+                        "yes": "Ja"
+                    },
+                    "message": "Möchten Sie die Sitzung speichern ?",
+                    "title": "Sitzung sichern"
+                }
+            }
+        },
+        "update": {
+            "message": "",
+            "title": ""
+        },
+>>>>>>> develop
         "window": {
             "showLibrary": ""
         }
@@ -67,7 +84,7 @@
         "moreInfo": "Mehr Informationen",
         "myBooks": "Meine Bücher",
         "noPublicationHelpL1": "Geben Sie die Publikation ab",
-        "noPublicationHelpL2": "oder über den Button \"+\" hinzufügen.",
+        "noPublicationHelpL2": "oder über den Button \"{{- importTitle }}\" hinzufügen.",
         "noPublicationHelpL3": "LCP-geschützte Dateien werden unterstützt.",
         "noPublicationHelpL4": "Unterstützte Erweiterungen:",
         "numberOfPages": "Seitenzahl",
@@ -290,7 +307,6 @@
             "Color": "",
             "addNote": "",
             "advancedMode": "",
-            "advancedModeDetails": "",
             "annotationsOptions": "",
             "highlight": "",
             "noSelectionToast": "",
@@ -410,8 +426,13 @@
             "text": "Text",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "Neutral",
                     "Night": "Nachtzeit",
+                    "Paper": "",
                     "Sepia": "Sepia"
                 },
                 "title": "Motiv"

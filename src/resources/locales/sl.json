@@ -17,7 +17,6 @@
         "noLibraryFound": "Ne najdem knjižnice ({{- ime}})"
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Kopiraj",
             "cut": "Izreži",
@@ -28,8 +27,26 @@
             "undo": "Razveljavi"
         },
         "hide": "Skrij {{- appName}}",
-        "newVersion": "",
         "quit": "Zapri {{- appName}}",
+<<<<<<< HEAD
+=======
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Ne",
+                        "yes": "Da"
+                    },
+                    "message": "Ali želiš shraniti sejo?",
+                    "title": "Shrani sejo"
+                }
+            }
+        },
+        "update": {
+            "message": "",
+            "title": ""
+        },
+>>>>>>> develop
         "window": {
             "showLibrary": "Prikaži knjižnico / knjižna polica"
         }
@@ -67,7 +84,7 @@
         "moreInfo": "Osnovni podatki",
         "myBooks": "Moje knjige",
         "noPublicationHelpL1": "Drop a publication here",
-        "noPublicationHelpL2": "ali uporabi \"+\" zgornji gumb.",
+        "noPublicationHelpL2": "ali uporabi \"{{- importTitle }}\" zgornji gumb.",
         "noPublicationHelpL3": "LCP zaščitene datoteke so podprte.",
         "noPublicationHelpL4": "Podprte razširitve:",
         "numberOfPages": "Število strani",
@@ -290,7 +307,6 @@
             "Color": "",
             "addNote": "",
             "advancedMode": "",
-            "advancedModeDetails": "",
             "annotationsOptions": "",
             "highlight": "",
             "noSelectionToast": "",
@@ -410,8 +426,13 @@
             "text": "Besedilo",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "Nevtralno",
                     "Night": "Temno",
+                    "Paper": "",
                     "Sepia": "Sepija"
                 },
                 "title": "Tema"

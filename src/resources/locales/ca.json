@@ -17,7 +17,6 @@
         "noLibraryFound": ""
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Copiar",
             "cut": "Tallar",
@@ -28,8 +27,26 @@
             "undo": "Desfer"
         },
         "hide": "Ocultar {{- appName}}",
-        "newVersion": "",
         "quit": "Sortir de {{- appName}}",
+<<<<<<< HEAD
+=======
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "No",
+                        "yes": "Sí"
+                    },
+                    "message": "Vols guardar la sessió?",
+                    "title": "Guardar sessió"
+                }
+            }
+        },
+        "update": {
+            "message": "",
+            "title": ""
+        },
+>>>>>>> develop
         "window": {
             "showLibrary": "Mostrar biblioteca"
         }
@@ -67,7 +84,7 @@
         "moreInfo": "Més información",
         "myBooks": "Els meus llibres",
         "noPublicationHelpL1": "Solta una publicació aquí",
-        "noPublicationHelpL2": "o utiltza el botó \"+\" de dalt.",
+        "noPublicationHelpL2": "o utiltza el botó \"{{- importTitle }}\" de dalt.",
         "noPublicationHelpL3": "S'admiteixen fitxers protegits LCP.",
         "noPublicationHelpL4": "Extensions admitides:",
         "numberOfPages": " de pàgines",
@@ -290,7 +307,6 @@
             "Color": "",
             "addNote": "",
             "advancedMode": "",
-            "advancedModeDetails": "",
             "annotationsOptions": "",
             "highlight": "",
             "noSelectionToast": "",
@@ -410,8 +426,13 @@
             "text": "Text",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "Neutral",
                     "Night": "Nit",
+                    "Paper": "",
                     "Sepia": "Sèpia"
                 },
                 "title": "Disposició"

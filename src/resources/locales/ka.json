@@ -17,7 +17,6 @@
         "noLibraryFound": ""
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "ასლი",
             "cut": "ამოჭრა",
@@ -28,8 +27,26 @@
             "undo": "დაბრუნება"
         },
         "hide": "დამალვა {{- appName}}",
-        "newVersion": "",
         "quit": "დახურვა {{- appName}}",
+<<<<<<< HEAD
+=======
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "არა",
+                        "yes": "დიახ"
+                    },
+                    "message": "გსურს შევინახოთ სესია ?",
+                    "title": "სესიის შენახვა"
+                }
+            }
+        },
+        "update": {
+            "message": "",
+            "title": ""
+        },
+>>>>>>> develop
         "window": {
             "showLibrary": "ბიბლიოთეკის ჩვენება / წიგნების კარადა"
         }
@@ -67,7 +84,7 @@
         "moreInfo": "მეტი ინფორმაცია",
         "myBooks": "ჩემი წიგნები",
         "noPublicationHelpL1": "ჩააგდე პუბლიკაცია აქ",
-        "noPublicationHelpL2": "ან გამოიყენე \"+\" ღილაკი ზემოთ.",
+        "noPublicationHelpL2": "ან გამოიყენე \"{{- importTitle }}\" ღილაკი ზემოთ.",
         "noPublicationHelpL3": "შესაძლებელია LCP ტექნოლოგიით დაცული ფაილების წაკითხვაც.",
         "noPublicationHelpL4": "მხარდაჭერილი გაფართოებები:",
         "numberOfPages": "გვერდების რაოდენობა",
@@ -290,7 +307,6 @@
             "Color": "",
             "addNote": "",
             "advancedMode": "",
-            "advancedModeDetails": "",
             "annotationsOptions": "",
             "highlight": "",
             "noSelectionToast": "",
@@ -410,8 +426,13 @@
             "text": "ტექსტი",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "ნეიტრალური",
                     "Night": "ღამე",
+                    "Paper": "",
                     "Sepia": "სეპია"
                 },
                 "title": "თემა"

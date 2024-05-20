@@ -91,6 +91,9 @@ function* annotationPop(action: readerActions.annotation.pop.TAction) {
 
 function* createAnnotation(locatorExtended: LocatorExtended, color: IColor, comment: string, drawType: TDrawType) {
 
+    // clean __selection global variable state
+    __selectionInfoGlobal.locatorExtended = undefined;
+
     debug(`Create an annotation for, [${locatorExtended.selectionInfo.cleanText.slice(0, 10)}]`);
     yield* put(readerActions.annotation.push.build({
         color,
@@ -126,6 +129,8 @@ function* newLocatorEditAndSaveTheNote(locatorExtended: LocatorExtended): SagaGe
 
     if (cancelAction) {
         debug("annotation canceled and not saved [not created]");
+
+        // __selectionInfoGlobal.locatorExtended is not yet cleaned, ready to re-trigger the note creation
         return;
     } else if (noteTakenAction) {
 
@@ -134,20 +139,48 @@ function* newLocatorEditAndSaveTheNote(locatorExtended: LocatorExtended): SagaGe
 
         // get color and comment and save the note
         yield* call(createAnnotation, locatorExtended, color, comment, drawType);
+
     } else {
         debug("ERROR: second yield RACE not worked !!?!!");
     }
 }
 
-function* newLocator(action: readerLocalActionSetLocator.TAction): SagaGenerator<void> {
+function* annotationButtonTrigger(_action: readerLocalActionAnnotations.trigger.TAction) {
+
+    const { locatorExtended } = __selectionInfoGlobal;
+    if (!locatorExtended) {
+        const translator = yield* callTyped(
+            () => diReaderGet("translator"));
+    
+        debug("annotationBtnTriggerRequestedAction received");
+        // trigger a Toast notification to user
+        yield* put(
+            toastActions.openRequest.build(
+                ToastType.Error,
+                translator.translate("reader.annotations.noSelectionToast"),
+            ),
+        );
+        return ;
+    }
+
+    debug("annotation trigger btn requested, create annotation");
+    yield* call(newLocatorEditAndSaveTheNote, locatorExtended);
+
+}
+
+const __selectionInfoGlobal: {locatorExtended: LocatorExtended | undefined} = {locatorExtended: undefined};
+function* setLocator(action: readerLocalActionSetLocator.TAction) {
+
     const locatorExtended = action.payload;
     const { selectionInfo, selectionIsNew } = locatorExtended;
 
-    if (!selectionInfo || !selectionIsNew) {
+    if (!selectionInfo) {
+        __selectionInfoGlobal.locatorExtended = undefined;
         return;
     }
 
-    debug(`New Selection Requested ! [${selectionInfo.cleanText.slice(0, 10)}]`);
+    debug(`${selectionIsNew ? "New" : "Old"} Selection Requested ! [${selectionInfo.cleanText.slice(0, 50)}...]`);
+    __selectionInfoGlobal.locatorExtended = locatorExtended;
 
     // check the boolean value of annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator
     const annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator = (window as any).__annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator || false;
@@ -156,99 +189,7 @@ function* newLocator(action: readerLocalActionSetLocator.TAction): SagaGenerator
         yield* call(newLocatorEditAndSaveTheNote, locatorExtended);
         return ;
     }
-
-    // wait the click on "take a note" button or call recursively this function to reload the wait of "take a note" button
-    const { newLocatorAction, annotationBtnTriggerRequestedAction } = yield* raceTyped({
-        newLocatorAction: takeTyped(readerLocalActionSetLocator.build),
-        annotationBtnTriggerRequestedAction: takeTyped(readerLocalActionAnnotations.trigger.build),
-    });
-
-    if (newLocatorAction) {
-
-        debug("new Locator requested, so we drop this annotation [not created]");
-
-        yield* call(newLocator, newLocatorAction);
-
-    } else if (annotationBtnTriggerRequestedAction) {
-
-        debug("annotation trigger btn requested, creation of the annotation");
-
-        yield* call(newLocatorEditAndSaveTheNote, locatorExtended);
-
-    } else {
-        debug("ERROR: yield RACE not worked !!?!!");
-    }
 }
-
-function* newLocatorOrTriggerBtnWatcher() {
-
-    const { newLocatorAction, annotationBtnTriggerRequestedAction } = yield* raceTyped({
-        newLocatorAction: takeTyped(readerLocalActionSetLocator.build),
-        annotationBtnTriggerRequestedAction: takeTyped(readerLocalActionAnnotations.trigger.build),
-    });
-
-    if (newLocatorAction) {
-
-        yield* call(newLocator, newLocatorAction);
-
-    } else if (annotationBtnTriggerRequestedAction) {
-
-        const translator = yield* callTyped(
-            () => diReaderGet("translator"));
-
-        debug(`annotationBtnTriggerRequestedAction received [${JSON.stringify(annotationBtnTriggerRequestedAction.payload, null, 4)}]`);
-        // trigger a Toast notification to user
-        yield* put(
-            toastActions.openRequest.build(
-                ToastType.Error,
-                translator.translate("reader.annotations.noSelectionToast"),
-            ),
-        );
-    }
-}
-// function* annotationEnableMode(action: readerLocalActionAnnotations.enableMode.TAction) {
-//     const { payload: {enable}} = action;
-
-//     debug(`annotationEnableMode enable=${enable}`);
-//     if (enable) {
-//         highlightsDrawMargin(false);
-//         debug("annotation mode enabled ! draws highlight NOT in marging!");
-//     } else {
-//         highlightsDrawMargin(["annotation"]);
-//         debug("annotation mode diasbled ! draws highlight IN marging!");
-//     }
-// }
-
-// function* annotationFocusMode(action: readerLocalActionAnnotations.focusMode.TAction) {
-//     debug("annotationMode (UI Edition and focus on current plus remove focus if any previous)");
-    
-//     const { payload: {previousFocusUuid, currentFocusUuid} } = action;
-
-//     if (previousFocusUuid ) {
-//         // disable with the new annotation margin mode, annotations are never deleted/unmounted
-//         // const modeEnabled = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.mode.enable);
-//         // if (!modeEnabled) {
-//         //     debug(`annotation focus mode -- delete the highlight for previousFocusUUId=${previousFocusUuid}`);
-//         //     yield* put(readerLocalActionHighlights.handler.pop.build([{ uuid: previousFocusUuid }]));
-//         // }
-//     }
-
-//     if (currentFocusUuid) {
-
-//         const annotations = yield* selectTyped((store: IReaderRootState) => store.reader.annotation);
-//         const annotationItemQueue = annotations.find(([_, {uuid}]) => uuid === currentFocusUuid);
-//         if (!annotationItemQueue) {
-//             debug(`ERROR: annotation item not found [currentFocusId=${currentFocusUuid}`);
-//         } else {
-//             debug(`annotation focus mode -- highlight the new currentFocusUUId=${currentFocusUuid}`);
-
-//             const annotationItem = annotationItemQueue[1]; // [timestamp, data]
-//             const { uuid, locatorExtended: { locator: { href }, selectionInfo }, color } = annotationItem;
-
-//             yield* put(readerLocalActionHighlights.handler.push.build([{ uuid, href, def: { selectionInfo, color, group: "annotation" } }]));
-//         }
-//     }
-// }
 
 function* readerStart() {
 
@@ -294,21 +235,6 @@ function* captureHightlightDrawMargin(action: readerLocalActionSetConfig.TAction
 
 export const saga = () =>
     all([
-        // takeSpawnEvery(
-        //     readerLocalActionAnnotations.enableMode.ID,
-        //     annotationEnableMode,
-        //     (e) => console.error("readerLocalActionAnnotations.enableMode", e),
-        // ),
-        // takeSpawnEvery(
-        //     readerLocalActionAnnotations.focusMode.ID,
-        //     annotationFocusMode,
-        //     (e) => console.error("readerLocalActionAnnotations.annotationFocusMode", e),
-        // ),
-        // takeSpawnEvery(
-        //     readerLocalActionHighlights.click.ID,
-        //     annotationClick,
-        //     (e) => console.error("readerLocalActionHighlights.click", e),
-        // ),
         takeSpawnEvery(
             readerLocalActionSetConfig.ID,
             captureHightlightDrawMargin,
@@ -334,9 +260,15 @@ export const saga = () =>
             annotationPop,
             (e) => console.error("readerLocalActionAnnotations.pop", e),
         ),
-        spawnLeading(
-            newLocatorOrTriggerBtnWatcher,
-            (e) => console.error("newLocatorOrTriggerBtnWatcher", e),
+        takeSpawnEvery(
+            readerLocalActionSetLocator.ID,
+            setLocator,
+            (e) => console.error("readerLocalActionSetLocator", e),
+        ),
+        takeSpawnEvery(
+            readerLocalActionAnnotations.trigger.ID,
+            annotationButtonTrigger,
+            (e) => console.error("readerLocalActionAnnotations.trigger", e),
         ),
         spawnLeading(
             readerStart,

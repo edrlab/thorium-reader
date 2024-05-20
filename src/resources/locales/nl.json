@@ -17,7 +17,6 @@
         "noLibraryFound": ""
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Kopieer",
             "cut": "Knip",
@@ -28,8 +27,26 @@
             "undo": "Ongedaan maken"
         },
         "hide": "Verbergen {{- appName}}",
-        "newVersion": "",
         "quit": "Verlaat {{- appName}}",
+<<<<<<< HEAD
+=======
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Nee",
+                        "yes": "Ja"
+                    },
+                    "message": "Wil je deze sessie bewaren?",
+                    "title": "Bewaar sessie"
+                }
+            }
+        },
+        "update": {
+            "message": "",
+            "title": ""
+        },
+>>>>>>> develop
         "window": {
             "showLibrary": "Toon bibliotheek / boekenplank"
         }
@@ -67,7 +84,7 @@
         "moreInfo": "Meer Informatie",
         "myBooks": "Mijn boeken",
         "noPublicationHelpL1": "Sleep een publicatie hier naar toe",
-        "noPublicationHelpL2": "of gebruik \"+\" knop hier boven.",
+        "noPublicationHelpL2": "of gebruik \"{{- importTitle }}\" knop hier boven.",
         "noPublicationHelpL3": "LCP beveiligde bestanden zijn ondersteund.",
         "noPublicationHelpL4": "Ondersteunde extensies:",
         "numberOfPages": "Aantal pagina's",
@@ -290,7 +307,6 @@
             "Color": "",
             "addNote": "",
             "advancedMode": "",
-            "advancedModeDetails": "",
             "annotationsOptions": "",
             "highlight": "",
             "noSelectionToast": "",
@@ -410,8 +426,13 @@
             "text": "Tekst",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "Neutraal",
                     "Night": "Nacht",
+                    "Paper": "",
                     "Sepia": "Sepia"
                 },
                 "title": "Thema"

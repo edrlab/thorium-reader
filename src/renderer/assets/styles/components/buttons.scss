@@ -52,15 +52,28 @@ button {
   padding: 5px;
   min-width: 100px;
   background-color: var(--color-blue);
-  color: white;
+  color: var(--color-secondary);
   transition: 200ms linear;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
+  &:focus-within, &:focus {
+    outline: var(--color-blue) solid 1px !important;
+    outline-offset: 2px;
+    border-radius: 5px;
+    background-color: var(--color-blue);
+    color: var(--color-secondary)!important;
+
+    svg {
+      fill: var(--color-secondary)!important;
+      color: var(--color-secondary)!important;
+    }
+  }
+
   svg {
     width: 14px;
-    fill: white;
+    fill: var(--color-secondary);
   }
 
   &:hover {
@@ -254,7 +267,7 @@ button {
   }
 
   &:disabled {
-    background-color: var(--color-medium-grey);
+    background-color: var(--color-verylight-grey-alt);
   }
 }
 
@@ -286,9 +299,23 @@ button {
   gap: 5px;
   box-sizing: content-box;
   position: relative;
+  transition: 200ms;
+
+  &:hover {
+    background-color: var(--color-button-hover);
+  }
   
-  &:focus-within {
-    @include R2_MIXIN_FOCUS_OUTLINE;
+  &:focus-within, &:focus {
+    outline: var(--color-blue) solid 1px !important;
+    outline-offset: 2px;
+    border-radius: 5px;
+    background-color: var(--color-blue);
+    color: var(--color-secondary)!important;
+
+    svg {
+      fill: var(--color-secondary)!important;
+      color: var(--color-secondary)!important;
+    }
   }
 
   svg {
@@ -299,11 +326,13 @@ button {
   
   input {
     position: absolute;
-    right: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
+    right: 5px;
+    top: 2px;
+    width: 90%;
+    height: 80%;
     z-index: -10;
+    border-radius: 5px;
+    padding: 1%;
   }
 }
 
@@ -358,6 +387,10 @@ button {
   
   &:focus-within {
     @include R2_MIXIN_FOCUS_OUTLINE;
+
+    outline: var(--color-blue) solid 1px !important;
+    outline-offset: 2px;
+    border-radius: 5px;
   }
 
   a {

@@ -7,6 +7,7 @@
 
 import "regenerator-runtime/runtime"; // for react-table (useAsyncDebounce()) see: https://github.com/TanStack/react-table/issues/2071#issuecomment-679999096
 
+import { HoverEvent } from "@react-types/shared";
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Location } from "history";
@@ -20,6 +21,7 @@ import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirs
 import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-right.svg";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
+import * as CloseIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import { matchSorter } from "match-sorter";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -622,7 +624,7 @@ const CellFormat: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell 
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => {
+            onKeyUp={(e) => {
                 if (e.key === "Enter") {
                     e.preventDefault();
                     // props.column.setFilter(t);
@@ -657,7 +659,7 @@ const CellLangs: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => {
+            onKeyUp={(e) => {
                 if (e.key === "Enter") {
                     e.preventDefault();
                     // props.column.setFilter(t);
@@ -709,7 +711,7 @@ const CellPublishers: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => {
+            onKeyUp={(e) => {
                 if (e.key === "Enter") {
                     e.preventDefault();
                     // props.column.setFilter(t);
@@ -761,7 +763,7 @@ const CellAuthors: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => {
+            onKeyUp={(e) => {
                 if (e.key === "Enter") {
                     e.preventDefault();
                     // props.column.setFilter(t);
@@ -826,7 +828,7 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => {
+            onKeyUp={(e) => {
                 if (e.key === "Enter") {
                     e.preventDefault();
                     // props.column.setFilter(t);
@@ -874,6 +876,8 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
 
     const textNeedToBeSanitized = props.value || "";
     const textSanitize = DOMPurify.sanitize(textNeedToBeSanitized).replace(/font-size:/g, "font-sizexx:");
+    const [isOpen, setIsOpen] = React.useState(false);
+
     return (<div
         className={stylesPublication.cell_description}
         style={{
@@ -892,12 +896,16 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
         }}>
         <p dangerouslySetInnerHTML={{ __html: textSanitize }}></p>
         {props.value ?
-            <Popover.Root>
-                <Popover.Trigger>
+            <Popover.Root onOpenChange={() => setIsOpen(!isOpen)}>
+                <Popover.Trigger style={{maxWidth: "15px"}}>
+                    {isOpen ?
+                    <SVG ariaHidden svg={CloseIcon} />
+                    :
                     <SVG ariaHidden svg={ChevronDown} />
+                    }
                 </Popover.Trigger>
                 <Popover.Portal>
-                    <Popover.Content collisionPadding={50} avoidCollisions>
+                    <Popover.Content collisionPadding={{top : 280}} avoidCollisions sideOffset={5} align="end" alignOffset={-10} hideWhenDetached>
                         <p className={stylesDropDown.dropdown_description} dangerouslySetInnerHTML={{ __html: textSanitize }}></p>
                         <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
                     </Popover.Content>
@@ -921,7 +929,7 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
 //         return <a
 //             title={`${t} (${props.__("header.searchPlaceholder")})`}
 //             tabIndex={0}
-//             onKeyPress={(e) => { if (e.key === "Enter") {
+//             onKeyUp={(e) => { if (e.key === "Enter") {
 //                 e.preventDefault();
 //                 props.column.setFilter(t);
 //                 props.setShowColumnFilters(true);
@@ -1009,7 +1017,7 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
 //         return <a
 //             title={`${t} (${props.__("header.searchPlaceholder")})`}
 //             tabIndex={0}
-//             onKeyPress={(e) => { if (e.key === "Enter") {
+//             onKeyUp={(e) => { if (e.key === "Enter") {
 //                 e.preventDefault();
 //                 props.column.setFilter(t);
 //                 props.setShowColumnFilters(true);
@@ -1101,7 +1109,7 @@ const CellDate: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
                 <a
                     title={`${props.value.label} (${props.__("header.searchPlaceholder")})`}
                     tabIndex={0}
-                    onKeyPress={(e) => {
+                    onKeyUp={(e) => {
                         if (e.key === "Enter") {
                             e.preventDefault();
                             const t = props.value.label.substring(0, props.column.id === "colLastReadTimestamp" ? 7 : 4); // YYYY or YYYY-MM
@@ -1171,7 +1179,7 @@ const CellRemainingDays: React.FC<ITableCellProps_Column & ITableCellProps_Gener
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => {
+            onKeyUp={(e) => {
                 if (e.key === "Enter") {
                     e.preventDefault();
                     // props.column.setFilter(t);
@@ -1208,7 +1216,7 @@ const CellReadingState: React.FC<ITableCellProps_Column & ITableCellProps_Generi
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => {
+            onKeyUp={(e) => {
                 if (e.key === "Enter") {
                     e.preventDefault();
                     // props.column.setFilter(t);
@@ -2034,7 +2042,14 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                         svg={TagIcon}
                                         allowsCustomValue
                                     >
-                                        {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                                        {item => <ComboBoxItem
+                                            onHoverStart={(e: HoverEvent) => {
+                                                if (!e.target.getAttribute("title")) {
+                                                    e.target.setAttribute("title", item.name);
+                                                }
+                                            }}
+                                            // aria-label={item.name}
+                                        >{item.name}</ComboBoxItem>}
                                     </ComboBox>
                                 </div>
 
@@ -2192,10 +2207,10 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                 >
                                     {
                                         !column.canSort ?
-                                        <button style={{position: "absolute", top: "8px", left: "5px"}} onClick={(e) => e.preventDefault()}>
+                                        <h4 style={{position: "absolute", top: "8px", left: "5px"}}>
                                         {
                                             column.render("Header")
-                                        }</button>
+                                        }</h4>
                                         :
                                         columnIsSortable ?
                                             <><button
@@ -2318,7 +2333,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
                                     <tr key={`bodytr_${index}`} {...row.getRowProps()}
                                         style={{
-                                            backgroundColor: index % 2 ? "var(--color-light-grey)" : undefined,
+                                            backgroundColor: index % 2 ? "var(--color-extralight-grey)" : undefined,
                                         }}>{row.cells.map((cell, i) => {
                                             return (<td key={`bodytrtd_${i}`} {...cell.getCellProps()}
                                             >{

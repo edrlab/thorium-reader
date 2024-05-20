@@ -14,6 +14,7 @@ import { patchChannel } from "../sagas/patch";
 
 import { PersistRootState, RootState } from "../states";
 
+// We do not persist ICommonRootState.versionUpdate ({newVersionURL, newVersion} state always starts at undefined)
 export const reduxPersistMiddleware: Middleware
     = (store: MiddlewareAPI<Dispatch<UnknownAction>, RootState>) =>
         (next: (action: unknown) => unknown) => // Dispatch<ActionWithSender>
@@ -26,6 +27,7 @@ export const reduxPersistMiddleware: Middleware
                 const nextState = store.getState();
 
                 const persistPrevState: PersistRootState = {
+                    // versionUpdate: prevState.versionUpdate,
                     theme: prevState.theme,
                     win: prevState.win,
                     reader: prevState.reader,
@@ -42,6 +44,7 @@ export const reduxPersistMiddleware: Middleware
                 };
 
                 const persistNextState: PersistRootState = {
+                    // versionUpdate: nextState.versionUpdate,
                     theme: nextState.theme,
                     win: nextState.win,
                     reader: nextState.reader,

@@ -17,7 +17,6 @@
         "noLibraryFound": "Knjižnica nije pronađena ({{- name}})"
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "Kopiraj",
             "cut": "Izreži",
@@ -28,8 +27,26 @@
             "undo": "Poništi"
         },
         "hide": "Sakrij {{- appName}}",
-        "newVersion": "",
         "quit": "Ugasi {{- appName}}",
+<<<<<<< HEAD
+=======
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Ne",
+                        "yes": "Da"
+                    },
+                    "message": "Želite li spremiti sesiju ?",
+                    "title": "Spremi sesiju"
+                }
+            }
+        },
+        "update": {
+            "message": "",
+            "title": ""
+        },
+>>>>>>> develop
         "window": {
             "showLibrary": "Prikaži knjižnicu / policu"
         }
@@ -67,7 +84,7 @@
         "moreInfo": "Detalji građe",
         "myBooks": "Moje knjige",
         "noPublicationHelpL1": "Ispusti građu ovdje",
-        "noPublicationHelpL2": "ili koristi \"+\" gumb iznad.",
+        "noPublicationHelpL2": "ili koristi \"{{- importTitle }}\" gumb iznad.",
         "noPublicationHelpL3": "Dokumenti zaštićeni LCP-om su podržani.",
         "noPublicationHelpL4": "Podržane ekstenzije:",
         "numberOfPages": "Broj stranica",
@@ -290,7 +307,6 @@
             "Color": "",
             "addNote": "",
             "advancedMode": "",
-            "advancedModeDetails": "",
             "annotationsOptions": "",
             "highlight": "",
             "noSelectionToast": "",
@@ -410,8 +426,13 @@
             "text": "Tekst",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "Neutralno",
                     "Night": "Noćno",
+                    "Paper": "",
                     "Sepia": "Sepia"
                 },
                 "title": "Tema"

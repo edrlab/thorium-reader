@@ -17,7 +17,6 @@
         "noLibraryFound": "未发现图书馆 ({{- name}})"
     },
     "app": {
-        "downloadVersion": "",
         "edit": {
             "copy": "复制",
             "cut": "剪切",
@@ -28,8 +27,26 @@
             "undo": "撤销"
         },
         "hide": "隐藏 {{- appName}}",
-        "newVersion": "",
         "quit": "退出 {{- appName}}",
+<<<<<<< HEAD
+=======
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "否",
+                        "yes": "是"
+                    },
+                    "message": "是否保存当前会话？",
+                    "title": "保存会话"
+                }
+            }
+        },
+        "update": {
+            "message": "",
+            "title": ""
+        },
+>>>>>>> develop
         "window": {
             "showLibrary": "显示 书库/书架"
         }
@@ -67,7 +84,7 @@
         "moreInfo": "更多信息",
         "myBooks": "我的图书",
         "noPublicationHelpL1": "拖放 EPUB 至此处。",
-        "noPublicationHelpL2": "或者使用上面的\"+\"按钮。",
+        "noPublicationHelpL2": "或者使用上面的\"{{- importTitle }}\"按钮。",
         "noPublicationHelpL3": "支持受 LCP 保护的文件。",
         "noPublicationHelpL4": "支持的扩展名：",
         "numberOfPages": "页码",
@@ -290,7 +307,6 @@
             "Color": "",
             "addNote": "",
             "advancedMode": "",
-            "advancedModeDetails": "",
             "annotationsOptions": "",
             "highlight": "",
             "noSelectionToast": "",
@@ -410,8 +426,13 @@
             "text": "文字",
             "theme": {
                 "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
                     "Neutral": "无色",
                     "Night": "夜间",
+                    "Paper": "",
                     "Sepia": "茶色"
                 },
                 "title": "主题"

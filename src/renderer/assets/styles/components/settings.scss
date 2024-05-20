@@ -2,6 +2,8 @@
 =-=-= settings.scss
 */
 
+@import 'src/renderer/assets/styles/partials/mixin';
+
 $settings_bg: var(--color-light-blue);
 $setting_color: var(--color-blue);
 
@@ -13,13 +15,9 @@ $setting_color: var(--color-blue);
         accent-color: $setting_color;
     }
 
-    @media screen and (height <= 700px) {
-        height: 450px;
-    }
-
     .section {
         padding-bottom: 15px ;
-        border-bottom: 3px solid var(--color-light-grey);
+        border-bottom: 2px solid var(--color-extralight-grey);
         margin: 10px 0 20px;
         width: 100%;
         display: flex;
@@ -57,6 +55,19 @@ $setting_color: var(--color-blue);
             gap: 5px;
             color: $setting_color;
 
+            &:focus-within, &:focus {
+                outline: var(--color-blue) solid 1px !important;
+                outline-offset: 2px;
+                border-radius: 5px;
+                background-color: var(--color-blue);
+                color: var(--color-secondary)!important;
+            
+                svg {
+                  fill: var(--color-secondary)!important;
+                  color: var(--color-secondary)!important;
+                }
+              }
+
             p {
                 font-size: 14px;
             }
@@ -75,12 +86,20 @@ $setting_color: var(--color-blue);
     }
 }
 
+.modal_dialog_reader .settings_container {
+    &:not(:has(.guidedTour_content)) {
+        @media screen and (height <= 700px) {
+            height: 450px;
+        }
+    }
+} 
+
 .settings_tabslist {
     display: flex;
     flex-direction: column;
     width: 100%;
     flex: 1;
-    border-right: 1px solid var(--color-medium-grey);
+    border-right: 2px solid var(--color-extralight-grey-alt);
     padding-top: 50px;
     background-color: var(--color-extralight-grey);
     gap: 10px;
@@ -95,20 +114,27 @@ $setting_color: var(--color-blue);
         margin: 0 10%;
         gap: 10px;
         padding: 5px;
-        border: 1px solid transparent;
         border-radius: 6px;
         font-weight: normal;
+        border: 1px solid transparent;
 
         h3 {
             font-size: 14px;
             text-overflow: ellipsis;
             overflow: hidden;
-            max-width: 120px;
+            max-width: 180px;
             white-space: nowrap;
         }
 
         &:hover {
-            background-color: var(--color-medium-grey);
+            background-color: var(--color-secondary);
+            border: 1px solid var(--color-blue);
+            color: var(--color-blue);
+
+            svg {
+                color: var(--color-blue);
+                fill: var(--color-blue);
+            }
         }
 
         &[data-state="active"]{ 
@@ -144,7 +170,17 @@ $setting_color: var(--color-blue);
 .allowCustom {
     display: flex;
     accent-color: var(--color-blue);
-    margin: 10px;
+    // margin: 10px;
+    gap: 5px;
+
+
+    input {
+        height: 12px;
+    }
+
+    label {
+        font-size: 12px;
+    }
 }
 
 .tablist_reading {
@@ -202,18 +238,7 @@ $setting_color: var(--color-blue);
     overflow: hidden scroll;
     margin-top: 50px;
 
-    &::-webkit-scrollbar-thumb {
-        border-radius: 5px;
-    }
-
-    &::-webkit-scrollbar {
-    width: 10px;
-    background: var(--color-secondary);
-    }
-
-    &:hover::-webkit-scrollbar-thumb {
-        background-color: var(--scrollbar-thumb);
-    }
+    @include scrollbar_styling;
 
     .button_transparency_icon {
         position: relative;
@@ -224,6 +249,22 @@ $setting_color: var(--color-blue);
             left: 50%;
             top: 50%;
             fill: $setting_color;
+        }
+    }
+}
+
+[data-theme="dark"] {
+    .button_transparency_icon:not([aria-label= "Close"]) svg {
+        color: var(--color-primary);
+        fill: var(--color-primary);
+    }
+}
+
+[data-theme="system"] {
+    @media (prefers-color-scheme: dark) {
+        .button_transparency_icon:not([aria-label= "Close"]) svg {
+            color: var(--color-primary);
+            fill: var(--color-primary);
         }
     }
 }
@@ -312,6 +353,10 @@ $setting_color: var(--color-blue);
         &_spacing {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
+
+            @media screen and (width <= 820px) {
+                display: block;
+            }
 
             .section {
                 width: 90%!important;
@@ -408,7 +453,7 @@ $setting_color: var(--color-blue);
         gap: 10px;
         width: 320px;
         font-size: 14px;
-        background-color: var(--color-light-grey);
+        background-color: var(--color-extralight-grey);
         color: var(--color-primary);
         padding: 5px 10px;
         border-radius: 5px;
@@ -776,9 +821,9 @@ div[data-radix-popper-content-wrapper] {
 
 .settings_theme_container {
     border-radius: 6px;
-    border-width: 2px;
+    border-width: 1px;
     border-style: solid;
-    border-color: var(--color-medium-grey);
+    border-color: var(--color-light-grey);
     width: 85px;
     height: 45px!important;
     min-height: 45px!important;
@@ -802,8 +847,8 @@ div[data-radix-popper-content-wrapper] {
         top: -6px;
         right: -8px;
         border-radius: 6px;
-        border-right: 1px solid var(--color-medium-grey);
-        border-top: 1px solid var(--color-medium-grey);
+        border-right: 1px solid var(--color-light-grey);
+        border-top: 1px solid var(--color-light-grey);
     }
 
     svg {

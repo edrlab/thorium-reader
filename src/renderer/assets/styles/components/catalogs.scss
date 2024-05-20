@@ -2,6 +2,9 @@
 =-=-= catalogs.scss
 */
 
+@import 'src/renderer/assets/styles/partials/mixin';
+
+
 .catalog_wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -25,9 +28,9 @@
 
     .catalog_content {
         border-radius: 6px;
-        border-width: 2px;
+        border-width: 1px;
         border-style: solid;
-        border-color: var(--color-medium-grey);
+        border-color: var(--color-light-grey);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -47,8 +50,8 @@
             top: -8px;
             right: -10px;
             border-radius: 6px;
-            border-right: 1px solid var(--color-medium-grey);
-            border-top: 1px solid var(--color-medium-grey);
+            border-right: 1px solid var(--color-light-grey);
+            border-top: 1px solid var(--color-light-grey);
         }
 
         svg {
@@ -136,9 +139,9 @@
 
     &_item {
         border-radius: 6px;
-        border-width: 2px;
+        border-width: 1px;
         border-style: solid;
-        border-color: var(--color-medium-grey);
+        border-color: var(--color-light-grey);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -158,8 +161,8 @@
             top: -8px;
             right: -10px;
             border-radius: 6px;
-            border-right: 1px solid var(--color-medium-grey);
-            border-top: 1px solid var(--color-medium-grey);
+            border-right: 1px solid var(--color-light-grey);
+            border-top: 1px solid var(--color-light-grey);
         }
 
         a {
@@ -172,6 +175,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            box-sizing: border-box;
+
+            span {
+                // display: block;
+                max-height: 55px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 3; /* number of lines to show */
+                        line-clamp: 3; 
+                -webkit-box-orient: vertical;
+            }
         }
     }
 }
@@ -228,7 +243,7 @@
 
     label {
         background-color: var(--color-extralight-grey)!important;
-        top: -18px!important;
+        // top: -18px!important;
     }
 
     @media screen and (width <= 1024px) {
@@ -276,12 +291,21 @@
 
 .opds_browserResults {
     overflow: auto;
-    inset: 280px 20px 30px 30px;
+    inset: 260px 20px 30px 30px;
     padding: 0;
-    margin-top: 0;
-    margin-bottom: 0.4em;
     position: absolute;
     padding-right: 25px;
+    margin: 2px;
+
+    .button_transparency {
+        margin: 4px;
+    }
+
+    @media only screen and (width <= 1024px) {
+        inset: 310px 20px 30px 30px;
+    }
+
+    @include scrollbar_styling;
 
     .loader {
         margin: 20%;

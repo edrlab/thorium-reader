@@ -34,9 +34,9 @@
   user-select: none;
 
   --sideButtonColor: rgb(130 130 130 / 50%);
-  --reader-mainColor: white;
-  --reader-secondaryColor: white;
-  --reader-fontColor: #000;
+  --reader-mainColor: #FEFEFE;
+  --reader-secondaryColor: #FEFEFE;
+  --reader-fontColor: #1E1E1E;
   --reader-separatorColor: #c1c1c1;
   --reader-menuPartColor: #f8f8f8;
   --reader-menuPartTitleColor: #ededed;
@@ -51,9 +51,9 @@
 }
 
 .nightMode {
-  --reader-mainColor: #000;
-  --reader-secondaryColor: #151515;
-  --reader-fontColor: white;
+  --reader-mainColor: #121212;
+  --reader-secondaryColor: #121212;
+  --reader-fontColor: #EAEAEA;
   --reader-separatorColor: #565656;
   --reader-menuPartColor: #353535;
   --reader-menuPartTitleColor: #151515;
@@ -63,11 +63,61 @@
 .sepiaMode {
   --reader-mainColor: #faf4e8;
   --reader-secondaryColor: #faf4e8;
-  --reader-fontColor: #121212;
+  --reader-fontColor: #050B17;
   --reader-separatorColor: #b3b3b3;
   --reader-menuPartColor: #ece6da;
   --reader-menuPartTitleColor: #e8dac5;
   --reader-menuPartTitleHoverColor: #d8d8d8;
+}
+
+.contrast1Mode {
+  --reader-mainColor: #000;
+  --reader-secondaryColor: #151515;
+  --reader-fontColor: white;
+  --reader-separatorColor: #565656;
+  --reader-menuPartColor: #353535;
+  --reader-menuPartTitleColor: #151515;
+  --reader-menuPartTitleHoverColor: #1c1c1c;
+}
+
+.paperMode {
+  --reader-mainColor: #E9DDC8;
+  --reader-secondaryColor: #E9DDC8;
+  --reader-fontColor: black;
+  --reader-separatorColor: #565656;
+  --reader-menuPartColor: #353535;
+  --reader-menuPartTitleColor: #151515;
+  --reader-menuPartTitleHoverColor: #1c1c1c;
+}
+
+.contrast2Mode {
+  --reader-mainColor: #000;
+  --reader-secondaryColor: #151515;
+  --reader-fontColor: #FF0;
+  --reader-separatorColor: #565656;
+  --reader-menuPartColor: #353535;
+  --reader-menuPartTitleColor: #151515;
+  --reader-menuPartTitleHoverColor: #1c1c1c;
+}
+
+.contrast3Mode {
+  --reader-mainColor: #181842;
+  --reader-secondaryColor: #181842;
+  --reader-fontColor: white;
+  --reader-separatorColor: #565656;
+  --reader-menuPartColor: #353535;
+  --reader-menuPartTitleColor: #151515;
+  --reader-menuPartTitleHoverColor: #1c1c1c;
+}
+
+.contrast4Mode {
+  --reader-mainColor: #C5E7CD;
+  --reader-secondaryColor: #C5E7CD;
+  --reader-fontColor: black;
+  --reader-separatorColor: #565656;
+  --reader-menuPartColor: #353535;
+  --reader-menuPartTitleColor: #151515;
+  --reader-menuPartTitleHoverColor: #1c1c1c;
 }
 
 body {
@@ -144,7 +194,7 @@ button {
   height: 100%;
   display: flex;
   align-items: stretch;
-  margin-top: 0.5rem;
+  // margin-top: 0.5rem;
 
   // margin-bottom: 5rem;
 
@@ -203,11 +253,15 @@ button {
 }
 
 .isOnSearch {
-  top: 100px!important;
+  top: 96px!important;
 }
 
 .isOnSearchPdf {
   top: 48px!important;
+}
+
+.isOnSearch.popover_dialog_reader .settings_container {
+  height: calc(100dvh - 270px);
 }
 
 
@@ -1053,4 +1107,19 @@ input[type="radio"] + label {
   display: block;
   text-align: left;
   width: 100%;
+
+  p {
+    padding: 5px;
+  }
+}
+
+.display_checkbox_section {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+
+  &:has(input:focus) {
+    outline: var(--color-blue) solid 2px !important;
+    outline-offset: -2px;
+  }
 }

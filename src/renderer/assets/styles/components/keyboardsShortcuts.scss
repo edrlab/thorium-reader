@@ -26,6 +26,13 @@
         width: fit-content;
         font-size: 16px;
 
+        button {
+            height: 20px;
+            width: 20px;
+            padding-bottom: 5px;
+            padding-left: 5px;
+        }
+
         &_container {
             margin-bottom: 10px;
 
@@ -33,8 +40,6 @@
                 color: var(--color-blue)!important;
                 width: 15px;
                 height: 15px;
-                padding-bottom: 5px;
-                padding-left: 5px;
                 transition: 200ms;
 
                 &:hover {
@@ -52,6 +57,10 @@
                 .keyshortElement_shortcut {
                     color: var(--color--primary);
                     background-color: transparent;
+
+                    > button {
+                        display: none;
+                    }
                 }
 
                 > * {
@@ -62,6 +71,14 @@
                     position: absolute;
                     left: -2000px;
 
+                    &:focus + label {
+                        outline: var(--color-blue) solid 1px !important;
+                        outline-offset: 2px;
+                        border-radius: 5px;
+                        background-color: var(--color-blue);
+                        color: var(--color-secondary);
+                    }
+
                     &:checked + label {
                         border: 1px solid var(--color-blue);
                         background-color: var(--color-secondary);
@@ -71,10 +88,6 @@
                             fill: var(--color-blue);
                         }
                     }
-
-                    &:focus + label {
-                        outline: 2px solid var(--color--blue);
-                    }
                 }
 
                 label {
@@ -82,7 +95,7 @@
                     border-radius: 6px;
                     color: var(--color--primary);
                     padding: 3px;
-                    background-color: var(--color-light-grey);
+                    background-color: var(--color-verylight-grey);
 
                     &:hover {
                         cursor: pointer;

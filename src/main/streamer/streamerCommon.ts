@@ -99,6 +99,13 @@ export function setupMathJaxTransformer(getUrl: () => string) {
         -webkit-app-region: no-drag !important;
     }
      */
+
+/* ReadiumCSS override to eliminate the attempt to make images "blend". Here in Thorium we pass Sepia mode even with custom themes in order to inherit link styles and avoid headings custom treatment if only fore/background colours are passed ... in other words, it's a hack */
+:root[style*="readium-sepia-on"] > body svg,
+:root[style*="readium-sepia-on"] > body img {
+/* background-color: transparent !important; */
+mix-blend-mode: normal !important;
+}
     </style>
     `;
         str = str.replace(/<\/head>/, `${cssElectronMouseDrag}</head>`);

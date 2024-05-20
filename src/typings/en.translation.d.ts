@@ -31,7 +31,6 @@ declare namespace typed_i18n {
   (_: "apiapp.informations", __?: {}): string;
   (_: "apiapp.noLibraryFound", __?: {}): string;
   (_: "app", __?: {}): {
-  readonly "downloadVersion": string,
   readonly "edit": {
     readonly "copy": string,
     readonly "cut": string,
@@ -42,11 +41,22 @@ declare namespace typed_i18n {
     readonly "undo": string
   },
   readonly "hide": string,
-  readonly "newVersion": string,
   readonly "quit": string,
+<<<<<<< HEAD
+=======
+  readonly "session": {
+    readonly "exit": {
+      readonly "askBox": {
+        readonly "button": { readonly "no": string, readonly "yes": string },
+        readonly "message": string,
+        readonly "title": string
+      }
+    }
+  },
+  readonly "update": { readonly "message": string, readonly "title": string },
+>>>>>>> develop
   readonly "window": { readonly "showLibrary": string }
 };
-  (_: "app.downloadVersion", __?: {}): string;
   (_: "app.edit", __?: {}): {
   readonly "copy": string,
   readonly "cut": string,
@@ -63,7 +73,40 @@ declare namespace typed_i18n {
   (_: "app.edit.selectAll", __?: {}): string;
   (_: "app.edit.title", __?: {}): string;
   (_: "app.edit.undo", __?: {}): string; (_: "app.hide", __?: {}): string;
+<<<<<<< HEAD
   (_: "app.newVersion", __?: {}): string; (_: "app.quit", __?: {}): string;
+=======
+  (_: "app.quit", __?: {}): string;
+  (_: "app.session", __?: {}): {
+  readonly "exit": {
+    readonly "askBox": {
+      readonly "button": { readonly "no": string, readonly "yes": string },
+      readonly "message": string,
+      readonly "title": string
+    }
+  }
+};
+  (_: "app.session.exit", __?: {}): {
+  readonly "askBox": {
+    readonly "button": { readonly "no": string, readonly "yes": string },
+    readonly "message": string,
+    readonly "title": string
+  }
+};
+  (_: "app.session.exit.askBox", __?: {}): {
+  readonly "button": { readonly "no": string, readonly "yes": string },
+  readonly "message": string,
+  readonly "title": string
+};
+  (_: "app.session.exit.askBox.button", __?: {}): { readonly "no": string, readonly "yes": string };
+  (_: "app.session.exit.askBox.button.no", __?: {}): string;
+  (_: "app.session.exit.askBox.button.yes", __?: {}): string;
+  (_: "app.session.exit.askBox.message", __?: {}): string;
+  (_: "app.session.exit.askBox.title", __?: {}): string;
+  (_: "app.update", __?: {}): { readonly "message": string, readonly "title": string };
+  (_: "app.update.message", __?: {}): string;
+  (_: "app.update.title", __?: {}): string;
+>>>>>>> develop
   (_: "app.window", __?: {}): { readonly "showLibrary": string };
   (_: "app.window.showLibrary", __?: {}): string;
   (_: "catalog", __?: {}): {
@@ -660,7 +703,6 @@ declare namespace typed_i18n {
     readonly "Color": string,
     readonly "addNote": string,
     readonly "advancedMode": string,
-    readonly "advancedModeDetails": string,
     readonly "annotationsOptions": string,
     readonly "highlight": string,
     readonly "noSelectionToast": string,
@@ -773,8 +815,13 @@ declare namespace typed_i18n {
     readonly "text": string,
     readonly "theme": {
       readonly "name": {
+        readonly "Contrast1": string,
+        readonly "Contrast2": string,
+        readonly "Contrast3": string,
+        readonly "Contrast4": string,
         readonly "Neutral": string,
         readonly "Night": string,
+        readonly "Paper": string,
         readonly "Sepia": string
       },
       readonly "title": string
@@ -801,7 +848,6 @@ declare namespace typed_i18n {
   readonly "Color": string,
   readonly "addNote": string,
   readonly "advancedMode": string,
-  readonly "advancedModeDetails": string,
   readonly "annotationsOptions": string,
   readonly "highlight": string,
   readonly "noSelectionToast": string,
@@ -812,7 +858,6 @@ declare namespace typed_i18n {
   (_: "reader.annotations.Color", __?: {}): string;
   (_: "reader.annotations.addNote", __?: {}): string;
   (_: "reader.annotations.advancedMode", __?: {}): string;
-  (_: "reader.annotations.advancedModeDetails", __?: {}): string;
   (_: "reader.annotations.annotationsOptions", __?: {}): string;
   (_: "reader.annotations.highlight", __?: {}): string;
   (_: "reader.annotations.noSelectionToast", __?: {}): string;
@@ -985,8 +1030,13 @@ declare namespace typed_i18n {
   readonly "text": string,
   readonly "theme": {
     readonly "name": {
+      readonly "Contrast1": string,
+      readonly "Contrast2": string,
+      readonly "Contrast3": string,
+      readonly "Contrast4": string,
       readonly "Neutral": string,
       readonly "Night": string,
+      readonly "Paper": string,
       readonly "Sepia": string
     },
     readonly "title": string
@@ -1060,19 +1110,34 @@ declare namespace typed_i18n {
   (_: "reader.settings.text", __?: {}): string;
   (_: "reader.settings.theme", __?: {}): {
   readonly "name": {
+    readonly "Contrast1": string,
+    readonly "Contrast2": string,
+    readonly "Contrast3": string,
+    readonly "Contrast4": string,
     readonly "Neutral": string,
     readonly "Night": string,
+    readonly "Paper": string,
     readonly "Sepia": string
   },
   readonly "title": string
 };
   (_: "reader.settings.theme.name", __?: {}): {
+  readonly "Contrast1": string,
+  readonly "Contrast2": string,
+  readonly "Contrast3": string,
+  readonly "Contrast4": string,
   readonly "Neutral": string,
   readonly "Night": string,
+  readonly "Paper": string,
   readonly "Sepia": string
 };
+  (_: "reader.settings.theme.name.Contrast1", __?: {}): string;
+  (_: "reader.settings.theme.name.Contrast2", __?: {}): string;
+  (_: "reader.settings.theme.name.Contrast3", __?: {}): string;
+  (_: "reader.settings.theme.name.Contrast4", __?: {}): string;
   (_: "reader.settings.theme.name.Neutral", __?: {}): string;
   (_: "reader.settings.theme.name.Night", __?: {}): string;
+  (_: "reader.settings.theme.name.Paper", __?: {}): string;
   (_: "reader.settings.theme.name.Sepia", __?: {}): string;
   (_: "reader.settings.theme.title", __?: {}): string;
   (_: "reader.settings.wordSpacing", __?: {}): string;

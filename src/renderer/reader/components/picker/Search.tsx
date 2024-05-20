@@ -25,6 +25,8 @@ import SearchFormPicker from "./SearchFormPicker";
 import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
 
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -115,7 +117,7 @@ class SearchPicker extends React.Component<IProps, IState> {
                     (this.loadSeq > 2 && found) &&
                     (
                         <div className={stylesReaderHeader.searchActions}>
-                            <span style={{ width: "1px", height: "30px", backgroundColor: "var(--color-medium-grey)", margin: "auto 20px" }}></span>
+                            <span style={{ width: "1px", height: "30px", backgroundColor: "var(--color-verylight-grey)", margin: "auto 10px auto 20px" }}></span>
                             <button
                                 disabled={notFound}
                                 onClick={() => {
@@ -125,19 +127,20 @@ class SearchPicker extends React.Component<IProps, IState> {
                                 }}
                                 aria-label={found}
                                 title={found}
-                                style={{
+                                 style={{
                                     width: "auto",
-                                    padding: "4px",
-                                    margin: "0",
+                                //     padding: "4px",
+                                //     margin: "0",
                                     fontSize: "1em",
-                                    // color: notFound ? "grey" : "black",
-                                    fill: notFound ? "grey" : "black",
-                                    background: "var(--color-light-blue)",
-                                    border: "1px solid var(--color-blue)",
-                                    borderRadius: "6px",
-                                    color: "var(--color-blue)",
+                                //     // color: notFound ? "grey" : "black",
+                                //     fill: notFound ? "grey" : "black",
+                                //     background: "var(--color-light-blue)",
+                                //     border: "1px solid var(--color-blue)",
+                                //     borderRadius: "6px",
+                                //     color: "var(--color-blue)",
                                     textWrap: "nowrap",
-                                }}
+                                 }}
+                                className={stylesButtons.button_nav_primary}
                             >
                                 <span aria-live="polite">
                                     {found}

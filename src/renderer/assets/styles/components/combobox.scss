@@ -2,6 +2,8 @@
 =-=-= combobox.scss
 */
 
+@import 'src/renderer/assets/styles/partials/mixin';
+
 .react_aria_ComboBox {
   color: var(--text-color);
   padding-bottom: 15px;
@@ -12,7 +14,7 @@
   gap: 5px;
 
   .my_combobox_container {
-    border: 1px solid var(--color-primary);
+    border: 1px solid var(--color-dark-grey-alt);
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -45,7 +47,7 @@
     background: transparent!important;
     color: var(--field-text-color);
     height: 24px;
-    padding: 0 5px 0 40px;
+    padding: 0 5px 0 30px;
     vertical-align: middle;
     border: none;
     width: 320px;
@@ -82,11 +84,21 @@
   width: var(--trigger-width);
   background-color: var(--color-secondary);
   pointer-events: auto;
-  border: 1px solid var(--color-primary);
+  border: 1px solid var(--color-dark-grey-alt);
   border-radius: 6px;
   height: fit-content;
   max-height: 350px!important;
-  overflow: auto;
+  overflow: hidden auto;
+
+  @include scrollbar_styling;
+  
+  &::-webkit-scrollbar {
+    width: 10px;
+
+    &-thumb {
+        border-radius: 5px;
+    }
+  }
 
   .react_aria_ListBox {
     display: block;
@@ -101,32 +113,40 @@
 }
 
 .my_item {
-    margin: 2px;
-    padding: 4px 8px 4px 22px;
-    border-radius: 6px;
+    padding: 4px 8px 4px 30px;
     outline: none;
     cursor: pointer;
     color: var(--color-primary);
     position: relative;
     transition: 100ms;
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
   
     &.selected {
       font-weight: 600;
       background: none;
   
       &::before {
-        content: '✓';
-        content: '✓' / '';
+        content: '';
+        content: '' / '';
         alt: ' ';
         position: absolute;
-        top: 4px;
-        left: 4px;
+        top: 2px;
+        left: 2px;
+        background-color: var(--color-primary);
+        mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNSA3IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNOC44MzUxMiAxLjg0MzEyTDMuOTM1MTIgNi42NTU2MkMzLjgxMjQgNi43NzYxOSAzLjY0NzI0IDYuODQzNzUgMy40NzUyIDYuODQzNzVDMy4zMDMxNiA2Ljg0Mzc1IDMuMTM4IDYuNzc2MTkgMy4wMTUyOCA2LjY1NTYyTDAuOTE1Mjc3IDQuNTkzMzVDMC44NTM3NjYgNC41MzI5NiAwLjgwNDc1NCA0LjQ2MTA0IDAuNzcxMDM4IDQuMzgxN0MwLjczNzMyMyA0LjMwMjM2IDAuNzE5NTY1IDQuMjE3MTUgMC43MTg3NzcgNC4xMzA5NUMwLjcxNzE4OCAzLjk1Njg2IDAuNzg0ODIyIDMuNzg5MjYgMC45MDY4MDEgMy42NjUwM0MwLjk2NzE5OCAzLjYwMzUyIDEuMDM5MTIgMy41NTQ1MSAxLjExODQ2IDMuNTIwOEMxLjE5NzggMy40ODcwOCAxLjI4MyAzLjQ2OTMyIDEuMzY5MjEgMy40Njg1M0MxLjU0MzMgMy40NjY5NCAxLjcxMDg5IDMuNTM0NTggMS44MzUxMiAzLjY1NjU2TDMuNDc1NzUgNS4yNjc2NUw3LjkxNTgyIDAuOTA2ODcxQzguMDM5OTggMC43ODQ4OTIgOC4yMDc1IDAuNzE3MjI5IDguMzgxNTUgMC43MTg3NjdDOC41NTU1OSAwLjcyMDMwNiA4LjcyMTg5IDAuNzkwOTE5IDguODQzODcgMC45MTUwNzRDOC45NjU4NSAxLjAzOTIzIDkuMDMzNTEgMS4yMDY3NSA5LjAzMTk3IDEuMzgwOEM5LjAzMDQ0IDEuNTU0ODQgOC45NTk4MiAxLjcyMTE0IDguODM1NjcgMS44NDMxMkg4LjgzNTEyWk0xNC4wOTMzIDAuOTEzNDMzQzE0LjAzMjkgMC44NTE3MTIgMTMuOTYwOSAwLjgwMjUyNyAxMy44ODE0IDAuNzY4Njk5QzEzLjgwMTkgMC43MzQ4NzEgMTMuNzE2NiAwLjcxNzA2NiAxMy42MzAyIDAuNzE2MzA0QzEzLjU0MzggMC43MTU1NDIgMTMuNDU4MSAwLjczMTgzOCAxMy4zNzgxIDAuNzY0MjU4QzEzLjI5OCAwLjc5NjY3OSAxMy4yMjUxIDAuODQ0NTg1IDEzLjE2MzYgMC45MDUyM0w4LjcyNTIgNS4yNjc2NUw4LjI5NDI2IDQuODQ0MzdDOC4xNzAxMSA0LjcyMjM5IDguMDAyNTggNC42NTQ3MyA3LjgyODU0IDQuNjU2MjdDNy42NTQ1IDQuNjU3ODEgNy40ODgxOSA0LjcyODQyIDcuMzY2MjIgNC44NTI1N0M3LjI0NDI0IDQuOTc2NzMgNy4xNzY1NyA1LjE0NDI1IDcuMTc4MTEgNS4zMTgzQzcuMTc5NjUgNS40OTIzNCA3LjI1MDI2IDUuNjU4NjQgNy4zNzQ0MiA1Ljc4MDYyTDguMjY1MjggNi42NTU2MkM4LjM4OCA2Ljc3NjE5IDguNTUzMTYgNi44NDM3NSA4LjcyNTIgNi44NDM3NUM4Ljg5NzI0IDYuODQzNzUgOS4wNjI0IDYuNzc2MTkgOS4xODUxMiA2LjY1NTYyTDE0LjA4NTEgMS44NDMxMkMxNC4xNDY2IDEuNzgyNzIgMTQuMTk1NiAxLjcxMDgxIDE0LjIyOTMgMS42MzE0OEMxNC4yNjI5IDEuNTUyMTYgMTQuMjgwNyAxLjQ2Njk3IDE0LjI4MTQgMS4zODA4QzE0LjI4MjIgMS4yOTQ2MiAxNC4yNjYgMS4yMDkxNCAxNC4yMzM3IDEuMTI5MjNDMTQuMjAxNCAxLjA0OTMyIDE0LjE1MzcgMC45NzY1NDggMTQuMDkzMyAwLjkxNTA3NFYwLjkxMzQzM1oiIGZpbGw9ImN1cnJlbnRDb2xvciIvPgo8L3N2Zz4K");
+        mask-repeat: no-repeat;
+        mask-position: 50% 50%;
+        height: 25px;
+        width: 25px;
       }
     }
   
     &.focused {
-      background: var(--color-blue);
-      color: white;
+      background: var(--color-light-blue);
+      color: var(--color-blue);
     }
   }
   
