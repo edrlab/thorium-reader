@@ -363,6 +363,10 @@ $setting_color: var(--color-blue);
             display: grid;
             grid-template-columns: repeat(2, 1fr);
 
+            @media screen and (width <= 820px) {
+                display: block;
+            }
+
             .section {
                 width: 90%!important;
 
