@@ -1517,8 +1517,11 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         <div 
                                         tabIndex={0}
                                         role="checkbox"
+                                        aria-checked={serialAnnotator}
+                                        aria-label={__("reader.annotations.advancedMode")}
                                         onKeyUp={(e) => {
-                                            if (e.key === "Space") {
+                                            // if (e.code === "Space") {
+                                            if (e.key === " ") {
                                                 e.preventDefault();
                                                 advancedAnnotationsOnChange();
                                             }
@@ -1531,7 +1534,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                                 <></>
                                             }
                                         </div>
-                                        <div>
+                                        <div aria-hidden>
                                             <h4>{__("reader.annotations.advancedMode")}</h4>
                                         </div>
                                     </label>
@@ -1545,8 +1548,11 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         <div 
                                         tabIndex={0}
                                         role="checkbox"
+                                        aria-checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
+                                        aria-label={__("reader.annotations.quickAnnotations")}
                                         onKeyUp={(e) => {
-                                            if (e.key === "Space") {
+                                            // if (e.code === "Space") {
+                                            if (e.key === " ") {
                                                 e.preventDefault();
                                                 quickAnnotationsOnChange();
                                             }
@@ -1558,16 +1564,19 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                                 :
                                                 <></>
                                             } </div>
-                                        <h4>{__("reader.annotations.quickAnnotations")}</h4></label>
+                                        <h4 aria-hidden>{__("reader.annotations.quickAnnotations")}</h4></label>
                                 </div>
                                 <div className={stylesAnnotations.annotations_checkbox}>
                                     <input type="checkbox" id="marginAnnotations" name="marginAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={marginAnnotationsOnChange} />
                                     <label htmlFor="marginAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div 
+                                        <div
                                         tabIndex={0}
                                         role="checkbox"
+                                        aria-checked={readerConfig.annotation_defaultDrawView === "margin"}
+                                        aria-label={__("reader.annotations.toggleMarginMarks")}
                                         onKeyUp={(e) => {
-                                            if (e.key === "Space") {
+                                            // if (e.code === "Space") {
+                                            if (e.key === " ") {
                                                 e.preventDefault();
                                                 marginAnnotationsOnChange();
                                             }
@@ -1580,7 +1589,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                                 <></>
                                             }
                                         </div>
-                                        <h4>{__("reader.annotations.toggleMarginMarks")}</h4></label>
+                                        <h4 aria-hidden>{__("reader.annotations.toggleMarginMarks")}</h4></label>
                                 </div>
                             </details>
                             <AnnotationList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} dockedMode={dockedMode} annotationUUIDFocused={annotationUUID} focus={focus}/>
