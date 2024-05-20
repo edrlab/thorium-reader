@@ -143,10 +143,10 @@ const Theme = ({theme, set}: {theme: Pick<ReaderConfig, "theme">, set: (a: Pick<
     ]);
 
 
-    const defaultKey =
-    theme.theme === "neutral" ? 1
-    : theme.theme === "night" ? 4
-    : theme.theme === "sepia" ? 2
+    const defaultKey = 
+    theme.theme === "neutral" ? 1 
+    : theme.theme === "night" ? 4 
+    : theme.theme === "sepia" ? 2 
     : theme.theme === "contrast1" ? 5
     : theme.theme === "paper" ? 3
     : theme.theme === "contrast2" ? 6
@@ -161,34 +161,34 @@ const Theme = ({theme, set}: {theme: Pick<ReaderConfig, "theme">, set: (a: Pick<
         value={themeOptions.find((theme) => theme.id === defaultKey).value}
                 onValueChange={(option) => set({ theme: option as TTheme  })}
             >
-                {themeOptions.map((theme) =>
-                                <RadioGroupItem
+                {themeOptions.map((theme) => 
+                                <RadioGroupItem 
                                 key={theme.value}
-                                value={theme.value}
+                                value={theme.value} 
                                 description={theme.name}
-                                className={stylesSettings.settings_theme_container}
+                                className={stylesSettings.settings_theme_container} 
                                 style={theme.style}
                                 svg={defaultKey === theme.id ? DoubleCheckIcon : null}
                                 />,
                 )}
-                {/* <RadioGroupItem
-                value="neutral"
+                {/* <RadioGroupItem 
+                value="neutral" 
                 description={`${__("reader.settings.theme.name.Neutral")}`}
-                className={stylesSettings.settings_theme_container}
+                className={stylesSettings.settings_theme_container} 
                 style={{backgroundColor: "#fff", color: "black"}}
                 svg={defaultKey === 1 ? CheckIcon : null}
                 />
-                <RadioGroupItem
-                value="sepia"
+                <RadioGroupItem 
+                value="sepia" 
                 description={`${__("reader.settings.theme.name.Sepia")}`}
-                className={stylesSettings.settings_theme_container}
+                className={stylesSettings.settings_theme_container} 
                 style={{backgroundColor: "#faf4e8", color: "black"}}
                 svg={defaultKey === 2 ? CheckIcon : null}
                 />
-                <RadioGroupItem
-                value="night"
+                <RadioGroupItem 
+                value="night" 
                 description={`${__("reader.settings.theme.name.Night")}`}
-                className={stylesSettings.settings_theme_container}
+                className={stylesSettings.settings_theme_container} 
                 style={{backgroundColor: "#2D2D2D", color: "#fff" }}
                 svg={defaultKey === 3 ? CheckIcon : null}
                 /> */}
