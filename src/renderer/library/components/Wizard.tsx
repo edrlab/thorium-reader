@@ -63,7 +63,7 @@ export const WizardModal = () => {
 
     const [checked, setChecked] = React.useState(true);
 
-    return <Dialog.Root defaultOpen={opened} onOpenChange={(openState: boolean) => {
+    return <Dialog.Root defaultOpen={!opened} onOpenChange={(openState: boolean) => {
         if (checked && openState == false) {
             dispatch(wizardActions.setWizard.build(true));
         }
