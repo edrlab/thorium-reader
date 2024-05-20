@@ -117,7 +117,7 @@ export const WizardModal = () => {
                                         {__("wizard.buttons.goToBooks")}
                                     </Dialog.Close>
                                     <Tabs.List>
-                                        <Tabs.Trigger value="tab2" className={stylesButtons.button_primary_blue}>
+                                        <Tabs.Trigger value="tab2" className={stylesButtons.button_primary_blue} onFocus={(e) => e.preventDefault()}>
                                             <SVG ariaHidden svg={ArrowRightIcon} />
                                             {__("wizard.buttons.discover")}
                                         </Tabs.Trigger>
@@ -136,7 +136,7 @@ export const WizardModal = () => {
                                 <img src={BooksImage} />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Tabs.List>
-                                        <Tabs.Trigger value="tab3" className={stylesButtons.button_primary_blue}>
+                                        <Tabs.Trigger value="tab3" className={stylesButtons.button_primary_blue} onFocus={(e) => e.preventDefault()}>
                                             <SVG ariaHidden svg={ArrowRightIcon} />
                                             {__("wizard.buttons.next")}
                                         </Tabs.Trigger>
@@ -154,7 +154,7 @@ export const WizardModal = () => {
                                 <img src={CatalogsImage} />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Tabs.List>
-                                        <Tabs.Trigger value="tab4" className={stylesButtons.button_primary_blue} >
+                                        <Tabs.Trigger value="tab4" className={stylesButtons.button_primary_blue} onFocus={(e) => e.preventDefault()}>
                                             <SVG ariaHidden svg={ArrowRightIcon} />
                                             {__("wizard.buttons.next")}
                                         </Tabs.Trigger>
@@ -171,7 +171,7 @@ export const WizardModal = () => {
                                 <img src={ReadingImage} />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Tabs.List>
-                                        <Tabs.Trigger value="tab5" className={stylesButtons.button_primary_blue}>
+                                        <Tabs.Trigger value="tab5" className={stylesButtons.button_primary_blue} onFocus={(e) => e.preventDefault()}>
                                             <SVG ariaHidden svg={ArrowRightIcon} />
                                             {__("wizard.buttons.next")}
                                         </Tabs.Trigger>
