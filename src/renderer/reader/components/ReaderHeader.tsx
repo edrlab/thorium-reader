@@ -886,7 +886,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 className={stylesReader.bookmarkButton}
                                 type="checkbox"
                                 checked={this.props.isOnBookmark}
-                                onKeyDown={(e) => {
+                                onKeyUp={(e) => {
                                     if (e.key === "Enter") { this.props.toggleBookmark(); }
                                 }}
                                 onChange={this.props.toggleBookmark}
@@ -923,7 +923,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         className={stylesReader.bookmarkButton}
                                         type="checkbox"
                                         checked={this.props.isAnnotationModeEnabled}
-                                        onKeyDown={(e) => {
+                                        onKeyUp={(e) => {
                                             if (e.key === "Enter") {
                                                 this.props.triggerAnnotationBtn();
                                             }
@@ -1002,8 +1002,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
                                                     right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
                                                     left: (this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left") ? "0" : "",
-                                                    height: (isDockedMode && isOnSearch) ? "calc(100dvh - 139px)" : "",
-                                                    marginTop: (isDockedMode && !isOnSearch) ? "70px" : "0",
+                                                    height: (isDockedMode && isOnSearch) ? "calc(100dvh - 159px)" : "",
+                                                    marginTop: (isDockedMode && !isOnSearch) ? "70px" : "20px",
                                                 }}
                                             >
                                                 <ReaderMenu {...this.props.readerMenuProps}
@@ -1043,8 +1043,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
                                                     right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
                                                     left: (this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left") ? "0" : "",
-                                                    height: (isDockedMode && isOnSearch) ? "calc(100dvh - 139px)" : "",
-                                                    marginTop: (isDockedMode && !isOnSearch) ? "70px" : "0",
+                                                    height: (isDockedMode && isOnSearch) ? "calc(100dvh - 159px)" : "",
+                                                    marginTop: (isDockedMode && !isOnSearch) ? "70px" : "20px",
                                                 }}
                                             >
                                                 <ReaderMenu
@@ -1105,8 +1105,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
                                                 right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
                                                 left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
-                                                height: isDockedMode && isOnSearch && "calc(100dvh - 139px)",
-                                                marginTop: isDockedMode && !isOnSearch ? "70px" : "0",
+                                                height: isDockedMode && isOnSearch && "calc(100dvh - 159px)",
+                                                marginTop: isDockedMode && !isOnSearch ? "70px" : "20px",
                                             }}
                                         >
                                             <ReaderSettings {...this.props.ReaderSettingsProps}
@@ -1123,8 +1123,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
                                                 right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
                                                 left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
-                                                height: isDockedMode && isOnSearch && "calc(100dvh - 139px)",
-                                                marginTop: isDockedMode && !isOnSearch ? "70px" : "0",
+                                                height: isDockedMode && isOnSearch && "calc(100dvh - 159px)",
+                                                marginTop: isDockedMode && !isOnSearch ? "70px" : "20px",
                                             }}
                                         >
                                             <ReaderSettings {...this.props.ReaderSettingsProps}

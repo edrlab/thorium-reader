@@ -232,7 +232,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                                         onDoubleClick=
                                             {(e) => this.handleSearchClickDebounced(e, v.uuid, false)}
                                         tabIndex={0}
-                                        onKeyPress=
+                                        onKeyUp=
                                             {
                                                 (e) => {
                                                     if (e.key === "Enter") {
@@ -329,7 +329,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
     //                                         onClick=
     //                                         {(e) => this.handleSearchClick(e, link.Href, false)}
     //                                         tabIndex={0}
-    //                                         onKeyPress=
+    //                                         onKeyUp=
     //                                         {
     //                                             (e) => {
     //                                                 if (link.Href && e.key === "Enter") {

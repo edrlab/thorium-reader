@@ -103,13 +103,20 @@ export const WizardModal = () => {
                             <h4>{__("wizard.tab.annotations")}</h4>
                         </Tabs.Trigger>
                         <div style={{display: "flex", alignItems: "center", gap: "10px", position: "absolute", bottom: "30px", left: "30px"}}>
-                            <input type="checkbox" checked={checked} onChange={() => setChecked(!checked)} id="wizardCheckbox" name="wizardCheckbox" className={stylesGlobal.checkbox_custom_input} />
+                            <input type="checkbox" checked={checked} onChange={() => { setChecked(!checked); }} id="wizardCheckbox" name="wizardCheckbox" className={stylesGlobal.checkbox_custom_input} />
+                            {/* label htmlFor clicked with mouse cursor causes onChange() of input (which is display:none), but keyboard interaction (tab stop and space bar toggle) occurs with the div role="checkbox" below! (onChange is not called, only onKeyUp) */}
                             <label htmlFor="wizardCheckbox" className={stylesGlobal.checkbox_custom_label}>
                                 <div
                                     tabIndex={0}
                                     role="checkbox"
+                                    aria-checked={checked}
+                                    aria-label={__("wizard.dontShow")}
                                     onKeyUp={(e) => {
-                                        if (e.code === "Space") {
+                                        // Includes screen reader tests:
+                                        // if (e.code === "Space") { WORKS
+                                        // if (e.key === "Space") { DOES NOT WORK
+                                        // if (e.key === "Enter") { WORKS
+                                        if (e.key === " ") { // WORKS
                                             e.preventDefault();
                                             setChecked(!checked);
                                         }
@@ -122,7 +129,9 @@ export const WizardModal = () => {
                                         <></>
                                     }
                                 </div>
+                                <span aria-hidden>
                                 {__("wizard.dontShow")}
+                                </span>
                             </label>
                         </div>
                     </Tabs.List>
