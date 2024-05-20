@@ -8,9 +8,9 @@
 import classNames from "classnames";
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
+import FocusLock from "react-focus-lock";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 // import {TextArea} from 'react-aria-components';
-
 
 import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -72,7 +72,6 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionAnnotations, readerLocalActionSetConfig } from "../redux/actions";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
-
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -466,9 +465,13 @@ const AnnotationCard: React.FC<Pick<IReaderMenuProps, "goToLocator"> & { timesta
             </button>
         }
         {
-            isEdited ? <AnnotationEdit uuid={uuid} save={save} cancel={() => setEdition(false)} dockedMode={props.dockedMode} btext={dockedEditAnnotation && btext}/> : 
-            // <p>{comment}</p>
-            <HardWrapComment comment={comment} />
+                isEdited
+                    ?
+                    <FocusLock disabled={false} autoFocus={true}>
+                        <AnnotationEdit uuid={uuid} save={save} cancel={() => setEdition(false)} dockedMode={props.dockedMode} btext={dockedEditAnnotation && btext} />
+                    </FocusLock>
+                    :
+                    <HardWrapComment comment={comment} />
         }
         </div>
         {((!isEdited && props.dockedMode) || !props.dockedMode) &&
