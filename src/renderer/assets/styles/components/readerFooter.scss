@@ -264,6 +264,8 @@
 }
 
 .tooltip_content {
+    z-index: 1000;
+
     span {
         fill: var(--color-light-grey);
     }
