@@ -684,6 +684,7 @@ const ReadingDisplayCheckboxSettings = ({
             onChange: () => {
                 if (enableMathJax === false) {
                     set({ paged: false, enableMathJax: true });
+                    return ;
                 }
                 set({ enableMathJax: false });
             },
@@ -713,6 +714,15 @@ const ReadingDisplayCheckboxSettings = ({
             checked: noRuby,
             onChange: () => {
                 set({ noRuby: !noRuby });
+            },
+        },
+        {
+            id: "noRTLFlipCheckBox",
+            name: "noRTLFlipCheckBox",
+            label: __("reader.settings.noRTLFlip"),
+            checked: disableRTLFlip,
+            onChange: () => {
+                setDisableRTLFlip(!disableRTLFlip);
             },
         },
     ];
@@ -752,35 +762,6 @@ const ReadingDisplayCheckboxSettings = ({
                 </section>
 
             ))}
-
-            <section>
-                <div className={stylesReader.display_checkbox_section}>
-                    <input
-                        id="noRTLFlipCheckBox"
-                        type="checkbox"
-                        checked={disableRTLFlip}
-                        onChange={() => setDisableRTLFlip(!disableRTLFlip)}
-                        className={stylesGlobal.checkbox_custom_input}
-                    />
-                    <label htmlFor="noRTLFlipCheckBox" style={{margin: "0 5px", height: "unset"}} className={stylesGlobal.checkbox_custom_label}>
-                    <div
-                        tabIndex={0}
-                        role="checkbox"
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                                setDisableRTLFlip(!disableRTLFlip);
-                            }
-                        }}
-                        className={stylesGlobal.checkbox_custom} style={{ border: disableRTLFlip ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: disableRTLFlip ? "var(--color-blue)" : "transparent" }}>
-                                            {disableRTLFlip ?
-                                                <SVG ariaHidden svg={CheckIcon} />
-                                                :
-                                                <></>
-                                            }
-                                        </div>
-                        {__("reader.settings.noRTLFlip")}</label>
-                </div>
-            </section>
         </div>
     );
 };
