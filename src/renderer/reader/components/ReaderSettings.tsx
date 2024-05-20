@@ -659,7 +659,7 @@ export const ReadingAudio = ({ useMO, config: { mediaOverlaysEnableCaptionsMode:
     );
 };
 
-const ReadingDisplayMathJax = ({
+const ReadingDisplayCheckboxSettings = ({
     config: { enableMathJax, reduceMotion, noFootnotes, noRuby },
     set,
     disableRTLFlip,
@@ -684,6 +684,7 @@ const ReadingDisplayMathJax = ({
             onChange: () => {
                 if (enableMathJax === false) {
                     set({ paged: false, enableMathJax: true });
+                    return ;
                 }
                 set({ enableMathJax: false });
             },
@@ -715,6 +716,15 @@ const ReadingDisplayMathJax = ({
                 set({ noRuby: !noRuby });
             },
         },
+        {
+            id: "noRTLFlipCheckBox",
+            name: "noRTLFlipCheckBox",
+            label: __("reader.settings.noRTLFlip"),
+            checked: disableRTLFlip,
+            onChange: () => {
+                setDisableRTLFlip(!disableRTLFlip);
+            },
+        },
     ];
 
     return (
@@ -731,7 +741,16 @@ const ReadingDisplayMathJax = ({
                             className={stylesGlobal.checkbox_custom_input}
                         />
                         <label htmlFor={option.id} style={{margin: "0 5px", height: "unset"}} className={stylesGlobal.checkbox_custom_label}>
-                        <div className={stylesGlobal.checkbox_custom} style={{ border: option.checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: option.checked ? "var(--color-blue)" : "transparent" }}>
+                        <div
+                            tabIndex={0}
+                            role="checkbox"
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    option.onChange();
+                                }
+                            }}
+                            className={stylesGlobal.checkbox_custom}
+                            style={{ border: option.checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: option.checked ? "var(--color-blue)" : "transparent" }}>
                                             {option.checked ?
                                                 <SVG ariaHidden svg={CheckIcon} />
                                                 :
@@ -743,27 +762,6 @@ const ReadingDisplayMathJax = ({
                 </section>
 
             ))}
-
-            <section>
-                <div className={stylesReader.display_checkbox_section}>
-                    <input
-                        id="noRTLFlipCheckBox"
-                        type="checkbox"
-                        checked={disableRTLFlip}
-                        onChange={() => setDisableRTLFlip(!disableRTLFlip)}
-                        className={stylesGlobal.checkbox_custom_input}
-                    />
-                    <label htmlFor="noRTLFlipCheckBox" style={{margin: "0 5px", height: "unset"}} className={stylesGlobal.checkbox_custom_label}>
-                    <div className={stylesGlobal.checkbox_custom} style={{ border: disableRTLFlip ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: disableRTLFlip ? "var(--color-blue)" : "transparent" }}>
-                                            {disableRTLFlip ?
-                                                <SVG ariaHidden svg={CheckIcon} />
-                                                :
-                                                <></>
-                                            }
-                                        </div>
-                        {__("reader.settings.noRTLFlip")}</label>
-                </div>
-            </section>
         </div>
     );
 };
@@ -1023,7 +1021,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
             setTimeout(() => {
                 if (dockedModeRef.current) {
-    
+
                     console.log("Focus on docked mode combobox");
                     dockedModeRef.current.focus();
                 } else {
@@ -1258,7 +1256,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             {isPdf ? <></> : <ReadingDisplayLayout config={readerConfig} set={setPartialSettingsDebounced} isFXL={props.isFXL} />}
                             {isPdf ? <></> : <ReadingDisplayAlign config={readerConfig} set={setPartialSettingsDebounced} />}
                             <ReadingDisplayCol config={readerConfig} set={setPartialSettingsDebounced} isPdf={props.isPdf} pdfCol={pdfState.pdfCol} />
-                            {isPdf ? <></> : <ReadingDisplayMathJax config={readerConfig} set={setPartialSettingsDebounced} disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />}
+                            {isPdf ? <></> : <ReadingDisplayCheckboxSettings config={readerConfig} set={setPartialSettingsDebounced} disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />}
                         </section>
                     </Tabs.Content>
                     {/* <Tabs.Content value="tab-audio" tabIndex={-1}>
