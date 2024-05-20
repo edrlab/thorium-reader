@@ -24,6 +24,8 @@
   perspective: 1000px;
   overflow: hidden;
   position: relative;
+  height: auto;
+  align-items: start;
 
     &:hover {
       img, .no_img_wrapper {
@@ -128,6 +130,8 @@
     overflow: hidden;
     min-height: 30px;
     margin-left: 4px;
+    width: 100%;
+    text-align: start;
 
     & p {
       margin: 0;
