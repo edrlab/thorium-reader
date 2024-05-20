@@ -2,6 +2,9 @@
 =-=-= allPublicationsPage.scss
 */
 
+@import 'src/renderer/assets/styles/partials/mixin';
+
+
 .allBooks {
     &_header {
         font-size: 18px;
@@ -239,31 +242,13 @@
             justify-content: center;
         }
 
-        &::-webkit-scrollbar {
-            width: 12px;
-
-            &-thumb {
-                background-color: var(--scrollbar-thumb);
-                border-radius: 6px;
-                border-left: 2px solid transparent;
-                background-clip: padding-box;
-                cursor: pointer;
-
-                &:hover {
-                  border: 0;
-                }
-            }
-
-            &-track {
-                background-color: var(--color-secondary);
-                }
-        }
-
         &:hover {
             &::-webkit-scrollbar-thumb {
                 background-color: var(--color-blue);
             }
         }
+
+        @include scrollbar_styling
     }
 
     &_multi_langs {
@@ -313,26 +298,16 @@
         position: absolute;
         background-color: var(--color-secondary);
 
+        @include scrollbar_styling;
+
         &::-webkit-scrollbar {
             width: 10px;
             height: 10px;
             background-color: var(--color-secondary);
 
-            &-thumb {
-                background-color: var(--scrollbar-thumb);
-                border-radius: 6px;
-                border-left: 2px solid transparent;
-                background-clip: padding-box;
-                cursor: pointer;
-
-                &:hover {
-                    border-left: 0;
-                }
+            &:hover {
+                border-left: 0;
             }
-
-            &-track {
-                background-color: var(--color-secondary);
-                }
         }
     }
 

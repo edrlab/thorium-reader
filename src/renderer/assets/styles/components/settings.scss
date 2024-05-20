@@ -2,6 +2,8 @@
 =-=-= settings.scss
 */
 
+@import 'src/renderer/assets/styles/partials/mixin';
+
 $settings_bg: var(--color-light-blue);
 $setting_color: var(--color-blue);
 
@@ -236,18 +238,7 @@ $setting_color: var(--color-blue);
     overflow: hidden scroll;
     margin-top: 50px;
 
-    &::-webkit-scrollbar-thumb {
-        border-radius: 5px;
-    }
-
-    &::-webkit-scrollbar {
-    width: 10px;
-    background: var(--color-secondary);
-    }
-
-    &:hover::-webkit-scrollbar-thumb {
-        background-color: var(--scrollbar-thumb);
-    }
+    @include scrollbar_styling;
 
     .button_transparency_icon {
         position: relative;

@@ -2,6 +2,8 @@
 =-=-= modals.scss
 */
 
+@import 'src/renderer/assets/styles/partials/mixin';
+
 .modal_dialog_overlay {
   position: fixed;
   z-index: 102;
@@ -92,6 +94,8 @@
     align-items: center;
     justify-content: center;
   }
+
+  @include scrollbar_styling;
 }
 
 .modal_dialog_body_cover > img {
