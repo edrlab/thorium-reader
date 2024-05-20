@@ -535,13 +535,15 @@
       .react_aria_Label {
         position: absolute;
         left: 10px;
-        top: -15px;
+        top: -13px;
         padding: 0 5px;
         background-color: var(--color-secondary);
         text-overflow: ellipsis;
         overflow: hidden;
         max-width: 250px;
         white-space: nowrap;
+        line-height: 95%;
+        height: unset;
     }
 
       & input {
@@ -622,7 +624,7 @@
     }
 
     .react_aria_Button svg {
-      width: 15px;
+      // width: 15px;
       color: var(--color-primary)!important;
     }
   }

@@ -102,9 +102,10 @@ select {
 
   & >label{
       position:absolute;
-      top:-10px;
-      left:10px;
-      background-color: var(--color-annotations-bg);
+      line-height: 90%;
+      top: -12px;
+      left: 10px;
+      background-color: var(--color-secondary);
       padding: 0 5px;
       z-index: 1;
   }
