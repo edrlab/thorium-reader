@@ -79,7 +79,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                             <p
                             ><a href=""
                             onClick={async (ev) => {
-                                ev.preventDefault();
+                                ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                 this.setState({ versionInfo : false });
                                 await shell.openExternal(this.props.newVersionURL);
                             }}>{`${this.props.__("app.update.message")}`}</a> <span>(v{this.props.newVersion})</span></p>
@@ -102,7 +102,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                     <div>
                     <p>{`v${_APP_VERSION}`}</p>
                     <a href="" onClick={(ev) => {
-                                ev.preventDefault();
+                                ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                 this.about();
                             }}
                         tabIndex={0}>{__("catalog.about.title", { appName: capitalizedAppName })}</a>

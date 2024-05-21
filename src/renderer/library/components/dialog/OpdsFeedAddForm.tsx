@@ -108,7 +108,7 @@ export const ApiappAddFormDialog = () => {
                                     </p>
                                     <a href=""
                                         onClick={async (ev) => {
-                                            ev.preventDefault();
+                                            ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                             await shell.openExternal("https://opds.io/");
                                         }}>
                                     {__("opds.documentation")}
