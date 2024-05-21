@@ -46,7 +46,7 @@ import * as AnnotationIcon from "readium-desktop/renderer/assets/icons/annotatio
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar-icon.svg";
 // import * as DuplicateIcon from "readium-desktop/renderer/assets/icons/duplicate-icon.svg";
 
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
+import { highlightsRemove, LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -72,6 +72,7 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionAnnotations, readerLocalActionSetConfig } from "../redux/actions";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+import debounce from "debounce";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -1202,6 +1203,9 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
     // const annotations = useSelector((state: IReaderRootState) => state.reader.annotation).map(([, v]) => v);
     const readerConfig = useSelector((state: IReaderRootState) => state.reader.config);
+    const mountHighLightReadOnly = useSelector((state: IReaderRootState) => state.reader.highlight.mounter);
+    const href = useSelector((store: IReaderRootState) => store.reader.locator?.locator?.href);
+    const href2 = useSelector((store: IReaderRootState) => store.reader.locator?.secondWebViewHref);
 
     // const isFixedLayoutPublication = r2Publication.Metadata?.Rendition?.Layout === "fixed";
     // const isFixedLayoutWithPageList = isFixedLayoutPublication && r2Publication.PageList;
@@ -1402,6 +1406,27 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         dispatch(readerLocalActionSetConfig.build(newReaderConfig));
     };
 
+    const [hideAnnotationChecked, setHideAnnotationChecked] = React.useState(false);
+    const hideAnnotationOnPush = React.useMemo(() => {
+
+        const debounceFunction = () => {
+
+            const href1 = href;
+            if (href1) {
+                const uuidFilteredForHref1 = mountHighLightReadOnly.filter(([_uuid, { href: __href, ref: { group } }]) => __href === href1 && group === "annotation").map(([_uuid, { ref: { id } }]) => id);
+                highlightsRemove(href1, uuidFilteredForHref1);
+            }
+            if (href2) {
+                const uuidFilteredForHref2 = mountHighLightReadOnly.filter(([_uuid, { href: __href, ref: { group } }]) => __href === href2 && group === "annotation").map(([_uuid, { ref: { id } }]) => id);
+                highlightsRemove(href2, uuidFilteredForHref2);
+            }
+
+            setHideAnnotationChecked(false);
+        }
+
+        return debounce(debounceFunction, 1000);
+    }, [mountHighLightReadOnly, href, href2]);
+
     return (
         <div>
             {
@@ -1590,6 +1615,35 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                             }
                                         </div>
                                         <h4 aria-hidden>{__("reader.annotations.toggleMarginMarks")}</h4></label>
+                                </div>
+                                <div className={stylesAnnotations.annotations_checkbox}>
+                                    <input type="checkbox" id="hideAnnotation" name="hideAnnotation" className={stylesGlobal.checkbox_custom_input} checked={hideAnnotationChecked} onChange={() => {
+                                        setHideAnnotationChecked(true);
+                                        hideAnnotationOnPush();
+                                    }} />
+                                    <label htmlFor="hideAnnotation" className={stylesGlobal.checkbox_custom_label}>
+                                        <div
+                                        tabIndex={0}
+                                        role="checkbox"
+                                        aria-checked={hideAnnotationChecked}
+                                        aria-label={"HIDE -- TODO LABEL IT"}
+                                        onKeyUp={(e) => {
+                                            // if (e.code === "Space") {
+                                            if (e.key === " ") {
+                                                e.preventDefault();
+                                                setHideAnnotationChecked(true);
+                                                hideAnnotationOnPush();
+                                            }
+                                        }}                                       
+                                        className={stylesGlobal.checkbox_custom} 
+                                        style={{ border: hideAnnotationChecked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: hideAnnotationChecked ? "var(--color-blue)" : "transparent" }}>
+                                            {hideAnnotationChecked ?
+                                                <SVG ariaHidden svg={CheckIcon} />
+                                                :
+                                                <></>
+                                            }
+                                        </div>
+                                        <h4 aria-hidden>{"HIDE -- TODO LABEL IT"}</h4></label>
                                 </div>
                             </details>
                             <AnnotationList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} dockedMode={dockedMode} annotationUUIDFocused={annotationUUID} focus={focus}/>
