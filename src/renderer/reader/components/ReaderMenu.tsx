@@ -1534,6 +1534,12 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         role="checkbox"
                                         aria-checked={serialAnnotator}
                                         aria-label={__("reader.annotations.advancedMode")}
+                                        onKeyDown={(e) => {
+                                            // if (e.code === "Space") {
+                                            if (e.key === " ") {
+                                                e.preventDefault(); // prevent scroll
+                                            }
+                                        }}
                                         onKeyUp={(e) => {
                                             // if (e.code === "Space") {
                                             if (e.key === " ") {
@@ -1565,6 +1571,12 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         role="checkbox"
                                         aria-checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
                                         aria-label={__("reader.annotations.quickAnnotations")}
+                                        onKeyDown={(e) => {
+                                            // if (e.code === "Space") {
+                                            if (e.key === " ") {
+                                                e.preventDefault(); // prevent scroll
+                                            }
+                                        }}
                                         onKeyUp={(e) => {
                                             // if (e.code === "Space") {
                                             if (e.key === " ") {
