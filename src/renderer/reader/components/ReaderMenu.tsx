@@ -1396,14 +1396,18 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
     const marginAnnotationsOnChange = () => {
         const newReaderConfig = { ...readerConfig };
-        newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "annotation" ? "margin" : "annotation";
+        newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "margin" ? "annotation" : "margin";
 
         console.log(`marginAnnotationsToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
         dispatch(readerLocalActionSetConfig.build(newReaderConfig));
+
+        const href1 = currentLocation?.locator?.href;
+        const href2 = currentLocation?.secondWebViewHref;
+        dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
     };
     const hideAnnotationOnChange = () => {
         const newReaderConfig = { ...readerConfig };
-        newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "annotation" ? "hide" : "annotation";
+        newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "hide" ? "annotation" : "hide";
 
         console.log(`hideAnnotationsToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
         dispatch(readerLocalActionSetConfig.build(newReaderConfig));
@@ -1585,13 +1589,19 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         role="checkbox"
                                         aria-checked={readerConfig.annotation_defaultDrawView === "margin"}
                                         aria-label={__("reader.annotations.toggleMarginMarks")}
+                                        onKeyDown={(e) => {
+                                            // if (e.code === "Space") {
+                                            if (e.key === " ") {
+                                                e.preventDefault(); // prevent scroll
+                                            }
+                                        }}
                                         onKeyUp={(e) => {
                                             // if (e.code === "Space") {
                                             if (e.key === " ") {
                                                 e.preventDefault();
                                                 marginAnnotationsOnChange();
                                             }
-                                        }}                                       
+                                        }}
                                         className={stylesGlobal.checkbox_custom} 
                                         style={{ border: readerConfig.annotation_defaultDrawView === "margin" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "margin" ? "var(--color-blue)" : "transparent" }}>
                                             {readerConfig.annotation_defaultDrawView === "margin" ?
@@ -1609,7 +1619,13 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         tabIndex={0}
                                         role="checkbox"
                                         aria-checked={readerConfig.annotation_defaultDrawView === "hide"}
-                                        aria-label={"DO NOT DRAW -- LABEL IT"}
+                                        aria-label={__("reader.annotations.hide")}
+                                        onKeyDown={(e) => {
+                                            // if (e.code === "Space") {
+                                            if (e.key === " ") {
+                                                e.preventDefault(); // prevent scroll
+                                            }
+                                        }}
                                         onKeyUp={(e) => {
                                             // if (e.code === "Space") {
                                             if (e.key === " ") {
@@ -1625,7 +1641,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                                 <></>
                                             }
                                         </div>
-                                        <h4 aria-hidden>{"DO NOT DRAW -- LABEL IT"}</h4></label>
+                                        <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
                                 </div>
                             </details>
                             <AnnotationList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} dockedMode={dockedMode} annotationUUIDFocused={annotationUUID} focus={focus}/>
