@@ -500,6 +500,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 </button> */}
                 <button title={__("reader.marks.delete")}
                     onClick={() => {
+                        setItemToEdit(-1);
                         dispatch(readerActions.annotation.pop.build(annotation));
                     }}>
                     <SVG ariaHidden={true} svg={DeleteIcon} />
