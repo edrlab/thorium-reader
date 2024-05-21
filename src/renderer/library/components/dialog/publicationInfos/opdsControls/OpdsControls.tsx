@@ -58,7 +58,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
             __,
         } = this.props;
 
-        const boxStyle = { height: "50px", padding: "0.4em", paddingTop: "0.2em", marginBottom: "0.5em", marginTop: "0.4em", fontSize: "14px" };
+        const boxStyle = { minHeight: "50px", height: "fit-content", padding: "0.4em", paddingTop: "0.2em", marginBottom: "0.5em", marginTop: "0.4em", fontSize: "14px" };
 
         const m = findMimeTypeWithExtension(ADOBE_ADEPT_XML);
         const orderLinks = (links: IOpdsLinkView[]) => {
