@@ -30,6 +30,9 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { wizardActions } from "readium-desktop/common/redux/actions";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+
 
 const TabTitle = (props: React.PropsWithChildren<{ title: string }>) => {
     return (
@@ -61,7 +64,7 @@ export const WizardModal = () => {
     const dispatch = useDispatch();
     const opened = useSelector((state: ILibraryRootState) => state.wizard.opened);
 
-    const [checked, setChecked] = React.useState(true);
+    const [checked, setChecked] = React.useState(false);
 
     return <Dialog.Root defaultOpen={!opened} onOpenChange={(openState: boolean) => {
         if (checked && openState == false) {
@@ -100,8 +103,36 @@ export const WizardModal = () => {
                             <h4>{__("wizard.tab.annotations")}</h4>
                         </Tabs.Trigger>
                         <div style={{display: "flex", alignItems: "center", gap: "10px", position: "absolute", bottom: "30px", left: "30px"}}>
-                            <input type="checkbox" checked={checked} onChange={() => setChecked(!checked)} id="wizardCheckbox" name="wizardCheckbox" />
-                            <label htmlFor="wizardCheckbox">{__("wizard.dontShow")}</label>
+                            <input type="checkbox" checked={checked} onChange={() => { setChecked(!checked); }} id="wizardCheckbox" name="wizardCheckbox" className={stylesGlobal.checkbox_custom_input} />
+                            {/* label htmlFor clicked with mouse cursor causes onChange() of input (which is display:none), but keyboard interaction (tab stop and space bar toggle) occurs with the div role="checkbox" below! (onChange is not called, only onKeyUp) */}
+                            <label htmlFor="wizardCheckbox" className={stylesGlobal.checkbox_custom_label}>
+                                <div
+                                    tabIndex={0}
+                                    role="checkbox"
+                                    aria-checked={checked}
+                                    aria-label={__("wizard.dontShow")}
+                                    onKeyUp={(e) => {
+                                        // Includes screen reader tests:
+                                        // if (e.code === "Space") { WORKS
+                                        // if (e.key === "Space") { DOES NOT WORK
+                                        // if (e.key === "Enter") { WORKS
+                                        if (e.key === " ") { // WORKS
+                                            e.preventDefault();
+                                            setChecked(!checked);
+                                        }
+                                    }}
+                                    className={stylesGlobal.checkbox_custom}
+                                    style={{ border: checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: checked ? "var(--color-blue)" : "transparent" }}>
+                                    {checked ?
+                                        <SVG ariaHidden svg={CheckIcon} />
+                                        :
+                                        <></>
+                                    }
+                                </div>
+                                <span aria-hidden>
+                                {__("wizard.dontShow")}
+                                </span>
+                            </label>
                         </div>
                     </Tabs.List>
                     <div className={classNames(stylesSettings.settings_content, stylesModals.guidedTour_content)} style={{ marginTop: "70px" }}>

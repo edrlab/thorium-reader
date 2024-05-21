@@ -150,7 +150,7 @@ class PublicationCard extends React.Component<IProps> {
                         :
                         <a
                             onClick={(e) => this.handleLocalBookshelfBookClick(e)}
-                            onKeyPress={
+                            onKeyUp={
                                 (e) =>
                                     (e.key === "Enter") && this.handleLocalBookshelfBookClick(e)
                             }

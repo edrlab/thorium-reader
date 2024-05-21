@@ -663,7 +663,10 @@ export const ReadingAudio = ({ useMO, config: { mediaOverlaysEnableCaptionsMode:
                         <div 
                             tabIndex={0}
                             role="checkbox"
-                            onKeyDown={(e) => {
+                            aria-checked={option.checked}
+                            aria-label={option.label}
+                            onKeyUp={(e) => {
+                                // if (e.code === "Space") {
                                 if (e.key === " ") {
                                     e.preventDefault();
                                     option.onChange();
@@ -677,7 +680,9 @@ export const ReadingAudio = ({ useMO, config: { mediaOverlaysEnableCaptionsMode:
                                 <></>
                             }
                         </div>
+                        <span aria-hidden>
                         {option.label}
+                        </span>
                     </label>
                     {/* <p className={stylesSettings.session_text}>{option.description}</p> */}
                 </div>
@@ -772,7 +777,10 @@ const ReadingDisplayCheckboxSettings = ({
                         <div
                             tabIndex={0}
                             role="checkbox"
-                            onKeyDown={(e) => {
+                            aria-checked={option.checked}
+                            aria-label={option.label}
+                            onKeyUp={(e) => {
+                                // if (e.code === "Space") {
                                 if (e.key === " ") {
                                     e.preventDefault();
                                     option.onChange();
@@ -785,8 +793,11 @@ const ReadingDisplayCheckboxSettings = ({
                                                 :
                                                 <></>
                                             }
-                                        </div>
-                            {option.label}</label>
+                        </div>
+                        <span aria-hidden>
+                        {option.label}
+                        </span>
+                    </label>
                     </div>
                 </section>
 
@@ -939,7 +950,10 @@ const AllowCustom = ({ overridePublisherDefault, set }:
                     <div 
                     tabIndex={0}
                     role="checkbox"
-                    onKeyDown={(e) => {
+                    aria-checked={overridePublisherDefault}
+                    aria-label={__("reader.settings.customizeReader")}
+                    onKeyUp={(e) => {
+                        // if (e.code === "Space") {
                         if (e.key === " ") {
                             e.preventDefault();
                             set();
@@ -953,7 +967,9 @@ const AllowCustom = ({ overridePublisherDefault, set }:
                             <></>
                         }
                     </div>
+                    <span aria-hidden>
                     {__("reader.settings.customizeReader")}
+                    </span>
                 </label>
             </>
         );
