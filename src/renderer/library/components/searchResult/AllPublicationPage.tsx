@@ -1164,9 +1164,16 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
         dir={pubTitleIsRTL ? "rtl" : undefined}
     >
                 <a
+                    tabIndex={0}
                     className={stylesPublication.cell_bookTitle}
-                    title={`${pubTitleStr} (${props.__("catalog.bookInfo")})`}
                     onClick={() => props.openReader(props.value.publicationViewIdentifier)}
+                    onKeyUp={(e) => {
+                        // ALTERNATIVE IMPLEMENTATION:
+                        // href="" ==> automatically sets up ENTER key and keyboard tab, but also requires preventDefault inside onClick (otherwise user can hit the options/alt key to download the href current location!), and introduces hyperlin visited style so CSS must account for this!
+                        if (e.key === "Enter") {
+                            props.openReader(props.value.publicationViewIdentifier);
+                        }
+                    }}
                 >
                     {pubTitleStr}
                 </a>
