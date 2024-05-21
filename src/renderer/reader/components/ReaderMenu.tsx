@@ -591,13 +591,13 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                 isPaginated ?
                     <div className={stylesPopoverDialog.navigation_container}>
                         <button title={__("opds.firstPage")}
-                            onClick={() => { setPageNumber(1); }}
+                            onClick={() => { setPageNumber(1); setItemToEdit(-1); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowFirstIcon} />
                         </button>
 
                         <button title={__("opds.previous")}
-                            onClick={() => { setPageNumber(pageNumber - 1); }}
+                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
@@ -621,20 +621,20 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                                 selectedKey={pageNumber}
                                 defaultSelectedKey={1}
                                 onSelectionChange={(id) => {
-                                    setPageNumber(id as number);
+                                    setPageNumber(id as number); setItemToEdit(-1);
                                 }}
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                             </ComboBox>
                         </div>
                         <button title={__("opds.next")}
-                            onClick={() => { setPageNumber(pageNumber + 1); }}
+                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                         </button>
 
                         <button title={__("opds.lastPage")}
-                            onClick={() => { setPageNumber(pageTotal); }}
+                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowLastIcon} />
                         </button>
@@ -645,11 +645,13 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
         );
 };
 
-const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Publication; i: number} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) => {
 
-    const { bookmark, r2Publication, i, goToLocator } = props;
+    const { r2Publication, goToLocator, dockedMode, setItemToEdit, itemEdited } = React.useContext(bookmarkCardContext);
+    const { bookmark, i } = props;
+    const isEdited = itemEdited === i;
     const [__] = useTranslator();
-    const [isEdited, setEdition] = React.useState(false);
+    
     const dispatch = useDispatch();
     const isAudioBook = isAudiobookFn(r2Publication);
     const deleteBookmark = (bookmark: IBookmarkState) => {
@@ -677,18 +679,18 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Public
     const submitBookmark = (textValue: string) => {
 
         dispatch(readerActions.bookmark.update.build({...bookmark, name: textValue}));
-        setEdition(false);
+        setItemToEdit(-1);
     };
 
     const bname = (bookmark.name ? `${bookmark.name}` : `${__("reader.navigation.bookmarkTitle")} ${i}`);
 
-    React.useEffect(() => {
-        if (textearearef.current) {
-            textearearef.current.style.height = "auto";
-            textearearef.current.style.height = textearearef.current.scrollHeight + 3 + "px";
-            textearearef.current.focus();
-        }
-    }, [isEdited]);
+    // React.useEffect(() => {
+    //     if (textearearef.current) {
+    //         textearearef.current.style.height = "auto";
+    //         textearearef.current.style.height = textearearef.current.scrollHeight + 3 + "px";
+    //         textearearef.current.focus();
+    //     }
+    // }, [isEdited]);
 
     return (
         <div
@@ -701,23 +703,25 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Public
 
                 <div className={stylesPopoverDialog.chapter_marker}>
                     {isEdited ?
-                        <form className={stylesPopoverDialog.update_form}>
-                            <TextArea id="editBookmark" name="editBookmark" wrap="hard" ref={textearearef}
-                                defaultValue={bname}
-                                className={stylesPopoverDialog.bookmark_textArea}
-                            />
-                            <div style={{display: "flex", gap: "5px"}}>
-                                <button className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={() => { setEdition(false); }}>{__("dialog.cancel")}</button>
-                                <button type="submit"
-                                    className={stylesButtons.button_primary_blue}
-                                    aria-label="save"
-                                    onClick={(e) => { e.preventDefault(); submitBookmark(textearearef?.current?.value || ""); }}
-                                >
-                                    <SVG ariaHidden svg={SaveIcon} />
-                                    {__("reader.marks.saveMark")}
-                                </button>
-                            </div>
-                        </form>
+                        <FocusLock disabled={dockedMode} autoFocus={true}>
+                            <form className={stylesPopoverDialog.update_form}>
+                                <TextArea id="editBookmark" name="editBookmark" wrap="hard" ref={textearearef}
+                                    defaultValue={bname}
+                                    className={stylesPopoverDialog.bookmark_textArea}
+                                />
+                                <div style={{ display: "flex", gap: "5px" }}>
+                                    <button className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={() => { setItemToEdit(-1); }}>{__("dialog.cancel")}</button>
+                                    <button type="submit"
+                                        className={stylesButtons.button_primary_blue}
+                                        aria-label="save"
+                                        onClick={(e) => { e.preventDefault(); submitBookmark(textearearef?.current?.value || ""); }}
+                                    >
+                                        <SVG ariaHidden svg={SaveIcon} />
+                                        {__("reader.marks.saveMark")}
+                                    </button>
+                                </div>
+                            </form>
+                        </FocusLock>
                         :
                         <button
                             className={stylesReader.bookmarkList_button}
@@ -748,13 +752,13 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Public
                         </div>
                         <div className={stylesPopoverDialog.bookmark_actions_buttons}>
                             <button title={__("reader.marks.edit")}
-                                onClick={() => { setEdition(true); }}
+                                onClick={() => { setItemToEdit(i); }}
                                 disabled={isEdited}
                             >
                                 <SVG ariaHidden={true} svg={EditIcon} />
                             </button>
                             <button title={__("reader.marks.delete")}
-                                onClick={() => { setEdition(false); deleteBookmark(bookmark); }}>
+                                onClick={() => { setItemToEdit(-1); deleteBookmark(bookmark); }}>
                                 <SVG ariaHidden={true} svg={DeleteIcon} />
                             </button>
                         </div>
@@ -769,9 +773,17 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; r2Publication: R2Public
 };
 
 
-const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const bookmarkCardContext = React.createContext<{
+    itemEdited: number;
+    setItemToEdit: (i: number) => void;
+    goToLocator: (locator: Locator, closeNavPanel?: boolean) => void;
+    dockedMode: boolean;
+    r2Publication: R2Publication;
+}>(undefined);
 
-    const {r2Publication, goToLocator} = props;
+const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+
+    const {r2Publication, goToLocator, dockedMode} = props;
     const [__] = useTranslator();
     const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
 
@@ -827,18 +839,28 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
     
     const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} / ${pageTotal}`}));
 
+    const [itemEdited, setItemToEdit] = React.useState(-1);
+
     return (
         <>
-            {
-                bookmarksPagedArray.map((bookmark, i) =>
-                    <BookmarkItem
-                        key={i}
-                        bookmark={bookmark}
-                        r2Publication={r2Publication}
-                        i={i + 1 + ((pageNumber - 1) * MAX_MATCHES_PER_PAGE)}
-                        goToLocator={goToLocator}
-                    />)
-            }
+            <bookmarkCardContext.Provider value={{
+                goToLocator,
+                dockedMode,
+                r2Publication,
+                itemEdited,
+                setItemToEdit,
+            }}>
+
+                {
+                    bookmarksPagedArray.map((bookmark, i) =>
+                        <BookmarkItem
+                            key={`bookmark_card-${i}`}
+                            bookmark={bookmark}
+                            i={i + 1 + ((pageNumber - 1) * MAX_MATCHES_PER_PAGE)}
+                        />,
+                    )
+                }
+            </bookmarkCardContext.Provider>,
             {
                 isPaginated ?
                     <div className={stylesPopoverDialog.navigation_container}>
@@ -849,7 +871,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
                         </button>
 
                         <button title={__("opds.previous")}
-                            onClick={() => { setPageNumber(pageNumber - 1); }}
+                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
@@ -873,20 +895,20 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
                                 selectedKey={pageNumber}
                                 defaultSelectedKey={1}
                                 onSelectionChange={(id) => {
-                                    setPageNumber(id as number);
+                                    setPageNumber(id as number); setItemToEdit(-1);
                                 }}
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                             </ComboBox>
                         </div>
                         <button title={__("opds.next")}
-                            onClick={() => { setPageNumber(pageNumber + 1); }}
+                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                         </button>
 
                         <button title={__("opds.lastPage")}
-                            onClick={() => { setPageNumber(pageTotal); }}
+                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowLastIcon} />
                         </button>
@@ -1521,7 +1543,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     <Tabs.Content value="tab-bookmark" tabIndex={-1}>
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
-                            <BookmarkList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} />
+                            <BookmarkList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} dockedMode={dockedMode} />
                         </div>
                     </Tabs.Content>
 
