@@ -305,6 +305,7 @@
             "addNote": "Annotate",
             "advancedMode": "Instant mode (auto create after select)",
             "annotationsOptions": "Options",
+            "hide": "Do not display",
             "highlight": "Highlight",
             "noSelectionToast": "No selection",
             "quickAnnotations": "Quick create (skip editor)",
