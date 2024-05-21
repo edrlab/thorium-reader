@@ -185,7 +185,7 @@ export async function initStore()
         await tryCatch(() =>
             fsp.writeFile(
                 runtimeStateFilePath,
-                reduxState ? JSON.stringify(reduxState) : "",
+                reduxState ? JSON.stringify(reduxState) : "{}",
                 { encoding: "utf8" },
             )
             , "");
