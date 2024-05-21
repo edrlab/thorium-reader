@@ -15,6 +15,12 @@ $setting_color: var(--color-blue);
         accent-color: $setting_color;
     }
 
+    &:not(:has(.guidedTour_content)) {
+        @media screen and (height <= 700px) {
+            height: 450px;
+        }
+    }
+
     .section {
         padding-bottom: 15px ;
         border-bottom: 2px solid var(--color-extralight-grey);
