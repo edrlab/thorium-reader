@@ -665,6 +665,12 @@ export const ReadingAudio = ({ useMO, config: { mediaOverlaysEnableCaptionsMode:
                             role="checkbox"
                             aria-checked={option.checked}
                             aria-label={option.label}
+                            onKeyDown={(e) => {
+                                // if (e.code === "Space") {
+                                if (e.key === " ") {
+                                    e.preventDefault(); // prevent scroll
+                                }
+                            }}
                             onKeyUp={(e) => {
                                 // if (e.code === "Space") {
                                 if (e.key === " ") {
@@ -779,6 +785,12 @@ const ReadingDisplayCheckboxSettings = ({
                             role="checkbox"
                             aria-checked={option.checked}
                             aria-label={option.label}
+                            onKeyDown={(e) => {
+                                // if (e.code === "Space") {
+                                if (e.key === " ") {
+                                    e.preventDefault(); // prevent scroll
+                                }
+                            }}
                             onKeyUp={(e) => {
                                 // if (e.code === "Space") {
                                 if (e.key === " ") {
@@ -952,6 +964,12 @@ const AllowCustom = ({ overridePublisherDefault, set }:
                     role="checkbox"
                     aria-checked={overridePublisherDefault}
                     aria-label={__("reader.settings.customizeReader")}
+                    onKeyDown={(e) => {
+                        // if (e.code === "Space") {
+                        if (e.key === " ") {
+                            e.preventDefault(); // prevent scroll
+                        }
+                    }}
                     onKeyUp={(e) => {
                         // if (e.code === "Space") {
                         if (e.key === " ") {
