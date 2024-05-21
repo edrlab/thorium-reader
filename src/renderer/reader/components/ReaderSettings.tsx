@@ -532,7 +532,9 @@ interface IRadioGroupItemProps {
 
 const RadioGroupItem = (props: IRadioGroupItemProps) => {
     return (
-        <RadioGroup.Item value={props.value} id={props.value} className={classNames(stylesSettings.display_options_item, props.className)} disabled={props.disabled} style={props.style}>
+        <RadioGroup.Item
+            data-input-type="radio"
+            value={props.value} id={props.value} className={classNames(stylesSettings.display_options_item, props.className)} disabled={props.disabled} style={props.style}>
             {props.svg ? <SVG ariaHidden svg={props.svg} /> : <></>}
             {props.description}
         </RadioGroup.Item>
