@@ -21,6 +21,12 @@ $setting_color: var(--color-blue);
         }
     }
 
+    &:has(.guidedTour_content) {
+        @media screen and (height <= 700px) {
+            height: 512px;
+        }
+    }
+
     .section {
         padding-bottom: 15px ;
         border-bottom: 2px solid var(--color-extralight-grey);
@@ -277,13 +283,13 @@ $setting_color: var(--color-blue);
 
 .close_button_div {
     position: absolute;
-    top: 10px;
-    right: 20px;
+    top: 5px;
+    right: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    background-color: var(--color-secondary);
+    background-color: transparent;
     padding: 10px;
     width: 60%;
     z-index: 10;
