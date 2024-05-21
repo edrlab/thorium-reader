@@ -1219,7 +1219,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         );
     };
     return (
-        <div>
+        <>
             {
                 dockedMode ?
                     <>
@@ -1245,7 +1245,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                                 </Dialog.Close>
                             </div>
                         </div>
-                        <SelectRef
+                        {/* <SelectRef
                             items={options}
                             selectedKey={optionSelected}
                             disabledKeys={optionDisabled}
@@ -1276,7 +1276,26 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             ref={dockedModeRef}
                         >
                             {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                        </SelectRef>
+                        </SelectRef> */}
+                        <ComboBox
+                        items={options}
+                        selectedKey={optionSelected}
+                        disabledKeys={optionDisabled}
+                        svg={options.find(({ value }) => value === tabValue)?.svg}
+                        onSelectionChange={(id) => {
+                            // console.log("selectionchange: ", id);
+                            const value = options.find(({ id: _id }) => _id === id)?.value;
+                            if (value) {
+                                setTabValue(value);
+                                // console.log("set Tab Value = ", value);
+                            } else {
+                                // console.error("Combobox No value !!!");
+                            }
+                        }}
+                        style={{margin: "0", padding: "0", flexDirection: "row"}}
+                    >
+                        {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                    </ComboBox>
                     </>
                     : <></>
             }
@@ -1332,6 +1351,6 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                     </Tabs.Content> */}
                 </div>
             </Tabs.Root>
-        </div>
+        </>
     );
 };

@@ -59,7 +59,7 @@ import ReaderMenuSearch from "./ReaderMenuSearch";
 // import UpdateBookmarkForm from "./UpdateBookmarkForm";
 
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
-import { MySelectProps, Select, SelectItem } from "readium-desktop/renderer/common/components/Select";
+import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
@@ -1403,7 +1403,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
 
     return (
-        <div>
+        <>
             {
                 dockedMode ?
                     <><div key="docked-header" className={stylesPopoverDialog.docked_header} style={{borderBottom: "unset"}}>
@@ -1426,7 +1426,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                             </Dialog.Close>
                         </div>
                     </div>
-                    <SelectRef
+                    {/* <SelectRef
                         items={options}
                         selectedKey={optionSelected}
                         svg={options.find(({ value }) => value === tabValue)?.svg}
@@ -1458,7 +1458,26 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         ref={dockedModeRef}
                     >
                         {item => <SelectItem>{item.name}</SelectItem>}
-                    </SelectRef>
+                    </SelectRef> */}
+                    <ComboBox
+                        items={options}
+                        selectedKey={optionSelected}
+                        svg={options.find(({ value }) => value === tabValue)?.svg}
+                        onSelectionChange={(id) => {
+                            console.log("selectionchange: ", id);
+                            const value = options.find(({ id: _id }) => _id === id)?.value;
+                            if (value) {
+                                setTabValue(value);
+                                console.log("set Tab Value = ", value);
+
+                            } else {
+                                console.error("Combobox No value !!!");
+                            }
+                        }}
+                        style={{margin: "0", padding: "0", flexDirection: "row"}}
+                    >
+                        {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                    </ComboBox>
                     </>
                     : <></>
             }
@@ -1619,6 +1638,6 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </Tabs.Content>
                 </div>
             </Tabs.Root>
-        </div>
+        </>
     );
 };
