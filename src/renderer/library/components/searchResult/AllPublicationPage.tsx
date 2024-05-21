@@ -1166,7 +1166,6 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
                 <a
                     tabIndex={0}
                     className={stylesPublication.cell_bookTitle}
-                    title={`${pubTitleStr} (${props.__("catalog.bookInfo")})`}
                     onClick={() => props.openReader(props.value.publicationViewIdentifier)}
                     onKeyUp={(e) => {
                         if (e.key === "Enter") {
