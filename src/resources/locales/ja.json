@@ -13,7 +13,7 @@
   "apiapp": {
     "documentation": "Thoriumの説明書",
     "howItWorks": "どのように機能しますか？",
-    "informations": "フランスでは、多くの公共図書館がデジタル図書目録を提供していて（OPDSに似ていますが異なります）、利用者は自身の本棚から電子出版物をダウンロードできます。このテクノロジーをThorium Readerに統合することで、電子書籍またはオーディオブックをThorium Readerに直接ダウンロードして、すぐに読めるようになります。\nフランスの公共図書館のアカウントをThorium Readerに接続するにはどうすればよいですか？ それは簡単です。検索フィールドにフランスの都市（「Paris」）または図書館の名前の一部を入力し、検索ボタンを押してください。検索結果に公共図書館の一覧が表示されますので、該当する図書館を選択して「追加」をクリックします。デジタル図書目録の更新一覧において、その図書館を選択してください。その際、認証フォームが表示されますので、ユーザー名/メールアドレスとパスワードを入力し、「ログイン」をクリックしてください。あなたの本棚の内容が表示され、そこから以前に借りた電子書籍やオーディオブックをダウンロードして読むことができます。\n",
+    "informations": "フランスでは、多くの公共図書館がデジタル図書目録を提供していて（OPDSに似ていますが異なります）、利用者はそこにある自身の本棚から電子出版物をダウンロードできます。このテクノロジーをThorium Readerに統合することで、電子書籍またはオーディオブックをThorium Readerに直接ダウンロードして、すぐに読めるようになります。\nフランスの公共図書館のアカウントをThorium Readerに接続するにはどうすればよいですか？ それは簡単です。検索フィールドにフランスの都市（「Paris」）または図書館の名前の一部を入力し、検索ボタンを押してください。検索結果に公共図書館の一覧が表示されますので、該当する図書館を選択して「追加」をクリックします。デジタル図書目録の更新一覧において、その図書館を選択してください。その際、認証フォームが表示されますので、ユーザー名/メールアドレスとパスワードを入力し、「ログイン」をクリックしてください。あなたの本棚の内容が表示され、そこから借りた電子書籍やオーディオブックをダウンロードして読むことができます。\n",
     "noLibraryFound": "蔵書は見つかりませんでした（{{- name}}）"
   },
   "app": {
@@ -41,7 +41,7 @@
       }
     },
     "update": {
-      "message": "新しいバージョンが利用可能です。詳細はクリックしてください。",
+      "message": "新しいバージョンが利用できます。詳細はクリックしてください。",
       "title": "{{- appName}} ソフトウェア アップデート"
     },
     "window": {
@@ -50,13 +50,13 @@
   },
   "catalog": {
     "about": {
-      "title": "{{appName}}について"
+      "title": "{{appName}} について"
     },
     "addBookToLib": "追加",
     "addTags": "タグを追加",
     "addTagsButton": "追加",
     "allBooks": "すべての本",
-    "bookInfo": "この本の情報",
+    "bookInfo": "本の情報",
     "column": {
       "ascending": "昇順（A-Z）",
       "descending": "降順（Z-A）",
@@ -69,7 +69,7 @@
     "emptyTagList": "タグがついた本はありません",
     "entry": {
       "continueReading": "読書にもどる",
-      "continueReadingAudioBooks": "聴きにもどる",
+      "continueReadingAudioBooks": "再生を続ける",
       "continueReadingDivina": "DiViNaを再開する",
       "continueReadingPdf": "PDFを開きなおす",
       "lastAdditions": "最近追加したもの"
@@ -80,7 +80,7 @@
     "lastRead": "読書の最終日時",
     "moreInfo": "本の詳細",
     "myBooks": "わたしの本",
-    "noPublicationHelpL1": "ここにファイルをドロップしてください",
+    "noPublicationHelpL1": "ファイルをここにおいてください",
     "noPublicationHelpL2": "または、画面上部にある［{{- importTitle }}］ボタンを押してください。",
     "noPublicationHelpL3": "LCPで保護されたファイルにも対応しています。",
     "noPublicationHelpL4": "対応している拡張子：",
@@ -96,14 +96,14 @@
       "info": {
         "availableSince": "いつから",
         "availableState": {
-          "available": "入手できます",
+          "available": "利用できます",
           "ready": "準備中",
           "reserved": "予約済み",
-          "unavailable": "入手できません",
-          "unknown": "入手可能か不明です"
+          "unavailable": "利用できません",
+          "unknown": "利用可能か不明です"
         },
         "availableUntil": "いつまで",
-        "copyAvalaible": "複製できます",
+        "copyAvalaible": "利用できます",
         "copyTotal": "コピー",
         "holdPosition": "待機順番",
         "holdTotal": "待機",
@@ -143,12 +143,12 @@
     "catalogs": "図書目録",
     "downloads": "ダウンロード",
     "fitlerTagTitle": "タグで絞りこむ",
-    "gridTitle": "格子状",
+    "gridTitle": "格子状で表示",
     "home": "本棚のメニュー",
     "homeTitle": "ホーム",
     "importTitle": "本を追加",
-    "listTitle": "一覧表",
-    "myCatalogs": "わたしの図書目録",
+    "listTitle": "一覧表で表示",
+    "myCatalogs": "図書目録",
     "refreshTitle": "再読み込み",
     "searchPlaceholder": "検索",
     "searchTitle": "検索する",
@@ -157,7 +157,7 @@
   },
   "library": {
     "lcp": {
-      "hint": "Hint：{{- hint}}",
+      "hint": "ヒント：{{- hint}}",
       "password": "パスワード",
       "sentence": "この本はLCPで保護されています。パスワードを入力してください： ",
       "urlHint": "パスワードを忘れましたか？ サポート窓口で確認してください：",
@@ -168,12 +168,12 @@
   },
   "message": {
     "download": {
-      "error": "{{- title}}のダウンロードに失敗しました：［{{- err}}］"
+      "error": "『{{- title}}』のダウンロードに失敗しました：{{- err}}"
     },
     "import": {
-      "alreadyImport": "{{- title}}はすでに追加されています。",
+      "alreadyImport": "『{{- title}}』はすでに追加されています。",
       "fail": "[{{- path}}]の追加に失敗しました：[{{- err}}]",
-      "success": "{{- title}}の追加が完了しました。"
+      "success": "『{{- title}}』の追加が完了しました。"
     },
     "open": {
       "error": "本を開けません：{{- err}}"
@@ -188,7 +188,7 @@
       "urlPlaceholder": "URL"
     },
     "addFormApiapp": {
-      "title": "図書アカウントを追加"
+      "title": "図書館アカウントを追加"
     },
     "addMenu": "OPDSフィードを追加",
     "breadcrumbRoot": "図書目録",
@@ -243,9 +243,9 @@
         "name": "危険要因：",
         "noFlashing": "光らない（点滅しない）",
         "noMotionSimulation": "動きのあるシミュレーションはない",
-        "noSound": "音が出るものを含まない",
+        "noSound": "音は出ない",
         "none": "ありません",
-        "sound": "音が出るものを含む",
+        "sound": "音が出る",
         "unknown": "不明"
       },
       "certifierReport": "認証書",
@@ -288,7 +288,7 @@
       "title": "進行度"
     },
     "read": "既読",
-    "remainingTime": "貸出（残り日数）",
+    "remainingTime": "借受中（残り日数）",
     "renewButton": "更新",
     "returnButton": "返却",
     "returnedLcp": "このLCPライセンスは返却されました。",
@@ -303,13 +303,14 @@
     "annotations": {
       "Color": "色",
       "addNote": "注釈をつける",
-      "advancedMode": "インスタントモード（選択後自動作成）",
+      "advancedMode": "インスタントモード（本文を選択するだけで自動作成）",
       "annotationsOptions": "オプション",
+      "hide": "注釈を表示しない",
       "highlight": "ハイライト",
       "noSelectionToast": "選択されていません",
-      "quickAnnotations": "クイック作成（編集しない）",
+      "quickAnnotations": "クイック作成（注釈編集画面をスキップ）",
       "saveNote": "保存",
-      "toggleMarginMarks": "外側に表示"
+      "toggleMarginMarks": "ページ余白に注釈マークを表示"
     },
     "divina": {
       "mute": "音を鳴らさない",
@@ -323,7 +324,7 @@
       "bookmarks": "しおり",
       "delete": "削除",
       "edit": "編集",
-      "goTo": "ページに移動",
+      "goTo": "ページ移動",
       "landmarks": "構成",
       "saveMark": "しおりを挟む",
       "search": "検索",
@@ -359,7 +360,7 @@
       "historyNext": "先に飛ぶ",
       "historyPrevious": "前にもどる",
       "infoTitle": "本の情報",
-      "magnifyingGlassButton": "この本の中で検索",
+      "magnifyingGlassButton": "この本を検索",
       "openTableOfContentsTitle": "ナビゲーション",
       "page": "ページ",
       "pdfscalemode": "画面にページを収める / 画面横幅にページを合わせる",
@@ -384,7 +385,7 @@
         "title": "縦列",
         "two": "2列"
       },
-      "customizeReader": "テキストの書式を変更する",
+      "customizeReader": "本文のスタイル",
       "disabled": "無効",
       "display": "画面表示",
       "disposition": {
@@ -450,7 +451,7 @@
       "pause": "一時停止（TTS）",
       "play": "再生（TTS）",
       "previous": "前にもどる（TTS）",
-      "sentenceDetect": "音声読み上げ機能（TTS）語句の分割",
+      "sentenceDetect": "音声読み上げ（TTS）語句の分割",
       "sentenceDetectDescription": "長い段落を複数の文に分割",
       "speed": "再生速度（TTS）",
       "stop": "停止（TTS）",
@@ -464,9 +465,9 @@
     "keyboard": {
       "advancedMenu": "メニュー",
       "cancel": "キャンセル",
-      "disclaimer": "ショートカットは、QWERTYキーボードレイアウトから定義されました。",
+      "disclaimer": "ショートカットは、QWERTY配列のキーボードレイアウトから定義されました。",
       "editUserJson": "編集：ユーザーファイル",
-      "keyboardShortcuts": "キーボード ショートカット",
+      "keyboardShortcuts": "キーボードショートカット",
       "loadUserJson": "読込：ユーザーファイル",
       "resetDefaults": "リセット（初期設定に戻す）",
       "save": "保存"
@@ -495,27 +496,27 @@
   "wizard": {
     "buttons": {
       "discover": "新しい情報を見る",
-      "goToBooks": "わたしの本を見る",
-      "next": "次"
+      "goToBooks": "わたしの本を一覧する",
+      "next": "次へ"
     },
     "description": {
-      "annotations": "文書の本文を、スタイルと色を選択してハイライトできます。その際、個人的なメモも添付できます。その際に編集を飛ばす場合には、「クイック」モードで注釈を作成してください（あとでメモを入力したり、スタイルをカスタマイズしたりできます)。さらなる高速化を求めたい方は、本文をハイライトするだけで、すぐに注釈が作られる「インスタント」モードを使ってください！",
+      "annotations": "文書の本文を、スタイルと色を選択してハイライトできます。その際、個人的なメモも添付できます。オプションの「クイック」作成を有効にすると、注釈編集画面を飛ばすことができます（あとでメモを入力したり、スタイルをカスタマイズしたりできます)。さらなる高速化を求めたい方は、本文を選択するだけで、すぐにハイライトできる「インスタント」モードをあわせて使ってください！",
       "catalogs": "地元の図書館から本を借りたり、OPDSフィード経由で本を見つけたりできます。オンラインの図書目録により、複数のところにある、さまざまな本にアクセスできます。",
       "home": "Thoriumの見た目が違います！ 何が新しいのか見てみましょう...",
-      "readingView1": "読書と聴き方の設定をカスタマイズ:：Thoriumでは、ユーザーインターフェイスと電子書籍の両方に複数のカラー テーマが提供されるようになりました。合成音声と同期する本文/音声ナレーションによる「読み上げ」電子書籍の設定もより簡単になりました。",
-      "readingView2": "Thoriumのユーザーインターフェイスが改良されました。本文検索、検索結果の探索、指定したページへの移動、目次の参照、しおりの作成などがより簡単になりました。これは、新しい「ドックド（docked）」パネルによるものです。フルスクリーンの読書モードではこれまでどおり、気を散らすことのない環境を提供します。\n\n",
-      "yourBooks": "再設計されたあなた自身の本棚へようこそ！ 「格子状（grid）」の表示では、タグで簡単にフィルタリングしたり、キーワードで本を検索したりできます。高度な「一覧表（table）」での表示では、著者、書名、日付、ファイル形式などで並べ替えて本を選択できます。"
+      "readingView1": "読書と聴き方の設定をカスタマイズ： Thoriumでは、ソフトウェアの外観（ユーザーインターフェイス）と電子書籍の両方に複数のカラーテーマが提供されるようになりました。また、電子書籍を合成音声で朗読したり同期される本文/音声ナレーションについての設定もより簡単になりました。",
+      "readingView2": "Thoriumのユーザーインターフェイスが改良されました。本文検索、検索結果の探索、指定したページへの移動、目次の参照、しおりの作成などがより簡単になりました。これは、新しい「ドックド（docked）」パネルによるものです。フルスクリーンの読書モードはこれまでどおり、気を散らすことのない読書環境を提供します。\n\n",
+      "yourBooks": "再設計されたあなた自身の本棚へようこそ！ 「格子状（grid）」の表示では、タグで簡単にフィルタリングしたり、キーワードで本を検索したりできます。より高機能な「一覧表（table）」での表示では、著者、書名、日付、ファイル形式などで並べ替えてから本を選択できます。"
     },
     "dontShow": "次回以降は表示しない",
     "tab": {
       "annotations": "注釈",
       "catalogs": "図書目録",
       "home": "ホーム",
-      "readingView": "読書表示",
+      "readingView": "読書画面",
       "yourBooks": "あなたの本"
     },
     "title": {
-      "allBooks": "すべてのわたしの本",
+      "allBooks": "自分の本棚",
       "newFeature": "新機能：注釈",
       "welcome": "Thorium 3.0へようこそ"
     }

@@ -428,6 +428,7 @@
         display: inherit;
         align-items: center;
         gap: 5px;
+        margin: 2px;
 
         p {
           margin: 0;
@@ -441,15 +442,15 @@
       }
 
       &_buttons svg {
-        fill: var(--color-blue);
-        color: var(--color-blue);
+        fill: var(--color-blue-alt);
+        color: var(--color-blue-alt);
       }
 
       button {
         height: unset;
 
         &:focus {
-          border: 1px solid var(--color-blue);
+          // border: 1px solid var(--color-blue);
           border-radius: 5px;
           background-color: var(--color-light-blue);
         }
