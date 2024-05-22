@@ -31,7 +31,7 @@ export interface IAnnotationModeState {
     cleanText: string,
 }
 
-export type TDrawView = "annotation" | "margin";
+export type TDrawView = "annotation" | "margin" | "hide";
 
 export interface IAnnotationReaderConfigState {
     annotation_popoverNotOpenOnNoteTaking: boolean,

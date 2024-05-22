@@ -2,6 +2,8 @@
 =-=-= combobox.scss
 */
 
+@import 'src/renderer/assets/styles/partials/mixin';
+
 .react_aria_ComboBox {
   color: var(--text-color);
   padding-bottom: 15px;
@@ -87,26 +89,15 @@
   height: fit-content;
   max-height: 350px!important;
   overflow: hidden auto;
+
+  @include scrollbar_styling;
   
   &::-webkit-scrollbar {
     width: 10px;
-    transition: 200ms;
 
     &-thumb {
-        background-color: var(--scrollbar-thumb);
         border-radius: 5px;
-        border-left: 2px solid transparent;
-        background-clip: padding-box;
-        cursor: pointer;
-
-        &:hover {
-          border: 0;
-        }
     }
-
-    &-track {
-      background-color: var(--color-secondary);
-      }
   }
 
   .react_aria_ListBox {

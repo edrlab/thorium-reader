@@ -2,6 +2,9 @@
 =-=-= catalogs.scss
 */
 
+@import 'src/renderer/assets/styles/partials/mixin';
+
+
 .catalog_wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -240,7 +243,7 @@
 
     label {
         background-color: var(--color-extralight-grey)!important;
-        top: -18px!important;
+        // top: -18px!important;
     }
 
     @media screen and (width <= 1024px) {
@@ -290,36 +293,19 @@
     overflow: auto;
     inset: 260px 20px 30px 30px;
     padding: 0;
-    margin-top: 0;
-    margin-bottom: 0.4em;
     position: absolute;
     padding-right: 25px;
+    margin: 2px;
+
+    .button_transparency {
+        margin: 4px;
+    }
 
     @media only screen and (width <= 1024px) {
         inset: 310px 20px 30px 30px;
     }
 
-    &::-webkit-scrollbar {
-        width: 12px;
-        transition: 200ms;
-    
-        &-thumb {
-            background-color: var(--scrollbar-thumb);
-            border-radius: 6px;
-            border-left: 2px solid transparent;
-            background-clip: padding-box;
-            cursor: pointer;
-    
-            &:hover {
-              border: 0;
-            }
-    
-        }
-    
-        &-track {
-            background-color: var(--color-secondary);
-            }
-      }
+    @include scrollbar_styling;
 
     .loader {
         margin: 20%;

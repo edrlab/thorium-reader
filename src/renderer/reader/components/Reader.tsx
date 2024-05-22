@@ -736,8 +736,8 @@ class Reader extends React.Component<IProps, IState> {
         
         const isAudioBook = isAudiobookFn(this.props.r2Publication);
         const arrowDisabledNotEpub = isAudioBook || this.props.isPdf || this.props.isDivina;
-        const isFXL = this.isFixedLayout();
-        const isPaginated = this.props.readerConfig.paged;
+        // const isFXL = this.isFixedLayout();
+        // const isPaginated = this.props.readerConfig.paged;
 
         // console.log(arrowDisabledNotEpub, isFXL, isPaginated);
         // epub non fxl (page)      : false false true  : true
@@ -748,7 +748,7 @@ class Reader extends React.Component<IProps, IState> {
         // audiobook                : true false true :   false
         // divina                   : true false true :   false
 
-        const arrowEnabled = !arrowDisabledNotEpub && (isFXL || isPaginated);
+        const arrowEnabled = !arrowDisabledNotEpub /* && (isFXL || isPaginated) */;
         
         return (
             <div className={classNames(

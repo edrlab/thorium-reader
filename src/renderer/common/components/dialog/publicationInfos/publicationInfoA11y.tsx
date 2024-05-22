@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { shell } from "electron";
 import classNames from "classnames";
 import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.scss";
 import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
@@ -200,7 +201,14 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
                     a11y_certifierReport.map((value, i) => {
                         if (!value) return <></>;
                         if (isURL(value)) {
-                            return <li key={i}><a href={value} title={value} aria-label={__("publication.accessibility.certifierReport")}>{__("publication.accessibility.certifierReport")}</a></li>;
+                            // file:// and data: are automatically excluded by isURL(), as well as http://localhost but not http://127.0.0.1 (or http://IP:PORT more generally, which is ok)
+                            // onClick (which includes ENTER key) is not strictly necessary but it allows us to prevent SHIFT for new window, OPT/ALT for download hyperlink target
+                            return <li key={i}><a
+                            onClick={async (ev) => {
+                                ev.preventDefault(); // necessary because href, see comment above
+                                await shell.openExternal(value);
+                            }}
+                            href={value} title={value} aria-label={__("publication.accessibility.certifierReport")}>{__("publication.accessibility.certifierReport")}</a></li>;
                         }
                         return <li key={i}>{__("publication.accessibility.certifierReport")} {value}</li>;
                     })

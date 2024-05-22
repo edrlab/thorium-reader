@@ -128,7 +128,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 ?
                                 <a href=""
                                     onClick={async (ev) => {
-                                        ev.preventDefault();
+                                        ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                         await shell.openExternal(this.props.urlHint.href);
                                     }} className={stylesModals.urlHint}>
                                     {this.props.urlHint.title || __("library.lcp.urlHint")}
@@ -147,7 +147,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 </p>
                                 <a href=""
                                     onClick={async (ev) => {
-                                        ev.preventDefault();
+                                        ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                         await shell.openExternal("https://www.edrlab.org/readium-lcp/");
                                     }}>
                                     {__("library.lcp.whatIsLcpInfoDetailsLink")}

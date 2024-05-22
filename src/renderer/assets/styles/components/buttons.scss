@@ -326,11 +326,13 @@ button {
   
   input {
     position: absolute;
-    right: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
+    right: 5px;
+    top: 2px;
+    width: 90%;
+    height: 80%;
     z-index: -10;
+    border-radius: 5px;
+    padding: 1%;
   }
 }
 

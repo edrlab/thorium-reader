@@ -2,6 +2,8 @@
 =-=-= settings.scss
 */
 
+@import 'src/renderer/assets/styles/partials/mixin';
+
 $settings_bg: var(--color-light-blue);
 $setting_color: var(--color-blue);
 
@@ -11,6 +13,18 @@ $setting_color: var(--color-blue);
 
     input[type='range'], input[type="checkbox"] {
         accent-color: $setting_color;
+    }
+
+    &:not(:has(.guidedTour_content)) {
+        @media screen and (height <= 700px) {
+            height: 450px;
+        }
+    }
+
+    &:has(.guidedTour_content) {
+        @media screen and (height <= 700px) {
+            height: 512px;
+        }
     }
 
     .section {
@@ -236,18 +250,7 @@ $setting_color: var(--color-blue);
     overflow: hidden scroll;
     margin-top: 50px;
 
-    &::-webkit-scrollbar-thumb {
-        border-radius: 5px;
-    }
-
-    &::-webkit-scrollbar {
-    width: 10px;
-    background: var(--color-secondary);
-    }
-
-    &:hover::-webkit-scrollbar-thumb {
-        background-color: var(--scrollbar-thumb);
-    }
+    @include scrollbar_styling;
 
     .button_transparency_icon {
         position: relative;
@@ -280,13 +283,13 @@ $setting_color: var(--color-blue);
 
 .close_button_div {
     position: absolute;
-    top: 10px;
-    right: 20px;
+    top: 5px;
+    right: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    background-color: var(--color-secondary);
+    background-color: transparent;
     padding: 10px;
     width: 60%;
     z-index: 10;

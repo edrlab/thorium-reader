@@ -427,6 +427,7 @@
         display: inherit;
         align-items: center;
         gap: 5px;
+        margin: 2px;
 
         p {
           margin: 0;
@@ -440,15 +441,15 @@
       }
 
       &_buttons svg {
-        fill: var(--color-blue);
-        color: var(--color-blue);
+        fill: var(--color-blue-alt);
+        color: var(--color-blue-alt);
       }
 
       button {
         height: unset;
 
         &:focus {
-          border: 1px solid var(--color-blue);
+          // border: 1px solid var(--color-blue);
           border-radius: 5px;
           background-color: var(--color-light-blue);
         }
@@ -535,13 +536,15 @@
       .react_aria_Label {
         position: absolute;
         left: 10px;
-        top: -15px;
+        top: -13px;
         padding: 0 5px;
         background-color: var(--color-secondary);
         text-overflow: ellipsis;
         overflow: hidden;
         max-width: 250px;
         white-space: nowrap;
+        line-height: 95%;
+        height: unset;
     }
 
       & input {
@@ -622,7 +625,7 @@
     }
 
     .react_aria_Button svg {
-      width: 15px;
+      // width: 15px;
       color: var(--color-primary)!important;
     }
   }

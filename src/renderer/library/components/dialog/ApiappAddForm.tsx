@@ -56,7 +56,7 @@ const Item = ({v}: {v: IApiappSearchResultView}) => {
                             submitAction();
                         }, 0);
                     }}
-                    onKeyDown={(e) => {
+                    onKeyUp={(e) => {
                         if (e.key === "Enter") {
                             // e.preventDefault();
                             // e.stopPropagation();
@@ -116,7 +116,7 @@ const ApiappAddForm = () => {
                         type="search"
                         id="apiapp_search"
                         // placeholder={__("header.searchPlaceholder")}
-                        onKeyDown={(e) => {
+                        onKeyUp={(e) => {
                             if (e.key === "Enter") {
                                 e.stopPropagation();
                                 e.preventDefault();
@@ -158,7 +158,7 @@ const ApiappAddForm = () => {
                         </p>
                         <a href=""
                             onClick={async (ev) => {
-                                ev.preventDefault();
+                                ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                 await shell.openExternal("https://thorium.edrlab.org/docs/");
                             }}>
                         {__("apiapp.documentation")}

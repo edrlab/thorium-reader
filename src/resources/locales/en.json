@@ -305,6 +305,7 @@
             "addNote": "Annotate",
             "advancedMode": "Instant mode (auto create after select)",
             "annotationsOptions": "Options",
+            "hide": "Do not display",
             "highlight": "Highlight",
             "noSelectionToast": "No selection",
             "quickAnnotations": "Quick create (skip editor)",
@@ -506,7 +507,7 @@
             "readingView2": "Thorium's improved user interface makes it easier to find text in publications, explore search results, go to specific pages, browse the table of contents, create bookmarks, etc. thanks to the new 'docked' panels. The fullscreen reading mode continues to offer a distraction-free environment.",
             "yourBooks": "Welcome to your redesigned personal bookshelf! In the 'grid' view, easily filter by tags or find publications by keywords. In the advanced 'table' view, select and sort publications by specific authors, title, date, format, etc."
         },
-        "dontShow": "Don't show anymore",
+        "dontShow": "Don't show again",
         "tab": {
             "annotations": "Annotations",
             "catalogs": "Catalogs",

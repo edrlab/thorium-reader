@@ -2,6 +2,8 @@
 =-=-= modals.scss
 */
 
+@import 'src/renderer/assets/styles/partials/mixin';
+
 .modal_dialog_overlay {
   position: fixed;
   z-index: 102;
@@ -67,7 +69,8 @@
 
     .react_aria_ComboBox {
       .react_aria_Button {
-        background-color: var(--color-secondary);
+        // background-color: var(--color-secondary);
+        background-color: inherit;
       }
 
       .react_aria_Input {
@@ -91,6 +94,8 @@
     align-items: center;
     justify-content: center;
   }
+
+  @include scrollbar_styling;
 }
 
 .modal_dialog_body_cover > img {
@@ -213,11 +218,12 @@
   margin-top: 30px!important;
 
   .guidedTour_tab {
-    margin-top: 0;
+    margin-top: 0!important;
 
     h3 {
       font-size: 25px;
       margin-top: 0;
+      margin-bottom: 10px;
     }
 
     p {
@@ -243,9 +249,10 @@
       align-items: center;
       justify-content: flex-end;
       gap: 20px;
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
+      // position: absolute;
+      // bottom: 20px;
+      // right: 20px;
+      margin: 20px 0;
     }
   }
 }

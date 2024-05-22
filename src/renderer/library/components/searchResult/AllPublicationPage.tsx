@@ -624,7 +624,7 @@ const CellFormat: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell 
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => {
+            onKeyUp={(e) => {
                 if (e.key === "Enter") {
                     e.preventDefault();
                     // props.column.setFilter(t);
@@ -659,7 +659,7 @@ const CellLangs: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => {
+            onKeyUp={(e) => {
                 if (e.key === "Enter") {
                     e.preventDefault();
                     // props.column.setFilter(t);
@@ -711,7 +711,7 @@ const CellPublishers: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => {
+            onKeyUp={(e) => {
                 if (e.key === "Enter") {
                     e.preventDefault();
                     // props.column.setFilter(t);
@@ -763,7 +763,7 @@ const CellAuthors: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => {
+            onKeyUp={(e) => {
                 if (e.key === "Enter") {
                     e.preventDefault();
                     // props.column.setFilter(t);
@@ -828,7 +828,7 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => {
+            onKeyUp={(e) => {
                 if (e.key === "Enter") {
                     e.preventDefault();
                     // props.column.setFilter(t);
@@ -929,7 +929,7 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
 //         return <a
 //             title={`${t} (${props.__("header.searchPlaceholder")})`}
 //             tabIndex={0}
-//             onKeyPress={(e) => { if (e.key === "Enter") {
+//             onKeyUp={(e) => { if (e.key === "Enter") {
 //                 e.preventDefault();
 //                 props.column.setFilter(t);
 //                 props.setShowColumnFilters(true);
@@ -1017,7 +1017,7 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
 //         return <a
 //             title={`${t} (${props.__("header.searchPlaceholder")})`}
 //             tabIndex={0}
-//             onKeyPress={(e) => { if (e.key === "Enter") {
+//             onKeyUp={(e) => { if (e.key === "Enter") {
 //                 e.preventDefault();
 //                 props.column.setFilter(t);
 //                 props.setShowColumnFilters(true);
@@ -1109,7 +1109,7 @@ const CellDate: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
                 <a
                     title={`${props.value.label} (${props.__("header.searchPlaceholder")})`}
                     tabIndex={0}
-                    onKeyPress={(e) => {
+                    onKeyUp={(e) => {
                         if (e.key === "Enter") {
                             e.preventDefault();
                             const t = props.value.label.substring(0, props.column.id === "colLastReadTimestamp" ? 7 : 4); // YYYY or YYYY-MM
@@ -1164,9 +1164,16 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
         dir={pubTitleIsRTL ? "rtl" : undefined}
     >
                 <a
+                    tabIndex={0}
                     className={stylesPublication.cell_bookTitle}
-                    title={`${pubTitleStr} (${props.__("catalog.bookInfo")})`}
                     onClick={() => props.openReader(props.value.publicationViewIdentifier)}
+                    onKeyUp={(e) => {
+                        // ALTERNATIVE IMPLEMENTATION:
+                        // href="" ==> automatically sets up ENTER key and keyboard tab, but also requires preventDefault inside onClick (otherwise user can hit the options/alt key to download the href current location!), and introduces hyperlink visited style so CSS must account for this!
+                        if (e.key === "Enter") {
+                            props.openReader(props.value.publicationViewIdentifier);
+                        }
+                    }}
                 >
                     {pubTitleStr}
                 </a>
@@ -1179,7 +1186,7 @@ const CellRemainingDays: React.FC<ITableCellProps_Column & ITableCellProps_Gener
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => {
+            onKeyUp={(e) => {
                 if (e.key === "Enter") {
                     e.preventDefault();
                     // props.column.setFilter(t);
@@ -1216,7 +1223,7 @@ const CellReadingState: React.FC<ITableCellProps_Column & ITableCellProps_Generi
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
-            onKeyPress={(e) => {
+            onKeyUp={(e) => {
                 if (e.key === "Enter") {
                     e.preventDefault();
                     // props.column.setFilter(t);

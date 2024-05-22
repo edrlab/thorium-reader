@@ -202,6 +202,10 @@ export const FontSize = ({config: {fontSize}, set}: {config: Pick<ReaderConfig, 
 
     const [currentSliderValue, setCurrentSliderValue] = React.useState(fontSize.replace(/%/g, ""));
 
+    React.useEffect(() => {
+        setCurrentSliderValue(fontSize.replace(/%/g, ""));
+    }, [fontSize]);
+
     const click = (direction: string) => {
         const step = 12.5;
         let newStepValue: number;
@@ -216,8 +220,6 @@ export const FontSize = ({config: {fontSize}, set}: {config: Pick<ReaderConfig, 
         setCurrentSliderValue(valueToString);
         set({ fontSize: valueToString + "%" });
     };
-
-    console.log(currentSliderValue);
 
     return (
         <section>
@@ -269,19 +271,29 @@ export const FontFamily = ({config: {font}, set}: {config: Pick<ReaderConfig, "f
     // }
 
     // console.log(options);
-    const selected = options.find((v) => v.value === font) || {
-        id: fontList.length,
-        value: font,
-        name: font,
-        fontFamily: `${font}, Consolas, monospace`,
+
+    const selectFont = () => {
+
+        const selected = options.find((v) => v.value === font) || {
+            id: fontList.length,
+            value: font,
+            name: font,
+            fontFamily: `${font}, Consolas, monospace`,
+        };
+        // console.log(selected);
+
+        const defaultkey = selected.id;
+        const fontFamily = selected.fontFamily;
+        const fontName = selected.name;
+
+        return {defaultkey, fontFamily, fontName};
     };
-    // console.log(selected);
 
-    const defaultkey = selected.id;
-    const fontFamily = selected.fontFamily;
-    const fontName = selected.name;
+    const [inputval, setInputval] = React.useState(selectFont().fontName);
 
-    const [inputval, setInputval] = React.useState(fontName);
+    React.useEffect(() => {
+        setInputval(selectFont().fontName);
+    }, [font]);
 
     const saveFont = (value: string) => {
         let val = value.trim();
@@ -305,6 +317,7 @@ export const FontFamily = ({config: {font}, set}: {config: Pick<ReaderConfig, "f
         set({ font: val });
     };
 
+    const { defaultkey, fontFamily, fontName } = selectFont();
     return (
         <div>
             <ComboBox label={__("reader.settings.font")} defaultItems={options} selectedKey={defaultkey}
@@ -365,8 +378,12 @@ interface ITable {
     rem: boolean,
 }
 
-const Slider = ({ option, set }: { option: ITable, set: (a: Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">) => void }) => {
+const Slider = ({ value, option, set }: { value: string, option: ITable, set: (a: Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">) => void }) => {
     const [currentSliderValue, setCurrentSliderValue] = React.useState(option.defaultValue);
+
+    React.useEffect(() => {
+        setCurrentSliderValue(value.replace(/rem/g, ""));
+    }, [value]);
 
     const click = (direction: string) => {
         const step = option.step;
@@ -426,10 +443,11 @@ const Slider = ({ option, set }: { option: ITable, set: (a: Pick<ReaderConfig, "
 };
 
 
-const ReadingSpacing = ({config: {pageMargins, wordSpacing, letterSpacing, paraSpacing, lineHeight}, set }: {config: ReaderConfig, set: (a: Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">) => void }) => {
+const ReadingSpacing = ({config, set }: {config: ReaderConfig, set: (a: Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">) => void }) => {
 
     const [__] = useTranslator();
 
+    const { pageMargins, wordSpacing, letterSpacing, paraSpacing, lineHeight } = config;
     const spacingOptions: ITable[] = [
         {
             title: `${__("reader.settings.margin")}`,
@@ -496,7 +514,7 @@ const ReadingSpacing = ({config: {pageMargins, wordSpacing, letterSpacing, paraS
     return (
         <div className={stylesSettings.settings_tab_container_reading_spacing}>
             {spacingOptions.map((option: ITable) => (
-                <Slider option={option} key={option.title} set={set}/>
+                <Slider value={config[option.parameter]} option={option} key={option.title} set={set}/>
             ))}
         </div>
     );
@@ -514,7 +532,9 @@ interface IRadioGroupItemProps {
 
 const RadioGroupItem = (props: IRadioGroupItemProps) => {
     return (
-        <RadioGroup.Item value={props.value} id={props.value} className={classNames(stylesSettings.display_options_item, props.className)} disabled={props.disabled} style={props.style}>
+        <RadioGroup.Item
+            data-input-type="radio"
+            value={props.value} id={props.value} className={classNames(stylesSettings.display_options_item, props.className)} disabled={props.disabled} style={props.style}>
             {props.svg ? <SVG ariaHidden svg={props.svg} /> : <></>}
             {props.description}
         </RadioGroup.Item>
@@ -642,14 +662,35 @@ export const ReadingAudio = ({ useMO, config: { mediaOverlaysEnableCaptionsMode:
                         className={stylesGlobal.checkbox_custom_input}
                     />
                     <label htmlFor={option.id} className={stylesGlobal.checkbox_custom_label}>
-                        <div className={stylesGlobal.checkbox_custom} style={{border: option.checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: option.checked ? "var(--color-blue)" : "transparent"}}>
+                        <div 
+                            tabIndex={0}
+                            role="checkbox"
+                            aria-checked={option.checked}
+                            aria-label={option.label}
+                            onKeyDown={(e) => {
+                                // if (e.code === "Space") {
+                                if (e.key === " ") {
+                                    e.preventDefault(); // prevent scroll
+                                }
+                            }}
+                            onKeyUp={(e) => {
+                                // if (e.code === "Space") {
+                                if (e.key === " ") {
+                                    e.preventDefault();
+                                    option.onChange();
+                                }
+                            }}
+                        className={stylesGlobal.checkbox_custom} 
+                        style={{border: option.checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: option.checked ? "var(--color-blue)" : "transparent"}}>
                             {option.checked ?
                                 <SVG ariaHidden svg={CheckIcon} />
                                 :
                                 <></>
                             }
                         </div>
+                        <span aria-hidden>
                         {option.label}
+                        </span>
                     </label>
                     {/* <p className={stylesSettings.session_text}>{option.description}</p> */}
                 </div>
@@ -744,8 +785,18 @@ const ReadingDisplayCheckboxSettings = ({
                         <div
                             tabIndex={0}
                             role="checkbox"
+                            aria-checked={option.checked}
+                            aria-label={option.label}
                             onKeyDown={(e) => {
-                                if (e.key === "Enter") {
+                                // if (e.code === "Space") {
+                                if (e.key === " ") {
+                                    e.preventDefault(); // prevent scroll
+                                }
+                            }}
+                            onKeyUp={(e) => {
+                                // if (e.code === "Space") {
+                                if (e.key === " ") {
+                                    e.preventDefault();
                                     option.onChange();
                                 }
                             }}
@@ -756,8 +807,11 @@ const ReadingDisplayCheckboxSettings = ({
                                                 :
                                                 <></>
                                             }
-                                        </div>
-                            {option.label}</label>
+                        </div>
+                        <span aria-hidden>
+                        {option.label}
+                        </span>
+                    </label>
                     </div>
                 </section>
 
@@ -907,14 +961,35 @@ const AllowCustom = ({ overridePublisherDefault, set }:
                 <input id="allow-custom" className={stylesGlobal.checkbox_custom_input} type="checkbox" checked={overridePublisherDefault} onChange={() => {set();}
             }/>
                 <label htmlFor="allow-custom" className={stylesGlobal.checkbox_custom_label}>
-                    <div className={stylesGlobal.checkbox_custom} style={{border: overridePublisherDefault ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: overridePublisherDefault ? "var(--color-blue)" : "transparent"}}>
+                    <div 
+                    tabIndex={0}
+                    role="checkbox"
+                    aria-checked={overridePublisherDefault}
+                    aria-label={__("reader.settings.customizeReader")}
+                    onKeyDown={(e) => {
+                        // if (e.code === "Space") {
+                        if (e.key === " ") {
+                            e.preventDefault(); // prevent scroll
+                        }
+                    }}
+                    onKeyUp={(e) => {
+                        // if (e.code === "Space") {
+                        if (e.key === " ") {
+                            e.preventDefault();
+                            set();
+                        }
+                    }}
+                    className={stylesGlobal.checkbox_custom} 
+                    style={{border: overridePublisherDefault ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: overridePublisherDefault ? "var(--color-blue)" : "transparent"}}>
                         {overridePublisherDefault ?
                             <SVG ariaHidden svg={CheckIcon} />
                             :
                             <></>
                         }
                     </div>
+                    <span aria-hidden>
                     {__("reader.settings.customizeReader")}
+                    </span>
                 </label>
             </>
         );
@@ -928,6 +1003,11 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const isEpub = !isDivina && !isPdf;
 
     const [__] = useTranslator();
+
+    const [
+        transcientStateOverridePublisherDefault,
+        setTranscientStateOverridePublisherDefault,
+    ] = React.useState<ReaderConfig>(readerConfig);
 
     const [pdfState, setPdfState] = React.useState<IState>({
         pdfScale: undefined,
@@ -976,7 +1056,10 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     }, []);
 
     const setPartialSettingsDebounced = React.useMemo(() => {
-        const saveConfig = (config: Partial<ReaderConfig>) => {
+        const saveConfig = (config: Partial<ReaderConfig>, override = true) => {
+            if (override) {
+                setTranscientStateOverridePublisherDefault({ ...transcientStateOverridePublisherDefault, ...config });
+            }
             setSettings({ ...readerConfig, ...config });
         };
         return debounce(saveConfig, 400);
@@ -990,27 +1073,29 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const [overridePublisherDefault, setOverride] = React.useState(false);
     const [tabValue, setTabValue] = React.useState(isDivina ? "tab-divina" : isPdf ? "tab-pdfzoom" : "tab-display");
 
-    React.useEffect(() => {
-        let ov = false;
-        for (const [key, value] of Object.entries(readerConfigInitialStateDefaultPublisher)) {
-            if (readerConfig[key as keyof typeof readerConfigInitialState] === value) continue;
-            else {
-                ov = true;
-                break;
-            }
-        }
-        setOverride(ov);
-    }, [readerConfig]);
+    // React.useEffect(() => {
+    //     let ov = false;
+    //     for (const [key, value] of Object.entries(readerConfigInitialStateDefaultPublisher)) {
+    //         if (readerConfig[key as keyof typeof readerConfigInitialState] === value) continue;
+    //         else {
+    //             ov = true;
+    //             break;
+    //         }
+    //     }
+    //     setOverride(ov);
+    // }, [readerConfig]);
 
     const setOverridePublisherDefault = React.useMemo(() => () => {
         if (overridePublisherDefault) {
-            setPartialSettingsDebounced(readerConfigInitialStateDefaultPublisher);
+            setPartialSettingsDebounced(readerConfigInitialStateDefaultPublisher, false);
             setTabValue("tab-display");
+            setOverride(false);
         } else {
             setOverride(true);
             setTabValue("tab-text");
+            setPartialSettingsDebounced(transcientStateOverridePublisherDefault);
         }
-    }, [overridePublisherDefault]);
+    }, [overridePublisherDefault, transcientStateOverridePublisherDefault]);
 
     const dockedModeRef = React.useRef<HTMLButtonElement>();
     const tabModeRef = React.useRef<HTMLDivElement>();
