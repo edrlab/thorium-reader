@@ -468,7 +468,9 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
         {
                 isEdited
                     ?
-                    <FocusLock disabled={dockedMode} autoFocus={true} returnFocus={true}>
+                    //  <FocusLock disabled={dockedMode} autoFocus={true}>
+                    // TODO fix issue with focusLock on modal not docked
+                    <FocusLock disabled={false} autoFocus={true}>
                         <AnnotationEdit uuid={uuid} save={save} cancel={() => setItemToEdit(-1)} dockedMode={dockedMode} btext={dockedEditAnnotation && btext} />
                     </FocusLock>
                     :
@@ -647,7 +649,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
 
 const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) => {
 
-    const { r2Publication, goToLocator, dockedMode, setItemToEdit, itemEdited } = React.useContext(bookmarkCardContext);
+    const { r2Publication, goToLocator, dockedMode: _dockedMode, setItemToEdit, itemEdited } = React.useContext(bookmarkCardContext);
     const { bookmark, i } = props;
     const isEdited = itemEdited === i;
     const [__] = useTranslator();
@@ -684,13 +686,13 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) =
 
     const bname = (bookmark.name ? `${bookmark.name}` : `${__("reader.navigation.bookmarkTitle")} ${i}`);
 
-    // React.useEffect(() => {
-    //     if (textearearef.current) {
-    //         textearearef.current.style.height = "auto";
-    //         textearearef.current.style.height = textearearef.current.scrollHeight + 3 + "px";
-    //         textearearef.current.focus();
-    //     }
-    // }, [isEdited]);
+    React.useEffect(() => {
+        if (textearearef.current) {
+            textearearef.current.style.height = "auto";
+            textearearef.current.style.height = textearearef.current.scrollHeight + 3 + "px";
+            textearearef.current.focus();
+        }
+    }, [isEdited]);
 
     return (
         <div
@@ -703,7 +705,9 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) =
 
                 <div className={stylesPopoverDialog.chapter_marker}>
                     {isEdited ?
-                        <FocusLock disabled={dockedMode} autoFocus={true}>
+                        // <FocusLock disabled={dockedMode} autoFocus={true}>
+                        // TODO fix issue with focusLock on modal not docked
+                        <FocusLock disabled={false} autoFocus={true}>
                             <form className={stylesPopoverDialog.update_form}>
                                 <TextArea id="editBookmark" name="editBookmark" wrap="hard" ref={textearearef}
                                     defaultValue={bname}
