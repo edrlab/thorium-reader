@@ -44,6 +44,15 @@ declare namespace typed_i18n {
   readonly "hide": string,
   readonly "newVersion": string,
   readonly "quit": string,
+  readonly "session": {
+    readonly "exit": {
+      readonly "askBox": {
+        readonly "button": { readonly "no": string, readonly "yes": string },
+        readonly "message": string,
+        readonly "title": string
+      }
+    }
+  },
   readonly "window": { readonly "showLibrary": string }
 };
   (_: "app.downloadVersion", __?: {}): string;
@@ -64,6 +73,32 @@ declare namespace typed_i18n {
   (_: "app.edit.title", __?: {}): string;
   (_: "app.edit.undo", __?: {}): string; (_: "app.hide", __?: {}): string;
   (_: "app.newVersion", __?: {}): string; (_: "app.quit", __?: {}): string;
+  (_: "app.session", __?: {}): {
+  readonly "exit": {
+    readonly "askBox": {
+      readonly "button": { readonly "no": string, readonly "yes": string },
+      readonly "message": string,
+      readonly "title": string
+    }
+  }
+};
+  (_: "app.session.exit", __?: {}): {
+  readonly "askBox": {
+    readonly "button": { readonly "no": string, readonly "yes": string },
+    readonly "message": string,
+    readonly "title": string
+  }
+};
+  (_: "app.session.exit.askBox", __?: {}): {
+  readonly "button": { readonly "no": string, readonly "yes": string },
+  readonly "message": string,
+  readonly "title": string
+};
+  (_: "app.session.exit.askBox.button", __?: {}): { readonly "no": string, readonly "yes": string };
+  (_: "app.session.exit.askBox.button.no", __?: {}): string;
+  (_: "app.session.exit.askBox.button.yes", __?: {}): string;
+  (_: "app.session.exit.askBox.message", __?: {}): string;
+  (_: "app.session.exit.askBox.title", __?: {}): string;
   (_: "app.window", __?: {}): { readonly "showLibrary": string };
   (_: "app.window.showLibrary", __?: {}): string;
   (_: "catalog", __?: {}): {
