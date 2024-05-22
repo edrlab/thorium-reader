@@ -209,7 +209,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         {/* <label htmlFor="addNote">{__("reader.annotations.addNote")}</label> */}
         <div className={stylesAnnotations.annotation_form_textarea_buttons}>
             {displayFromReaderMenu
-                ? <button className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={cancel}>{__("dialog.cancel")}</button>
+                ? <button className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={cancel} type="button">{__("dialog.cancel")}</button>
                 : <Popover.Close className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={cancel}>{__("dialog.cancel")}</Popover.Close>
             }
             {displayFromReaderMenu

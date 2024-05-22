@@ -714,7 +714,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) =
                                     className={stylesPopoverDialog.bookmark_textArea}
                                 />
                                 <div style={{ display: "flex", gap: "5px" }}>
-                                    <button className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={() => { setItemToEdit(-1); }}>{__("dialog.cancel")}</button>
+                                    <button className={stylesButtons.button_secondary_blue} aria-label="cancel" type="button" onClick={() => { setItemToEdit(-1); }}>{__("dialog.cancel")}</button>
                                     <button type="submit"
                                         className={stylesButtons.button_primary_blue}
                                         aria-label="save"
