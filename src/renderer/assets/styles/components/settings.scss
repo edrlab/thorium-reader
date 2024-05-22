@@ -100,8 +100,8 @@ $setting_color: var(--color-blue);
 
 .modal_dialog_reader .settings_container {
     &:not(:has(.guidedTour_content)) {
-        @media screen and (height <= 700px) {
-            height: 450px;
+        @media screen and (height <= 750px) {
+            height: calc(100dvh - 150px);
         }
     }
 } 

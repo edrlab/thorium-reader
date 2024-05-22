@@ -39,8 +39,8 @@
     }
   }
 
-  @media screen and (height <= 700px) {
-    height: 450px;
+  @media screen and (height <= 750px) {
+    height: calc(100dvh - 150px);
 }
 }
 
