@@ -24,10 +24,10 @@
   overflow: hidden;
   border: 1px solid var(--color-verylight-grey-alt);
 
-  > .settings_container {
-    padding: 0 20px 0 30px;
-    overflow: hidden auto;
-  }
+  // > .settings_container {
+  //   padding: 0 20px 0 30px;
+  //   overflow: hidden auto;
+  // }
 
   &.modal_dialog_full {
     position: relative;
