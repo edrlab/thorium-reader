@@ -30,6 +30,18 @@
         "hide": "Απόκρυψη {{- appName}}",
         "newVersion": "",
         "quit": "Εγκατάληψη {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Όχι",
+                        "yes": "Ναι"
+                    },
+                    "message": "Θέλεις να αποθηκεύσεις τη συνεδρία;",
+                    "title": "Αποθήκευση συνεδρίας"
+                }
+            }
+        },
         "window": {
             "showLibrary": "Εμφάνιση βιβλιοθήκης"
         }

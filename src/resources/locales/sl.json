@@ -30,6 +30,18 @@
         "hide": "Skrij {{- appName}}",
         "newVersion": "",
         "quit": "Zapri {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Ne",
+                        "yes": "Da"
+                    },
+                    "message": "Ali želiš shraniti sejo?",
+                    "title": "Shrani sejo"
+                }
+            }
+        },
         "window": {
             "showLibrary": "Prikaži knjižnico / knjižna polica"
         }

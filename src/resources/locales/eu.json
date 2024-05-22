@@ -30,6 +30,18 @@
         "hide": "Ezkutatu {{- appName}}",
         "newVersion": "",
         "quit": "Irten {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Ez",
+                        "yes": "Bai"
+                    },
+                    "message": "Saioa gorde nahi duzu?",
+                    "title": "Gorde saioa"
+                }
+            }
+        },
         "window": {
             "showLibrary": "Erakutsi liburutegia"
         }

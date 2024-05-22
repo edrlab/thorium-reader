@@ -30,6 +30,18 @@
         "hide": "Скрыть {{- appName}}",
         "newVersion": "",
         "quit": "Выйти {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Нет",
+                        "yes": "Да"
+                    },
+                    "message": "Вы хотите сохранить сеанс ?",
+                    "title": "Сохранить сеанс"
+                }
+            }
+        },
         "window": {
             "showLibrary": "Показать библиотеку / книжную полку"
         }

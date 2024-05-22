@@ -30,6 +30,18 @@
         "hide": "Ausblenden {{- appName}}",
         "newVersion": "",
         "quit": "Beenden {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Nein",
+                        "yes": "Ja"
+                    },
+                    "message": "Möchten Sie die Sitzung speichern ?",
+                    "title": "Sitzung sichern"
+                }
+            }
+        },
         "window": {
             "showLibrary": ""
         }

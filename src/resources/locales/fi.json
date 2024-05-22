@@ -30,6 +30,18 @@
         "hide": "Piilota {{- appName}}",
         "newVersion": "",
         "quit": "Lopeta {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Ei",
+                        "yes": "Kyllä"
+                    },
+                    "message": "Haluatko tallentaa istunnon?",
+                    "title": "Tallenna istunto"
+                }
+            }
+        },
         "window": {
             "showLibrary": "Näytä kirjasto / kirjahylly"
         }

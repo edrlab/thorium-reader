@@ -30,6 +30,18 @@
         "hide": "დამალვა {{- appName}}",
         "newVersion": "",
         "quit": "დახურვა {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "არა",
+                        "yes": "დიახ"
+                    },
+                    "message": "გსურს შევინახოთ სესია ?",
+                    "title": "სესიის შენახვა"
+                }
+            }
+        },
         "window": {
             "showLibrary": "ბიბლიოთეკის ჩვენება / წიგნების კარადა"
         }

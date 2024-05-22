@@ -30,6 +30,18 @@
         "hide": "Skjul {{- appName}}",
         "newVersion": "",
         "quit": "Luk {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Nej",
+                        "yes": "Ja"
+                    },
+                    "message": "Ønsker du at gemme denne session ?",
+                    "title": "Gem session"
+                }
+            }
+        },
         "window": {
             "showLibrary": "Vis bibliotek / boghylde"
         }

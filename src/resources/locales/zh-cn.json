@@ -30,6 +30,18 @@
         "hide": "隐藏 {{- appName}}",
         "newVersion": "",
         "quit": "退出 {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "否",
+                        "yes": "是"
+                    },
+                    "message": "是否保存当前会话？",
+                    "title": "保存会话"
+                }
+            }
+        },
         "window": {
             "showLibrary": "显示 书库/书架"
         }

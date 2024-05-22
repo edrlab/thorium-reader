@@ -30,6 +30,18 @@
         "hide": "隱藏 {{- appName}}",
         "newVersion": "",
         "quit": "退出 {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "否",
+                        "yes": "是"
+                    },
+                    "message": "是否保存當前連線？",
+                    "title": "保存連線"
+                }
+            }
+        },
         "window": {
             "showLibrary": "顯示 書庫/書架"
         }
