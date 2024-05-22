@@ -589,7 +589,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                             </SelectRef> */}
                             <ComboBox
                                 aria-label={__("reader.navigation.page")}
-                                items={pageOptions}
+                                defaultItems={pageOptions}
                                 selectedKey={pageNumber}
                                 defaultSelectedKey={1}
                                 onSelectionChange={(id) => {
@@ -841,7 +841,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
                             </SelectRef> */}
                             <ComboBox
                                 aria-label={__("reader.navigation.page")}
-                                items={pageOptions}
+                                defaultItems={pageOptions}
                                 selectedKey={pageNumber}
                                 defaultSelectedKey={1}
                                 onSelectionChange={(id) => {
@@ -1460,7 +1460,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         {item => <SelectItem>{item.name}</SelectItem>}
                     </SelectRef> */}
                     <ComboBox
-                        items={options}
+                        defaultItems={options}
                         selectedKey={optionSelected}
                         svg={options.find(({ value }) => value === tabValue)?.svg}
                         onSelectionChange={(id) => {

@@ -1278,7 +1278,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                         </SelectRef> */}
                         <ComboBox
-                        items={options}
+                        defaultItems={options}
                         selectedKey={optionSelected}
                         disabledKeys={optionDisabled}
                         svg={options.find(({ value }) => value === tabValue)?.svg}
