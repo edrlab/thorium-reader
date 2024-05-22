@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { shell } from "electron";
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
@@ -23,7 +24,7 @@ import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLin
 import * as penIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as linkIcon from "readium-desktop/renderer/assets/icons/link-icon.svg";
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
-import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
+import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon-bold.svg";
 
 export const ApiappAddFormDialog = () => {
     const [__] = useTranslator();
@@ -42,7 +43,7 @@ export const ApiappAddFormDialog = () => {
     return <Dialog.Root>
         <Dialog.Trigger asChild>
             <button
-                className={stylesButtons.button_nav_primary}
+                className={classNames(stylesButtons.button_nav_primary)}
             >
                 <SVG ariaHidden={true} svg={GlobeIcon} />
                 <span>{__("opds.addMenu")}</span>
@@ -105,7 +106,11 @@ export const ApiappAddFormDialog = () => {
                                     <p>
                                     {__("opds.informations")}
                                     </p>
-                                    <a href="https://opds.io/">
+                                    <a href=""
+                                        onClick={async (ev) => {
+                                            ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
+                                            await shell.openExternal("https://opds.io/");
+                                        }}>
                                     {__("opds.documentation")}
                                         <SVG ariaHidden svg={FollowLinkIcon} />
                                     </a>

@@ -114,6 +114,13 @@ export async function initStore()
     }
 
     try {
+
+        debug("BE CAREFUL");
+        debug("State initialisation on the first and second launch of Thorium");
+        debug("On the first launch runtimeStatePath failed it's an empty file (not created)");
+        debug("On the second launch runtimeStatePath is equal to an empty object {}");
+        debug("and failed on checkReduxState, reduxState has not be preloaded in runtimeStateFilePath");
+        debug("So the Third launch is good!, Thorium State is stabilize");
         const state = await recoveryReduxState(await runtimeState());
         reduxState = await checkReduxState(state, reduxState);
 
@@ -185,7 +192,7 @@ export async function initStore()
         await tryCatch(() =>
             fsp.writeFile(
                 runtimeStateFilePath,
-                reduxState ? JSON.stringify(reduxState) : "",
+                reduxState ? JSON.stringify(reduxState) : "{}",
                 { encoding: "utf8" },
             )
             , "");

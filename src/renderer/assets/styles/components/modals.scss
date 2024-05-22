@@ -213,11 +213,12 @@
   margin-top: 30px!important;
 
   .guidedTour_tab {
-    margin-top: 0;
+    margin-top: 0!important;
 
     h3 {
       font-size: 25px;
       margin-top: 0;
+      margin-bottom: 10px;
     }
 
     p {
@@ -239,9 +240,10 @@
       align-items: center;
       justify-content: flex-end;
       gap: 20px;
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
+      // position: absolute;
+      // bottom: 20px;
+      // right: 20px;
+      margin: 20px 0;
     }
   }
 }

@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { shell } from "electron";
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { connect } from "react-redux";
@@ -125,7 +126,11 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                         {
                             this.props.urlHint?.href
                                 ?
-                                <a href={this.props.urlHint.href} className={stylesModals.urlHint}>
+                                <a href=""
+                                    onClick={async (ev) => {
+                                        ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
+                                        await shell.openExternal(this.props.urlHint.href);
+                                    }} className={stylesModals.urlHint}>
                                     {this.props.urlHint.title || __("library.lcp.urlHint")}
                                 </a>
                                 : <></>
@@ -140,7 +145,11 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 <p>
                                     {__("library.lcp.whatIsLcpInfoDetails")}
                                 </p>
-                                <a href="https://thorium.edrlab.org/">
+                                <a href=""
+                                    onClick={async (ev) => {
+                                        ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
+                                        await shell.openExternal("https://www.edrlab.org/readium-lcp/");
+                                    }}>
                                     {__("library.lcp.whatIsLcpInfoDetailsLink")}
                                     <SVG ariaHidden svg={FollowLinkIcon} />
                                 </a>

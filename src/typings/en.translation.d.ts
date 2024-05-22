@@ -697,6 +697,7 @@ declare namespace typed_i18n {
     readonly "advancedMode": string,
     readonly "advancedModeDetails": string,
     readonly "annotationsOptions": string,
+    readonly "hide": string,
     readonly "highlight": string,
     readonly "noSelectionToast": string,
     readonly "quickAnnotations": string,
@@ -838,6 +839,7 @@ declare namespace typed_i18n {
   readonly "advancedMode": string,
   readonly "advancedModeDetails": string,
   readonly "annotationsOptions": string,
+  readonly "hide": string,
   readonly "highlight": string,
   readonly "noSelectionToast": string,
   readonly "quickAnnotations": string,
@@ -849,6 +851,7 @@ declare namespace typed_i18n {
   (_: "reader.annotations.advancedMode", __?: {}): string;
   (_: "reader.annotations.advancedModeDetails", __?: {}): string;
   (_: "reader.annotations.annotationsOptions", __?: {}): string;
+  (_: "reader.annotations.hide", __?: {}): string;
   (_: "reader.annotations.highlight", __?: {}): string;
   (_: "reader.annotations.noSelectionToast", __?: {}): string;
   (_: "reader.annotations.quickAnnotations", __?: {}): string;

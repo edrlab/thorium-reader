@@ -25,8 +25,9 @@ import * as TextOutlineIcon from "readium-desktop/renderer/assets/icons/TextOutl
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { readerLocalActionSetConfig } from "../redux/actions";
 import classNames from "classnames";
+import { TextArea } from "react-aria-components";
 
-interface IPros {
+interface IProps {
     save: (color: IColor, comment: string, drawType: TDrawType) => void;
     cancel: () => void;
     uuid?: string;
@@ -62,7 +63,7 @@ const drawType: TDrawType[] = [
     "outline",
 ];
 
-export const AnnotationEdit: React.FC<IPros> = (props) => {
+export const AnnotationEdit: React.FC<IProps> = (props) => {
 
     const { save, cancel, uuid, dockedMode} = props;
 
@@ -160,8 +161,8 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
         <div
             className={classNames(displayFromReaderMenu ? "" : stylesAnnotations.annotations_line, dockedMode ? stylesAnnotations.docked_annotation_line : "")}>
             <p>{annotationState.locatorExtended.selectionInfo.cleanText}</p>
-            <textarea id="addNote" name="addNote" wrap="hard" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef}
-            ></textarea>
+            <TextArea id="addNote" name="addNote" wrap="hard" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef}
+            ></TextArea>
 
         </div>
         <div className={stylesAnnotations.annotation_actions} style={{ flexDirection: dockedMode ? "column" : "row", alignItems: dockedMode ? "start" : "center" }}>
@@ -169,7 +170,7 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
             <div className={stylesAnnotations.annotation_actions_container}>
                 <h4>{__("reader.annotations.Color")}</h4>
                 <div className={stylesAnnotations.colorPicker}
-                    role="group">
+                    role="radiogroup">
                     {annotationsColorsLight.map((color) => (
                         <div key={color}>
                             <input type="radio" id={color} name="colorpicker" value={color}
@@ -188,7 +189,7 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
             </div>
             <div className={stylesAnnotations.annotation_actions_container}>
                 <h4>{__("reader.annotations.highlight")}</h4>
-                <div role="group" className={stylesAnnotations.stylePicker}>
+                <div role="radiogroup" className={stylesAnnotations.stylePicker}>
                     {drawType.map((type, i) => (
                         <div key={type}>
                             <input type="radio" id={type} name="drawtype" value={type}
