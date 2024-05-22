@@ -253,7 +253,11 @@ button {
 }
 
 .isOnSearch {
-  top: 96px!important;
+  top: 50px!important;
+}
+
+.isOnSearch.popover_dialog_reader {
+  top: 100px!important;
 }
 
 .isOnSearchPdf {
@@ -261,7 +265,7 @@ button {
 }
 
 .isOnSearch.popover_dialog_reader .settings_container {
-  height: calc(100dvh - 270px);
+  height: calc(100dvh - 280px);
 }
 
 
