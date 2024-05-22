@@ -32,30 +32,7 @@
 
 @mixin R2_MIXIN_FOCUS_OUTLINE {
   outline: var(--color-blue) solid 2px !important;
-  // outline-offset: -2px;
-}
-
-@mixin scrollbar_styling {
-  &::-webkit-scrollbar {
-    width: 12px;
-    transition: 200ms;
-
-    &-thumb {
-        background-color: var(--scrollbar-thumb);
-        border-radius: 6px;
-        border-left: 2px solid transparent;
-        background-clip: padding-box;
-        cursor: pointer;
-
-        &:hover {
-          border: 0;
-        }
-    }
-
-    &-track {
-        background-color: var(--color-secondary);
-      }
-  }
+  outline-offset: -2px;
 }
 
 .___DEBUG___PARTIALS_MIXINS_CSS {

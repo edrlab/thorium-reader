@@ -17,6 +17,7 @@
         "noLibraryFound": ""
     },
     "app": {
+        "downloadVersion": "",
         "edit": {
             "copy": "Kopiatu",
             "cut": "Moztu",
@@ -27,26 +28,8 @@
             "undo": "Desegin"
         },
         "hide": "Ezkutatu {{- appName}}",
+        "newVersion": "",
         "quit": "Irten {{- appName}}",
-<<<<<<< HEAD
-=======
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "Ez",
-                        "yes": "Bai"
-                    },
-                    "message": "Saioa gorde nahi duzu?",
-                    "title": "Gorde saioa"
-                }
-            }
-        },
-        "update": {
-            "message": "",
-            "title": ""
-        },
->>>>>>> develop
         "window": {
             "showLibrary": "Erakutsi liburutegia"
         }
@@ -84,7 +67,7 @@
         "moreInfo": "Informazio gehiago",
         "myBooks": "Nire liburuak",
         "noPublicationHelpL1": "Lerratu argitalpen bat hemen",
-        "noPublicationHelpL2": "edo erabili goiko \"{{- importTitle }}\" botoia.",
+        "noPublicationHelpL2": "edo erabili goiko \"+\" botoia.",
         "noPublicationHelpL3": "LCP fitxategi babestuak onartzen badituzte.",
         "noPublicationHelpL4": "Luzapen onartuak:",
         "numberOfPages": "Orrialde-kopurua",
@@ -307,6 +290,7 @@
             "Color": "",
             "addNote": "",
             "advancedMode": "",
+            "advancedModeDetails": "",
             "annotationsOptions": "",
             "highlight": "",
             "noSelectionToast": "",
@@ -426,13 +410,8 @@
             "text": "Testua",
             "theme": {
                 "name": {
-                    "Contrast1": "",
-                    "Contrast2": "",
-                    "Contrast3": "",
-                    "Contrast4": "",
                     "Neutral": "Neutrala",
                     "Night": "Gauez",
-                    "Paper": "",
                     "Sepia": "Sepia"
                 },
                 "title": "Antolamendu"

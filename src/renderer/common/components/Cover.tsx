@@ -27,7 +27,7 @@ interface IBaseProps extends TranslatorProps {
     publicationViewMaybeOpds: TPublication;
     coverType?: "cover" | "thumbnail" | undefined;
     onClick?: () => void;
-    onKeyUp?: (e: React.KeyboardEvent<HTMLImageElement>) => void;
+    onKeyPress?: (e: React.KeyboardEvent<HTMLImageElement>) => void;
     forwardedRef?:  React.ForwardedRef<HTMLImageElement>;
     imgRadixProp?: any;
     hasEnded?: boolean;
@@ -111,13 +111,13 @@ class Cover extends React.Component<IProps, IState> {
             return (
                 <>
                 <img
-                    tabIndex={(this.props.imgRadixProp || this.props.onKeyUp) ? 0 : -1}
+                    tabIndex={(this.props.imgRadixProp || this.props.onKeyPress) ? 0 : -1}
                     className={stylesPublications.cover_img}
                     onClick={this.props.onClick}
-                    onKeyUp={this.props.onKeyUp}
+                    onKeyPress={this.props.onKeyPress}
                     role="presentation"
-                    alt={(this.props.imgRadixProp || this.props.onKeyUp) ? this.props.__("publication.cover.img") : ""}
-                    aria-hidden={(this.props.imgRadixProp || this.props.onKeyUp) ? undefined : true}
+                    alt={(this.props.imgRadixProp || this.props.onKeyPress) ? this.props.__("publication.cover.img") : ""}
+                    aria-hidden={(this.props.imgRadixProp || this.props.onKeyPress) ? undefined : true}
                     ref={this.props.forwardedRef}
                     src={this.state.imgUrl}
                     onError={this.imageOnError}

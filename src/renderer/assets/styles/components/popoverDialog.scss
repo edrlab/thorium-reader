@@ -21,8 +21,7 @@
   color: var(--color-primary);
   position: fixed;
   box-sizing: border-box;
-  overflow: hidden;
-  border: 1px solid var(--color-verylight-grey-alt);
+  box-shadow: 0 2px 10px 5px var(--color-medium-grey);
 
   > .settings_container {
     padding: 0 20px 0 30px;
@@ -44,25 +43,9 @@
 }
 }
 
-[data-theme="light"] {
-  .modal_dialog_reader {
-    box-shadow: 0 1px 10px 2px var(--color-verylight-grey-alt);
-    border: none;
-  }
-}
-
-[data-theme="system"] {
-  @media (prefers-color-scheme: light) {
-    .modal_dialog_reader {
-      box-shadow: 0 1px 10px 2px var(--color-verylight-grey-alt);
-      border: none;
-    }
-  }
-}
-
 .popover_dialog_reader {
   width: 350px;
-  height: calc(100dvh - 114px);
+  height: calc(100dvh - 94px);
   display: flex;
   margin-top: 50px;
   flex-direction: column;
@@ -71,20 +54,9 @@
   background-color: var(--color-secondary);
   position: absolute;
   overflow: hidden;
-  color: var(--color-primary);
-
-  .pages .react_aria_ComboBox .my_combobox_container { 
-    > * {
-    margin: 0!important;
-    }
-
-    input {
-      max-width: 70px!important;
-    }
-  } 
 
   .settings_container {
-    height: calc(100dvh - 230px);
+    height: calc(100dvh - 235px);
     padding: 0;
     overflow: hidden auto;
 
@@ -100,32 +72,6 @@
   .display_options_item {
     background-color: transparent;
     color: var(--color-primary);
-  }
-
-  .docked_header + .react_aria_ComboBox {
-    padding: 15px 20px!important;
-    width: calc(100% - 40px);
-    background-color: var(--color-docked-header);
-    border-bottom: 1px solid var(--color-extralight-grey-alt);
-
-    .my_combobox_container {
-      width: calc(100% - 10px);
-
-      > button {
-        width: 100%!important;
-      }
-    }
-  }
-
-  .goToPage {
-    .react_aria_ComboBox .my_combobox_container input {
-      padding-left: 10px!important;
-    }
-
-    .react_aria_ComboBox .my_combobox_container button {
-      padding-left: 0!important; 
-      margin: 0!important;
-    }
   }
 
   .react_aria_ComboBox {
@@ -182,17 +128,14 @@
   .bookmarks_line .bookmark_textArea {
     min-width: unset;
     width: 270px;
-  } 
+  }
 }
-
 
 .docked_header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px;
-  background-color: var(--color-docked-header);
-  border-bottom: 1px solid var(--color-extralight-grey-alt);
 
   .my_combobox_container button {
     min-width: 110px;
@@ -306,7 +249,7 @@
     display: block;
     padding: 5px 40px 5px 5px;
     margin: 5px 0;
-    background-color: var(--color-extralight-grey);
+    background-color: var(--color-light-grey);
   }
 }
 
@@ -315,7 +258,7 @@
   align-items: end;
   justify-content: end;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 
   .pages {
     display: flex;
@@ -331,7 +274,6 @@
 
   button {
     transition: 100ms;
-    min-width: 24px
   }
 
   button svg {
@@ -402,7 +344,7 @@
   .bookmark_infos {
     width: 100%;
     display: flex;
-    background-color: var(--color-extralight-grey);
+    background-color: var(--color-light-grey);
     border-left: 2px solid var(--color-blue);
     height: fit-content;
     padding: 0 10px;
@@ -499,13 +441,13 @@
   width: 100%;
   margin-top: 2px;
   height: 4px;
-  background-color: var(--color-verylight-grey-alt);
+  background-color: #ececec;
 
   & .fill {
     height: 100%;
     position: relative;
     width: 63%;
-    background-color: var(--color-mediumdark-grey-alt);
+    background-color: #3b3b3b;
   }
 }
 
@@ -535,15 +477,12 @@
       .react_aria_Label {
         position: absolute;
         left: 10px;
-        top: -13px;
-        padding: 0 5px;
+        // top: -20px;
         background-color: var(--color-secondary);
         text-overflow: ellipsis;
         overflow: hidden;
         max-width: 250px;
         white-space: nowrap;
-        line-height: 95%;
-        height: unset;
     }
 
       & input {
@@ -575,7 +514,7 @@
 
     button {
       background-color: var(--color-blue);
-      color: var(--color-secondary);
+      color: white;
       width: fit-content;
       border-radius: 6px;
       display: flex;
@@ -586,8 +525,8 @@
 
       svg {
         width: 15px;
-        fill: var(--color-secondary)!important;
-        color: var(--color-secondary)!important;
+        fill: white!important;
+        color: white!important;
       }
     }
   }
@@ -624,49 +563,12 @@
     }
 
     .react_aria_Button svg {
-      // width: 15px;
+      width: 15px;
       color: var(--color-primary)!important;
     }
   }
 }
 
-// .pages {
-//   input {
-//     width: fit-content!important;
-//     max-width: 80px;
-//     padding: 0!important;
-//     padding-left: 10px!important;
-//   }
-//   .react_aria_ComboBox .my_combobox_container {
-//     background-color: var(--color-secondary)!important;
-//     color: var(--color-primary)!important;
-//     border-color: var(--color-primary)!important;
-//     max-width: 100px!important;
-//     button {
-//       padding: 0 5px;
-//     }
-//   }
-// }
-
-.modal_dialog_reader, .popover_dialog_reader {
-  .pages .react_aria_ComboBox .my_combobox_container {
-    background-color: var(--color-secondary)!important;
-    color: var(--color-primary)!important;
-    border-color: var(--color-primary)!important;
-    max-width: 100px!important;
-    
-    input {
-      width: fit-content!important;
-      max-width: 80px;
-      padding: 0!important;
-      padding-left: 10px!important;
-    }
-
-    button {
-      padding: 0 5px!important;
-    }
-  } 
-} 
 
 .react_aria_ListBox {
   width: inherit;

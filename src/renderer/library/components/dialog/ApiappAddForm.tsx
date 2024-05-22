@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { shell } from "electron";
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
@@ -56,7 +55,7 @@ const Item = ({v}: {v: IApiappSearchResultView}) => {
                             submitAction();
                         }, 0);
                     }}
-                    onKeyUp={(e) => {
+                    onKeyDown={(e) => {
                         if (e.key === "Enter") {
                             // e.preventDefault();
                             // e.stopPropagation();
@@ -116,7 +115,7 @@ const ApiappAddForm = () => {
                         type="search"
                         id="apiapp_search"
                         // placeholder={__("header.searchPlaceholder")}
-                        onKeyUp={(e) => {
+                        onKeyDown={(e) => {
                             if (e.key === "Enter") {
                                 e.stopPropagation();
                                 e.preventDefault();
@@ -130,14 +129,8 @@ const ApiappAddForm = () => {
                     />
                 </div>
                 <button
-                        onClick={(e) => {
-                            e.preventDefault();
-                            if (searchInputRef.current?.value) {
-                                apiAppSearchAction(searchInputRef.current.value);
-                            }
-                        }}
-                        className={stylesButtons.button_nav_primary}
-                        style={{height: "24px"}}
+                        onClick={() => searchInputRef.current?.value ? apiAppSearchAction(searchInputRef.current.value) : ""}
+                        className={stylesButtons.button_secondary_blue}
                         title={__("header.searchTitle")}
                     >
                         <SVG ariaHidden={true} svg={magnifyingGlass} />
@@ -156,11 +149,7 @@ const ApiappAddForm = () => {
                         <p>
                         {__("apiapp.informations")}
                         </p>
-                        <a href=""
-                            onClick={async (ev) => {
-                                ev.preventDefault();
-                                await shell.openExternal("https://thorium.edrlab.org/docs/");
-                            }}>
+                        <a href="https://thorium.edrlab.org/docs/">
                         {__("apiapp.documentation")}
                             <SVG ariaHidden svg={FollowLinkIcon} />
                         </a>

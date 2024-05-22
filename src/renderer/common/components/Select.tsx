@@ -6,22 +6,20 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { Button, Select as SelectReactAria, Label, ListBox, ListBoxItem, Popover, ValidationResult, Group, SelectValue } from "react-aria-components";
+import { Button, Select as SelectReactAria, Label, ListBox, ListBoxItem, Popover, SelectProps, ValidationResult, Group, SelectValue } from "react-aria-components";
 import { FieldError, Text } from "react-aria-components";
 import SVG, { ISVGProps } from "./SVG";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 import classNames from "classnames";
 
-type TSelectReactAriaProps<T extends object> = Parameters<typeof SelectReactAria<T>>[0];
 export interface MySelectProps<T extends object>
-extends Omit<TSelectReactAriaProps<T>, "children"> {
-  children: Parameters<typeof ListBox<T>>[0]["children"];
-
+  extends Omit<SelectProps<T>, "children"> {
   label?: string;
   description?: string;
   errorMessage?: string | ((validation: ValidationResult) => string);
   items?: Iterable<T>;
+  children: React.ReactNode | ((item: T) => React.ReactNode);
   svg?: ISVGProps;
   refButEl?: React.Ref<HTMLButtonElement>;
 }

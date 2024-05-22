@@ -17,6 +17,7 @@
         "noLibraryFound": ""
     },
     "app": {
+        "downloadVersion": "",
         "edit": {
             "copy": "Копировать",
             "cut": "Вырезать",
@@ -27,26 +28,8 @@
             "undo": "Отменить"
         },
         "hide": "Скрыть {{- appName}}",
+        "newVersion": "",
         "quit": "Выйти {{- appName}}",
-<<<<<<< HEAD
-=======
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "Нет",
-                        "yes": "Да"
-                    },
-                    "message": "Вы хотите сохранить сеанс ?",
-                    "title": "Сохранить сеанс"
-                }
-            }
-        },
-        "update": {
-            "message": "",
-            "title": ""
-        },
->>>>>>> develop
         "window": {
             "showLibrary": "Показать библиотеку / книжную полку"
         }
@@ -84,7 +67,7 @@
         "moreInfo": "Дополнительные сведения",
         "myBooks": "Мои книги",
         "noPublicationHelpL1": "Перетащите сюда книгу",
-        "noPublicationHelpL2": "или используйте \"{{- importTitle }}\" кнопку выше.",
+        "noPublicationHelpL2": "или используйте \"+\" кнопку выше.",
         "noPublicationHelpL3": "Поддерживаются файлы с защитой LCP.",
         "noPublicationHelpL4": "Поддерживаемые расширения:",
         "numberOfPages": "Количество страниц",
@@ -307,6 +290,7 @@
             "Color": "",
             "addNote": "",
             "advancedMode": "",
+            "advancedModeDetails": "",
             "annotationsOptions": "",
             "highlight": "",
             "noSelectionToast": "",
@@ -426,13 +410,8 @@
             "text": "Текст",
             "theme": {
                 "name": {
-                    "Contrast1": "",
-                    "Contrast2": "",
-                    "Contrast3": "",
-                    "Contrast4": "",
                     "Neutral": "Нейтральная",
                     "Night": "Ночная",
-                    "Paper": "",
                     "Sepia": "Сепия"
                 },
                 "title": "Тема"

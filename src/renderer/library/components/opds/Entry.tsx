@@ -61,7 +61,7 @@ class Entry extends React.Component<IProps, undefined> {
                 state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
             >
                 <span>
-                    <span title={entry.subtitle ? entry.subtitle : entry.title}>{entry.title}</span>
+                    <span title={entry.subtitle ? entry.subtitle : undefined}>{entry.title}</span>
                     {
                         (entry.subtitle && entry.subtitle !== entry.title) ?
                         (<span title={entry.subtitle} aria-label={entry.subtitle}>

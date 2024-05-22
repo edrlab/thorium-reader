@@ -27,11 +27,10 @@ import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import { IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../pdf/common/pdfReader.type";
 import { IPopoverDialogProps, IReaderSettingsProps } from "./options-values";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
-import { ReaderConfig, TTheme } from "readium-desktop/common/models/reader";
+import { ReaderConfig } from "readium-desktop/common/models/reader";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import debounce from "debounce";
 import { FONT_LIST, FONT_LIST_WITH_JA } from "readium-desktop/utils/fontList";
@@ -39,8 +38,7 @@ import { readerConfigInitialState, readerConfigInitialStateDefaultPublisher } fr
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import { createOrGetPdfEventBus } from "../pdf/driver";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
-import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
-import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as ResetIcon from "readium-desktop/renderer/assets/icons/clock-reverse-icon.svg";
 import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-bold.svg";
@@ -89,89 +87,63 @@ const TabTitle = ({value}: {value: string}) => {
     );
 };
 
-const Theme = ({theme, set}: {theme: Pick<ReaderConfig, "theme">, set: (a: Pick<ReaderConfig, "theme">) => void}) => {
+const Theme = ({theme, set}: {theme: Pick<ReaderConfig, "night" | "sepia">, set: (a: Pick<ReaderConfig, "night" | "sepia">) => void}) => {
     const [__] = useTranslator();
-    const [themeOptions] = React.useState(() => [
-        {
-            id: 1,
-            name: `${__("reader.settings.theme.name.Neutral")}`,
-            value: "neutral",
-            style: {backgroundColor: "#fefefe", color: "black"},
-        },
-        {
-            id: 2,
-            name: `${__("reader.settings.theme.name.Sepia")}`,
-            value: "sepia",
-            style: {backgroundColor: "#faf4e8", color: "black"},
-        },
-        {
-            id: 3,
-            name: `${__("reader.settings.theme.name.Paper")}`,
-            value: "paper",
-            style: {backgroundColor: "#E9DDC8", color: "#000000" },
-        },
-        {
-            id: 4,
-            name: `${__("reader.settings.theme.name.Night")}`,
-            value: "night",
-            style: {backgroundColor: "#121212", color: "#fff" },
-        },
-        {
-            id: 5,
-            name: `${__("reader.settings.theme.name.Contrast1")}`,
-            value: "contrast1",
-            style: {backgroundColor: "#000000", color: "#fff" },
-        },
-        {
-            id: 6,
-            name: `${__("reader.settings.theme.name.Contrast2")}`,
-            value: "contrast2",
-            style: {backgroundColor: "#000000", color: "#FFFF00" },
-        },
-        {
-            id: 7,
-            name: `${__("reader.settings.theme.name.Contrast3")}`,
-            value: "contrast3",
-            style: {backgroundColor: "#181842", color: "#FFFF" },
-        },
-        {
-            id: 8,
-            name: `${__("reader.settings.theme.name.Contrast4")}`,
-            value: "contrast4",
-            style: {backgroundColor: "#C5E7CD", color: "#000000" },
-        },
-    ]);
+    // const [options] = React.useState(() => [
+    //     {
+    //         id: 1,
+    //         name: `${__("reader.settings.theme.name.Neutral")}`,
+    //         value: "neutral",
+    //     },
+    //     {
+    //         id: 2,
+    //         name: `${__("reader.settings.theme.name.Sepia")}`,
+    //         value: "sepia",
+    //     },
+    //     {
+    //         id: 3,
+    //         name: `${__("reader.settings.theme.name.Night")}`,
+    //         value: "night",
+    //     },
+    // ]);
 
 
-    const defaultKey = 
-    theme.theme === "neutral" ? 1 
-    : theme.theme === "night" ? 4 
-    : theme.theme === "sepia" ? 2 
-    : theme.theme === "contrast1" ? 5
-    : theme.theme === "paper" ? 3
-    : theme.theme === "contrast2" ? 6
-    : theme.theme === "contrast3" ? 7
-    : theme.theme === "contrast4" ? 8
-    : 1;
+    const defaultKey = theme.night ? 3 : theme.sepia ? 2 : 1;
 
     return (
-        <section className={stylesSettings.section}>
+        <>
+        {/* <ComboBox style={{ borderBottom: "3px solid var(--color-light-grey)" }} label={__("reader.settings.theme.title")} defaultItems={options} defaultSelectedKey={defaultKey} onSelectionChange={(key: React.Key) => {
+            set({
+                night: key === 3,
+                sepia: key === 2,
+            });
+        }} svg={SwatchesIcon}>
+            {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+        </ComboBox> */}
         <h4>{__("reader.settings.theme.title")}</h4>
-        <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px", marginTop: "20px", flexWrap: "wrap"}}
-        value={themeOptions.find((theme) => theme.id === defaultKey).value}
-                onValueChange={(option) => set({ theme: option as TTheme  })}
+        {/* <div role="radiogroup" style={{display: "flex", alignItems: "center", gap: "20px", marginTop: "20px"}} tabIndex={0} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+        {
+        options.map((option) => (
+                <button type="button" role="radio" id={option.value} name="themepicker" value={option.value}
+                key={option.id}
+                className={stylesSettings.settings_theme_container} style={{backgroundColor: option.value === "sepia" ? "#faf4e8" : option.value === "night" ? "#2D2D2D" : "#fff", color: option.value === "night" ? "#fff" : "black"}}
+                    onClick={() => {
+                        set({
+                            night: option.id === 3,
+                            sepia: option.id === 2, 
+                        });
+                    }}
+                >
+                    {option.name}
+                    {defaultKey === option.id ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
+                </button>
+        ),
+        )}
+        </div> */}
+        <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px", marginTop: "20px" }} value={(defaultKey === 2) ? "sepia_option" : (defaultKey === 3) ? "night_option" : "neutral_option"}
+                onValueChange={(option) => set({ night: option === "night",sepia: option === "sepia"  })}
             >
-                {themeOptions.map((theme) => 
-                                <RadioGroupItem 
-                                key={theme.value}
-                                value={theme.value} 
-                                description={theme.name}
-                                className={stylesSettings.settings_theme_container} 
-                                style={theme.style}
-                                svg={defaultKey === theme.id ? DoubleCheckIcon : null}
-                                />,
-                )}
-                {/* <RadioGroupItem 
+                <RadioGroupItem 
                 value="neutral" 
                 description={`${__("reader.settings.theme.name.Neutral")}`}
                 className={stylesSettings.settings_theme_container} 
@@ -191,9 +163,9 @@ const Theme = ({theme, set}: {theme: Pick<ReaderConfig, "theme">, set: (a: Pick<
                 className={stylesSettings.settings_theme_container} 
                 style={{backgroundColor: "#2D2D2D", color: "#fff" }}
                 svg={defaultKey === 3 ? CheckIcon : null}
-                /> */}
+                />
             </RadioGroup.Root>
-        </section>
+        </>
     );
 };
 
@@ -201,10 +173,6 @@ export const FontSize = ({config: {fontSize}, set}: {config: Pick<ReaderConfig, 
     const [__] = useTranslator();
 
     const [currentSliderValue, setCurrentSliderValue] = React.useState(fontSize.replace(/%/g, ""));
-
-    React.useEffect(() => {
-        setCurrentSliderValue(fontSize.replace(/%/g, ""));
-    }, [fontSize]);
 
     const click = (direction: string) => {
         const step = 12.5;
@@ -220,6 +188,8 @@ export const FontSize = ({config: {fontSize}, set}: {config: Pick<ReaderConfig, 
         setCurrentSliderValue(valueToString);
         set({ fontSize: valueToString + "%" });
     };
+
+    console.log(currentSliderValue);
 
     return (
         <section>
@@ -271,29 +241,19 @@ export const FontFamily = ({config: {font}, set}: {config: Pick<ReaderConfig, "f
     // }
 
     // console.log(options);
-
-    const selectFont = () => {
-
-        const selected = options.find((v) => v.value === font) || {
-            id: fontList.length,
-            value: font,
-            name: font,
-            fontFamily: `${font}, Consolas, monospace`,
-        };
-        // console.log(selected);
-
-        const defaultkey = selected.id;
-        const fontFamily = selected.fontFamily;
-        const fontName = selected.name;
-
-        return {defaultkey, fontFamily, fontName};
+    const selected = options.find((v) => v.value === font) || {
+        id: fontList.length,
+        value: font,
+        name: font,
+        fontFamily: `${font}, Consolas, monospace`,
     };
+    // console.log(selected);
 
-    const [inputval, setInputval] = React.useState(selectFont().fontName);
+    const defaultkey = selected.id;
+    const fontFamily = selected.fontFamily;
+    const fontName = selected.name;
 
-    React.useEffect(() => {
-        setInputval(selectFont().fontName);
-    }, [font]);
+    const [inputval, setInputval] = React.useState(fontName);
 
     const saveFont = (value: string) => {
         let val = value.trim();
@@ -317,7 +277,6 @@ export const FontFamily = ({config: {font}, set}: {config: Pick<ReaderConfig, "f
         set({ font: val });
     };
 
-    const { defaultkey, fontFamily, fontName } = selectFont();
     return (
         <div>
             <ComboBox label={__("reader.settings.font")} defaultItems={options} selectedKey={defaultkey}
@@ -378,12 +337,8 @@ interface ITable {
     rem: boolean,
 }
 
-const Slider = ({ value, option, set }: { value: string, option: ITable, set: (a: Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">) => void }) => {
+const Slider = ({ option, set }: { option: ITable, set: (a: Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">) => void }) => {
     const [currentSliderValue, setCurrentSliderValue] = React.useState(option.defaultValue);
-
-    React.useEffect(() => {
-        setCurrentSliderValue(value.replace(/rem/g, ""));
-    }, [value]);
 
     const click = (direction: string) => {
         const step = option.step;
@@ -443,11 +398,10 @@ const Slider = ({ value, option, set }: { value: string, option: ITable, set: (a
 };
 
 
-const ReadingSpacing = ({config, set }: {config: ReaderConfig, set: (a: Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">) => void }) => {
+const ReadingSpacing = ({config: {pageMargins, wordSpacing, letterSpacing, paraSpacing, lineHeight}, set }: {config: ReaderConfig, set: (a: Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">) => void }) => {
 
     const [__] = useTranslator();
 
-    const { pageMargins, wordSpacing, letterSpacing, paraSpacing, lineHeight } = config;
     const spacingOptions: ITable[] = [
         {
             title: `${__("reader.settings.margin")}`,
@@ -514,7 +468,7 @@ const ReadingSpacing = ({config, set }: {config: ReaderConfig, set: (a: Pick<Rea
     return (
         <div className={stylesSettings.settings_tab_container_reading_spacing}>
             {spacingOptions.map((option: ITable) => (
-                <Slider value={config[option.parameter]} option={option} key={option.title} set={set}/>
+                <Slider option={option} key={option.title} set={set}/>
             ))}
         </div>
     );
@@ -657,33 +611,8 @@ export const ReadingAudio = ({ useMO, config: { mediaOverlaysEnableCaptionsMode:
                         name={option.name}
                         onChange={option.onChange}
                         defaultChecked={option.checked}
-                        className={stylesGlobal.checkbox_custom_input}
                     />
-                    <label htmlFor={option.id} className={stylesGlobal.checkbox_custom_label}>
-                        <div 
-                            tabIndex={0}
-                            role="checkbox"
-                            aria-checked={option.checked}
-                            aria-label={option.label}
-                            onKeyUp={(e) => {
-                                // if (e.code === "Space") {
-                                if (e.key === " ") {
-                                    e.preventDefault();
-                                    option.onChange();
-                                }
-                            }}
-                        className={stylesGlobal.checkbox_custom} 
-                        style={{border: option.checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: option.checked ? "var(--color-blue)" : "transparent"}}>
-                            {option.checked ?
-                                <SVG ariaHidden svg={CheckIcon} />
-                                :
-                                <></>
-                            }
-                        </div>
-                        <span aria-hidden>
-                        {option.label}
-                        </span>
-                    </label>
+                    <label htmlFor={option.id}>{option.label}</label>
                     {/* <p className={stylesSettings.session_text}>{option.description}</p> */}
                 </div>
 
@@ -692,7 +621,7 @@ export const ReadingAudio = ({ useMO, config: { mediaOverlaysEnableCaptionsMode:
     );
 };
 
-const ReadingDisplayCheckboxSettings = ({
+const ReadingDisplayMathJax = ({
     config: { enableMathJax, reduceMotion, noFootnotes, noRuby },
     set,
     disableRTLFlip,
@@ -717,7 +646,6 @@ const ReadingDisplayCheckboxSettings = ({
             onChange: () => {
                 if (enableMathJax === false) {
                     set({ paged: false, enableMathJax: true });
-                    return ;
                 }
                 set({ enableMathJax: false });
             },
@@ -749,59 +677,38 @@ const ReadingDisplayCheckboxSettings = ({
                 set({ noRuby: !noRuby });
             },
         },
-        {
-            id: "noRTLFlipCheckBox",
-            name: "noRTLFlipCheckBox",
-            label: __("reader.settings.noRTLFlip"),
-            checked: disableRTLFlip,
-            onChange: () => {
-                setDisableRTLFlip(!disableRTLFlip);
-            },
-        },
     ];
 
     return (
         <div>
             {options.map((option) => (
                 <section key={option.id}>
-                    <div className={stylesReader.display_checkbox_section}>
+                    <div style={{display: "flex", alignItems: "center"}}>
                         <input
                             id={option.id}
                             type="checkbox"
                             name={option.name}
                             onChange={option.onChange}
                             defaultChecked={option.checked}
-                            className={stylesGlobal.checkbox_custom_input}
                         />
-                        <label htmlFor={option.id} style={{margin: "0 5px", height: "unset"}} className={stylesGlobal.checkbox_custom_label}>
-                        <div
-                            tabIndex={0}
-                            role="checkbox"
-                            aria-checked={option.checked}
-                            aria-label={option.label}
-                            onKeyUp={(e) => {
-                                // if (e.code === "Space") {
-                                if (e.key === " ") {
-                                    e.preventDefault();
-                                    option.onChange();
-                                }
-                            }}
-                            className={stylesGlobal.checkbox_custom}
-                            style={{ border: option.checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: option.checked ? "var(--color-blue)" : "transparent" }}>
-                                            {option.checked ?
-                                                <SVG ariaHidden svg={CheckIcon} />
-                                                :
-                                                <></>
-                                            }
-                        </div>
-                        <span aria-hidden>
-                        {option.label}
-                        </span>
-                    </label>
+                        <label htmlFor={option.id} style={{margin: "0 5px", height: "unset"}}>{option.label}</label>
                     </div>
                 </section>
 
             ))}
+
+            <section>
+                <div>
+                    <input
+                        id="noRTLFlipCheckBox"
+                        type="checkbox"
+
+                        checked={disableRTLFlip}
+                        onChange={() => setDisableRTLFlip(!disableRTLFlip)}
+                    />
+                    <label htmlFor="noRTLFlipCheckBox" style={{margin: "0 5px", height: "unset"}}>{__("reader.settings.noRTLFlip")}</label>
+                </div>
+            </section>
         </div>
     );
 };
@@ -944,33 +851,10 @@ const AllowCustom = ({ overridePublisherDefault, set }:
     const [__] = useTranslator();
         return(
             <>
-                <input id="allow-custom" className={stylesGlobal.checkbox_custom_input} type="checkbox" checked={overridePublisherDefault} onChange={() => {set();}
+                <input id="allow-custom" type="checkbox" checked={overridePublisherDefault} onChange={() => {set();}
             }/>
-                <label htmlFor="allow-custom" className={stylesGlobal.checkbox_custom_label}>
-                    <div 
-                    tabIndex={0}
-                    role="checkbox"
-                    aria-checked={overridePublisherDefault}
-                    aria-label={__("reader.settings.customizeReader")}
-                    onKeyUp={(e) => {
-                        // if (e.code === "Space") {
-                        if (e.key === " ") {
-                            e.preventDefault();
-                            set();
-                        }
-                    }}
-                    className={stylesGlobal.checkbox_custom} 
-                    style={{border: overridePublisherDefault ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: overridePublisherDefault ? "var(--color-blue)" : "transparent"}}>
-                        {overridePublisherDefault ?
-                            <SVG ariaHidden svg={CheckIcon} />
-                            :
-                            <></>
-                        }
-                    </div>
-                    <span aria-hidden>
-                    {__("reader.settings.customizeReader")}
-                    </span>
-                </label>
+
+                <label htmlFor="allow-custom">{__("reader.settings.customizeReader")}</label>
             </>
         );
 };
@@ -983,11 +867,6 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const isEpub = !isDivina && !isPdf;
 
     const [__] = useTranslator();
-
-    const [
-        transcientStateOverridePublisherDefault,
-        setTranscientStateOverridePublisherDefault,
-    ] = React.useState<ReaderConfig>(readerConfig);
 
     const [pdfState, setPdfState] = React.useState<IState>({
         pdfScale: undefined,
@@ -1036,10 +915,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     }, []);
 
     const setPartialSettingsDebounced = React.useMemo(() => {
-        const saveConfig = (config: Partial<ReaderConfig>, override = true) => {
-            if (override) {
-                setTranscientStateOverridePublisherDefault({ ...transcientStateOverridePublisherDefault, ...config });
-            }
+        const saveConfig = (config: Partial<ReaderConfig>) => {
             setSettings({ ...readerConfig, ...config });
         };
         return debounce(saveConfig, 400);
@@ -1053,49 +929,70 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const [overridePublisherDefault, setOverride] = React.useState(false);
     const [tabValue, setTabValue] = React.useState(isDivina ? "tab-divina" : isPdf ? "tab-pdfzoom" : "tab-display");
 
-    // React.useEffect(() => {
-    //     let ov = false;
-    //     for (const [key, value] of Object.entries(readerConfigInitialStateDefaultPublisher)) {
-    //         if (readerConfig[key as keyof typeof readerConfigInitialState] === value) continue;
-    //         else {
-    //             ov = true;
-    //             break;
-    //         }
-    //     }
-    //     setOverride(ov);
-    // }, [readerConfig]);
+    React.useEffect(() => {
+        let ov = false;
+        for (const [key, value] of Object.entries(readerConfigInitialStateDefaultPublisher)) {
+            if (readerConfig[key as keyof typeof readerConfigInitialState] === value) continue;
+            else {
+                ov = true;
+                break;
+            }
+        }
+        setOverride(ov);
+    }, [readerConfig]);
 
     const setOverridePublisherDefault = React.useMemo(() => () => {
         if (overridePublisherDefault) {
-            setPartialSettingsDebounced(readerConfigInitialStateDefaultPublisher, false);
+            setPartialSettingsDebounced(readerConfigInitialStateDefaultPublisher);
             setTabValue("tab-display");
-            setOverride(false);
         } else {
             setOverride(true);
             setTabValue("tab-text");
-            setPartialSettingsDebounced(transcientStateOverridePublisherDefault);
         }
-    }, [overridePublisherDefault, transcientStateOverridePublisherDefault]);
+    }, [overridePublisherDefault]);
 
     const dockedModeRef = React.useRef<HTMLButtonElement>();
     const tabModeRef = React.useRef<HTMLDivElement>();
     React.useEffect(() => {
         console.log("ReaderSettings UPDATED");
 
-        if (dockingMode !== "full") {
+        setTimeout(() => {
+            console.log("readerSettings FOCUS");
 
-            setTimeout(() => {
-                if (dockedModeRef.current) {
-
-                    console.log("Focus on docked mode combobox");
-                    dockedModeRef.current.focus();
+            if (dockedMode) {
+                if (dockedModeRef) {
+                    dockedModeRef.current?.focus();
                 } else {
                     console.error("!no dockedModeRef on combobox");
                 }
-            }, 1);
+            } else {
+                if (tabModeRef) {
+                    tabModeRef.current?.focus();
+                } else {
+                    console.error("!no tabModeRef on tabList");
+                }
+            }
+        }, 1);
 
-        }
+        const itv = setTimeout(() => {
+            console.log("readerSettings FOCUS");
 
+            if (dockedMode) {
+                if (dockedModeRef) {
+                    dockedModeRef.current?.focus();
+                } else {
+                    console.error("!no dockedModeRef on combobox");
+                }
+            } else {
+                if (tabModeRef) {
+                    tabModeRef.current?.focus();
+                } else {
+                    console.error("!no tabModeRef on tabList");
+                }
+            }
+        }, 1000); // force focus on tabList instead of webview
+
+        return () => clearInterval(itv);
     }, [dockingMode]);
 
     if (!readerConfig) {
@@ -1186,10 +1083,10 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const setDockingModeLeftSide = () => setDockingMode("left");
     const setDockingModeRightSide = () => setDockingMode("right");
 
-    const optionSelected = options.find(({ value }) => value === tabValue)?.id;
-    const optionDisabled = options.map(({ id, disabled }) => disabled ? id : -1).filter((v) => v > -1);
+    const optionSelected = options.find(({ value }) => value === tabValue)?.id || 0;
+    const optionDisabled = options.map(({ id, disabled }) => disabled ? id : "").filter((v) => !!v) as number[];
 
-    // console.log("RENDER");
+    console.log("RENDER");
 
     const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     SelectRef.displayName = "ComboBox";
@@ -1221,64 +1118,62 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     return (
         <div>
             {
-                dockedMode ?
-                    <>
-                        <div key="docked-header" className={stylesPopoverDialog.docked_header}>
-                            {
-                                (dockedMode && isEpub) ? <AllowCustomContainer /> : <></>
+                dockedMode ? <div key="docked-header" className={stylesPopoverDialog.docked_header}>
+                    <SelectRef
+                        items={options}
+                        selectedKey={optionSelected}
+                        disabledKeys={optionDisabled}
+                        svg={options.find(({ value }) => value === tabValue)?.svg}
+                        onSelectionChange={(id) => {
+                            console.log("selectionchange: ", id);
+                            const value = options.find(({ id: _id }) => _id === id)?.value;
+                            if (value) {
+                                setTabValue(value);
+                                console.log("set Tab Value = ", value);
+
+                            } else {
+                                // console.error("Combobox No value !!!");
                             }
-                            <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls}>
-                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label="left" onClick={setDockingModeLeftSide}>
-                                    <SVG ariaHidden={true} svg={DockLeftIcon} />
-                                </button>
-                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label="right" onClick={setDockingModeRightSide}>
-                                    <SVG ariaHidden={true} svg={DockRightIcon} />
-                                </button>
-                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "full" ? true : false} aria-label="full" onClick={setDockingModeFull}>
-                                    <SVG ariaHidden={true} svg={DockModalIcon} />
-                                </button>
+                        }}
+                        // onInputChange={(v) => {
+                        //     console.log("inputchange: ", v);
 
-                                <Dialog.Close asChild>
-                                    <button className={stylesButtons.button_transparency_icon} aria-label="Close">
-                                        <SVG ariaHidden={true} svg={QuitIcon} />
-                                    </button>
-                                </Dialog.Close>
-                            </div>
-                        </div>
-                        <SelectRef
-                            items={options}
-                            selectedKey={optionSelected}
-                            disabledKeys={optionDisabled}
-                            svg={options.find(({ value }) => value === tabValue)?.svg}
-                            onSelectionChange={(id) => {
-                                // console.log("selectionchange: ", id);
-                                const value = options.find(({ id: _id }) => _id === id)?.value;
-                                if (value) {
-                                    setTabValue(value);
-                                    // console.log("set Tab Value = ", value);
-                                } else {
-                                    // console.error("Combobox No value !!!");
-                                }
-                            }}
-                            // onInputChange={(v) => {
-                            //     console.log("inputchange: ", v);
+                        //     const value = options.find(({ name }) => name === v)?.value;
+                        //     if (value) {
+                        //         setTabValue(value);
+                        //         console.log("set Tab Value = ", value);
 
-                            //     const value = options.find(({ name }) => name === v)?.value;
-                            //     if (value) {
-                            //         setTabValue(value);
-                            //         console.log("set Tab Value = ", value);
+                        //     } else {
+                        //         console.error("Combobox No value !!!");
+                        //     }
+                        // }}
+                        style={{paddingBottom: "0", margin: "0"}}
+                        ref={dockedModeRef}
+                    >
+                        {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                    </SelectRef>
 
-                            //     } else {
-                            //         console.error("Combobox No value !!!");
-                            //     }
-                            // }}
-                            style={{ paddingBottom: "0", margin: "0" }}
-                            ref={dockedModeRef}
-                        >
-                            {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                        </SelectRef>
-                    </>
-                    : <></>
+                    <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls}>
+                        <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label="left" onClick={setDockingModeLeftSide}>
+                            <SVG ariaHidden={true} svg={DockLeftIcon} />
+                        </button>
+                        <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label="right" onClick={setDockingModeRightSide}>
+                            <SVG ariaHidden={true} svg={DockRightIcon} />
+                        </button>
+                        <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "full" ? true : false} aria-label="full" onClick={setDockingModeFull}>
+                            <SVG ariaHidden={true} svg={DockModalIcon} />
+                        </button>
+
+                        <Dialog.Close asChild>
+                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                                <SVG ariaHidden={true} svg={QuitIcon} />
+                            </button>
+                        </Dialog.Close>
+                    </div>
+                </div> : <></>
+            }
+            {
+                (dockedMode && isEpub) ? <AllowCustomContainer /> : <></>
             }
             <Tabs.Root value={tabValue} defaultValue={tabValue} onValueChange={dockedMode ? null : setTabValue} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {
@@ -1321,7 +1216,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             {isPdf ? <></> : <ReadingDisplayLayout config={readerConfig} set={setPartialSettingsDebounced} isFXL={props.isFXL} />}
                             {isPdf ? <></> : <ReadingDisplayAlign config={readerConfig} set={setPartialSettingsDebounced} />}
                             <ReadingDisplayCol config={readerConfig} set={setPartialSettingsDebounced} isPdf={props.isPdf} pdfCol={pdfState.pdfCol} />
-                            {isPdf ? <></> : <ReadingDisplayCheckboxSettings config={readerConfig} set={setPartialSettingsDebounced} disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />}
+                            {isPdf ? <></> : <ReadingDisplayMathJax config={readerConfig} set={setPartialSettingsDebounced} disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />}
                         </section>
                     </Tabs.Content>
                     {/* <Tabs.Content value="tab-audio" tabIndex={-1}>

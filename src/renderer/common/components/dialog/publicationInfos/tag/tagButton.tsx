@@ -64,18 +64,16 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
                     </Popover.Trigger>
                     <Popover.Portal>
                         <Popover.Content sideOffset={5} className={stylesTags.Popover_delete_tag}>
-                            <Popover.Close asChild>
-                                <button
-                                    onClick={
-                                        // () => this.deleteTag(index)
-                                        onClickDeleteCb(index)
-                                    }
-                                    title={__("catalog.deleteTag")}
-                                >
-                                    <SVG ariaHidden={true} svg={TrashIcon} />
-                                    {__("catalog.delete")}
-                                </button>
-                            </Popover.Close>
+                            <button
+                                onClick={
+                                    // () => this.deleteTag(index)
+                                    onClickDeleteCb(index)
+                                }
+                                title={__("catalog.deleteTag")}
+                            >
+                                <SVG ariaHidden={true} svg={TrashIcon} />
+                                Delete
+                            </button>
                             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
                         </Popover.Content>
                     </Popover.Portal>

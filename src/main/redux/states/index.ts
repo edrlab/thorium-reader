@@ -51,4 +51,5 @@ export interface RootState extends ICommonRootState {
     wizard: IWizardState;
 }
 
+
 export type PersistRootState = Pick<RootState, "win" | "publication" | "reader" | "session" | "i18n" | "opds" | "version" | "theme" | "wizard">;

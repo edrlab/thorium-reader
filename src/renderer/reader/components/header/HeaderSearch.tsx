@@ -123,7 +123,6 @@ class HeaderSearch extends React.Component<IProps> {
                         align="start"
                         onPointerDownOutside={(e) => { e.preventDefault(); console.log("SearchPopover onPointerDownOutside"); }}
                         onInteractOutside={(e) => { e.preventDefault(); console.log("SearchPopover onInteractOutside"); }}
-                        sideOffset={14}
                     >
                         <div style={{display: "flex", gap:"10%", alignItems: "center", height: "50px", width: "100vw", justifyContent: "end"}}>
                             <SearchPicker

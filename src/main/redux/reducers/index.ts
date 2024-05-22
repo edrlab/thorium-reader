@@ -27,12 +27,10 @@ import { publicationDbReducers } from "./publication/db";
 import { opdsDbReducers } from "./opds/db";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
-import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/version-update";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { wizardReducer } from "readium-desktop/common/redux/reducers/wizard";
 
 export const rootReducer = combineReducers({ // RootState
-    versionUpdate: versionUpdateReducer,
     theme: themeReducer,
     session: sessionReducer,
     streamer: streamerReducer,

@@ -33,7 +33,6 @@ import Nunito from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-Regula
 import NunitoBold from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-SemiBold.ttf";
 
 import * as globalScssStyle from "readium-desktop/renderer/assets/styles/global.scss";
-import { WizardModal } from "./Wizard";
 globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
 
 export default class App extends React.Component<{}, undefined> {
@@ -158,7 +157,6 @@ export default class App extends React.Component<{}, undefined> {
                                     <DialogManager />
                                     <LoaderMainLoad />
                                     <ToastManager />
-                                    <WizardModal />
                                 </div>;
                             }}
                         </Dropzone>

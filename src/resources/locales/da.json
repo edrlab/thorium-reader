@@ -17,6 +17,7 @@
         "noLibraryFound": "Intet bibliotek fundet ({{- name}})"
     },
     "app": {
+        "downloadVersion": "",
         "edit": {
             "copy": "Kopier",
             "cut": "Klip",
@@ -27,26 +28,8 @@
             "undo": "Fortryd"
         },
         "hide": "Skjul {{- appName}}",
+        "newVersion": "",
         "quit": "Luk {{- appName}}",
-<<<<<<< HEAD
-=======
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "Nej",
-                        "yes": "Ja"
-                    },
-                    "message": "Ønsker du at gemme denne session ?",
-                    "title": "Gem session"
-                }
-            }
-        },
-        "update": {
-            "message": "",
-            "title": ""
-        },
->>>>>>> develop
         "window": {
             "showLibrary": "Vis bibliotek / boghylde"
         }
@@ -84,7 +67,7 @@
         "moreInfo": "Bogdetaljer",
         "myBooks": "Mine bøger",
         "noPublicationHelpL1": "Træk en bog hertil",
-        "noPublicationHelpL2": "eller brug \"{{- importTitle }}\" knappen ovenfor.",
+        "noPublicationHelpL2": "eller brug \"+\" knappen ovenfor.",
         "noPublicationHelpL3": "LCP beskyttede filer understøttes.",
         "noPublicationHelpL4": "Understøttede udvidelser:",
         "numberOfPages": "Antal sider",
@@ -307,6 +290,7 @@
             "Color": "",
             "addNote": "",
             "advancedMode": "",
+            "advancedModeDetails": "",
             "annotationsOptions": "",
             "highlight": "",
             "noSelectionToast": "",
@@ -426,13 +410,8 @@
             "text": "Tekst",
             "theme": {
                 "name": {
-                    "Contrast1": "",
-                    "Contrast2": "",
-                    "Contrast3": "",
-                    "Contrast4": "",
                     "Neutral": "Neutralt",
                     "Night": "Nat",
-                    "Paper": "",
                     "Sepia": "Sepia"
                 },
                 "title": "Tema"

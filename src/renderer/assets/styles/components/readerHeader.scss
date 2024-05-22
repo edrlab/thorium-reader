@@ -2,28 +2,12 @@
 =-=-= readerHeader.scss
 */
 
-[data-theme="dark"] {
-    .toolbar_navigation, .picker_container {
-        background-color: var(--color-secondary);
-        // border-bottom: 2px solid var(--color-mediumdark-grey);
-    }
-}
-
-[data-theme="system"] {
-    @media (prefers-color-scheme: dark) {
-        .toolbar_navigation, .picker_container {
-        background-color: var(--color-secondary);
-        // border-bottom: 2px solid var(--color-mediumdark-grey);
-        }
-    }
-}
-
 .toolbar_navigation {
-    height: 70px;
+    height: 50px;
     width: 100%;
     padding: 0;
     background-color: var(--color-extralight-grey);
-    border-bottom: 3px solid var(--color-extralight-grey-alt);
+    border-bottom: 2px solid var(--color-medium-grey);
     box-sizing: border-box;
 
     &.ttsAudioActivated .tts_toolbar::before {
@@ -102,7 +86,8 @@
                 transition: .2s;
                 border-radius: 5px;
 
-                &:not(:has(.active_svg)):hover {
+                &:not(:has(.active_svg)):hover, 
+                &:not(:has(.active_svg)):focus {
                     border-color: var(--color-blue);
                     background-color: var(--color-light-blue);
                 }
@@ -110,8 +95,8 @@
                 svg {
                     height: 20px;
                     width: 30px;
-                    fill: var(--color-blue-alt);
-                    color: var(--color-blue-alt);
+                    fill: var(--color-blue);
+                    color: var(--color-blue);
 
                     // @media (prefers-color-scheme: dark) {
                     //     fill: #FEFEFE;
@@ -143,14 +128,13 @@
             display: flex;
             padding: 0;
             flex: 1;
-            gap: 5px;
         }
     }
 }
 
 .active_svg {
-    fill: var(--color-secondary)!important;
-    color: var(--color-secondary)!important;
+    fill: white!important;
+    color: white!important;
 
     // @media (prefers-color-scheme: dark) {
     //     fill: black!important;
@@ -166,11 +150,11 @@
     height: 48px;
     background-color: var(--color-extralight-grey);
     margin-right: 5px;
-    z-index: 200;
+    z-index: 100;
     top: 65px;
     right: 10px;
     left: unset;
-    border-bottom: 2px solid var(--color-medium-grey);
+    border: 1px solid var(--color-medium-grey);
 
     button[title="Close"] {
         width: 15px;
@@ -218,13 +202,13 @@
     align-items: center;
     height: fit-content;
     background-color: var(--color-extralight-grey);
+    box-shadow: 0 6px 10px 0 var(--color-medium-grey);
     border-radius: 6px;
     list-style-type: none;
     margin: 0;
     padding: 10px;
-    border: 1px solid var(--color-verylight-grey-alt);
+    border: 1px solid var(--color-medium-grey);
     gap: 20px;
-    color: var(--color-primary);
 
 
     .react_aria_ComboBox{
@@ -319,13 +303,12 @@
     .searchActions {
         display: flex;
         align-items: center;
-        gap: 10px;
 
         &::before {
             content: "";
             position: absolute;
             margin-right: 10%;
-            top: 47px;
+            top: 48px;
             height: 1px;
             width: 200px;
             border-bottom: 2px solid var(--color-blue);

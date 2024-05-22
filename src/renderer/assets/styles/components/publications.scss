@@ -9,7 +9,6 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  margin: 2px;
 }
 
 .publication_main_container {
@@ -25,8 +24,6 @@
   perspective: 1000px;
   overflow: hidden;
   position: relative;
-  height: auto;
-  align-items: start;
 
     &:hover {
       img, .no_img_wrapper {
@@ -61,7 +58,7 @@
     box-sizing: border-box;
     // border: 1px solid #e2e2e2;
     border-radius: 6px;
-    background-color: var(--color-extralight-grey);
+    background-color: var(--color-light-grey);
   }
 
   .gradient {
@@ -99,7 +96,6 @@
     justify-content: center;
     transform-origin: 100% 0;
     transition: transform 0.3s ease-in-out;
-    width: 100%;
 
     & .no_img {
       border: 1px black solid;
@@ -132,8 +128,6 @@
     overflow: hidden;
     min-height: 30px;
     margin-left: 4px;
-    width: 100%;
-    text-align: start;
 
     & p {
       margin: 0;
@@ -185,7 +179,6 @@
   font-size: 15px;
   gap: 10px;
   padding: 0 6px;
-  margin-bottom: 4px;
 
   & button {
     width: 20px;
@@ -204,11 +197,7 @@
       padding: 0 2px;
       width: fit-content;
       min-width: 30px;
-      font-size: 12px;
-
-      &:hover {
-        background-color: var(--color-light-blue);
-      }
+      font-size: 10px;
     }
 
     & svg {
@@ -226,7 +215,6 @@
   justify-content: center;
   gap: 5px;
   font-size: 12px;
-  cursor: pointer;
 
   svg {
     width: 13px;

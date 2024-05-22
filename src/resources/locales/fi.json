@@ -17,6 +17,7 @@
         "noLibraryFound": ""
     },
     "app": {
+        "downloadVersion": "",
         "edit": {
             "copy": "Kopioi",
             "cut": "Leikkaa",
@@ -27,26 +28,8 @@
             "undo": "Peru"
         },
         "hide": "Piilota {{- appName}}",
+        "newVersion": "",
         "quit": "Lopeta {{- appName}}",
-<<<<<<< HEAD
-=======
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "Ei",
-                        "yes": "Kyllä"
-                    },
-                    "message": "Haluatko tallentaa istunnon?",
-                    "title": "Tallenna istunto"
-                }
-            }
-        },
-        "update": {
-            "message": "",
-            "title": ""
-        },
->>>>>>> develop
         "window": {
             "showLibrary": "Näytä kirjasto / kirjahylly"
         }
@@ -84,7 +67,7 @@
         "moreInfo": "Lisää tietoja",
         "myBooks": "Minun kirjani",
         "noPublicationHelpL1": "Pudota julkaisu tähän",
-        "noPublicationHelpL2": "tai käytä \"{{- importTitle }}\"-painiketta yllä.",
+        "noPublicationHelpL2": "tai käytä \"+\"-painiketta yllä.",
         "noPublicationHelpL3": "LCP-suojattuja tiedostoja tuetaan.",
         "noPublicationHelpL4": "Tuetut laajennukset:",
         "numberOfPages": "Sivumäärä",
@@ -307,6 +290,7 @@
             "Color": "",
             "addNote": "",
             "advancedMode": "",
+            "advancedModeDetails": "",
             "annotationsOptions": "",
             "highlight": "",
             "noSelectionToast": "",
@@ -426,13 +410,8 @@
             "text": "Teksti",
             "theme": {
                 "name": {
-                    "Contrast1": "",
-                    "Contrast2": "",
-                    "Contrast3": "",
-                    "Contrast4": "",
                     "Neutral": "Neutraali",
                     "Night": "Yö",
-                    "Paper": "",
                     "Sepia": "Seepia"
                 },
                 "title": "Teema"

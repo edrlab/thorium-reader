@@ -1,4 +1,3 @@
-export declare const ___DEBUG___PARTIALS_MIXINS_CSS: string;
 export declare const allBook_table: string;
 export declare const allBook_table_body: string;
 export declare const allBook_table_head: string;

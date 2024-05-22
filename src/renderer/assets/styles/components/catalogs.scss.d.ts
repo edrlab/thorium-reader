@@ -1,8 +1,6 @@
-export declare const ___DEBUG___PARTIALS_MIXINS_CSS: string;
 export declare const breadcrumb: string;
 export declare const button_delete: string;
 export declare const button_edit: string;
-export declare const button_transparency: string;
 export declare const catalog_breadcrumbSearch_Wrapper: string;
 export declare const catalog_container: string;
 export declare const catalog_content: string;

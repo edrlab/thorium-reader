@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { shell } from "electron";
 import { existsSync, promises } from "fs";
 import * as path from "path";
 import * as React from "react";
@@ -30,8 +29,6 @@ import { apiAction } from "../../apiAction";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import * as EdrlabLogo from "readium-desktop/renderer/assets/icons/logo_edrlab.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -46,69 +43,28 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
-interface IState {
-    versionInfo: boolean;
-}
-
-class AboutThoriumButton extends React.Component<IProps, IState> {
+class AboutThoriumButton extends React.Component<IProps, undefined> {
 
     private manifestView: PublicationView;
 
     constructor(props: IProps) {
         super(props);
-
-
-        this.state = {
-            versionInfo: true,
-        };
     }
 
     public render() {
         const { __ } = this.props;
-        const displayVersionToast = !!(this.state.versionInfo && this.props.newVersionURL && this.props.newVersion);
-        
         return (
-            <section className={stylesFooter.footer_wrapper} style={{justifyContent: displayVersionToast ? "space-between" : "end"}}>
-                                {
-                    displayVersionToast ?
-                    <div className={stylesGlobal.new_version}
-                    aria-live="polite"
-                    role="alert">
-                        <div>
-                            <SVG ariaHidden svg={InfoIcon} />
-                            <p
-                            ><a href=""
-                            onClick={async (ev) => {
-                                ev.preventDefault();
-                                this.setState({ versionInfo : false });
-                                await shell.openExternal(this.props.newVersionURL);
-                            }}>{`${this.props.__("app.update.message")}`}</a> <span>(v{this.props.newVersion})</span></p>
-                        </div>
-                        {/* <button onClick={async () => {
-                            this.setState({ versionInfo : false });
-                            await shell.openExternal(this.props.newVersionURL);
-                        }}>
-                            {this.props.__("app.session.exit.askBox.button.yes")}
-                        </button>
-                        <button onClick={() => {
-                            this.setState({ versionInfo : false });
-                        }}>
-                            {this.props.__("app.session.exit.askBox.button.no")}
-                        </button> */}
-                    </div>
-                    : <></>
-                }
-                <div className={stylesFooter.footer_about}>
-                    <div>
-                    <p>{`v${_APP_VERSION}`}</p>
-                    <a href="" onClick={(ev) => {
-                                ev.preventDefault();
-                                this.about();
-                            }}
-                        tabIndex={0}>{__("catalog.about.title", { appName: capitalizedAppName })}</a>
-                    </div>
-                    <SVG ariaHidden svg={EdrlabLogo} />
+            <section className={stylesFooter.footer_wrapper}>
+ <div>
+                   <p>{`v${_APP_VERSION}`}</p>
+                   <a onClick={this.about} onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            this.about();
+                        }
+                    }}
+                    tabIndex={0}>{__("catalog.about.title", { appName: capitalizedAppName })}</a>
                 </div>
+                <SVG ariaHidden svg={EdrlabLogo} />
             </section>
         );
     }
@@ -207,8 +163,6 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
 
     return {
         locale: state.i18n.locale,
-        newVersionURL: state.versionUpdate.newVersionURL,
-        newVersion: state.versionUpdate.newVersion,
     };
 };
 

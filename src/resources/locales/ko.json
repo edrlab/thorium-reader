@@ -17,6 +17,7 @@
         "noLibraryFound": "({{- name}}) 라이브러리가 없습니다"
     },
     "app": {
+        "downloadVersion": "",
         "edit": {
             "copy": "복사",
             "cut": "잘라내기",
@@ -27,26 +28,8 @@
             "undo": "실행 취소"
         },
         "hide": "{{- appName}} 숨기기",
+        "newVersion": "",
         "quit": "{{- appName}} 종료",
-<<<<<<< HEAD
-=======
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "취소",
-                        "yes": "확인"
-                    },
-                    "message": "세션을 저장하시겠습니까?",
-                    "title": "세션 저장"
-                }
-            }
-        },
-        "update": {
-            "message": "",
-            "title": ""
-        },
->>>>>>> develop
         "window": {
             "showLibrary": "라이브러리 / 내서재 보기"
         }
@@ -84,7 +67,7 @@
         "moreInfo": "상세정보",
         "myBooks": "내 도서",
         "noPublicationHelpL1": "출판물을 여기로 가져오십시오.",
-        "noPublicationHelpL2": "또는 위의 \"{{- importTitle }}\" 버튼을 눌러서 추가하십시오.",
+        "noPublicationHelpL2": "또는 위의 \"+\" 버튼을 눌러서 추가하십시오.",
         "noPublicationHelpL3": "LCP로 보호된 파일을 지원합니다.",
         "noPublicationHelpL4": "지원되는 확장자:",
         "numberOfPages": "페이지 수",
@@ -307,6 +290,7 @@
             "Color": "",
             "addNote": "",
             "advancedMode": "",
+            "advancedModeDetails": "",
             "annotationsOptions": "",
             "highlight": "",
             "noSelectionToast": "",
@@ -426,13 +410,8 @@
             "text": "텍스트",
             "theme": {
                 "name": {
-                    "Contrast1": "",
-                    "Contrast2": "",
-                    "Contrast3": "",
-                    "Contrast4": "",
                     "Neutral": "화이트",
                     "Night": "블랙",
-                    "Paper": "",
                     "Sepia": "세피아"
                 },
                 "title": "테마"

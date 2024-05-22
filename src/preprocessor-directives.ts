@@ -41,9 +41,6 @@ export const _VSCODE_LAUNCH = __VSCODE_LAUNCH__;
 declare const __APP_VERSION__: string;
 export const _APP_VERSION = __APP_VERSION__;
 
-declare const __PACK_NAME__: string;
-export const _PACK_NAME = __PACK_NAME__;
-
 declare const __APP_NAME__: string;
 export const _APP_NAME = __APP_NAME__;
 

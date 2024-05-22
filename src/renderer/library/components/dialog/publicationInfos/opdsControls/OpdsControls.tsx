@@ -98,7 +98,6 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 )}
                                 className={feedLinksList.length > 0 ? stylesButtons.button_secondary : stylesButtons.button_primary}
                                 disabled={openAccessButtonIsDisabled()}
-                                title={ln.title || __("catalog.addBookToLib")}
                             >
                                 {`${__("catalog.addBookToLib")}${typeStr(ln)}`}
                             </button>
@@ -121,7 +120,6 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 )}
                                 className={stylesButtons.button_secondary}
                                 disabled={sampleButtonIsDisabled()}
-                                title={ln.title || __("opds.menu.addExtract")}
                             >
                                 <SVG ariaHidden={true} svg={ImportIcon} />
                                 {`${__("opds.menu.addExtract")}${typeStr(ln)}`}

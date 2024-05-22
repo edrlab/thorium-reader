@@ -34,39 +34,30 @@ jobs:
     # runs-on: ubuntu-latest # / ubuntu-18.04 ... or ubuntu-16.04, ubuntu-20.04
     # runs-on: macos-latest # / macos-10.15
     # runs-on: windows-2016 # not window-latest / windows-2019, see https://github.com/edrlab/thorium-reader/issues/1591
-    runs-on: ${{ matrix.runson }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        # windows-arm
-        osarch: [windows-intel, macos-intel, macos-arm, linux-intel, linux-arm]
+        os: [windows-latest, macos-13, macos-latest, ubuntu-20.04]
         include:
-          - osarch: windows-intel
-            runson: windows-latest
+          - os: windows-latest
+            osname: windows
             packname: win
-            release_tag: latest-windows-intel
-          # - osarch: windows-arm
-          #   runson: windows-latest
-          #   packname: win
-          #   release_tag: latest-windows-arm
-          - osarch: macos-intel
-            runson: macos-13
+            release_tag: latest-windows
+          - os: macos-13
+            osname: macos-intel
             packname: 'mac:skip-notarize'
             release_tag: latest-macos-intel
-          - osarch: macos-arm
-            runson: macos-latest
+          - os: macos-latest
+            osname: macos-arm
             packname: 'mac:skip-notarize'
             release_tag: latest-macos-arm
-          - osarch: linux-intel
-            runson: ubuntu-20.04
+          - os: ubuntu-20.04
+            osname: linux
             packname: linux
-            release_tag: latest-linux-intel
-          - osarch: linux-arm
-            runson: ubuntu-20.04
-            packname: linux
-            release_tag: latest-linux-arm
+            release_tag: latest-linux
     env:
-#      OS_NAME_: ${{ matrix.osarch }}
+#      OS_NAME_: ${{ matrix.osname }}
       RELEASE_TAG: ${{ matrix.release_tag }}
     steps:
 #    - run: echo 'OS_NAME_:' ${{ env.OS_NAME_ }}
@@ -78,8 +69,8 @@ jobs:
     - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
     - run: 'echo "GITHUB_SHA: ${{ github.sha }}"'
     - name: Check sys arch
-      if: ${{ matrix.osarch != 'windows-intel' }}
-      run: echo "${{ matrix.osarch }}" && uname -m && arch
+      if: ${{ matrix.osname != 'windows' }}
+      run: echo "${{ matrix.osname }}" && uname -m && arch
     - name: Checkout
       uses: actions/checkout@v4
     #   with:
@@ -147,11 +138,11 @@ jobs:
       run: npm run build:prod
       # && npm run test SEE https://github.com/edrlab/thorium-reader/issues/1697
     - name: non-PR action, Windows (build and package)
-      if: ${{ github.event_name != 'pull_request' && ( matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' ) }}
+      if: ${{ github.event_name != 'pull_request' && matrix.osname == 'windows' }}
       run: npm run package:${{ matrix.packname }}
     - name: non-PR action, non-Windows (build and package)
-      if: ${{ github.event_name != 'pull_request' && matrix.osarch != 'windows-intel' && matrix.osarch != 'windows-arm' }}
-      run: echo "${{ matrix.osarch }}" && (if [[ ${{ matrix.osarch }} == 'macos-arm' || ${{ matrix.osarch }} == 'linux-arm' ]]; then uname -m && arch && sed 's/x64/arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json && npm run package:${{ matrix.packname }} && sed 's/arm64/x64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json; else npm run package:${{ matrix.packname }}; fi)
+      if: ${{ github.event_name != 'pull_request' && matrix.osname != 'windows' }}
+      run: echo "${{ matrix.osname }}" && (if [[ ${{ matrix.osname }} == 'macos-arm' ]]; then uname -m && arch && sed 's/x64/arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json && npm run package:${{ matrix.packname }} && sed 's/arm64/x64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json; else npm run package:${{ matrix.packname }}; fi)
     #- run: ls -alsR release
     #- run: npm install @octokit/rest
     - name: GitHub Tagged Release Delete/ReCreate and Upload Build Artefacts

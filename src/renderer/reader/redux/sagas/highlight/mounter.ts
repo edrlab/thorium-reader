@@ -17,7 +17,7 @@ import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro
 
 import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 import {
-    highlightsCreate, highlightsDrawMargin, highlightsRemove,
+    highlightsCreate, highlightsRemove,
 } from "@r2-navigator-js/electron/renderer";
 
 import { readerLocalActionHighlights } from "../../actions";
@@ -28,16 +28,6 @@ import {
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:highlight:mounter");
 
 export function* mountHighlight(href: string, handlerState: IHighlightHandlerState[]): SagaIterator {
-
-    const isAnnotationHighlight = handlerState.reduce((pv, {def: {group}}) => pv || group === "annotation", false);
-    if (isAnnotationHighlight) {
-        const { annotation_defaultDrawView } = yield* selectTyped((state: IReaderRootState) => state.reader.config);
-        if (annotation_defaultDrawView === "margin") {
-            highlightsDrawMargin(["annotation"]);
-        } else {
-            highlightsDrawMargin(false);
-        }
-    }
 
     const mounterStateMap = yield* selectTyped((state: IReaderRootState) => state.reader.highlight.mounter);
     // if (!mounterStateMap?.length) {

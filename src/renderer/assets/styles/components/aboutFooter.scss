@@ -26,17 +26,11 @@
     margin-bottom: 10px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: end;
     gap: 10px;
     height: 75px;
     width: calc(100% - 247px);
     background-color: var(--color-secondary);
-
-    .footer_about {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
 
     svg {
         width: 45px;
@@ -54,10 +48,5 @@
         font-style: italic;
         text-decoration: underline;
         cursor: pointer;
-        color: var(--color-primary);
-
-        &:visited {
-          color: var(--color-primary);
-        }
     }
 }

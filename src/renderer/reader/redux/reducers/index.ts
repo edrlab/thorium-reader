@@ -34,7 +34,6 @@ import { readerRTLFlipReducer } from "readium-desktop/common/redux/reducers/read
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
-import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/version-update";
 import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { annotationModeEnableReducer } from "./annotationModeEnable";
 import { readerActions } from "readium-desktop/common/redux/actions";
@@ -42,7 +41,6 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 export const rootReducer = () => {
 
     return combineReducers({ // IReaderRootState
-        versionUpdate: versionUpdateReducer,
         theme: themeReducer,
         session: sessionReducer,
         api: apiReducer,

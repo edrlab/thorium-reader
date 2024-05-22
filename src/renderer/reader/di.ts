@@ -60,14 +60,6 @@ const createStoreFromDi = async (preloadedState: Partial<IReaderRootState>) => {
         newConfig.annotation_defaultDrawView = defaultConfig.annotation_defaultDrawView;
         flag = true;
     }
-    if (newConfig.theme === undefined) {
-
-        console.log("ANNOTATION MIGRATION !! theme not set migrate from defaultConfig value=", newConfig.theme);
-        newConfig.theme = newConfig.night ? "night" : newConfig.sepia ? "sepia" : defaultConfig.theme;
-        newConfig.night = false;
-        newConfig.sepia = false;
-        flag = true;
-    }
 
     if (flag) {
         console.log(`ANNOTATION MIGRATION : There are a data need to be migrated from defaultConfig to config OLD=${JSON.stringify(store.getState().reader.config, null, 4)} NEW=${JSON.stringify(newConfig, null, 4)}`);

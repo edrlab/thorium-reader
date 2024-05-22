@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { shell } from "electron";
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { connect } from "react-redux";
@@ -126,11 +125,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                         {
                             this.props.urlHint?.href
                                 ?
-                                <a href=""
-                                    onClick={async (ev) => {
-                                        ev.preventDefault();
-                                        await shell.openExternal(this.props.urlHint.href);
-                                    }} className={stylesModals.urlHint}>
+                                <a href={this.props.urlHint.href} className={stylesModals.urlHint}>
                                     {this.props.urlHint.title || __("library.lcp.urlHint")}
                                 </a>
                                 : <></>
@@ -145,11 +140,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 <p>
                                     {__("library.lcp.whatIsLcpInfoDetails")}
                                 </p>
-                                <a href=""
-                                    onClick={async (ev) => {
-                                        ev.preventDefault();
-                                        await shell.openExternal("https://www.edrlab.org/readium-lcp/");
-                                    }}>
+                                <a href="https://thorium.edrlab.org/">
                                     {__("library.lcp.whatIsLcpInfoDetailsLink")}
                                     <SVG ariaHidden svg={FollowLinkIcon} />
                                 </a>

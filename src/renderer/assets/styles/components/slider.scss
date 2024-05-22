@@ -9,7 +9,7 @@
   &_wrapper {
     position: relative;
     overflow: hidden hidden;
-    min-height: 400px;
+    height: 400px;
   }
 
   &_items {
@@ -62,7 +62,7 @@
 
 
 .continue_reading {
-  border: 1px solid var(--color-verylight-grey-alt);
+  border: 1px solid var(--color-medium-grey);
   background-color: var(--color-extralight-grey);
   border-radius: 6px;
   margin: 20px;

@@ -6,21 +6,19 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { Button, ComboBox as ComboBoxReactAria, Input, Label, ListBox, ListBoxItem, Popover, ValidationResult, Group } from "react-aria-components";
+import { Button, ComboBox as ComboBoxReactAria, Input, Label, ListBox, ListBoxItem, Popover, ComboBoxProps, ValidationResult, Group } from "react-aria-components";
 import { FieldError, Text } from "react-aria-components";
 import SVG, { ISVGProps } from "./SVG";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 import classNames from "classnames";
 
-type TComboBoxReactAriaProps<T extends object> = Parameters<typeof ComboBoxReactAria<T>>[0];
-export interface MyComboBoxProps<T extends object>
-    extends Omit<TComboBoxReactAriaProps<T>, "children"> {
-    children: Parameters<typeof ListBox<T>>[0]["children"];
-
+export interface MyComboBoxProps<T extends {}>
+    extends Omit<ComboBoxProps<T>, "children"> {
     label?: string;
     description?: string | null;
     errorMessage?: string | ((validation: ValidationResult) => string);
+    children: React.ReactNode | ((item: T) => React.ReactNode);
     svg?: ISVGProps;
     refInputEl?: React.Ref<HTMLInputElement>;
 }
@@ -77,7 +75,7 @@ export function ComboBox<T extends object>(
     );
 }
 
-export function ComboBoxItem<T extends object>(props: Parameters<typeof ListBoxItem<T>>[0]) {
+export function ComboBoxItem<T extends object>(props: T) {
     return (
         <ListBoxItem
             {...props}

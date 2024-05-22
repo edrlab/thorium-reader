@@ -8,19 +8,19 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-// import * as GridIcon from "readium-desktop/renderer/assets/icons/grid-icon.svg";
-// import * as ListIcon from "readium-desktop/renderer/assets/icons/list-icon.svg";
-// import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as GridIcon from "readium-desktop/renderer/assets/icons/grid-icon.svg";
+import * as ListIcon from "readium-desktop/renderer/assets/icons/list-icon.svg";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-// import SVG from "readium-desktop/renderer/common/components/SVG";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import SecondaryHeader from "readium-desktop/renderer/library/components/SecondaryHeader";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-// import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
-// import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import ApiappAddFormDialog from "readium-desktop/renderer/library/components/dialog/ApiappAddForm";
 import OpdsFeedAddForm from "../dialog/OpdsFeedAddForm";
 
@@ -44,14 +44,14 @@ class Header extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        // const { __, location } = this.props;
+        const { __, location } = this.props;
 
-        // const displayType = (location?.state && (location.state as IRouterLocationState).displayType) || DisplayType.Grid;
+        const displayType = (location?.state && (location.state as IRouterLocationState).displayType) || DisplayType.Grid;
 
         // FIXME : css in code
         return (
-            <SecondaryHeader style={{display: "flex", gap: "10px", alignItems: "end", height: "65px", justifyContent: "end", margin: "0px"}}>
-                {/* <div>
+            <SecondaryHeader>
+                <div>
                     <h3>{__("header.viewMode")}</h3>
                     <div style={{display: "flex", gap: "10px"}}>
                         <Link
@@ -91,7 +91,7 @@ class Header extends React.Component<IProps, undefined> {
                             <h3>{__("header.listTitle")}</h3>
                         </Link>
                     </div>
-                </div> */}
+                </div>
                 <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
                     <OpdsFeedAddForm />
                     <ApiappAddFormDialog />

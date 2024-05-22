@@ -128,7 +128,7 @@ class PublicationCard extends React.Component<IProps> {
                             opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
                         >
                             <PublicationInfoOpdsWithRadixTrigger asChild>
-                                <button
+                                <a
                                     className={classNames(stylesPublications.publication_main_container, hasEnded ? stylesPublications.expired : "")}
                                     title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
                                     tabIndex={0}
@@ -143,14 +143,14 @@ class PublicationCard extends React.Component<IProps> {
                                             {this.truncateAuthors(authors)}
                                         </p>
                                     </div>
-                                </button>
+                                </a>
                             </PublicationInfoOpdsWithRadixTrigger>
                             <PublicationInfoOpdsWithRadixContent />
                         </PublicationInfoOpdsWithRadix>
                         :
                         <a
                             onClick={(e) => this.handleLocalBookshelfBookClick(e)}
-                            onKeyUp={
+                            onKeyPress={
                                 (e) =>
                                     (e.key === "Enter") && this.handleLocalBookshelfBookClick(e)
                             }

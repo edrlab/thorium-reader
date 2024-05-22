@@ -1,4 +1,3 @@
-export declare const ___DEBUG___PARTIALS_MIXINS_CSS: string;
 export declare const add_dialog: string;
 export declare const c_dialog__box: string;
 export declare const close_button: string;

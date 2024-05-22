@@ -125,7 +125,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                     >
                         {this.props.secondaryHeader}
                         {(page === __("opds.breadcrumbRoot")) ?
-                            <div style={{display: "flex", alignItems: "center", gap: "10px", padding: "10px 0"}}>
+                            <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
                                 <h2 className={stylesAllBooks.allBooks_header}>{this.props.title}</h2>
                                 {this.props.breadCrumb ?
                                     <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
@@ -310,7 +310,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         }}
                         style={{height: "unset"}}
                         state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                        className={classNames(stylesButtons.button_refresh, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
+                        className={classNames(stylesButtons.button_refresh)}
                     >
                         <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
                     </Link>
@@ -324,7 +324,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                             ...this.props.location,
                         }}
                         state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                        className={classNames(stylesButtons.button_refresh, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
+                        className={classNames(stylesButtons.button_refresh)}
                     >
                         <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
                     </Link>

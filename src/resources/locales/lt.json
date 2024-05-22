@@ -17,6 +17,7 @@
         "noLibraryFound": "Biblioteka „({{- name}})“ nerasta"
     },
     "app": {
+        "downloadVersion": "",
         "edit": {
             "copy": "Kopijuoti",
             "cut": "Iškirpti",
@@ -27,26 +28,8 @@
             "undo": "Atšaukti"
         },
         "hide": "Slėpti {{- appName}}",
+        "newVersion": "",
         "quit": "Uždaryti {{- appName}}",
-<<<<<<< HEAD
-=======
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "Ne",
-                        "yes": "Taip"
-                    },
-                    "message": "Ar norite išsaugoti sesiją?",
-                    "title": "Sesijos išsaugojimas"
-                }
-            }
-        },
-        "update": {
-            "message": "",
-            "title": ""
-        },
->>>>>>> develop
         "window": {
             "showLibrary": "Rodyti biblioteką / knygų lentyną"
         }
@@ -84,7 +67,7 @@
         "moreInfo": "Daugiau informacijos",
         "myBooks": "Mano knygos",
         "noPublicationHelpL1": "Nutempkite leidinį čia",
-        "noPublicationHelpL2": "arba naudokite \"{{- importTitle }}\" mygtuką viršuje.",
+        "noPublicationHelpL2": "arba naudokite \"+\" mygtuką viršuje.",
         "noPublicationHelpL3": "Failai, apsaugoti LCP, yra palaikomi.",
         "noPublicationHelpL4": "Palaikomi plėtiniai:",
         "numberOfPages": "Puslapių skaičius",
@@ -307,6 +290,7 @@
             "Color": "",
             "addNote": "",
             "advancedMode": "",
+            "advancedModeDetails": "",
             "annotationsOptions": "",
             "highlight": "",
             "noSelectionToast": "",
@@ -426,13 +410,8 @@
             "text": "Tekstas",
             "theme": {
                 "name": {
-                    "Contrast1": "",
-                    "Contrast2": "",
-                    "Contrast3": "",
-                    "Contrast4": "",
                     "Neutral": "Neutrali",
                     "Night": "Naktis",
-                    "Paper": "",
                     "Sepia": "Sepija"
                 },
                 "title": "Tema"

@@ -158,7 +158,7 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
             <h4>{__("reader.annotations.addNote")}</h4>
         }
         <div
-            className={classNames(displayFromReaderMenu ? "" : stylesAnnotations.annotations_line, dockedMode ? stylesAnnotations.docked_annotation_line : "")} style={{backgroundColor: !displayFromReaderMenu ? "var(--color-extralight-grey)" : ""}}>
+            className={classNames(displayFromReaderMenu ? "" : stylesAnnotations.annotations_line, dockedMode ? stylesAnnotations.docked_annotation_line : "")}>
             <p>{annotationState.locatorExtended.selectionInfo.cleanText}</p>
             <textarea id="addNote" name="addNote" wrap="hard" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef}
             ></textarea>
@@ -172,12 +172,12 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
                     role="group">
                     {annotationsColorsLight.map((color) => (
                         <div key={color}>
-                            <input type="radio"  id={`anno_color_${uuid}_${color}`} name="colorpicker" value={color}
+                            <input type="radio" id={color} name="colorpicker" value={color}
                                 onChange={() => setColor(color)}
                                 checked={colorSelected === color}
                             />
-                            <label htmlFor={`anno_color_${uuid}_${color}`}
-                                style={{ backgroundColor: color, border: colorSelected === color ? "1px solid var(--color-dark-grey)" : "" }}
+                            <label htmlFor={color}
+                                style={{ backgroundColor: color, border: colorSelected === color ? "1px solid var(--color-primary)" : "" }}
                             >
                                 {colorSelected === color ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
                             </label>
@@ -191,11 +191,11 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
                 <div role="group" className={stylesAnnotations.stylePicker}>
                     {drawType.map((type, i) => (
                         <div key={type}>
-                            <input type="radio" id={`anno_type_${uuid}_${type}`} name="drawtype" value={type}
+                            <input type="radio" id={type} name="drawtype" value={type}
                                 onChange={() => setDrawType(type)}
                                 checked={drawTypeSelected === type}
                             />
-                            <label htmlFor={`anno_type_${uuid}_${type}`} aria-label={type}
+                            <label htmlFor={type} aria-label={type}
                                 className={drawTypeSelected === type ? stylesAnnotations.drawType_active : ""}
                             ><SVG ariaHidden svg={drawIcon[i]} /></label>
                         </div>
@@ -215,14 +215,7 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
                 ? <button type="submit"
                     className={stylesButtons.button_primary_blue}
                     aria-label="save"
-                    onClick={(e) => {
-                        e.preventDefault();
-
-                        const textareaValue = textAreaRef?.current?.value || "";
-                        const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
-                        save(colorObj, textareaNormalize, drawTypeSelected);
-                        saveConfig();
-                    }}
+                    onClick={(e) => { e.preventDefault(); save(colorObj, textAreaRef?.current?.value || "", drawTypeSelected); saveConfig(); }}
                 >
                     <SVG ariaHidden svg={SaveIcon} />
                     {__("reader.annotations.saveNote")}
@@ -232,14 +225,7 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
                     type="submit"
                     className={stylesButtons.button_primary_blue}
                     aria-label="save"
-                    onClick={(e) => {
-                        e.preventDefault();
-
-                        const textareaValue = textAreaRef?.current?.value || "";
-                        const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
-                        save(colorObj, textareaNormalize, drawTypeSelected);
-                        saveConfig();
-                    }}
+                    onClick={(e) => { e.preventDefault(); save(colorObj, textAreaRef?.current?.value || "", drawTypeSelected); saveConfig(); }}
                 >
                     <SVG ariaHidden svg={SaveIcon} />
                     {__("reader.annotations.saveNote")}

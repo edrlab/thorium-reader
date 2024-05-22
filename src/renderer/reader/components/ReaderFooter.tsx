@@ -36,7 +36,6 @@ import { publicationActions, readerActions } from "readium-desktop/common/redux/
 import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
-import { IPopoverDialogProps } from "./options-values";
 
 function throttle(callback: (...args: any) => void, limit: number) {
     let waiting = false;
@@ -62,9 +61,9 @@ interface IBaseProps extends TranslatorProps, ReturnType<typeof mapDispatchToPro
     historyCanGoForward: boolean;
     currentLocation: LocatorExtended;
     r2Publication: R2Publication | undefined;
-    goToLocator: (locator: R2Locator, closeNavPanel?: boolean, isFromOnPopState?: boolean) => void;
+    goToLocator: (locator: R2Locator) => void;
     // tslint:disable-next-line: max-line-length
-    handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor, url: string, closeNavPanel?: boolean, isFromOnPopState?: boolean) => void;
+    handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string) => void;
     isDivina: boolean;
     divinaNumberOfPages: number;
     divinaContinousEqualTrue: boolean;
@@ -74,8 +73,6 @@ interface IBaseProps extends TranslatorProps, ReturnType<typeof mapDispatchToPro
 
     isPdf: boolean;
     publicationView: PublicationView;
-
-    readerPopoverDialogContext: IPopoverDialogProps;
 }
 
 // IProps may typically extend:
@@ -267,7 +264,6 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                             <span
                                                                 onClick={(e) => {
 
-                                                                    const isDockedMode = this.props.readerPopoverDialogContext.dockedMode;
                                                                     if (isDivina) {
                                                                         // const loc = {
                                                                         //     href: index.toString(),
@@ -275,7 +271,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                         // };
                                                                         // this.props.goToLocator(loc as any);
                                                                         if (link?.Href) {
-                                                                            this.props.handleLinkClick(e, link.Href, !isDockedMode);
+                                                                            this.props.handleLinkClick(e, link.Href);
 
                                                                         }
                                                                     } else {
@@ -304,7 +300,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                                 progression: percent,
                                                                             },
                                                                         };
-                                                                        this.props.goToLocator(loc, !isDockedMode);
+                                                                        this.props.goToLocator(loc);
                                                                         // this.props.handleLinkClick(e, link.Href);
                                                                     }
                                                                 }}
