@@ -169,7 +169,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
             <div className={stylesAnnotations.annotation_actions_container}>
                 <h4>{__("reader.annotations.Color")}</h4>
                 <div className={stylesAnnotations.colorPicker}
-                    role="group">
+                    role="radiogroup">
                     {annotationsColorsLight.map((color) => (
                         <div key={color}>
                             <input type="radio"  id={`anno_color_${uuid}_${color}`} name="colorpicker" value={color}
@@ -188,7 +188,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
             </div>
             <div className={stylesAnnotations.annotation_actions_container}>
                 <h4>{__("reader.annotations.highlight")}</h4>
-                <div role="group" className={stylesAnnotations.stylePicker}>
+                <div role="radiogroup" className={stylesAnnotations.stylePicker}>
                     {drawType.map((type, i) => (
                         <div key={type}>
                             <input type="radio" id={`anno_type_${uuid}_${type}`} name="drawtype" value={type}

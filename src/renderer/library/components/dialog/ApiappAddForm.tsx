@@ -158,7 +158,7 @@ const ApiappAddForm = () => {
                         </p>
                         <a href=""
                             onClick={async (ev) => {
-                                ev.preventDefault();
+                                ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                 await shell.openExternal("https://thorium.edrlab.org/docs/");
                             }}>
                         {__("apiapp.documentation")}

@@ -94,10 +94,10 @@ function* hrefChanged(action: readerLocalActionLocatorHrefChanged.TAction) {
         yield call(unmountHightlight, prevHref2, uuids);
     }
 
-    if (href) {
+    if (href && (!prevHref || href !== prevHref)) {
         yield call(unmountHightlight, href, uuids);
     }
-    if (href2) {
+    if (href2 && (!prevHref2 || href2 !== prevHref2)) {
         yield call(unmountHightlight, href2, uuids);
     }
 

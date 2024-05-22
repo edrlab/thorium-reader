@@ -111,6 +111,12 @@ export const WizardModal = () => {
                                     role="checkbox"
                                     aria-checked={checked}
                                     aria-label={__("wizard.dontShow")}
+                                    onKeyDown={(e) => {
+                                        // if (e.code === "Space") {
+                                        if (e.key === " ") {
+                                            e.preventDefault(); // prevent scroll
+                                        }
+                                    }}
                                     onKeyUp={(e) => {
                                         // Includes screen reader tests:
                                         // if (e.code === "Space") { WORKS

@@ -34,6 +34,8 @@ export function* mountHighlight(href: string, handlerState: IHighlightHandlerSta
         const { annotation_defaultDrawView } = yield* selectTyped((state: IReaderRootState) => state.reader.config);
         if (annotation_defaultDrawView === "margin") {
             highlightsDrawMargin(["annotation"]);
+        } else if (annotation_defaultDrawView === "hide") {
+            return ;
         } else {
             highlightsDrawMargin(false);
         }
