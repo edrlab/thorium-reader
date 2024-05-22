@@ -165,7 +165,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
             ></TextArea>
 
         </div>
-        <div className={stylesAnnotations.annotation_actions} style={{ flexDirection: dockedMode ? "column" : "row", alignItems: dockedMode ? "start" : "center" }}>
+        <div className={stylesAnnotations.annotation_actions}>
             {/* <div className={stylesReader.annotation_form_textarea_container}> */}
             <div className={stylesAnnotations.annotation_actions_container}>
                 <h4>{__("reader.annotations.Color")}</h4>
@@ -209,7 +209,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         {/* <label htmlFor="addNote">{__("reader.annotations.addNote")}</label> */}
         <div className={stylesAnnotations.annotation_form_textarea_buttons}>
             {displayFromReaderMenu
-                ? <button className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={cancel}>{__("dialog.cancel")}</button>
+                ? <button className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={cancel} type="button">{__("dialog.cancel")}</button>
                 : <Popover.Close className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={cancel}>{__("dialog.cancel")}</Popover.Close>
             }
             {displayFromReaderMenu

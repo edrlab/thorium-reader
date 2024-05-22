@@ -17,6 +17,7 @@ export declare const maths_options: string;
 export declare const modal_dialog_reader: string;
 export declare const off: string;
 export declare const on: string;
+export declare const popover_dialog_reader: string;
 export declare const position: string;
 export declare const range_inactive: string;
 export declare const reset_button: string;
