@@ -59,7 +59,7 @@
   }
 }
 
-.settings_tab:has(.docked_header) .annotation_actions {
+.popover_dialog_reader .annotation_actions {
   flex-direction: column;
   align-items: start;
 }
