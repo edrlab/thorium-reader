@@ -120,7 +120,7 @@ export async function initStore()
         debug("On the first launch runtimeStatePath failed it's an empty file (not created)");
         debug("On the second launch runtimeStatePath is equal to an empty object {}");
         debug("and failed on checkReduxState, reduxState has not be preloaded in runtimeStateFilePath");
-        debug("So the Third launch is good!, Thorium State is stabilize");
+        debug("So the Third launch is good!, Thorium State is stabilize")
         const state = await recoveryReduxState(await runtimeState());
         reduxState = await checkReduxState(state, reduxState);
 

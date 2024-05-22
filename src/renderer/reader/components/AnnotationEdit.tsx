@@ -148,8 +148,6 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         if (textAreaRef.current) {
             textAreaRef.current.style.height = "auto";
             textAreaRef.current.style.height = textAreaRef.current.scrollHeight + 3 + "px";
-            console.log("FOCUS !!!ANNOTATION EDIT");
-            
             textAreaRef.current.focus();
         }
     }, []);
