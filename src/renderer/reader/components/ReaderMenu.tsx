@@ -183,10 +183,14 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
         const linkRef = React.useRef<HTMLAnchorElement>();
 
         React.useEffect(() => {
-
             setTimeout(() => {
                 if (linkRef.current) {
-                    linkRef.current.focus();
+                    // linkRef.current.focus();
+                    linkRef.current.scrollIntoView({
+                        behavior: "instant",
+                        block: "nearest", // "center" | "end" | "nearest" | "start",
+                        inline: "nearest",
+                    });
                 }
             }, 1);
         });
@@ -791,8 +795,8 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
     const [__] = useTranslator();
     const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
 
-    if (!r2Publication || !bookmarks) {
-        <></>;
+    if (!r2Publication || !bookmarks?.length) {
+        return <></>;
     }
 
     // const sortedBookmarks = bookmarks;
@@ -864,7 +868,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                         />,
                     )
                 }
-            </bookmarkCardContext.Provider>,
+            </bookmarkCardContext.Provider>
             {
                 isPaginated ?
                     <div className={stylesPopoverDialog.navigation_container}>
