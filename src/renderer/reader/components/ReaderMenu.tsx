@@ -595,6 +595,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                                 onSelectionChange={(id) => {
                                     setPageNumber(id as number);
                                 }}
+                                inputDisabled={true}
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                             </ComboBox>
@@ -847,6 +848,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication} & Pick<IReaderMenuP
                                 onSelectionChange={(id) => {
                                     setPageNumber(id as number);
                                 }}
+                                inputDisabled={true}
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                             </ComboBox>
@@ -1475,6 +1477,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                             }
                         }}
                         style={{margin: "0", padding: "0", flexDirection: "row"}}
+                        inputDisabled={true}
                     >
                         {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                     </ComboBox>

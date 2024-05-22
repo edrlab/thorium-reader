@@ -23,6 +23,7 @@ export interface MyComboBoxProps<T extends object>
     errorMessage?: string | ((validation: ValidationResult) => string);
     svg?: ISVGProps;
     refInputEl?: React.Ref<HTMLInputElement>;
+    inputDisabled?: boolean;
 }
 
 // function forwardRef<T extends object>(
@@ -54,14 +55,14 @@ export interface MyComboBoxProps<T extends object>
 // );
 
 export function ComboBox<T extends object>(
-    { label, description, errorMessage, children, svg, refInputEl, ...props }: MyComboBoxProps<T>,
+    { label, description, errorMessage, children, svg, refInputEl, inputDisabled, ...props }: MyComboBoxProps<T>,
 ) {
     return (
         <ComboBoxReactAria {...props} className={StylesCombobox.react_aria_ComboBox}>
             <Label className={StylesCombobox.react_aria_Label}>{label}</Label>
             <Group className={classNames(StylesCombobox.my_combobox_container,"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} >
                 {svg ? <SVG ariaHidden svg={svg} /> : <></>}
-                <Input className={classNames(StylesCombobox.react_aria_Input, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} ref={refInputEl}/>
+                <Input className={classNames(StylesCombobox.react_aria_Input, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} ref={refInputEl} disabled={inputDisabled}/>
                 <Button className={StylesCombobox.react_aria_Button}>
                     <SVG ariaHidden svg={ChevronDown} />
                 </Button>

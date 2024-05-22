@@ -1293,6 +1293,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             }
                         }}
                         style={{margin: "0", padding: "0", flexDirection: "row"}}
+                        inputDisabled={true}
                     >
                         {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                     </ComboBox>
