@@ -164,7 +164,7 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
             ></textarea>
 
         </div>
-        <div className={stylesAnnotations.annotation_actions} style={{ flexDirection: dockedMode ? "column" : "row", alignItems: dockedMode ? "start" : "center" }}>
+        <div className={stylesAnnotations.annotation_actions}>
             {/* <div className={stylesReader.annotation_form_textarea_container}> */}
             <div className={stylesAnnotations.annotation_actions_container}>
                 <h4>{__("reader.annotations.Color")}</h4>
