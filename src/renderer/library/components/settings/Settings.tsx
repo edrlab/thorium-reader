@@ -25,7 +25,7 @@ import { AvailableLanguages } from "readium-desktop/common/services/translator";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { authActions, i18nActions, themeActions } from "readium-desktop/common/redux/actions";
+import { authActions, i18nActions, sessionActions, themeActions } from "readium-desktop/common/redux/actions";
 import * as BinIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { TTheme } from "readium-desktop/common/redux/states/theme";
@@ -34,6 +34,9 @@ import * as LanguageIcon from "readium-desktop/renderer/assets/icons/language.sv
 import * as BrushIcon from "readium-desktop/renderer/assets/icons/paintbrush-icon.svg";
 import KeyboardSettings, { AdvancedTrigger } from "readium-desktop/renderer/library/components/settings/KeyboardSettings";
 import * as GearIcon from "readium-desktop/renderer/assets/icons/gear-icon.svg";
+import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 
 interface ISettingsProps {};
 
@@ -90,6 +93,56 @@ const ConnectionSettings: React.FC<{}> = () => {
         </section>
     );
 };
+
+const SaveSessionSettings: React.FC<{}> = () => {
+    const [__] = useTranslator();
+    const dispatch = useDispatch();
+    const sessionSaveState = useSelector((state: ICommonRootState) => state.session.save);
+    const onChange = () => {
+        dispatch(sessionActions.save.build(!sessionSaveState));
+    };
+    return (
+        <section className={stylesSettings.section} style={{ position: "relative" }}>
+            <h4>{__("app.session.exit.askBox.message")}</h4>
+            <div className={stylesAnnotations.annotations_checkbox}>
+                <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={sessionSaveState} onChange={onChange} />
+                <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
+                    <div
+                        tabIndex={0}
+                        role="checkbox"
+                        aria-checked={sessionSaveState}
+                        aria-label={__("settings.session.title")}
+                        onKeyDown={(e) => {
+                            // if (e.code === "Space") {
+                            if (e.key === " ") {
+                                e.preventDefault(); // prevent scroll
+                            }
+                        }}
+                        onKeyUp={(e) => {
+                            // if (e.code === "Space") {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                                onChange();
+                            }
+                        }}
+                        className={stylesGlobal.checkbox_custom}
+                        style={{ border: sessionSaveState ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: sessionSaveState ? "var(--color-blue)" : "transparent" }}>
+                        {sessionSaveState ?
+                            <SVG ariaHidden svg={CheckIcon} />
+                            :
+                            <></>
+                        }
+                    </div>
+                    <div aria-hidden>
+                        <h4>{__("settings.session.title")}</h4>
+                    </div>
+                </label>
+            </div>
+        </section>
+    );
+};
+
+
 
 
 const Themes = () => {
@@ -178,6 +231,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <div className={stylesSettings.settings_tab}>
                                 <LanguageSettings />
                                 <ConnectionSettings />
+                                <SaveSessionSettings />
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab2" tabIndex={-1}>

@@ -7,4 +7,5 @@
 
 export interface ISessionState {
     state: boolean;
+    save: boolean;
 }

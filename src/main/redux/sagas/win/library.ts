@@ -106,6 +106,10 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
             },
             tag: [],
         },
+        session: {
+            state: state.session.state,
+            save: state.session.save,
+        },
     };
     try {
         const publication = yield* callTyped(getCatalog);
@@ -181,7 +185,7 @@ function* winClose(_action: winActions.library.closed.TAction) {
     debug("library -> winClose");
 
     const library = getLibraryWindowFromDi();
-    // const value = 0; // window.close() // not saved session by default
+    let sessionSaving = false; // window.close() // not saved session by default
 
     {
 
@@ -191,36 +195,36 @@ function* winClose(_action: winActions.library.closed.TAction) {
 
         if (readersArray.length) {
 
-            // keep session in next startup disabled for the release of Thorium 3.0
-            // session still exits between publication state but not saved at closing 
+            const sessionIsEnabled = yield* selectTyped((state: RootState) => state.session.state);
+            debug(sessionIsEnabled ? "session enabled destroy reader" : "session not enabled close reader");
+            if (sessionIsEnabled) {
 
-            // const sessionIsEnabled = yield* selectTyped((state: RootState) => state.session.state);
-            // debug(sessionIsEnabled ? "session enabled destroy reader" : "session not enabled close reader");
-            // if (sessionIsEnabled) {
 
-            //     const messageValue = yield* callTyped(
-            //         async () => {
+                delay(100);
+                sessionSaving = (yield* selectTyped((state: RootState) => state.session.save)) || false;
+                // const messageValue = yield* callTyped(
+                //     async () => {
 
-            //             const translator = diMainGet("translator");
+                //         const translator = diMainGet("translator");
 
-            //             return dialog.showMessageBox(
-            //                 library,
-            //                 {
-            //                     type: "question",
-            //                     buttons: [
-            //                         translator.translate("app.session.exit.askBox.button.no"),
-            //                         translator.translate("app.session.exit.askBox.button.yes"),
-            //                     ],
-            //                     defaultId: 1,
-            //                     title: translator.translate("app.session.exit.askBox.title"),
-            //                     message: translator.translate("app.session.exit.askBox.message"),
-            //                 },
-            //             );
-            //         },
-            //     );
-            //     debug("result:", messageValue.response);
-            //     value = messageValue.response;
-            // }
+                //         return dialog.showMessageBox(
+                //             library,
+                //             {
+                //                 type: "question",
+                //                 buttons: [
+                //                     translator.translate("app.session.exit.askBox.button.no"),
+                //                     translator.translate("app.session.exit.askBox.button.yes"),
+                //                 ],
+                //                 defaultId: 1,
+                //                 title: translator.translate("app.session.exit.askBox.title"),
+                //                 message: translator.translate("app.session.exit.askBox.message"),
+                //             },
+                //         );
+                //     },
+                // );
+                // debug("result:", messageValue.response);
+                // value = messageValue.response;
+            }
 
             yield all(
                 readersArray.map(
@@ -233,15 +237,14 @@ function* winClose(_action: winActions.library.closed.TAction) {
                             try {
                                 const readerWin = yield* callTyped(() => getReaderWindowFromDi(reader.identifier));
 
-                                // if (value === 1) {
-                                //     // force quit the reader windows to keep session in next startup
-                                //     debug("destroy reader", index);
-                                //     readerWin.destroy();
-                                // } else {
+                                if (sessionSaving) {
+                                    // force quit the reader windows to keep session in next startup
+                                    debug("destroy reader", index);
+                                    readerWin.destroy();
+                                } else {
                                     debug("close reader", index);
                                     readerWin.close();
-
-                                // }
+                                }
                             } catch (_err) {
                                 // ignore
                             }
@@ -254,11 +257,11 @@ function* winClose(_action: winActions.library.closed.TAction) {
         }
     }
 
-    // if (value === 1) {
+    if (sessionSaving) {
 
-    //     // closed the library and thorium
-    //     library.destroy();
-    // } else {
+        // closed the library and thorium
+        library.destroy();
+    } else {
 
         yield spawn(function* () {
 
@@ -274,7 +277,7 @@ function* winClose(_action: winActions.library.closed.TAction) {
             library.destroy();
         });
 
-    // }
+    }
 }
 
 export function saga() {
