@@ -208,7 +208,9 @@ button {
 
 .button_transparency,
 .button_transparency_icon {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--color-primary);
   transition: all 0.2s;
   border-radius: 5px;
