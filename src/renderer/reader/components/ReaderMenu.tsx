@@ -470,7 +470,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                     ?
                     //  <FocusLock disabled={dockedMode} autoFocus={true}>
                     // TODO fix issue with focusLock on modal not docked
-                    <FocusLock disabled={false} autoFocus={true}>
+                    <FocusLock disabled={true} autoFocus={true}>
                         <AnnotationEdit uuid={uuid} save={save} cancel={() => setItemToEdit(-1)} dockedMode={dockedMode} btext={dockedEditAnnotation && btext} />
                     </FocusLock>
                     :
@@ -707,7 +707,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) =
                     {isEdited ?
                         // <FocusLock disabled={dockedMode} autoFocus={true}>
                         // TODO fix issue with focusLock on modal not docked
-                        <FocusLock disabled={false} autoFocus={true}>
+                        <FocusLock disabled={true} autoFocus={true}>
                             <form className={stylesPopoverDialog.update_form}>
                                 <TextArea id="editBookmark" name="editBookmark" wrap="hard" ref={textearearef}
                                     defaultValue={bname}
