@@ -367,7 +367,7 @@
 }
 
 .bookmarks_line {
-  width: calc(100% - 10px);
+  // width: calc(100% - 10px);
   position: relative;
   text-align: left;
   padding: 20px 0;
@@ -400,7 +400,7 @@
   }
 
   .bookmark_infos {
-    width: 100%;
+    // width: 100%;
     display: flex;
     background-color: var(--color-extralight-grey);
     border-left: 2px solid var(--color-blue);
