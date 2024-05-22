@@ -219,6 +219,7 @@ export async function initStore()
         },
         session: {
             state: true,
+            save: reduxState?.session?.save || false,
         },
     };
     const preloadedState = reduxState ? {

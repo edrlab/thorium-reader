@@ -77,6 +77,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.annotation.pop.ID,
     readerActions.annotation.push.ID,
     readerActions.annotation.update.ID,
+
+    sessionActions.save.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

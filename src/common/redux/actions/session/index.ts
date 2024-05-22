@@ -6,7 +6,9 @@
 // ==LICENSE-END==
 
 import * as enable from "./enable";
+import * as save from "./save";
 
 export {
+    save,
     enable,
 };

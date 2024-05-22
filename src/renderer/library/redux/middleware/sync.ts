@@ -52,6 +52,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.bookmark.update.ID,
 
     wizardActions.setWizard.ID,
+
+    sessionActions.save.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);
