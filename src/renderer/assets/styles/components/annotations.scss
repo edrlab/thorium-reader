@@ -55,13 +55,13 @@
   @media screen and (width <= 800px) {
     flex-direction: column!important;
     align-items: start!important;
-    gap: 10px;
   }
 }
 
 .popover_dialog_reader .annotation_actions {
   flex-direction: column;
   align-items: start;
+  gap: 10px;
 }
 
 .annotation_form {
@@ -189,7 +189,7 @@
 
     p {
       background-color: var(--color-extralight-grey);
-      width: 95%!important;
+      // width: 95%!important;
       border-radius: 5px;
       margin-bottom: 10px!important;
     }
@@ -316,12 +316,13 @@
 
       // overflow: hidden;
       // text-overflow: ellipsis;
-      width: calc(100% - 15px);
+      // width: calc(100% - 15px);
+      width: fit-content;
 
       // display: -webkit-box;
       // -webkit-box-orient: vertical;
       // -webkit-line-clamp: 3;
-      padding: 5px;
+      padding: 8px;
       margin: 5px 0;
     }
   
@@ -345,6 +346,7 @@
       border-bottom: 8px solid var(--color-annotations-txt);
       height: unset;
       font-family: Nunito, sans-serif;
+      border-radius: 5px;
   
       p {
         text-align: left;
