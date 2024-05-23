@@ -1479,59 +1479,65 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         <div>
             {
                 dockedMode ?
-                    <><div key="docked-header" className={stylesPopoverDialog.docked_header} style={{borderBottom: "unset"}}>
-                        <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls} style={{justifyContent: "space-between", width: "100%", padding: "0 10px"}}>
-                            <div style={{display: "flex", gap: "5px"}}>
-                            <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label="left" onClick={setDockingModeLeftSide}>
-                                <SVG ariaHidden={true} svg={DockLeftIcon} />
-                            </button>
-                            <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label="right" onClick={setDockingModeRightSide}>
-                                <SVG ariaHidden={true} svg={DockRightIcon} />
-                            </button>
-                            <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "full" ? true : false} aria-label="full" onClick={setDockingModeFull}>
-                                <SVG ariaHidden={true} svg={DockModalIcon} />
-                            </button>
+                    <>
+                        <div key="docked-header" className={stylesPopoverDialog.docked_header} style={{ borderBottom: "unset" }}>
+                            <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls} style={{ justifyContent: "space-between", width: "100%", padding: "0 10px" }}>
+                                <div style={{ display: "flex", gap: "5px" }}>
+                                    <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label="left" onClick={setDockingModeLeftSide}>
+                                        <SVG ariaHidden={true} svg={DockLeftIcon} />
+                                    </button>
+                                    <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label="right" onClick={setDockingModeRightSide}>
+                                        <SVG ariaHidden={true} svg={DockRightIcon} />
+                                    </button>
+                                    <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "full" ? true : false} aria-label="full" onClick={setDockingModeFull}>
+                                        <SVG ariaHidden={true} svg={DockModalIcon} />
+                                    </button>
+                                </div>
+                                <Dialog.Close asChild>
+                                    <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                                        <SVG ariaHidden={true} svg={QuitIcon} />
+                                    </button>
+                                </Dialog.Close>
                             </div>
-                            <Dialog.Close asChild>
-                                <button className={stylesButtons.button_transparency_icon} aria-label="Close">
-                                    <SVG ariaHidden={true} svg={QuitIcon} />
-                                </button>
-                            </Dialog.Close>
                         </div>
-                    </div>
-                    <SelectRef
-                        items={options}
-                        selectedKey={optionSelected}
-                        svg={options.find(({ value }) => value === tabValue)?.svg}
-                        onSelectionChange={(id) => {
-                            console.log("selectionchange: ", id);
-                            const value = options.find(({ id: _id }) => _id === id)?.value;
-                            if (value) {
-                                setTabValue(value);
-                                console.log("set Tab Value = ", value);
+                        <SelectRef
+                            items={options}
+                            selectedKey={optionSelected}
+                            svg={options.find(({ value }) => value === tabValue)?.svg}
+                            onSelectionChange={(id) => {
+                                console.log("selectionchange: ", id);
+                                const value = options.find(({ id: _id }) => _id === id)?.value;
+                                if (value) {
+                                    setTabValue(value);
+                                    setTimeout(() => {
+                                        const elem = document.getElementById(`readerMenu_tabs-${value}`);
+                                        elem?.blur();
+                                        elem?.focus();
+                                    }, 1);
+                                    console.log("set Tab Value = ", value);
 
-                            } else {
-                                console.error("Combobox No value !!!");
-                            }
-                        }}
-                        style={{margin: "0", padding: "0", flexDirection: "row"}}
-                        // onInputChange={(v) => {
-                        //     console.log("inputchange: ", v);
+                                } else {
+                                    console.error("Combobox No value !!!");
+                                }
+                            }}
+                            style={{ margin: "0", padding: "0", flexDirection: "row" }}
+                            // onInputChange={(v) => {
+                            //     console.log("inputchange: ", v);
 
-                        //     const value = options.find(({ name }) => name === v)?.value;
-                        //     if (value === tabValue) return;
-                        //     if (value) {
-                        //         setTabValue(value);
-                        //         console.log("set Tab Value = ", value);
+                            //     const value = options.find(({ name }) => name === v)?.value;
+                            //     if (value === tabValue) return;
+                            //     if (value) {
+                            //         setTabValue(value);
+                            //         console.log("set Tab Value = ", value);
 
-                        //     } else {
-                        //         console.error("Combobox No value !!!");
-                        //     }
-                        // }}
-                        ref={dockedModeRef}
-                    >
-                        {item => <SelectItem>{item.name}</SelectItem>}
-                    </SelectRef>
+                            //     } else {
+                            //         console.error("Combobox No value !!!");
+                            //     }
+                            // }}
+                            ref={dockedModeRef}
+                        >
+                            {item => <SelectItem>{item.name}</SelectItem>}
+                        </SelectRef>
                     </>
                     : <></>
             }
@@ -1544,7 +1550,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 }
                 <div className={stylesSettings.settings_content}
                 style={{marginTop: dockedMode && "0"}}>
-                    <Tabs.Content value="tab-toc" tabIndex={-1}>
+                    <Tabs.Content value="tab-toc" tabIndex={-1} id={"readerMenu_tabs-tab-toc"}>
                     <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             {(isPdf && pdfToc?.length && renderLinkTree_(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
@@ -1555,7 +1561,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </Tabs.Content>
 
-                    <Tabs.Content value="tab-landmark" tabIndex={-1}>
+                    <Tabs.Content value="tab-landmark" tabIndex={-1} id={"readerMenu_tabs-tab-landmark"}>
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             {r2Publication.Landmarks &&
@@ -1563,14 +1569,14 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </Tabs.Content>
 
-                    <Tabs.Content value="tab-bookmark" tabIndex={-1}>
+                    <Tabs.Content value="tab-bookmark" tabIndex={-1} id={"readerMenu_tabs-tab-bookmark"}>
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <BookmarkList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} dockedMode={dockedMode} />
                         </div>
                     </Tabs.Content>
 
-                    <Tabs.Content value="tab-annotation" tabIndex={-1}>
+                    <Tabs.Content value="tab-annotation" tabIndex={-1} id={"readerMenu_tabs-tab-annotation"}>
                         <TabHeader />
                         <div className={classNames(stylesSettings.settings_tab, stylesAnnotations.annotations_tab)}>
 
@@ -1718,7 +1724,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </Tabs.Content>
 
-                    <Tabs.Content value="tab-search" tabIndex={-1}>
+                    <Tabs.Content value="tab-search" tabIndex={-1} id={"readerMenu_tabs-tab-search"}>
                         <TabHeader />
                         <div className={classNames(stylesSettings.settings_tab, stylesPopoverDialog.search_container)}>
                             {searchEnable
@@ -1730,7 +1736,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </Tabs.Content>
 
-                    <Tabs.Content value="tab-gotopage" tabIndex={-1}>
+                    <Tabs.Content value="tab-gotopage" tabIndex={-1} id={"readerMenu_tabs-tab-gotopage"}>
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <GoToPageSection totalPages={
