@@ -249,6 +249,7 @@ $setting_color: var(--color-blue);
     flex: 2;
     overflow: hidden scroll;
     margin-top: 50px;
+    margin-bottom: 5px;
 
     @include scrollbar_styling;
 
