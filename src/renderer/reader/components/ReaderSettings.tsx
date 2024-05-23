@@ -50,6 +50,13 @@ import * as DefaultPageIcon from "readium-desktop/renderer/assets/icons/defaultP
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps, IPopoverDialogProps {
     handleSettingsClick: (open: boolean) => void;
+
+    setOverridePublisherDefault: (value: boolean) => void;
+    overridePublisherDefault: boolean;
+    transcientStateOverridePublisherDefault: ReaderConfig;
+    setTranscientStateOverridePublisherDefault: (value: ReaderConfig) => void;
+    tabValue: string;
+    setTabValue: (value: string) => void;
 }
 
 interface IState {
@@ -999,15 +1006,18 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const { setSettings, readerConfig, open } = props;
     const { setDockingMode, dockedMode, dockingMode } = props;
     const { handleDivinaReadingMode, divinaReadingMode, divinaReadingModeSupported } = props;
+    const { overridePublisherDefault, setOverridePublisherDefault } = props;
+    const { transcientStateOverridePublisherDefault, setTranscientStateOverridePublisherDefault } = props;
+    const { tabValue, setTabValue } = props;
     const { isDivina, isPdf } = props;
     const isEpub = !isDivina && !isPdf;
 
     const [__] = useTranslator();
 
-    const [
-        transcientStateOverridePublisherDefault,
-        setTranscientStateOverridePublisherDefault,
-    ] = React.useState<ReaderConfig>(readerConfig);
+    // const [
+    //     transcientStateOverridePublisherDefault,
+    //     setTranscientStateOverridePublisherDefault,
+    // ] = React.useState<ReaderConfig>(readerConfig);
 
     const [pdfState, setPdfState] = React.useState<IState>({
         pdfScale: undefined,
@@ -1070,8 +1080,8 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         return () => setPartialSettingsDebounced.flush();
     }, [setPartialSettingsDebounced]);
 
-    const [overridePublisherDefault, setOverride] = React.useState(false);
-    const [tabValue, setTabValue] = React.useState(isDivina ? "tab-divina" : isPdf ? "tab-pdfzoom" : "tab-display");
+
+    // const [tabValue, setTabValue] = React.useState(isDivina ? "tab-divina" : isPdf ? "tab-pdfzoom" : "tab-display");
 
     // React.useEffect(() => {
     //     let ov = false;
@@ -1085,13 +1095,13 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     //     setOverride(ov);
     // }, [readerConfig]);
 
-    const setOverridePublisherDefault = React.useMemo(() => () => {
+    const setAllowCustomCheckbox = React.useMemo(() => () => {
         if (overridePublisherDefault) {
             setPartialSettingsDebounced(readerConfigInitialStateDefaultPublisher, false);
             setTabValue("tab-display");
-            setOverride(false);
+            setOverridePublisherDefault(false);
         } else {
-            setOverride(true);
+            setOverridePublisherDefault(true);
             setTabValue("tab-text");
             setPartialSettingsDebounced(transcientStateOverridePublisherDefault);
         }
@@ -1175,7 +1185,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
     const AllowCustomContainer = () =>
         <div className={stylesSettings.allowCustom} key={"allowCustom"}>
-            <AllowCustom overridePublisherDefault={overridePublisherDefault} set={setOverridePublisherDefault} />
+            <AllowCustom overridePublisherDefault={overridePublisherDefault} set={setAllowCustomCheckbox} />
         </div>;
 
 
@@ -1275,6 +1285,11 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                                 const value = options.find(({ id: _id }) => _id === id)?.value;
                                 if (value) {
                                     setTabValue(value);
+                                    setTimeout(() => {
+                                        const elem = document.getElementById(`readerSettings_tabs-${value}`);
+                                        elem?.blur();
+                                        elem?.focus();
+                                    }, 1);
                                     // console.log("set Tab Value = ", value);
                                 } else {
                                     // console.error("Combobox No value !!!");
@@ -1309,32 +1324,32 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                 }
                 <div className={stylesSettings.settings_content}
                 style={{marginTop: dockedMode && "0"}}>
-                    <Tabs.Content value="tab-divina" tabIndex={-1}>
+                    <Tabs.Content value="tab-divina" tabIndex={-1} id="readerSettings_tabs-tab-divina">
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <DivinaSetReadingMode handleDivinaReadingMode={handleDivinaReadingMode} divinaReadingMode={divinaReadingMode} divinaReadingModeSupported={divinaReadingModeSupported} />
                         </div>
                     </Tabs.Content>
-                    <Tabs.Content value="tab-pdfzoom" tabIndex={-1}>
+                    <Tabs.Content value="tab-pdfzoom" tabIndex={-1} id="readerSettings_tabs-tab-pdfzoom">
                     <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <PdfZoom pdfScale={pdfState.pdfScale} pdfView={pdfState.pdfView} />
                         </div>
                     </Tabs.Content>
-                    <Tabs.Content value="tab-text" tabIndex={-1}>
+                    <Tabs.Content value="tab-text" tabIndex={-1} id="readerSettings_tabs-tab-text">
                     <TabHeader />
                         <div className={classNames(stylesSettings.settings_tab, stylesSettings.settings_reading_text, stylesSettings.section)}>
                             <FontSize config={readerConfig} set={setPartialSettingsDebounced} />
                             <FontFamily config={readerConfig} set={setPartialSettingsDebounced} />
                         </div>
                     </Tabs.Content>
-                    <Tabs.Content value="tab-spacing" tabIndex={-1}>
+                    <Tabs.Content value="tab-spacing" tabIndex={-1} id="readerSettings_tabs-tab-spacing">
                     <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <ReadingSpacing config={readerConfig} set={setPartialSettingsDebounced} />
                         </div>
                     </Tabs.Content>
-                    <Tabs.Content value="tab-display" tabIndex={-1}>
+                    <Tabs.Content value="tab-display" tabIndex={-1} id="readerSettings_tabs-tab-display">
                     <TabHeader />
                         <section className={stylesSettings.settings_tab}>
                             {isPdf ? <></> : <Theme theme={readerConfig} set={setPartialSettingsDebounced} />}

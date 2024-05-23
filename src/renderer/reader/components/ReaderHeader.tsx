@@ -70,6 +70,7 @@ import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/
 import { AnnotationEdit } from "./AnnotationEdit";
 import { Collection, Header as ReactAriaHeader, Section } from "react-aria-components";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
+import { readerConfigInitialState, readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 // import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 
@@ -159,6 +160,9 @@ interface IState {
     fxlZoomPercent: number;
     forceTTS: boolean;
     ttsPopoverOpen: boolean;
+    overridePublisherDefault: boolean;
+    transcientStateOverridePublisherDefault: ReaderConfig;
+    tabValue: string;
 }
 
 export class ReaderHeader extends React.Component<IProps, IState> {
@@ -184,12 +188,24 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         this.onKeyboardFixedLayoutZoomIn = this.onKeyboardFixedLayoutZoomIn.bind(this);
         this.onKeyboardFixedLayoutZoomOut = this.onKeyboardFixedLayoutZoomOut.bind(this);
 
+        let ov = false;
+        for (const [key, value] of Object.entries(readerConfigInitialStateDefaultPublisher)) {
+            if (this.props.ReaderSettingsProps.readerConfig[key as keyof typeof readerConfigInitialState] === value) continue;
+            else {
+                ov = true;
+                break;
+            }
+        }
+
         this.state = {
             pdfScaleMode: undefined,
             divinaSoundEnabled: false,
             fxlZoomPercent: 0,
             forceTTS: false,
             ttsPopoverOpen: false,
+            overridePublisherDefault: ov,
+            transcientStateOverridePublisherDefault: this.props.ReaderSettingsProps.readerConfig,
+            tabValue: this.props.ReaderSettingsProps.isDivina ? "tab-divina" : this.props.ReaderSettingsProps.isPdf ? "tab-pdfzoom" : "tab-display",
         };
 
         this.timerFXLZoomDebounce = undefined;
@@ -345,6 +361,18 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
+
+        const readerSettingsHeaderProps = {
+
+            setOverridePublisherDefault: (value: boolean) => this.setState({ overridePublisherDefault: value}),
+            overridePublisherDefault: this.state.overridePublisherDefault,
+
+            transcientStateOverridePublisherDefault: this.state.transcientStateOverridePublisherDefault,
+            setTranscientStateOverridePublisherDefault: (value: ReaderConfig) => this.setState({ transcientStateOverridePublisherDefault: value }),
+
+            tabValue: this.state.tabValue,
+            setTabValue: (value: string) => this.setState({ tabValue: value}),
+        };
 
         type VoiceWithIndex = SpeechSynthesisVoice & { id: number };
         const voicesWithIndex = speechSynthesis.getVoices()
@@ -1109,7 +1137,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 marginTop: isDockedMode && !isOnSearch ? "70px" : "20px",
                                             }}
                                         >
-                                            <ReaderSettings {...this.props.ReaderSettingsProps}
+                                            <ReaderSettings 
+                                                {...readerSettingsHeaderProps}
+                                                {...this.props.ReaderSettingsProps}
                                                 {...this.props.readerPopoverDialogContext}
                                                 handleSettingsClick={this.props.handleSettingsClick} />
                                         </div>
@@ -1127,7 +1157,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 marginTop: isDockedMode && !isOnSearch ? "70px" : "20px",
                                             }}
                                         >
-                                            <ReaderSettings {...this.props.ReaderSettingsProps}
+                                            <ReaderSettings
+                                                {...readerSettingsHeaderProps}
+                                                {...this.props.ReaderSettingsProps}
                                                 {...this.props.readerPopoverDialogContext}
                                                 handleSettingsClick={this.props.handleSettingsClick} />
                                         </Dialog.Content>
