@@ -240,8 +240,13 @@
       "accessibilityHazard": {
         "flashing": "Välähdyksiä",
         "motionSimulation": "Simuloitua liikettä",
-        "name": "Vaaratekijä:"
+        "name": "Vaaratekijä:",
+        "noFlashing": "Ei välähdyksiä",
+        "noMotionSimulation": "Ei simuloitua liikettä",
+        "noSound": "Ei ääntä"
       },
+      "certifierReport": "Arviointiraportti",
+      "conformsTo": "Noudattaa:",
       "moreInformation": "Lisätietoja",
       "name": "Saavutettavuus",
       "noA11y": "Saavutettavuustietoja ei ole saatavilla."
