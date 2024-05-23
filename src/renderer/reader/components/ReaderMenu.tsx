@@ -439,6 +439,18 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     return (<div
         className={stylesAnnotations.annotations_line}
         style={{ backgroundColor: dockedEditAnnotation ? "var(--color-extralight-grey)" : "", borderLeft: dockedEditAnnotation && "none" }}
+        onKeyDown={isEdited ? (e) => {
+            if (e.key === "Escape") {
+                e.preventDefault();
+                e.stopPropagation();
+                setItemToEdit(-1);
+                setTimeout(() => {
+                    const el = document.getElementById(`annotation_card-${itemEdited}_edit_button`);
+                    el?.blur();
+                    el?.focus();
+                }, 100);
+            }
+        } : undefined}
     >
         {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
         <div className={stylesAnnotations.annnotation_container}>
@@ -494,7 +506,9 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 </div>
             </div>
             <div className={stylesAnnotations.annotation_actions_buttons}>
-                <button title={__("reader.marks.edit")}
+                <button
+                    id={`annotation_card-${index}_edit_button`} 
+                    title={__("reader.marks.edit")}
                     disabled={isEdited}
                     onClick={() => { setItemToEdit(index); }
                     }>
@@ -702,6 +716,18 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) =
         <div
             className={stylesPopoverDialog.bookmarks_line}
             key={i}
+            onKeyDown={isEdited ? (e) => {
+                if (e.key === "Escape") {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setItemToEdit(-1);
+                    setTimeout(() => {
+                        const el = document.getElementById(`bookmark_item-${itemEdited}_edit_button`);
+                        el?.blur();
+                        el?.focus();
+                    }, 100);
+                }
+            } : undefined}
         >
             <div
                 className={stylesPopoverDialog.bookmark_infos}
@@ -759,7 +785,9 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) =
                             <p>{bprogression}</p>
                         </div>
                         <div className={stylesPopoverDialog.bookmark_actions_buttons}>
-                            <button title={__("reader.marks.edit")}
+                            <button
+                                id={`bookmark_item-${i}_edit_button`}
+                                title={__("reader.marks.edit")}
                                 onClick={() => { setItemToEdit(i); }}
                                 disabled={isEdited}
                             >
