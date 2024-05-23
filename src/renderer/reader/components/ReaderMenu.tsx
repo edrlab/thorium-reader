@@ -593,7 +593,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
             setItemToEdit(-1);
         }
     }, [isSearchEnable]);
-    
+
     return (
         <>
             <annotationCardContext.Provider value={{
@@ -635,7 +635,22 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                             </SelectRef> */}
-                            <ComboBox
+                            <label htmlFor="page" style={{margin: "0"}}>{__("reader.navigation.page")}</label>
+                            <select onChange={(e) => {
+                                console.log( e.currentTarget.value);
+                                    setPageNumber(pageOptions.find((option) => option.value === parseInt(e.currentTarget.value, 10)).id);
+                                    
+                                }}
+                                id="page"
+                                aria-label={__("reader.navigation.page")}
+                                // defaultValue={1}
+                                value={pageNumber}
+                                >
+                                {pageOptions.map((item) => (
+                                    <option key={item.id} value={item.id}>{item.name}</option>
+                                ))}
+                            </select>
+                            {/* <ComboBox
                                 aria-label={__("reader.navigation.page")}
                                 items={pageOptions}
                                 selectedKey={pageNumber}
@@ -645,7 +660,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                                 }}
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                            </ComboBox>
+                            </ComboBox> */}
                         </div>
                         <button title={__("opds.next")}
                             onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); }}
@@ -925,7 +940,22 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                             </SelectRef> */}
-                            <ComboBox
+                                                        <label htmlFor="page" style={{margin: "0"}}>{__("reader.navigation.page")}</label>
+                            <select onChange={(e) => {
+                                console.log( e.currentTarget.value);
+                                    setPageNumber(pageOptions.find((option) => option.value === parseInt(e.currentTarget.value, 10)).id);
+                                    
+                                }}
+                                id="page"
+                                aria-label={__("reader.navigation.page")}
+                                // defaultValue={1}
+                                value={pageNumber}
+                                >
+                                {pageOptions.map((item) => (
+                                    <option key={item.id} value={item.id}>{item.name}</option>
+                                ))}
+                            </select>
+                            {/* <ComboBox
                                 aria-label={__("reader.navigation.page")}
                                 items={pageOptions}
                                 selectedKey={pageNumber}
@@ -935,7 +965,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                                 }}
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                            </ComboBox>
+                            </ComboBox> */}
                         </div>
                         <button title={__("opds.next")}
                             onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); }}

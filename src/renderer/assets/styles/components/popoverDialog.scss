@@ -649,6 +649,22 @@
 //   }
 // }
 
+.modal_dialog_reader .pages select, .popover_dialog_reader .pages select {
+  width: 80px;
+  height: 30px;
+  padding: 0!important;
+  // padding-left: 10px!important;
+  text-align: center;
+  border: 1px solid var(--color-dark-grey-alt);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-right: 0 !important;
+  background-color: inherit;
+  color: var(--color-primary);
+}
+
 .modal_dialog_reader, .popover_dialog_reader {
   .pages .react_aria_ComboBox .my_combobox_container {
     background-color: var(--color-secondary)!important;
