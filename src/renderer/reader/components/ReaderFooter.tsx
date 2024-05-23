@@ -328,19 +328,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                     id={stylesReaderFooter.arrow_box}
                                                                     style={this.getStyle(this.getArrowBoxStyle)}
                                                                 >
-                                                                    <span title={spineTitle}><em>{`(${(isDivina)
-                                                                        ? spineTitle
-                                                                        : isPdf ?
-                                                                            parseInt(link.Href, 10).toString()
-                                                                            :
-                                                                            ((r2Publication.Spine.findIndex((spineLink) => spineLink.Href === link.Href)) + 1).toString()
-                                                                        }/${isPdf ? (r2Publication.Metadata?.NumberOfPages ? r2Publication.Metadata.NumberOfPages : 0) :
-                                                                            (isDivina
-                                                                                ? (this.props.divinaContinousEqualTrue ? r2Publication.Spine.length : this.props.divinaNumberOfPages)
-                                                                                : r2Publication.Spine.length)
-                                                                        }) `}</em> {` ${link.Title !== undefined ? link.Title : spineTitle}`}</span>
+                                                                    <span title={spineTitle}><em>{`(${this.getCurrentChapter(spineTitle, link)}/${this.getTotalChapters()}) `}</em> {` ${link.Title !== undefined ? link.Title : spineTitle}`}</span>
                                                                     <p>
-                                                                        {this.getProgression()}
+                                                                        {this.getProgression(link, spineTitle)}
                                                                     </p>
                                                                     {/* <span
                                                                         style={this.getStyle(this.getArrowStyle)}
@@ -393,6 +383,29 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         );
     }
 
+    private getCurrentChapter(spineTitle: string, link: Link): number {
+        const { r2Publication, isDivina, isPdf } = this.props;
+
+        const currentChapter = isDivina
+        ? parseInt(spineTitle)
+        : isPdf ?
+            parseInt(link.Href, 10)
+            :
+            (r2Publication.Spine.findIndex((spineLink) => spineLink.Href === link.Href)) + 1; 
+        return currentChapter;
+    }
+
+    private getTotalChapters(): number {
+        const { r2Publication, isDivina, isPdf } = this.props;
+
+        const totalChapters = 
+        isPdf ? (r2Publication.Metadata?.NumberOfPages ? r2Publication.Metadata.NumberOfPages : 0) :
+        (isDivina
+            ? (this.props.divinaContinousEqualTrue ? r2Publication.Spine.length : this.props.divinaNumberOfPages)
+            : r2Publication.Spine.length) + 1;
+        return totalChapters;
+    }
+
     private navLeftOrRightThrottled(left: boolean) {
         this.props.navLeftOrRight(left);
     }
@@ -434,21 +447,26 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         return ((onePourcent * spineItemId) + (onePourcent * progression));
     }
 
-    private getProgression(): string {
+    private getProgression(link: Link, spineTitle: string): string {
         const { currentLocation } = this.props;
 
         if (!currentLocation) {
             return "";
         }
 
+        const currentChapter = this.getCurrentChapter(spineTitle, link);
+
+        const totalChapters =  this.getTotalChapters();
+
         const percent = Math.round((currentLocation.locator.locations?.progression || 0) * 100);
+        const globalPercent = Math.round((currentChapter/totalChapters * 100) + percent/totalChapters);
 
         if (currentLocation.paginationInfo) {
-            return `${percent}% (${(currentLocation.paginationInfo.currentColumn || 0) + 1} / ${currentLocation.paginationInfo.totalColumns || 0})`;
+            return `${globalPercent}% (${(currentLocation.paginationInfo.currentColumn || 0) + 1} / ${currentLocation.paginationInfo.totalColumns || 0})`;
         } else if (currentLocation.audioPlaybackInfo) {
-            return `${percent}% (${formatTime(currentLocation.audioPlaybackInfo.localTime || 0)} / ${formatTime(currentLocation.audioPlaybackInfo.localDuration || 0)})`;
+            return `${globalPercent}% (${formatTime(currentLocation.audioPlaybackInfo.localTime || 0)} / ${formatTime(currentLocation.audioPlaybackInfo.localDuration || 0)})`;
         } else {
-            return `${percent}%`;
+            return `${globalPercent}%`;
         }
     }
 
