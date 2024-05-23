@@ -328,7 +328,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                     id={stylesReaderFooter.arrow_box}
                                                                     style={this.getStyle(this.getArrowBoxStyle)}
                                                                 >
-                                                                    <span title={spineTitle}><em>{`(${this.getCurrentChapter(spineTitle, link)}/${this.getTotalChapters()}) `}</em> {` ${link.Title !== undefined ? link.Title : spineTitle}`}</span>
+                                                                    <span title={spineTitle}><em>{`(${this.getCurrentChapter(spineTitle, link)}/${this.getTotalChapters()}) `}</em> {` ${link.Title ? link.Title : spineTitle}`}</span>
                                                                     <p>
                                                                         {this.getProgression(link, spineTitle)}
                                                                     </p>
