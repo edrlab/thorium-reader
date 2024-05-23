@@ -121,7 +121,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         let spineTitle = currentLocation.locator?.title || currentLocation.locator.href;
 
         const isEnding = (isDivina
-            ? parseInt(spineTitle)
+            ? parseInt(spineTitle, 10)
             : isPdf ?
                 parseInt(currentLocation.locator?.href, 10).toString()
                 :
@@ -387,7 +387,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         const { r2Publication, isDivina, isPdf } = this.props;
 
         const currentChapter = isDivina
-        ? parseInt(spineTitle)
+        ? parseInt(spineTitle, 10)
         : isPdf ?
             parseInt(link.Href, 10)
             :
