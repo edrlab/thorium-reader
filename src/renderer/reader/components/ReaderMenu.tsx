@@ -553,7 +553,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     if (!r2Publication || !annotationsQueue) {
         <></>;
     }
-    const MAX_MATCHES_PER_PAGE = 10;
+    const MAX_MATCHES_PER_PAGE = 3;
 
     const pageTotal =  Math.floor(annotationsQueue.length / MAX_MATCHES_PER_PAGE) + ((annotationsQueue.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1);
 
@@ -583,7 +583,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     // const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     // SelectRef.displayName = "ComboBox";
     
-    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} / ${pageTotal}`}));
+    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, name: `${v} / ${pageTotal}`}));
 
     const [itemEdited, setItemToEdit] = React.useState<number>(-1);
 
@@ -623,7 +623,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                         </button>
                         <div className={stylesPopoverDialog.pages}>
                             {/* <SelectRef
-                                id="page"
+                                id="paginatorAnnotations"
                                 aria-label={__("reader.navigation.page")}
                                 items={pageOptions}
                                 selectedKey={pageNumber}
@@ -635,13 +635,12 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                             </SelectRef> */}
-                            <label htmlFor="page" style={{margin: "0"}}>{__("reader.navigation.page")}</label>
+                            <label htmlFor="paginatorAnnotations" style={{margin: "0"}}>{__("reader.navigation.page")}</label>
                             <select onChange={(e) => {
-                                console.log( e.currentTarget.value);
-                                    setPageNumber(pageOptions.find((option) => option.value === parseInt(e.currentTarget.value, 10)).id);
+                                    setPageNumber(pageOptions.find((option) => option.id === parseInt(e.currentTarget.value, 10)).id);
                                     
                                 }}
-                                id="page"
+                                id="paginatorAnnotations"
                                 aria-label={__("reader.navigation.page")}
                                 // defaultValue={1}
                                 value={pageNumber}
@@ -870,7 +869,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
         return 0;
     }), [bookmarks]);
 
-    const MAX_MATCHES_PER_PAGE = 10;
+    const MAX_MATCHES_PER_PAGE = 3;
 
     const pageTotal =  Math.floor(sortedBookmarks.length / MAX_MATCHES_PER_PAGE) + ((sortedBookmarks.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1);
 
@@ -888,7 +887,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
     // const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     // SelectRef.displayName = "ComboBox";
     
-    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} / ${pageTotal}`}));
+    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, name: `${v} / ${pageTotal}`}));
 
     const [itemEdited, setItemToEdit] = React.useState(-1);
 
@@ -928,7 +927,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                         </button>
                         <div className={stylesPopoverDialog.pages}>
                             {/* <SelectRef
-                                id="page"
+                                id="paginatorBookmarks"
                                 aria-label={__("reader.navigation.page")}
                                 items={pageOptions}
                                 selectedKey={pageNumber}
@@ -940,13 +939,12 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                             </SelectRef> */}
-                                                        <label htmlFor="page" style={{margin: "0"}}>{__("reader.navigation.page")}</label>
+                            <label htmlFor="page" style={{margin: "0"}}>{__("reader.navigation.page")}</label>
                             <select onChange={(e) => {
-                                console.log( e.currentTarget.value);
-                                    setPageNumber(pageOptions.find((option) => option.value === parseInt(e.currentTarget.value, 10)).id);
+                                    setPageNumber(pageOptions.find((option) => option.id === parseInt(e.currentTarget.value, 10)).id);
                                     
                                 }}
-                                id="page"
+                                id="paginatorBookmarks"
                                 aria-label={__("reader.navigation.page")}
                                 // defaultValue={1}
                                 value={pageNumber}
