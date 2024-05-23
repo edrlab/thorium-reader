@@ -37,6 +37,7 @@ import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { IPopoverDialogProps } from "./options-values";
+import { I18nTyped } from "readium-desktop/common/services/translator";
 
 function throttle(callback: (...args: any) => void, limit: number) {
     let waiting = false;
@@ -328,9 +329,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                     id={stylesReaderFooter.arrow_box}
                                                                     style={this.getStyle(this.getArrowBoxStyle)}
                                                                 >
-                                                                    <span title={spineTitle}><em>{`(${this.getCurrentChapter(spineTitle, link)}/${this.getTotalChapters()}) `}</em> {` ${link.Title ? link.Title : spineTitle}`}</span>
+                                                                    <span><em>{`[${this.getCurrentChapter(spineTitle, link)+1} / ${this.getTotalChapters()}] `}</em> {` ${link.Title ? `${link.Title}${spineTitle ? ` (${spineTitle})` : ""}` : (spineTitle ? spineTitle : "")}`}</span>
                                                                     <p>
-                                                                        {this.getProgression(link, spineTitle)}
+                                                                        {this.getProgression(link, spineTitle, __)}
                                                                     </p>
                                                                     {/* <span
                                                                         style={this.getStyle(this.getArrowStyle)}
@@ -383,19 +384,23 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         );
     }
 
+    // zero-based
     private getCurrentChapter(spineTitle: string, link: Link): number {
         const { r2Publication, isDivina, isPdf } = this.props;
-
-        const currentChapter =
-        isDivina
-        ? (parseInt(spineTitle, 10) - 1) // 1-based
-        : isPdf ?
-            parseInt(link.Href, 10) // 0-based
-            :
-            r2Publication.Spine.findIndex((spineLink) => spineLink.Href === link.Href); // 0-based
-        return currentChapter;
+        try {
+            const n = isDivina // 1-based
+                ? (parseInt(spineTitle, 10) - 1)
+                : isPdf ? // 0-based
+                    parseInt(link.Href, 10)
+                    : // audiobook, EPUB reflow / FXL, etc. => 0-based
+                    r2Publication.Spine.findIndex((spineLink) => spineLink.Href === link.Href);
+            return Number.isInteger(n) ? n : 0; // NaN
+        } catch (_e) {
+            return 0;
+        }
     }
 
+    // [0-N]
     private getTotalChapters(): number {
         const { r2Publication, isDivina, isPdf } = this.props;
 
@@ -449,7 +454,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         return ((onePourcent * spineItemId) + (onePourcent * progression));
     }
 
-    private getProgression(link: Link, spineTitle: string): string {
+    private getProgression(link: Link, spineTitle: string, __: I18nTyped): string {
         const { currentLocation } = this.props;
 
         if (!currentLocation) {
@@ -461,12 +466,21 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         // can return 0!
         const totalChapters =  this.getTotalChapters();
 
-        const globalPercent = totalChapters > 0 ? Math.round(((currentLocation.locator.locations?.progression || 0) + (currentChapter >= 0 ? currentChapter : 0)) / totalChapters * 100) : 0;
+        const globalPercent =
+            totalChapters > 0 // division by zero
+            ?
+            Math.round(
+                (((currentLocation.locator.locations?.progression || 0) + (currentChapter >= 0 ? currentChapter : 0)) / totalChapters)
+                * 100,
+            )
+            :
+            0;
 
         if (currentLocation.paginationInfo) {
-            return `${globalPercent}% (${(currentLocation.paginationInfo.currentColumn || 0) + 1} / ${currentLocation.paginationInfo.totalColumns || 0})`;
+            return `${__("reader.navigation.currentPageTotal", { current: `${(currentLocation.paginationInfo.currentColumn || 0) + 1}`, total: `${currentLocation.paginationInfo.totalColumns || 0}` })} (${globalPercent}%)`;
         } else if (currentLocation.audioPlaybackInfo) {
-            return `${globalPercent}% (${formatTime(currentLocation.audioPlaybackInfo.localTime || 0)} / ${formatTime(currentLocation.audioPlaybackInfo.localDuration || 0)})`;
+            return `${formatTime(currentLocation.audioPlaybackInfo.globalTime || 0)} / ${formatTime(currentLocation.audioPlaybackInfo.globalDuration || 0)} (${Math.round(currentLocation.audioPlaybackInfo.globalProgression * 100)}%))`;
+            // return `${formatTime(currentLocation.audioPlaybackInfo.localTime || 0)} / ${formatTime(currentLocation.audioPlaybackInfo.localDuration || 0)} (${Math.round(currentLocation.audioPlaybackInfo.localProgression * 100)}%))`;
         } else {
             return `${globalPercent}%`;
         }
