@@ -84,7 +84,7 @@
         "noPublicationHelpL2": "or use the \"{{- importTitle }}\" button above.",
         "noPublicationHelpL3": "LCP-protected publications are supported.",
         "noPublicationHelpL4": "Supported extensions:",
-        "numberOfPages": "Number of pages",
+        "numberOfPages": "Results",
         "opds": {
             "auth": {
                 "cancel": "Cancel",
