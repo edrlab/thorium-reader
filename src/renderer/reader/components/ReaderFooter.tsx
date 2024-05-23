@@ -386,12 +386,13 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     private getCurrentChapter(spineTitle: string, link: Link): number {
         const { r2Publication, isDivina, isPdf } = this.props;
 
-        const currentChapter = isDivina
-        ? parseInt(spineTitle, 10)
+        const currentChapter =
+        isDivina
+        ? (parseInt(spineTitle, 10) - 1) // 1-based
         : isPdf ?
-            parseInt(link.Href, 10)
+            parseInt(link.Href, 10) // 0-based
             :
-            (r2Publication.Spine.findIndex((spineLink) => spineLink.Href === link.Href)) + 1; 
+            r2Publication.Spine.findIndex((spineLink) => spineLink.Href === link.Href); // 0-based
         return currentChapter;
     }
 
@@ -399,10 +400,11 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         const { r2Publication, isDivina, isPdf } = this.props;
 
         const totalChapters = 
-        isPdf ? (r2Publication.Metadata?.NumberOfPages ? r2Publication.Metadata.NumberOfPages : 0) :
-        (isDivina
+        isPdf ?
+        (r2Publication.Metadata?.NumberOfPages ? r2Publication.Metadata.NumberOfPages : 0) :
+        isDivina
             ? (this.props.divinaContinousEqualTrue ? r2Publication.Spine.length : this.props.divinaNumberOfPages)
-            : r2Publication.Spine.length) + 1;
+            : r2Publication.Spine.length;
         return totalChapters;
     }
 
@@ -454,12 +456,12 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             return "";
         }
 
+        // can return -1 (not found)
         const currentChapter = this.getCurrentChapter(spineTitle, link);
-
+        // can return 0!
         const totalChapters =  this.getTotalChapters();
 
-        const percent = Math.round((currentLocation.locator.locations?.progression || 0) * 100);
-        const globalPercent = Math.round((currentChapter/totalChapters * 100) + percent/totalChapters);
+        const globalPercent = totalChapters > 0 ? Math.round(((currentLocation.locator.locations?.progression || 0) + (currentChapter >= 0 ? currentChapter : 0)) / totalChapters * 100) : 0;
 
         if (currentLocation.paginationInfo) {
             return `${globalPercent}% (${(currentLocation.paginationInfo.currentColumn || 0) + 1} / ${currentLocation.paginationInfo.totalColumns || 0})`;
