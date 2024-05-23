@@ -50,6 +50,13 @@ import * as DefaultPageIcon from "readium-desktop/renderer/assets/icons/defaultP
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps, IPopoverDialogProps {
     handleSettingsClick: (open: boolean) => void;
+
+    setOverridePublisherDefault: (value: boolean) => void;
+    overridePublisherDefault: boolean;
+    transcientStateOverridePublisherDefault: ReaderConfig;
+    setTranscientStateOverridePublisherDefault: (value: ReaderConfig) => void;
+    tabValue: string;
+    setTabValue: (value: string) => void;
 }
 
 interface IState {
@@ -999,15 +1006,18 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const { setSettings, readerConfig, open } = props;
     const { setDockingMode, dockedMode, dockingMode } = props;
     const { handleDivinaReadingMode, divinaReadingMode, divinaReadingModeSupported } = props;
+    const { overridePublisherDefault, setOverridePublisherDefault } = props;
+    const { transcientStateOverridePublisherDefault, setTranscientStateOverridePublisherDefault } = props;
+    const { tabValue, setTabValue } = props;
     const { isDivina, isPdf } = props;
     const isEpub = !isDivina && !isPdf;
 
     const [__] = useTranslator();
 
-    const [
-        transcientStateOverridePublisherDefault,
-        setTranscientStateOverridePublisherDefault,
-    ] = React.useState<ReaderConfig>(readerConfig);
+    // const [
+    //     transcientStateOverridePublisherDefault,
+    //     setTranscientStateOverridePublisherDefault,
+    // ] = React.useState<ReaderConfig>(readerConfig);
 
     const [pdfState, setPdfState] = React.useState<IState>({
         pdfScale: undefined,
@@ -1070,8 +1080,8 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         return () => setPartialSettingsDebounced.flush();
     }, [setPartialSettingsDebounced]);
 
-    const [overridePublisherDefault, setOverride] = React.useState(false);
-    const [tabValue, setTabValue] = React.useState(isDivina ? "tab-divina" : isPdf ? "tab-pdfzoom" : "tab-display");
+
+    // const [tabValue, setTabValue] = React.useState(isDivina ? "tab-divina" : isPdf ? "tab-pdfzoom" : "tab-display");
 
     // React.useEffect(() => {
     //     let ov = false;
@@ -1085,13 +1095,13 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     //     setOverride(ov);
     // }, [readerConfig]);
 
-    const setOverridePublisherDefault = React.useMemo(() => () => {
+    const setAllowCustomCheckbox = React.useMemo(() => () => {
         if (overridePublisherDefault) {
             setPartialSettingsDebounced(readerConfigInitialStateDefaultPublisher, false);
             setTabValue("tab-display");
-            setOverride(false);
+            setOverridePublisherDefault(false);
         } else {
-            setOverride(true);
+            setOverridePublisherDefault(true);
             setTabValue("tab-text");
             setPartialSettingsDebounced(transcientStateOverridePublisherDefault);
         }
@@ -1175,7 +1185,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
     const AllowCustomContainer = () =>
         <div className={stylesSettings.allowCustom} key={"allowCustom"}>
-            <AllowCustom overridePublisherDefault={overridePublisherDefault} set={setOverridePublisherDefault} />
+            <AllowCustom overridePublisherDefault={overridePublisherDefault} set={setAllowCustomCheckbox} />
         </div>;
 
 
