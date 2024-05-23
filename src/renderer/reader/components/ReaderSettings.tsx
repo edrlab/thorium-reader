@@ -1275,6 +1275,11 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                                 const value = options.find(({ id: _id }) => _id === id)?.value;
                                 if (value) {
                                     setTabValue(value);
+                                    setTimeout(() => {
+                                        const elem = document.getElementById(`readerSettings_tabs-${value}`);
+                                        elem?.blur();
+                                        elem?.focus();
+                                    }, 1);
                                     // console.log("set Tab Value = ", value);
                                 } else {
                                     // console.error("Combobox No value !!!");
@@ -1309,32 +1314,32 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                 }
                 <div className={stylesSettings.settings_content}
                 style={{marginTop: dockedMode && "0"}}>
-                    <Tabs.Content value="tab-divina" tabIndex={-1}>
+                    <Tabs.Content value="tab-divina" tabIndex={-1} id="readerSettings_tabs-tab-divina">
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <DivinaSetReadingMode handleDivinaReadingMode={handleDivinaReadingMode} divinaReadingMode={divinaReadingMode} divinaReadingModeSupported={divinaReadingModeSupported} />
                         </div>
                     </Tabs.Content>
-                    <Tabs.Content value="tab-pdfzoom" tabIndex={-1}>
+                    <Tabs.Content value="tab-pdfzoom" tabIndex={-1} id="readerSettings_tabs-tab-pdfzoom">
                     <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <PdfZoom pdfScale={pdfState.pdfScale} pdfView={pdfState.pdfView} />
                         </div>
                     </Tabs.Content>
-                    <Tabs.Content value="tab-text" tabIndex={-1}>
+                    <Tabs.Content value="tab-text" tabIndex={-1} id="readerSettings_tabs-tab-text">
                     <TabHeader />
                         <div className={classNames(stylesSettings.settings_tab, stylesSettings.settings_reading_text, stylesSettings.section)}>
                             <FontSize config={readerConfig} set={setPartialSettingsDebounced} />
                             <FontFamily config={readerConfig} set={setPartialSettingsDebounced} />
                         </div>
                     </Tabs.Content>
-                    <Tabs.Content value="tab-spacing" tabIndex={-1}>
+                    <Tabs.Content value="tab-spacing" tabIndex={-1} id="readerSettings_tabs-tab-spacing">
                     <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <ReadingSpacing config={readerConfig} set={setPartialSettingsDebounced} />
                         </div>
                     </Tabs.Content>
-                    <Tabs.Content value="tab-display" tabIndex={-1}>
+                    <Tabs.Content value="tab-display" tabIndex={-1} id="readerSettings_tabs-tab-display">
                     <TabHeader />
                         <section className={stylesSettings.settings_tab}>
                             {isPdf ? <></> : <Theme theme={readerConfig} set={setPartialSettingsDebounced} />}
