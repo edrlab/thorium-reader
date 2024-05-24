@@ -271,7 +271,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                             let atCurrentLocation = false;
                                             if (isDivina) {
                                                 atCurrentLocation = this.props.divinaContinousEqualTrue
-                                                    ? Math.floor((currentLocation.locator.locations as any).totalProgression * r2Publication.Spine.length) === index
+                                                    ? (Math.floor((currentLocation.locator.locations as any).totalProgression * r2Publication.Spine.length)-1) === index
                                                     : (currentLocation.locator?.locations.position || 0) === index; // see divinaNumberOfPages
                                             } else if (isPdf) {
                                                 // let href = link.Href;
@@ -303,21 +303,21 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                     if (isDivina) {
                                                                         // alert(link?.Href);
                                                                         // alert(this.props.divinaContinousEqualTrue);
-                                                                        // TODO does not work
-                                                                        this.props.handleLinkClick(e, link.Href, !isDockedMode);
-                                                                        // if (this.props.divinaContinousEqualTrue) {
-                                                                        //     if (link?.Href) {
-                                                                        //         this.props.handleLinkClick(e, link.Href, !isDockedMode);
-                                                                        //     }
-                                                                        // } else {
-                                                                        //     const loc = {
-                                                                        //         // href: index.toString(),
-                                                                        //         href: String(this.props.r2Publication?.Spine?.findIndex((lnk) => lnk.Href === link?.Href)),
-                                                                        //         // progression generate in divina pagechange event
-                                                                        //     };
-                                                                        //     alert(loc.href);
-                                                                        //     this.props.goToLocator(loc as any, !isDockedMode);
-                                                                        // }
+                                                                        if (this.props.divinaContinousEqualTrue) {
+                                                                            this.props.handleLinkClick(e, link.Href, !isDockedMode);
+                                                                        } else {
+                                                                            // TODO does not work
+                                                                            // this.props.handleLinkClick(e, link.Href, !isDockedMode);
+
+                                                                            // TODO does not work either (same symptoms)
+                                                                            const loc = {
+                                                                                // href: index.toString(),
+                                                                                href: String(this.props.r2Publication?.Spine?.findIndex((lnk) => lnk.Href === link?.Href)),
+                                                                                // progression generate in divina pagechange event
+                                                                            };
+                                                                            // alert(loc.href);
+                                                                            this.props.goToLocator(loc as any, !isDockedMode);
+                                                                        }
                                                                     } if (isPdf) {
                                                                         // let href = link.Href;
                                                                         // try {
@@ -440,7 +440,8 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         // console.log(this.props.divinaContinousEqualTrue, this.props.r2Publication?.Spine?.length, link.Href, link.Title);
         try {
             const n = isDivina // 1-based
-                ? this.props.divinaContinousEqualTrue ? (parseInt(link.Href, 10) - 1) : this.props.r2Publication?.Spine?.length ? this.props.r2Publication.Spine.findIndex((lnk) => lnk.Href === link.Href) : 0
+                ? // this.props.divinaContinousEqualTrue ? (parseInt(link.Href, 10) - 1) :
+                r2Publication?.Spine?.length ? r2Publication.Spine.findIndex((lnk) => lnk.Href === link.Href) : 0
                 : isPdf ? // 1-based
                     parseInt(link.Href, 10) - 1
                     : // audiobook, EPUB reflow / FXL, etc. => 0-based

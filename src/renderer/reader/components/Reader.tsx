@@ -2428,11 +2428,22 @@ class Reader extends React.Component<IProps, IState> {
                 createOrGetPdfEventBus().dispatch("page", index);
             }
         } else if (this.props.isDivina) {
-            // const index = parseInt(locator?.href, 10);
-            // if (index >= 0) {
-            //     this.currentDivinaPlayer.goToPageWithIndex(index);
-            // }
-            this.currentDivinaPlayer.goTo(locator);
+            // console.log(JSON.stringify(locator, null, 4));
+            let index = -1;
+            try {
+                index = parseInt(locator?.href, 10);
+                if (!Number.isInteger(index)) { // NaN
+                    index = -1;
+                }
+            } catch (_e) {
+                // noop
+            }
+            if (index >= 0) {
+                // alert(index);
+                this.currentDivinaPlayer.goToPageWithIndex(index);
+            } else {
+                this.currentDivinaPlayer.goTo(locator);
+            }
         } else {
             this.handleLinkLocator(locator, isFromOnPopState);
         }
