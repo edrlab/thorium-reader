@@ -203,7 +203,7 @@ interface IState {
     landmarksOpen: boolean;
     landmarkTabOpen: number;
     menuOpen: boolean;
-    focusMenuOpen: number;
+    doFocus: boolean;
     fullscreen: boolean;
     zenMode: boolean;
 
@@ -330,7 +330,7 @@ class Reader extends React.Component<IProps, IState> {
 
             dockingMode: "full",
 
-            focusMenuOpen: 0,
+            doFocus: false,
         };
 
         ttsListen((ttss: TTSStateEnum) => {
@@ -676,7 +676,7 @@ class Reader extends React.Component<IProps, IState> {
 
         const readerMenuProps: IReaderMenuProps = {
             open: this.state.menuOpen,
-            focus: this.state.focusMenuOpen,
+            doFocus: this.state.doFocus,
             r2Publication: this.props.r2Publication,
             handleLinkClick: this.handleLinkClick,
             goToLocator: this.goToLocator,
@@ -2263,7 +2263,7 @@ class Reader extends React.Component<IProps, IState> {
         this.handleMenuButtonClick(true, "tab-search", true);
     }
 
-    private handleMenuButtonClick(open?: boolean, openedSectionMenu?: string, focused?: boolean, annotationUUID?: string) {
+    private handleMenuButtonClick(open?: boolean, openedSectionMenu?: string, doFocus?: boolean, annotationUUID?: string) {
         console.log("handleMenuButtonClick", "menuOpen=", this.state.menuOpen ? "closeMenu" : "openMenu", open !== undefined ? `openFromParam=${open ? "openMenu" : "closeMenu"}` : "");
 
         const openToggle = !this.state.menuOpen;
@@ -2275,7 +2275,7 @@ class Reader extends React.Component<IProps, IState> {
             shortcutEnable: shortcutEnable,
             settingsOpen: false,
             openedSectionMenu: openedSectionMenu ? openedSectionMenu : this.state.openedSectionMenu,
-            focusMenuOpen: focused ? (this.state.focusMenuOpen + 1) : this.state.focusMenuOpen,
+            doFocus: doFocus ? true : false,
             annotationUUID: annotationUUID ? annotationUUID : "",
         });
     }
