@@ -14,7 +14,7 @@ export const DEFAULT_COLOR_ANNOTATION: IColor = {red: 235, green: 150, blue: 148
 export const readerConfigInitialStateDefaultPublisher = {
     font: FONT_ID_DEFAULT,
     fontSize: "100%",
-    pageMargins: "0.5",
+    pageMargins: "1",
     wordSpacing: "0",
     letterSpacing: "0",
     paraSpacing: "0",

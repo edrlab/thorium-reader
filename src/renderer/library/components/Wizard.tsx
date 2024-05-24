@@ -203,8 +203,8 @@ export const WizardModal = () => {
                             <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("wizard.tab.readingView")}</h3>
-                                <p>
-                                    {__("wizard.description.readingView1")}<br />{__("wizard.description.readingView2")}</p>
+                                <p>{__("wizard.description.readingView1")}</p>
+                                <p>{__("wizard.description.readingView2")}</p>
                                 <img src={ReadingImage} />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Tabs.List>

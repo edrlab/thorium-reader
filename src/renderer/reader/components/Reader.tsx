@@ -856,6 +856,26 @@ class Reader extends React.Component<IProps, IState> {
                                     aria-label={this.props.__("accessibility.mainContent")}
                                     tabIndex={-1}>{this.props.__("accessibility.mainContent")}</a>
 
+                                <div
+                                    id="publication_viewport"
+                                    // className={stylesReader.publication_viewport}
+                                    className={classNames(stylesReader.publication_viewport, (!this.state.zenMode && (this.state.settingsOpen || this.state.menuOpen)) ?
+                                        (!this.props.isPdf ?
+                                           this.state.dockingMode === "left" ? stylesReader.docked_left
+                                            : this.state.dockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right
+                                            : ""
+                                        :
+                                            this.state.dockingMode === "left" ? stylesReader.docked_left_pdf
+                                            : this.state.dockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right_pdf
+                                            : ""
+                                        ) : undefined, 
+                                        (this.props.searchEnable && !this.props.isPdf) ? stylesReader.isOnSearch 
+                                        : (this.props.searchEnable && this.props.isPdf) ? stylesReader.isOnSearchPdf 
+                                        : "")}
+                                    ref={this.mainElRef}
+                                    style={{ inset: isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : "75px 50px" }}>
+                                </div>
+
                                 {arrowEnabled && !this.state.zenMode ?
                                     <div className={stylesReaderFooter.arrows}>
                                         <button onClick={(ev) => {
@@ -879,25 +899,6 @@ class Reader extends React.Component<IProps, IState> {
                                     : 
                                     <></>}
 
-                                <div
-                                    id="publication_viewport"
-                                    // className={stylesReader.publication_viewport}
-                                    className={classNames(stylesReader.publication_viewport, (!this.state.zenMode && (this.state.settingsOpen || this.state.menuOpen)) ?
-                                        (!this.props.isPdf ?
-                                           this.state.dockingMode === "left" ? stylesReader.docked_left
-                                            : this.state.dockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right
-                                            : ""
-                                        :
-                                            this.state.dockingMode === "left" ? stylesReader.docked_left_pdf
-                                            : this.state.dockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right_pdf
-                                            : ""
-                                        ) : undefined, 
-                                        (this.props.searchEnable && !this.props.isPdf) ? stylesReader.isOnSearch 
-                                        : (this.props.searchEnable && this.props.isPdf) ? stylesReader.isOnSearchPdf 
-                                        : "")}
-                                    ref={this.mainElRef}
-                                    style={{ inset: isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : "75px 50px" }}>
-                                </div>
                                 {
                                     this.props.isDivina && this.state.divinaArrowEnabled
                                         ?

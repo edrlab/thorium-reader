@@ -25,8 +25,9 @@ import * as TextOutlineIcon from "readium-desktop/renderer/assets/icons/TextOutl
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { readerLocalActionSetConfig } from "../redux/actions";
 import classNames from "classnames";
+import { TextArea } from "react-aria-components";
 
-interface IPros {
+interface IProps {
     save: (color: IColor, comment: string, drawType: TDrawType) => void;
     cancel: () => void;
     uuid?: string;
@@ -62,7 +63,7 @@ const drawType: TDrawType[] = [
     "outline",
 ];
 
-export const AnnotationEdit: React.FC<IPros> = (props) => {
+export const AnnotationEdit: React.FC<IProps> = (props) => {
 
     const { save, cancel, uuid, dockedMode} = props;
 
@@ -160,11 +161,11 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
         <div
             className={classNames(displayFromReaderMenu ? "" : stylesAnnotations.annotations_line, dockedMode ? stylesAnnotations.docked_annotation_line : "")} style={{backgroundColor: !displayFromReaderMenu ? "var(--color-extralight-grey)" : ""}}>
             <p>{annotationState.locatorExtended.selectionInfo.cleanText}</p>
-            <textarea id="addNote" name="addNote" wrap="hard" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef}
-            ></textarea>
+            <TextArea id="addNote" name="addNote" wrap="hard" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef}
+            ></TextArea>
 
         </div>
-        <div className={stylesAnnotations.annotation_actions} style={{ flexDirection: dockedMode ? "column" : "row", alignItems: dockedMode ? "start" : "center" }}>
+        <div className={stylesAnnotations.annotation_actions}>
             {/* <div className={stylesReader.annotation_form_textarea_container}> */}
             <div className={stylesAnnotations.annotation_actions_container}>
                 <h4>{__("reader.annotations.Color")}</h4>
@@ -208,7 +209,7 @@ export const AnnotationEdit: React.FC<IPros> = (props) => {
         {/* <label htmlFor="addNote">{__("reader.annotations.addNote")}</label> */}
         <div className={stylesAnnotations.annotation_form_textarea_buttons}>
             {displayFromReaderMenu
-                ? <button className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={cancel}>{__("dialog.cancel")}</button>
+                ? <button className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={cancel} type="button">{__("dialog.cancel")}</button>
                 : <Popover.Close className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={cancel}>{__("dialog.cancel")}</Popover.Close>
             }
             {displayFromReaderMenu

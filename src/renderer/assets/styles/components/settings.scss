@@ -100,8 +100,8 @@ $setting_color: var(--color-blue);
 
 .modal_dialog_reader .settings_container {
     &:not(:has(.guidedTour_content)) {
-        @media screen and (height <= 700px) {
-            height: 450px;
+        @media screen and (height <= 750px) {
+            height: calc(100dvh - 150px);
         }
     }
 } 
@@ -249,6 +249,7 @@ $setting_color: var(--color-blue);
     flex: 2;
     overflow: hidden scroll;
     margin-top: 50px;
+    margin-bottom: 5px;
 
     @include scrollbar_styling;
 
@@ -326,6 +327,10 @@ $setting_color: var(--color-blue);
     svg {
         color: var(--color-blue);
     }
+}
+
+.popover_dialog_reader .settings_tab {
+    margin: 30px 20px 0!important;
 }
 
 .settings_tab {
