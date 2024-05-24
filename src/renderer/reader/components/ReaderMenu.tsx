@@ -601,6 +601,9 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     
     const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, name: `${v} / ${pageTotal}`}));
 
+    const begin = startIndex + 1;
+    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationsQueue.length);
+
     const [itemEdited, setItemToEdit] = React.useState<number>(-1);
 
     const isSearchEnable = useSelector((state: IReaderRootState) => state.search.enable);
@@ -624,7 +627,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                 }
             </annotationCardContext.Provider>
             {
-                isPaginated ?
+                isPaginated ? <>
                     <div className={stylesPopoverDialog.navigation_container}>
                         <button title={__("opds.firstPage")}
                             onClick={() => { setPageNumber(1); setItemToEdit(-1); }}
@@ -689,6 +692,18 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                             <SVG ariaHidden={true} svg={ArrowLastIcon} />
                         </button>
                     </div>
+                    {
+                        annotationsQueue.length &&
+                        <p
+                            style={{
+                                textAlign: "center",
+                                padding: 0,
+                                margin: 0,
+                                marginTop: "-16px",
+                                marginBottom: "20px",
+                        }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${annotationsQueue.length}`}</p>
+                    }
+                    </>
                     : <></>
             }
         </>
@@ -914,6 +929,9 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
     
     const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, name: `${v} / ${pageTotal}`}));
 
+    const begin = startIndex + 1;
+    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, sortedBookmarks.length);
+
     const [itemEdited, setItemToEdit] = React.useState(-1);
 
     return (
@@ -937,10 +955,10 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                 }
             </bookmarkCardContext.Provider>
             {
-                isPaginated ?
+                isPaginated ? <>
                     <div className={stylesPopoverDialog.navigation_container}>
                         <button title={__("opds.firstPage")}
-                            onClick={() => { setPageNumber(1); }}
+                            onClick={() => { setPageNumber(1); setItemToEdit(-1); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowFirstIcon} />
                         </button>
@@ -1002,6 +1020,18 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                             <SVG ariaHidden={true} svg={ArrowLastIcon} />
                         </button>
                     </div>
+                    {
+                        sortedBookmarks.length &&
+                        <p
+                            style={{
+                                textAlign: "center",
+                                padding: 0,
+                                margin: 0,
+                                marginTop: "-16px",
+                                marginBottom: "20px",
+                        }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${sortedBookmarks.length}`}</p>
+                    }
+                    </>
                     : <></>
             }
         </>);
