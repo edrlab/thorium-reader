@@ -73,6 +73,12 @@ function* pop(action: readerLocalActionHighlights.handler.pop.TAction) {
 
 function* hrefChanged(action: readerLocalActionLocatorHrefChanged.TAction) {
 
+    const { divina, info, locator } = yield* selectTyped((state: IReaderRootState) => state.reader);
+    const skip = typeof divina !== "undefined" || info?.publicationView?.isDivina ||
+        locator?.audioPlaybackInfo || info?.publicationView?.isAudio ||
+        info?.publicationView?.isPDF;
+    if (skip) return;
+
     debug(`hrefChanged (unmountHightlight+mountHighlight) -- action.payload: [${JSON.stringify(action.payload, null, 4)}]`);
 
     // yield* callTyped(() => highlightsDrawMargin(_drawMargin)); // should probably be invoked in mounter, not handler
