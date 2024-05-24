@@ -1149,6 +1149,7 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
         }
     };
 
+    // TODO enable Divina??
     if (!r2Publication || isDivina) {
         return <></>;
     }

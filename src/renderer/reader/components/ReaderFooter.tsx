@@ -106,7 +106,7 @@ interface IProps extends IBaseProps {
 }
 
 interface IState {
-    moreInfo: boolean;
+    // moreInfo: boolean;
 }
 
 export class ReaderFooter extends React.Component<IProps, IState> {
@@ -114,11 +114,11 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
-        this.state = {
-            moreInfo: false,
-        };
+        // this.state = {
+        //     moreInfo: false,
+        // };
 
-        this.handleMoreInfoClick = this.handleMoreInfoClick.bind(this);
+        // this.handleMoreInfoClick = this.handleMoreInfoClick.bind(this);
 
         this.navLeftOrRightThrottled = throttle(this.navLeftOrRightThrottled, 500).bind(this);
     }
@@ -135,7 +135,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         const isAudioBook = isAudiobookFn(r2Publication);
 
         const { __ } = this.props;
-        const { moreInfo } = this.state;
+        // const { moreInfo } = this.state;
 
         let spineTitle = currentLocation.locator?.title || currentLocation.locator.href;
 
@@ -256,7 +256,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                         { // <div id={stylesReader.current}></div>
                             <div id={stylesReaderFooter.track_reading}>
                                 <div id={stylesReaderFooter.chapters_markers}
-                                    className={classNames(isRTL ? stylesReaderFooter.RTL_FLIP : undefined, moreInfo ? stylesReaderFooter.more_information : undefined)}>
+                                    className={classNames(isRTL ? stylesReaderFooter.RTL_FLIP : undefined /* , moreInfo ? stylesReaderFooter.more_information : undefined */)}>
                                     {
                                         (isPdf
                                             // tslint:disable-next-line: max-line-length
@@ -301,15 +301,23 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
                                                                     const isDockedMode = this.props.readerPopoverDialogContext.dockedMode;
                                                                     if (isDivina) {
-                                                                        // const loc = {
-                                                                        //     href: index.toString(),
-                                                                        //     // progression generate in divina pagechange event
-                                                                        // };
-                                                                        // this.props.goToLocator(loc as any);
-                                                                        if (link?.Href) {
-                                                                            this.props.handleLinkClick(e, link.Href, !isDockedMode);
-
-                                                                        }
+                                                                        // alert(link?.Href);
+                                                                        // alert(this.props.divinaContinousEqualTrue);
+                                                                        // TODO does not work
+                                                                        this.props.handleLinkClick(e, link.Href, !isDockedMode);
+                                                                        // if (this.props.divinaContinousEqualTrue) {
+                                                                        //     if (link?.Href) {
+                                                                        //         this.props.handleLinkClick(e, link.Href, !isDockedMode);
+                                                                        //     }
+                                                                        // } else {
+                                                                        //     const loc = {
+                                                                        //         // href: index.toString(),
+                                                                        //         href: String(this.props.r2Publication?.Spine?.findIndex((lnk) => lnk.Href === link?.Href)),
+                                                                        //         // progression generate in divina pagechange event
+                                                                        //     };
+                                                                        //     alert(loc.href);
+                                                                        //     this.props.goToLocator(loc as any, !isDockedMode);
+                                                                        // }
                                                                     } if (isPdf) {
                                                                         // let href = link.Href;
                                                                         // try {
@@ -377,11 +385,11 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                     id={stylesReaderFooter.arrow_box}
                                                                     style={this.getStyle(this.getArrowBoxStyle)}
                                                                 >
-                                                                    <span>{`[${this.getCurrentChapter(spineTitle, link)+1} / ${this.getTotalChapters()}] `} {
+                                                                    <span>{`[${this.getCurrentChapter(link)+1} / ${this.getTotalChapters()}] `} {
                                                                         isPdf ? "" :
                                                                         ` ${link.Title ? `${link.Title}${atCurrentLocation && spineTitle ? ` (${spineTitle})` : ""}` : (atCurrentLocation && spineTitle ? spineTitle : "")}`}</span>
                                                                     {atCurrentLocation ?
-                                                                        this.getProgression(link, spineTitle, isAudioBook).map((str, i) => {
+                                                                        this.getProgression(link, isAudioBook).map((str, i) => {
                                                                             return !str ? <></> :
                                                                             i === 0 ?
                                                                             <p key={`p${i}`}>{str}</p>
@@ -416,11 +424,23 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     }
 
     // 0-based
-    private getCurrentChapter(spineTitle: string, link: Link): number {
+    private getCurrentChapter(link: Link): number {
         const { r2Publication, isDivina, isPdf } = this.props;
+
+        // let spineTitle = currentLocation.locator?.title || currentLocation.locator.href;
+        // if (isDivina) {
+        //     try {
+        //         spineTitle = this.props.divinaContinousEqualTrue
+        //             ? `${Math.floor((currentLocation.locator.locations as any).totalProgression * r2Publication.Spine.length)}`
+        //             : `${(currentLocation.locator?.locations.position || 0) + 1}`;
+        //     } catch (_e) {
+        //         // ignore
+        //     }
+        // }
+        // console.log(this.props.divinaContinousEqualTrue, this.props.r2Publication?.Spine?.length, link.Href, link.Title);
         try {
             const n = isDivina // 1-based
-                ? (parseInt(spineTitle, 10) - 1)
+                ? this.props.divinaContinousEqualTrue ? (parseInt(link.Href, 10) - 1) : this.props.r2Publication?.Spine?.length ? this.props.r2Publication.Spine.findIndex((lnk) => lnk.Href === link.Href) : 0
                 : isPdf ? // 1-based
                     parseInt(link.Href, 10) - 1
                     : // audiobook, EPUB reflow / FXL, etc. => 0-based
@@ -485,7 +505,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         return ((onePourcent * spineItemId) + (onePourcent * progression));
     }
 
-    private getProgression(link: Link, spineTitle: string, isAudioBook: boolean): string[] {
+    private getProgression(link: Link, isAudioBook: boolean): string[] {
         const { currentLocation, isDivina, isPdf, __, r2Publication } = this.props;
 
         if (!currentLocation) {
@@ -493,7 +513,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         }
 
         // can return -1 (not found)
-        const currentChapter = this.getCurrentChapter(spineTitle, link);
+        const currentChapter = this.getCurrentChapter(link);
         // can return 0!
         const totalChapters =  this.getTotalChapters();
 
@@ -553,9 +573,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     //     return `calc(${arrowBoxPosition}% + ${multiplicator * 30 * rest / 100}px)`;
     // }
 
-    private handleMoreInfoClick() {
-        this.setState({ moreInfo: !this.state.moreInfo });
-    }
+    // private handleMoreInfoClick() {
+    //     this.setState({ moreInfo: !this.state.moreInfo });
+    // }
 }
 
 const mapDispatchToProps = (dispatch: TDispatch) => {

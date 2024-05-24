@@ -1832,6 +1832,7 @@ class Reader extends React.Component<IProps, IState> {
                 headings: undefined,
                 secondWebViewHref: undefined,
             };
+            // console.log(JSON.stringify(LocatorExtended, null, 4));
             this.handleReadingLocationChange(LocatorExtended);
         } else {
             console.log("DIVINA: location bad formated ", data);
@@ -2145,11 +2146,13 @@ class Reader extends React.Component<IProps, IState> {
             });
             let pageChangeDropFirst = false;
             eventEmitter.on("pagechange", (data: any) => {
+                console.log("DIVINA: 'pagechange'", data, pageChangeDropFirst);
                 if (!pageChangeDropFirst) {
+                    console.log("DIVINA: 'pagechange' SKIP");
                     pageChangeDropFirst = true;
+                    // inpagescrollDropFirst = false;
                     return;
                 }
-                console.log("DIVINA: 'pagechange'", data);
 
                 this.setState({ divinaArrowEnabled: false });
 
@@ -2159,6 +2162,8 @@ class Reader extends React.Component<IProps, IState> {
                 };
 
                 if (isInPageChangeData(data)) {
+                    // inpagescrollDropFirst = false;
+                    // pageChangeDropFirst = false;
                     this.divinaSetLocation(data);
                 } else {
                     console.error("DIVINA: pagechange event => unknow data", data);
@@ -2171,11 +2176,12 @@ class Reader extends React.Component<IProps, IState> {
             });
             let inpagescrollDropFirst = false;
             eventEmitter.on("inpagescroll", (data: any) => {
+                console.log("DIVINA: 'inpagescroll'", data, inpagescrollDropFirst);
                 if (!inpagescrollDropFirst) {
+                    console.log("DIVINA: 'inpagescroll' SKIP");
                     inpagescrollDropFirst = true;
                     return;
                 }
-                console.log("DIVINA: 'inpagescroll'", data);
                 this.setState({ divinaArrowEnabled: false });
                 const isInPagesScrollData = (data: any): data is { percent: number, locator: R2Locator } => {
                     return typeof data === "object" &&
@@ -2184,7 +2190,8 @@ class Reader extends React.Component<IProps, IState> {
                 };
 
                 if (isInPagesScrollData(data)) {
-
+                    // inpagescrollDropFirst = false;
+                    // pageChangeDropFirst = false;
                     this.divinaSetLocation(data);
                 } else
                     console.error("DIVINA: inpagescroll event => unknow data", data);
