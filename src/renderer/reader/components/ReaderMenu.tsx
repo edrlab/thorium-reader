@@ -630,13 +630,13 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                 isPaginated ? <>
                     <div className={stylesPopoverDialog.navigation_container}>
                         <button title={__("opds.firstPage")}
-                            onClick={() => { setPageNumber(1); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowFirstIcon} />
                         </button>
 
                         <button title={__("opds.previous")}
-                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
@@ -657,7 +657,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                             <label htmlFor="paginatorAnnotations" style={{margin: "0"}}>{__("reader.navigation.page")}</label>
                             <select onChange={(e) => {
                                     setPageNumber(pageOptions.find((option) => option.id === parseInt(e.currentTarget.value, 10)).id);
-                                    
+                                    setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100);
                                 }}
                                 id="paginatorAnnotations"
                                 aria-label={__("reader.navigation.page")}
@@ -681,13 +681,13 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                             </ComboBox> */}
                         </div>
                         <button title={__("opds.next")}
-                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                         </button>
 
                         <button title={__("opds.lastPage")}
-                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowLastIcon} />
                         </button>
@@ -958,13 +958,13 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                 isPaginated ? <>
                     <div className={stylesPopoverDialog.navigation_container}>
                         <button title={__("opds.firstPage")}
-                            onClick={() => { setPageNumber(1); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowFirstIcon} />
                         </button>
 
                         <button title={__("opds.previous")}
-                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
@@ -985,7 +985,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                             <label htmlFor="page" style={{margin: "0"}}>{__("reader.navigation.page")}</label>
                             <select onChange={(e) => {
                                     setPageNumber(pageOptions.find((option) => option.id === parseInt(e.currentTarget.value, 10)).id);
-                                    
+                                    setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100);
                                 }}
                                 id="paginatorBookmarks"
                                 aria-label={__("reader.navigation.page")}
@@ -1009,13 +1009,13 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                             </ComboBox> */}
                         </div>
                         <button title={__("opds.next")}
-                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                         </button>
 
                         <button title={__("opds.lastPage")}
-                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowLastIcon} />
                         </button>
