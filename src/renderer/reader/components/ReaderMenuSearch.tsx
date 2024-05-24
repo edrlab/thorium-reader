@@ -233,10 +233,11 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
             ((this.props.foundArray.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1)
             );
         const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i).map((v) => {
-            const startIndex = v * MAX_MATCHES_PER_PAGE;
-            const begin = startIndex + 1;
-            const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, this.props.foundArray?.length || 0);
-            return {id: v, name: `${v+1} / ${pageTotal}  [ ${begin === end ? `${end}` : `${begin} ... ${end}`} ]`};
+            // const startIndex = v * MAX_MATCHES_PER_PAGE;
+            // const begin = startIndex + 1;
+            // const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, this.props.foundArray?.length || 0);
+            // return {id: v, name: `${v+1} / ${pageTotal}  [ ${begin === end ? `${end}` : `${begin} ... ${end}`} ]`};
+            return {id: v, name: `${v+1} / ${pageTotal}`};
         });
 
         return (<>
@@ -289,6 +290,17 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                     </>
                 }
             </div>
+            {
+            this.props.foundArray?.length &&
+            <p
+                style={{
+                    textAlign: "center",
+                    padding: 0,
+                    margin: 0,
+                    marginTop: "-16px",
+                    marginBottom: "20px",
+            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${__("reader.picker.search.founds", {nResults: this.props.foundArray.length})}`}</p>
+        }
         </>);
     }
 
