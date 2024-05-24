@@ -913,9 +913,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
 
     const [pageNumber, setPageNumber] = React.useState(1);
     React.useEffect(() => {
-        if (pageNumber > pageTotal) {
-            setPageNumber(pageTotal);
-        }
+        setPageNumber(pageTotal === 0 ? 1 : pageNumber > pageTotal ? pageTotal : pageNumber);
     }, [pageTotal]);
 
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
