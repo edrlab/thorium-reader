@@ -197,6 +197,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                                         el?.focus();
                                                     }, 100);
                                                 }}
+                                                aria-label={`${__("app.edit.title")} (${id}) ${this.stringifyKeyboardShortcut(def)}`}
+                                                // title={`${__("app.edit.title")} (${id}) ${this.stringifyKeyboardShortcut(def)}`}
                                             ><SVG ariaHidden svg={EditIcon} /></button>
                                         </div>
                                         {
@@ -217,7 +219,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                                                 el?.focus();
                                                             }, 100);
                                                         }}
-                                                        aria-label={`${hit ? __("settings.keyboard.cancel") : ""} (${id}) ${this.stringifyKeyboardShortcut(def)}`}
+                                                        aria-label={`${__("settings.keyboard.cancel")} (${id}) ${this.stringifyKeyboardShortcut(this.state.editKeyboardShortcutData)}`}
+                                                        // title={`${__("settings.keyboard.cancel")} (${id}) ${this.stringifyKeyboardShortcut(this.state.editKeyboardShortcutData)}`}
                                                         >
                                                         {hit ?
                                                         __("settings.keyboard.cancel") : ""}
@@ -233,7 +236,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                                                 el?.focus();
                                                             }, 100);
                                                         }}
-                                                        aria-label={`${__("settings.keyboard.save")} (${id})`}
+                                                        aria-label={`${__("settings.keyboard.save")} (${id}) ${this.stringifyKeyboardShortcut(this.state.editKeyboardShortcutData)}`}
+                                                        // title={`${__("settings.keyboard.save")} (${id}) ${this.stringifyKeyboardShortcut(this.state.editKeyboardShortcutData)}`}
                                                         >
                                                             <SVG ariaHidden svg={SaveIcon} />
                                                         {__("settings.keyboard.save")}
