@@ -147,20 +147,21 @@ const renderLinkList = (isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBa
                             }
                             onClick=
                             {link.Href ? (e) => {
-                                const closeNavPanel = dockedMode ? false : e.shiftKey && e.altKey ? false : true;
-                                handleLinkClick(e, link.Href, closeNavPanel);
+                                const closeNavTOCList = !dockedMode && !(e.shiftKey && e.altKey);
+                                handleLinkClick(e, link.Href, closeNavTOCList);
                             } : undefined}
                             onDoubleClick=
                             {link.Href ? (e) => handleLinkClick(e, link.Href, false) : undefined}
                             tabIndex={0}
                             onKeyUp=
-                            {
+                            {link.Href ?
                                 (e) => {
-                                    if (link.Href && e.key === "Enter") {
-                                        const closeNavPanel = dockedMode ? false : e.shiftKey && e.altKey ? false : true;
-                                        handleLinkClick(e, link.Href, closeNavPanel);
+                                    if (e.key === "Enter") {
+                                        const closeNavTOCList = !dockedMode && !(e.shiftKey && e.altKey);
+                                        handleLinkClick(e, link.Href, closeNavTOCList);
                                     }
                                 }
+                                : undefined
                             }
                             data-href={link.Href}
                         >
@@ -302,20 +303,21 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
                                         }
                                         onClick=
                                         {link.Href ? (e) => {
-                                            const closeNavPanel = dockedMode ? false : e.shiftKey && e.altKey ? false : true;
-                                            handleLinkClick(e, link.Href, closeNavPanel);
+                                            const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
+                                            handleLinkClick(e, link.Href, closeNavTOCTree);
                                         } : undefined}
                                         onDoubleClick=
                                         {link.Href ? (e) => handleLinkClick(e, link.Href, false) : undefined}
                                         tabIndex={0}
                                         onKeyUp=
-                                        {
+                                        {link.Href ?
                                             (e) => {
-                                                if (link.Href && e.key === "Enter") {
-                                                    const closeNavPanel = dockedMode ? false : e.shiftKey && e.altKey ? false : true;
-                                                    handleLinkClick(e, link.Href, closeNavPanel);
+                                                if (e.key === "Enter") {
+                                                    const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
+                                                    handleLinkClick(e, link.Href, closeNavTOCTree);
                                                 }
                                             }
+                                            : undefined
                                         }
                                         data-href={link.Href}
                                         ref={flag ? linkRef : undefined}
@@ -340,20 +342,22 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
                                     }
                                     onClick=
                                     {link.Href ? (e) => {
-                                        const closeNavPanel = dockedMode ? false : e.shiftKey && e.altKey ? false : true;
-                                        handleLinkClick(e, link.Href, closeNavPanel);
+                                        const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
+                                        handleLinkClick(e, link.Href, closeNavTOCTree);
                                     } : undefined}
                                     onDoubleClick=
                                     {link.Href ? (e) => handleLinkClick(e, link.Href, false) : undefined}
                                     tabIndex={0}
                                     onKeyUp=
                                     {
+                                        link.Href ?
                                         (e) => {
-                                            if (link.Href && e.key === "Enter") {
-                                                const closeNavPanel = dockedMode ? false : e.shiftKey && e.altKey ? false : true;
-                                                handleLinkClick(e, link.Href, closeNavPanel);
+                                            if (e.key === "Enter") {
+                                                const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
+                                                handleLinkClick(e, link.Href, closeNavTOCTree);
                                             }
                                         }
+                                        : undefined
                                     }
                                     data-href={link.Href}
                                     ref={flag ? linkRef : undefined}
@@ -454,28 +458,39 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     >
         {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
         <div className={stylesAnnotations.annnotation_container}>
-        {((!isEdited &&dockedMode) || (!dockedMode && !isEdited)) &&
+        {((!isEdited && dockedMode) || (!dockedMode && !isEdited)) &&
             <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
             // title={bname}
             aria-label="goToLocator"
                 style={{ borderLeft: dockedEditAnnotation && "2px solid var(--color-blue)" }}
                 onClick={(e) => {
-                    const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                    goToLocator(annotation.locatorExtended.locator, closeNavPanel);
+                    e.preventDefault();
+                    const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
+                    goToLocator(annotation.locatorExtended.locator, closeNavAnnotation);
+                    dispatch(readerLocalActionAnnotations.focus.build(annotation));
                 }}
-                onDoubleClick={(_e) => {
-                    goToLocator(annotation.locatorExtended.locator, false);
-                }}
-                onKeyUp=
-                {
-                    (e) => {
-                        if (e.key === "Enter" || e.key === "Space") {
-                            const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                            goToLocator(annotation.locatorExtended.locator, closeNavPanel);
-                            dispatch(readerLocalActionAnnotations.focus.build(annotation));
-                        }
-                    }
-                }
+
+                // does not work on button (works on 'a' link)
+                // onDoubleClick={(_e) => {
+                //     e.preventDefault();
+                //     goToLocator(annotation.locatorExtended.locator, false);
+                //     dispatch(readerLocalActionAnnotations.focus.build(annotation));
+                // }}
+
+                // not necessary (onClick works)
+                // onKeyUp=
+                // {
+                //     (e) => {
+                //         // SPACE does not work (only without key mods on button)
+                //         // || e.key === "Space"
+                //         if (e.key === "Enter") {
+                ///            e.preventDefault();
+                //             const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
+                //             goToLocator(annotation.locatorExtended.locator, closeNavAnnotation);
+                //             dispatch(readerLocalActionAnnotations.focus.build(annotation));
+                //         }
+                //     }
+                // }
                 id={uuid}
             >
                 <p>{btext}</p>
@@ -553,8 +568,9 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     if (!r2Publication || !annotationsQueue) {
         <></>;
     }
-    const MAX_MATCHES_PER_PAGE = 10;
+    const MAX_MATCHES_PER_PAGE = 3;
 
+    // const pageTotal =  Math.ceil(annotationsQueue.length / MAX_MATCHES_PER_PAGE);
     const pageTotal =  Math.floor(annotationsQueue.length / MAX_MATCHES_PER_PAGE) + ((annotationsQueue.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1);
 
     const getStartPage = () => {
@@ -573,7 +589,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
 
     const annotationsPagedArray = React.useMemo(() => {
-        return annotationsQueue.slice(startIndex, startIndex + 10); // catch the end of the array
+        return annotationsQueue.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE); // catch the end of the array
     }, [startIndex, annotationsQueue]);
 
     const isLastPage = pageTotal === pageNumber;
@@ -583,7 +599,10 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     // const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     // SelectRef.displayName = "ComboBox";
     
-    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} / ${pageTotal}`}));
+    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, name: `${v} / ${pageTotal}`}));
+
+    const begin = startIndex + 1;
+    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationsQueue.length);
 
     const [itemEdited, setItemToEdit] = React.useState<number>(-1);
 
@@ -593,7 +612,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
             setItemToEdit(-1);
         }
     }, [isSearchEnable]);
-    
+
     return (
         <>
             <annotationCardContext.Provider value={{
@@ -608,22 +627,22 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                 }
             </annotationCardContext.Provider>
             {
-                isPaginated ?
+                isPaginated ? <>
                     <div className={stylesPopoverDialog.navigation_container}>
                         <button title={__("opds.firstPage")}
-                            onClick={() => { setPageNumber(1); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowFirstIcon} />
                         </button>
 
                         <button title={__("opds.previous")}
-                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
                         <div className={stylesPopoverDialog.pages}>
                             {/* <SelectRef
-                                id="page"
+                                id="paginatorAnnotations"
                                 aria-label={__("reader.navigation.page")}
                                 items={pageOptions}
                                 selectedKey={pageNumber}
@@ -635,7 +654,21 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                             </SelectRef> */}
-                            <ComboBox
+                            <label htmlFor="paginatorAnnotations" style={{margin: "0"}}>{__("reader.navigation.page")}</label>
+                            <select onChange={(e) => {
+                                    setPageNumber(pageOptions.find((option) => option.id === parseInt(e.currentTarget.value, 10)).id);
+                                    setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100);
+                                }}
+                                id="paginatorAnnotations"
+                                aria-label={__("reader.navigation.page")}
+                                // defaultValue={1}
+                                value={pageNumber}
+                                >
+                                {pageOptions.map((item) => (
+                                    <option key={item.id} value={item.id}>{item.name}</option>
+                                ))}
+                            </select>
+                            {/* <ComboBox
                                 aria-label={__("reader.navigation.page")}
                                 items={pageOptions}
                                 selectedKey={pageNumber}
@@ -645,20 +678,32 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                                 }}
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                            </ComboBox>
+                            </ComboBox> */}
                         </div>
                         <button title={__("opds.next")}
-                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                         </button>
 
                         <button title={__("opds.lastPage")}
-                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowLastIcon} />
                         </button>
                     </div>
+                    {
+                        annotationsQueue.length &&
+                        <p
+                            style={{
+                                textAlign: "center",
+                                padding: 0,
+                                margin: 0,
+                                marginTop: "-16px",
+                                marginBottom: "20px",
+                        }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${annotationsQueue.length}`}</p>
+                    }
+                    </>
                     : <></>
             }
         </>
@@ -667,7 +712,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
 
 const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) => {
 
-    const { r2Publication, goToLocator, dockedMode: _dockedMode, setItemToEdit, itemEdited } = React.useContext(bookmarkCardContext);
+    const { r2Publication, goToLocator, dockedMode: _dockedMode, setItemToEdit, itemEdited, dockedMode } = React.useContext(bookmarkCardContext);
     const { bookmark, i } = props;
     const isEdited = itemEdited === i;
     const [__] = useTranslator();
@@ -760,21 +805,29 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) =
                         <button
                             className={stylesReader.bookmarkList_button}
                             onClick={(e) => {
-                                e.stopPropagation();
-                                const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                                goToLocator(bookmark.locator, closeNavPanel);
+                                // e.stopPropagation();
+                                e.preventDefault();
+                                const closeNavBookmark = !dockedMode && !(e.shiftKey && e.altKey);
+                                goToLocator(bookmark.locator, closeNavBookmark);
                             }}
-                            onDoubleClick={(_e) => goToLocator(bookmark.locator, false)}
-                            onKeyUp=
-                            {
-                                (e) => {
-                                    if (e.key === "Enter" || e.key === "Space") {
-                                        e.stopPropagation();
-                                        const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                                        goToLocator(bookmark.locator, closeNavPanel);
-                                    }
-                                }
-                            }
+
+                            // does not work on button (works on 'a' link)
+                            // onDoubleClick={(_e) => goToLocator(bookmark.locator, false)}
+
+                            // not necessary (onClick works)
+                            // onKeyUp=
+                            // {
+                            //     (e) => {
+                            //         // SPACE does not work (only without key mods on button)
+                            //         // || e.key === "Space"
+                            //         if (e.key === "Enter") {
+                            //             // e.stopPropagation();
+                            //             e.preventDefault();
+                            //             const closeNavBookmark = !dockedMode && !(e.shiftKey && e.altKey);
+                            //             goToLocator(bookmark.locator, closeNavBookmark);
+                            //         }
+                            //     }
+                            // }
                         >
                             <HardWrapComment comment={bname}/>
                         </button>
@@ -855,15 +908,16 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
         return 0;
     }), [bookmarks]);
 
-    const MAX_MATCHES_PER_PAGE = 10;
+    const MAX_MATCHES_PER_PAGE = 3;
 
+    // const pageTotal =  Math.ceil(sortedBookmarks.length / MAX_MATCHES_PER_PAGE);
     const pageTotal =  Math.floor(sortedBookmarks.length / MAX_MATCHES_PER_PAGE) + ((sortedBookmarks.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1);
 
     const [pageNumber, setPageNumber] = React.useState(1);
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
 
     const bookmarksPagedArray = React.useMemo(() => {
-        return sortedBookmarks.slice(startIndex, startIndex + 10); // catch the end of the array
+        return sortedBookmarks.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE); // catch the end of the array
     }, [startIndex, sortedBookmarks]);
 
     const isLastPage = pageTotal === pageNumber;
@@ -873,7 +927,10 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
     // const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     // SelectRef.displayName = "ComboBox";
     
-    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} / ${pageTotal}`}));
+    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, name: `${v} / ${pageTotal}`}));
+
+    const begin = startIndex + 1;
+    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, sortedBookmarks.length);
 
     const [itemEdited, setItemToEdit] = React.useState(-1);
 
@@ -898,22 +955,22 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                 }
             </bookmarkCardContext.Provider>
             {
-                isPaginated ?
+                isPaginated ? <>
                     <div className={stylesPopoverDialog.navigation_container}>
                         <button title={__("opds.firstPage")}
-                            onClick={() => { setPageNumber(1); }}
+                            onClick={() => { setPageNumber(1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowFirstIcon} />
                         </button>
 
                         <button title={__("opds.previous")}
-                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
                         <div className={stylesPopoverDialog.pages}>
                             {/* <SelectRef
-                                id="page"
+                                id="paginatorBookmarks"
                                 aria-label={__("reader.navigation.page")}
                                 items={pageOptions}
                                 selectedKey={pageNumber}
@@ -925,7 +982,21 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                             </SelectRef> */}
-                            <ComboBox
+                            <label htmlFor="page" style={{margin: "0"}}>{__("reader.navigation.page")}</label>
+                            <select onChange={(e) => {
+                                    setPageNumber(pageOptions.find((option) => option.id === parseInt(e.currentTarget.value, 10)).id);
+                                    setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100);
+                                }}
+                                id="paginatorBookmarks"
+                                aria-label={__("reader.navigation.page")}
+                                // defaultValue={1}
+                                value={pageNumber}
+                                >
+                                {pageOptions.map((item) => (
+                                    <option key={item.id} value={item.id}>{item.name}</option>
+                                ))}
+                            </select>
+                            {/* <ComboBox
                                 aria-label={__("reader.navigation.page")}
                                 items={pageOptions}
                                 selectedKey={pageNumber}
@@ -935,20 +1006,32 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                                 }}
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                            </ComboBox>
+                            </ComboBox> */}
                         </div>
                         <button title={__("opds.next")}
-                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                         </button>
 
                         <button title={__("opds.lastPage")}
-                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowLastIcon} />
                         </button>
                     </div>
+                    {
+                        sortedBookmarks.length &&
+                        <p
+                            style={{
+                                textAlign: "center",
+                                padding: 0,
+                                margin: 0,
+                                marginTop: "-16px",
+                                marginBottom: "20px",
+                        }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${sortedBookmarks.length}`}</p>
+                    }
+                    </>
                     : <></>
             }
         </>);
@@ -956,7 +1039,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
 
 const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) => {
 
-    const { r2Publication, handleLinkClick, isDivina, isPdf, currentLocation, totalPages: totalPagesFromProps, goToLocator } = props;
+    const { r2Publication, handleLinkClick, isDivina, isPdf, currentLocation, totalPages: totalPagesFromProps, goToLocator, dockedMode } = props;
     let totalPages = `${totalPagesFromProps}`;
     const goToRef = React.useRef<HTMLInputElement>();
 
@@ -1175,10 +1258,12 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
             onKeyUp=
                 {
                     (e) => {
-                        if (e.key === "Enter" || e.key === "Space") {
-                            const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                        // SPACE does not work (only without key mods on button)
+                        //  || e.key === "Space"
+                        if (e.key === "Enter") {
+                            const closeNavGotoPage = !dockedMode && !(e.shiftKey && e.altKey);
                             e.preventDefault();
-                            handleSubmitPage(closeNavPanel);
+                            handleSubmitPage(closeNavGotoPage);
                         }
                 }
             }
@@ -1210,13 +1295,29 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
 
                 onClick=
                 {(e) => {
-                    const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                    const closeNavGotoPage = !dockedMode && !(e.shiftKey && e.altKey);
                     e.preventDefault();
-                    console.log(goToRef?.current?.value);
-                    handleSubmitPage(closeNavPanel);
+                    // console.log(goToRef?.current?.value);
+                    handleSubmitPage(closeNavGotoPage);
                 }}
-                onDoubleClick=
-                {(e) => {e.preventDefault(); handleSubmitPage(false);}}
+
+                // does not work on button (works on 'a' link)
+                // onDoubleClick=
+                // {(e) => {e.preventDefault(); handleSubmitPage(false);}}
+
+                // not necessary (onClick works)
+                // onKeyUp=
+                //     {
+                //         (e) => {
+                //             // SPACE does not work (only without key mods on button)
+                //             //  || e.key === "Space"
+                //             if (e.key === "Enter") {
+                //                 const closeNavGotoPage = !dockedMode && !(e.shiftKey && e.altKey);
+                //                 e.preventDefault();
+                //                 handleSubmitPage(closeNavGotoPage);
+                //             }
+                //         }
+                //     }
                 disabled={
                     !(isFixedLayoutNoPageList || r2Publication.PageList || isDivina || isPdf)
                 }
@@ -1600,7 +1701,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     <Tabs.Content value="tab-bookmark" tabIndex={-1} id={"readerMenu_tabs-tab-bookmark"}>
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
-                            <BookmarkList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} dockedMode={dockedMode} />
+                            <BookmarkList r2Publication={r2Publication} goToLocator={goToLocator} dockedMode={dockedMode} />
                         </div>
                     </Tabs.Content>
 
@@ -1748,7 +1849,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
                                 </div>
                             </details>
-                            <AnnotationList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} dockedMode={dockedMode} annotationUUIDFocused={annotationUUID} focus={focus}/>
+                            <AnnotationList r2Publication={r2Publication} goToLocator={goToLocator} dockedMode={dockedMode} annotationUUIDFocused={annotationUUID} focus={focus}/>
                         </div>
                     </Tabs.Content>
 

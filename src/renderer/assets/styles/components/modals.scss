@@ -42,6 +42,7 @@
   align-content: flex-start;
   position: fixed;
   box-sizing: border-box;
+  border: 1px solid var(--color-verylight-grey-alt);
 
   &.modal_dialog_full {
     position: relative;
@@ -230,6 +231,7 @@
       font-size: 14px;
       font-weight: 400;
       margin-bottom: 10px;
+      margin-top: 5px;
     }
 
     img {
