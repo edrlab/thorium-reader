@@ -298,9 +298,13 @@
       fill: var(--color-secondary)!important;
     }
   }
+
+  .settings_tab .annotations_line {
+    width: 100%;
+  }
   
   .annotations_line {
-    width: 100%;
+    // width: 100%;
     position: relative;
     text-align: left;
     font-size: 1rem;
