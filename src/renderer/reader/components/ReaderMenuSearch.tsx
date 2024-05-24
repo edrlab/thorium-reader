@@ -138,20 +138,20 @@ function renderSearchLinks(label: string, foundArray: ISearchResult[], nMatchPag
                                     style={{
                                         fontWeight: "normal",
                                     }}
+                                    tabIndex={0}
                                     onClick=
-                                        {(e) => {
-                                            const closeNavPanel = !dockedMode && !(e.shiftKey && e.altKey);
-                                            thiz.handleSearchClickDebounced(e, v.uuid, closeNavPanel);
+                                        {(e) => { // MOUSE CLICK (not ENTER)
+                                            const closeNavSearch = !dockedMode && !(e.shiftKey && e.altKey);
+                                            thiz.handleSearchClickDebounced(e, v.uuid, closeNavSearch);
                                         }}
                                     onDoubleClick=
                                         {(e) => thiz.handleSearchClickDebounced(e, v.uuid, false)}
-                                    tabIndex={0}
                                     onKeyUp=
                                         {
-                                            (e) => {
+                                            (e) => { // because onClick is only for MOUSE CLICK
                                                 if (e.key === "Enter") {
-                                                    const closeNavPanel = !dockedMode && !(e.shiftKey && e.altKey);
-                                                    thiz.handleSearchClick(e, v.uuid, closeNavPanel);
+                                                    const closeNavSearch = !dockedMode && !(e.shiftKey && e.altKey);
+                                                    thiz.handleSearchClick(e, v.uuid, closeNavSearch);
                                                 }
                                             }
                                         }
@@ -394,8 +394,8 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
     //                                         {
     //                                             (e) => {
     //                                                 if (link.Href && e.key === "Enter") {
-    //                                                     const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-    //                                                     this.handleSearchClick(e, link.Href, closeNavPanel);
+    //                                                     const closeNavSearch = e.shiftKey && e.altKey ? false : true;
+    //                                                     this.handleSearchClick(e, link.Href, closeNavSearch);
     //                                                 }
     //                                             }
     //                                         }
