@@ -1000,10 +1000,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     console.log("MENU DialogOnOpenChange", open);
                                     this.props.handleMenuClick(open);
                                     if (open) {
-                                        stealFocusDisable(true);
+                                        if (!this.props.isDivina  && !this.props.isPdf) {
+                                            stealFocusDisable(true);
+                                        }
                                         this.__closeNavPanel = false;
                                     } else {
-                                        stealFocusDisable(false);
+                                        if (!this.props.isDivina  && !this.props.isPdf) {
+                                            stealFocusDisable(false);
+                                        }
                                     }
                                 }}
                                 modal={!isDockedMode}
@@ -1104,9 +1108,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     console.log("SETTINGS DialogOnOpenChange", open);
                                     this.props.handleSettingsClick(open);
                                     if (open) {
-                                        stealFocusDisable(true);
+                                        if (!this.props.isDivina  && !this.props.isPdf) {
+                                            stealFocusDisable(true);
+                                        }
+                                        // this.__closeNavPanel = false;
                                     } else {
-                                        stealFocusDisable(false);
+                                        if (!this.props.isDivina  && !this.props.isPdf) {
+                                            stealFocusDisable(false);
+                                        }
                                     }
                                 }}
                                 modal={!isDockedMode}
