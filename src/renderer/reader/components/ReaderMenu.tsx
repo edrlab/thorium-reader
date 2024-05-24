@@ -615,9 +615,6 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
         }
     }, [isSearchEnable]);
 
-    if (!r2Publication || !annotationsQueue) {
-        <></>;
-    }
     return (
         <>
             <annotationCardContext.Provider value={{
@@ -941,9 +938,6 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
 
     const [itemEdited, setItemToEdit] = React.useState(-1);
 
-    if (!r2Publication || !bookmarks?.length) {
-        return <></>;
-    }
     return (
         <>
             <bookmarkCardContext.Provider value={{
@@ -1396,7 +1390,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
 
     // const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     const searchEnable = useSelector((state: IReaderRootState) => state.search.enable);
-    const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
+    // const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
     // const annotations = useSelector((state: IReaderRootState) => state.reader.annotation).map(([, v]) => v);
     const readerConfig = useSelector((state: IReaderRootState) => state.reader.config);
 
@@ -1494,12 +1488,13 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
 
     const BookmarksTrigger =
-        <Tabs.Trigger value="tab-bookmark" key={"tab-bookmark"} data-value={"tab-bookmark"} title={__("reader.marks.bookmarks")} disabled={!bookmarks || bookmarks.length === 0}>
+        // <Tabs.Trigger value="tab-bookmark" key={"tab-bookmark"} data-value={"tab-bookmark"} title={__("reader.marks.bookmarks")} disabled={!bookmarks || bookmarks.length === 0}>
+        <Tabs.Trigger value="tab-bookmark" key={"tab-bookmark"} data-value={"tab-bookmark"} title={__("reader.marks.bookmarks")}>
             <SVG ariaHidden svg={BookmarkIcon} />
             <h3>{__("reader.marks.bookmarks")}</h3>
         </Tabs.Trigger>;
     const optionBookmarkItem = {
-        id: 2, value: "tab-bookmark", name: __("reader.marks.bookmarks"), disabled: !bookmarks || bookmarks.length === 0,
+        id: 2, value: "tab-bookmark", name: __("reader.marks.bookmarks"), disabled: false, // !bookmarks || bookmarks.length === 0,
         svg: BookmarkIcon,
     };
 
@@ -1530,7 +1525,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
             <h3>{__("reader.marks.annotations")}</h3>
         </Tabs.Trigger>;
     const optionAnnotationItem = {
-        id: 5, value: "tab-annotation", name: __("reader.marks.annotations"), disabled: !bookmarks || bookmarks.length === 0,
+        id: 5, value: "tab-annotation", name: __("reader.marks.annotations"), disabled: false,// !bookmarks || bookmarks.length === 0,
         svg: AnnotationIcon,
     };
 
