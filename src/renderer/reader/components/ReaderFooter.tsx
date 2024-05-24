@@ -298,7 +298,8 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                         <Tooltip.Trigger asChild>
                                                             <span
                                                                 onClick={(e) => {
-
+                                                                    // e.preventDefault();
+                                                                    // e.stopPropagation();
                                                                     const isDockedMode = this.props.readerPopoverDialogContext.dockedMode;
                                                                     if (isDivina) {
                                                                         // alert(link?.Href);
@@ -306,19 +307,17 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                         if (this.props.divinaContinousEqualTrue) {
                                                                             this.props.handleLinkClick(e, link.Href, !isDockedMode);
                                                                         } else {
-                                                                            // TODO does not work
-                                                                            // this.props.handleLinkClick(e, link.Href, !isDockedMode);
+                                                                            this.props.handleLinkClick(e, link.Href, !isDockedMode);
 
-                                                                            // TODO does not work either (same symptoms)
-                                                                            const loc = {
-                                                                                // href: index.toString(),
-                                                                                href: String(this.props.r2Publication?.Spine?.findIndex((lnk) => lnk.Href === link?.Href)),
-                                                                                // progression generate in divina pagechange event
-                                                                            };
-                                                                            // alert(loc.href);
-                                                                            this.props.goToLocator(loc as any, !isDockedMode);
+                                                                            // const loc = {
+                                                                            //     // href: index.toString(),
+                                                                            //     href: String(this.props.r2Publication?.Spine?.findIndex((lnk) => lnk.Href === link?.Href)),
+                                                                            //     // progression generate in divina pagechange event
+                                                                            // };
+                                                                            // // alert(loc.href);
+                                                                            // this.props.goToLocator(loc as any, !isDockedMode);
                                                                         }
-                                                                    } if (isPdf) {
+                                                                    } else if (isPdf) {
                                                                         // let href = link.Href;
                                                                         // try {
                                                                         //     const n = parseInt(href, 10);
@@ -336,7 +335,6 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                         };
                                                                         this.props.goToLocator(loc, !isDockedMode);
                                                                     } else {
-
                                                                         const el = e.nativeEvent.target as HTMLElement;
                                                                         const deltaX = e.nativeEvent.offsetX;
                                                                         let element = el;

@@ -1705,7 +1705,8 @@ class Reader extends React.Component<IProps, IState> {
             }
         } else if (this.props.isDivina) {
             // TODO: Divina total number of pages? (last page index (number))
-            // this.currentDivinaPlayer.goToPageWithIndex(index);
+
+            //     this.currentDivinaPlayer.goToPageWithIndex(index);
         } else {
             if (this.props.r2Publication?.Spine) {
                 const lastSpine = this.props.r2Publication.Spine[this.props.r2Publication.Spine.length - 1];
@@ -2151,6 +2152,11 @@ class Reader extends React.Component<IProps, IState> {
                     console.log("DIVINA: 'pagechange' SKIP");
                     pageChangeDropFirst = true;
                     // inpagescrollDropFirst = false;
+                    if (locator?.locator?.href) {
+                        setTimeout(() => {
+                            this.currentDivinaPlayer.goTo({ href: locator.locator.href });
+                        }, 500);
+                    }
                     return;
                 }
 
@@ -2439,7 +2445,6 @@ class Reader extends React.Component<IProps, IState> {
                 // noop
             }
             if (index >= 0) {
-                // alert(index);
                 this.currentDivinaPlayer.goToPageWithIndex(index);
             } else {
                 this.currentDivinaPlayer.goTo(locator);
@@ -2471,7 +2476,6 @@ class Reader extends React.Component<IProps, IState> {
             }
 
         } else if (this.props.isDivina) {
-
             console.log("HANDLE LINK CLICK DIVINA URL", url);
 
             this.currentDivinaPlayer.goTo({ href: url });
@@ -2479,7 +2483,6 @@ class Reader extends React.Component<IProps, IState> {
         } else {
             const newUrl = isFromOnPopState ? url : this.props.manifestUrlR2Protocol + "/../" + url;
             this.handleLinkUrl(newUrl, isFromOnPopState);
-
         }
     }
 
