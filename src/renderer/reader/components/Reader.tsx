@@ -2414,13 +2414,15 @@ class Reader extends React.Component<IProps, IState> {
 
     private goToLocator(locator: R2Locator, closeNavPanel = true, isFromOnPopState = false) {
 
-        if (this.props.isPdf) {
+        if (closeNavPanel) {
+            this.focusMainAreaLandmarkAndCloseMenu();
+        }
 
+        if (this.props.isPdf) {
             const index = locator?.href || "";
             if (index) {
                 createOrGetPdfEventBus().dispatch("page", index);
             }
-
         } else if (this.props.isDivina) {
             // const index = parseInt(locator?.href, 10);
             // if (index >= 0) {
@@ -2428,10 +2430,6 @@ class Reader extends React.Component<IProps, IState> {
             // }
             this.currentDivinaPlayer.goTo(locator);
         } else {
-            if (closeNavPanel) {
-                this.focusMainAreaLandmarkAndCloseMenu();
-            }
-
             this.handleLinkLocator(locator, isFromOnPopState);
         }
 
@@ -2444,6 +2442,10 @@ class Reader extends React.Component<IProps, IState> {
         }
         if (!url) {
             return;
+        }
+
+        if (closeNavPanel) {
+            this.focusMainAreaLandmarkAndCloseMenu();
         }
 
         if (this.props.isPdf) {
@@ -2460,9 +2462,6 @@ class Reader extends React.Component<IProps, IState> {
             this.currentDivinaPlayer.goTo({ href: url });
 
         } else {
-            if (closeNavPanel) {
-                this.focusMainAreaLandmarkAndCloseMenu();
-            }
             const newUrl = isFromOnPopState ? url : this.props.manifestUrlR2Protocol + "/../" + url;
             this.handleLinkUrl(newUrl, isFromOnPopState);
 
