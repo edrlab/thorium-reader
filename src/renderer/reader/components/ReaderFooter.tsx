@@ -37,7 +37,25 @@ import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { IPopoverDialogProps } from "./options-values";
-import { I18nTyped } from "readium-desktop/common/services/translator";
+// import { I18nTyped } from "readium-desktop/common/services/translator";
+
+const isFixedLayout = (link: Link, publication: R2Publication): boolean => {
+    if (link && link.Properties) {
+        if (link.Properties.Layout === "fixed") {
+            return true;
+        }
+        if (typeof link.Properties.Layout !== "undefined") {
+            return false;
+        }
+    }
+
+    if (publication &&
+        publication.Metadata &&
+        publication.Metadata.Rendition) {
+        return publication.Metadata.Rendition.Layout === "fixed";
+    }
+    return false;
+};
 
 function throttle(callback: (...args: any) => void, limit: number) {
     let waiting = false;
@@ -468,7 +486,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     }
 
     private getProgression(link: Link, spineTitle: string, isAudioBook: boolean): string[] {
-        const { currentLocation, isDivina, isPdf, __ } = this.props;
+        const { currentLocation, isDivina, isPdf, __, r2Publication } = this.props;
 
         if (!currentLocation) {
             return ["", ""];
@@ -500,7 +518,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                 `${formatTime(currentLocation.audioPlaybackInfo.globalTime || 0)} / ${formatTime(currentLocation.audioPlaybackInfo.globalDuration || 0)} (${Math.round(currentLocation.audioPlaybackInfo.globalProgression * 100)}%))`,
             ];
         } else {
-            return [!isPdf && typeof currentLocation.locator.locations?.progression !== "undefined" ? `${Math.round(currentLocation.locator.locations.progression * 100)}%${!isAudioBook && !isDivina ? ` (${__("reader.settings.scrolled")})` : ""}` : "", `${__("publication.progression.title")} ${globalPercent}%`];
+            return [!isPdf && !isDivina && !isFixedLayout(link, r2Publication) && typeof currentLocation.locator.locations?.progression !== "undefined" ? `${Math.round(currentLocation.locator.locations.progression * 100)}%${!isAudioBook && !isDivina ? ` (${__("reader.settings.scrolled")})` : ""}` : "", `${__("publication.progression.title")} ${globalPercent}%`];
         }
     }
 
