@@ -359,9 +359,11 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                     id={stylesReaderFooter.arrow_box}
                                                                     style={this.getStyle(this.getArrowBoxStyle)}
                                                                 >
-                                                                    <span>{`[${this.getCurrentChapter(spineTitle, link)+(isPdf ? 0 : 1)} / ${this.getTotalChapters()}] `} {isPdf ? "" : ` ${link.Title ? `${link.Title}${atCurrentLocation && spineTitle ? ` (${spineTitle})` : ""}` : (atCurrentLocation && spineTitle ? spineTitle : "")}`}</span>
+                                                                    <span>{`[${this.getCurrentChapter(spineTitle, link)+1} / ${this.getTotalChapters()}] `} {
+                                                                        isPdf ? "" :
+                                                                        ` ${link.Title ? `${link.Title}${atCurrentLocation && spineTitle ? ` (${spineTitle})` : ""}` : (atCurrentLocation && spineTitle ? spineTitle : "")}`}</span>
                                                                     {atCurrentLocation ?
-                                                                        this.getProgression(link, spineTitle, __, isDivina, isAudioBook, isPdf).map((str, i) => {
+                                                                        this.getProgression(link, spineTitle, isAudioBook).map((str, i) => {
                                                                             return !str ? <></> :
                                                                             i === 0 ?
                                                                             <p key={`p${i}`}>{str}</p>
@@ -383,32 +385,6 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                             );
                                         })}
                                 </div>
-
-                                {/* {moreInfo &&
-                                    <div
-                                        id={stylesReaderFooter.arrow_box}
-                                        style={this.getStyle(this.getArrowBoxStyle)}
-                                    >
-                                        <span title={spineTitle}><em>{`(${(isDivina)
-                                            ? spineTitle
-                                            : isPdf ?
-                                                parseInt(currentLocation.locator?.href, 10).toString()
-                                                :
-                                                ((r2Publication.Spine.findIndex((spineLink) => spineLink.Href === currentLocation.locator?.href)) + 1).toString()
-                                            }/${isPdf ? (r2Publication.Metadata?.NumberOfPages ? r2Publication.Metadata.NumberOfPages : 0) :
-                                            (isDivina
-                                            ? (this.props.divinaContinousEqualTrue ? r2Publication.Spine.length : this.props.divinaNumberOfPages)
-                                            : r2Publication.Spine.length)
-                                            }) `}</em> {` ${spineTitle}`}</span>
-                                        <p>
-                                            {this.getProgression()}
-                                        </p>
-                                        <span
-                                            style={this.getStyle(this.getArrowStyle)}
-                                            className={stylesReaderFooter.after}
-                                        />
-                                    </div>
-                                } */}
                             </div>
                         }
                         {isEnding ? <button className={stylesReaderFooter.finishedIcon}
@@ -421,14 +397,14 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         );
     }
 
-    // zero-based
+    // 0-based
     private getCurrentChapter(spineTitle: string, link: Link): number {
         const { r2Publication, isDivina, isPdf } = this.props;
         try {
             const n = isDivina // 1-based
                 ? (parseInt(spineTitle, 10) - 1)
-                : isPdf ? // 0-based
-                    parseInt(link.Href, 10)
+                : isPdf ? // 1-based
+                    parseInt(link.Href, 10) - 1
                     : // audiobook, EPUB reflow / FXL, etc. => 0-based
                     r2Publication.Spine.findIndex((spineLink) => spineLink.Href === link.Href);
             return Number.isInteger(n) ? n : 0; // NaN
@@ -460,7 +436,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             return {};
         }
 
-        let progression = this.props.isPdf ? 1 : currentLocation.locator.locations?.progression || 0;
+        let progression = this.props.isPdf ?  1 : currentLocation.locator.locations?.progression || 0;
         if (progression >= 0.97) {
             progression = 1;
         }
@@ -491,8 +467,8 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         return ((onePourcent * spineItemId) + (onePourcent * progression));
     }
 
-    private getProgression(link: Link, spineTitle: string, __: I18nTyped, isDivina: boolean, isAudioBook: boolean, isPdf: boolean): string[] {
-        const { currentLocation } = this.props;
+    private getProgression(link: Link, spineTitle: string, isAudioBook: boolean): string[] {
+        const { currentLocation, isDivina, isPdf, __ } = this.props;
 
         if (!currentLocation) {
             return ["", ""];
@@ -507,7 +483,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             totalChapters > 0 // division by zero
             ?
             Math.round(
-                (((currentLocation.locator.locations?.progression || 0) + (currentChapter >= 0 ? currentChapter : 0)) / totalChapters)
+                (((isPdf ? 1 : (currentLocation.locator.locations?.progression || 0)) + (currentChapter >= 0 ? currentChapter : 0)) / totalChapters)
                 * 100,
             )
             :
