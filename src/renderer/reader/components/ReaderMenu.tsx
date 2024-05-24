@@ -1093,24 +1093,44 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
                 // } catch (_e) {
                 //     // ignore error
                 // }
+
+                if (typeof page !== "undefined" && page >= 0 &&
+                    r2Publication.Spine && r2Publication.Spine[page]) {
+
+                    setPageError(false);
+
+                    // handleLinkClick(undefined, pageNbr);
+                    const loc = {
+                        href: (page || pageNbr).toString(),
+                        // progression generate in divina pagechange event
+                    };
+                    goToLocator(loc as any, closeNavPanel);
+
+                    return;
+                }
             } else if (isPdf) {
-                //
-            }
-            if (isPdf ||
-                (typeof page !== "undefined" && page >= 0 &&
-                    r2Publication.Spine && r2Publication.Spine[page])
-            ) {
+                const nPages = r2Publication.Metadata?.NumberOfPages || 1;
+                let pageStr = "";
+                try {
+                    const n = parseInt(pageNbr, 10);
+                    if (Number.isInteger(n)) { // NaN
+                        if (n >= 1 && n <= nPages) {
+                            pageStr = String(n);
+                        }
+                    }
+                } catch (_e) {
+                }
+                if (pageStr) {
+                    setPageError(false);
 
-                setPageError(false);
+                    const loc = {
+                        href: pageStr,
+                        locations: {progression: 1},
+                    };
+                    goToLocator(loc, closeNavPanel);
 
-                // handleLinkClick(undefined, pageNbr);
-                const loc = {
-                    href: (page || pageNbr).toString(),
-                    // progression generate in divina pagechange event
-                };
-                goToLocator(loc as any, closeNavPanel);
-
-                return;
+                    return;
+                }
             }
 
             setRefreshError(true);
@@ -1221,6 +1241,17 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
                     value: pageLink.Title,
                 }
                 : null
+            );
+        });
+    } else if (isPdf) {
+        options = Array.from({ length: r2Publication.Metadata?.NumberOfPages || 1 }, (_v, idx) => {
+            const indexStr = (idx + 1).toString();
+            return (
+                {
+                    id: idx +1,
+                    name: indexStr,
+                    value: indexStr,
+                }
             );
         });
     }
