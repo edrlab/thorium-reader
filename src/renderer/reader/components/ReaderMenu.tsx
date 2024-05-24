@@ -565,9 +565,6 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
     // const previousFocusUuid = useSelector((state: IReaderRootState) => state.annotationControlMode.focus.previousFocusUuid);
 
-    if (!r2Publication || !annotationsQueue) {
-        <></>;
-    }
     const MAX_MATCHES_PER_PAGE = 3;
 
     // const pageTotal =  Math.ceil(annotationsQueue.length / MAX_MATCHES_PER_PAGE);
@@ -581,6 +578,11 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     };
 
     const [pageNumber, setPageNumber] = React.useState(getStartPage);
+    React.useEffect(() => {
+        if (pageNumber > pageTotal) {
+            setPageNumber(pageTotal);
+        }
+    }, [pageTotal]);
 
     React.useEffect(() => {
         setPageNumber(getStartPage());
@@ -613,6 +615,9 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
         }
     }, [isSearchEnable]);
 
+    if (!r2Publication || !annotationsQueue) {
+        <></>;
+    }
     return (
         <>
             <annotationCardContext.Provider value={{
@@ -876,10 +881,6 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
     const [__] = useTranslator();
     const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
 
-    if (!r2Publication || !bookmarks?.length) {
-        return <></>;
-    }
-
     // const sortedBookmarks = bookmarks;
     // WARNING: .sort() is in-place same-array mutation! (not a new array)
     const sortedBookmarks = React.useMemo(() => bookmarks.sort((a, b) => {
@@ -914,6 +915,12 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
     const pageTotal =  Math.floor(sortedBookmarks.length / MAX_MATCHES_PER_PAGE) + ((sortedBookmarks.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1);
 
     const [pageNumber, setPageNumber] = React.useState(1);
+    React.useEffect(() => {
+        if (pageNumber > pageTotal) {
+            setPageNumber(pageTotal);
+        }
+    }, [pageTotal]);
+
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
 
     const bookmarksPagedArray = React.useMemo(() => {
@@ -934,6 +941,9 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
 
     const [itemEdited, setItemToEdit] = React.useState(-1);
 
+    if (!r2Publication || !bookmarks?.length) {
+        return <></>;
+    }
     return (
         <>
             <bookmarkCardContext.Provider value={{
