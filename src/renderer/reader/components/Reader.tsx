@@ -2242,7 +2242,6 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        // WARNING: "goto page" zero-based index in SectionData[] of ReaderMenu.tsx
         this.handleMenuButtonClick(true, "tab-gotopage", true);
     }
 
@@ -2254,12 +2253,10 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        // WARNING: "table of contents" zero-based index in SectionData[] of ReaderMenu.tsx
         this.handleMenuButtonClick(true, "tab-toc", true);
     }
 
     private showSearchResults() {
-        // WARNING: "search" zero-based index in SectionData[] of ReaderMenu.tsx
         this.handleMenuButtonClick(true, "tab-search", true);
     }
 
