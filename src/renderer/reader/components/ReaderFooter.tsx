@@ -121,6 +121,16 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
         let spineTitle = currentLocation.locator?.title || currentLocation.locator.href;
 
+        if (isDivina) {
+            try {
+                spineTitle = this.props.divinaContinousEqualTrue
+                    ? `${Math.floor((currentLocation.locator.locations as any).totalProgression * r2Publication.Spine.length)}`
+                    : `${(currentLocation.locator?.locations.position || 0) + 1}`;
+            } catch (_e) {
+                // ignore
+            }
+        }
+
         const isEnding = (isDivina
             ? parseInt(spineTitle, 10)
             : isPdf ?
@@ -133,16 +143,6 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                     ? (this.props.divinaContinousEqualTrue ? r2Publication.Spine.length : this.props.divinaNumberOfPages)
                     : r2Publication.Spine.length)
             );
-
-        if (isDivina) {
-            try {
-                spineTitle = this.props.divinaContinousEqualTrue
-                    ? `${Math.floor((currentLocation.locator.locations as any).totalProgression * r2Publication.Spine.length)}`
-                    : `${(currentLocation.locator?.locations.position || 0) + 1}`;
-            } catch (_e) {
-                // ignore
-            }
-        }
 
         let afterCurrentLocation = false;
 
@@ -244,7 +244,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                             // tslint:disable-next-line: max-line-length
                                             ? Array.from({ length: r2Publication.Metadata?.NumberOfPages || 1 }, (_v, i) => {
                                                 const link = new Link();
-                                                link.Href = i.toString();
+                                                link.Href = String(i+1);
                                                 return link;
                                             })
                                             : r2Publication.Spine
@@ -255,12 +255,25 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                 atCurrentLocation = this.props.divinaContinousEqualTrue
                                                     ? Math.floor((currentLocation.locator.locations as any).totalProgression * r2Publication.Spine.length) === index
                                                     : (currentLocation.locator?.locations.position || 0) === index; // see divinaNumberOfPages
+                                            } else if (isPdf) {
+                                                // let href = link.Href;
+                                                // try {
+                                                //     const n = parseInt(href, 10);
+                                                //     href = Number.isInteger(n) ? String(n) : "1"; // NaN
+                                                // } catch (_e) {
+                                                //     href = "1";
+                                                // }
+                                                // console.log(link.Href, href, currentLocation.locator?.href);
+                                                // atCurrentLocation = currentLocation.locator?.href === href;
+                                                // console.log(link.Href, currentLocation.locator?.href);
+                                                atCurrentLocation = currentLocation.locator?.href === link.Href;
                                             } else {
                                                 atCurrentLocation = currentLocation.locator?.href === link.Href;
                                             }
                                             if (atCurrentLocation) {
                                                 afterCurrentLocation = true;
                                             }
+
                                             return (
                                                 <Tooltip.Provider key={index}>
                                                     <Tooltip.Root>
@@ -279,6 +292,23 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                             this.props.handleLinkClick(e, link.Href, !isDockedMode);
 
                                                                         }
+                                                                    } if (isPdf) {
+                                                                        // let href = link.Href;
+                                                                        // try {
+                                                                        //     const n = parseInt(href, 10);
+                                                                        //     href = Number.isInteger(n) ? String(n) : "1"; // NaN
+                                                                        // } catch (_e) {
+                                                                        //     href = "1";
+                                                                        // }
+                                                                        // alert(`${link.Href} - ${href}`);
+                                                                        // alert(link.Href);
+                                                                        const loc: R2Locator = {
+                                                                            href: link.Href,
+                                                                            locations: {
+                                                                                progression: 0,
+                                                                            },
+                                                                        };
+                                                                        this.props.goToLocator(loc, !isDockedMode);
                                                                     } else {
 
                                                                         const el = e.nativeEvent.target as HTMLElement;
@@ -312,7 +342,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                 key={index}
                                                                 className={
                                                                     classNames(
-                                                                        "progressChunkSpineItem",
+                                                                        stylesReaderFooter.progressChunkSpineItem,
                                                                         atCurrentLocation ? stylesReaderFooter.currentSpineItem : undefined)
                                                                 }
                                                             >
@@ -329,10 +359,17 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                     id={stylesReaderFooter.arrow_box}
                                                                     style={this.getStyle(this.getArrowBoxStyle)}
                                                                 >
-                                                                    <span><em>{`[${this.getCurrentChapter(spineTitle, link)+1} / ${this.getTotalChapters()}] `}</em> {` ${link.Title ? `${link.Title}${spineTitle ? ` (${spineTitle})` : ""}` : (spineTitle ? spineTitle : "")}`}</span>
-                                                                    <p>
-                                                                        {this.getProgression(link, spineTitle, __)}
-                                                                    </p>
+                                                                    <span>{`[${this.getCurrentChapter(spineTitle, link)+(isPdf ? 0 : 1)} / ${this.getTotalChapters()}] `} {isPdf ? "" : ` ${link.Title ? `${link.Title}${atCurrentLocation && spineTitle ? ` (${spineTitle})` : ""}` : (atCurrentLocation && spineTitle ? spineTitle : "")}`}</span>
+                                                                    {atCurrentLocation ?
+                                                                        this.getProgression(link, spineTitle, __, isDivina, isAudioBook, isPdf).map((str, i) => {
+                                                                            return !str ? <></> :
+                                                                            i === 0 ?
+                                                                            <p key={`p${i}`}>{str}</p>
+                                                                            :
+                                                                            <p style={{fontSize:"revert"}} key={`p${i}`}>{str}</p>;
+                                                                        })
+                                                                        : <></>
+                                                                    }
                                                                     {/* <span
                                                                         style={this.getStyle(this.getArrowStyle)}
                                                                         className={stylesReaderFooter.after}
@@ -423,7 +460,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             return {};
         }
 
-        let progression = currentLocation.locator.locations?.progression;
+        let progression = this.props.isPdf ? 1 : currentLocation.locator.locations?.progression || 0;
         if (progression >= 0.97) {
             progression = 1;
         }
@@ -454,11 +491,11 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         return ((onePourcent * spineItemId) + (onePourcent * progression));
     }
 
-    private getProgression(link: Link, spineTitle: string, __: I18nTyped): string {
+    private getProgression(link: Link, spineTitle: string, __: I18nTyped, isDivina: boolean, isAudioBook: boolean, isPdf: boolean): string[] {
         const { currentLocation } = this.props;
 
         if (!currentLocation) {
-            return "";
+            return ["", ""];
         }
 
         // can return -1 (not found)
@@ -477,12 +514,17 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             0;
 
         if (currentLocation.paginationInfo) {
-            return `${__("reader.navigation.currentPageTotal", { current: `${(currentLocation.paginationInfo.currentColumn || 0) + 1}`, total: `${currentLocation.paginationInfo.totalColumns || 0}` })} (${globalPercent}%)`;
-        } else if (currentLocation.audioPlaybackInfo) {
-            return `${formatTime(currentLocation.audioPlaybackInfo.globalTime || 0)} / ${formatTime(currentLocation.audioPlaybackInfo.globalDuration || 0)} (${Math.round(currentLocation.audioPlaybackInfo.globalProgression * 100)}%))`;
-            // return `${formatTime(currentLocation.audioPlaybackInfo.localTime || 0)} / ${formatTime(currentLocation.audioPlaybackInfo.localDuration || 0)} (${Math.round(currentLocation.audioPlaybackInfo.localProgression * 100)}%))`;
+            return [
+                `${__("reader.navigation.currentPageTotal", { current: `${(currentLocation.paginationInfo.currentColumn || 0) + 1}`, total: `${currentLocation.paginationInfo.totalColumns || 0} (${Math.round(100 * (currentLocation.locator.locations?.progression || 0))}%)` })}`,
+                `${__("publication.progression.title")} ${globalPercent}%`,
+            ];
+        } else if (isAudioBook && currentLocation.audioPlaybackInfo) {
+            return [
+                `${formatTime(currentLocation.audioPlaybackInfo.localTime || 0)} / ${formatTime(currentLocation.audioPlaybackInfo.localDuration || 0)} (${Math.round(currentLocation.audioPlaybackInfo.localProgression * 100)}%))`,
+                `${formatTime(currentLocation.audioPlaybackInfo.globalTime || 0)} / ${formatTime(currentLocation.audioPlaybackInfo.globalDuration || 0)} (${Math.round(currentLocation.audioPlaybackInfo.globalProgression * 100)}%))`,
+            ];
         } else {
-            return `${globalPercent}%`;
+            return [!isPdf && typeof currentLocation.locator.locations?.progression !== "undefined" ? `${Math.round(currentLocation.locator.locations.progression * 100)}%${!isAudioBook && !isDivina ? ` (${__("reader.settings.scrolled")})` : ""}` : "", `${__("publication.progression.title")} ${globalPercent}%`];
         }
     }
 
