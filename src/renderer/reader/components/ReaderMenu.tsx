@@ -570,6 +570,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     }
     const MAX_MATCHES_PER_PAGE = 3;
 
+    // const pageTotal =  Math.ceil(annotationsQueue.length / MAX_MATCHES_PER_PAGE);
     const pageTotal =  Math.floor(annotationsQueue.length / MAX_MATCHES_PER_PAGE) + ((annotationsQueue.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1);
 
     const getStartPage = () => {
@@ -588,7 +589,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
 
     const annotationsPagedArray = React.useMemo(() => {
-        return annotationsQueue.slice(startIndex, startIndex + 10); // catch the end of the array
+        return annotationsQueue.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE); // catch the end of the array
     }, [startIndex, annotationsQueue]);
 
     const isLastPage = pageTotal === pageNumber;
@@ -894,13 +895,14 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
 
     const MAX_MATCHES_PER_PAGE = 3;
 
+    // const pageTotal =  Math.ceil(sortedBookmarks.length / MAX_MATCHES_PER_PAGE);
     const pageTotal =  Math.floor(sortedBookmarks.length / MAX_MATCHES_PER_PAGE) + ((sortedBookmarks.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1);
 
     const [pageNumber, setPageNumber] = React.useState(1);
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
 
     const bookmarksPagedArray = React.useMemo(() => {
-        return sortedBookmarks.slice(startIndex, startIndex + 10); // catch the end of the array
+        return sortedBookmarks.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE); // catch the end of the array
     }, [startIndex, sortedBookmarks]);
 
     const isLastPage = pageTotal === pageNumber;

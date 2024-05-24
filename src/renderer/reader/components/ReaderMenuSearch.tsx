@@ -229,6 +229,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
 
         const pageTotal =  !this.props.foundArray?.length ? 0 :
             (
+            // Math.ceil(this.props.foundArray.length / MAX_MATCHES_PER_PAGE)
             Math.floor(this.props.foundArray.length / MAX_MATCHES_PER_PAGE) +
             ((this.props.foundArray.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1)
             );
