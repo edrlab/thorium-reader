@@ -557,9 +557,9 @@ const annotationCardContext = React.createContext<{
     r2Publication: R2Publication;
 }>(undefined);
 
-const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean, annotationUUIDFocused: string, focus: number} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean, annotationUUIDFocused: string, doFocus: boolean} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
-    const {r2Publication, goToLocator, annotationUUIDFocused, focus, dockedMode} = props;
+    const {r2Publication, goToLocator, annotationUUIDFocused, doFocus, dockedMode} = props;
     const [__] = useTranslator();
     // const [bookmarkToUpdate, setBookmarkToUpdate] = React.useState(undefined);
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
@@ -584,7 +584,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
 
     React.useEffect(() => {
         setPageNumber(getStartPage());
-    }, [annotationUUIDFocused, focus]);
+    }, [annotationUUIDFocused, doFocus]);
 
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
 
@@ -1380,7 +1380,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const { r2Publication, /* toggleMenu */ pdfToc, isPdf, focusMainAreaLandmarkAndCloseMenu,
         pdfNumberOfPages, currentLocation, goToLocator, openedSection: tabValue, setOpenedSection: setTabValue } = props;
     const { setDockingMode, dockedMode, dockingMode } = props;
-    const { focus, annotationUUID, handleLinkClick } = props;
+    const { doFocus, annotationUUID, handleLinkClick } = props;
 
     const [__] = useTranslator();
 
@@ -1411,7 +1411,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     React.useEffect(() => {
 
         console.log("##########");
-        console.log(`USE EFFECT [annotationUUID=${annotationUUID}] [focus=${focus}] [tabValue=${tabValue}] [dockedMode=${dockingMode}]`);
+        console.log(`USE EFFECT [annotationUUID=${annotationUUID}] [doFocus=${doFocus}] [tabValue=${tabValue}] [dockedMode=${dockingMode}]`);
         console.log("##########");
 
         if (annotationUUID) {
@@ -1443,7 +1443,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
 
         }
 
-    }, [annotationUUID, focus]);
+    }, [annotationUUID, doFocus]);
 
     if (!r2Publication) {
         return <>Critical Error no R2Publication available</>;
@@ -1849,7 +1849,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
                                 </div>
                             </details>
-                            <AnnotationList r2Publication={r2Publication} goToLocator={goToLocator} dockedMode={dockedMode} annotationUUIDFocused={annotationUUID} focus={focus}/>
+                            <AnnotationList r2Publication={r2Publication} goToLocator={goToLocator} dockedMode={dockedMode} annotationUUIDFocused={annotationUUID} doFocus={doFocus}/>
                         </div>
                     </Tabs.Content>
 

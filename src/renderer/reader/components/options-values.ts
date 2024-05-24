@@ -110,7 +110,7 @@ export default optionsValues;
 
 export interface IReaderMenuProps {
     open: boolean;
-    focus: number;
+    doFocus: boolean;
     r2Publication: R2Publication;
     // tslint:disable-next-line: max-line-length
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeNavPanel?: boolean) => void;
