@@ -1250,8 +1250,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         title={__("reader.navigation.pdfscalemode")}
                                         onChange={(e) => {
                                             debug("FXL this.state.fxlZoomPercent TOGGLE: " + this.state.fxlZoomPercent);
-                                            this.setState({ fxlZoomPercent: parseInt(e.target.value) });
-                                            fixedLayoutZoomPercent(parseInt(e.target.value))
+                                            this.setState({ fxlZoomPercent: parseInt(e.target.value, 10) });
+                                            fixedLayoutZoomPercent(parseInt(e.target.value, 10))
                                         }}>
                                         <option value="">Fit</option>
                                         <option value={0}>Auto</option>

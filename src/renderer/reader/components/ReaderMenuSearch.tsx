@@ -443,7 +443,6 @@ const handleSearchClickFunc = (
         thiz.props.focusMainAreaLandmarkAndCloseMenu();
     }
 
-    console.log(href);
     thiz.props.focus(href); // search uuid
 };
 
