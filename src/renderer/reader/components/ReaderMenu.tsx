@@ -147,20 +147,21 @@ const renderLinkList = (isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBa
                             }
                             onClick=
                             {link.Href ? (e) => {
-                                const closeNavPanel = dockedMode ? false : e.shiftKey && e.altKey ? false : true;
-                                handleLinkClick(e, link.Href, closeNavPanel);
+                                const closeNavTOCList = !dockedMode && !(e.shiftKey && e.altKey);
+                                handleLinkClick(e, link.Href, closeNavTOCList);
                             } : undefined}
                             onDoubleClick=
                             {link.Href ? (e) => handleLinkClick(e, link.Href, false) : undefined}
                             tabIndex={0}
                             onKeyUp=
-                            {
+                            {link.Href ?
                                 (e) => {
-                                    if (link.Href && e.key === "Enter") {
-                                        const closeNavPanel = dockedMode ? false : e.shiftKey && e.altKey ? false : true;
-                                        handleLinkClick(e, link.Href, closeNavPanel);
+                                    if (e.key === "Enter") {
+                                        const closeNavTOCList = !dockedMode && !(e.shiftKey && e.altKey);
+                                        handleLinkClick(e, link.Href, closeNavTOCList);
                                     }
                                 }
+                                : undefined
                             }
                             data-href={link.Href}
                         >
@@ -302,20 +303,21 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
                                         }
                                         onClick=
                                         {link.Href ? (e) => {
-                                            const closeNavPanel = dockedMode ? false : e.shiftKey && e.altKey ? false : true;
-                                            handleLinkClick(e, link.Href, closeNavPanel);
+                                            const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
+                                            handleLinkClick(e, link.Href, closeNavTOCTree);
                                         } : undefined}
                                         onDoubleClick=
                                         {link.Href ? (e) => handleLinkClick(e, link.Href, false) : undefined}
                                         tabIndex={0}
                                         onKeyUp=
-                                        {
+                                        {link.Href ?
                                             (e) => {
-                                                if (link.Href && e.key === "Enter") {
-                                                    const closeNavPanel = dockedMode ? false : e.shiftKey && e.altKey ? false : true;
-                                                    handleLinkClick(e, link.Href, closeNavPanel);
+                                                if (e.key === "Enter") {
+                                                    const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
+                                                    handleLinkClick(e, link.Href, closeNavTOCTree);
                                                 }
                                             }
+                                            : undefined
                                         }
                                         data-href={link.Href}
                                         ref={flag ? linkRef : undefined}
@@ -340,20 +342,22 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
                                     }
                                     onClick=
                                     {link.Href ? (e) => {
-                                        const closeNavPanel = dockedMode ? false : e.shiftKey && e.altKey ? false : true;
-                                        handleLinkClick(e, link.Href, closeNavPanel);
+                                        const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
+                                        handleLinkClick(e, link.Href, closeNavTOCTree);
                                     } : undefined}
                                     onDoubleClick=
                                     {link.Href ? (e) => handleLinkClick(e, link.Href, false) : undefined}
                                     tabIndex={0}
                                     onKeyUp=
                                     {
+                                        link.Href ?
                                         (e) => {
-                                            if (link.Href && e.key === "Enter") {
-                                                const closeNavPanel = dockedMode ? false : e.shiftKey && e.altKey ? false : true;
-                                                handleLinkClick(e, link.Href, closeNavPanel);
+                                            if (e.key === "Enter") {
+                                                const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
+                                                handleLinkClick(e, link.Href, closeNavTOCTree);
                                             }
                                         }
+                                        : undefined
                                     }
                                     data-href={link.Href}
                                     ref={flag ? linkRef : undefined}
@@ -454,28 +458,39 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     >
         {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
         <div className={stylesAnnotations.annnotation_container}>
-        {((!isEdited &&dockedMode) || (!dockedMode && !isEdited)) &&
+        {((!isEdited && dockedMode) || (!dockedMode && !isEdited)) &&
             <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
             // title={bname}
             aria-label="goToLocator"
                 style={{ borderLeft: dockedEditAnnotation && "2px solid var(--color-blue)" }}
                 onClick={(e) => {
-                    const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                    goToLocator(annotation.locatorExtended.locator, closeNavPanel);
+                    e.preventDefault();
+                    const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
+                    goToLocator(annotation.locatorExtended.locator, closeNavAnnotation);
+                    dispatch(readerLocalActionAnnotations.focus.build(annotation));
                 }}
-                onDoubleClick={(_e) => {
-                    goToLocator(annotation.locatorExtended.locator, false);
-                }}
-                onKeyUp=
-                {
-                    (e) => {
-                        if (e.key === "Enter" || e.key === "Space") {
-                            const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                            goToLocator(annotation.locatorExtended.locator, closeNavPanel);
-                            dispatch(readerLocalActionAnnotations.focus.build(annotation));
-                        }
-                    }
-                }
+
+                // does not work on button (works on 'a' link)
+                // onDoubleClick={(_e) => {
+                //     e.preventDefault();
+                //     goToLocator(annotation.locatorExtended.locator, false);
+                //     dispatch(readerLocalActionAnnotations.focus.build(annotation));
+                // }}
+
+                // not necessary (onClick works)
+                // onKeyUp=
+                // {
+                //     (e) => {
+                //         // SPACE does not work (only without key mods on button)
+                //         // || e.key === "Space"
+                //         if (e.key === "Enter") {
+                ///            e.preventDefault();
+                //             const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
+                //             goToLocator(annotation.locatorExtended.locator, closeNavAnnotation);
+                //             dispatch(readerLocalActionAnnotations.focus.build(annotation));
+                //         }
+                //     }
+                // }
                 id={uuid}
             >
                 <p>{btext}</p>
@@ -667,7 +682,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
 
 const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) => {
 
-    const { r2Publication, goToLocator, dockedMode: _dockedMode, setItemToEdit, itemEdited } = React.useContext(bookmarkCardContext);
+    const { r2Publication, goToLocator, dockedMode: _dockedMode, setItemToEdit, itemEdited, dockedMode } = React.useContext(bookmarkCardContext);
     const { bookmark, i } = props;
     const isEdited = itemEdited === i;
     const [__] = useTranslator();
@@ -760,21 +775,29 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) =
                         <button
                             className={stylesReader.bookmarkList_button}
                             onClick={(e) => {
-                                e.stopPropagation();
-                                const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                                goToLocator(bookmark.locator, closeNavPanel);
+                                // e.stopPropagation();
+                                e.preventDefault();
+                                const closeNavBookmark = !dockedMode && !(e.shiftKey && e.altKey);
+                                goToLocator(bookmark.locator, closeNavBookmark);
                             }}
-                            onDoubleClick={(_e) => goToLocator(bookmark.locator, false)}
-                            onKeyUp=
-                            {
-                                (e) => {
-                                    if (e.key === "Enter" || e.key === "Space") {
-                                        e.stopPropagation();
-                                        const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                                        goToLocator(bookmark.locator, closeNavPanel);
-                                    }
-                                }
-                            }
+
+                            // does not work on button (works on 'a' link)
+                            // onDoubleClick={(_e) => goToLocator(bookmark.locator, false)}
+
+                            // not necessary (onClick works)
+                            // onKeyUp=
+                            // {
+                            //     (e) => {
+                            //         // SPACE does not work (only without key mods on button)
+                            //         // || e.key === "Space"
+                            //         if (e.key === "Enter") {
+                            //             // e.stopPropagation();
+                            //             e.preventDefault();
+                            //             const closeNavBookmark = !dockedMode && !(e.shiftKey && e.altKey);
+                            //             goToLocator(bookmark.locator, closeNavBookmark);
+                            //         }
+                            //     }
+                            // }
                         >
                             <HardWrapComment comment={bname}/>
                         </button>
@@ -956,7 +979,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
 
 const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) => {
 
-    const { r2Publication, handleLinkClick, isDivina, isPdf, currentLocation, totalPages: totalPagesFromProps, goToLocator } = props;
+    const { r2Publication, handleLinkClick, isDivina, isPdf, currentLocation, totalPages: totalPagesFromProps, goToLocator, dockedMode } = props;
     let totalPages = `${totalPagesFromProps}`;
     const goToRef = React.useRef<HTMLInputElement>();
 
@@ -1175,10 +1198,12 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
             onKeyUp=
                 {
                     (e) => {
-                        if (e.key === "Enter" || e.key === "Space") {
-                            const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                        // SPACE does not work (only without key mods on button)
+                        //  || e.key === "Space"
+                        if (e.key === "Enter") {
+                            const closeNavGotoPage = !dockedMode && !(e.shiftKey && e.altKey);
                             e.preventDefault();
-                            handleSubmitPage(closeNavPanel);
+                            handleSubmitPage(closeNavGotoPage);
                         }
                 }
             }
@@ -1210,13 +1235,29 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
 
                 onClick=
                 {(e) => {
-                    const closeNavPanel = e.shiftKey && e.altKey ? false : true;
+                    const closeNavGotoPage = !dockedMode && !(e.shiftKey && e.altKey);
                     e.preventDefault();
-                    console.log(goToRef?.current?.value);
-                    handleSubmitPage(closeNavPanel);
+                    // console.log(goToRef?.current?.value);
+                    handleSubmitPage(closeNavGotoPage);
                 }}
-                onDoubleClick=
-                {(e) => {e.preventDefault(); handleSubmitPage(false);}}
+
+                // does not work on button (works on 'a' link)
+                // onDoubleClick=
+                // {(e) => {e.preventDefault(); handleSubmitPage(false);}}
+
+                // not necessary (onClick works)
+                // onKeyUp=
+                //     {
+                //         (e) => {
+                //             // SPACE does not work (only without key mods on button)
+                //             //  || e.key === "Space"
+                //             if (e.key === "Enter") {
+                //                 const closeNavGotoPage = !dockedMode && !(e.shiftKey && e.altKey);
+                //                 e.preventDefault();
+                //                 handleSubmitPage(closeNavGotoPage);
+                //             }
+                //         }
+                //     }
                 disabled={
                     !(isFixedLayoutNoPageList || r2Publication.PageList || isDivina || isPdf)
                 }
@@ -1600,7 +1641,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     <Tabs.Content value="tab-bookmark" tabIndex={-1} id={"readerMenu_tabs-tab-bookmark"}>
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
-                            <BookmarkList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} dockedMode={dockedMode} />
+                            <BookmarkList r2Publication={r2Publication} goToLocator={goToLocator} dockedMode={dockedMode} />
                         </div>
                     </Tabs.Content>
 
@@ -1748,7 +1789,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
                                 </div>
                             </details>
-                            <AnnotationList r2Publication={r2Publication} goToLocator={(locator: Locator) => goToLocator(locator, !dockedMode)} dockedMode={dockedMode} annotationUUIDFocused={annotationUUID} focus={focus}/>
+                            <AnnotationList r2Publication={r2Publication} goToLocator={goToLocator} dockedMode={dockedMode} annotationUUIDFocused={annotationUUID} focus={focus}/>
                         </div>
                     </Tabs.Content>
 
