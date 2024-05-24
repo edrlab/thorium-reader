@@ -568,8 +568,9 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     if (!r2Publication || !annotationsQueue) {
         <></>;
     }
-    const MAX_MATCHES_PER_PAGE = 10;
+    const MAX_MATCHES_PER_PAGE = 3;
 
+    // const pageTotal =  Math.ceil(annotationsQueue.length / MAX_MATCHES_PER_PAGE);
     const pageTotal =  Math.floor(annotationsQueue.length / MAX_MATCHES_PER_PAGE) + ((annotationsQueue.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1);
 
     const getStartPage = () => {
@@ -588,7 +589,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
 
     const annotationsPagedArray = React.useMemo(() => {
-        return annotationsQueue.slice(startIndex, startIndex + 10); // catch the end of the array
+        return annotationsQueue.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE); // catch the end of the array
     }, [startIndex, annotationsQueue]);
 
     const isLastPage = pageTotal === pageNumber;
@@ -598,7 +599,10 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     // const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     // SelectRef.displayName = "ComboBox";
     
-    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} / ${pageTotal}`}));
+    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, name: `${v} / ${pageTotal}`}));
+
+    const begin = startIndex + 1;
+    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationsQueue.length);
 
     const [itemEdited, setItemToEdit] = React.useState<number>(-1);
 
@@ -608,7 +612,7 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
             setItemToEdit(-1);
         }
     }, [isSearchEnable]);
-    
+
     return (
         <>
             <annotationCardContext.Provider value={{
@@ -623,22 +627,22 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                 }
             </annotationCardContext.Provider>
             {
-                isPaginated ?
+                isPaginated ? <>
                     <div className={stylesPopoverDialog.navigation_container}>
                         <button title={__("opds.firstPage")}
-                            onClick={() => { setPageNumber(1); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowFirstIcon} />
                         </button>
 
                         <button title={__("opds.previous")}
-                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
                         <div className={stylesPopoverDialog.pages}>
                             {/* <SelectRef
-                                id="page"
+                                id="paginatorAnnotations"
                                 aria-label={__("reader.navigation.page")}
                                 items={pageOptions}
                                 selectedKey={pageNumber}
@@ -650,7 +654,21 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                             </SelectRef> */}
-                            <ComboBox
+                            <label htmlFor="paginatorAnnotations" style={{margin: "0"}}>{__("reader.navigation.page")}</label>
+                            <select onChange={(e) => {
+                                    setPageNumber(pageOptions.find((option) => option.id === parseInt(e.currentTarget.value, 10)).id);
+                                    setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100);
+                                }}
+                                id="paginatorAnnotations"
+                                aria-label={__("reader.navigation.page")}
+                                // defaultValue={1}
+                                value={pageNumber}
+                                >
+                                {pageOptions.map((item) => (
+                                    <option key={item.id} value={item.id}>{item.name}</option>
+                                ))}
+                            </select>
+                            {/* <ComboBox
                                 aria-label={__("reader.navigation.page")}
                                 items={pageOptions}
                                 selectedKey={pageNumber}
@@ -660,20 +678,32 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                                 }}
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                            </ComboBox>
+                            </ComboBox> */}
                         </div>
                         <button title={__("opds.next")}
-                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                         </button>
 
                         <button title={__("opds.lastPage")}
-                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowLastIcon} />
                         </button>
                     </div>
+                    {
+                        annotationsQueue.length &&
+                        <p
+                            style={{
+                                textAlign: "center",
+                                padding: 0,
+                                margin: 0,
+                                marginTop: "-16px",
+                                marginBottom: "20px",
+                        }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${annotationsQueue.length}`}</p>
+                    }
+                    </>
                     : <></>
             }
         </>
@@ -878,15 +908,16 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
         return 0;
     }), [bookmarks]);
 
-    const MAX_MATCHES_PER_PAGE = 10;
+    const MAX_MATCHES_PER_PAGE = 3;
 
+    // const pageTotal =  Math.ceil(sortedBookmarks.length / MAX_MATCHES_PER_PAGE);
     const pageTotal =  Math.floor(sortedBookmarks.length / MAX_MATCHES_PER_PAGE) + ((sortedBookmarks.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1);
 
     const [pageNumber, setPageNumber] = React.useState(1);
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
 
     const bookmarksPagedArray = React.useMemo(() => {
-        return sortedBookmarks.slice(startIndex, startIndex + 10); // catch the end of the array
+        return sortedBookmarks.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE); // catch the end of the array
     }, [startIndex, sortedBookmarks]);
 
     const isLastPage = pageTotal === pageNumber;
@@ -896,7 +927,10 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
     // const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     // SelectRef.displayName = "ComboBox";
     
-    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, value: v, name: `${v} / ${pageTotal}`}));
+    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, name: `${v} / ${pageTotal}`}));
+
+    const begin = startIndex + 1;
+    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, sortedBookmarks.length);
 
     const [itemEdited, setItemToEdit] = React.useState(-1);
 
@@ -921,22 +955,22 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                 }
             </bookmarkCardContext.Provider>
             {
-                isPaginated ?
+                isPaginated ? <>
                     <div className={stylesPopoverDialog.navigation_container}>
                         <button title={__("opds.firstPage")}
-                            onClick={() => { setPageNumber(1); }}
+                            onClick={() => { setPageNumber(1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowFirstIcon} />
                         </button>
 
                         <button title={__("opds.previous")}
-                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
                         <div className={stylesPopoverDialog.pages}>
                             {/* <SelectRef
-                                id="page"
+                                id="paginatorBookmarks"
                                 aria-label={__("reader.navigation.page")}
                                 items={pageOptions}
                                 selectedKey={pageNumber}
@@ -948,7 +982,21 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                             </SelectRef> */}
-                            <ComboBox
+                            <label htmlFor="page" style={{margin: "0"}}>{__("reader.navigation.page")}</label>
+                            <select onChange={(e) => {
+                                    setPageNumber(pageOptions.find((option) => option.id === parseInt(e.currentTarget.value, 10)).id);
+                                    setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100);
+                                }}
+                                id="paginatorBookmarks"
+                                aria-label={__("reader.navigation.page")}
+                                // defaultValue={1}
+                                value={pageNumber}
+                                >
+                                {pageOptions.map((item) => (
+                                    <option key={item.id} value={item.id}>{item.name}</option>
+                                ))}
+                            </select>
+                            {/* <ComboBox
                                 aria-label={__("reader.navigation.page")}
                                 items={pageOptions}
                                 selectedKey={pageNumber}
@@ -958,20 +1006,32 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                                 }}
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                            </ComboBox>
+                            </ComboBox> */}
                         </div>
                         <button title={__("opds.next")}
-                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                         </button>
 
                         <button title={__("opds.lastPage")}
-                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); }}
+                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowLastIcon} />
                         </button>
                     </div>
+                    {
+                        sortedBookmarks.length &&
+                        <p
+                            style={{
+                                textAlign: "center",
+                                padding: 0,
+                                margin: 0,
+                                marginTop: "-16px",
+                                marginBottom: "20px",
+                        }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${sortedBookmarks.length}`}</p>
+                    }
+                    </>
                     : <></>
             }
         </>);
