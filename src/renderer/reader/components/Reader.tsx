@@ -203,7 +203,7 @@ interface IState {
     landmarksOpen: boolean;
     landmarkTabOpen: number;
     menuOpen: boolean;
-    focusMenuOpen: number;
+    doFocus: boolean;
     fullscreen: boolean;
     zenMode: boolean;
 
@@ -330,7 +330,7 @@ class Reader extends React.Component<IProps, IState> {
 
             dockingMode: "full",
 
-            focusMenuOpen: 0,
+            doFocus: false,
         };
 
         ttsListen((ttss: TTSStateEnum) => {
@@ -676,7 +676,7 @@ class Reader extends React.Component<IProps, IState> {
 
         const readerMenuProps: IReaderMenuProps = {
             open: this.state.menuOpen,
-            focus: this.state.focusMenuOpen,
+            doFocus: this.state.doFocus,
             r2Publication: this.props.r2Publication,
             handleLinkClick: this.handleLinkClick,
             goToLocator: this.goToLocator,
@@ -1705,7 +1705,8 @@ class Reader extends React.Component<IProps, IState> {
             }
         } else if (this.props.isDivina) {
             // TODO: Divina total number of pages? (last page index (number))
-            // this.currentDivinaPlayer.goToPageWithIndex(index);
+
+            //     this.currentDivinaPlayer.goToPageWithIndex(index);
         } else {
             if (this.props.r2Publication?.Spine) {
                 const lastSpine = this.props.r2Publication.Spine[this.props.r2Publication.Spine.length - 1];
@@ -1832,6 +1833,7 @@ class Reader extends React.Component<IProps, IState> {
                 headings: undefined,
                 secondWebViewHref: undefined,
             };
+            // console.log(JSON.stringify(LocatorExtended, null, 4));
             this.handleReadingLocationChange(LocatorExtended);
         } else {
             console.log("DIVINA: location bad formated ", data);
@@ -2145,11 +2147,18 @@ class Reader extends React.Component<IProps, IState> {
             });
             let pageChangeDropFirst = false;
             eventEmitter.on("pagechange", (data: any) => {
+                console.log("DIVINA: 'pagechange'", data, pageChangeDropFirst);
                 if (!pageChangeDropFirst) {
+                    console.log("DIVINA: 'pagechange' SKIP");
                     pageChangeDropFirst = true;
+                    // inpagescrollDropFirst = false;
+                    if (locator?.locator?.href) {
+                        setTimeout(() => {
+                            this.currentDivinaPlayer.goTo({ href: locator.locator.href });
+                        }, 500);
+                    }
                     return;
                 }
-                console.log("DIVINA: 'pagechange'", data);
 
                 this.setState({ divinaArrowEnabled: false });
 
@@ -2159,6 +2168,8 @@ class Reader extends React.Component<IProps, IState> {
                 };
 
                 if (isInPageChangeData(data)) {
+                    // inpagescrollDropFirst = false;
+                    // pageChangeDropFirst = false;
                     this.divinaSetLocation(data);
                 } else {
                     console.error("DIVINA: pagechange event => unknow data", data);
@@ -2171,11 +2182,12 @@ class Reader extends React.Component<IProps, IState> {
             });
             let inpagescrollDropFirst = false;
             eventEmitter.on("inpagescroll", (data: any) => {
+                console.log("DIVINA: 'inpagescroll'", data, inpagescrollDropFirst);
                 if (!inpagescrollDropFirst) {
+                    console.log("DIVINA: 'inpagescroll' SKIP");
                     inpagescrollDropFirst = true;
                     return;
                 }
-                console.log("DIVINA: 'inpagescroll'", data);
                 this.setState({ divinaArrowEnabled: false });
                 const isInPagesScrollData = (data: any): data is { percent: number, locator: R2Locator } => {
                     return typeof data === "object" &&
@@ -2184,7 +2196,8 @@ class Reader extends React.Component<IProps, IState> {
                 };
 
                 if (isInPagesScrollData(data)) {
-
+                    // inpagescrollDropFirst = false;
+                    // pageChangeDropFirst = false;
                     this.divinaSetLocation(data);
                 } else
                     console.error("DIVINA: inpagescroll event => unknow data", data);
@@ -2242,7 +2255,6 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        // WARNING: "goto page" zero-based index in SectionData[] of ReaderMenu.tsx
         this.handleMenuButtonClick(true, "tab-gotopage", true);
     }
 
@@ -2254,16 +2266,14 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        // WARNING: "table of contents" zero-based index in SectionData[] of ReaderMenu.tsx
         this.handleMenuButtonClick(true, "tab-toc", true);
     }
 
     private showSearchResults() {
-        // WARNING: "search" zero-based index in SectionData[] of ReaderMenu.tsx
         this.handleMenuButtonClick(true, "tab-search", true);
     }
 
-    private handleMenuButtonClick(open?: boolean, openedSectionMenu?: string, focused?: boolean, annotationUUID?: string) {
+    private handleMenuButtonClick(open?: boolean, openedSectionMenu?: string, doFocus?: boolean, annotationUUID?: string) {
         console.log("handleMenuButtonClick", "menuOpen=", this.state.menuOpen ? "closeMenu" : "openMenu", open !== undefined ? `openFromParam=${open ? "openMenu" : "closeMenu"}` : "");
 
         const openToggle = !this.state.menuOpen;
@@ -2275,7 +2285,7 @@ class Reader extends React.Component<IProps, IState> {
             shortcutEnable: shortcutEnable,
             settingsOpen: false,
             openedSectionMenu: openedSectionMenu ? openedSectionMenu : this.state.openedSectionMenu,
-            focusMenuOpen: focused ? (this.state.focusMenuOpen + 1) : this.state.focusMenuOpen,
+            doFocus: doFocus ? true : false,
             annotationUUID: annotationUUID ? annotationUUID : "",
         });
     }
@@ -2414,24 +2424,32 @@ class Reader extends React.Component<IProps, IState> {
 
     private goToLocator(locator: R2Locator, closeNavPanel = true, isFromOnPopState = false) {
 
-        if (this.props.isPdf) {
+        if (closeNavPanel) {
+            this.focusMainAreaLandmarkAndCloseMenu();
+        }
 
+        if (this.props.isPdf) {
             const index = locator?.href || "";
             if (index) {
                 createOrGetPdfEventBus().dispatch("page", index);
             }
-
         } else if (this.props.isDivina) {
-            // const index = parseInt(locator?.href, 10);
-            // if (index >= 0) {
-            //     this.currentDivinaPlayer.goToPageWithIndex(index);
-            // }
-            this.currentDivinaPlayer.goTo(locator);
-        } else {
-            if (closeNavPanel) {
-                this.focusMainAreaLandmarkAndCloseMenu();
+            // console.log(JSON.stringify(locator, null, 4));
+            let index = -1;
+            try {
+                index = parseInt(locator?.href, 10);
+                if (!Number.isInteger(index)) { // NaN
+                    index = -1;
+                }
+            } catch (_e) {
+                // noop
             }
-
+            if (index >= 0) {
+                this.currentDivinaPlayer.goToPageWithIndex(index);
+            } else {
+                this.currentDivinaPlayer.goTo(locator);
+            }
+        } else {
             this.handleLinkLocator(locator, isFromOnPopState);
         }
 
@@ -2446,6 +2464,10 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
+        if (closeNavPanel) {
+            this.focusMainAreaLandmarkAndCloseMenu();
+        }
+
         if (this.props.isPdf) {
 
             const index = url;
@@ -2454,18 +2476,13 @@ class Reader extends React.Component<IProps, IState> {
             }
 
         } else if (this.props.isDivina) {
-
             console.log("HANDLE LINK CLICK DIVINA URL", url);
 
             this.currentDivinaPlayer.goTo({ href: url });
 
         } else {
-            if (closeNavPanel) {
-                this.focusMainAreaLandmarkAndCloseMenu();
-            }
             const newUrl = isFromOnPopState ? url : this.props.manifestUrlR2Protocol + "/../" + url;
             this.handleLinkUrl(newUrl, isFromOnPopState);
-
         }
     }
 
