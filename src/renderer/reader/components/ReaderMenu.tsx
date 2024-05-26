@@ -565,9 +565,6 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
     // const previousFocusUuid = useSelector((state: IReaderRootState) => state.annotationControlMode.focus.previousFocusUuid);
 
-    if (!r2Publication || !annotationsQueue) {
-        <></>;
-    }
     const MAX_MATCHES_PER_PAGE = 3;
 
     // const pageTotal =  Math.ceil(annotationsQueue.length / MAX_MATCHES_PER_PAGE);
@@ -581,6 +578,11 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     };
 
     const [pageNumber, setPageNumber] = React.useState(getStartPage);
+    React.useEffect(() => {
+        if (pageNumber > pageTotal) {
+            setPageNumber(pageTotal);
+        }
+    }, [pageTotal]);
 
     React.useEffect(() => {
         setPageNumber(getStartPage());
@@ -876,10 +878,6 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
     const [__] = useTranslator();
     const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
 
-    if (!r2Publication || !bookmarks?.length) {
-        return <></>;
-    }
-
     // const sortedBookmarks = bookmarks;
     // WARNING: .sort() is in-place same-array mutation! (not a new array)
     const sortedBookmarks = React.useMemo(() => bookmarks.sort((a, b) => {
@@ -914,6 +912,10 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
     const pageTotal =  Math.floor(sortedBookmarks.length / MAX_MATCHES_PER_PAGE) + ((sortedBookmarks.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1);
 
     const [pageNumber, setPageNumber] = React.useState(1);
+    React.useEffect(() => {
+        setPageNumber(pageTotal === 0 ? 1 : pageNumber > pageTotal ? pageTotal : pageNumber);
+    }, [pageTotal]);
+
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
 
     const bookmarksPagedArray = React.useMemo(() => {
@@ -1418,7 +1420,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
 
     // const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     const searchEnable = useSelector((state: IReaderRootState) => state.search.enable);
-    const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
+    // const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
     // const annotations = useSelector((state: IReaderRootState) => state.reader.annotation).map(([, v]) => v);
     const readerConfig = useSelector((state: IReaderRootState) => state.reader.config);
 
@@ -1516,12 +1518,13 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
 
     const BookmarksTrigger =
-        <Tabs.Trigger value="tab-bookmark" key={"tab-bookmark"} data-value={"tab-bookmark"} title={__("reader.marks.bookmarks")} disabled={!bookmarks || bookmarks.length === 0}>
+        // <Tabs.Trigger value="tab-bookmark" key={"tab-bookmark"} data-value={"tab-bookmark"} title={__("reader.marks.bookmarks")} disabled={!bookmarks || bookmarks.length === 0}>
+        <Tabs.Trigger value="tab-bookmark" key={"tab-bookmark"} data-value={"tab-bookmark"} title={__("reader.marks.bookmarks")}>
             <SVG ariaHidden svg={BookmarkIcon} />
             <h3>{__("reader.marks.bookmarks")}</h3>
         </Tabs.Trigger>;
     const optionBookmarkItem = {
-        id: 2, value: "tab-bookmark", name: __("reader.marks.bookmarks"), disabled: !bookmarks || bookmarks.length === 0,
+        id: 2, value: "tab-bookmark", name: __("reader.marks.bookmarks"), disabled: false, // !bookmarks || bookmarks.length === 0,
         svg: BookmarkIcon,
     };
 
@@ -1552,7 +1555,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
             <h3>{__("reader.marks.annotations")}</h3>
         </Tabs.Trigger>;
     const optionAnnotationItem = {
-        id: 5, value: "tab-annotation", name: __("reader.marks.annotations"), disabled: !bookmarks || bookmarks.length === 0,
+        id: 5, value: "tab-annotation", name: __("reader.marks.annotations"), disabled: false,// !bookmarks || bookmarks.length === 0,
         svg: AnnotationIcon,
     };
 
