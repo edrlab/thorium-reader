@@ -74,6 +74,7 @@ import {
     setReadingLocationSaver, ttsClickEnable, ttsListen, ttsNext, ttsOverlayEnable, ttsPause,
     ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
     ttsStop, ttsVoice, highlightsClickListen,
+    stealFocusDisable,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
@@ -2263,7 +2264,17 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        this.handleMenuButtonClick(true, "tab-toc", true);
+        // Force webview to give the hand before Radix Dialog triggered
+        stealFocusDisable(true);
+
+        this.handleMenuButtonClick(true, "tab-toc");
+
+        setTimeout(() => {
+            const anchor = document.getElementById("headingFocus");
+            if (anchor) {
+                anchor.focus();
+            }
+        }, 1);
     }
 
     private showSearchResults() {
