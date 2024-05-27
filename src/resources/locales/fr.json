@@ -159,7 +159,7 @@
     "lcp": {
       "hint": "Indice : {{- hint}}",
       "password": "Mot de passe",
-      "sentence": "L'ouverture de ce livre protégé par le technologie LCP nécessite une clé LCP (un mot de passe) : ",
+      "sentence": "Entrez la clé LCP associée à cette publication :",
       "urlHint": "Vous avez oublié votre phrase d'accès ? Trouvez de l'aide avec ce lien",
       "whatIsLcp?": "Qu'est-ce que LCP ?",
       "whatIsLcpInfoDetails": "LCP signifie 'Licensed Content Protection'. Il s'agit d'une technologie de protection des libres numériques contre la copie pirate, souvent appelée DRM. Ouvrir un livre protégé par LCP nécessite une clé LCP, c'est à dire un ou plusieurs mots séparés par des espaces. LCP est un standard ouvert, qui équilibre facilité d'usage et demandes des éditeurs. ",
@@ -305,6 +305,7 @@
       "addNote": "Annoter",
       "advancedMode": "Mode instantané (création automatique après sélection)",
       "annotationsOptions": "Options",
+      "hide": "Ne pas afficher",
       "highlight": "Surligner",
       "noSelectionToast": "Aucun texte sélectionné",
       "quickAnnotations": "Annotation rapide (sans édition)",
@@ -502,8 +503,8 @@
       "annotations": "Surlignez le texte du document, choisissez le style et la couleur, joignez des notes personnelles. Créez des annotations en mode \"rapide\" pour éviter d'activer l'éditeur (vous pouvez saisir le texte et personnaliser les styles ultérieurement). Pour plus de rapidité, utilisez le mode \"instantané\" qui crée des annotations immédiatement après avoir surligné le texte du document !",
       "catalogs": "Empruntez des publications auprès de votre bibliothèque locale ou découvrez des publications via les catalogues OPDS. Accédez à une variété de publications provenant de sources multiples grâce aux catalogues en ligne.",
       "home": "Thorium fait peau neuve, découvrons ensemble les nouveautés !",
-      "readingView1": "Personnalisez vos préférences de lecture et d'écoute : Thorium propose désormais plusieurs thèmes de couleurs pour l'interface utilisateur et les documents de publication. Il est également plus facile de configurer des livres électroniques \"lus à voix haute\" avec une synthèse vocale et une narration synchronisée texte/audio.",
-      "readingView2": "L'interface utilisateur améliorée de Thorium facilite la recherche de texte dans les publications, l'exploration des résultats de recherche, l'accès à des pages spécifiques, la consultation de la table des matières, la création de signets, etc. grâce aux nouveaux panneaux \"ancrés\". Le mode de lecture plein écran continue d'offrir un environnement sans distraction.",
+      "readingView1": "Personnalisez vos préférences de lecture et d'écoute : Thorium propose désormais plusieurs thèmes de couleur. Les réglages de lecture audio ont également été simplifiés.",
+      "readingView2": "L'interface utilisateur améliorée de Thorium facilite la recherche de texte, l'exploration des résultats de recherche, l'accès à des pages spécifiques, la consultation de la table des matières, etc. Les nouveaux panneaux \\\"ancrés\\\" et le mode de lecture plein écran offrent un environnement de lecture sans distraction.",
       "yourBooks": "Bienvenue dans votre bibliothèque personnelle remaniée ! Dans la vue \"grille\", filtrez facilement par étiquettes ou trouvez des publications par mots-clés. Dans la vue \"tableau\" avancée, sélectionnez et triez les publications par auteur, titre, date, format, etc."
     },
     "dontShow": "Ne plus afficher",

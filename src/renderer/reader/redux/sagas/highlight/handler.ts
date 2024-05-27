@@ -73,11 +73,17 @@ function* pop(action: readerLocalActionHighlights.handler.pop.TAction) {
 
 function* hrefChanged(action: readerLocalActionLocatorHrefChanged.TAction) {
 
-    const { divina, info, locator } = yield* selectTyped((state: IReaderRootState) => state.reader);
-    const skip = typeof divina !== "undefined" || info?.publicationView?.isDivina ||
+    // divina,
+    const { info, locator } = yield* selectTyped((state: IReaderRootState) => state.reader);
+    // typeof divina !== "undefined" ||
+    const skip = info?.publicationView?.isDivina ||
         locator?.audioPlaybackInfo || info?.publicationView?.isAudio ||
         info?.publicationView?.isPDF;
-    if (skip) return;
+    if (skip) {
+        // divina,
+        debug("hrefChanged SKIP annot", skip, info?.publicationView?.isDivina, locator?.audioPlaybackInfo, info?.publicationView?.isAudio, info?.publicationView?.isPDF);
+        return;
+    }
 
     debug(`hrefChanged (unmountHightlight+mountHighlight) -- action.payload: [${JSON.stringify(action.payload, null, 4)}]`);
 

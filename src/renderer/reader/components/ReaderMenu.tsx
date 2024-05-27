@@ -72,6 +72,8 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionAnnotations, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+import * as Popover from '@radix-ui/react-popover';
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -461,7 +463,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
         {((!isEdited && dockedMode) || (!dockedMode && !isEdited)) &&
             <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
             // title={bname}
-            aria-label="goToLocator"
+                aria-label={`${__("reader.navigation.goTo")} ... "${btext}"`}
                 style={{ borderLeft: dockedEditAnnotation && "2px solid var(--color-blue)" }}
                 onClick={(e) => {
                     e.preventDefault();
@@ -533,13 +535,30 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 {/* <button>
                     <SVG ariaHidden={true} svg={DuplicateIcon} />
                 </button> */}
-                <button title={__("reader.marks.delete")}
-                    onClick={() => {
-                        setItemToEdit(-1);
-                        dispatch(readerActions.annotation.pop.build(annotation));
-                    }}>
-                    <SVG ariaHidden={true} svg={DeleteIcon} />
-                </button>
+                <Popover.Root>
+                    <Popover.Trigger asChild>
+                        <button title={__("reader.marks.delete")}
+                        >
+                            <SVG ariaHidden={true} svg={DeleteIcon} />
+                        </button>
+                    </Popover.Trigger>
+                    <Popover.Portal>
+                        <Popover.Content collisionPadding={{top : 180, bottom: 100}} avoidCollisions alignOffset={-10} hideWhenDetached sideOffset={5} className={stylesPopoverDialog.delete_item}>
+                            <Popover.Close
+                                    onClick={() => {
+                                        setItemToEdit(-1);
+                                        dispatch(readerActions.annotation.pop.build(annotation));
+                                    }}
+                                    title={__("reader.marks.delete")}
+                                >
+                                    <SVG ariaHidden={true} svg={DeleteIcon} />
+                                    {__("reader.marks.delete")}
+                            </Popover.Close>
+                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                        </Popover.Content>
+                    </Popover.Portal>
+
+                </Popover.Root>
             </div>
         </div>
 }
@@ -557,7 +576,7 @@ const annotationCardContext = React.createContext<{
     r2Publication: R2Publication;
 }>(undefined);
 
-const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean, annotationUUIDFocused: string, doFocus: boolean} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean, annotationUUIDFocused: string, doFocus: number} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
     const {r2Publication, goToLocator, annotationUUIDFocused, doFocus, dockedMode} = props;
     const [__] = useTranslator();
@@ -848,10 +867,27 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) =
                             >
                                 <SVG ariaHidden={true} svg={EditIcon} />
                             </button>
-                            <button title={__("reader.marks.delete")}
-                                onClick={() => { setItemToEdit(-1); deleteBookmark(bookmark); }}>
-                                <SVG ariaHidden={true} svg={DeleteIcon} />
-                            </button>
+                            <Popover.Root>
+                                <Popover.Trigger asChild>
+                                    <button title={__("reader.marks.delete")}
+                                    >
+                                        <SVG ariaHidden={true} svg={DeleteIcon} />
+                                    </button>
+                                </Popover.Trigger>
+                                <Popover.Portal>
+                                    <Popover.Content collisionPadding={{top : 180, bottom: 100}} avoidCollisions alignOffset={-10} hideWhenDetached sideOffset={5} className={stylesPopoverDialog.delete_item}>
+                                        <Popover.Close
+                                                onClick={() => { setItemToEdit(-1); deleteBookmark(bookmark); }}
+                                                title={__("reader.marks.delete")}
+                                            >
+                                                <SVG ariaHidden={true} svg={DeleteIcon} />
+                                                {__("reader.marks.delete")}
+                                        </Popover.Close>
+                                        <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                                    </Popover.Content>
+                                </Popover.Portal>
+
+                            </Popover.Root>
                         </div>
                     </div>
                     <div className={stylesPopoverDialog.gauge}>
@@ -1289,18 +1325,18 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
                 e.preventDefault();
             }
             }
-            onKeyUp=
-                {
-                    (e) => {
-                        // SPACE does not work (only without key mods on button)
-                        //  || e.key === "Space"
-                        if (e.key === "Enter") {
-                            const closeNavGotoPage = !dockedMode && !(e.shiftKey && e.altKey);
-                            e.preventDefault();
-                            handleSubmitPage(closeNavGotoPage);
-                        }
-                }
-            }
+            // onKeyUp=
+            //     {
+            //         (e) => {
+            //             // SPACE does not work (only without key mods on button)
+            //             //  || e.key === "Space"
+            //             if (e.key === "Enter") {
+            //                 const closeNavGotoPage = !dockedMode && !(e.shiftKey && e.altKey);
+            //                 e.preventDefault();
+            //                 handleSubmitPage(closeNavGotoPage);
+            //             }
+            //     }
+            // }
         >
 
             <div className={classNames(stylesInputs.form_group, stylesPopoverDialog.gotopage_combobox)} style={{width: "80%"}}>
@@ -1326,6 +1362,7 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
             </div>
             <button
                 type="button"
+                className={stylesButtons.button_nav_primary}
 
                 onClick=
                 {(e) => {
@@ -1475,9 +1512,11 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 }
             }, 1);
 
+        } else {
+
         }
 
-    }, [annotationUUID, doFocus]);
+    }, [tabValue, annotationUUID, doFocus]);
 
     if (!r2Publication) {
         return <>Critical Error no R2Publication available</>;
@@ -1644,8 +1683,8 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
             {
                 dockedMode ?
                     <>
-                        <div key="docked-header" className={stylesPopoverDialog.docked_header} style={{ borderBottom: "unset" }}>
-                            <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls} style={{ justifyContent: "space-between", width: "100%", padding: "0 10px" }}>
+                        <div key="docked-header" className={stylesPopoverDialog.docked_header}>
+                            <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls} style={{ justifyContent: "space-between", width: "100%"}}>
                                 <div style={{ display: "flex", gap: "5px" }}>
                                     <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label="left" onClick={setDockingModeLeftSide}>
                                         <SVG ariaHidden={true} svg={DockLeftIcon} />
@@ -1714,7 +1753,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 }
                 <div className={stylesSettings.settings_content}
                 style={{marginTop: dockedMode && "0"}}>
-                    <Tabs.Content value="tab-toc" tabIndex={-1} id={"readerMenu_tabs-tab-toc"}>
+                    <Tabs.Content value="tab-toc" tabIndex={-1} id={"readerMenu_tabs-tab-toc"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                     <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             {(isPdf && pdfToc?.length && renderLinkTree_(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
@@ -1725,7 +1764,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </Tabs.Content>
 
-                    <Tabs.Content value="tab-landmark" tabIndex={-1} id={"readerMenu_tabs-tab-landmark"}>
+                    <Tabs.Content value="tab-landmark" tabIndex={-1} id={"readerMenu_tabs-tab-landmark"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             {r2Publication.Landmarks &&
@@ -1733,14 +1772,14 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </Tabs.Content>
 
-                    <Tabs.Content value="tab-bookmark" tabIndex={-1} id={"readerMenu_tabs-tab-bookmark"}>
+                    <Tabs.Content value="tab-bookmark" tabIndex={-1} id={"readerMenu_tabs-tab-bookmark"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <BookmarkList r2Publication={r2Publication} goToLocator={goToLocator} dockedMode={dockedMode} />
                         </div>
                     </Tabs.Content>
 
-                    <Tabs.Content value="tab-annotation" tabIndex={-1} id={"readerMenu_tabs-tab-annotation"}>
+                    <Tabs.Content value="tab-annotation" tabIndex={-1} id={"readerMenu_tabs-tab-annotation"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
                         <div className={classNames(stylesSettings.settings_tab, stylesAnnotations.annotations_tab)}>
 
@@ -1888,7 +1927,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </Tabs.Content>
 
-                    <Tabs.Content value="tab-search" tabIndex={-1} id={"readerMenu_tabs-tab-search"}>
+                    <Tabs.Content value="tab-search" tabIndex={-1} id={"readerMenu_tabs-tab-search"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
                         <div className={classNames(stylesSettings.settings_tab, stylesPopoverDialog.search_container)}>
                             {searchEnable
@@ -1900,7 +1939,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </Tabs.Content>
 
-                    <Tabs.Content value="tab-gotopage" tabIndex={-1} id={"readerMenu_tabs-tab-gotopage"}>
+                    <Tabs.Content value="tab-gotopage" tabIndex={-1} id={"readerMenu_tabs-tab-gotopage"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <GoToPageSection totalPages={

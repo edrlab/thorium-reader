@@ -74,6 +74,7 @@ import {
     setReadingLocationSaver, ttsClickEnable, ttsListen, ttsNext, ttsOverlayEnable, ttsPause,
     ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
     ttsStop, ttsVoice, highlightsClickListen,
+    stealFocusDisable,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
@@ -203,7 +204,7 @@ interface IState {
     landmarksOpen: boolean;
     landmarkTabOpen: number;
     menuOpen: boolean;
-    doFocus: boolean;
+    doFocus: number;
     fullscreen: boolean;
     zenMode: boolean;
 
@@ -326,7 +327,7 @@ class Reader extends React.Component<IProps, IState> {
             historyCanGoBack: false,
             historyCanGoForward: false,
 
-            doFocus: false,
+            doFocus: 1,
         };
 
         ttsListen((ttss: TTSStateEnum) => {
@@ -689,6 +690,7 @@ class Reader extends React.Component<IProps, IState> {
 
         const ReaderSettingsProps: IReaderSettingsProps = {
             open: this.state.settingsOpen,
+            doFocus: this.state.doFocus,
             indexes: this.props.indexes,
             readerConfig: this.props.readerConfig,
             // handleSettingChange: this.handleSettingChange.bind(this),
@@ -1591,7 +1593,7 @@ class Reader extends React.Component<IProps, IState> {
             }
             return;
         }
-        this.handleMenuButtonClick();
+        this.handleMenuButtonClick(true, this.state.openedSectionMenu, true);
     };
     private onKeyboardFocusSettings = () => {
         if (!this.state.shortcutEnable) {
@@ -1600,7 +1602,7 @@ class Reader extends React.Component<IProps, IState> {
             }
             return;
         }
-        this.handleSettingsClick();
+        this.handleSettingsClick(true, true);
     };
 
     private onKeyboardBookmark = async () => {
@@ -2262,7 +2264,17 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        this.handleMenuButtonClick(true, "tab-toc", true);
+        // Force webview to give the hand before Radix Dialog triggered
+        stealFocusDisable(true);
+
+        this.handleMenuButtonClick(true, "tab-toc");
+
+        setTimeout(() => {
+            const anchor = document.getElementById("headingFocus");
+            if (anchor) {
+                anchor.focus();
+            }
+        }, 1);
     }
 
     private showSearchResults() {
@@ -2281,7 +2293,7 @@ class Reader extends React.Component<IProps, IState> {
             shortcutEnable: shortcutEnable,
             settingsOpen: false,
             openedSectionMenu: openedSectionMenu ? openedSectionMenu : this.state.openedSectionMenu,
-            doFocus: doFocus ? true : false,
+            doFocus: doFocus ? this.state.doFocus + 1 : this.state.doFocus,
             annotationUUID: annotationUUID ? annotationUUID : "",
         });
     }
@@ -2629,7 +2641,7 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private handleSettingsClick(open?: boolean) {
+    private handleSettingsClick(open?: boolean, doFocus?: boolean) {
         console.log("HandleSettingsClick", "settingsOpen=", this.state.settingsOpen ? "closeSettings" : "openSettings", open !== undefined ? `openFromParam=${open ? "openSettings" : "closeSettings"}`: "");
 
         const openToggle = !this.state.settingsOpen;
@@ -2640,6 +2652,7 @@ class Reader extends React.Component<IProps, IState> {
             settingsOpen,
             shortcutEnable: shortcutEnable,
             menuOpen: false,
+            doFocus: doFocus ? this.state.doFocus + 1 : this.state.doFocus,
             // openedSectionSettings,
         });
     }

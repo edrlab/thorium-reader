@@ -12,6 +12,7 @@ export declare const chapter_marker: string;
 export declare const chapters_content: string;
 export declare const correspondances: string;
 export declare const currentPage: string;
+export declare const delete_item: string;
 export declare const display_options_item: string;
 export declare const docked_header: string;
 export declare const docked_header_controls: string;
