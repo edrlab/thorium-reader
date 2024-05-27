@@ -72,6 +72,8 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionAnnotations, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+import * as Popover from '@radix-ui/react-popover';
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -533,13 +535,30 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 {/* <button>
                     <SVG ariaHidden={true} svg={DuplicateIcon} />
                 </button> */}
-                <button title={__("reader.marks.delete")}
-                    onClick={() => {
-                        setItemToEdit(-1);
-                        dispatch(readerActions.annotation.pop.build(annotation));
-                    }}>
-                    <SVG ariaHidden={true} svg={DeleteIcon} />
-                </button>
+                <Popover.Root>
+                    <Popover.Trigger asChild>
+                        <button title={__("reader.marks.delete")}
+                        >
+                            <SVG ariaHidden={true} svg={DeleteIcon} />
+                        </button>
+                    </Popover.Trigger>
+                    <Popover.Portal>
+                        <Popover.Content collisionPadding={{top : 180, bottom: 100}} avoidCollisions alignOffset={-10} hideWhenDetached sideOffset={5} className={stylesPopoverDialog.delete_item}>
+                            <Popover.Close
+                                    onClick={() => {
+                                        setItemToEdit(-1);
+                                        dispatch(readerActions.annotation.pop.build(annotation));
+                                    }}
+                                    title={__("reader.marks.delete")}
+                                >
+                                    <SVG ariaHidden={true} svg={DeleteIcon} />
+                                    {__("reader.marks.delete")}
+                            </Popover.Close>
+                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                        </Popover.Content>
+                    </Popover.Portal>
+
+                </Popover.Root>
             </div>
         </div>
 }
@@ -848,10 +867,27 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) =
                             >
                                 <SVG ariaHidden={true} svg={EditIcon} />
                             </button>
-                            <button title={__("reader.marks.delete")}
-                                onClick={() => { setItemToEdit(-1); deleteBookmark(bookmark); }}>
-                                <SVG ariaHidden={true} svg={DeleteIcon} />
-                            </button>
+                            <Popover.Root>
+                                <Popover.Trigger asChild>
+                                    <button title={__("reader.marks.delete")}
+                                    >
+                                        <SVG ariaHidden={true} svg={DeleteIcon} />
+                                    </button>
+                                </Popover.Trigger>
+                                <Popover.Portal>
+                                    <Popover.Content collisionPadding={{top : 180, bottom: 100}} avoidCollisions alignOffset={-10} hideWhenDetached sideOffset={5} className={stylesPopoverDialog.delete_item}>
+                                        <Popover.Close
+                                                onClick={() => { setItemToEdit(-1); deleteBookmark(bookmark); }}
+                                                title={__("reader.marks.delete")}
+                                            >
+                                                <SVG ariaHidden={true} svg={DeleteIcon} />
+                                                {__("reader.marks.delete")}
+                                        </Popover.Close>
+                                        <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                                    </Popover.Content>
+                                </Popover.Portal>
+
+                            </Popover.Root>
                         </div>
                     </div>
                     <div className={stylesPopoverDialog.gauge}>
