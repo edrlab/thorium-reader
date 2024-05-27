@@ -171,11 +171,12 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                 <h4>{__("reader.annotations.Color")}</h4>
                 <div className={stylesAnnotations.colorPicker}
                     role="radiogroup">
-                    {annotationsColorsLight.map((color) => (
+                    {annotationsColorsLight.map((color, i) => (
                         <div key={color}>
                             <input type="radio"  id={`anno_color_${uuid}_${color}`} name="colorpicker" value={color}
                                 onChange={() => setColor(color)}
                                 checked={colorSelected === color}
+                                aria-label={`${__("reader.annotations.Color")} ${i} (${color.split("").join(" ")})`}
                             />
                             <label htmlFor={`anno_color_${uuid}_${color}`}
                                 style={{ backgroundColor: color, border: colorSelected === color ? "1px solid var(--color-dark-grey)" : "" }}
