@@ -536,7 +536,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                     <SVG ariaHidden={true} svg={DuplicateIcon} />
                 </button> */}
                 <Popover.Root>
-                    <Popover.Trigger>
+                    <Popover.Trigger asChild>
                         <button title={__("reader.marks.delete")}
                         >
                             <SVG ariaHidden={true} svg={DeleteIcon} />
@@ -868,7 +868,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) =
                                 <SVG ariaHidden={true} svg={EditIcon} />
                             </button>
                             <Popover.Root>
-                                <Popover.Trigger>
+                                <Popover.Trigger asChild>
                                     <button title={__("reader.marks.delete")}
                                     >
                                         <SVG ariaHidden={true} svg={DeleteIcon} />
