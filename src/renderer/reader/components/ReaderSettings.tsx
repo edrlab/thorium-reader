@@ -1011,6 +1011,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const { tabValue, setTabValue } = props;
     const { isDivina, isPdf } = props;
     const isEpub = !isDivina && !isPdf;
+    const { doFocus } = props;
 
     const [__] = useTranslator();
 
@@ -1134,7 +1135,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
         }
 
-    }, [dockingMode]);
+    }, [dockingMode, doFocus]);
 
     if (!readerConfig) {
         return <></>;

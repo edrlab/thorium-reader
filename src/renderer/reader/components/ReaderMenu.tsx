@@ -557,7 +557,7 @@ const annotationCardContext = React.createContext<{
     r2Publication: R2Publication;
 }>(undefined);
 
-const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean, annotationUUIDFocused: string, doFocus: boolean} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean, annotationUUIDFocused: string, doFocus: number} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
     const {r2Publication, goToLocator, annotationUUIDFocused, doFocus, dockedMode} = props;
     const [__] = useTranslator();
@@ -1475,9 +1475,11 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 }
             }, 1);
 
+        } else {
+
         }
 
-    }, [annotationUUID, doFocus]);
+    }, [tabValue, annotationUUID, doFocus]);
 
     if (!r2Publication) {
         return <>Critical Error no R2Publication available</>;
