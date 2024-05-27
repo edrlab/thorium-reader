@@ -66,7 +66,7 @@ export const WizardModal = () => {
 
     const [checked, setChecked] = React.useState(false);
 
-    return <Dialog.Root defaultOpen={!opened} onOpenChange={(openState: boolean) => {
+    return <Dialog.Root defaultOpen={opened} onOpenChange={(openState: boolean) => {
         if (checked && openState == false) {
             dispatch(wizardActions.setWizard.build(true));
         }
@@ -142,7 +142,7 @@ export const WizardModal = () => {
                         </div>
                     </Tabs.List>
                     <div className={classNames(stylesSettings.settings_content, stylesModals.guidedTour_content)} style={{ marginTop: "70px" }}>
-                        <Tabs.Content value="tab1" tabIndex={-1}>
+                        <Tabs.Content value="tab1" tabIndex={-1} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                             <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("wizard.title.welcome")}</h3>
@@ -163,7 +163,7 @@ export const WizardModal = () => {
                                 </div>
                             </div>
                         </Tabs.Content>
-                        <Tabs.Content value="tab2" tabIndex={-1}>
+                        <Tabs.Content value="tab2" tabIndex={-1} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                             <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("wizard.title.allBooks")}</h3>
@@ -181,7 +181,7 @@ export const WizardModal = () => {
                                 </div>
                             </div>
                         </Tabs.Content>
-                        <Tabs.Content value="tab3" tabIndex={-1}>
+                        <Tabs.Content value="tab3" tabIndex={-1} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                             <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("wizard.tab.catalogs")}</h3>
@@ -199,7 +199,7 @@ export const WizardModal = () => {
                                 </div>
                             </div>
                         </Tabs.Content>
-                        <Tabs.Content value="tab4" tabIndex={-1}>
+                        <Tabs.Content value="tab4" tabIndex={-1} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                             <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("wizard.tab.readingView")}</h3>
@@ -216,7 +216,7 @@ export const WizardModal = () => {
                                 </div>
                             </div>
                         </Tabs.Content>
-                        <Tabs.Content value="tab5" tabIndex={-1}>
+                        <Tabs.Content value="tab5" tabIndex={-1} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                             <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("wizard.title.newFeature")}</h3>
