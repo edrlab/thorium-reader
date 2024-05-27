@@ -196,8 +196,10 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                             <input type="radio" id={`anno_type_${uuid}_${type}`} name="drawtype" value={type}
                                 onChange={() => setDrawType(type)}
                                 checked={drawTypeSelected === type}
+                                aria-label={`${__("reader.annotations.highlight")} ${type === "solid_background" ? __("reader.annotations.type.solid") : type === "outline" ? __("reader.annotations.type.outline") : type === "underline" ? __("reader.annotations.type.underline") : type === "strikethrough" ? __("reader.annotations.type.strikethrough") : __("reader.annotations.type.solid")}`}
                             />
-                            <label htmlFor={`anno_type_${uuid}_${type}`} aria-label={type}
+                            <label htmlFor={`anno_type_${uuid}_${type}`}
+                                title={`${type === "solid_background" ? __("reader.annotations.type.solid") : type === "outline" ? __("reader.annotations.type.outline") : type === "underline" ? __("reader.annotations.type.underline") : type === "strikethrough" ? __("reader.annotations.type.strikethrough") : __("reader.annotations.type.solid")}`}
                                 className={drawTypeSelected === type ? stylesAnnotations.drawType_active : ""}
                             ><SVG ariaHidden svg={drawIcon[i]} /></label>
                         </div>

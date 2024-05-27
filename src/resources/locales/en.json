@@ -310,7 +310,13 @@
             "noSelectionToast": "No selection",
             "quickAnnotations": "Quick create (skip editor)",
             "saveNote": "Save",
-            "toggleMarginMarks": "Display in margins"
+            "toggleMarginMarks": "Display in margins",
+            "type": {
+                "outline": "Outline",
+                "solid": "Solid background",
+                "strikethrough": "Strikethrough",
+                "underline": "Underline"
+            }
         },
         "divina": {
             "mute": "mute audio",
