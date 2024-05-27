@@ -86,7 +86,14 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
         button = (<>
             <a onClick={
                 // () => this.props.link(tag.link[0], this.props.location, tag.name)
-                onClickLinkCb(tag)}>
+                onClickLinkCb(tag)}
+                tabIndex={0}
+                onKeyUp={(e) => {
+                    if (e.key === "Enter") {
+                        onClickLinkCb(tag)();
+                        e.preventDefault();
+                    }
+                }}>
                 {tagString}
             </a>
         </>
@@ -127,6 +134,13 @@ export const TagReaderButton: React.FC<React.PropsWithChildren<IBaseProps>> = (p
                 <a onClick={
                     // () => this.props.link(tag.link[0], this.props.location, tag.name)
                     onClickLinkCb(tag)}
+                    tabIndex={0}
+                    onKeyUp={(e) => {
+                        if (e.key === "Enter") {
+                            onClickLinkCb(tag)();
+                            e.preventDefault();
+                        }
+                    }}
                 >
                     {tagString}
                 </a>

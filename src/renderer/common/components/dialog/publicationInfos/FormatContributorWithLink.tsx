@@ -40,13 +40,14 @@ export const FormatContributorWithLink: React.FC<IProps> = (props) => {
                 // FIXME : add pointer hover on 'a' links
                 retElement.push(
                     <a onClick={onClickLinkCb(newContributor)}
-                        onKeyUp={(e) => {
+                        onKeyUp={(e) => { // necessary because no href (with href, preventDefault() inside onClick would be necessary to avoid SHIT and OPT/ALT key mods on the hyperlink, and CSS visited styles would need to be added)
                             if (e.key === "Enter") {
                                onClickLinkCb(newContributor)();
                                e.preventDefault();
                             }
                         }}
-                        className={classNames(stylesButtons.button_link, className ? stylesPublications.authors : "")} tabIndex={0}
+                        className={classNames(stylesButtons.button_link, className ? stylesPublications.authors : "")}
+                        tabIndex={0}
                     >
                         {translator.translateContentField(newContributor.name)}
                     </a>,
