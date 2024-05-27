@@ -133,7 +133,15 @@ class PageNavigation extends React.Component<IProps, undefined> {
                         }
                     </select> */}
                     <span className={stylesPublication.allBooks_header_pagination_opds_currentPage}>
-                        {pageInfo.currentPage} / {Math.ceil(pageInfo.numberOfItems / pageInfo.itemsPerPage)}
+                        {
+                            pageInfo?.currentPage ?
+                                <>{pageInfo.currentPage} {
+                                    (pageInfo?.numberOfItems && pageInfo?.itemsPerPage) ?
+                                        ` / ${Math.ceil(pageInfo.numberOfItems / pageInfo.itemsPerPage)}`
+                                        : ""
+                                }</>
+                                : <></>
+                        }
                     </span>
                     <button
                         className={stylesPublication.allBooks_header_pagination_arrow}
