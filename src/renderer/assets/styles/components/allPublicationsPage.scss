@@ -329,7 +329,7 @@
     }
 
     &_body {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fill, 205px);
         grid-gap: 15px;
         grid-row-gap: 30px;
         margin-bottom: 20px;
