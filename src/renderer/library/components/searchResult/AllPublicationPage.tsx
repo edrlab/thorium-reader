@@ -1942,9 +1942,11 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
         const cb = () => {
             if (props.displayType === DisplayType.Grid) {
-                const body = document.getElementById("publicationsTableBody") as HTMLDivElement;
+                const body = document.getElementById("publicationsTableBody") as HTMLTableSectionElement;
                 const bodyWidth = body?.offsetWidth;
-                if (!bodyWidth) return;
+                if (!bodyWidth) {
+                    return;
+                }
                 
                 const coverWidth = 205;
                 const col = Math.floor(bodyWidth/coverWidth);
