@@ -232,8 +232,6 @@ interface IState {
     historyCanGoBack: boolean;
     historyCanGoForward: boolean;
 
-    dockingMode: "full" | "left" | "right";
-
     // bookmarkMessage: string | undefined;
 }
 
@@ -327,8 +325,6 @@ class Reader extends React.Component<IProps, IState> {
 
             historyCanGoBack: false,
             historyCanGoForward: false,
-
-            dockingMode: "full",
 
             doFocus: false,
         };
@@ -624,10 +620,10 @@ class Reader extends React.Component<IProps, IState> {
             this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();
         }
-        if (oldState.dockingMode !== "full" && this.state.dockingMode === "full") {
+        if (oldProps.readerConfig.readerDockingMode !== "full" && this.props.readerConfig.readerDockingMode === "full") {
             this.setState({shortcutEnable: false});
         }
-        if (oldState.dockingMode === "full" && this.state.dockingMode !== "full") {
+        if (oldProps.readerConfig.readerDockingMode === "full" && this.props.readerConfig.readerDockingMode !== "full") {
             this.setState({shortcutEnable: true});
         }
     }
@@ -718,9 +714,9 @@ class Reader extends React.Component<IProps, IState> {
         };
 
         const readerPopoverDialogContext: IPopoverDialogProps = {
-            dockingMode: this.state.dockingMode,
-            dockedMode: this.state.dockingMode !== "full",
-            setDockingMode: (m) => { this.setState({"dockingMode": m }); },
+            dockingMode: this.props.readerConfig.readerDockingMode,
+            dockedMode: this.props.readerConfig.readerDockingMode !== "full",
+            setDockingMode: (m) => { this.props.setConfig({ ...this.props.readerConfig, readerDockingMode: m }, this.props.session); },
         };
 
         // {this.state.bookmarkMessage ? <div
@@ -861,12 +857,12 @@ class Reader extends React.Component<IProps, IState> {
                                     // className={stylesReader.publication_viewport}
                                     className={classNames(stylesReader.publication_viewport, (!this.state.zenMode && (this.state.settingsOpen || this.state.menuOpen)) ?
                                         (!this.props.isPdf ?
-                                           this.state.dockingMode === "left" ? stylesReader.docked_left
-                                            : this.state.dockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right
+                                           this.props.readerConfig.readerDockingMode === "left" ? stylesReader.docked_left
+                                            : this.props.readerConfig.readerDockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right
                                             : ""
                                         :
-                                            this.state.dockingMode === "left" ? stylesReader.docked_left_pdf
-                                            : this.state.dockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right_pdf
+                                            this.props.readerConfig.readerDockingMode === "left" ? stylesReader.docked_left_pdf
+                                            : this.props.readerConfig.readerDockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right_pdf
                                             : ""
                                         ) : undefined, 
                                         (this.props.searchEnable && !this.props.isPdf) ? stylesReader.isOnSearch 
@@ -891,7 +887,7 @@ class Reader extends React.Component<IProps, IState> {
                                             }
                                         }}
                                             title={this.props.__("reader.svg.left")}
-                                            className={(this.state.settingsOpen || this.state.menuOpen) ? (this.state.dockingMode === "left" ? stylesReaderFooter.navigation_arrow_docked_left :  stylesReaderFooter.navigation_arrow_left) : stylesReaderFooter.navigation_arrow_left}
+                                            className={(this.state.settingsOpen || this.state.menuOpen) ? (this.props.readerConfig.readerDockingMode === "left" ? stylesReaderFooter.navigation_arrow_docked_left :  stylesReaderFooter.navigation_arrow_left) : stylesReaderFooter.navigation_arrow_left}
                                         >
                                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                                         </button>
@@ -954,7 +950,7 @@ class Reader extends React.Component<IProps, IState> {
                                             }
                                         }}
                                             title={this.props.__("reader.svg.right")}
-                                            className={(this.state.settingsOpen || this.state.menuOpen) ? (this.state.dockingMode === "right" ? stylesReaderFooter.navigation_arrow_docked_right :  stylesReaderFooter.navigation_arrow_right) : stylesReaderFooter.navigation_arrow_right}
+                                            className={(this.state.settingsOpen || this.state.menuOpen) ? (this.props.readerConfig.readerDockingMode === "right" ? stylesReaderFooter.navigation_arrow_docked_right :  stylesReaderFooter.navigation_arrow_right) : stylesReaderFooter.navigation_arrow_right}
                                         >
                                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                                         </button>
@@ -1767,7 +1763,7 @@ class Reader extends React.Component<IProps, IState> {
 
         // windowHistory._readerInstance === this
 
-        const isDocked = this.state.dockingMode !== "full";
+        const isDocked = this.props.readerConfig.readerDockingMode !== "full";
 
         if (popState.state?.data) {
             if (typeof popState.state.data === "object") {
@@ -2278,7 +2274,7 @@ class Reader extends React.Component<IProps, IState> {
 
         const openToggle = !this.state.menuOpen;
         const menuOpen = open !== undefined ? open : openToggle;
-        const shortcutEnable = (menuOpen && this.state.dockingMode === "full") ? false : true;
+        const shortcutEnable = (menuOpen && this.props.readerConfig.readerDockingMode === "full") ? false : true;
 
         this.setState({
             menuOpen: menuOpen,
@@ -2638,7 +2634,7 @@ class Reader extends React.Component<IProps, IState> {
 
         const openToggle = !this.state.settingsOpen;
         const settingsOpen = open !== undefined ? open : openToggle;
-        const shortcutEnable = (settingsOpen && this.state.dockingMode === "full") ? false : true;
+        const shortcutEnable = (settingsOpen && this.props.readerConfig.readerDockingMode === "full") ? false : true;
 
         this.setState({
             settingsOpen,
