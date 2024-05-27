@@ -41,8 +41,9 @@ export const FormatContributorWithLink: React.FC<IProps> = (props) => {
                 retElement.push(
                     <a onClick={onClickLinkCb(newContributor)}
                         onKeyUp={(e) => {
-                            if (e.key === "Enter" || e.key === " ") {
+                            if (e.key === "Enter") {
                                onClickLinkCb(newContributor)();
+                               e.preventDefault();
                             }
                         }}
                         className={classNames(stylesButtons.button_link, className ? stylesPublications.authors : "")} tabIndex={0}
