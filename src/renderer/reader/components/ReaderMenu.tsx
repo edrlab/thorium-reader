@@ -463,7 +463,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
         {((!isEdited && dockedMode) || (!dockedMode && !isEdited)) &&
             <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
             // title={bname}
-            aria-label="goToLocator"
+                aria-label={`${__("reader.navigation.goTo")} ... "${btext}"`}
                 style={{ borderLeft: dockedEditAnnotation && "2px solid var(--color-blue)" }}
                 onClick={(e) => {
                     e.preventDefault();
