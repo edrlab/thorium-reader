@@ -32,6 +32,9 @@ export interface ReaderInfo {
  * A reader configuration
  */
 
+export interface ReaderConfigPublisher extends Pick<ReaderConfigStrings, "font" | "fontSize" | "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight"> {
+}
+
 export interface ReaderConfigStringsAdjustables {
     fontSize: string;
     pageMargins: string;
