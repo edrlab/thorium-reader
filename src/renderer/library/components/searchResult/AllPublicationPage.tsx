@@ -102,6 +102,7 @@ import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import * as ValidatedIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as OnGoingBookIcon from "readium-desktop/renderer/assets/icons/ongoingBook-icon.svg";
+import debounce from "debounce";
 
 // import GridTagButton from "../catalog/GridTagButton";
 
@@ -1910,8 +1911,11 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
     // infinite render loop
     // tableInstance.setPageSize(pageSize);
+
+    const PAGESIZE = 50;
+
     const initialState: UsePaginationState<IColumns> & TableState<IColumns> = {
-        pageSize: 50, // props.displayType === DisplayType.List ? 20 : 10;
+        pageSize: PAGESIZE, // props.displayType === DisplayType.List ? 20 : 10;
         pageIndex: 0,
         hiddenColumns: props.displayType === DisplayType.Grid ? ["colLanguages", "colPublishers", "colPublishedDate", "colLCP", "colDuration", "colDescription", "col_a11y_accessibilitySummary"] : [],
     };
@@ -1934,6 +1938,35 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     const tableInstance =
         useTable<IColumns>(opts, useFilters, useGlobalFilter, useSortBy, usePagination) as MyTableInstance<IColumns>;
 
+    React.useEffect(() => {
+
+        const cb = () => {
+            if (props.displayType === DisplayType.Grid) {
+                const body = document.getElementById("publicationsTableBody") as HTMLTableSectionElement;
+                const bodyWidth = body?.offsetWidth;
+                if (!bodyWidth) {
+                    return;
+                }
+                
+                const coverWidth = 205;
+                const col = Math.floor(bodyWidth/coverWidth);
+                const nbItemMissing = col - PAGESIZE%col;
+                
+                tableInstance.setPageSize(PAGESIZE+nbItemMissing);
+            } else {
+                tableInstance.setPageSize(PAGESIZE);
+            }
+        };
+        cb();
+
+        const cdDebounce = debounce(cb, 500);
+
+        window.addEventListener("resize", cdDebounce);
+        
+        return () => {
+            window.removeEventListener("resize", cdDebounce);
+        };
+    }, [tableInstance, props.displayType]);
 
     // <pre>
     // <code>
@@ -2010,6 +2043,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                     if (currentShow && !show) {
                                         for (const col of tableInstance.allColumns) {
                                             tableInstance.setFilter(col.id, "");
+                                            
                                         }
                                     }
                                 }, 200);
@@ -2315,6 +2349,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                         </thead>}
                     <tbody {...tableInstance.getTableBodyProps()}
                         className={stylesPublication.allBook_table_body}
+                        id="publicationsTableBody"
                         style={{
                             display: props.displayType === DisplayType.Grid ? "grid" : "",
                         }}
