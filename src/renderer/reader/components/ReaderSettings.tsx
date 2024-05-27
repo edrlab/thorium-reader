@@ -31,7 +31,7 @@ import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scs
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
-import { ReaderConfig, TTheme } from "readium-desktop/common/models/reader";
+import { ReaderConfig, ReaderConfigPublisher, TTheme } from "readium-desktop/common/models/reader";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import debounce from "debounce";
 import { FONT_LIST, FONT_LIST_WITH_JA } from "readium-desktop/utils/fontList";
@@ -53,8 +53,8 @@ interface IBaseProps extends IReaderSettingsProps, IPopoverDialogProps {
 
     setOverridePublisherDefault: (value: boolean) => void;
     overridePublisherDefault: boolean;
-    transcientStateOverridePublisherDefault: ReaderConfig;
-    setTranscientStateOverridePublisherDefault: (value: ReaderConfig) => void;
+    transcientStateOverridePublisherDefault: ReaderConfigPublisher;
+    setTranscientStateOverridePublisherDefault: (value: ReaderConfigPublisher) => void;
     tabValue: string;
     setTabValue: (value: string) => void;
 }
@@ -1011,6 +1011,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const { tabValue, setTabValue } = props;
     const { isDivina, isPdf } = props;
     const isEpub = !isDivina && !isPdf;
+    const { doFocus } = props;
 
     const [__] = useTranslator();
 
@@ -1068,12 +1069,20 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const setPartialSettingsDebounced = React.useMemo(() => {
         const saveConfig = (config: Partial<ReaderConfig>, override = true) => {
             if (override) {
-                setTranscientStateOverridePublisherDefault({ ...transcientStateOverridePublisherDefault, ...config });
+                setTranscientStateOverridePublisherDefault({
+                    font: config.font || transcientStateOverridePublisherDefault.font || readerConfig.font,
+                    fontSize: config.fontSize || transcientStateOverridePublisherDefault.fontSize || readerConfig.fontSize,
+                    pageMargins: config.pageMargins || transcientStateOverridePublisherDefault.pageMargins || readerConfig.pageMargins,
+                    wordSpacing: config.wordSpacing || transcientStateOverridePublisherDefault.wordSpacing || readerConfig.wordSpacing,
+                    letterSpacing: config.letterSpacing || transcientStateOverridePublisherDefault.letterSpacing || readerConfig.letterSpacing,
+                    paraSpacing: config.paraSpacing || transcientStateOverridePublisherDefault.paraSpacing || readerConfig.paraSpacing,
+                    lineHeight: config.lineHeight || transcientStateOverridePublisherDefault.lineHeight || readerConfig.lineHeight,
+                });
             }
             setSettings({ ...readerConfig, ...config });
         };
         return debounce(saveConfig, 400);
-    }, [readerConfig]);
+    }, [transcientStateOverridePublisherDefault, readerConfig]);
 
     React.useEffect(() => {
         setPartialSettingsDebounced.clear();
@@ -1126,7 +1135,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
         }
 
-    }, [dockingMode]);
+    }, [dockingMode, doFocus]);
 
     if (!readerConfig) {
         return <></>;

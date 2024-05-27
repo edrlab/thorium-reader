@@ -13,7 +13,7 @@ import * as Popover from "@radix-ui/react-popover";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 // import * as ReactDOM from "react-dom";
-import { ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
+import { ReaderConfig, ReaderConfigPublisher, ReaderMode } from "readium-desktop/common/models/reader";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
 import * as viewMode from "readium-desktop/renderer/assets/icons/fullscreen-corners-icon.svg";
 import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
@@ -161,7 +161,7 @@ interface IState {
     forceTTS: boolean;
     ttsPopoverOpen: boolean;
     overridePublisherDefault: boolean;
-    transcientStateOverridePublisherDefault: ReaderConfig;
+    transcientStateOverridePublisherDefault: ReaderConfigPublisher;
     tabValue: string;
 }
 
@@ -368,7 +368,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             overridePublisherDefault: this.state.overridePublisherDefault,
 
             transcientStateOverridePublisherDefault: this.state.transcientStateOverridePublisherDefault,
-            setTranscientStateOverridePublisherDefault: (value: ReaderConfig) => this.setState({ transcientStateOverridePublisherDefault: value }),
+            setTranscientStateOverridePublisherDefault: (value: ReaderConfigPublisher) => this.setState({ transcientStateOverridePublisherDefault: value }),
 
             tabValue: this.state.tabValue,
             setTabValue: (value: string) => this.setState({ tabValue: value}),
