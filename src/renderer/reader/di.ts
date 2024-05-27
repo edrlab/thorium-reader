@@ -68,6 +68,12 @@ const createStoreFromDi = async (preloadedState: Partial<IReaderRootState>) => {
         newConfig.sepia = false;
         flag = true;
     }
+    if (newConfig.readerDockingMode === undefined) {
+
+        console.log("ANNOTATION MIGRATION !! readerDockingMode not set migrate from defaultConfig value=", newConfig.readerDockingMode);
+        newConfig.readerDockingMode = defaultConfig.readerDockingMode;
+        flag = true;
+    }
 
     if (flag) {
         console.log(`ANNOTATION MIGRATION : There are a data need to be migrated from defaultConfig to config OLD=${JSON.stringify(store.getState().reader.config, null, 4)} NEW=${JSON.stringify(newConfig, null, 4)}`);

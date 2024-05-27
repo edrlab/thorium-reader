@@ -110,7 +110,7 @@ export default optionsValues;
 
 export interface IReaderMenuProps {
     open: boolean;
-    doFocus: boolean;
+    doFocus: number;
     r2Publication: R2Publication;
     // tslint:disable-next-line: max-line-length
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeNavPanel?: boolean) => void;
@@ -134,6 +134,7 @@ export const isDivinaReadingMode = (v: any): v is TdivinaReadingMode => {
 export interface IReaderSettingsProps {
     indexes: AdjustableSettingsNumber;
     open: boolean;
+    doFocus: number;
     readerConfig: ReaderConfig;
     // handleSettingChange: (
     //     event: TChangeEventOnInput | TChangeEventOnSelect | undefined,

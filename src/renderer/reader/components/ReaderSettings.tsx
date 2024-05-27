@@ -31,7 +31,7 @@ import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scs
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
-import { ReaderConfig, TTheme } from "readium-desktop/common/models/reader";
+import { ReaderConfig, ReaderConfigPublisher, TTheme } from "readium-desktop/common/models/reader";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import debounce from "debounce";
 import { FONT_LIST, FONT_LIST_WITH_JA } from "readium-desktop/utils/fontList";
@@ -53,8 +53,8 @@ interface IBaseProps extends IReaderSettingsProps, IPopoverDialogProps {
 
     setOverridePublisherDefault: (value: boolean) => void;
     overridePublisherDefault: boolean;
-    transcientStateOverridePublisherDefault: ReaderConfig;
-    setTranscientStateOverridePublisherDefault: (value: ReaderConfig) => void;
+    transcientStateOverridePublisherDefault: ReaderConfigPublisher;
+    setTranscientStateOverridePublisherDefault: (value: ReaderConfigPublisher) => void;
     tabValue: string;
     setTabValue: (value: string) => void;
 }
@@ -1011,6 +1011,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const { tabValue, setTabValue } = props;
     const { isDivina, isPdf } = props;
     const isEpub = !isDivina && !isPdf;
+    const { doFocus } = props;
 
     const [__] = useTranslator();
 
@@ -1068,12 +1069,20 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const setPartialSettingsDebounced = React.useMemo(() => {
         const saveConfig = (config: Partial<ReaderConfig>, override = true) => {
             if (override) {
-                setTranscientStateOverridePublisherDefault({ ...transcientStateOverridePublisherDefault, ...config });
+                setTranscientStateOverridePublisherDefault({
+                    font: config.font || transcientStateOverridePublisherDefault.font || readerConfig.font,
+                    fontSize: config.fontSize || transcientStateOverridePublisherDefault.fontSize || readerConfig.fontSize,
+                    pageMargins: config.pageMargins || transcientStateOverridePublisherDefault.pageMargins || readerConfig.pageMargins,
+                    wordSpacing: config.wordSpacing || transcientStateOverridePublisherDefault.wordSpacing || readerConfig.wordSpacing,
+                    letterSpacing: config.letterSpacing || transcientStateOverridePublisherDefault.letterSpacing || readerConfig.letterSpacing,
+                    paraSpacing: config.paraSpacing || transcientStateOverridePublisherDefault.paraSpacing || readerConfig.paraSpacing,
+                    lineHeight: config.lineHeight || transcientStateOverridePublisherDefault.lineHeight || readerConfig.lineHeight,
+                });
             }
             setSettings({ ...readerConfig, ...config });
         };
         return debounce(saveConfig, 400);
-    }, [readerConfig]);
+    }, [transcientStateOverridePublisherDefault, readerConfig]);
 
     React.useEffect(() => {
         setPartialSettingsDebounced.clear();
@@ -1126,7 +1135,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
         }
 
-    }, [dockingMode]);
+    }, [dockingMode, doFocus]);
 
     if (!readerConfig) {
         return <></>;
@@ -1307,7 +1316,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             //         console.error("Combobox No value !!!");
                             //     }
                             // }}
-                            style={{ paddingBottom: "0", margin: "0" }}
+                            style={{ paddingBottom: "0", margin: "0", flexDirection: "row"}}
                             ref={dockedModeRef}
                         >
                             {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
@@ -1324,32 +1333,32 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                 }
                 <div className={stylesSettings.settings_content}
                 style={{marginTop: dockedMode && "0"}}>
-                    <Tabs.Content value="tab-divina" tabIndex={-1} id="readerSettings_tabs-tab-divina">
+                    <Tabs.Content value="tab-divina" tabIndex={-1} id="readerSettings_tabs-tab-divina" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <DivinaSetReadingMode handleDivinaReadingMode={handleDivinaReadingMode} divinaReadingMode={divinaReadingMode} divinaReadingModeSupported={divinaReadingModeSupported} />
                         </div>
                     </Tabs.Content>
-                    <Tabs.Content value="tab-pdfzoom" tabIndex={-1} id="readerSettings_tabs-tab-pdfzoom">
+                    <Tabs.Content value="tab-pdfzoom" tabIndex={-1} id="readerSettings_tabs-tab-pdfzoom" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                     <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <PdfZoom pdfScale={pdfState.pdfScale} pdfView={pdfState.pdfView} />
                         </div>
                     </Tabs.Content>
-                    <Tabs.Content value="tab-text" tabIndex={-1} id="readerSettings_tabs-tab-text">
+                    <Tabs.Content value="tab-text" tabIndex={-1} id="readerSettings_tabs-tab-text" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                     <TabHeader />
                         <div className={classNames(stylesSettings.settings_tab, stylesSettings.settings_reading_text, stylesSettings.section)}>
                             <FontSize config={readerConfig} set={setPartialSettingsDebounced} />
                             <FontFamily config={readerConfig} set={setPartialSettingsDebounced} />
                         </div>
                     </Tabs.Content>
-                    <Tabs.Content value="tab-spacing" tabIndex={-1} id="readerSettings_tabs-tab-spacing">
+                    <Tabs.Content value="tab-spacing" tabIndex={-1} id="readerSettings_tabs-tab-spacing" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                     <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <ReadingSpacing config={readerConfig} set={setPartialSettingsDebounced} />
                         </div>
                     </Tabs.Content>
-                    <Tabs.Content value="tab-display" tabIndex={-1} id="readerSettings_tabs-tab-display">
+                    <Tabs.Content value="tab-display" tabIndex={-1} id="readerSettings_tabs-tab-display" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                     <TabHeader />
                         <section className={stylesSettings.settings_tab}>
                             {isPdf ? <></> : <Theme theme={readerConfig} set={setPartialSettingsDebounced} />}

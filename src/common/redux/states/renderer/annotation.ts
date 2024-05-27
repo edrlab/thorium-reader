@@ -27,15 +27,15 @@ export interface IAnnotationState {
 export type TAnnotationState = TPQueueState<number, IAnnotationState>;
 
 export interface IAnnotationModeState {
-    enable: boolean,
-    cleanText: string,
+    enable: boolean;
+    cleanText: string;
 }
 
 export type TDrawView = "annotation" | "margin" | "hide";
 
 export interface IAnnotationReaderConfigState {
-    annotation_popoverNotOpenOnNoteTaking: boolean,
-    annotation_defaultColor: IColor,
-    annotation_defaultDrawType: TDrawType
-    annotation_defaultDrawView: TDrawView
+    annotation_popoverNotOpenOnNoteTaking: boolean;
+    annotation_defaultColor: IColor;
+    annotation_defaultDrawType: TDrawType;
+    annotation_defaultDrawView: TDrawView;
 }

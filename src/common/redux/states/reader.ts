@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { IReaderSettingsMenuState, ReaderConfig } from "readium-desktop/common/models/reader";
 import { FONT_ID_DEFAULT } from "readium-desktop/utils/fontList";
 import { IAnnotationReaderConfigState, IColor } from "./renderer/annotation";
 
@@ -26,6 +26,10 @@ export const readerConfigInitialStateAnnotation: IAnnotationReaderConfigState = 
     annotation_defaultDrawType: "solid_background",
     annotation_popoverNotOpenOnNoteTaking: false,
     annotation_defaultDrawView: "annotation",
+};
+
+export const readerConfigInitialStateReaderDockingMode: IReaderSettingsMenuState = {
+    readerDockingMode: "full",
 };
 
 export const readerConfigInitialState: ReaderConfig = {
@@ -49,4 +53,5 @@ export const readerConfigInitialState: ReaderConfig = {
     ttsEnableOverlayMode: false,
     ...readerConfigInitialStateDefaultPublisher,
     ...readerConfigInitialStateAnnotation,
+    ...readerConfigInitialStateReaderDockingMode,
 };

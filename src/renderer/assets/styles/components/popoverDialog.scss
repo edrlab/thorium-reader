@@ -109,7 +109,8 @@
     border-bottom: 1px solid var(--color-extralight-grey-alt);
 
     .my_combobox_container {
-      width: calc(100% - 10px);
+      width: 310px;
+      height: 30px;
 
       > button {
         width: 100%!important;
@@ -193,6 +194,7 @@
   padding: 10px;
   background-color: var(--color-docked-header);
   border-bottom: 1px solid var(--color-extralight-grey-alt);
+  height: 32px;
 
   .my_combobox_container button {
     min-width: 110px;
@@ -695,4 +697,34 @@
 .react_aria_ComboBox [role="group"]:focus-within {
   outline: var(--color-blue) solid 2px !important;
   outline-offset: -2px;
+}
+
+.delete_item {
+  z-index: 1000;
+  border: 1px solid var(--color-blue);
+  background-color: var(--color-light-blue);
+  border-radius: 5px;
+  transition: 200ms;
+
+  button {
+    padding: 5px;
+    color: var(--color-blue);
+    height: unset;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: var(--color-secondary);
+    }
+
+    &:focus {
+      background-color: var(--color-blue);
+      border: 1px solid var(--color-secondary);
+      outline: 1px solid var(--color-blue);
+      color: var(--color-secondary);
+    }
+
+    svg {
+      width: 10px;
+    }
+  }
 }

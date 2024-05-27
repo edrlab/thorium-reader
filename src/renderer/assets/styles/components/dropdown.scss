@@ -138,6 +138,10 @@
   svg {
     color: var(--color-secondary)!important;
   }
+
+  &:hover svg {
+    color: var(--color-blue)!important;
+  }
 }
 
 .PopoverArrow {
