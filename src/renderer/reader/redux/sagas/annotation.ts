@@ -200,11 +200,17 @@ function* readerStart() {
         take(winActions.initSuccess.build),
     ]);
 
-    const { divina, info, locator } = yield* selectTyped((state: IReaderRootState) => state.reader);
-    const skip = typeof divina !== "undefined" || info?.publicationView?.isDivina ||
+    // divina,
+    const { info, locator } = yield* selectTyped((state: IReaderRootState) => state.reader);
+    // typeof divina !== "undefined" ||
+    const skip = info?.publicationView?.isDivina ||
         locator?.audioPlaybackInfo || info?.publicationView?.isAudio ||
         info?.publicationView?.isPDF;
-    if (skip) return;
+    if (skip) {
+        // divina,
+        debug("readerStart SKIP annot", skip, info?.publicationView?.isDivina, locator?.audioPlaybackInfo, info?.publicationView?.isAudio, info?.publicationView?.isPDF);
+        return;
+    }
 
     debug("annotation iframe reader viewport is started and ready to annotate, we draws all the annotation for the first time with 'highlightsDrawMargin' enabled");
 
@@ -230,11 +236,17 @@ function* readerStart() {
 
 function* captureHightlightDrawMargin(action: readerLocalActionSetConfig.TAction) {
 
-    const { divina, info, locator } = yield* selectTyped((state: IReaderRootState) => state.reader);
-    const skip = typeof divina !== "undefined" || info?.publicationView?.isDivina ||
+    // divina,
+    const { info, locator } = yield* selectTyped((state: IReaderRootState) => state.reader);
+    // typeof divina !== "undefined" ||
+    const skip = info?.publicationView?.isDivina ||
         locator?.audioPlaybackInfo || info?.publicationView?.isAudio ||
         info?.publicationView?.isPDF;
-    if (skip) return;
+    if (skip) {
+        // divina,
+        debug("captureHightlightDrawMargin SKIP annot", skip, info?.publicationView?.isDivina, locator?.audioPlaybackInfo, info?.publicationView?.isAudio, info?.publicationView?.isPDF);
+        return;
+    }
 
     const { annotation_defaultDrawView } = action.payload;
 
