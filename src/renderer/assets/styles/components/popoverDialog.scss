@@ -109,7 +109,8 @@
     border-bottom: 1px solid var(--color-extralight-grey-alt);
 
     .my_combobox_container {
-      width: calc(100% - 10px);
+      width: 310px;
+      height: 30px;
 
       > button {
         width: 100%!important;
@@ -193,6 +194,7 @@
   padding: 10px;
   background-color: var(--color-docked-header);
   border-bottom: 1px solid var(--color-extralight-grey-alt);
+  height: 32px;
 
   .my_combobox_container button {
     min-width: 110px;
