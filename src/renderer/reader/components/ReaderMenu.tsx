@@ -1325,18 +1325,18 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
                 e.preventDefault();
             }
             }
-            onKeyUp=
-                {
-                    (e) => {
-                        // SPACE does not work (only without key mods on button)
-                        //  || e.key === "Space"
-                        if (e.key === "Enter") {
-                            const closeNavGotoPage = !dockedMode && !(e.shiftKey && e.altKey);
-                            e.preventDefault();
-                            handleSubmitPage(closeNavGotoPage);
-                        }
-                }
-            }
+            // onKeyUp=
+            //     {
+            //         (e) => {
+            //             // SPACE does not work (only without key mods on button)
+            //             //  || e.key === "Space"
+            //             if (e.key === "Enter") {
+            //                 const closeNavGotoPage = !dockedMode && !(e.shiftKey && e.altKey);
+            //                 e.preventDefault();
+            //                 handleSubmitPage(closeNavGotoPage);
+            //             }
+            //     }
+            // }
         >
 
             <div className={classNames(stylesInputs.form_group, stylesPopoverDialog.gotopage_combobox)} style={{width: "80%"}}>
@@ -1362,6 +1362,7 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
             </div>
             <button
                 type="button"
+                className={stylesButtons.button_nav_primary}
 
                 onClick=
                 {(e) => {
