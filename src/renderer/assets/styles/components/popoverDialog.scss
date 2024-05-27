@@ -543,7 +543,7 @@
         overflow: hidden;
         max-width: 250px;
         white-space: nowrap;
-        line-height: 95%;
+        line-height: 97%;
         height: unset;
     }
 
@@ -584,6 +584,7 @@
       padding: 3px 5px;
       text-wrap: nowrap;
       box-sizing: content-box;
+      height: 28px;
 
       svg {
         width: 15px;
