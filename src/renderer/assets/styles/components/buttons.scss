@@ -80,6 +80,7 @@ button {
   &:hover {
     color: var(--color-blue);
     background-color: var(--color-light-blue);
+
     svg {
       fill: var(--color-blue)!important;
       color: var(--color-blue)!important;
