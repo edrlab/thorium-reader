@@ -78,21 +78,15 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
 
     const annotationStateDEFAULT: Omit<IAnnotationState, "uuid"> = { color: annotation_defaultColor, comment: "", drawType: annotation_defaultDrawType, locatorExtended };
     let annotationState: typeof annotationStateDEFAULT = annotationStateDEFAULT;
-    console.log(uuid, annotationState);
     if (uuid) {
         const tpl = annotationReaderState.find(([, annotationState]) => annotationState.uuid === uuid);
         if (tpl) {
-            console.log("tpl");
             const [, iannotationState] = tpl;
             if (iannotationState) {
-                console.log("iannotationState", iannotationState);
                 annotationState = iannotationState;
             }
         }
     }
-
-    // console.log("iannotationState", iannotationState);
-    // return <></>;
 
     const colorStr = `#${annotationState.color.red.toString(16).padStart(2, "0")}${annotationState.color.green.toString(16).padStart(2, "0")}${annotationState.color.blue.toString(16).padStart(2, "0")}`.toUpperCase();
 
