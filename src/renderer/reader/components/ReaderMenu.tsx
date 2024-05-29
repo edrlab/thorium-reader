@@ -178,8 +178,8 @@ const renderLinkList = (isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBa
     return T;
 };
 
-const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBaseProps["handleLinkClick"], dockedMode: boolean) => {
-    const renderLinkTree = (label: string | undefined, links: TToc, level: number, headingTrailLink: ILink | undefined): JSX.Element => {
+const renderLinkTree = (currentLocation: LocatorExtended, isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBaseProps["handleLinkClick"], dockedMode: boolean) => {
+    const RenderLinkTree = (label: string | undefined, links: TToc, level: number, headingTrailLink: ILink | undefined): JSX.Element => {
         // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
         const useTree = false;
 
@@ -328,7 +328,7 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
                                     </a>
                                 </div>
 
-                                {renderLinkTree(undefined, link.Children, level + 1, headingTrailLink)}
+                                {RenderLinkTree(undefined, link.Children, level + 1, headingTrailLink)}
                             </>
                         ) : (
                             <div role={"heading"} aria-level={level}>
@@ -373,7 +373,7 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
             })}
         </ul>;
     };
-    return renderLinkTree;
+    return RenderLinkTree;
 };
 
 const HardWrapComment: React.FC<{comment: string}> = (props) => {
