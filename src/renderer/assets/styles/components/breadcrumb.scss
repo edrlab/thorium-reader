@@ -8,15 +8,15 @@
   align-items: center;
   font-weight: bold;
   color: var(--color-blue);
-  width: calc(100% - 120px);
+  width: calc(100% - 370px);
 
   a {
     display: flex;
-    max-width: 150px;
+    // max-width: 150px;
 
     & p {
       font-size: 14px;
-      max-width: 110px;
+      // max-width: 110px;
       overflow: hidden;
       text-overflow: ellipsis;
       text-wrap: nowrap;
@@ -25,9 +25,9 @@
   }
 
   & strong {
-    max-width: 200px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    // max-width: 200px;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
     text-wrap: nowrap;
     margin: 0 10px;
   }
@@ -81,6 +81,8 @@
 
    svg {
     height: 20px;
+    width: 20px;
+    min-width: 20px;
     color: var(--color-blue);
   }
 }
