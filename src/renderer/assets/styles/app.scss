@@ -12,11 +12,12 @@
   height: auto;
   overflow: hidden;
   overflow-y: auto;
-  background: var(--color-light-grey);
+  background: var(--color-extralight-grey);
   border: 2px solid var(--color-light-blue);
   margin: 0;
   padding: 10px;
   z-index: 110;
+  color: var(--color-primary);
 
   li {
     display: inline-block;
