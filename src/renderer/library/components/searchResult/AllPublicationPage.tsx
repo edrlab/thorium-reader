@@ -2129,7 +2129,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                 : <></>
                         }
                     </div>
-                    <div style={{ position: "relative" }}>
+                    <div className={stylesPublication.allBooks_header_pagination}>
                         <label htmlFor="pageSelect" className={stylesPublication.allBooks_header_pagination_title}>{__("catalog.numberOfPages")}</label>
                         <div className={stylesPublication.allBooks_header_pagination_container}>
                             <button

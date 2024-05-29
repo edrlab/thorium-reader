@@ -54,12 +54,12 @@ class PageNavigation extends React.Component<IProps, undefined> {
         ensureKeyboardListenerIsInstalled();
         this.registerAllKeyboardListeners();
         this.adjustElementPosition();
-        window.addEventListener('resize', this.adjustElementPosition);
+        window.addEventListener("resize", this.adjustElementPosition);
     }
 
     public componentWillUnmount() {
         this.unregisterAllKeyboardListeners();
-        window.removeEventListener('resize', this.adjustElementPosition);
+        window.removeEventListener("resize", this.adjustElementPosition);
     }
 
     public async componentDidUpdate(oldProps: IProps) {
@@ -74,13 +74,13 @@ class PageNavigation extends React.Component<IProps, undefined> {
         const container = document.getElementById("opds_browserResults");
         const cardWrapper = document.getElementById("card_wrapper");
         if (cardWrapper.scrollHeight >container.clientHeight) {
-          element.style.position = 'unset';
+          element.style.position = "unset";
         } else {
-          element.style.position = 'fixed';
-          element.style.bottom = '20px';
-          element.style.left = '50%';
+          element.style.position = "fixed";
+          element.style.bottom = "20px";
+          element.style.left = "50%";
         }
-      }
+      };
 
     public render() {
         const { pageLinks, pageInfo, __ } = this.props;
