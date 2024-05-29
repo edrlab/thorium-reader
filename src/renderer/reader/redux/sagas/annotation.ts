@@ -200,7 +200,13 @@ function* readerStart() {
         take(winActions.initSuccess.build),
     ]);
 
-    debug("annotation iframe reader viewport is started and ready to annotate, we draws all the annoatation for the first time with 'highlightsDrawMargin' enabled");
+    const { divina, info, locator } = yield* selectTyped((state: IReaderRootState) => state.reader);
+    const skip = typeof divina !== "undefined" || info?.publicationView?.isDivina ||
+        locator?.audioPlaybackInfo || info?.publicationView?.isAudio ||
+        info?.publicationView?.isPDF;
+    if (skip) return;
+
+    debug("annotation iframe reader viewport is started and ready to annotate, we draws all the annotation for the first time with 'highlightsDrawMargin' enabled");
 
     const { annotation_defaultDrawView } = yield* selectTyped((state: IReaderRootState) => state.reader.config);
     if (annotation_defaultDrawView === "margin") {
@@ -223,6 +229,13 @@ function* readerStart() {
 }
 
 function* captureHightlightDrawMargin(action: readerLocalActionSetConfig.TAction) {
+
+    const { divina, info, locator } = yield* selectTyped((state: IReaderRootState) => state.reader);
+    const skip = typeof divina !== "undefined" || info?.publicationView?.isDivina ||
+        locator?.audioPlaybackInfo || info?.publicationView?.isAudio ||
+        info?.publicationView?.isPDF;
+    if (skip) return;
+
     const { annotation_defaultDrawView } = action.payload;
 
     debug(`captureHightlightDrawMargin : readerLocalActionSetConfig CHANGED apply=${annotation_defaultDrawView}`);
