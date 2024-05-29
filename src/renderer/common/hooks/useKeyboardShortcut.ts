@@ -5,31 +5,32 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
-import { TKeyboardShortcutReadOnly, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
-import { ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener } from "../keyboard";
-import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
-import { ReactReduxContext, ReactReduxContextValue } from "react-redux";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { useSyncExternalStoreWithSelector } from "./useSyncExternalStore";
+// import * as React from "react";
+// import { TKeyboardShortcutReadOnly, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
+// import { ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener } from "../keyboard";
+// import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+// import { ReactReduxContext, ReactReduxContextValue } from "react-redux";
+// import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+// import { useSyncExternalStoreWithSelector } from "./useSyncExternalStore";
 
-export function useKeyboardShortcut(ListenForKeyUP: boolean, keyboardShortcut: (s: ICommonRootState["keyboard"]["shortcuts"]) => TKeyboardShortcutReadOnly, callback: () => void) {
+// TODO: ensure keyboardShortcut() and callback() have a "stable" identity (Object.is during the React functional component lifecycle so that they do not cause unnecessary triggers of the React.useEffect() inside this custom hook
+// export function useKeyboardShortcut(ListenForKeyUP: boolean, keyboardShortcut: (s: ICommonRootState["keyboard"]["shortcuts"]) => TKeyboardShortcutReadOnly, callback: () => void) {
 
-    React.useEffect(() => {
-        ensureKeyboardListenerIsInstalled();
-    }, []);
-    const { store } = React.useContext<ReactReduxContextValue<ILibraryRootState>>(ReactReduxContext);
-    const keyboardShortcutState = useSyncExternalStoreWithSelector(
-        store.subscribe,
-        () => store.getState(),
-        undefined, // server snapshot
-        (state) => state.keyboard.shortcuts,
-        keyboardShortcutsMatch,
-    );
-    React.useEffect(() => {
-        registerKeyboardListener(ListenForKeyUP, keyboardShortcut(keyboardShortcutState), callback);
-        return () => unregisterKeyboardListener(callback);
-    }, [keyboardShortcutState]);
+//     React.useEffect(() => {
+//         ensureKeyboardListenerIsInstalled();
+//     }, []);
+//     const { store } = React.useContext<ReactReduxContextValue<ILibraryRootState>>(ReactReduxContext);
+//     const keyboardShortcutState = useSyncExternalStoreWithSelector(
+//         store.subscribe,
+//         () => store.getState(),
+//         undefined, // server snapshot
+//         (state) => state.keyboard.shortcuts,
+//         keyboardShortcutsMatch,
+//     );
+//     React.useEffect(() => {
+//         registerKeyboardListener(ListenForKeyUP, keyboardShortcut(keyboardShortcutState), callback);
+//         return () => unregisterKeyboardListener(callback);
+//     }, [keyboardShortcutState, ListenForKeyUP, callback, keyboardShortcut]);
 
-    return ;
-}
+//     return ;
+// }
