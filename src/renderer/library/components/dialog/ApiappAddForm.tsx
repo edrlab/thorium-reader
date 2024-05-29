@@ -49,7 +49,7 @@ const Item = ({v}: {v: IApiappSearchResultView}) => {
                     aria-selected={selectSearchResult === v}
                     tabIndex={0}
                     onClick={() => setSelectSearchResult(v)}
-                    onDoubleClick={() => {
+                    onDoubleClick={(_e) => {
                         // e.preventDefault();
                         setSelectSearchResult(v);
                         setTimeout(() => {
@@ -222,7 +222,10 @@ export const ApiappAddFormDialog = () => {
                                 <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
                             </Dialog.Close>
                             <Dialog.Close asChild>
-                                <button type="submit" ref={submitButtonRef} className={stylesButtons.button_primary_blue} onClick={() => addFeedAction()}>
+                                <button type="submit" ref={submitButtonRef} className={stylesButtons.button_primary_blue} onClick={(e) => {
+                                    e.preventDefault();
+                                    addFeedAction();
+                                }}>
                                     <SVG ariaHidden svg={AddIcon} />
                                     {__("opds.addForm.addButton")}</button>
                             </Dialog.Close>
