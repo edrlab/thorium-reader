@@ -74,13 +74,25 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
     const { annotation_defaultColor, annotation_defaultDrawType } = useSelector((state: IReaderRootState) => state.reader.defaultConfig);
 
     const { locatorExtended } = useSelector((state: IReaderRootState) => state.annotation);
-    // const cleanText = locatorExtended.selectionInfo.cleanText.slice(0, 200);
+    const annotationReaderState = useSelector((state: IReaderRootState) => state.reader.annotation);
 
-    // Pick<IAnnotationState, "color" | "comment" | "drawType"> & { locatorExtended: { selectionInfo: { cleanText: string } } }
     const annotationStateDEFAULT: Omit<IAnnotationState, "uuid"> = { color: annotation_defaultColor, comment: "", drawType: annotation_defaultDrawType, locatorExtended };
+    let annotationState: typeof annotationStateDEFAULT = annotationStateDEFAULT;
+    console.log(uuid, annotationState);
+    if (uuid) {
+        const tpl = annotationReaderState.find(([, annotationState]) => annotationState.uuid === uuid);
+        if (tpl) {
+            console.log("tpl");
+            const [, iannotationState] = tpl;
+            if (iannotationState) {
+                console.log("iannotationState", iannotationState);
+                annotationState = iannotationState;
+            }
+        }
+    }
 
-    const [, iannotationState] = useSelector((state: IReaderRootState) => !uuid ? [undefined, undefined] : state.reader.annotation.find(([, annotationState]) => annotationState.uuid === uuid));
-    const annotationState: typeof annotationStateDEFAULT = iannotationState ? iannotationState : annotationStateDEFAULT;
+    // console.log("iannotationState", iannotationState);
+    // return <></>;
 
     const colorStr = `#${annotationState.color.red.toString(16).padStart(2, "0")}${annotationState.color.green.toString(16).padStart(2, "0")}${annotationState.color.blue.toString(16).padStart(2, "0")}`.toUpperCase();
 
@@ -162,7 +174,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         }
         <div
             className={classNames(displayFromReaderMenu ? "" : stylesAnnotations.annotations_line, dockedMode ? stylesAnnotations.docked_annotation_line : "")} style={{backgroundColor: !displayFromReaderMenu ? "var(--color-extralight-grey)" : ""}}>
-            <p>{annotationState.locatorExtended.selectionInfo.cleanText.length > (200-3) ? `${annotationState.locatorExtended.selectionInfo.cleanText.slice(0, 200)}...` : annotationState.locatorExtended.selectionInfo.cleanText}</p>
+            <p>{annotationState.locatorExtended ? (annotationState.locatorExtended.selectionInfo.cleanText.length > (200-3) ? `${annotationState.locatorExtended.selectionInfo.cleanText.slice(0, 200)}...` : annotationState.locatorExtended.selectionInfo.cleanText) : ""}</p>
             <TextArea id="addNote" name="addNote" wrap="hard" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef}
             ></TextArea>
 
@@ -209,7 +221,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                     )}
                 </div>
             </div>
-{/* 
+{/* annotationState.locatorExtended &&
             <details><summary>{__("reader.settings.preview")}</summary><div>{<p style={{
                 backgroundColor: (!readerConfig.theme || readerConfig.theme === "neutral") ? (readiumCSSDefaults.backgroundColor || "white") :
                     readerConfig.theme === "sepia" ? "#faf4e8" :
