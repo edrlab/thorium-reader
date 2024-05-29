@@ -314,7 +314,8 @@
       "type": {
         "outline": "Contorno",
         "solid": "Fundo sólido",
-        "strikethrough": "Rasurar"
+        "strikethrough": "Rasurar",
+        "underline": "Sublinhado"
       }
     },
     "divina": {
