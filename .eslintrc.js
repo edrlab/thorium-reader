@@ -48,8 +48,12 @@ module.exports = {
         // "unused-imports",
         "prettier",
         "eslint-plugin-local-rules",
+        "react-hooks",
     ],
     rules: {
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "error",
+
         quotes: ["error", "double"],
         "comma-dangle": ["error", "always-multiline"],
         "eol-last": ["error", "always"],
