@@ -46,7 +46,7 @@ export class GridView extends React.Component<IProps, undefined> {
         const { isOpdsView } = this.props;
 
         return (
-            <div ref={this.ref} className={stylesPublicationView.card_wrapper}>
+            <div ref={this.ref} className={stylesPublicationView.card_wrapper} id="card_wrapper">
                 {this.props.normalOrOpdsPublicationViews.map((pub, index) =>
                     <PublicationCard
                         key={`gridview-${index}`}
