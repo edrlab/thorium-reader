@@ -19,7 +19,7 @@ import { useSyncExternalStore } from "./useSyncExternalStore";
 export function useApi<T extends TApiMethodName>(_requestId: string | undefined, apiPath: T):
     [ApiResponse<TReturnPromiseOrGeneratorType<TApiMethod[T]>>, (...requestData: Parameters<TApiMethod[T]>) => void]
 {
-    let requestId = React.useMemo(() => uuidv4(), []);
+    let requestId = React.useMemo(() => uuidv4(), []); // empty dep array = once on mount
     if (_requestId) requestId = _requestId;
 
     const { store } = React.useContext(ReactReduxContext);

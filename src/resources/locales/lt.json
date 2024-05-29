@@ -310,7 +310,13 @@
       "noSelectionToast": "Niekas nepasirinkta",
       "quickAnnotations": "Greitasis kūrimas (praleidžiant rengyklę)",
       "saveNote": "Išsaugoti",
-      "toggleMarginMarks": "Atvaizduoti paraštėse"
+      "toggleMarginMarks": "Atvaizduoti paraštėse",
+      "type": {
+        "outline": "Kontūras",
+        "solid": "Vientisas fonas",
+        "strikethrough": "Perbraukimas",
+        "underline": "Pabraukimas"
+      }
     },
     "divina": {
       "mute": "išjungti garsą",
