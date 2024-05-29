@@ -40,9 +40,11 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 }
 
 class PageNavigation extends React.Component<IProps, undefined> {
+    private fixedElementRef: React.RefObject<HTMLDivElement>;
 
     constructor(props: IProps) {
         super(props);
+        this.fixedElementRef = React.createRef<HTMLDivElement>();
 
         this.onKeyboardPageNavigationPrevious = this.onKeyboardPageNavigationPrevious.bind(this);
         this.onKeyboardPageNavigationNext = this.onKeyboardPageNavigationNext.bind(this);
@@ -51,10 +53,13 @@ class PageNavigation extends React.Component<IProps, undefined> {
     public componentDidMount() {
         ensureKeyboardListenerIsInstalled();
         this.registerAllKeyboardListeners();
+        this.adjustElementPosition();
+        window.addEventListener('resize', this.adjustElementPosition);
     }
 
     public componentWillUnmount() {
         this.unregisterAllKeyboardListeners();
+        window.removeEventListener('resize', this.adjustElementPosition);
     }
 
     public async componentDidUpdate(oldProps: IProps) {
@@ -63,6 +68,18 @@ class PageNavigation extends React.Component<IProps, undefined> {
             this.registerAllKeyboardListeners();
         }
     }
+ 
+    public  adjustElementPosition = () => {
+        const element = this.fixedElementRef.current;
+        const container = document.getElementById("opds_browserResults");
+        if (container.scrollHeight > window.innerHeight) {
+          element.style.position = 'block';
+        } else {
+          element.style.position = 'fixed';
+          element.style.bottom = '20px';
+          element.style.left = '50%';
+        }
+      }
 
     public render() {
         const { pageLinks, pageInfo, __ } = this.props;
@@ -72,7 +89,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
 
 
         return (
-            <div className={stylesPublication.opds_publication_wrapper}>
+            <div className={stylesPublication.opds_publication_wrapper} ref={this.fixedElementRef} style={{width: "unset"}}>
                 {/* <button className={stylesButtons.button_primary_blue} onClick={() => console.log(pageLinks)}>Log "pageLinks"</button> */}
                 {/* <p className={stylesPublication.allBooks_header_pagination_title}>{__("catalog.numberOfPages")}</p> */}
                 <div className={stylesPublication.allBooks_header_pagination_container}>

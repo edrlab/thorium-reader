@@ -196,7 +196,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
             }
         }
 
-        return <div className={stylesCatalogs.opds_browserResults}>
+        return <div className={stylesCatalogs.opds_browserResults} id="opds_browserResults">
             {content}
         </div>;
     }
