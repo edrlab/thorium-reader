@@ -26,10 +26,13 @@ export interface IAnnotationState {
 
 export type TAnnotationState = TPQueueState<number, IAnnotationState>;
 
-export interface IAnnotationModeState {
-    enable: boolean;
-    cleanText: string;
-}
+export type IAnnotationModeState = {
+    enable: true;
+    locatorExtended: LocatorExtended;
+} | {
+    enable: false;
+    locatorExtended: undefined;
+};
 
 export type TDrawView = "annotation" | "margin" | "hide";
 

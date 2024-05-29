@@ -103,7 +103,7 @@ function* createAnnotation(locatorExtended: LocatorExtended, color: IColor, comm
     }));
 
     // sure! close the popover
-    yield* put(readerLocalActionAnnotations.enableMode.build(false, ""));
+    yield* put(readerLocalActionAnnotations.enableMode.build(false, undefined));
 }
 
 function* newLocatorEditAndSaveTheNote(locatorExtended: LocatorExtended): SagaGenerator<void> {
@@ -118,7 +118,7 @@ function* newLocatorEditAndSaveTheNote(locatorExtended: LocatorExtended): SagaGe
     }
 
     // open popover to edit and save the note
-    yield* put(readerLocalActionAnnotations.enableMode.build(true, locatorExtended.selectionInfo.cleanText.slice(0, 200)));
+    yield* put(readerLocalActionAnnotations.enableMode.build(true, locatorExtended));
 
     // wait the action of the annotation popover, the user select the text, click on "take the note" button and then edit his note with the popover.
     // 2 choices: cancel (annotationModeEnabled = false) or takeNote with color and comment

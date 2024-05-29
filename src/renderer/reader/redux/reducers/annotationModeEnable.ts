@@ -11,7 +11,7 @@ import { readerLocalActionAnnotations } from "../actions";
 import { IAnnotationModeState } from "readium-desktop/common/redux/states/renderer/annotation";
 
 function annotationModeEnableReducer_(
-    state: IAnnotationModeState = { enable: false, cleanText: "" },
+    state: IAnnotationModeState = { enable: false, locatorExtended: undefined },
     action: readerLocalActionAnnotations.enableMode.TAction,
 ): IAnnotationModeState {
 

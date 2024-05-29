@@ -27,6 +27,8 @@ import { readerLocalActionSetConfig } from "../redux/actions";
 import classNames from "classnames";
 import { TextArea } from "react-aria-components";
 
+// import { readiumCSSDefaults } from "@r2-navigator-js/electron/common/readium-css-settings";
+
 interface IProps {
     save: (color: IColor, comment: string, drawType: TDrawType) => void;
     cancel: () => void;
@@ -71,10 +73,11 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
     const [__] = useTranslator();
     const { annotation_defaultColor, annotation_defaultDrawType } = useSelector((state: IReaderRootState) => state.reader.defaultConfig);
 
-    const { cleanText } = useSelector((state: IReaderRootState) => state.annotation);
+    const { locatorExtended } = useSelector((state: IReaderRootState) => state.annotation);
+    // const cleanText = locatorExtended.selectionInfo.cleanText.slice(0, 200);
 
-    const annotationStateDEFAULT: Pick<IAnnotationState, "color" | "comment" | "drawType"> & { locatorExtended: { selectionInfo: { cleanText: string } } }
-        = { color: annotation_defaultColor, comment: "", drawType: annotation_defaultDrawType, locatorExtended: { selectionInfo: { cleanText } } };
+    // Pick<IAnnotationState, "color" | "comment" | "drawType"> & { locatorExtended: { selectionInfo: { cleanText: string } } }
+    const annotationStateDEFAULT: Omit<IAnnotationState, "uuid"> = { color: annotation_defaultColor, comment: "", drawType: annotation_defaultDrawType, locatorExtended };
 
     const [, iannotationState] = useSelector((state: IReaderRootState) => !uuid ? [undefined, undefined] : state.reader.annotation.find(([, annotationState]) => annotationState.uuid === uuid));
     const annotationState: typeof annotationStateDEFAULT = iannotationState ? iannotationState : annotationStateDEFAULT;
@@ -159,7 +162,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         }
         <div
             className={classNames(displayFromReaderMenu ? "" : stylesAnnotations.annotations_line, dockedMode ? stylesAnnotations.docked_annotation_line : "")} style={{backgroundColor: !displayFromReaderMenu ? "var(--color-extralight-grey)" : ""}}>
-            <p>{annotationState.locatorExtended.selectionInfo.cleanText}</p>
+            <p>{annotationState.locatorExtended.selectionInfo.cleanText.length > (200-3) ? `${annotationState.locatorExtended.selectionInfo.cleanText.slice(0, 200)}...` : annotationState.locatorExtended.selectionInfo.cleanText}</p>
             <TextArea id="addNote" name="addNote" wrap="hard" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef}
             ></TextArea>
 
@@ -206,6 +209,29 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                     )}
                 </div>
             </div>
+{/* 
+            <details><summary>{__("reader.settings.preview")}</summary><div>{<p style={{
+                backgroundColor: (!readerConfig.theme || readerConfig.theme === "neutral") ? (readiumCSSDefaults.backgroundColor || "white") :
+                    readerConfig.theme === "sepia" ? "#faf4e8" :
+                    readerConfig.theme === "night" ? "#121212" :
+                    readerConfig.theme === "paper" ? "#E9DDC8" :
+                    readerConfig.theme === "contrast1" ? "#000000" :
+                    readerConfig.theme === "contrast2" ? "#000000" :
+                    readerConfig.theme === "contrast3" ? "#181842" :
+                    readerConfig.theme === "contrast4" ? "#C5E7CD" :
+                    (readiumCSSDefaults.backgroundColor || "white"),
+                color: (!readerConfig.theme || readerConfig.theme === "neutral") ? (readiumCSSDefaults.textColor || "black") :
+                    readerConfig.theme === "sepia" ? "black" :
+                    readerConfig.theme === "night" ? "#fff" :
+                    readerConfig.theme === "paper" ? "#000000" :
+                    readerConfig.theme === "contrast1" ? "#fff" :
+                    readerConfig.theme === "contrast2" ? "#FFFF00" :
+                    readerConfig.theme === "contrast3" ? "#FFFF" :
+                    readerConfig.theme === "contrast4" ? "#000000" :
+                    (readiumCSSDefaults.textColor || "black"),
+            }}><span>{annotationState.locatorExtended.selectionInfo.cleanBefore}</span><span style={{
+                backgroundColor: colorSelected,
+            }}>{annotationState.locatorExtended.selectionInfo.cleanText}</span><span>{annotationState.locatorExtended.selectionInfo.cleanAfter}</span></p>}</div></details> */}
         </div>
 
         {/* <label htmlFor="addNote">{__("reader.annotations.addNote")}</label> */}
