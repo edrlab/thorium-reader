@@ -182,13 +182,14 @@ const Themes = () => {
 };
 
 const TabHeader = (props: React.PropsWithChildren<{title: string}>) => {
+    const [__] = useTranslator();
     return (
         <div key="modal-header" className={stylesSettings.close_button_div}>
             <TabTitle title={props.title}>
             {props.children}
             </TabTitle>
             <Dialog.Close asChild>
-                <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
                     <SVG ariaHidden={true} svg={QuitIcon} />
                 </button>
             </Dialog.Close>
@@ -253,7 +254,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
 
                 {/* <div className={stylesSettings.close_button_div}>
                     <Dialog.Close asChild>
-                        <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                        <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
                             <SVG ariaHidden={true} svg={QuitIcon} />
                         </button>
                     </Dialog.Close>

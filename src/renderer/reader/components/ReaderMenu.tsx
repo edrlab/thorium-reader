@@ -810,10 +810,10 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) =
                                     className={stylesPopoverDialog.bookmark_textArea}
                                 />
                                 <div style={{ display: "flex", gap: "5px" }}>
-                                    <button className={stylesButtons.button_secondary_blue} aria-label="cancel" type="button" onClick={() => { setItemToEdit(-1); }}>{__("dialog.cancel")}</button>
+                                    <button className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")} type="button" onClick={() => { setItemToEdit(-1); }}>{__("dialog.cancel")}</button>
                                     <button type="submit"
                                         className={stylesButtons.button_primary_blue}
-                                        aria-label="save"
+                                        aria-label={__("reader.marks.saveMark")}
                                         onClick={(e) => { e.preventDefault(); submitBookmark(textearearef?.current?.value || ""); }}
                                     >
                                         <SVG ariaHidden svg={SaveIcon} />
@@ -1630,17 +1630,17 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 <div key="modal-header" className={stylesSettings.close_button_div}>
                     <TabTitle value={tabValue}/>
                     <div>
-                    <button className={stylesButtons.button_transparency_icon} aria-label="left" onClick={setDockingModeLeftSide}>
+                    <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.svg.left")} onClick={setDockingModeLeftSide}>
                         <SVG ariaHidden={true} svg={DockLeftIcon} />
                     </button>
-                    <button className={stylesButtons.button_transparency_icon} aria-label="right" onClick={setDockingModeRightSide}>
+                    <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.svg.right")} onClick={setDockingModeRightSide}>
                         <SVG ariaHidden={true} svg={DockRightIcon} />
                     </button>
-                    <button className={stylesButtons.button_transparency_icon} disabled aria-label="full" onClick={setDockingModeFull}>
+                    <button className={stylesButtons.button_transparency_icon} disabled aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
                         <SVG ariaHidden={true} svg={DockModalIcon} />
                     </button>
                     <Dialog.Close asChild>
-                        <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                        <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
                             <SVG ariaHidden={true} svg={QuitIcon} />
                         </button>
                     </Dialog.Close>
@@ -1686,18 +1686,18 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         <div key="docked-header" className={stylesPopoverDialog.docked_header}>
                             <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls} style={{ justifyContent: "space-between", width: "100%"}}>
                                 <div style={{ display: "flex", gap: "5px" }}>
-                                    <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label="left" onClick={setDockingModeLeftSide}>
+                                    <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label={__("reader.svg.left")} onClick={setDockingModeLeftSide}>
                                         <SVG ariaHidden={true} svg={DockLeftIcon} />
                                     </button>
-                                    <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label="right" onClick={setDockingModeRightSide}>
+                                    <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label={__("reader.svg.right")} onClick={setDockingModeRightSide}>
                                         <SVG ariaHidden={true} svg={DockRightIcon} />
                                     </button>
-                                    <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "full" ? true : false} aria-label="full" onClick={setDockingModeFull}>
+                                    <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "full" ? true : false} aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
                                         <SVG ariaHidden={true} svg={DockModalIcon} />
                                     </button>
                                 </div>
                                 <Dialog.Close asChild>
-                                    <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                                    <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
                                         <SVG ariaHidden={true} svg={QuitIcon} />
                                     </button>
                                 </Dialog.Close>

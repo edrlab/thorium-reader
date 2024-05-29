@@ -62,7 +62,7 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
                         </Dialog.Title>
                         <div>
                             <Dialog.Close asChild>
-                                <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                                <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
                                     <SVG ariaHidden={true} svg={QuitIcon} />
                                 </button>
                             </Dialog.Close>

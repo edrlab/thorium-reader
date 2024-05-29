@@ -237,13 +237,13 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         {/* <label htmlFor="addNote">{__("reader.annotations.addNote")}</label> */}
         <div className={stylesAnnotations.annotation_form_textarea_buttons}>
             {displayFromReaderMenu
-                ? <button className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={cancel} type="button">{__("dialog.cancel")}</button>
-                : <Popover.Close className={stylesButtons.button_secondary_blue} aria-label="cancel" onClick={cancel}>{__("dialog.cancel")}</Popover.Close>
+                ? <button className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")} onClick={cancel} type="button">{__("dialog.cancel")}</button>
+                : <Popover.Close className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")} onClick={cancel}>{__("dialog.cancel")}</Popover.Close>
             }
             {displayFromReaderMenu
                 ? <button type="submit"
                     className={stylesButtons.button_primary_blue}
-                    aria-label="save"
+                    aria-label={__("reader.annotations.saveNote")}
                     onClick={(e) => {
                         e.preventDefault();
 
@@ -260,7 +260,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                 <Popover.Close
                     type="submit"
                     className={stylesButtons.button_primary_blue}
-                    aria-label="save"
+                    aria-label={__("reader.annotations.saveNote")}
                     onClick={(e) => {
                         e.preventDefault();
 
