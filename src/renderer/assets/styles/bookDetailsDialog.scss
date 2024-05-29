@@ -320,7 +320,16 @@
     display: flex;
     align-items: center;
     justify-content: start;
-    gap: 5px;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+
+    .allowUserSelect {
+      font-size: smaller;
+    }
+
+    strong {
+      padding-right: 5px;
+    }
   }
 
   &_state {
