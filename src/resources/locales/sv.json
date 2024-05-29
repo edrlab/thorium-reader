@@ -310,7 +310,13 @@
       "noSelectionToast": "Ingen markering",
       "quickAnnotations": "Snabbskapa (hoppa över redigeraren)",
       "saveNote": "Spara",
-      "toggleMarginMarks": "Visa i marginalen"
+      "toggleMarginMarks": "Visa i marginalen",
+      "type": {
+        "outline": "Kontur",
+        "solid": "Färgöverstrykning",
+        "strikethrough": "Genomstrykning",
+        "underline": "Understrykning"
+      }
     },
     "divina": {
       "mute": "stäng av ljud",
@@ -419,7 +425,7 @@
       },
       "preview": "Förhandsvisning",
       "reduceMotion": "Minska rörelser",
-      "scrolled": "Rullbar",
+      "scrolled": "Rullningsbar",
       "spacing": "Avstånd",
       "text": "Text",
       "theme": {
