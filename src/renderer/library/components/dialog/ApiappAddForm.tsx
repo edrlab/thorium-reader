@@ -41,8 +41,8 @@ const Item = ({v}: {v: IApiappSearchResultView}) => {
                     cursor: "pointer",
                     padding: "8px",
                     marginTop: "1rem",
-                    backgroundColor: selectSearchResult === v ? "#DDDDDD" : "transparent",
-                    border: selectSearchResult === v ? "2px solid black" : "2px solid transparent",
+                    backgroundColor: selectSearchResult === v ? "var(--color-light-blue)" : "transparent",
+                    border: selectSearchResult === v ? "2px solid var(--color-blue)" : "2px solid transparent",
                     borderRadius: "8px",
                 }}
                     role="option"
