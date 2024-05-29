@@ -310,7 +310,13 @@
       "noSelectionToast": "Ei valintaa",
       "quickAnnotations": "Pikatila (ohita muokkausikkuna)",
       "saveNote": "Tallenna",
-      "toggleMarginMarks": "Näytä marginaalissa"
+      "toggleMarginMarks": "Näytä marginaalissa",
+      "type": {
+        "outline": "Reunaviiva",
+        "solid": "Värikorostus",
+        "strikethrough": "Yliviivaus",
+        "underline": "Alleviivaus"
+      }
     },
     "divina": {
       "mute": "mykistä",
