@@ -277,30 +277,22 @@ export const FontFamily = ({config: {font}, set}: {config: Pick<ReaderConfig, "f
     //     });
     // }
 
-    // console.log(options);
-
-    const selectFont = () => {
-
-        const selected = options.find((v) => v.value === font) || {
-            id: fontList.length,
-            value: font,
-            name: font,
-            fontFamily: `${font}, Consolas, monospace`,
-        };
-        // console.log(selected);
-
-        const defaultkey = selected.id;
-        const fontFamily = selected.fontFamily;
-        const fontName = selected.name;
-
-        return {defaultkey, fontFamily, fontName};
+    const selected = options.find((v) => v.value === font) || {
+        id: fontList.length,
+        value: font,
+        name: font,
+        fontFamily: `${font}, Consolas, monospace`,
     };
 
-    const [inputval, setInputval] = React.useState(selectFont().fontName);
+    const defaultkey = selected.id;
+    const fontFamily = selected.fontFamily;
+    const fontName = selected.name;
+
+    const [inputval, setInputval] = React.useState(fontName);
 
     React.useEffect(() => {
-        setInputval(selectFont().fontName);
-    }, [font]);
+        setInputval(fontName);
+    }, [fontName]);
 
     const saveFont = (value: string) => {
         let val = value.trim();
@@ -324,7 +316,7 @@ export const FontFamily = ({config: {font}, set}: {config: Pick<ReaderConfig, "f
         set({ font: val });
     };
 
-    const { defaultkey, fontFamily, fontName } = selectFont();
+    
     return (
         <div>
             <ComboBox label={__("reader.settings.font")} defaultItems={options} selectedKey={defaultkey}
@@ -1082,7 +1074,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
             setSettings({ ...readerConfig, ...config });
         };
         return debounce(saveConfig, 400);
-    }, [transcientStateOverridePublisherDefault, readerConfig]);
+    }, [setSettings, setTranscientStateOverridePublisherDefault, transcientStateOverridePublisherDefault, readerConfig]);
 
     React.useEffect(() => {
         setPartialSettingsDebounced.clear();
@@ -1114,7 +1106,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
             setTabValue("tab-text");
             setPartialSettingsDebounced(transcientStateOverridePublisherDefault);
         }
-    }, [overridePublisherDefault, transcientStateOverridePublisherDefault]);
+    }, [setOverridePublisherDefault, setPartialSettingsDebounced, setTabValue, overridePublisherDefault, transcientStateOverridePublisherDefault]);
 
     const dockedModeRef = React.useRef<HTMLButtonElement>();
     const tabModeRef = React.useRef<HTMLDivElement>();

@@ -73,11 +73,11 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
 
     const { cleanText } = useSelector((state: IReaderRootState) => state.annotation);
 
-    let annotationState: Pick<IAnnotationState, "color" | "comment" | "drawType"> & { locatorExtended: { selectionInfo: { cleanText: string } } }
+    const annotationStateDEFAULT: Pick<IAnnotationState, "color" | "comment" | "drawType"> & { locatorExtended: { selectionInfo: { cleanText: string } } }
         = { color: annotation_defaultColor, comment: "", drawType: annotation_defaultDrawType, locatorExtended: { selectionInfo: { cleanText } } };
-    if (uuid) {
-        [, annotationState] = useSelector((state: IReaderRootState) => state.reader.annotation.find(([, annotationState]) => annotationState.uuid === uuid));
-    } 
+
+    const [, iannotationState] = useSelector((state: IReaderRootState) => !uuid ? [undefined, undefined] : state.reader.annotation.find(([, annotationState]) => annotationState.uuid === uuid));
+    const annotationState: typeof annotationStateDEFAULT = iannotationState ? iannotationState : annotationStateDEFAULT;
 
     const colorStr = `#${annotationState.color.red.toString(16).padStart(2, "0")}${annotationState.color.green.toString(16).padStart(2, "0")}${annotationState.color.blue.toString(16).padStart(2, "0")}`.toUpperCase();
 
@@ -94,7 +94,6 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
       } : annotationState.color;
 
     const previousColorSelected = React.useRef<IColor>(colorObj);
-
 
     const textAreaRef = React.useRef<HTMLTextAreaElement>();
 

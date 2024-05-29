@@ -215,7 +215,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
         const displayType = (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid;
 
-        const { __ } = this.props;
+        const { __, location, translator, tags, openReader, displayPublicationInfo } = this.props;
 
         const secondaryHeader = <Header />;
         // const breadCrumb = <BreadCrumb breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}/>;
@@ -230,15 +230,15 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
                     this.state.publicationViews ?
                         <TableView
                             accessibilitySupportEnabled={this.state.accessibilitySupportEnabled}
-                            location={this.props.location}
+                            location={location}
                             displayType={displayType}
                             __={__}
-                            translator={this.props.translator}
+                            translator={translator}
                             publicationViews={this.state.publicationViews}
-                            displayPublicationInfo={this.props.displayPublicationInfo}
-                            openReader={this.props.openReader}
+                            displayPublicationInfo={displayPublicationInfo}
+                            openReader={openReader}
                             focusInputRef={this.focusInputRef}
-                            tags={this.props.tags}
+                            tags={tags}
                         />
                         // (displayType === DisplayType.Grid ?
                         //     <GridView normalOrOpdsPublicationViews={this.state.publicationViews} /> :
@@ -502,6 +502,13 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
     //     return <></>;
     // }
 
+    // TOOD: verify that onInputChange() is referentially stable (Object.is) so that the React.useEffect() isn't triggered unnecessarily when the Functional component's render function is called.
+    const onInputChange = useAsyncDebounce((v) => {
+        props.column.setFilter(v);
+    }, 500);
+
+    // TOOD: verify that searchParams is referentially stable (Object.is) so that the React.useEffect() isn't triggered unnecessarily when the Functional component's render function is called.
+    // ... failing this, destructure early (searchParams.get("focus") and searchParams.get("value"))
     const [searchParams] = useSearchParams();
     React.useEffect(() => {
         if (searchParams.get("focus") === "tags" && props.column.id === "colTags") {
@@ -523,11 +530,7 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                     (inputRef?.current?.value || "").trim() || undefined);
             }
         }
-    }, []);
-
-    const onInputChange = useAsyncDebounce((v) => {
-        props.column.setFilter(v);
-    }, 500);
+    }, [props.column.id, props.accessibilitySupportEnabled, props.column, searchParams, onInputChange]);
 
     return props.showColumnFilters ?
         <div className={stylesPublication.showColFilters_wrapper}>
@@ -1373,32 +1376,32 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
     const scrollToViewRef = React.useRef(null);
 
-    const { __ } = props;
+    const { openReader, displayPublicationInfo, displayType, __, focusInputRef, translator, publicationViews, accessibilitySupportEnabled, tags } = props;
 
     const renderProps_Filter: ITableCellProps_Filter =
     {
-        __: props.__,
-        translator: props.translator,
-        displayType: props.displayType,
+        __,
+        translator,
+        displayType,
 
         showColumnFilters,
-        accessibilitySupportEnabled: props.accessibilitySupportEnabled,
+        accessibilitySupportEnabled,
 
-        selectedTag: selectedTag,
-        setSelectedTag: setSelectedTag,
+        selectedTag,
+        setSelectedTag,
     };
 
     const renderProps_Cell: ITableCellProps_GenericCell =
     {
-        __: props.__,
-        translator: props.translator,
-        displayType: props.displayType,
+        __,
+        translator,
+        displayType,
 
-        selectedTag: selectedTag,
-        setSelectedTag: setSelectedTag,
+        selectedTag,
+        setSelectedTag,
 
-        displayPublicationInfo: props.displayPublicationInfo,
-        openReader: props.openReader,
+        displayPublicationInfo,
+        openReader,
 
         setShowColumnFilters: (show: boolean, columnId: string, filterValue: string) => {
             setShowColumnFilters(show);
@@ -1413,16 +1416,16 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         },
     };
 
-    // const locale = props.translator.getLocale();
+    // const locale = translator.getLocale();
     // // https://momentjs.com/docs/#/displaying/
     // moment.locale(locale);
 
     const tableRows = React.useMemo(() => {
-        return props.publicationViews.slice().reverse().map((publicationView) => {
+        return publicationViews.slice().reverse().map((publicationView) => {
 
             // translator.translateContentField(author)
-            // const authors = publicationView.authors ? formatContributorToString(publicationView.authors, props.translator) : "";
-            // const publishers = publicationView.publishers ? formatContributorToString(publicationView.publishers, props.translator) : "";
+            // const authors = publicationView.authors ? formatContributorToString(publicationView.authors, translator) : "";
+            // const publishers = publicationView.publishers ? formatContributorToString(publicationView.publishers, translator) : "";
 
             // publicationView.publishedAt = r2Publication.metadata.PublicationDate && moment(metadata.PublicationDate).toISOString();
             const momPublishedDate_ = publicationView.publishedAt ? moment(publicationView.publishedAt) : undefined;
@@ -1433,7 +1436,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             let publishedDateVisual = publishedDateCanonical;
             if (publishedDateCanonical) {
                 try {
-                    publishedDateVisual = new Intl.DateTimeFormat(props.translator.getLocale(), { dateStyle: "medium", timeStyle: undefined }).format(new Date(publishedDateCanonical));
+                    publishedDateVisual = new Intl.DateTimeFormat(translator.getLocale(), { dateStyle: "medium", timeStyle: undefined }).format(new Date(publishedDateCanonical));
                 } catch (err) {
                     console.log(err);
                 }
@@ -1447,7 +1450,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             let lastReadDateVisual = lastReadDateCanonical;
             if (lastReadDateCanonical) {
                 try {
-                    lastReadDateVisual = new Intl.DateTimeFormat(props.translator.getLocale(), { dateStyle: "medium", timeStyle: "short" }).format(new Date(lastReadDateCanonical));
+                    lastReadDateVisual = new Intl.DateTimeFormat(translator.getLocale(), { dateStyle: "medium", timeStyle: "short" }).format(new Date(lastReadDateCanonical));
                 } catch (err) {
                     console.log(err);
                 }
@@ -1493,7 +1496,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
             const format = publicationView.isAudio ? "Audio" : publicationView.isDivina ? "Divina" : publicationView.isPDF ? "PDF" : publicationView.isDaisy ? "DAISY" : publicationView.isFixedLayoutPublication ? "EPUB (FXL)" : "EPUB";
 
-            const duration = (publicationView.duration ? formatTime(publicationView.duration) : "") + (publicationView.nbOfTracks ? ` (${props.__("publication.audio.tracks")}: ${publicationView.nbOfTracks})` : "");
+            const duration = (publicationView.duration ? formatTime(publicationView.duration) : "") + (publicationView.nbOfTracks ? ` (${__("publication.audio.tracks")}: ${publicationView.nbOfTracks})` : "");
 
             // const identifier = publicationView.workIdentifier ? publicationView.workIdentifier : "";
             // const publicationType = publicationView.RDFType ? publicationView.RDFType : "";
@@ -1501,7 +1504,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             let strA11Summary = "";
             if (publicationView.a11y_accessibilitySummary) {
 
-                const langStr = convertMultiLangStringToString(props.translator, publicationView.a11y_accessibilitySummary);
+                const langStr = convertMultiLangStringToString(translator, publicationView.a11y_accessibilitySummary);
 
                 if (langStr && langStr[1]) {
                     strA11Summary = DOMPurify.sanitize(langStr[1]).replace(/font-size:/g, "font-sizexx:");
@@ -1526,7 +1529,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     authors: publicationView.authors,
                 },
                 colReadingState: { // IColumnValue_Authors
-                    label: publicationView.readingFinished ? `${props.__("publication.read")}` : publicationView.lastReadingLocation ? `${props.__("publication.onGoing")}` : `${props.__("publication.notStarted")}`,
+                    label: publicationView.readingFinished ? `${__("publication.read")}` : publicationView.lastReadingLocation ? `${__("publication.onGoing")}` : `${__("publication.notStarted")}`,
                 },
                 colRemainingDays: { // IColumnValue_Remain
                     label: remainingDays,
@@ -1607,7 +1610,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             };
             return cols;
         });
-    }, [props.publicationViews]);
+    }, [translator, publicationViews, __]);
 
     const sortFunction = (rowA: Row<IColumns>, rowB: Row<IColumns>, columnId: IdType<IColumns>, desc?: boolean) => {
         let res = 0;
@@ -1647,7 +1650,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             UseGlobalFiltersColumnOptions<IColumns> &
             UseFiltersColumnOptions<IColumns>)[] = [
                 {
-                    Header: props.__("publication.cover.img"),
+                    Header: __("publication.cover.img"),
                     accessor: "colCover",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1656,7 +1659,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: props.__("publication.title"),
+                    Header: __("publication.title"),
                     accessor: "colTitle",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1665,7 +1668,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: props.__("publication.author"),
+                    Header: __("publication.author"),
                     accessor: "colAuthors",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1674,7 +1677,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: props.__("publication.progression.title"),
+                    Header: __("publication.progression.title"),
                     accessor: "colReadingState",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1683,7 +1686,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: props.__("publication.remainingTime"),
+                    Header: __("publication.remainingTime"),
                     accessor: "colRemainingDays",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1692,7 +1695,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: props.__("catalog.lang"),
+                    Header: __("catalog.lang"),
                     accessor: "colLanguages",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1701,7 +1704,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: props.__("catalog.tags"),
+                    Header: __("catalog.tags"),
                     accessor: "colTags",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1710,7 +1713,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: props.__("catalog.format"),
+                    Header: __("catalog.format"),
                     accessor: "colFormat",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1718,7 +1721,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: props.__("catalog.lastRead"),
+                    Header: __("catalog.lastRead"),
                     accessor: "colLastReadTimestamp",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1727,7 +1730,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: props.__("catalog.publisher"),
+                    Header: __("catalog.publisher"),
                     accessor: "colPublishers",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1736,7 +1739,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: props.__("catalog.released"),
+                    Header: __("catalog.released"),
                     accessor: "colPublishedDate",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1750,12 +1753,12 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: props.__("publication.duration.title"),
+                    Header: __("publication.duration.title"),
                     accessor: "colDuration",
                     sortType: sortFunction,
                 },
                 {
-                    Header: props.__("catalog.description"),
+                    Header: __("catalog.description"),
                     accessor: "colDescription",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1764,7 +1767,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 },
 
                 {
-                    Header: props.__("publication.accessibility.name"),
+                    Header: __("publication.accessibility.name"),
                     accessor: "col_a11y_accessibilitySummary",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1772,7 +1775,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: props.__("publication.actions"),
+                    Header: __("publication.actions"),
                     accessor: "colActions",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1838,7 +1841,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 // },
 
                 // {
-                //     Header: props.__("publication.progression.title"),
+                //     Header: __("publication.progression.title"),
                 //     accessor: "colProgression",
                 // sortType: sortFunction,
                 // },
@@ -1854,7 +1857,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 // },
             ];
         return arr;
-    }, [props.displayType]);
+    }, [__]);
 
     const defaultColumn = React.useMemo(
         () => ({
@@ -1915,9 +1918,9 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     const PAGESIZE = 50;
 
     const initialState: UsePaginationState<IColumns> & TableState<IColumns> = {
-        pageSize: PAGESIZE, // props.displayType === DisplayType.List ? 20 : 10;
+        pageSize: PAGESIZE, // displayType === DisplayType.List ? 20 : 10;
         pageIndex: 0,
-        hiddenColumns: props.displayType === DisplayType.Grid ? ["colLanguages", "colPublishers", "colPublishedDate", "colLCP", "colDuration", "colDescription", "col_a11y_accessibilitySummary"] : [],
+        hiddenColumns: displayType === DisplayType.Grid ? ["colLanguages", "colPublishers", "colPublishedDate", "colLCP", "colDuration", "colDescription", "col_a11y_accessibilitySummary"] : [],
     };
     const opts:
         TableOptions<IColumns> &
@@ -1941,7 +1944,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     React.useEffect(() => {
 
         const cb = () => {
-            if (props.displayType === DisplayType.Grid) {
+            if (displayType === DisplayType.Grid) {
                 const body = document.getElementById("publicationsTableBody") as HTMLTableSectionElement;
                 const bodyWidth = body?.offsetWidth;
                 if (!bodyWidth) {
@@ -1966,7 +1969,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         return () => {
             window.removeEventListener("resize", cdDebounce);
         };
-    }, [tableInstance, props.displayType]);
+    }, [tableInstance, displayType]);
 
     // <pre>
     // <code>
@@ -1985,7 +1988,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     // {tableInstance.state.pageIndex + 1} / {tableInstance.pageOptions.length}
     // </span>
     // <span>
-    // {props.__("reader.navigation.goTo")}
+    // {__("reader.navigation.goTo")}
     // <input
     //     type="number"
     //     defaultValue={tableInstance.state.pageIndex + 1}
@@ -2016,8 +2019,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         <Select refButEl={forwardedRef} {...props}></Select>);
     SelectRef.displayName = "ComboBox";
 
-    const tagsOptions = props.tags.map((v, i) => ({ id: i, value: i, name: v }));
-
+    const tagsOptions = tags.map((v, i) => ({ id: i, value: i, name: v }));
 
     return (
         <>
@@ -2026,15 +2028,15 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 <div className={stylesPublication.allBooks_header_navigation}>
                     <div className={stylesPublication.allBooks_header_navigation_inputs}>
                         <CellGlobalFilter
-                            accessibilitySupportEnabled={props.accessibilitySupportEnabled}
+                            accessibilitySupportEnabled={accessibilitySupportEnabled}
                             preGlobalFilteredRows={tableInstance.preGlobalFilteredRows}
                             globalFilteredRows={tableInstance.globalFilteredRows}
                             globalFilter={tableInstance.state.globalFilter}
                             setGlobalFilter={tableInstance.setGlobalFilter}
-                            __={props.__}
-                            translator={props.translator}
-                            displayType={props.displayType}
-                            focusInputRef={props.focusInputRef}
+                            __={__}
+                            translator={translator}
+                            displayType={displayType}
+                            focusInputRef={focusInputRef}
 
                             setShowColumnFilters={(show: boolean) => {
                                 const currentShow = showColumnFilters;
@@ -2050,7 +2052,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                             }}
                         />
                         {
-                            (props.tags.length > 0) && (props.displayType === DisplayType.Grid)
+                            (tags.length > 0) && (displayType === DisplayType.Grid)
                                 ?
                                 // <div className={stylesPublication.filter_container}>
                                 // <SelectRef
@@ -2110,7 +2112,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                 //                 <SVG ariaHidden svg={DeleteFilter} />
                                 //             </button>
                                 //             <div>
-                                //                 {props.tags.map((tag, i: number) => {
+                                //                 {tags.map((tag, i: number) => {
                                 //                     return (
                                 //                         <span
                                 //                             key={i + 1000}
@@ -2134,7 +2136,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                         <div className={stylesPublication.allBooks_header_pagination_container}>
                             <button
                                 className={stylesPublication.allBooks_header_pagination_arrow}
-                                aria-label={`${props.__("opds.firstPage")}`}
+                                aria-label={`${__("opds.firstPage")}`}
                                 onClick={() => tableInstance.gotoPage(0)}
                                 disabled={!tableInstance.canPreviousPage}>
                                 <SVG ariaHidden={true} svg={ArrowFirstIcon} />
@@ -2144,14 +2146,14 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                 style={{
                                     transform: "rotate(180deg)",
                                 }}
-                                aria-label={`${props.__("opds.previous")}`}
+                                aria-label={`${__("opds.previous")}`}
                                 onClick={() => tableInstance.previousPage()}
                                 disabled={!tableInstance.canPreviousPage}>
                                 <SVG ariaHidden={true} svg={ChevronRight} />
                             </button>
                             <select
                                 id="pageSelect"
-                                aria-label={`${props.__("reader.navigation.currentPageTotal", { current: tableInstance.state.pageIndex + 1, total: tableInstance.pageOptions.length })}`}
+                                aria-label={`${__("reader.navigation.currentPageTotal", { current: tableInstance.state.pageIndex + 1, total: tableInstance.pageOptions.length })}`}
                                 className={stylesPublication.allBooks_header_pagination_select}
                                 value={tableInstance.state.pageIndex}
                                 onChange={(e) => {
@@ -2171,14 +2173,14 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                             </select>
                             <button
                                 className={stylesPublication.allBooks_header_pagination_arrow}
-                                aria-label={`${props.__("opds.next")}`}
+                                aria-label={`${__("opds.next")}`}
                                 onClick={() => tableInstance.nextPage()}
                                 disabled={!tableInstance.canNextPage}>
                                 <SVG ariaHidden={true} svg={ChevronRight} />
                             </button>
                             <button
                                 className={stylesPublication.allBooks_header_pagination_arrow}
-                                aria-label={`${props.__("opds.lastPage")}`}
+                                aria-label={`${__("opds.lastPage")}`}
                                 onClick={() => tableInstance.gotoPage(tableInstance.pageCount - 1)}
                                 disabled={!tableInstance.canNextPage}>
                                 <SVG ariaHidden={true} svg={ArrowLastIcon} />
@@ -2196,7 +2198,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     style={{
                         display: "table",
                     }}>
-                    {props.displayType === DisplayType.Grid ? ""
+                    {displayType === DisplayType.Grid ? ""
                         :
                         <thead>{tableInstance.headerGroups.map((headerGroup, index) =>
                         (<tr key={`headtr_${index}`} {...headerGroup.getHeaderGroupProps()}>{
@@ -2260,11 +2262,11 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                                 }}
                                                 aria-label={
                                                     `${column.Header}${column.isSorted ? (column.isSortedDesc ?
-                                                        ` (${props.__("catalog.column.descending")})`
+                                                        ` (${__("catalog.column.descending")})`
                                                         :
-                                                        ` (${props.__("catalog.column.ascending")})`)
+                                                        ` (${__("catalog.column.ascending")})`)
                                                         :
-                                                        ` (${props.__("catalog.column.unsorted")})`
+                                                        ` (${__("catalog.column.unsorted")})`
                                                     }`
                                                 }
                                             >
@@ -2291,12 +2293,12 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                             // aria-label={`${column.Header}`}
                                             //     >
                                             //     {
-                                            //     // props.displayType === DisplayType.List ? "" : column.render("Header")
+                                            //     // displayType === DisplayType.List ? "" : column.render("Header")
                                             //     // column.render("Header")
                                             //     }
                                             // </span>
                                             <><input
-                                                aria-label={props.__("header.searchPlaceholder")}
+                                                aria-label={__("header.searchPlaceholder")}
                                                 id="setShowColumnFiltersCheckbox"
                                                 type="checkbox"
                                                 checked={showColumnFilters ? true : false}
@@ -2338,9 +2340,9 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                 //         globalFilteredRows={tableInstance.globalFilteredRows}
                                 //         globalFilter={tableInstance.state.globalFilter}
                                 //         setGlobalFilter={tableInstance.setGlobalFilter}
-                                //         __={props.__}
-                                //         translator={props.translator}
-                                //         displayType={props.displayType}
+                                //         __={__}
+                                //         translator={translator}
+                                //         displayType={displayType}
                                 //     />
                                 // </th>
                                 // </tr>
@@ -2351,7 +2353,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                         className={stylesPublication.allBook_table_body}
                         id="publicationsTableBody"
                         style={{
-                            display: props.displayType === DisplayType.Grid ? "grid" : "",
+                            display: displayType === DisplayType.Grid ? "grid" : "",
                         }}
                     >
                         {tableInstance.page.map((row, index) => {
@@ -2359,7 +2361,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                             tableInstance.prepareRow(row);
 
                             const pubView: PublicationView = row.values?.colActions?.publication || undefined;
-                            if (props.displayType === DisplayType.Grid && !pubView) {
+                            if (displayType === DisplayType.Grid && !pubView) {
                                 console.log("#### pubView !! not defined for row :");
                                 console.log(row);
                                 console.log("####");
@@ -2367,7 +2369,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                             }
                         
                             return (
-                                props.displayType === DisplayType.Grid ?
+                                displayType === DisplayType.Grid ?
                                     <tr key={index}>
                                         <td><PublicationCard publicationViewMaybeOpds={pubView} isReading={pubView.lastReadingLocation ? true : false} /></td>
                                     </tr>

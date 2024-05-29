@@ -72,7 +72,7 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionAnnotations, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
-import * as Popover from '@radix-ui/react-popover';
+import * as Popover from "@radix-ui/react-popover";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 
 
@@ -178,8 +178,8 @@ const renderLinkList = (isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBa
     return T;
 };
 
-const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBaseProps["handleLinkClick"], dockedMode: boolean) => {
-    const renderLinkTree = (label: string | undefined, links: TToc, level: number, headingTrailLink: ILink | undefined): JSX.Element => {
+const renderLinkTree = (currentLocation: LocatorExtended, isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBaseProps["handleLinkClick"], dockedMode: boolean) => {
+    const RenderLinkTree = (label: string | undefined, links: TToc, level: number, headingTrailLink: ILink | undefined): JSX.Element => {
         // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
         const useTree = false;
 
@@ -328,7 +328,7 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
                                     </a>
                                 </div>
 
-                                {renderLinkTree(undefined, link.Children, level + 1, headingTrailLink)}
+                                {RenderLinkTree(undefined, link.Children, level + 1, headingTrailLink)}
                             </>
                         ) : (
                             <div role={"heading"} aria-level={level}>
@@ -373,7 +373,7 @@ const renderLinkTree = (currentLocation: any, isRTLfn: (_link: ILink) => boolean
             })}
         </ul>;
     };
-    return renderLinkTree;
+    return RenderLinkTree;
 };
 
 const HardWrapComment: React.FC<{comment: string}> = (props) => {
@@ -578,7 +578,7 @@ const annotationCardContext = React.createContext<{
 
 const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean, annotationUUIDFocused: string, doFocus: number} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
-    const {r2Publication, goToLocator, annotationUUIDFocused, doFocus, dockedMode} = props;
+    const {r2Publication, goToLocator, annotationUUIDFocused, dockedMode} = props;
     const [__] = useTranslator();
     // const [bookmarkToUpdate, setBookmarkToUpdate] = React.useState(undefined);
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
@@ -589,23 +589,23 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     // const pageTotal =  Math.ceil(annotationsQueue.length / MAX_MATCHES_PER_PAGE);
     const pageTotal =  Math.floor(annotationsQueue.length / MAX_MATCHES_PER_PAGE) + ((annotationsQueue.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1);
 
-    const getStartPage = () => {
+    const getStartPage = React.useCallback(() => {
         const annotationFocusItemIndex = annotationUUIDFocused ? annotationsQueue.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused) : 0;
         const annotationFocusItemPageNumber = Math.floor(annotationFocusItemIndex / MAX_MATCHES_PER_PAGE) + 1;
         const startPage = annotationUUIDFocused ? annotationFocusItemPageNumber : 1;
         return startPage;
-    };
+    }, [annotationUUIDFocused, annotationsQueue]);
 
     const [pageNumber, setPageNumber] = React.useState(getStartPage);
     React.useEffect(() => {
         if (pageNumber > pageTotal) {
             setPageNumber(pageTotal);
         }
-    }, [pageTotal]);
+    }, [pageTotal, pageNumber]);
 
     React.useEffect(() => {
         setPageNumber(getStartPage());
-    }, [annotationUUIDFocused, doFocus]);
+    }, [getStartPage]);
 
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
 
@@ -940,7 +940,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
             }
         }
         return 0;
-    }), [bookmarks]);
+    }), [bookmarks, r2Publication.Spine]);
 
     const MAX_MATCHES_PER_PAGE = 3;
 
@@ -950,7 +950,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
     const [pageNumber, setPageNumber] = React.useState(1);
     React.useEffect(() => {
         setPageNumber(pageTotal === 0 ? 1 : pageNumber > pageTotal ? pageTotal : pageNumber);
-    }, [pageTotal]);
+    }, [pageTotal, pageNumber]);
 
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
 
@@ -1516,7 +1516,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
 
         }
 
-    }, [tabValue, annotationUUID, doFocus]);
+    }, [tabValue, annotationUUID, doFocus, dockingMode]);
 
     if (!r2Publication) {
         return <>Critical Error no R2Publication available</>;

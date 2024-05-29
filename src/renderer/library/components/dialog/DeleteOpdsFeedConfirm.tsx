@@ -24,7 +24,7 @@ const DeleteOpdsFeedConfirm = (props: { feed: IOpdsFeedView, trigger: React.Reac
     const removeAction = React.useCallback(() => {
         dispatch(dialogActions.closeRequest.build());
         remove(props.feed.identifier);
-    }, [remove, props.feed.identifier]);
+    }, [dispatch, remove, props.feed.identifier]);
 
     return (
         <AlertDialog.Root {...props}>

@@ -20,7 +20,7 @@ export function useTranslator(): [typeof Translator.prototype.translate, Transla
             forceUpdate();
         };
         return translator.subscribe(handleLocaleChange);
-    }, [translator.subscribe]);
+    }, [translator]);
 
     return [__, translator];
 }
