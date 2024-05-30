@@ -69,7 +69,7 @@ import { TextArea } from "react-aria-components";
 import { AnnotationEdit } from "./AnnotationEdit";
 import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { readerLocalActionAnnotations, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
+import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import * as Popover from "@radix-ui/react-popover";
@@ -469,7 +469,9 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                     e.preventDefault();
                     const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
                     goToLocator(annotation.locatorExtended.locator, closeNavAnnotation);
-                    dispatch(readerLocalActionAnnotations.focus.build(annotation));
+                    
+                    // not used anymore, TODO remove the action
+                    // dispatch(readerLocalActionAnnotations.focus.build(annotation));
                 }}
 
                 // does not work on button (works on 'a' link)

@@ -2374,21 +2374,42 @@ class Reader extends React.Component<IProps, IState> {
         return visibleBookmarkList;
     }
 
+    private focusMainArea() {
+        if (this.fastLinkRef?.current) {
+            console.log("€€€€€ FOCUS READER MAIN");
+            this.fastLinkRef.current.focus(); console.log("!! FOCUS !!");
+        }
+    }
+
+    private closeMenu() {
+        
+        if (this.state.menuOpen) {
+            this.handleMenuButtonClick(false);
+        }
+    }
+
     private focusMainAreaLandmarkAndCloseMenu() {
 
-        if (this.state.menuOpen) {
-            this.handleMenuButtonClick();
-        }
+        // if (this.state.menuOpen) {
+        //     this.handleMenuButtonClick(false);
+        // }
 
         // no need here, as no hyperlink from settings menu
         // if (this.state.settingsOpen) {
         //     this.handleSettingsClick();
         // }
 
-        if (this.fastLinkRef?.current) {
-            // shortcutEnable must be true (see handleMenuButtonClick() above, and this.state.menuOpen))
-            this.onKeyboardFocusMain();
-        }
+        this.closeMenu();
+        this.focusMainArea();
+        // if (this.fastLinkRef?.current) {
+        //     // shortcutEnable must be true (see handleMenuButtonClick() above, and this.state.menuOpen))
+        //     console.log("@@@@@@@@@@@@@@@");
+        //     console.log();
+            
+        //     console.log("@@@@@@@@@@@@@@@");
+            
+        //     this.onKeyboardFocusMain();
+        // }
     }
 
     private navLeftOrRight_(left: boolean, spineNav?: boolean) {
@@ -2433,7 +2454,7 @@ class Reader extends React.Component<IProps, IState> {
     private goToLocator(locator: R2Locator, closeNavPanel = true, isFromOnPopState = false) {
 
         if (closeNavPanel) {
-            this.focusMainAreaLandmarkAndCloseMenu();
+            this.closeMenu();
         }
 
         if (this.props.isPdf) {
@@ -2459,6 +2480,8 @@ class Reader extends React.Component<IProps, IState> {
             }
         } else {
             this.handleLinkLocator(locator, isFromOnPopState);
+
+            this.focusMainArea();
         }
 
     }
