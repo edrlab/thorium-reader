@@ -2377,7 +2377,7 @@ class Reader extends React.Component<IProps, IState> {
     private focusMainArea() {
         if (this.fastLinkRef?.current) {
             console.log("€€€€€ FOCUS READER MAIN");
-            this.fastLinkRef.current.focus(); console.log("!! FOCUS !!");
+            this.fastLinkRef.current.focus();
         }
     }
 
