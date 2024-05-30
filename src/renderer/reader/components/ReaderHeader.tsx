@@ -929,6 +929,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 aria-hidden="true"
                                 className={stylesReader.menu_button}
                                 id="bookmarkLabel"
+                                aria-label={__("reader.navigation.bookmarkTitle")}
+                                title={__("reader.navigation.bookmarkTitle")}
                             >
                                 <SVG ariaHidden={true} svg={MarkIcon} className={classNames(stylesReaderHeader.bookmarkIcon, this.props.isOnBookmark ? stylesReaderHeader.active_svg : "")} />
                                 <SVG ariaHidden={true} svg={RemoveBookMarkIcon} className={classNames(stylesReaderHeader.bookmarkRemove, this.props.isOnBookmark ? stylesReaderHeader.active_svg : "")} />
@@ -970,6 +972,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         aria-hidden="true"
                                         className={stylesReader.menu_button}
                                         id="annotationLabel"
+                                        aria-label={__("reader.navigation.annotationTitle")}
+                                        title={__("reader.navigation.annotationTitle")}
                                     >
                                         <SVG ariaHidden svg={AnnotationsIcon} className={classNames(stylesReaderHeader.annotationsIcon, this.props.isAnnotationModeEnabled ? stylesReaderHeader.active_svg : "")} />
                                     </label>
