@@ -2,11 +2,11 @@
   "accessibility": {
     "bookMenu": "Menu",
     "closeDialog": "Fechar",
-    "importFile": "Importar publicação",
+    "importFile": "Importar documento",
     "leftSlideButton": "Deslizar lista para a esquerda",
     "mainContent": "Conteúdo principal",
     "rightSlideButton": "Deslizar lista para a direita",
-    "searchBook": "Procurar por título",
+    "searchBook": "Pesquisar por título",
     "skipLink": "Ir para o conteúdo",
     "toolbar": "Barra de ferramentas"
   },
@@ -55,8 +55,8 @@
     "addBookToLib": "Importar",
     "addTags": "Adicionar etiqueta",
     "addTagsButton": "Adicionar",
-    "allBooks": "Todos os livros",
-    "bookInfo": "Sobre este livro",
+    "allBooks": "Documentos",
+    "bookInfo": "Sobre o documento",
     "column": {
       "ascending": "crescente",
       "descending": "decrescente",
@@ -139,7 +139,7 @@
     }
   },
   "header": {
-    "allBooks": "Todos os documentos",
+    "allBooks": "Documentos",
     "catalogs": "Catálogos",
     "downloads": "Descarregamentos",
     "fitlerTagTitle": "Filtrar por etiqueta",
@@ -150,8 +150,8 @@
     "listTitle": "Tabela",
     "myCatalogs": "Meus catálogos",
     "refreshTitle": "recarregar",
-    "searchPlaceholder": "Procurar",
-    "searchTitle": "Pesquisar",
+    "searchPlaceholder": "Pesquisa",
+    "searchTitle": "Pesquisar por",
     "settings": "Configurações",
     "viewMode": "Modo de visualização"
   },
@@ -310,7 +310,13 @@
       "noSelectionToast": "Nenhuma seleção",
       "quickAnnotations": "Criação rápida (saltar editor)",
       "saveNote": "Guardar",
-      "toggleMarginMarks": "Exibir nas margens"
+      "toggleMarginMarks": "Exibir nas margens",
+      "type": {
+        "outline": "Contorno",
+        "solid": "Fundo sólido",
+        "strikethrough": "Rasurar",
+        "underline": "Sublinhado"
+      }
     },
     "divina": {
       "mute": "Silenciar áudio",
@@ -400,7 +406,7 @@
       "lineSpacing": "Espaçamento de linhas",
       "margin": "Margem",
       "noFootnotes": "Desativar notas de rodapé",
-      "noRTLFlip": "Desativar interface Direita para esquerda",
+      "noRTLFlip": "Desativar interface Direita-para-esquerda",
       "noRuby": "Ocultar Ruby Japonês",
       "paginated": "Paginado",
       "paraSpacing": "Espaçamento de parágrafos",
@@ -483,7 +489,7 @@
     "tabs": {
       "appearance": "Aparência",
       "general": "Geral",
-      "keyboardShortcuts": "Atalhos do teclado"
+      "keyboardShortcuts": "Atalhos de teclado"
     },
     "theme": {
       "auto": "Automático",
@@ -505,7 +511,7 @@
       "home": "O Thorium está diferente! Vamos descobrir o que há de novo...",
       "readingView1": "Personalize as suas preferências de leitura e audição: Thorium agora oferece vários temas de cores para a interface do utilizador e dos documentos. Agora também é mais fácil configurar ebooks 'narrados' com voz sintética e narração sincronizada de texto/áudio.",
       "readingView2": "A melhorada interface de utilizador do Thorium torna mais fácil encontrar texto em documentos, explorar resultados de pesquisa, ir para páginas específicas, navegar no índice, criar marcadores, etc., graças aos novos painéis 'encaixados'. O modo de leitura em ecrã completo continua a oferecer um ambiente livre de distrações.",
-      "yourBooks": "Bem-vindo à sua redesenhada estante pessoal! Na vista em ‘grelha’, filtre facilmente por etiquetas ou encontre documentos por palavras-chave. Na vista avançada de 'tabela', selecione e classifique os documentos por autores, título, data, formato, etc."
+      "yourBooks": "Bem-vindo à sua redesenhada estante pessoal! Na vista em ‘grelha’, filtre facilmente por etiquetas ou encontre documentos por palavras-chave. Na vista avançada de 'tabela', selecione e ordene os documentos por autores, título, data, formato, etc."
     },
     "dontShow": "Não voltar a exibir",
     "tab": {
