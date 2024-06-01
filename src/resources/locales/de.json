@@ -305,11 +305,18 @@
       "addNote": "Notiz hinzufügen",
       "advancedMode": "Sofortmodus (automatisch erstellen nach Auswahl)",
       "annotationsOptions": "Optionen",
-      "highlight": "Hervorheben",
+      "hide": "Ausblenden",
+      "highlight": "Markieren",
       "noSelectionToast": "Keine Auswahl",
       "quickAnnotations": "Schnell erstellen (Editor überspringen)",
       "saveNote": "Speichern",
-      "toggleMarginMarks": "Anzeige in Rändern"
+      "toggleMarginMarks": "Anzeige in Rändern",
+      "type": {
+        "outline": "Umranden",
+        "solid": "Hintergrundfarbe",
+        "strikethrough": "Durchstreichen",
+        "underline": "Unterstreichen"
+      }
     },
     "divina": {
       "mute": "Audio stummschalten",
