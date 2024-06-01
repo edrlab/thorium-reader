@@ -123,16 +123,19 @@ function* searchFound(action: readerLocalActionSearch.found.TAction) {
 function* searchFocus(action: readerLocalActionSearch.focus.TAction) {
 
     const { newFocusUUId, oldFocusUUId } = action.payload;
-    if (newFocusUUId === oldFocusUUId) {
-        return;
-    }
-
     debug(`searchFocus -- oldFocusUUId: [${oldFocusUUId}] newFocusUUId: [${newFocusUUId}]`);
 
     const { foundArray } = yield* selectTyped((state: IReaderRootState) => state.search);
 
     const oldItem = foundArray.find((v) => v.uuid === oldFocusUUId);
     const newItem = foundArray.find((v) => v.uuid === newFocusUUId);
+
+
+    // page turn, same current search focus but position / scroll needs to be restored!
+    if (newItem && newFocusUUId === oldFocusUUId) {
+        handleLinkLocatorDebounced(createLocatorLink(newItem.href, newItem.rangeInfo));
+        return;
+    }
 
     if (newItem && oldItem) {
         const oldItemClone = clone(oldItem);
