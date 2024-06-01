@@ -309,7 +309,13 @@
       "noSelectionToast": "Nenhuma seleção",
       "quickAnnotations": "Criação rápida (pular editor)",
       "saveNote": "Salvar",
-      "toggleMarginMarks": "Exibir nas margens"
+      "toggleMarginMarks": "Exibir nas margens",
+      "type": {
+        "outline": "Contorno",
+        "solid": "Fundo sólido",
+        "strikethrough": "Riscado",
+        "underline": "Sublinhado"
+      }
     },
     "divina": {
       "mute": "silenciar áudio",
