@@ -241,9 +241,31 @@
     min-height: 40px;
     margin-bottom: 40px;
 
+    &:has(> #spaceLeft.small) {
+        .breadcrumb li:nth-child(3) {
+            display: none;
+        }
+        .hiddenBreadcrumb {
+            display: flex;
+        }
+    }
+
+    &:not(:has(> #spaceLeft.small)) {
+        .breadcrumb li:nth-child(3) {
+            display: flex;
+        }
+        .hiddenBreadcrumb {
+            display: none;
+        }
+    }
+
     label {
         background-color: var(--color-extralight-grey)!important;
         // top: -18px!important;
+    }
+
+    .form_group {
+        min-width: 300px;
     }
 
     @media screen and (width <= 1024px) {

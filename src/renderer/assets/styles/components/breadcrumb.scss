@@ -2,13 +2,42 @@
 =-=-= breadcrumbs.scss
 */
 
+.small {
+  background-color: red!important;
+}
+
+#spaceLeft {
+  background-color: blue;
+  width: 100%;
+  height: 30px;
+  color: white;
+  container-type: inline-size;
+  container-name: spaceLeft;
+}
+
 .breadcrumb {
   font-size: 16px;
   display: flex;
   align-items: center;
   font-weight: bold;
   color: var(--color-blue);
-  width: calc(100% - 370px);
+  width: fit-content;
+  max-width: calc(100% - 300px);
+  padding: 0;
+
+  .hiddenBreadcrumb {
+    display: none;
+  }
+
+  .hide {
+    display: none;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    list-style-type: none;
+  }
 
   a {
     display: flex;
