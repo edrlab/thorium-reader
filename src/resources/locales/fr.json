@@ -312,7 +312,10 @@
       "saveNote": "Sauvegarder",
       "toggleMarginMarks": "Afficher dans la marge",
       "type": {
-        "outline": "Encadré"
+        "outline": "Encadré",
+        "solid": "Fond coloré",
+        "strikethrough": "Barrer",
+        "underline": "Souligner"
       }
     },
     "divina": {
