@@ -37,8 +37,10 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 const BreadCrumbComponent: React.FC<IProps> = (props) => {
     const { breadcrumb } = props;
     const breadcrumbRefs = React.useRef([]);
+    const prevNbBreadcrumbs = React.useRef(0);
     const [ i, setI ] = React.useState(1);
-    // const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+    const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+
     const brdcrmb = breadcrumb.slice(1).map(
         (item, index) =>
             item.path && index !== breadcrumb.length - 2 ?
@@ -59,65 +61,91 @@ const BreadCrumbComponent: React.FC<IProps> = (props) => {
                     <SVG ariaHidden svg={ChevronRight} />
                 </li>
                 :
-                <strong key={index} title={item.name} ref={el => breadcrumbRefs.current[index + 1] = el} id="currentBreadcrumb">
+                <strong key={index} title={item.name} id="currentBreadcrumb">
                     {item.name}
                 </strong>,
     );
 
-    const spaceLeft = document.getElementById("spaceLeft");
-    const prevNbBreadcrumbs = React.useRef(0);
+
+    const removeHideClass = (strong: HTMLElement, spaceLeft: HTMLElement) => {
+        setTimeout(() => {
+            strong.style.overflow = "unset";
+            strong.style.textOverflow = "unset";
+            const currentRef = breadcrumbRefs.current[i];
+            if (currentRef) {
+                const currentElement = currentRef as HTMLLIElement;
+                currentElement.classList.remove(stylesBreadcrumb.hide);
+                spaceLeft.classList.remove(stylesBreadcrumb.small);
+                console.log("!!!! Remove hide class /", "i",i, "/ current element :", currentElement.innerHTML);
+            }
+            if (i >= 2) {
+                setI(i - 1);
+            } else {
+                setI(0);
+            }
+            // setI(i - 1);
+            // if (i === -1) {
+            //     setI(0);
+            // }
+        }, 100);
+    };
+
+    const addHideClass = (strong: HTMLElement, spaceLeft: HTMLElement) => {
+        setTimeout(() => {
+            spaceLeft.classList.add(stylesBreadcrumb.small);
+            const currentRef = breadcrumbRefs.current[i + 1];
+            strong.style.overflow = "hidden";
+            strong.style.textOverflow = "ellipsis";
+            if (currentRef) {
+                const currentElement = currentRef as HTMLLIElement;
+                currentElement.classList.add(stylesBreadcrumb.hide);
+                console.log("!!!! Add hide class /", "i",i, "/ current element :", currentElement.innerHTML);
+            }
+            setI(i + 1);
+        }, 100);
+    };
 
     React.useEffect(() => {
         const spaceLeft = document.getElementById("spaceLeft");
         const strong = document.getElementById("currentBreadcrumb");
-        const remainingWidth = spaceLeft.offsetWidth;
-        console.log("######");
-        console.log("remaing width", remainingWidth);
-        console.log("breadcrumb", breadcrumb);
-        console.log("new nb of breadcrumbs", breadcrumb.length);
-        if (breadcrumb.length !== prevNbBreadcrumbs.current) {
-            // Si différent, mettre à jour le useRef avec la nouvelle valeur
-            // prevNbBreadcrumbs.current = breadcrumb.length;
-            console.log("prevNbBreadcrumbs.current", prevNbBreadcrumbs.current);
+        const handleResize = () => {
+            const remainingWidth = spaceLeft.offsetWidth;
+            console.log("######");
+            // console.log("remaining width", remainingWidth);
+            console.log("breadcrumb", breadcrumb);
+            // console.log("new nb of breadcrumbs", breadcrumb.length);
+            setWindowWidth(window.innerWidth);
+            if (breadcrumb.length !== prevNbBreadcrumbs.current) {
+                // console.log("prevNbBreadcrumbs.current", prevNbBreadcrumbs.current);
+                if (breadcrumb.length < prevNbBreadcrumbs.current) {
+                    // New value smaller than old one
+                    removeHideClass(strong, spaceLeft);
+                } else {
+                    // New value greater than old one 
+                    if (remainingWidth < 100) {
+                        addHideClass(strong, spaceLeft);
+                    } else {
+                        strong.style.overflow = "unset";
+                        strong.style.textOverflow = "unset";
+                    }
+                }
+                prevNbBreadcrumbs.current = breadcrumb.length;
+            } else if (windowWidth !== window.innerWidth) {
+                // console.log("resize");
+                if (remainingWidth < 100) {
+                    addHideClass(strong, spaceLeft);
+                } else {
+                    removeHideClass(strong, spaceLeft);
+                }
+            } 
+        };
+        window.addEventListener("resize", handleResize);
+        handleResize();
 
-            // Ici vous pouvez utiliser nbBreadcrumbs et prevNbBreadcrumbs.current
-            // pour comparer les valeurs avant et après le rendu
-            if (breadcrumb.length < prevNbBreadcrumbs.current) {
-              // Nouvelle valeur plus petite que l'ancienne
-              console.log("un de moins");
-                setI(i-1);
-                if (i === -1) {
-                    setI(0);
-                }
-                console.log("i", i);
-                const currentRef = breadcrumbRefs.current[i];
-                if (currentRef) {
-                    const currentElement = currentRef as HTMLLIElement;
-                    console.log("current", currentElement);
-                    currentElement.classList.remove(stylesBreadcrumb.hide);
-                    spaceLeft.classList.remove(stylesBreadcrumb.small);
-                }
-            } else {
-              // Nouvelle valeur plus grande que l'ancienne  
-              console.log("un de plus");
-              if (remainingWidth < 20) {
-                setI(i+1);
-                spaceLeft.classList.add(stylesBreadcrumb.small);
-                const currentRef = breadcrumbRefs.current[i + 1];
-                strong.style.overflow = "hidden";
-                strong.style.textOverflow = "ellipsis";
-                if (currentRef) {
-                    const currentElement = currentRef as HTMLLIElement;
-                    currentElement.classList.add(stylesBreadcrumb.hide);
-                }
-            } else {
-                strong.style.overflow = "unset";
-                strong.style.textOverflow = "unset";
-            }
-            }
-            prevNbBreadcrumbs.current = breadcrumb.length;
-          }
-            }, [breadcrumb, spaceLeft]);
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, [breadcrumb, windowWidth]);
 
     return (
         <ul className={classNames(stylesBreadcrumb.breadcrumb, props.className)} id="breadcrumb_container" style={{display: "flex", flexWrap: "nowrap", flex: "2"}}>

@@ -277,6 +277,10 @@
             padding-bottom: 20px;
         }
 
+        .spaceLeft {
+            padding-bottom: 20px;
+        }
+
         form[role="search"] {
             width: 290px!important;
         }
@@ -313,7 +317,7 @@
 
 .opds_browserResults {
     overflow: auto;
-    inset: 260px 20px 30px 30px;
+    inset: 280px 20px 30px 30px;
     padding: 0;
     position: absolute;
     padding-right: 25px;
@@ -324,7 +328,7 @@
     }
 
     @media only screen and (width <= 1024px) {
-        inset: 310px 20px 30px 30px;
+        inset: 330px 20px 30px 30px;
     }
 
     @include scrollbar_styling;
