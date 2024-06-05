@@ -288,7 +288,7 @@
       "title": "Progression"
     },
     "read": "Terminé",
-    "remainingTime": "Prêts (jours restants)",
+    "remainingTime": "Prêt (temps restant)",
     "renewButton": "Renouveler",
     "returnButton": "Retourner",
     "returnedLcp": "Ce livre ne peut être lu car la licence LCP a été retournée.",
@@ -310,7 +310,10 @@
       "noSelectionToast": "Aucun texte sélectionné",
       "quickAnnotations": "Annotation rapide (sans édition)",
       "saveNote": "Sauvegarder",
-      "toggleMarginMarks": "Afficher dans la marge"
+      "toggleMarginMarks": "Afficher dans la marge",
+      "type": {
+        "outline": "Encadré"
+      }
     },
     "divina": {
       "mute": "désactiver le son",
