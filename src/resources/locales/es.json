@@ -288,12 +288,14 @@
       "title": "Progreso"
     },
     "read": "Finalizado",
+    "remainingTime": "Préstamo (tiempo restante)",
     "renewButton": "Renovar",
     "returnButton": "Devolver",
     "returnedLcp": "Este libro no se puede leer porque la licencia LCP se ha devuelto.",
     "revokedLcp": "Este libro no se puede leer porque la licencia LCP se ha cancelado.",
     "seeLess": "Ver menos",
     "seeMore": "Ver más",
+    "timeLeft": "Tiempo restante",
     "title": "Título",
     "userKeyCheckInvalid": "Contraseña incorrecta"
   },
@@ -310,7 +312,10 @@
       "saveNote": "Guardar",
       "toggleMarginMarks": "Mostrar en márgenes",
       "type": {
-        "solid": "Fondo solido"
+        "outline": "Marco",
+        "solid": "Fondo solido",
+        "strikethrough": "Tachado",
+        "underline": "Subrayado"
       }
     },
     "divina": {
