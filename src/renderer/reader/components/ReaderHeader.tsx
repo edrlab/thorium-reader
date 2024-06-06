@@ -110,7 +110,6 @@ interface IBaseProps extends TranslatorProps {
     handleTTSNext: (skipSentences?: boolean) => void;
     handleTTSPlaybackRate: (speed: string) => void;
     handleTTSVoice: (voice: SpeechSynthesisVoice | null) => void;
-    ttsState: TTSStateEnum;
     ttsPlaybackRate: string;
     ttsVoice: SpeechSynthesisVoice | null;
 
@@ -121,7 +120,6 @@ interface IBaseProps extends TranslatorProps {
     handleMediaOverlaysPrevious: () => void;
     handleMediaOverlaysNext: () => void;
     handleMediaOverlaysPlaybackRate: (speed: string) => void;
-    mediaOverlaysState: MediaOverlaysStateEnum;
     mediaOverlaysPlaybackRate: string;
 
     handleReaderClose: () => void;
@@ -1321,6 +1319,8 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         annotationsDataArray: state.reader.annotation,
         isAnnotationModeEnabled: state.annotation.enable,
         publicationHasMediaOverlays: state.reader.info.navigator.r2PublicationHasMediaOverlays,
+        mediaOverlaysState: state.reader.mediaOverlay.state,
+        ttsState: state.reader.tts.state,
     };
 };
 

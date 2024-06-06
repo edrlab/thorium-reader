@@ -13,6 +13,7 @@ import * as readerLocalActionPicker from "./picker";
 import * as readerLocalActionSearch from "./search";
 import * as readerLocalActionSetConfig from "./setConfig";
 import * as readerLocalActionSetLocator from "./setLocator";
+import * as readerLocalActionReader from "./reader";
 
 export {
     readerLocalActionAnnotations,
@@ -23,4 +24,5 @@ export {
     readerLocalActionPicker,
     readerLocalActionSearch,
     readerLocalActionDivina,
+    readerLocalActionReader,
 };

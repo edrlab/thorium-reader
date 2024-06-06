@@ -67,11 +67,11 @@ import {
 import {
     getCurrentReadingLocation, handleLinkLocator as r2HandleLinkLocator, handleLinkUrl as r2HandleLinkUrl, installNavigatorDOM,
     isLocatorVisible, LocatorExtended, mediaOverlaysClickEnable, mediaOverlaysEnableCaptionsMode,
-    mediaOverlaysEnableSkippability, mediaOverlaysListen, mediaOverlaysNext, mediaOverlaysPause,
+    mediaOverlaysEnableSkippability, mediaOverlaysNext, mediaOverlaysPause,
     mediaOverlaysPlay, mediaOverlaysPlaybackRate, mediaOverlaysPrevious, mediaOverlaysResume,
     MediaOverlaysStateEnum, mediaOverlaysStop, navLeftOrRight,
     readiumCssUpdate, setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
-    setReadingLocationSaver, ttsClickEnable, ttsListen, ttsNext, ttsOverlayEnable, ttsPause,
+    setReadingLocationSaver, ttsClickEnable, ttsNext, ttsOverlayEnable, ttsPause,
     ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
     ttsStop, ttsVoice, highlightsClickListen,
     stealFocusDisable,
@@ -207,11 +207,9 @@ interface IState {
     fullscreen: boolean;
     zenMode: boolean;
 
-    ttsState: TTSStateEnum;
     ttsPlaybackRate: string;
     ttsVoice: SpeechSynthesisVoice | null;
 
-    mediaOverlaysState: MediaOverlaysStateEnum;
     mediaOverlaysPlaybackRate: string;
 
     visibleBookmarkList: IBookmarkState[];
@@ -298,11 +296,9 @@ class Reader extends React.Component<IProps, IState> {
             fullscreen: false,
             zenMode: false,
 
-            ttsState: TTSStateEnum.STOPPED,
             ttsPlaybackRate: "1",
             ttsVoice: null,
 
-            mediaOverlaysState: MediaOverlaysStateEnum.STOPPED,
             mediaOverlaysPlaybackRate: "1",
 
             visibleBookmarkList: [],
@@ -326,13 +322,6 @@ class Reader extends React.Component<IProps, IState> {
 
             doFocus: 1,
         };
-
-        ttsListen((ttss: TTSStateEnum) => {
-            this.setState({ ttsState: ttss });
-        });
-        mediaOverlaysListen((mos: MediaOverlaysStateEnum) => {
-            this.setState({ mediaOverlaysState: mos });
-        });
 
         this.handleTTSPlay = this.handleTTSPlay.bind(this);
         this.handleTTSPause = this.handleTTSPause.bind(this);
@@ -786,7 +775,6 @@ class Reader extends React.Component<IProps, IState> {
                         handleTTSPause={this.handleTTSPause}
                         handleTTSPlaybackRate={this.handleTTSPlaybackRate}
                         handleTTSVoice={this.handleTTSVoice}
-                        ttsState={this.state.ttsState}
                         ttsPlaybackRate={this.state.ttsPlaybackRate}
                         ttsVoice={this.state.ttsVoice}
 
@@ -797,7 +785,6 @@ class Reader extends React.Component<IProps, IState> {
                         handleMediaOverlaysNext={this.handleMediaOverlaysNext}
                         handleMediaOverlaysPause={this.handleMediaOverlaysPause}
                         handleMediaOverlaysPlaybackRate={this.handleMediaOverlaysPlaybackRate}
-                        mediaOverlaysState={this.state.mediaOverlaysState}
                         mediaOverlaysPlaybackRate={this.state.mediaOverlaysPlaybackRate}
 
                         handleMenuClick={this.handleMenuButtonClick}
@@ -988,14 +975,6 @@ class Reader extends React.Component<IProps, IState> {
     }
             </div>
         );
-    }
-
-    public setTTSState(ttss: TTSStateEnum) {
-        this.setState({ ttsState: ttss });
-    }
-
-    public setMediaOverlaysState(mos: MediaOverlaysStateEnum) {
-        this.setState({ mediaOverlaysState: mos });
     }
 
     public handleTTSPlay_() {
@@ -1279,13 +1258,13 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         if (this.props.r2PublicationHasMediaOverlays) {
-            if (this.state.mediaOverlaysState !== MediaOverlaysStateEnum.STOPPED) {
+            if (this.props.mediaOverlaysState !== MediaOverlaysStateEnum.STOPPED) {
                 this.handleMediaOverlaysStop();
             }
         } else if (this.state.currentLocation.audioPlaybackInfo) {
             audioPause();
         } else {
-            if (this.state.ttsState !== TTSStateEnum.STOPPED) {
+            if (this.props.ttsState !== TTSStateEnum.STOPPED) {
                 this.handleTTSStop();
             }
         }
@@ -1304,21 +1283,21 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         if (this.props.r2PublicationHasMediaOverlays) {
-            if (this.state.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING) {
+            if (this.props.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING) {
                 this.handleMediaOverlaysPause();
-            } else if (this.state.mediaOverlaysState === MediaOverlaysStateEnum.PAUSED) {
+            } else if (this.props.mediaOverlaysState === MediaOverlaysStateEnum.PAUSED) {
                 this.handleMediaOverlaysResume();
-            } else if (this.state.mediaOverlaysState === MediaOverlaysStateEnum.STOPPED) {
+            } else if (this.props.mediaOverlaysState === MediaOverlaysStateEnum.STOPPED) {
                 this.handleMediaOverlaysPlay();
             }
         } else if (this.state.currentLocation.audioPlaybackInfo) {
             audioTogglePlayPause();
         } else {
-            if (this.state.ttsState === TTSStateEnum.PLAYING) {
+            if (this.props.ttsState === TTSStateEnum.PLAYING) {
                 this.handleTTSPause();
-            } else if (this.state.ttsState === TTSStateEnum.PAUSED) {
+            } else if (this.props.ttsState === TTSStateEnum.PAUSED) {
                 this.handleTTSResume();
-            } else if (this.state.ttsState === TTSStateEnum.STOPPED) {
+            } else if (this.props.ttsState === TTSStateEnum.STOPPED) {
                 this.handleTTSPlay();
             }
         }
@@ -2403,11 +2382,11 @@ class Reader extends React.Component<IProps, IState> {
             }
         } else {
             const wasPlaying = this.props.r2PublicationHasMediaOverlays ?
-                this.state.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING :
-                this.state.ttsState === TTSStateEnum.PLAYING;
+                this.props.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING :
+                this.props.ttsState === TTSStateEnum.PLAYING;
             const wasPaused = this.props.r2PublicationHasMediaOverlays ?
-                this.state.mediaOverlaysState === MediaOverlaysStateEnum.PAUSED :
-                this.state.ttsState === TTSStateEnum.PAUSED;
+                this.props.mediaOverlaysState === MediaOverlaysStateEnum.PAUSED :
+                this.props.ttsState === TTSStateEnum.PAUSED;
 
             const rtlIsOverridden = this.isRTL(this.isFixedLayout()) && this.props.disableRTLFlip;
             const left_ = rtlIsOverridden ? !left : left;
@@ -2877,6 +2856,8 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
         disableRTLFlip: !!state.reader.disableRTLFlip?.disabled,
         r2PublicationHasMediaOverlays: state.reader.info.navigator.r2PublicationHasMediaOverlays,
+        ttsState: state.reader.tts.state,
+        mediaOverlaysState: state.reader.mediaOverlay.state,
     };
 };
 

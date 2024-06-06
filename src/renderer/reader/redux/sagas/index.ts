@@ -19,13 +19,58 @@ import * as ipc from "./ipc";
 import * as search from "./search";
 import * as winInit from "./win";
 import * as annotation from "./annotation";
-import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { setTheme } from "readium-desktop/common/redux/actions/theme";
+import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } from "r2-navigator-js/dist/es8-es2017/src/electron/renderer";
+import { eventChannel } from "redux-saga";
+import { put } from "typed-redux-saga";
+import { readerLocalActionReader } from "../actions";
 
 // Logger
 const filename_ = "readium-desktop:renderer:reader:saga:index";
 const debug = debug_(filename_);
 debug("_");
+
+export function getMediaOverlayStateChannel() {
+    const channel = eventChannel<MediaOverlaysStateEnum>(
+        (emit) => {
+
+            const handler = (state: MediaOverlaysStateEnum) => {
+                emit(state);
+            };
+
+            mediaOverlaysListen(handler);
+
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            return () => {
+                // no destrutor
+            };
+        },
+    );
+
+    return channel;
+}
+
+export function getTTSStateChannel() {
+    const channel = eventChannel<TTSStateEnum>(
+        (emit) => {
+
+            const handler = (state: TTSStateEnum) => {
+                emit(state);
+            };
+
+            ttsListen(handler);
+
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            return () => {
+                // no destrutor
+            };
+        },
+    );
+
+    return channel;
+}
+
 
 export function* rootSaga() {
 
@@ -56,6 +101,28 @@ export function* rootSaga() {
             },
         ),
     ]);
+
+    const MOChannel = getMediaOverlayStateChannel();
+    const TTSChannel = getTTSStateChannel();
+    yield all([
+        takeSpawnEveryChannel(
+            MOChannel,
+            function* (state: MediaOverlaysStateEnum) {
+                yield put(readerLocalActionReader.setMediaOverlayState.build(state));
+            },
+        ),
+        takeSpawnEveryChannel(
+            TTSChannel,
+            function* (state: TTSStateEnum) {
+                yield put(readerLocalActionReader.setTTSState.build(state));
+            },
+        ),
+    ]);
+
+    console.log("SAGA-rootSaga() INIT SUCCESS");
+
+
     // initSuccess triggered in reader.tsx didmount and publication loaded
     // yield put(winActions.initSuccess.build());
+
 }

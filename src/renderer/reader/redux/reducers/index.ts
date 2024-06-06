@@ -38,6 +38,8 @@ import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/vers
 import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { annotationModeEnableReducer } from "./annotationModeEnable";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import { readerMediaOverlayReducer } from "./mediaOverlay";
+import { readerTTSReducer } from "./tts";
 
 export const rootReducer = () => {
 
@@ -165,6 +167,8 @@ export const rootReducer = () => {
             }),
             divina: readerDivinaReducer,
             disableRTLFlip: readerRTLFlipReducer,
+            mediaOverlay: readerMediaOverlayReducer,
+            tts: readerTTSReducer,
         }),
         search: searchReducer,
         annotation: annotationModeEnableReducer,
