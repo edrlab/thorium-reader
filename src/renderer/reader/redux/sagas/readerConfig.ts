@@ -23,7 +23,12 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
     if (!action.payload) {
         throw new Error("NO READER CONFIG RECEIVED !!!");
     }
-    const readerConfig = action.payload;
+
+    const readerConfigFromReduxState = yield* select((state: IReaderRootState) => state.reader.config);
+    const readerConfig = {
+        ...readerConfigFromReduxState,
+        ...action.payload,
+    };
 
     const r2PublicationHasMediaOverlays = yield* select((state: IReaderRootState) => state.reader.info.navigator.r2PublicationHasMediaOverlays);
     const mediaOverlaysState = yield* select((state: IReaderRootState) => state.reader.mediaOverlay.state);

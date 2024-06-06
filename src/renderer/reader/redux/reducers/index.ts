@@ -40,6 +40,8 @@ import { annotationModeEnableReducer } from "./annotationModeEnable";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerMediaOverlayReducer } from "./mediaOverlay";
 import { readerTTSReducer } from "./tts";
+import { readerTransientConfigReducer } from "./readerTransientConfig";
+import { readerAllowCustomConfigReducer } from "readium-desktop/common/redux/reducers/reader/allowCustom";
 
 export const rootReducer = () => {
 
@@ -52,6 +54,8 @@ export const rootReducer = () => {
         reader: combineReducers({ // IReaderStateReader, dehydrated from main process registry (preloaded state)
             defaultConfig: readerDefaultConfigReducer,
             config: readerConfigReducer,
+            allowCustomConfig: readerAllowCustomConfigReducer,
+            transientConfig: readerTransientConfigReducer,// ReaderConfigPublisher
             info: readerInfoReducer,
             locator: readerLocatorReducer,
             bookmark: priorityQueueReducer

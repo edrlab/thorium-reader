@@ -21,6 +21,7 @@ import { IRTLFlipState } from "./rtlFlip";
 import { IAnnotationModeState, TAnnotationState } from "./annotation";
 import { ITTSState } from "readium-desktop/renderer/reader/redux/state/tts";
 import { IMediaOverlayState } from "readium-desktop/renderer/reader/redux/state/mediaOverlay";
+import { IAllowCustomConfigState } from "readium-desktop/renderer/reader/redux/state/allowCustom";
 
 export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
@@ -46,4 +47,5 @@ export interface IReaderStateReader {
     defaultConfig: ReaderConfig; // sync across all app
     tts: ITTSState;
     mediaOverlay: IMediaOverlayState;
+    allowCustomConfig: IAllowCustomConfigState;
 }
