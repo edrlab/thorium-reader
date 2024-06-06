@@ -16,6 +16,10 @@ export enum ReaderMode {
     Detached = "detached",
 }
 
+export interface ReaderInfoNavigator {
+    r2PublicationHasMediaOverlays: boolean;
+}
+
 /**
  *  A reader
  */
@@ -26,6 +30,7 @@ export interface ReaderInfo {
     publicationIdentifier: string;
     r2Publication: R2Publication;
     publicationView: PublicationView;
+    navigator: ReaderInfoNavigator;
 }
 
 /**

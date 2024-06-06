@@ -69,7 +69,7 @@ import {
     isLocatorVisible, LocatorExtended, mediaOverlaysClickEnable, mediaOverlaysEnableCaptionsMode,
     mediaOverlaysEnableSkippability, mediaOverlaysListen, mediaOverlaysNext, mediaOverlaysPause,
     mediaOverlaysPlay, mediaOverlaysPlaybackRate, mediaOverlaysPrevious, mediaOverlaysResume,
-    MediaOverlaysStateEnum, mediaOverlaysStop, navLeftOrRight, publicationHasMediaOverlays,
+    MediaOverlaysStateEnum, mediaOverlaysStop, navLeftOrRight,
     readiumCssUpdate, setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
     setReadingLocationSaver, ttsClickEnable, ttsListen, ttsNext, ttsOverlayEnable, ttsPause,
     ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
@@ -196,7 +196,6 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 }
 
 interface IState {
-    r2PublicationHasMediaOverlays: boolean;
 
     contentTableOpen: boolean;
     settingsOpen: boolean;
@@ -294,8 +293,6 @@ class Reader extends React.Component<IProps, IState> {
             shortcutEnable: true,
             landmarksOpen: false,
             landmarkTabOpen: 0,
-
-            r2PublicationHasMediaOverlays: false,
 
             menuOpen: false,
             fullscreen: false,
@@ -802,7 +799,6 @@ class Reader extends React.Component<IProps, IState> {
                         handleMediaOverlaysPlaybackRate={this.handleMediaOverlaysPlaybackRate}
                         mediaOverlaysState={this.state.mediaOverlaysState}
                         mediaOverlaysPlaybackRate={this.state.mediaOverlaysPlaybackRate}
-                        publicationHasMediaOverlays={this.state.r2PublicationHasMediaOverlays}
 
                         handleMenuClick={this.handleMenuButtonClick}
                         handleSettingsClick={this.handleSettingsClick}
@@ -1282,7 +1278,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        if (this.state.r2PublicationHasMediaOverlays) {
+        if (this.props.r2PublicationHasMediaOverlays) {
             if (this.state.mediaOverlaysState !== MediaOverlaysStateEnum.STOPPED) {
                 this.handleMediaOverlaysStop();
             }
@@ -1307,7 +1303,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        if (this.state.r2PublicationHasMediaOverlays) {
+        if (this.props.r2PublicationHasMediaOverlays) {
             if (this.state.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING) {
                 this.handleMediaOverlaysPause();
             } else if (this.state.mediaOverlaysState === MediaOverlaysStateEnum.PAUSED) {
@@ -1343,7 +1339,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        if (this.state.r2PublicationHasMediaOverlays) {
+        if (this.props.r2PublicationHasMediaOverlays) {
             this.handleMediaOverlaysPrevious();
         } else if (this.state.currentLocation.audioPlaybackInfo) {
             audioRewind();
@@ -1369,7 +1365,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        if (this.state.r2PublicationHasMediaOverlays) {
+        if (this.props.r2PublicationHasMediaOverlays) {
             this.handleMediaOverlaysNext();
         } else if (this.state.currentLocation.audioPlaybackInfo) {
             audioForward();
@@ -2203,10 +2199,6 @@ class Reader extends React.Component<IProps, IState> {
             });
 
         } else {
-            this.setState({
-                r2PublicationHasMediaOverlays: publicationHasMediaOverlays(this.props.r2Publication),
-            });
-
             let preloadPath = "preload.js";
             if (_PACKAGING === "1") {
                 preloadPath = "file://" + path.normalize(path.join((global as any).__dirname, preloadPath));
@@ -2410,10 +2402,10 @@ class Reader extends React.Component<IProps, IState> {
                 }
             }
         } else {
-            const wasPlaying = this.state.r2PublicationHasMediaOverlays ?
+            const wasPlaying = this.props.r2PublicationHasMediaOverlays ?
                 this.state.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING :
                 this.state.ttsState === TTSStateEnum.PLAYING;
-            const wasPaused = this.state.r2PublicationHasMediaOverlays ?
+            const wasPaused = this.props.r2PublicationHasMediaOverlays ?
                 this.state.mediaOverlaysState === MediaOverlaysStateEnum.PAUSED :
                 this.state.ttsState === TTSStateEnum.PAUSED;
 
@@ -2884,6 +2876,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         session: state.session.state,
 
         disableRTLFlip: !!state.reader.disableRTLFlip?.disabled,
+        r2PublicationHasMediaOverlays: state.reader.info.navigator.r2PublicationHasMediaOverlays,
     };
 };
 

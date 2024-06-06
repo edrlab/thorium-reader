@@ -114,7 +114,6 @@ interface IBaseProps extends TranslatorProps {
     ttsPlaybackRate: string;
     ttsVoice: SpeechSynthesisVoice | null;
 
-    publicationHasMediaOverlays: boolean;
     handleMediaOverlaysPlay: () => void;
     handleMediaOverlaysPause: () => void;
     handleMediaOverlaysStop: () => void;
@@ -1321,6 +1320,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         keyboardShortcuts: state.keyboard.shortcuts,
         annotationsDataArray: state.reader.annotation,
         isAnnotationModeEnabled: state.annotation.enable,
+        publicationHasMediaOverlays: state.reader.info.navigator.r2PublicationHasMediaOverlays,
     };
 };
 

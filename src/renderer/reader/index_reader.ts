@@ -19,6 +19,7 @@ import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { publicationHasMediaOverlays } from "r2-navigator-js/dist/es8-es2017/src/electron/renderer";
 
 // let devTron: any;
 let axe: any;
@@ -55,6 +56,10 @@ ipcRenderer.on(readerIpc.CHANNEL,
                 const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 
                 data.payload.reader.info.r2Publication = r2Publication;
+
+                data.payload.reader.info.navigator = {
+                    r2PublicationHasMediaOverlays: publicationHasMediaOverlays(r2Publication),
+                };
 
                 createStoreFromDi(data.payload)
                     .then(
