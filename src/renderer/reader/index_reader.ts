@@ -19,7 +19,7 @@ import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import { publicationHasMediaOverlays } from "r2-navigator-js/dist/es8-es2017/src/electron/renderer";
+import { publicationHasMediaOverlays } from "@r2-navigator-js/electron/renderer";
 
 // let devTron: any;
 let axe: any;
