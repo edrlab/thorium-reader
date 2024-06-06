@@ -56,14 +56,6 @@ export function getTTSStateChannel() {
         (emit) => {
 
             const handler = (state: TTSStateEnum) => {
-                
-
-
-                console.log("#############@!############");
-                                                    console.log("hamdletts");
-                                                    console.log("hamdletts");
-                                                    console.log("hamdletts");
-                
                 emit(state);
             };
 
