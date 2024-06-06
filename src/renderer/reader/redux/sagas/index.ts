@@ -12,7 +12,7 @@ import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/s
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, take } from "redux-saga/effects";
 
-import * as cssUpdate from "./cssUpdate";
+import * as readerConfig from "./readerConfig";
 import * as highlightHandler from "./highlight/handler";
 import * as i18n from "./i18n";
 import * as ipc from "./ipc";
@@ -56,6 +56,14 @@ export function getTTSStateChannel() {
         (emit) => {
 
             const handler = (state: TTSStateEnum) => {
+                
+
+
+                console.log("#############@!############");
+                                                    console.log("hamdletts");
+                                                    console.log("hamdletts");
+                                                    console.log("hamdletts");
+                
                 emit(state);
             };
 
@@ -85,7 +93,7 @@ export function* rootSaga() {
         publicationInfoReaderAndLib.saga(),
         publicationInfoSyncTag.saga(),
 
-        cssUpdate.saga(),
+        readerConfig.saga(),
 
         highlightHandler.saga(),
 
@@ -96,11 +104,13 @@ export function* rootSaga() {
         takeSpawnEvery(
             setTheme.ID,
             (action: setTheme.TAction) => {
-                const {payload: {name}} = action;
+                const { payload: { name } } = action;
                 document.body.setAttribute("data-theme", name);
             },
         ),
     ]);
+
+    console.log("SAGA-rootSaga() PRE INIT SUCCESS");
 
     const MOChannel = getMediaOverlayStateChannel();
     const TTSChannel = getTTSStateChannel();

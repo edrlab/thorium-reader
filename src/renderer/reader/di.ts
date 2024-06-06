@@ -74,6 +74,25 @@ const createStoreFromDi = async (preloadedState: Partial<IReaderRootState>) => {
         newConfig.readerDockingMode = defaultConfig.readerDockingMode;
         flag = true;
     }
+    if (newConfig.ttsPlaybackRate === undefined) {
+
+        console.log("ANNOTATION MIGRATION !! ttsPlaybackRate not set migrate from defaultConfig value=", newConfig.ttsPlaybackRate);
+        newConfig.ttsPlaybackRate = defaultConfig.ttsPlaybackRate;
+        flag = true;
+    }
+    if (newConfig.mediaOverlaysPlaybackRate === undefined) {
+
+        console.log("ANNOTATION MIGRATION !! mediaOverlaysPlaybackRate not set migrate from defaultConfig value=", newConfig.mediaOverlaysPlaybackRate);
+        newConfig.mediaOverlaysPlaybackRate = defaultConfig.mediaOverlaysPlaybackRate;
+        flag = true;
+    }
+    if (newConfig.ttsVoice === undefined) {
+
+        console.log("ANNOTATION MIGRATION !! ttsVoice not set migrate from defaultConfig value=", newConfig.ttsVoice);
+        newConfig.ttsVoice = defaultConfig.ttsVoice;
+        flag = true;
+    }
+
 
     if (flag) {
         console.log(`ANNOTATION MIGRATION : There are a data need to be migrated from defaultConfig to config OLD=${JSON.stringify(store.getState().reader.config, null, 4)} NEW=${JSON.stringify(newConfig, null, 4)}`);

@@ -46,6 +46,10 @@ import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-bold.svg";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as DefaultPageIcon from "readium-desktop/renderer/assets/icons/defaultPage-icon.svg";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { readerLocalActionSetConfig } from "../redux/actions";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps, IPopoverDialogProps {
@@ -614,10 +618,18 @@ const ReadingDisplayAlign = ({ config: { align }, set }: { config: Pick<ReaderCo
     );
 };
 
-export const ReadingAudio = ({ useMO, config: { mediaOverlaysEnableCaptionsMode: moCaptions, ttsEnableOverlayMode: ttsCaptions, mediaOverlaysEnableSkippability: skippability, ttsEnableSentenceDetection: splitTTStext }, set }:
-    { useMO: boolean, config: Pick<ReaderConfig, "ttsEnableOverlayMode" | "mediaOverlaysEnableCaptionsMode" | "mediaOverlaysEnableSkippability" | "ttsEnableSentenceDetection">,
-    set: (a: Partial<Pick<ReaderConfig, "ttsEnableOverlayMode" | "mediaOverlaysEnableCaptionsMode" | "mediaOverlaysEnableSkippability" | "ttsEnableSentenceDetection">>) => void }) => {
+export const ReadingAudio = ({ useMO }: { useMO: boolean }) => {
     const [__] = useTranslator();
+
+    const dispatch = useDispatch();
+
+    // : Pick<ReaderConfig, "ttsEnableOverlayMode" | "mediaOverlaysEnableCaptionsMode" | "mediaOverlaysEnableSkippability" | "ttsEnableSentenceDetection">
+    const config = useSelector((state: IReaderRootState) => state.reader.config);
+    const { mediaOverlaysEnableCaptionsMode: moCaptions, ttsEnableOverlayMode: ttsCaptions, mediaOverlaysEnableSkippability: skippability, ttsEnableSentenceDetection: splitTTStext } = config;
+
+    const set = React.useCallback((newState: Partial<Pick<ReaderConfig, "ttsEnableOverlayMode" | "mediaOverlaysEnableCaptionsMode" | "mediaOverlaysEnableSkippability" | "ttsEnableSentenceDetection">>) => {
+        dispatch(readerLocalActionSetConfig.build({...config, ...newState}));
+    }, [dispatch, config]);
 
     const options = [
         {
@@ -1003,7 +1015,7 @@ const AllowCustom = ({ overridePublisherDefault, set }:
 };
 
 export const ReaderSettings: React.FC<IBaseProps> = (props) => {
-    const { setSettings, readerConfig, open } = props;
+    const { readerConfig, open } = props;
     const { setDockingMode, dockedMode, dockingMode } = props;
     const { handleDivinaReadingMode, divinaReadingMode, divinaReadingModeSupported } = props;
     const { overridePublisherDefault, setOverridePublisherDefault } = props;
@@ -1014,6 +1026,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const { doFocus } = props;
 
     const [__] = useTranslator();
+    const dispatch = useDispatch();
 
     // const [
     //     transcientStateOverridePublisherDefault,
@@ -1079,10 +1092,10 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                     lineHeight: config.lineHeight || transcientStateOverridePublisherDefault.lineHeight || readerConfig.lineHeight,
                 });
             }
-            setSettings({ ...readerConfig, ...config });
+            dispatch(readerLocalActionSetConfig.build({ ...readerConfig, ...config }));
         };
         return debounce(saveConfig, 400);
-    }, [transcientStateOverridePublisherDefault, readerConfig]);
+    }, [transcientStateOverridePublisherDefault, readerConfig, dispatch]);
 
     React.useEffect(() => {
         setPartialSettingsDebounced.clear();

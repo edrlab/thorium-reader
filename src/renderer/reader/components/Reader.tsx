@@ -17,7 +17,7 @@ import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
-    ReaderConfig, ReaderConfigStringsAdjustables,
+    ReaderConfig,
 } from "readium-desktop/common/models/reader";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { dialogActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
@@ -49,7 +49,7 @@ import {
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
 import {
-    TChangeEventOnInput, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
+    TKeyboardEventOnAnchor, TMouseEventOnAnchor,
     TMouseEventOnSpan,
 } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
@@ -70,13 +70,12 @@ import {
     mediaOverlaysEnableSkippability, mediaOverlaysNext, mediaOverlaysPause,
     mediaOverlaysPlay, mediaOverlaysPlaybackRate, mediaOverlaysPrevious, mediaOverlaysResume,
     MediaOverlaysStateEnum, mediaOverlaysStop, navLeftOrRight,
-    readiumCssUpdate, setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
+    setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
     setReadingLocationSaver, ttsClickEnable, ttsNext, ttsOverlayEnable, ttsPause,
     ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
     ttsStop, ttsVoice, highlightsClickListen,
     stealFocusDisable,
 } from "@r2-navigator-js/electron/renderer/index";
-import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
 import { TToc } from "../pdf/common/pdfReader.type";
@@ -207,11 +206,6 @@ interface IState {
     fullscreen: boolean;
     zenMode: boolean;
 
-    ttsPlaybackRate: string;
-    ttsVoice: SpeechSynthesisVoice | null;
-
-    mediaOverlaysPlaybackRate: string;
-
     visibleBookmarkList: IBookmarkState[];
     currentLocation: LocatorExtended;
 
@@ -296,11 +290,6 @@ class Reader extends React.Component<IProps, IState> {
             fullscreen: false,
             zenMode: false,
 
-            ttsPlaybackRate: "1",
-            ttsVoice: null,
-
-            mediaOverlaysPlaybackRate: "1",
-
             visibleBookmarkList: [],
             currentLocation: undefined,
 
@@ -349,7 +338,6 @@ class Reader extends React.Component<IProps, IState> {
         this.handleFullscreenClick = this.handleFullscreenClick.bind(this);
         this.handleReaderClose = this.handleReaderClose.bind(this);
         this.handleReaderDetach = this.handleReaderDetach.bind(this);
-        this.setSettings = this.setSettings.bind(this);
         this.handleReadingLocationChange = this.handleReadingLocationChange.bind(this);
         this.handleToggleBookmark = this.handleToggleBookmark.bind(this);
         this.goToLocator = this.goToLocator.bind(this);
@@ -681,8 +669,7 @@ class Reader extends React.Component<IProps, IState> {
             indexes: this.props.indexes,
             readerConfig: this.props.readerConfig,
             // handleSettingChange: this.handleSettingChange.bind(this),
-            handleIndexChange: this.handleIndexChange.bind(this),
-            setSettings: this.setSettings,
+            // handleIndexChange: this.handleIndexChange.bind(this),
             toggleMenu: this.handleSettingsClick,
             r2Publication: this.props.r2Publication,
             handleDivinaReadingMode: this.handleDivinaReadingMode.bind(this),
@@ -775,8 +762,6 @@ class Reader extends React.Component<IProps, IState> {
                         handleTTSPause={this.handleTTSPause}
                         handleTTSPlaybackRate={this.handleTTSPlaybackRate}
                         handleTTSVoice={this.handleTTSVoice}
-                        ttsPlaybackRate={this.state.ttsPlaybackRate}
-                        ttsVoice={this.state.ttsVoice}
 
                         handleMediaOverlaysPlay={this.handleMediaOverlaysPlay}
                         handleMediaOverlaysResume={this.handleMediaOverlaysResume}
@@ -785,7 +770,6 @@ class Reader extends React.Component<IProps, IState> {
                         handleMediaOverlaysNext={this.handleMediaOverlaysNext}
                         handleMediaOverlaysPause={this.handleMediaOverlaysPause}
                         handleMediaOverlaysPlaybackRate={this.handleMediaOverlaysPlaybackRate}
-                        mediaOverlaysPlaybackRate={this.state.mediaOverlaysPlaybackRate}
 
                         handleMenuClick={this.handleMenuButtonClick}
                         handleSettingsClick={this.handleSettingsClick}
@@ -2631,7 +2615,7 @@ class Reader extends React.Component<IProps, IState> {
 
     private handleTTSPlay() {
         ttsClickEnable(true);
-        ttsPlay(parseFloat(this.state.ttsPlaybackRate), this.state.ttsVoice);
+        ttsPlay(parseFloat(this.props.ttsPlaybackRate), this.props.ttsVoice);
     }
     private handleTTSPause() {
         ttsPause();
@@ -2651,7 +2635,8 @@ class Reader extends React.Component<IProps, IState> {
     }
     private handleTTSPlaybackRate(speed: string) {
         ttsPlaybackRate(parseFloat(speed));
-        this.setState({ ttsPlaybackRate: speed });
+        // this.setState({ ttsPlaybackRate: speed });
+        this.props.setConfig({ ...this.props.readerConfig, ttsPlaybackRate: speed }, this.props.session);
     }
     private handleTTSVoice(voice: SpeechSynthesisVoice | null) {
         // alert(`${voice.name} ${voice.lang} ${voice.default} ${voice.voiceURI} ${voice.localService}`);
@@ -2663,12 +2648,13 @@ class Reader extends React.Component<IProps, IState> {
             voiceURI: voice.voiceURI,
         } : null;
         ttsVoice(v);
-        this.setState({ ttsVoice: v });
+        // this.setState({ ttsVoice: v });
+        this.props.setConfig({ ...this.props.readerConfig, ttsVoice: v }, this.props.session);
     }
 
     private handleMediaOverlaysPlay() {
         mediaOverlaysClickEnable(true);
-        mediaOverlaysPlay(parseFloat(this.state.mediaOverlaysPlaybackRate));
+        mediaOverlaysPlay(parseFloat(this.props.mediaOverlaysPlaybackRate));
     }
     private handleMediaOverlaysPause() {
         mediaOverlaysPause();
@@ -2688,46 +2674,48 @@ class Reader extends React.Component<IProps, IState> {
     }
     private handleMediaOverlaysPlaybackRate(speed: string) {
         mediaOverlaysPlaybackRate(parseFloat(speed));
-        this.setState({ mediaOverlaysPlaybackRate: speed });
+        // this.setState({ mediaOverlaysPlaybackRate: speed });
+        this.props.setConfig({ ...this.props.readerConfig, mediaOverlaysPlaybackRate: speed }, this.props.session);
     }
 
-    private handleSettingsSave(readerConfig: ReaderConfig) {
-        const moWasPlaying = this.state.r2PublicationHasMediaOverlays &&
-            this.state.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING;
-        const ttsWasPlaying = this.state.ttsState !== TTSStateEnum.STOPPED;
+    // private handleSettingsSave(readerConfig: ReaderConfig) {
+    //     const moWasPlaying = this.props.r2PublicationHasMediaOverlays &&
+    //         this.props.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING;
 
-        mediaOverlaysEnableSkippability(readerConfig.mediaOverlaysEnableSkippability);
-        ttsSentenceDetectionEnable(readerConfig.ttsEnableSentenceDetection);
-        ttsSkippabilityEnable(readerConfig.mediaOverlaysEnableSkippability);
-        mediaOverlaysEnableCaptionsMode(readerConfig.mediaOverlaysEnableCaptionsMode);
-        ttsOverlayEnable(readerConfig.ttsEnableOverlayMode);
+    //     const ttsWasPlaying = this.props.ttsState !== TTSStateEnum.STOPPED;
 
-        if (moWasPlaying) {
-            mediaOverlaysPause();
-            setTimeout(() => {
-                mediaOverlaysResume();
-            }, 300);
-        }
-        if (ttsWasPlaying) {
-            ttsStop();
-            setTimeout(() => {
-                ttsPlay(parseFloat(this.state.ttsPlaybackRate), this.state.ttsVoice);
-            }, 300);
-        }
+    //     mediaOverlaysEnableSkippability(readerConfig.mediaOverlaysEnableSkippability);
+    //     ttsSentenceDetectionEnable(readerConfig.ttsEnableSentenceDetection);
+    //     ttsSkippabilityEnable(readerConfig.mediaOverlaysEnableSkippability);
+    //     mediaOverlaysEnableCaptionsMode(readerConfig.mediaOverlaysEnableCaptionsMode);
+    //     ttsOverlayEnable(readerConfig.ttsEnableOverlayMode);
 
-        this.props.setConfig(readerConfig, this.props.session);
+    //     if (moWasPlaying) {
+    //         mediaOverlaysPause();
+    //         setTimeout(() => {
+    //             mediaOverlaysResume();
+    //         }, 300);
+    //     }
+    //     if (ttsWasPlaying) {
+    //         ttsStop();
+    //         setTimeout(() => {
+    //             ttsPlay(parseFloat(this.state.ttsPlaybackRate), this.state.ttsVoice);
+    //         }, 300);
+    //     }
 
-        if (this.props.r2Publication) {
-            readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
+    //     this.props.setConfig(readerConfig, this.props.session);
 
-            if (readerConfig.enableMathJax !== this.props.readerConfig.enableMathJax) {
-                setTimeout(() => {
-                    // window.location.reload();
-                    reloadContent();
-                }, 1000);
-            }
-        }
-    }
+    //     if (this.props.r2Publication) {
+    //         readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
+
+    //         if (readerConfig.enableMathJax !== this.props.readerConfig.enableMathJax) {
+    //             setTimeout(() => {
+    //                 // window.location.reload();
+    //                 reloadContent();
+    //             }, 1000);
+    //         }
+    //     }
+    // }
 
     // private handleSettingChange(
     //     event: TChangeEventOnInput | TChangeEventOnSelect | undefined,
@@ -2758,24 +2746,24 @@ class Reader extends React.Component<IProps, IState> {
     //     this.handleSettingsSave(readerConfig);
     // }
 
-    private handleIndexChange(event: TChangeEventOnInput, name: keyof ReaderConfigStringsAdjustables) {
+    // private handleIndexChange(event: TChangeEventOnInput, name: keyof ReaderConfigStringsAdjustables) {
 
-        let valueNum = event.target.valueAsNumber;
-        if (typeof valueNum !== "number") {
-            const valueStr = event.target.value.toString();
-            valueNum = parseInt(valueStr, 10);
-            if (typeof valueNum !== "number") {
-                console.log(`valueNum?!! ${valueNum}`);
-                return;
-            }
-        }
+    //     let valueNum = event.target.valueAsNumber;
+    //     if (typeof valueNum !== "number") {
+    //         const valueStr = event.target.value.toString();
+    //         valueNum = parseInt(valueStr, 10);
+    //         if (typeof valueNum !== "number") {
+    //             console.log(`valueNum?!! ${valueNum}`);
+    //             return;
+    //         }
+    //     }
 
-        const readerConfig = r.clone(this.props.readerConfig);
+    //     const readerConfig = r.clone(this.props.readerConfig);
 
-        readerConfig[name] = optionsValues[name][valueNum];
+    //     readerConfig[name] = optionsValues[name][valueNum];
 
-        this.handleSettingsSave(readerConfig);
-    }
+    //     this.handleSettingsSave(readerConfig);
+    // }
 
     private handleDivinaReadingMode(v: TdivinaReadingMode) {
 
@@ -2786,14 +2774,14 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private setSettings(readerConfig: ReaderConfig) {
-        // TODO: with TypeScript strictNullChecks this test condition should not be necessary!
-        if (!readerConfig) {
-            return;
-        }
+    // private setSettings(readerConfig: ReaderConfig) {
+    //     // TODO: with TypeScript strictNullChecks this test condition should not be necessary!
+    //     if (!readerConfig) {
+    //         return;
+    //     }
 
-        this.handleSettingsSave(readerConfig);
-    }
+    //     this.handleSettingsSave(readerConfig);
+    // }
 }
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
@@ -2858,6 +2846,9 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         r2PublicationHasMediaOverlays: state.reader.info.navigator.r2PublicationHasMediaOverlays,
         ttsState: state.reader.tts.state,
         mediaOverlaysState: state.reader.mediaOverlay.state,
+        ttsVoice: state.reader.config.ttsVoice,
+        mediaOverlaysPlaybackRate: state.reader.config.mediaOverlaysPlaybackRate,
+        ttsPlaybackRate: state.reader.config.ttsPlaybackRate,
     };
 };
 

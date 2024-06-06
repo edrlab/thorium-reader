@@ -13,7 +13,7 @@ import * as Popover from "@radix-ui/react-popover";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 // import * as ReactDOM from "react-dom";
-import { ReaderConfig, ReaderConfigPublisher, ReaderMode } from "readium-desktop/common/models/reader";
+import { ReaderConfigPublisher, ReaderMode } from "readium-desktop/common/models/reader";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
 import * as viewMode from "readium-desktop/renderer/assets/icons/fullscreen-corners-icon.svg";
 import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
@@ -110,8 +110,6 @@ interface IBaseProps extends TranslatorProps {
     handleTTSNext: (skipSentences?: boolean) => void;
     handleTTSPlaybackRate: (speed: string) => void;
     handleTTSVoice: (voice: SpeechSynthesisVoice | null) => void;
-    ttsPlaybackRate: string;
-    ttsVoice: SpeechSynthesisVoice | null;
 
     handleMediaOverlaysPlay: () => void;
     handleMediaOverlaysPause: () => void;
@@ -120,7 +118,6 @@ interface IBaseProps extends TranslatorProps {
     handleMediaOverlaysPrevious: () => void;
     handleMediaOverlaysNext: () => void;
     handleMediaOverlaysPlaybackRate: (speed: string) => void;
-    mediaOverlaysPlaybackRate: string;
 
     handleReaderClose: () => void;
     handleReaderDetach: () => void;
@@ -811,7 +808,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                             </div>
                                                                         )}
                                                                     </div>
-                                                                    <ReadingAudio useMO={useMO} config={this.props.ReaderSettingsProps.readerConfig} set={(config: Partial<ReaderConfig>) => { this.props.ReaderSettingsProps.setSettings({ ...this.props.ReaderSettingsProps.readerConfig, ...config }); }} />
+                                                                    <ReadingAudio useMO={useMO}/>
                                                                 </div>
                                                                 <Popover.Arrow className={stylesReaderHeader.popover_arrow} />
                                                             </Popover.Content>
@@ -1321,6 +1318,9 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         publicationHasMediaOverlays: state.reader.info.navigator.r2PublicationHasMediaOverlays,
         mediaOverlaysState: state.reader.mediaOverlay.state,
         ttsState: state.reader.tts.state,
+        ttsVoice: state.reader.config.ttsVoice,
+        mediaOverlaysPlaybackRate: state.reader.config.mediaOverlaysPlaybackRate,
+        ttsPlaybackRate: state.reader.config.ttsPlaybackRate,
     };
 };
 

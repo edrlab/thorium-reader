@@ -16,6 +16,13 @@ export enum ReaderMode {
     Detached = "detached",
 }
 
+export interface ReaderTTSMediaOverlay {
+    ttsPlaybackRate: string;
+    ttsVoice: SpeechSynthesisVoice | null,
+
+    mediaOverlaysPlaybackRate: string,
+}
+
 export interface ReaderInfoNavigator {
     r2PublicationHasMediaOverlays: boolean;
 }
@@ -86,7 +93,7 @@ export interface IReaderSettingsMenuState {
     readerDockingMode: IPopoverDialogProps["dockingMode"];
 }
 
-export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans, IAnnotationReaderConfigState, IReaderSettingsMenuState {
+export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans, IAnnotationReaderConfigState, IReaderSettingsMenuState, ReaderTTSMediaOverlay {
 }
 
 // export interface BookmarkCollection {

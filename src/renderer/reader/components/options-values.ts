@@ -7,7 +7,7 @@
 
 import { ReaderConfig, ReaderConfigStringsAdjustables } from "readium-desktop/common/models/reader";
 import {
-    TChangeEventOnInput, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
+    TKeyboardEventOnAnchor, TMouseEventOnAnchor,
     TMouseEventOnSpan,
 } from "readium-desktop/typings/react";
 
@@ -140,10 +140,9 @@ export interface IReaderSettingsProps {
     //     event: TChangeEventOnInput | TChangeEventOnSelect | undefined,
     //     name: keyof ReaderConfig,
     //     value?: string | boolean) => void;
-    handleIndexChange: (
-        event: TChangeEventOnInput,
-        name: keyof ReaderConfigStringsAdjustables) => void;
-    setSettings: (settings: ReaderConfig) => void;
+    // handleIndexChange: (
+    //     event: TChangeEventOnInput,
+    //     name: keyof ReaderConfigStringsAdjustables) => void;
     toggleMenu: () => void;
     r2Publication: R2Publication | undefined;
     handleDivinaReadingMode: (v: TdivinaReadingMode) => void;
