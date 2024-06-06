@@ -65,7 +65,7 @@ const FONT_LIST_JA: Font[] =
     id: "JA-SANS",
     label: "日本語 ゴシック（横書き）",
     // eslint-disable-next-line quotes
-    fontFamily: `"Hiragino Sans", "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ W3", "YuGothic", "BIZ UDPGothic", "Yu Gothic", "ＭＳ Ｐゴシック", "MS PGothic", sans-serif`,
+    fontFamily: `"Hiragino Sans", "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ W3", "YuGothic", "Yu Gothic Medium", "BIZ UDPGothic", "Yu Gothic", "ＭＳ Ｐゴシック", "MS PGothic", sans-serif`,
 }, {
     id: "JA-V",
     label: "日本語 明朝 (縦書き)",
@@ -75,6 +75,6 @@ const FONT_LIST_JA: Font[] =
     id: "JA-V-SANS",
     label: "日本語 ゴシック (縦書き)",
     // eslint-disable-next-line quotes
-    fontFamily: `"Hiragino Sans", "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ W3", "YuGothic", "BIZ UDGothic", "Yu Gothic", "ＭＳゴシック", "MS Gothic", sans-serif`,
+    fontFamily: `"Hiragino Sans", "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ W3", "YuGothic", Yu Gothic Medium", "BIZ UDGothic", "Yu Gothic", "ＭＳゴシック", "MS Gothic", sans-serif`,
 }];
 export const FONT_LIST_WITH_JA = FONT_LIST.concat(...FONT_LIST_JA);
