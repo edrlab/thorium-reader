@@ -15,7 +15,7 @@ export const initialState: ITTSState = {
 };
 
 function readerTTSReducer_(
-    state: ITTSState = initialState, // (preloaded state?) see registerReader
+    state: ITTSState = initialState,
     action: setTTSState.TAction,
 ): ITTSState {
     switch (action.type) {

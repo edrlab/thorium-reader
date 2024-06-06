@@ -15,7 +15,7 @@ export const initialState: IMediaOverlayState = {
 };
 
 function readerMediaOverlayReducer_(
-    state: IMediaOverlayState = initialState, // (preloaded state?) see registerReader
+    state: IMediaOverlayState = initialState,
     action: setMediaOverlayState.TAction,
 ): IMediaOverlayState {
     switch (action.type) {
