@@ -27,173 +27,129 @@ interface IBaseProps extends TranslatorProps {
     breadcrumb: IBreadCrumbItem[];
     className?: string;
 }
+
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
-}
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {}
 
 function useSize<T extends Element>(target: React.RefObject<T>) {
-    const [size, setSize] = React.useState(undefined);
+    const [size, setSize] = React.useState<DOMRect | undefined>(undefined);
 
     React.useLayoutEffect(() => {
-        setSize(target.current.getBoundingClientRect())
-    }, [target])
+        if (target.current) {
+            setSize(target.current.getBoundingClientRect());
+        }
+    }, [target]);
 
-    // Where the magic happens
-    useResizeObserver(target, (entry) => setSize(entry.contentRect))
-    return size
+    useResizeObserver(target, (entry) => setSize(entry.contentRect));
+    return size;
 }
 
 const BreadCrumbComponent: React.FC<IProps> = (props) => {
     const { breadcrumb } = props;
-    const breadcrumbRefs = React.useRef([]);
+    const breadcrumbRefs = React.useRef<(HTMLAnchorElement | HTMLLIElement)[]>([]);
     const prevNbBreadcrumbs = React.useRef(0);
-    const [ i, setI ] = React.useState(0);
-    const target = React.useRef(null);
+    const [i, setI] = React.useState(0);
+    const target = React.useRef<HTMLSpanElement>(null);
     const size = useSize(target)?.width;
-    const prevWidth = React.useRef(size?.width);
+    const prevWidth = React.useRef(size);
 
-    const [breadcrumbsArray, setBreadcrumbsArray] = React.useState([]);
-    let newBreadcrumbsArray: IBreadCrumbItem[];
+    const [breadcrumbsArray, setBreadcrumbsArray] = React.useState<IBreadCrumbItem[]>([]);
 
     React.useEffect(() => {
-        newBreadcrumbsArray = [...breadcrumb].slice(i);
+        const newBreadcrumbsArray = breadcrumb.slice(i);
         const item = newBreadcrumbsArray.shift();
         console.log("item", item);
-        console.log("test")
-    }, []);
-
-    console.log("i before effect", i);
+        setTimeout(() => {
+            setBreadcrumbsArray(newBreadcrumbsArray);
+        }, 100)
+    }, [breadcrumb, i]);
 
     React.useEffect(() => {
-        console.log("###### useEffect #######");
-        console.log("size", size);
-        console.log("initial i", i);
-        console.log("prevWidth.current", prevWidth.current);
-
-        if (size === 0 && prevWidth.current === 0) {
-            if (i <= breadcrumb.length - 1) {
+        if (size !== undefined && prevWidth.current !== size) {
+            if (size < 5 && i < breadcrumb.length - 1) {
                 setI(i + 1);
-            } 
-        } else if (prevWidth.current !== size) {
-            if (size < 50) {
-                if (i <= breadcrumb.length - 1) {
-                    setI(i + 1);
-                }
-            } else if (size > 250) {
-                if (i >= 1) {
-                    setI(i - 1)
-                } else {
-                    setI(0);
-                }
-            }
-        } else if (breadcrumbsArray.length < prevNbBreadcrumbs.current) {
-            const diff = prevNbBreadcrumbs.current - breadcrumbsArray.length;
-            if (diff > i) {
-                setI(0)
-            } else {
-                setI(i - diff);
+            } else if (size > 250 && i > 0) {
+                setI(i - 1);
             }
         }
-        if (breadcrumb.length > 4) {
-            newBreadcrumbsArray = [...breadcrumb].slice(i + 1);
-        } else {
-            newBreadcrumbsArray = [...breadcrumb].slice(i);
-        }
-        if (i === 0) {
-            const item = newBreadcrumbsArray?.shift();
-            console.log("item", item);
-        }
-
         prevWidth.current = size;
         prevNbBreadcrumbs.current = breadcrumbsArray.length;
-        setBreadcrumbsArray(newBreadcrumbsArray);
-        console.log("array", newBreadcrumbsArray);
-        console.log("i end effect",i);
-    }, [breadcrumb, size]);
+    }, [size, breadcrumb.length, i, breadcrumbsArray.length]);
 
-
-    const brdcrmb = breadcrumbsArray?.map(
-        (item, index) =>
-            item.path && index !== breadcrumbsArray.length - 1 ?
+    const renderBreadcrumbs = () => {
+        return breadcrumbsArray.map((item, index) => (
+            item.path && index !== breadcrumbsArray.length - 1 ? (
                 <li key={index} ref={el => breadcrumbRefs.current[index + 1] = el}>
                     <Link
-                        key={index}
                         to={{
                             ...props.location,
-                            pathname: item?.path,
+                            pathname: item.path,
                         }}
-                        state={{ displayType: (props.location.state && (props.location.state as IRouterLocationState).displayType) ? (props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                        state={{ displayType: (props.location.state as IRouterLocationState)?.displayType || DisplayType.Grid }}
                         title={item.name}
                         className={stylesButtons.button_transparency}
-                        ref={el => breadcrumbRefs.current[index + 1] = el}
-                        style={{maxWidth: "200px"}}
+                        style={{ maxWidth: "200px" }}
                     >
                         <p title={item.name}>{item.name}</p>
                     </Link>
                     <SVG ariaHidden svg={ChevronRight} />
                 </li>
-                :
-                <strong key={index} title={item.name} id="currentBreadcrumb" className={size < 50 ? stylesBreadcrumb.strongBreadcrumb : ""}>
+            ) : (
+                <strong key={index} title={item.name} id="currentBreadcrumb" className={size && size < 50 ? stylesBreadcrumb.strongBreadcrumb : ""}>
                     {item.name}
-                </strong>,
-    );
+                </strong>
+            )
+        ));
+    };
 
     return (
         <>
-        <ul className={classNames(stylesBreadcrumb.breadcrumb, props.className)} id="breadcrumb_container" style={{display: "flex", flexWrap: "nowrap", flex: "2"}}>
-            {
-                breadcrumb?.length
-                    ?
-                        <>
+            <ul className={classNames(stylesBreadcrumb.breadcrumb, props.className)} id="breadcrumb_container" style={{ display: "flex", flexWrap: "nowrap", flex: "2" }}>
+                {breadcrumb.length > 0 && (
+                    <>
                         <li>
                             <Link
                                 to={{
                                     ...props.location,
                                     pathname: breadcrumb[0]?.path,
                                 }}
-                                    state={{ displayType: (props.location.state && (props.location.state as IRouterLocationState).displayType) ? (props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
-                                    title={breadcrumb[0].name}
+                                state={{ displayType: (props.location.state as IRouterLocationState)?.displayType || DisplayType.Grid }}
+                                title={breadcrumb[0].name}
+                                className={stylesButtons.button_transparency}
+                                ref={el => breadcrumbRefs.current[0] = el}
+                            >
+                                <SVG ariaHidden={true} svg={BreacrmbsNavIcon} />
+                                {breadcrumb.length < 5 && <p>{breadcrumb[0].name}</p>}
+                            </Link>
+                            <SVG ariaHidden svg={ChevronRight} />
+                        </li>
+                        {breadcrumb.length > 4 && (
+                            <li>
+                                <Link
+                                    to={{
+                                        ...props.location,
+                                        pathname: breadcrumb[i]?.path,
+                                    }}
+                                    state={{ displayType: (props.location.state as IRouterLocationState)?.displayType || DisplayType.Grid }}
+                                    title={breadcrumb[i]?.name}
                                     className={stylesButtons.button_transparency}
-                                    ref={el => breadcrumbRefs.current[0] = el}
+                                    ref={el => breadcrumbRefs.current[i] = el}
                                 >
-                                    <SVG ariaHidden={true} svg={BreacrmbsNavIcon} />
-                                    {breadcrumb.length < 5 ?
-                                        <p>{breadcrumb[0].name}</p>
-                                        : <></>
-                                    }
+                                    <p>...</p>
                                 </Link>
                                 <SVG ariaHidden svg={ChevronRight} />
                             </li>
-                            { breadcrumb.length > 4 ?
-                                <li>
-                                    <Link
-                                        to={{
-                                            ...props.location,
-                                            pathname: breadcrumb[i + 1]?.path,
-                                        }}
-                                        state={{ displayType: (props.location.state && (props.location.state as IRouterLocationState).displayType) ? (props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
-                                        title={breadcrumb[i + 1]?.name}
-                                        className={stylesButtons.button_transparency}
-                                        ref={el => breadcrumbRefs.current[i + 1] = el}
-                                    >
-                                        <p>...</p>
-                                    </Link>
-                                    <SVG ariaHidden svg={ChevronRight} />
-                                </li>
-                                : <></>
-                            }
-                            {brdcrmb}
-                        </>
-                        : <></>
-            }
-        </ul>
-        <span id="spaceLeft" className="spaceLeft" ref={target}></span>
+                        )}
+                        {renderBreadcrumbs()}
+                    </>
+                )}
+            </ul>
+            <span id="spaceLeft" className="spaceLeft" ref={target}></span>
         </>
-
     );
 };
 
