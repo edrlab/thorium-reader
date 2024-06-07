@@ -26,6 +26,11 @@
   max-width: calc(100% - 300px);
   padding: 0;
 
+  .strongBreadcrumb {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .hiddenBreadcrumb {
     display: none;
   }

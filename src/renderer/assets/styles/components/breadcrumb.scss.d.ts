@@ -6,3 +6,4 @@ export declare const hiddenBreadcrumb: string;
 export declare const hide: string;
 export declare const small: string;
 export declare const spaceLeft: string;
+export declare const strongBreadcrumb: string;

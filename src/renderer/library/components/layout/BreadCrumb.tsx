@@ -20,6 +20,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IRouterLocationState } from "../../routing";
+import useResizeObserver from '@react-hook/resize-observer';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -34,16 +35,90 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
+function useSize<T extends Element>(target: React.RefObject<T>) {
+    const [size, setSize] = React.useState(undefined);
+
+    React.useLayoutEffect(() => {
+        setSize(target.current.getBoundingClientRect())
+    }, [target])
+
+    // Where the magic happens
+    useResizeObserver(target, (entry) => setSize(entry.contentRect))
+    return size
+}
+
 const BreadCrumbComponent: React.FC<IProps> = (props) => {
     const { breadcrumb } = props;
     const breadcrumbRefs = React.useRef([]);
     const prevNbBreadcrumbs = React.useRef(0);
-    const [ i, setI ] = React.useState(1);
-    const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+    const [ i, setI ] = React.useState(0);
+    const target = React.useRef(null);
+    const size = useSize(target)?.width;
+    const prevWidth = React.useRef(size?.width);
 
-    const brdcrmb = breadcrumb.slice(1).map(
+    const [breadcrumbsArray, setBreadcrumbsArray] = React.useState([]);
+    let newBreadcrumbsArray: IBreadCrumbItem[];
+
+    React.useEffect(() => {
+        newBreadcrumbsArray = [...breadcrumb].slice(i);
+        const item = newBreadcrumbsArray.shift();
+        console.log("item", item);
+        console.log("test")
+    }, []);
+
+    console.log("i before effect", i);
+
+    React.useEffect(() => {
+        console.log("###### useEffect #######");
+        console.log("size", size);
+        console.log("initial i", i);
+        console.log("prevWidth.current", prevWidth.current);
+
+        if (size === 0 && prevWidth.current === 0) {
+            if (i <= breadcrumb.length - 1) {
+                setI(i + 1);
+            } 
+        } else if (prevWidth.current !== size) {
+            if (size < 50) {
+                if (i <= breadcrumb.length - 1) {
+                    setI(i + 1);
+                }
+            } else if (size > 250) {
+                if (i >= 1) {
+                    setI(i - 1)
+                } else {
+                    setI(0);
+                }
+            }
+        } else if (breadcrumbsArray.length < prevNbBreadcrumbs.current) {
+            const diff = prevNbBreadcrumbs.current - breadcrumbsArray.length;
+            if (diff > i) {
+                setI(0)
+            } else {
+                setI(i - diff);
+            }
+        }
+        if (breadcrumb.length > 4) {
+            newBreadcrumbsArray = [...breadcrumb].slice(i + 1);
+        } else {
+            newBreadcrumbsArray = [...breadcrumb].slice(i);
+        }
+        if (i === 0) {
+            const item = newBreadcrumbsArray?.shift();
+            console.log("item", item);
+        }
+
+        prevWidth.current = size;
+        prevNbBreadcrumbs.current = breadcrumbsArray.length;
+        setBreadcrumbsArray(newBreadcrumbsArray);
+        console.log("array", newBreadcrumbsArray);
+        console.log("i end effect",i);
+    }, [breadcrumb, size]);
+
+
+    const brdcrmb = breadcrumbsArray?.map(
         (item, index) =>
-            item.path && index !== breadcrumb.length - 2 ?
+            item.path && index !== breadcrumbsArray.length - 1 ?
                 <li key={index} ref={el => breadcrumbRefs.current[index + 1] = el}>
                     <Link
                         key={index}
@@ -55,99 +130,20 @@ const BreadCrumbComponent: React.FC<IProps> = (props) => {
                         title={item.name}
                         className={stylesButtons.button_transparency}
                         ref={el => breadcrumbRefs.current[index + 1] = el}
+                        style={{maxWidth: "200px"}}
                     >
-                        <p title={item.name}>{item?.name}</p>
+                        <p title={item.name}>{item.name}</p>
                     </Link>
                     <SVG ariaHidden svg={ChevronRight} />
                 </li>
                 :
-                <strong key={index} title={item.name} id="currentBreadcrumb">
+                <strong key={index} title={item.name} id="currentBreadcrumb" className={size < 50 ? stylesBreadcrumb.strongBreadcrumb : ""}>
                     {item.name}
                 </strong>,
     );
 
-
-    const removeHideClass = (strong: HTMLElement, spaceLeft: HTMLElement) => {
-        setTimeout(() => {
-            strong.style.overflow = "unset";
-            strong.style.textOverflow = "unset";
-            const currentRef = breadcrumbRefs.current[i];
-            if (currentRef) {
-                const currentElement = currentRef as HTMLLIElement;
-                currentElement.classList.remove(stylesBreadcrumb.hide);
-                spaceLeft.classList.remove(stylesBreadcrumb.small);
-                console.log("!!!! Remove hide class /", "i",i, "/ current element :", currentElement.innerHTML);
-            }
-            if (i >= 2) {
-                setI(i - 1);
-            } else {
-                setI(0);
-            }
-            // setI(i - 1);
-            // if (i === -1) {
-            //     setI(0);
-            // }
-        }, 100);
-    };
-
-    const addHideClass = (strong: HTMLElement, spaceLeft: HTMLElement) => {
-        setTimeout(() => {
-            spaceLeft.classList.add(stylesBreadcrumb.small);
-            const currentRef = breadcrumbRefs.current[i + 1];
-            strong.style.overflow = "hidden";
-            strong.style.textOverflow = "ellipsis";
-            if (currentRef) {
-                const currentElement = currentRef as HTMLLIElement;
-                currentElement.classList.add(stylesBreadcrumb.hide);
-                console.log("!!!! Add hide class /", "i",i, "/ current element :", currentElement.innerHTML);
-            }
-            setI(i + 1);
-        }, 100);
-    };
-
-    React.useEffect(() => {
-        const spaceLeft = document.getElementById("spaceLeft");
-        const strong = document.getElementById("currentBreadcrumb");
-        const handleResize = () => {
-            const remainingWidth = spaceLeft.offsetWidth;
-            console.log("######");
-            // console.log("remaining width", remainingWidth);
-            console.log("breadcrumb", breadcrumb);
-            // console.log("new nb of breadcrumbs", breadcrumb.length);
-            setWindowWidth(window.innerWidth);
-            if (breadcrumb.length !== prevNbBreadcrumbs.current) {
-                // console.log("prevNbBreadcrumbs.current", prevNbBreadcrumbs.current);
-                if (breadcrumb.length < prevNbBreadcrumbs.current) {
-                    // New value smaller than old one
-                    removeHideClass(strong, spaceLeft);
-                } else {
-                    // New value greater than old one 
-                    if (remainingWidth < 100) {
-                        addHideClass(strong, spaceLeft);
-                    } else {
-                        strong.style.overflow = "unset";
-                        strong.style.textOverflow = "unset";
-                    }
-                }
-                prevNbBreadcrumbs.current = breadcrumb.length;
-            } else if (windowWidth !== window.innerWidth) {
-                // console.log("resize");
-                if (remainingWidth < 100) {
-                    addHideClass(strong, spaceLeft);
-                } else {
-                    removeHideClass(strong, spaceLeft);
-                }
-            } 
-        };
-        window.addEventListener("resize", handleResize);
-        handleResize();
-
-        return () => {
-            window.removeEventListener("resize", handleResize);
-        };
-    }, [breadcrumb, windowWidth]);
-
     return (
+        <>
         <ul className={classNames(stylesBreadcrumb.breadcrumb, props.className)} id="breadcrumb_container" style={{display: "flex", flexWrap: "nowrap", flex: "2"}}>
             {
                 breadcrumb?.length
@@ -159,39 +155,45 @@ const BreadCrumbComponent: React.FC<IProps> = (props) => {
                                     ...props.location,
                                     pathname: breadcrumb[0]?.path,
                                 }}
-                                state={{ displayType: (props.location.state && (props.location.state as IRouterLocationState).displayType) ? (props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
-                                title={breadcrumb[0].name}
-                                className={stylesButtons.button_transparency}
-                                ref={el => breadcrumbRefs.current[0] = el}
-                            >
-                                <SVG ariaHidden={true} svg={BreacrmbsNavIcon} />
-                                {breadcrumb.length < 5 ?
-                                <p>{breadcrumb[0].name}</p>
+                                    state={{ displayType: (props.location.state && (props.location.state as IRouterLocationState).displayType) ? (props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                                    title={breadcrumb[0].name}
+                                    className={stylesButtons.button_transparency}
+                                    ref={el => breadcrumbRefs.current[0] = el}
+                                >
+                                    <SVG ariaHidden={true} svg={BreacrmbsNavIcon} />
+                                    {breadcrumb.length < 5 ?
+                                        <p>{breadcrumb[0].name}</p>
+                                        : <></>
+                                    }
+                                </Link>
+                                <SVG ariaHidden svg={ChevronRight} />
+                            </li>
+                            { breadcrumb.length > 4 ?
+                                <li>
+                                    <Link
+                                        to={{
+                                            ...props.location,
+                                            pathname: breadcrumb[i + 1]?.path,
+                                        }}
+                                        state={{ displayType: (props.location.state && (props.location.state as IRouterLocationState).displayType) ? (props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                                        title={breadcrumb[i + 1]?.name}
+                                        className={stylesButtons.button_transparency}
+                                        ref={el => breadcrumbRefs.current[i + 1] = el}
+                                    >
+                                        <p>...</p>
+                                    </Link>
+                                    <SVG ariaHidden svg={ChevronRight} />
+                                </li>
                                 : <></>
-                                }
-                            </Link>
-                            <SVG ariaHidden svg={ChevronRight} />
-                        </li>
-                        <li className={stylesBreadcrumb.hiddenBreadcrumb}>
-                            <Link
-                                to={{
-                                    ...props.location,
-                                    pathname: breadcrumb[i]?.path,
-                                }}
-                                state={{ displayType: (props.location.state && (props.location.state as IRouterLocationState).displayType) ? (props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
-                                title={breadcrumb[i]?.name}
-                                className={stylesButtons.button_transparency}
-                                ref={el => breadcrumbRefs.current[i] = el}
-                            >
-                                <p>...</p>
-                            </Link>
-                            <SVG ariaHidden svg={ChevronRight} />
-                        </li>
+                            }
                             {brdcrmb}
                         </>
-                    : <></>
+                        : <></>
             }
         </ul>
+        <span id="spaceLeft" className="spaceLeft" ref={target}></span>
+        </>
+
     );
 };
 

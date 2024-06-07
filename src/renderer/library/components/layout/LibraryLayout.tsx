@@ -148,7 +148,6 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         {this.props.breadCrumb ?
                         <div className={stylesCatalogs.catalog_breadcrumbSearch_Wrapper}>
                             { this.props.breadCrumb }
-                            <span id="spaceLeft" className="spaceLeft"></span>
                             { this.props.search }
                         </div>
                         : <></>}
