@@ -9,6 +9,8 @@ import { ReaderConfig, ReaderInfo } from "readium-desktop/common/models/reader";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { IRTLFlipState } from "readium-desktop/common/redux/states/renderer/rtlFlip";
 
+
+// WHY They are 2 IReaderRootState declared ??
 export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
 }
