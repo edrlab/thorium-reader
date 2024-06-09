@@ -13,10 +13,11 @@ import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysEnableCaptionsMode, 
     ttsSentenceDetectionEnable, ttsSkippabilityEnable, ttsStop,
 } from "@r2-navigator-js/electron/renderer";
 
-import { readerLocalActionSetConfig } from "../actions";
+import { readerLocalActionReader, readerLocalActionSetConfig } from "../actions";
 import { SagaGenerator, all, put, select, spawn, take } from "typed-redux-saga";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import { readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
 
 function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaGenerator<void> {
 
@@ -65,11 +66,46 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
     readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
 }
 
+function* alowCustomTriggered(action: readerLocalActionReader.allowCustom.TAction): SagaGenerator<void> {
+
+    const { payload: { state: checked }} = action;
+
+    if (checked) {
+
+        const {
+            font,
+            fontSize,
+            pageMargins,
+            wordSpacing,
+            letterSpacing,
+            paraSpacing,
+            lineHeight,
+        } = yield* select((state: IReaderRootState) => state.reader.transientConfig);
+
+        yield* put(readerLocalActionSetConfig.build({
+                            font,
+                            fontSize,
+                            pageMargins,
+                            wordSpacing,
+                            letterSpacing,
+                            paraSpacing,
+                            lineHeight,
+        }));
+
+    } else {
+        yield* put(readerLocalActionSetConfig.build(readerConfigInitialStateDefaultPublisher));
+    }
+}
+
 export function saga() {
     return all([
         takeSpawnEvery(
             readerLocalActionSetConfig.ID,
             readerConfigChanged,
+        ),
+        takeSpawnEvery(
+            readerLocalActionReader.allowCustom.ID,
+            alowCustomTriggered,
         ),
         spawn(function* () {
             while (true) {

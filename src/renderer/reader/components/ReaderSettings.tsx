@@ -1299,6 +1299,11 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
     const optionSelected = options.find(({ value }) => value === tabValue)?.id;
     const optionDisabled = options.map(({ id, disabled }) => disabled ? id : -1).filter((v) => v > -1);
+    const optionSelectedIsOnOptionDisabled = optionDisabled.includes(optionSelected);
+    if (optionSelectedIsOnOptionDisabled) {
+        setTabValue("tab-display");
+    }
+
 
     // console.log("RENDER");
 
