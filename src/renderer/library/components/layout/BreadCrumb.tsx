@@ -20,7 +20,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IRouterLocationState } from "../../routing";
-import useResizeObserver from '@react-hook/resize-observer';
+import useResizeObserver from "@react-hook/resize-observer";
 import debounce from "debounce";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -42,8 +42,8 @@ function useSize<T extends Element>(target: React.RefObject<T>) {
     React.useLayoutEffect(() => {
         if (target.current) {
             const sizeUpdate = () => {
-                setSize(target.current.getBoundingClientRect())
-            }
+                setSize(target.current.getBoundingClientRect());
+            };
             debounce(sizeUpdate, 400);
         }
     }, [target]);
@@ -69,11 +69,10 @@ const BreadCrumbComponent: React.FC<IProps> = (props) => {
         console.log("item", item);
         setTimeout(() => {
             setBreadcrumbsArray(newBreadcrumbsArray);
-        }, 50)
+        }, 50);
     }, [breadcrumb, i]);
 
     React.useLayoutEffect(() => {
-        console.log("effect")
         if (size !== undefined && prevWidth.current !== size) {
             if (size < 5 && i < breadcrumb.length - 1) {
                 setI(i + 1);
