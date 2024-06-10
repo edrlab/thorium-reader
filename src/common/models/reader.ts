@@ -9,7 +9,6 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { IAnnotationReaderConfigState } from "../redux/states/renderer/annotation";
-import { IPopoverDialogProps } from "readium-desktop/renderer/reader/components/options-values";
 
 export enum ReaderMode {
     Attached = "attached",
@@ -90,7 +89,7 @@ export interface ReaderConfigBooleans {
 }
 
 export interface IReaderSettingsMenuState {
-    readerDockingMode: IPopoverDialogProps["dockingMode"];
+    readerDockingMode: "full" | "left" | "right";
 }
 
 export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans, IAnnotationReaderConfigState, IReaderSettingsMenuState, ReaderTTSMediaOverlay {

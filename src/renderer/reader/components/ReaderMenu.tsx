@@ -52,7 +52,7 @@ import { Link } from "@r2-shared-js/models/publication-link";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import { ILink, TToc } from "../pdf/common/pdfReader.type";
-import { IPopoverDialogProps, IReaderMenuProps } from "./options-values";
+import { IReaderMenuProps } from "./options-values";
 import ReaderMenuSearch from "./ReaderMenuSearch";
 // import SideMenu from "./sideMenu/SideMenu";
 // import { SectionData } from "./sideMenu/sideMenuData";
@@ -74,10 +74,12 @@ import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scs
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import * as Popover from "@radix-ui/react-popover";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
+import { ReaderConfig } from "readium-desktop/common/models/reader";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends IReaderMenuProps, IPopoverDialogProps {
+interface IBaseProps extends IReaderMenuProps {
     // focusNaviguationMenu: () => void;
     currentLocation: LocatorExtended;
     isDivina: boolean;
@@ -597,11 +599,9 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     };
 
     const [pageNumber, setPageNumber] = React.useState(getStartPage);
-    React.useEffect(() => {
-        if (pageNumber > pageTotal) {
-            setPageNumber(pageTotal);
-        }
-    }, [pageTotal]);
+    if (pageNumber > pageTotal) {
+        setPageNumber(pageTotal);
+    }
 
     React.useEffect(() => {
         setPageNumber(getStartPage());
@@ -620,11 +620,16 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     // const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     // SelectRef.displayName = "ComboBox";
     
-    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, name: `${v} / ${pageTotal}`}));
+    // const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, name: `${v} / ${pageTotal}`}));
+    const pageOptions = React.useMemo(() =>
+        Array.from({ length: pageTotal }, (_k, v) => (v += 1, ({ id: v, name: `${v} / ${pageTotal}` })))
+        , [pageTotal]);
+
 
     const begin = startIndex + 1;
     const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationsQueue.length);
 
+    // TODO: need to remove this , switch to popover modal with react-aria-spectrum
     const [itemEdited, setItemToEdit] = React.useState<number>(-1);
 
     const isSearchEnable = useSelector((state: IReaderRootState) => state.search.enable);
@@ -1077,7 +1082,10 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
 
 const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) => {
 
-    const { r2Publication, handleLinkClick, isDivina, isPdf, currentLocation, totalPages: totalPagesFromProps, goToLocator, dockedMode } = props;
+    const { handleLinkClick, isDivina, isPdf, currentLocation, totalPages: totalPagesFromProps, goToLocator } = props;
+    const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
+    const dockingMode = useReaderConfig("readerDockingMode");
+    const dockedMode = dockingMode !== "full";
     let totalPages = `${totalPagesFromProps}`;
     const goToRef = React.useRef<HTMLInputElement>();
 
@@ -1448,11 +1456,16 @@ const TabTitle = ({value}: {value: string}) => {
 };
 
 export const ReaderMenu: React.FC<IBaseProps> = (props) => {
-    const { r2Publication, /* toggleMenu */ pdfToc, isPdf, focusMainAreaLandmarkAndCloseMenu,
+    const { /* toggleMenu */ pdfToc, isPdf, focusMainAreaLandmarkAndCloseMenu,
         pdfNumberOfPages, currentLocation, goToLocator, openedSection: tabValue, setOpenedSection: setTabValue } = props;
-    const { setDockingMode, dockedMode, dockingMode } = props;
     const { doFocus, annotationUUID, handleLinkClick } = props;
-
+    const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
+    const dockingMode = useReaderConfig("readerDockingMode");
+    const setReaderConfig = useSaveReaderConfig();
+    const setDockingMode = React.useCallback((value: ReaderConfig["readerDockingMode"]) => {
+        setReaderConfig({readerDockingMode: value});
+    }, [setReaderConfig]);
+    const dockedMode = dockingMode !== "full";
     const [__] = useTranslator();
 
     // const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
@@ -1692,7 +1705,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                     <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label={__("reader.svg.right")} onClick={setDockingModeRightSide}>
                                         <SVG ariaHidden={true} svg={DockRightIcon} />
                                     </button>
-                                    <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "full" ? true : false} aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
+                                    <button className={stylesButtons.button_transparency_icon} disabled={false} aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
                                         <SVG ariaHidden={true} svg={DockModalIcon} />
                                     </button>
                                 </div>

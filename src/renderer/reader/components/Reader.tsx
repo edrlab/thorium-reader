@@ -87,7 +87,7 @@ import {
 } from "../redux/actions";
 import { TdivinaReadingMode, defaultReadingMode } from "readium-desktop/common/redux/states/renderer/divina";
 import optionsValues, {
-    AdjustableSettingsNumber, IPopoverDialogProps, IReaderMenuProps, IReaderSettingsProps, isDivinaReadingMode,
+    AdjustableSettingsNumber, IReaderMenuProps, IReaderSettingsProps, isDivinaReadingMode,
 } from "./options-values";
 import { URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS, URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_GOTO, URL_PARAM_GOTO_DOM_RANGE, URL_PARAM_IS_IFRAME, URL_PARAM_PREVIOUS, URL_PARAM_REFRESH, URL_PARAM_SECOND_WEBVIEW, URL_PARAM_SESSION_INFO, URL_PARAM_WEBVIEW_SLOT } from "@r2-navigator-js/electron/renderer/common/url-params";
 
@@ -649,7 +649,6 @@ class Reader extends React.Component<IProps, IState> {
         const readerMenuProps: IReaderMenuProps = {
             open: this.state.menuOpen,
             doFocus: this.state.doFocus,
-            r2Publication: this.props.r2Publication,
             handleLinkClick: this.handleLinkClick,
             goToLocator: this.goToLocator,
             toggleMenu: this.handleMenuButtonClick,
@@ -667,11 +666,11 @@ class Reader extends React.Component<IProps, IState> {
             open: this.state.settingsOpen,
             doFocus: this.state.doFocus,
             indexes: this.props.indexes,
-            readerConfig: this.props.readerConfig,
+            // readerConfig: this.props.readerConfig,
             // handleSettingChange: this.handleSettingChange.bind(this),
             // handleIndexChange: this.handleIndexChange.bind(this),
             toggleMenu: this.handleSettingsClick,
-            r2Publication: this.props.r2Publication,
+            // r2Publication: this.props.r2Publication,
             handleDivinaReadingMode: this.handleDivinaReadingMode.bind(this),
 
             setDisableRTLFlip: this.props.setDisableRTLFlip.bind(this),
@@ -687,12 +686,6 @@ class Reader extends React.Component<IProps, IState> {
             zenMode: this.state.zenMode,
             setZenMode : () => this.setState({ zenMode : !this.state.zenMode}),
             searchEnable: this.props.searchEnable,
-        };
-
-        const readerPopoverDialogContext: IPopoverDialogProps = {
-            dockingMode: this.props.readerConfig.readerDockingMode,
-            dockedMode: this.props.readerConfig.readerDockingMode !== "full",
-            setDockingMode: (m) => { this.props.setConfig({ ...this.props.readerConfig, readerDockingMode: m }, this.props.session); },
         };
 
         // {this.state.bookmarkMessage ? <div
@@ -789,9 +782,7 @@ class Reader extends React.Component<IProps, IState> {
                         isDivina={this.props.isDivina}
                         isPdf={this.props.isPdf}
                         divinaSoundPlay={this.handleDivinaSound}
-                        r2Publication={this.props.r2Publication}
 
-                        readerPopoverDialogContext={readerPopoverDialogContext}
                         showSearchResults={this.showSearchResults}
                         disableRTLFlip={this.props.disableRTLFlip}
                         isRTLFlip={this.isRTLFlip}
@@ -941,7 +932,6 @@ class Reader extends React.Component<IProps, IState> {
                     fullscreen={this.state.fullscreen}
                     // tslint:disable-next-line: max-line-length
                     currentLocation={this.props.isDivina || this.props.isPdf ? this.props.locator : this.state.currentLocation}
-                    r2Publication={this.props.r2Publication}
                     handleLinkClick={this.handleLinkClick}
                     goToLocator={this.goToLocator}
                     isDivina={this.props.isDivina}
@@ -953,7 +943,6 @@ class Reader extends React.Component<IProps, IState> {
                     isRTLFlip={this.isRTLFlip}
                     publicationView={this.props.publicationView}
 
-                    readerPopoverDialogContext={readerPopoverDialogContext}
                 />
                 : <></>
     }

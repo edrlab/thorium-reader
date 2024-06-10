@@ -25,15 +25,14 @@ import * as DockModalIcon from "readium-desktop/renderer/assets/icons/dockmodal-
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import { IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../pdf/common/pdfReader.type";
-import { IPopoverDialogProps, IReaderSettingsProps } from "./options-values";
+import { IReaderSettingsProps } from "./options-values";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
-import { ReaderConfig, ReaderConfigPublisher, TTheme } from "readium-desktop/common/models/reader";
+import { ReaderConfig, TTheme } from "readium-desktop/common/models/reader";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
-import debounce from "debounce";
 import { FONT_LIST, FONT_LIST_WITH_JA } from "readium-desktop/utils/fontList";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import { createOrGetPdfEventBus } from "../pdf/driver";
@@ -46,13 +45,14 @@ import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-bold.svg";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as DefaultPageIcon from "readium-desktop/renderer/assets/icons/defaultPage-icon.svg";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { readerLocalActionReader, readerLocalActionSetConfig, readerLocalActionSetTransientConfig } from "../redux/actions";
+import { readerLocalActionReader } from "../redux/actions";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
+import { usePublisherReaderConfig, useReaderConfig, useReaderConfigAll, useSavePublisherReaderConfig, useSavePublisherReaderConfigDebounced, useSaveReaderConfig, useSaveReaderConfigDebounced } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends IReaderSettingsProps, IPopoverDialogProps {
+interface IBaseProps extends IReaderSettingsProps {
     handleSettingsClick: (open: boolean) => void;
 
     tabValue: string;
@@ -64,62 +64,6 @@ interface IState {
     pdfView?: IPdfPlayerView | undefined;
     pdfCol?: IPdfPlayerColumn | undefined;
 }
-
-const useReaderConfigAll = () => {
-    const config = useSelector((state: IReaderRootState) => state.reader.config);
-
-    return config;
-};
-
-function useReaderConfig<T extends keyof ReaderConfig>(key: T): ReaderConfig[T] {
-    const config = useSelector((state: IReaderRootState) => state.reader.config);
-
-    return config[key];
-}
-
-const usePublisherReaderConfig = (key: keyof ReaderConfigPublisher) => {
-    return useReaderConfig(key);
-};
-
-const useSaveReaderConfig = () => {
-    const dispatch = useDispatch();
-
-    const cb = React.useCallback(
-        (state: Partial<ReaderConfig>) => {
-
-            dispatch(readerLocalActionSetConfig.build(state));
-        }, [dispatch]);
-
-    return cb;
-};
-
-const useSaveReaderConfigDebounced = () => {
-    const cb = useSaveReaderConfig();
-
-    const debounceCB = React.useCallback(debounce(cb, 400), [cb]);
-    return debounceCB;
-};
-
-const useSavePublisherReaderConfig = () => {
-    const dispatch = useDispatch();
-    const setReaderConfig = useSaveReaderConfig();
-
-    const cb = React.useCallback(
-        (state: Partial<ReaderConfigPublisher>) => {
-
-            dispatch(readerLocalActionSetTransientConfig.build(state));
-            setReaderConfig(state);
-        }, [dispatch, setReaderConfig]);
-
-    return cb;
-};
-
-const useSavePublisherReaderConfigDebounced = () => {
-    const cb = useSavePublisherReaderConfig();
-
-    const debounceCB = React.useCallback(debounce(cb, 400), [cb]);
-    return debounceCB;
-};
 
 const TabTitle = ({value}: {value: string}) => {
     let title: string;
@@ -1084,8 +1028,7 @@ const AllowCustom = () => {
 };
 
 export const ReaderSettings: React.FC<IBaseProps> = (props) => {
-    const { readerConfig, open } = props;
-    const { setDockingMode, dockedMode, dockingMode } = props;
+    const { open } = props;
     const { handleDivinaReadingMode, divinaReadingMode, divinaReadingModeSupported } = props;
     const { tabValue, setTabValue } = props;
     const { isDivina, isPdf } = props;
@@ -1093,6 +1036,12 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const { doFocus } = props;
 
     const overridePublisherDefault = useSelector((state: IReaderRootState) => state.reader.allowCustomConfig.state);
+    const dockingMode = useReaderConfig("readerDockingMode");
+    const setReaderConfig = useSaveReaderConfig();
+    const setDockingMode = React.useCallback((value: ReaderConfig["readerDockingMode"]) => {
+        setReaderConfig({readerDockingMode: value});
+    }, [setReaderConfig]);
+    const dockedMode = dockingMode !== "full";
 
     const [__] = useTranslator();
 
@@ -1218,10 +1167,6 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         }
 
     }, [dockingMode, doFocus]);
-
-    if (!readerConfig) {
-        return <></>;
-    }
 
     if (!open) {
         return <></>;
@@ -1360,7 +1305,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                                 <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label={__("reader.svg.right")} onClick={setDockingModeRightSide}>
                                     <SVG ariaHidden={true} svg={DockRightIcon} />
                                 </button>
-                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "full" ? true : false} aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
+                                <button className={stylesButtons.button_transparency_icon} disabled={false} aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
                                     <SVG ariaHidden={true} svg={DockModalIcon} />
                                 </button>
 
