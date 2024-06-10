@@ -90,9 +90,15 @@ const useSaveReaderConfig = () => {
             dispatch(readerLocalActionSetConfig.build(state));
         }, [dispatch]);
 
+    return cb;
+};
+
+const useSaveReaderConfigDebounced = () => {
+    const cb = useSaveReaderConfig();
+
     const debounceCB = React.useCallback(debounce(cb, 400), [cb]);
     return debounceCB;
-};
+}
 
 const useSavePublisherReaderConfig = () => {
     const dispatch = useDispatch();
@@ -101,15 +107,19 @@ const useSavePublisherReaderConfig = () => {
     const cb = React.useCallback(
         (state: Partial<ReaderConfigPublisher>) => {
 
-            
-
             dispatch(readerLocalActionSetTransientConfig.build(state));
             setReaderConfig(state);
         }, [dispatch, setReaderConfig]);
 
+    return cb;
+};
+
+const useSavePublisherReaderConfigDebounced = () => {
+    const cb = useSavePublisherReaderConfig();
+
     const debounceCB = React.useCallback(debounce(cb, 400), [cb]);
     return debounceCB;
-};
+}
 
 const TabTitle = ({value}: {value: string}) => {
     let title: string;
@@ -145,7 +155,7 @@ const TabTitle = ({value}: {value: string}) => {
 const Theme = () => {
     const [__] = useTranslator();
     const theme = useReaderConfig("theme");
-    const set = useSaveReaderConfig();
+    const set = useSaveReaderConfigDebounced();
 
     const [themeOptions] = React.useState(() => [
         {
@@ -257,7 +267,7 @@ export const FontSize = () => {
     const [__] = useTranslator();
 
     const fontSize = usePublisherReaderConfig("fontSize");
-    const set = useSavePublisherReaderConfig();
+    const set = useSavePublisherReaderConfigDebounced();
 
     const [currentSliderValue, setCurrentSliderValue] = React.useState(fontSize.replace(/%/g, ""));
 
@@ -509,7 +519,7 @@ const ReadingSpacing = () => {
 
     const [__] = useTranslator();
 
-    const set = useSavePublisherReaderConfig();
+    const set = useSavePublisherReaderConfigDebounced();
     const config = useSelector((state: IReaderRootState) => state.reader.config);
     const { pageMargins, wordSpacing, letterSpacing, paraSpacing, lineHeight } = config;
     const spacingOptions: ITable[] = [
@@ -608,7 +618,7 @@ const RadioGroupItem = (props: IRadioGroupItemProps) => {
 const ReadingDisplayLayout = ({ isFXL }: { isFXL: boolean }) => {
     const [__] = useTranslator();
     const layout = useReaderConfig("paged");
-    const set = useSaveReaderConfig();
+    const set = useSaveReaderConfigDebounced();
     return (
         <div className={stylesSettings.section}>
             <h4>{__("reader.settings.disposition.title")}</h4>
@@ -629,7 +639,7 @@ const ReadingDisplayCol = ({ isPdf, pdfCol }: Pick<IBaseProps, "isPdf"> & Pick<I
 
     const paged = useReaderConfig("paged");
     const colCount = useReaderConfig("colCount");
-    const set = useSaveReaderConfig();
+    const set = useSaveReaderConfigDebounced();
     const scrollable = !paged;
 
     const [state, setState] = React.useState(scrollable ? "auto" : colCount);
@@ -660,7 +670,7 @@ const ReadingDisplayAlign = () => {
     const [__] = useTranslator();
 
     const align = useReaderConfig("align");
-    const set = useSaveReaderConfig();
+    const set = useSaveReaderConfigDebounced();
 
     return (
         <section className={stylesSettings.section}>
@@ -686,7 +696,7 @@ export const ReadingAudio = ({ useMO }: { useMO: boolean }) => {
     // : Pick<ReaderConfig, "ttsEnableOverlayMode" | "mediaOverlaysEnableCaptionsMode" | "mediaOverlaysEnableSkippability" | "ttsEnableSentenceDetection">
     const config = useReaderConfigAll();
     const { mediaOverlaysEnableCaptionsMode: moCaptions, ttsEnableOverlayMode: ttsCaptions, mediaOverlaysEnableSkippability: skippability, ttsEnableSentenceDetection: splitTTStext } = config;
-    const set = useSaveReaderConfig();
+    const set = useSaveReaderConfigDebounced();
 
     const options = [
         {
@@ -787,7 +797,7 @@ const ReadingDisplayCheckboxSettings = ({
 ) => {
     const [__] = useTranslator();
 
-    const set = useSaveReaderConfig();
+    const set = useSaveReaderConfigDebounced();
     const { enableMathJax, reduceMotion, noFootnotes, noRuby } = useReaderConfigAll();
 
     const options = [
