@@ -98,7 +98,7 @@ const useSaveReaderConfigDebounced = () => {
 
     const debounceCB = React.useCallback(debounce(cb, 400), [cb]);
     return debounceCB;
-}
+};
 
 const useSavePublisherReaderConfig = () => {
     const dispatch = useDispatch();
@@ -119,7 +119,7 @@ const useSavePublisherReaderConfigDebounced = () => {
 
     const debounceCB = React.useCallback(debounce(cb, 400), [cb]);
     return debounceCB;
-}
+};
 
 const TabTitle = ({value}: {value: string}) => {
     let title: string;
