@@ -21,6 +21,7 @@ import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/br
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IRouterLocationState } from "../../routing";
 import useResizeObserver from '@react-hook/resize-observer';
+import debounce from "debounce";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -40,7 +41,10 @@ function useSize<T extends Element>(target: React.RefObject<T>) {
 
     React.useLayoutEffect(() => {
         if (target.current) {
-            setSize(target.current.getBoundingClientRect());
+            const sizeUpdate = () => {
+                setSize(target.current.getBoundingClientRect())
+            }
+            debounce(sizeUpdate, 400);
         }
     }, [target]);
 
@@ -65,20 +69,32 @@ const BreadCrumbComponent: React.FC<IProps> = (props) => {
         console.log("item", item);
         setTimeout(() => {
             setBreadcrumbsArray(newBreadcrumbsArray);
-        }, 100)
+        }, 50)
     }, [breadcrumb, i]);
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
+        console.log("effect")
         if (size !== undefined && prevWidth.current !== size) {
             if (size < 5 && i < breadcrumb.length - 1) {
                 setI(i + 1);
-            } else if (size > 250 && i > 0) {
+            } else if (size > 350 && i > 0) {
                 setI(i - 1);
             }
         }
         prevWidth.current = size;
         prevNbBreadcrumbs.current = breadcrumbsArray.length;
     }, [size, breadcrumb.length, i, breadcrumbsArray.length]);
+
+    // if (size !== undefined && prevWidth.current !== size) {
+    //     if (size < 5 && i < breadcrumb.length - 1) {
+    //         setI(i + 1);
+    //     } else if (size > 250 && i > 0) {
+    //         setI(i - 1);
+    //     }
+    // }
+    // prevWidth.current = size;
+    // prevNbBreadcrumbs.current = breadcrumbsArray.length;
+    // console.log("size", size);
 
     const renderBreadcrumbs = () => {
         return breadcrumbsArray.map((item, index) => (
@@ -99,7 +115,7 @@ const BreadCrumbComponent: React.FC<IProps> = (props) => {
                     <SVG ariaHidden svg={ChevronRight} />
                 </li>
             ) : (
-                <strong key={index} title={item.name} id="currentBreadcrumb" className={size && size < 50 ? stylesBreadcrumb.strongBreadcrumb : ""}>
+                <strong key={index} title={item.name} id="currentBreadcrumb" className={stylesBreadcrumb.strongBreadcrumb}>
                     {item.name}
                 </strong>
             )
@@ -127,7 +143,7 @@ const BreadCrumbComponent: React.FC<IProps> = (props) => {
                             </Link>
                             <SVG ariaHidden svg={ChevronRight} />
                         </li>
-                        {breadcrumb.length > 4 && (
+                        {breadcrumb.length > 4 && i > 0 ? 
                             <li>
                                 <Link
                                     to={{
@@ -143,7 +159,7 @@ const BreadCrumbComponent: React.FC<IProps> = (props) => {
                                 </Link>
                                 <SVG ariaHidden svg={ChevronRight} />
                             </li>
-                        )}
+                        : <></>}
                         {renderBreadcrumbs()}
                     </>
                 )}

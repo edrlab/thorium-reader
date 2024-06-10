@@ -269,20 +269,27 @@
     }
 
     @media screen and (width <= 1024px) {
-        flex-direction: column;
-        align-items: end;
+        position: relative;
 
         .breadcrumb {
             width: 100%;
             padding-bottom: 20px;
+            max-width: unset;
+            height: 50px;
         }
 
         .spaceLeft {
-            padding-bottom: 20px;
+            display: none;
         }
 
         form[role="search"] {
             width: 290px!important;
+        }
+
+        .form_group {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
         }
     }
 }
