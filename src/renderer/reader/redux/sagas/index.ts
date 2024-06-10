@@ -25,7 +25,6 @@ import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } 
 import { eventChannel } from "redux-saga";
 import { put, select } from "typed-redux-saga";
 import { readerLocalActionReader, readerLocalActionSetTransientConfig } from "../actions";
-// import { IReaderRootState } from "readium-desktop/renderer/common/redux/states/renderer/readerRootState";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 // Logger
