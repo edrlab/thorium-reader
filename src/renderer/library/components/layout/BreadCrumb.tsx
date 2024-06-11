@@ -26,7 +26,7 @@ function useSize<T extends Element>(target: React.RefObject<T>) {
         setSize(target.current.getBoundingClientRect());
     }, [target]);
 
-    const handler = React.useCallback(debounce((entry) => setSize(entry.contentRect), 500), [setSize, debounce])
+    const handler = React.useCallback(debounce((entry) => setSize(entry.contentRect), 500), [setSize, debounce]);
 
     useResizeObserver(target, handler);
     return size;
@@ -48,7 +48,7 @@ const LinkItemBreadcrumb = ({item: {name, path}, isTheFirstOne}: {item: IBreadCr
         {isTheFirstOne ? <SVG ariaHidden={true} svg={BreacrmbsNavIcon} /> : <></>}
         <p >{name}</p>
     </Link>);
-}
+};
 
 const ChevronRightBreadCrumb = () => <SVG ariaHidden svg={ChevronRight} />;
 
@@ -63,7 +63,7 @@ const breadcrumbLayoutSize = (firstOne: IBreadCrumbItem, between: IBreadCrumbIte
     sizeFootprint += 10 + 8 * lastOne.name.length + 10;
 
     return sizeFootprint;
-}
+};
 
 const BreadCrumb = () => {
 
@@ -89,8 +89,8 @@ const BreadCrumb = () => {
 
     if (!between.length && spaceLeftWidth === 4/*min-width*/) {
         lastOne.name = lastOne.name.slice(0,
-            Math.round((containerWidth - (firstItemSize(firstOne.name.length) + 30/*offset*/) - 3/*...*/) / 8/*fontsize*/)
-        ) + '...';
+            Math.round((containerWidth - (firstItemSize(firstOne.name.length) + 30/*offset*/) - 3/*...*/) / 8/*fontsize*/),
+        ) + "...";
     }
 
     // console.log("RENDER");
@@ -100,7 +100,7 @@ const BreadCrumb = () => {
             containerType: "inline-size",
             containerName: "spaceLeft",
             display: "flex",
-            alignItems: "center"
+            alignItems: "center",
         }} ref={container}>
             <ul className={stylesBreadcrumb.breadcrumb}>
                 {
@@ -128,7 +128,7 @@ const BreadCrumb = () => {
             <span id="spaceLeft" className="spaceLeft" ref={spanLeft} aria-hidden></span>
         </div>
     );
-}
+};
 
 
 export default BreadCrumb;
