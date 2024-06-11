@@ -69,13 +69,13 @@ const BreadCrumb = () => {
 
     const spanLeft = React.useRef<HTMLSpanElement>(null);
     const container = React.useRef<HTMLDivElement>(null);
-    const spaceLeftSize = useSize(spanLeft);
     const containerSize = useSize(container);
-    const spaceLeftWidth = Math.floor(spaceLeftSize?.width || -1);
     const containerWidth = Math.floor(containerSize?.width || -1);
     const breadCrumbData = useSelector((state: ILibraryRootState) => state.opds.browser.breadcrumb);
     const firstOne = {...(breadCrumbData.at(0) || {name: "", path: ""})};
-    const lastOne = {...(breadCrumbData.at(-1) || {name: "", path: ""})};
+    const lastOneFromBreadcrumbData = () => ({...(breadCrumbData.at(-1) || {name: "", path: ""})});
+    const [lastOne, setLastOne] = React.useState(lastOneFromBreadcrumbData);
+    React.useEffect(() => setLastOne(lastOneFromBreadcrumbData()), [breadCrumbData]);
     const between = [...(breadCrumbData.slice(1, -1) || [])];
 
     do {
@@ -87,11 +87,22 @@ const BreadCrumb = () => {
         }
     } while (between.length);
 
-    if (!between.length && spaceLeftWidth === 4/*min-width*/) {
-        lastOne.name = lastOne.name.slice(0,
-            Math.round((containerWidth - (firstItemSize(firstOne.name.length) + 30/*offset*/) - 3/*...*/) / 8/*fontsize*/),
-        ) + "...";
-    }
+    React.useEffect(() => {
+        const spaceLeftWidth = Math.floor(spanLeft.current?.clientWidth || -1);
+
+        if (spaceLeftWidth === 4) {
+            if (!between.length) {
+                setLastOne({
+                    name: lastOne.name.slice(0,
+                        Math.round((containerWidth - (firstItemSize(firstOne.name.length) + 30/*offset*/) - 3/*...*/) / 8/*fontsize*/),
+                    ) + "...",
+                    path: lastOne.path,
+                });
+            }
+        } else {
+            setLastOne(lastOneFromBreadcrumbData());
+        }
+    }, [containerWidth, spanLeft.current, lastOneFromBreadcrumbData, setLastOne]);
 
     // console.log("RENDER");
     return (
@@ -101,7 +112,6 @@ const BreadCrumb = () => {
             containerName: "spaceLeft",
             display: "flex",
             alignItems: "center",
-            overflow: "hidden",
         }} ref={container}>
             <ul className={stylesBreadcrumb.breadcrumb}>
                 {
