@@ -5,141 +5,130 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classNames from "classnames";
 import * as React from "react";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as BreacrmbsNavIcon from "readium-desktop/renderer/assets/icons/breadcrumbsNav-icon.svg";
 import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-right.svg";
 import * as stylesBreadcrumb from "readium-desktop/renderer/assets/styles/components/breadcrumb.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IRouterLocationState } from "../../routing";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import useResizeObserver from "@react-hook/resize-observer";
+import debounce from "debounce";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
-    breadcrumb: IBreadCrumbItem[];
-    className?: string;
+function useSize<T extends Element>(target: React.RefObject<T>) {
+    const [size, setSize] = React.useState<DOMRect | undefined>(undefined);
+
+    React.useLayoutEffect(() => {
+        setSize(target.current.getBoundingClientRect());
+    }, [target]);
+
+    const handler = React.useCallback(debounce((entry) => setSize(entry.contentRect), 500), [setSize, debounce])
+
+    useResizeObserver(target, handler);
+    return size;
 }
-// IProps may typically extend:
-// RouteComponentProps
-// ReturnType<typeof mapStateToProps>
-// ReturnType<typeof mapDispatchToProps>
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+
+const LinkItemBreadcrumb = ({item: {name, path}, isTheFirstOne}: {item: IBreadCrumbItem, isTheFirstOne?: boolean}) => {
+
+    const location = useSelector((state: ILibraryRootState) => state.router.location);
+
+    return (<Link
+        to={{
+            ...location,
+            pathname: path,
+        }}
+        state={{ displayType: (location.state && (location.state as IRouterLocationState).displayType) ? (location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+        title={name}
+        className={stylesButtons.button_transparency}
+    >
+        {isTheFirstOne ? <SVG ariaHidden={true} svg={BreacrmbsNavIcon} /> : <></>}
+        <p >{name}</p>
+    </Link>);
 }
 
-class BreadCrumb extends React.Component<IProps, undefined> {
+const ChevronRightBreadCrumb = () => <SVG ariaHidden svg={ChevronRight} />;
 
-    constructor(props: IProps) {
-        super(props);
+const firstItemSize = (textLength: number) => 15 + 20 + 5 + 7 * textLength + 15 + 20;
+const breadcrumbLayoutSize = (firstOne: IBreadCrumbItem, between: IBreadCrumbItem[], lastOne: IBreadCrumbItem) => {
+
+    let sizeFootprint = 0;
+    sizeFootprint += firstItemSize(firstOne.name.length);
+    for (const el of between) {
+        sizeFootprint += 15 + 7 * el.name.length + 15 + 20;
+    }
+    sizeFootprint += 10 + 8 * lastOne.name.length + 10;
+
+    return sizeFootprint;
+}
+
+const BreadCrumb = () => {
+
+    const spanLeft = React.useRef<HTMLSpanElement>(null);
+    const container = React.useRef<HTMLDivElement>(null);
+    const spaceLeftSize = useSize(spanLeft);
+    const containerSize = useSize(container);
+    const spaceLeftWidth = Math.floor(spaceLeftSize?.width || -1);
+    const containerWidth = Math.floor(containerSize?.width || -1);
+    const breadCrumbData = useSelector((state: ILibraryRootState) => state.opds.browser.breadcrumb);
+    const firstOne = {...(breadCrumbData.at(0) || {name: "", path: ""})};
+    const lastOne = {...(breadCrumbData.at(-1) || {name: "", path: ""})};
+    const between = [...(breadCrumbData.slice(1, -1) || [])];
+
+    do {
+        const sizeFootprint = breadcrumbLayoutSize(firstOne, between, lastOne);
+        if (sizeFootprint > containerWidth) {
+            between.shift();
+        } else {
+            break;
+        }
+    } while (between.length);
+
+    if (!between.length && spaceLeftWidth === 4/*min-width*/) {
+        lastOne.name = lastOne.name.slice(0,
+            Math.round((containerWidth - (firstItemSize(firstOne.name.length) + 30/*offset*/) - 3/*...*/) / 8/*fontsize*/)
+        ) + '...';
     }
 
-    public render(): React.ReactElement<{}> {
-        const { breadcrumb } = this.props;
-
-        return (
-            <div className={classNames(stylesBreadcrumb.breadcrumb, this.props.className)}>
+    // console.log("RENDER");
+    return (
+        <div id="breadcrumb-div-container" style={{
+            width: "100%",
+            containerType: "inline-size",
+            containerName: "spaceLeft",
+            display: "flex",
+            alignItems: "center"
+        }} ref={container}>
+            <ul className={stylesBreadcrumb.breadcrumb}>
                 {
-                    breadcrumb
-                        ?
-                        breadcrumb.length > 5 ?
-                            <>
-                                <Link
-                                    to={{
-                                        ...this.props.location,
-                                        pathname: breadcrumb[0].path,
-                                    }}
-                                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
-                                    title={breadcrumb[0].name}
-                                    className={stylesButtons.button_transparency}
-                                >
-                                     <SVG ariaHidden={true} svg={BreacrmbsNavIcon} />
-                                    <p>{breadcrumb[0].name}</p>
-                                </Link>
-                                <SVG ariaHidden svg={ChevronRight} />
-                                <Link
-                                    to={{
-                                        ...this.props.location,
-                                        pathname: breadcrumb[breadcrumb.length - 3].path,
-                                    }}
-                                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
-                                    title={breadcrumb[breadcrumb.length - 3].name}
-                                    className={stylesButtons.button_transparency}
-                                >
-                                    <p>...</p>
-                                </Link>
-                                <SVG ariaHidden svg={ChevronRight} />
-                                <Link
-                                    to={{
-                                        ...this.props.location,
-                                        pathname: breadcrumb[breadcrumb.length - 2].path,
-                                    }}
-                                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
-                                    title={breadcrumb[breadcrumb.length - 2].name}
-                                    className={stylesButtons.button_transparency}
-                                >
-                                    <p>{breadcrumb[breadcrumb.length - 2].name}</p>
-                                </Link>
-                                <SVG ariaHidden svg={ChevronRight} />
-                                <strong>
-                                    {breadcrumb[breadcrumb.length - 1].name}
-                                </strong>
-                            </>
-                        :
-                        breadcrumb.length >= 2 && breadcrumb.length <= 5 ?
-                            <>
-                                <Link
-                                    to={{
-                                        ...this.props.location,
-                                        pathname: breadcrumb[0].path,
-                                    }}
-                                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
-                                    title={breadcrumb[0].name}
-                                    className={stylesButtons.button_transparency}
-                                >
-                                    <SVG ariaHidden={true} svg={BreacrmbsNavIcon} />
-                                    <p>{breadcrumb[0].name}</p>
-                                </Link>
-                                <SVG ariaHidden svg={ChevronRight} />
-                                {breadcrumb.slice(1).map(
-                                    (item, index) =>
-                                        item.path && index !== breadcrumb.length - 2 ?
-                                            <React.Fragment key={index}>
-                                                <Link
-                                                    key={index}
-                                                    to={{
-                                                        ...this.props.location,
-                                                        pathname: item.path,
-                                                    }}
-                                                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
-                                                    title={item.name}
-                                                    className={stylesButtons.button_transparency}
-                                                >
-                                                    <p title={item.name}>{item.name}</p>
-                                                </Link>
-                                                <SVG ariaHidden svg={ChevronRight} />
-                                            </React.Fragment>
-                                            :
-                                        <strong key={index} title={item.name}>
-                                            {item.name}
-                                        </strong>,
-                                )}
-                            </>
-                        : <></> : <></>
-                } 
-            </div>
-        );
-    }
+                    <li key={0} className={"breadcrumb-li-item"}>
+                        <LinkItemBreadcrumb item={firstOne} isTheFirstOne />
+                        <ChevronRightBreadCrumb />
+                    </li>
+                }
+                {
+                    between.map((item, index) => {
+                        return (
+                            <li key={index+1} className={"breadcrumb-li-item"}>
+                                <LinkItemBreadcrumb item={item} />
+                                <ChevronRightBreadCrumb />
+                            </li>
+                        );
+                    })
+                }
+                {
+                    <li key={between.length+1} id="breadcrumb-li-lastone">
+                        <strong title={lastOne.name}>{lastOne.name}</strong>
+                    </li>
+                }
+            </ul>
+            <span id="spaceLeft" className="spaceLeft" ref={spanLeft} aria-hidden></span>
+        </div>
+    );
 }
 
-const mapStateToProps = (state: ILibraryRootState) => ({
-    location: state.router.location,
-});
 
-export default connect(mapStateToProps)(withTranslator(BreadCrumb));
+export default BreadCrumb;
