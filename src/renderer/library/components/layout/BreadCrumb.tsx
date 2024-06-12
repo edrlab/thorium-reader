@@ -23,6 +23,9 @@ function useSize<T extends Element>(target: React.RefObject<T>) {
     const [size, setSize] = React.useState<DOMRect | undefined>(undefined);
 
     React.useLayoutEffect(() => {
+
+        // no need to check target.current here, what do you think @danielWeck ? , more like a double security
+        // from the documentation useLayoutEffect fires synchronously after all DOM mutations.
         target.current && setSize(target.current.getBoundingClientRect());
         // TODO: "destructor" needed?
         // return () => {
@@ -114,41 +117,42 @@ const BreadCrumb = () => {
         } while (between.length);
     }
 
-    React.useEffect(() => {
-        const spaceLeftWidth = Math.floor(spanLeft.current?.clientWidth || -1);
-        // const spaceLeftWidth = spanLeft.current?.clientWidth || -1;
+    // I think it's not needed to run it inside an 'effect' because there are already a check of dependencies mutation
+    // React.useEffect(() => {
+    const spaceLeftWidth = Math.floor(spanLeft.current?.clientWidth || -1);
+    // const spaceLeftWidth = spanLeft.current?.clientWidth || -1;
 
-        // console.log(spaceLeftWidth, spanLeft.current?.clientWidth, containerWidth, between.length, firstOne.name.length, lastOne.name, lastOneFromBreadcrumbData.name);
+    console.log(spaceLeftWidth, spanLeft.current?.clientWidth, containerWidth, between.length, firstOne.name.length, lastOne.name, lastOneFromBreadcrumbData.name);
 
-        if (between.length) {
-            if (lastOne.name !== lastOneFromBreadcrumbData.name || lastOne.path !== lastOneFromBreadcrumbData.path) {
+    if (between.length) {
+        if (lastOne.name !== lastOneFromBreadcrumbData.name || lastOne.path !== lastOneFromBreadcrumbData.path) {
+            setLastOne({
+                name: lastOneFromBreadcrumbData.name,
+                path: lastOneFromBreadcrumbData.path,
+            });
+        }
+    } else {
+        const name = lastOneFromBreadcrumbData.name.slice(0,
+            // TODO: logic based on hard-coded CSS values is super britle! (also, font metrics multiplier is unreliable, just an approximation)
+            Math.round((containerWidth - (firstItemSize(firstOne.name.length) + 30/*offset*/) - 3/*...*/) / 8/*fontsize*/),
+        ) + "...";
+        if (spaceLeftWidth <= 4) {
+            if (lastOne.name !== name) {
+                setLastOne({
+                    name,
+                    path: lastOne.path,
+                });
+            }
+        } else {
+            if (lastOne.name !== name && lastOne.name !== lastOneFromBreadcrumbData.name || lastOne.path !== lastOneFromBreadcrumbData.path) {
                 setLastOne({
                     name: lastOneFromBreadcrumbData.name,
                     path: lastOneFromBreadcrumbData.path,
                 });
             }
-        } else {
-            const name = lastOneFromBreadcrumbData.name.slice(0,
-                // TODO: logic based on hard-coded CSS values is super britle! (also, font metrics multiplier is unreliable, just an approximation)
-                Math.round((containerWidth - (firstItemSize(firstOne.name.length) + 30/*offset*/) - 3/*...*/) / 8/*fontsize*/),
-            ) + "...";
-            if (spaceLeftWidth <= 4) {
-                if (lastOne.name !== name) {
-                    setLastOne({
-                        name,
-                        path: lastOne.path,
-                    });
-                }
-            } else {
-                if (lastOne.name !== name && lastOne.name !== lastOneFromBreadcrumbData.name || lastOne.path !== lastOneFromBreadcrumbData.path) {
-                    setLastOne({
-                        name: lastOneFromBreadcrumbData.name,
-                        path: lastOneFromBreadcrumbData.path,
-                    });
-                }
-            }
         }
-    }, [spanLeft.current?.clientWidth, containerWidth, between.length, firstOne.name.length, lastOne.name, lastOne.path, lastOneFromBreadcrumbData.name, lastOneFromBreadcrumbData.path]);
+    }
+    // }, [spanLeft.current?.clientWidth, containerWidth, between.length, firstOne.name.length, lastOne.name, lastOne.path, lastOneFromBreadcrumbData.name, lastOneFromBreadcrumbData.path]);
 
     // console.log("RENDER");
     return (
