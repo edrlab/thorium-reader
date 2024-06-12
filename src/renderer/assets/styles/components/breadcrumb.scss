@@ -2,6 +2,8 @@
 =-=-= breadcrumbs.scss
 */
 
+@import 'src/renderer/assets/styles/partials/mixin';
+
 #spaceLeft {
   // background-color: blue;
   width: 100%;
@@ -10,6 +12,10 @@
   color: white;
   container-type: inline-size;
   container-name: spaceleft;
+}
+
+.breadcrumb_container {
+  @include scrollbar_styling;
 }
 
 .breadcrumb {

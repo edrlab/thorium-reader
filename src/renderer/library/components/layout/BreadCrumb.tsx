@@ -79,6 +79,8 @@ const BreadCrumb = () => {
     const spanLeft = React.useRef<HTMLSpanElement>(null);
     const container = React.useRef<HTMLDivElement>(null);
 
+    const [displayFullBreadcrumb, setDisplayFullBreadcrumb] = React.useState(false);
+
     const containerSize = useSize(container);
     const containerWidth = Math.floor(containerSize?.width || -1);
 
@@ -100,37 +102,53 @@ const BreadCrumb = () => {
     // },
     // [lastOne.name, lastOne.path, lastOneFromBreadcrumbData.name, lastOneFromBreadcrumbData.path]);
 
-    const between = [...(breadCrumbData.slice(1, -1) || [])];
-
+    const between = breadCrumbData.length > 2 ? [...(breadCrumbData.slice(1, -1) || [])] : [];
+    let someBetweenWereRemoved = false;
     // skip trim logic before initial useLayoutEffect or first resize observer
-    if (containerWidth > 0) {
+    if (containerWidth > 0 && between.length && !displayFullBreadcrumb) {
         do {
             const sizeFootprint = breadcrumbLayoutSize(firstOne, between, lastOne);
             if (sizeFootprint > containerWidth) {
                 between.shift();
+                someBetweenWereRemoved = true;
             } else {
                 break;
             }
         } while (between.length);
+
+        if (someBetweenWereRemoved) {
+            between.unshift({name: "...", path: ""});
+        }
     }
 
+    const theOnlyBetweenIsDotDotDot = between.length === 1 && between[0].name === "..." && between[0].path === "";
+
     React.useEffect(() => {
-        const spaceLeftWidth = Math.floor(spanLeft.current?.clientWidth || -1);
-        // const spaceLeftWidth = spanLeft.current?.clientWidth || -1;
-
-        // console.log(spaceLeftWidth, spanLeft.current?.clientWidth, containerWidth, between.length, firstOne.name.length, lastOne.name, lastOneFromBreadcrumbData.name);
-
-        if (between.length) {
+        if (displayFullBreadcrumb) {
             if (lastOne.name !== lastOneFromBreadcrumbData.name || lastOne.path !== lastOneFromBreadcrumbData.path) {
                 setLastOne({
                     name: lastOneFromBreadcrumbData.name,
                     path: lastOneFromBreadcrumbData.path,
                 });
             }
-        } else {
+            return;
+        }
+        const spaceLeftWidth = Math.floor(spanLeft.current?.clientWidth || -1);
+        // const spaceLeftWidth = spanLeft.current?.clientWidth || -1;
+
+        // console.log(spaceLeftWidth, spanLeft.current?.clientWidth, containerWidth, between.length, firstOne.name.length, lastOne.name, lastOneFromBreadcrumbData.name);
+
+        if (between.length && !theOnlyBetweenIsDotDotDot) {
+            if (lastOne.name !== lastOneFromBreadcrumbData.name || lastOne.path !== lastOneFromBreadcrumbData.path) {
+                setLastOne({
+                    name: lastOneFromBreadcrumbData.name,
+                    path: lastOneFromBreadcrumbData.path,
+                });
+            }
+        } else if (!between.length || theOnlyBetweenIsDotDotDot) {
             const name = lastOneFromBreadcrumbData.name.slice(0,
                 // TODO: logic based on hard-coded CSS values is super britle! (also, font metrics multiplier is unreliable, just an approximation)
-                Math.round((containerWidth - (firstItemSize(firstOne.name.length) + 30/*offset*/) - 3/*...*/) / 8/*fontsize*/),
+                Math.round((containerWidth - (firstItemSize(firstOne.name.length) + 30/*offset*/) - 3/*...*/ - (theOnlyBetweenIsDotDotDot ? (12 + 20) : 0)) / 8/*fontsize*/),
             ) + "...";
             if (spaceLeftWidth <= 4) {
                 if (lastOne.name !== name) {
@@ -148,7 +166,7 @@ const BreadCrumb = () => {
                 }
             }
         }
-    }, [spanLeft.current?.clientWidth, containerWidth, between.length, firstOne.name.length, lastOne.name, lastOne.path, lastOneFromBreadcrumbData.name, lastOneFromBreadcrumbData.path]);
+    }, [theOnlyBetweenIsDotDotDot, displayFullBreadcrumb, spanLeft.current?.clientWidth, containerWidth, between.length, firstOne.name.length, lastOne.name, lastOne.path, lastOneFromBreadcrumbData.name, lastOneFromBreadcrumbData.path]);
 
     // console.log("RENDER");
     return (
@@ -158,8 +176,9 @@ const BreadCrumb = () => {
             containerName: "spaceLeft",
             display: "flex",
             alignItems: "center",
-            overflow: "hidden",
-        }} ref={container}>
+            overflowY: "hidden",
+            overflowX: displayFullBreadcrumb ? "auto" : "hidden",
+        }} ref={container} className={stylesBreadcrumb.breadcrumb_container}>
             <ul className={stylesBreadcrumb.breadcrumb}>
                 {
                     <li key={0} className={"breadcrumb-li-item"}>
@@ -171,7 +190,11 @@ const BreadCrumb = () => {
                     between.map((item, index) => {
                         return (
                             <li key={index+1} className={"breadcrumb-li-item"}>
-                                <LinkItemBreadcrumb item={item} />
+                                {
+                                    (!displayFullBreadcrumb && item.name === "..." && item.path === "") ?
+                                    (<button onClick={() => { setDisplayFullBreadcrumb(true); }}>...</button>) :
+                                    (<LinkItemBreadcrumb item={item} />)
+                                }
                                 <ChevronRightBreadCrumb />
                             </li>
                         );
@@ -179,8 +202,16 @@ const BreadCrumb = () => {
                 }
                 {
                     <li key={between.length+1} id="breadcrumb-li-lastone">
-                        <strong title={lastOne.name}>{lastOne.name}</strong>
+                        <strong title={lastOneFromBreadcrumbData.name}>{lastOne.name}</strong>
                     </li>
+                }
+                {
+                    // displayFullBreadcrumb && 
+                    // (<li key={between.length+2} id="breadcrumb-li-plus">
+                    //     <button onClick={() => {
+                    //         setDisplayFullBreadcrumb(false);
+                    //     }}>...</button>
+                    // </li>)
                 }
             </ul>
             <span id="spaceLeft" className="spaceLeft" ref={spanLeft} aria-hidden></span>
