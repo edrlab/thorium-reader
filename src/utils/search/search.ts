@@ -29,7 +29,7 @@ export async function search(searchInput: string, data: ISearchDocument): Promis
     // so we need it here to compute CSS Selectors
     let toParse = data.isFixedLayout ? data.xml : data.xml.replace(
         /<body([\s\S]*?)>/gm,
-        "<body$1><a href=\"DUMMY_URL\">DUMMY LINK</a>",
+        "<body$1><a id=\"r2-skip-link\" href=\"javascript:;\" title=\"__\" aria-label=\"__\" tabindex=\"0\"> </a>",
     );
     // console.log(`===data.isFixedLayout ${data.isFixedLayout}`, data.xml);
 

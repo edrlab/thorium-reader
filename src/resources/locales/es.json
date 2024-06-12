@@ -226,7 +226,7 @@
   "publication": {
     "accessibility": {
       "accessModeSufficient": {
-        "textual": "Amigable con síntesis de voz y lectores de pantalla"
+        "textual": "TTS y lector de pantalla amigables"
       },
       "accessibilityFeature": {
         "alternativeText": "Contiene texto alternativo",
@@ -239,14 +239,14 @@
       },
       "accessibilityHazard": {
         "flashing": "Destellos",
-        "motionSimulation": "Animaciones",
+        "motionSimulation": "Animación",
         "name": "Riesgo:",
         "noFlashing": "Sin destellos",
         "noMotionSimulation": "Sin animaciones",
-        "noSound": "Sin sonidos",
+        "noSound": "Sin sonido",
         "none": "Ninguno",
-        "sound": "Sonidos",
-        "unknown": "Desconocidos"
+        "sound": "Sonido",
+        "unknown": "Desconocido"
       },
       "certifierReport": "Informe de la entidad certificadora",
       "conformsTo": "Conforme con",
@@ -288,28 +288,35 @@
       "title": "Progreso"
     },
     "read": "Finalizado",
-    "remainingTime": "Préstamos (días restantes)",
+    "remainingTime": "Préstamo (tiempo restante)",
     "renewButton": "Renovar",
     "returnButton": "Devolver",
     "returnedLcp": "Este libro no se puede leer porque la licencia LCP se ha devuelto.",
     "revokedLcp": "Este libro no se puede leer porque la licencia LCP se ha cancelado.",
     "seeLess": "Ver menos",
     "seeMore": "Ver más",
-    "timeLeft": "Quedan",
+    "timeLeft": "Tiempo restante",
     "title": "Título",
     "userKeyCheckInvalid": "Contraseña incorrecta"
   },
   "reader": {
     "annotations": {
       "Color": "Color",
-      "addNote": "Annotar",
+      "addNote": "Anotar",
       "advancedMode": "Modo instantáneo (creación automática al seleccionar)",
       "annotationsOptions": "Opciones",
+      "hide": "No mostrar",
       "highlight": "Destacar",
       "noSelectionToast": "Sin selección",
       "quickAnnotations": "Creación rápida (omitir editor)",
       "saveNote": "Guardar",
-      "toggleMarginMarks": "Mostrar en márgenes"
+      "toggleMarginMarks": "Mostrar en márgenes",
+      "type": {
+        "outline": "Marco",
+        "solid": "Fondo solido",
+        "strikethrough": "Tachado",
+        "underline": "Subrayado"
+      }
     },
     "divina": {
       "mute": "silenciar",
@@ -512,10 +519,10 @@
       "catalogs": "Catálogos",
       "home": "Inicio",
       "readingView": "Vista de lectura",
-      "yourBooks": "Tus libros"
+      "yourBooks": "Tus publicaciones"
     },
     "title": {
-      "allBooks": "Todos mis libros",
+      "allBooks": "Todas mis publicaciones",
       "newFeature": "Nueva función: Anotaciones",
       "welcome": "Bienvenido a Thorium 3.0"
     }

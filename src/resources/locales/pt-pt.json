@@ -146,7 +146,7 @@
     "gridTitle": "Grelha",
     "home": "Menu de estante",
     "homeTitle": "Entrada",
-    "importTitle": "Importar publicação",
+    "importTitle": "Importar documento",
     "listTitle": "Tabela",
     "myCatalogs": "Meus catálogos",
     "refreshTitle": "recarregar",
@@ -195,7 +195,7 @@
     "documentation": "Sítio Web oficial do OPDS",
     "empty": "Nenhum documento encontrado",
     "firstPage": "Primeira",
-    "informations": "Imagine um mundo onde você possa explorar e descarregar publicações digitais de bibliotecas públicas e livrarias digitais com apenas alguns cliques. Isso é exatamente o que o formato de catálogo Open Publication Distribution System (OPDS) oferece. Com o OPDS, pode navegar pelos catálogos de vários fornecedores de ebooks, inscrever-se, pedir emprestado, comprar uma publicação ou visitar a sua estante pessoal. Pode até descarregar um ebook ou audiolivro diretamente no Thorium Reader para leitura imediata.\nComo encontrar um catálogo OPDS? É simples. Procure uma hiperligação (URL) que leve ao catálogo. Copie esse URL no campo hiperligação. Lembre-se de que não existe um modelo único para todos os catálogos OPDS ativos. Poderá ser necessário entrar em contacto com a biblioteca ou livraria de sua preferência e solicitar o URL do catálogo OPDS. Se não sabe por onde começar, a Wikipedia possui alguns registos de catálogos OPDS em vários idiomas e que podem ser úteis.\nO campo Nome fica ao seu critério: constitui um modo fácil de identificar o sinal no Thorium Reader.",
+    "informations": "Imagine um mundo onde você possa explorar e descarregar publicações digitais de bibliotecas públicas e livrarias digitais com apenas alguns cliques. Isso é exatamente o que o formato de catálogo Open Publication Distribution System (OPDS) oferece. Com o OPDS, pode navegar pelos catálogos de vários fornecedores de ebooks, inscrever-se, pedir emprestado, comprar um documento ou visitar a sua estante pessoal. Pode até descarregar um ebook ou audiolivro diretamente no Thorium Reader para leitura imediata.\nComo encontrar um catálogo OPDS? É simples. Procure uma hiperligação (URL) que leve ao catálogo. Copie esse URL no campo hiperligação. Lembre-se de que não existe um modelo único para todos os catálogos OPDS ativos. Poderá ser necessário entrar em contacto com a biblioteca ou livraria de sua preferência e solicitar o URL do catálogo OPDS. Se não sabe por onde começar, a Wikipedia possui alguns registos de catálogos OPDS em vários idiomas e que podem ser úteis.\nO campo Nome fica ao seu critério: constitui um modo fácil de identificar o sinal no Thorium Reader.",
     "lastPage": "Última",
     "menu": {
       "aboutBook": "Sobre o documento",
@@ -210,7 +210,7 @@
       "noInternet": "Sem Internet",
       "noInternetMessage": "Verifique o cabo de rede, modem, router ou o wi-fi",
       "reject": "Desculpe, ocorreu um erro inesperado!",
-      "timeout": "Foi atingido o máximo de tempo de espera na rede. Por favor, tente novamente mais tarde"
+      "timeout": "Foi atingido o tempo máximo de espera na rede. Por favor, tente novamente mais tarde"
     },
     "next": "Seguinte",
     "previous": "Anterior",
@@ -288,14 +288,14 @@
       "title": "Progressão"
     },
     "read": "Finalizado",
-    "remainingTime": "Empréstimos (dias restantes)",
+    "remainingTime": "Empréstimo (tempo restante)",
     "renewButton": "Renovar",
     "returnButton": "Devolver",
     "returnedLcp": "A licença deste documento protegido por LCP foi devolvida.",
     "revokedLcp": "A licença deste documento protegido por LCP foi revogada.",
     "seeLess": "Ver menos",
     "seeMore": "Ver mais",
-    "timeLeft": "Esquerda",
+    "timeLeft": "Tempo restante",
     "title": "Título",
     "userKeyCheckInvalid": "A frase-passe está incorreta"
   },
@@ -312,10 +312,10 @@
       "saveNote": "Guardar",
       "toggleMarginMarks": "Exibir nas margens",
       "type": {
-        "outline": "Contorno",
+        "outline": "Contornar",
         "solid": "Fundo sólido",
         "strikethrough": "Rasurar",
-        "underline": "Sublinhado"
+        "underline": "Sublinhar"
       }
     },
     "divina": {
@@ -332,7 +332,7 @@
       "edit": "Editar",
       "goTo": "Ir para página",
       "landmarks": "Pontos de referência",
-      "saveMark": "Salvar favorito",
+      "saveMark": "Guardar favorito",
       "search": "Pesquisar",
       "searchResult": "Pesquisar [{{- searchText}}]",
       "toc": "Índice"
@@ -352,7 +352,7 @@
       "title": "Narração"
     },
     "navigation": {
-      "annotationTitle": "anotação",
+      "annotationTitle": "Anotação",
       "backHomeTitle": "Voltar à estante",
       "bookmarkTitle": "Marcador",
       "currentPage": "Página atual: {{- current}}",
@@ -506,9 +506,9 @@
       "next": "Seguinte"
     },
     "description": {
-      "annotations": "Realce o texto do documento, escolha o estilo e a cor, anexe notas pessoais. Crie anotações no modo 'rápido' para ignorar o editor (pode inserir texto e personalizar estilos posteriormente). Para maior rapidez, use o modo 'instantâneo' que cria anotações imediatamente após realçar o texto do documento!",
-      "catalogs": "Faça um empréstimo de documentos da sua biblioteca local ou descubra documentos por meio de sinais OPDS. Aceda a uma variedade de publicações de diversas fontes graças aos catálogos em linha.",
-      "home": "O Thorium está diferente! Vamos descobrir o que há de novo...",
+      "annotations": "Realce o texto do documento, escolha o estilo e a cor, anexe notas pessoais. Crie anotações no modo 'rápido' para ignorar o editor (pode inserir texto e personalizar estilos posteriormente). Para maior rapidez use o modo 'instantâneo' para criar anotações imediatamente após realçar o texto do documento!",
+      "catalogs": "Faça um empréstimo de documentos da sua biblioteca local ou descubra documentos por meio de sinais OPDS. Aceda a uma variedade de documentos, a partir de diversas fontes, graças aos catálogos em linha.",
+      "home": "O Thorium está diferente! Venha descobrir o que há de novo...",
       "readingView1": "Personalize as suas preferências de leitura e audição: Thorium agora oferece vários temas de cores para a interface do utilizador e dos documentos. Agora também é mais fácil configurar ebooks 'narrados' com voz sintética e narração sincronizada de texto/áudio.",
       "readingView2": "A melhorada interface de utilizador do Thorium torna mais fácil encontrar texto em documentos, explorar resultados de pesquisa, ir para páginas específicas, navegar no índice, criar marcadores, etc., graças aos novos painéis 'encaixados'. O modo de leitura em ecrã completo continua a oferecer um ambiente livre de distrações.",
       "yourBooks": "Bem-vindo à sua redesenhada estante pessoal! Na vista em ‘grelha’, filtre facilmente por etiquetas ou encontre documentos por palavras-chave. Na vista avançada de 'tabela', selecione e ordene os documentos por autores, título, data, formato, etc."
