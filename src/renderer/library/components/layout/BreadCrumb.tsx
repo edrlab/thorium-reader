@@ -23,7 +23,7 @@ function useSize<T extends Element>(target: React.RefObject<T>) {
     const [size, setSize] = React.useState<DOMRect | undefined>(undefined);
 
     React.useLayoutEffect(() => {
-        setSize(target.current.getBoundingClientRect());
+        target.current && setSize(target.current.getBoundingClientRect());
     }, [target]);
 
     const handler = React.useCallback(debounce((entry) => setSize(entry.contentRect), 500), [setSize, debounce]);
