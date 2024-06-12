@@ -24,12 +24,19 @@ function useSize<T extends Element>(target: React.RefObject<T>) {
 
     React.useLayoutEffect(() => {
         target.current && setSize(target.current.getBoundingClientRect());
+        // TODO: "destructor" needed?
+        // return () => {
+        //     setSize(undefined);
+        // };
     }, [target]);
 
     // UseResizeObserverCallback
-    const handler = React.useCallback(() => debounce((entry: ResizeObserverEntry, _observer: ResizeObserver) => setSize(entry.contentRect), 500), [setSize]);
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const handler = React.useCallback(debounce((entry: ResizeObserverEntry, _observer: ResizeObserver) => setSize(entry.contentRect), 500), [setSize]);
+    // const handler = React.useCallback((entry: ResizeObserverEntry, _observer: ResizeObserver) => setSize(entry.contentRect), [setSize]);
     useResizeObserver(target, handler);
+    // useResizeObserver(target, (entry: ResizeObserverEntry, _observer: ResizeObserver) => setSize(entry.contentRect));
+
     return size;
 }
 
@@ -53,6 +60,7 @@ const LinkItemBreadcrumb = ({item: {name, path}, isTheFirstOne}: {item: IBreadCr
 
 const ChevronRightBreadCrumb = () => <SVG ariaHidden svg={ChevronRight} />;
 
+// TODO: more magic hard-coded numbers here! (CSS values?)
 const firstItemSize = (textLength: number) => 15 + 20 + 5 + 7 * textLength + 15 + 20;
 const breadcrumbLayoutSize = (firstOne: IBreadCrumbItem, between: IBreadCrumbItem[], lastOne: IBreadCrumbItem) => {
 
@@ -70,40 +78,62 @@ const BreadCrumb = () => {
 
     const spanLeft = React.useRef<HTMLSpanElement>(null);
     const container = React.useRef<HTMLDivElement>(null);
+
     const containerSize = useSize(container);
     const containerWidth = Math.floor(containerSize?.width || -1);
+
     const breadCrumbData = useSelector((state: ILibraryRootState) => state.opds.browser.breadcrumb);
+
     const firstOne = {...(breadCrumbData.at(0) || {name: "", path: ""})};
-    const lastOneFromBreadcrumbData = () => ({...(breadCrumbData.at(-1) || {name: "", path: ""})});
+    // const lastOneFromBreadcrumbData = () => ({...(breadCrumbData.at(-1) || {name: "", path: ""})});
+    const lastOneFromBreadcrumbData = {...(breadCrumbData.at(-1) || {name: "", path: ""})};
+
     const [lastOne, setLastOne] = React.useState(lastOneFromBreadcrumbData);
-    React.useEffect(() => setLastOne(lastOneFromBreadcrumbData()), [breadCrumbData]);
+
+    // React.useEffect(() => {
+    //     if (lastOne.name !== lastOneFromBreadcrumbData.name || lastOne.path !== lastOneFromBreadcrumbData.path) {
+    //         setLastOne({
+    //             name: lastOneFromBreadcrumbData.name,
+    //             path: lastOneFromBreadcrumbData.path,
+    //         });
+    //     }
+    // },
+    // [lastOne.name, lastOne.path, lastOneFromBreadcrumbData.name, lastOneFromBreadcrumbData.path]);
+
     const between = [...(breadCrumbData.slice(1, -1) || [])];
 
-    do {
-        const sizeFootprint = breadcrumbLayoutSize(firstOne, between, lastOne);
-        if (sizeFootprint > containerWidth) {
-            between.shift();
-        } else {
-            break;
-        }
-    } while (between.length);
+    // skip trim logic before initial useLayoutEffect or first resize observer
+    if (containerWidth > 0) {
+        do {
+            const sizeFootprint = breadcrumbLayoutSize(firstOne, between, lastOne);
+            if (sizeFootprint > containerWidth) {
+                between.shift();
+            } else {
+                break;
+            }
+        } while (between.length);
+    }
 
     React.useEffect(() => {
         const spaceLeftWidth = Math.floor(spanLeft.current?.clientWidth || -1);
 
-        if (spaceLeftWidth === 4) {
+        if (spaceLeftWidth <= 4) {
             if (!between.length) {
                 setLastOne({
                     name: lastOne.name.slice(0,
+                        // TODO: logic based on hard-coded CSS values is super britle!
                         Math.round((containerWidth - (firstItemSize(firstOne.name.length) + 30/*offset*/) - 3/*...*/) / 8/*fontsize*/),
                     ) + "...",
                     path: lastOne.path,
                 });
             }
         } else {
-            setLastOne(lastOneFromBreadcrumbData());
+            setLastOne({
+                name: lastOneFromBreadcrumbData.name,
+                path: lastOneFromBreadcrumbData.path,
+            });
         }
-    }, [containerWidth, spanLeft.current]);
+    }, [containerWidth, between.length, firstOne.name.length, lastOne.name, lastOne.path, lastOneFromBreadcrumbData.name, lastOneFromBreadcrumbData.path]);
 
     // console.log("RENDER");
     return (
