@@ -122,7 +122,7 @@ const BreadCrumb = () => {
     const spaceLeftWidth = Math.floor(spanLeft.current?.clientWidth || -1);
     // const spaceLeftWidth = spanLeft.current?.clientWidth || -1;
 
-    console.log(spaceLeftWidth, spanLeft.current?.clientWidth, containerWidth, between.length, firstOne.name.length, lastOne.name, lastOneFromBreadcrumbData.name);
+    // console.log(spaceLeftWidth, spanLeft.current?.clientWidth, containerWidth, between.length, firstOne.name.length, lastOne.name, lastOneFromBreadcrumbData.name);
 
     if (between.length) {
         if (lastOne.name !== lastOneFromBreadcrumbData.name || lastOne.path !== lastOneFromBreadcrumbData.path) {
