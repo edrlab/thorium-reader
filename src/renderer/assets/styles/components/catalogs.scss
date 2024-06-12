@@ -246,19 +246,23 @@
         // top: -18px!important;
     }
 
-    @media screen and (width <= 1024px) {
-        flex-direction: column;
-        align-items: end;
-
-        .breadcrumb {
-            width: 100%;
-            padding-bottom: 20px;
-        }
-
-        form[role="search"] {
-            width: 290px!important;
-        }
+    .form_group {
+        min-width: 300px;
     }
+
+    // @media screen and (width <= 1024px) {
+    //     flex-direction: column;
+    //     align-items: end;
+
+    //     .breadcrumb {
+    //         width: 100%;
+    //         padding-bottom: 20px;
+    //     }
+
+    //     form[role="search"] {
+    //         width: 290px!important;
+    //     }
+    // }
 }
 
 .numberOfItems {
@@ -291,7 +295,7 @@
 
 .opds_browserResults {
     overflow: auto;
-    inset: 280px 20px 30px 30px;
+    inset: 300px 20px 30px 30px;
     padding: 0;
     position: absolute;
     padding-right: 25px;
@@ -301,9 +305,9 @@
         margin: 4px;
     }
 
-    @media only screen and (width <= 1024px) {
-        inset: 330px 20px 30px 30px;
-    }
+    // @media only screen and (width <= 1024px) {
+    //     inset: 330px 20px 30px 30px;
+    // }
 
     @include scrollbar_styling;
 
