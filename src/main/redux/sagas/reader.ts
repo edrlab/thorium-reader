@@ -316,9 +316,25 @@ function* readerSetReduxState(action: readerActions.setReduxState.TAction) {
 
     const { winId, reduxState } = action.payload;
 
-    const pubId = yield* selectTyped(
-        (state: RootState) => state?.win?.session?.reader[winId]?.reduxState?.info?.publicationIdentifier);
-    yield put(winActions.session.setReduxState.build(winId, pubId, reduxState));
+    // const pubId = yield* selectTyped(
+        // (state: RootState) => state?.win?.session?.reader[winId]?.reduxState?.info?.publicationIdentifier);
+    // yield put(winActions.session.setReduxState.build(winId, pubId, reduxState));
+
+    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+    const reader = readers[winId];
+
+    if (reader) {
+
+        yield put(winActions.session.setReduxState.build(winId, reader.publicationIdentifier, reduxState));
+
+        yield put(winActions.registry.registerReaderPublication.build(
+            reader.publicationIdentifier,
+            reader.windowBound,
+            reader.reduxState),
+        );
+    } else {
+        debug("!!! Error no reader window found, why ??", winId);
+    }
 }
 
 function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction) {
