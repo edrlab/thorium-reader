@@ -26,7 +26,8 @@ function useSize<T extends Element>(target: React.RefObject<T>) {
         target.current && setSize(target.current.getBoundingClientRect());
     }, [target]);
 
-    const handler = React.useCallback(debounce((entry) => setSize(entry.contentRect), 500), [setSize, debounce]);
+    // UseResizeObserverCallback
+    const handler = React.useCallback(() => debounce((entry: ResizeObserverEntry, _observer: ResizeObserver) => setSize(entry.contentRect), 500), [setSize]);
 
     useResizeObserver(target, handler);
     return size;
