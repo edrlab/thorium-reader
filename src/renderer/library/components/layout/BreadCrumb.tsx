@@ -102,7 +102,7 @@ const BreadCrumb = () => {
         } else {
             setLastOne(lastOneFromBreadcrumbData());
         }
-    }, [containerWidth, spanLeft.current, lastOneFromBreadcrumbData, setLastOne]);
+    }, [containerWidth, spanLeft.current]);
 
     // console.log("RENDER");
     return (
