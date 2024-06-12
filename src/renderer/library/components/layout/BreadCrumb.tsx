@@ -23,9 +23,8 @@ function useSize<T extends Element>(target: React.RefObject<T>) {
     const [size, setSize] = React.useState<DOMRect | undefined>(undefined);
 
     React.useLayoutEffect(() => {
-
-        // no need to check target.current here, what do you think @danielWeck ? , more like a double security
-        // from the documentation useLayoutEffect fires synchronously after all DOM mutations.
+        // The useLayoutEffect documentation states that this fires synchronously after all DOM mutations,
+        // so practically-speaking the target.current sanity check is not needed here (but with strictNullChecks the compiler should identify null as a possible value)
         target.current && setSize(target.current.getBoundingClientRect());
         // TODO: "destructor" needed?
         // return () => {
