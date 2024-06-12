@@ -2,21 +2,54 @@
 =-=-= breadcrumbs.scss
 */
 
+@import 'src/renderer/assets/styles/partials/mixin';
+
+#spaceLeft {
+  // background-color: blue;
+  width: 100%;
+  min-width: 4px;
+  height: 30px;
+  color: white;
+  container-type: inline-size;
+  container-name: spaceleft;
+}
+
+.breadcrumb_container {
+  @include scrollbar_styling;
+}
+
 .breadcrumb {
   font-size: 16px;
   display: flex;
   align-items: center;
   font-weight: bold;
   color: var(--color-blue);
-  width: calc(100% - 120px);
+  width: fit-content;
+  // max-width: calc(100% - 300px);
+  padding: 0;
+
+  .strongBreadcrumb {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .hide {
+    display: none;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    list-style-type: none;
+  }
 
   a {
     display: flex;
-    max-width: 150px;
+    // max-width: 150px;
 
     & p {
       font-size: 14px;
-      max-width: 110px;
+      // max-width: 110px;
       overflow: hidden;
       text-overflow: ellipsis;
       text-wrap: nowrap;
@@ -25,9 +58,9 @@
   }
 
   & strong {
-    max-width: 200px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    // max-width: 200px;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
     text-wrap: nowrap;
     margin: 0 10px;
   }

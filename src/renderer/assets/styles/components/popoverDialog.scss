@@ -577,16 +577,11 @@
     }
 
     button {
-      background-color: var(--color-blue);
-      color: var(--color-secondary);
-      width: fit-content;
-      border-radius: 6px;
-      display: flex;
-      flex-wrap: nowrap;
       padding: 3px 5px;
       text-wrap: nowrap;
       box-sizing: content-box;
       height: 28px;
+      min-width: unset;
 
       svg {
         width: 15px;
