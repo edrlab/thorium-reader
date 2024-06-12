@@ -987,7 +987,7 @@ const AllowCustom = () => {
     const dispatch = useDispatch();
     const set = React.useCallback(() => {
         dispatch(readerLocalActionReader.allowCustom.build(!overridePublisherDefault));
-    }, [dispatch]);
+    }, [dispatch, overridePublisherDefault]);
 
     return (
         <>
