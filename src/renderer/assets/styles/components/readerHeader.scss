@@ -167,7 +167,7 @@
     background-color: var(--color-extralight-grey);
     z-index: 200;
     top: 70px;
-    right: 0px;
+    right: 0;
     left: unset;
     border-bottom: 2px solid var(--color-extralight-grey-alt);
     position: absolute;
@@ -186,6 +186,7 @@
     .form_group {
         width: 200px!important;
         height: 24px!important;
+
         input {
             opacity: 1;
         }
