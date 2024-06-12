@@ -288,14 +288,14 @@
       "title": "Eteneminen"
     },
     "read": "Luettu",
-    "remainingTime": "Laina-aikaa jäljellä",
+    "remainingTime": "Laina (aikaa jäljellä)",
     "renewButton": "Uudista",
     "returnButton": "Palauta",
     "returnedLcp": "Tämä LCP-suojattu julkaisu on palautettu.",
     "revokedLcp": "LCP-käyttöoikeus on kumottu",
     "seeLess": "Näytä vähemmän",
     "seeMore": "Näytä enemmän",
-    "timeLeft": "Jäljellä",
+    "timeLeft": "Aikaa jäljellä",
     "title": "Nimike",
     "userKeyCheckInvalid": "Salasana on väärä"
   },

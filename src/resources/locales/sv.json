@@ -3,9 +3,9 @@
     "bookMenu": "Meny",
     "closeDialog": "Stäng",
     "importFile": "Importera publikation",
-    "leftSlideButton": "Dra listan åt vänster",
+    "leftSlideButton": "Dra åt vänster",
     "mainContent": "huvudinnehåll",
-    "rightSlideButton": "Dra listan åt höger",
+    "rightSlideButton": "Dra åt höger",
     "searchBook": "Sök på titel",
     "skipLink": "Hoppa till innehåll",
     "toolbar": "vektygsfält"
@@ -56,7 +56,7 @@
     "addTags": "Lägg till tagg",
     "addTagsButton": "Lägg till",
     "allBooks": "Alla böcker",
-    "bookInfo": "Om den här boken",
+    "bookInfo": "Om boken",
     "column": {
       "ascending": "stigande",
       "descending": "fallande",
@@ -288,7 +288,7 @@
       "title": "Läsförlopp"
     },
     "read": "Färdigläst",
-    "remainingTime": "Lån (dagar kvar)",
+    "remainingTime": "Lån (tid kvar)",
     "renewButton": "Låna om",
     "returnButton": "Lämna tillbaka",
     "returnedLcp": "Den här LCP-skyddade publikationen är återlämnad.",
