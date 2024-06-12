@@ -11,9 +11,9 @@
     "toolbar": "Työkalurivi"
   },
   "apiapp": {
-    "documentation": "Thoriumin dokumentointi",
+    "documentation": "Thoriumin dokumentaatio",
     "howItWorks": "Mitä tämä tarkoittaa?",
-    "informations": "Ranskassa moni yleinen kirjasto tarjoaa koneellisesti luettavan luettelon (samankaltainen kuin OPDS, mutta ei identtinen). Sen avulla asiakkaat voivat ladata digitaalisia julkaisuja henkilökohtaisesta kirjahyllystään. Tämän tekniikan avulla voi e-kirjan tai äänikirjan ladata suoraan Thorium Readeriin lukemista varten.\nKuinka yhdistät ranskalaisen yleisen kirjaston tilisi Thorium Readeriin? Aloita kirjoittamalla hakukenttään ranskalainen kaupunki tai osa kirjaston nimestä ja paina Hae-painiketta. Näkyviin tulee luettelo hakuasi vastaavista julkisista kirjastoista. Valitse kirjasto ja paina Lisää. Valitse päivitetystä luettelosta uudelleen sama kirjasto: näyttöön tulee todennuslomake. Anna käyttäjätunnuksesi/sähköpostiosoitteesi ja salasanasi ja paina Kirjaudu. Näet nyt henkilökohtaisen kirjahyllysi sisällön, josta voit ladata ja lukea aiemmin lainaamiasi e-kirjoja ja äänikirjoja.",
+    "informations": "Ranskassa moni yleinen kirjasto tarjoaa koneellisesti luettavan luettelon (samankaltainen kuin OPDS, mutta ei identtinen). Sen avulla asiakkaat voivat ladata digitaalisia julkaisuja henkilökohtaisesta kirjahyllystään. Tämän tekniikan avulla e-kirjan tai äänikirjan voi ladata suoraan Thorium Readeriin lukemista varten.\nKuinka yhdistät ranskalaisen yleisen kirjaston tilisi Thorium Readeriin? Aloita kirjoittamalla hakukenttään ranskalainen kaupunki tai osa kirjaston nimestä ja paina Hae-painiketta. Näkyviin tulee luettelo hakuasi vastaavista julkisista kirjastoista. Valitse kirjasto ja paina Lisää. Valitse päivitetystä luettelosta uudelleen sama kirjasto: näyttöön tulee todennuslomake. Anna käyttäjätunnuksesi/sähköpostiosoitteesi ja salasanasi ja paina Kirjaudu. Näet nyt henkilökohtaisen kirjahyllysi sisällön, josta voit ladata ja lukea aiemmin lainaamiasi e-kirjoja ja äänikirjoja.",
     "noLibraryFound": "Kirjastoa ei löytynyt ({{- name}})"
   },
   "app": {
@@ -24,7 +24,7 @@
       "redo": "Tee uudelleen",
       "selectAll": "Valitse kaikki",
       "title": "Muokkaa",
-      "undo": "Peru"
+      "undo": "Kumoa"
     },
     "hide": "Piilota {{- appName}}",
     "quit": "Lopeta {{- appName}}",
@@ -41,8 +41,8 @@
       }
     },
     "update": {
-      "message": "Uusi versio on saatavilla, klikkaa, jos haluat lisätietoja.",
-      "title": "{{- appName}} ohjelmiston päivitys."
+      "message": "Uusi versio on saatavilla. Napsauta, jos haluat lisätietoja.",
+      "title": "{{- appName}} -ohjelmiston päivitys."
     },
     "window": {
       "showLibrary": "Näytä kirjasto / kirjahylly"
@@ -50,7 +50,7 @@
   },
   "catalog": {
     "about": {
-      "title": "Julkaisusta {{- appName}}"
+      "title": "Tietoa ohjelmasta {{- appName}}"
     },
     "addBookToLib": "Tuo",
     "addTags": "Lisää tunniste",
@@ -60,7 +60,7 @@
     "column": {
       "ascending": "nouseva",
       "descending": "laskeva",
-      "unsorted": "järjestämätön"
+      "unsorted": "lajittelematon"
     },
     "delete": "Poista",
     "deleteBook": "Poista",
@@ -78,12 +78,12 @@
     "format": "Formaatti",
     "lang": "Kieli",
     "lastRead": "Luettu viimeksi",
-    "moreInfo": "Tietoja julkaisusta",
-    "myBooks": "Minun kirjani",
+    "moreInfo": "Tietoa julkaisusta",
+    "myBooks": "Omat kirjat",
     "noPublicationHelpL1": "Pudota julkaisu tähän",
     "noPublicationHelpL2": "tai käytä \"{{- importTitle }}\"-painiketta yllä.",
     "noPublicationHelpL3": "LCP-suojattuja tiedostoja tuetaan.",
-    "noPublicationHelpL4": "Tuetut laajennukset:",
+    "noPublicationHelpL4": "Tuetut tiedostot:",
     "numberOfPages": "Sivumäärä",
     "opds": {
       "auth": {
@@ -115,7 +115,7 @@
     "publisher": "Julkaisija",
     "readBook": "Lue",
     "released": "Julkaistu",
-    "sort": "Järjestä",
+    "sort": "Lajittele",
     "tag": "Tunniste",
     "tagCount": "Tunnistemäärä",
     "tags": "Tunnisteet",
@@ -126,7 +126,7 @@
     "deleteFeed": "Haluatko poistaa tämän luettelon?",
     "deletePublication": "Haluatko poistaa tämän julkaisun?",
     "import": "Haluatko tuoda nämä tiedostot:",
-    "importError": "Havaittiin virhe, varmista tiedostopääte ({{acceptedExtension}})",
+    "importError": "Virhe havaittiin. Varmista tiedostopääte ({{acceptedExtension}})",
     "renew": "Haluatko uusia tämän lainan?",
     "return": "Haluatko palauttaa tämän lainan?",
     "yes": "Kyllä"
@@ -135,7 +135,7 @@
     "errorBox": {
       "error": "Virheilmoitus:",
       "message": "Virhe tiedostossa {{- filename}}",
-      "title": "Sisäinen {{- appName}} virhe"
+      "title": "Sisäinen ohjelman {{- appName}} virhe"
     }
   },
   "header": {
@@ -148,7 +148,7 @@
     "homeTitle": "Koti",
     "importTitle": "Tuo julkaisu",
     "listTitle": "Taulukkonäkymä",
-    "myCatalogs": "Minun luetteloni",
+    "myCatalogs": "Omat luettelot",
     "refreshTitle": "Lataa uudestaan",
     "searchPlaceholder": "Hae",
     "searchTitle": "Hae",
@@ -157,7 +157,7 @@
   },
   "library": {
     "lcp": {
-      "hint": "Vihje : {{- hint}}",
+      "hint": "Vihje: {{- hint}}",
       "password": "Salasana",
       "sentence": "Julkaisun avaamiseen tarvitaan LCP-salasana: ",
       "urlHint": "Unohtuiko salasana? Lisätietoja:",
@@ -171,7 +171,7 @@
       "error": "Julkaisun {{- title}} lataus epäonnistui: [{{- err}}]"
     },
     "import": {
-      "alreadyImport": "Julkaisu {{- title}} on jo tuotu",
+      "alreadyImport": "Julkaisu {{- title}} on jo tuotu.",
       "fail": "Julkaisun {{- path}} tuonti epäonnistui. {{- err}}",
       "success": "Julkaisun {{- title}} tuonti on valmis."
     },
@@ -210,7 +210,7 @@
       "noInternet": "Ei internetyhteyttä",
       "noInternetMessage": "Tarkista verkkokaapeli, modeemi, reititin tai langaton verkko",
       "reject": "Odottamaton virhe!",
-      "timeout": "Verkkoyhteyden aikakatkaisu. Yritä myöhemmin uudelleen"
+      "timeout": "Verkkoyhteyden aikakatkaisu. Yritä myöhemmin uudestaan."
     },
     "next": "Seuraava",
     "previous": "Edellinen",
@@ -270,8 +270,8 @@
     "duration": {
       "title": "Kesto"
     },
-    "expired": "Laina on umpeutunut",
-    "expiredLcp": "Kirjaa ei voi lukea: LCP-käyttöoikeus on erääntynyt.",
+    "expired": "Laina-aika on päättynyt",
+    "expiredLcp": "LCP-käyttöoikeus on päättynyt.",
     "lcpEnd": "Loppu",
     "lcpRightsCopy": "Kopioidut merkit",
     "lcpRightsPrint": "Tulostetut sivut",
@@ -288,14 +288,14 @@
       "title": "Eteneminen"
     },
     "read": "Luettu",
-    "remainingTime": "Laina-aikaa jäljellä",
+    "remainingTime": "Laina (aikaa jäljellä)",
     "renewButton": "Uudista",
     "returnButton": "Palauta",
-    "returnedLcp": "Kirjaa ei voi lukea: LCP-käyttöoikeus on palautettu",
+    "returnedLcp": "Tämä LCP-suojattu julkaisu on palautettu.",
     "revokedLcp": "LCP-käyttöoikeus on kumottu",
     "seeLess": "Näytä vähemmän",
     "seeMore": "Näytä enemmän",
-    "timeLeft": "Jäljellä",
+    "timeLeft": "Aikaa jäljellä",
     "title": "Nimike",
     "userKeyCheckInvalid": "Salasana on väärä"
   },
@@ -320,7 +320,7 @@
     },
     "divina": {
       "mute": "mykistä",
-      "unmute": "poista mykistä"
+      "unmute": "poista mykistys"
     },
     "fxl": {
       "fit": "Sovita"
@@ -355,8 +355,8 @@
       "annotationTitle": "muistiinpano",
       "backHomeTitle": "Takaisin kirjahyllyyn",
       "bookmarkTitle": "Kirjanmerkki",
-      "currentPage": "Nykyinen sivu : {{- current}}",
-      "currentPageTotal": "Nykyinen sivu : {{- current}}/{{- total}}",
+      "currentPage": "Nykyinen sivu: {{- current}}",
+      "currentPageTotal": "Nykyinen sivu: {{- current}}/{{- total}}",
       "detachWindowTitle": "Näytä kirjaston / kirjahyllyn ikkuna",
       "fullscreenTitle": "Avaa kokoruudun tilassa",
       "goTo": "Siirry",
@@ -409,7 +409,7 @@
       "noRTLFlip": "Estä oikealta vasemmalle -käyttöliittymä",
       "noRuby": "Piilota japanin rubi-merkit",
       "paginated": "Sivuiksi jaettu",
-      "paraSpacing": "Kappaleiden väli",
+      "paraSpacing": "Kappaleväli",
       "pdfZoom": {
         "name": {
           "100pct": "100 %",
@@ -502,14 +502,14 @@
   "wizard": {
     "buttons": {
       "discover": "Mikä on muuttunut",
-      "goToBooks": "Siirry omiin julkaisuihini",
+      "goToBooks": "Siirry omiin julkaisuihin",
       "next": "Seuraava"
     },
     "description": {
       "annotations": "Korosta asiakirjan tekstiä eri tyyleillä ja väreillä tai tee muistiinpanoja. Luo muistiinpanoja pikatilassa, jossa voi ohittaa editorin (voit kirjoittaa tekstiä ja muokata ulkonäköä myöhemmin). Voit myös käyttää välitöntä tilaa, joka luo muistiinpanon heti, kun olet korostanut tekstin.",
       "catalogs": "Lainaa julkaisuja paikallisesta kirjastostasi tai löydä julkaisuja OPDS-syötteiden kautta. Verkkoluetteloiden ansiosta pääset käsiksi julkaisuihin useista lähteistä.",
       "home": "Thorium näyttää erilaiselta! Katso mikä on muuttunut...",
-      "readingView1": "Mukauta luku- ja kuunteluasetuksiasi: Thorium tarjoaa useita väriteemoja sekä käyttöliittymään että julkaisuihin. Nyt voit myös entistä paremmin säätää sekä tekstistä ääneksi -toiminnon että synkronoidun tekstin ja äänen asetuksia.",
+      "readingView1": "Mukauta luku- ja kuunteluasetuksiasi: Thorium tarjoaa useita väriteemoja sekä käyttöliittymään että julkaisuihin. Nyt voit myös entistä paremmin säätää sekä tekstistä puheeksi -toiminnon että synkronoidun tekstin ja äänen asetuksia.",
       "readingView2": "Thoriumin parannettu käyttöliittymä helpottaa tekstin löytämistä julkaisuista, hakutulosten tutkimista, tietyille sivuille siirtymistä, sisällysluettelon selaamista, kirjanmerkkien luomista jne. siirrettävien valintaikkunoiden avulla. Koko näytön lukutila tarjoaa edelleen häiriöttömän ympäristön.",
       "yourBooks": "Tervetuloa uudistettuun henkilökohtaiseen kirjahyllyysi! Ruudukkonäkymässä voit suodattaa helposti tunnisteiden mukaan tai etsiä julkaisuja avainsanojen perusteella. Tarkennetussa taulukkonäkymässä voit valita ja lajitella julkaisuja tekijän, otsikon, päivämäärän, muodon jne. mukaan."
     },
@@ -522,7 +522,7 @@
       "yourBooks": "Omat julkaisut"
     },
     "title": {
-      "allBooks": "Kaikki omat julkaisuni",
+      "allBooks": "Kaikki omat julkaisut",
       "newFeature": "Uusi ominaisuus: Muistiinpanot",
       "welcome": "Tervetuloa Thorium 3.0 -sovellukseen"
     }

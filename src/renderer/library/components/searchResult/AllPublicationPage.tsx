@@ -1470,8 +1470,15 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 } else if (timeEndDif === 1) {
                     remainingDays = `${timeEndDif} ${__("publication.day")}`;
                 } else {
-                    remainingDays = `${__("publication.expired")}`;
-                    hasEnded = true;
+                    // const nowUTC = (new Date()).toISOString();
+                    // const momentNow = moment(nowUTC);
+                    if (now.isAfter(momentEnd)) {
+                        remainingDays = `${__("publication.expired")}`;
+                        hasEnded = true;
+                    } else {
+                        // remainingDays = `${__("publication.licensed")}`;
+                        remainingDays = `${formatTime(momentEnd.diff(now, "seconds"))}`;
+                    }
                 }
             }
 
@@ -2131,7 +2138,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                 : <></>
                         }
                     </div>
-                    <div style={{ position: "relative" }}>
+                    <div className={stylesPublication.allBooks_header_pagination}>
                         <label htmlFor="pageSelect" className={stylesPublication.allBooks_header_pagination_title}>{__("catalog.numberOfPages")}</label>
                         <div className={stylesPublication.allBooks_header_pagination_container}>
                             <button

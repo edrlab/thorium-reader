@@ -1231,17 +1231,17 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                 <div key="modal-header" className={stylesSettings.close_button_div}>
                     <TabTitle value={tabValue}/>
                     <div>
-                    <button className={stylesButtons.button_transparency_icon} aria-label="left" onClick={setDockingModeLeftSide}>
+                    <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.svg.left")} onClick={setDockingModeLeftSide}>
                         <SVG ariaHidden={true} svg={DockLeftIcon} />
                     </button>
-                    <button className={stylesButtons.button_transparency_icon} aria-label="right" onClick={setDockingModeRightSide}>
+                    <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.svg.right")} onClick={setDockingModeRightSide}>
                         <SVG ariaHidden={true} svg={DockRightIcon} />
                     </button>
-                    <button className={stylesButtons.button_transparency_icon} disabled aria-label="full" onClick={setDockingModeFull}>
+                    <button className={stylesButtons.button_transparency_icon} disabled aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
                         <SVG ariaHidden={true} svg={DockModalIcon} />
                     </button>
                     <Dialog.Close asChild>
-                        <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                        <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
                             <SVG ariaHidden={true} svg={QuitIcon} />
                         </button>
                     </Dialog.Close>
@@ -1259,18 +1259,18 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                                 (dockedMode && isEpub) ? <AllowCustomContainer /> : <></>
                             }
                             <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls}>
-                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label="left" onClick={setDockingModeLeftSide}>
+                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label={__("reader.svg.left")} onClick={setDockingModeLeftSide}>
                                     <SVG ariaHidden={true} svg={DockLeftIcon} />
                                 </button>
-                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label="right" onClick={setDockingModeRightSide}>
+                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label={__("reader.svg.right")} onClick={setDockingModeRightSide}>
                                     <SVG ariaHidden={true} svg={DockRightIcon} />
                                 </button>
-                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "full" ? true : false} aria-label="full" onClick={setDockingModeFull}>
+                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "full" ? true : false} aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
                                     <SVG ariaHidden={true} svg={DockModalIcon} />
                                 </button>
 
                                 <Dialog.Close asChild>
-                                    <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                                    <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
                                         <SVG ariaHidden={true} svg={QuitIcon} />
                                     </button>
                                 </Dialog.Close>

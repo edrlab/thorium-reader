@@ -267,7 +267,7 @@ $setting_color: var(--color-blue);
 }
 
 [data-theme="dark"] {
-    .button_transparency_icon:not([aria-label= "Close"]) svg {
+    .button_transparency_icon:not([data-css-override]) svg {
         color: var(--color-primary);
         fill: var(--color-primary);
     }
@@ -275,7 +275,7 @@ $setting_color: var(--color-blue);
 
 [data-theme="system"] {
     @media (prefers-color-scheme: dark) {
-        .button_transparency_icon:not([aria-label= "Close"]) svg {
+        .button_transparency_icon:not([data-css-override]) svg {
             color: var(--color-primary);
             fill: var(--color-primary);
         }

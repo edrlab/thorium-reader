@@ -598,6 +598,7 @@ class Reader extends React.Component<IProps, IState> {
                     href,
                     locations: {
                         cssSelector: handlerState.def.selectionInfo.rangeInfo.startContainerElementCssSelector,
+                        rangeInfo: handlerState.def.selectionInfo.rangeInfo,
                     },
                 });
             }

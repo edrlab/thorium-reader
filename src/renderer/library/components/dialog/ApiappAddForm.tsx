@@ -41,15 +41,15 @@ const Item = ({v}: {v: IApiappSearchResultView}) => {
                     cursor: "pointer",
                     padding: "8px",
                     marginTop: "1rem",
-                    backgroundColor: selectSearchResult === v ? "#DDDDDD" : "transparent",
-                    border: selectSearchResult === v ? "2px solid black" : "2px solid transparent",
+                    backgroundColor: selectSearchResult === v ? "var(--color-light-blue)" : "transparent",
+                    border: selectSearchResult === v ? "2px solid var(--color-blue)" : "2px solid transparent",
                     borderRadius: "8px",
                 }}
                     role="option"
                     aria-selected={selectSearchResult === v}
                     tabIndex={0}
                     onClick={() => setSelectSearchResult(v)}
-                    onDoubleClick={() => {
+                    onDoubleClick={(_e) => {
                         // e.preventDefault();
                         setSelectSearchResult(v);
                         setTimeout(() => {
@@ -206,7 +206,7 @@ export const ApiappAddFormDialog = () => {
                     </Dialog.Title>
                     <div>
                         <Dialog.Close asChild>
-                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                            <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
                                 <SVG ariaHidden={true} svg={QuitIcon} />
                             </button>
                         </Dialog.Close>
@@ -222,7 +222,10 @@ export const ApiappAddFormDialog = () => {
                                 <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
                             </Dialog.Close>
                             <Dialog.Close asChild>
-                                <button type="submit" ref={submitButtonRef} className={stylesButtons.button_primary_blue} onClick={() => addFeedAction()}>
+                                <button type="submit" ref={submitButtonRef} className={stylesButtons.button_primary_blue} onClick={(e) => {
+                                    e.preventDefault();
+                                    addFeedAction();
+                                }}>
                                     <SVG ariaHidden svg={AddIcon} />
                                     {__("opds.addForm.addButton")}</button>
                             </Dialog.Close>

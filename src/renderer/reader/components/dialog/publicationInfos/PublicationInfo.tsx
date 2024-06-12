@@ -72,7 +72,7 @@ export const PublicationInfoReaderWithRadixContent = React.forwardRef<HTMLDivEle
                         {/* <Dialog.Title className="DialogTitle">{__("catalog.bookInfo")}</Dialog.Title> */}
                         <h1>{__("catalog.bookInfo")}</h1>
                         <Dialog.Close asChild>
-                            <button className={stylesButtons.button_transparency_icon} aria-label="Close">
+                            <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
                                 <SVG ariaHidden={true} svg={QuitIcon} />
                             </button>
                         </Dialog.Close>
