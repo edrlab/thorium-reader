@@ -116,24 +116,39 @@ const BreadCrumb = () => {
 
     React.useEffect(() => {
         const spaceLeftWidth = Math.floor(spanLeft.current?.clientWidth || -1);
+        // const spaceLeftWidth = spanLeft.current?.clientWidth || -1;
 
-        if (spaceLeftWidth <= 4) {
-            if (!between.length) {
+        // console.log(spaceLeftWidth, spanLeft.current?.clientWidth, containerWidth, between.length, firstOne.name.length, lastOne.name, lastOneFromBreadcrumbData.name);
+
+        if (between.length) {
+            if (lastOne.name !== lastOneFromBreadcrumbData.name || lastOne.path !== lastOneFromBreadcrumbData.path) {
                 setLastOne({
-                    name: lastOne.name.slice(0,
-                        // TODO: logic based on hard-coded CSS values is super britle!
-                        Math.round((containerWidth - (firstItemSize(firstOne.name.length) + 30/*offset*/) - 3/*...*/) / 8/*fontsize*/),
-                    ) + "...",
-                    path: lastOne.path,
+                    name: lastOneFromBreadcrumbData.name,
+                    path: lastOneFromBreadcrumbData.path,
                 });
             }
         } else {
-            setLastOne({
-                name: lastOneFromBreadcrumbData.name,
-                path: lastOneFromBreadcrumbData.path,
-            });
+            const name = lastOneFromBreadcrumbData.name.slice(0,
+                // TODO: logic based on hard-coded CSS values is super britle! (also, font metrics multiplier is unreliable, just an approximation)
+                Math.round((containerWidth - (firstItemSize(firstOne.name.length) + 30/*offset*/) - 3/*...*/) / 8/*fontsize*/),
+            ) + "...";
+            if (spaceLeftWidth <= 4) {
+                if (lastOne.name !== name) {
+                    setLastOne({
+                        name,
+                        path: lastOne.path,
+                    });
+                }
+            } else {
+                if (lastOne.name !== name && lastOne.name !== lastOneFromBreadcrumbData.name || lastOne.path !== lastOneFromBreadcrumbData.path) {
+                    setLastOne({
+                        name: lastOneFromBreadcrumbData.name,
+                        path: lastOneFromBreadcrumbData.path,
+                    });
+                }
+            }
         }
-    }, [containerWidth, between.length, firstOne.name.length, lastOne.name, lastOne.path, lastOneFromBreadcrumbData.name, lastOneFromBreadcrumbData.path]);
+    }, [spanLeft.current?.clientWidth, containerWidth, between.length, firstOne.name.length, lastOne.name, lastOne.path, lastOneFromBreadcrumbData.name, lastOneFromBreadcrumbData.path]);
 
     // console.log("RENDER");
     return (
