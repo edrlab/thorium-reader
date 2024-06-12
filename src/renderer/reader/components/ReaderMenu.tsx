@@ -1362,7 +1362,7 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
             </div>
             <button
                 type="button"
-                className={stylesButtons.button_nav_primary}
+                className={stylesButtons.button_primary_blue}
 
                 onClick=
                 {(e) => {
