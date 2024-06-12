@@ -23,6 +23,9 @@ function useSize<T extends Element>(target: React.RefObject<T>) {
     const [size, setSize] = React.useState<DOMRect | undefined>(undefined);
 
     React.useLayoutEffect(() => {
+
+        // no need to check target.current here, what do you think @danielWeck ? , more like a double security
+        // from the documentation useLayoutEffect fires synchronously after all DOM mutations.
         target.current && setSize(target.current.getBoundingClientRect());
         // TODO: "destructor" needed?
         // return () => {
@@ -92,16 +95,6 @@ const BreadCrumb = () => {
 
     const [lastOne, setLastOne] = React.useState(lastOneFromBreadcrumbData);
 
-    // React.useEffect(() => {
-    //     if (lastOne.name !== lastOneFromBreadcrumbData.name || lastOne.path !== lastOneFromBreadcrumbData.path) {
-    //         setLastOne({
-    //             name: lastOneFromBreadcrumbData.name,
-    //             path: lastOneFromBreadcrumbData.path,
-    //         });
-    //     }
-    // },
-    // [lastOne.name, lastOne.path, lastOneFromBreadcrumbData.name, lastOneFromBreadcrumbData.path]);
-
     const between = breadCrumbData.length > 2 ? [...(breadCrumbData.slice(1, -1) || [])] : [];
     let someBetweenWereRemoved = false;
     // skip trim logic before initial useLayoutEffect or first resize observer
@@ -168,7 +161,6 @@ const BreadCrumb = () => {
         }
     }, [theOnlyBetweenIsDotDotDot, displayFullBreadcrumb, spanLeft.current?.clientWidth, containerWidth, between.length, firstOne.name.length, lastOne.name, lastOne.path, lastOneFromBreadcrumbData.name, lastOneFromBreadcrumbData.path]);
 
-    // console.log("RENDER");
     return (
         <div id="breadcrumb-div-container" style={{
             width: "100%",
