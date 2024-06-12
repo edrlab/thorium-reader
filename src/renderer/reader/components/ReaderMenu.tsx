@@ -423,7 +423,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
             comment,
             drawType,
         }));
-    }, [dispatch]);
+    }, [dispatch, locatorExtended, uuid]);
 
     const date = new Date(timestamp);
     const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;
@@ -967,7 +967,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
             }
         }
         return 0;
-    }), [bookmarks]);
+    }), [bookmarks, r2Publication.Spine]);
 
     const MAX_MATCHES_PER_PAGE = 3;
 
@@ -977,7 +977,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
     const [pageNumber, setPageNumber] = React.useState(1);
     React.useEffect(() => {
         setPageNumber(pageTotal === 0 ? 1 : pageNumber > pageTotal ? pageTotal : pageNumber);
-    }, [pageTotal]);
+    }, [pageTotal, pageNumber]);
 
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
 
