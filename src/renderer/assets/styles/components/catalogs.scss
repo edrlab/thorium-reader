@@ -295,7 +295,7 @@
 
 .opds_browserResults {
     overflow: auto;
-    inset: 280px 20px 30px 30px;
+    inset: 300px 20px 30px 30px;
     padding: 0;
     position: absolute;
     padding-right: 25px;
@@ -305,9 +305,9 @@
         margin: 4px;
     }
 
-    @media only screen and (width <= 1024px) {
-        inset: 330px 20px 30px 30px;
-    }
+    // @media only screen and (width <= 1024px) {
+    //     inset: 330px 20px 30px 30px;
+    // }
 
     @include scrollbar_styling;
 

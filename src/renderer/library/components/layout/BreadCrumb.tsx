@@ -112,6 +112,7 @@ const BreadCrumb = () => {
             containerName: "spaceLeft",
             display: "flex",
             alignItems: "center",
+            overflow: "hidden",
         }} ref={container}>
             <ul className={stylesBreadcrumb.breadcrumb}>
                 {
