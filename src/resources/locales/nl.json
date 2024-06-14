@@ -41,6 +41,7 @@
       }
     },
     "update": {
+      "message": "Nieuwe versie beschikbaar, klik voor meer informatie.",
       "title": "{{- appName}} software update."
     },
     "window": {
