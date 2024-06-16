@@ -12,15 +12,15 @@ import { TranslatorContext } from "readium-desktop/renderer/common/translator.co
 export function useTranslator(): [typeof Translator.prototype.translate, Translator] {
 
     const translator = React.useContext(TranslatorContext);
-    const { translate: __ } = translator;
+    const { translate: __, subscribe: translatorSubscribe } = translator;
 
     const [, forceUpdate] = React.useReducer(x => x + 1, 0);
     React.useEffect(() => {
         const handleLocaleChange = () => {
             forceUpdate();
         };
-        return translator.subscribe(handleLocaleChange);
-    }, [translator]);
+        return translatorSubscribe(handleLocaleChange);
+    }, [translatorSubscribe]);
 
     return [__, translator];
 }
