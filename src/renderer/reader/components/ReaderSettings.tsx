@@ -322,7 +322,9 @@ export const FontFamily = () => {
         if (!val) { // includes empty string (falsy)
             val = undefined;
         }
-        set({ font: val });
+        if (val) {
+            set({ font: val });
+        }
     };
 
     
