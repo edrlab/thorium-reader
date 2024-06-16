@@ -52,7 +52,7 @@ import { Link } from "@r2-shared-js/models/publication-link";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import { ILink, TToc } from "../pdf/common/pdfReader.type";
-import { IPopoverDialogProps, IReaderMenuProps } from "./options-values";
+import { IReaderMenuProps } from "./options-values";
 import ReaderMenuSearch from "./ReaderMenuSearch";
 // import SideMenu from "./sideMenu/SideMenu";
 // import { SectionData } from "./sideMenu/sideMenuData";
@@ -65,6 +65,7 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "r2-shared-js/dist/es8-es2017/src/models/locator";
+// import { DialogTrigger as DialogTriggerReactAria, Popover as PopoverReactAria, Dialog as DialogReactAria } from "react-aria-components";
 import { TextArea } from "react-aria-components";
 import { AnnotationEdit } from "./AnnotationEdit";
 import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
@@ -74,10 +75,12 @@ import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scs
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import * as Popover from "@radix-ui/react-popover";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
+import { ReaderConfig } from "readium-desktop/common/models/reader";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends IReaderMenuProps, IPopoverDialogProps {
+interface IBaseProps extends IReaderMenuProps {
     // focusNaviguationMenu: () => void;
     currentLocation: LocatorExtended;
     isDivina: boolean;
@@ -396,16 +399,23 @@ const HardWrapComment: React.FC<{comment: string}> = (props) => {
     );
 };
 
-const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, index: number }> = (props) => {
+const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, isEdited: boolean, requestEdition: () => void, cancelEdition: () => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
-    const { goToLocator, r2Publication, setItemToEdit, itemEdited, dockedMode } = React.useContext(annotationCardContext);
-    const { timestamp, annotation, index } = props;
-    const { uuid, locatorExtended, comment } = annotation;
-    const isEdited = itemEdited === index;
+    const { goToLocator } = props;
+    const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
+    const dockingMode = useReaderConfig("readerDockingMode");
+    // const setReaderConfig = useSaveReaderConfig();
+    // const setDockingMode = React.useCallback((value: ReaderConfig["readerDockingMode"]) => {
+    //     setReaderConfig({readerDockingMode: value});
+    // }, [setReaderConfig]);
+    const dockedMode = dockingMode !== "full";
+    const { timestamp, annotation, isEdited, cancelEdition, requestEdition } = props;
+    const { uuid, comment, locatorExtended } = annotation;
+    const dockedEditAnnotation = isEdited && dockedMode;
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
-    const save = (color: IColor, comment: string, drawType: TDrawType) => {
+    const save = React.useCallback((color: IColor, comment: string, drawType: TDrawType) => {
         dispatch(readerActions.annotation.update.build({
             uuid,
             locatorExtended,
@@ -413,34 +423,38 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
             comment,
             drawType,
         }));
-        setItemToEdit(-1);
-        console.log(JSON.stringify(comment));
-    };
+    }, [dispatch, locatorExtended, uuid]);
 
     const date = new Date(timestamp);
     const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;
-    let percent = 100;
-    let p = -1;
-    if (r2Publication.Spine?.length && annotation.locatorExtended.locator?.href) {
-        const index = r2Publication.Spine.findIndex((item) => item.Href === annotation.locatorExtended.locator.href);
-        if (index >= 0) {
-            if (typeof annotation.locatorExtended.locator?.locations?.progression === "number") {
-                percent = 100 * ((index + annotation.locatorExtended.locator.locations.progression) / r2Publication.Spine.length);
-            } else {
-                percent = 100 * (index / r2Publication.Spine.length);
+
+    const { style, percentRounded } = React.useMemo(() => {
+
+        let percent = 100;
+        let percentRounded = -1;
+        if (r2Publication.Spine?.length && annotation.locatorExtended.locator?.href) {
+            const index = r2Publication.Spine.findIndex((item) => item.Href === annotation.locatorExtended.locator.href);
+            if (index >= 0) {
+                if (typeof annotation.locatorExtended.locator?.locations?.progression === "number") {
+                    percent = 100 * ((index + annotation.locatorExtended.locator.locations.progression) / r2Publication.Spine.length);
+                } else {
+                    percent = 100 * (index / r2Publication.Spine.length);
+                }
+                percent = Math.round(percent * 100) / 100;
+                percentRounded = Math.round(percent);
             }
-            percent = Math.round(percent * 100) / 100;
-            p = Math.round(percent);
         }
-    }
-    const style = { width: `${percent}%` };
+        return { style: {width: `${percent}%`}, percentRounded };
+    }, [r2Publication, annotation]);
 
     // const bname = (annotation?.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText.slice(0, 20)}` : `${__("reader.navigation.annotationTitle")} ${index}`);
-    const btext = (annotation?.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText}` : `${__("reader.navigation.annotationTitle")} ${index}`);
+    const btext = (annotation?.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText}` : `${__("reader.navigation.annotationTitle")} ${uuid}`);
 
-    const bprogression = (p >= 0 ? `${p}% ` : "");
+    const bprogression = (percentRounded >= 0 ? `${percentRounded}% ` : "");
 
-    const dockedEditAnnotation = (isEdited && dockedMode);
+    if (!uuid) {
+        return <></>;
+    }
 
     return (<div
         className={stylesAnnotations.annotations_line}
@@ -449,9 +463,9 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
             if (e.key === "Escape") {
                 e.preventDefault();
                 e.stopPropagation();
-                setItemToEdit(-1);
+                cancelEdition();
                 setTimeout(() => {
-                    const el = document.getElementById(`annotation_card-${itemEdited}_edit_button`);
+                    const el = document.getElementById(`annotation_card-${uuid}_edit_button`);
                     el?.blur();
                     el?.focus();
                 }, 100);
@@ -460,57 +474,57 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     >
         {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
         <div className={stylesAnnotations.annnotation_container}>
-        {((!isEdited && dockedMode) || (!dockedMode && !isEdited)) &&
-            <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
-            // title={bname}
-                aria-label={`${__("reader.navigation.goTo")} ... "${btext}"`}
-                style={{ borderLeft: dockedEditAnnotation && "2px solid var(--color-blue)" }}
-                onClick={(e) => {
-                    e.preventDefault();
-                    const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
-                    goToLocator(annotation.locatorExtended.locator, closeNavAnnotation);
-                    dispatch(readerLocalActionAnnotations.focus.build(annotation));
-                }}
+            {isEdited ?
+                <></>
+                : <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
+                    // title={bname}
+                    aria-label={`${__("reader.navigation.goTo")} ... "${btext}"`}
+                    style={{ borderLeft: dockedEditAnnotation && "2px solid var(--color-blue)" }}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
+                        goToLocator(annotation.locatorExtended.locator, closeNavAnnotation);
+                        dispatch(readerLocalActionAnnotations.focus.build(annotation));
+                    }}
 
-                // does not work on button (works on 'a' link)
-                // onDoubleClick={(_e) => {
-                //     e.preventDefault();
-                //     goToLocator(annotation.locatorExtended.locator, false);
-                //     dispatch(readerLocalActionAnnotations.focus.build(annotation));
-                // }}
+                    // does not work on button (works on 'a' link)
+                    // onDoubleClick={(_e) => {
+                    //     e.preventDefault();
+                    //     goToLocator(annotation.locatorExtended.locator, false);
+                    //     dispatch(readerLocalActionAnnotations.focus.build(annotation));
+                    // }}
 
-                // not necessary (onClick works)
-                // onKeyUp=
-                // {
-                //     (e) => {
-                //         // SPACE does not work (only without key mods on button)
-                //         // || e.key === "Space"
-                //         if (e.key === "Enter") {
-                ///            e.preventDefault();
-                //             const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
-                //             goToLocator(annotation.locatorExtended.locator, closeNavAnnotation);
-                //             dispatch(readerLocalActionAnnotations.focus.build(annotation));
-                //         }
-                //     }
-                // }
-                id={uuid}
-            >
-                <p>{btext}</p>
-            </button>
-        }
-        {
+                    // not necessary (onClick works)
+                    // onKeyUp=
+                    // {
+                    //     (e) => {
+                    //         // SPACE does not work (only without key mods on button)
+                    //         // || e.key === "Space"
+                    //         if (e.key === "Enter") {
+                    ///            e.preventDefault();
+                    //             const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
+                    //             goToLocator(annotation.locatorExtended.locator, closeNavAnnotation);
+                    //             dispatch(readerLocalActionAnnotations.focus.build(annotation));
+                    //         }
+                    //     }
+                    // }
+                    id={uuid}
+                >
+                    <p>{btext}</p>
+                </button>
+            }
+            {
                 isEdited
                     ?
                     //  <FocusLock disabled={dockedMode} autoFocus={true}>
                     // TODO fix issue with focusLock on modal not docked
-                    <FocusLock disabled={true} autoFocus={true}>
-                        <AnnotationEdit uuid={uuid} save={save} cancel={() => setItemToEdit(-1)} dockedMode={dockedMode} btext={dockedEditAnnotation && btext} />
-                    </FocusLock>
+                    // <FocusLock disabled={true} autoFocus={true}>
+                    <AnnotationEdit uuid={uuid} save={save} cancel={cancelEdition} dockedMode={dockedMode} btext={dockedEditAnnotation && btext} />
+                    // </FocusLock>
                     :
                     <HardWrapComment comment={comment} />
-        }
+            }
         </div>
-        {((!isEdited && dockedMode) || !dockedMode) &&
         <div className={stylesAnnotations.annotation_edit}>
             <div>
                 <div>
@@ -524,17 +538,36 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
             </div>
             <div className={stylesAnnotations.annotation_actions_buttons}>
                 <button
-                    id={`annotation_card-${index}_edit_button`} 
+                    id={`annotation_card-${annotation.uuid}_edit_button`} 
                     title={__("reader.marks.edit")}
                     disabled={isEdited}
-                    onClick={() => { setItemToEdit(index); }
-                    }>
+                    onClick={requestEdition}
+                    >
                     <SVG ariaHidden={true} svg={EditIcon} />
                 </button>
 
                 {/* <button>
                     <SVG ariaHidden={true} svg={DuplicateIcon} />
                 </button> */}
+                {/* <DialogTriggerReactAria>
+                    <button title={__("reader.marks.delete")}
+                    >
+                        <SVG ariaHidden={true} svg={DeleteIcon} />
+                    </button>
+                    <PopoverReactAria>
+                        <DialogReactAria>
+                            <button onClick={() => {
+                                // setItemToEdit(-1);
+                                dispatch(readerActions.annotation.pop.build(annotation));
+                            }}
+                                title={__("reader.marks.delete")}
+                            >
+                                <SVG ariaHidden={true} svg={DeleteIcon} />
+                                {__("reader.marks.delete")}
+                            </button>
+                        </DialogReactAria>
+                    </PopoverReactAria>
+                </DialogTriggerReactAria> */}
                 <Popover.Root>
                     <Popover.Trigger asChild>
                         <button title={__("reader.marks.delete")}
@@ -546,7 +579,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                         <Popover.Content collisionPadding={{top : 180, bottom: 100}} avoidCollisions alignOffset={-10} hideWhenDetached sideOffset={5} className={stylesPopoverDialog.delete_item}>
                             <Popover.Close
                                     onClick={() => {
-                                        setItemToEdit(-1);
+                                        cancelEdition();
                                         dispatch(readerActions.annotation.pop.build(annotation));
                                     }}
                                     title={__("reader.marks.delete")}
@@ -561,24 +594,16 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 </Popover.Root>
             </div>
         </div>
-}
         <div className={stylesPopoverDialog.gauge}>
             <div className={stylesPopoverDialog.fill} style={style}></div>
         </div>
     </div>);
 };
 
-const annotationCardContext = React.createContext<{
-    itemEdited: number;
-    setItemToEdit: (i: number) => void;
-    goToLocator: (locator: Locator, closeNavPanel?: boolean) => void;
-    dockedMode: boolean;
-    r2Publication: R2Publication;
-}>(undefined);
+const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
-const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean, annotationUUIDFocused: string, doFocus: number} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+    const {goToLocator, annotationUUIDFocused, doFocus} = props;
 
-    const {r2Publication, goToLocator, annotationUUIDFocused, doFocus, dockedMode} = props;
     const [__] = useTranslator();
     // const [bookmarkToUpdate, setBookmarkToUpdate] = React.useState(undefined);
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
@@ -597,11 +622,9 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     };
 
     const [pageNumber, setPageNumber] = React.useState(getStartPage);
-    React.useEffect(() => {
-        if (pageNumber > pageTotal) {
-            setPageNumber(pageTotal);
-        }
-    }, [pageTotal]);
+    if (pageNumber > pageTotal) {
+        setPageNumber(pageTotal);
+    }
 
     React.useEffect(() => {
         setPageNumber(getStartPage());
@@ -620,44 +643,48 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
     // const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     // SelectRef.displayName = "ComboBox";
     
-    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, name: `${v} / ${pageTotal}`}));
+    // const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, name: `${v} / ${pageTotal}`}));
+    const pageOptions = React.useMemo(() =>
+        Array.from({ length: pageTotal }, (_k, v) => (v += 1, ({ id: v, name: `${v} / ${pageTotal}` })))
+        , [pageTotal]);
+
 
     const begin = startIndex + 1;
     const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationsQueue.length);
 
-    const [itemEdited, setItemToEdit] = React.useState<number>(-1);
+    const [annotationItemEditedUUID, setannotationItemEditedUUID] = React.useState("");
 
-    const isSearchEnable = useSelector((state: IReaderRootState) => state.search.enable);
-    React.useEffect(() => {
-        if (isSearchEnable) {
-            setItemToEdit(-1);
-        }
-    }, [isSearchEnable]);
+    // const isSearchEnable = useSelector((state: IReaderRootState) => state.search.enable);
+    // React.useEffect(() => {
+    //     if (isSearchEnable) {
+    //         setannotationItemEditedUUID("");
+    //     }
+    // }, [isSearchEnable]);
 
     return (
         <>
-            <annotationCardContext.Provider value={{
-                itemEdited,
-                setItemToEdit ,
-                goToLocator,
-                dockedMode,
-                r2Publication,
-            }}>
-                {annotationsPagedArray.map(([timestamp, annotationItem], i) =>
-                    <AnnotationCard key={`annotation-card_${i}`} timestamp={timestamp} annotation={annotationItem} index={i} />)
-                }
-            </annotationCardContext.Provider>
+            {annotationsPagedArray.map(([timestamp, annotationItem], _i) =>
+                <AnnotationCard
+                    key={`annotation-card_${annotationItem.uuid}`}
+                    timestamp={timestamp}
+                    annotation={annotationItem}
+                    goToLocator={goToLocator}
+                    isEdited={annotationItem.uuid === annotationItemEditedUUID}
+                    requestEdition={() => setannotationItemEditedUUID(annotationItem.uuid)}
+                    cancelEdition={() => setannotationItemEditedUUID("")}
+                />,
+            )}
             {
                 isPaginated ? <>
                     <div className={stylesPopoverDialog.navigation_container}>
                         <button title={__("opds.firstPage")}
-                            onClick={() => { setPageNumber(1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
+                            onClick={() => { setPageNumber(1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowFirstIcon} />
                         </button>
 
                         <button title={__("opds.previous")}
-                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
+                            onClick={() => { setPageNumber(pageNumber - 1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
@@ -702,13 +729,13 @@ const AnnotationList: React.FC<{ r2Publication: R2Publication, dockedMode: boole
                             </ComboBox> */}
                         </div>
                         <button title={__("opds.next")}
-                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
+                            onClick={() => { setPageNumber(pageNumber + 1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                         </button>
 
                         <button title={__("opds.lastPage")}
-                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
+                            onClick={() => { setPageNumber(pageTotal); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowLastIcon} />
                         </button>
@@ -940,7 +967,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
             }
         }
         return 0;
-    }), [bookmarks]);
+    }), [bookmarks, r2Publication.Spine]);
 
     const MAX_MATCHES_PER_PAGE = 3;
 
@@ -950,7 +977,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
     const [pageNumber, setPageNumber] = React.useState(1);
     React.useEffect(() => {
         setPageNumber(pageTotal === 0 ? 1 : pageNumber > pageTotal ? pageTotal : pageNumber);
-    }, [pageTotal]);
+    }, [pageTotal, pageNumber]);
 
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
 
@@ -1077,7 +1104,10 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
 
 const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) => {
 
-    const { r2Publication, handleLinkClick, isDivina, isPdf, currentLocation, totalPages: totalPagesFromProps, goToLocator, dockedMode } = props;
+    const { handleLinkClick, isDivina, isPdf, currentLocation, totalPages: totalPagesFromProps, goToLocator } = props;
+    const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
+    const dockingMode = useReaderConfig("readerDockingMode");
+    const dockedMode = dockingMode !== "full";
     let totalPages = `${totalPagesFromProps}`;
     const goToRef = React.useRef<HTMLInputElement>();
 
@@ -1448,11 +1478,16 @@ const TabTitle = ({value}: {value: string}) => {
 };
 
 export const ReaderMenu: React.FC<IBaseProps> = (props) => {
-    const { r2Publication, /* toggleMenu */ pdfToc, isPdf, focusMainAreaLandmarkAndCloseMenu,
+    const { /* toggleMenu */ pdfToc, isPdf, focusMainAreaLandmarkAndCloseMenu,
         pdfNumberOfPages, currentLocation, goToLocator, openedSection: tabValue, setOpenedSection: setTabValue } = props;
-    const { setDockingMode, dockedMode, dockingMode } = props;
     const { doFocus, annotationUUID, handleLinkClick } = props;
-
+    const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
+    const dockingMode = useReaderConfig("readerDockingMode");
+    const setReaderConfig = useSaveReaderConfig();
+    const setDockingMode = React.useCallback((value: ReaderConfig["readerDockingMode"]) => {
+        setReaderConfig({readerDockingMode: value});
+    }, [setReaderConfig]);
+    const dockedMode = dockingMode !== "full";
     const [__] = useTranslator();
 
     // const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
@@ -1692,7 +1727,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                     <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label={__("reader.svg.right")} onClick={setDockingModeRightSide}>
                                         <SVG ariaHidden={true} svg={DockRightIcon} />
                                     </button>
-                                    <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "full" ? true : false} aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
+                                    <button className={stylesButtons.button_transparency_icon} disabled={false} aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
                                         <SVG ariaHidden={true} svg={DockModalIcon} />
                                     </button>
                                 </div>
@@ -1923,7 +1958,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
                                 </div>
                             </details>
-                            <AnnotationList r2Publication={r2Publication} goToLocator={goToLocator} dockedMode={dockedMode} annotationUUIDFocused={annotationUUID} doFocus={doFocus}/>
+                            <AnnotationList goToLocator={goToLocator} annotationUUIDFocused={annotationUUID} doFocus={doFocus}/>
                         </div>
                     </Tabs.Content>
 

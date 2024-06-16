@@ -13,7 +13,7 @@ import { Translator } from "readium-desktop/common/services/translator";
 import { initStore } from "readium-desktop/renderer/reader/redux/store/memory";
 import { type Store } from "redux";
 
-import { IReaderRootState } from "../../common/redux/states/renderer/readerRootState";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import App from "./components/App";
 import { diReaderSymbolTable } from "./diSymbolTable";
 import { readerLocalActionSetConfig } from "./redux/actions";
@@ -62,7 +62,7 @@ const createStoreFromDi = async (preloadedState: Partial<IReaderRootState>) => {
     }
     if (newConfig.theme === undefined) {
 
-        console.log("ANNOTATION MIGRATION !! theme not set migrate from defaultConfig value=", newConfig.theme);
+        console.log("MIGRATION !! theme not set migrate from defaultConfig value=", newConfig.theme);
         newConfig.theme = newConfig.night ? "night" : newConfig.sepia ? "sepia" : defaultConfig.theme;
         newConfig.night = false;
         newConfig.sepia = false;
@@ -70,10 +70,29 @@ const createStoreFromDi = async (preloadedState: Partial<IReaderRootState>) => {
     }
     if (newConfig.readerDockingMode === undefined) {
 
-        console.log("ANNOTATION MIGRATION !! readerDockingMode not set migrate from defaultConfig value=", newConfig.readerDockingMode);
+        console.log("MIGRATION !! readerDockingMode not set migrate from defaultConfig value=", newConfig.readerDockingMode);
         newConfig.readerDockingMode = defaultConfig.readerDockingMode;
         flag = true;
     }
+    if (newConfig.ttsPlaybackRate === undefined) {
+
+        console.log("MIGRATION !! ttsPlaybackRate not set migrate from defaultConfig value=", newConfig.ttsPlaybackRate);
+        newConfig.ttsPlaybackRate = defaultConfig.ttsPlaybackRate;
+        flag = true;
+    }
+    if (newConfig.mediaOverlaysPlaybackRate === undefined) {
+
+        console.log("MIGRATION !! mediaOverlaysPlaybackRate not set migrate from defaultConfig value=", newConfig.mediaOverlaysPlaybackRate);
+        newConfig.mediaOverlaysPlaybackRate = defaultConfig.mediaOverlaysPlaybackRate;
+        flag = true;
+    }
+    if (newConfig.ttsVoice === undefined) {
+
+        console.log("MIGRATION !! ttsVoice not set migrate from defaultConfig value=", newConfig.ttsVoice);
+        newConfig.ttsVoice = defaultConfig.ttsVoice;
+        flag = true;
+    }
+
 
     if (flag) {
         console.log(`ANNOTATION MIGRATION : There are a data need to be migrated from defaultConfig to config OLD=${JSON.stringify(store.getState().reader.config, null, 4)} NEW=${JSON.stringify(newConfig, null, 4)}`);
