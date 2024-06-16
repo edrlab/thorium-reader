@@ -288,7 +288,7 @@
       "title": "Progression"
     },
     "read": "Terminé",
-    "remainingTime": "Prêts (jours restants)",
+    "remainingTime": "Prêt (temps restant)",
     "renewButton": "Renouveler",
     "returnButton": "Retourner",
     "returnedLcp": "Ce livre ne peut être lu car la licence LCP a été retournée.",
@@ -310,7 +310,13 @@
       "noSelectionToast": "Aucun texte sélectionné",
       "quickAnnotations": "Annotation rapide (sans édition)",
       "saveNote": "Sauvegarder",
-      "toggleMarginMarks": "Afficher dans la marge"
+      "toggleMarginMarks": "Afficher dans la marge",
+      "type": {
+        "outline": "Encadré",
+        "solid": "Fond coloré",
+        "strikethrough": "Barrer",
+        "underline": "Souligner"
+      }
     },
     "divina": {
       "mute": "désactiver le son",
@@ -504,7 +510,7 @@
       "catalogs": "Empruntez des publications auprès de votre bibliothèque locale ou découvrez des publications via les catalogues OPDS. Accédez à une variété de publications provenant de sources multiples grâce aux catalogues en ligne.",
       "home": "Thorium fait peau neuve, découvrons ensemble les nouveautés !",
       "readingView1": "Personnalisez vos préférences de lecture et d'écoute : Thorium propose désormais plusieurs thèmes de couleur. Les réglages de lecture audio ont également été simplifiés.",
-      "readingView2": "L'interface utilisateur améliorée de Thorium facilite la recherche de texte, l'exploration des résultats de recherche, l'accès à des pages spécifiques, la consultation de la table des matières, etc. Les nouveaux panneaux \\\"ancrés\\\" et le mode de lecture plein écran offrent un environnement de lecture sans distraction.",
+      "readingView2": "L'interface utilisateur améliorée de Thorium facilite la recherche de texte, l'exploration des résultats de recherche, l'accès à des pages spécifiques, la consultation de la table des matières, etc. Les nouveaux panneaux \"ancrés\" et le mode de lecture plein écran offrent un environnement de lecture sans distraction.",
       "yourBooks": "Bienvenue dans votre bibliothèque personnelle remaniée ! Dans la vue \"grille\", filtrez facilement par étiquettes ou trouvez des publications par mots-clés. Dans la vue \"tableau\" avancée, sélectionnez et triez les publications par auteur, titre, date, format, etc."
     },
     "dontShow": "Ne plus afficher",

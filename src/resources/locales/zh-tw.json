@@ -305,11 +305,18 @@
       "addNote": "註解",
       "advancedMode": "即時模式（選擇後自動建立）",
       "annotationsOptions": "選項",
+      "hide": "不顯示",
       "highlight": "重點標示",
       "noSelectionToast": "沒有選擇",
       "quickAnnotations": "快速建立（跳過編輯）",
       "saveNote": "保存",
-      "toggleMarginMarks": "在頁邊距中顯示"
+      "toggleMarginMarks": "在頁邊距中顯示",
+      "type": {
+        "outline": "輪廓",
+        "solid": "純色背景",
+        "strikethrough": "刪除線",
+        "underline": "下底線"
+      }
     },
     "divina": {
       "mute": "靜音",

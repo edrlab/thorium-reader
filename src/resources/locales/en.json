@@ -288,14 +288,14 @@
             "title": "Progression"
         },
         "read": "Finished",
-        "remainingTime": "Loans (remaining days)",
+        "remainingTime": "Loan (remaining time)",
         "renewButton": "Renew",
         "returnButton": "Return",
         "returnedLcp": "This LCP-protected publication is returned.",
         "revokedLcp": "This publication's LCP license is revoked.",
         "seeLess": "See less",
         "seeMore": "See more",
-        "timeLeft": "Left",
+        "timeLeft": "Remaining time",
         "title": "Title",
         "userKeyCheckInvalid": "Incorrect passphrase"
     },

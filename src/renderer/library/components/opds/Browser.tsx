@@ -40,7 +40,7 @@ class Browser extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<IProps>  {
         const secondaryHeader = <Header/>;
-        const breadCrumb = <BreadCrumb breadcrumb={this.props.breadrumb} />;
+        const breadCrumb = <BreadCrumb />;
         const search = <SearchForm />;
         const catalogTitle = this.props.breadrumb[1]?.name;
         

@@ -18,6 +18,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
+import { formatTime } from "readium-desktop/common/utils/time";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -84,7 +85,14 @@ class LcpInfo extends React.Component<IProps, undefined> {
             } else if (timeEndDif === 1) {
                 remainingDays = `${timeEndDif} ${__("publication.day")}`;
             } else {
-                remainingDays = `${__("publication.expired")}`;
+                // const nowUTC = (new Date()).toISOString();
+                // const momentNow = moment(nowUTC);
+                if (now.isAfter(momentEnd)) {
+                    remainingDays = `${__("publication.expired")}`;
+                } else {
+                    // remainingDays = `${__("publication.licensed")}`;
+                    remainingDays = `${formatTime(momentEnd.diff(now, "seconds"))}`;
+                }
             }
 
         }

@@ -36,7 +36,7 @@ import { publicationActions, readerActions } from "readium-desktop/common/redux/
 import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
-import { IPopoverDialogProps } from "./options-values";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 // import { I18nTyped } from "readium-desktop/common/services/translator";
 
 const isFixedLayout = (link: Link, publication: R2Publication): boolean => {
@@ -72,7 +72,7 @@ function throttle(callback: (...args: any) => void, limit: number) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
+interface IBaseProps extends TranslatorProps {
     navLeftOrRight: (left: boolean) => void;
     gotoBegin: () => void;
     gotoEnd: () => void;
@@ -80,7 +80,6 @@ interface IBaseProps extends TranslatorProps, ReturnType<typeof mapDispatchToPro
     historyCanGoBack: boolean;
     historyCanGoForward: boolean;
     currentLocation: LocatorExtended;
-    r2Publication: R2Publication | undefined;
     goToLocator: (locator: R2Locator, closeNavPanel?: boolean, isFromOnPopState?: boolean) => void;
     // tslint:disable-next-line: max-line-length
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor, url: string, closeNavPanel?: boolean, isFromOnPopState?: boolean) => void;
@@ -93,8 +92,6 @@ interface IBaseProps extends TranslatorProps, ReturnType<typeof mapDispatchToPro
 
     isPdf: boolean;
     publicationView: PublicationView;
-
-    readerPopoverDialogContext: IPopoverDialogProps;
 }
 
 // IProps may typically extend:
@@ -102,7 +99,7 @@ interface IBaseProps extends TranslatorProps, ReturnType<typeof mapDispatchToPro
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
 interface IState {
@@ -300,7 +297,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                 onClick={(e) => {
                                                                     // e.preventDefault();
                                                                     // e.stopPropagation();
-                                                                    const isDockedMode = this.props.readerPopoverDialogContext.dockedMode;
+                                                                    const isDockedMode = this.props.readerConfig.readerDockingMode !== "full";
                                                                     if (isDivina) {
                                                                         // alert(link?.Href);
                                                                         // alert(this.props.divinaContinousEqualTrue);
@@ -577,6 +574,13 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     // }
 }
 
+const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
+    return {
+        readerConfig: state.reader.config,
+        r2Publication: state.reader.info.r2Publication,
+    };
+};
+
 const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         finishReading: (pubId: string) => {
@@ -589,4 +593,4 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(ReaderFooter));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(ReaderFooter));

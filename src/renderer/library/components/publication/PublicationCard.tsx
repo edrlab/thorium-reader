@@ -38,6 +38,7 @@ import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCh
 import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
 import classNames from "classnames";
 import * as moment from "moment";
+import { formatTime } from "readium-desktop/common/utils/time";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -100,8 +101,15 @@ class PublicationCard extends React.Component<IProps> {
             } else if (timeEndDif === 1) {
                 remainingDays = `${timeEndDif} ${__("publication.day")}`;
             } else {
-                remainingDays = `${__("publication.expired")}`;
-                hasEnded = true;
+                // const nowUTC = (new Date()).toISOString();
+                // const momentNow = moment(nowUTC);
+                if (now.isAfter(momentEnd)) {
+                    remainingDays = `${__("publication.expired")}`;
+                    hasEnded = true;
+                } else {
+                    // remainingDays = `${__("publication.licensed")}`;
+                    remainingDays = `${formatTime(momentEnd.diff(now, "seconds"))}`;
+                }
             }
         }
 
@@ -179,7 +187,7 @@ class PublicationCard extends React.Component<IProps> {
                                     : <></>}
                                 {
                                     remainingDays ?
-                                        <div className={stylesPublications.lcpIndicator}>
+                                        <div className={stylesPublications.lcpIndicator} title={`${remainingDays} (${__("publication.timeLeft")})`}>
                                             <SVG ariaHidden svg={hasEnded ? KeyIcon : CalendarIcon} />
                                             {remainingDays}
                                         </div>
