@@ -24,7 +24,7 @@
     "_NOT_NEEDED_electron-build": "electron-rebuild --version=30.1.0 --disturl=https://electronjs.org/headers",
     "_NOT_NEEDED_rmDupeReactReduxTypes": "rimraf \"./node_modules/@types/react-redux/node_modules/@types/react\"",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js && ncp src/package.json dist/package.json",
-    "build:prod": "npm run lint:css && npm run build",
+    "build:prod": "npm run lint && npm run build",
     "build:dev:main": "webpack --config webpack.config.main.js",
     "build:dev:renderer:library": "webpack --config webpack.config.renderer-library.js",
     "build:dev:renderer:reader": "webpack --config webpack.config.renderer-reader.js",
