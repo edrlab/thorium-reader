@@ -25,7 +25,7 @@ const DeletePublicationConfirm = (props: { publicationView: PublicationView, tri
     const removeAction = React.useCallback(() => {
         dispatch(dialogActions.closeRequest.build());
         remove(props.publicationView.identifier);
-    }, [remove, props.publicationView.identifier, dispatch]);
+    }, [dispatch, remove, props.publicationView.identifier]);
 
     return (
         <AlertDialog.Root {...props}>
