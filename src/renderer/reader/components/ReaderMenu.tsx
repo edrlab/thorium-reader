@@ -614,21 +614,21 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
     // const pageTotal =  Math.ceil(annotationsQueue.length / MAX_MATCHES_PER_PAGE);
     const pageTotal =  Math.floor(annotationsQueue.length / MAX_MATCHES_PER_PAGE) + ((annotationsQueue.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1);
 
-    const getStartPage = React.useCallback(() => {
+    const memoizedStartPage = React.useMemo(() => {
         const annotationFocusItemIndex = annotationUUIDFocused ? annotationsQueue.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused) : 0;
         const annotationFocusItemPageNumber = Math.floor(annotationFocusItemIndex / MAX_MATCHES_PER_PAGE) + 1;
         const startPage = annotationUUIDFocused ? annotationFocusItemPageNumber : 1;
         return startPage;
     }, [annotationUUIDFocused, annotationsQueue]);
 
-    const [pageNumber, setPageNumber] = React.useState(getStartPage);
+    const [pageNumber, setPageNumber] = React.useState(memoizedStartPage);
     if (pageNumber > pageTotal) {
         setPageNumber(pageTotal);
     }
 
     React.useEffect(() => {
-        setPageNumber(getStartPage());
-    }, [getStartPage]);
+        setPageNumber(memoizedStartPage);
+    }, [memoizedStartPage]);
 
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
 
@@ -1483,10 +1483,6 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const { doFocus, annotationUUID, handleLinkClick } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
-    const setReaderConfig = useSaveReaderConfig();
-    const setDockingMode = React.useCallback((value: ReaderConfig["readerDockingMode"]) => {
-        setReaderConfig({readerDockingMode: value});
-    }, [setReaderConfig]);
     const dockedMode = dockingMode !== "full";
     const [__] = useTranslator();
 
@@ -1553,12 +1549,22 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
 
     }, [tabValue, annotationUUID, doFocus, dockingMode]);
 
-    if (!r2Publication) {
-        return <>Critical Error no R2Publication available</>;
-    }
+    const setReaderConfig = useSaveReaderConfig();
+    // memoization not needed here, onCick not passed as child component props (only event re-bind in local HTML element)
+    // ... plus, see setDockingModeFull() and setDockingModeLeftSide() and setDockingModeRightSide() below which are the ones used in onClick!
+    // const setDockingMode = React.useCallback((value: ReaderConfig["readerDockingMode"]) => {
+    //     setReaderConfig({readerDockingMode: value});
+    // }, [setReaderConfig]);
+    const setDockingMode = (value: ReaderConfig["readerDockingMode"]) => {
+        setReaderConfig({readerDockingMode: value});
+    };
     const setDockingModeFull = () => setDockingMode("full");
     const setDockingModeLeftSide = () => setDockingMode("left");
     const setDockingModeRightSide = () => setDockingMode("right");
+
+    if (!r2Publication) {
+        return <>Critical Error no R2Publication available</>;
+    }
 
     const sectionsArray: Array<React.JSX.Element> = [];
     const options: Array<{ id: number, value: string, name: string, disabled: boolean, svg: {} }> = [];
