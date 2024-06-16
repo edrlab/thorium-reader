@@ -44,7 +44,10 @@ export const useSaveReaderConfig = () => {
 export const useSaveReaderConfigDebounced = () => {
     const cb = useSaveReaderConfig();
 
-    const debounceCB = React.useCallback(debounce(cb, 400), [cb]);
+    // XXeslint-disable-next-line react-hooks/exhaustive-deps
+    // const debounceCB = React.useCallback(debounce(cb, 400), [cb]);
+    // https://legacy.reactjs.org/docs/hooks-reference.html#usecallback
+    const debounceCB = React.useMemo(() => debounce(cb, 400), [cb]);
     return debounceCB;
 };
 
@@ -65,6 +68,9 @@ export const useSavePublisherReaderConfig = () => {
 export const useSavePublisherReaderConfigDebounced = () => {
     const cb = useSavePublisherReaderConfig();
 
-    const debounceCB = React.useCallback(debounce(cb, 400), [cb]);
+    // XXeslint-disable-next-line react-hooks/exhaustive-deps
+    // const debounceCB = React.useCallback(debounce(cb, 400), [cb]);
+    // https://legacy.reactjs.org/docs/hooks-reference.html#usecallback
+    const debounceCB = React.useMemo(() => debounce(cb, 400), [cb]);
     return debounceCB;
 };

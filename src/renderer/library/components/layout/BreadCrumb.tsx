@@ -33,8 +33,10 @@ function useSize<T extends Element>(target: React.RefObject<T>) {
     }, [target]);
 
     // UseResizeObserverCallback
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const handler = React.useCallback(debounce((entry: ResizeObserverEntry, _observer: ResizeObserver) => setSize(entry.contentRect), 500), [setSize]);
+    // XXeslint-disable-next-line react-hooks/exhaustive-deps
+    // const handler = React.useCallback(debounce((entry: ResizeObserverEntry, _observer: ResizeObserver) => setSize(entry.contentRect), 500), [setSize]);
+    // https://legacy.reactjs.org/docs/hooks-reference.html#usecallback
+    const handler = React.useMemo(() => debounce((entry: ResizeObserverEntry, _observer: ResizeObserver) => setSize(entry.contentRect), 500), [setSize]);
     // const handler = React.useCallback((entry: ResizeObserverEntry, _observer: ResizeObserver) => setSize(entry.contentRect), [setSize]);
     useResizeObserver(target, handler);
     // useResizeObserver(target, (entry: ResizeObserverEntry, _observer: ResizeObserver) => setSize(entry.contentRect));
