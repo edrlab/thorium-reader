@@ -167,7 +167,7 @@ i18nextInstanceEN.changeLanguage("en").then((_t) => {
 export const AvailableLanguages = {
     "en": "English",
     "fr": "Français (French)",
-    "fi": "Suomi (Finish)",
+    "fi": "Suomi (Finnish)",
     "de": "Deutsch (German)",
     "es": "Español (Spanish)",
     "nl": "Nederlands (Dutch)",

@@ -10,7 +10,7 @@ It is currently localized in following 25 languages:
 
 * (en) English
 * (fr) Français (French)
-* (fi) Suomi (Finish)
+* (fi) Suomi (Finnish)
 * (de) Deutsch (German)
 * (es) Español (Spanish)
 * (nl) Nederlands (Dutch)
