@@ -382,6 +382,7 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
     // const [value, setValue] = React.useState(props.globalFilter);
     // const [, forceReRender] = React.useState(NaN);
 
+    // https://github.com/TanStack/table/blob/7535f8fd51a2aa784949e32a68b9bb24c8a6c811/src/publicUtils.js#L163
     const onInputChange = useAsyncDebounce((v) => {
 
         // if (v) {}
@@ -502,16 +503,16 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
     //     return <></>;
     // }
 
-    // TOOD: verify that onInputChange() is referentially stable (Object.is) so that the React.useEffect() isn't triggered unnecessarily when the Functional component's render function is called.
+    // https://github.com/TanStack/table/blob/7535f8fd51a2aa784949e32a68b9bb24c8a6c811/src/publicUtils.js#L163
     const onInputChange = useAsyncDebounce((v) => {
         props.column.setFilter(v);
     }, 500);
 
-    // TOOD: verify that searchParams is referentially stable (Object.is) so that the React.useEffect() isn't triggered unnecessarily when the Functional component's render function is called.
-    // ... failing this, destructure early (searchParams.get("focus") and searchParams.get("value"))
     const [searchParams] = useSearchParams();
+    const searchParamsFocus = searchParams.get("focus");
+    const searchParamsValue = searchParams.get("value");
     React.useEffect(() => {
-        if (searchParams.get("focus") === "tags" && props.column.id === "colTags") {
+        if (searchParamsFocus === "tags" && props.column.id === "colTags") {
             console.log("focus=tags");
             if (!inputRef.current) {
                 console.log("NO REF!");
@@ -519,7 +520,7 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
 
             }
             inputRef.current.focus();
-            inputRef.current.value = decodeURIComponent(searchParams.get("value") || "");
+            inputRef.current.value = decodeURIComponent(searchParamsValue || "");
             if (!props.accessibilitySupportEnabled) {
                 onInputChange((inputRef.current.value || "").trim() || undefined);
             }
@@ -530,7 +531,7 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                     (inputRef?.current?.value || "").trim() || undefined);
             }
         }
-    }, [props.column.id, props.accessibilitySupportEnabled, props.column, searchParams, onInputChange]);
+    }, [props.column.id, props.accessibilitySupportEnabled, props.column, searchParamsFocus, searchParamsValue, onInputChange]);
 
     return props.showColumnFilters ?
         <div className={stylesPublication.showColFilters_wrapper}>
