@@ -24,10 +24,12 @@ export function useApi<T extends TApiMethodName>(_requestId: string | undefined,
 
     const { store } = React.useContext(ReactReduxContext);
     React.useEffect(() => {
+        // <StrictMode> effect runs twice in dev mode,
+        // clean REQUESTID multiple times works fine in reducer (delete newState[action.payload.requestId] doesn't crash when object key is undefined)
         return () => {
             store.dispatch(apiActions.clean.build(requestId));
         };
-    }, []);
+    }, [requestId, store]);
     const apiAction = (...requestData: Parameters<TApiMethod[T]>) => {
         const splitPath = apiPath.split("/");
         const moduleId = splitPath[0] as TModuleApi;
