@@ -13,7 +13,7 @@ import * as Popover from "@radix-ui/react-popover";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 // import * as ReactDOM from "react-dom";
-import { ReaderConfig, ReaderConfigPublisher, ReaderMode } from "readium-desktop/common/models/reader";
+import { ReaderMode } from "readium-desktop/common/models/reader";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
 import * as viewMode from "readium-desktop/renderer/assets/icons/fullscreen-corners-icon.svg";
 import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
@@ -47,11 +47,10 @@ import { fixedLayoutZoomPercent, stealFocusDisable } from "@r2-navigator-js/elec
 import {
     LocatorExtended, MediaOverlaysStateEnum, TTSStateEnum,
 } from "@r2-navigator-js/electron/renderer/index";
-import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import { IPdfPlayerScale } from "../pdf/common/pdfReader.type";
 import HeaderSearch from "./header/HeaderSearch";
-import { IPopoverDialogProps, IReaderMenuProps, IReaderSettingsProps } from "./options-values";
+import { IReaderMenuProps, IReaderSettingsProps } from "./options-values";
 import { ReaderMenu } from "./ReaderMenu";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
@@ -70,7 +69,6 @@ import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/
 import { AnnotationEdit } from "./AnnotationEdit";
 import { Collection, Header as ReactAriaHeader, Section } from "react-aria-components";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
-import { readerConfigInitialState, readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 // import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 
@@ -110,11 +108,7 @@ interface IBaseProps extends TranslatorProps {
     handleTTSNext: (skipSentences?: boolean) => void;
     handleTTSPlaybackRate: (speed: string) => void;
     handleTTSVoice: (voice: SpeechSynthesisVoice | null) => void;
-    ttsState: TTSStateEnum;
-    ttsPlaybackRate: string;
-    ttsVoice: SpeechSynthesisVoice | null;
 
-    publicationHasMediaOverlays: boolean;
     handleMediaOverlaysPlay: () => void;
     handleMediaOverlaysPause: () => void;
     handleMediaOverlaysStop: () => void;
@@ -122,8 +116,6 @@ interface IBaseProps extends TranslatorProps {
     handleMediaOverlaysPrevious: () => void;
     handleMediaOverlaysNext: () => void;
     handleMediaOverlaysPlaybackRate: (speed: string) => void;
-    mediaOverlaysState: MediaOverlaysStateEnum;
-    mediaOverlaysPlaybackRate: string;
 
     handleReaderClose: () => void;
     handleReaderDetach: () => void;
@@ -138,8 +130,6 @@ interface IBaseProps extends TranslatorProps {
     isPdf: boolean;
     divinaSoundPlay: (play: boolean) => void;
 
-    readerPopoverDialogContext: IPopoverDialogProps;
-
     showSearchResults: () => void;
     disableRTLFlip: boolean;
     isRTLFlip: () => boolean;
@@ -151,7 +141,6 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
-    r2Publication: R2Publication;
 }
 
 interface IState {
@@ -160,8 +149,6 @@ interface IState {
     fxlZoomPercent: number;
     forceTTS: boolean;
     ttsPopoverOpen: boolean;
-    overridePublisherDefault: boolean;
-    transcientStateOverridePublisherDefault: ReaderConfigPublisher;
     tabValue: string;
 }
 
@@ -188,23 +175,12 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         this.onKeyboardFixedLayoutZoomIn = this.onKeyboardFixedLayoutZoomIn.bind(this);
         this.onKeyboardFixedLayoutZoomOut = this.onKeyboardFixedLayoutZoomOut.bind(this);
 
-        let ov = false;
-        for (const [key, value] of Object.entries(readerConfigInitialStateDefaultPublisher)) {
-            if (this.props.ReaderSettingsProps.readerConfig[key as keyof typeof readerConfigInitialState] === value) continue;
-            else {
-                ov = true;
-                break;
-            }
-        }
-
         this.state = {
             pdfScaleMode: undefined,
             divinaSoundEnabled: false,
             fxlZoomPercent: 0,
             forceTTS: false,
             ttsPopoverOpen: false,
-            overridePublisherDefault: ov,
-            transcientStateOverridePublisherDefault: this.props.ReaderSettingsProps.readerConfig,
             tabValue: this.props.ReaderSettingsProps.isDivina ? "tab-divina" : this.props.ReaderSettingsProps.isPdf ? "tab-pdfzoom" : "tab-display",
         };
 
@@ -362,13 +338,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
+        // TODO change this
         const readerSettingsHeaderProps = {
-
-            setOverridePublisherDefault: (value: boolean) => this.setState({ overridePublisherDefault: value}),
-            overridePublisherDefault: this.state.overridePublisherDefault,
-
-            transcientStateOverridePublisherDefault: this.state.transcientStateOverridePublisherDefault,
-            setTranscientStateOverridePublisherDefault: (value: ReaderConfigPublisher) => this.setState({ transcientStateOverridePublisherDefault: value }),
 
             tabValue: this.state.tabValue,
             setTabValue: (value: string) => this.setState({ tabValue: value}),
@@ -476,10 +447,10 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             },
         ];
 
-        const isDockedMode = this.props.readerPopoverDialogContext.dockedMode;
+        const isDockedMode = this.props.readerConfig.readerDockingMode !== "full";
         const isOnSearch = this.props.isOnSearch;
-        const isNightMode = this.props.ReaderSettingsProps.readerConfig.night || this.props.ReaderSettingsProps.readerConfig.theme === "night";
-        const isSepiaMode = this.props.ReaderSettingsProps.readerConfig.sepia || this.props.ReaderSettingsProps.readerConfig.theme === "sepia";
+        const isNightMode = this.props.readerConfig.night || this.props.readerConfig.theme === "night";
+        const isSepiaMode = this.props.readerConfig.sepia || this.props.readerConfig.theme === "sepia";
 
         const containerClassName = classNames(
             isDockedMode && isOnSearch && stylesReader.isOnSearch,
@@ -814,7 +785,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                             </div>
                                                                         )}
                                                                     </div>
-                                                                    <ReadingAudio useMO={useMO} config={this.props.ReaderSettingsProps.readerConfig} set={(config: Partial<ReaderConfig>) => { this.props.ReaderSettingsProps.setSettings({ ...this.props.ReaderSettingsProps.readerConfig, ...config }); }} />
+                                                                    <ReadingAudio useMO={useMO}/>
                                                                 </div>
                                                                 <Popover.Arrow className={stylesReaderHeader.popover_arrow} />
                                                             </Popover.Content>
@@ -1034,23 +1005,23 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             <div
                                                 className={containerClassName}
                                                 style={{
-                                                    borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "2px solid var(--color-extralight-grey-alt)" : "",
-                                                    borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
-                                                    right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
-                                                    left: (this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left") ? "0" : "",
-                                                    height: (isDockedMode && isOnSearch) ? "calc(100dvh - 159px)" : "",
-                                                    marginTop: (isDockedMode && !isOnSearch) ? "70px" : "20px",
+                                                    borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-extralight-grey-alt)" : "",
+                                                    borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
+                                                    right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
+                                                    left: (this.props.readerConfig.readerDockingMode === "left") ? "0" : "",
+                                                    height: (isOnSearch) ? "calc(100dvh - 159px)" : "",
+                                                    marginTop: (!isOnSearch) ? "70px" : "20px",
                                                 }}
                                             >
-                                                <ReaderMenu {...this.props.readerMenuProps}
-                                                    {...this.props.readerPopoverDialogContext}
+                                                <ReaderMenu
+                                                    {...this.props.readerMenuProps}
                                                     isDivina={this.props.isDivina}
                                                     isPdf={this.props.isPdf}
                                                     currentLocation={this.props.currentLocation}
                                                     // focusNaviguationMenu={this.focusNaviguationMenuButton}
                                                     handleMenuClick={this.props.handleMenuClick} />
                                             </div>
-                                            :
+                                        :
                                             <Dialog.Content
                                                 // onFocusOutside={(e) => {
                                                 // console.log(e);
@@ -1075,12 +1046,12 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 }}
                                                 className={containerClassName}
                                                 style={{
-                                                    borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "2px solid var(--color-extralight-grey-alt)" : "",
-                                                    borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
-                                                    right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
-                                                    left: (this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left") ? "0" : "",
-                                                    height: (isDockedMode && isOnSearch) ? "calc(100dvh - 159px)" : "",
-                                                    marginTop: (isDockedMode && !isOnSearch) ? "70px" : "20px",
+                                                    borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-extralight-grey-alt)" : "",
+                                                    borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
+                                                    right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
+                                                    left: /*(isDockedMode && this.props.readerConfig.readerDockingMode === "left") ? "0" :*/ "",
+                                                    height: /*(isDockedMode && isOnSearch) ? "calc(100dvh - 159px)" :*/ "",
+                                                    marginTop: /*(isDockedMode && !isOnSearch) ? "70px" :*/ "20px",
                                                 }}
                                             >
                                                 <ReaderMenu
@@ -1091,7 +1062,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                             this.__closeNavPanel = true;
                                                         }
                                                     }}
-                                                    {...this.props.readerPopoverDialogContext}
                                                     isDivina={this.props.isDivina}
                                                     isPdf={this.props.isPdf}
                                                     currentLocation={this.props.currentLocation}
@@ -1142,38 +1112,38 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         <div
                                             className={containerClassName}
                                             style={{
-                                                borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "2px solid var(--color-extralight-grey-alt)" : "",
-                                                borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
-                                                right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
-                                                left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
-                                                height: isDockedMode && isOnSearch && "calc(100dvh - 159px)",
-                                                marginTop: isDockedMode && !isOnSearch ? "70px" : "20px",
+                                                borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-extralight-grey-alt)" : "",
+                                                borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
+                                                right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
+                                                left: this.props.readerConfig.readerDockingMode === "left" ? "0" : "",
+                                                height: isOnSearch ? "calc(100dvh - 159px)" : "",
+                                                marginTop: !isOnSearch ? "70px" : "20px",
                                             }}
                                         >
+                                            {/* TODO remove readerSettingsHeaderProps */}
                                             <ReaderSettings 
                                                 {...readerSettingsHeaderProps}
                                                 {...this.props.ReaderSettingsProps}
-                                                {...this.props.readerPopoverDialogContext}
                                                 handleSettingsClick={this.props.handleSettingsClick} />
                                         </div>
-                                        :
+                                    :
                                         <Dialog.Content
                                             // onPointerDownOutside={(e) => { e.preventDefault(); console.log("settingsModal onPointerDownOutside"); }}
                                             // onInteractOutside={(e) => { e.preventDefault(); console.log("SettingsModal onInteractOutside"); }}
                                             className={containerClassName}
                                             style={{
-                                                borderLeft: this.props.readerPopoverDialogContext.dockingMode === "right" ? "2px solid var(--color-extralight-grey-alt)" : "",
-                                                borderRight: this.props.readerPopoverDialogContext.dockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
-                                                right: this.props.readerPopoverDialogContext.dockingMode === "right" ? "0" : "unset",
-                                                left: this.props.readerPopoverDialogContext.dockedMode && this.props.readerPopoverDialogContext.dockingMode === "left" ? "0" : "",
-                                                height: isDockedMode && isOnSearch && "calc(100dvh - 159px)",
-                                                marginTop: isDockedMode && !isOnSearch ? "70px" : "20px",
+                                                borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-extralight-grey-alt)" : "",
+                                                borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
+                                                right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
+                                                left: /*isDockedMode && this.props.readerConfig.readerDockingMode === "left" ? "0" :*/ "",
+                                                height: /*isDockedMode && isOnSearch ? "calc(100dvh - 159px)" :*/ "",
+                                                marginTop: /*isDockedMode && !isOnSearch ? "70px" :*/ "20px",
                                             }}
                                         >
+                                            {/* TODO remove readerSettingsHeaderProps */}
                                             <ReaderSettings
                                                 {...readerSettingsHeaderProps}
                                                 {...this.props.ReaderSettingsProps}
-                                                {...this.props.readerPopoverDialogContext}
                                                 handleSettingsClick={this.props.handleSettingsClick} />
                                         </Dialog.Content>
 
@@ -1321,6 +1291,14 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         keyboardShortcuts: state.keyboard.shortcuts,
         annotationsDataArray: state.reader.annotation,
         isAnnotationModeEnabled: state.annotation.enable,
+        publicationHasMediaOverlays: state.reader.info.navigator.r2PublicationHasMediaOverlays,
+        mediaOverlaysState: state.reader.mediaOverlay.state,
+        ttsState: state.reader.tts.state,
+        ttsVoice: state.reader.config.ttsVoice,
+        mediaOverlaysPlaybackRate: state.reader.config.mediaOverlaysPlaybackRate,
+        ttsPlaybackRate: state.reader.config.ttsPlaybackRate,
+        readerConfig: state.reader.config,
+        r2Publication: state.reader.info.r2Publication,
     };
 };
 

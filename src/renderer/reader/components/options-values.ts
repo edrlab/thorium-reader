@@ -5,14 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ReaderConfig, ReaderConfigStringsAdjustables } from "readium-desktop/common/models/reader";
+import { ReaderConfigStringsAdjustables } from "readium-desktop/common/models/reader";
 import {
-    TChangeEventOnInput, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
+    TKeyboardEventOnAnchor, TMouseEventOnAnchor,
     TMouseEventOnSpan,
 } from "readium-desktop/typings/react";
 
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
-import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { TToc } from "../pdf/common/pdfReader.type";
 import { TdivinaReadingMode } from "readium-desktop/common/redux/states/renderer/divina";
 
@@ -111,7 +110,6 @@ export default optionsValues;
 export interface IReaderMenuProps {
     open: boolean;
     doFocus: number;
-    r2Publication: R2Publication;
     // tslint:disable-next-line: max-line-length
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeNavPanel?: boolean) => void;
     goToLocator: (locator: R2Locator, closeNavPanel?: boolean) => void;
@@ -135,17 +133,16 @@ export interface IReaderSettingsProps {
     indexes: AdjustableSettingsNumber;
     open: boolean;
     doFocus: number;
-    readerConfig: ReaderConfig;
+    // readerConfig: ReaderConfig;
     // handleSettingChange: (
     //     event: TChangeEventOnInput | TChangeEventOnSelect | undefined,
     //     name: keyof ReaderConfig,
     //     value?: string | boolean) => void;
-    handleIndexChange: (
-        event: TChangeEventOnInput,
-        name: keyof ReaderConfigStringsAdjustables) => void;
-    setSettings: (settings: ReaderConfig) => void;
+    // handleIndexChange: (
+    //     event: TChangeEventOnInput,
+    //     name: keyof ReaderConfigStringsAdjustables) => void;
     toggleMenu: () => void;
-    r2Publication: R2Publication | undefined;
+    // r2Publication: R2Publication | undefined;
     handleDivinaReadingMode: (v: TdivinaReadingMode) => void;
 
     divinaReadingMode: TdivinaReadingMode;
@@ -160,10 +157,4 @@ export interface IReaderSettingsProps {
     zenMode: boolean;
     setZenMode: (value : boolean) => void;
     searchEnable: boolean;
-}
-
-export interface IPopoverDialogProps {
-    dockingMode: "full" | "left" | "right";
-    dockedMode: boolean;
-    setDockingMode: (m: "full" | "left" | "right") => void;
 }

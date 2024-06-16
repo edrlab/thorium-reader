@@ -11,6 +11,12 @@ import { IAnnotationReaderConfigState, IColor } from "./renderer/annotation";
 
 export const DEFAULT_COLOR_ANNOTATION: IColor = {red: 235, green: 150, blue: 148};
 
+export const readerConfigInitialStateTTSMediaOverlay = {
+    ttsPlaybackRate: "1",
+    ttsVoice: null as SpeechSynthesisVoice,
+    mediaOverlaysPlaybackRate: "1",
+};
+
 export const readerConfigInitialStateDefaultPublisher = {
     font: FONT_ID_DEFAULT,
     fontSize: "100%",
@@ -54,4 +60,5 @@ export const readerConfigInitialState: ReaderConfig = {
     ...readerConfigInitialStateDefaultPublisher,
     ...readerConfigInitialStateAnnotation,
     ...readerConfigInitialStateReaderDockingMode,
+    ...readerConfigInitialStateTTSMediaOverlay,
 };

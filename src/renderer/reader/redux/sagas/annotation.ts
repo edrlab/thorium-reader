@@ -42,15 +42,15 @@ const convertDrawTypeToNumber = (drawType: TDrawType) => {
 //     }
 // }
 
-// focus from annotation menu
-function* annotationFocus(action: readerLocalActionAnnotations.focus.TAction) {
-    debug(`annotationFocus -- action: [${JSON.stringify(action.payload, null, 4)}]`);
+// // focus from annotation menu
+// function* annotationFocus(action: readerLocalActionAnnotations.focus.TAction) {
+//     debug(`annotationFocus -- action: [${JSON.stringify(action.payload, null, 4)}]`);
 
-    // const { payload: { uuid } } = action;
+//     // const { payload: { uuid } } = action;
 
-    // const { currentFocusUuid } = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.focus);
-    // yield* put(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: false}));
-}
+//     // const { currentFocusUuid } = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.focus);
+//     // yield* put(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: false}));
+// }
 
 function* annotationUpdate(action: readerActions.annotation.update.TAction) {
     debug(`annotationUpdate-- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
@@ -270,11 +270,11 @@ export const saga = () =>
             annotationUpdate,
             (e) => console.error("readerLocalActionAnnotations.update", e),
         ),
-        takeSpawnEvery(
-            readerLocalActionAnnotations.focus.ID,
-            annotationFocus,
-            (e) => console.error("readerLocalActionAnnotations.focus", e),
-        ),
+        // takeSpawnEvery(
+        //     readerLocalActionAnnotations.focus.ID,
+        //     annotationFocus,
+        //     (e) => console.error("readerLocalActionAnnotations.focus", e),
+        // ),
         takeSpawnEvery(
             readerActions.annotation.push.ID,
             annotationPush,
