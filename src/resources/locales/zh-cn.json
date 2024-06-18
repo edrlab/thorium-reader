@@ -12,6 +12,7 @@
   },
   "apiapp": {
     "documentation": "Thorium 文档",
+    "howItWorks": "如何工作的？",
     "noLibraryFound": "未发现图书馆 ({{- name}})"
   },
   "app": {
@@ -262,6 +263,8 @@
     "cover": {
       "img": "封面图像"
     },
+    "day": "天",
+    "days": "天",
     "duration": {
       "title": "播放时长"
     },
@@ -297,7 +300,7 @@
   "reader": {
     "annotations": {
       "Color": "颜色",
-      "addNote": "注释",
+      "addNote": "注解",
       "advancedMode": "即时模式（选择后自动创建）",
       "annotationsOptions": "选项",
       "hide": "不显示",
@@ -305,7 +308,12 @@
       "noSelectionToast": "未选择",
       "quickAnnotations": "快速创建（跳过编辑器）",
       "saveNote": "保存",
+      "toggleMarginMarks": "在页边距中显示",
       "type": {
+        "outline": "大纲",
+        "solid": "纯色背景",
+        "strikethrough": "删除线",
+        "underline": "强调"
       }
     },
     "divina": {
@@ -315,7 +323,7 @@
     "fxl": {
     },
     "marks": {
-      "annotations": "笔记",
+      "annotations": "注解",
       "bookmarks": "书签",
       "delete": "删除",
       "edit": "编辑",
@@ -329,6 +337,7 @@
     "media-overlays": {
       "activate": "激活语音朗读",
       "captions": "字幕 / 简明视图",
+      "captionsDescription": "具有最少字幕样式的简化文本视图。",
       "next": "朗读下一段",
       "pause": "暂停朗读",
       "play": "开始朗读",
@@ -340,6 +349,7 @@
       "title": "语音朗读"
     },
     "navigation": {
+      "annotationTitle": "注解",
       "backHomeTitle": "返回书架",
       "bookmarkTitle": "书签",
       "currentPage": "当前页面: {{- current}}",
@@ -394,6 +404,7 @@
       "margin": "页边距",
       "noFootnotes": "禁用脚注",
       "noRTLFlip": "禁用从右到左的 UI",
+      "noRuby": "隐藏日文Ruby标注",
       "paginated": "已分页",
       "paraSpacing": "段落间距",
       "pdfZoom": {
@@ -416,8 +427,13 @@
       "text": "文字",
       "theme": {
         "name": {
+          "Contrast1": "对比度1",
+          "Contrast2": "对比度2",
+          "Contrast3": "对比度3",
+          "Contrast4": "对比度4",
           "Neutral": "无色",
           "Night": "夜间",
+          "Paper": "纸张",
           "Sepia": "茶色"
         },
         "title": "主题"
@@ -476,21 +492,34 @@
       "auto": "自动",
       "dark": "深色",
       "description": "跟随操作系统主题。",
+      "light": "浅色",
       "title": "应用主题"
     }
   },
   "wizard": {
     "buttons": {
+      "discover": "探索新变化",
+      "goToBooks": "查看我的出版物",
+      "next": "下一个"
     },
     "description": {
+      "annotations": "突出显示文档中的文本，选择样式和颜色，并添加个人注释。在‘快速’模式下创建注解，无需经过编辑器（您可以稍后输入文本并自定义样式）。为了提高速度，您还可以使用‘即时’模式，该模式允许您在高亮文本后立即生成注解！",
+      "catalogs": "从您的当地图书馆借阅出版物或通过 OPDS 源添加出版物。得益于在线目录，您可以从多个来源访问各种出版物。",
+      "home": "Thorium 看起来不同了！让我们探索一下有什么新变化。",
+      "readingView2": "Thorium 改进的用户界面使得在出版物中查找文本、探索搜索结果、跳转到特定页面、浏览目录、创建书签等流程变得更加容易，这得益于新的‘固定’面板。在全屏阅读模式下继续提供无干扰的阅读体验。",
+      "yourBooks": "欢迎来到重新设计的个人书架！在'网格'视图中，您可以轻松地通过标签筛选或通过关键词找到出版物。在高级的'表格'视图中，可以按特定作者、标题、日期、格式等选择并排序出版物。"
     },
+    "dontShow": "不再显示",
     "tab": {
+      "annotations": "注解",
       "catalogs": "目录",
+      "home": "主页",
       "readingView": "阅读视图",
       "yourBooks": "您的出版物"
     },
     "title": {
       "allBooks": "我的所有出版物",
+      "newFeature": "新功能：注解",
       "welcome": "欢迎使用 Thorium 3.0"
     }
   }
