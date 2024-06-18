@@ -29,6 +29,7 @@ import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
 import * as MarkIcon from "readium-desktop/renderer/assets/icons/bookmarkSingle-icon.svg";
 import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
 import * as RemoveBookMarkIcon from "readium-desktop/renderer/assets/icons/BookmarkRemove-icon.svg";
+import * as PlusIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 // import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
 import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
 import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreen-icon.svg";
@@ -121,6 +122,7 @@ interface IBaseProps extends TranslatorProps {
     handleReaderDetach: () => void;
     toggleBookmark: () => void;
     isOnBookmark: boolean;
+    visibleBookmarkList: number;
     isOnSearch: boolean;
     handlePublicationInfo: () => void;
     readerMenuProps: IReaderMenuProps;
@@ -904,7 +906,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 title={__("reader.navigation.bookmarkTitle")}
                             >
                                 <SVG ariaHidden={true} svg={MarkIcon} className={classNames(stylesReaderHeader.bookmarkIcon, this.props.isOnBookmark ? stylesReaderHeader.active_svg : "")} />
-                                <SVG ariaHidden={true} svg={RemoveBookMarkIcon} className={classNames(stylesReaderHeader.bookmarkRemove, this.props.isOnBookmark ? stylesReaderHeader.active_svg : "")} />
+                                <SVG ariaHidden={true} svg={RemoveBookMarkIcon} className={classNames(stylesReaderHeader.bookmarkRemove, (this.props.visibleBookmarkList === 1  && !this.props.selectionIsNew) ? stylesReaderHeader.active_svg : "")} />
+                                <SVG ariaHidden={true} svg={PlusIcon} className={classNames(stylesReaderHeader.bookmarkRemove, this.props.visibleBookmarkList > 1 || (this.props.visibleBookmarkList === 1 && this.props.selectionIsNew) ? stylesReaderHeader.active_svg : "")} />
                             </label>
                         </li>
 
@@ -1299,6 +1302,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         ttsPlaybackRate: state.reader.config.ttsPlaybackRate,
         readerConfig: state.reader.config,
         r2Publication: state.reader.info.r2Publication,
+        selectionIsNew: state.reader.locator.selectionIsNew,
     };
 };
 
