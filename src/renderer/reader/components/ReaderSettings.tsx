@@ -355,7 +355,7 @@ export const FontFamily = () => {
             >
                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
             </ComboBox>
-            <div className={stylesSettings.session_text} style={{ marginTop: "0"}}>
+            <div className={stylesSettings.session_text} style={{ marginTop: "0", marginRight: "20px"}}>
                 <SVG ariaHidden svg={InfoIcon} />
                 <p>{__("reader.settings.infoCustomFont")}</p>
             </div>
