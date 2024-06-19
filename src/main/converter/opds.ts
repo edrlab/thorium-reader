@@ -55,6 +55,9 @@ const supportedFileTypeLinkArray = [
     ContentType.lcppdf,
     ContentType.Lpf,
     ContentType.Zip,
+
+    ContentType.Html, // https://github.com/edrlab/thorium-reader/issues/2208
+    ContentType.Xhtml,
 ];
 
 @injectable()

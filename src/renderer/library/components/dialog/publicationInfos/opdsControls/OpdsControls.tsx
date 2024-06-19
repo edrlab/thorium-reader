@@ -25,6 +25,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { findExtWithMimeType, findMimeTypeWithExtension, ADOBE_ADEPT_XML } from "readium-desktop/utils/mimeTypes";
 
 import OpdsLinkProperties from "./OpdsLinkProperties";
+import { ContentType } from "readium-desktop/utils/contentType";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -82,8 +83,8 @@ export class OpdsControls extends React.Component<IProps, undefined> {
         const adjustDisplayType = (str: string | undefined) => str?.replace("lcpl", "LCP").replace("lcpdf", "PDF").replace("pdf", "PDF").replace("epub", "EPUB");
         const typeStr = (ln: IOpdsLinkView) => {
             return ln.properties?.indirectAcquisitionTypes?.top ?
-                ` (${adjustDisplayType(findExtWithMimeType(ln.properties.indirectAcquisitionTypes.top)) || ln.properties.indirectAcquisitionTypes.top}${ln.properties?.indirectAcquisitionTypes?.child ? ` ${adjustDisplayType(findExtWithMimeType(ln.properties.indirectAcquisitionTypes.child)) || ln.properties.indirectAcquisitionTypes.child}` : ""})` :
-                (ln.type ? ` (${adjustDisplayType(findExtWithMimeType(ln.type)) || adjustDisplayType(findExtWithMimeType(ln.type.replace("+json", "+zip")))})` : "");
+                ` (${adjustDisplayType(findExtWithMimeType(ln.properties.indirectAcquisitionTypes.top)) || ln.properties.indirectAcquisitionTypes.top}${ln.properties?.indirectAcquisitionTypes?.child ? ` ${adjustDisplayType(findExtWithMimeType(ln.properties.indirectAcquisitionTypes.child)) || ln.properties.indirectAcquisitionTypes.child}` : ""})`
+                : (ln.type ? ` (${adjustDisplayType(findExtWithMimeType(ln.type)) || adjustDisplayType(findExtWithMimeType(ln.type.replace("+json", "+zip")))})` : "");
         };
 
         const openAccessLinksButton = () =>
@@ -92,10 +93,21 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                     (ln, idx) =>
                         <div key={`openAccessControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
                             <button
-                                onClick={() => verifyImport(
-                                    ln,
-                                    opdsPublicationView,
-                                )}
+                                onClick={() => {
+
+                                    if (ln.type === ContentType.Html || ln.type === ContentType.Xhtml) {
+                                        this.props.link(
+                                            ln,
+                                            this.props.location,
+                                        );
+                                    } else {
+
+                                        verifyImport(
+                                            ln,
+                                            opdsPublicationView,
+                                        );
+                                    }
+                                }}
                                 className={feedLinksList.length > 0 ? stylesButtons.button_secondary : stylesButtons.button_primary}
                                 disabled={openAccessButtonIsDisabled()}
                                 title={ln.title || __("catalog.addBookToLib")}
@@ -115,10 +127,21 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                     (ln, idx) =>
                         <div key={`sampleControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
                             <button
-                                onClick={() => verifyImport(
-                                    ln,
-                                    opdsPublicationView,
-                                )}
+                                onClick={() => {
+
+                                    if (ln.type === ContentType.Html || ln.type === ContentType.Xhtml) {
+                                        this.props.link(
+                                            ln,
+                                            this.props.location,
+                                        );
+                                    } else {
+
+                                        verifyImport(
+                                            ln,
+                                            opdsPublicationView,
+                                        );
+                                    }
+                                }}
                                 className={stylesButtons.button_secondary}
                                 disabled={sampleButtonIsDisabled()}
                                 title={ln.title || __("opds.menu.addExtract")}
@@ -170,7 +193,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                         ln,
                                         this.props.location,
                                         `${__("opds.menu.goLoanBook")} (${opdsPublicationView.documentTitle})`)}
-                                    disabled={ln.properties.indirectAcquisitionTypes?.top === findMimeTypeWithExtension(ADOBE_ADEPT_XML)}
+                                    disabled={ln.properties?.indirectAcquisitionTypes?.top === findMimeTypeWithExtension(ADOBE_ADEPT_XML)}
                                 >
                                     <SVG ariaHidden svg={BorrowIcon} />
                                     {__("opds.menu.goLoanBook")}
