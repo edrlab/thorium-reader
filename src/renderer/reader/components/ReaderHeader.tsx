@@ -30,6 +30,7 @@ import * as MarkIcon from "readium-desktop/renderer/assets/icons/bookmarkSingle-
 import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
 import * as RemoveBookMarkIcon from "readium-desktop/renderer/assets/icons/BookmarkRemove-icon.svg";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
+// import * as BookmarkFullIcon from "readium-desktop/renderer/assets/icons/.unused-icons/outline-bookmark-24px.svg";
 // import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
 import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
 import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreen-icon.svg";
@@ -121,8 +122,8 @@ interface IBaseProps extends TranslatorProps {
     handleReaderClose: () => void;
     handleReaderDetach: () => void;
     toggleBookmark: () => void;
-    isOnBookmark: boolean;
-    visibleBookmarkList: number;
+    // isOnBookmark: boolean;
+    numberOfVisibleBookmarks: number;
     isOnSearch: boolean;
     handlePublicationInfo: () => void;
     readerMenuProps: IReaderMenuProps;
@@ -879,14 +880,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                <HeaderSearch shortcutEnable={this.props.shortcutEnable} isPdf={this.props.isPdf} showSearchResults={this.props.showSearchResults} isAudiobook={isAudioBook} isDivina={this.props.isDivina}></HeaderSearch>
                         </li>
                         <li
-                            {...(this.props.isOnBookmark &&
+                            {...(this.props.numberOfVisibleBookmarks > 0 &&
                                 { style: { backgroundColor: "var(--color-blue" } })}
                         >
                             <input
                                 id="bookmarkButton"
                                 className={stylesReader.bookmarkButton}
                                 type="checkbox"
-                                checked={this.props.isOnBookmark}
+                                checked={this.props.numberOfVisibleBookmarks > 0}
                                 onKeyUp={(e) => {
                                     if (e.key === "Enter") { this.props.toggleBookmark(); }
                                 }}
@@ -902,12 +903,23 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 aria-hidden="true"
                                 className={stylesReader.menu_button}
                                 id="bookmarkLabel"
-                                aria-label={__("reader.navigation.bookmarkTitle")}
-                                title={__("reader.navigation.bookmarkTitle")}
+
+                                aria-label={`${__("reader.navigation.bookmarkTitle")} (${
+                                    (this.props.numberOfVisibleBookmarks === 1 && !this.props.selectionIsNew) ? __("catalog.delete") : __("catalog.addTagsButton")
+                                })`}
+                                title={`${__("reader.navigation.bookmarkTitle")} (${
+                                    (this.props.numberOfVisibleBookmarks === 1 && !this.props.selectionIsNew) ? __("catalog.delete") : __("catalog.addTagsButton")
+                                })`}
                             >
-                                <SVG ariaHidden={true} svg={MarkIcon} className={classNames(stylesReaderHeader.bookmarkIcon, this.props.isOnBookmark ? stylesReaderHeader.active_svg : "")} />
-                                <SVG ariaHidden={true} svg={RemoveBookMarkIcon} className={classNames(stylesReaderHeader.bookmarkRemove, (this.props.visibleBookmarkList === 1  && !this.props.selectionIsNew) ? stylesReaderHeader.active_svg : "")} />
-                                <SVG ariaHidden={true} svg={PlusIcon} className={classNames(stylesReaderHeader.bookmarkRemove, this.props.visibleBookmarkList > 1 || (this.props.visibleBookmarkList === 1 && this.props.selectionIsNew) ? stylesReaderHeader.active_svg : "")} />
+                                <SVG ariaHidden={true} svg={MarkIcon} className={classNames(stylesReaderHeader.bookmarkIcon,
+                                    this.props.numberOfVisibleBookmarks > 0
+                                    ? stylesReaderHeader.active_svg : "")} />
+                                <SVG ariaHidden={true} svg={RemoveBookMarkIcon} className={classNames(stylesReaderHeader.bookmarkRemove,
+                                    (this.props.numberOfVisibleBookmarks === 1 && !this.props.selectionIsNew)
+                                    ? stylesReaderHeader.active_svg : "")} />
+                                <SVG ariaHidden={true} svg={PlusIcon} className={classNames(stylesReaderHeader.bookmarkRemove,
+                                    this.props.numberOfVisibleBookmarks > 1 || (this.props.numberOfVisibleBookmarks === 1 && this.props.selectionIsNew)
+                                    ? stylesReaderHeader.active_svg : "")} />
                             </label>
                         </li>
 

@@ -772,8 +772,8 @@ class Reader extends React.Component<IProps, IState> {
                         handleReaderDetach={this.handleReaderDetach}
                         handleReaderClose={this.handleReaderClose}
                         toggleBookmark={() => this.handleToggleBookmark(false)}
-                        isOnBookmark={this.state.visibleBookmarkList.length > 0}
-                        visibleBookmarkList={this.state.visibleBookmarkList.length}
+                        // isOnBookmark={this.state.visibleBookmarkList.length > 0}
+                        numberOfVisibleBookmarks={this.state.visibleBookmarkList.length}
                         isOnSearch={this.props.searchEnable}
                         ReaderSettingsProps={ReaderSettingsProps}
                         readerMenuProps={readerMenuProps}
