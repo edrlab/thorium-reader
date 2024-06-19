@@ -12,6 +12,7 @@
   },
   "apiapp": {
     "documentation": "Documentazione di Thorium",
+    "howItWorks": "Come funziona?",
     "informations": "In alcuni paesi, ad esempio in Francia, molte biblioteche pubbliche forniscono un catalogo a lettura automatica (simile all'OPDS, ma non identico), che consente agli utenti che siano iscritti a una biblioteca francese di scaricare pubblicazioni digitali dal loro scaffale personale. L'integrazione di questa tecnologia in Thorium Reader consente di scaricare un ebook o un audiolibro direttamente in Thorium Reader per una lettura immediata. Come si collega l'account della biblioteca pubblica a Thorium Reader? È semplice. Inserite una città (\"Roma\") o una parte del nome della biblioteca nel campo di ricerca e premete il pulsante Cerca. Apparirà un elenco di biblioteche pubbliche corrispondenti alla ricerca. Selezionare una biblioteca e premere Aggiungi. Nell'elenco aggiornato dei cataloghi, selezionare questa biblioteca: viene visualizzato un modulo di autenticazione. Inserire il nome utente/indirizzo e-mail e la password e premere Login. Ora è possibile vedere il contenuto della propria libreria personale, da cui è possibile scaricare e leggere gli ebook e gli audiolibri precedentemente presi in prestito.",
     "noLibraryFound": "Nessuna libreria trovata ({{- name}})"
   },
@@ -40,6 +41,8 @@
       }
     },
     "update": {
+      "message": "Nuova versione disponibile, clicca per saperne di più.",
+      "title": "Aggiornamento del software {{- appName}}."
     },
     "window": {
       "showLibrary": "Mostra libreria"
@@ -87,6 +90,7 @@
         "cancel": "Annulla",
         "login": "Login",
         "password": "Password",
+        "register": "Registrati",
         "username": "Nome utente / indirizzo e-mail"
       },
       "info": {
@@ -138,15 +142,18 @@
     "allBooks": "Tutti i libri",
     "catalogs": "Cataloghi",
     "downloads": "Downloads",
+    "fitlerTagTitle": "Filtra per tag",
     "gridTitle": "Vista a griglia",
     "home": "Menu libreria",
     "homeTitle": "Home",
     "importTitle": "Importa una pubblicazione",
     "listTitle": "Vista a lista",
+    "myCatalogs": "I miei cataloghi",
     "refreshTitle": "Ricarica",
     "searchPlaceholder": "Cerca",
     "searchTitle": "Inizia una ricerca",
-    "settings": "Impostazioni"
+    "settings": "Impostazioni",
+    "viewMode": "Modalità di visualizzazione"
   },
   "library": {
     "lcp": {
@@ -213,7 +220,8 @@
       "title": "Modifica un feed OPDS",
       "updateButton": "Modifica",
       "url": "Link"
-    }
+    },
+    "whatIsOpds": "Cos'è l'OPDS?"
   },
   "publication": {
     "accessibility": {
@@ -231,6 +239,7 @@
       },
       "accessibilityHazard": {
         "flashing": "Flashing",
+        "motionSimulation": "Simulazione del movimento",
         "name": "Rischi:",
         "noFlashing": "Non è presente flashing",
         "noMotionSimulation": "Nessuna simulazione di movimento",
@@ -245,6 +254,7 @@
       "name": "Accessibilità",
       "noA11y": "Nessuna informazione disponibile sull'accessibilità"
     },
+    "actions": "Azioni",
     "audio": {
       "tracks": "Tracce"
     },
@@ -255,35 +265,56 @@
     "cover": {
       "img": "Immagine di copertina"
     },
+    "day": "giorno",
+    "days": "giorni",
     "duration": {
       "title": "Durata"
     },
+    "expired": "Prestito scaduto",
     "expiredLcp": "Questo libro non può essere letto perchè la licenza LCP è scaduta.",
     "lcpEnd": "Fine",
     "lcpRightsCopy": "Caratteri copiati",
     "lcpRightsPrint": "Pagine stampate",
     "lcpStart": "Inizio",
+    "licenceLCP": "Licenza (LCP)",
     "licenseOutOfDate": "La licenza è scaduta",
     "licenseSignatureDateInvalid": "La data della firma della licenza non è valida",
     "licenseSignatureInvalid": "La firma della licenza non è valida",
+    "licensed": "Concesso in licenza",
     "markAsRead": "Segna come letto",
+    "notStarted": "Non iniziato",
+    "onGoing": "In corso",
     "progression": {
       "title": "Progressione"
     },
+    "read": "Finito",
+    "remainingTime": "Prestito (tempo rimanente)",
     "renewButton": "Rinnova",
     "returnButton": "Restituisci",
     "returnedLcp": "Questo libro non può essere letto perchè la licenza LCP è stata restituita",
     "revokedLcp": "Questo libro non può essere letto perchè la licenza LCP è stata revocata",
     "seeLess": "Vedi di meno",
     "seeMore": "Vedi di più",
+    "timeLeft": "Tempo rimanente",
     "title": "Titolo",
     "userKeyCheckInvalid": "La passphrase non è corretta"
   },
   "reader": {
     "annotations": {
+      "Color": "Colore",
+      "addNote": "Annotare",
+      "advancedMode": "Modalità istantanea (creazione automatica dopo la selezione)",
+      "annotationsOptions": "Opzioni",
       "hide": "Non mostrare",
+      "highlight": "Evidenziare",
+      "noSelectionToast": "Nessuna selezione",
+      "quickAnnotations": "Creazione rapida (salta editor)",
+      "saveNote": "Salva",
+      "toggleMarginMarks": "Visualizzazione ai margini",
       "type": {
+        "outline": "Contorno",
         "solid": "Sfondo pieno",
+        "strikethrough": "Barrato",
         "underline": "Sottolineatura"
       }
     },
@@ -299,23 +330,29 @@
       "bookmarks": "Segnalibri",
       "delete": "Elimina",
       "edit": "Modifica",
+      "goTo": "Vai alla pagina",
       "landmarks": "Punti di riferimento",
+      "saveMark": "Salva segnalibro",
       "search": "Ricerca",
+      "searchResult": "Cerca [{{- searchText}}]",
       "toc": "Tabella dei contenuti"
     },
     "media-overlays": {
       "activate": "Attiva la lettura ad alta voce",
       "captions": "Testo sincronizzato",
+      "captionsDescription": "Visualizzazione del testo semplificata con uno stile didascalia minimo.",
       "next": "Prossima lettura ad alta voce",
       "pause": "Metti in pausa la lettura ad alta voce",
       "play": "Riproduci la lettura ad alta voce",
       "previous": "Precedente lettura ad alta voce",
       "skip": "Ometti informazioni ausiliari",
+      "skipDescription": "Salta/ignora i contenuti ausiliari come interruzioni di pagina, note a piè di pagina/note di chiusura, ecc.",
       "speed": "Velocità di riproduzione per la lettura ad alta voce",
       "stop": "Interrompi la lettura ad alta voce",
       "title": "lettura ad alta voce"
     },
     "navigation": {
+      "annotationTitle": "annotazione",
       "backHomeTitle": "ritorna alla libreria",
       "bookmarkTitle": "segnalibro",
       "currentPage": "Pagina attuale: {{- current}}",
@@ -331,6 +368,7 @@
       "infoTitle": "informazione",
       "magnifyingGlassButton": "cerca nella pubblicazione",
       "openTableOfContentsTitle": "navigazione",
+      "page": "Pagina",
       "pdfscalemode": "Dimensioni della pagina o larghezza",
       "settingsTitle": "impostazioni"
     },
@@ -341,6 +379,7 @@
         "next": "Prossimo",
         "notFound": "Nessun risultato",
         "previous": "Precedente",
+        "results": "Risultati",
         "submit": "Trova"
       },
       "searchTitle": "Cerca:"
@@ -352,18 +391,22 @@
         "title": "Colonne",
         "two": "2 cols"
       },
+      "customizeReader": "Personalizza la formattazione del testo",
+      "disabled": "Disabilitato",
       "display": "Visualizzazione",
       "disposition": {
         "title": "Layout"
       },
       "font": "Font",
       "fontSize": "Dimensioni del font",
+      "infoCustomFont": "Seleziona il carattere personalizzato dal sistema operativo digitandone il nome",
       "justification": "Allineamento",
       "justify": "Giustifica",
       "letterSpacing": "Spaziatura lettere",
       "lineSpacing": "Spaziatura linee",
       "margin": "Margine",
       "noFootnotes": "Disattiva note a piè di pagina",
+      "noRTLFlip": "Disabilita l'interfaccia utente da destra a sinistra",
       "noRuby": "Nascondi Ruby Giapponese",
       "paginated": "Impaginato",
       "paraSpacing": "Spaziatura paragrafo",
@@ -380,14 +423,20 @@
         },
         "title": "Zoom"
       },
+      "preview": "Anteprima",
       "reduceMotion": "Riduci movimento",
       "scrolled": "Scrollabile",
       "spacing": "Spaziatura",
       "text": "Testo",
       "theme": {
         "name": {
+          "Contrast1": "Contrasto 1",
+          "Contrast2": "Contrasto 2",
+          "Contrast3": "Contrasto 3",
+          "Contrast4": "Contrasto 4",
           "Neutral": "Neutrale",
           "Night": "Notte",
+          "Paper": "Carta",
           "Sepia": "Seppia"
         },
         "title": "Tema"
@@ -409,6 +458,7 @@
       "play": "Riproduci Testo a Voce",
       "previous": "Precedente Testo a Voce",
       "sentenceDetect": "Separa testo",
+      "sentenceDetectDescription": "Suddividi i paragrafi lunghi in frasi.",
       "speed": "Velocità di riproduzione Testo a Voce",
       "stop": "Interrompi Testo a Voce",
       "voice": "Voce del Testo a voce"
@@ -437,26 +487,43 @@
       "yes": "Abilita"
     },
     "tabs": {
+      "appearance": "Aspetto",
+      "general": "Generale",
       "keyboardShortcuts": "Scorciatoie da tastiera"
     },
     "theme": {
+      "auto": "Automatico",
       "dark": "Scuro",
-      "light": "Chiaro"
+      "description": "Il tema dell'applicazione corrisponde al sistema operativo.",
+      "light": "Chiaro",
+      "title": "Tema dell'applicazione"
     }
   },
   "wizard": {
     "buttons": {
+      "discover": "Scopri le novità",
+      "goToBooks": "Vai alle mie pubblicazioni",
       "next": "Successivo"
     },
     "description": {
+      "annotations": "Evidenzia il testo del documento, scegli stile e colore, allega note personali. Crea annotazioni in modalità 'rapida' per bypassare l'editor (puoi inserire testo e personalizzare gli stili in un secondo momento). Per una maggiore velocità, utilizza la modalità \"istantanea\" che crea annotazioni immediatamente dopo aver evidenziato il testo del documento!",
+      "catalogs": "Prendi in prestito pubblicazioni dalla tua biblioteca locale o scopri pubblicazioni tramite i feed OPDS. Accedi a una varietà di pubblicazioni da più fonti grazie ai cataloghi online.",
       "home": "Thorium sembra diverso! Scopriamo le novità...",
-      "readingView1": "Personalizza le tue preferenze di lettura e ascolto: Thorium ora offre più temi di colore sia per l'interfaccia utente che per la lettura di documenti digitali. Ora è anche più semplice configurare la lettura ad alta voce con voce computerizzata e narrazione testo/audio sincronizzata."
+      "readingView1": "Personalizza le tue preferenze di lettura e ascolto: Thorium ora offre più temi di colore sia per l'interfaccia utente che per la lettura di documenti digitali. Ora è anche più semplice configurare la lettura ad alta voce con voce computerizzata e narrazione testo/audio sincronizzata.",
+      "readingView2": "L'interfaccia utente migliorata di Thorium semplifica la ricerca di testo nelle pubblicazioni, l'esplorazione dei risultati di ricerca, l'accesso a pagine specifiche, la navigazione nel sommario, la creazione di segnalibri, ecc. grazie ai nuovi pannelli \"ancorati\". La modalità di lettura a schermo intero continua a offrire un ambiente privo di distrazioni.",
+      "yourBooks": "Benvenuto nella tua libreria personale ridisegnata! Nella visualizzazione \"griglia\", filtra facilmente per tag o trova pubblicazioni per parole chiave. Nella vista avanzata \"tabella\", seleziona e ordina le pubblicazioni per autori specifici, titolo, data, formato, ecc."
     },
+    "dontShow": "Non mostrare più",
     "tab": {
+      "annotations": "Annotazioni",
+      "catalogs": "Cataloghi",
       "home": "Home",
-      "readingView": "Modalità lettura"
+      "readingView": "Modalità lettura",
+      "yourBooks": "Le tue pubblicazioni"
     },
     "title": {
+      "allBooks": "Tutte le mie pubblicazioni",
+      "newFeature": "Nuova funzionalità: annotazioni",
       "welcome": "Benvenuti in Thorium 3.0"
     }
   }
