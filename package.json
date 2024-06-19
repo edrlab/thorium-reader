@@ -288,7 +288,7 @@
     "node-fetch": "^3.3.2",
     "proxy-agent": "^6.4.0",
     "r2-lcp-js": "^1.0.40",
-    "r2-navigator-js": "^1.15.8",
+    "r2-navigator-js": "^1.15.9",
     "r2-opds-js": "^1.0.43",
     "r2-shared-js": "^1.0.74",
     "r2-streamer-js": "^1.0.47",

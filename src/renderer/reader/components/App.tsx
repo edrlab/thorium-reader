@@ -85,8 +85,62 @@ font-weight: normal;
 src: local("iAWriterDuospace-Regular"),
 url("${rcssPath}/fonts/iAWriterDuospace-Regular.ttf") format("truetype");
 }
-
         `;
+
+// https://github.com/readium/readium-css/pull/146/files
+// https://github.com/readium/readium-css/blob/2e1bb29d02de1b2d36ec960eb90c2c4ac238b346/css/src/modules/ReadiumCSS-base.css#L119-L131
+// https://github.com/readium/readium-css/blob/2e1bb29d02de1b2d36ec960eb90c2c4ac238b346/css/src/ReadiumCSS-ebpaj_fonts_patch.css#L22-L79
+// @font-face {
+// font-family: "serif-ja";
+// src: local("ＭＳ Ｐ明朝"), /* for IE */
+// local("MS PMincho"), /* ＭＳ Ｐ明朝 */
+// local("HiraMinProN-W3"), local("Hiragino Mincho ProN"), /* ヒラギノ明朝 ProN W3 */
+// local("HiraMinPro-W3"), local("Hiragino Mincho Pro"), /* ヒラギノ明朝 Pro W3 */
+// local("YuMin-Medium"), local("YuMincho"), /* 游明朝体(macOS) */
+// local("Yu Mincho"), /* 游明朝(Windows) */
+// local("BIZ UDPMincho"); /* BIZ UDP明朝 */
+// }
+
+// @font-face {
+// font-family: "sans-serif-ja";
+// src: local("ＭＳ Ｐゴシック"), /* for IE */
+// local("MS PGothic"), /* ＭＳ Ｐゴシック */
+// local("HiraginoSans-W3"), local("Hiragino Sans"), /* ヒラギノ角ゴシック */
+// local("HiraKakuProN-W3"), local("Hiragino Kaku Gothic ProN"), /* ヒラギノ角ゴ ProN W3 */
+// local("HiraKakuPro-W3"), local("Hiragino Kaku Gothic Pro"), /* ヒラギノ角ゴ Pro W3 */
+// local("ヒラギノ角ゴ W3"), /* for old  Safari */
+// local("HiraginoKaku-W3-90msp-RKSJ-H"), /* ヒラギノ角ゴ W3(TrueType) */
+// local("YuGothic-Medium"), local("YuGothic"), /* 游ゴシック体(macOS) */
+// local("Yu Gothic Medium"), local("Yu Gothic"), /* 游ゴシック(Windows) "Yu Gothic" is a fallback. */
+// local("BIZ UDPGothic"); /* BIZ UDPゴシック */
+// }
+
+// /* 縦組み用 (vertical writing) */
+
+// @font-face {
+// font-family: "serif-ja-v";
+// src: local("ＭＳ 明朝"), /* for IE */
+// local("MS Mincho"), /* ＭＳ 明朝 */
+// local("HiraMinProN-W3"), local("Hiragino Mincho ProN"), /* ヒラギノ明朝 ProN W3 */
+// local("HiraMinPro-W3"), local("Hiragino Mincho Pro"), /* ヒラギノ明朝 Pro W3 */
+// local("YuMin-Medium"), local("YuMincho"), /* 游明朝体(macOS) */
+// local("Yu Mincho"), /* 游明朝(Windows) */
+// local("BIZ UDMincho"); /*  BIZ UD明朝 */
+// }
+
+// @font-face {
+// font-family: "sans-serif-ja-v";
+// src: local("ＭＳ ゴシック"), /* for IE */
+// local("MS Gothic"), /* ＭＳ ゴシック */
+// local("HiraginoSans-W3"), local("Hiragino Sans"), /* ヒラギノ角ゴシック */
+// local("HiraKakuProN-W3"), local("Hiragino Kaku Gothic ProN"), /* ヒラギノ角ゴ ProN W3 */
+// local("HiraKakuPro-W3"), local("Hiragino Kaku Gothic Pro"), /* ヒラギノ角ゴ Pro W3 */
+// local("ヒラギノ角ゴ W3"), /* for old Safari */
+// local("HiraKakuDS-W3-83pv-RKSJ-H"), /* ヒラギノ角ゴ W3(TrueType) */
+// local("YuGothic-Medium"), local("YuGothic"), /* 游ゴシック体(macOS) */
+// local("Yu Gothic Medium"), local("Yu Gothic"), /* 游ゴシック(Windows)  "Yu Gothic" is a fallback. */
+// local("BIZ UDGothic"); /* BIZ UDゴシック */
+// }
                 el = document.createElement("style");
                 el.setAttribute("id", readiumCssFontFaceStyleID);
                 el.setAttribute("type", "text/css");
