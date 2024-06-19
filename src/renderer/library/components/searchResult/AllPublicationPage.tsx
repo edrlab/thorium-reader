@@ -567,7 +567,7 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                     }
                 }}
                 aria-label={`${props.__("header.searchPlaceholder")} (${props.column.Header})`}
-                placeholder={`${props.__("header.searchPlaceholder")} (${props.column.Header})`}
+                placeholder={"" /* `${props.column.Header}` */}
                 className={stylesPublication.showColFilters_input}
                 style={{
                     width: props.accessibilitySupportEnabled ? "calc(100% - 30px)" : "100%",
@@ -1372,7 +1372,7 @@ interface ITableCellProps_TableView {
 
 export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Common> = (props) => {
 
-    const [showColumnFilters, setShowColumnFilters] = React.useState(true);
+    const [showColumnFilters, setShowColumnFilters] = React.useState(false);
     const [selectedTag, setSelectedTag] = React.useState("");
 
     const scrollToViewRef = React.useRef(null);
@@ -2310,8 +2310,39 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                                 id="setShowColumnFiltersCheckbox"
                                                 type="checkbox"
                                                 checked={showColumnFilters ? true : false}
-                                                onChange={() => {
+                                                onFocus={()=>{
+                                                    const el = window.document.getElementById("setShowColumnFiltersCheckboxLabel");
+                                                    if (el) {
+                                                        el.setAttribute("data-focussed", "true");
+                                                    }
+                                                }}
+                                                onBlur={()=>{
+                                                    const el = window.document.getElementById("setShowColumnFiltersCheckboxLabel");
+                                                    if (el) {
+                                                        el.removeAttribute("data-focussed");
+                                                    }
+                                                }}
+                                                onKeyUp={(ev)=>{
+                                                    if (ev.key === "Enter") {
+                                                        // (ev.target as HTMLInputElement).checked = showColumnFilters ? false : true;
+                                                        (ev.target as HTMLElement).click();
 
+                                                        // const show = showColumnFilters;
+                                                        // setShowColumnFilters(!showColumnFilters);
+
+                                                        // setTimeout(() => {
+                                                        //     if (!show) {
+                                                        //         tableInstance.setGlobalFilter("");
+                                                        //     }
+                                                        //     if (show) {
+                                                        //         for (const col of tableInstance.allColumns) {
+                                                        //             tableInstance.setFilter(col.id, "");
+                                                        //         }
+                                                        //     }
+                                                        // }, 200);
+                                                    }
+                                                }}
+                                                onChange={() => {
                                                     const show = showColumnFilters;
                                                     setShowColumnFilters(!showColumnFilters);
 
@@ -2328,6 +2359,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                                 }}
                                                 style={{ position: "absolute", left: "-999px" }}
                                             /><label
+                                                id="setShowColumnFiltersCheckboxLabel"
+                                                className={stylesPublication.setShowColumnFiltersCheckboxLabel}
                                                 aria-hidden="true"
                                                 htmlFor="setShowColumnFiltersCheckbox"
                                                 style={{ cursor: "pointer", padding: "0.2em", color: "var(--color-blue)", paddingBottom: "0", display: "inline-block", width: "20px" }}>

@@ -294,6 +294,16 @@
     }
 }
 
+.setShowColumnFiltersCheckboxLabel[data-focussed] {
+    outline: var(--color-blue) solid 2px !important;
+    outline-offset: 4px;
+}
+
+/*
+.setShowColumnFiltersCheckboxLabel:not([data-focussed]) {
+}
+*/
+
 .allBook_table {
     &_wrapper {
         overflow: auto;

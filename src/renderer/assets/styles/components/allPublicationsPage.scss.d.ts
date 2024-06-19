@@ -30,6 +30,7 @@ export declare const react_aria_Button: string;
 export declare const react_aria_ComboBox: string;
 export declare const react_aria_Input: string;
 export declare const react_aria_Label: string;
+export declare const setShowColumnFiltersCheckboxLabel: string;
 export declare const showColFilters: string;
 export declare const showColFilters_input: string;
 export declare const showColFilters_wrapper: string;
