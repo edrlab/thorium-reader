@@ -58,23 +58,23 @@ export const FONT_LIST: Font[] =
 const FONT_LIST_JA: Font[] =
 [{
     id: "JA",
-    label: "日本語 SERIF (H)",
+    label: "日本語 明朝（横書き）",
     // eslint-disable-next-line quotes
-    fontFamily: `"ＭＳ Ｐ明朝", "MS PMincho", "Hiragino Mincho Pro", "ヒラギノ明朝 Pro W3", "游明朝", "YuMincho", "ＭＳ 明朝", "MS Mincho", "Hiragino Mincho ProN", serif`,
+    fontFamily: `"Hiragino Mincho ProN", "Hiragino Mincho Pro", "YuMincho", "BIZ UDPMincho", "Yu Mincho", "ＭＳ Ｐ明朝", "MS PMincho", serif`,
 }, {
     id: "JA-SANS",
-    label: "日本語 SANS (H)",
+    label: "日本語 ゴシック（横書き）",
     // eslint-disable-next-line quotes
-    fontFamily: `"ＭＳ Ｐゴシック", "MS PGothic", "Hiragino Kaku Gothic Pro W3", "ヒラギノ角ゴ Pro W3", "Hiragino Sans GB", "ヒラギノ角ゴシック W3", "游ゴシック", "YuGothic", "ＭＳ ゴシック", "MS Gothic", "Hiragino Sans", sans-serif`,
+    fontFamily: `"Hiragino Sans", "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ W3", "YuGothic", "Yu Gothic Medium", "BIZ UDPGothic", "Yu Gothic", "ＭＳ Ｐゴシック", "MS PGothic", sans-serif`,
 }, {
     id: "JA-V",
-    label: "日本語 SERIF (V)",
+    label: "日本語 明朝 (縦書き)",
     // eslint-disable-next-line quotes
-    fontFamily: `"ＭＳ 明朝", "MS Mincho", "Hiragino Mincho Pro", "ヒラギノ明朝 Pro W3", "游明朝", "YuMincho", "ＭＳ Ｐ明朝", "MS PMincho", "Hiragino Mincho ProN", serif`,
+    fontFamily: `"Hiragino Mincho ProN", "Hiragino Mincho Pro", "YuMincho", "BIZ UDMincho", "Yu Mincho", "ＭＳ明朝", "MS Mincho", serif`,
 }, {
     id: "JA-V-SANS",
-    label: "日本語 SANS (V)",
+    label: "日本語 ゴシック (縦書き)",
     // eslint-disable-next-line quotes
-    fontFamily: `"ＭＳ ゴシック", "MS Gothic", "Hiragino Kaku Gothic Pro W3", "ヒラギノ角ゴ Pro W3", "Hiragino Sans GB", "ヒラギノ角ゴシック W3", "游ゴシック", "YuGothic", "ＭＳ Ｐゴシック", "MS PGothic", "Hiragino Sans", sans-serif`,
+    fontFamily: `"Hiragino Sans", "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ W3", "YuGothic", Yu Gothic Medium", "BIZ UDGothic", "Yu Gothic", "ＭＳゴシック", "MS Gothic", sans-serif`,
 }];
 export const FONT_LIST_WITH_JA = FONT_LIST.concat(...FONT_LIST_JA);
