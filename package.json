@@ -221,6 +221,15 @@
       ],
       "icon": "dist/assets/icons/icon.ico"
     },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "selectPerMachineByDefault": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": false,
+      "removeDefaultUninstallWelcomePage": false,
+      "runAfterFinish": true
+    },
     "linux": {
       "target": [
         "deb",
