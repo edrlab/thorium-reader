@@ -105,10 +105,12 @@
         "availableUntil": "حتى",
         "copyAvalaible": "متوفر",
         "numberOfItems": "عدد البنود",
-        "priveValue": "السعر"
+        "priveValue": "السعر",
+        "state": "الحالة"
       }
     },
     "publisher": "الناشر",
+    "readBook": "اقرأ",
     "released": "تم نشره بتاريخ",
     "sort": "الفرز حسب",
     "tag": "الوسم",
