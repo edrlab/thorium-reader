@@ -156,7 +156,7 @@ jobs:
     #- run: npm install @octokit/rest
     - name: GitHub Tagged Release Delete/ReCreate and Upload Build Artefacts
       if: ${{ github.event_name != 'pull_request' }}
-      run: node scripts/release-github.js
+      run: node scripts/release-github.mjs
     # - name: Upload Artifact
     #   if: ${{ github.event_name != 'pull_request' }}
     #   uses: actions/upload-artifact@v2
