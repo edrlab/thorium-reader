@@ -33,7 +33,7 @@ console.log(process.env.GITHUB_SHA);
 if (!process.env.GITHUB_SHA) {
     console.log("Missing COMMIT_SHA! Abort.");
     process.exit(1);
-    return;
+    // return;
 }
 
 console.log("RELEASE_TAG:");
@@ -41,14 +41,14 @@ console.log(process.env.RELEASE_TAG);
 if (!process.env.RELEASE_TAG) {
     console.log("Missing RELEASE_TAG! Abort.");
     process.exit(1);
-    return;
+    // return;
 }
 
 const ghtoken = process.env.GITHUB_TOKEN_RELEASE_PUBLISH || process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
 if (!ghtoken) {
     console.log("Missing GITHUB_TOKEN! Abort.");
     process.exit(1);
-    return;
+    // return;
 }
 
 const octokit = new Octokit({
