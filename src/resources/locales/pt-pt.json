@@ -283,12 +283,12 @@
     "licensed": "Licenciado",
     "markAsRead": "Marcar como Lido",
     "notStarted": "Não iniciado",
-    "onGoing": "Em andamento",
+    "onGoing": "Iniciado",
     "progression": {
       "title": "Progressão"
     },
     "read": "Finalizado",
-    "remainingTime": "Empréstimo (tempo restante)",
+    "remainingTime": "Empréstimo (restante)",
     "renewButton": "Renovar",
     "returnButton": "Devolver",
     "returnedLcp": "A licença deste documento protegido por LCP foi devolvida.",
@@ -375,7 +375,7 @@
     "picker": {
       "search": {
         "founds": "{{- nResults}} correspondência(s)",
-        "input": "texto a corresponder",
+        "input": "texto a encontrar",
         "next": "Seguinte",
         "notFound": "sem correspondências",
         "previous": "Anterior",
