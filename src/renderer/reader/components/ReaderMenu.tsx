@@ -191,6 +191,7 @@ const renderLinkTree = (currentLocation: LocatorExtended, isRTLfn: (_link: ILink
         React.useEffect(() => {
             setTimeout(() => {
                 if (linkRef.current) {
+                    // no "structural" focus steal here, just visual scroll into view
                     // linkRef.current.focus();
                     linkRef.current.scrollIntoView({
                         behavior: "instant",
@@ -281,10 +282,8 @@ const renderLinkTree = (currentLocation: LocatorExtended, isRTLfn: (_link: ILink
                 const isRTL = isRTLfn(link);
 
                 let emphasis = undefined;
-                let flag = false;
                 if (link === headingTrailLink) {
                     emphasis = { backgroundColor: "var(--color-extralight-grey)", borderLeft: "2px solid var(--color-blue)" };
-                    flag = true;
                 } else if ((link as any).__inHeadingsTrail) {
                     emphasis = { border: "1px dashed silver" };
                 }
@@ -298,6 +297,7 @@ const renderLinkTree = (currentLocation: LocatorExtended, isRTLfn: (_link: ILink
                             <>
                                 <div role={"heading"} aria-level={level}>
                                     <a
+                                        ref={link === headingTrailLink ? linkRef : undefined}
                                         id={link === headingTrailLink ? "headingFocus" : undefined}
                                         aria-label={link === headingTrailLink ? label + " (***)" : undefined}
                                         style={emphasis}
@@ -325,7 +325,6 @@ const renderLinkTree = (currentLocation: LocatorExtended, isRTLfn: (_link: ILink
                                             : undefined
                                         }
                                         data-href={link.Href}
-                                        ref={flag ? linkRef : undefined}
                                     >
                                         <span dir={isRTL ? "rtl" : "ltr"}>{label}</span>
                                     </a>
@@ -336,6 +335,7 @@ const renderLinkTree = (currentLocation: LocatorExtended, isRTLfn: (_link: ILink
                         ) : (
                             <div role={"heading"} aria-level={level}>
                                 <a
+                                    ref={link === headingTrailLink ? linkRef : undefined}
                                     id={link === headingTrailLink ? "headingFocus" : undefined}
                                     aria-label={link === headingTrailLink ? label + " (***)" : undefined}
                                     style={emphasis}
@@ -365,7 +365,6 @@ const renderLinkTree = (currentLocation: LocatorExtended, isRTLfn: (_link: ILink
                                         : undefined
                                     }
                                     data-href={link.Href}
-                                    ref={flag ? linkRef : undefined}
                                 >
                                     <span dir={isRTL ? "rtl" : "ltr"}>{label}</span>
                                 </a>
@@ -661,6 +660,8 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
     //     }
     // }, [isSearchEnable]);
 
+    const paginatorAnnotationsRef = React.useRef<HTMLSelectElement>();
+
     return (
         <>
             {annotationsPagedArray.map(([timestamp, annotationItem], _i) =>
@@ -678,19 +679,19 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
                 isPaginated ? <>
                     <div className={stylesPopoverDialog.navigation_container}>
                         <button title={__("opds.firstPage")}
-                            onClick={() => { setPageNumber(1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
+                            onClick={() => { setPageNumber(1); setTimeout(()=>paginatorAnnotationsRef.current?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowFirstIcon} />
                         </button>
 
                         <button title={__("opds.previous")}
-                            onClick={() => { setPageNumber(pageNumber - 1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
+                            onClick={() => { setPageNumber(pageNumber - 1); setTimeout(()=>paginatorAnnotationsRef.current?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
                         <div className={stylesPopoverDialog.pages}>
                             {/* <SelectRef
-                                id="paginatorAnnotations"
+                                ref={paginatorAnnotationsRef}
                                 aria-label={__("reader.navigation.page")}
                                 items={pageOptions}
                                 selectedKey={pageNumber}
@@ -705,8 +706,9 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
                             <label htmlFor="paginatorAnnotations" style={{margin: "0"}}>{__("reader.navigation.page")}</label>
                             <select onChange={(e) => {
                                     setPageNumber(pageOptions.find((option) => option.id === parseInt(e.currentTarget.value, 10)).id);
-                                    setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100);
+                                    setTimeout(()=>paginatorAnnotationsRef.current?.focus(), 100);
                                 }}
+                                ref={paginatorAnnotationsRef}
                                 id="paginatorAnnotations"
                                 aria-label={__("reader.navigation.page")}
                                 // defaultValue={1}
@@ -729,13 +731,13 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
                             </ComboBox> */}
                         </div>
                         <button title={__("opds.next")}
-                            onClick={() => { setPageNumber(pageNumber + 1); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
+                            onClick={() => { setPageNumber(pageNumber + 1); setTimeout(()=>paginatorAnnotationsRef.current?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                         </button>
 
                         <button title={__("opds.lastPage")}
-                            onClick={() => { setPageNumber(pageTotal); setTimeout(()=>document.getElementById("paginatorAnnotations")?.focus(), 100); }}
+                            onClick={() => { setPageNumber(pageTotal); setTimeout(()=>paginatorAnnotationsRef.current?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowLastIcon} />
                         </button>
@@ -798,9 +800,9 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) =
     const bname = (bookmark.name ? `${bookmark.name}` : `${__("reader.navigation.bookmarkTitle")} ${i}`);
 
     React.useEffect(() => {
-        if (textearearef.current) {
+        if (isEdited && textearearef.current) {
             textearearef.current.style.height = "auto";
-            textearearef.current.style.height = textearearef.current.scrollHeight + 3 + "px";
+            textearearef.current.style.height = `${textearearef.current.scrollHeight + 3}px`;
             textearearef.current.focus();
         }
     }, [isEdited]);
@@ -999,6 +1001,8 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
 
     const [itemEdited, setItemToEdit] = React.useState(-1);
 
+    const paginatorBookmarksRef = React.useRef<HTMLSelectElement>();
+
     return (
         <>
             <bookmarkCardContext.Provider value={{
@@ -1023,13 +1027,13 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                 isPaginated ? <>
                     <div className={stylesPopoverDialog.navigation_container}>
                         <button title={__("opds.firstPage")}
-                            onClick={() => { setPageNumber(1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100); }}
+                            onClick={() => { setPageNumber(1); setItemToEdit(-1); setTimeout(()=>paginatorBookmarksRef.current?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowFirstIcon} />
                         </button>
 
                         <button title={__("opds.previous")}
-                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100); }}
+                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); setTimeout(()=>paginatorBookmarksRef.current?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
@@ -1047,12 +1051,13 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                             </SelectRef> */}
-                            <label htmlFor="page" style={{margin: "0"}}>{__("reader.navigation.page")}</label>
+                            <label htmlFor="paginatorBookmarks" style={{margin: "0"}}>{__("reader.navigation.page")}</label>
                             <select onChange={(e) => {
                                     setPageNumber(pageOptions.find((option) => option.id === parseInt(e.currentTarget.value, 10)).id);
-                                    setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100);
+                                    setTimeout(()=>paginatorBookmarksRef.current?.focus(), 100);
                                 }}
                                 id="paginatorBookmarks"
+                                ref={paginatorBookmarksRef}
                                 aria-label={__("reader.navigation.page")}
                                 // defaultValue={1}
                                 value={pageNumber}
@@ -1074,13 +1079,13 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                             </ComboBox> */}
                         </div>
                         <button title={__("opds.next")}
-                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100); }}
+                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); setTimeout(()=>paginatorBookmarksRef.current?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                         </button>
 
                         <button title={__("opds.lastPage")}
-                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); setTimeout(()=>document.getElementById("paginatorBookmarks")?.focus(), 100); }}
+                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); setTimeout(()=>paginatorBookmarksRef.current?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowLastIcon} />
                         </button>
@@ -1524,6 +1529,8 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     console.log(`annotationDiv found "(${elem.tagName})" and Focus on [${annotationUUID}]`);
 
                     // annotationDivRef.current = elem;
+
+                    // TODO: what is the logic for stealing focus here? The result of keyboard or mouse interaction?
                     elem.focus();
 
                 } else {
@@ -1537,6 +1544,8 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 if (dockedModeRef.current) {
     
                     console.log("Focus on docked mode combobox");
+
+                    // TODO: what is the logic for stealing focus here? The result of keyboard or mouse interaction?
                     dockedModeRef.current.focus();
                 } else {
                     console.error("!no dockedModeRef on combobox");
@@ -1754,6 +1763,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 if (value) {
                                     setTabValue(value);
                                     setTimeout(() => {
+                                        // TODO: is stealing focus here necessary? Should this vary depending on keyboard or mouse interaction?
                                         const elem = document.getElementById(`readerMenu_tabs-${value}`);
                                         elem?.blur();
                                         elem?.focus();

@@ -1150,7 +1150,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
             setTimeout(() => {
                 if (dockedModeRef.current) {
-
+                    // TODO: is stealing focus here necessary? The logic here does not even check doFocus which is in the dependency array! Should this vary depending on keyboard or mouse interaction?
                     console.log("Focus on docked mode combobox");
                     dockedModeRef.current.focus();
                 } else {
@@ -1321,6 +1321,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                                 if (value) {
                                     setTabValue(value);
                                     setTimeout(() => {
+                                        // TODO: is stealing focus here necessary? Should this vary depending on keyboard or mouse interaction?
                                         const elem = document.getElementById(`readerSettings_tabs-${value}`);
                                         elem?.blur();
                                         elem?.focus();
