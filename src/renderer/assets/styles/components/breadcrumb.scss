@@ -1,0 +1,123 @@
+/*
+=-=-= breadcrumbs.scss
+*/
+
+@import 'src/renderer/assets/styles/partials/mixin';
+
+#spaceLeft {
+  // background-color: blue;
+  width: 100%;
+  min-width: 4px;
+  height: 30px;
+  color: white;
+  container-type: inline-size;
+  container-name: spaceleft;
+}
+
+.breadcrumb_container {
+  @include scrollbar_styling;
+}
+
+.breadcrumb {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: var(--color-blue);
+  width: fit-content;
+  // max-width: calc(100% - 300px);
+  padding: 0;
+
+  .strongBreadcrumb {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .hide {
+    display: none;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    list-style-type: none;
+  }
+
+  a {
+    display: flex;
+    // max-width: 150px;
+
+    & p {
+      font-size: 14px;
+      // max-width: 110px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-wrap: nowrap;
+    }
+
+  }
+
+  & strong {
+    // max-width: 200px;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
+    text-wrap: nowrap;
+    margin: 0 10px;
+  }
+
+  & .breadcrumb_icon {
+    position: relative;
+    height: 38px;
+    width: 42px;
+
+    & svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      height: 24px;
+      width: 24px;
+    }
+  }
+
+  & .button_transparency {
+    font-weight: 500;
+    text-decoration: underline;
+    font-size: inherit;
+    white-space: nowrap;
+    height: 32px;
+    padding: 0 5px;
+    margin: 0 10px;
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    svg {
+      width: 20px;
+    }
+
+    &:hover {
+      background-color: var(--color-secondary);
+      border-color: var(--color-blue);
+    }
+
+    p {
+      margin: auto;
+    }
+
+    & + .button_transparency {
+      margin-left: -10px;
+    }
+  }
+
+   svg {
+    height: 20px;
+    color: var(--color-blue);
+  }
+}
+
+.___DEBUG___COMPONENTS_BREADCRUMB_CSS {
+  display: none;
+}

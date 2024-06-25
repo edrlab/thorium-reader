@@ -6,74 +6,33 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { connect } from "react-redux";
-import { DialogTypeName } from "readium-desktop/common/models/dialog";
-import { dialogActions } from "readium-desktop/common/redux/actions/";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { TMouseEventOnButton } from "readium-desktop/typings/react";
-import { TDispatch } from "readium-desktop/typings/redux";
+import { PublicationInfoOpdsWithRadix, PublicationInfoOpdsWithRadixContent, PublicationInfoOpdsWithRadixTrigger } from "../../dialog/publicationInfos/PublicationInfo";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
-    opdsPublicationView: IOpdsPublicationView;
-}
-// IProps may typically extend:
-// RouteComponentProps
-// ReturnType<typeof mapStateToProps>
-// ReturnType<typeof mapDispatchToProps>
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
-}
+const OpdsMenu: React.FC<{opdsPublicationView: IOpdsPublicationView}> = (props) => {
+    const [__] = useTranslator();
 
-export class OpdsMenu extends React.Component<IProps, undefined> {
+    return (
+        <>
+            <PublicationInfoOpdsWithRadix
+                opdsPublicationView={props.opdsPublicationView}
+            >
+                <PublicationInfoOpdsWithRadixTrigger asChild>
+                    <button>
+                        <SVG ariaHidden svg={InfoIcon} />
+                        {__("opds.menu.aboutBook")}
+                    </button>
 
-    constructor(props: IProps) {
-        super(props);
+                </PublicationInfoOpdsWithRadixTrigger>
+                <PublicationInfoOpdsWithRadixContent
+                 />
+            </PublicationInfoOpdsWithRadix>
+        </>
+    );
 
-    }
-
-    public render(): React.ReactElement<{}> {
-
-        const {
-            __,
-        } = this.props;
-
-        return (
-            <>
-                <button role="menuitem"
-                    onClick={this.displayPublicationInfo}
-                >
-                    {__("opds.menu.aboutBook")}
-                </button>
-            </>
-        );
-    }
-
-    private displayPublicationInfo = (e: TMouseEventOnButton) => {
-        e.preventDefault();
-        this.props.displayPublicationInfo();
-    };
-}
-
-const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
-    return {
-        displayPublicationInfo: () => {
-            dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoOpds,
-                {
-                    publication: props.opdsPublicationView,
-                },
-            ));
-        },
-    };
 };
 
-const mapStateToProps = (_state: ILibraryRootState, _props: IBaseProps) => {
-    return {
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(OpdsMenu));
+export default (OpdsMenu);

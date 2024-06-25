@@ -483,6 +483,8 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
                     auth.labels?.password,
                     auth.title,
                     auth.logo?.url,
+                    auth.register?.url,
+                    auth.help,
                     auth.nonce,
                     auth.qop,
                     auth.algorithm,
@@ -517,6 +519,10 @@ interface IOPDSAuthDocParsed {
     } | undefined;
 
     logo?: IOpdsLinkView | undefined;
+
+    register?: IOpdsLinkView | undefined;
+
+    help?: string[] | undefined;
 
     // digest authentication
     // see IWWWAuthenticateDataParsed
@@ -583,7 +589,7 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
     const logo = tryCatchSync(() => {
         const ln = Array.isArray(doc.Links)
             ? doc.Links.find((v) => {
-                debug(v);
+                // debug(v);
                 return (v.Rel || []).includes("logo");
             })
             : undefined;
@@ -595,6 +601,37 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
 
     }, filename_);
 
+    const register = tryCatchSync(() => {
+        const ln = Array.isArray(doc.Links)
+            ? doc.Links.find((v) => {
+                // debug(v);
+                return (v.Rel || []).includes("register");
+            })
+            : undefined;
+        if (ln) {
+            const linkView = viewConvert.convertLinkToView(ln, baseUrl);
+            return linkView;
+        }
+        return undefined;
+
+    }, filename_);
+
+    const helpLinkView = tryCatchSync(() => {
+        const ln = Array.isArray(doc.Links)
+            ? doc.Links.filter((v) => {
+                // debug(v);
+                return (v.Rel || []).includes("help");
+            })
+            : [];
+        if (ln) {
+            const linksView = ln.map((lnItem) => viewConvert.convertLinkToView(lnItem, baseUrl));
+            return linksView;
+        }
+        return undefined;
+
+    }, filename_);
+    const helpStringArray = helpLinkView.map((item) => item.url);
+
     return {
         title: doc.Title || "",
         id: doc.Id || "",
@@ -602,6 +639,8 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
         links,
         labels,
         logo,
+        register,
+        help: helpStringArray,
         nonce: typeof authentication.AdditionalJSON?.nonce === "string" ? authentication.AdditionalJSON.nonce : undefined,
         algorithm: typeof authentication.AdditionalJSON?.algorithm === "string" ? authentication.AdditionalJSON.algorithm : undefined,
         qop: typeof authentication.AdditionalJSON?.qop === "string" ? authentication.AdditionalJSON.qop : undefined,
@@ -753,13 +792,29 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
     return undefined;
 }
 
+const AvatarIcon = `<svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.9857 9.84375C10.343 8.7158 9.33948 7.83692 8.13664 7.3486C8.7348 6.89997 9.17665 6.27451 9.39959 5.56082C9.62253 4.84712 9.61526 4.08137 9.37882 3.37204C9.14237 2.6627 8.68874 2.04574 8.08217 1.60855C7.47559 1.17135 6.74684 0.936096 5.99914 0.936096C5.25143 0.936096 4.52268 1.17135 3.91611 1.60855C3.30953 2.04574 2.8559 2.6627 2.61945 3.37204C2.38301 4.08137 2.37574 4.84712 2.59868 5.56082C2.82162 6.27451 3.26347 6.89997 3.86164 7.3486C2.65879 7.83692 1.65525 8.7158 1.01257 9.84375C0.972751 9.90779 0.946209 9.97917 0.934526 10.0537C0.922844 10.1282 0.926258 10.2042 0.944568 10.2774C0.962877 10.3505 0.995706 10.4193 1.0411 10.4795C1.0865 10.5397 1.14354 10.5901 1.20884 10.6279C1.27413 10.6656 1.34634 10.6898 1.42117 10.6991C1.49601 10.7083 1.57194 10.7024 1.64446 10.6818C1.71697 10.6611 1.78459 10.626 1.84329 10.5787C1.902 10.5314 1.95058 10.4727 1.98617 10.4063C2.83554 8.93813 4.33554 8.0625 5.99914 8.0625C7.66273 8.0625 9.16273 8.9386 10.0121 10.4063C10.0892 10.5303 10.2115 10.6194 10.3532 10.6549C10.4948 10.6903 10.6447 10.6693 10.7712 10.5962C10.8976 10.5232 10.9907 10.4038 11.0307 10.2634C11.0707 10.123 11.0546 9.9725 10.9857 9.84375ZM3.56164 4.5C3.56164 4.01791 3.70459 3.54665 3.97243 3.1458C4.24026 2.74496 4.62095 2.43253 5.06634 2.24805C5.51174 2.06356 6.00184 2.01529 6.47467 2.10934C6.9475 2.20339 7.38182 2.43554 7.72271 2.77643C8.0636 3.11732 8.29575 3.55164 8.3898 4.02447C8.48385 4.4973 8.43558 4.9874 8.25109 5.43279C8.0666 5.87819 7.75418 6.25887 7.35334 6.52671C6.95249 6.79455 6.48123 6.9375 5.99914 6.9375C5.3529 6.93676 4.73334 6.67971 4.27638 6.22275C3.81943 5.7658 3.56238 5.14624 3.56164 4.5Z" fill="#2D2D2D"/>
+</svg>`;
+
+const PasswordIcon = `<svg width="11" height="9" viewBox="0 0 11 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.25 1.51562V8.26562C1.25 8.41481 1.19074 8.55788 1.08525 8.66337C0.979758 8.76886 0.836684 8.82812 0.6875 8.82812C0.538316 8.82812 0.395242 8.76886 0.289752 8.66337C0.184263 8.55788 0.125 8.41481 0.125 8.26562V1.51562C0.125 1.36644 0.184263 1.22337 0.289752 1.11788C0.395242 1.01239 0.538316 0.953125 0.6875 0.953125C0.836684 0.953125 0.979758 1.01239 1.08525 1.11788C1.19074 1.22337 1.25 1.36644 1.25 1.51562ZM5.12797 3.89219L4.4375 4.11625V3.39062C4.4375 3.24144 4.37824 3.09837 4.27275 2.99288C4.16726 2.88739 4.02418 2.82812 3.875 2.82812C3.72582 2.82812 3.58274 2.88739 3.47725 2.99288C3.37176 3.09837 3.3125 3.24144 3.3125 3.39062V4.11625L2.62203 3.89219C2.55126 3.86729 2.47623 3.85681 2.40135 3.86134C2.32647 3.86588 2.25325 3.88535 2.18601 3.91861C2.11877 3.95186 2.05885 3.99823 2.0098 4.05499C1.96074 4.11174 1.92354 4.17774 1.90037 4.24909C1.8772 4.32044 1.86854 4.39571 1.87489 4.47045C1.88125 4.5452 1.90249 4.61792 1.93737 4.68434C1.97224 4.75076 2.02006 4.80953 2.07799 4.85719C2.13592 4.90485 2.2028 4.94045 2.27469 4.96187L2.96469 5.18641L2.53813 5.77328C2.45042 5.894 2.41426 6.04461 2.43759 6.19199C2.46093 6.33936 2.54186 6.47143 2.66258 6.55914C2.78329 6.64685 2.93391 6.68301 3.08128 6.65967C3.22866 6.63633 3.36073 6.5554 3.44844 6.43469L3.875 5.84781L4.30156 6.43469C4.38927 6.5554 4.52134 6.63633 4.66872 6.65967C4.81609 6.68301 4.96671 6.64685 5.08742 6.55914C5.20814 6.47143 5.28907 6.33936 5.31241 6.19199C5.33574 6.04461 5.29958 5.894 5.21187 5.77328L4.78531 5.18641L5.47531 4.96187C5.5472 4.94045 5.61408 4.90485 5.67201 4.85719C5.72994 4.80953 5.77776 4.75076 5.81263 4.68434C5.84751 4.61792 5.86875 4.5452 5.87511 4.47045C5.88146 4.39571 5.8728 4.32044 5.84963 4.24909C5.82646 4.17774 5.78926 4.11174 5.7402 4.05499C5.69115 3.99823 5.63123 3.95186 5.56399 3.91861C5.49675 3.88535 5.42353 3.86588 5.34865 3.86134C5.27377 3.85681 5.19874 3.86729 5.12797 3.89219ZM10.3367 4.25313C10.2906 4.11129 10.19 3.99359 10.0571 3.9259C9.92417 3.85822 9.76982 3.84609 9.62797 3.89219L8.9375 4.11625V3.39062C8.9375 3.24144 8.87824 3.09837 8.77275 2.99288C8.66726 2.88739 8.52418 2.82812 8.375 2.82812C8.22582 2.82812 8.08274 2.88739 7.97725 2.99288C7.87176 3.09837 7.8125 3.24144 7.8125 3.39062V4.11625L7.12203 3.89219C7.05126 3.86729 6.97623 3.85681 6.90135 3.86134C6.82647 3.86588 6.75325 3.88535 6.68601 3.91861C6.61877 3.95186 6.55885 3.99823 6.5098 4.05499C6.46074 4.11174 6.42354 4.17774 6.40037 4.24909C6.3772 4.32044 6.36854 4.39571 6.37489 4.47045C6.38125 4.5452 6.40249 4.61792 6.43737 4.68434C6.47224 4.75076 6.52006 4.80953 6.57799 4.85719C6.63592 4.90485 6.7028 4.94045 6.77469 4.96187L7.46469 5.18641L7.03813 5.77328C6.95042 5.894 6.91426 6.04461 6.93759 6.19199C6.96093 6.33936 7.04186 6.47143 7.16258 6.55914C7.28329 6.64685 7.43391 6.68301 7.58128 6.65967C7.72866 6.63633 7.86073 6.5554 7.94844 6.43469L8.375 5.84781L8.80156 6.43469C8.84499 6.49446 8.89977 6.54509 8.96276 6.58369C9.02576 6.6223 9.09574 6.64811 9.16872 6.65967C9.24169 6.67123 9.31623 6.6683 9.38807 6.65105C9.45991 6.6338 9.52765 6.60257 9.58742 6.55914C9.64719 6.51571 9.69783 6.46094 9.73643 6.39794C9.77503 6.33494 9.80085 6.26496 9.8124 6.19199C9.82396 6.11901 9.82103 6.04448 9.80378 5.97264C9.78653 5.90079 9.7553 5.83305 9.71187 5.77328L9.28531 5.18641L9.97531 4.96187C10.0456 4.93907 10.1107 4.90265 10.1669 4.8547C10.2231 4.80674 10.2693 4.74818 10.3028 4.68236C10.3364 4.61654 10.3567 4.54476 10.3625 4.47111C10.3683 4.39747 10.3595 4.32339 10.3367 4.25313Z" fill="currentColor"/>
+</svg>`;
+
+const AddIcon = "<svg xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\" xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\" width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" version=\"1.1\" id=\"svg6\" sodipodi:docname=\"add-alone.svg\" inkscape:version=\"0.92.4 (33fec40, 2019-01-16)\"> <metadata id=\"metadata12\"> <rdf:RDF> <cc:Work rdf:about=\"\"> <dc:format>image/svg+xml</dc:format> <dc:type df:resource=\"http://purl.org/dc/dcmitype/StillImage\" /> <dc:title></dc:title> </cc:Work> </rdf:RDF> </metadata> <defs id=\"defs10\" /> <sodipodi:namedview pagecolor=\"#ffffff\" bordercolor=\"#666666\" borderopacity=\"1\" objecttolerance=\"10\" gridtolerance=\"10\" guidetolerance=\"10\" inkscape:pageopacity=\"0\" inkscape:pageshadow=\"2\" inkscape:window-width=\"640\" inkscape:window-height=\"480\" id=\"namedview8\" showgrid=\"false\" fit-margin-top=\"0\" fit-margin-left=\"0\" fit-margin-right=\"0\" fit-margin-bottom=\"0\" inkscape:zoom=\"9.8333333\" inkscape:cx=\"7\" inkscape:cy=\"7\" inkscape:window-x=\"720\" inkscape:window-y=\"196\" inkscape:window-maximized=\"0\" inkscape:current-layer=\"svg6\" /> <path d=\"M 14,8 H 8 v 6 H 6 V 8 H 0 V 6 H 6 V 0 h 2 v 6 h 6 z\" id=\"path2\" inkscape:connector-curvature=\"0\" /> <path d=\"M -5,-5 H 19 V 19 H -5 Z\" id=\"path4\" inkscape:connector-curvature=\"0\" style=\"fill:none\" /> </svg>";
+
+const LoginIcon = `<svg width="9" height="9" viewBox="0 0 9 9" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.64414 5.04819L4.08164 6.61069C3.99358 6.69875 3.87415 6.74823 3.74961 6.74823C3.62507 6.74823 3.50564 6.69875 3.41758 6.61069C3.32952 6.52263 3.28005 6.4032 3.28005 6.27866C3.28005 6.15413 3.32952 6.03469 3.41758 5.94663L4.17969 5.1853H0.9375C0.81318 5.1853 0.693951 5.13592 0.606044 5.04801C0.518136 4.9601 0.46875 4.84087 0.46875 4.71655C0.46875 4.59223 0.518136 4.473 0.606044 4.3851C0.693951 4.29719 0.81318 4.2478 0.9375 4.2478H4.17969L3.41836 3.48569C3.37476 3.44209 3.34017 3.39033 3.31657 3.33336C3.29297 3.27639 3.28083 3.21533 3.28083 3.15366C3.28083 3.02913 3.3303 2.90969 3.41836 2.82163C3.50642 2.73357 3.62585 2.6841 3.75039 2.6841C3.87493 2.6841 3.99436 2.73357 4.08242 2.82163L5.64492 4.38413C5.68857 4.42773 5.72318 4.47952 5.74678 4.53652C5.77037 4.59353 5.78247 4.65463 5.7824 4.71632C5.78233 4.77802 5.77008 4.83909 5.74635 4.89604C5.72263 4.95299 5.68789 5.0047 5.64414 5.04819ZM7.5 0.810303H5.3125C5.18818 0.810303 5.06895 0.859689 4.98104 0.947596C4.89314 1.0355 4.84375 1.15473 4.84375 1.27905C4.84375 1.40337 4.89314 1.5226 4.98104 1.61051C5.06895 1.69842 5.18818 1.7478 5.3125 1.7478H7.34375V7.6853H5.3125C5.18818 7.6853 5.06895 7.73469 4.98104 7.8226C4.89314 7.9105 4.84375 8.02973 4.84375 8.15405C4.84375 8.27837 4.89314 8.3976 4.98104 8.48551C5.06895 8.57342 5.18818 8.6228 5.3125 8.6228H7.5C7.7072 8.6228 7.90591 8.54049 8.05243 8.39398C8.19894 8.24747 8.28125 8.04875 8.28125 7.84155V1.59155C8.28125 1.38435 8.19894 1.18564 8.05243 1.03913C7.90591 0.892613 7.7072 0.810303 7.5 0.810303Z" fill="currenColor"/>
+</svg>`;
+
 // tslint:disable-next-line: max-line-length
 const htmlLoginTemplate = (
     urlToSubmit = "",
-    loginLabel = "login",
-    passLabel = "password",
+    loginLabel = diMainGet("translator").translate("catalog.opds.auth.username"),
+    passLabel = diMainGet("translator").translate("catalog.opds.auth.password"),
     title: string | undefined,
     logoUrl?: string,
+    registerUrl?: string,
+    help?: string[],
     nonce?: string,
     qop?: string,
     algorithm?: string,
@@ -770,216 +825,404 @@ const htmlLoginTemplate = (
     }
 
     return `
-<html lang="en">
+    <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+    
+        <title>${title}</title>
+    
+        <!-- Custom styles for this template -->
+        <style>
+        body {
+                font: 13px/20px Nunito, "Lucida Grande", Tahoma, Verdana, sans-serif;
+                font-weight: 400;
+                color: #404040;
+                background: #ECF2FD;
+                width: 100vw;
+                height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+    
+            .login {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background: white;
+                border-radius: 20px;
+                margin: auto;
+                width: 60vw;
+                max-width: 700px;
+                min-height: 35vh;
+                height: fit-content;
+                padding: 20px 40px;
+                position: relative;
+                gap: 50px;
+                flex-wrap: wrap;
+    
+                @media only screen and (max-width: 1000px) {
+                    flex-direction: column;
+                }
+            }
+    
+            .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                flex: 1;
+                flex-wrap: wrap;
+                width: 100%;
+            }
+    
+            .presentation {
+                display: flex;
+                flex-direction: column;
+                max-height: 45vh;
+                justify-content: start;
+                width: 100%;
+            }
+    
+            .presentation h1 {
+                line-height: 40px;
+                font-size: 30px;
+                font-weight: bold;
+                color: #555;
+                width: fit-content;
+                padding-right: 30px;
+                border-bottom: 1px solid #e5e5e5;
+            }
+    
+            .content_wrapper {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 50px;
 
-    <title>${title}</title>
+                @media only screen and (max-width: 1000px) {
+                    gap: unset;
+                }
+            }
 
-    <!-- Custom styles for this template -->
-    <style>
-    body {
-            font: 13px/20px "Lucida Grande", Tahoma, Verdana, sans-serif;
-            color: #404040;
-            background: white;
-        }
+            .content_informations {
+                display: flex;
+                flex-direction: column;
+                align-items: start;
+                gap: 10px;
+            }
+    
+            .logo {
+                max-height: 200px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                flex: 1;
+    
+                @media only screen and (max-width: 1000px) {
+                    // display: none;
+                    position: absolute;
+                    transform-origin: top right;
+                    right: 40px;
+                    top: 20px;
+                    max-height: 75px;
+                    max-width: 150px;
+                }
 
-        .login {
-            position: relative;
-            margin: 30px auto;
-            padding: 20px 20px 20px;
-            width: 310px;
-            background: white;
-            border-radius: 3px;
-            -webkit-box-shadow: 0 0 200px rgba(255, 255, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
-            box-shadow: 0 0 200px rgba(255, 255, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
-        }
+                @media only screen and (max-width: 600px) {
+                    display: none;
+                }
+            }
+    
+            .login form {
+                flex: 2;
+                border-bottom: 1px solid #e5e5e5;
+                width: 100%;
+                align-items: end;
+                justify-content: center;
+                display: flex;
+                flex-direction: column;
 
-        .login:before {
-            content: '';
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            bottom: -8px;
-            left: -8px;
-            z-index: -1;
-            background: rgba(0, 0, 0, 0.08);
-            border-radius: 4px;
-        }
+                @media only screen and (max-width: 1000px) {
+                    border: none;
+                    align-items: start;
+                }
+            }
+    
+            .login p {
+                margin: 0;
+                position: relative;
+                max-width: 400px;
+                width: 100%;
+            }
 
-        .login h1 {
-            margin: -20px -20px 21px;
-            line-height: 40px;
-            font-size: 15px;
-            font-weight: bold;
-            color: #555;
-            text-align: center;
-            text-shadow: 0 1px white;
-            background: #f3f3f3;
-            border-bottom: 1px solid #cfcfcf;
-            border-radius: 3px 3px 0 0;
-            background-image: -webkit-linear-gradient(top, whiteffd, #eef2f5);
-            background-image: -moz-linear-gradient(top, whiteffd, #eef2f5);
-            background-image: -o-linear-gradient(top, whiteffd, #eef2f5);
-            background-image: linear-gradient(to bottom, whiteffd, #eef2f5);
-            -webkit-box-shadow: 0 1px whitesmoke;
-            box-shadow: 0 1px whitesmoke;
-        }
+            .login p:has(input[name=login]) {
+                margin: 20px 0 10px;
+            }
 
-        .login img {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            width: 50%;
-        }
+            .login p:has(input[name=password]):has(+ .register_button) {
+                margin: 10px 0 0; 
+            }
 
-        .login p {
-            margin: 20px 0 0;
-        }
+            .login p:has(input[name=password]) {
+                margin: 10px 0;
+            }
 
-        .login p:first-child {
-            margin-top: 0;
-        }
+            .login p label {
+                position: absolute;
+                top: -8px;
+                left: 20px;
+                background-color: white;
+                padding: 0 5px;
+            }
 
-        .login input[type=text], .login input[type=password] {
-            width: 278px;
-        }
+            .login p svg {
+                height: 20px;
+                fill: black;
+                transform: translate(-50%, -50%);
+                position: absolute;
+                top: 50%;
+                left: 20px;
+            }
+    
+            .login p:first-child {
+                margin-top: 0;
+            }
+    
+            .login input[type=text], .login input[type=password] {
+                width: 100%;
+                height: 35px;
+                border: 1px solid black;
+                border-radius: 5px;
+            }
+    
+            .login .submit {
+                text-align: right;
+                position: absolute;
+                bottom: 20px;
+                right: 40px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
 
-        .login p.remember_me {
-            float: left;
-            line-height: 31px;
-        }
+                @media only screen and (max-width: 1000px) {
+                    position: unset;
+                    width: 100%;
+                    justify-content: end;
+                }
+            }
 
-        .login p.remember_me label {
-            font-size: 12px;
-            color: #777;
-            cursor: pointer;
-        }
+            .submit_button {
+                position: relative;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                padding: 0 5px;
+            }
 
-        .login p.remember_me input {
-            position: relative;
-            bottom: 1px;
-            margin-right: 4px;
-            vertical-align: middle;
-        }
+            .submit_button label {
+                position: absolute;
+                transform: translate(-50%, -50%);
+                top: 50%;
+                left: 15px;
+            }
 
-        .login p.submit {
-            text-align: right;
-        }
+            .submit_button label svg {
+                height: 15px;
+                width: 15px;
+                fill: white;
+                transition: 200ms linear;
+            }
+    
+            .register_button {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                width: 100%;
+                max-width: 400px;
+                text-decoration: none;
+                color: #1053C8;
+                margin: 5px 5px 10px;
+            }
+    
+            .register_button svg {
+                height: 12px;
+                fill: #1053C8;
+            }
+    
+            .help_links {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 5px;
+                gap: 10px;
+                width: fit-content;
+                position: relative;
+    
+                @media only screen and (max-width: 1000px) {
+                    position: absolute;
+                    flex-direction: row;
+                    bottom: -30px;
+                    left: 10px;
+                }
+            }
+    
+            .help_links a {
+                color: #1053C8;
+            }
+            
+            .help_links a:visited {
+                color: #1053C8;
+            }
+    
+            :-moz-placeholder {
+                color: #c9c9c9 !important;
+                font-size: 13px;
+            }
+    
+            ::-webkit-input-placeholder {
+                color: #ccc;
+                font-size: 13px;
+            }
+    
+            input {
+                font-family: 'Lucida Grande', Tahoma, Verdana, sans-serif;
+                font-size: 14px;
+            }
+    
+            input[type=text], input[type=password] {
+                margin: 5px;
+                padding: 0 10px 0 25px;
+                width: 300px;
+                height: 34px;
+                color: #404040;
+                background: white;
+                border: 1px solid;
+                border-color: #c4c4c4 #d1d1d1 #d4d4d4;
+                border-radius: 2px;
+                -moz-outline-radius: 3px;
+            }
+    
+            input[type=text]:focus, input[type=password]:focus {
+                border-color: #1053C8;
+                outline-color: #1053C8;
+                outline-offset: 0;
+            }
+    
+            input[type=submit] {
+                padding: 0 18px;
+                height: 29px;
+                font-size: 14px;
+                color: white;
+                background: #1053C8;
+                border-radius: 5px;
+                border: 1px solid transparent;
+                -webkit-box-sizing: content-box;
+                -moz-box-sizing: content-box;
+                box-sizing: content-box;
+                padding: 0 10px 0 20px;
+                transition: 200ms;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                cursor: pointer;
+            }
+    
+            input[type=submit] > svg {
+                height: 15px;
+                fill: white;
+            }
+    
+            input[type=button] {
+                padding: 0 18px;
+                height: 29px;
+                font-size: 14px;
+                color: #1053C8;
+                background: #ECF2FD;
+                border: 1px solid #1053C8;
+                border-radius: 5px;
+                -webkit-box-sizing: content-box;
+                -moz-box-sizing: content-box;
+                box-sizing: content-box;
+                padding: 0 1em;
+                transition: 200ms;
+                cursor: pointer;
+            }
+    
+            input[type=submit]:hover {
+                background: #ECF2FD;
+                border-color: #1053C8;
+                color: #1053C8;
+            }
 
-        .login-help {
-            margin: 20px 0;
-            font-size: 11px;
-            color: white;
-            text-align: center;
-            text-shadow: 0 1px #2a85a1;
-        }
-
-        .login-help a {
-            color: #cce7fa;
-            text-decoration: none;
-        }
-
-        .login-help a:hover {
-            text-decoration: underline;
-        }
-
-        :-moz-placeholder {
-            color: #c9c9c9 !important;
-            font-size: 13px;
-        }
-
-        ::-webkit-input-placeholder {
-            color: #ccc;
-            font-size: 13px;
-        }
-
-        input {
-            font-family: 'Lucida Grande', Tahoma, Verdana, sans-serif;
-            font-size: 14px;
-        }
-
-        input[type=text], input[type=password] {
-            margin: 5px;
-            padding: 0 10px;
-            width: 200px;
-            height: 34px;
-            color: #404040;
-            background: white;
-            border: 1px solid;
-            border-color: #c4c4c4 #d1d1d1 #d4d4d4;
-            border-radius: 2px;
-            outline: 5px solid #eff4f7;
-            -moz-outline-radius: 3px;
-            -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
-        }
-
-        input[type=text]:focus, input[type=password]:focus {
-            border-color: #7dc9e2;
-            outline-color: #dceefc;
-            outline-offset: 0;
-        }
-
-        input[type=submit], input[type=button] {
-            padding: 0 18px;
-            height: 29px;
-            font-size: 12px;
-            font-weight: bold;
-            color: #527881;
-            text-shadow: 0 1px #e3f1f1;
-            background: #cde5ef;
-            border: 1px solid;
-            border-color: #b4ccce #b3c0c8 #9eb9c2;
-            border-radius: 16px;
-            outline: 0;
-            -webkit-box-sizing: content-box;
-            -moz-box-sizing: content-box;
-            box-sizing: content-box;
-            background-image: -webkit-linear-gradient(top, #edf5f8, #cde5ef);
-            background-image: -moz-linear-gradient(top, #edf5f8, #cde5ef);
-            background-image: -o-linear-gradient(top, #edf5f8, #cde5ef);
-            background-image: linear-gradient(to bottom, #edf5f8, #cde5ef);
-            -webkit-box-shadow: inset 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.15);
-            box-shadow: inset 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.15);
-            padding-left: 1em;
-        }
-
-        input[type=submit]:active, input[type=button]:active {
-            background: #cde5ef;
-            border-color: #9eb9c2 #b3c0c8 #b4ccce;
-            -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
-            box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
-        }
-
-        .lt-ie9 input[type=text], .lt-ie9 input[type=password] {
-            line-height: 34px;
-        }
-    </style>
-    </head>
-
-    <body class="text-center">
-        <div class="login">
-        <h1>${title}</h1>
-        <form method="post" action="${urlToSubmit}">
-        ${logoUrl ? `<img src="${logoUrl}" alt="login logo">` : ""}
-        <p><input type="text" name="login" value="" placeholder="${loginLabel}"></p>
-        <p><input type="password" name="password" value="" placeholder="${passLabel}"></p>
-        <p><input hidden type="text" name="nonce" value="${nonce}"></p>
-        <p><input hidden type="text" name="qop" value="${qop}"></p>
-        <p><input hidden type="text" name="algorithm" value="${algorithm}"></p>
-        <p><input hidden type="text" name="realm" value="${realm}"></p>
-        <p class="submit">
-        <input type="button" name="cancel" value="${diMainGet("translator").translate("catalog.opds.auth.cancel")}" onClick="window.location.href='${urlToSubmit}';">
-        <input type="submit" name="commit" value="${diMainGet("translator").translate("catalog.opds.auth.login")}">
-        </p>
-        </form>
-        </div>
-    </body>
-
-</html>`;
+            input[type=submit]:hover + label svg {
+                fill: #1053C8;
+            }
+    
+            input[type=button]:hover {
+                background: white;
+            }
+    
+            .lt-ie9 input[type=text], .lt-ie9 input[type=password] {
+                line-height: 34px;
+            }
+        </style>
+        </head>
+    
+        <body class="text-center">
+            <div class="login">
+                <div class="container">
+                    <div class="presentation">
+                        <h1>${title}</h1>
+                    </div>
+                    <div class="content_wrapper">
+                    ${(logoUrl || help.length > 0) ? 
+                        `<div class="content_informations">
+                            ${logoUrl ? `<img class="logo" src="${logoUrl}" alt="login logo">` : ""}
+                            <div class="help_links">
+                                ${help ? `${help.map((v) => `<a href=${v}>${v}</a>`).join("")}` : ""}
+                            </div>
+                        </div>`
+                        : ""}
+                        <form method="post" action="${urlToSubmit}" style="align-items: ${!(logoUrl || help.length > 0) ? "center" : "end"}">
+                            <p>
+                                <input type="text" name="login" value="" required>
+                                    ${AvatarIcon}
+                                </input>
+                                <label for="login">${loginLabel}</label>
+                            </p>
+                            <p>
+                                <input type="password" name="password" value="" required>
+                                    ${PasswordIcon}
+                                </input>
+                                <label for="password">${passLabel}</label>
+                            </p>
+                            ${registerUrl ? `<a href="${registerUrl}" target="_blank" class="register_button">
+                                ${AddIcon}
+                                ${diMainGet("translator").translate("catalog.opds.auth.register")}
+                            </a>` : ""}
+                            <p><input hidden type="text" name="nonce" value="${nonce}"></p>
+                            <p><input hidden type="text" name="qop" value="${qop}"></p>
+                            <p><input hidden type="text" name="algorithm" value="${algorithm}"></p>
+                            <p><input hidden type="text" name="realm" value="${realm}"></p>
+                            <div class="submit">
+                                <input type="button" name="cancel" value="${diMainGet("translator").translate("catalog.opds.auth.cancel")}" onClick="window.location.href='${urlToSubmit}';">
+                                <div class="submit_button">
+                                    <input type="submit" name="commit" value="${diMainGet("translator").translate("catalog.opds.auth.login")}">
+                                    <label for="commit">${LoginIcon}</label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </body>
+    
+    </html>`;
 };

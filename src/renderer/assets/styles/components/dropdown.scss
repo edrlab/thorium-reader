@@ -1,0 +1,218 @@
+/*
+=-=-= dropdown.scss
+*/
+
+.dropdown{
+  &_description {
+    width: 400px;
+    height: fit-content;
+    box-shadow: 0 3px 10px 5px var(--color-extralight-grey);
+    border-width: 1px;
+    border-color: var(--color-blue);
+    border-style: solid;
+    border-radius: 10px;
+    position: relative;
+    background-color: var(--color-secondary);
+    margin: 0;
+    padding: 10px;
+    text-align: justify;
+    line-height: 1.5em;
+    color: var(--color-primary);
+  }
+
+  &_trigger {
+    width: 30px!important;
+    height: 30px!important;
+    padding: 5px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    transition: 200ms;
+
+    &:hover{
+      border-color: var(--color-blue);
+      background-color: var(--color-button-hover);
+    }
+
+    &:focus {
+      border-color: var(--color-blue);
+      background-color: var(--color-light-blue);
+    }
+  }
+
+  &_menu {
+    height: fit-content;
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+    // box-shadow: 0 0 10px 0 var(--color-medium-grey);
+    border-width: 1px;
+    border-color: var(--color-blue);
+    border-style: solid;
+    border-radius: 6px;
+    position: relative;
+    background-color: var(--color-light-blue);
+
+    &.dropdown_right::after {
+      left: auto;
+      right: 34px;
+    }
+
+    &.dropdown_publication::after {
+      left: auto;
+      right: 25px;
+    }
+
+    & > * {
+      text-decoration: none;
+      color:  var(--color-blue);;
+      // padding: 0.7rem;
+      text-align: center;
+      height: 2.5rem;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 0.9rem;
+      opacity: 1;
+      margin: 0;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      display: inline-block;
+
+      &:first-child {
+        border-radius: 6px 6px 0 0;
+      }
+
+      &:last-child {
+        border-radius: 0 0 6px 6px;
+      }
+
+      // &:not(:last-child) {
+      //   border-bottom: 1px solid var(--color-blue);
+      // }
+    }
+
+    > div {
+      height: 1px;
+    }
+
+    button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      gap: 10px;
+      padding: 4px;
+      color: var(--color-blue);
+      border: 2px solid transparent;
+
+      &:focus {
+        background-color: var(--color-blue);
+        border: 2px solid var(--color-light-blue);
+        color: var(--color-secondary);
+        // outline: var(--color-blue) solid 1px !important;
+        border-radius: 6px;
+      }
+
+      &:hover {
+        background-color: var(--color-button-hover);
+        color: var(--color-blue);
+      }
+
+      p {
+        font-size: inherit;
+      }
+
+      svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
+  }
+}
+
+.popover_open {
+  border-color: var(--color-blue);
+  background-color: var(--color-blue);
+
+  svg {
+    color: var(--color-secondary)!important;
+  }
+
+  &:hover svg {
+    color: var(--color-blue)!important;
+  }
+}
+
+.PopoverArrow {
+  fill: var(--color-blue);
+  width: 20px;
+  height: 12px;
+}
+
+.PopoverContent {
+  z-index: 10000;
+}
+
+.menu {
+  height: fit-content;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  font-size: 0.9rem;
+  box-shadow: 0 0 10px 0 #cfcfcf;
+  overflow: hidden;
+
+  & button,
+  & a,
+  & span label {
+    text-decoration: none;
+    color: var(--color-primary);
+    padding: 0.7rem;
+    text-align: center;
+    cursor: pointer;
+    height: 2.5rem;
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 0.9rem;
+    opacity: 1;
+    margin: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+
+    &:hover {
+      background-color: #cecece;
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid #e5e3e3;
+    }
+  }
+
+  & button[disabled] {
+    cursor: not-allowed;
+  }
+
+  & span {
+    cursor: pointer;
+
+    & input {
+      height: 0;
+      width: 0;
+      position: absolute;
+      left: -2000px;
+    }
+
+    & input:focus + label {
+      outline: var(--color-blue) solid 2px !important;
+      outline-offset: -2px;
+    }
+  }
+}
+
+.___DEBUG___COMPONENTS_DROPDOWN_CSS {
+  display: none;
+}

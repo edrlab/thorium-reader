@@ -11,10 +11,10 @@ import { Action } from "readium-desktop/common/models/redux";
 export const ID = "READER_SET_CONFIG_IN_RENDERER";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface Payload extends ReaderConfig {
+export interface Payload extends Partial<ReaderConfig> {
 }
 
-export function build(readerConfig: ReaderConfig):
+export function build(readerConfig: Partial<ReaderConfig>):
     Action<typeof ID, Payload> {
 
     return {

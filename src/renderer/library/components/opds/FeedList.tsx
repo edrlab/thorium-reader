@@ -5,18 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
-import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-import * as EditIcon from "readium-desktop/renderer/assets/icons/edit.svg";
-import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.css";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.css";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.css";
+import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
+import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
+import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -25,10 +23,11 @@ import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/library/apiSubscribe";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
 import { DisplayType, IRouterLocationState } from "../../routing";
+import DeleteOpdsFeedConfirm from "../dialog/DeleteOpdsFeedConfirm";
+import OpdsFeedUpdateForm from "../dialog/OpdsFeedUpdateForm";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -76,10 +75,11 @@ class FeedList extends React.Component<IProps, IState> {
         const { __ } = this.props;
         return (
             <section>
-                <ul className={classNames(stylesGlobal.flex_wrap, stylesGlobal.p_0)}>
+                <h2>{__("header.myCatalogs")}</h2>
+                <ul className={stylesCatalogs.catalog_wrapper}>
                     {this.state.feedsResult.map((item, index) => {
                         return (
-                            <li key={"feed-" + index} className={stylesBlocks.block_full_wrapper}>
+                            <li key={"feed-" + index} className={stylesCatalogs.catalog_container}>
                                 <Link
                                     to={{
                                         ...this.props.location,
@@ -89,25 +89,34 @@ class FeedList extends React.Component<IProps, IState> {
                                             item.url,
                                         ),
                                     }}
-                                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                                    className={stylesBlocks.block_full}
+                                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                                    className={stylesCatalogs.catalog_content}
                                 >
-                                    <p title={`${item.title} --- ${item.url}`}>{item.title}</p>
+                                    <div style={{ width: "100%", height: "50px", backgroundColor: "var(--color-extralight-grey)", borderBottom: "1px solid var(--color-light-grey)", position: "absolute", top: "2px" }}></div>
+                                    <div className={stylesCatalogs.catalog_title}>
+                                        <SVG ariaHidden svg={GlobeIcon} />
+                                        <p title={`${item.title} --- ${item.url}`}>{item.title}</p>
+                                    </div>
                                 </Link>
-                                <button
-                                    onClick={(e) => this.deleteFeed(e, item)}
-                                    className={classNames(stylesButtons.button_transparency_icon, stylesBlocks.block_full_close)}
-                                    title={__("catalog.delete")}
-                                >
-                                    <SVG ariaHidden={true} svg={DeleteIcon} />
-                                </button>
-                                <button
-                                    onClick={(e) => this.updateFeed(e, item)}
-                                    className={classNames(stylesButtons.button_transparency_icon, stylesBlocks.block_full_update)}
-                                    title={__("catalog.update")}
-                                >
-                                    <SVG ariaHidden={true} svg={EditIcon} />
-                                </button>
+                                <OpdsFeedUpdateForm trigger={(
+                                    <button
+                                        className={stylesCatalogs.button_edit}
+                                        title={__("catalog.update")}
+                                    >
+                                        <SVG ariaHidden={true} svg={EditIcon} />
+                                    </button>
+                                )}
+                                    feed={item}
+                                />
+                                <DeleteOpdsFeedConfirm trigger={(
+                                    <button
+                                        // onClick={(e) => this.deleteFeed(e, item)}
+                                        className={stylesCatalogs.button_delete}
+                                        title={__("catalog.delete")}
+                                    >
+                                        <SVG ariaHidden={true} svg={DeleteIcon} />
+                                    </button>
+                                )} feed={item} />
                             </li>
                         );
                     })}
@@ -119,15 +128,10 @@ class FeedList extends React.Component<IProps, IState> {
         );
     }
 
-    private deleteFeed(event: TMouseEventOnButton, feed: IOpdsFeedView) {
-        event.preventDefault();
-        this.props.openDeleteDialog(feed);
-    }
-
-    private updateFeed(event: TMouseEventOnButton, feed: IOpdsFeedView) {
-        event.preventDefault();
-        this.props.openUpdateDialog(feed);
-    }
+    // private deleteFeed(event: TMouseEventOnButton, feed: IOpdsFeedView) {
+    //     event.preventDefault();
+    //     this.props.openDeleteDialog(feed);
+    // }
 
     private async loadFeeds() {
         try {
@@ -141,13 +145,13 @@ class FeedList extends React.Component<IProps, IState> {
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        openDeleteDialog: (feed: IOpdsFeedView) => {
-            dispatch(dialogActions.openRequest.build(DialogTypeName.DeleteOpdsFeedConfirm,
-                {
-                    feed,
-                },
-            ));
-        },
+        // openDeleteDialog: (feed: IOpdsFeedView) => {
+        //     dispatch(dialogActions.openRequest.build(DialogTypeName.DeleteOpdsFeedConfirm,
+        //         {
+        //             feed,
+        //         },
+        //     ));
+        // },
         openUpdateDialog: (feed: IOpdsFeedView) => {
             dispatch(dialogActions.openRequest.build(DialogTypeName.OpdsFeedUpdateForm,
                 {

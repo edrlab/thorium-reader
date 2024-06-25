@@ -10,25 +10,72 @@ import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoReaderAndLib from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
 import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, call, put, take } from "redux-saga/effects";
+import { all, call, take } from "redux-saga/effects";
 
-import * as cssUpdate from "./cssUpdate";
+import * as readerConfig from "./readerConfig";
 import * as highlightHandler from "./highlight/handler";
 import * as i18n from "./i18n";
 import * as ipc from "./ipc";
 import * as search from "./search";
 import * as winInit from "./win";
+import * as annotation from "./annotation";
+import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { setTheme } from "readium-desktop/common/redux/actions/theme";
+import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } from "r2-navigator-js/dist/es8-es2017/src/electron/renderer";
+import { eventChannel } from "redux-saga";
+import { put, select } from "typed-redux-saga";
+import { readerLocalActionReader, readerLocalActionSetTransientConfig } from "../actions";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 // Logger
 const filename_ = "readium-desktop:renderer:reader:saga:index";
 const debug = debug_(filename_);
 debug("_");
 
+export function getMediaOverlayStateChannel() {
+    const channel = eventChannel<MediaOverlaysStateEnum>(
+        (emit) => {
+
+            const handler = (state: MediaOverlaysStateEnum) => {
+                emit(state);
+            };
+
+            mediaOverlaysListen(handler);
+
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            return () => {
+                // no destrutor
+            };
+        },
+    );
+
+    return channel;
+}
+
+export function getTTSStateChannel() {
+    const channel = eventChannel<TTSStateEnum>(
+        (emit) => {
+
+            const handler = (state: TTSStateEnum) => {
+                emit(state);
+            };
+
+            ttsListen(handler);
+
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            return () => {
+                // no destrutor
+            };
+        },
+    );
+
+    return channel;
+}
+
+
 export function* rootSaga() {
 
     yield take(winActions.initRequest.ID);
-
-    yield put(winActions.initSuccess.build());
 
     yield call(winInit.render);
 
@@ -39,10 +86,67 @@ export function* rootSaga() {
         publicationInfoReaderAndLib.saga(),
         publicationInfoSyncTag.saga(),
 
-        cssUpdate.saga(),
+        readerConfig.saga(),
 
         highlightHandler.saga(),
 
         search.saga(),
+
+        annotation.saga(),
+
+        takeSpawnEvery(
+            setTheme.ID,
+            (action: setTheme.TAction) => {
+                const { payload: { name } } = action;
+                document.body.setAttribute("data-theme", name);
+            },
+        ),
     ]);
+
+    console.log("SAGA-rootSaga() PRE INIT SUCCESS");
+
+    const MOChannel = getMediaOverlayStateChannel();
+    const TTSChannel = getTTSStateChannel();
+    yield all([
+        takeSpawnEveryChannel(
+            MOChannel,
+            function* (state: MediaOverlaysStateEnum) {
+                yield put(readerLocalActionReader.setMediaOverlayState.build(state));
+            },
+        ),
+        takeSpawnEveryChannel(
+            TTSChannel,
+            function* (state: TTSStateEnum) {
+                yield put(readerLocalActionReader.setTTSState.build(state));
+            },
+        ),
+    ]);
+
+
+    // Copy reader config to reader transcient config at reader start
+    const {
+        font,
+        fontSize,
+        pageMargins,
+        wordSpacing,
+        letterSpacing,
+        paraSpacing,
+        lineHeight,
+    } = yield* select((state: IReaderRootState) => state.reader.config);
+
+    yield* put(readerLocalActionSetTransientConfig.build({
+                        font,
+                        fontSize,
+                        pageMargins,
+                        wordSpacing,
+                        letterSpacing,
+                        paraSpacing,
+                        lineHeight,
+    }));
+
+    console.log("SAGA-rootSaga() INIT SUCCESS");
+
+    // initSuccess triggered in reader.tsx didmount and publication loaded
+    // yield put(winActions.initSuccess.build());
+
 }

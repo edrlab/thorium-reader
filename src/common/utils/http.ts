@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { RequestInit, Response } from "node-fetch";
-
+import { IProblemDetailsResultView } from "../views/problemDetails";
 
 // maxRedirect:
 // https://github.com/valeriangalliat/fetch-cookie#max-redirects
@@ -36,3 +36,22 @@ export type THttpGetResultAfterCallback<TData> = Omit<IHttpGetResult<TData>, "bo
 export type THttpGetCallback<T> =
     (result: IHttpGetResult<T>) =>
         THttpGetResultAfterCallback<T> | Promise<THttpGetResultAfterCallback<T>>;
+
+
+export async function parseProblemDetails(response: Partial<Response> | undefined): Promise<IProblemDetailsResultView> {
+    const json = await response?.json();
+    const {
+        type,
+        title,
+        status,
+        detail,
+        instance,
+    } = json as IProblemDetailsResultView;
+    return {
+        type: typeof type === "string" ? type : undefined,
+        title: typeof title === "string" ? title : undefined,
+        status: typeof status === "number" ? status : undefined,
+        detail: typeof detail === "string" ? detail : undefined,
+        instance: typeof instance === "string" ? instance : undefined,
+    };
+} 

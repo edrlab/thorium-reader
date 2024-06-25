@@ -1,0 +1,63 @@
+/*
+=-=-= aboutFooter.scss
+*/
+
+// .footer_wrapper{
+//     display: flex;
+//     justify-content: end;
+//     align-items: center;
+//     gap: 10px;
+//     border-top: 1px solid var(--color-extralight-grey);
+//     margin: 0;
+
+//     a {
+//         font-style: italic;
+//         text-decoration: underline;
+//         cursor: pointer;
+//     }
+// }
+
+.footer_wrapper {
+    position: fixed;
+    bottom: -10px;
+    right: 40px;
+    border-top: 1px solid var(--color-extralight-grey);
+    margin: 0;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    height: 75px;
+    width: calc(100% - 247px);
+    background-color: var(--color-secondary);
+
+    .footer_about {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    svg {
+        width: 45px;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    @media screen and (width <= 800px) {
+        width: calc(100% - 112px);
+    }
+
+    a {
+        font-style: italic;
+        text-decoration: underline;
+        cursor: pointer;
+        color: var(--color-primary);
+
+        &:visited {
+          color: var(--color-primary);
+        }
+    }
+}

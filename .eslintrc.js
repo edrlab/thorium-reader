@@ -1,4 +1,22 @@
 module.exports = {
+    ignorePatterns: [
+        ".vscode/*",
+        ".history/*",
+        ".github/*",
+        ".git/*",
+        "dist/*",
+        "docs/*",
+        "img/*",
+        "node_modules/*",
+        "resources/*",
+        "external-assets/*",
+        "scripts/*",
+        "src/typings/*",
+        "src/resources/*",
+        "src/renderer/assets/*",
+        "src/renderer/reader/pdf/*"
+    ],
+    // ignorePatterns: [ "*.*" ],
     parser: "@typescript-eslint/parser",
     env: {
         node: true,
@@ -6,7 +24,6 @@ module.exports = {
         es6: true,
         es2020: true,
     },
-    // ignorePatterns: [ "*.*" ],
     parserOptions: {
         project: true,
         tsconfigRootDir: __dirname,
@@ -31,8 +48,12 @@ module.exports = {
         // "unused-imports",
         "prettier",
         "eslint-plugin-local-rules",
+        "react-hooks",
     ],
     rules: {
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "error",
+
         quotes: ["error", "double"],
         "comma-dangle": ["error", "always-multiline"],
         "eol-last": ["error", "always"],

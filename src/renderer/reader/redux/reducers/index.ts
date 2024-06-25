@@ -19,7 +19,7 @@ import { combineReducers } from "redux";
 
 // import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
 
-import { readerLocalActionBookmarks, readerLocalActionHighlights } from "../actions";
+import { readerLocalActionHighlights } from "../actions";
 import { IHighlightHandlerState, IHighlightMounterState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { readerInfoReducer } from "./info";
 import { pickerReducer } from "./picker";
@@ -33,48 +33,92 @@ import { readerDivinaReducer } from "./divina";
 import { readerRTLFlipReducer } from "readium-desktop/common/redux/reducers/reader/rtlFlip";
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
+import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
+import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/version-update";
+import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { annotationModeEnableReducer } from "./annotationModeEnable";
+import { readerActions } from "readium-desktop/common/redux/actions";
+import { readerMediaOverlayReducer } from "./mediaOverlay";
+import { readerTTSReducer } from "./tts";
+import { readerTransientConfigReducer } from "./readerTransientConfig";
+import { readerAllowCustomConfigReducer } from "readium-desktop/common/redux/reducers/reader/allowCustom";
 
 export const rootReducer = () => {
+
     return combineReducers({ // IReaderRootState
+        versionUpdate: versionUpdateReducer,
+        theme: themeReducer,
         session: sessionReducer,
         api: apiReducer,
         i18n: i18nReducer,
         reader: combineReducers({ // IReaderStateReader, dehydrated from main process registry (preloaded state)
             defaultConfig: readerDefaultConfigReducer,
             config: readerConfigReducer,
+            allowCustomConfig: readerAllowCustomConfigReducer,
+            transientConfig: readerTransientConfigReducer,// ReaderConfigPublisher
             info: readerInfoReducer,
             locator: readerLocatorReducer,
             bookmark: priorityQueueReducer
-                    <
-                        readerLocalActionBookmarks.push.TAction,
-                        readerLocalActionBookmarks.pop.TAction,
-                        number,
-                        IBookmarkState,
-                        string,
-                        readerLocalActionBookmarks.update.TAction
-                    >(
-                        {
-                            push: {
-                                type: readerLocalActionBookmarks.push.ID,
-                                selector: (action) =>
-                                    [(new Date()).getTime(), action.payload],
-                            },
-                            pop: {
-                                type: readerLocalActionBookmarks.pop.ID,
-                                selector: (action) =>
-                                    [undefined, action.payload],
-                            },
-                            sortFct: (a, b) => b[0] - a[0],
-                            update: {
-                                type: readerLocalActionBookmarks.update.ID,
-                                selector: (action, queue) =>
-                                    [
-                                        queue.reduce<number>((pv, [k, v]) => v.uuid === action.payload.uuid ? k : pv, undefined),
-                                        action.payload,
-                                    ],
+                <
+                    readerActions.bookmark.push.TAction,
+                    readerActions.bookmark.pop.TAction,
+                    number,
+                    IBookmarkState,
+                    string,
+                    readerActions.bookmark.update.TAction
+                >(
+                    {
+                        push: {
+                            type: readerActions.bookmark.push.ID,
+                            selector: (action) =>
+                                [(new Date()).getTime(), action.payload],
+                        },
+                        pop: {
+                            type: readerActions.bookmark.pop.ID,
+                            selector: (action, queue) => queue.find(([_, bookmarkState]) => action.payload.uuid === bookmarkState.uuid),
+                        },
+                        sortFct: (a, b) => b[0] - a[0],
+                        update: {
+                            type: readerActions.bookmark.update.ID,
+                            selector: (action, queue) =>
+                                [
+                                    queue.reduce<number>((pv, [k, v]) => v.uuid === action.payload.uuid ? k : pv, undefined),
+                                    action.payload,
+                                ],
+                        },
+                    },
+                ),
+            annotation: priorityQueueReducer
+                <
+                    readerActions.annotation.push.TAction,
+                    readerActions.annotation.pop.TAction,
+                    number,
+                    IAnnotationState,
+                    string,
+                    readerActions.annotation.update.TAction
+                >(
+                    {
+                        push: {
+                            type: readerActions.annotation.push.ID,
+                            selector: (action, _queue) => {
+                                return [(new Date()).getTime(), action.payload];
                             },
                         },
-                    ),
+                        pop: {
+                            type: readerActions.annotation.pop.ID,
+                            selector: (action, queue) => queue.find(([_, annotationState]) => action.payload.uuid === annotationState.uuid),
+                        },
+                        sortFct: (a, b) => b[0] - a[0],
+                        update: {
+                            type: readerActions.annotation.update.ID,
+                            selector: (action, queue) =>
+                                [
+                                    queue.reduce<number>((pv, [k, v]) => v.uuid === action.payload.uuid ? k : pv, undefined),
+                                    action.payload,
+                                ],
+                        },
+                    },
+                ),
             highlight: combineReducers({
                 handler: mapReducer
                     <
@@ -127,8 +171,11 @@ export const rootReducer = () => {
             }),
             divina: readerDivinaReducer,
             disableRTLFlip: readerRTLFlipReducer,
+            mediaOverlay: readerMediaOverlayReducer,
+            tts: readerTTSReducer,
         }),
         search: searchReducer,
+        annotation: annotationModeEnableReducer,
         picker: pickerReducer,
         win: winReducer,
         dialog: dialogReducer,

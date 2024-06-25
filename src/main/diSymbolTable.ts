@@ -15,6 +15,7 @@ export const diSymbolTable = {
     // "streamer": Symbol("streamer"),
     "device-id-manager": Symbol("device-id-manager"),
     "lcp-manager": Symbol("lcp-manager"),
+    "lsd-manager": Symbol("lsd-manager"),
     "publication-service": Symbol("publication-service"),
     "opds-service": Symbol("opds-service"),
     "catalog-api": Symbol("catalog-api"),

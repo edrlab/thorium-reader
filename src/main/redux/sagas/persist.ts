@@ -32,6 +32,7 @@ const persistStateToFs = async (nextState: RootState) => {
     debug("start of persist reduxState in disk");
 
     const value: PersistRootState = {
+        theme: nextState.theme,
         win: nextState.win,
         publication: nextState.publication,
         reader: nextState.reader,
@@ -39,6 +40,7 @@ const persistStateToFs = async (nextState: RootState) => {
         i18n: nextState.i18n,
         opds: nextState.opds,
         version: nextState.version,
+        wizard: nextState.wizard,
     };
 
     await fsp.writeFile(stateFilePath, JSON.stringify(value), {encoding: "utf8"});

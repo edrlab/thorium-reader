@@ -1,0 +1,98 @@
+/*
+=-=-= slider.scss
+*/
+
+.slider {
+  display: block;
+  position: relative;
+
+  &_wrapper {
+    position: relative;
+    overflow: hidden hidden;
+    min-height: 400px;
+  }
+
+  &_items {
+    display: inline-flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+  
+    & > *:not(:first-child) {
+      margin-left: 15px;
+    }
+  }
+
+  > button {
+    display: flex;
+  }
+  
+  button:disabled {
+    svg {
+      fill: var(--color-disabled);
+    }
+  }
+}
+
+.slider_button {
+  &_prev {
+  right: 40px;
+  transform: translateY(-50%) rotateY(180deg);
+
+  svg {
+    margin: auto;
+  }
+  }
+
+  &_next {
+    right: 0;
+    transform: translateY(-50%);
+    
+    svg {
+      margin: auto;
+    }
+  }
+
+  &_prev,
+  &_next {
+    position: absolute;
+    top: -30px;
+  }
+}
+
+
+.continue_reading {
+  border: 1px solid var(--color-verylight-grey-alt);
+  background-color: var(--color-extralight-grey);
+  border-radius: 6px;
+  margin: 20px;
+  padding: 20px;
+
+  .slider_wrapper {
+    min-height: 380px;
+    height: fit-content;
+    padding-bottom: 10px;
+  }
+
+  .publication_wrapper {
+    width: 170px;
+    height: 360px;
+
+    img, .no_img_wrapper {
+      height: 225px;
+    }
+  }
+
+  .cover_img {
+    background-color: var(--color-secondary);
+  }
+}
+
+.home_section {
+  border: 1px solid transparent;
+  margin: 20px;
+}
+
+.___DEBUG___COMPONENTS_SLIDER_CSS {
+  display: none;
+}

@@ -22,6 +22,7 @@ export enum ContentType {
     FormUrlEncoded = "application/x-www-form-urlencoded",
     Xhtml = "application/xhtml+xml",
     Html = "text/html",
+    TextPlain = "text/plain",
     Epub = "application/epub+zip",
     Lpf = "application/lpf+zip",
     AudioBook = "application/audiobook+json",
@@ -76,3 +77,12 @@ export const contentTypeisOpdsAuth = (contentType: ContentType | undefined) =>
 export const contentTypeisApiProblem = (contentType: ContentType | undefined) =>
     contentType === ContentType.problemDetails ||
     contentType === ContentType.ApiProblem;
+
+export const contentTypeisLsd = (contentType: ContentType | undefined) =>
+    contentType === ContentType.Lsd ||
+    contentType === ContentType.Json;
+
+export const contentTypeisLcp = (contentType: ContentType | undefined) =>
+    contentType === ContentType.Lcp ||
+    contentType === ContentType.Json;
+    

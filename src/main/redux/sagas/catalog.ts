@@ -17,14 +17,15 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 import { ToastType } from "readium-desktop/common/models/toast";
 import { publicationApi } from "./api";
 import { diMainGet } from "readium-desktop/main/di";
-import { isAudiobookFn, isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
+// import { isPdfFn } from "readium-desktop/common/isManifestType";
 
-import { PublicationView } from "readium-desktop/common/views/publication";
-import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
-import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+// import { PublicationView } from "readium-desktop/common/views/publication";
+// import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+// import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import { aboutFiltered } from "readium-desktop/main/tools/filter";
-import { publicationActions } from "../actions";
+import { publicationActions as publicationActionsFromMainAction } from "../actions";
+import { publicationActions as publicationActionsFromCommonAction } from "readium-desktop/common/redux/actions";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
@@ -32,28 +33,28 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 const filename_ = "readium-desktop:main:redux:sagas:catalog";
 const debug = debug_(filename_);
 
-const NB_PUB = 5;
+const NB_PUB = 10;
 
 // TODO: this memo-ization is very expensive (memory and CPU-wise) ...
 // and TaJsonDeserialize() is called in several other places in the library lifecycle
 // (including below via convertDocumentToView())
 // so it would make sense to hoist the cache higher in the application architecture
-const viewToR2Pub = (view: PublicationView) => {
-    // Legacy Base64 data blobs
-    // const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
-    // const r2PublicationJson = JSON.parse(r2PublicationStr);
-    const r2Publication = TaJsonDeserialize(view.r2PublicationJson, R2Publication);
+// const viewToR2Pub = (view: PublicationView) => {
+//     // Legacy Base64 data blobs
+//     // const r2PublicationStr = Buffer.from(view.r2PublicationBase64, "base64").toString("utf-8");
+//     // const r2PublicationJson = JSON.parse(r2PublicationStr);
+//     const r2Publication = TaJsonDeserialize(view.r2PublicationJson, R2Publication);
 
-    return r2Publication;
-};
-const _pdfMemo: {[str: string]: boolean} = {};
-const isPdfMemo = (view: PublicationView): boolean => {
-    if (typeof _pdfMemo[view.identifier] === "undefined") {
-        const r2Publication = viewToR2Pub(view);
-        _pdfMemo[view.identifier] = isPdfFn(r2Publication);
-    }
-    return _pdfMemo[view.identifier];
-};
+//     return r2Publication;
+// };
+// const _pdfMemo: {[str: string]: boolean} = {};
+// const isPdfMemo = (view: PublicationView): boolean => {
+//     if (typeof _pdfMemo[view.identifier] === "undefined") {
+//         const r2Publication = viewToR2Pub(view);
+//         _pdfMemo[view.identifier] = isPdfFn(r2Publication);
+//     }
+//     return _pdfMemo[view.identifier];
+// };
 
 
 const getLastAddedPublicationDocument = async (publicationRepository: PublicationRepository) => {
@@ -65,6 +66,13 @@ const getLastAddedPublicationDocument = async (publicationRepository: Publicatio
 function* getLastReadingPublicationId() {
 
     const lastReading = yield* selectTyped((state: RootState) => state.publication.lastReadingQueue);
+    const pubIdArray = lastReading.map(([, pubId]) => pubId);
+    return pubIdArray;
+}
+
+function* getReadingFinishedPublicationId() {
+
+    const lastReading = yield* selectTyped((state: RootState) => state.publication.readingFinishedQueue);
     const pubIdArray = lastReading.map(([, pubId]) => pubId);
     return pubIdArray;
 }
@@ -99,15 +107,22 @@ function* getPublicationView() {
     const publicationViewConverter = diMainGet("publication-view-converter");
     const lastAddedPublicationsDocumentRaw = yield* callTyped(getLastAddedPublicationDocument, publicationRepository);
     const lastReadingPubArray = yield* callTyped(getLastReadingPublicationId);
+    const lastReadingFinishedPubArray = yield* callTyped(getReadingFinishedPublicationId);
 
     const lastAddedPublicationsDocument =
-        lastAddedPublicationsDocumentRaw.filter(({ identifier }) => !lastReadingPubArray.includes(identifier));
+        lastAddedPublicationsDocumentRaw.filter(({ identifier }) => !lastReadingPubArray.includes(identifier) && !lastReadingFinishedPubArray.includes(identifier));
     const lastReadedPublicationDocument =
         lastReadingPubArray
             .map(
                 (identifier) => lastAddedPublicationsDocumentRaw.find((v) => v.identifier === identifier),
             )
             .filter((v) => !!v);
+    // const readingFinishedPublicationDocument =
+    //     lastReadingFinishedPubArray
+    //         .map(
+    //             (identifier) => lastAddedPublicationsDocumentRaw.find((v) => v.identifier === identifier),
+    //         )
+    //         .filter((v) => !!v);
 
     const lastAddedPublicationsView = [];
     for (const doc of lastAddedPublicationsDocument) {
@@ -129,37 +144,37 @@ function* getPublicationView() {
         }
     }
 
-    const audio = {
-        readed: lastReadedPublicationsView.filter(isAudiobookFn),
-        added: lastAddedPublicationsView.filter(isAudiobookFn),
-    };
+    // const audio = {
+    //     readed: lastReadedPublicationsView.filter(isAudiobookFn),
+    //     added: lastAddedPublicationsView.filter(isAudiobookFn),
+    // };
 
-    const divina = {
-        readed: lastReadedPublicationsView.filter(isDivinaFn),
-        added: lastAddedPublicationsView.filter(isDivinaFn),
-    };
+    // const divina = {
+    //     readed: lastReadedPublicationsView.filter(isDivinaFn),
+    //     added: lastAddedPublicationsView.filter(isDivinaFn),
+    // };
 
-    const pdf = {
-        readed: lastReadedPublicationsView.filter(
-            (view: PublicationView) => {
-                return isPdfMemo(view);
-            }),
-        added: lastAddedPublicationsView.filter(
-            (view: PublicationView) => {
-                return isPdfMemo(view);
-            }),
-    };
+    // const pdf = {
+    //     readed: lastReadedPublicationsView.filter(
+    //         (view: PublicationView) => {
+    //             return isPdfMemo(view);
+    //         }),
+    //     added: lastAddedPublicationsView.filter(
+    //         (view: PublicationView) => {
+    //             return isPdfMemo(view);
+    //         }),
+    // };
 
-    const epub = {
-        readed: lastReadedPublicationsView.filter(
-            (view: PublicationView) => {
-                return !isAudiobookFn(view) && !isDivinaFn(view) && !isPdfMemo(view);
-            }),
-        added: lastAddedPublicationsView.filter(
-            (view: PublicationView) => {
-                return !isAudiobookFn(view) && !isDivinaFn(view) && !isPdfMemo(view);
-            }),
-    };
+    // const epub = {
+    //     readed: lastReadedPublicationsView.filter(
+    //         (view: PublicationView) => {
+    //             return !isAudiobookFn(view) && !isDivinaFn(view) && !isPdfMemo(view);
+    //         }),
+    //     added: lastAddedPublicationsView.filter(
+    //         (view: PublicationView) => {
+    //             return !isAudiobookFn(view) && !isDivinaFn(view) && !isPdfMemo(view);
+    //         }),
+    // };
 
     const all = {
         readed: lastReadedPublicationsView,
@@ -167,10 +182,10 @@ function* getPublicationView() {
     };
 
     return {
-        audio,
-        epub,
-        divina,
-        pdf,
+        // audio,
+        // epub,
+        // divina,
+        // pdf,
         all,
     };
 }
@@ -180,63 +195,68 @@ function* getPublicationView() {
 export function* getCatalog(): SagaGenerator<ILibraryRootState["publication"]> {
     debug("getCatalog");
 
-    const translator = diMainGet("translator");
-    const __ = translator.translate.bind(translator);
-
     const {
-        audio: {
-            readed: audiobookReaded,
-        },
-        divina: {
-            readed: divinaReaded,
-        },
-        epub: {
-            readed: epubReaded,
-        },
-        pdf: {
-            readed: pdfReaded,
-        },
+        // audio: {
+        //     readed: audiobookReaded,
+        // },
+        // divina: {
+        //     readed: divinaReaded,
+        // },
+        // epub: {
+        //     readed: epubReaded,
+        // },
+        // pdf: {
+        //     readed: pdfReaded,
+        // },
         all: {
             added: allAdded,
+            readed: allReaded,
         },
     } = yield* callTyped(getPublicationView);
 
     const _allAdded = aboutFiltered(allAdded);
-    const _epubReaded = aboutFiltered(epubReaded);
+    const _allReaded = aboutFiltered(allReaded);
+    // const _epubReaded = aboutFiltered(epubReaded);
 
     const allAdded_ = _allAdded.slice(0, NB_PUB);
-    const epubReaded_ = _epubReaded.slice(0, NB_PUB);
-    const audiobookReaded_ = audiobookReaded.slice(0, NB_PUB);
-    const divinaReaded_ = divinaReaded.slice(0, NB_PUB);
-    const pdfReaded_ = pdfReaded.slice(0, NB_PUB);
+    const allReaded_ = _allReaded.slice(0, NB_PUB);
+    // const epubReaded_ = _epubReaded.slice(0, NB_PUB);
+    // const audiobookReaded_ = audiobookReaded.slice(0, NB_PUB);
+    // const divinaReaded_ = divinaReaded.slice(0, NB_PUB);
+    // const pdfReaded_ = pdfReaded.slice(0, NB_PUB);
 
     // Dynamic entries
     const entries: CatalogEntryView[] = [
         {
-            title: __("catalog.entry.lastAdditions"),
+            id: "continueReading",
+            totalCount: allReaded.length,
+            publicationViews: allReaded_,
+        },
+        {
+            id: "lastAdditions",
             totalCount: allAdded_.length,
             publicationViews: allAdded_,
         },
-        {
-            title: __("catalog.entry.continueReading"),
-            totalCount: epubReaded_.length,
-            publicationViews: epubReaded_,
-        },
-        {
-            title: __("catalog.entry.continueReadingAudioBooks"),
-            totalCount: audiobookReaded_.length,
-            publicationViews: audiobookReaded_,
-        },
-        {
-            title: __("catalog.entry.continueReadingDivina"),
-            totalCount: divinaReaded_.length,
-            publicationViews: divinaReaded_,
-        },
-        {
-            title: __("catalog.entry.continueReadingPdf"),
-            totalCount: pdfReaded_.length,
-            publicationViews: pdfReaded_,
-        },
+        // {
+        //     id: "continueReading",
+        //     totalCount: epubReaded_.length,
+        //     publicationViews: epubReaded_,
+        // },
+        // {
+        //     id: "continueReadingAudioBooks",
+        //     totalCount: audiobookReaded_.length,
+        //     publicationViews: audiobookReaded_,
+        // },
+        // {
+        //     id: "continueReadingDivina",
+        //     totalCount: divinaReaded_.length,
+        //     publicationViews: divinaReaded_,
+        // },
+        // {
+        //     id: "continueReadingPdf",
+        //     totalCount: pdfReaded_.length,
+        //     publicationViews: pdfReaded_,
+        // },
     ];
     const publicationRepository = diMainGet("publication-repository");
     const allTags = yield* callTyped(() => publicationRepository.getAllTags());
@@ -267,7 +287,7 @@ function* updateResumePosition() {
     };
 
     let prevState = yield* selectTyped((state: RootState) => state.publication.lastReadingQueue);
-    yield* debounceTyped(500, readerActions.setReduxState.build, function* worker(){
+    yield* debounceTyped(500, [readerActions.setReduxState.build, publicationActionsFromCommonAction.readingFinished.build], function* worker() {
         const nextState = yield* selectTyped((state: RootState) => state.publication.lastReadingQueue);
 
         const prevId = prevState.map(([_,v]) => v);
@@ -282,7 +302,9 @@ function* updateResumePosition() {
 export function saga() {
     return all([
         takeSpawnLatest(
-            [catalogActions.getCatalog.ID, publicationActions.addPublication.ID, publicationActions.deletePublication.ID],
+            [catalogActions.getCatalog.ID
+                , publicationActionsFromMainAction.addPublication.ID
+                , publicationActionsFromMainAction.deletePublication.ID],
             getCatalogAndDispatchIt,
             (e) => error(filename_ + ":getCatalogAndDispatchIt", e),
         ),

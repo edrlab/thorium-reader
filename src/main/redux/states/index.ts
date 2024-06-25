@@ -19,6 +19,7 @@ import { IDictWinRegistryReaderState } from "./win/registry/reader";
 import { IWinSessionLibraryState } from "./win/session/library";
 import { IDictWinSessionReaderState } from "./win/session/reader";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import { IWizardState } from "readium-desktop/common/redux/states/wizard";
 
 export interface RootState extends ICommonRootState {
     app: AppState;
@@ -39,6 +40,7 @@ export interface RootState extends ICommonRootState {
     lcp: ILcpState;
     publication: {
         lastReadingQueue: TPQueueState;
+        readingFinishedQueue: TPQueueState;
         db: IDictPublicationState;
     };
     keyboard: IKeyboardState;
@@ -46,7 +48,7 @@ export interface RootState extends ICommonRootState {
         catalog: OpdsFeedDocument[];
     },
     version: string;
+    wizard: IWizardState;
 }
 
-
-export type PersistRootState = Pick<RootState, "win" | "publication" | "reader" | "session" | "i18n" | "opds" | "version">;
+export type PersistRootState = Pick<RootState, "win" | "publication" | "reader" | "session" | "i18n" | "opds" | "version" | "theme" | "wizard">;

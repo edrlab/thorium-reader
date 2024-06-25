@@ -5,9 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import * as Dialog from "@radix-ui/react-dialog";
 import * as React from "react";
-import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
@@ -15,128 +14,220 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import {
     PublicationInfoContent,
 } from "readium-desktop/renderer/common/components/dialog/publicationInfos/publicationInfoContent";
-import PublicationInfoManager from "readium-desktop/renderer/common/components/dialog/publicationInfos/publicationInfoManager";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { TDispatch } from "readium-desktop/typings/redux";
 
 import CatalogControls from "./catalogControls";
 import CatalogLcpControls from "./catalogLcpControls";
 import OpdsControls from "./opdsControls/OpdsControls";
 import TagManager from "./TagManager";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+import { TPublication } from "readium-desktop/common/type/publication.type";
+import Loader from "readium-desktop/renderer/common/components/Loader";
+import { useLocation } from "react-router";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
-}
-// IProps may typically extend:
-// RouteComponentProps
-// ReturnType<typeof mapStateToProps>
-// ReturnType<typeof mapDispatchToProps>
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+interface IProps {
 }
 
-// Logger
-const debug = debug_("readium-desktop:renderer:library:publication-info");
+const PublicationInfoLibContext = React.createContext<DialogType[DialogTypeName.PublicationInfoLib] | undefined>(undefined);
+export const PublicationInfoLibWithRadix: React.FC<React.PropsWithChildren<{publicationView: Pick<PublicationView, "identifier">}>> = (props) => {
+    const defaultOpen = false;
 
-class PublicationInfo extends React.Component<IProps> {
-
-    public render() {
-        const { publication, toggleCoverZoom, closeDialog, coverZoom, open } = this.props;
-
-        if (!open) {
-            return <></>;
+    const dispatch = useDispatch();
+    const [open, setOpen] = React.useState(defaultOpen);
+    const openFromState = useSelector((state: ILibraryRootState) => state.dialog.open);
+    React.useMemo(() => {
+        if (!openFromState) {
+            setOpen(false);
         }
-
-        return (
-            <PublicationInfoManager
-                publicationViewMaybeOpds={publication}
-                coverZoom={coverZoom}
-                toggleCoverZoomCb={toggleCoverZoom}
-                closeDialogCb={closeDialog}
-            >
-                <PublicationInfoContent
-                    publicationViewMaybeOpds={publication}
-                    r2Publication={null}
-                    manifestUrlR2Protocol={null}
-                    handleLinkUrl={null}
-                    toggleCoverZoomCb={toggleCoverZoom}
-                    ControlComponent={this.controlsComponent}
-                    TagManagerComponent={TagManager}
-                    coverZoom={coverZoom}
-                    translator={this.props.translator}
-                    onClikLinkCb={
-                        (_link) => () =>
-                            this.props.link(
-                            _link.link[0], this.props.location, _link.name)
+    }, [openFromState]);
+    const data = useSelector((state: ILibraryRootState) =>
+        state.dialog.type === DialogTypeName.PublicationInfoLib
+            ? state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib]
+            : undefined);
+    return (
+        <Dialog.Root
+            defaultOpen={defaultOpen}
+            open={open}
+            onOpenChange={
+                (open) => {
+                    if (open) {
+                        dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoLib, {
+                            publicationIdentifier: props.publicationView.identifier,
+                        }));
+                        setOpen(true);
+                    } else {
+                        dispatch(dialogActions.closeRequest.build());
+                        setOpen(false);
                     }
-                    focusWhereAmI={false}
-                    pdfPlayerNumberOfPages={undefined}
-                    divinaNumberOfPages={undefined}
-                    divinaContinousEqualTrue={undefined}
-                    readerReadingLocation={undefined}
-                    closeDialogCb={closeDialog}
-                >
-                </PublicationInfoContent>
-            </PublicationInfoManager>
-        );
-    }
-
-    private controlsComponent = () => {
-        const { publicationInfoLib, publicationInfoOpds, publication } = this.props;
-
-        let controlsComponent = (<></>);
-
-        if (publicationInfoOpds) {
-            controlsComponent = (<OpdsControls opdsPublicationView={publication as IOpdsPublicationView} />);
-        }
-        if (publicationInfoLib) {
-            if (publication?.lcp) {
-                controlsComponent = (<CatalogLcpControls publicationView={publication as PublicationView} />);
-            } else {
-                controlsComponent = (<CatalogControls publicationView={publication as PublicationView} />);
-            }
-        }
-
-        return controlsComponent;
-    };
-
-}
-
-const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
-    // Warning : mapDispatchToProps isn't rendered when the state is updateds
-    // but only when the component is mounted
-    debug("mapDispatchToProps rendered");
-    return {
-        closeDialog: () => {
-            dispatch(
-                dialogActions.closeRequest.build(),
-            );
-        },
-        toggleCoverZoom: (state: boolean) => {
-            dispatch(dialogActions.updateRequest.build(
-                {
-                    coverZoom: !state,
-                },
-            ));
-        },
-        link: (...data: Parameters<ReturnType<typeof dispatchOpdsLink>>) =>
-            dispatchOpdsLink(dispatch)(...data),
-    };
+                }}
+        >
+            <PublicationInfoLibContext.Provider value={data}>
+                {props.children}
+            </PublicationInfoLibContext.Provider>
+        </Dialog.Root>
+    );
 };
 
-const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
-    ...{
-        open: state.dialog.type === DialogTypeName.PublicationInfoOpds
-            || state.dialog.type === DialogTypeName.PublicationInfoLib,
-        publicationInfoOpds: state.dialog.type === DialogTypeName.PublicationInfoOpds,
-        publicationInfoLib: state.dialog.type === DialogTypeName.PublicationInfoLib,
+export const PublicationInfoLibWithRadixTrigger = Dialog.Trigger;
+PublicationInfoLibWithRadixTrigger.displayName = Dialog.Trigger.displayName;
+export const PublicationInfoLibWithRadixContent = React.forwardRef<HTMLDivElement, IProps>(
+    ({ ...props }, forwardRef) => {
+        const [__] = useTranslator();
+        const dispatch = useDispatch();
+        return (
+            <Dialog.Portal>
+                {/* <Dialog.Overlay className="DialogOverlay" /> */}
+                <div className={stylesModals.modal_dialog_overlay}></div>
+                <Dialog.Content className={stylesModals.modal_dialog} {...props} ref={forwardRef}>
+                    <div className={stylesModals.modal_dialog_header}>
+                        {/* <Dialog.Title className="DialogTitle">{__("catalog.bookInfo")}</Dialog.Title> */}
+                        <h1>{__("catalog.bookInfo")}</h1>
+                        <Dialog.Close asChild>
+                            <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
+                                <SVG ariaHidden={true} svg={QuitIcon} />
+                            </button>
+                        </Dialog.Close>
+                    </div>
+                    <div className={stylesModals.modal_dialog_body}>
+                        <PublicationInfoLibContext.Consumer>
+                            {
+                                (data) =>
+                                    <PublicationInfoWithRadixContent publicationViewMaybeOpds={data?.publication} closeDialog={() => dispatch(dialogActions.closeRequest.build())}
+                                     />
+                            }
+                        </PublicationInfoLibContext.Consumer>
+                    </div>
+                </Dialog.Content>
+            </Dialog.Portal>
+        );
     },
-    ...(state.dialog.data as DialogType[DialogTypeName.PublicationInfoOpds]),
-    location: state.router.location,
-});
+);
+PublicationInfoLibWithRadixContent.displayName = "PublicationInfoLibWithRadixContent";
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationInfo));
+const PublicationInfoOpdsContext = React.createContext<IOpdsPublicationView | undefined>(undefined);
+export const PublicationInfoOpdsWithRadix: React.FC<React.PropsWithChildren<{opdsPublicationView: IOpdsPublicationView}>> = (props) => {
+    const defaultOpen = false;
+
+    const dispatch = useDispatch();
+    const [open, setOpen] = React.useState(defaultOpen);
+    const openFromState = useSelector((state: ILibraryRootState) => state.dialog.open);
+    React.useMemo(() => {
+        if (!openFromState) {
+            setOpen(false);
+        }
+    }, [openFromState]);
+    return (
+        <Dialog.Root
+            defaultOpen={defaultOpen}
+            open={open}
+            onOpenChange={
+                (open) => {
+                    if (open) {
+                        dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoOpds, {
+                            publication: props.opdsPublicationView,
+                        }));
+                        setOpen(true);
+                    } else {
+                        dispatch(dialogActions.closeRequest.build());
+                        setOpen(false);
+                    }
+                }}
+        >
+            <PublicationInfoOpdsContext.Provider value={props.opdsPublicationView}>
+                {props.children}
+            </PublicationInfoOpdsContext.Provider>
+        </Dialog.Root>
+    );
+};
+export const PublicationInfoOpdsWithRadixTrigger = Dialog.Trigger;
+PublicationInfoOpdsWithRadixTrigger.displayName = Dialog.Trigger.displayName;
+export const PublicationInfoOpdsWithRadixContent = React.forwardRef<HTMLDivElement, IProps>(
+    ({ ...props }, forwardRef) => {
+        const [__] = useTranslator();
+        const dispatch = useDispatch();
+        return (
+            <Dialog.Portal>
+                {/* <Dialog.Overlay className="DialogOverlay" /> */}
+                <div className={stylesModals.modal_dialog_overlay}></div>
+                <Dialog.Content className={stylesModals.modal_dialog} {...props} ref={forwardRef}>
+                    <div className={stylesModals.modal_dialog_header}>
+                        {/* <Dialog.Title className="DialogTitle">{__("catalog.bookInfo")}</Dialog.Title> */}
+                        <h2>{__("catalog.bookInfo")}</h2>
+                        <Dialog.Close asChild>
+                            <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
+                                <SVG ariaHidden={true} svg={QuitIcon} />
+                            </button>
+                        </Dialog.Close>
+                    </div>
+                    <div className={stylesModals.modal_dialog_body}>
+                        <PublicationInfoOpdsContext.Consumer>
+                            {
+                                (opdsPublicationView) =>
+                                    <PublicationInfoWithRadixContent publicationViewMaybeOpds={opdsPublicationView} closeDialog={() => dispatch(dialogActions.closeRequest.build())} isOpds={true}
+                                     />
+                            }
+                        </PublicationInfoOpdsContext.Consumer>
+                    </div>
+                </Dialog.Content>
+            </Dialog.Portal>
+        );
+    },
+);
+PublicationInfoOpdsWithRadixContent.displayName = "PublicationInfoOpdsWithRadixContent";
+
+const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPublication | undefined, closeDialog: () => void, isOpds?: boolean}) => {
+    const [, translator] = useTranslator(); // FIXME in reader.tsx
+    const dispatch = useDispatch();
+    const link = dispatchOpdsLink(dispatch);
+    const location = useLocation();
+
+    if (!props.publicationViewMaybeOpds?.documentTitle) {
+        return <Loader></Loader>;
+    }
+
+    let controlsComponent = () => (<></>);
+
+    if (props.isOpds) {
+        controlsComponent = () => (<OpdsControls opdsPublicationView={props.publicationViewMaybeOpds as IOpdsPublicationView} />);
+    } else {
+        if (props.publicationViewMaybeOpds?.lcp) {
+            controlsComponent = () => (<CatalogLcpControls publicationView={props.publicationViewMaybeOpds as PublicationView} />);
+        } else {
+            controlsComponent = () => (<CatalogControls publicationView={props.publicationViewMaybeOpds as PublicationView} />);
+        }
+    }
+
+    return (
+        <PublicationInfoContent
+            publicationViewMaybeOpds={props.publicationViewMaybeOpds}
+            r2Publication={null}
+            manifestUrlR2Protocol={null}
+            handleLinkUrl={null}
+            // toggleCoverZoomCb={() => setCoverZoom(!coverZoom)}
+            ControlComponent={controlsComponent}
+            TagManagerComponent={TagManager}
+            // coverZoom={coverZoom}
+            translator={translator}
+            onClikLinkCb={
+                (_link) => () => link(
+                        _link.link[0], location, _link.name)
+            }
+            focusWhereAmI={false}
+            pdfPlayerNumberOfPages={undefined}
+            divinaNumberOfPages={undefined}
+            divinaContinousEqualTrue={undefined}
+            readerReadingLocation={undefined}
+            closeDialogCb={props.closeDialog}
+        >
+        </PublicationInfoContent>
+    );
+};

@@ -1,0 +1,33 @@
+/*
+=-=-= loader.scss
+*/
+
+.loader {
+  text-align: center;
+
+  svg {
+    width: 5rem;
+  }
+
+  &_small {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    z-index: 999;
+  
+    & svg {
+      width: 2rem;
+    }
+  }
+
+  &_search_picker {
+      width: 15px;
+      position: absolute;
+      left: 5px;
+      top: 6px;
+  }
+}
+
+.___DEBUG___LOADER_CSS {
+  display: none;
+}

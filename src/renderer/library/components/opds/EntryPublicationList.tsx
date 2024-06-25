@@ -8,16 +8,21 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { IOpdsPublicationView, IOpdsResultView } from "readium-desktop/common/views/opds";
-import Loader from "readium-desktop/renderer/common/components/Loader";
 import { GridView } from "readium-desktop/renderer/library/components/utils/GridView";
-import { ListView } from "readium-desktop/renderer/library/components/utils/ListView";
+// import { ListView } from "readium-desktop/renderer/library/components/utils/ListView";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
+// import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as ForbiddenIcon from "readium-desktop/renderer/assets/icons/forbidden-icon.svg";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/common/components/hoc/translator";
 
 import PageNavigation from "./PageNavigation";
 
-interface IBaseProps {
-    opdsPublicationView: IOpdsPublicationView[] | undefined;
+interface IBaseProps extends TranslatorProps {
+    opdsPublicationView?: IOpdsPublicationView[] | undefined;
     links: IOpdsResultView["links"];
     pageInfo?: IOpdsResultView["metadata"];
 }
@@ -37,28 +42,32 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
     }
 
     public render() {
-        const displayType = (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid;
+        // const displayType = (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid;
 
         return (
             <>
-                {this.props.opdsPublicationView
+                {this.props.opdsPublicationView?.length > 0
                     ? <>
-                        {displayType === DisplayType.Grid ?
+                        {/* {displayType === DisplayType.Grid ? */}
                             <GridView
                                 normalOrOpdsPublicationViews={this.props.opdsPublicationView}
                                 isOpdsView={true}
-                            /> :
+                            /> {/* :
                             <ListView
                                 normalOrOpdsPublicationViews={this.props.opdsPublicationView}
                                 isOpdsView={true}
-                            />
-                        }
+                            /> 
+                        } */}
                         <PageNavigation
                             pageLinks={this.props.links}
                             pageInfo={this.props.pageInfo}
                         />
                     </>
-                    : <Loader />}
+                    :
+                    <p className={stylesCatalogs.noPublication}>
+                        <SVG ariaHidden svg={ForbiddenIcon} />
+                        {this.props.__("opds.empty")}
+                    </p>}
             </>
         );
     }
@@ -68,4 +77,4 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     location: state.router.location,
 });
 
-export default connect(mapStateToProps)(EntryPublicationList);
+export default connect(mapStateToProps)(withTranslator(EntryPublicationList));

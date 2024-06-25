@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import * as debug_ from "debug";
 import { shell } from "electron";
 import * as fs from "fs";
@@ -33,9 +34,6 @@ import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { type Store } from "redux";
 
-import { lsdRenew_ } from "@r2-lcp-js/lsd/renew";
-import { lsdReturn_ } from "@r2-lcp-js/lsd/return";
-import { launchStatusDocumentProcessing } from "@r2-lcp-js/lsd/status-document-processing";
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { LSD } from "@r2-lcp-js/parser/epub/lsd";
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
@@ -45,7 +43,7 @@ import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 import { lcpHashesFilePath } from "../di";
 import { lcpActions } from "../redux/actions";
 import { extractCrc32OnZip } from "../tools/crc";
-import { DeviceIdManager } from "./device";
+import { LSDManager } from "./lsd";
 
 // import { Server } from "@r2-streamer-js/http/server";
 
@@ -77,14 +75,14 @@ export class LcpManager {
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
 
-    @inject(diSymbolTable["device-id-manager"])
-    private readonly deviceIdManager!: DeviceIdManager;
-
     @inject(diSymbolTable.store)
     private readonly store!: Store<RootState>;
 
     @inject(diSymbolTable.translator)
     private readonly translator!: Translator;
+    
+    @inject(diSymbolTable["lsd-manager"])
+    private readonly lsdManager!: LSDManager;
 
     public async absorbDBToJson() {
         await this.getAllSecrets();
@@ -110,7 +108,7 @@ export class LcpManager {
         return json;
     }
 
-    public async getSecrets(doc: PublicationDocument): Promise<string[]> {
+    private async getSecrets(doc: PublicationDocument): Promise<string[]> {
         debug("LCP getSecrets ... ", doc.identifier);
 
         const secrets: string[] = [];
@@ -163,7 +161,7 @@ export class LcpManager {
         fs.promises.writeFile(lcpHashesFilePath, encrypted);
     }
 
-    public async injectLcplIntoZip_(epubPath: string, lcpStr: string) {
+    private async injectLcplIntoZip_(epubPath: string, lcpStr: string) {
 
         const extension = path.extname(epubPath);
         const isAudioBook = new RegExp(`\\${acceptedExtensionObject.audiobook}$`).test(extension) ||
@@ -388,7 +386,7 @@ export class LcpManager {
         }
     }
 
-    public async checkPublicationLicenseUpdate_(
+    private async checkPublicationLicenseUpdate_(
         publicationDocument: PublicationDocument,
         r2Publication: R2Publication,
     ): Promise<PublicationDocument> {
@@ -441,16 +439,6 @@ export class LcpManager {
         }
         this.store.dispatch(lcpActions.publicationFileLock.build({ [publicationDocument.identifier]: true }));
         try {
-            const locale = rootState.i18n.locale;
-            const httpHeaders = {
-                "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
-                "User-Agent": "readium-desktop",
-            };
-            // TODO - IDEALLY AS WELL:
-            // agentOptions: {
-            //     rejectUnauthorized: IS_DEV ? false : true,
-            // },
-
             const r2Publication = await this.publicationViewConverter.unmarshallR2Publication(publicationDocument); // , true
 
             let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
@@ -490,12 +478,12 @@ export class LcpManager {
                 let renewResponseLsd: LSD;
                 try {
                     renewResponseLsd =
-                        await lsdRenew_(endDate, r2Publication.LCP.LSD, this.deviceIdManager, httpHeaders);
+                        await this.lsdManager.lsdRenew(endDate, r2Publication.LCP.LSD);
                 } catch (err) {
                     debug(err);
-                    const str = this.stringifyLsdError(err);
+
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
-                        `LCP [${this.translator.translate("publication.renewButton")}]: ${str}`,
+                        `LCP [${this.translator.translate("publication.renewButton")}]: ${err}`,
                         ));
                 }
                 if (renewResponseLsd) {
@@ -563,16 +551,6 @@ export class LcpManager {
         }
         this.store.dispatch(lcpActions.publicationFileLock.build({ [publicationDocument.identifier]: true }));
         try {
-            const locale = rootState.i18n.locale;
-            const httpHeaders = {
-                "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
-                "User-Agent": "readium-desktop",
-            };
-            // TODO - IDEALLY AS WELL:
-            // agentOptions: {
-            //     rejectUnauthorized: IS_DEV ? false : true,
-            // },
-
             const r2Publication = await this.publicationViewConverter.unmarshallR2Publication(publicationDocument); // , true
 
             let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
@@ -604,12 +582,11 @@ export class LcpManager {
                 let returnResponseLsd: LSD;
                 try {
                     returnResponseLsd =
-                        await lsdReturn_(r2Publication.LCP.LSD, this.deviceIdManager, httpHeaders);
+                        await this.lsdManager.lsdReturn(r2Publication.LCP.LSD);
                 } catch (err) {
                     debug(err);
-                    const str = this.stringifyLsdError(err);
                     this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
-                        `LCP [${this.translator.translate("publication.returnButton")}]: ${str}`,
+                        `LCP [${this.translator.translate("publication.returnButton")}]: ${err}`,
                         ));
                 }
                 if (returnResponseLsd) {
@@ -847,7 +824,7 @@ export class LcpManager {
 
     // , r2LSDJson: JsonMap
     // , r2LCPJson: JsonMap
-    public convertLcpLsdInfo(lcp: LCP): LcpInfo {
+    private convertLcpLsdInfo(lcp: LCP): LcpInfo {
 
         let dateStr1 = "";
         try {
@@ -975,34 +952,29 @@ export class LcpManager {
         r2Publication: R2Publication): Promise<void> {
 
         (r2Publication as any).__LCP_LSD_UPDATE_COUNT = 0;
-        return this.processStatusDocument_(publicationDocumentIdentifier, r2Publication);
-    }
-
-    private async processStatusDocument_(
-        publicationDocumentIdentifier: string,
-        r2Publication: R2Publication): Promise<void> {
 
         if (!r2Publication.LCP) {
             return Promise.reject("processStatusDocument NO LCP data!");
         }
 
-        const locale = this.store.getState().i18n.locale;
-        const httpHeaders = {
-            "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
-            "User-Agent": "readium-desktop",
-        };
-        // TODO - IDEALLY AS WELL:
-        // agentOptions: {
-        //     rejectUnauthorized: IS_DEV ? false : true,
-        // },
+        
 
         return new Promise(async (resolve, reject) => {
             const callback = async (r2LCPStr: string | undefined) => {
                 debug("launchStatusDocumentProcessing DONE.");
                 debug(r2LCPStr);
 
-                if (r2LCPStr) {
+                // r2Publication.LCP.LSD.Status !== StatusEnum.Active && r2Publication.LCP.LSD.Status !== StatusEnum.Ready
+                if (r2Publication.LCP.LSD &&
+                    (r2Publication.LCP.LSD.Status === StatusEnum.Revoked
+                    || r2Publication.LCP.LSD.Status === StatusEnum.Returned
+                    || r2Publication.LCP.LSD.Status === StatusEnum.Cancelled
+                    || r2Publication.LCP.LSD.Status === StatusEnum.Expired)) {
+                    // TODO anything here just in case the LCP license end date is still "open" in the future? We assume it is now closed (subsequent attempts to load book will fail).
+                    // The license is supposed to be the source of truth, so it should have been correspondingly updated by server...maybe too optimistic assumption?
+                }
 
+                if (r2LCPStr) {
                     let atLeastOneReaderIsOpen = false;
                     const readers = this.store.getState().win.session.reader;
                     if (readers) {
@@ -1025,7 +997,10 @@ export class LcpManager {
                     }
 
                     try {
+                        // --------- This LSD was set in launchStatusDocumentProcessing() so it is up to date in the context of r2Publication.LCP,
+                        // but we are receiving a new LCP license so need to reassign later...
                         const prevLSD = r2Publication.LCP.LSD;
+
                         // const epubPath_ = await lsdLcpUpdateInject(
                         //     licenseUpdateJson,
                         //     r2Publication,
@@ -1052,7 +1027,7 @@ export class LcpManager {
                         r2LCP.JsonSource = r2LCPStr;
                         r2Publication.LCP = r2LCP;
 
-                        // will be updated below via another round of processStatusDocument_()
+                        // --------- will be updated below via another round of processStatusDocument_() UPDATE: no, see below ...
                         r2Publication.LCP.LSD = prevLSD;
 
                         const epubPath = this.publicationStorage.getPublicationEpubPath(
@@ -1060,32 +1035,39 @@ export class LcpManager {
                         );
                         await this.injectLcplIntoZip_(epubPath, r2LCPStr);
 
-                        // Protect against infinite loop due to incorrect LCP / LSD server dates
+                        // --------- see the prevLSD assignment above, and the processStatusDocument_() call below
+                        // ... we avoid the second LSD network request which is deemed unnecessary in the real world
                         if (!(r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
-                            (r2Publication as any).__LCP_LSD_UPDATE_COUNT = 1;
-                        } else {
-                            (r2Publication as any).__LCP_LSD_UPDATE_COUNT++;
+                            (r2Publication as any).__LCP_LSD_UPDATE_COUNT = 1; // TODO: this is used elsewhere to trigger the recalculation of the pub hash, should really be a proper typed flag, not "any"
                         }
-                        if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT > 2) {
-                            debug("__LCP_LSD_UPDATE_COUNT!?");
-                            resolve();
-                        } else {
-                            try {
-                                // loop to re-init LSD in updated LCP
-                                await this.processStatusDocument_(
-                                    publicationDocumentIdentifier,
-                                    r2Publication);
+                        resolve();
+                        // --------- below is the commented code that used to create the second LSD network request:
+                        // // Protect against infinite loop due to incorrect LCP / LSD server dates
+                        // if (!(r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
+                        //     (r2Publication as any).__LCP_LSD_UPDATE_COUNT = 1;
+                        // } else {
+                        //     (r2Publication as any).__LCP_LSD_UPDATE_COUNT++;
+                        // }
+                        // if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT > 2) {
+                        //     debug("__LCP_LSD_UPDATE_COUNT!?");
+                        //     resolve();
+                        // } else {
+                        //     try {
+                        //         // loop to re-init LSD in updated LCP
+                        //         await this.processStatusDocument_(
+                        //             publicationDocumentIdentifier,
+                        //             r2Publication);
 
-                                // TODO: publicationFileLock by checkPublicationLicenseUpdate(), so does not work
-                                if (atLeastOneReaderIsOpen) {
-                                    this.store.dispatch(readerActions.openRequest.build(publicationDocumentIdentifier));
-                                }
-                                resolve();
-                            } catch (err) {
-                                debug(err);
-                                reject(err);
-                            }
-                        }
+                        //         // TODO: publicationFileLock by checkPublicationLicenseUpdate(), so does not work
+                        //         if (atLeastOneReaderIsOpen) {
+                        //             this.store.dispatch(readerActions.openRequest.build(publicationDocumentIdentifier));
+                        //         }
+                        //         resolve();
+                        //     } catch (err) {
+                        //         debug(err);
+                        //         reject(err);
+                        //     }
+                        // }
                     } catch (err) {
                         debug(err);
                         reject(err);
@@ -1101,12 +1083,8 @@ export class LcpManager {
                 return;
             }
             try {
-                await launchStatusDocumentProcessing(
-                    r2Publication.LCP,
-                    this.deviceIdManager,
-                    callback,
-                    httpHeaders,
-                );
+                const r2LCPStr = await this.lsdManager.launchStatusDocumentProcessing(r2Publication.LCP);
+                await callback(r2LCPStr);
             } catch (err) {
                 debug(err);
 
@@ -1132,25 +1110,27 @@ export class LcpManager {
     // Typically, compliant LCP/LSD servers are expected to return
     // Problem Details JSON (RFC7807),
     // which provides `title` `type` and `details` JSON properties.
-    // See https://readium.org/technical/readium-lsd-specification/#31-handling-errors
-    private stringifyLsdError(err: any): string {
-        if (typeof err === "number") {
-            return `${err}`;
-        }
-        if (!err) {
-            return "";
-        }
-        if (typeof err === "object") {
-            if (err.httpStatusCode) {
-                if (err.httpResponseBody) {
-                    return `${err.httpStatusCode} (${err.httpResponseBody})`;
-                }
-                if (err.title && err.detail) {
-                    return `${err.httpStatusCode} (${err.title} - ${err.detail})`;
-                }
-            }
-            return JSON.stringify(err);
-        }
-        return err;
-    }
+    // See https://readium.org/lcp-specs/releases/lsd/latest#31-handling-errors
+
+    // TODO in LSD class
+    // private stringifyLsdError(err: any): string {
+    //     if (typeof err === "number") {
+    //         return `${err}`;
+    //     }
+    //     if (!err) {
+    //         return "";
+    //     }
+    //     if (typeof err === "object") {
+    //         if (err.httpStatusCode) {
+    //             if (err.httpResponseBody) {
+    //                 return `${err.httpStatusCode} (${err.httpResponseBody})`;
+    //             }
+    //             if (err.title && err.detail) {
+    //                 return `${err.httpStatusCode} (${err.title} - ${err.detail})`;
+    //             }
+    //         }
+    //         return JSON.stringify(err);
+    //     }
+    //     return err;
+    // }
 }

@@ -1,0 +1,64 @@
+/*
+=-=-= blocks.scss
+*/
+
+.block_line {
+  padding: 0.5em;
+  border-radius: 8px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--color-disabled);
+
+  &.description_see_more {
+    position: relative;
+    font-size: 1rem;
+
+    & p {
+      margin: 0;
+    }
+  }
+}
+
+.block_line_edit {
+  padding: 0.5em;
+  border-radius: 8px;
+  border-width: 1px;
+  border-style: dashed;
+  border-color: var(--color-primary);
+}
+
+.block_line,
+.block_line_edit {
+  margin-top: 20px;
+}
+
+.block_line_inactive {
+  opacity: 0.5;
+}
+
+
+.block_dashed {
+  border-radius: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  border: 1px var(--color-disabled) dashed;
+  min-height: 17rem;
+  max-width: 43rem;
+  margin: 2rem auto;
+  box-sizing: border-box;
+  color: var(--color-disabled);
+
+  & p {
+    font-size: 1.1rem;
+  }
+
+  & p:last-child {
+    font-size: 1rem;
+  }
+}
+
+.___DEBUG___COMPONENTS_BLOCKS_CSS {
+  display: none;
+}

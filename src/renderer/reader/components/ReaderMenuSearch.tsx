@@ -12,9 +12,10 @@ import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
-import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
-import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
+import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -29,6 +30,7 @@ import { readerLocalActionSearch } from "../redux/actions";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
     focusMainAreaLandmarkAndCloseMenu: () => void;
+    dockedMode: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -43,6 +45,8 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 interface IState {
     nMatchPage: number;
 }
+
+const MAX_MATCHES_PER_PAGE = 10;
 
 function findFirstLinkWithHref(links: Link[], href: string): Link | undefined {
     for (const link of links) {
@@ -59,11 +63,140 @@ function findFirstLinkWithHref(links: Link[], href: string): Link | undefined {
     return undefined;
 }
 
-const MAX_MATCHES_PER_PAGE = 10;
+let _memoRenderSearchLinks: JSX.Element | undefined;
+const _memoDeps: {
+    label: string | undefined;
+    foundArray: ISearchResult[] | undefined;
+    nMatchPage: number | undefined;
+    readingOrder: Link[] | undefined;
+    toc: Link[] | undefined;
+    dockedMode: boolean | undefined;
+} = {
+    label: undefined,
+    foundArray: undefined,
+    nMatchPage: undefined,
+    readingOrder: undefined,
+    toc: undefined,
+    dockedMode: undefined,
+};
+function renderSearchLinks(label: string, foundArray: ISearchResult[], nMatchPage: number, readingOrder: Link[], toc: Link[], dockedMode: boolean, thiz: ReaderMenuSearch): JSX.Element {
 
-// let prevLinks: Link[];
-let _foundArray: ISearchResult[] | undefined;
-let _searchJsx: JSX.Element = <></>;
+    // use memoized / cached object
+    if (_memoRenderSearchLinks
+        && _memoDeps.label === label
+        && _memoDeps.foundArray === foundArray
+        && _memoDeps.nMatchPage === nMatchPage
+        && _memoDeps.readingOrder === readingOrder
+        && _memoDeps.toc === toc
+        && _memoDeps.dockedMode === dockedMode
+    ) {
+        return _memoRenderSearchLinks;
+    }
+
+    // invalidate, create updated object
+    _memoRenderSearchLinks = undefined;
+
+    _memoDeps.label = label;
+    _memoDeps.foundArray = foundArray;
+    _memoDeps.nMatchPage = nMatchPage;
+    _memoDeps.readingOrder = readingOrder;
+    _memoDeps.toc = toc;
+    _memoDeps.dockedMode = dockedMode;
+
+    if (!foundArray) { _memoRenderSearchLinks = <></>; return _memoRenderSearchLinks; }
+
+    let k = 0;
+    let iMatch = -1;
+    _memoRenderSearchLinks = <ul
+        aria-label={label}
+        className={stylesPopoverDialog.chapters_content}
+        role={"list"}
+    >{
+        (readingOrder || []).reduce((pv, spineLink, j) => {
+            const res = foundArray.reduce((prevVal, v, _i) => {
+                if (v.href === spineLink.Href) {
+
+                    iMatch++;
+                    const startIndex = nMatchPage * MAX_MATCHES_PER_PAGE;
+                    if (iMatch >= startIndex && iMatch < (startIndex + MAX_MATCHES_PER_PAGE)) {
+
+                        const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
+
+                        k++;
+                        const jsx = (
+                            <li
+                                key={`found_${k}`}
+                                aria-level={1}
+                                role={"listitem"}
+                            >
+                                <a
+                                    className={
+                                        classNames(stylesReader.line,
+                                            stylesReader.active,
+                                            isRTL ? stylesReader.rtlDir : " ")
+                                    }
+                                    style={{
+                                        fontWeight: "normal",
+                                    }}
+                                    tabIndex={0}
+                                    onClick=
+                                        {(e) => { // MOUSE CLICK (not ENTER)
+                                            const closeNavSearch = !dockedMode && !(e.shiftKey && e.altKey);
+                                            thiz.handleSearchClickDebounced(e, v.uuid, closeNavSearch);
+                                        }}
+                                    onDoubleClick=
+                                        {(e) => thiz.handleSearchClickDebounced(e, v.uuid, false)}
+                                    onKeyUp=
+                                        {
+                                            (e) => { // because onClick is only for MOUSE CLICK
+                                                if (e.key === "Enter") {
+                                                    const closeNavSearch = !dockedMode && !(e.shiftKey && e.altKey);
+                                                    thiz.handleSearchClick(e, v.uuid, closeNavSearch);
+                                                }
+                                            }
+                                        }
+                                    data-href={v.href}
+                                >
+                                    <span dir={isRTL ? "rtl" : "ltr"}>{
+                                    `...${v.cleanBefore}`
+                                    }<span style={{backgroundColor: "var(--color-blue)", color: "white", padding: "0 2px"}}>{
+                                    `${v.cleanText}`
+                                    }</span>{
+                                    `${v.cleanAfter}...`
+                                    }</span>
+                                </a>
+                            </li>
+                        );
+
+                        prevVal.push(jsx);
+                    }
+                }
+
+                return prevVal;
+            }, []);
+            if (res.length) {
+                k++;
+                let title = spineLink.Title;
+                if (!title && toc) {
+                    const l = findFirstLinkWithHref(toc, spineLink.Href);
+                    if (l && l.Title) {
+                        title = l.Title;
+                    }
+                }
+                const jsxHead = (
+                <li
+                    className={stylesPopoverDialog.subheading}
+                    key={`found_${k}`}>
+                    <span>{title ? title : `#${j} ${spineLink.Href}`}</span>
+                </li>
+                );
+                pv.push(jsxHead);
+            }
+            return pv.concat(res);
+        }, [])
+    }</ul>;
+    return _memoRenderSearchLinks;
+}
 
 class ReaderMenuSearch extends React.Component<IProps, IState> {
 
@@ -75,105 +208,112 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
         };
     }
 
+    public componentDidUpdate(prevProps: Readonly<IProps>): void {
+        if (prevProps.foundArray !== this.props.foundArray) {
+            this.setState({ nMatchPage: 0 });
+        }
+    }
+
     public render() {
         const { __ } = this.props;
-
-        // if (prevLinks !== this.props.links) {
-        //     searchTree = this.renderLinkTree(undefined, this.props.links, 1);
-        //     prevLinks = this.props.links;
-        // }
 
         const label = this.props.foundArray?.length ?
             __("reader.picker.search.founds", {nResults: this.props.foundArray.length}) :
             __("reader.picker.search.notFound");
 
-        if (_foundArray !== this.props.foundArray) {
-
-            _foundArray = this.props.foundArray || undefined;
-            _searchJsx = _foundArray ? this.renderSearchLinks(label, _foundArray) : <></>;
-        }
-
+        const memoJsx = renderSearchLinks(label, this.props.foundArray, this.state.nMatchPage, this.props.readingOrder, this.props.toc, this.props.dockedMode, this);
+    
         const startIndex = this.state.nMatchPage * MAX_MATCHES_PER_PAGE;
         const begin = startIndex + 1;
-        const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, _foundArray.length);
+        const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, this.props.foundArray?.length || 0);
+
+        const pageTotal =  !this.props.foundArray?.length ? 0 :
+            (
+            // Math.ceil(this.props.foundArray.length / MAX_MATCHES_PER_PAGE)
+            Math.floor(this.props.foundArray.length / MAX_MATCHES_PER_PAGE) +
+            ((this.props.foundArray.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1)
+            );
+        const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i).map((v) => {
+            // const startIndex = v * MAX_MATCHES_PER_PAGE;
+            // const begin = startIndex + 1;
+            // const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, this.props.foundArray?.length || 0);
+            // return {id: v, name: `${v+1} / ${pageTotal}  [ ${begin === end ? `${end}` : `${begin} ... ${end}`} ]`};
+            return {id: v, name: `${v+1} / ${pageTotal}`};
+        });
 
         return (<>
-            <p style={{
-                padding: "0",
-                margin: "0",
-                paddingBottom: "0.4em",
-                marginBottom: "0.4em",
-                borderBottom: "1px solid black",
-            }}>{`${label}`}</p>
-            <div style={{
-                padding: "0",
-                margin: "0",
-                marginBottom: "1em",
-                textAlign: "center",
-            }}>
-                {(_foundArray && _foundArray?.length > MAX_MATCHES_PER_PAGE) &&
-                <>
-                <button title={__("opds.firstPage")}
-                onClick={() => this.onPageFirst()}
-                style={{
-                    width: "30px",
-                }}>
-                    <SVG ariaHidden={true} svg={ArrowFirstIcon} />
-                </button>
+            <p className={stylesPopoverDialog.correspondances}>{`${label}`}</p>
+            {
+                memoJsx
+            }
+            <div className={stylesPopoverDialog.navigation_container}>
+                {(this.props.foundArray && this.props.foundArray.length > MAX_MATCHES_PER_PAGE) &&
+                    <>
+                        <button title={__("opds.firstPage")}
+                            onClick={() => this.onPageFirst()}
+                            disabled={begin === 1 ? true : false}>
+                            <SVG ariaHidden={true} svg={ArrowFirstIcon} />
+                        </button>
 
-                <button title={__("opds.previous")}
-                onClick={() => this.onPagePrevious()}
-                style={{
-                    width: "30px",
-                }}>
-                    <SVG ariaHidden={true} svg={ArrowLeftIcon} />
-                </button>
-                <span style={{
-                    marginLeft: "0.5em",
-                    marginRight: "1em",
-                    verticalAlign: "super",
-                }}>
-                {
-                    begin === end ?
-                    `${end}` :
-                    `${begin} - ${end}`
-                }
-                </span>
-                <button title={__("opds.next")}
-                onClick={() => this.onPageNext()}
-                style={{
-                    width: "30px",
-                }}>
-                    <SVG ariaHidden={true} svg={ArrowRightIcon} />
-                </button>
+                        <button title={__("opds.previous")}
+                            onClick={() => this.onPagePrevious()}
+                            disabled={begin === 1 ? true : false}>
+                            <SVG ariaHidden={true} svg={ArrowLeftIcon} />
+                        </button>
 
-                <button title={__("opds.lastPage")}
-                onClick={() => this.onPageLast()}
-                style={{
-                    width: "30px",
-                }}>
-                    <SVG ariaHidden={true} svg={ArrowLastIcon} />
-                </button>
-                </>
+                        <div className={stylesPopoverDialog.pages}>
+                            <label htmlFor="paginatorSearch" style={{margin: "0"}}>{__("reader.navigation.page")}</label>
+                            <select onChange={(e) => {
+                                    this.setState({nMatchPage: pageOptions.find((option) => option.id === parseInt(e.currentTarget.value, 10)).id});
+                                }}
+                                id="paginatorSearch"
+                                aria-label={__("reader.navigation.page")}
+                                // defaultValue={1}
+                                value={this.state.nMatchPage}
+                                >
+                                {pageOptions.map((item) => (
+                                    <option key={item.id} value={item.id}>{item.name}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <button title={__("opds.next")}
+                            onClick={() => this.onPageNext()}
+                            disabled={end === this.props.foundArray?.length ? true : false}>
+                            <SVG ariaHidden={true} svg={ArrowRightIcon} />
+                        </button>
+
+                        <button title={__("opds.lastPage")}
+                            onClick={() => this.onPageLast()}
+                            disabled={end === this.props.foundArray?.length ? true : false}>
+                            <SVG ariaHidden={true} svg={ArrowLastIcon} />
+                        </button>
+                    </>
                 }
             </div>
             {
-                _searchJsx
-            }
+            this.props.foundArray?.length &&
+            <p
+                style={{
+                    textAlign: "center",
+                    padding: 0,
+                    margin: 0,
+                    marginTop: "-16px",
+                    marginBottom: "20px",
+            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${__("reader.picker.search.founds", {nResults: this.props.foundArray.length})}`}</p>
+        }
         </>);
     }
 
     private onPageFirst() {
-        _foundArray = undefined;
         this.setState({
             nMatchPage: 0,
         });
     }
     private onPageLast() {
-        if (_foundArray?.length) {
-            const nPages = Math.ceil(_foundArray.length / MAX_MATCHES_PER_PAGE);
+        if (this.props.foundArray?.length) {
+            const nPages = Math.ceil(this.props.foundArray.length / MAX_MATCHES_PER_PAGE);
 
-            _foundArray = undefined;
             this.setState({
                 nMatchPage: nPages - 1,
             });
@@ -184,7 +324,6 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
             return;
         }
 
-        _foundArray = undefined;
         this.setState({
             nMatchPage: this.state.nMatchPage - 1,
         });
@@ -192,8 +331,8 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
     private onPageNext() {
         let lastPage = true;
 
-        if (_foundArray?.length) {
-            const nPages = Math.ceil(_foundArray.length / MAX_MATCHES_PER_PAGE);
+        if (this.props.foundArray?.length) {
+            const nPages = Math.ceil(this.props.foundArray.length / MAX_MATCHES_PER_PAGE);
             lastPage = this.state.nMatchPage >= (nPages - 1);
         }
 
@@ -201,109 +340,9 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
             return;
         }
 
-        _foundArray = undefined;
         this.setState({
             nMatchPage: this.state.nMatchPage + 1,
         });
-    }
-
-    private renderSearchLinks(label: string, foundArray: ISearchResult[]): JSX.Element {
-
-        let k = 0;
-        let iMatch = -1;
-        return <ul
-            aria-label={label}
-            className={stylesReader.chapters_content}
-            role={"list"}
-        >{
-            (this.props.readingOrder || []).reduce((pv, spineLink, j) => {
-                const res = foundArray.reduce((prevVal, v, _i) => {
-                    if (v.href === spineLink.Href) {
-
-                        iMatch++;
-                        const startIndex = this.state.nMatchPage * MAX_MATCHES_PER_PAGE;
-                        if (iMatch >= startIndex && iMatch < (startIndex + MAX_MATCHES_PER_PAGE)) {
-
-                            const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
-
-                            k++;
-                            const jsx = (
-                                <li
-                                    key={`found_${k}`}
-                                    aria-level={1}
-                                    role={"listitem"}
-                                >
-                                    <a
-                                        className={
-                                            classNames(stylesReader.line,
-                                                stylesReader.active,
-                                                isRTL ? stylesReader.rtlDir : " ")
-                                        }
-                                        style={{
-                                            fontWeight: "normal",
-                                        }}
-                                        onClick=
-                                            {(e) => {
-                                                const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                                                this.handleSearchClickDebounced(e, v.uuid, closeNavPanel);
-                                            }}
-                                        onDoubleClick=
-                                            {(e) => this.handleSearchClickDebounced(e, v.uuid, false)}
-                                        tabIndex={0}
-                                        onKeyPress=
-                                            {
-                                                (e) => {
-                                                    if (e.key === "Enter") {
-                                                        const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-                                                        this.handleSearchClick(e, v.uuid, closeNavPanel);
-                                                    }
-                                                }
-                                            }
-                                        data-href={v.href}
-                                    >
-                                        <span dir={isRTL ? "rtl" : "ltr"}>{
-                                        `...${v.cleanBefore}`
-                                        }<span style={{backgroundColor: "coral"}}>{
-                                        `${v.cleanText}`
-                                        }</span>{
-                                        `${v.cleanAfter}...`
-                                        }</span>
-                                    </a>
-                                </li>
-                            );
-
-                            prevVal.push(jsx);
-                        }
-                    }
-
-                    return prevVal;
-                }, []);
-                if (res.length) {
-                    k++;
-                    let title = spineLink.Title;
-                    if (!title && this.props.toc) {
-                        const l = findFirstLinkWithHref(this.props.toc, spineLink.Href);
-                        if (l && l.Title) {
-                            title = l.Title;
-                        }
-                    }
-                    const jsxHead = (
-                    <li
-                        style={{
-                            padding: "0.7em",
-                            border: "1px solid #333333",
-                            borderRadius: "1em",
-                            lineHeight: "1.3",
-                        }}
-                        key={`found_${k}`}>
-                        <span>{title ? title : `#${j} ${spineLink.Href}`}</span>
-                    </li>
-                    );
-                    pv.push(jsxHead);
-                }
-                return pv.concat(res);
-            }, [])
-        }</ul>;
     }
 
     // private renderLinkTree(label: string | undefined, links: Link[], level: number): JSX.Element {
@@ -352,12 +391,12 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
     //                                         onClick=
     //                                         {(e) => this.handleSearchClick(e, link.Href, false)}
     //                                         tabIndex={0}
-    //                                         onKeyPress=
+    //                                         onKeyUp=
     //                                         {
     //                                             (e) => {
     //                                                 if (link.Href && e.key === "Enter") {
-    //                                                     const closeNavPanel = e.shiftKey && e.altKey ? false : true;
-    //                                                     this.handleSearchClick(e, link.Href, closeNavPanel);
+    //                                                     const closeNavSearch = e.shiftKey && e.altKey ? false : true;
+    //                                                     this.handleSearchClick(e, link.Href, closeNavSearch);
     //                                                 }
     //                                             }
     //                                         }
@@ -375,7 +414,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
     //     </ul>;
     // }
 
-    private handleSearchClick(
+    public handleSearchClick(
         e: React.MouseEvent<any> | React.KeyboardEvent<HTMLAnchorElement>,
         href: string,
         closeNavPanel: boolean) {
@@ -383,7 +422,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
         handleSearchClickFunc(this, e, href, closeNavPanel);
     }
 
-    private handleSearchClickDebounced(
+    public handleSearchClickDebounced(
         e: React.MouseEvent<any> | React.KeyboardEvent<HTMLAnchorElement>,
         href: string,
         closeNavPanel: boolean) {
@@ -404,8 +443,7 @@ const handleSearchClickFunc = (
         thiz.props.focusMainAreaLandmarkAndCloseMenu();
     }
 
-    console.log(href);
-    thiz.props.focus(href); // search uuid
+    thiz.props.searchFocusCurrent(href); // search uuid
 };
 
 const handleSearchClickFuncDebounced = debounce(handleSearchClickFunc, 300);
@@ -494,7 +532,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 };
 
 const mapDispatchToProps = (dispatch: TDispatch) => ({
-    focus: (uuid: string) => {
+    searchFocusCurrent: (uuid: string) => {
         dispatch(readerLocalActionSearch.focus.build(uuid));
     },
 });

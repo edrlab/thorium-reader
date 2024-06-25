@@ -15,6 +15,7 @@ import { getPublication } from "./getPublication";
 import { importFromFs, importFromLink, importFromString } from "./import";
 import { search, searchEqTitle } from "./search";
 import { updateTags } from "./updateTags";
+import { SagaGenerator } from "typed-redux-saga";
 
 export const publicationApi: IPublicationApi = {
     findAll,
@@ -28,4 +29,7 @@ export const publicationApi: IPublicationApi = {
     importFromString,
     searchEqTitle,
     updateTags,
+
+    // see readingFinished action : just used to refresh AllPublicationPage.tsx when set as finished
+    readingFinishedRefresh: function* (): SagaGenerator<void> { },
 };

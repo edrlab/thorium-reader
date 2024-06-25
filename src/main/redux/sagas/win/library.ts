@@ -6,13 +6,12 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { dialog } from "electron";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import {
-    closeProcessLock, diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi,
+    closeProcessLock, getLibraryWindowFromDi, getReaderWindowFromDi,
 } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { winActions } from "readium-desktop/main/redux/actions";
@@ -96,6 +95,8 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
     const state = yield* selectTyped((_state: RootState) => _state);
 
     const payload: Partial<ILibraryRootState> = {
+        theme: state.theme,
+        wizard: state.wizard,
         win: {
             identifier,
         },
@@ -104,6 +105,10 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
                 entries: [],
             },
             tag: [],
+        },
+        session: {
+            state: state.session.state,
+            save: state.session.save,
         },
     };
     try {
@@ -180,7 +185,7 @@ function* winClose(_action: winActions.library.closed.TAction) {
     debug("library -> winClose");
 
     const library = getLibraryWindowFromDi();
-    let value = 0; // window.close() // not saved session by default
+    let sessionSaving = false; // window.close() // not saved session by default
 
     {
 
@@ -194,28 +199,31 @@ function* winClose(_action: winActions.library.closed.TAction) {
             debug(sessionIsEnabled ? "session enabled destroy reader" : "session not enabled close reader");
             if (sessionIsEnabled) {
 
-                const messageValue = yield* callTyped(
-                    async () => {
 
-                        const translator = diMainGet("translator");
+                delay(100);
+                sessionSaving = (yield* selectTyped((state: RootState) => state.session.save)) || false;
+                // const messageValue = yield* callTyped(
+                //     async () => {
 
-                        return dialog.showMessageBox(
-                            library,
-                            {
-                                type: "question",
-                                buttons: [
-                                    translator.translate("app.session.exit.askBox.button.no"),
-                                    translator.translate("app.session.exit.askBox.button.yes"),
-                                ],
-                                defaultId: 1,
-                                title: translator.translate("app.session.exit.askBox.title"),
-                                message: translator.translate("app.session.exit.askBox.message"),
-                            },
-                        );
-                    },
-                );
-                debug("result:", messageValue.response);
-                value = messageValue.response;
+                //         const translator = diMainGet("translator");
+
+                //         return dialog.showMessageBox(
+                //             library,
+                //             {
+                //                 type: "question",
+                //                 buttons: [
+                //                     translator.translate("app.session.exit.askBox.button.no"),
+                //                     translator.translate("app.session.exit.askBox.button.yes"),
+                //                 ],
+                //                 defaultId: 1,
+                //                 title: translator.translate("app.session.exit.askBox.title"),
+                //                 message: translator.translate("app.session.exit.askBox.message"),
+                //             },
+                //         );
+                //     },
+                // );
+                // debug("result:", messageValue.response);
+                // value = messageValue.response;
             }
 
             yield all(
@@ -229,14 +237,13 @@ function* winClose(_action: winActions.library.closed.TAction) {
                             try {
                                 const readerWin = yield* callTyped(() => getReaderWindowFromDi(reader.identifier));
 
-                                if (value === 1) {
+                                if (sessionSaving) {
                                     // force quit the reader windows to keep session in next startup
                                     debug("destroy reader", index);
                                     readerWin.destroy();
                                 } else {
                                     debug("close reader", index);
                                     readerWin.close();
-
                                 }
                             } catch (_err) {
                                 // ignore
@@ -250,13 +257,13 @@ function* winClose(_action: winActions.library.closed.TAction) {
         }
     }
 
-    if (value === 1) {
+    if (sessionSaving) {
 
         // closed the library and thorium
         library.destroy();
     } else {
 
-        yield spawn(function*() {
+        yield spawn(function* () {
 
             let readersArray: IWinSessionReaderState[];
 
@@ -269,6 +276,7 @@ function* winClose(_action: winActions.library.closed.TAction) {
 
             library.destroy();
         });
+
     }
 }
 

@@ -71,7 +71,10 @@ const keyDownUpEventHandler = (
     keyDown: boolean,
 ) => {
     const doc = document as TKeyboardDocument;
-    const inputType = elementName === "INPUT" ? elementAttributes.type : undefined;
+    let inputType = elementName === "INPUT" ? elementAttributes.type : undefined;
+    if (!inputType && elementAttributes["data-input-type"]) {
+        inputType = elementAttributes["data-input-type"];
+    }
     const isArrows = _keyOptionsArrows.includes(ev.code);
     const isEnterReturnSpace = _keyOptionsEnterReturnSpace.includes(ev.code);
     const isBlackListed =

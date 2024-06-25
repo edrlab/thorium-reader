@@ -16,7 +16,7 @@ import { ISearchDocument, ISearchResult } from "readium-desktop/utils/search/sea
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, cancel, join, put, take } from "redux-saga/effects";
 import {
-    all as allTyped, fork as forkTyped, select as selectTyped, takeEvery as takeEveryTyped,
+    all as allTyped, delay as delayTyped, fork as forkTyped, select as selectTyped, takeEvery as takeEveryTyped,
     takeLatest as takeLatestTyped,
 } from "typed-redux-saga/macro";
 
@@ -86,7 +86,6 @@ function converterSearchResultToHighlightHandlerState(v: ISearchResult, color = 
     return {
         uuid: v.uuid,
         href: v.href,
-        type: "search",
         def: {
             group: "search",
             color,
@@ -124,16 +123,19 @@ function* searchFound(action: readerLocalActionSearch.found.TAction) {
 function* searchFocus(action: readerLocalActionSearch.focus.TAction) {
 
     const { newFocusUUId, oldFocusUUId } = action.payload;
-    if (newFocusUUId === oldFocusUUId) {
-        return;
-    }
-
     debug(`searchFocus -- oldFocusUUId: [${oldFocusUUId}] newFocusUUId: [${newFocusUUId}]`);
 
     const { foundArray } = yield* selectTyped((state: IReaderRootState) => state.search);
 
     const oldItem = foundArray.find((v) => v.uuid === oldFocusUUId);
     const newItem = foundArray.find((v) => v.uuid === newFocusUUId);
+
+
+    // page turn, same current search focus but position / scroll needs to be restored!
+    if (newItem && newFocusUUId === oldFocusUUId) {
+        handleLinkLocatorDebounced(createLocatorLink(newItem.href, newItem.rangeInfo));
+        return;
+    }
 
     if (newItem && oldItem) {
         const oldItemClone = clone(oldItem);
@@ -247,6 +249,8 @@ function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
         function*(action: readerLocalActionSearch.request.TAction) {
             yield join(taskRequest);
 
+            yield* delayTyped(100); // refresh load props in Search.tsx (Caused by React18 !?, the load spinner doesn't rotate now !)
+
             yield call(searchRequest, action);
         },
     );
@@ -265,11 +269,11 @@ function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
 }
 
 function* highlightClick(action: readerLocalActionHighlights.click.TAction) {
-    debug(`highlightClick ACTION (will focus) -- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
 
-    const { type, uuid } = action.payload;
+    const { uuid, def: {group} } = action.payload;
 
-    if (uuid && type === "search") {
+    if (uuid && group === "search") {
+        debug(`highlightClick ACTION (will focus) -- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
         yield put(readerLocalActionSearch.focus.build(uuid));
     }
 }
@@ -313,7 +317,7 @@ function* clearSearch() {
     }
 
     const uuids = handlerStateMap
-        .filter(([_uuid, handlerState]) => handlerState.type === "search")
+        .filter(([_uuid, handlerState]) => handlerState.def.group === "search")
         .map(([uuid, _handlerState]) => ({ uuid }));
 
     debug(`clearSearch (highlight pop) -- uuids: [${JSON.stringify(uuids, null, 4)}]`);

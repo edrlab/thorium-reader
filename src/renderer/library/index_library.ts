@@ -68,8 +68,12 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
     switch (data.type) {
         case winIpc.EventType.IdResponse:
             // Initialize window
+
             const preloadedState: Partial<ILibraryRootState> = {
+                theme: data.payload.theme,
+                wizard: data.payload.wizard,
                 publication: data.payload.publication,
+                session: data.payload.session,
             };
             createStoreFromDi(preloadedState)
                 .then((store) => store.dispatch(winActions.initRequest.build(data.payload.win.identifier)))

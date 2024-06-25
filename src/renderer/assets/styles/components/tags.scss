@@ -1,0 +1,199 @@
+/*
+=-=-= tags.scss
+*/
+
+.tags_wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-light-blue);
+  padding: 2px 6px;
+  border-radius: 5px;
+  border: 1px solid var(--color-blue);
+  color: var(--color-blue)!important;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  margin-right: 10px;
+  margin-bottom: 5px;
+
+
+  a {
+    display: flex;
+    align-items: center;
+    text-decoration: none!important;
+    color: var(--color-blue)!important;
+    word-break: break-all;
+    white-space: normal;
+
+
+    &:visited {
+      color: var(--color-blue);
+    }
+  }
+
+  &:has(button[data-state="open"]) {
+    background-color: var(--color-light-grey);
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+
+    a {
+      color: black!important;
+    }
+
+    &:hover {
+      background-color: var(--color-light-grey);
+    }
+
+    svg {
+      color: var(--color-primary);
+    }
+  }
+
+  & svg {
+    fill: var(--color-blue);
+    color: var(--color-blue);
+  }
+
+  &:hover {
+    background-color: var(--color-secondary);
+  }
+
+  &.no_hover:hover {
+    background-color: var(--color-secondary);
+    cursor: default;
+  }
+
+  & button {
+    width: 11px;
+    height: 11px;
+    margin: 0 0 0 5px;
+
+    &:hover svg {
+      color: var(--color-primary);
+    }
+  }
+
+  &_inputs {
+    position: relative;
+    max-width: 300px;
+    flex: 1;
+    border-radius: 0;
+    border: none;
+    height: 35px;
+    background-color: transparent;
+    color: var(--color-primary);
+    border-bottom: 1px solid #c1c1c1;
+  
+    &::placeholder {
+      font-weight: 300;
+      color: #c1c1c1;
+    }
+  }
+}
+
+.___DEBUG___COMPONENTS_TAGS_CSS {
+  display: none;
+}
+
+.Popover_delete_tag {
+  z-index: 1000;
+  border: 1px solid var(--color-blue);
+  background-color: var(--color-light-blue);
+  border-radius: 5px;
+  transition: 200ms;
+
+  button {
+    padding: 5px;
+    color: var(--color-blue);
+    height: unset;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: var(--color-secondary);
+    }
+
+    &:focus {
+      background-color: var(--color-blue);
+      border: 1px solid var(--color-secondary);
+      outline: 1px solid var(--color-blue);
+      color: var(--color-secondary);
+    }
+
+    svg {
+      width: 10px;
+    }
+  }
+}
+
+
+.allPub_tagsTrigger {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border-radius: 6px;
+  padding: 5px;
+
+  svg {
+    width: 24px;
+    color: var(--color-blue);
+    fill: var(--color-blue);
+  }
+}
+
+.Popover_filter_container {
+  background-color: var(--color-secondary);
+  border-radius: 6px;
+  border: 1px solid var(--color-medium-grey);
+  box-shadow: 0 3px 10px 5px var(--color-medium-grey);
+  padding: 20px 0 0;
+  overflow: scroll;
+  max-height: 50dvh;
+  width: fit-content;
+
+  > div {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    gap: 5px 10px 0;
+    width: 100%;
+    padding: 10px 0 0;
+
+    .tag_item {
+      font-size: 14px;
+      border-bottom: 1px solid var(--color-medium-grey);
+      width: 100%;
+      padding: 5px 10px 5px 5px;
+      margin: 0;
+
+      &:hover {
+        cursor: pointer;
+        background-color: var(--color-light-blue);
+      }
+    }
+  }
+
+  .resetFilter {
+    margin: auto;
+
+    svg {
+      width: 20px;
+      color: var(--color-blue);
+      fill: var(--color-blue);
+    }
+
+    &:hover svg {
+      color: var(--color-error-dark);
+      fill: var(--color-error-dark);
+    }
+  }
+}

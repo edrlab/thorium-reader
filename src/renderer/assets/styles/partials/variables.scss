@@ -1,70 +1,98 @@
-/*
-=-=-= partials/variables.css
-=-=-= globally imported by sass-loader with : { additionalData: `@import "./src/renderer/assets/styles/partials/variables.scss";` }
-*/
-
 @use "sass:map";
+@use 'sass:color';
 
 $color-palette: (
   light: (
     --color-primary: #4d4d4d,
     --color-secondary: #fff,
-    --color-tertiary: #67a3e0,
-    --color-disabled: #040303,
-    --color-light-grey: #f1f1f1,
-    --color-medium-grey: #e5e5e5,
-    --color-accent: rgb(0, 188, 212),
+    --color-blue: #1053C8,
+    --color-blue-alt: #1053C8,
+    --color-light-blue: #ECF2FD,
+    --color-extralight-grey: #f5f5f5,
+    --color-extralight-grey-alt: color.adjust(#f5f5f5, $lightness: -5%),
+    --color-verylight-grey: #d9d9d9,
+    --color-verylight-grey-alt: #d9d9d9,
+    --color-light-grey: #afb1b6,
+    --color-medium-grey: #61646B,
+    --color-mediumdark-grey: #2D2D2D,
+    --color-mediumdark-grey-alt: #2D2D2D,
+    --color-dark-grey: #1E1E1E,
+    --color-dark-grey-alt: #1E1E1E,
+    --color-accent: #00BCD4,
     --color-accent-contrast: #fff,
     --reader-fontColor: #000,
-    --color-button-primary: rgba(16, 83, 200, 1),
-    --color-button-secondary: rgba(16, 83, 200, 0.05),
-    --color-bg-tab: rgba(246, 246, 246, 0.84),
-    --setting-btn-primary: #3a00e5,
-    --setting-btn-secondary: #f7f5ff,
+    --scrollbar-thumb: #98989d,
+    --color-disabled: #61646B,
+    --color-error: #FCEEF1,
+    --color-error-dark: #D52A54,
+    --color-success: #0B8454,
+    --color-success-light: #ECFEF7,
+    --color-appName: #AFB1B6,
+    --color-annotations-txt: #f5f5f5,
+    --color-annotations-txt-area: #fff,
+    --color-annotations-bg: #fff,
+    --color-button-hover: #fff,
+    --color-docked-header: #f5f5f5,
   ),
   dark: (
-    --color-primary: #4d4d4d,
-    --color-secondary: #fff,
+    --color-primary: #e7eaf8,
+    --color-secondary: #1D1D1E,
+    --color-blue: #99A9E3,
+    --color-blue-alt: #fff,
+    --color-light-blue: #2D2D2D,
+    --color-extralight-grey: #27272a,
+    --color-extralight-grey-alt: color.adjust(#27272a, $lightness: 5%),
+    --color-verylight-grey: color.adjust(#61646B, $lightness: 25%),
+    --color-verylight-grey-alt: #7c7d86,
+    --color-light-grey: #48484b,
+    --color-medium-grey: #7c7d86,
+    --color-mediumdark-grey: #2D2D2D,
+    --color-mediumdark-grey-alt: #d9d9d9,
+    --color-dark-grey: #1E1E1E,
+    --color-dark-grey-alt: #7c7d86,
+    --color-accent: #00BCD4,
+    --color-accent-contrast: #fff,
+    --reader-fontColor: #000,
+    --scrollbar-thumb: #98989d,
+    --color-disabled: #a7a9b3,
+    --color-error: #4f1d1d,
+    --color-error-dark: #F590A9,
+    --color-success: #303936,
+    --color-success-light: #121d19,
+    --color-appName: #EAEAEA,
+    --color-annotations-txt: #3b3c3f,
+    --color-annotations-txt-area: #3b3c3f,
+    --color-annotations-bg: #2D2D2D,
+    --color-button-hover: #48484b,
+    --color-docked-header: #121212,
+
+  /*
+    --color-primary: #fff,
+    --color-secondary: #4d4d4d,
     --color-tertiary: #67a3e0,
-    --color-disabled: #040303,
+    --color-disabled: #b7b7b7,
     --color-light-grey: #f1f1f1,
     --color-medium-grey: #e5e5e5,
     --color-accent: rgb(0, 188, 212),
     --color-accent-contrast: #fff,
-    --reader-fontColor: #000,
-    --color-button-primary: rgba(16, 83, 200, 1),
-    --color-button-secondary: rgba(16, 83, 200, 0.05),
-    --color-bg-tab: rgba(246, 246, 246, 0.84),
-    --setting-btn-primary: #3a00e5,
-    --setting-btn-secondary: #f7f5ff,
-  
-  // disable in develop branch, TODO improve darkmode color
-  //   --color-primary: #fff,
-  //   --color-secondary: #4d4d4d,
-  //   --color-tertiary: #67a3e0,
-  //   --color-disabled: #b7b7b7,
-  //   --color-light-grey: #f1f1f1,
-  //   --color-medium-grey: #e5e5e5,
-  //   --color-accent: rgb(0, 188, 212),
-  //   --color-accent-contrast: #fff,
-  //   --reader-fontColor: #fff,
-  //   --color-button-primary: rgba(16, 83, 200, 1),
-  //   --color-button-secondary: rgba(16, 83, 200, 0.05),
-  //   --color-bg-tab: rgba(16, 18, 22, 0.6),
-  //   --setting-btn-primary: #fff,
-  //   --setting-btn-secondary: var(--color-secondary),
-
+    --reader-fontColor: #fff,
+    --color-blue: rgba(16, 83, 200, 1),
+    --color-light-blue: rgba(236, 242, 253, 1),
+    --color-bg-tab: rgba(16, 18, 22, 0.6),
+    --setting-btn-primary: #fff,
+    --setting-btn-secondary: var(--color-secondary),
+        */
   ),
 );
 
 @function color($color, $value) {
-  @return map-get(map-get($color-palette, $color), $value);
+  @return map.get(map.get($color-palette, $color), $value);
 }
 
 @media (prefers-color-scheme: light) {
   :root {
     /* Colors */
-    @each $key, $value in map-get($color-palette, light) {
+    @each $key, $value in map.get($color-palette, light) {
       #{$key}: color(light, #{$key});
     }
   }
@@ -73,7 +101,7 @@ $color-palette: (
 @media (prefers-color-scheme: dark) {
   :root {
     /* Colors */
-    @each $key, $value in map-get($color-palette, dark) {
+    @each $key, $value in map.get($color-palette, dark) {
       #{$key}: color(dark, #{$key});
     }
   }
@@ -82,7 +110,7 @@ $color-palette: (
 [data-theme="light"] {
 
   /* Colors */
-  @each $key, $value in map-get($color-palette, light) {
+  @each $key, $value in map.get($color-palette, light) {
     #{$key}: color(light, #{$key});
   }
 }
@@ -90,7 +118,7 @@ $color-palette: (
 [data-theme="dark"] {
 
   /* Colors */
-  @each $key, $value in map-get($color-palette, dark) {
+  @each $key, $value in map.get($color-palette, dark) {
     #{$key}: color(dark, #{$key});
   }
 }

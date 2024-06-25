@@ -60,6 +60,16 @@ export const reduxPersistMiddleware: Middleware
                     readerState.disableRTLFlip = nextState.reader.disableRTLFlip;
                     dispatchFlag = true;
                 }
+                if (!ramda.equals(prevState.reader.annotation, nextState.reader.annotation)) {
+
+                    readerState.annotation = nextState.reader.annotation;
+                    dispatchFlag = true;
+                }
+                if (!ramda.equals(prevState.reader.allowCustomConfig, nextState.reader.allowCustomConfig)) {
+
+                    readerState.allowCustomConfig = nextState.reader.allowCustomConfig;
+                    dispatchFlag = true;
+                }
                 if (dispatchFlag) {
 
                     dispatchSetReduxState(store, readerState);

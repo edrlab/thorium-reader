@@ -27,11 +27,17 @@ import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { catalogViewReducer } from "./catalog";
 import { tagReducer } from "./tag";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
+import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
+
 // import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { readerRTLFlipReducer } from "readium-desktop/common/redux/reducers/reader/rtlFlip";
+import { wizardReducer } from "readium-desktop/common/redux/reducers/wizard";
+import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/version-update";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
     return combineReducers({ // ILibraryRootState
+        versionUpdate: versionUpdateReducer,
+        theme: themeReducer,
         reader: combineReducers({
             defaultConfig: readerDefaultConfigReducer,
             disableRTLFlip: readerRTLFlipReducer,
@@ -79,5 +85,6 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
             catalog: catalogViewReducer,
             tag: tagReducer,
         }),
+        wizard: wizardReducer,
     });
 };

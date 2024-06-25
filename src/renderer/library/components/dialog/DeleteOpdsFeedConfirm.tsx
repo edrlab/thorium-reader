@@ -6,64 +6,53 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { connect } from "react-redux";
-import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
-import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
-import { apiAction } from "readium-desktop/renderer/library/apiAction";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import { IOpdsFeedView } from "readium-desktop/common/views/opds";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
+import { useDispatch } from "react-redux";
+import { dialogActions } from "readium-desktop/common/redux/actions";
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
-}
-// IProps may typically extend:
-// RouteComponentProps
-// ReturnType<typeof mapStateToProps>
-// ReturnType<typeof mapDispatchToProps>
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
-}
+const DeleteOpdsFeedConfirm = (props: { feed: IOpdsFeedView, trigger: React.ReactNode } & AlertDialog.AlertDialogProps) => {
+    const [__] = useTranslator();
+    const [_, remove] = useApi(undefined, "opds/deleteFeed");
+    const dispatch = useDispatch();
+    const removeAction = React.useCallback(() => {
+        dispatch(dialogActions.closeRequest.build());
+        remove(props.feed.identifier);
+    }, [dispatch, remove, props.feed.identifier]);
 
-class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
+    return (
+        <AlertDialog.Root {...props}>
+            <AlertDialog.Trigger asChild>
+                {props.trigger}
+            </AlertDialog.Trigger>
+            <AlertDialog.Portal>
+                <div className={stylesAlertModals.AlertDialogOverlay}></div>
+                <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
+                    <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deleteFeed")}</AlertDialog.Title>
+                    <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
+                        {props.feed.title}
+                    </AlertDialog.Description>
+                    <div className={stylesAlertModals.AlertDialogButtonContainer}>
+                        <AlertDialog.Cancel asChild>
+                            <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                        </AlertDialog.Cancel>
+                        <AlertDialog.Action asChild>
+                            <button className={stylesButtons.button_primary_blue} onClick={removeAction} type="button">
+                                <SVG ariaHidden svg={TrashIcon} />
+                                {__("dialog.yes")}</button>
+                        </AlertDialog.Action>
+                    </div>
+                </AlertDialog.Content>
+            </AlertDialog.Portal>
+        </AlertDialog.Root>
+    );
 
-    constructor(props: IProps) {
-        super(props);
-    }
+};
 
-    public render(): React.ReactElement<{}> {
-        if (!this.props.open || !this.props.feed) {
-            return (<></>);
-        }
-
-        const { __ } = this.props;
-        return (
-            <Dialog
-                title={__("dialog.deleteFeed")}
-                onSubmitButton={this.remove}
-                submitButtonDisabled={false}
-                submitButtonTitle={this.props.__("dialog.yes")}
-                shouldOkRefEnabled={true}
-                size={"small"}
-            >
-                <p>
-                    <span>{this.props.feed.title}</span>
-                </p>
-            </Dialog>
-        );
-    }
-
-    private remove = () => {
-        apiAction("opds/deleteFeed", this.props.feed.identifier).catch((error) => {
-            console.error("Error to fetch opds/deleteFeed", error);
-        });
-    };
-}
-
-const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
-    open: state.dialog.type === DialogTypeName.DeleteOpdsFeedConfirm,
-    feed: (state.dialog.data as DialogType[DialogTypeName.DeleteOpdsFeedConfirm]).feed,
-});
-
-export default connect(mapStateToProps)(withTranslator(DeleteOpdsFeedConfirm));
+export default DeleteOpdsFeedConfirm;

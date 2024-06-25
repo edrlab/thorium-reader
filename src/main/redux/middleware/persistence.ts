@@ -14,6 +14,7 @@ import { patchChannel } from "../sagas/patch";
 
 import { PersistRootState, RootState } from "../states";
 
+// We do not persist ICommonRootState.versionUpdate ({newVersionURL, newVersion} state always starts at undefined)
 export const reduxPersistMiddleware: Middleware
     = (store: MiddlewareAPI<Dispatch<UnknownAction>, RootState>) =>
         (next: (action: unknown) => unknown) => // Dispatch<ActionWithSender>
@@ -26,6 +27,8 @@ export const reduxPersistMiddleware: Middleware
                 const nextState = store.getState();
 
                 const persistPrevState: PersistRootState = {
+                    // versionUpdate: prevState.versionUpdate,
+                    theme: prevState.theme,
                     win: prevState.win,
                     reader: prevState.reader,
                     i18n: prevState.i18n,
@@ -33,12 +36,16 @@ export const reduxPersistMiddleware: Middleware
                     publication: {
                         db: prevState.publication.db,
                         lastReadingQueue: prevState.publication.lastReadingQueue,
+                        readingFinishedQueue: prevState.publication.readingFinishedQueue,
                     },
                     opds: prevState.opds,
                     version: prevState.version,
+                    wizard: prevState.wizard,
                 };
 
                 const persistNextState: PersistRootState = {
+                    // versionUpdate: nextState.versionUpdate,
+                    theme: nextState.theme,
                     win: nextState.win,
                     reader: nextState.reader,
                     i18n: nextState.i18n,
@@ -46,9 +53,11 @@ export const reduxPersistMiddleware: Middleware
                     publication: {
                         db: nextState.publication.db,
                         lastReadingQueue: nextState.publication.lastReadingQueue,
+                        readingFinishedQueue: nextState.publication.readingFinishedQueue,
                     },
                     opds: nextState.opds,
                     version: nextState.version,
+                    wizard: nextState.wizard,
                 };
 
                 // RangeError: Maximum call stack size exceeded

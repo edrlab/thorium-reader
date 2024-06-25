@@ -48,6 +48,8 @@ export interface IPublicationApi {
     exportPublication: (
         publicationView: PublicationView,
     ) => SagaGenerator<void>;
+    readingFinishedRefresh: (
+    ) => SagaGenerator<void>;
 }
 
 export interface IPublicationModuleApi {
@@ -62,4 +64,5 @@ export interface IPublicationModuleApi {
     "publication/search": IPublicationApi["search"];
     "publication/searchEqTitle": IPublicationApi["searchEqTitle"];
     "publication/exportPublication": IPublicationApi["exportPublication"];
+    "publication/readingFinishedRefresh": IPublicationApi["readingFinishedRefresh"];
 }

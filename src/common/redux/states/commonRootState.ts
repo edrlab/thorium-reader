@@ -6,15 +6,19 @@
 // ==LICENSE-END==
 
 import { ISessionState } from "readium-desktop/common/redux/states/session";
+import { IVersionUpdateState } from "readium-desktop/common/redux/states/version";
 import { IRTLFlipState } from "readium-desktop/common/redux/states/renderer/rtlFlip";
 import { IKeyboardState } from "readium-desktop/common/redux/states/keyboard";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { ITheme } from "./theme";
 
 export interface ICommonRootState {
-    session: ISessionState
+    session: ISessionState;
+    versionUpdate: IVersionUpdateState;
     keyboard: IKeyboardState;
     reader: {
         defaultConfig: ReaderConfig,
         disableRTLFlip: IRTLFlipState,
     };
+    theme: ITheme;
 }

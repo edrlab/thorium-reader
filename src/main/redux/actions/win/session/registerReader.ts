@@ -63,6 +63,7 @@ export function build(
                 publicationIdentifier,
                 r2Publication: undefined,
                 publicationView,
+                navigator: undefined,
             },
         },
     };
