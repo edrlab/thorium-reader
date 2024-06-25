@@ -2401,7 +2401,8 @@ class Reader extends React.Component<IProps, IState> {
     private goToLocator(locator: R2Locator, closeNavPanel = true, isFromOnPopState = false) {
 
         if (closeNavPanel) {
-            this.closeMenu();
+            // this.closeMenu();
+            this.focusMainAreaLandmarkAndCloseMenu();
         }
 
         if (this.props.isPdf) {
@@ -2428,7 +2429,7 @@ class Reader extends React.Component<IProps, IState> {
         } else {
             this.handleLinkLocator(locator, isFromOnPopState);
 
-            this.focusMainArea();
+            // this.focusMainArea();
         }
 
     }
