@@ -155,10 +155,10 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
     React.useEffect(() => {
         if (textAreaRef.current) {
             textAreaRef.current.style.height = "auto";
-            textAreaRef.current.style.height = textAreaRef.current.scrollHeight + 3 + "px";
+            textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight + 3}px`;
             textAreaRef.current.focus();
         }
-    }, []);
+    }, []); // empty => runs once on mount (undefined => runs on every render)
 
     const component = <form
         className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form : stylesAnnotations.annotation_form}
