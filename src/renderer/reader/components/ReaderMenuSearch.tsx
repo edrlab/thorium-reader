@@ -443,7 +443,7 @@ const handleSearchClickFunc = (
         thiz.props.focusMainAreaLandmarkAndCloseMenu();
     }
 
-    thiz.props.focus(href); // search uuid
+    thiz.props.searchFocusCurrent(href); // search uuid
 };
 
 const handleSearchClickFuncDebounced = debounce(handleSearchClickFunc, 300);
@@ -532,7 +532,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 };
 
 const mapDispatchToProps = (dispatch: TDispatch) => ({
-    focus: (uuid: string) => {
+    searchFocusCurrent: (uuid: string) => {
         dispatch(readerLocalActionSearch.focus.build(uuid));
     },
 });
