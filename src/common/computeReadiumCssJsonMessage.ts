@@ -97,15 +97,6 @@ export const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayl
             settings.theme === "night" ? readiumCSSDefaults.linkVisitedColor :
             "#551A8B", // never seems to work in ReadiumCSS
 
-        backgroundColor: readiumCSSDefaults.backgroundColor,
-        textColor: readiumCSSDefaults.textColor,
-
-        selectionBackgroundColor: readiumCSSDefaults.selectionBackgroundColor,
-        selectionTextColor: readiumCSSDefaults.selectionTextColor,
-
-        linkColor: readiumCSSDefaults.linkColor,
-        linkVisitedColor: readiumCSSDefaults.linkVisitedColor,
-
         textAlign: settings.align === textAlignEnum.left ? textAlignEnum.left :
             (settings.align === textAlignEnum.right ? textAlignEnum.right :
             (settings.align === textAlignEnum.justify ? textAlignEnum.justify :
