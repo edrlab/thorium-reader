@@ -44,15 +44,15 @@ interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, Retu
 }
 
 export class PublicationListElement extends React.Component<IProps> {
-    private buttonRef: React.RefObject<HTMLButtonElement>;
+    // private buttonRef: React.RefObject<HTMLButtonElement>;
 
     constructor(props: IProps) {
         super(props);
 
-        this.buttonRef = React.createRef<HTMLButtonElement>();
+        // this.buttonRef = React.createRef<HTMLButtonElement>();
 
         // this.deletePublication = this.deletePublication.bind(this);
-        this.focusButton = this.focusButton.bind(this);
+        // this.focusButton = this.focusButton.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -109,12 +109,12 @@ export class PublicationListElement extends React.Component<IProps> {
                     {this.props.menuContent}
                 </Menu>
                 {/* <button
+                    ref={this.buttonRef}
                     type="button"
                     aria-expanded={this.state.menuOpen}
                     aria-controls={this.menuId}
                     title={`${pub.title} - ${authors}`}
                     onClick={this.toggleMenu}
-                    ref={this.buttonRef}
                     className={stylesButtons.button_transparency_icon}
                 >
                     <SVG ariaHidden={true} svg={MenuIcon} />
@@ -156,11 +156,11 @@ export class PublicationListElement extends React.Component<IProps> {
         );
     }
 
-    private focusButton() {
-        if (this.buttonRef?.current) {
-            this.buttonRef.current.focus();
-        }
-    }
+    // private focusButton() {
+    //     if (this.buttonRef?.current) {
+    //         this.buttonRef.current.focus();
+    //     }
+    // }
 
     private handleBookClick(e: React.SyntheticEvent) {
         e.preventDefault();
