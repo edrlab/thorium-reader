@@ -74,7 +74,7 @@ import {
     setReadingLocationSaver, ttsClickEnable, ttsNext, ttsOverlayEnable, ttsPause,
     ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
     ttsStop, ttsVoice, highlightsClickListen,
-    stealFocusDisable,
+    // stealFocusDisable,
 } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
@@ -1573,10 +1573,11 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        if (this.fastLinkRef?.current) {
-            console.log("€€€€€ FOCUS READER MAIN");
-            this.fastLinkRef.current.focus();
-        }
+        this.focusMainArea();
+        // if (this.fastLinkRef?.current) {
+        //     console.log("€€€€€ FOCUS READER MAIN");
+        //     this.fastLinkRef.current.focus();
+        // }
     };
 
     private onKeyboardFocusToolbar = () => {
@@ -2210,8 +2211,8 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        // Force webview to give the hand before Radix Dialog triggered
-        stealFocusDisable(true);
+        // // Force webview to give the hand before Radix Dialog triggered
+        // stealFocusDisable(true);
 
         this.handleMenuButtonClick(true, "tab-toc");
 

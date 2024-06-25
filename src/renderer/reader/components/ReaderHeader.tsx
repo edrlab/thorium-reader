@@ -45,7 +45,9 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
-import { fixedLayoutZoomPercent, stealFocusDisable } from "@r2-navigator-js/electron/renderer/dom";
+import { fixedLayoutZoomPercent,
+    // stealFocusDisable
+} from "@r2-navigator-js/electron/renderer/dom";
 import {
     LocatorExtended, MediaOverlaysStateEnum, TTSStateEnum,
 } from "@r2-navigator-js/electron/renderer/index";
@@ -232,6 +234,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         }
 
         if (this.props.fullscreen !== oldProps.fullscreen) {
+            // TODO: why steal focus here? (for example if the fullscreen/zenmode feature is activated via keyboard shortcut instead of button click!)
             if (this.props.fullscreen && this.disableFullscreenRef?.current) {
                 this.disableFullscreenRef.current.focus();
             } else if (!this.props.fullscreen && this.enableFullscreenRef?.current) {
@@ -242,6 +245,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         if (this.props.infoOpen !== oldProps.infoOpen &&
             this.props.infoOpen === false &&
             this.infoMenuButtonRef?.current) {
+            // TODO: why steal focus here? (for example if the dialog was activated via keyboard shortcut instead of button click!)
             this.infoMenuButtonRef.current.focus();
         }
 
@@ -990,14 +994,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     console.log("MENU DialogOnOpenChange", open);
                                     this.props.handleMenuClick(open);
                                     if (open) {
-                                        if (!this.props.isDivina  && !this.props.isPdf) {
-                                            stealFocusDisable(true);
-                                        }
+                                        // if (!this.props.isDivina  && !this.props.isPdf) {
+                                        //     stealFocusDisable(true);
+                                        // }
                                         this.__closeNavPanel = false;
                                     } else {
-                                        if (!this.props.isDivina  && !this.props.isPdf) {
-                                            stealFocusDisable(false);
-                                        }
+                                        // if (!this.props.isDivina  && !this.props.isPdf) {
+                                        //     stealFocusDisable(false);
+                                        // }
                                     }
                                 }}
                                 modal={!isDockedMode}
@@ -1096,16 +1100,16 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 onOpenChange={(open) => {
                                     console.log("SETTINGS DialogOnOpenChange", open);
                                     this.props.handleSettingsClick(open);
-                                    if (open) {
-                                        if (!this.props.isDivina  && !this.props.isPdf) {
-                                            stealFocusDisable(true);
-                                        }
-                                        // this.__closeNavPanel = false;
-                                    } else {
-                                        if (!this.props.isDivina  && !this.props.isPdf) {
-                                            stealFocusDisable(false);
-                                        }
-                                    }
+                                    // if (open) {
+                                    //     if (!this.props.isDivina  && !this.props.isPdf) {
+                                    //         stealFocusDisable(true);
+                                    //     }
+                                    //     // this.__closeNavPanel = false;
+                                    // } else {
+                                    //     if (!this.props.isDivina  && !this.props.isPdf) {
+                                    //         stealFocusDisable(false);
+                                    //     }
+                                    // }
                                 }}
                                 modal={!isDockedMode}
                             >
