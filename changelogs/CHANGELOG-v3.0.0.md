@@ -2,7 +2,7 @@
 
 ## Summary
 
-Version `3.0.0` was released on **25 June 2024**.
+Version `3.0.0` was released on **26 June 2024**.
 
 This release includes the following (notable) new features, improvements and bug fixes:
 
