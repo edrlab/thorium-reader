@@ -406,6 +406,9 @@
       display: inline-block;
       vertical-align: top;
       margin-top: 5px;
+      word-wrap: break-word;
+      word-break: break-word;
+      white-space: normal;
     }
   
     .annotation_edit {
