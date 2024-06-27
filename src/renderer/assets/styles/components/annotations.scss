@@ -115,8 +115,8 @@
           &.button_primary_blue {
             color: var(--color-secondary);
 
-            &:hover {
-              color: var(--color-blue);
+            &:hover, &:focus:hover {
+              color: var(--color-blue)!important;
             }
           }
 
