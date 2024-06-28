@@ -422,6 +422,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
             comment,
             drawType,
         }));
+        cancelEdition();
     }, [dispatch, locatorExtended, uuid]);
 
     const date = new Date(timestamp);
