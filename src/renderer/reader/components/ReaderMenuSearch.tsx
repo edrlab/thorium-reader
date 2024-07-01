@@ -247,7 +247,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                 memoJsx
             }
             <div className={stylesPopoverDialog.navigation_container}>
-                {(this.props.foundArray && this.props.foundArray.length > MAX_MATCHES_PER_PAGE) &&
+                {(this.props.foundArray && this.props.foundArray.length > MAX_MATCHES_PER_PAGE) ?
                     <>
                         <button title={__("opds.firstPage")}
                             onClick={() => this.onPageFirst()}
@@ -288,11 +288,11 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                             disabled={end === this.props.foundArray?.length ? true : false}>
                             <SVG ariaHidden={true} svg={ArrowLastIcon} />
                         </button>
-                    </>
+                    </> : <></>
                 }
             </div>
             {
-            this.props.foundArray?.length &&
+            this.props.foundArray?.length ?
             <p
                 style={{
                     textAlign: "center",
@@ -301,6 +301,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                     marginTop: "-16px",
                     marginBottom: "20px",
             }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${__("reader.picker.search.founds", {nResults: this.props.foundArray.length})}`}</p>
+            : <></>
         }
         </>);
     }
