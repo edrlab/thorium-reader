@@ -398,7 +398,7 @@ const HardWrapComment: React.FC<{comment: string}> = (props) => {
     );
 };
 
-const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, isEdited: boolean, requestEdition: () => void, cancelEdition: () => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, isEdited: boolean, triggerEdition: (v: boolean) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
     const { goToLocator } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
@@ -408,7 +408,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     //     setReaderConfig({readerDockingMode: value});
     // }, [setReaderConfig]);
     const dockedMode = dockingMode !== "full";
-    const { timestamp, annotation, isEdited, cancelEdition, requestEdition } = props;
+    const { timestamp, annotation, isEdited, triggerEdition } = props;
     const { uuid, comment, locatorExtended } = annotation;
     const dockedEditAnnotation = isEdited && dockedMode;
 
@@ -422,7 +422,8 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
             comment,
             drawType,
         }));
-    }, [dispatch, locatorExtended, uuid]);
+        triggerEdition(false);
+    }, [dispatch, locatorExtended, uuid, triggerEdition]);
 
     const date = new Date(timestamp);
     const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;
@@ -462,7 +463,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
             if (e.key === "Escape") {
                 e.preventDefault();
                 e.stopPropagation();
-                cancelEdition();
+                triggerEdition(false);
                 setTimeout(() => {
                     const el = document.getElementById(`annotation_card-${uuid}_edit_button`);
                     el?.blur();
@@ -518,7 +519,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                     //  <FocusLock disabled={dockedMode} autoFocus={true}>
                     // TODO fix issue with focusLock on modal not docked
                     // <FocusLock disabled={true} autoFocus={true}>
-                    <AnnotationEdit uuid={uuid} save={save} cancel={cancelEdition} dockedMode={dockedMode} btext={dockedEditAnnotation && btext} />
+                    <AnnotationEdit uuid={uuid} save={save} cancel={() => triggerEdition(false)} dockedMode={dockedMode} btext={dockedEditAnnotation && btext} />
                     // </FocusLock>
                     :
                     <HardWrapComment comment={comment} />
@@ -540,7 +541,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                     id={`annotation_card-${annotation.uuid}_edit_button`} 
                     title={__("reader.marks.edit")}
                     disabled={isEdited}
-                    onClick={requestEdition}
+                    onClick={() => triggerEdition(true)}
                     >
                     <SVG ariaHidden={true} svg={EditIcon} />
                 </button>
@@ -578,7 +579,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                         <Popover.Content collisionPadding={{top : 180, bottom: 100}} avoidCollisions alignOffset={-10} hideWhenDetached sideOffset={5} className={stylesPopoverDialog.delete_item}>
                             <Popover.Close
                                     onClick={() => {
-                                        cancelEdition();
+                                        triggerEdition(false);
                                         dispatch(readerActions.annotation.pop.build(annotation));
                                     }}
                                     title={__("reader.marks.delete")}
@@ -608,58 +609,43 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
     // const previousFocusUuid = useSelector((state: IReaderRootState) => state.annotationControlMode.focus.previousFocusUuid);
 
-    const MAX_MATCHES_PER_PAGE = 3;
+    const MAX_MATCHES_PER_PAGE = 5;
 
-    // const pageTotal =  Math.ceil(annotationsQueue.length / MAX_MATCHES_PER_PAGE);
-    const pageTotal =  Math.floor(annotationsQueue.length / MAX_MATCHES_PER_PAGE) + ((annotationsQueue.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1);
+    const pageTotal =  Math.ceil(annotationsQueue.length / MAX_MATCHES_PER_PAGE) || 1;
 
-    const memoizedStartPage = React.useMemo(() => {
-        const annotationFocusItemIndex = annotationUUIDFocused ? annotationsQueue.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused) : 0;
-        const annotationFocusItemPageNumber = Math.floor(annotationFocusItemIndex / MAX_MATCHES_PER_PAGE) + 1;
-        const startPage = annotationUUIDFocused ? annotationFocusItemPageNumber : 1;
-        return startPage;
-    }, [annotationUUIDFocused, annotationsQueue]);
+    let startPage = 1;
+    if (annotationUUIDFocused) {
+        const annotationFocusItemFindIndex = annotationsQueue.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused);
+        if (annotationFocusItemFindIndex > -1) {
+            const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex+1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
+            startPage = annotationFocusItemPageNumber;
+        }
+    }
+    
+    const startPageRef = React.useRef<number>();
 
-    const [pageNumber, setPageNumber] = React.useState(memoizedStartPage);
-    if (pageNumber > pageTotal) {
+    const [pageNumber, setPageNumber] = React.useState(startPage);
+
+    if (pageNumber <= 0 || startPageRef.current !== startPage) {
+        setPageNumber(startPage);
+        startPageRef.current = startPage;
+    } else if (pageNumber > pageTotal) {
         setPageNumber(pageTotal);
     }
 
-    React.useEffect(() => {
-        setPageNumber(memoizedStartPage);
-    }, [memoizedStartPage]);
-
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
-
-    const annotationsPagedArray = React.useMemo(() => {
-        return annotationsQueue.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE); // catch the end of the array
-    }, [startIndex, annotationsQueue]);
+    const annotationsPagedArray = annotationsQueue.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE);
 
     const isLastPage = pageTotal === pageNumber;
     const isFirstPage = pageNumber === 1;
     const isPaginated = pageTotal > 1;
-
-    // const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
-    // SelectRef.displayName = "ComboBox";
-    
-    // const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, name: `${v} / ${pageTotal}`}));
-    const pageOptions = React.useMemo(() =>
-        Array.from({ length: pageTotal }, (_k, v) => (v += 1, ({ id: v, name: `${v} / ${pageTotal}` })))
-        , [pageTotal]);
+    const pageOptions = Array.from({ length: pageTotal }, (_k, v) => (v += 1, ({ id: v, name: `${v} / ${pageTotal}` })));
 
 
     const begin = startIndex + 1;
     const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationsQueue.length);
 
     const [annotationItemEditedUUID, setannotationItemEditedUUID] = React.useState("");
-
-    // const isSearchEnable = useSelector((state: IReaderRootState) => state.search.enable);
-    // React.useEffect(() => {
-    //     if (isSearchEnable) {
-    //         setannotationItemEditedUUID("");
-    //     }
-    // }, [isSearchEnable]);
-
     const paginatorAnnotationsRef = React.useRef<HTMLSelectElement>();
 
     return (
@@ -671,8 +657,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
                     annotation={annotationItem}
                     goToLocator={goToLocator}
                     isEdited={annotationItem.uuid === annotationItemEditedUUID}
-                    requestEdition={() => setannotationItemEditedUUID(annotationItem.uuid)}
-                    cancelEdition={() => setannotationItemEditedUUID("")}
+                    triggerEdition={(value: boolean) => value ? setannotationItemEditedUUID(annotationItem.uuid) : setannotationItemEditedUUID("")}
                 />,
             )}
             {
@@ -971,29 +956,24 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
         return 0;
     }), [bookmarks, r2Publication.Spine]);
 
-    const MAX_MATCHES_PER_PAGE = 3;
+    const MAX_MATCHES_PER_PAGE = 5;
 
-    // const pageTotal =  Math.ceil(sortedBookmarks.length / MAX_MATCHES_PER_PAGE);
-    const pageTotal =  Math.floor(sortedBookmarks.length / MAX_MATCHES_PER_PAGE) + ((sortedBookmarks.length % MAX_MATCHES_PER_PAGE === 0) ? 0 : 1);
+    const pageTotal =  Math.ceil(sortedBookmarks.length / MAX_MATCHES_PER_PAGE) || 1;
 
     const [pageNumber, setPageNumber] = React.useState(1);
-    React.useEffect(() => {
-        setPageNumber(pageTotal === 0 ? 1 : pageNumber > pageTotal ? pageTotal : pageNumber);
-    }, [pageTotal, pageNumber]);
+    if (pageNumber <= 0) {
+        setPageNumber(1);
+    } else if (pageNumber > pageTotal) {
+        setPageNumber(pageTotal);
+    }
 
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
 
-    const bookmarksPagedArray = React.useMemo(() => {
-        return sortedBookmarks.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE); // catch the end of the array
-    }, [startIndex, sortedBookmarks]);
+    const bookmarksPagedArray = sortedBookmarks.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE); // catch the end of the array
 
     const isLastPage = pageTotal === pageNumber;
     const isFirstPage = pageNumber === 1;
     const isPaginated = pageTotal > 1;
-
-    // const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: number, name: string }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
-    // SelectRef.displayName = "ComboBox";
-    
     const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, name: `${v} / ${pageTotal}`}));
 
     const begin = startIndex + 1;
