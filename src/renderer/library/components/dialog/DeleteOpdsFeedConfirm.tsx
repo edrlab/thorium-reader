@@ -32,7 +32,9 @@ const DeleteOpdsFeedConfirm = (props: { feed: IOpdsFeedView, trigger: React.Reac
                 {props.trigger}
             </AlertDialog.Trigger>
             <AlertDialog.Portal>
-                <div className={stylesAlertModals.AlertDialogOverlay}></div>
+                {/** TODO:  Overlay Component doesn't work, just a white screen */}
+                <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
+                {/* <div className={stylesAlertModals.AlertDialogOverlay}></div> */}
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deleteFeed")}</AlertDialog.Title>
                     <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
