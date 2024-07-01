@@ -75,6 +75,7 @@
             "lastAdditions": "Recently added"
         },
         "export": "Save as",
+        "exportAnnotation": "Save annotation as",
         "format": "Format",
         "lang": "Language",
         "lastRead": "Last Read",

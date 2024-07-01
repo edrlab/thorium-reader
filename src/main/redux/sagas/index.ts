@@ -35,6 +35,7 @@ import * as win from "./win";
 import * as telemetry from "./telemetry";
 import * as lcp from "./lcp";
 import * as catalog from "./catalog";
+import * as annotation from "./annotation";
 
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 // Logger
@@ -123,6 +124,9 @@ export function* rootSaga() {
     // call telemetry before app init state
     // need to track the previous state version before update in initSuccess.build
     yield call(telemetry.collectSaveAndSend);
+
+    // export annotations
+    yield annotation.saga();
 
     // app initialized
     yield put(appActions.initSuccess.build());

@@ -127,6 +127,7 @@ declare namespace typed_i18n {
     readonly "lastAdditions": string
   },
   readonly "export": string,
+  readonly "exportAnnotation": string,
   readonly "format": string,
   readonly "lang": string,
   readonly "lastRead": string,
@@ -206,6 +207,7 @@ declare namespace typed_i18n {
   (_: "catalog.entry.continueReadingPdf", __?: {}): string;
   (_: "catalog.entry.lastAdditions", __?: {}): string;
   (_: "catalog.export", __?: {}): string;
+  (_: "catalog.exportAnnotation", __?: {}): string;
   (_: "catalog.format", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.lastRead", __?: {}): string;
