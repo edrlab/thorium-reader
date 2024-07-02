@@ -160,7 +160,7 @@ select {
 /* 6. dropzone */
 
 .dropzone {
-  position: absolute;
+  position: fixed;
   overflow: hidden;
   inset: 0;
 }
