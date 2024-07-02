@@ -33,10 +33,7 @@ const DeletePublicationConfirm = (props: { publicationView: PublicationView, tri
                 {props.trigger}
             </AlertDialog.Trigger>
             <AlertDialog.Portal>
-
-                {/** Overlay Component doesn't work */}
                 <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay}/>
-                {/* <div className={stylesAlertModals.AlertDialogOverlay}></div> */}
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deletePublication")}</AlertDialog.Title>
                     <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
