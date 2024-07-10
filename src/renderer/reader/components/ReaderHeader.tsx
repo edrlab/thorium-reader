@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { HoverEvent } from "@react-types/shared";
+// import { HoverEvent } from "@react-types/shared";
 import classNames from "classnames";
 import * as debug_ from "debug";
 import * as React from "react";
@@ -71,10 +71,12 @@ import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/componen
 import { readerLocalActionAnnotations } from "../redux/actions";
 import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { AnnotationEdit } from "./AnnotationEdit";
-import { Collection, Header as ReactAriaHeader, Section } from "react-aria-components";
+// import { Collection, Header as ReactAriaHeader, Section } from "react-aria-components";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 // import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
+
+import { CascadingSelect } from "./CascadingSelect";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -745,7 +747,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                         </div>
                                                                         {!useMO && (
                                                                             <div className={stylesReader.ttsSelectVoice}>
-                                                                                <ComboBox
+                                                                                {/* <ComboBox
                                                                                     label={__("reader.tts.voice")}
                                                                                     defaultItems={voiceComboBoxDefaultItems}
                                                                                     defaultInputValue={
@@ -788,7 +790,12 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                                                     </ComboBoxItem>}
                                                                                             </Collection>
                                                                                         </Section>)}
-                                                                                </ComboBox>
+                                                                                </ComboBox> */}
+                                                                                <CascadingSelect voices={voiceComboBoxDefaultItems}
+                                                                                    handleTTSVoice={this.props.handleTTSVoice}
+                                                                                    voicesWithIndex={voicesWithIndex}
+                                                                                    ttsVoice={this.props.ttsVoice}
+                                                                                     />
                                                                             </div>
                                                                         )}
                                                                     </div>

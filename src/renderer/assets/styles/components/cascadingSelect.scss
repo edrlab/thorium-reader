@@ -1,0 +1,13 @@
+.cascadingSelect {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    &_level1 {
+        color: var(--color-blue);
+    }
+
+    &_level2 {
+        color: black;
+    }
+}
