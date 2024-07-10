@@ -22,6 +22,7 @@ interface IProps {
     handleTTSVoice: (voice: SpeechSynthesisVoice) => void;
     voicesWithIndex: VoiceWithIndex[];
     ttsVoice: SpeechSynthesisVoice;
+    pubLang: string;
 }
 
 const languageObjects = [
@@ -55,17 +56,22 @@ const languageObjects = [
     { id: 27, lang: "Swedish", code: "sv" },
     { id: 28, lang: "Thai", code: "th" },
     { id: 29, lang: "Turkish", code: "tr" },
-    { id: 30, lang: "English", code: "en" },
+    { id: 30, lang: "English", code: "en", defaultVoice: "Bonnes nouvelles" },
     { id: 31, lang: "Vietnamese", code: "vi" },
     { id: 32, lang: "Chinese", code: "zh" },
 ];
 
 export const CascadingSelect : React.FC<IProps> = (props) => {
-    const [selectedCategory, setSelectedCategory] = React.useState<string>(props.ttsVoice ? 
-        languageObjects.find((voice) => voice.code === props.ttsVoice.lang.slice(0, 2)).lang : languageObjects[0].lang);
-    const [items, setItems] = React.useState<IProps["voices"]>(props.voices.filter((elem) => elem.lang.includes(languageObjects.find((voice) => voice.code === props.ttsVoice.lang.slice(0, 2)).code)));
-    const [selectedItem, setSelectedItem] = React.useState<string>(props.ttsVoice ?
-        props.ttsVoice.name : props.voicesWithIndex[0].name);
+    const [selectedCategory, setSelectedCategory] = React.useState<string>(
+        languageObjects.find((voice) => voice.code === props.pubLang).lang,
+    );
+    const [items, setItems] = React.useState<IProps["voices"]>(
+        props.voices.filter((elem) => elem.lang.includes(languageObjects.find((voice) => voice.code === props.pubLang).code)),
+    );
+    const [selectedItem, setSelectedItem] = React.useState<string>(props.ttsVoice ? 
+        props.ttsVoice.name : 
+        languageObjects.find((voice) => voice.code === props.pubLang).defaultVoice,
+    );
     const [__] = useTranslator();
 
     const handleCategoryChange = (event: Key) => {
@@ -98,7 +104,7 @@ export const CascadingSelect : React.FC<IProps> = (props) => {
             label={"Voice"}
             defaultItems={items}
             defaultInputValue={selectedItem}
-            isDisabled={selectedCategory === "default"}
+            isDisabled={items.length === 0}
             selectedKey={
                 props.ttsVoice ?
                     `TTSID${(props.voicesWithIndex.find((voice) =>

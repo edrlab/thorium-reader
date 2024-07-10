@@ -795,6 +795,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                                     handleTTSVoice={this.props.handleTTSVoice}
                                                                                     voicesWithIndex={voicesWithIndex}
                                                                                     ttsVoice={this.props.ttsVoice}
+                                                                                    pubLang={this.props.r2Publication.Metadata.Language[0].slice(0, 2)}
                                                                                      />
                                                                             </div>
                                                                         )}
