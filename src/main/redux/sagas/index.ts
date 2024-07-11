@@ -140,6 +140,9 @@ export function* rootSaga() {
 
     // open reader from CLI or open-file event on MACOS
     yield events.saga();
+
+    // handle first launch of the app
+    yield call(appSaga.handleFirstLaunch);
 }
 
 function* checkAppVersionUpdate() {

@@ -7,6 +7,7 @@
 
 import * as debug_ from "debug";
 import { app, protocol, ipcMain } from "electron";
+import { existsSync, writeFileSync } from "fs";
 import * as path from "path";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
@@ -20,7 +21,7 @@ import { needToPersistFinalState } from "readium-desktop/main/redux/sagas/persis
 import { error } from "readium-desktop/main/tools/error";
 import { _APP_NAME, _PACKAGING, IS_DEV } from "readium-desktop/preprocessor-directives";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, call, race, spawn, take } from "redux-saga/effects";
+import { all, call, put, race, spawn, take } from "redux-saga/effects";
 import { delay as delayTyped, put as putTyped, race as raceTyped } from "typed-redux-saga/macro";
 
 import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
@@ -30,10 +31,32 @@ import {
     getBeforeQuitEventChannel, getQuitEventChannel, getShutdownEventChannel,
     getWindowAllClosedEventChannel,
 } from "./getEventChannel";
+import { i18nActions } from "readium-desktop/common/redux/actions";
+import { GetMatchingAvailableLanguage } from "readium-desktop/common/services/translator";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
 const debug = debug_(filename_);
+
+// Path to the first launch flag file
+const firstLaunchFlagPath = path.join(app.getPath('userData'), 'firstLaunchFlag.txt');
+
+export function* handleFirstLaunch() {
+    if (!existsSync(firstLaunchFlagPath)) {
+        const preferredLanguage = app.getPreferredSystemLanguages(); // Get OS primary locale via Electron.
+        try {
+            // Check if the user's first preferred language is available in the app.
+            const matchingLanguage = GetMatchingAvailableLanguage(preferredLanguage[0])
+            debug('Found matching app language at first launch', matchingLanguage);
+            if (matchingLanguage !== undefined) {
+                // Use first component of the matching language (language code).
+                yield put(i18nActions.setLocale.build(matchingLanguage[0]));
+            }
+        } finally {
+            writeFileSync(firstLaunchFlagPath, 'first_launch');
+        }
+    }
+}
 
 export function* init() {
 
