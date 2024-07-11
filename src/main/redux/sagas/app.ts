@@ -39,7 +39,7 @@ const filename_ = "readium-desktop:main:saga:app";
 const debug = debug_(filename_);
 
 // Path to the first launch flag file
-const firstLaunchFlagPath = path.join(app.getPath('userData'), 'firstLaunchFlag.txt');
+const firstLaunchFlagPath = path.join(app.getPath("userData"), "firstLaunchFlag.txt");
 
 export function* handleFirstLaunch() {
     if (!existsSync(firstLaunchFlagPath)) {
@@ -47,13 +47,13 @@ export function* handleFirstLaunch() {
         try {
             // Check if the user's first preferred language is available in the app.
             const matchingLanguage = GetMatchingAvailableLanguage(preferredLanguage[0])
-            debug('Found matching app language at first launch', matchingLanguage);
+            debug("Found matching app language at first launch", matchingLanguage);
             if (matchingLanguage !== undefined) {
                 // Use first component of the matching language (language code).
                 yield put(i18nActions.setLocale.build(matchingLanguage[0]));
             }
         } finally {
-            writeFileSync(firstLaunchFlagPath, 'first_launch');
+            writeFileSync(firstLaunchFlagPath, "first_launch");
         }
     }
 }
