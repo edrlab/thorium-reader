@@ -194,7 +194,7 @@ export const AvailableLanguages = {
 
 export const GetMatchingAvailableLanguage = (lang: string) => {
     return Object.entries(AvailableLanguages).find((key) => lang.startsWith(key[0]));
-}
+};
 
 interface LocalizedContent {
     [locale: string]: string;

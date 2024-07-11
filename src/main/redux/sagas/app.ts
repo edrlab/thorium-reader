@@ -46,7 +46,7 @@ export function* handleFirstLaunch() {
         const preferredLanguage = app.getPreferredSystemLanguages(); // Get OS primary locale via Electron.
         try {
             // Check if the user's first preferred language is available in the app.
-            const matchingLanguage = GetMatchingAvailableLanguage(preferredLanguage[0])
+            const matchingLanguage = GetMatchingAvailableLanguage(preferredLanguage[0]);
             debug("Found matching app language at first launch", matchingLanguage);
             if (matchingLanguage !== undefined) {
                 // Use first component of the matching language (language code).
