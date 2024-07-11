@@ -53,7 +53,7 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
     if (ttsWasPlaying) {
         ttsStop();
         setTimeout(() => {
-            ttsPlay(parseFloat(readerConfig.ttsPlaybackRate), readerConfig.ttsVoice);
+            ttsPlay(parseFloat(readerConfig.ttsPlaybackRate), readerConfig.ttsVoice[0]);
         }, 300);
     }
 

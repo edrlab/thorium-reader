@@ -2630,7 +2630,7 @@ class Reader extends React.Component<IProps, IState> {
 
     private handleTTSPlay() {
         ttsClickEnable(true);
-        ttsPlay(parseFloat(this.props.ttsPlaybackRate), this.props.ttsVoice);
+        ttsPlay(parseFloat(this.props.ttsPlaybackRate), this.props.ttsVoice[0]);
     }
     private handleTTSPause() {
         ttsPause();
@@ -2655,16 +2655,25 @@ class Reader extends React.Component<IProps, IState> {
     }
     private handleTTSVoice(voice: SpeechSynthesisVoice | null) {
         // alert(`${voice.name} ${voice.lang} ${voice.default} ${voice.voiceURI} ${voice.localService}`);
-        const v = voice ? {
-            default: voice.default,
-            lang: voice.lang,
-            localService: voice.localService,
-            name: voice.name,
-            voiceURI: voice.voiceURI,
-        } : null;
-        ttsVoice(v);
-        // this.setState({ ttsVoice: v });
-        this.props.setConfig({ ...this.props.readerConfig, ttsVoice: v }, this.props.session);
+        const voicesArray = Array.isArray(this.props.readerConfig.ttsVoice) 
+        ? [...this.props.readerConfig.ttsVoice] 
+        : [];
+
+        const existingLangIndex = voicesArray.findIndex(e => e.lang.slice(0,2) === voice.lang.slice(0,2));
+        if (existingLangIndex !== -1) {
+            voicesArray.splice(existingLangIndex, 1);
+        }
+            const v = voice ? {
+                default: voice.default,
+                lang: voice.lang,
+                localService: voice.localService,
+                name: voice.name,
+                voiceURI: voice.voiceURI,
+            } : null;
+            ttsVoice(voicesArray);
+            voicesArray.push(v);
+            // this.setState({ ttsVoice: v });
+            this.props.setConfig({ ...this.props.readerConfig, ttsVoice: voicesArray }, this.props.session);
     }
 
     private handleMediaOverlaysPlay() {

@@ -13,7 +13,7 @@ export const DEFAULT_COLOR_ANNOTATION: IColor = {red: 235, green: 150, blue: 148
 
 export const readerConfigInitialStateTTSMediaOverlay = {
     ttsPlaybackRate: "1",
-    ttsVoice: null as SpeechSynthesisVoice,
+    ttsVoice: null as SpeechSynthesisVoice[],
     mediaOverlaysPlaybackRate: "1",
 };
 

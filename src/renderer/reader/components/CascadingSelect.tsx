@@ -21,7 +21,7 @@ interface IProps {
     }[];
     handleTTSVoice: (voice: SpeechSynthesisVoice) => void;
     voicesWithIndex: VoiceWithIndex[];
-    ttsVoice: SpeechSynthesisVoice;
+    ttsVoice: SpeechSynthesisVoice[] | SpeechSynthesisVoice;
     pubLang: string;
 }
 
@@ -68,10 +68,21 @@ export const CascadingSelect : React.FC<IProps> = (props) => {
     const [items, setItems] = React.useState<IProps["voices"]>(
         props.voices.filter((elem) => elem.lang.includes(languageObjects.find((voice) => voice.code === props.pubLang).code)),
     );
-    const [selectedItem, setSelectedItem] = React.useState<string>(props.ttsVoice ? 
-        props.ttsVoice.name : 
-        languageObjects.find((voice) => voice.code === props.pubLang).defaultVoice,
-    );
+    const [selectedItem, setSelectedItem] = React.useState<string>(() => {
+        if (props.ttsVoice && Array.isArray(props.ttsVoice)) {
+            const voice = props.ttsVoice.find((voice) => voice.lang.includes(props.pubLang));
+            if (voice && voice.name) {
+                return voice.name;
+            } else {
+                const languageObject = languageObjects.find((voice) => voice.code === props.pubLang);
+                return languageObject.defaultVoice;
+            }
+        } else if (props.ttsVoice && !Array.isArray(props.ttsVoice)) {
+            console.log("ttsVoice", props.ttsVoice.name);
+            return props.ttsVoice.name;
+        }
+        return items[0].voices[0].name;
+    });
     const [__] = useTranslator();
 
     const handleCategoryChange = (event: Key) => {
@@ -105,15 +116,15 @@ export const CascadingSelect : React.FC<IProps> = (props) => {
             defaultItems={items}
             defaultInputValue={selectedItem}
             isDisabled={items.length === 0}
-            selectedKey={
-                props.ttsVoice ?
-                    `TTSID${(props.voicesWithIndex.find((voice) =>
-                        voice.name === props.ttsVoice.name
-                        && voice.lang === props.ttsVoice.lang
-                        && voice.voiceURI === props.ttsVoice.voiceURI,
-                    ) || { id: -1 }).id}` :
-                    "TTSID-1"
-            }
+            // selectedKey={
+            //     props.ttsVoice ?
+            //         `TTSID${(props.voicesWithIndex.find((voice) =>
+            //             voice.name === props.ttsVoice[0].name
+            //             && voice.lang === props.ttsVoice[0].lang
+            //             && voice.voiceURI === props.ttsVoice[0].voiceURI,
+            //         ) || { id: -1 }).id}` :
+            //         "TTSID-1"
+            // }
             onSelectionChange={(key) => {
                 if (!key) return;
 
