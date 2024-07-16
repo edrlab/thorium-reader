@@ -20,7 +20,7 @@ import * as stylesModals from "readium-desktop/renderer/assets/styles/components
 // import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
 import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLink-icon.svg";
 import * as CrossIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
-import * as PassIcon from "readium-desktop/renderer/assets/icons/password-icon.svg";
+import * as KeyholeIcon from "readium-desktop/renderer/assets/icons/keyhole-icon.svg";
 import * as LightBulbIcon from "readium-desktop/renderer/assets/icons/lightbulb-icon.svg";
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import {
@@ -105,7 +105,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                         </p>
                         <div className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)}>
                             <label htmlFor="passphrase">{__("library.lcp.password")}</label>
-                            <SVG ariaHidden svg={PassIcon} />
+                            <SVG ariaHidden svg={KeyholeIcon} />
                             <input
                                 id="passphrase"
                                 aria-label={__("library.lcp.password")}
