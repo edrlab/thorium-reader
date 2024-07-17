@@ -157,3 +157,32 @@ export const CascadingSelect : React.FC<IProps> = (props) => {
       </div>
     );
   };
+
+
+
+// const voices = [
+//     {
+//         lang: "France",
+//         voices: [
+//             {id: 100, name: 'Amélie', default: false, lang: 'fr-FR', localService: true, voiceURI: "Amélie"},
+//             {id: 101, name: 'Thomas', default: false, lang: 'fr-FR', localService: true, voiceURI: "Thomas"},
+//             {id: 102, name: 'Flo', default: false, lang: 'fr-FR', localService: true, voiceURI: "Flo"},
+//             {id: 103, name: 'Jacques', default: false, lang: 'fr-FR', localService: true, voiceURI: "Jacques"},
+//             {id: 104, name: 'Marie', default: false, lang: 'fr-FR', localService: true, voiceURI: "Marie"},
+//             {id: 105, name: 'Rocko', default: false, lang: 'fr-FR', localService: true, voiceURI: "Rocko"},
+//             {id: 106, name: 'Sandy', default: false, lang: 'fr-FR', localService: true, voiceURI: "Sandy"},
+//         ]
+//     },
+//     {
+//         lang: "Canada",
+//         voices: [
+//             {id: 107, name: 'Eddy', default: false, lang: 'fr-CA', localService: true, voiceURI: "Eddy"},
+//             {id: 108, name: 'Reed', default: false, lang: 'fr-CA', localService: true, voiceURI: "Reed"},
+//             {id: 109, name: 'Shelley', default: false, lang: 'fr-CA', localService: true, voiceURI: "Shelly"},
+//             {id: 110, name: 'Rocko', default: false, lang: 'fr-CA', localService: true, voiceURI: "Rocko"},
+//             {id: 111, name: 'Marie', default: false, lang: 'fr-CA', localService: true, voiceURI: "Marie"},
+//             {id: 112, name: 'Rocko', default: false, lang: 'fr-CA', localService: true, voiceURI: "Rocko"},
+//             {id: 113, name: 'Thomas', default: false, lang: 'fr-CA', localService: true, voiceURI: "Thomas"},
+//         ]
+//     },
+// ];

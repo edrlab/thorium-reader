@@ -2630,7 +2630,9 @@ class Reader extends React.Component<IProps, IState> {
 
     private handleTTSPlay() {
         ttsClickEnable(true);
-        ttsPlay(parseFloat(this.props.ttsPlaybackRate), this.props.ttsVoice[0]);
+        const currentVoice = this.props.ttsVoice.find((voice) => voice.lang.includes(this.props.r2Publication.Metadata.Language[0]));
+        console.log("#### CURRENT VOICE",currentVoice, "#####");
+        ttsPlay(parseFloat(this.props.ttsPlaybackRate), this.props.ttsVoice ? currentVoice : null);
     }
     private handleTTSPause() {
         ttsPause();
@@ -2665,7 +2667,7 @@ class Reader extends React.Component<IProps, IState> {
         }
             const v = voice ? {
                 default: voice.default,
-                lang: voice.lang,
+                lang: voice.lang.slice(0, 2),
                 localService: voice.localService,
                 name: voice.name,
                 voiceURI: voice.voiceURI,
