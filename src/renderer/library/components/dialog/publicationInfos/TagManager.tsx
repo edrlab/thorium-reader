@@ -11,7 +11,8 @@ import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import AddTag from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/AddTag";
+// import AddTag from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/AddTag";
+import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
 import {
     TagButton,
 } from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/tagButton";
@@ -28,6 +29,9 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { TDispatch } from "readium-desktop/typings/redux";
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 import classNames from "classnames";
+import { InputPredict } from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/TagPredict";
+import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+import { HoverEvent } from "react-aria";
 // import GridTagButton from "../../catalog/GridTagButton";
 
 
@@ -47,10 +51,18 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
-class TagManager extends React.Component<IProps> {
+interface IState {
+    newTagName: string,
+}
+
+class TagManager extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+
+        this.state = {
+            newTagName: "",
+        };
     }
 
     public render(): React.ReactElement<{}> {
@@ -69,9 +81,12 @@ class TagManager extends React.Component<IProps> {
                 () =>
                     deleteTag(this.props.tagArray, setTagsCb)(index);
 
+
+        const tagsOptions = this.props.tags.map((v, i) => ({ id: i, value: i, name: v }));
+
         return (
             <section className={stylePublication.publicationInfo_tagContainer}>
-                <div className={classNames(stylePublication.publicationInfo_heading,stylePublication.tag_list )}>
+                <div className={classNames(stylePublication.publicationInfo_heading, stylePublication.tag_list)}>
                     <h4>{__("catalog.tags")} {this.props.tagArray?.length > 0 ? ":" : ""}</h4>
                     <TagList tagArray={this.props.tagArray}>
                         {
@@ -88,26 +103,98 @@ class TagManager extends React.Component<IProps> {
                                     location={this.props.location}
                                 >
                                 </TagButton>
-                                // <GridTagButton name={tag as string} key={index} />
+                            // <GridTagButton name={tag as string} key={index} />
                         }
                     </TagList>
                 </div>
-                <AddTag
+                {/* <AddTag
                     pubId={this.props.pubId}
                     tagArray={this.props.tagArray}
                     __={__}
                     setTags={setTagsCb}
-                />
+                /> */}
+                <InputPredict dictionary={this.props.tags} pubId={this.props.pubId}
+                    tagArray={this.props.tagArray}
+                    __={__}
+                    setTags={setTagsCb} />
+                <ComboBox
+                    defaultItems={tagsOptions}
+                    onSelectionChange={this.handleSelectionChange}
+                    svg={TagIcon}
+                    allowsCustomValue
+                    onKeyUp={(e) => {
+                        if (e.key === "Enter") {
+                            this.handleKeyUp(e);
+                        }
+                    }}
+                >
+                    {item => <ComboBoxItem
+                        onHoverStart={(e: HoverEvent) => {
+                            if (!e.target.getAttribute("title")) {
+                                e.target.setAttribute("title", item.name);
+                            }
+                        }}
+                    // aria-label={item.name}
+                    >{item.name}</ComboBoxItem>}
+                </ComboBox>
             </section>
         );
     }
+
+    private handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        this.setState({ newTagName: e.currentTarget.value }, this.addTag);
+    };
+
+
+
+    private handleSelectionChange = (key: React.Key) => {
+        const selectedTag = this.props.tags[Number(key)];
+        if (selectedTag && key) {
+            this.setState({ newTagName: selectedTag }, this.addTag);
+        }
+    };
+
+
+    private addTag = () => {
+        const { tagArray } = this.props;
+
+        const tags = Array.isArray(tagArray) ? tagArray.slice() : [];
+        const tagName = this.state.newTagName.trim().replace(/\s\s+/g, " ");
+
+        this.setState({ newTagName: "" });
+
+        if (tagName) {
+
+            const tagsName: string[] = [];
+            for (const tag of tags) {
+                if (typeof tag === "string") {
+                    if (tag === tagName) {
+                        return;
+                    } else {
+                        tagsName.push(tag);
+                    }
+                } else {
+                    if (tag.name === tagName) {
+                        return;
+                    } else {
+                        tagsName.push(tag.name);
+                    }
+                }
+            }
+
+            tagsName.push(tagName);
+            this.props.setTags(this.props.pubId, this.props.publication as PublicationView, tagsName);
+        }
+    };
 }
+
 
 const mapStateToProps = (state: ILibraryRootState) => ({
     tagArray: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication?.tags,
     pubId: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication?.identifier,
     publication: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication,
     location: state.router.location,
+    tags: state.publication.tag,
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => ({
