@@ -399,7 +399,7 @@ const Slider = ({ value, option, set }: { value: string, option: ITable, set: (a
     }, [value, option.parameter]);
 
     const updateValue = (index: number) => {
-        const newValue = optionsValues[option.parameter][index] || "0";
+        const newValue = (optionsValues[option.parameter] || [])[index] || "0";
         setCurrentSliderValue(newValue);
         setCurrentIndex(index);
         set({ [option.parameter]: newValue } as Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">);
