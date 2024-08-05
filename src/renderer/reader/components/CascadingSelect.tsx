@@ -68,7 +68,8 @@ export const CascadingSelect : React.FC<IProps> = (props) => {
     const [items, setItems] = React.useState<IProps["voices"]>(
         props.voices.filter((elem) => elem.lang.includes(languageObjects.find((voice) => voice.code === props.pubLang).code)),
     );
-    const [selectedItem, setSelectedItem] = React.useState<string>(() => {
+
+    const GetVoiceItem = () => {
         if (props.ttsVoice && Array.isArray(props.ttsVoice)) {
             const voice = props.ttsVoice.find((voice) => voice.lang.includes(props.pubLang));
             if (voice && voice.name) {
@@ -82,7 +83,9 @@ export const CascadingSelect : React.FC<IProps> = (props) => {
             return props.ttsVoice.name;
         }
         return items[0].voices[0].name;
-    });
+    };
+    
+    const [selectedItem, setSelectedItem] = React.useState<string>(GetVoiceItem);
     const [__] = useTranslator();
 
     const handleCategoryChange = (event: Key) => {
@@ -94,8 +97,21 @@ export const CascadingSelect : React.FC<IProps> = (props) => {
         setSelectedItem("");
     };
 
+
+    const handleVoiceChange = (key: Key) => {
+        if (!key) return;
+        key = key.toString();
+        const id = parseInt(key.replace("TTSID", ""), 10);
+        const v = id === -1 ? null : (props.voicesWithIndex.find((voice) => voice.id === id) || null);
+        props.handleTTSVoice(v);
+        setSelectedItem(v.name || "");
+    };
+
+
     console.log("category:", selectedCategory);
     console.log("items", items);
+    console.log("selected item:", selectedItem);
+    
     return (
       <div className={styleCascading.cascadingSelect}>
         <ComboBox
@@ -125,14 +141,7 @@ export const CascadingSelect : React.FC<IProps> = (props) => {
             //         ) || { id: -1 }).id}` :
             //         "TTSID-1"
             // }
-            onSelectionChange={(key) => {
-                if (!key) return;
-
-                key = key.toString();
-                const id = parseInt(key.replace("TTSID", ""), 10);
-                const v = id === -1 ? null : (props.voicesWithIndex.find((voice) => voice.id === id) || null);
-                props.handleTTSVoice(v);
-            }}
+            onSelectionChange={(key) => handleVoiceChange(key)}
             style={{ paddingBottom: "0", margin: "0" }}
         >
             {section => (
