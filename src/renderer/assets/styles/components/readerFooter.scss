@@ -24,12 +24,25 @@
     }
 }
 
+.arrows {
+    height: 100dvh;
+    width: 10%;
+    z-index: 1;
+
+    &:hover {
+        button {
+            opacity: 1 !important;
+        }
+    }
+}
+
 .arrows button {
     width: 50px;
     height: 50px;
     position: absolute;
     top: calc(50dvh - 100px);
     z-index: 10;
+    transition: 200ms;
 
     svg {
         fill: var(--color-blue);
