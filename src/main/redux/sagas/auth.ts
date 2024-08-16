@@ -39,6 +39,7 @@ import { getOpdsRequestCustomProtocolEventChannel, getOpdsRequestMediaCustomProt
 import { initClientSecretToken } from "./apiapp";
 import { digestAuthentication } from "readium-desktop/utils/digest";
 import isURL from "validator/lib/isURL";
+import { nanoid } from "nanoid";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:auth";
@@ -452,6 +453,10 @@ async function opdsSetAuthCredentials(
     return [, new Error("")];
 }
 
+let _implicitNonce = "";
+const setAndGetImplicitNonceForImplicitAuthentication = () => (_implicitNonce = nanoid(16), _implicitNonce);
+const getImplicitNonceForImplicitAuthentication = () => _implicitNonce;
+
 function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
 
     let browserUrl: string;
@@ -459,7 +464,27 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
 
         case "http://opds-spec.org/auth/oauth/implicit": {
 
-            browserUrl = auth.links?.authenticate?.url;
+            try {
+                const browserUrlParsed = new URL(auth.links?.authenticate?.url);
+
+                // The unique identifier used in the callback URI must have the same value as the identifier provided in the Authentication Document.
+                // https://drafts.opds.io/authentication-for-opds-1.0#342-a-shared-client-identifier:~:text=The%20unique%20identifier%20used%20in%20the%20callback%20URI%20must%20have%20the%20same%20value%20as%20the%20identifier%20provided%20in%20the%20Authentication%20Document.
+
+                // see also the callback response : it must use the id query parameter to indicate the Authentication Document identifier
+                // https://drafts.opds.io/authentication-for-opds-1.0#342-a-shared-client-identifier:~:text=it%20must%20use%20the%20id%20query%20parameter%20to%20indicate%20the%20Authentication%20Document%20identifier
+
+                browserUrlParsed.searchParams.set("client_id", encodeURIComponent_RFC3986(auth?.id || "http://opds-spec.org/auth/client"));
+
+                browserUrlParsed.searchParams.set("response_type", "token");
+                browserUrlParsed.searchParams.set("state", encodeURIComponent_RFC3986(setAndGetImplicitNonceForImplicitAuthentication()));
+
+                browserUrl = browserUrlParsed.toString();
+
+            } catch {
+                debug("Error to parse browserUrl", auth.links?.authenticate?.url);
+                browserUrl = "";
+            }
+
             break;
         }
 
@@ -778,6 +803,17 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
                 const data: Record<string, string> = {};
                 for (const [key, value] of urlObject.searchParams) {
                     data[key] = value;
+                }
+
+                if (data.state !== getImplicitNonceForImplicitAuthentication()) {
+                    debug("received state parameter is not equal to the nonce sent", "value=", data.state);
+                    debug("the state verification is IGNORED and bypassed to ensure a legacy compatibility with all OPDS OAUTH2 server");
+                    // TODO: improve this and enable the state verification
+
+                    // https://auth0.com/docs/secure/attack-protection/state-parameters
+                    // https://github.com/edrlab/thorium-reader/issues/2506
+                } else {
+                    debug("State parameter of the callback response is VERIFIED and CORRECT");
                 }
 
                 return {
