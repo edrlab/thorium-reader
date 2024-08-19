@@ -576,15 +576,11 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
 
     // https://drafts.opds.io/authentication-for-opds-1.0#231-core-properties
     if (!doc.Id || doc.Id === "") {
-        // Todo: Return typed error so user-friendly message can be displayed
-        debug("OPDS Authentication Document missing required `id` property.");
-        return undefined;
+        debug("OPDS Authentication Document missing required `id` property. IGNORED and bypassed to ensure legacy compatibility with misconfigured OPDS OAuth 2.0 servers");
     }
 
     if (!doc.Title || doc.Title === "") {
-        // Todo: Return typed error so user-friendly message can be displayed
-        debug("OPDS Authentication Document missing required `title` property.");
-        return undefined;
+        debug("OPDS Authentication Document missing required `title` property. IGNORED and bypassed to ensure legacy compatibility with misconfigured OPDS OAuth 2.0 servers");
     }
 
     if (!doc.Authentication) {
