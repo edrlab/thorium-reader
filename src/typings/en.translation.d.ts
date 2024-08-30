@@ -843,7 +843,8 @@ declare namespace typed_i18n {
     readonly "sentenceDetectDescription": string,
     readonly "speed": string,
     readonly "stop": string,
-    readonly "voice": string
+    readonly "voice": string,
+    readonly "language": string
   }
 };
   (_: "reader.annotations", __?: {}): {
@@ -1177,7 +1178,8 @@ declare namespace typed_i18n {
   readonly "sentenceDetectDescription": string,
   readonly "speed": string,
   readonly "stop": string,
-  readonly "voice": string
+  readonly "voice": string,
+  readonly "language": string
 };
   (_: "reader.tts.activate", __?: {}): string;
   (_: "reader.tts.default", __?: {}): string;
@@ -1190,6 +1192,7 @@ declare namespace typed_i18n {
   (_: "reader.tts.speed", __?: {}): string;
   (_: "reader.tts.stop", __?: {}): string;
   (_: "reader.tts.voice", __?: {}): string;
+  (_: "reader.tts.language", __?: {}): string;
   (_: "settings", __?: {}): {
   readonly "auth": { readonly "wipeData": string },
   readonly "keyboard": {

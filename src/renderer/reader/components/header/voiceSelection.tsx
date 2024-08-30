@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
@@ -6,25 +6,21 @@ import { ttsVoice as r2navigatorSetTTSVoice } from "@r2-navigator-js/electron/re
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { Collection, Header as ReactAriaHeader, Section } from "react-aria-components";
 import { HoverEvent } from "@react-types/shared";
-import { getVoices, groupByLanguage, IVoices } from "readium-speech/build/cjs/voices";
+import { filterOnLanguage, getLanguages, getVoices, groupByRegions, IVoices } from "readium-speech/build/cjs/voices";
 
 export interface IProps {}
-
-// let voices: IVoices[] = [];
-// getVoices().then((_voices) => {
-//     voices = _voices;
-// });
 
 type IVoicesWithIndex = IVoices & { id: number };
 
 export const VoiceSelection: React.FC<IProps> = () => {
 
-    const [__, translator] = useTranslator();
+    const [__] = useTranslator();
 
     const ttsVoice = useReaderConfig("ttsVoice");
     const setConfig = useSaveReaderConfig();
     
     const [voices, setVoices] = React.useState<IVoicesWithIndex[]>([]);
+    const [selectedLanguage, setSelectedLanguage] = React.useState<string>("");
     const handleTTSVoice = (voice: IVoices) => {
         const v = voice ? {
             default: false,
@@ -34,44 +30,66 @@ export const VoiceSelection: React.FC<IProps> = () => {
             voiceURI: voice.voiceURI,
         } : null;
         r2navigatorSetTTSVoice(v);
-        // this.setState({ ttsVoice: v });
-        // this.props.setConfig({ ...this.props.readerConfig, ttsVoice: v }, this.props.session);
         setConfig({ ttsVoice: v });
-    }
+    };
 
     React.useEffect(() => {
         getVoices().then((_voices) => {
-            setVoices(_voices.map((v, i) => ({...v, id: i+1})));
+            if (Array.isArray(_voices)) {
+                setVoices(_voices.map((v, i) => ({...v, id: i+1})));
+            }
         });
     }, []);
 
-    let voiceComboBoxDefaultItems: Map<string, IVoicesWithIndex[]> = new Map([["", undefined]]);
-    let defaultVoiceName = "";
-    if (!voices) {
 
-    } else {
-        const voicesMapped = voices.map((v, i) => ({ ...v, id: i + 1 }));
-        if (voices.some(({ id }: any) => !id)) {
-            setVoices(voicesMapped);
-        }
-        voiceComboBoxDefaultItems = groupByLanguage(voicesMapped, undefined, translator?.getLocale()) as Map<string, IVoicesWithIndex[]>;
-        const [voicesFromFirstLanguages] = voiceComboBoxDefaultItems.values();
-        if (voicesFromFirstLanguages) {
-            const firstVoice = voicesFromFirstLanguages[0];
-            if (firstVoice) {
-                defaultVoiceName = firstVoice.name || "";
-                if (!ttsVoice) {
+    const languages = getLanguages(voices);
+    const ttsVoiceDefaultLanguageCode = (ttsVoice?.lang || "").split("-")[0];
+    const defaultLanguageCode =  languages.find(({code}) => code === ttsVoiceDefaultLanguageCode)
+        ? ttsVoiceDefaultLanguageCode
+        : languages[0]?.code || ""; 
+
+    if (selectedLanguage === "" && defaultLanguageCode) {
+        setSelectedLanguage(defaultLanguageCode);
+    }
+
+    const voicesFilteredOnLanguage = filterOnLanguage(voices, selectedLanguage || "") as IVoicesWithIndex[];
+    const voicesGroupedByRegions = groupByRegions(voicesFilteredOnLanguage) as Map<string, IVoicesWithIndex[]>;
+
+    const firstVoice = ((Array.from(voicesGroupedByRegions)[0] || [])[1] || [])[0];
+    if (firstVoice) {
+        if (ttsVoice) {
+            if (firstVoice.voiceURI === ttsVoice.voiceURI && firstVoice.name === ttsVoice.name && firstVoice.language === ttsVoice.lang) {
+                // nothing
+            } else {
+                if (firstVoice.language.split("-")[0] === ttsVoice.lang.split("-")[0]) {
+                    // nothing
+                } else {
+                    // when language code switch, change the default ttsVoice
                     handleTTSVoice(firstVoice);
                 }
             }
+        } else {
+            // if there is no default TTSVoice, set the first voice returned par getVoices
+            handleTTSVoice(firstVoice);
         }
     }
 
     return (<div className={stylesReader.ttsSelectVoice}>
         <ComboBox
+            label={__("reader.tts.language")}
+            defaultItems={languages}
+            // defaultSelectedKey={`TTS_LANG_${selectedLanguage}`}
+            selectedKey={`TTS_LANG_${selectedLanguage}`}
+            onSelectionChange={
+                (key: React.Key) => {
+                    setSelectedLanguage(((key as string) || "").split("TTS_LANG_")[1] || "");
+                }}
+        >
+            {item => <ComboBoxItem id={`TTS_LANG_${item.code}`} key={`TTS_LANG_${item.code}`}>{item.label}</ComboBoxItem>}
+        </ComboBox>
+        <ComboBox
             label={__("reader.tts.voice")}
-            defaultItems={voiceComboBoxDefaultItems}
-            defaultInputValue={defaultVoiceName}
+            defaultItems={voicesGroupedByRegions}
             selectedKey={
                 ttsVoice ?
                 `TTSID${(voices.find((voice) =>
@@ -105,10 +123,10 @@ export const VoiceSelection: React.FC<IProps> = () => {
                             }}
                             // aria-label={item.name}
 
-                            id={`TTSID${voice.id}`} key={`TTSKEY${voice.id}`}>{`${voice.name}`}
+                            id={`TTSID${voice.id}`} key={`TTSKEY${voice.id}`}>{`${voice.label}`}
                         </ComboBoxItem>}
                     </Collection>
                 </Section>)}
         </ComboBox>
-    </div>)
-}
+    </div>);
+};
