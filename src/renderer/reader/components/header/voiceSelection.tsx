@@ -7,6 +7,8 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { Collection, Header as ReactAriaHeader, Section } from "react-aria-components";
 import { HoverEvent } from "@react-types/shared";
 import { filterOnLanguage, getLanguages, getVoices, groupByRegions, IVoices } from "readium-speech/build/cjs/voices";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 export interface IProps {}
 
@@ -18,6 +20,9 @@ export const VoiceSelection: React.FC<IProps> = () => {
 
     const ttsVoice = useReaderConfig("ttsVoice");
     const setConfig = useSaveReaderConfig();
+
+    const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
+    const locale = useSelector((state: IReaderRootState) => state.i18n.locale);
     
     const [voices, setVoices] = React.useState<IVoicesWithIndex[]>([]);
     const [selectedLanguage, setSelectedLanguage] = React.useState<string>("");
@@ -41,8 +46,7 @@ export const VoiceSelection: React.FC<IProps> = () => {
         });
     }, []);
 
-
-    const languages = getLanguages(voices);
+    const languages = getLanguages(voices, r2Publication.Metadata?.Language || [], locale);
     const ttsVoiceDefaultLanguageCode = (ttsVoice?.lang || "").split("-")[0];
     const defaultLanguageCode =  languages.find(({code}) => code === ttsVoiceDefaultLanguageCode)
         ? ttsVoiceDefaultLanguageCode
@@ -53,7 +57,7 @@ export const VoiceSelection: React.FC<IProps> = () => {
     }
 
     const voicesFilteredOnLanguage = filterOnLanguage(voices, selectedLanguage || "") as IVoicesWithIndex[];
-    const voicesGroupedByRegions = groupByRegions(voicesFilteredOnLanguage) as Map<string, IVoicesWithIndex[]>;
+    const voicesGroupedByRegions = groupByRegions(voicesFilteredOnLanguage, r2Publication.Metadata?.Language || [], locale) as Map<string, IVoicesWithIndex[]>;
 
     const firstVoice = ((Array.from(voicesGroupedByRegions)[0] || [])[1] || [])[0];
     if (firstVoice) {
