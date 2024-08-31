@@ -413,7 +413,7 @@
     "typed-css-modules": "^0.9.1",
     "typed-scss-modules": "^8.0.1",
     "typescript": "^5.5.2",
-    "webpack": "^5.92.1",
+    "webpack": "^5.94.0",
     "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.0.4",
