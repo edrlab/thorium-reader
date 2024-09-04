@@ -203,15 +203,16 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
                 state.win.registry.reader[publicationIdentifier]?.reduxState || {} as IReaderStateReader,
         );
 
-        const sessionIsEnabled = yield* selectTyped(
-            (state: RootState) => state.session.state,
-        );
-        if (!sessionIsEnabled) {
-            const reduxDefaultConfig = yield* selectTyped(
-                (state: RootState) => state.reader.defaultConfig,
-            );
-            reduxState.config = reduxDefaultConfig;
-        }
+        // session always enabled
+        // const sessionIsEnabled = yield* selectTyped(
+        //     (state: RootState) => state.session.state,
+        // );
+        // if (!sessionIsEnabled) {
+        //     const reduxDefaultConfig = yield* selectTyped(
+        //         (state: RootState) => state.reader.defaultConfig,
+        //     );
+        //     reduxState.config = reduxDefaultConfig;
+        // }
 
         const winBound = yield* callTyped(getWinBound, publicationIdentifier);
 

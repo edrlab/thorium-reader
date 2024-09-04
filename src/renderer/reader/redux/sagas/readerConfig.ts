@@ -58,10 +58,12 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
     }
 
     // this.props.setConfig(readerConfig, this.props.session);
-    const sessionEnabled = yield* select((state: IReaderRootState) => state.session.state);
-    if (!sessionEnabled) {
+    // const sessionEnabled = yield* select((state: IReaderRootState) => state.session.state);
+
+    // session never enabled in reader but always in main/lib
+    // if (!sessionEnabled) {
         yield* put(readerActions.configSetDefault.build(readerConfig));
-    }
+    // }
 
     readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
 }

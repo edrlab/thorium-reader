@@ -538,31 +538,31 @@ class Reader extends React.Component<IProps, IState> {
                 console.log(`highlightsClickListen MOUNTER STATE EMPTY -- mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
                 return;
             }
-        
+
             const mounterStateItem = mounterStateMap.find(([_uuid, mounterState]) => mounterState.ref.id === highlight.id && mounterState.href === href);
-        
+
             if (!mounterStateItem) {
                 console.log(`highlightsClickListen CANNOT FIND MOUNTER -- href: [${href}] ref.id: [${highlight.id}] mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
                 return;
             }
-        
+
             const [mounterStateItemUuid] = mounterStateItem; // mounterStateItem[0]
-        
+
             const handlerStateMap = store.getState()?.reader.highlight.handler;
             if (!handlerStateMap?.length) {
                 console.log(`highlightsClickListen HANDLER STATE EMPTY -- handlerStateMap: [${JSON.stringify(handlerStateMap, null, 4)}]`);
                 return;
             }
-        
+
             const handlerStateItem = handlerStateMap.find(([uuid, _handlerState]) => uuid === mounterStateItemUuid);
-        
+
             if (!handlerStateItem) {
                 console.log(`dispatchClick CANNOT FIND HANDLER -- uuid: [${mounterStateItemUuid}] handlerStateMap: [${JSON.stringify(handlerStateMap, null, 4)}]`);
                 return;
             }
-        
+
             const [uuid, handlerState] = handlerStateItem;
-        
+
             console.log(`dispatchClick CLICK ACTION ... -- uuid: [${uuid}] handlerState: [${JSON.stringify(handlerState, null, 4)}]`);
 
             this.handleMenuButtonClick(true, "tab-annotation", true, uuid);
@@ -698,7 +698,7 @@ class Reader extends React.Component<IProps, IState> {
         //     {this.state.bookmarkMessage}
         // </div> : <></>}
 
-        
+
         const isAudioBook = isAudiobookFn(this.props.r2Publication);
         const arrowDisabledNotEpub = isAudioBook || this.props.isPdf || this.props.isDivina;
         // const isFXL = this.isFixedLayout();
@@ -707,14 +707,14 @@ class Reader extends React.Component<IProps, IState> {
         // console.log(arrowDisabledNotEpub, isFXL, isPaginated);
         // epub non fxl (page)      : false false true  : true
         // epub non fxl (scroll)    : false false false : false
-        // epub fxl                 : false true true :   true 
+        // epub fxl                 : false true true :   true
         // epub fxl (scroll)        : false true false :  true
         // pdf                      : true false true :   false
         // audiobook                : true false true :   false
         // divina                   : true false true :   false
 
         const arrowEnabled = !arrowDisabledNotEpub /* && (isFXL || isPaginated) */;
-        
+
         return (
             <div className={classNames(
                 this.props.readerConfig.theme === "night" ? stylesReader.nightMode :
@@ -788,13 +788,13 @@ class Reader extends React.Component<IProps, IState> {
                         disableRTLFlip={this.props.disableRTLFlip}
                         isRTLFlip={this.isRTLFlip}
                     />
-                    : 
+                    :
                     <button onClick={() => this.setState({ zenMode : false})} className={stylesReader.button_exitZen}>
                         <SVG ariaHidden svg={exitZenModeIcon} />
                     </button>
                     }
 
-                    <div 
+                    <div
                     style={{marginBottom: this.state.zenMode ? "0" : "44px"}}
                     className={classNames(stylesReader.content_root,
                         this.state.fullscreen ? stylesReader.content_root_fullscreen : undefined,
@@ -826,9 +826,9 @@ class Reader extends React.Component<IProps, IState> {
                                             this.props.readerConfig.readerDockingMode === "left" ? stylesReader.docked_left_pdf
                                             : this.props.readerConfig.readerDockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right_pdf
                                             : ""
-                                        ) : undefined, 
-                                        (this.props.searchEnable && !this.props.isPdf) ? stylesReader.isOnSearch 
-                                        : (this.props.searchEnable && this.props.isPdf) ? stylesReader.isOnSearchPdf 
+                                        ) : undefined,
+                                        (this.props.searchEnable && !this.props.isPdf) ? stylesReader.isOnSearch
+                                        : (this.props.searchEnable && this.props.isPdf) ? stylesReader.isOnSearchPdf
                                         : "")}
                                     ref={this.mainElRef}
                                     style={{ inset: isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : "75px 50px" }}>
@@ -854,7 +854,7 @@ class Reader extends React.Component<IProps, IState> {
                                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                                         </button>
                                     </div>
-                                    : 
+                                    :
                                     <></>}
 
                                 {
@@ -923,7 +923,7 @@ class Reader extends React.Component<IProps, IState> {
                         </div>
                     </div>
                 </div>
-                { !this.state.zenMode ? 
+                { !this.state.zenMode ?
                 <ReaderFooter
                     historyCanGoBack={this.state.historyCanGoBack}
                     historyCanGoForward={this.state.historyCanGoForward}
@@ -1178,7 +1178,7 @@ class Reader extends React.Component<IProps, IState> {
         newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "annotation" ? "margin" : "annotation";
 
         console.log(`onKeyboardAnnotationMargin : highlight=${newReaderConfig.annotation_defaultDrawView}`);
-        this.props.setConfig(newReaderConfig, this.props.session);
+        this.props.setConfig(newReaderConfig);
     };
 
     private onKeyboardAnnotation = () => {
@@ -1210,13 +1210,13 @@ class Reader extends React.Component<IProps, IState> {
         newReaderConfig.annotation_popoverNotOpenOnNoteTaking = true;
 
         console.log(`onKeyboardQuickAnnotation : popoverNotOpenOnNoteTaking=${annotation_popoverNotOpenOnNoteTaking}`);
-        this.props.setConfig(newReaderConfig, this.props.session);
+        this.props.setConfig(newReaderConfig);
 
         this.props.triggerAnnotationBtn();
 
         newReaderConfig = {...this.props.readerConfig};
         newReaderConfig.annotation_popoverNotOpenOnNoteTaking = annotation_popoverNotOpenOnNoteTaking;
-        this.props.setConfig(newReaderConfig, this.props.session);
+        this.props.setConfig(newReaderConfig);
     };
 
     private onKeyboardAudioStop = () => {
@@ -2329,7 +2329,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private closeMenu() {
-        
+
         if (this.state.menuOpen) {
             this.handleMenuButtonClick(false);
         }
@@ -2352,9 +2352,9 @@ class Reader extends React.Component<IProps, IState> {
         //     // shortcutEnable must be true (see handleMenuButtonClick() above, and this.state.menuOpen))
         //     console.log("@@@@@@@@@@@@@@@");
         //     console.log();
-            
+
         //     console.log("@@@@@@@@@@@@@@@");
-            
+
         //     this.onKeyboardFocusMain();
         // }
     }
@@ -2651,7 +2651,7 @@ class Reader extends React.Component<IProps, IState> {
     private handleTTSPlaybackRate(speed: string) {
         ttsPlaybackRate(parseFloat(speed));
         // this.setState({ ttsPlaybackRate: speed });
-        this.props.setConfig({ ...this.props.readerConfig, ttsPlaybackRate: speed }, this.props.session);
+        this.props.setConfig({ ...this.props.readerConfig, ttsPlaybackRate: speed });
     }
     private handleTTSVoice(voice: SpeechSynthesisVoice | null) {
         // alert(`${voice.name} ${voice.lang} ${voice.default} ${voice.voiceURI} ${voice.localService}`);
@@ -2664,7 +2664,7 @@ class Reader extends React.Component<IProps, IState> {
         } : null;
         ttsVoice(v);
         // this.setState({ ttsVoice: v });
-        this.props.setConfig({ ...this.props.readerConfig, ttsVoice: v }, this.props.session);
+        this.props.setConfig({ ...this.props.readerConfig, ttsVoice: v });
     }
 
     private handleMediaOverlaysPlay() {
@@ -2690,7 +2690,7 @@ class Reader extends React.Component<IProps, IState> {
     private handleMediaOverlaysPlaybackRate(speed: string) {
         mediaOverlaysPlaybackRate(parseFloat(speed));
         // this.setState({ mediaOverlaysPlaybackRate: speed });
-        this.props.setConfig({ ...this.props.readerConfig, mediaOverlaysPlaybackRate: speed }, this.props.session);
+        this.props.setConfig({ ...this.props.readerConfig, mediaOverlaysPlaybackRate: speed });
     }
 
     // private handleSettingsSave(readerConfig: ReaderConfig) {
@@ -2718,7 +2718,7 @@ class Reader extends React.Component<IProps, IState> {
     //         }, 300);
     //     }
 
-    //     this.props.setConfig(readerConfig, this.props.session);
+    //     this.props.setConfig(readerConfig);
 
     //     if (this.props.r2Publication) {
     //         readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
@@ -2855,7 +2855,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         readerMode: state.mode,
         divinaReadingMode: state.reader.divina.readingMode,
         locale: state.i18n.locale,
-        session: state.session.state,
+        // session: state.session.state,
 
         disableRTLFlip: !!state.reader.disableRTLFlip?.disabled,
         r2PublicationHasMediaOverlays: state.reader.info.navigator.r2PublicationHasMediaOverlays,
@@ -2908,14 +2908,14 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 
             // TODO: quick fix to refresh AllPublication component grid view
             // when a book is set as finished and then open / readed
-            // 
+            //
             // dispatch a stub api endpoint "readingFinishedRefresh" just to trigger
             // AllPublication grid view, this is a legacy usage of the ReduxApi
             // originaly developped. Now we should use the react/redux data update mechanism
             // instead to call a fake IPC API
             //
             // So call readingFinishedRefresh API at each call of setLocator function
-            // trigger too often the refresh, needed only at start or when the book is 
+            // trigger too often the refresh, needed only at start or when the book is
             // check as set as finished in library/AllPublication compoment during the reading
             // setLocator is heavealy called with tts enabled or in an audiobook
             // so we just called readingFinishedRefresh 2 times at start
@@ -2928,12 +2928,14 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                 apiDispatch(dispatch)()("publication/readingFinishedRefresh")();
             }
         },
-        setConfig: (config: ReaderConfig, sessionEnabled: boolean) => {
+        setConfig: (config: ReaderConfig) => {
             dispatch(readerLocalActionSetConfig.build(config));
 
-            if (!sessionEnabled) {
-                dispatch(readerActions.configSetDefault.build(config));
-            }
+            // session never enabled in reader but always in main/lib
+            // if (!sessionEnabled) {
+                // called once in the readerConfigChanged saga function triggerd by the readerLocalActionSetConfig action just above.
+                // dispatch(readerActions.configSetDefault.build(config));
+            // }
         },
         addBookmark: (bookmark: IBookmarkStateWithoutUUID) => {
             dispatch(readerActions.bookmark.push.build(bookmark));
