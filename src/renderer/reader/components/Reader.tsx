@@ -1174,11 +1174,10 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        const newReaderConfig = {...this.props.readerConfig};
-        newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "annotation" ? "margin" : "annotation";
+        const annotation_defaultDrawView = this.props.readerConfig.annotation_defaultDrawView === "annotation" ? "margin" : "annotation";
 
-        console.log(`onKeyboardAnnotationMargin : highlight=${newReaderConfig.annotation_defaultDrawView}`);
-        this.props.setConfig(newReaderConfig);
+        console.log(`onKeyboardAnnotationMargin : highlight=${annotation_defaultDrawView}`);
+        this.props.setConfig({ annotation_defaultDrawView });
     };
 
     private onKeyboardAnnotation = () => {
@@ -1205,7 +1204,7 @@ class Reader extends React.Component<IProps, IState> {
             return ;
         }
 
-        let newReaderConfig = {...this.props.readerConfig};
+        let newReaderConfig: Partial<ReaderConfig> = {};
         const { annotation_popoverNotOpenOnNoteTaking } = newReaderConfig;
         newReaderConfig.annotation_popoverNotOpenOnNoteTaking = true;
 
@@ -1214,7 +1213,7 @@ class Reader extends React.Component<IProps, IState> {
 
         this.props.triggerAnnotationBtn();
 
-        newReaderConfig = {...this.props.readerConfig};
+        newReaderConfig = {};
         newReaderConfig.annotation_popoverNotOpenOnNoteTaking = annotation_popoverNotOpenOnNoteTaking;
         this.props.setConfig(newReaderConfig);
     };
@@ -2651,7 +2650,7 @@ class Reader extends React.Component<IProps, IState> {
     private handleTTSPlaybackRate(speed: string) {
         ttsPlaybackRate(parseFloat(speed));
         // this.setState({ ttsPlaybackRate: speed });
-        this.props.setConfig({ ...this.props.readerConfig, ttsPlaybackRate: speed });
+        this.props.setConfig({ ttsPlaybackRate: speed });
     }
     private handleTTSVoice(voice: SpeechSynthesisVoice | null) {
         // alert(`${voice.name} ${voice.lang} ${voice.default} ${voice.voiceURI} ${voice.localService}`);
@@ -2664,7 +2663,7 @@ class Reader extends React.Component<IProps, IState> {
         } : null;
         ttsVoice(v);
         // this.setState({ ttsVoice: v });
-        this.props.setConfig({ ...this.props.readerConfig, ttsVoice: v });
+        this.props.setConfig({ ttsVoice: v });
     }
 
     private handleMediaOverlaysPlay() {
@@ -2690,7 +2689,7 @@ class Reader extends React.Component<IProps, IState> {
     private handleMediaOverlaysPlaybackRate(speed: string) {
         mediaOverlaysPlaybackRate(parseFloat(speed));
         // this.setState({ mediaOverlaysPlaybackRate: speed });
-        this.props.setConfig({ ...this.props.readerConfig, mediaOverlaysPlaybackRate: speed });
+        this.props.setConfig({ mediaOverlaysPlaybackRate: speed });
     }
 
     // private handleSettingsSave(readerConfig: ReaderConfig) {
@@ -2928,7 +2927,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                 apiDispatch(dispatch)()("publication/readingFinishedRefresh")();
             }
         },
-        setConfig: (config: ReaderConfig) => {
+        setConfig: (config: Partial<ReaderConfig>) => {
             dispatch(readerLocalActionSetConfig.build(config));
 
             // session never enabled in reader but always in main/lib

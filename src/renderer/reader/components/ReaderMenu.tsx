@@ -388,7 +388,7 @@ const HardWrapComment: React.FC<{comment: string}> = (props) => {
         strListComponent.push(<span key={++n}>{strline}</span>);
         strListComponent.push(<br key={++n}/>);
     }
-    
+
     return (
         <p>
             {
@@ -538,7 +538,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
             </div>
             <div className={stylesAnnotations.annotation_actions_buttons}>
                 <button
-                    id={`annotation_card-${annotation.uuid}_edit_button`} 
+                    id={`annotation_card-${annotation.uuid}_edit_button`}
                     title={__("reader.marks.edit")}
                     disabled={isEdited}
                     onClick={() => triggerEdition(true)}
@@ -621,7 +621,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
             startPage = annotationFocusItemPageNumber;
         }
     }
-    
+
     const startPageRef = React.useRef<number>();
 
     const [pageNumber, setPageNumber] = React.useState(startPage);
@@ -751,7 +751,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) =
     const { bookmark, i } = props;
     const isEdited = itemEdited === i;
     const [__] = useTranslator();
-    
+
     const dispatch = useDispatch();
     const isAudioBook = isAudiobookFn(r2Publication);
     const deleteBookmark = (bookmark: IBookmarkState) => {
@@ -1445,7 +1445,7 @@ const TabTitle = ({value}: {value: string}) => {
             title=__("reader.marks.bookmarks");
             break;
         case "tab-search":
-            title=  searchText ? translator.translate("reader.marks.searchResult", { searchText: searchText.slice(0, 20) }) 
+            title=  searchText ? translator.translate("reader.marks.searchResult", { searchText: searchText.slice(0, 20) })
             : (__("reader.marks.search"));;
             break;
         case "tab-gotopage":
@@ -1522,7 +1522,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
 
             setTimeout(() => {
                 if (dockedModeRef.current) {
-    
+
                     console.log("Focus on docked mode combobox");
 
                     // TODO: what is the logic for stealing focus here? The result of keyboard or mouse interaction?
@@ -1683,25 +1683,23 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         setSerialAnnotatorMode(!serialAnnotator);
     };
     const quickAnnotationsOnChange = () => {
-        dispatch(readerLocalActionSetConfig.build({ ...readerConfig, annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking }));
+        dispatch(readerLocalActionSetConfig.build({ annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking }));
     };
     const marginAnnotationsOnChange = () => {
-        const newReaderConfig = { ...readerConfig };
-        newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "margin" ? "annotation" : "margin";
+        const annotation_defaultDrawView = readerConfig.annotation_defaultDrawView === "margin" ? "annotation" : "margin";
 
-        console.log(`marginAnnotationsToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
-        dispatch(readerLocalActionSetConfig.build(newReaderConfig));
+        console.log(`marginAnnotationsToggleSwitch : highlight=${annotation_defaultDrawView}`);
+        dispatch(readerLocalActionSetConfig.build({ annotation_defaultDrawView }));
 
         const href1 = currentLocation?.locator?.href;
         const href2 = currentLocation?.secondWebViewHref;
         dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
     };
     const hideAnnotationOnChange = () => {
-        const newReaderConfig = { ...readerConfig };
-        newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "hide" ? "annotation" : "hide";
+        const annotation_defaultDrawView = readerConfig.annotation_defaultDrawView === "hide" ? "annotation" : "hide";
 
-        console.log(`hideAnnotationsToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
-        dispatch(readerLocalActionSetConfig.build(newReaderConfig));
+        console.log(`hideAnnotationsToggleSwitch : highlight=${annotation_defaultDrawView}`);
+        dispatch(readerLocalActionSetConfig.build({ annotation_defaultDrawView }));
 
         const href1 = currentLocation?.locator?.href;
         const href2 = currentLocation?.secondWebViewHref;
@@ -1827,7 +1825,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 <div className={stylesAnnotations.annotations_checkbox}>
                                     <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={serialAnnotator} onChange={advancedAnnotationsOnChange} />
                                     <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div 
+                                        <div
                                         tabIndex={0}
                                         role="checkbox"
                                         aria-checked={serialAnnotator}
@@ -1845,7 +1843,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                                 advancedAnnotationsOnChange();
                                             }
                                         }}
-                                        className={stylesGlobal.checkbox_custom} 
+                                        className={stylesGlobal.checkbox_custom}
                                         style={{ border: serialAnnotator ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: serialAnnotator ? "var(--color-blue)" : "transparent" }}>
                                             {serialAnnotator ?
                                                 <SVG ariaHidden svg={CheckIcon} />
@@ -1864,7 +1862,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         onChange={quickAnnotationsOnChange}
                                     />
                                     <label htmlFor="quickAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div 
+                                        <div
                                         tabIndex={0}
                                         role="checkbox"
                                         aria-checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
@@ -1882,7 +1880,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                                 quickAnnotationsOnChange();
                                             }
                                         }}
-                                        className={stylesGlobal.checkbox_custom} 
+                                        className={stylesGlobal.checkbox_custom}
                                         style={{ border: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "var(--color-blue)" : "transparent" }}>
                                             {readerConfig.annotation_popoverNotOpenOnNoteTaking ?
                                                 <SVG ariaHidden svg={CheckIcon} />
@@ -1912,7 +1910,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                                 marginAnnotationsOnChange();
                                             }
                                         }}
-                                        className={stylesGlobal.checkbox_custom} 
+                                        className={stylesGlobal.checkbox_custom}
                                         style={{ border: readerConfig.annotation_defaultDrawView === "margin" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "margin" ? "var(--color-blue)" : "transparent" }}>
                                             {readerConfig.annotation_defaultDrawView === "margin" ?
                                                 <SVG ariaHidden svg={CheckIcon} />
@@ -1942,8 +1940,8 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                                 e.preventDefault();
                                                 hideAnnotationOnChange();
                                             }
-                                        }}                                       
-                                        className={stylesGlobal.checkbox_custom} 
+                                        }}
+                                        className={stylesGlobal.checkbox_custom}
                                         style={{ border: readerConfig.annotation_defaultDrawView === "hide" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "hide" ? "var(--color-blue)" : "transparent" }}>
                                             {readerConfig.annotation_defaultDrawView === "hide" ?
                                                 <SVG ariaHidden svg={CheckIcon} />

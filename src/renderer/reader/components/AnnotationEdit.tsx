@@ -93,7 +93,6 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
     const [colorSelected, setColor] = React.useState(colorStr);
 
     const dispatch = useDispatch();
-    const readerConfig = useSelector((state: IReaderRootState) => state.reader.config);
 
     const rgbresultmatch = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(colorSelected);
     const colorObj = rgbresultmatch ? {
@@ -130,7 +129,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
 //             drawIcon = TextOutlineIcon;
 //             break;
 // }
-    
+
     const saveConfig = () => {
 
         let flag = false;
@@ -142,10 +141,9 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         }
 
         if (flag) {
-            const newReaderConfig = { ...readerConfig };
-            newReaderConfig.annotation_defaultColor = { ...colorObj };
-            newReaderConfig.annotation_defaultDrawType = drawTypeSelected;
-            dispatch(readerLocalActionSetConfig.build(newReaderConfig));
+            const annotation_defaultColor = { ...colorObj };
+            const annotation_defaultDrawType = drawTypeSelected;
+            dispatch(readerLocalActionSetConfig.build({ annotation_defaultColor, annotation_defaultDrawType }));
         }
 
         previousColorSelected.current = { ...colorObj };

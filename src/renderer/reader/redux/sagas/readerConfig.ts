@@ -18,44 +18,76 @@ import { SagaGenerator, all, put, select, spawn, take } from "typed-redux-saga";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
+import { isNotNil } from "readium-desktop/utils/nil";
+
 
 function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaGenerator<void> {
 
-    if (!action.payload) {
+    const { payload } = action;
+    // payload must contain readerConfig keys that need to be updated
+
+    // fine-graining the parsing of readerConfig to avoid too many rendering of the webview
+    // and then reconciliate readerConfig to save it as default global config (configSetDefault)
+
+
+    if (!payload) {
         throw new Error("NO READER CONFIG RECEIVED !!!");
     }
+
 
     const readerConfigFromReduxState = yield* select((state: IReaderRootState) => state.reader.config);
     const readerConfig = {
         ...readerConfigFromReduxState,
-        ...action.payload,
+        ...payload,
     };
 
-    const r2PublicationHasMediaOverlays = yield* select((state: IReaderRootState) => state.reader.info.navigator.r2PublicationHasMediaOverlays);
-    const mediaOverlaysState = yield* select((state: IReaderRootState) => state.reader.mediaOverlay.state);
-    const ttsState = yield* select((state: IReaderRootState) => state.reader.tts.state);
-    const moWasPlaying = r2PublicationHasMediaOverlays && mediaOverlaysState === MediaOverlaysStateEnum.PLAYING;
-    const ttsWasPlaying = ttsState !== TTSStateEnum.STOPPED;
 
-    mediaOverlaysEnableSkippability(readerConfig.mediaOverlaysEnableSkippability);
-    ttsSentenceDetectionEnable(readerConfig.ttsEnableSentenceDetection);
-    ttsSkippabilityEnable(readerConfig.mediaOverlaysEnableSkippability);
-    mediaOverlaysEnableCaptionsMode(readerConfig.mediaOverlaysEnableCaptionsMode);
-    ttsOverlayEnable(readerConfig.ttsEnableOverlayMode);
-
-
-    if (moWasPlaying) {
-        mediaOverlaysPause();
-        setTimeout(() => {
-            mediaOverlaysResume();
-        }, 300);
+    if (isNotNil(payload.mediaOverlaysEnableSkippability)) {
+        mediaOverlaysEnableSkippability(readerConfig.mediaOverlaysEnableSkippability);
     }
-    if (ttsWasPlaying) {
-        ttsStop();
-        setTimeout(() => {
-            ttsPlay(parseFloat(readerConfig.ttsPlaybackRate), readerConfig.ttsVoice);
-        }, 300);
+
+    if (isNotNil(payload.ttsEnableSentenceDetection)) {
+        ttsSentenceDetectionEnable(readerConfig.ttsEnableSentenceDetection);
     }
+
+    if (isNotNil(payload.mediaOverlaysEnableSkippability)) {
+        ttsSkippabilityEnable(readerConfig.mediaOverlaysEnableSkippability);
+    }
+
+    if (isNotNil(payload.mediaOverlaysEnableCaptionsMode)) {
+        mediaOverlaysEnableCaptionsMode(readerConfig.mediaOverlaysEnableCaptionsMode);
+    }
+
+    if (isNotNil(payload.ttsEnableOverlayMode)) {
+        ttsOverlayEnable(readerConfig.ttsEnableOverlayMode);
+    }
+
+
+    if (isNotNil(payload.mediaOverlaysEnableCaptionsMode) || isNotNil(payload.mediaOverlaysEnableSkippability) || isNotNil(payload.mediaOverlaysPlaybackRate)) {
+
+        const r2PublicationHasMediaOverlays = yield* select((state: IReaderRootState) => state.reader.info.navigator.r2PublicationHasMediaOverlays);
+        const mediaOverlaysState = yield* select((state: IReaderRootState) => state.reader.mediaOverlay.state);
+        const moWasPlaying = r2PublicationHasMediaOverlays && mediaOverlaysState === MediaOverlaysStateEnum.PLAYING;
+        if (moWasPlaying) {
+            mediaOverlaysPause();
+            setTimeout(() => {
+                mediaOverlaysResume();
+            }, 300);
+        }
+    }
+
+    if (isNotNil(payload.ttsVoice) || isNotNil(payload.ttsPlaybackRate)) {
+
+        const ttsState = yield* select((state: IReaderRootState) => state.reader.tts.state);
+        const ttsWasPlaying = ttsState !== TTSStateEnum.STOPPED;
+        if (ttsWasPlaying) {
+            ttsStop();
+            setTimeout(() => {
+                ttsPlay(parseFloat(readerConfig.ttsPlaybackRate), readerConfig.ttsVoice);
+            }, 300);
+        }
+    }
+
 
     // this.props.setConfig(readerConfig, this.props.session);
     // const sessionEnabled = yield* select((state: IReaderRootState) => state.session.state);
