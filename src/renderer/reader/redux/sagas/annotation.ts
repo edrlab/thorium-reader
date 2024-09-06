@@ -54,7 +54,7 @@ const convertDrawTypeToNumber = (drawType: TDrawType) => {
 
 function* annotationUpdate(action: readerActions.annotation.update.TAction) {
     debug(`annotationUpdate-- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
-    const {payload: {uuid, locatorExtended: {locator: {href}, selectionInfo}, color: newColor, drawType}} = action;
+    const {payload: {uuid, locatorExtended: {locator: {href}, selectionInfo}, color: newColor, drawType, tags}} = action;
 
     const item = yield* selectTyped((store: IReaderRootState) => store.reader.highlight.handler.find(([_, highlightState]) => highlightState.uuid === uuid));
 
@@ -69,6 +69,9 @@ function* annotationUpdate(action: readerActions.annotation.update.TAction) {
         // error sync between hightlight data array and annotation array
         yield* put(readerLocalActionHighlights.handler.pop.build([{ uuid }]));
     }
+
+    const annotation_tagNameUniqueIndexList = yield* select((state: IReaderRootState) => state.reader.config.annotation_tagNameUniqueIndexList);
+    yield* put(readerLocalActionSetConfig.build({ annotation_tagNameUniqueIndexList: [...new Set([...tags, ...annotation_tagNameUniqueIndexList])] }));
 }
 
 function* annotationPush(action: readerActions.annotation.push.TAction) {
