@@ -11,15 +11,15 @@ import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redu
 export const ID = "READER_ANNOTATIONS_CREATE_NOTE";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IPayload extends Pick<IAnnotationState, "color"|"comment"|"drawType"> {
+interface IPayload extends Pick<IAnnotationState, "color"|"comment"|"drawType"|"tags"> {
 }
 
-export function build(color: IColor, comment: string, drawType: TDrawType):
+export function build(color: IColor, comment: string, drawType: TDrawType, tags: string[]):
     Action<typeof ID, IPayload> {
 
     return {
         type: ID,
-        payload: { color, comment, drawType},
+        payload: { color, comment, drawType, tags },
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

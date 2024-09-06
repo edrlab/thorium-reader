@@ -26,11 +26,14 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { readerLocalActionSetConfig } from "../redux/actions";
 import classNames from "classnames";
 import { TextArea } from "react-aria-components";
+import { TagList } from "readium-desktop/renderer/common/components/tag/tagList";
+import { TagButton } from "readium-desktop/renderer/common/components/tag/tagButton";
+import AddTag from "readium-desktop/renderer/common/components/tag/AddTag";
 
 // import { readiumCSSDefaults } from "@r2-navigator-js/electron/common/readium-css-settings";
 
 interface IProps {
-    save: (color: IColor, comment: string, drawType: TDrawType) => void;
+    save: (color: IColor, comment: string, drawType: TDrawType, tags: string[]) => void;
     cancel: () => void;
     uuid?: string;
     dockedMode: boolean;
@@ -115,6 +118,8 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         TextStrikeThroughtIcon,
         TextOutlineIcon,
     ];
+
+    const [annotationTagsStringArray, setAnnotationTagsStringArray] = React.useState<string[]>(annotationState.tags || []);
 
 //     switch (drawType) {
 //         case "solid_background":
@@ -215,6 +220,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                     )}
                 </div>
             </div>
+
 {/* annotationState.locatorExtended &&
             <details><summary>{__("reader.settings.preview")}</summary><div>{<p style={{
                 backgroundColor: (!readerConfig.theme || readerConfig.theme === "neutral") ? (readiumCSSDefaults.backgroundColor || "white") :
@@ -239,6 +245,33 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                 backgroundColor: colorSelected,
             }}>{annotationState.locatorExtended.selectionInfo.cleanText}</span><span>{annotationState.locatorExtended.selectionInfo.cleanAfter}</span></p>}</div></details> */}
         </div>
+        <div className={stylesAnnotations.annotation_actions}>
+            <div className={stylesAnnotations.annotation_actions_container}>
+                <h4>Tags</h4>
+                <TagList tagArray={annotationTagsStringArray}>
+                    {
+                        (tag, index) =>
+                            <TagButton
+                                tag={tag}
+                                index={index}
+                                onClickDeleteCb={undefined}
+                                onClickCb={(tagString) => {
+                                    setAnnotationTagsStringArray((tags) => tags.filter((annotationListTagName) => annotationListTagName !== tagString));
+                                }}
+                                location={undefined}
+                            >
+                            </TagButton>
+                        // <GridTagButton name={tag as string} key={index} />
+                    }
+                </TagList>
+                <AddTag
+                    disableForm
+                    tagArray={annotationTagsStringArray}
+                    __={__}
+                    setTags={setAnnotationTagsStringArray}
+                />
+            </div>
+        </div>
 
         {/* <label htmlFor="addNote">{__("reader.annotations.addNote")}</label> */}
         <div className={stylesAnnotations.annotation_form_textarea_buttons}>
@@ -255,7 +288,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
 
                         const textareaValue = textAreaRef?.current?.value || "";
                         const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
-                        save(colorObj, textareaNormalize, drawTypeSelected);
+                        save(colorObj, textareaNormalize, drawTypeSelected, annotationTagsStringArray);
                         saveConfig();
                     }}
                 >
@@ -272,7 +305,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
 
                         const textareaValue = textAreaRef?.current?.value || "";
                         const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
-                        save(colorObj, textareaNormalize, drawTypeSelected);
+                        save(colorObj, textareaNormalize, drawTypeSelected, annotationTagsStringArray);
                         saveConfig();
                     }}
                 >

@@ -13,7 +13,7 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
-import SVG from "../../../SVG";
+import SVG from "../SVG";
 import * as AddTagIcon from "readium-desktop/renderer/assets/icons/addTag-icon.svg";
 import classNames from "classnames";
 import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
@@ -21,10 +21,10 @@ import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps {
-    pubId: string;
     __: I18nTyped;
     tagArray: string[] | IOpdsTagView[];
     setTags: (tagsArray: string[]) => void;
+    disableForm?: boolean;
 }
 
 interface IState {
@@ -48,35 +48,59 @@ export default class AddTag extends React.Component<IProps, IState> {
     public render() {
         const { __ } = this.props;
 
+        const content = <>
+            <div className={stylesInputs.form_group}>
+                <label style={this.props.disableForm ? {top: "-20px", height: "0.5rem"} : {}}>{__("catalog.tag")}</label>
+                <SVG ariaHidden svg={TagIcon} />
+                <input
+                    type="text"
+                    className={classNames(stylesTags.tag_inputs, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
+                    title={__("catalog.addTags")}
+                    // placeholder={__("catalog.addTags")}
+                    onChange={this.handleChangeName}
+                    value={this.state.newTagName}
+                    onKeyDown={(e) => {
+                        if (this.props.disableForm) {
+                            if (e.key === "Enter") {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            }
+                        }
+                    }}
+                    onKeyUp={(e) => {
+                        if (this.props.disableForm) {
+                            if (e.key === "Enter") {
+                                this.addTag();
+                            }
+                        }
+                    }}
+                />
+            </div>
+            {this.props.disableForm ? <button
+                className={stylesButtons.button_secondary_blue}
+                onClick={() => this.addTag()}
+                type="button"
+            >
+                <SVG ariaHidden svg={AddTagIcon} />
+                {__("catalog.addTagsButton")}
+            </button>
+                : <button
+                    type="submit"
+                    className={stylesButtons.button_secondary_blue}
+                >
+                    <SVG ariaHidden svg={AddTagIcon} />
+                    {__("catalog.addTagsButton")}
+                </button>}
+        </>;
+
         return (
-            this.props.pubId
-                ? <form onSubmit={this.addTag}>
-                    <div className={stylesInputs.form_group}>
-                        <label>{__("catalog.tag")}</label>
-                        <SVG ariaHidden svg={TagIcon} />
-                        <input
-                            type="text"
-                            className={classNames(stylesTags.tag_inputs, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
-                            title={__("catalog.addTags")}
-                            // placeholder={__("catalog.addTags")}
-                            onChange={this.handleChangeName}
-                            value={this.state.newTagName}
-                        />
-                    </div>
-                    <button
-                        type="submit"
-                        className={stylesButtons.button_secondary_blue}
-                    >
-                        <SVG ariaHidden svg={AddTagIcon} />
-                        {__("catalog.addTagsButton")}
-                    </button>
-                </form>
-                : <></>
+            this.props.disableForm ? <div>{content}</div> : <form onSubmit={this.addTag}>{content}</form>
         );
     }
 
-    private addTag = (e: TFormEvent) => {
-        e.preventDefault();
+    private addTag = (e?: TFormEvent) => {
+        e?.preventDefault();
+        
         const { tagArray } = this.props;
 
         const tags = Array.isArray(tagArray) ? tagArray.slice() : [];

@@ -13,12 +13,11 @@ import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import AddTag from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/AddTag";
 import { TagReaderButton,
-} from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/tagButton";
+} from "readium-desktop/renderer/common/components/tag/tagButton";
 import {
     TagList,
-} from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/tagList";
+} from "readium-desktop/renderer/common/components/tag/tagList";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -26,6 +25,7 @@ import {
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { TDispatch } from "readium-desktop/typings/redux";
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
+import AddTag from "readium-desktop/renderer/common/components/tag/AddTag";
 
 
 // Logger
@@ -80,7 +80,6 @@ export class TagManager extends React.Component<IProps> {
                             (tag) =>
                                 <TagReaderButton
                                     tag={tag}
-                                    pubId={this.props.pubId}
                                     onClickDeleteCb={ updateTagsCb }
                                 >
                                 </TagReaderButton>
@@ -88,7 +87,6 @@ export class TagManager extends React.Component<IProps> {
                     </TagList>
                 </div>
                 <AddTag
-                    pubId={this.props.pubId}
                     tagArray={this.props.tagArray}
                     __={__}
                     setTags={setTagsCb}

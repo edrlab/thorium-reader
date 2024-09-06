@@ -5,45 +5,45 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as Dialog from "@radix-ui/react-dialog";
 import classNames from "classnames";
 import * as React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
 import FocusLock from "react-focus-lock";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 // import {TextArea} from 'react-aria-components';
 
 import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
-import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
-import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as BookmarkIcon from "readium-desktop/renderer/assets/icons/bookmarkMultiple-icon.svg";
 import * as BookOpenIcon from "readium-desktop/renderer/assets/icons/bookOpen-icon.svg";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
-import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
-import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
+import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
+import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
+import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 
-import * as DockLeftIcon from "readium-desktop/renderer/assets/icons/dockleft-icon.svg";
-import * as DockRightIcon from "readium-desktop/renderer/assets/icons/dockright-icon.svg";
-import * as DockModalIcon from "readium-desktop/renderer/assets/icons/dockmodal-icon.svg";
-import * as ChevronIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
-import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
-import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import * as Tabs from "@radix-ui/react-tabs";
+import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
+import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
-import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
-import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
-import * as Tabs from "@radix-ui/react-tabs";
+import * as ChevronIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
+import * as DockLeftIcon from "readium-desktop/renderer/assets/icons/dockleft-icon.svg";
+import * as DockModalIcon from "readium-desktop/renderer/assets/icons/dockmodal-icon.svg";
+import * as DockRightIcon from "readium-desktop/renderer/assets/icons/dockright-icon.svg";
+import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 
-import * as TocIcon from "readium-desktop/renderer/assets/icons/toc-icon.svg";
-import * as LandmarkIcon from "readium-desktop/renderer/assets/icons/landmark-icon.svg";
-import * as TargetIcon from "readium-desktop/renderer/assets/icons/target-icon.svg";
-import * as SearchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
 import * as AnnotationIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar-icon.svg";
+import * as LandmarkIcon from "readium-desktop/renderer/assets/icons/landmark-icon.svg";
+import * as SearchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
+import * as TargetIcon from "readium-desktop/renderer/assets/icons/target-icon.svg";
+import * as TocIcon from "readium-desktop/renderer/assets/icons/toc-icon.svg";
 // import * as DuplicateIcon from "readium-desktop/renderer/assets/icons/duplicate-icon.svg";
 
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
@@ -58,25 +58,27 @@ import ReaderMenuSearch from "./ReaderMenuSearch";
 // import { SectionData } from "./sideMenu/sideMenuData";
 // import UpdateBookmarkForm from "./UpdateBookmarkForm";
 
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { Locator } from "r2-shared-js/dist/es8-es2017/src/models/locator";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { MySelectProps, Select, SelectItem } from "readium-desktop/renderer/common/components/Select";
-import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
-import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { Locator } from "r2-shared-js/dist/es8-es2017/src/models/locator";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 // import { DialogTrigger as DialogTriggerReactAria, Popover as PopoverReactAria, Dialog as DialogReactAria } from "react-aria-components";
-import { TextArea } from "react-aria-components";
-import { AnnotationEdit } from "./AnnotationEdit";
-import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
-import { readerActions } from "readium-desktop/common/redux/actions";
-import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import * as Popover from "@radix-ui/react-popover";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
-import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
+import { TextArea } from "react-aria-components";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { readerActions } from "readium-desktop/common/redux/actions";
+import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import { TagButton } from "readium-desktop/renderer/common/components/tag/tagButton";
+import { TagList } from "readium-desktop/renderer/common/components/tag/tagList";
+import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
+import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
+import { AnnotationEdit } from "./AnnotationEdit";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -398,9 +400,9 @@ const HardWrapComment: React.FC<{comment: string}> = (props) => {
     );
 };
 
-const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, isEdited: boolean, triggerEdition: (v: boolean) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (tag: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
-    const { goToLocator } = props;
+    const { goToLocator, setTagFilter } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
     // const setReaderConfig = useSaveReaderConfig();
@@ -409,18 +411,19 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     // }, [setReaderConfig]);
     const dockedMode = dockingMode !== "full";
     const { timestamp, annotation, isEdited, triggerEdition } = props;
-    const { uuid, comment, locatorExtended } = annotation;
+    const { uuid, comment, locatorExtended, tags: tagsStringArray } = annotation;
     const dockedEditAnnotation = isEdited && dockedMode;
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
-    const save = React.useCallback((color: IColor, comment: string, drawType: TDrawType) => {
+    const save = React.useCallback((color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
         dispatch(readerActions.annotation.update.build({
             uuid,
             locatorExtended,
             color,
             comment,
             drawType,
+            tags,
         }));
         triggerEdition(false);
     }, [dispatch, locatorExtended, uuid, triggerEdition]);
@@ -522,7 +525,22 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                     <AnnotationEdit uuid={uuid} save={save} cancel={() => triggerEdition(false)} dockedMode={dockedMode} btext={dockedEditAnnotation && btext} />
                     // </FocusLock>
                     :
-                    <HardWrapComment comment={comment} />
+                    <>
+                        <HardWrapComment comment={comment} />
+                        <TagList tagArray={tagsStringArray}>
+                            {
+                                (tag, index) =>
+                                    <TagButton
+                                        tag={tag}
+                                        index={index}
+                                        onClickDeleteCb={undefined}
+                                        onClickCb={setTagFilter}
+                                        location={undefined}
+                                    >
+                                    </TagButton>
+                            }
+                        </TagList>
+                    </>
             }
         </div>
         <div className={stylesAnnotations.annotation_edit}>
@@ -609,13 +627,17 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
     // const previousFocusUuid = useSelector((state: IReaderRootState) => state.annotationControlMode.focus.previousFocusUuid);
 
+    const [tagFilter, setTagFilter] = React.useState<string>("");
+
+    const annotationList = tagFilter ? annotationsQueue.filter(([, {tags}]) => tags.includes(tagFilter)) : annotationsQueue;
+
     const MAX_MATCHES_PER_PAGE = 5;
 
-    const pageTotal =  Math.ceil(annotationsQueue.length / MAX_MATCHES_PER_PAGE) || 1;
+    const pageTotal =  Math.ceil(annotationList.length / MAX_MATCHES_PER_PAGE) || 1;
 
     let startPage = 1;
     if (annotationUUIDFocused) {
-        const annotationFocusItemFindIndex = annotationsQueue.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused);
+        const annotationFocusItemFindIndex = annotationList.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused);
         if (annotationFocusItemFindIndex > -1) {
             const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex+1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
             startPage = annotationFocusItemPageNumber;
@@ -634,7 +656,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
     }
 
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
-    const annotationsPagedArray = annotationsQueue.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE);
+    const annotationsPagedArray = annotationList.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE);
 
     const isLastPage = pageTotal === pageNumber;
     const isFirstPage = pageNumber === 1;
@@ -643,13 +665,28 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
 
 
     const begin = startIndex + 1;
-    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationsQueue.length);
+    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationList.length);
 
     const [annotationItemEditedUUID, setannotationItemEditedUUID] = React.useState("");
     const paginatorAnnotationsRef = React.useRef<HTMLSelectElement>();
 
+    const tagNameUniqueIndexList = useReaderConfig("annotation_tagNameUniqueIndexList");
+
+    const selectTagFilterOption = tagNameUniqueIndexList.map((name, i) => ({id: i+1, name}));
+    selectTagFilterOption.unshift({id: 0, name: "No Filter"});
+    const selectTagFilterSelectedKey = selectTagFilterOption.find(({name}) => name === tagFilter);
+
     return (
         <>
+            <ComboBox label={"tag filter"} defaultItems={selectTagFilterOption} selectedKey={selectTagFilterSelectedKey?.id || 0} onSelectionChange={(key) => {
+                if (typeof key === "number" && key > 0 && key < selectTagFilterOption.length) {
+                    setTagFilter(selectTagFilterOption[key]?.name);
+                } else {
+                    setTagFilter("");
+                }
+            }} svg={undefined}>
+                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+            </ComboBox>
             {annotationsPagedArray.map(([timestamp, annotationItem], _i) =>
                 <AnnotationCard
                     key={`annotation-card_${annotationItem.uuid}`}
@@ -658,6 +695,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
                     goToLocator={goToLocator}
                     isEdited={annotationItem.uuid === annotationItemEditedUUID}
                     triggerEdition={(value: boolean) => value ? setannotationItemEditedUUID(annotationItem.uuid) : setannotationItemEditedUUID("")}
+                    setTagFilter={setTagFilter}
                 />,
             )}
             {
@@ -728,7 +766,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
                         </button>
                     </div>
                     {
-                        annotationsQueue.length &&
+                        annotationList.length &&
                         <p
                             style={{
                                 textAlign: "center",
@@ -736,7 +774,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
                                 margin: 0,
                                 marginTop: "-16px",
                                 marginBottom: "20px",
-                        }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${annotationsQueue.length}`}</p>
+                        }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${annotationList.length}`}</p>
                     }
                     </>
                     : <></>

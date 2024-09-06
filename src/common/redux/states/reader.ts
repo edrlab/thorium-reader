@@ -32,6 +32,7 @@ export const readerConfigInitialStateAnnotation: IAnnotationReaderConfigState = 
     annotation_defaultDrawType: "solid_background",
     annotation_popoverNotOpenOnNoteTaking: false,
     annotation_defaultDrawView: "annotation",
+    annotation_tagNameUniqueIndexList: [],
 };
 
 export const readerConfigInitialStateReaderDockingMode: IReaderSettingsMenuState = {

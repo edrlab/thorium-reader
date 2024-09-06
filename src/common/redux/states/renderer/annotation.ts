@@ -22,6 +22,7 @@ export interface IAnnotationState {
     comment: string;
     color: IColor;
     drawType: TDrawType;
+    tags?: string[] | undefined;
 }
 
 export type TAnnotationState = TPQueueState<number, IAnnotationState>;
@@ -41,4 +42,6 @@ export interface IAnnotationReaderConfigState {
     annotation_defaultColor: IColor;
     annotation_defaultDrawType: TDrawType;
     annotation_defaultDrawView: TDrawView;
+    annotation_tagNameUniqueIndexList: string[]; // check strings uniqueness
+    // add new tag string with set constructor and serialize it to an array
 }

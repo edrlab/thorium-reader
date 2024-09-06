@@ -60,6 +60,12 @@ const createStoreFromDi = async (preloadedState: Partial<IReaderRootState>) => {
         newConfig.annotation_defaultDrawView = defaultConfig.annotation_defaultDrawView;
         flag = true;
     }
+    if (newConfig.annotation_tagNameUniqueIndexList === undefined) {
+
+        console.log("ANNOTATION MIGRATION !! tagNameUniqueIndexList not set migrate from defaultConfig value=", newConfig.annotation_tagNameUniqueIndexList);
+        newConfig.annotation_tagNameUniqueIndexList = defaultConfig.annotation_tagNameUniqueIndexList;
+        flag = true;
+    }
     if (newConfig.theme === undefined) {
 
         console.log("MIGRATION !! theme not set migrate from defaultConfig value=", newConfig.theme);

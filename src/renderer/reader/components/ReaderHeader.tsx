@@ -1330,8 +1330,8 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         closeAnnotationEditionMode: () => {
             dispatch(readerLocalActionAnnotations.enableMode.build(false, undefined));
         },
-        saveAnnotation: (color: IColor, comment: string, drawType: TDrawType) => {
-            dispatch(readerLocalActionAnnotations.createNote.build(color, comment, drawType));
+        saveAnnotation: (color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
+            dispatch(readerLocalActionAnnotations.createNote.build(color, comment, drawType, tags));
         },
     };
 };

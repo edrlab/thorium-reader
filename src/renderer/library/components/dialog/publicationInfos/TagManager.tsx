@@ -11,13 +11,12 @@ import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import AddTag from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/AddTag";
 import {
     TagButton,
-} from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/tagButton";
+} from "readium-desktop/renderer/common/components/tag/tagButton";
 import {
     TagList,
-} from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/tagList";
+} from "readium-desktop/renderer/common/components/tag/tagList";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -28,6 +27,7 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { TDispatch } from "readium-desktop/typings/redux";
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 import classNames from "classnames";
+import AddTag from "readium-desktop/renderer/common/components/tag/AddTag";
 // import GridTagButton from "../../catalog/GridTagButton";
 
 
@@ -44,7 +44,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, Partial<ReturnType<typeof mapDispatchToProps>> {
 }
 
 class TagManager extends React.Component<IProps> {
@@ -79,7 +79,6 @@ class TagManager extends React.Component<IProps> {
                                 <TagButton
                                     tag={tag}
                                     index={index}
-                                    pubId={this.props.pubId}
                                     onClickDeleteCb={updateTagsCb}
                                     onClickLinkCb={
                                         (_tag) => () => this.props.link(
@@ -93,7 +92,7 @@ class TagManager extends React.Component<IProps> {
                     </TagList>
                 </div>
                 <AddTag
-                    pubId={this.props.pubId}
+                    // pubId={this.props.pubId}
                     tagArray={this.props.tagArray}
                     __={__}
                     setTags={setTagsCb}

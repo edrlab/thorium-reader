@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { all, call, put, take} from "typed-redux-saga/macro";
+import { all, call, put, select, take} from "typed-redux-saga/macro";
 import { select as selectTyped, take as takeTyped, race as raceTyped, SagaGenerator, call as callTyped} from "typed-redux-saga";
 import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionSetConfig, readerLocalActionSetLocator } from "../actions";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
@@ -89,7 +89,7 @@ function* annotationPop(action: readerActions.annotation.pop.TAction) {
     yield* put(readerLocalActionHighlights.handler.pop.build([{uuid}]));
 }
 
-function* createAnnotation(locatorExtended: LocatorExtended, color: IColor, comment: string, drawType: TDrawType) {
+function* createAnnotation(locatorExtended: LocatorExtended, color: IColor, comment: string, drawType: TDrawType, tags: string[]) {
 
     // clean __selection global variable state
     __selectionInfoGlobal.locatorExtended = undefined;
@@ -100,7 +100,11 @@ function* createAnnotation(locatorExtended: LocatorExtended, color: IColor, comm
         comment,
         locatorExtended,
         drawType,
+        tags,
     }));
+
+    const annotation_tagNameUniqueIndexList = yield* select((state: IReaderRootState) => state.reader.config.annotation_tagNameUniqueIndexList);
+    yield* put(readerLocalActionSetConfig.build({ annotation_tagNameUniqueIndexList: [...new Set([...tags, ...annotation_tagNameUniqueIndexList])] }));
 
     // sure! close the popover
     yield* put(readerLocalActionAnnotations.enableMode.build(false, undefined));
@@ -113,7 +117,7 @@ function* newLocatorEditAndSaveTheNote(locatorExtended: LocatorExtended): SagaGe
     // check the boolean value of annotation_popoverNotOpenOnNoteTaking
     const annotation_popoverNotOpenOnNoteTaking = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_popoverNotOpenOnNoteTaking);
     if (annotation_popoverNotOpenOnNoteTaking) {
-        yield* call(createAnnotation, locatorExtended, {...defaultColor}, "", defaultDrawType);
+        yield* call(createAnnotation, locatorExtended, {...defaultColor}, "", defaultDrawType, []);
         return;
     }
 
@@ -134,11 +138,11 @@ function* newLocatorEditAndSaveTheNote(locatorExtended: LocatorExtended): SagaGe
         return;
     } else if (noteTakenAction) {
 
-        const { color, comment, drawType } = noteTakenAction.payload;
-        debug(`annotation save the note with the color: ${color} and comment: ${comment.slice(0, 20)}`);
+        const { color, comment, drawType, tags } = noteTakenAction.payload;
+        debug(`annotation save the note with the color: ${color} , comment: ${comment.slice(0, 20)} , drawType: ${drawType} , tags: ${tags}`);
 
         // get color and comment and save the note
-        yield* call(createAnnotation, locatorExtended, color, comment, drawType);
+        yield* call(createAnnotation, locatorExtended, color, comment, drawType, tags);
 
     } else {
         debug("ERROR: second yield RACE not worked !!?!!");

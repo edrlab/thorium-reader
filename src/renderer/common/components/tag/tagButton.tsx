@@ -22,16 +22,16 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 interface IBaseProps {
     tag: string | IOpdsTagView;
     index?: number;
-    pubId?: string;
     onClickDeleteCb?: (index: number) => () => void | undefined;
     onClickLinkCb?: (tag: IOpdsTagView) => () => void | undefined;
+    onClickCb?: (tag: string) => void;
 }
 
-export interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+export interface IProps extends IBaseProps, Partial<ReturnType<typeof mapStateToProps>> {
 }
 
 export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
-    const { tag, index, pubId, onClickDeleteCb, onClickLinkCb, location } = props;
+    const { tag, index, onClickDeleteCb, onClickLinkCb, onClickCb, location } = props;
     let button = <></>;
 
     const [__] = useTranslator();
@@ -43,7 +43,7 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
         tagString = tag.name;
     }
 
-    if (pubId && onClickDeleteCb) {
+    if (location && onClickDeleteCb) {
         button = (
             <>
                 <Link
@@ -94,6 +94,23 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
                         e.preventDefault();
                     }
                 }}>
+                {tagString}
+            </a>
+        </>
+        );
+    } else if (onClickCb) {
+        button = (<>
+            <a onClick={() =>
+                // () => this.props.link(tag.link[0], this.props.location, tag.name)
+                onClickCb(tagString)}
+                onKeyUp={(e) => {
+                    if (e.key === "Enter") {
+                        onClickCb(tagString);
+                        e.preventDefault();
+                    }
+                }}
+                aria-label="remove"
+            >
                 {tagString}
             </a>
         </>
