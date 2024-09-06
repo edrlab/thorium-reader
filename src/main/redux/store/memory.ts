@@ -22,6 +22,7 @@ import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 import { applyPatch } from "rfc6902";
 
 import { reduxPersistMiddleware } from "../middleware/persistence";
+import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -234,7 +235,14 @@ export async function initStore()
     // } : {
     //     ...forceDisableReaderDefaultConfigAndSessionForTheNewUI,
     // };
-    const preloadedState = reduxState ? { ...reduxState } : {};
+    const preloadedState: Partial<PersistRootState> = reduxState ? {
+        ...reduxState,
+    } : {};
+
+    // defaultConfig state initialization from older database thorium version 2.x, 3.0
+    if (preloadedState?.reader?.defaultConfig) {
+        preloadedState.reader.defaultConfig = { ...readerConfigInitialState, ...preloadedState.reader.defaultConfig };
+    }
 
     const sagaMiddleware = createSagaMiddleware();
 
