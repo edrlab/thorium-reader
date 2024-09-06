@@ -411,7 +411,8 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     // }, [setReaderConfig]);
     const dockedMode = dockingMode !== "full";
     const { timestamp, annotation, isEdited, triggerEdition } = props;
-    const { uuid, comment, locatorExtended, tags: tagsStringArray } = annotation;
+    const { uuid, comment, locatorExtended, tags: tagsStringArrayMaybeUndefined } = annotation;
+    const tagsStringArray = tagsStringArrayMaybeUndefined || [];
     const dockedEditAnnotation = isEdited && dockedMode;
 
     const dispatch = useDispatch();
