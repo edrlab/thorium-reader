@@ -16,19 +16,18 @@ function readerTransientConfigReducer_(
     action: readerLocalActionSetTransientConfig.TAction,
 ): ReaderConfigPublisher {
 
-    const config = action.payload;
     switch (action.type) {
         case readerLocalActionSetTransientConfig.ID:
 
+            const merge = { ...state, ...action.payload };
             return {
-                ...state,
-                font: config?.font,
-                fontSize: config?.fontSize,
-                pageMargins: config?.pageMargins,
-                wordSpacing: config?.wordSpacing,
-                letterSpacing: config?.letterSpacing,
-                paraSpacing: config?.paraSpacing,
-                lineHeight: config?.lineHeight,
+                font: merge.font,
+                fontSize: merge.fontSize,
+                pageMargins: merge.pageMargins,
+                wordSpacing: merge.wordSpacing,
+                letterSpacing: merge.letterSpacing,
+                paraSpacing: merge.paraSpacing,
+                lineHeight: merge.lineHeight,
             };
         default:
             return state;

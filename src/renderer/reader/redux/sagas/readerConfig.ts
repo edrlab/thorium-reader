@@ -74,25 +74,8 @@ function* alowCustomTriggered(action: readerLocalActionReader.allowCustom.TActio
 
     if (checked) {
 
-        const {
-            font,
-            fontSize,
-            pageMargins,
-            wordSpacing,
-            letterSpacing,
-            paraSpacing,
-            lineHeight,
-        } = yield* select((state: IReaderRootState) => state.reader.transientConfig);
-
-        yield* put(readerLocalActionSetConfig.build({
-                            font,
-                            fontSize,
-                            pageMargins,
-                            wordSpacing,
-                            letterSpacing,
-                            paraSpacing,
-                            lineHeight,
-        }));
+        const transientConfig = yield* select((state: IReaderRootState) => state.reader.transientConfig);
+        yield* put(readerLocalActionSetConfig.build(transientConfig));
 
     } else {
         yield* put(readerLocalActionSetConfig.build(readerConfigInitialStateDefaultPublisher));

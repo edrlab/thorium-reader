@@ -20,7 +20,7 @@ import { all, put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { createReaderWindow } from "./browserWindow/createReaderWindow";
-import { readerConfigInitialState, readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
+import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
 
 // Logger
@@ -42,6 +42,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const mode = yield* selectTyped((state: RootState) => state.mode);
     const theme = yield* selectTyped((state: RootState) => state.theme);
     const config = reader?.reduxState?.config || readerConfigInitialState;
+    const transientConfigMerge = {...readerConfigInitialState, ...config};
 
     webContents.send(readerIpc.CHANNEL, {
         type: readerIpc.EventType.request,
@@ -57,14 +58,13 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                 // see issue https://github.com/edrlab/thorium-reader/issues/2532
                 defaultConfig: readerDefaultConfig,
                 transientConfig: {
-                    ...readerConfigInitialStateDefaultPublisher,
-                    font: config.font,
-                    fontSize: config.fontSize,
-                    pageMargins: config.pageMargins,
-                    wordSpacing: config.wordSpacing,
-                    letterSpacing: config.letterSpacing,
-                    paraSpacing: config.paraSpacing,
-                    lineHeight: config.lineHeight,
+                    font: transientConfigMerge.font,
+                    fontSize: transientConfigMerge.fontSize,
+                    pageMargins: transientConfigMerge.pageMargins,
+                    wordSpacing: transientConfigMerge.wordSpacing,
+                    letterSpacing: transientConfigMerge.letterSpacing,
+                    paraSpacing: transientConfigMerge.paraSpacing,
+                    lineHeight: transientConfigMerge.lineHeight,
                 },
                 allowCustomConfig: {
                     state: !comparePublisherReaderConfig(config, readerConfigInitialState),
