@@ -16,12 +16,19 @@ function readerTransientConfigReducer_(
     action: readerLocalActionSetTransientConfig.TAction,
 ): ReaderConfigPublisher {
 
+    const config = action.payload;
     switch (action.type) {
         case readerLocalActionSetTransientConfig.ID:
 
             return {
                 ...state,
-                ...action.payload,
+                font: config?.font,
+                fontSize: config?.fontSize,
+                pageMargins: config?.pageMargins,
+                wordSpacing: config?.wordSpacing,
+                letterSpacing: config?.letterSpacing,
+                paraSpacing: config?.paraSpacing,
+                lineHeight: config?.lineHeight,
             };
         default:
             return state;

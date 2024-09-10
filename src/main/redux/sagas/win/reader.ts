@@ -20,6 +20,8 @@ import { all, put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { createReaderWindow } from "./browserWindow/createReaderWindow";
+import { readerConfigInitialState, readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
+import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:reader";
@@ -39,6 +41,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const keyboard = yield* selectTyped((_state: RootState) => _state.keyboard);
     const mode = yield* selectTyped((state: RootState) => state.mode);
     const theme = yield* selectTyped((state: RootState) => state.theme);
+    const config = reader?.reduxState?.config || readerConfigInitialState;
 
     webContents.send(readerIpc.CHANNEL, {
         type: readerIpc.EventType.request,
@@ -53,6 +56,20 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                 ...reader?.reduxState || {},
                 // see issue https://github.com/edrlab/thorium-reader/issues/2532
                 defaultConfig: readerDefaultConfig,
+                transientConfig: {
+                    ...readerConfigInitialStateDefaultPublisher,
+                    font: config.font,
+                    fontSize: config.fontSize,
+                    pageMargins: config.pageMargins,
+                    wordSpacing: config.wordSpacing,
+                    letterSpacing: config.letterSpacing,
+                    paraSpacing: config.paraSpacing,
+                    lineHeight: config.lineHeight,
+                },
+                allowCustomConfig: {
+                    state: !comparePublisherReaderConfig(config, readerConfigInitialState),
+                },
+                config,
             },
             keyboard,
             mode,
