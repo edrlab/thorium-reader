@@ -35,6 +35,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const webContents = readerWin.webContents;
     const locale = yield* selectTyped((_state: RootState) => _state.i18n.locale);
     const reader = yield* selectTyped((_state: RootState) => _state.win.session.reader[identifier]);
+    const readerDefaultConfig = yield* selectTyped((_state: RootState) => _state.reader.defaultConfig);
     const keyboard = yield* selectTyped((_state: RootState) => _state.keyboard);
     const mode = yield* selectTyped((state: RootState) => state.mode);
     const theme = yield* selectTyped((state: RootState) => state.theme);
@@ -48,7 +49,11 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
             win: {
                 identifier,
             },
-            reader: reader?.reduxState,
+            reader: {
+                ...reader?.reduxState || {},
+                // see issue https://github.com/edrlab/thorium-reader/issues/2532
+                defaultConfig: readerDefaultConfig,
+            },
             keyboard,
             mode,
             theme,
@@ -93,8 +98,8 @@ function* winClose(action: winActions.reader.closed.TAction) {
 
                 const mode = yield* selectTyped((state: RootState) => state.mode);
                 if (mode === ReaderMode.Detached) {
-                    
-                    // disabled for the new UI refactoring by choice of the designer 
+
+                    // disabled for the new UI refactoring by choice of the designer
                     // yield put(readerActions.attachModeRequest.build());
 
                 } else {
