@@ -17,6 +17,7 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 import App from "./components/App";
 import { diReaderSymbolTable } from "./diSymbolTable";
 import { readerLocalActionSetConfig } from "./redux/actions";
+import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 
 // Create container used for dependency injection
 const container = new Container();
@@ -31,11 +32,14 @@ const createStoreFromDi = async (preloadedState: Partial<IReaderRootState>) => {
     await translator.setLocale(locale);
 
     // migration from defaultConfig to config if new keyValue added
-    const defaultConfig = store.getState().reader.defaultConfig;
+    // const defaultConfig = store.getState().reader.defaultConfig;
+
+    // see issue https://github.com/edrlab/thorium-reader/issues/2532
+    const defaultConfig = readerConfigInitialState;
     const newConfig = { ...store.getState().reader.config };
     let flag = false;
 
-    // Migrate new entry for annotation in READER config 
+    // Migrate new entry for annotation in READER config
     if (newConfig.annotation_defaultColor === undefined) {
 
         console.log("ANNOTATION MIGRATION !! defaultColor not set migrate from defaultConfig value=", newConfig.annotation_defaultColor);
