@@ -70,7 +70,7 @@ import * as Popover from "@radix-ui/react-popover";
 import { TextArea } from "react-aria-components";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
+import { IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
@@ -79,6 +79,14 @@ import { TagList } from "readium-desktop/renderer/common/components/tag/tagList"
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import { AnnotationEdit } from "./AnnotationEdit";
+import {Button, Dialog as DialogReactAria, DialogTrigger, Popover as PopoverReactAria } from "react-aria-components";
+import * as MenuIcon from "readium-desktop/renderer/assets/icons/filter2-icon.svg";
+import * as Accordion from "@radix-ui/react-accordion";
+import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import * as HighLightIcon from "readium-desktop/renderer/assets/icons/highlight-icon.svg";
+import * as UnderLineIcon from "readium-desktop/renderer/assets/icons/underline-icon.svg";
+import * as TextStrikeThroughtIcon from "readium-desktop/renderer/assets/icons/TextStrikethrough-icon.svg";
+import * as TextOutlineIcon from "readium-desktop/renderer/assets/icons/TextOutline-icon.svg";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -400,7 +408,7 @@ const HardWrapComment: React.FC<{comment: string}> = (props) => {
     );
 };
 
-const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (tag: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (tags: string[]) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
     const { goToLocator, setTagFilter } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
@@ -414,6 +422,8 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     const { uuid, comment, locatorExtended, tags: tagsStringArrayMaybeUndefined } = annotation;
     const tagsStringArray = tagsStringArrayMaybeUndefined || [];
     const dockedEditAnnotation = isEdited && dockedMode;
+    const annotationColor = `rgb(${annotation.color.red},${annotation.color.green},${annotation.color.blue})`;
+
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
@@ -462,7 +472,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
 
     return (<div
         className={stylesAnnotations.annotations_line}
-        style={{ backgroundColor: dockedEditAnnotation ? "var(--color-extralight-grey)" : "", borderLeft: dockedEditAnnotation && "none" }}
+        style={{ backgroundColor: dockedEditAnnotation ? "var(--color-extralight-grey)" : "", borderLeft: dockedEditAnnotation ? "none" : `4px solid ${annotationColor}` }}
         onKeyDown={isEdited ? (e) => {
             if (e.key === "Escape") {
                 e.preventDefault();
@@ -619,18 +629,40 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     </div>);
 };
 
-const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number,  dockedMode : boolean} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
-    const {goToLocator, annotationUUIDFocused} = props;
+    const {goToLocator, annotationUUIDFocused, dockedMode} = props;
 
     const [__] = useTranslator();
     // const [bookmarkToUpdate, setBookmarkToUpdate] = React.useState(undefined);
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
     // const previousFocusUuid = useSelector((state: IReaderRootState) => state.annotationControlMode.focus.previousFocusUuid);
 
-    const [tagFilter, setTagFilter] = React.useState<string>("");
+    const [tagFilter, setTagFilter] = React.useState<string[]>([]);
+    const [colorFilter, setColorFilter] = React.useState<IColor>();
+    const [drawTypeFilter, setDrawTypeFilter] = React.useState<string[]>([]);
+    
 
-    const annotationList = tagFilter ? annotationsQueue.filter(([, {tags}]) => tags.includes(tagFilter)) : annotationsQueue;
+    const compareColors = (color1: { red: number, green: number, blue: number }, color2: { red: number, green: number, blue: number }) => {
+      return color1.red === color2.red && color1.green === color2.green && color1.blue === color2.blue;
+    };
+
+    const annotationList = annotationsQueue.filter(([, { tags, color, drawType }]) => {
+        let matchesTag = true;
+        let matchesColor = true;
+        let matchesDrawType = true;
+      
+        if (tagFilter.length > 0) {
+              matchesTag = tagFilter.some(tag => tags.includes(tag));
+        }
+        if (drawTypeFilter.length > 0) {
+            matchesDrawType = drawTypeFilter.some(type => drawType.includes(type));
+        }
+        if (colorFilter) {
+          matchesColor = compareColors(color, colorFilter);
+        }
+        return matchesTag && matchesColor && matchesDrawType;
+      });
 
     const MAX_MATCHES_PER_PAGE = 5;
 
@@ -673,21 +705,21 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
 
     const tagNameUniqueIndexList = useReaderConfig("annotation_tagNameUniqueIndexList");
 
-    const selectTagFilterOption = tagNameUniqueIndexList.map((name, i) => ({id: i+1, name}));
-    selectTagFilterOption.unshift({id: 0, name: "No Filter"});
-    const selectTagFilterSelectedKey = selectTagFilterOption.find(({name}) => name === tagFilter);
+    const selectTagFilterOption = tagNameUniqueIndexList.map((name, i) => ({id: i, name}));
+    // selectTagFilterOption.unshift({id: 0, name: "No Filter"});
+    // const selectTagFilterSelectedKey = selectTagFilterOption.find(({name}) => name === tagFilter);
 
     return (
         <>
-            <ComboBox label={"tag filter"} defaultItems={selectTagFilterOption} selectedKey={selectTagFilterSelectedKey?.id || 0} onSelectionChange={(key) => {
-                if (typeof key === "number" && key > 0 && key < selectTagFilterOption.length) {
-                    setTagFilter(selectTagFilterOption[key]?.name);
-                } else {
-                    setTagFilter("");
-                }
-            }} svg={undefined}>
-                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-            </ComboBox>
+            <AnnotationsFilterComponent  
+            selectTagFilterOption={selectTagFilterOption} 
+            setTagFilter={setTagFilter} 
+            annotationList={annotationList}
+            setColorFilter={setColorFilter}
+            dockedMode={dockedMode}
+            tagFilter={tagFilter}
+            setDrawTypeFilter={setDrawTypeFilter}
+            />
             {annotationsPagedArray.map(([timestamp, annotationItem], _i) =>
                 <AnnotationCard
                     key={`annotation-card_${annotationItem.uuid}`}
@@ -782,6 +814,259 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
             }
         </>
         );
+};
+
+const AnnotationsFilterComponent = ({selectTagFilterOption, setTagFilter, tagFilter, setColorFilter, annotationList, dockedMode, setDrawTypeFilter}: {selectTagFilterOption: {id: number; name: string;}[], setTagFilter: React.Dispatch<React.SetStateAction<string[]>>, tagFilter: string[], annotationList: TAnnotationState, setColorFilter:React.Dispatch<React.SetStateAction<IColor>>, dockedMode: boolean, setDrawTypeFilter: React.Dispatch<React.SetStateAction<string[]>>}) => {
+    const [__] = useTranslator();
+
+    const filterTags = (key: number) => {
+        const tagName = selectTagFilterOption[key]?.name;
+        
+        setTagFilter(prevTags =>
+          prevTags.includes(tagName)
+            ? prevTags.filter(tag => tag !== tagName)
+            : [...prevTags, tagName],
+        );
+      };
+      
+      const filterColors = (color: IColor) => {
+        setColorFilter(color);
+      };
+      
+      const SelectTagFilter = () => {
+        return (
+          <div>
+            {selectTagFilterOption.map((tag: { id: number; name: string }) => (
+              <div key={tag.id} style={{marginBottom: "10px"}}>
+                <input
+                  type="checkbox"
+                  onChange={() => {
+                    filterTags(tag.id);}
+                }
+                  id={tag.name}
+                  checked={tagFilter.includes(tag.name)}
+                />
+                <label htmlFor={tag.name}>{tag.name}</label>
+              </div>
+            ))}
+          </div>
+        );
+      };
+
+      const filterDrawTypes = (drawType: string) => {
+        
+        setDrawTypeFilter(prevTags =>
+          prevTags.includes(drawType)
+            ? prevTags.filter(tag => tag !== drawType)
+            : [...prevTags, drawType],
+        );
+      };
+      
+      // Composant pour sélectionner les tags
+    const SelectAnnotationDrawType = () => {
+        const uniqueDrawTypesMap = new Map<string, typeof CheckIcon>();
+        annotationList.forEach(([, { drawType }]) => {
+            let drawIcon;
+            switch (drawType) {
+                case "solid_background":
+                    drawIcon = HighLightIcon;
+                    break;
+                case "underline":
+                    drawIcon = UnderLineIcon;
+                    break;
+                case "strikethrough":
+                    drawIcon = TextStrikeThroughtIcon;
+                    break;
+                case "outline":
+                    drawIcon = TextOutlineIcon;
+                    break;
+            }
+            if (!uniqueDrawTypesMap.has(drawType)) {
+                uniqueDrawTypesMap.set(drawType, drawIcon);
+            }
+        });
+
+        return (
+          <div>
+                {[...uniqueDrawTypesMap.entries()].map(([ drawType, drawIcon]) => (
+                    <div key={drawType}>
+                        <input
+                            type="checkbox"
+                            id={drawType}
+                            style={{ display: "none" }}
+                            onChange={() => filterDrawTypes(drawType)}
+                        />
+                        <label
+                            htmlFor={drawType}
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "5px",
+                                flexWrap: "nowrap",
+                                marginBottom: "10px",
+                            }}
+                        > 
+                        <SVG svg={drawIcon} />
+                        {drawType}
+                        </label>
+                    </div>
+                ))}
+          </div>
+        );
+      };
+
+    const SelectAnnotationHighlight = () => {
+        const uniqueColorsMap = new Map<string, { red: number; green: number; blue: number }>();
+
+        annotationList.forEach(([, { color }]) => {
+          const colorKey = `rgb(${color.red},${color.green},${color.blue})`;
+        
+          if (!uniqueColorsMap.has(colorKey)) {
+            let colorName;
+        
+            switch (colorKey) {
+              case "rgb(235,150,148)":
+                colorName = __("reader.annotations.colors.red");
+                break;
+              case "rgb(250,208,195)":
+                colorName = __("reader.annotations.colors.orange");
+                break;
+              case "rgb(254,243,189)":
+                colorName = __("reader.annotations.colors.yellow");
+                break;
+              case "rgb(193,234,197)":
+                colorName = __("reader.annotations.colors.green");
+                break;
+              case "rgb(190,218,220)":
+                colorName = __("reader.annotations.colors.bluegreen");
+                break;
+              case "rgb(196,222,246)":
+                colorName = __("reader.annotations.colors.lightblue");
+                break;
+              case "rgb(190,211,243)":
+                colorName = __("reader.annotations.colors.cyan");
+                break;
+              case "rgb(212,196,251)":
+                colorName = __("reader.annotations.colors.purple");
+                break;
+              default:
+                colorName = colorKey;
+                break;
+            }
+        
+            uniqueColorsMap.set(colorName, color);
+          }
+        });
+
+        return (
+            <div>
+                <button 
+                className={stylesAnnotations.annotations_filter_button}
+                onClick={() => {
+                    filterColors(null);
+                }}>{__("reader.annotations.resetHighlight")}
+                </button>
+                {[...uniqueColorsMap.entries()].map(([colorName, color]) => (
+                    <div key={colorName}>
+                        <input
+                            type="checkbox"
+                            id={colorName}
+                            style={{ display: "none" }}
+                            onChange={() => filterColors(color)}
+                        />
+                        <label
+                            htmlFor={colorName}
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "5px",
+                                flexWrap: "nowrap",
+                                marginBottom: "10px",
+                            }}
+                        >
+                            <div style={circleStyle(color)}></div>
+                            {colorName}
+                        </label>
+                    </div>
+                ))}
+            </div>
+        );
+      };
+      
+      const circleStyle = ({ red, green, blue }: { red: number, green: number, blue: number }) => ({
+        width: "20px",
+        height: "20px",
+        borderRadius: "50%",
+        border: "1px solid grey",
+        backgroundColor: `rgb(${red},${green},${blue})`,
+      });
+
+      const container = document.getElementsByClassName("annotations_tab").item(0);
+
+    return (
+    <DialogTrigger>
+        <Button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button} style={{top: dockedMode ? "150px" : "80px"}}><SVG svg={MenuIcon} title={__("reader.annotations.filterOptions")} /></Button>
+        <PopoverReactAria className={stylesAnnotations.annotations_filter_container} placement={dockedMode ? "bottom left" : "bottom right"} style={{maxHeight: dockedMode ? "700px !important" : "450px !important"}} UNSTABLE_portalContainer={container}>
+            <DialogReactAria>
+                    <button 
+                className={stylesAnnotations.annotations_filter_button}
+                onClick={() => {
+                    setTagFilter([]);
+                    filterColors(null);
+                    filterDrawTypes("");
+
+                }}>{__("reader.annotations.resetAll")}</button>
+                    <Accordion.Root type="multiple">
+                        <Accordion.Item className={stylesAnnotations.AccordionItem} value="item-1">
+                            <Accordion.Header className={stylesAnnotations.AccordionHeader}>
+                                <Accordion.Trigger
+                                    className={stylesAnnotations.AccordionTrigger}
+                                >
+                                    {__("reader.annotations.filterByTag")}
+                                    <SVG className={stylesAnnotations.AccordionChevron} aria-hidden svg={ChevronDown} />
+                                </Accordion.Trigger>
+                            </Accordion.Header>
+                            <Accordion.Content
+                                className={stylesAnnotations.AccordionContent}
+                            >
+                                <div className={stylesAnnotations.AccordionContentText}><SelectTagFilter/></div>
+                            </Accordion.Content>
+                        </Accordion.Item>
+                        <Accordion.Item className={stylesAnnotations.AccordionItem} value="item-2">
+                            <Accordion.Header className={stylesAnnotations.AccordionHeader}>
+                                <Accordion.Trigger
+                                    className={stylesAnnotations.AccordionTrigger}
+                                >
+                                    {__("reader.annotations.filterByHighlight")}
+                                    <SVG className={stylesAnnotations.AccordionChevron} aria-hidden svg={ChevronDown} />
+                                </Accordion.Trigger>
+                            </Accordion.Header>
+                            <Accordion.Content
+                                className={stylesAnnotations.AccordionContent}
+                            >
+                                <div className={stylesAnnotations.AccordionContentText}><SelectAnnotationHighlight /></div>
+                            </Accordion.Content>
+                        </Accordion.Item>
+                        <Accordion.Item className={stylesAnnotations.AccordionItem} value="item-3">
+                            <Accordion.Header className={stylesAnnotations.AccordionHeader}>
+                                <Accordion.Trigger
+                                    className={stylesAnnotations.AccordionTrigger}
+                                >
+                                    {__("reader.annotations.filterByHighlight")}
+                                    <SVG className={stylesAnnotations.AccordionChevron} aria-hidden svg={ChevronDown} />
+                                </Accordion.Trigger>
+                            </Accordion.Header>
+                            <Accordion.Content
+                                className={stylesAnnotations.AccordionContent}
+                            >
+                                <div className={stylesAnnotations.AccordionContentText}><SelectAnnotationDrawType /></div>
+                            </Accordion.Content>
+                        </Accordion.Item>
+                    </Accordion.Root>
+                </DialogReactAria>
+        </PopoverReactAria>
+    </DialogTrigger>
+    );
 };
 
 const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) => {
@@ -1993,7 +2278,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
                                 </div>
                             </details>
-                            <AnnotationList goToLocator={goToLocator} annotationUUIDFocused={annotationUUID} doFocus={doFocus}/>
+                            <AnnotationList goToLocator={goToLocator} annotationUUIDFocused={annotationUUID} doFocus={doFocus} dockedMode={dockedMode}/>
                         </div>
                     </Tabs.Content>
 

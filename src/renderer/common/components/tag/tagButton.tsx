@@ -24,7 +24,7 @@ interface IBaseProps {
     index?: number;
     onClickDeleteCb?: (index: number) => () => void | undefined;
     onClickLinkCb?: (tag: IOpdsTagView) => () => void | undefined;
-    onClickCb?: (tag: string) => void;
+    onClickCb?: (tag: string[]) => void;
 }
 
 export interface IProps extends IBaseProps, Partial<ReturnType<typeof mapStateToProps>> {
@@ -102,10 +102,10 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
         button = (<>
             <a onClick={() =>
                 // () => this.props.link(tag.link[0], this.props.location, tag.name)
-                onClickCb(tagString)}
+                onClickCb([tagString])}
                 onKeyUp={(e) => {
                     if (e.key === "Enter") {
-                        onClickCb(tagString);
+                        onClickCb([tagString]);
                         e.preventDefault();
                     }
                 }}

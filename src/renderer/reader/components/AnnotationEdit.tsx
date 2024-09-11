@@ -256,7 +256,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                                 index={index}
                                 onClickDeleteCb={undefined}
                                 onClickCb={(tagString) => {
-                                    setAnnotationTagsStringArray((tags) => tags.filter((annotationListTagName) => annotationListTagName !== tagString));
+                                    setAnnotationTagsStringArray((tags) => tags.filter((annotationListTagName) => !tagString.includes(annotationListTagName)));
                                 }}
                                 location={undefined}
                             >

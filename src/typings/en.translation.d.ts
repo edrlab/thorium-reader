@@ -699,10 +699,25 @@ declare namespace typed_i18n {
     readonly "addNote": string,
     readonly "advancedMode": string,
     readonly "annotationsOptions": string,
+    readonly "colors": {
+      readonly "bluegreen": string,
+      readonly "cyan": string,
+      readonly "green": string,
+      readonly "lightblue": string,
+      readonly "orange": string,
+      readonly "purple": string,
+      readonly "red": string,
+      readonly "yellow": string
+    },
+    readonly "filterByHighlight": string,
+    readonly "filterByTag": string,
+    readonly "filterOptions": string,
     readonly "hide": string,
     readonly "highlight": string,
     readonly "noSelectionToast": string,
     readonly "quickAnnotations": string,
+    readonly "resetAll": string,
+    readonly "resetHighlight": string,
     readonly "saveNote": string,
     readonly "toggleMarginMarks": string,
     readonly "type": {
@@ -851,10 +866,25 @@ declare namespace typed_i18n {
   readonly "addNote": string,
   readonly "advancedMode": string,
   readonly "annotationsOptions": string,
+  readonly "colors": {
+    readonly "bluegreen": string,
+    readonly "cyan": string,
+    readonly "green": string,
+    readonly "lightblue": string,
+    readonly "orange": string,
+    readonly "purple": string,
+    readonly "red": string,
+    readonly "yellow": string
+  },
+  readonly "filterByHighlight": string,
+  readonly "filterByTag": string,
+  readonly "filterOptions": string,
   readonly "hide": string,
   readonly "highlight": string,
   readonly "noSelectionToast": string,
   readonly "quickAnnotations": string,
+  readonly "resetAll": string,
+  readonly "resetHighlight": string,
   readonly "saveNote": string,
   readonly "toggleMarginMarks": string,
   readonly "type": {
@@ -868,10 +898,33 @@ declare namespace typed_i18n {
   (_: "reader.annotations.addNote", __?: {}): string;
   (_: "reader.annotations.advancedMode", __?: {}): string;
   (_: "reader.annotations.annotationsOptions", __?: {}): string;
+  (_: "reader.annotations.colors", __?: {}): {
+  readonly "bluegreen": string,
+  readonly "cyan": string,
+  readonly "green": string,
+  readonly "lightblue": string,
+  readonly "orange": string,
+  readonly "purple": string,
+  readonly "red": string,
+  readonly "yellow": string
+};
+  (_: "reader.annotations.colors.bluegreen", __?: {}): string;
+  (_: "reader.annotations.colors.cyan", __?: {}): string;
+  (_: "reader.annotations.colors.green", __?: {}): string;
+  (_: "reader.annotations.colors.lightblue", __?: {}): string;
+  (_: "reader.annotations.colors.orange", __?: {}): string;
+  (_: "reader.annotations.colors.purple", __?: {}): string;
+  (_: "reader.annotations.colors.red", __?: {}): string;
+  (_: "reader.annotations.colors.yellow", __?: {}): string;
+  (_: "reader.annotations.filterByHighlight", __?: {}): string;
+  (_: "reader.annotations.filterByTag", __?: {}): string;
+  (_: "reader.annotations.filterOptions", __?: {}): string;
   (_: "reader.annotations.hide", __?: {}): string;
   (_: "reader.annotations.highlight", __?: {}): string;
   (_: "reader.annotations.noSelectionToast", __?: {}): string;
   (_: "reader.annotations.quickAnnotations", __?: {}): string;
+  (_: "reader.annotations.resetAll", __?: {}): string;
+  (_: "reader.annotations.resetHighlight", __?: {}): string;
   (_: "reader.annotations.saveNote", __?: {}): string;
   (_: "reader.annotations.toggleMarginMarks", __?: {}): string;
   (_: "reader.annotations.type", __?: {}): {
