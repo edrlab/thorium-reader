@@ -18,7 +18,7 @@ import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 
 import { TBookmarkState } from "../bookmark";
 import { IRTLFlipState } from "./rtlFlip";
-import { IAnnotationModeState, TAnnotationState } from "./annotation";
+import { IAnnotationModeState, TAnnotationState, TAnnotationTagsIndex } from "./annotation";
 import { ITTSState } from "readium-desktop/renderer/reader/redux/state/tts";
 import { IMediaOverlayState } from "readium-desktop/renderer/reader/redux/state/mediaOverlay";
 import { IAllowCustomConfigState } from "readium-desktop/renderer/reader/redux/state/allowCustom";
@@ -29,6 +29,7 @@ export interface IReaderRootState extends IRendererCommonRootState {
     search: ISearchState;
     mode: ReaderMode;
     annotation: IAnnotationModeState;
+    annotationTagsIndex: TAnnotationTagsIndex;
 }
 
 export interface IReaderStateReader {

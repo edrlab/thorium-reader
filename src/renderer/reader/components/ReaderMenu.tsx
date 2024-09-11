@@ -77,6 +77,8 @@ import * as Popover from "@radix-ui/react-popover";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { TagList } from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/tagList";
+import { TagButton } from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/tagButton";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -388,7 +390,7 @@ const HardWrapComment: React.FC<{comment: string}> = (props) => {
         strListComponent.push(<span key={++n}>{strline}</span>);
         strListComponent.push(<br key={++n}/>);
     }
-    
+
     return (
         <p>
             {
@@ -409,21 +411,28 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     // }, [setReaderConfig]);
     const dockedMode = dockingMode !== "full";
     const { timestamp, annotation, isEdited, triggerEdition } = props;
-    const { uuid, comment, locatorExtended } = annotation;
+    const { uuid, comment, tags: tagsStringArrayMaybeUndefined } = annotation;
+    const tagsStringArray = tagsStringArrayMaybeUndefined || [];
     const dockedEditAnnotation = isEdited && dockedMode;
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
-    const save = React.useCallback((color: IColor, comment: string, drawType: TDrawType) => {
-        dispatch(readerActions.annotation.update.build({
-            uuid,
-            locatorExtended,
-            color,
-            comment,
-            drawType,
-        }));
+    const save = React.useCallback((color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
+        dispatch(readerActions.annotation.update.build(
+            {
+                ...annotation
+            },
+            {
+                uuid: annotation.uuid,
+                locatorExtended: annotation.locatorExtended,
+                color,
+                comment,
+                drawType,
+                tags,
+            }
+        ));
         triggerEdition(false);
-    }, [dispatch, locatorExtended, uuid, triggerEdition]);
+    }, [dispatch, annotation, triggerEdition]);
 
     const date = new Date(timestamp);
     const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;
@@ -522,7 +531,22 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                     <AnnotationEdit uuid={uuid} save={save} cancel={() => triggerEdition(false)} dockedMode={dockedMode} btext={dockedEditAnnotation && btext} />
                     // </FocusLock>
                     :
-                    <HardWrapComment comment={comment} />
+                    // <HardWrapComment comment={comment} />
+                    <>
+                        <HardWrapComment comment={comment} />
+                        <TagList tagArray={tagsStringArray}>
+                            {
+                                (tag, index) =>
+                                    <TagButton
+                                        tag={tag}
+                                        index={index}
+                                        onClickDeleteCb={undefined}
+                                        location={undefined}
+                                    >
+                                    </TagButton>
+                            }
+                        </TagList>
+                    </>
             }
         </div>
         <div className={stylesAnnotations.annotation_edit}>
@@ -538,7 +562,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
             </div>
             <div className={stylesAnnotations.annotation_actions_buttons}>
                 <button
-                    id={`annotation_card-${annotation.uuid}_edit_button`} 
+                    id={`annotation_card-${annotation.uuid}_edit_button`}
                     title={__("reader.marks.edit")}
                     disabled={isEdited}
                     onClick={() => triggerEdition(true)}
@@ -609,19 +633,23 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
     // const previousFocusUuid = useSelector((state: IReaderRootState) => state.annotationControlMode.focus.previousFocusUuid);
 
+    const [tagFilter, _] = React.useState<string>("");
+
+    const annotationList = tagFilter ? annotationsQueue.filter(([, {tags}]) => tags.includes(tagFilter)) : annotationsQueue;
+
     const MAX_MATCHES_PER_PAGE = 5;
 
-    const pageTotal =  Math.ceil(annotationsQueue.length / MAX_MATCHES_PER_PAGE) || 1;
+    const pageTotal =  Math.ceil(annotationList.length / MAX_MATCHES_PER_PAGE) || 1;
 
     let startPage = 1;
     if (annotationUUIDFocused) {
-        const annotationFocusItemFindIndex = annotationsQueue.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused);
+        const annotationFocusItemFindIndex = annotationList.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused);
         if (annotationFocusItemFindIndex > -1) {
             const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex+1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
             startPage = annotationFocusItemPageNumber;
         }
     }
-    
+
     const startPageRef = React.useRef<number>();
 
     const [pageNumber, setPageNumber] = React.useState(startPage);
@@ -634,7 +662,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
     }
 
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
-    const annotationsPagedArray = annotationsQueue.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE);
+    const annotationsPagedArray = annotationList.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE);
 
     const isLastPage = pageTotal === pageNumber;
     const isFirstPage = pageNumber === 1;
@@ -643,7 +671,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
 
 
     const begin = startIndex + 1;
-    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationsQueue.length);
+    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationList.length);
 
     const [annotationItemEditedUUID, setannotationItemEditedUUID] = React.useState("");
     const paginatorAnnotationsRef = React.useRef<HTMLSelectElement>();
@@ -728,7 +756,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
                         </button>
                     </div>
                     {
-                        annotationsQueue.length &&
+                        annotationList.length &&
                         <p
                             style={{
                                 textAlign: "center",
@@ -736,7 +764,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
                                 margin: 0,
                                 marginTop: "-16px",
                                 marginBottom: "20px",
-                        }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${annotationsQueue.length}`}</p>
+                        }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${annotationList.length}`}</p>
                     }
                     </>
                     : <></>
@@ -751,7 +779,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) =
     const { bookmark, i } = props;
     const isEdited = itemEdited === i;
     const [__] = useTranslator();
-    
+
     const dispatch = useDispatch();
     const isAudioBook = isAudiobookFn(r2Publication);
     const deleteBookmark = (bookmark: IBookmarkState) => {
@@ -1445,7 +1473,7 @@ const TabTitle = ({value}: {value: string}) => {
             title=__("reader.marks.bookmarks");
             break;
         case "tab-search":
-            title=  searchText ? translator.translate("reader.marks.searchResult", { searchText: searchText.slice(0, 20) }) 
+            title=  searchText ? translator.translate("reader.marks.searchResult", { searchText: searchText.slice(0, 20) })
             : (__("reader.marks.search"));;
             break;
         case "tab-gotopage":
@@ -1522,7 +1550,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
 
             setTimeout(() => {
                 if (dockedModeRef.current) {
-    
+
                     console.log("Focus on docked mode combobox");
 
                     // TODO: what is the logic for stealing focus here? The result of keyboard or mouse interaction?
@@ -1827,7 +1855,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 <div className={stylesAnnotations.annotations_checkbox}>
                                     <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={serialAnnotator} onChange={advancedAnnotationsOnChange} />
                                     <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div 
+                                        <div
                                         tabIndex={0}
                                         role="checkbox"
                                         aria-checked={serialAnnotator}
@@ -1845,7 +1873,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                                 advancedAnnotationsOnChange();
                                             }
                                         }}
-                                        className={stylesGlobal.checkbox_custom} 
+                                        className={stylesGlobal.checkbox_custom}
                                         style={{ border: serialAnnotator ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: serialAnnotator ? "var(--color-blue)" : "transparent" }}>
                                             {serialAnnotator ?
                                                 <SVG ariaHidden svg={CheckIcon} />
@@ -1864,7 +1892,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         onChange={quickAnnotationsOnChange}
                                     />
                                     <label htmlFor="quickAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div 
+                                        <div
                                         tabIndex={0}
                                         role="checkbox"
                                         aria-checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
@@ -1882,7 +1910,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                                 quickAnnotationsOnChange();
                                             }
                                         }}
-                                        className={stylesGlobal.checkbox_custom} 
+                                        className={stylesGlobal.checkbox_custom}
                                         style={{ border: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "var(--color-blue)" : "transparent" }}>
                                             {readerConfig.annotation_popoverNotOpenOnNoteTaking ?
                                                 <SVG ariaHidden svg={CheckIcon} />
@@ -1912,7 +1940,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                                 marginAnnotationsOnChange();
                                             }
                                         }}
-                                        className={stylesGlobal.checkbox_custom} 
+                                        className={stylesGlobal.checkbox_custom}
                                         style={{ border: readerConfig.annotation_defaultDrawView === "margin" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "margin" ? "var(--color-blue)" : "transparent" }}>
                                             {readerConfig.annotation_defaultDrawView === "margin" ?
                                                 <SVG ariaHidden svg={CheckIcon} />
@@ -1942,8 +1970,8 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                                 e.preventDefault();
                                                 hideAnnotationOnChange();
                                             }
-                                        }}                                       
-                                        className={stylesGlobal.checkbox_custom} 
+                                        }}
+                                        className={stylesGlobal.checkbox_custom}
                                         style={{ border: readerConfig.annotation_defaultDrawView === "hide" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "hide" ? "var(--color-blue)" : "transparent" }}>
                                             {readerConfig.annotation_defaultDrawView === "hide" ?
                                                 <SVG ariaHidden svg={CheckIcon} />

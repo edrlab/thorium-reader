@@ -26,11 +26,13 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { readerLocalActionSetConfig } from "../redux/actions";
 import classNames from "classnames";
 import { TextArea } from "react-aria-components";
+import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 // import { readiumCSSDefaults } from "@r2-navigator-js/electron/common/readium-css-settings";
 
 interface IProps {
-    save: (color: IColor, comment: string, drawType: TDrawType) => void;
+    save: (color: IColor, comment: string, drawType: TDrawType, tags: string[]) => void;
     cancel: () => void;
     uuid?: string;
     dockedMode: boolean;
@@ -109,6 +111,10 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
     const [drawTypeSelected, setDrawType] = React.useState(annotationState.drawType);
     const previousDrawTypeSelected = React.useRef<TDrawType>(drawTypeSelected);
 
+    const [tag, setTag] = React.useState<string>((annotationState.tags || [])[0] || "");
+    const tagsIndexList = useSelector((state: IReaderRootState) => state.annotationTagsIndex);
+    const selectTagOption = ObjectKeys(tagsIndexList).map((v, i) => ({id: i, name: v}));
+
     const drawIcon = [
         HighLightIcon,
         UnderLineIcon,
@@ -130,7 +136,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
 //             drawIcon = TextOutlineIcon;
 //             break;
 // }
-    
+
     const saveConfig = () => {
 
         let flag = false;
@@ -240,6 +246,35 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
             }}>{annotationState.locatorExtended.selectionInfo.cleanText}</span><span>{annotationState.locatorExtended.selectionInfo.cleanAfter}</span></p>}</div></details> */}
         </div>
 
+        <div className={stylesAnnotations.annotation_actions}>
+            <div className={stylesAnnotations.annotation_actions_container} style={{width: "100%"}}>
+                {/* <h4>Tag</h4> */}
+                <ComboBox label={__("catalog.tag")} defaultItems={selectTagOption}
+                    placeholder={__("catalog.addTags")}
+                    defaultInputValue={tag}
+                    defaultSelectedKey={selectTagOption.findIndex(({name}) => name === tag)}
+                    onSelectionChange={
+                        (key: React.Key) => {
+
+
+                            if (key === null) {
+
+                                // nothing
+                            } else {
+                                const found = selectTagOption.find((v) => v.id === key);
+                                setTag(found.name);
+                            }
+                        }}
+                    // svg={}
+                    allowsCustomValue
+                    onInputChange={(v) => setTag(v)}
+
+                >
+                    {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                </ComboBox>
+            </div>
+        </div>
+
         {/* <label htmlFor="addNote">{__("reader.annotations.addNote")}</label> */}
         <div className={stylesAnnotations.annotation_form_textarea_buttons}>
             {displayFromReaderMenu
@@ -255,7 +290,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
 
                         const textareaValue = textAreaRef?.current?.value || "";
                         const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
-                        save(colorObj, textareaNormalize, drawTypeSelected);
+                        save(colorObj, textareaNormalize, drawTypeSelected, tag ? [tag] : []);
                         saveConfig();
                     }}
                 >
@@ -272,7 +307,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
 
                         const textareaValue = textAreaRef?.current?.value || "";
                         const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
-                        save(colorObj, textareaNormalize, drawTypeSelected);
+                        save(colorObj, textareaNormalize, drawTypeSelected, tag ? [tag] : []);
                         saveConfig();
                     }}
                 >
