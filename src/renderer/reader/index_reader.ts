@@ -65,7 +65,7 @@ ipcRenderer.on(readerIpc.CHANNEL,
                 const annotationList = data.payload.reader.annotation || [];
                 const annotationTagsList = [];
                 for (const [_, {tags}] of annotationList) {
-                    annotationTagsList.push(...tags);
+                    annotationTagsList.push(...(tags || []));
                 }
                 data.payload.annotationTagsIndex = pushTags({}, annotationTagsList);
 
