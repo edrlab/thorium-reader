@@ -16,7 +16,7 @@ export const pushTags = (container: TAnnotationTagsIndex, tags: string[] | undef
         copy[t] = (copy[t] || 0) + 1;
     }
     return copy;
-}
+};
 // pop tags and reduce number, remove them if lower than 1
 export const popTags = (container: TAnnotationTagsIndex, tags: string[] | undefined) => {
     const copy = {
@@ -29,8 +29,8 @@ export const popTags = (container: TAnnotationTagsIndex, tags: string[] | undefi
         }
     }
     return copy;
-}
+};
 // update pop and push combine
 export const updateTags = (container: TAnnotationTagsIndex, oldTags: string[] | undefined, newTags: string[] | undefined) => {
     return pushTags(popTags(container, oldTags), newTags);
-}
+};

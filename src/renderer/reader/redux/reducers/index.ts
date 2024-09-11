@@ -117,7 +117,7 @@ export const rootReducer = () => {
                                 return [
                                     queue.reduce<number>((pv, [k, v]) => v.uuid === newAnnot.uuid ? k : pv, undefined),
                                     newAnnot,
-                                ]
+                                ];
                             },
                         },
                     },

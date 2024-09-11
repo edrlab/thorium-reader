@@ -420,7 +420,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     const save = React.useCallback((color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
         dispatch(readerActions.annotation.update.build(
             {
-                ...annotation
+                ...annotation,
             },
             {
                 uuid: annotation.uuid,
@@ -429,7 +429,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 comment,
                 drawType,
                 tags,
-            }
+            },
         ));
         triggerEdition(false);
     }, [dispatch, annotation, triggerEdition]);
