@@ -644,9 +644,9 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
 
     const annotationList = tagArrayFilter.length
         ? annotationsQueue.filter(([, {tags, color, drawType}]) =>
-            (tagArrayFilter.length ? tags.some((tagsValueName) => tagArrayFilter.includes(tagsValueName)) : true) &&
-            (colorArrayFilter.length ? colorArrayFilter.some((colorValueFilteredObject) => shallowEqual(color, colorValueFilteredObject)) : true) &&
-            (drawTypeArrayFilter.length ? drawTypeArrayFilter.includes(drawType) : true))
+            (!tagArrayFilter.length || tags.some((tagsValueName) => tagArrayFilter.includes(tagsValueName))) &&
+            (!colorArrayFilter.length || colorArrayFilter.some((colorValueFilteredObject) => shallowEqual(color, colorValueFilteredObject))) &&
+            (!drawTypeArrayFilter.length || drawTypeArrayFilter.includes(drawType)))
         : annotationsQueue;
 
     const MAX_MATCHES_PER_PAGE = 5;
