@@ -1006,7 +1006,7 @@ const AnnotationsFilterComponent = ({selectTagFilterOption, setTagFilter, tagFil
     return (
     <DialogTrigger>
         <Button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button} style={{top: dockedMode ? "150px" : "80px"}}><SVG svg={MenuIcon} title={__("reader.annotations.filterOptions")} /></Button>
-        <PopoverReactAria className={stylesAnnotations.annotations_filter_container} placement={dockedMode ? "bottom left" : "bottom right"} style={{maxHeight: dockedMode ? "700px !important" : "450px !important"}} UNSTABLE_portalContainer={container}>
+        <PopoverReactAria className={stylesAnnotations.annotations_filter_container} placement={dockedMode ? "bottom left" : "bottom right"} UNSTABLE_portalContainer={container}>
             <DialogReactAria>
                     <button 
                 className={stylesAnnotations.annotations_filter_button}
