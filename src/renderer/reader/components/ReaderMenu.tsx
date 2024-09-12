@@ -66,9 +66,9 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "r2-shared-js/dist/es8-es2017/src/models/locator";
 // import { DialogTrigger as DialogTriggerReactAria, Popover as PopoverReactAria, Dialog as DialogReactAria } from "react-aria-components";
-import { TextArea } from "react-aria-components";
+import { Key, TextArea } from "react-aria-components";
 import { AnnotationEdit } from "./AnnotationEdit";
-import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
+import { IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
@@ -82,6 +82,14 @@ import { shallowEqual } from "readium-desktop/utils/shallowEqual";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
+import {Button, Dialog as DialogReactAria, DialogTrigger, Popover as PopoverReactAria } from "react-aria-components";
+import * as MenuIcon from "readium-desktop/renderer/assets/icons/filter2-icon.svg";
+import * as HighLightIcon from "readium-desktop/renderer/assets/icons/highlight-icon.svg";
+import * as UnderLineIcon from "readium-desktop/renderer/assets/icons/underline-icon.svg";
+import * as TextStrikeThroughtIcon from "readium-desktop/renderer/assets/icons/TextStrikethrough-icon.svg";
+import * as TextOutlineIcon from "readium-desktop/renderer/assets/icons/TextOutline-icon.svg";
+import {TagGroup, TagList, Tag, Label} from 'react-aria-components';
+import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -632,9 +640,9 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     </div>);
 };
 
-const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number, dockedMode : boolean} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
-    const {goToLocator, annotationUUIDFocused} = props;
+    const {goToLocator, annotationUUIDFocused, dockedMode} = props;
 
     const [__] = useTranslator();
     // const [bookmarkToUpdate, setBookmarkToUpdate] = React.useState(undefined);
@@ -736,6 +744,11 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
                 </AlertDialog.Root>
                 : <></>
             }
+        <AnnotationsFilterComponent
+        setTagArrayFilter={setTagArrayFilter}
+        tagArrayFilter={tagArrayFilter}
+        dockedMode={dockedMode}
+         />
             {annotationsPagedArray.map(([timestamp, annotationItem], _i) =>
                 <AnnotationCard
                     key={`annotation-card_${annotationItem.uuid}`}
@@ -830,6 +843,81 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
             }
         </>
         );
+};
+
+
+interface IProps {
+    setTagArrayFilter: React.Dispatch<React.SetStateAction<string[]>>;
+    tagArrayFilter: string[]
+    dockedMode: boolean;
+}
+
+const AnnotationsFilterComponent: React.FC<IProps> = (props) => {
+    const {setTagArrayFilter, tagArrayFilter, dockedMode} = props;
+    const [__] = useTranslator();
+
+    const tagsIndexList = useSelector((state: IReaderRootState) => state.annotationTagsIndex);
+    const selectTagOption = ObjectKeys(tagsIndexList).map((v, i) => ({id: i, name: v}));
+
+    console.log(selectTagOption);
+
+    const filterTags = (key: number) => {
+        const tagName = selectTagOption[key]?.name;
+
+        setTagArrayFilter(prevTags =>
+          prevTags.includes(tagName)
+            ? prevTags.filter(tag => tag !== tagName)
+            : [...prevTags, tagName],
+        );
+      };
+
+      const SelectTagFilter = () => {
+        return (
+            <div>
+          {/* <div>
+            {selectTagOption.map((tag: { id: number; name: string }) => (
+              <div key={tag.id} style={{marginBottom: "10px"}}>
+                <input
+                  type="checkbox"
+                  onChange={() => {
+                    filterTags(tag.id);}
+                }
+                  id={tag.name}
+                  checked={tagArrayFilter.includes(tag.name)}
+                />
+                <label htmlFor={tag.name}>{tag.name}</label>
+              </div>
+            ))}
+          </div> */}
+          <TagGroup selectionMode="multiple" onSelectionChange={(tag) => console.log(tag)} aria-label="tag selection">
+            <TagList items={selectTagOption}>
+            {(item) => <Tag>{item.name}</Tag>}
+            </TagList>
+          </TagGroup>
+          </div>
+        );
+      };
+
+      const container = document.getElementsByClassName("annotations_tab").item(0);
+
+    return (
+    <DialogTrigger>
+        <Button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button} style={{top: dockedMode ? "150px" : "80px"}}><SVG svg={MenuIcon} title={__("reader.annotations.filterOptions")} /></Button>
+        <PopoverReactAria className={stylesAnnotations.annotations_filter_container} placement={dockedMode ? "bottom left" : "bottom right"} style={{maxHeight: dockedMode ? "700px !important" : "450px !important"}} UNSTABLE_portalContainer={container}>
+            <DialogReactAria>
+                    <button 
+                className={stylesAnnotations.annotations_filter_button}
+                onClick={() => {
+                    setTagArrayFilter([]);
+
+                }}>{__("reader.annotations.resetAll")}</button>
+                <SelectTagFilter/>
+                {/* <SelectAnnotationHighlight />
+                <SelectAnnotationDrawType /> */}
+                </DialogReactAria>
+        </PopoverReactAria>
+    </DialogTrigger>
+    );
 };
 
 const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) => {
@@ -2041,7 +2129,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
                                 </div>
                             </details>
-                            <AnnotationList goToLocator={goToLocator} annotationUUIDFocused={annotationUUID} doFocus={doFocus}/>
+                            <AnnotationList goToLocator={goToLocator} annotationUUIDFocused={annotationUUID} doFocus={doFocus} dockedMode={dockedMode}/>
                         </div>
                     </Tabs.Content>
 

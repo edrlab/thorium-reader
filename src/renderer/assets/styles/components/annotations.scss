@@ -13,6 +13,7 @@
     justify-content: start;
     color: var(--color-blue);
     font-size: 14px;
+    width: fit-content;
 
     span svg {
       fill: var(--color-blue);
@@ -48,7 +49,36 @@
         margin: 0;
         height: fit-content!important;
     }
+  }
 }
+
+.annotations_filter {
+  &_container {
+    background-color: var(--color-extralight-grey);
+    width: 290px;
+    border: 1px solid var(--color-light-grey);
+    padding: 10px 20px;
+    box-shadow: 1px 1px 3px var(--color-light-grey);
+    overflow-y: scroll;
+  }
+
+  &_button {
+    border: 1px solid var(--color-primary);
+    border-radius: 5px;
+    padding: 0 10px;
+  }
+
+  &_trigger_button {
+    width: 20px; 
+    height: 20px;
+    position: absolute;
+    right: 50px;
+    top: 80px;
+
+    svg {
+      color: var(--color-blue);
+    }
+  }
 }
 
 .settings_tab .annotation_actions {

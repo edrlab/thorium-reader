@@ -317,7 +317,22 @@
                 "solid": "Solid background",
                 "strikethrough": "Strikethrough",
                 "underline": "Underline"
-            }
+            },
+            "colors": {
+                "bluegreen": "Blue-green",
+                "cyan": "Cyan",
+                "green": "Green",
+                "lightblue": "Light Blue",
+                "orange": "Orange",
+                "purple": "Purple",
+                "red": "Red",
+                "yellow": "Yellow"
+            },
+            "filterByHighlight": "Filter by Highlight",
+            "filterByTag": "Filter by Tag",
+            "filterOptions": "Filter Options",
+            "resetAll": "Reset All",
+            "resetHighlight": "Reset Highlight"
         },
         "divina": {
             "mute": "mute audio",
