@@ -31,7 +31,7 @@
       margin-right: 0.5em;
     }
   }
-  
+
   &[open] > summary span svg {
     transform: rotate(180deg);
     padding-bottom: 5px;
@@ -44,7 +44,7 @@
     padding: 5px;
     height: fit-content;
     margin-left: 15px;
-    
+
     label {
         margin: 0;
         height: fit-content!important;
@@ -59,7 +59,8 @@
     border: 1px solid var(--color-light-grey);
     padding: 10px 20px;
     box-shadow: 1px 1px 3px var(--color-light-grey);
-    overflow-y: scroll;
+    z-index: 1000;
+    // overflow-y: scroll;
   }
 
   &_button {
@@ -69,7 +70,7 @@
   }
 
   &_trigger_button {
-    width: 20px; 
+    width: 20px;
     height: 20px;
     position: absolute;
     right: 50px;
@@ -77,6 +78,15 @@
 
     svg {
       color: var(--color-blue);
+    }
+  }
+
+  &_tag {
+    color: black;
+    font-size: 13px;
+    &[data-selected] {
+
+      background-color: blue;
     }
   }
 }
@@ -103,17 +113,17 @@
     flex-direction: column;
     padding: 5px 10px;
     color: var(--color-primary);
-  
+
     // gap: 10px;
-  
+
     h4 {
       margin: 5px 0;
     }
-  
+
     label {
       margin: 5px;
     }
-  
+
     &_textarea{
       width: 420px;
       min-width: 420px;
@@ -125,18 +135,18 @@
       font-family: Nunito, sans-serif;
       background-color: var(--color-annotations-txt-area);
       color: var(--color-primary);
-  
-  
+
+
       &_container {
       display: flex;
       flex-direction: column;
       }
-  
+
       &_buttons {
         margin: 5px 0;
         display: flex;
         gap: 5px;
-  
+
         button {
           min-width: unset;
           width: fit-content;
@@ -163,38 +173,38 @@
       }
     }
   }
-  
+
   .annotation_actions {
     display: flex;
     align-items: center;
     gap: 30px;
     margin: 10px 0;
-  
+
     &_container {
       display: flex;
       flex-direction: column;
       justify-content: start;
     }
-  
+
     >div {
       display: inherit;
-  
+
       >div {
         display: flex;
         // gap: 5px;
         align-items: center;
       }
-  
+
       p {
         margin: 0;
       }
-  
+
       svg {
         width: 20px;
         height: 20px;
       }
     }
-  
+
     &_buttons {
       button:disabled {
         border-radius: 5px;
@@ -212,7 +222,7 @@
       }
     }
   }
-  
+
   .annotation_edit_form {
     display: flex;
     flex-direction: column;
@@ -223,7 +233,7 @@
       border-radius: 5px;
       margin-bottom: 10px!important;
     }
-  
+
     &_textarea{
       min-width: 95%;
       max-width: 95%;
@@ -234,12 +244,12 @@
       overflow: hidden;
       color: var(--color-primary);
       background-color: var(--color-secondary);
-  
+
       &_container {
       display: flex;
       flex-direction: column;
       }
-  
+
       &_buttons {
         margin: 5px 0;
         display: flex;
@@ -247,7 +257,7 @@
       }
     }
   }
-  
+
   .colorPicker {
     display: flex;
     background-color: var(--color-button-hover);
@@ -259,13 +269,13 @@
     &:has(input:focus) {
       @include R2_MIXIN_FOCUS_OUTLINE;
     }
-  
+
     div {
         input {
             position: absolute;
             z-index: -1;
         }
-  
+
         label {
             z-index: 20;
             width: 25px;
@@ -284,7 +294,7 @@
       color: #4d4d4d;
     }
   }
-  
+
   .stylePicker {
   display: flex;
   padding: 2px;
@@ -294,13 +304,13 @@
   &:has(input:focus) {
     @include R2_MIXIN_FOCUS_OUTLINE;
   }
-  
+
   div {
       input {
           position: absolute;
           z-index: -1;
       }
-  
+
       label {
           z-index: 20;
           width: 27px;
@@ -319,7 +329,7 @@
       }
   }
   }
-  
+
   .drawType_active {
     background-color: var(--color-blue)!important;
 
@@ -332,7 +342,7 @@
   .settings_tab .annotations_line {
     width: 100%;
   }
-  
+
   .annotations_line {
     // width: 100%;
     position: relative;
@@ -343,7 +353,7 @@
     margin: 0;
     margin-bottom: 10px;
     background-color: var(--color-annotations-bg);
-  
+
     p {
       text-align: left;
       // background-color: var(--color-annotations-txt);
@@ -359,7 +369,7 @@
       padding: 8px;
       margin: 5px 0;
     }
-  
+
     // @media (prefers-color-scheme: dark) {
     //   background-color: #2D2D2D;
     // }
@@ -367,21 +377,21 @@
     .annnotation_container {
       margin-top: 10px;
       margin-right: 10px;
-      
+
     }
 
     .annnotation_container:has(.annotation_name:focus) {
       outline: 2px solid var(--color-blue);
       border-radius: 5px;
     }
-  
+
     .annotation_name {
       background-color: var(--color-annotations-txt);
       border-bottom: 8px solid var(--color-annotations-txt);
       height: unset;
       font-family: Nunito, sans-serif;
       border-radius: 5px;
-  
+
       p {
         text-align: left;
         overflow: hidden;
@@ -399,30 +409,30 @@
       //   outline: 2px solid var(--color-blue);
       // }
     }
-  
+
     .update_form input {
       width: 100%;
       border-radius: 6px;
     }
-  
+
     & > button {
       border: none;
       background-color: transparent;
       cursor: pointer;
       padding: 0;
-  
+
       & svg {
         width: 24px;
       }
     }
-  
+
     & img {
       width: 30px;
       height: 30px;
       display: inline-block;
       vertical-align: top;
     }
-  
+
     // & .chapter_marker {
     //   vertical-align: top;
     //   position: relative;
@@ -431,7 +441,7 @@
     //   font-size: 0.9rem;
     //   margin-right: 0.5rem;
     // }
-  
+
     & span {
       display: inline-block;
       vertical-align: top;
@@ -440,13 +450,13 @@
       word-break: break-word;
       white-space: normal;
     }
-  
+
     .annotation_edit {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 5px;
-    
+
       >div {
         display: inherit;
         align-items: center;
@@ -456,13 +466,13 @@
           padding: 5px;
           border-radius: 5px;
         }
-    
+
         >div {
           display: flex;
           gap: 5px;
           align-items: center;
         }
-    
+
         svg {
           width: 18px;
           height: 18px;

@@ -91,6 +91,10 @@ import * as TextOutlineIcon from "readium-desktop/renderer/assets/icons/TextOutl
 import {TagGroup, TagList, Tag, Label} from 'react-aria-components';
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
+import type {Selection} from 'react-aria-components';
+import { rgbToHex } from "readium-desktop/common/rgb";
+
+
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderMenuProps {
@@ -640,25 +644,36 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     </div>);
 };
 
-const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number, dockedMode : boolean} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const selectionIsSet = (a: Selection): a is Set<string> => typeof a === "object";
+const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
-    const {goToLocator, annotationUUIDFocused, dockedMode} = props;
+    const {goToLocator, annotationUUIDFocused } = props;
 
     const [__] = useTranslator();
     // const [bookmarkToUpdate, setBookmarkToUpdate] = React.useState(undefined);
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
     // const previousFocusUuid = useSelector((state: IReaderRootState) => state.annotationControlMode.focus.previousFocusUuid);
 
-    const [tagArrayFilter, setTagArrayFilter] = React.useState<string[]>([]);
-    const [colorArrayFilter, setColorArrayFilter] = React.useState<IColor[]>([]);
-    const [drawTypeArrayFilter, setDrawTypeArrayFilter] = React.useState<TDrawType[]>([]);
+    const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
+    const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
+    const [drawTypeArrayFilter, setDrawTypeArrayFilter] = React.useState<Selection>(new Set([]));
 
-    const annotationList = tagArrayFilter.length
-        ? annotationsQueue.filter(([, {tags, color, drawType}]) =>
-            (!tagArrayFilter.length || tags.some((tagsValueName) => tagArrayFilter.includes(tagsValueName))) &&
-            (!colorArrayFilter.length || colorArrayFilter.some((colorValueFilteredObject) => shallowEqual(color, colorValueFilteredObject))) &&
-            (!drawTypeArrayFilter.length || drawTypeArrayFilter.includes(drawType)))
-        : annotationsQueue;
+    // setDrawTypeArrayFilter((mySet) => new Set(mySet).add("trest"));
+
+    const annotationList =
+        (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
+            (selectionIsSet(colorArrayFilter) && colorArrayFilter.size) ||
+            (selectionIsSet(drawTypeArrayFilter) && drawTypeArrayFilter.size)
+            ? annotationsQueue.filter(([, { tags, color, drawType }]) => {
+
+                const colorHex = rgbToHex(color);
+
+                return (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags.some((tagsValueName) => tagArrayFilter.has(tagsValueName))) &&
+                    (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
+                    (!selectionIsSet(drawTypeArrayFilter) || !drawTypeArrayFilter.size || drawTypeArrayFilter.has(drawType));
+
+            })
+            : annotationsQueue;
 
     const MAX_MATCHES_PER_PAGE = 5;
 
@@ -704,6 +719,12 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number,
 
     const dispatch = useDispatch();
 
+    const dockedMode = false;
+    const tagsIndexList = useSelector((state: IReaderRootState) => state.annotationTagsIndex);
+    const selectTagOption = ObjectKeys(tagsIndexList).map((v, i) => ({id: i, name: v}));
+
+    const accordionItems = {id: 0, key: 0, name: "test"};
+
     return (
         <>
             {annotationList.length ?
@@ -731,9 +752,9 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number,
                                         }
 
                                         // reset filters
-                                        setTagArrayFilter([]);
-                                        setColorArrayFilter([]);
-                                        setDrawTypeArrayFilter([]);
+                                        setTagArrayFilter('all');
+                                        setColorArrayFilter('all');
+                                        setDrawTypeArrayFilter('all');
                                     }} type="button">
                                         <SVG ariaHidden svg={TrashIcon} />
                                         {__("dialog.yes")}</button>
@@ -744,11 +765,46 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number,
                 </AlertDialog.Root>
                 : <></>
             }
-        <AnnotationsFilterComponent
-        setTagArrayFilter={setTagArrayFilter}
-        tagArrayFilter={tagArrayFilter}
-        dockedMode={dockedMode}
-         />
+            <Popover.Root>
+                <Popover.Trigger asChild>
+                    <button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button}
+                        style={{ top: dockedMode ? "150px" : "80px" }} title={__("reader.annotations.filterOptions")}>
+                        <SVG svg={MenuIcon} />
+                    </button>
+                </Popover.Trigger>
+                <Popover.Portal>
+                    <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesAnnotations.annotations_filter_container}>
+                        <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                        <button
+                            className={stylesAnnotations.annotations_filter_button}
+                            onClick={() => {
+                                setTagArrayFilter('all');
+
+                            }}>
+                                All{/*__("reader.annotations.filter.all")*/}
+                        </button>
+                        <button
+                            className={stylesAnnotations.annotations_filter_button}
+                            onClick={() => {
+                                setTagArrayFilter(new Set([]));
+
+                            }}>
+                                None{/*__("reader.annotations.filter.none")*/}
+                        </button>
+
+                        <TagGroup
+                            selectionMode="multiple"
+                            selectedKeys={tagArrayFilter}
+                            onSelectionChange={setTagArrayFilter}
+                            aria-label="tag selection"
+                        >
+                            <TagList items={selectTagOption}>
+                                {(item) => <Tag  className={stylesAnnotations.annotations_filter_tag} id={item.name} >{item.name}</Tag>}
+                            </TagList>
+                        </TagGroup>
+                    </Popover.Content>
+                </Popover.Portal>
+            </Popover.Root>
             {annotationsPagedArray.map(([timestamp, annotationItem], _i) =>
                 <AnnotationCard
                     key={`annotation-card_${annotationItem.uuid}`}
@@ -757,7 +813,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number,
                     goToLocator={goToLocator}
                     isEdited={annotationItem.uuid === annotationItemEditedUUID}
                     triggerEdition={triggerEdition(annotationItem)}
-                    setTagFilter={(v) => setTagArrayFilter([v])}
+                    setTagFilter={(v) => setTagArrayFilter(new Set([v]))}
                 />,
             )}
             {
@@ -846,79 +902,46 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number,
 };
 
 
-interface IProps {
-    setTagArrayFilter: React.Dispatch<React.SetStateAction<string[]>>;
-    tagArrayFilter: string[]
-    dockedMode: boolean;
-}
+// interface IAnnotationFilterProps {
+//     setTagArrayFilter: React.Dispatch<React.SetStateAction<Selection>>;
+//     tagArrayFilter: Selection;
+// }
 
-const AnnotationsFilterComponent: React.FC<IProps> = (props) => {
-    const {setTagArrayFilter, tagArrayFilter, dockedMode} = props;
-    const [__] = useTranslator();
+// const AnnotationsFilterComponent: React.FC<IAnnotationFilterProps> = (props) => {
+//     const {setTagArrayFilter, tagArrayFilter: tagArrayFilterSelected} = props;
+//     const [__] = useTranslator();
 
-    const tagsIndexList = useSelector((state: IReaderRootState) => state.annotationTagsIndex);
-    const selectTagOption = ObjectKeys(tagsIndexList).map((v, i) => ({id: i, name: v}));
 
-    console.log(selectTagOption);
 
-    const filterTags = (key: number) => {
-        const tagName = selectTagOption[key]?.name;
+//     //   const container = document.getElementsByClassName("annotations_tab").item(0);
 
-        setTagArrayFilter(prevTags =>
-          prevTags.includes(tagName)
-            ? prevTags.filter(tag => tag !== tagName)
-            : [...prevTags, tagName],
-        );
-      };
+//     const dockedMode = false;
+//     return (
+//         <DialogTrigger>
+//             <Button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button} style={{ top: dockedMode ? "150px" : "80px" }}><SVG svg={MenuIcon} title={__("reader.annotations.filterOptions")} /></Button>
+//             <PopoverReactAria className={stylesAnnotations.annotations_filter_container} placement={dockedMode ? "bottom left" : "bottom right"} style={{ maxHeight: dockedMode ? "700px !important" : "450px !important" }} /*UNSTABLE_portalContainer={container}*/>
+//                 <DialogReactAria>
+//                     <button
+//                         className={stylesAnnotations.annotations_filter_button}
+//                         onClick={() => {
+//                             setTagArrayFilter('all');
 
-      const SelectTagFilter = () => {
-        return (
-            <div>
-          {/* <div>
-            {selectTagOption.map((tag: { id: number; name: string }) => (
-              <div key={tag.id} style={{marginBottom: "10px"}}>
-                <input
-                  type="checkbox"
-                  onChange={() => {
-                    filterTags(tag.id);}
-                }
-                  id={tag.name}
-                  checked={tagArrayFilter.includes(tag.name)}
-                />
-                <label htmlFor={tag.name}>{tag.name}</label>
-              </div>
-            ))}
-          </div> */}
-          <TagGroup selectionMode="multiple" onSelectionChange={(tag) => console.log(tag)} aria-label="tag selection">
-            <TagList items={selectTagOption}>
-            {(item) => <Tag>{item.name}</Tag>}
-            </TagList>
-          </TagGroup>
-          </div>
-        );
-      };
-
-      const container = document.getElementsByClassName("annotations_tab").item(0);
-
-    return (
-    <DialogTrigger>
-        <Button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button} style={{top: dockedMode ? "150px" : "80px"}}><SVG svg={MenuIcon} title={__("reader.annotations.filterOptions")} /></Button>
-        <PopoverReactAria className={stylesAnnotations.annotations_filter_container} placement={dockedMode ? "bottom left" : "bottom right"} style={{maxHeight: dockedMode ? "700px !important" : "450px !important"}} UNSTABLE_portalContainer={container}>
-            <DialogReactAria>
-                    <button 
-                className={stylesAnnotations.annotations_filter_button}
-                onClick={() => {
-                    setTagArrayFilter([]);
-
-                }}>{__("reader.annotations.resetAll")}</button>
-                <SelectTagFilter/>
-                {/* <SelectAnnotationHighlight />
-                <SelectAnnotationDrawType /> */}
-                </DialogReactAria>
-        </PopoverReactAria>
-    </DialogTrigger>
-    );
-};
+//                         }}>{__("reader.annotations.resetAll")}</button>
+//                     <TagGroup
+//                         selectionMode="multiple"
+//                         selectedKeys={tagArrayFilterSelected}
+//                         onSelectionChange={setTagArrayFilter}
+//                         aria-label="tag selection"
+//                     >
+//                         <TagList items={selectTagOption}>
+//                             {(item) => <Tag>{item.name}</Tag>}
+//                         </TagList>
+//                     </TagGroup>
+//                 </DialogReactAria>
+//             </PopoverReactAria>
+//         </DialogTrigger>
+//     );
+// };
 
 const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) => {
 
@@ -2129,7 +2152,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
                                 </div>
                             </details>
-                            <AnnotationList goToLocator={goToLocator} annotationUUIDFocused={annotationUUID} doFocus={doFocus} dockedMode={dockedMode}/>
+                            <AnnotationList goToLocator={goToLocator} annotationUUIDFocused={annotationUUID} doFocus={doFocus}/>
                         </div>
                     </Tabs.Content>
 

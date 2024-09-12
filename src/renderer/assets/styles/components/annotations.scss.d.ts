@@ -17,6 +17,7 @@ export declare const annotation_name: string;
 export declare const annotations_checkbox: string;
 export declare const annotations_filter_button: string;
 export declare const annotations_filter_container: string;
+export declare const annotations_filter_tag: string;
 export declare const annotations_filter_trigger_button: string;
 export declare const annotations_line: string;
 export declare const annotations_options: string;

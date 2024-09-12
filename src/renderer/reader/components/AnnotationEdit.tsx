@@ -263,7 +263,8 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                                 // nothing
                             } else {
                                 const found = selectTagOption.find((v) => v.id === key);
-                                setTag(found.name);
+                                if (found)
+                                    setTag(found.name);
                             }
                         }}
                     // svg={}
