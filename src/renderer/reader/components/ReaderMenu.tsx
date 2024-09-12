@@ -79,6 +79,9 @@ import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/c
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
 import { shallowEqual } from "readium-desktop/utils/shallowEqual";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
+import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -639,8 +642,8 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
     // const previousFocusUuid = useSelector((state: IReaderRootState) => state.annotationControlMode.focus.previousFocusUuid);
 
     const [tagArrayFilter, setTagArrayFilter] = React.useState<string[]>([]);
-    const [colorArrayFilter, _setColorArrayFilter] = React.useState<IColor[]>([]);
-    const [drawTypeArrayFilter, _setDrawTypeArrayFilter] = React.useState<TDrawType[]>([]);
+    const [colorArrayFilter, setColorArrayFilter] = React.useState<IColor[]>([]);
+    const [drawTypeArrayFilter, setDrawTypeArrayFilter] = React.useState<TDrawType[]>([]);
 
     const annotationList = tagArrayFilter.length
         ? annotationsQueue.filter(([, {tags, color, drawType}]) =>
@@ -688,8 +691,51 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
     const [annotationItemEditedUUID, setannotationItemEditedUUID] = React.useState("");
     const paginatorAnnotationsRef = React.useRef<HTMLSelectElement>();
 
+    const triggerEdition = (annotationItem: IAnnotationState) =>
+            (value: boolean) => value ? setannotationItemEditedUUID(annotationItem.uuid) : setannotationItemEditedUUID("");
+
+    const dispatch = useDispatch();
+
     return (
         <>
+            {annotationList.length ?
+                <AlertDialog.Root>
+                    <AlertDialog.Trigger>
+                        Delete
+                    </AlertDialog.Trigger>
+                    <AlertDialog.Portal>
+                        <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
+                        <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
+                            <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deleteFeed")}</AlertDialog.Title>
+                            <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
+                                {`Do you want to delete ${annotationList.length} annotation(s) ?`}
+                            </AlertDialog.Description>
+                            <div className={stylesAlertModals.AlertDialogButtonContainer}>
+                                <AlertDialog.Cancel asChild>
+                                    <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                                </AlertDialog.Cancel>
+                                <AlertDialog.Action asChild>
+                                    <button className={stylesButtons.button_primary_blue} onClick={() => {
+                                        for (const [,annotation] of annotationList) {
+
+                                            dispatch(readerActions.annotation.pop.build(annotation));
+                                            setannotationItemEditedUUID("");
+                                        }
+
+                                        // reset filters
+                                        setTagArrayFilter([]);
+                                        setColorArrayFilter([]);
+                                        setDrawTypeArrayFilter([]);
+                                    }} type="button">
+                                        <SVG ariaHidden svg={TrashIcon} />
+                                        {__("dialog.yes")}</button>
+                                </AlertDialog.Action>
+                            </div>
+                        </AlertDialog.Content>
+                    </AlertDialog.Portal>
+                </AlertDialog.Root>
+                : <></>
+            }
             {annotationsPagedArray.map(([timestamp, annotationItem], _i) =>
                 <AnnotationCard
                     key={`annotation-card_${annotationItem.uuid}`}
@@ -697,7 +743,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
                     annotation={annotationItem}
                     goToLocator={goToLocator}
                     isEdited={annotationItem.uuid === annotationItemEditedUUID}
-                    triggerEdition={(value: boolean) => value ? setannotationItemEditedUUID(annotationItem.uuid) : setannotationItemEditedUUID("")}
+                    triggerEdition={triggerEdition(annotationItem)}
                     setTagFilter={(v) => setTagArrayFilter([v])}
                 />,
             )}
