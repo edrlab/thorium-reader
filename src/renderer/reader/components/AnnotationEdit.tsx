@@ -253,6 +253,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                     placeholder={__("catalog.addTags")}
                     defaultInputValue={tag}
                     defaultSelectedKey={selectTagOption.findIndex(({name}) => name === tag)}
+                    selectedKey={selectTagOption.findIndex(({name}) => name === tag)}
                     onSelectionChange={
                         (key: React.Key) => {
 
@@ -268,7 +269,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                     // svg={}
                     allowsCustomValue
                     onInputChange={(v) => setTag(v)}
-
+                    inputValue={tag}
                 >
                     {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                 </ComboBox>
