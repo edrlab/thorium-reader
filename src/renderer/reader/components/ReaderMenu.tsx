@@ -77,8 +77,8 @@ import * as Popover from "@radix-ui/react-popover";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
-import { TagList } from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/tagList";
-import { TagButton } from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/tagButton";
+import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
+import { shallowEqual } from "readium-desktop/utils/shallowEqual";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -400,9 +400,9 @@ const HardWrapComment: React.FC<{comment: string}> = (props) => {
     );
 };
 
-const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, isEdited: boolean, triggerEdition: (v: boolean) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
-    const { goToLocator } = props;
+    const { goToLocator, setTagFilter } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
     // const setReaderConfig = useSaveReaderConfig();
@@ -413,6 +413,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     const { timestamp, annotation, isEdited, triggerEdition } = props;
     const { uuid, comment, tags: tagsStringArrayMaybeUndefined } = annotation;
     const tagsStringArray = tagsStringArrayMaybeUndefined || [];
+    const tagName = tagsStringArray[0] || "";
     const dockedEditAnnotation = isEdited && dockedMode;
 
     const dispatch = useDispatch();
@@ -534,18 +535,22 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                     // <HardWrapComment comment={comment} />
                     <>
                         <HardWrapComment comment={comment} />
-                        <TagList tagArray={tagsStringArray}>
-                            {
-                                (tag, index) =>
-                                    <TagButton
-                                        tag={tag}
-                                        index={index}
-                                        onClickDeleteCb={undefined}
-                                        location={undefined}
-                                    >
-                                    </TagButton>
-                            }
-                        </TagList>
+                        {tagName ? <div className={stylesTags.tags_wrapper}>
+                            <div className={classNames(
+                                stylesTags.tag, stylesTags.no_hover,
+                            )}>
+                                <a onClick={() => setTagFilter(tagName)}
+                                    onKeyUp={(e) => {
+                                        if (e.key === "Enter" || e.key === "Space") {
+                                            e.preventDefault();
+                                            setTagFilter(tagName);
+                                        }
+                                    }}>
+                                    {tagName}
+                                </a>
+                            </div>
+                        </div>
+                        : <></>}
                     </>
             }
         </div>
@@ -633,9 +638,16 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
     // const previousFocusUuid = useSelector((state: IReaderRootState) => state.annotationControlMode.focus.previousFocusUuid);
 
-    const [tagFilter, _] = React.useState<string>("");
+    const [tagArrayFilter, setTagArrayFilter] = React.useState<string[]>([]);
+    const [colorArrayFilter, _setColorArrayFilter] = React.useState<IColor[]>([]);
+    const [drawTypeArrayFilter, _setDrawTypeArrayFilter] = React.useState<TDrawType[]>([]);
 
-    const annotationList = tagFilter ? annotationsQueue.filter(([, {tags}]) => tags.includes(tagFilter)) : annotationsQueue;
+    const annotationList = tagArrayFilter.length
+        ? annotationsQueue.filter(([, {tags, color, drawType}]) =>
+            (tagArrayFilter.length ? tags.some((tagsValueName) => tagArrayFilter.includes(tagsValueName)) : true) &&
+            (colorArrayFilter.length ? colorArrayFilter.some((colorValueFilteredObject) => shallowEqual(color, colorValueFilteredObject)) : true) &&
+            (drawTypeArrayFilter.length ? drawTypeArrayFilter.includes(drawType) : true))
+        : annotationsQueue;
 
     const MAX_MATCHES_PER_PAGE = 5;
 
@@ -686,6 +698,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
                     goToLocator={goToLocator}
                     isEdited={annotationItem.uuid === annotationItemEditedUUID}
                     triggerEdition={(value: boolean) => value ? setannotationItemEditedUUID(annotationItem.uuid) : setannotationItemEditedUUID("")}
+                    setTagFilter={(v) => setTagArrayFilter([v])}
                 />,
             )}
             {
