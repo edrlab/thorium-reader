@@ -328,11 +328,13 @@
                 "red": "Red",
                 "yellow": "Yellow"
             },
-            "filterByHighlight": "Filter by Highlight",
-            "filterByTag": "Filter by Tag",
-            "filterOptions": "Filter Options",
-            "resetAll": "Reset All",
-            "resetHighlight": "Reset Highlight"
+            "filter": {
+                "filterByHighlight": "Filter by Colors",
+                "filterByTag": "Filter by Tags",
+                "filterOptions": "Filter Options",
+                "all": "All",
+                "none": "None"
+            }
         },
         "divina": {
             "mute": "mute audio",

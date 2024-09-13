@@ -721,11 +721,13 @@ declare namespace typed_i18n {
       readonly "red": string,
       readonly "yellow": string
     },
-    readonly "filterByHighlight": string,
-    readonly "filterByTag": string,
-    readonly "filterOptions": string,
-    readonly "resetAll": string,
-    readonly "resetHighlight": string
+    readonly "filter": {
+      readonly "filterByHighlight": string,
+      readonly "filterByTag": string,
+      readonly "filterOptions": string,
+      readonly "all": string,
+      readonly "none": string
+    }
   },
   readonly "divina": { readonly "mute": string, readonly "unmute": string },
   readonly "fxl": { readonly "fit": string },
@@ -894,11 +896,13 @@ declare namespace typed_i18n {
     readonly "red": string,
     readonly "yellow": string
   },
-  readonly "filterByHighlight": string,
-  readonly "filterByTag": string,
-  readonly "filterOptions": string,
-  readonly "resetAll": string,
-  readonly "resetHighlight": string
+  readonly "filter": {
+    readonly "filterByHighlight": string,
+    readonly "filterByTag": string,
+    readonly "filterOptions": string,
+    readonly "all": string,
+    readonly "none": string
+  }
 };
   (_: "reader.annotations.Color", __?: {}): string;
   (_: "reader.annotations.addNote", __?: {}): string;
@@ -938,11 +942,18 @@ declare namespace typed_i18n {
   (_: "reader.annotations.colors.purple", __?: {}): string;
   (_: "reader.annotations.colors.red", __?: {}): string;
   (_: "reader.annotations.colors.yellow", __?: {}): string;
-  (_: "reader.annotations.filterByHighlight", __?: {}): string;
-  (_: "reader.annotations.filterByTag", __?: {}): string;
-  (_: "reader.annotations.filterOptions", __?: {}): string;
-  (_: "reader.annotations.resetAll", __?: {}): string;
-  (_: "reader.annotations.resetHighlight", __?: {}): string;
+  (_: "reader.annotations.filter", __?: {}): {
+  readonly "filterByHighlight": string,
+  readonly "filterByTag": string,
+  readonly "filterOptions": string,
+  readonly "all": string,
+  readonly "none": string
+};
+  (_: "reader.annotations.filter.filterByHighlight", __?: {}): string;
+  (_: "reader.annotations.filter.filterByTag", __?: {}): string;
+  (_: "reader.annotations.filter.filterOptions", __?: {}): string;
+  (_: "reader.annotations.filter.all", __?: {}): string;
+  (_: "reader.annotations.filter.none", __?: {}): string;
   (_: "reader.divina", __?: {}): { readonly "mute": string, readonly "unmute": string };
   (_: "reader.divina.mute", __?: {}): string;
   (_: "reader.divina.unmute", __?: {}): string;

@@ -66,9 +66,9 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "r2-shared-js/dist/es8-es2017/src/models/locator";
 // import { DialogTrigger as DialogTriggerReactAria, Popover as PopoverReactAria, Dialog as DialogReactAria } from "react-aria-components";
-import { Key, TextArea } from "react-aria-components";
+import { TextArea } from "react-aria-components";
 import { AnnotationEdit } from "./AnnotationEdit";
-import { IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
+import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
@@ -78,20 +78,18 @@ import * as stylesDropDown from "readium-desktop/renderer/assets/styles/componen
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
-import { shallowEqual } from "readium-desktop/utils/shallowEqual";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
-import {Button, Dialog as DialogReactAria, DialogTrigger, Popover as PopoverReactAria } from "react-aria-components";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/filter2-icon.svg";
 import * as HighLightIcon from "readium-desktop/renderer/assets/icons/highlight-icon.svg";
 import * as UnderLineIcon from "readium-desktop/renderer/assets/icons/underline-icon.svg";
 import * as TextStrikeThroughtIcon from "readium-desktop/renderer/assets/icons/TextStrikethrough-icon.svg";
 import * as TextOutlineIcon from "readium-desktop/renderer/assets/icons/TextOutline-icon.svg";
-import {TagGroup, TagList, Tag, Label} from 'react-aria-components';
+import {TagGroup, TagList, Tag, Label} from "react-aria-components";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
-import type {Selection} from 'react-aria-components';
+import type {Selection} from "react-aria-components";
 import { rgbToHex } from "readium-desktop/common/rgb";
 
 
@@ -722,11 +720,27 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
     const dockedMode = false;
     const tagsIndexList = useSelector((state: IReaderRootState) => state.annotationTagsIndex);
     const selectTagOption = ObjectKeys(tagsIndexList).map((v, i) => ({id: i, name: v}));
-
-    const accordionItems = {id: 0, key: 0, name: "test"};
+    const annotationsColorsLight = [
+        {hex:"#eb9694", name: `${__("reader.annotations.colors.red")}`},
+        {hex: "#fad0c3", name: `${__("reader.annotations.colors.orange")}`},
+        {hex: "#fef3bd", name: `${__("reader.annotations.colors.yellow")}`},
+        {hex: "#c1eac5", name: `${__("reader.annotations.colors.green")}`},
+        {hex: "#bedadc", name: `${__("reader.annotations.colors.bluegreen")}`},
+        {hex: "#c4def6", name: `${__("reader.annotations.colors.lightblue")}`},
+        {hex: "#bed3f3", name: `${__("reader.annotations.colors.cyan")}`},
+        {hex: "#d4c4fb", name: `${__("reader.annotations.colors.purple")}`},
+    ];
+    
+    const selectDrawtypesOptions = [
+        {name: "solid_background", svg: HighLightIcon},
+        {name: "underline", svg: UnderLineIcon},
+        {name: "strikethrough", svg: TextStrikeThroughtIcon},
+        {name: "outline", svg: TextOutlineIcon},
+    ];
 
     return (
         <>
+        <div style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
             {annotationList.length ?
                 <AlertDialog.Root>
                     <AlertDialog.Trigger>
@@ -752,9 +766,9 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
                                         }
 
                                         // reset filters
-                                        setTagArrayFilter('all');
-                                        setColorArrayFilter('all');
-                                        setDrawTypeArrayFilter('all');
+                                        setTagArrayFilter("all");
+                                        setColorArrayFilter("all");
+                                        setDrawTypeArrayFilter("all");
                                     }} type="button">
                                         <SVG ariaHidden svg={TrashIcon} />
                                         {__("dialog.yes")}</button>
@@ -768,20 +782,20 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
             <Popover.Root>
                 <Popover.Trigger asChild>
                     <button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button}
-                        style={{ top: dockedMode ? "150px" : "80px" }} title={__("reader.annotations.filterOptions")}>
+                        style={{ top: dockedMode ? "150px" : "80px" }} title={__("reader.annotations.filter.filterOptions")}>
                         <SVG svg={MenuIcon} />
                     </button>
                 </Popover.Trigger>
                 <Popover.Portal>
                     <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesAnnotations.annotations_filter_container}>
                         <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                        <button
+                        {/* <button
                             className={stylesAnnotations.annotations_filter_button}
                             onClick={() => {
                                 setTagArrayFilter('all');
 
                             }}>
-                                All{/*__("reader.annotations.filter.all")*/}
+                            {__("reader.annotations.filter.all")}
                         </button>
                         <button
                             className={stylesAnnotations.annotations_filter_button}
@@ -789,22 +803,109 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
                                 setTagArrayFilter(new Set([]));
 
                             }}>
-                                None{/*__("reader.annotations.filter.none")*/}
-                        </button>
+                            {__("reader.annotations.filter.none")}
+                        </button> */}
 
                         <TagGroup
                             selectionMode="multiple"
                             selectedKeys={tagArrayFilter}
                             onSelectionChange={setTagArrayFilter}
                             aria-label="tag selection"
+                            style={{marginBottom: "20px"}}
                         >
-                            <TagList items={selectTagOption}>
-                                {(item) => <Tag  className={stylesAnnotations.annotations_filter_tag} id={item.name} >{item.name}</Tag>}
-                            </TagList>
+                            <details>
+                                <summary className={stylesAnnotations.annotations_filter_tagGroup}>
+                                    <Label style={{ fontSize: "13px" }}>Tags</Label>
+                                    <div style={{ display: "flex", gap: "10px" }}>
+                                        <button
+                                            onClick={() => {
+                                                setTagArrayFilter("all");
+
+                                            }}>
+                                            {__("reader.annotations.filter.all")}
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setTagArrayFilter(new Set([]));
+
+                                            }}>
+                                            {__("reader.annotations.filter.none")}
+                                        </button>
+                                    </div>
+                                </summary>
+                                <TagList items={selectTagOption} className={stylesAnnotations.annotations_filter_taglist}>
+                                    {(item) => <Tag className={stylesAnnotations.annotations_filter_tag} id={item.name} >{item.name}</Tag>}
+                                </TagList>
+                            </details>
+                        </TagGroup>
+                        <TagGroup
+                            selectionMode="multiple"
+                            selectedKeys={colorArrayFilter}
+                            onSelectionChange={setColorArrayFilter}
+                            aria-label="color selection"
+                            style={{marginBottom: "20px"}}
+                        >
+                            <details>
+                                <summary className={stylesAnnotations.annotations_filter_tagGroup}>
+                                    <Label style={{ fontSize: "13px" }}>Colors</Label>
+                                    <div style={{ display: "flex", gap: "10px" }}>
+                                        <button
+                                            onClick={() => {
+                                                setColorArrayFilter("all");
+
+                                            }}>
+                                            {__("reader.annotations.filter.all")}
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setColorArrayFilter(new Set([]));
+
+                                            }}>
+                                            {__("reader.annotations.filter.none")}
+                                        </button>
+                                    </div>
+                                </summary>
+                                <TagList items={annotationsColorsLight} className={stylesAnnotations.annotations_filter_taglist}>
+                                    {(item) => <Tag className={stylesAnnotations.annotations_filter_color} style={{backgroundColor: item.hex, outlineColor: item.hex}} id={item.hex}></Tag>}
+                                </TagList>
+                            </details>
+                        </TagGroup>
+                        <TagGroup
+                            selectionMode="multiple"
+                            selectedKeys={drawTypeArrayFilter}
+                            onSelectionChange={setDrawTypeArrayFilter}
+                            aria-label="tag selection"
+                            style={{marginBottom: "20px"}}
+                        >
+                            <details>
+                                <summary className={stylesAnnotations.annotations_filter_tagGroup}>
+                                    <Label style={{ fontSize: "13px" }}>Drawtypes</Label>
+                                    <div style={{ display: "flex", gap: "10px" }}>
+                                        <button
+                                            onClick={() => {
+                                                setDrawTypeArrayFilter("all");
+
+                                            }}>
+                                            {__("reader.annotations.filter.all")}
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setDrawTypeArrayFilter(new Set([]));
+
+                                            }}>
+                                            {__("reader.annotations.filter.none")}
+                                        </button>
+                                    </div>
+                                </summary>
+                                <TagList items={selectDrawtypesOptions} className={stylesAnnotations.annotations_filter_taglist}>
+                                    {(item) => <Tag id={item.name} className={stylesAnnotations.annotations_filter_drawtype}><SVG svg={item.svg} /></Tag>}
+                                </TagList>
+                            </details>
                         </TagGroup>
                     </Popover.Content>
                 </Popover.Portal>
             </Popover.Root>
+            </div>
             {annotationsPagedArray.map(([timestamp, annotationItem], _i) =>
                 <AnnotationCard
                     key={`annotation-card_${annotationItem.uuid}`}
