@@ -75,6 +75,7 @@
       "lastAdditions": "Adicionados recentemente"
     },
     "export": "Guardar como",
+    "exportAnnotation": "Guardar anotação como",
     "format": "Formato",
     "lang": "Idioma",
     "lastRead": "Última leitura",
@@ -441,7 +442,13 @@
         },
         "title": "Tema"
       },
-      "wordSpacing": "Espaçamento de palavras"
+      "wordSpacing": "Espaçamento de palavras",
+      "preset": {
+        "title": "Predefinição",
+        "save": "Guardar as configurações de leitura atuais na predefinição preferida de configurações de leitura",
+        "apply": "Aplicar a predefinição preferida de configurações de leitura às configurações de leitura atuais",
+        "reset": "Redefinir a predefinição das configurações preferidas de leitura para o estado inicial"
+      }
     },
     "svg": {
       "left": "Esquerda",
