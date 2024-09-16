@@ -760,7 +760,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number 
                         <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                             <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deleteAnnotations")}</AlertDialog.Title>
                             <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
-                                {__("dialog.deleteAnnotationsText", { annotationListLength : annotationList.length})}
+                                {__("dialog.deleteAnnotationsText", { annotationListLength: annotationList.length })}
                             </AlertDialog.Description>
                             <div className={stylesAlertModals.AlertDialogButtonContainer}>
                                 <AlertDialog.Cancel asChild>
@@ -2106,135 +2106,135 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 </Popover.Trigger>
                                 <Popover.Portal>
                                     <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesAnnotations.annotations_filter_container}>
-                                    <div className={stylesAnnotations.annotations_checkbox}>
-                                    <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={serialAnnotator} onChange={advancedAnnotationsOnChange} />
-                                    <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div
-                                            tabIndex={0}
-                                            role="checkbox"
-                                            aria-checked={serialAnnotator}
-                                            aria-label={__("reader.annotations.advancedMode")}
-                                            onKeyDown={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault(); // prevent scroll
-                                                }
-                                            }}
-                                            onKeyUp={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault();
-                                                    advancedAnnotationsOnChange();
-                                                }
-                                            }}
-                                            className={stylesGlobal.checkbox_custom}
-                                            style={{ border: serialAnnotator ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: serialAnnotator ? "var(--color-blue)" : "transparent" }}>
-                                            {serialAnnotator ?
-                                                <SVG ariaHidden svg={CheckIcon} />
-                                                :
-                                                <></>
-                                            }
+                                        <div className={stylesAnnotations.annotations_checkbox}>
+                                            <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={serialAnnotator} onChange={advancedAnnotationsOnChange} />
+                                            <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
+                                                <div
+                                                    tabIndex={0}
+                                                    role="checkbox"
+                                                    aria-checked={serialAnnotator}
+                                                    aria-label={__("reader.annotations.advancedMode")}
+                                                    onKeyDown={(e) => {
+                                                        // if (e.code === "Space") {
+                                                        if (e.key === " ") {
+                                                            e.preventDefault(); // prevent scroll
+                                                        }
+                                                    }}
+                                                    onKeyUp={(e) => {
+                                                        // if (e.code === "Space") {
+                                                        if (e.key === " ") {
+                                                            e.preventDefault();
+                                                            advancedAnnotationsOnChange();
+                                                        }
+                                                    }}
+                                                    className={stylesGlobal.checkbox_custom}
+                                                    style={{ border: serialAnnotator ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: serialAnnotator ? "var(--color-blue)" : "transparent" }}>
+                                                    {serialAnnotator ?
+                                                        <SVG ariaHidden svg={CheckIcon} />
+                                                        :
+                                                        <></>
+                                                    }
+                                                </div>
+                                                <div aria-hidden>
+                                                    <h4>{__("reader.annotations.advancedMode")}</h4>
+                                                </div>
+                                            </label>
                                         </div>
-                                        <div aria-hidden>
-                                            <h4>{__("reader.annotations.advancedMode")}</h4>
+                                        {/* : <></>} */}
+                                        <div className={stylesAnnotations.annotations_checkbox}>
+                                            <input type="checkbox" id="quickAnnotations" name="quickAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
+                                                onChange={quickAnnotationsOnChange}
+                                            />
+                                            <label htmlFor="quickAnnotations" className={stylesGlobal.checkbox_custom_label}>
+                                                <div
+                                                    tabIndex={0}
+                                                    role="checkbox"
+                                                    aria-checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
+                                                    aria-label={__("reader.annotations.quickAnnotations")}
+                                                    onKeyDown={(e) => {
+                                                        // if (e.code === "Space") {
+                                                        if (e.key === " ") {
+                                                            e.preventDefault(); // prevent scroll
+                                                        }
+                                                    }}
+                                                    onKeyUp={(e) => {
+                                                        // if (e.code === "Space") {
+                                                        if (e.key === " ") {
+                                                            e.preventDefault();
+                                                            quickAnnotationsOnChange();
+                                                        }
+                                                    }}
+                                                    className={stylesGlobal.checkbox_custom}
+                                                    style={{ border: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "var(--color-blue)" : "transparent" }}>
+                                                    {readerConfig.annotation_popoverNotOpenOnNoteTaking ?
+                                                        <SVG ariaHidden svg={CheckIcon} />
+                                                        :
+                                                        <></>
+                                                    } </div>
+                                                <h4 aria-hidden>{__("reader.annotations.quickAnnotations")}</h4></label>
                                         </div>
-                                    </label>
-                                </div>
-                                {/* : <></>} */}
-                                <div className={stylesAnnotations.annotations_checkbox}>
-                                    <input type="checkbox" id="quickAnnotations" name="quickAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
-                                        onChange={quickAnnotationsOnChange}
-                                    />
-                                    <label htmlFor="quickAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div
-                                            tabIndex={0}
-                                            role="checkbox"
-                                            aria-checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
-                                            aria-label={__("reader.annotations.quickAnnotations")}
-                                            onKeyDown={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault(); // prevent scroll
-                                                }
-                                            }}
-                                            onKeyUp={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault();
-                                                    quickAnnotationsOnChange();
-                                                }
-                                            }}
-                                            className={stylesGlobal.checkbox_custom}
-                                            style={{ border: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "var(--color-blue)" : "transparent" }}>
-                                            {readerConfig.annotation_popoverNotOpenOnNoteTaking ?
-                                                <SVG ariaHidden svg={CheckIcon} />
-                                                :
-                                                <></>
-                                            } </div>
-                                        <h4 aria-hidden>{__("reader.annotations.quickAnnotations")}</h4></label>
-                                </div>
-                                <div className={stylesAnnotations.annotations_checkbox}>
-                                    <input type="checkbox" id="marginAnnotations" name="marginAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={marginAnnotationsOnChange} />
-                                    <label htmlFor="marginAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div
-                                            tabIndex={0}
-                                            role="checkbox"
-                                            aria-checked={readerConfig.annotation_defaultDrawView === "margin"}
-                                            aria-label={__("reader.annotations.toggleMarginMarks")}
-                                            onKeyDown={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault(); // prevent scroll
-                                                }
-                                            }}
-                                            onKeyUp={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault();
-                                                    marginAnnotationsOnChange();
-                                                }
-                                            }}
-                                            className={stylesGlobal.checkbox_custom}
-                                            style={{ border: readerConfig.annotation_defaultDrawView === "margin" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "margin" ? "var(--color-blue)" : "transparent" }}>
-                                            {readerConfig.annotation_defaultDrawView === "margin" ?
-                                                <SVG ariaHidden svg={CheckIcon} />
-                                                :
-                                                <></>
-                                            }
+                                        <div className={stylesAnnotations.annotations_checkbox}>
+                                            <input type="checkbox" id="marginAnnotations" name="marginAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={marginAnnotationsOnChange} />
+                                            <label htmlFor="marginAnnotations" className={stylesGlobal.checkbox_custom_label}>
+                                                <div
+                                                    tabIndex={0}
+                                                    role="checkbox"
+                                                    aria-checked={readerConfig.annotation_defaultDrawView === "margin"}
+                                                    aria-label={__("reader.annotations.toggleMarginMarks")}
+                                                    onKeyDown={(e) => {
+                                                        // if (e.code === "Space") {
+                                                        if (e.key === " ") {
+                                                            e.preventDefault(); // prevent scroll
+                                                        }
+                                                    }}
+                                                    onKeyUp={(e) => {
+                                                        // if (e.code === "Space") {
+                                                        if (e.key === " ") {
+                                                            e.preventDefault();
+                                                            marginAnnotationsOnChange();
+                                                        }
+                                                    }}
+                                                    className={stylesGlobal.checkbox_custom}
+                                                    style={{ border: readerConfig.annotation_defaultDrawView === "margin" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "margin" ? "var(--color-blue)" : "transparent" }}>
+                                                    {readerConfig.annotation_defaultDrawView === "margin" ?
+                                                        <SVG ariaHidden svg={CheckIcon} />
+                                                        :
+                                                        <></>
+                                                    }
+                                                </div>
+                                                <h4 aria-hidden>{__("reader.annotations.toggleMarginMarks")}</h4></label>
                                         </div>
-                                        <h4 aria-hidden>{__("reader.annotations.toggleMarginMarks")}</h4></label>
-                                </div>
-                                <div className={stylesAnnotations.annotations_checkbox}>
-                                    <input type="checkbox" id="hideAnnotation" name="hideAnnotation" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "hide"} onChange={hideAnnotationOnChange} />
-                                    <label htmlFor="hideAnnotation" className={stylesGlobal.checkbox_custom_label}>
-                                        <div
-                                            tabIndex={0}
-                                            role="checkbox"
-                                            aria-checked={readerConfig.annotation_defaultDrawView === "hide"}
-                                            aria-label={__("reader.annotations.hide")}
-                                            onKeyDown={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault(); // prevent scroll
-                                                }
-                                            }}
-                                            onKeyUp={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault();
-                                                    hideAnnotationOnChange();
-                                                }
-                                            }}
-                                            className={stylesGlobal.checkbox_custom}
-                                            style={{ border: readerConfig.annotation_defaultDrawView === "hide" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "hide" ? "var(--color-blue)" : "transparent" }}>
-                                            {readerConfig.annotation_defaultDrawView === "hide" ?
-                                                <SVG ariaHidden svg={CheckIcon} />
-                                                :
-                                                <></>
-                                            }
+                                        <div className={stylesAnnotations.annotations_checkbox}>
+                                            <input type="checkbox" id="hideAnnotation" name="hideAnnotation" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "hide"} onChange={hideAnnotationOnChange} />
+                                            <label htmlFor="hideAnnotation" className={stylesGlobal.checkbox_custom_label}>
+                                                <div
+                                                    tabIndex={0}
+                                                    role="checkbox"
+                                                    aria-checked={readerConfig.annotation_defaultDrawView === "hide"}
+                                                    aria-label={__("reader.annotations.hide")}
+                                                    onKeyDown={(e) => {
+                                                        // if (e.code === "Space") {
+                                                        if (e.key === " ") {
+                                                            e.preventDefault(); // prevent scroll
+                                                        }
+                                                    }}
+                                                    onKeyUp={(e) => {
+                                                        // if (e.code === "Space") {
+                                                        if (e.key === " ") {
+                                                            e.preventDefault();
+                                                            hideAnnotationOnChange();
+                                                        }
+                                                    }}
+                                                    className={stylesGlobal.checkbox_custom}
+                                                    style={{ border: readerConfig.annotation_defaultDrawView === "hide" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "hide" ? "var(--color-blue)" : "transparent" }}>
+                                                    {readerConfig.annotation_defaultDrawView === "hide" ?
+                                                        <SVG ariaHidden svg={CheckIcon} />
+                                                        :
+                                                        <></>
+                                                    }
+                                                </div>
+                                                <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
                                         </div>
-                                        <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
-                                </div>
                                         <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
                                     </Popover.Content>
                                 </Popover.Portal>
