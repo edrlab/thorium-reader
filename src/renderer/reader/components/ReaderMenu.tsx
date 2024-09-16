@@ -829,7 +829,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number 
                                         </div>
                                     </summary>
                                     <TagList items={selectTagOption} className={stylesAnnotations.annotations_filter_taglist}>
-                                        {(item) => <Tag className={stylesAnnotations.annotations_filter_tag} id={item.name} >{item.name}</Tag>}
+                                        {(item) => <Tag className={stylesAnnotations.annotations_filter_tag} id={item.name} textValue={item.name}>{item.name}</Tag>}
                                     </TagList>
                                 </details>
                             </TagGroup>
@@ -867,7 +867,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number 
                                         </div>
                                     </summary>
                                     <TagList items={annotationsColorsLight} className={stylesAnnotations.annotations_filter_taglist}>
-                                        {(item) => <Tag className={stylesAnnotations.annotations_filter_color} style={{ backgroundColor: item.hex, outlineColor: item.hex }} id={item.hex} />}
+                                        {(item) => <Tag className={stylesAnnotations.annotations_filter_color} style={{ backgroundColor: item.hex, outlineColor: item.hex }} id={item.hex} textValue={item.name}></Tag>}
                                     </TagList>
                                 </details>
                             </TagGroup>
@@ -905,7 +905,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number 
                                         </div>
                                     </summary>
                                     <TagList items={selectDrawtypesOptions} className={stylesAnnotations.annotations_filter_taglist}>
-                                        {(item) => <Tag id={item.name} className={stylesAnnotations.annotations_filter_drawtype}><SVG svg={item.svg} /></Tag>}
+                                        {(item) => <Tag id={item.name} className={stylesAnnotations.annotations_filter_drawtype} textValue={item.name}><SVG svg={item.svg} /></Tag>}
                                     </TagList>
                                 </details>
                             </TagGroup>

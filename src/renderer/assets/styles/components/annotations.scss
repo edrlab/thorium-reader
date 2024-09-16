@@ -99,7 +99,6 @@
     border-radius: 4px;
     // box-shadow: 1px 0 5px var(--color-light-grey);
     border: 1px solid var(--color-verylight-grey);
-    transition: 200ms;
 
     &:hover {
       background-color: var(--color-verylight-grey-alt2);
@@ -131,7 +130,6 @@
       font-size: 15px;
       line-height: 1;
       box-shadow: 0 3px 3px var(--color-verylight-grey-alt2);
-      transition: 200ms;
       flex: 1;
       display: flex;
       align-items: center;
