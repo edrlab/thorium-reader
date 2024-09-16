@@ -60,14 +60,18 @@ export function ComboBox<T extends object>(
 
     return (
         <ComboBoxReactAria {...props} className={StylesCombobox.react_aria_ComboBox}>
-            <Label className={StylesCombobox.react_aria_Label}>{label}</Label>
+            {
+                label ?
+                    <Label className={StylesCombobox.react_aria_Label}>{label}</Label>
+                    : <></>
+            }
             <Group className={classNames(StylesCombobox.my_combobox_container, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} >
                 {svg ? <SVG ariaHidden svg={svg} /> : <></>}
                 <Input className={classNames(StylesCombobox.react_aria_Input, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} ref={refInputEl} placeholder={placeholder} />
-                {(!props.defaultItems || !!Array(...(props.defaultItems || [])).length) && 
-                <Button className={StylesCombobox.react_aria_Button}>
-                    <SVG ariaHidden svg={ChevronDown} />
-                </Button>}
+                {(!props.defaultItems || !!Array(...(props.defaultItems || [])).length) &&
+                    <Button className={StylesCombobox.react_aria_Button}>
+                        <SVG ariaHidden svg={ChevronDown} />
+                    </Button>}
             </Group>
             {description ? <Text slot="description">{description}</Text> : <></>}
             <FieldError>{errorMessage}</FieldError>

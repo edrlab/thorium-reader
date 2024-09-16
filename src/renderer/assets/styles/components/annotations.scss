@@ -271,7 +271,8 @@
     display: flex;
     align-items: center;
     gap: 30px;
-    margin: 10px 0;
+    margin: 10px 0 20px;
+    flex-wrap: wrap;
 
     &_container {
       display: flex;
@@ -292,8 +293,14 @@
           background-color: var(--color-secondary);
           width: inherit;
 
+          input {
+            padding: 0 10px 0 30px !important;
+            width: 100%;
+          }
+
           button {
             margin-left: 0;
+            padding-left: 0!important;
           }
         }
       }
@@ -492,6 +499,10 @@
       // margin-top: 10px;
       margin-right: 10px;
       padding-top: 10px;
+
+      .tag a {
+        font-size: 14px;
+      }
 
     }
 
