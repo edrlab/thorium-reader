@@ -655,11 +655,6 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number 
     const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
     const [drawTypeArrayFilter, setDrawTypeArrayFilter] = React.useState<Selection>(new Set([]));
 
-
-
-    // setDrawTypeArrayFilter((mySet) => new Set(mySet).add("trest"));
-
-
     const annotationList =
         (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
             (selectionIsSet(colorArrayFilter) && colorArrayFilter.size) ||
@@ -732,9 +727,9 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number 
         { hex: "#d4c4fb", name: `${__("reader.annotations.colors.purple")}` },
     ];
 
-    annotationsQueue.forEach((annotation) => {
-        const colorHex = rgbToHex(annotation[1].color);
-        if (!annotationsColorsLight.find((annotation) => annotation.hex === colorHex)) {
+    annotationsQueue.forEach(([, annotation]) => {
+        const colorHex = rgbToHex(annotation.color);
+        if (!annotationsColorsLight.find((annotationColor) => annotationColor.hex === colorHex)) {
             annotationsColorsLight.push({ hex: colorHex, name: colorHex });
         }
     });
@@ -800,33 +795,16 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number 
                     <Popover.Portal>
                         <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} align="end" /* hideWhenDetached */ sideOffset={5} className={stylesAnnotations.annotations_filter_container} style={{ maxHeight: Math.round(window.innerHeight / 2) }}>
                             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
-                            {/* <button
-                            className={stylesAnnotations.annotations_filter_button}
-                            onClick={() => {
-                                setTagArrayFilter('all');
-
-                            }}>
-                            {__("reader.annotations.filter.all")}
-                        </button>
-                        <button
-                            className={stylesAnnotations.annotations_filter_button}
-                            onClick={() => {
-                                setTagArrayFilter(new Set([]));
-
-                            }}>
-                            {__("reader.annotations.filter.none")}
-                        </button> */}
-
                             <TagGroup
                                 selectionMode="multiple"
                                 selectedKeys={tagArrayFilter}
                                 onSelectionChange={setTagArrayFilter}
-                                aria-label="tag selection"
+                                aria-label={__("reader.annotations.filter.filterByTag")}
                                 style={{ marginBottom: "20px" }}
                             >
                                 <details open id="annotationListTagDetails">
                                     <summary className={stylesAnnotations.annotations_filter_tagGroup}>
-                                        <Label style={{ fontSize: "13px" }}>Tags</Label>
+                                        <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByTag")}</Label>
                                         <div style={{ display: "flex", gap: "10px" }}>
                                             <button
                                                 style={{ padding: "6px" }}
@@ -859,12 +837,12 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number 
                                 selectionMode="multiple"
                                 selectedKeys={colorArrayFilter}
                                 onSelectionChange={setColorArrayFilter}
-                                aria-label="color selection"
+                                aria-label={__("reader.annotations.filter.filterByColor")}
                                 style={{ marginBottom: "20px" }}
                             >
                                 <details open id="annotationListColorDetails">
                                     <summary className={stylesAnnotations.annotations_filter_tagGroup}>
-                                        <Label style={{ fontSize: "13px" }}>Colors</Label>
+                                        <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByColor")}</Label>
                                         <div style={{ display: "flex", gap: "10px" }}>
                                             <button
                                                 style={{ padding: "6px" }}
@@ -897,12 +875,12 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number 
                                 selectionMode="multiple"
                                 selectedKeys={drawTypeArrayFilter}
                                 onSelectionChange={setDrawTypeArrayFilter}
-                                aria-label="tag selection"
+                                aria-label={__("reader.annotations.filter.filterByDrawtype")}
                                 style={{ marginBottom: "20px" }}
                             >
                                 <details open id="annotationListDrawDetails">
                                     <summary className={stylesAnnotations.annotations_filter_tagGroup}>
-                                        <Label style={{ fontSize: "13px" }}>Drawtypes</Label>
+                                        <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByDrawtype")}</Label>
                                         <div style={{ display: "flex", gap: "10px" }}>
                                             <button
                                                 style={{ padding: "6px" }}

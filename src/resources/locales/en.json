@@ -331,8 +331,9 @@
                 "yellow": "Yellow"
             },
             "filter": {
-                "filterByHighlight": "Filter by Colors",
-                "filterByTag": "Filter by Tags",
+                "filterByColor": "Filter by Color",
+                "filterByDrawtype": "Filter by Drawtype",
+                "filterByTag": "Filter by Tag",
                 "filterOptions": "Filter Options",
                 "all": "All",
                 "none": "None"

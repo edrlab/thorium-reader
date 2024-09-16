@@ -726,7 +726,8 @@ declare namespace typed_i18n {
       readonly "yellow": string
     },
     readonly "filter": {
-      readonly "filterByHighlight": string,
+      readonly "filterByColor": string,
+      readonly "filterByDrawtype": string,
       readonly "filterByTag": string,
       readonly "filterOptions": string,
       readonly "all": string,
@@ -901,7 +902,8 @@ declare namespace typed_i18n {
     readonly "yellow": string
   },
   readonly "filter": {
-    readonly "filterByHighlight": string,
+    readonly "filterByColor": string,
+    readonly "filterByDrawtype": string,
     readonly "filterByTag": string,
     readonly "filterOptions": string,
     readonly "all": string,
@@ -947,13 +949,15 @@ declare namespace typed_i18n {
   (_: "reader.annotations.colors.red", __?: {}): string;
   (_: "reader.annotations.colors.yellow", __?: {}): string;
   (_: "reader.annotations.filter", __?: {}): {
-  readonly "filterByHighlight": string,
+  readonly "filterByColor": string,
+  readonly "filterByDrawtype": string,
   readonly "filterByTag": string,
   readonly "filterOptions": string,
   readonly "all": string,
   readonly "none": string
 };
-  (_: "reader.annotations.filter.filterByHighlight", __?: {}): string;
+  (_: "reader.annotations.filter.filterByColor", __?: {}): string;
+  (_: "reader.annotations.filter.filterByDrawtype", __?: {}): string;
   (_: "reader.annotations.filter.filterByTag", __?: {}): string;
   (_: "reader.annotations.filter.filterOptions", __?: {}): string;
   (_: "reader.annotations.filter.all", __?: {}): string;
