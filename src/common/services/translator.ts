@@ -193,7 +193,10 @@ export const AvailableLanguages = {
 };
 
 export const GetMatchingAvailableLanguage = (lang: string) => {
-    return Object.entries(AvailableLanguages).find((key) => lang.startsWith(key[0]));
+    // First match full BCP47 code, then match only the language code.
+    const langKeys = Object.keys(AvailableLanguages);
+    return langKeys.find((key) => key === lang) ??
+           langKeys.find((key) => key.startsWith(lang.split("-")[0]));
 };
 
 interface LocalizedContent {
