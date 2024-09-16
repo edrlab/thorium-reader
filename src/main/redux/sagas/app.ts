@@ -43,15 +43,16 @@ const firstLaunchFlagPath = path.join(app.getPath("userData"), "firstLaunchFlag.
 
 export function* handleFirstLaunch() {
     if (!existsSync(firstLaunchFlagPath)) {
-        // Get user's preferred languages via Electron.
-        const preferredLanguage = app.getPreferredSystemLanguages();
         try {
-            // Check if the user's first preferred language is available in the app.
-            const matchingLanguage = GetMatchingAvailableLanguage(preferredLanguage[0]);
-            debug("Found matching app language at first launch", matchingLanguage);
-            if (matchingLanguage !== undefined) {
-                // Use first component of the matching language (language code).
-                yield put(i18nActions.setLocale.build(matchingLanguage[0]));
+            // Set locale to user's preferred language if available.
+            const preferredLanguages = app.getPreferredSystemLanguages();
+            for (const prefLang of preferredLanguages) {
+                const match = GetMatchingAvailableLanguage(prefLang);
+                if (match) {
+                    debug("Found preferred app locale at first launch", match);
+                    yield put(i18nActions.setLocale.build(match));
+                    break;
+                }
             }
         } finally {
             writeFileSync(firstLaunchFlagPath, "first_launch");
