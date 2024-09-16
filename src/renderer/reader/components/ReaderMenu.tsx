@@ -793,7 +793,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number 
                         </button>
                     </Popover.Trigger>
                     <Popover.Portal>
-                        <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} align="end" /* hideWhenDetached */ sideOffset={5} className={stylesAnnotations.annotations_filter_container} style={{ maxHeight: Math.round(window.innerHeight / 2) }}>
+                        <Popover.Content collisionPadding={{ top: 200, bottom: 100 }} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_filter_container} style={{ maxHeight: Math.round(window.innerHeight / 2) }}>
                             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
                             <TagGroup
                                 selectionMode="multiple"
@@ -2083,7 +2083,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                     <SVG ariaHidden svg={OptionsIcon} title={__("reader.annotations.annotationsOptions")} />
                                 </Popover.Trigger>
                                 <Popover.Portal>
-                                    <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesAnnotations.annotations_filter_container}>
+                                    <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesAnnotations.annotations_filter_container} hideWhenDetached>
                                         <div className={stylesAnnotations.annotations_checkbox}>
                                             <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={serialAnnotator} onChange={advancedAnnotationsOnChange} />
                                             <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
