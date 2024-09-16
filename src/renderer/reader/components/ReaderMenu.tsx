@@ -66,7 +66,7 @@ import { Locator } from "r2-shared-js/dist/es8-es2017/src/models/locator";
 // import { DialogTrigger as DialogTriggerReactAria, Popover as PopoverReactAria, Dialog as DialogReactAria } from "react-aria-components";
 import { TextArea } from "react-aria-components";
 import { AnnotationEdit } from "./AnnotationEdit";
-import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
+import { IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
@@ -642,54 +642,76 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
 };
 
 const selectionIsSet = (a: Selection): a is Set<string> => typeof a === "object";
-const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const MAX_MATCHES_PER_PAGE = 5;
 
-    const { goToLocator, annotationUUIDFocused } = props;
+const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+
+    const { goToLocator, annotationUUIDFocused, resetAnnotationUUID } = props;
 
     const [__] = useTranslator();
-    // const [bookmarkToUpdate, setBookmarkToUpdate] = React.useState(undefined);
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
-    // const previousFocusUuid = useSelector((state: IReaderRootState) => state.annotationControlMode.focus.previousFocusUuid);
 
     const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
     const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
     const [drawTypeArrayFilter, setDrawTypeArrayFilter] = React.useState<Selection>(new Set([]));
 
-    const annotationList =
-        (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
-            (selectionIsSet(colorArrayFilter) && colorArrayFilter.size) ||
-            (selectionIsSet(drawTypeArrayFilter) && drawTypeArrayFilter.size)
-            ? annotationsQueue.filter(([, { tags, color, drawType }]) => {
-
-                const colorHex = rgbToHex(color);
-
-                return (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags.some((tagsValueName) => tagArrayFilter.has(tagsValueName))) &&
-                    (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
-                    (!selectionIsSet(drawTypeArrayFilter) || !drawTypeArrayFilter.size || drawTypeArrayFilter.has(drawType));
-
-            })
-            : annotationsQueue;
-
-    const MAX_MATCHES_PER_PAGE = 5;
-
-    const pageTotal = Math.ceil(annotationList.length / MAX_MATCHES_PER_PAGE) || 1;
-
+    let annotationList: TAnnotationState = [];
     let startPage = 1;
+    const [pageNumber, setPageNumber] = React.useState(startPage);
+
+    annotationList = (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
+        (selectionIsSet(colorArrayFilter) && colorArrayFilter.size) ||
+        (selectionIsSet(drawTypeArrayFilter) && drawTypeArrayFilter.size)
+        ? annotationsQueue.filter(([, { tags, color, drawType }]) => {
+
+            const colorHex = rgbToHex(color);
+
+            return (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags.some((tagsValueName) => tagArrayFilter.has(tagsValueName))) &&
+                (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
+                (!selectionIsSet(drawTypeArrayFilter) || !drawTypeArrayFilter.size || drawTypeArrayFilter.has(drawType));
+
+        })
+        : annotationsQueue;
+
     if (annotationUUIDFocused) {
+
         const annotationFocusItemFindIndex = annotationList.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused);
         if (annotationFocusItemFindIndex > -1) {
             const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
             startPage = annotationFocusItemPageNumber;
+            if (startPage !== pageNumber)
+                setPageNumber(startPage);
+
+        } else if (annotationList !== annotationsQueue) {
+            annotationList = annotationsQueue;
+            const annotationFocusItemFindIndex = annotationList.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused);
+            if (annotationFocusItemFindIndex > -1) {
+                const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
+                startPage = annotationFocusItemPageNumber;
+                if (startPage !== pageNumber)
+                    setPageNumber(startPage);
+
+                const [, annotationFound] = annotationList[annotationFocusItemFindIndex];
+
+                // reset filters
+                if (tagArrayFilter !== "all" && !tagArrayFilter.has((annotationFound.tags || [])[0]) && tagArrayFilter.size !== 0) {
+                    setTagArrayFilter(new Set([]));
+                }
+                if (colorArrayFilter !== "all" && !colorArrayFilter.has(rgbToHex(annotationFound.color)) && colorArrayFilter.size !== 0) {
+                    setColorArrayFilter(new Set([]));
+                }
+                if (drawTypeArrayFilter !== "all" && !drawTypeArrayFilter.has(annotationFound.drawType) && drawTypeArrayFilter.size !== 0) {
+                    setDrawTypeArrayFilter(new Set([]));
+                }
+            }
         }
+        resetAnnotationUUID();
     }
 
-    const startPageRef = React.useRef<number>();
+    const pageTotal = Math.ceil(annotationList.length / MAX_MATCHES_PER_PAGE) || 1;
 
-    const [pageNumber, setPageNumber] = React.useState(startPage);
-
-    if (pageNumber <= 0 || startPageRef.current !== startPage) {
+    if (pageNumber <= 0) {
         setPageNumber(startPage);
-        startPageRef.current = startPage;
     } else if (pageNumber > pageTotal) {
         setPageNumber(pageTotal);
     }
@@ -717,7 +739,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number 
     const tagsIndexList = useSelector((state: IReaderRootState) => state.annotationTagsIndex);
     const selectTagOption = ObjectKeys(tagsIndexList).map((v, i) => ({ id: i, name: v }));
 
-    // if tagArrayFilter value not include in the selectTagOption index then take only the included value (the difference)
+    // if tagArrayFilter value not include in the selectTagOption then take only the intersection between tagArrayFilter and selectTagOption
     const selectTagOptionFilteredNameArray = selectTagOption.map((v) => v.name);
     const tagArrayFilterArray = selectionIsSet(tagArrayFilter) ? Array(...tagArrayFilter) : [];
     if (tagArrayFilterArray.filter((tagValue) => !selectTagOptionFilteredNameArray.includes(tagValue)).length) {
@@ -1738,7 +1760,7 @@ const TabTitle = ({ value }: { value: string }) => {
 export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const { /* toggleMenu */ pdfToc, isPdf, focusMainAreaLandmarkAndCloseMenu,
         pdfNumberOfPages, currentLocation, goToLocator, openedSection: tabValue, setOpenedSection: setTabValue } = props;
-    const { doFocus, annotationUUID, handleLinkClick } = props;
+    const { doFocus, annotationUUID, handleLinkClick, resetAnnotationUUID } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
     const dockedMode = dockingMode !== "full";
@@ -2227,7 +2249,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 </Popover.Portal>
                             </Popover.Root>
 
-                            <AnnotationList goToLocator={goToLocator} annotationUUIDFocused={annotationUUID} doFocus={doFocus} />
+                            <AnnotationList goToLocator={goToLocator} annotationUUIDFocused={annotationUUID} resetAnnotationUUID={resetAnnotationUUID} doFocus={doFocus} />
                         </div>
                     </Tabs.Content>
 
