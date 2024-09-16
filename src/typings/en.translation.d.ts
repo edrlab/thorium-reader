@@ -306,6 +306,8 @@ declare namespace typed_i18n {
   (_: "dialog", __?: {}): {
   readonly "cancel": string,
   readonly "deleteFeed": string,
+  readonly "deleteAnnotations": string,
+  readonly "deleteAnnotationsText": string,
   readonly "deletePublication": string,
   readonly "import": string,
   readonly "importError": string,
@@ -315,6 +317,8 @@ declare namespace typed_i18n {
 };
   (_: "dialog.cancel", __?: {}): string;
   (_: "dialog.deleteFeed", __?: {}): string;
+  (_: "dialog.deleteAnnotations", __?: {}): string;
+  (_: "dialog.deleteAnnotationsText", __?: {}): string;
   (_: "dialog.deletePublication", __?: {}): string;
   (_: "dialog.import", __?: {}): string;
   (_: "dialog.importError", __?: {}): string;

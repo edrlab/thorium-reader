@@ -22,6 +22,7 @@ import * as HighLightIcon from "readium-desktop/renderer/assets/icons/highlight-
 import * as UnderLineIcon from "readium-desktop/renderer/assets/icons/underline-icon.svg";
 import * as TextStrikeThroughtIcon from "readium-desktop/renderer/assets/icons/TextStrikethrough-icon.svg";
 import * as TextOutlineIcon from "readium-desktop/renderer/assets/icons/TextOutline-icon.svg";
+import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { readerLocalActionSetConfig } from "../redux/actions";
 import classNames from "classnames";
@@ -246,8 +247,8 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
             }}>{annotationState.locatorExtended.selectionInfo.cleanText}</span><span>{annotationState.locatorExtended.selectionInfo.cleanAfter}</span></p>}</div></details> */}
         </div>
 
-        <div className={stylesAnnotations.annotation_actions}>
-            <div className={stylesAnnotations.annotation_actions_container} style={{width: "100%"}}>
+        <div className={stylesAnnotations.annotation_actions} style={{marginBottom: "20px"}}>
+            <div className={stylesAnnotations.annotation_actions_container} style={{width: "95%"}}>
                 {/* <h4>Tag</h4> */}
                 <ComboBox label={__("catalog.tag")} defaultItems={selectTagOption}
                     placeholder={__("catalog.addTags")}
@@ -267,7 +268,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                                     setTag(found.name);
                             }
                         }}
-                    // svg={}
+                    svg={TagIcon}
                     allowsCustomValue
                     onInputChange={(v) => setTag(v)}
                     inputValue={tag}

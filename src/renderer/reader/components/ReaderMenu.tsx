@@ -29,9 +29,7 @@ import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/compo
 import * as DockLeftIcon from "readium-desktop/renderer/assets/icons/dockleft-icon.svg";
 import * as DockRightIcon from "readium-desktop/renderer/assets/icons/dockright-icon.svg";
 import * as DockModalIcon from "readium-desktop/renderer/assets/icons/dockmodal-icon.svg";
-import * as ChevronIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
-import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
 import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
@@ -82,6 +80,7 @@ import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
+import * as OptionsIcon from "readium-desktop/renderer/assets/icons/filter2-icon.svg";
 import * as HighLightIcon from "readium-desktop/renderer/assets/icons/highlight-icon.svg";
 import * as UnderLineIcon from "readium-desktop/renderer/assets/icons/underline-icon.svg";
 import * as TextStrikeThroughtIcon from "readium-desktop/renderer/assets/icons/TextStrikethrough-icon.svg";
@@ -752,46 +751,43 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number 
     return (
         <>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "end", width: "100%", gap: "20px", marginTop: "-35px" }}>
-                {annotationList.length ?
-                    <AlertDialog.Root>
-                        <AlertDialog.Trigger className={stylesAnnotations.annotations_filter_trigger_button}>
-                            <SVG svg={TrashIcon} ariaHidden />
-                        </AlertDialog.Trigger>
-                        <AlertDialog.Portal>
-                            <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
-                            <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
-                                <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deleteFeed")}</AlertDialog.Title>
-                                <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
-                                    {`Do you want to delete ${annotationList.length} annotation(s) ?`}
-                                </AlertDialog.Description>
-                                <div className={stylesAlertModals.AlertDialogButtonContainer}>
-                                    <AlertDialog.Cancel asChild>
-                                        <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
-                                    </AlertDialog.Cancel>
-                                    <AlertDialog.Action asChild>
-                                        <button className={stylesButtons.button_primary_blue} onClick={() => {
-                                            for (const [, annotation] of annotationList) {
+                <AlertDialog.Root>
+                    <AlertDialog.Trigger className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationList.length}>
+                        <SVG svg={TrashIcon} ariaHidden />
+                    </AlertDialog.Trigger>
+                    <AlertDialog.Portal>
+                        <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
+                        <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
+                            <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deleteAnnotations")}</AlertDialog.Title>
+                            <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
+                                {__("dialog.deleteAnnotationsText", { annotationListLength : annotationList.length})}
+                            </AlertDialog.Description>
+                            <div className={stylesAlertModals.AlertDialogButtonContainer}>
+                                <AlertDialog.Cancel asChild>
+                                    <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                                </AlertDialog.Cancel>
+                                <AlertDialog.Action asChild>
+                                    <button className={stylesButtons.button_primary_blue} onClick={() => {
+                                        for (const [, annotation] of annotationList) {
 
-                                                dispatch(readerActions.annotation.pop.build(annotation));
-                                                setannotationItemEditedUUID("");
-                                            }
+                                            dispatch(readerActions.annotation.pop.build(annotation));
+                                            setannotationItemEditedUUID("");
+                                        }
 
-                                            // reset filters
-                                            setTagArrayFilter("all");
-                                            setColorArrayFilter("all");
-                                            setDrawTypeArrayFilter("all");
-                                        }} type="button">
-                                            <SVG ariaHidden svg={TrashIcon} />
-                                            {__("dialog.yes")}</button>
-                                    </AlertDialog.Action>
-                                </div>
-                            </AlertDialog.Content>
-                        </AlertDialog.Portal>
-                    </AlertDialog.Root>
-                    : <></>
-                }
+                                        // reset filters
+                                        setTagArrayFilter(new Set([]));
+                                        setColorArrayFilter(new Set([]));
+                                        setDrawTypeArrayFilter(new Set([]));
+                                    }} type="button">
+                                        <SVG ariaHidden svg={TrashIcon} />
+                                        {__("dialog.yes")}</button>
+                                </AlertDialog.Action>
+                            </div>
+                        </AlertDialog.Content>
+                    </AlertDialog.Portal>
+                </AlertDialog.Root>
                 <Popover.Root>
-                    <Popover.Trigger asChild>
+                    <Popover.Trigger asChild disabled={!annotationList.length}>
                         <button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button}
                             title={__("reader.annotations.filter.filterOptions")}>
                             <SVG svg={MenuIcon} />
@@ -1034,48 +1030,6 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number 
         </>
     );
 };
-
-
-// interface IAnnotationFilterProps {
-//     setTagArrayFilter: React.Dispatch<React.SetStateAction<Selection>>;
-//     tagArrayFilter: Selection;
-// }
-
-// const AnnotationsFilterComponent: React.FC<IAnnotationFilterProps> = (props) => {
-//     const {setTagArrayFilter, tagArrayFilter: tagArrayFilterSelected} = props;
-//     const [__] = useTranslator();
-
-
-
-//     //   const container = document.getElementsByClassName("annotations_tab").item(0);
-
-//     const dockedMode = false;
-//     return (
-//         <DialogTrigger>
-//             <Button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button} style={{ top: dockedMode ? "150px" : "80px" }}><SVG svg={MenuIcon} title={__("reader.annotations.filterOptions")} /></Button>
-//             <PopoverReactAria className={stylesAnnotations.annotations_filter_container} placement={dockedMode ? "bottom left" : "bottom right"} style={{ maxHeight: dockedMode ? "700px !important" : "450px !important" }} /*UNSTABLE_portalContainer={container}*/>
-//                 <DialogReactAria>
-//                     <button
-//                         className={stylesAnnotations.annotations_filter_button}
-//                         onClick={() => {
-//                             setTagArrayFilter('all');
-
-//                         }}>{__("reader.annotations.resetAll")}</button>
-//                     <TagGroup
-//                         selectionMode="multiple"
-//                         selectedKeys={tagArrayFilterSelected}
-//                         onSelectionChange={setTagArrayFilter}
-//                         aria-label="tag selection"
-//                     >
-//                         <TagList items={selectTagOption}>
-//                             {(item) => <Tag>{item.name}</Tag>}
-//                         </TagList>
-//                     </TagGroup>
-//                 </DialogReactAria>
-//             </PopoverReactAria>
-//         </DialogTrigger>
-//     );
-// };
 
 const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number }> = (props) => {
 
@@ -2146,17 +2100,13 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         <TabHeader />
                         <div className={classNames(stylesSettings.settings_tab, stylesAnnotations.annotations_tab)}>
 
-
-                            <details className={stylesAnnotations.annotations_options}>
-                                <summary>
-                                    <SVG ariaHidden svg={InfoIcon} />
-                                    {__("reader.annotations.annotationsOptions")}
-                                    <span>
-                                        <SVG ariaHidden svg={ChevronIcon} />
-                                    </span>
-                                </summary>
-                                {/* {dockedMode ? */}
-                                <div className={stylesAnnotations.annotations_checkbox}>
+                            <Popover.Root>
+                                <Popover.Trigger className={stylesAnnotations.annotations_filter_trigger_button}>
+                                    <SVG ariaHidden svg={OptionsIcon} title={__("reader.annotations.annotationsOptions")} />
+                                </Popover.Trigger>
+                                <Popover.Portal>
+                                    <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesAnnotations.annotations_filter_container}>
+                                    <div className={stylesAnnotations.annotations_checkbox}>
                                     <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={serialAnnotator} onChange={advancedAnnotationsOnChange} />
                                     <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
                                         <div
@@ -2285,7 +2235,11 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         </div>
                                         <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
                                 </div>
-                            </details>
+                                        <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                                    </Popover.Content>
+                                </Popover.Portal>
+                            </Popover.Root>
+
                             <AnnotationList goToLocator={goToLocator} annotationUUIDFocused={annotationUUID} doFocus={doFocus} />
                         </div>
                     </Tabs.Content>

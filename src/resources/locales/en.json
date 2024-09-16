@@ -125,6 +125,8 @@
     "dialog": {
         "cancel": "Cancel",
         "deleteFeed": "Delete catalog?",
+        "deleteAnnotations": "Delete annotations?",
+        "deleteAnnotationsText": "Do you want to delete {{- annotationListLength}} annotation(s)?",
         "deletePublication": "Delete publication?",
         "import": "Confirm import:",
         "importError": "An error occurred, verify the file extension ({{acceptedExtension}})",

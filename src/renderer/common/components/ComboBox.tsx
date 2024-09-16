@@ -57,15 +57,17 @@ export interface MyComboBoxProps<T extends object>
 export function ComboBox<T extends object>(
     { label, description, errorMessage, children, svg, refInputEl, placeholder, ...props }: MyComboBoxProps<T>,
 ) {
+
     return (
         <ComboBoxReactAria {...props} className={StylesCombobox.react_aria_ComboBox}>
             <Label className={StylesCombobox.react_aria_Label}>{label}</Label>
-            <Group className={classNames(StylesCombobox.my_combobox_container,"R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} >
+            <Group className={classNames(StylesCombobox.my_combobox_container, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} >
                 {svg ? <SVG ariaHidden svg={svg} /> : <></>}
-                <Input className={classNames(StylesCombobox.react_aria_Input, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} ref={refInputEl} placeholder={placeholder}/>
+                <Input className={classNames(StylesCombobox.react_aria_Input, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} ref={refInputEl} placeholder={placeholder} />
+                {(!props.defaultItems || !!Array(...(props.defaultItems || [])).length) && 
                 <Button className={StylesCombobox.react_aria_Button}>
                     <SVG ariaHidden svg={ChevronDown} />
-                </Button>
+                </Button>}
             </Group>
             {description ? <Text slot="description">{description}</Text> : <></>}
             <FieldError>{errorMessage}</FieldError>

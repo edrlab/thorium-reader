@@ -7,32 +7,31 @@
 }
 
 .annotations_options {
-  summary {
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    color: var(--color-blue);
-    font-size: 14px;
-    width: fit-content;
+  z-index: 10;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  color: var(--color-blue);
+  font-size: 14px;
 
-    span svg {
-      fill: var(--color-blue);
-      width: 20px;
-      height: 20px;
-      margin: 0 0.75em;
-      padding-top: 5px;
-      padding-bottom: 0;
-    }
-
-    svg {
-      fill: var(--color-blue);
-      width: 14px;
-      height: 14px;
-      margin-right: 0.5em;
-    }
+  span svg {
+    fill: var(--color-blue);
+    width: 20px;
+    height: 20px;
+    margin: 0 0.75em;
+    padding-top: 5px;
+    padding-bottom: 0;
   }
 
-  &[open] > summary span svg {
+  svg {
+    fill: var(--color-blue);
+    width: 14px;
+    height: 14px;
+    margin-right: 0.5em;
+  }
+
+  &[open] > span svg {
     transform: rotate(180deg);
     padding-bottom: 5px;
     padding-top: 0;
@@ -273,6 +272,26 @@
       display: flex;
       flex-direction: column;
       justify-content: start;
+
+      .react_aria_ComboBox {
+        margin: 0;
+        padding: 0;
+        width: inherit;
+
+        .react_aria_Label {
+          width: 100%;
+          text-align: left;
+        }
+
+        .my_combobox_container {
+          background-color: var(--color-secondary);
+          width: inherit;
+
+          button {
+            margin-left: 0;
+          }
+        }
+      }
     }
 
     >div {
@@ -442,6 +461,7 @@
     margin: 0;
     margin-bottom: 10px;
     background-color: var(--color-annotations-bg);
+    margin-top: 10px;
 
     p {
       text-align: left;
@@ -464,7 +484,7 @@
     // }
 
     .annnotation_container {
-      margin-top: 10px;
+      // margin-top: 10px;
       margin-right: 10px;
 
     }
