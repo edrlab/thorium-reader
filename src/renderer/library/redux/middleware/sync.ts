@@ -33,7 +33,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     downloadActions.abort.ID,
 
-    sessionActions.enable.ID,
+    // sessionActions.enable.ID,
 
     lcpActions.renewPublicationLicense.ID,
     lcpActions.returnPublication.ID,

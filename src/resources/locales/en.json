@@ -442,7 +442,13 @@
                 },
                 "title": "Theme"
             },
-            "wordSpacing": "Word spacing"
+            "wordSpacing": "Word spacing",
+            "preset": {
+              "title": "Preset",
+              "save": "Save the current reading settings to the preferred reading settings preset",
+              "apply": "Apply the preferred reading settings preset to the current reading settings",
+              "reset": "Reset preferred reading settings preset to the initial state"
+            }
         },
         "svg": {
             "left": "Left",

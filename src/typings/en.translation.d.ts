@@ -828,7 +828,13 @@ declare namespace typed_i18n {
       },
       readonly "title": string
     },
-    readonly "wordSpacing": string
+    readonly "wordSpacing": string,
+    readonly "preset": {
+      readonly "title": string,
+      readonly "save": string,
+      readonly "apply": string,
+      readonly "reset": string
+    }
   },
   readonly "svg": { readonly "left": string, readonly "right": string },
   readonly "toc": { readonly "publicationNoToc": string },
@@ -1061,7 +1067,13 @@ declare namespace typed_i18n {
     },
     readonly "title": string
   },
-  readonly "wordSpacing": string
+  readonly "wordSpacing": string,
+  readonly "preset": {
+    readonly "title": string,
+    readonly "save": string,
+    readonly "apply": string,
+    readonly "reset": string
+  }
 };
   (_: "reader.settings.column", __?: {}): {
   readonly "auto": string,
@@ -1161,6 +1173,16 @@ declare namespace typed_i18n {
   (_: "reader.settings.theme.name.Sepia", __?: {}): string;
   (_: "reader.settings.theme.title", __?: {}): string;
   (_: "reader.settings.wordSpacing", __?: {}): string;
+  (_: "reader.settings.preset", __?: {}): {
+  readonly "title": string,
+  readonly "save": string,
+  readonly "apply": string,
+  readonly "reset": string
+};
+  (_: "reader.settings.preset.title", __?: {}): string;
+  (_: "reader.settings.preset.save", __?: {}): string;
+  (_: "reader.settings.preset.apply", __?: {}): string;
+  (_: "reader.settings.preset.reset", __?: {}): string;
   (_: "reader.svg", __?: {}): { readonly "left": string, readonly "right": string };
   (_: "reader.svg.left", __?: {}): string;
   (_: "reader.svg.right", __?: {}): string;
