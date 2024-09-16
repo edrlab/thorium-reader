@@ -716,6 +716,15 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number 
 
     const tagsIndexList = useSelector((state: IReaderRootState) => state.annotationTagsIndex);
     const selectTagOption = ObjectKeys(tagsIndexList).map((v, i) => ({ id: i, name: v }));
+
+    // if tagArrayFilter value not include in the selectTagOption index then take only the included value (the difference)
+    const selectTagOptionFilteredNameArray = selectTagOption.map((v) => v.name);
+    const tagArrayFilterArray = selectionIsSet(tagArrayFilter) ? Array(...tagArrayFilter) : [];
+    if (tagArrayFilterArray.filter((tagValue) => !selectTagOptionFilteredNameArray.includes(tagValue)).length) {
+        const tagArrayFilterArrayDifference = tagArrayFilterArray.filter((tagValue) => selectTagOptionFilteredNameArray.includes(tagValue));
+        setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
+    }
+
     const annotationsColorsLight = [
         { hex: "#eb9694", name: `${__("reader.annotations.colors.red")}` },
         { hex: "#fad0c3", name: `${__("reader.annotations.colors.orange")}` },
@@ -782,7 +791,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number 
                     </AlertDialog.Portal>
                 </AlertDialog.Root>
                 <Popover.Root>
-                    <Popover.Trigger asChild disabled={!annotationList.length}>
+                    <Popover.Trigger asChild>
                         <button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button}
                             title={__("reader.annotations.filter.filterOptions")}>
                             <SVG svg={MenuIcon} />
