@@ -356,13 +356,13 @@ const renderLinkTree = (currentLocation: LocatorExtended, isRTLfn: (_link: ILink
                                     onKeyUp=
                                     {
                                         link.Href ?
-                                        (e) => {
-                                            if (e.key === "Enter") {
-                                                const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
-                                                handleLinkClick(e, link.Href, closeNavTOCTree);
+                                            (e) => {
+                                                if (e.key === "Enter") {
+                                                    const closeNavTOCTree = !dockedMode && !(e.shiftKey && e.altKey);
+                                                    handleLinkClick(e, link.Href, closeNavTOCTree);
+                                                }
                                             }
-                                        }
-                                        : undefined
+                                            : undefined
                                     }
                                     data-href={link.Href}
                                 >
@@ -378,17 +378,17 @@ const renderLinkTree = (currentLocation: LocatorExtended, isRTLfn: (_link: ILink
     return RenderLinkTree;
 };
 
-const HardWrapComment: React.FC<{comment: string}> = (props) => {
-    const {comment} = props;
+const HardWrapComment: React.FC<{ comment: string }> = (props) => {
+    const { comment } = props;
     const splittedComment = comment.split("\n");
 
     const strListComponent = [];
     let n = 0;
     for (const strline of splittedComment) {
         strListComponent.push(<span key={++n}>{strline}</span>);
-        strListComponent.push(<br key={++n}/>);
+        strListComponent.push(<br key={++n} />);
     }
-    
+
     return (
         <p>
             {
@@ -444,7 +444,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 percentRounded = Math.round(percent);
             }
         }
-        return { style: {width: `${percent}%`}, percentRounded };
+        return { style: { width: `${percent}%` }, percentRounded };
     }, [r2Publication, annotation]);
 
     // const bname = (annotation?.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText.slice(0, 20)}` : `${__("reader.navigation.annotationTitle")} ${index}`);
@@ -538,11 +538,11 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
             </div>
             <div className={stylesAnnotations.annotation_actions_buttons}>
                 <button
-                    id={`annotation_card-${annotation.uuid}_edit_button`} 
+                    id={`annotation_card-${annotation.uuid}_edit_button`}
                     title={__("reader.marks.edit")}
                     disabled={isEdited}
                     onClick={() => triggerEdition(true)}
-                    >
+                >
                     <SVG ariaHidden={true} svg={EditIcon} />
                 </button>
 
@@ -576,16 +576,16 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                         </button>
                     </Popover.Trigger>
                     <Popover.Portal>
-                        <Popover.Content collisionPadding={{top : 180, bottom: 100}} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
+                        <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
                             <Popover.Close
-                                    onClick={() => {
-                                        triggerEdition(false);
-                                        dispatch(readerActions.annotation.pop.build(annotation));
-                                    }}
-                                    title={__("reader.marks.delete")}
-                                >
-                                    <SVG ariaHidden={true} svg={DeleteIcon} />
-                                    {__("reader.marks.delete")}
+                                onClick={() => {
+                                    triggerEdition(false);
+                                    dispatch(readerActions.annotation.pop.build(annotation));
+                                }}
+                                title={__("reader.marks.delete")}
+                            >
+                                <SVG ariaHidden={true} svg={DeleteIcon} />
+                                {__("reader.marks.delete")}
                             </Popover.Close>
                             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
                         </Popover.Content>
@@ -600,9 +600,9 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     </div>);
 };
 
-const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
-    const {goToLocator, annotationUUIDFocused} = props;
+    const { goToLocator, annotationUUIDFocused } = props;
 
     const [__] = useTranslator();
     // const [bookmarkToUpdate, setBookmarkToUpdate] = React.useState(undefined);
@@ -611,17 +611,17 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
 
     const MAX_MATCHES_PER_PAGE = 5;
 
-    const pageTotal =  Math.ceil(annotationsQueue.length / MAX_MATCHES_PER_PAGE) || 1;
+    const pageTotal = Math.ceil(annotationsQueue.length / MAX_MATCHES_PER_PAGE) || 1;
 
     let startPage = 1;
     if (annotationUUIDFocused) {
         const annotationFocusItemFindIndex = annotationsQueue.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused);
         if (annotationFocusItemFindIndex > -1) {
-            const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex+1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
+            const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
             startPage = annotationFocusItemPageNumber;
         }
     }
-    
+
     const startPageRef = React.useRef<number>();
 
     const [pageNumber, setPageNumber] = React.useState(startPage);
@@ -664,13 +664,13 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
                 isPaginated ? <>
                     <div className={stylesPopoverDialog.navigation_container}>
                         <button title={__("opds.firstPage")}
-                            onClick={() => { setPageNumber(1); setTimeout(()=>paginatorAnnotationsRef.current?.focus(), 100); }}
+                            onClick={() => { setPageNumber(1); setTimeout(() => paginatorAnnotationsRef.current?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowFirstIcon} />
                         </button>
 
                         <button title={__("opds.previous")}
-                            onClick={() => { setPageNumber(pageNumber - 1); setTimeout(()=>paginatorAnnotationsRef.current?.focus(), 100); }}
+                            onClick={() => { setPageNumber(pageNumber - 1); setTimeout(() => paginatorAnnotationsRef.current?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
@@ -688,17 +688,17 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                             </SelectRef> */}
-                            <label htmlFor="paginatorAnnotations" style={{margin: "0"}}>{__("reader.navigation.page")}</label>
+                            <label htmlFor="paginatorAnnotations" style={{ margin: "0" }}>{__("reader.navigation.page")}</label>
                             <select onChange={(e) => {
-                                    setPageNumber(pageOptions.find((option) => option.id === parseInt(e.currentTarget.value, 10)).id);
-                                    setTimeout(()=>paginatorAnnotationsRef.current?.focus(), 100);
-                                }}
+                                setPageNumber(pageOptions.find((option) => option.id === parseInt(e.currentTarget.value, 10)).id);
+                                setTimeout(() => paginatorAnnotationsRef.current?.focus(), 100);
+                            }}
                                 ref={paginatorAnnotationsRef}
                                 id="paginatorAnnotations"
                                 aria-label={__("reader.navigation.page")}
                                 // defaultValue={1}
                                 value={pageNumber}
-                                >
+                            >
                                 {pageOptions.map((item) => (
                                     <option key={item.id} value={item.id}>{item.name}</option>
                                 ))}
@@ -716,13 +716,13 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
                             </ComboBox> */}
                         </div>
                         <button title={__("opds.next")}
-                            onClick={() => { setPageNumber(pageNumber + 1); setTimeout(()=>paginatorAnnotationsRef.current?.focus(), 100); }}
+                            onClick={() => { setPageNumber(pageNumber + 1); setTimeout(() => paginatorAnnotationsRef.current?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                         </button>
 
                         <button title={__("opds.lastPage")}
-                            onClick={() => { setPageNumber(pageTotal); setTimeout(()=>paginatorAnnotationsRef.current?.focus(), 100); }}
+                            onClick={() => { setPageNumber(pageTotal); setTimeout(() => paginatorAnnotationsRef.current?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowLastIcon} />
                         </button>
@@ -736,22 +736,22 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number}
                                 margin: 0,
                                 marginTop: "-16px",
                                 marginBottom: "20px",
-                        }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${annotationsQueue.length}`}</p>
+                            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${annotationsQueue.length}`}</p>
                     }
-                    </>
+                </>
                     : <></>
             }
         </>
-        );
+    );
 };
 
-const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) => {
+const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number }> = (props) => {
 
     const { r2Publication, goToLocator, dockedMode: _dockedMode, setItemToEdit, itemEdited, dockedMode } = React.useContext(bookmarkCardContext);
     const { bookmark, i } = props;
     const isEdited = itemEdited === i;
     const [__] = useTranslator();
-    
+
     const dispatch = useDispatch();
     const isAudioBook = isAudiobookFn(r2Publication);
     const deleteBookmark = (bookmark: IBookmarkState) => {
@@ -778,7 +778,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) =
 
     const submitBookmark = (textValue: string) => {
 
-        dispatch(readerActions.bookmark.update.build({...bookmark, name: textValue}));
+        dispatch(readerActions.bookmark.update.build({ ...bookmark, name: textValue }));
         setItemToEdit(-1);
     };
 
@@ -846,25 +846,25 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) =
                                 goToLocator(bookmark.locator, closeNavBookmark);
                             }}
 
-                            // does not work on button (works on 'a' link)
-                            // onDoubleClick={(_e) => goToLocator(bookmark.locator, false)}
+                        // does not work on button (works on 'a' link)
+                        // onDoubleClick={(_e) => goToLocator(bookmark.locator, false)}
 
-                            // not necessary (onClick works)
-                            // onKeyUp=
-                            // {
-                            //     (e) => {
-                            //         // SPACE does not work (only without key mods on button)
-                            //         // || e.key === "Space"
-                            //         if (e.key === "Enter") {
-                            //             // e.stopPropagation();
-                            //             e.preventDefault();
-                            //             const closeNavBookmark = !dockedMode && !(e.shiftKey && e.altKey);
-                            //             goToLocator(bookmark.locator, closeNavBookmark);
-                            //         }
-                            //     }
-                            // }
+                        // not necessary (onClick works)
+                        // onKeyUp=
+                        // {
+                        //     (e) => {
+                        //         // SPACE does not work (only without key mods on button)
+                        //         // || e.key === "Space"
+                        //         if (e.key === "Enter") {
+                        //             // e.stopPropagation();
+                        //             e.preventDefault();
+                        //             const closeNavBookmark = !dockedMode && !(e.shiftKey && e.altKey);
+                        //             goToLocator(bookmark.locator, closeNavBookmark);
+                        //         }
+                        //     }
+                        // }
                         >
-                            <HardWrapComment comment={bname}/>
+                            <HardWrapComment comment={bname} />
                         </button>
                     }
                     <div className={stylesPopoverDialog.bookmark_actions}>
@@ -889,13 +889,13 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number}> = (props) =
                                     </button>
                                 </Popover.Trigger>
                                 <Popover.Portal>
-                                    <Popover.Content collisionPadding={{top : 180, bottom: 100}} avoidCollisions alignOffset={-10} hideWhenDetached sideOffset={5} className={stylesPopoverDialog.delete_item}>
+                                    <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} hideWhenDetached sideOffset={5} className={stylesPopoverDialog.delete_item}>
                                         <Popover.Close
-                                                onClick={() => { setItemToEdit(-1); deleteBookmark(bookmark); }}
-                                                title={__("reader.marks.delete")}
-                                            >
-                                                <SVG ariaHidden={true} svg={DeleteIcon} />
-                                                {__("reader.marks.delete")}
+                                            onClick={() => { setItemToEdit(-1); deleteBookmark(bookmark); }}
+                                            title={__("reader.marks.delete")}
+                                        >
+                                            <SVG ariaHidden={true} svg={DeleteIcon} />
+                                            {__("reader.marks.delete")}
                                         </Popover.Close>
                                         <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
                                     </Popover.Content>
@@ -922,9 +922,9 @@ const bookmarkCardContext = React.createContext<{
     r2Publication: R2Publication;
 }>(undefined);
 
-const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean} & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
-    const {r2Publication, goToLocator, dockedMode} = props;
+    const { r2Publication, goToLocator, dockedMode } = props;
     const [__] = useTranslator();
     const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
 
@@ -958,7 +958,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
 
     const MAX_MATCHES_PER_PAGE = 5;
 
-    const pageTotal =  Math.ceil(sortedBookmarks.length / MAX_MATCHES_PER_PAGE) || 1;
+    const pageTotal = Math.ceil(sortedBookmarks.length / MAX_MATCHES_PER_PAGE) || 1;
 
     const [pageNumber, setPageNumber] = React.useState(1);
     if (pageNumber <= 0) {
@@ -974,7 +974,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
     const isLastPage = pageTotal === pageNumber;
     const isFirstPage = pageNumber === 1;
     const isPaginated = pageTotal > 1;
-    const pageOptions = Array(pageTotal).fill(undefined).map((_,i) => i+1).map((v) => ({id: v, name: `${v} / ${pageTotal}`}));
+    const pageOptions = Array(pageTotal).fill(undefined).map((_, i) => i + 1).map((v) => ({ id: v, name: `${v} / ${pageTotal}` }));
 
     const begin = startIndex + 1;
     const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, sortedBookmarks.length);
@@ -1007,13 +1007,13 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                 isPaginated ? <>
                     <div className={stylesPopoverDialog.navigation_container}>
                         <button title={__("opds.firstPage")}
-                            onClick={() => { setPageNumber(1); setItemToEdit(-1); setTimeout(()=>paginatorBookmarksRef.current?.focus(), 100); }}
+                            onClick={() => { setPageNumber(1); setItemToEdit(-1); setTimeout(() => paginatorBookmarksRef.current?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowFirstIcon} />
                         </button>
 
                         <button title={__("opds.previous")}
-                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); setTimeout(()=>paginatorBookmarksRef.current?.focus(), 100); }}
+                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); setTimeout(() => paginatorBookmarksRef.current?.focus(), 100); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
@@ -1031,17 +1031,17 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                             </SelectRef> */}
-                            <label htmlFor="paginatorBookmarks" style={{margin: "0"}}>{__("reader.navigation.page")}</label>
+                            <label htmlFor="paginatorBookmarks" style={{ margin: "0" }}>{__("reader.navigation.page")}</label>
                             <select onChange={(e) => {
-                                    setPageNumber(pageOptions.find((option) => option.id === parseInt(e.currentTarget.value, 10)).id);
-                                    setTimeout(()=>paginatorBookmarksRef.current?.focus(), 100);
-                                }}
+                                setPageNumber(pageOptions.find((option) => option.id === parseInt(e.currentTarget.value, 10)).id);
+                                setTimeout(() => paginatorBookmarksRef.current?.focus(), 100);
+                            }}
                                 id="paginatorBookmarks"
                                 ref={paginatorBookmarksRef}
                                 aria-label={__("reader.navigation.page")}
                                 // defaultValue={1}
                                 value={pageNumber}
-                                >
+                            >
                                 {pageOptions.map((item) => (
                                     <option key={item.id} value={item.id}>{item.name}</option>
                                 ))}
@@ -1059,13 +1059,13 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                             </ComboBox> */}
                         </div>
                         <button title={__("opds.next")}
-                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); setTimeout(()=>paginatorBookmarksRef.current?.focus(), 100); }}
+                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); setTimeout(() => paginatorBookmarksRef.current?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                         </button>
 
                         <button title={__("opds.lastPage")}
-                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); setTimeout(()=>paginatorBookmarksRef.current?.focus(), 100); }}
+                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); setTimeout(() => paginatorBookmarksRef.current?.focus(), 100); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowLastIcon} />
                         </button>
@@ -1079,15 +1079,15 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                                 margin: 0,
                                 marginTop: "-16px",
                                 marginBottom: "20px",
-                        }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${sortedBookmarks.length}`}</p>
+                            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${sortedBookmarks.length}`}</p>
                     }
-                    </>
+                </>
                     : <></>
             }
         </>);
 };
 
-const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) => {
+const GoToPageSection: React.FC<IBaseProps & { totalPages?: number }> = (props) => {
 
     const { handleLinkClick, isDivina, isPdf, currentLocation, totalPages: totalPagesFromProps, goToLocator } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
@@ -1178,7 +1178,7 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
 
                     const loc = {
                         href: pageStr,
-                        locations: {progression: 1},
+                        locations: { progression: 1 },
                     };
                     goToLocator(loc, closeNavPanel);
 
@@ -1272,14 +1272,14 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
         }
     }
 
-    let options:{ id: number; name: string; value: string; }[];
+    let options: { id: number; name: string; value: string; }[];
 
     if (isFixedLayoutNoPageList) {
         options = r2Publication.Spine.map((_spineLink, idx) => {
             const indexStr = (idx + 1).toString();
             return (
                 {
-                    id: idx +1,
+                    id: idx + 1,
                     name: indexStr,
                     value: indexStr,
                 }
@@ -1289,12 +1289,12 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
         options = r2Publication.PageList.map((pageLink, idx) => {
             return (
                 pageLink.Title ?
-                {
-                    id: idx +1,
-                    name: pageLink.Title,
-                    value: pageLink.Title,
-                }
-                : null
+                    {
+                        id: idx + 1,
+                        name: pageLink.Title,
+                        value: pageLink.Title,
+                    }
+                    : null
             );
         });
     } else if (isPdf) {
@@ -1302,7 +1302,7 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
             const indexStr = (idx + 1).toString();
             return (
                 {
-                    id: idx +1,
+                    id: idx + 1,
                     name: indexStr,
                     value: indexStr,
                 }
@@ -1313,7 +1313,7 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
     let defaultKey;
 
     if (isFixedLayoutNoPageList || r2Publication?.PageList) {
-        defaultKey = options.findIndex((value) => value.name === currentPage) +1;
+        defaultKey = options.findIndex((value) => value.name === currentPage) + 1;
     }
 
 
@@ -1322,39 +1322,39 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
 
         {
             currentPage ? <label className={stylesPopoverDialog.currentPage}
-            id="gotoPageLabel"
-            htmlFor="gotoPageInput">
+                id="gotoPageLabel"
+                htmlFor="gotoPageInput">
                 <SVG ariaHidden svg={BookOpenIcon} />
-            {
-                currentPage ?
-                    (parseInt(totalPages, 10)
-                        // tslint:disable-next-line: max-line-length
-                        ? __("reader.navigation.currentPageTotal", { current: `${currentPage}`, total: `${totalPages}` })
-                        : __("reader.navigation.currentPage", { current: `${currentPage}` })) :
-                    ""
-            }
-        </label> : <></>}
+                {
+                    currentPage ?
+                        (parseInt(totalPages, 10)
+                            // tslint:disable-next-line: max-line-length
+                            ? __("reader.navigation.currentPageTotal", { current: `${currentPage}`, total: `${totalPages}` })
+                            : __("reader.navigation.currentPage", { current: `${currentPage}` })) :
+                        ""
+                }
+            </label> : <></>}
         <form
             id="gotoPageForm"
             onSubmit={(e) => {
                 e.preventDefault();
             }
             }
-            // onKeyUp=
-            //     {
-            //         (e) => {
-            //             // SPACE does not work (only without key mods on button)
-            //             //  || e.key === "Space"
-            //             if (e.key === "Enter") {
-            //                 const closeNavGotoPage = !dockedMode && !(e.shiftKey && e.altKey);
-            //                 e.preventDefault();
-            //                 handleSubmitPage(closeNavGotoPage);
-            //             }
-            //     }
-            // }
+        // onKeyUp=
+        //     {
+        //         (e) => {
+        //             // SPACE does not work (only without key mods on button)
+        //             //  || e.key === "Space"
+        //             if (e.key === "Enter") {
+        //                 const closeNavGotoPage = !dockedMode && !(e.shiftKey && e.altKey);
+        //                 e.preventDefault();
+        //                 handleSubmitPage(closeNavGotoPage);
+        //             }
+        //     }
+        // }
         >
 
-            <div className={classNames(stylesInputs.form_group, stylesPopoverDialog.gotopage_combobox)} style={{width: "80%"}}>
+            <div className={classNames(stylesInputs.form_group, stylesPopoverDialog.gotopage_combobox)} style={{ width: "80%" }}>
                 {/* <label style={{position: "absolute"}}> {__("reader.navigation.goToPlaceHolder")}</label> */}
                 <ComboBox
                     label={__("reader.navigation.goToPlaceHolder")}
@@ -1371,7 +1371,7 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
                         goToRef.current.value = val;
                         setPageError(false);
                     }}
-                    >
+                >
                     {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                 </ComboBox>
             </div>
@@ -1429,30 +1429,30 @@ const GoToPageSection: React.FC<IBaseProps & {totalPages?: number}> = (props) =>
 
 
 
-const TabTitle = ({value}: {value: string}) => {
+const TabTitle = ({ value }: { value: string }) => {
     let title: string;
     const [__, translator] = useTranslator();
     const searchText = useSelector((state: IReaderRootState) => state.search.textSearch);
 
     switch (value) {
         case "tab-toc":
-        title=__("reader.marks.toc");
-        break;
+            title = __("reader.marks.toc");
+            break;
         case "tab-landmark":
-            title=__("reader.marks.landmarks");
+            title = __("reader.marks.landmarks");
             break;
         case "tab-bookmark":
-            title=__("reader.marks.bookmarks");
+            title = __("reader.marks.bookmarks");
             break;
         case "tab-search":
-            title=  searchText ? translator.translate("reader.marks.searchResult", { searchText: searchText.slice(0, 20) }) 
-            : (__("reader.marks.search"));;
+            title = searchText ? translator.translate("reader.marks.searchResult", { searchText: searchText.slice(0, 20) })
+                : (__("reader.marks.search"));;
             break;
         case "tab-gotopage":
-            title=(__("reader.navigation.goToTitle"));
+            title = (__("reader.navigation.goToTitle"));
             break;
         case "tab-annotation":
-            title=__("reader.marks.annotations");
+            title = __("reader.marks.annotations");
             break;
     }
     return (
@@ -1522,7 +1522,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
 
             setTimeout(() => {
                 if (dockedModeRef.current) {
-    
+
                     console.log("Focus on docked mode combobox");
 
                     // TODO: what is the logic for stealing focus here? The result of keyboard or mouse interaction?
@@ -1545,7 +1545,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     //     setReaderConfig({readerDockingMode: value});
     // }, [setReaderConfig]);
     const setDockingMode = (value: ReaderConfig["readerDockingMode"]) => {
-        setReaderConfig({readerDockingMode: value});
+        setReaderConfig({ readerDockingMode: value });
     };
     const setDockingModeFull = () => setDockingMode("full");
     const setDockingModeLeftSide = () => setDockingMode("left");
@@ -1560,7 +1560,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
 
     const TocTrigger =
         <Tabs.Trigger value="tab-toc" key={"tab-toc"} data-value={"tab-toc"}
-        title={__("reader.marks.toc")}
+            title={__("reader.marks.toc")}
             disabled={
                 (!r2Publication.TOC || r2Publication.TOC.length === 0) &&
                 (!r2Publication.Spine || r2Publication.Spine.length === 0)
@@ -1658,22 +1658,22 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         return (
             dockedMode ? <></> :
                 <div key="modal-header" className={stylesSettings.close_button_div}>
-                    <TabTitle value={tabValue}/>
+                    <TabTitle value={tabValue} />
                     <div>
-                    <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.svg.left")} onClick={setDockingModeLeftSide}>
-                        <SVG ariaHidden={true} svg={DockLeftIcon} />
-                    </button>
-                    <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.svg.right")} onClick={setDockingModeRightSide}>
-                        <SVG ariaHidden={true} svg={DockRightIcon} />
-                    </button>
-                    <button className={stylesButtons.button_transparency_icon} disabled aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
-                        <SVG ariaHidden={true} svg={DockModalIcon} />
-                    </button>
-                    <Dialog.Close asChild>
-                        <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                            <SVG ariaHidden={true} svg={QuitIcon} />
+                        <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.svg.left")} onClick={setDockingModeLeftSide}>
+                            <SVG ariaHidden={true} svg={DockLeftIcon} />
                         </button>
-                    </Dialog.Close>
+                        <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.svg.right")} onClick={setDockingModeRightSide}>
+                            <SVG ariaHidden={true} svg={DockRightIcon} />
+                        </button>
+                        <button className={stylesButtons.button_transparency_icon} disabled aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
+                            <SVG ariaHidden={true} svg={DockModalIcon} />
+                        </button>
+                        <Dialog.Close asChild>
+                            <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
+                                <SVG ariaHidden={true} svg={QuitIcon} />
+                            </button>
+                        </Dialog.Close>
                     </div>
                 </div>
         );
@@ -1714,7 +1714,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 dockedMode ?
                     <>
                         <div key="docked-header" className={stylesPopoverDialog.docked_header}>
-                            <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls} style={{ justifyContent: "space-between", width: "100%"}}>
+                            <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls} style={{ justifyContent: "space-between", width: "100%" }}>
                                 <div style={{ display: "flex", gap: "5px" }}>
                                     <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label={__("reader.svg.left")} onClick={setDockingModeLeftSide}>
                                         <SVG ariaHidden={true} svg={DockLeftIcon} />
@@ -1783,9 +1783,9 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </Tabs.List>
                 }
                 <div className={stylesSettings.settings_content}
-                style={{marginTop: dockedMode && "0"}}>
+                    style={{ marginTop: dockedMode && "0" }}>
                     <Tabs.Content value="tab-toc" tabIndex={-1} id={"readerMenu_tabs-tab-toc"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                    <TabHeader />
+                        <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             {(isPdf && pdfToc?.length && renderLinkTree_(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
                                 (isPdf && !pdfToc?.length && <p>{__("reader.toc.publicationNoToc")}</p>) ||
@@ -1827,26 +1827,26 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 <div className={stylesAnnotations.annotations_checkbox}>
                                     <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={serialAnnotator} onChange={advancedAnnotationsOnChange} />
                                     <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div 
-                                        tabIndex={0}
-                                        role="checkbox"
-                                        aria-checked={serialAnnotator}
-                                        aria-label={__("reader.annotations.advancedMode")}
-                                        onKeyDown={(e) => {
-                                            // if (e.code === "Space") {
-                                            if (e.key === " ") {
-                                                e.preventDefault(); // prevent scroll
-                                            }
-                                        }}
-                                        onKeyUp={(e) => {
-                                            // if (e.code === "Space") {
-                                            if (e.key === " ") {
-                                                e.preventDefault();
-                                                advancedAnnotationsOnChange();
-                                            }
-                                        }}
-                                        className={stylesGlobal.checkbox_custom} 
-                                        style={{ border: serialAnnotator ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: serialAnnotator ? "var(--color-blue)" : "transparent" }}>
+                                        <div
+                                            tabIndex={0}
+                                            role="checkbox"
+                                            aria-checked={serialAnnotator}
+                                            aria-label={__("reader.annotations.advancedMode")}
+                                            onKeyDown={(e) => {
+                                                // if (e.code === "Space") {
+                                                if (e.key === " ") {
+                                                    e.preventDefault(); // prevent scroll
+                                                }
+                                            }}
+                                            onKeyUp={(e) => {
+                                                // if (e.code === "Space") {
+                                                if (e.key === " ") {
+                                                    e.preventDefault();
+                                                    advancedAnnotationsOnChange();
+                                                }
+                                            }}
+                                            className={stylesGlobal.checkbox_custom}
+                                            style={{ border: serialAnnotator ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: serialAnnotator ? "var(--color-blue)" : "transparent" }}>
                                             {serialAnnotator ?
                                                 <SVG ariaHidden svg={CheckIcon} />
                                                 :
@@ -1864,26 +1864,26 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         onChange={quickAnnotationsOnChange}
                                     />
                                     <label htmlFor="quickAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div 
-                                        tabIndex={0}
-                                        role="checkbox"
-                                        aria-checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
-                                        aria-label={__("reader.annotations.quickAnnotations")}
-                                        onKeyDown={(e) => {
-                                            // if (e.code === "Space") {
-                                            if (e.key === " ") {
-                                                e.preventDefault(); // prevent scroll
-                                            }
-                                        }}
-                                        onKeyUp={(e) => {
-                                            // if (e.code === "Space") {
-                                            if (e.key === " ") {
-                                                e.preventDefault();
-                                                quickAnnotationsOnChange();
-                                            }
-                                        }}
-                                        className={stylesGlobal.checkbox_custom} 
-                                        style={{ border: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "var(--color-blue)" : "transparent" }}>
+                                        <div
+                                            tabIndex={0}
+                                            role="checkbox"
+                                            aria-checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
+                                            aria-label={__("reader.annotations.quickAnnotations")}
+                                            onKeyDown={(e) => {
+                                                // if (e.code === "Space") {
+                                                if (e.key === " ") {
+                                                    e.preventDefault(); // prevent scroll
+                                                }
+                                            }}
+                                            onKeyUp={(e) => {
+                                                // if (e.code === "Space") {
+                                                if (e.key === " ") {
+                                                    e.preventDefault();
+                                                    quickAnnotationsOnChange();
+                                                }
+                                            }}
+                                            className={stylesGlobal.checkbox_custom}
+                                            style={{ border: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "var(--color-blue)" : "transparent" }}>
                                             {readerConfig.annotation_popoverNotOpenOnNoteTaking ?
                                                 <SVG ariaHidden svg={CheckIcon} />
                                                 :
@@ -1895,25 +1895,25 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                     <input type="checkbox" id="marginAnnotations" name="marginAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={marginAnnotationsOnChange} />
                                     <label htmlFor="marginAnnotations" className={stylesGlobal.checkbox_custom_label}>
                                         <div
-                                        tabIndex={0}
-                                        role="checkbox"
-                                        aria-checked={readerConfig.annotation_defaultDrawView === "margin"}
-                                        aria-label={__("reader.annotations.toggleMarginMarks")}
-                                        onKeyDown={(e) => {
-                                            // if (e.code === "Space") {
-                                            if (e.key === " ") {
-                                                e.preventDefault(); // prevent scroll
-                                            }
-                                        }}
-                                        onKeyUp={(e) => {
-                                            // if (e.code === "Space") {
-                                            if (e.key === " ") {
-                                                e.preventDefault();
-                                                marginAnnotationsOnChange();
-                                            }
-                                        }}
-                                        className={stylesGlobal.checkbox_custom} 
-                                        style={{ border: readerConfig.annotation_defaultDrawView === "margin" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "margin" ? "var(--color-blue)" : "transparent" }}>
+                                            tabIndex={0}
+                                            role="checkbox"
+                                            aria-checked={readerConfig.annotation_defaultDrawView === "margin"}
+                                            aria-label={__("reader.annotations.toggleMarginMarks")}
+                                            onKeyDown={(e) => {
+                                                // if (e.code === "Space") {
+                                                if (e.key === " ") {
+                                                    e.preventDefault(); // prevent scroll
+                                                }
+                                            }}
+                                            onKeyUp={(e) => {
+                                                // if (e.code === "Space") {
+                                                if (e.key === " ") {
+                                                    e.preventDefault();
+                                                    marginAnnotationsOnChange();
+                                                }
+                                            }}
+                                            className={stylesGlobal.checkbox_custom}
+                                            style={{ border: readerConfig.annotation_defaultDrawView === "margin" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "margin" ? "var(--color-blue)" : "transparent" }}>
                                             {readerConfig.annotation_defaultDrawView === "margin" ?
                                                 <SVG ariaHidden svg={CheckIcon} />
                                                 :
@@ -1926,25 +1926,25 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                     <input type="checkbox" id="hideAnnotation" name="hideAnnotation" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "hide"} onChange={hideAnnotationOnChange} />
                                     <label htmlFor="hideAnnotation" className={stylesGlobal.checkbox_custom_label}>
                                         <div
-                                        tabIndex={0}
-                                        role="checkbox"
-                                        aria-checked={readerConfig.annotation_defaultDrawView === "hide"}
-                                        aria-label={__("reader.annotations.hide")}
-                                        onKeyDown={(e) => {
-                                            // if (e.code === "Space") {
-                                            if (e.key === " ") {
-                                                e.preventDefault(); // prevent scroll
-                                            }
-                                        }}
-                                        onKeyUp={(e) => {
-                                            // if (e.code === "Space") {
-                                            if (e.key === " ") {
-                                                e.preventDefault();
-                                                hideAnnotationOnChange();
-                                            }
-                                        }}                                       
-                                        className={stylesGlobal.checkbox_custom} 
-                                        style={{ border: readerConfig.annotation_defaultDrawView === "hide" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "hide" ? "var(--color-blue)" : "transparent" }}>
+                                            tabIndex={0}
+                                            role="checkbox"
+                                            aria-checked={readerConfig.annotation_defaultDrawView === "hide"}
+                                            aria-label={__("reader.annotations.hide")}
+                                            onKeyDown={(e) => {
+                                                // if (e.code === "Space") {
+                                                if (e.key === " ") {
+                                                    e.preventDefault(); // prevent scroll
+                                                }
+                                            }}
+                                            onKeyUp={(e) => {
+                                                // if (e.code === "Space") {
+                                                if (e.key === " ") {
+                                                    e.preventDefault();
+                                                    hideAnnotationOnChange();
+                                                }
+                                            }}
+                                            className={stylesGlobal.checkbox_custom}
+                                            style={{ border: readerConfig.annotation_defaultDrawView === "hide" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "hide" ? "var(--color-blue)" : "transparent" }}>
                                             {readerConfig.annotation_defaultDrawView === "hide" ?
                                                 <SVG ariaHidden svg={CheckIcon} />
                                                 :
@@ -1954,7 +1954,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                         <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
                                 </div>
                             </details>
-                            <AnnotationList goToLocator={goToLocator} annotationUUIDFocused={annotationUUID} doFocus={doFocus}/>
+                            <AnnotationList goToLocator={goToLocator} annotationUUIDFocused={annotationUUID} doFocus={doFocus} />
                         </div>
                     </Tabs.Content>
 
@@ -1976,7 +1976,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                             <GoToPageSection totalPages={
                                 isPdf && pdfNumberOfPages
                                     ? pdfNumberOfPages
-                                    : 0} {...props}/>
+                                    : 0} {...props} />
                         </div>
                     </Tabs.Content>
                 </div>
