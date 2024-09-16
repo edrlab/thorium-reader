@@ -19,6 +19,7 @@ export declare const annotations_filter_button: string;
 export declare const annotations_filter_color: string;
 export declare const annotations_filter_container: string;
 export declare const annotations_filter_drawtype: string;
+export declare const annotations_filter_nbOfFilters: string;
 export declare const annotations_filter_tag: string;
 export declare const annotations_filter_tagGroup: string;
 export declare const annotations_filter_taglist: string;
