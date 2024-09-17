@@ -783,7 +783,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                                                         }
                                                                                                     }}
                                                                                                     // aria-label={item.name}
-                                                                                                
+
                                                                                                     id={`TTSID${voice.id}`} key={`TTSKEY${voice.id}`}>{`${voice.name}${voice.default ? " *" : ""}`}
                                                                                                     </ComboBoxItem>}
                                                                                             </Collection>
@@ -1045,7 +1045,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 // onFocusOutside={(e) => {
                                                 // console.log(e);
                                                 // }}
-                                                // onPointerDownOutside={(e) => { 
+                                                // onPointerDownOutside={(e) => {
                                                 //     if (this.props.readerPopoverDialogContext.dockedMode) {
                                                 //         e.preventDefault();
                                                 //     }
@@ -1140,7 +1140,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             }}
                                         >
                                             {/* TODO remove readerSettingsHeaderProps */}
-                                            <ReaderSettings 
+                                            <ReaderSettings
                                                 {...readerSettingsHeaderProps}
                                                 {...this.props.ReaderSettingsProps}
                                                 handleSettingsClick={this.props.handleSettingsClick} />
@@ -1330,8 +1330,8 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         closeAnnotationEditionMode: () => {
             dispatch(readerLocalActionAnnotations.enableMode.build(false, undefined));
         },
-        saveAnnotation: (color: IColor, comment: string, drawType: TDrawType) => {
-            dispatch(readerLocalActionAnnotations.createNote.build(color, comment, drawType));
+        saveAnnotation: (color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
+            dispatch(readerLocalActionAnnotations.createNote.build(color, comment, drawType, tags));
         },
     };
 };

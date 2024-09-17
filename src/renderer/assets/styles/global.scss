@@ -25,6 +25,11 @@
   -webkit-app-region: no-drag;
 }
 
+// https://github.com/radix-ui/primitives/issues/1496#issuecomment-1962839229
+html body[data-scroll-locked] {
+  position: unset !important;
+} 
+
 body {
   margin: 0;
   padding: 0;
@@ -447,6 +452,10 @@ nav + nav + .breadcrumb + .main {
     align-items: center;
     gap: 10px;
     cursor: pointer;
+
+    h4 {
+      margin: 10px 0;
+    }
   }
 
   &_input {

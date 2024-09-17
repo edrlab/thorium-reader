@@ -125,6 +125,8 @@
     "dialog": {
         "cancel": "Cancel",
         "deleteFeed": "Delete catalog?",
+        "deleteAnnotations": "Delete annotations?",
+        "deleteAnnotationsText": "Do you want to delete {{- annotationListLength}} annotation(s)?",
         "deletePublication": "Delete publication?",
         "import": "Confirm import:",
         "importError": "An error occurred, verify the file extension ({{acceptedExtension}})",
@@ -317,6 +319,24 @@
                 "solid": "Solid background",
                 "strikethrough": "Strikethrough",
                 "underline": "Underline"
+            },
+            "colors": {
+                "bluegreen": "Blue-green",
+                "cyan": "Cyan",
+                "green": "Green",
+                "lightblue": "Light Blue",
+                "orange": "Orange",
+                "purple": "Purple",
+                "red": "Red",
+                "yellow": "Yellow"
+            },
+            "filter": {
+                "filterByColor": "Filter by Color",
+                "filterByDrawtype": "Filter by Drawtype",
+                "filterByTag": "Filter by Tag",
+                "filterOptions": "Filter Options",
+                "all": "All",
+                "none": "None"
             }
         },
         "divina": {
@@ -442,7 +462,13 @@
                 },
                 "title": "Theme"
             },
-            "wordSpacing": "Word spacing"
+            "wordSpacing": "Word spacing",
+            "preset": {
+              "title": "Preset",
+              "save": "Save the current reading settings to the preferred reading settings preset",
+              "apply": "Apply the preferred reading settings preset to the current reading settings",
+              "reset": "Reset preferred reading settings preset to the initial state"
+            }
         },
         "svg": {
             "left": "Left",

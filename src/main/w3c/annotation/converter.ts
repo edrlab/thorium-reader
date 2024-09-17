@@ -10,14 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
-
-function rgbToHex(color: { red: number; green: number; blue: number }): string {
-    const { red, green, blue } = color;
-    const redHex = Math.min(255, Math.max(0, red)).toString(16).padStart(2, "0");
-    const greenHex = Math.min(255, Math.max(0, green)).toString(16).padStart(2, "0");
-    const blueHex = Math.min(255, Math.max(0, blue)).toString(16).padStart(2, "0");
-    return `#${redHex}${greenHex}${blueHex}`;
-}
+import { rgbToHex } from "readium-desktop/common/rgb";
 
 export function convertAnnotationToW3CAnnotationModel(annotation: IAnnotationState): IW3CAnnotationModel {
 

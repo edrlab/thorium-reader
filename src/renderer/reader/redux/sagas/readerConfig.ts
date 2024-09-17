@@ -16,7 +16,6 @@ import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysEnableCaptionsMode, 
 import { readerLocalActionReader, readerLocalActionSetConfig } from "../actions";
 import { SagaGenerator, all, put, select, spawn, take } from "typed-redux-saga";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
 import { isNotNil } from "readium-desktop/utils/nil";
 
@@ -94,7 +93,8 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
 
     // session never enabled in reader but always in main/lib
     // if (!sessionEnabled) {
-        yield* put(readerActions.configSetDefault.build(readerConfig));
+        // see issue https://github.com/edrlab/thorium-reader/issues/2532
+        // yield* put(readerActions.configSetDefault.build(readerConfig));
     // }
 
     readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
