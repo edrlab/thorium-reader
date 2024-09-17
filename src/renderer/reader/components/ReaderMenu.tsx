@@ -1980,25 +1980,23 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         setSerialAnnotatorMode(!serialAnnotator);
     };
     const quickAnnotationsOnChange = () => {
-        dispatch(readerLocalActionSetConfig.build({ ...readerConfig, annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking }));
+        dispatch(readerLocalActionSetConfig.build({ annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking }));
     };
     const marginAnnotationsOnChange = () => {
-        const newReaderConfig = { ...readerConfig };
-        newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "margin" ? "annotation" : "margin";
+        const annotation_defaultDrawView = readerConfig.annotation_defaultDrawView === "margin" ? "annotation" : "margin";
 
-        console.log(`marginAnnotationsToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
-        dispatch(readerLocalActionSetConfig.build(newReaderConfig));
+        console.log(`marginAnnotationsToggleSwitch : highlight=${annotation_defaultDrawView}`);
+        dispatch(readerLocalActionSetConfig.build({ annotation_defaultDrawView }));
 
         const href1 = currentLocation?.locator?.href;
         const href2 = currentLocation?.secondWebViewHref;
         dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
     };
     const hideAnnotationOnChange = () => {
-        const newReaderConfig = { ...readerConfig };
-        newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "hide" ? "annotation" : "hide";
+        const annotation_defaultDrawView = readerConfig.annotation_defaultDrawView === "hide" ? "annotation" : "hide";
 
-        console.log(`hideAnnotationsToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
-        dispatch(readerLocalActionSetConfig.build(newReaderConfig));
+        console.log(`hideAnnotationsToggleSwitch : highlight=${annotation_defaultDrawView}`);
+        dispatch(readerLocalActionSetConfig.build({ annotation_defaultDrawView }));
 
         const href1 = currentLocation?.locator?.href;
         const href2 = currentLocation?.secondWebViewHref;

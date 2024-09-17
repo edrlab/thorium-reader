@@ -240,6 +240,9 @@ function* readerStart() {
 
 function* captureHightlightDrawMargin(action: readerLocalActionSetConfig.TAction) {
 
+    const { annotation_defaultDrawView } = action.payload;
+    if (!annotation_defaultDrawView) return ;
+
     // divina,
     const { info, locator } = yield* selectTyped((state: IReaderRootState) => state.reader);
     // typeof divina !== "undefined" ||
@@ -251,8 +254,6 @@ function* captureHightlightDrawMargin(action: readerLocalActionSetConfig.TAction
         debug("captureHightlightDrawMargin SKIP annot", skip, info?.publicationView?.isDivina, locator?.audioPlaybackInfo, info?.publicationView?.isAudio, info?.publicationView?.isPDF);
         return;
     }
-
-    const { annotation_defaultDrawView } = action.payload;
 
     debug(`captureHightlightDrawMargin : readerLocalActionSetConfig CHANGED apply=${annotation_defaultDrawView}`);
     if (annotation_defaultDrawView === "margin") {
