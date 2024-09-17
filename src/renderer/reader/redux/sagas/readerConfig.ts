@@ -75,7 +75,7 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
         }
     }
 
-    if (isNotNil(payload.ttsVoice) || isNotNil(payload.ttsPlaybackRate)) {
+    if (isNotNil(payload.ttsVoice) || isNotNil(payload.ttsPlaybackRate) || isNotNil(payload.ttsEnableOverlayMode) || isNotNil(payload.ttsEnableSentenceDetection)) {
 
         const ttsState = yield* select((state: IReaderRootState) => state.reader.tts.state);
         const ttsWasPlaying = ttsState !== TTSStateEnum.STOPPED;
@@ -97,7 +97,30 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
         // yield* put(readerActions.configSetDefault.build(readerConfig));
     // }
 
-    readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
+    if (
+        isNotNil(payload.fontSize)          ||
+        isNotNil(payload.pageMargins)       ||
+        isNotNil(payload.wordSpacing)       ||
+        isNotNil(payload.letterSpacing)     ||
+        isNotNil(payload.paraSpacing)       ||
+        isNotNil(payload.lineHeight)        ||
+        isNotNil(payload.align)             ||
+        isNotNil(payload.theme)             ||
+        isNotNil(payload.colCount)          ||
+        isNotNil(payload.font)              ||
+        isNotNil(payload.sepia)             ||
+        isNotNil(payload.night)             ||
+        isNotNil(payload.invert)            ||
+        isNotNil(payload.paged)             ||
+        // isNotNil(payload.readiumcss)     ||
+        isNotNil(payload.enableMathJax)     ||
+        isNotNil(payload.reduceMotion)      ||
+        isNotNil(payload.noFootnotes)       ||
+        isNotNil(payload.noRuby)            ||
+        isNotNil(payload.darken)
+    ) {
+        readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
+    }
 }
 
 function* alowCustomTriggered(action: readerLocalActionReader.allowCustom.TAction): SagaGenerator<void> {
