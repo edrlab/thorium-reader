@@ -1,530 +1,557 @@
 {
-  "accessibility": {
-    "bookMenu": "Valikko",
-    "closeDialog": "Sulje",
-    "importFile": "Tuo julkaisu",
-    "leftSlideButton": "Siirry listalla vasemmalle",
-    "mainContent": "Pääsisältö",
-    "rightSlideButton": "Siirry listalla oikealle",
-    "searchBook": "Hae kirjan nimellä",
-    "skipLink": "Hyppää sisältöön",
-    "toolbar": "Työkalurivi"
-  },
-  "apiapp": {
-    "documentation": "Thoriumin dokumentaatio",
-    "howItWorks": "Mitä tämä tarkoittaa?",
-    "informations": "Ranskassa moni yleinen kirjasto tarjoaa koneellisesti luettavan luettelon (samankaltainen kuin OPDS, mutta ei identtinen). Sen avulla asiakkaat voivat ladata digitaalisia julkaisuja henkilökohtaisesta kirjahyllystään. Tämän tekniikan avulla e-kirjan tai äänikirjan voi ladata suoraan Thorium Readeriin lukemista varten.\nKuinka yhdistät ranskalaisen yleisen kirjaston tilisi Thorium Readeriin? Aloita kirjoittamalla hakukenttään ranskalainen kaupunki tai osa kirjaston nimestä ja paina Hae-painiketta. Näkyviin tulee luettelo hakuasi vastaavista julkisista kirjastoista. Valitse kirjasto ja paina Lisää. Valitse päivitetystä luettelosta uudelleen sama kirjasto: näyttöön tulee todennuslomake. Anna käyttäjätunnuksesi/sähköpostiosoitteesi ja salasanasi ja paina Kirjaudu. Näet nyt henkilökohtaisen kirjahyllysi sisällön, josta voit ladata ja lukea aiemmin lainaamiasi e-kirjoja ja äänikirjoja.",
-    "noLibraryFound": "Kirjastoa ei löytynyt ({{- name}})"
-  },
-  "app": {
-    "edit": {
-      "copy": "Kopioi",
-      "cut": "Leikkaa",
-      "paste": "Liitä",
-      "redo": "Tee uudelleen",
-      "selectAll": "Valitse kaikki",
-      "title": "Muokkaa",
-      "undo": "Kumoa"
-    },
-    "hide": "Piilota {{- appName}}",
-    "quit": "Lopeta {{- appName}}",
-    "session": {
-      "exit": {
-        "askBox": {
-          "button": {
-            "no": "Ei",
-            "yes": "Kyllä"
-          },
-          "message": "Haluatko tallentaa istunnon?",
-          "title": "Tallenna istunto"
-        }
-      }
-    },
-    "update": {
-      "message": "Uusi versio on saatavilla. Napsauta, jos haluat lisätietoja.",
-      "title": "{{- appName}} -ohjelmiston päivitys."
-    },
-    "window": {
-      "showLibrary": "Näytä kirjasto / kirjahylly"
-    }
-  },
-  "catalog": {
-    "about": {
-      "title": "Tietoa ohjelmasta {{- appName}}"
-    },
-    "addBookToLib": "Tuo",
-    "addTags": "Lisää tunniste",
-    "addTagsButton": "Lisää",
-    "allBooks": "Kaikki kirjat",
-    "bookInfo": "Tietoja tästä kirjasta",
-    "column": {
-      "ascending": "nouseva",
-      "descending": "laskeva",
-      "unsorted": "lajittelematon"
-    },
-    "delete": "Poista",
-    "deleteBook": "Poista",
-    "deleteTag": "Poista tunniste",
-    "description": "Kuvaus",
-    "emptyTagList": "Tunnisteita ei ole käytössä.",
-    "entry": {
-      "continueReading": "Jatka lukemista",
-      "continueReadingAudioBooks": "Jatka kuuntelua",
-      "continueReadingDivina": "Jatka divinan lukemista",
-      "continueReadingPdf": "Jatka pdf:n lukemista",
-      "lastAdditions": "Viimeksi lisätty"
-    },
-    "export": "Tallenna nimellä",
-    "format": "Formaatti",
-    "lang": "Kieli",
-    "lastRead": "Luettu viimeksi",
-    "moreInfo": "Tietoa julkaisusta",
-    "myBooks": "Omat kirjat",
-    "noPublicationHelpL1": "Pudota julkaisu tähän",
-    "noPublicationHelpL2": "tai käytä \"{{- importTitle }}\"-painiketta yllä.",
-    "noPublicationHelpL3": "LCP-suojattuja tiedostoja tuetaan.",
-    "noPublicationHelpL4": "Tuetut tiedostot:",
-    "numberOfPages": "Sivumäärä",
-    "opds": {
-      "auth": {
-        "cancel": "Peru",
-        "login": "Kirjaudu",
-        "password": "Salasana",
-        "register": "Rekisteröidy",
-        "username": "Käyttäjätunnus / Sähköpostiosoite"
-      },
-      "info": {
-        "availableSince": "Lähtien",
-        "availableState": {
-          "available": "Saatavilla",
-          "ready": "Valmis",
-          "reserved": "Varattu",
-          "unavailable": "Ei saatavilla",
-          "unknown": "Tuntematon"
-        },
-        "availableUntil": "Asti",
-        "copyAvalaible": "Saatavilla oleva määrä",
-        "copyTotal": "Kopioiden määrä",
-        "holdPosition": "Varauksesi tila",
-        "holdTotal": "Varattuna",
-        "numberOfItems": "Kappalemäärä",
-        "priveValue": "Hinta",
-        "state": "Tila"
-      }
-    },
-    "publisher": "Julkaisija",
-    "readBook": "Lue",
-    "released": "Julkaistu",
-    "sort": "Lajittele",
-    "tag": "Tunniste",
-    "tagCount": "Tunnistemäärä",
-    "tags": "Tunnisteet",
-    "update": "Muokkaa"
-  },
-  "dialog": {
-    "cancel": "Peru",
-    "deleteFeed": "Haluatko poistaa tämän luettelon?",
-    "deletePublication": "Haluatko poistaa tämän julkaisun?",
-    "import": "Haluatko tuoda nämä tiedostot:",
-    "importError": "Virhe havaittiin. Varmista tiedostopääte ({{acceptedExtension}})",
-    "renew": "Haluatko uusia tämän lainan?",
-    "return": "Haluatko palauttaa tämän lainan?",
-    "yes": "Kyllä"
-  },
-  "error": {
-    "errorBox": {
-      "error": "Virheilmoitus:",
-      "message": "Virhe tiedostossa {{- filename}}",
-      "title": "Sisäinen ohjelman {{- appName}} virhe"
-    }
-  },
-  "header": {
-    "allBooks": "Kaikki kirjat",
-    "catalogs": "Luettelot",
-    "downloads": "Lataukset",
-    "fitlerTagTitle": "Suodata tunnisteen mukaan",
-    "gridTitle": "Ruudukkonäkymä",
-    "home": "Kirjahyllyn näkymä",
-    "homeTitle": "Koti",
-    "importTitle": "Tuo julkaisu",
-    "listTitle": "Taulukkonäkymä",
-    "myCatalogs": "Omat luettelot",
-    "refreshTitle": "Lataa uudestaan",
-    "searchPlaceholder": "Hae",
-    "searchTitle": "Hae",
-    "settings": "Asetukset",
-    "viewMode": "Näkymätila"
-  },
-  "library": {
-    "lcp": {
-      "hint": "Vihje: {{- hint}}",
-      "password": "Salasana",
-      "sentence": "Julkaisun avaamiseen tarvitaan LCP-salasana: ",
-      "urlHint": "Unohtuiko salasana? Lisätietoja:",
-      "whatIsLcp?": "Mikä on LCP?",
-      "whatIsLcpInfoDetails": "LCP (Licensed Content Protection) on sisällön suojaustapa.",
-      "whatIsLcpInfoDetailsLink": "Lisätietoja EDRLabin sivustolla."
-    }
-  },
-  "message": {
-    "download": {
-      "error": "Julkaisun {{- title}} lataus epäonnistui: [{{- err}}]"
-    },
-    "import": {
-      "alreadyImport": "Julkaisu {{- title}} on jo tuotu.",
-      "fail": "Julkaisun {{- path}} tuonti epäonnistui. {{- err}}",
-      "success": "Julkaisun {{- title}} tuonti on valmis."
-    },
-    "open": {
-      "error": "Julkaisua ei voi avata: {{- err}}"
-    }
-  },
-  "opds": {
-    "addForm": {
-      "addButton": "Lisää",
-      "name": "Nimi:",
-      "namePlaceholder": "Nimi",
-      "url": "Linkki:",
-      "urlPlaceholder": "Linkki"
-    },
-    "addFormApiapp": {
-      "title": "Lisää kirjastotili"
-    },
-    "addMenu": "Lisää OPDS-syöte",
-    "breadcrumbRoot": "Luettelot",
-    "documentation": "OPDS:n verkkosivu",
-    "empty": "Julkaisuja ei löytynyt",
-    "firstPage": "Ensimmäinen",
-    "informations": "Open Publication Distribution System (OPDS) -luettelomuoto tarjoaa mahdollisuuden tutkia ja ladata digitaalisia julkaisuja yleisistä kirjastoista ja digitaalisista kirjakaupoista vain muutamalla napsautuksella. OPDS:n avulla voit selata eri e-kirjojen tarjoajien luetteloita, rekisteröityä, lainata, ostaa julkaisun tai vierailla henkilökohtaisessa kirjahyllyssäsi. Voit jopa ladata e-kirjan tai äänikirjan suoraan Thorium Readeriin lukemista varten.\nMiten sitten löydät OPDS-luettelon? Etsi luetteloon johtava hyperlinkki (URL). Kopioi tämä URL-osoite yllä olevaan Linkki-kenttään. Muista, että kaikille aktiivisille OPDS-luetteloille ei ole keskitettyä palvelua. Sinun on otettava yhteyttä haluamaasi kirjastoon tai kirjakauppiaaseen ja pyydettävä heidän OPDS-luettelonsa URL-osoite. Jos et ole varma, mistä aloittaa, Wikipediassa on muutamia OPDS-luetteloita eri kielillä, mistä voi olla apua.\nNimi-kentän voit täydentää itse. Voit valita nimen, jolla helposti tunnistat syötteen Thorium Readerissa.",
-    "lastPage": "Viimeinen",
-    "menu": {
-      "aboutBook": "Tietoja tästä kirjasta",
-      "addExtract": "Tuo näyte",
-      "goBuyBook": "Osta kirja",
-      "goLoanBook": "Lainaa kirja",
-      "goRevokeLoanBook": "Peruuta laina",
-      "goSubBook": "Tilaa"
-    },
-    "network": {
-      "error": "OPDS-syöte ei ole saatavilla",
-      "noInternet": "Ei internetyhteyttä",
-      "noInternetMessage": "Tarkista verkkokaapeli, modeemi, reititin tai langaton verkko",
-      "reject": "Odottamaton virhe!",
-      "timeout": "Verkkoyhteyden aikakatkaisu. Yritä myöhemmin uudestaan."
-    },
-    "next": "Seuraava",
-    "previous": "Edellinen",
-    "shelf": "Hylly",
-    "updateForm": {
-      "name": "Nimi:",
-      "title": "Muokkaa OPDS-syötettä",
-      "updateButton": "Muokkaa",
-      "url": "Linkki:"
-    },
-    "whatIsOpds": "Mikä OPDS on?"
-  },
-  "publication": {
     "accessibility": {
-      "accessModeSufficient": {
-        "textual": "Yhteensopiva tekstistä puheeksi -toiminnon ja ruudunlukuohjelmien kanssa"
-      },
-      "accessibilityFeature": {
-        "alternativeText": "Kuvilla on vaihtoehtoiset tekstit",
-        "displayTransformability": "Tekstin ulkoasua voi mukauttaa",
-        "longDescription": "Kuvallisella sisällöllä on kattavia selostuksia",
-        "printPageNumbers": "Sisältää painetun kirjan sivunumeroinnin",
-        "readingOrder": "Lukemisjärjestys on määritelty",
-        "synchronizedAudioText": "Tekstin kanssa synkronoitu äänite",
-        "tableOfContents": "Sisältää sisällysluettelon"
-      },
-      "accessibilityHazard": {
-        "flashing": "Välähdyksiä",
-        "motionSimulation": "Simuloitua liikettä",
-        "name": "Vaaratekijä:",
-        "noFlashing": "Ei välähdyksiä",
-        "noMotionSimulation": "Ei simuloitua liikettä",
-        "noSound": "Ei ääntä",
-        "none": "Ei mitään",
-        "sound": "Ääni",
-        "unknown": "Tuntematon"
-      },
-      "certifierReport": "Arviointiraportti",
-      "conformsTo": "Noudattaa:",
-      "moreInformation": "Lisätietoja",
-      "name": "Saavutettavuus",
-      "noA11y": "Saavutettavuustietoja ei ole saatavilla."
+        "bookMenu": "Valikko",
+        "closeDialog": "Sulje",
+        "importFile": "Tuo julkaisu",
+        "leftSlideButton": "Siirry listalla vasemmalle",
+        "mainContent": "Pääsisältö",
+        "rightSlideButton": "Siirry listalla oikealle",
+        "searchBook": "Hae kirjan nimellä",
+        "skipLink": "Hyppää sisältöön",
+        "toolbar": "Työkalurivi"
     },
-    "actions": "Toiminnot",
-    "audio": {
-      "tracks": "Osat"
+    "apiapp": {
+        "documentation": "Thoriumin dokumentaatio",
+        "howItWorks": "Mitä tämä tarkoittaa?",
+        "informations": "Ranskassa moni yleinen kirjasto tarjoaa koneellisesti luettavan luettelon (samankaltainen kuin OPDS, mutta ei identtinen). Sen avulla asiakkaat voivat ladata digitaalisia julkaisuja henkilökohtaisesta kirjahyllystään. Tämän tekniikan avulla e-kirjan tai äänikirjan voi ladata suoraan Thorium Readeriin lukemista varten.\nKuinka yhdistät ranskalaisen yleisen kirjaston tilisi Thorium Readeriin? Aloita kirjoittamalla hakukenttään ranskalainen kaupunki tai osa kirjaston nimestä ja paina Hae-painiketta. Näkyviin tulee luettelo hakuasi vastaavista julkisista kirjastoista. Valitse kirjasto ja paina Lisää. Valitse päivitetystä luettelosta uudelleen sama kirjasto: näyttöön tulee todennuslomake. Anna käyttäjätunnuksesi/sähköpostiosoitteesi ja salasanasi ja paina Kirjaudu. Näet nyt henkilökohtaisen kirjahyllysi sisällön, josta voit ladata ja lukea aiemmin lainaamiasi e-kirjoja ja äänikirjoja.",
+        "noLibraryFound": "Kirjastoa ei löytynyt ({{- name}})"
     },
-    "author": "Tekijä",
-    "cancelledLcp": "Tämän julkaisun LCP-käyttöoikeus on peruttu.",
-    "certificateRevoked": "Varmenne on kumottu",
-    "certificateSignatureInvalid": "Varmenteen allekirjoitus ei kelpaa",
-    "cover": {
-      "img": "kansikuva"
+    "app": {
+        "edit": {
+            "copy": "Kopioi",
+            "cut": "Leikkaa",
+            "paste": "Liitä",
+            "redo": "Tee uudelleen",
+            "selectAll": "Valitse kaikki",
+            "title": "Muokkaa",
+            "undo": "Kumoa"
+        },
+        "hide": "Piilota {{- appName}}",
+        "quit": "Lopeta {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Ei",
+                        "yes": "Kyllä"
+                    },
+                    "message": "Haluatko tallentaa istunnon?",
+                    "title": "Tallenna istunto"
+                }
+            }
+        },
+        "update": {
+            "message": "Uusi versio on saatavilla. Napsauta, jos haluat lisätietoja.",
+            "title": "{{- appName}} -ohjelmiston päivitys."
+        },
+        "window": {
+            "showLibrary": "Näytä kirjasto / kirjahylly"
+        }
     },
-    "day": "päivä",
-    "days": "päivää",
-    "duration": {
-      "title": "Kesto"
+    "catalog": {
+        "about": {
+            "title": "Tietoa ohjelmasta {{- appName}}"
+        },
+        "addBookToLib": "Tuo",
+        "addTags": "Lisää tunniste",
+        "addTagsButton": "Lisää",
+        "allBooks": "Kaikki kirjat",
+        "bookInfo": "Tietoja tästä kirjasta",
+        "column": {
+            "ascending": "nouseva",
+            "descending": "laskeva",
+            "unsorted": "lajittelematon"
+        },
+        "delete": "Poista",
+        "deleteBook": "Poista",
+        "deleteTag": "Poista tunniste",
+        "description": "Kuvaus",
+        "emptyTagList": "Tunnisteita ei ole käytössä.",
+        "entry": {
+            "continueReading": "Jatka lukemista",
+            "continueReadingAudioBooks": "Jatka kuuntelua",
+            "continueReadingDivina": "Jatka divinan lukemista",
+            "continueReadingPdf": "Jatka pdf:n lukemista",
+            "lastAdditions": "Viimeksi lisätty"
+        },
+        "export": "Tallenna nimellä",
+        "exportAnnotation": "",
+        "format": "Formaatti",
+        "lang": "Kieli",
+        "lastRead": "Luettu viimeksi",
+        "moreInfo": "Tietoa julkaisusta",
+        "myBooks": "Omat kirjat",
+        "noPublicationHelpL1": "Pudota julkaisu tähän",
+        "noPublicationHelpL2": "tai käytä \"{{- importTitle }}\"-painiketta yllä.",
+        "noPublicationHelpL3": "LCP-suojattuja tiedostoja tuetaan.",
+        "noPublicationHelpL4": "Tuetut tiedostot:",
+        "numberOfPages": "Sivumäärä",
+        "opds": {
+            "auth": {
+                "cancel": "Peru",
+                "login": "Kirjaudu",
+                "password": "Salasana",
+                "register": "Rekisteröidy",
+                "username": "Käyttäjätunnus / Sähköpostiosoite"
+            },
+            "info": {
+                "availableSince": "Lähtien",
+                "availableState": {
+                    "available": "Saatavilla",
+                    "ready": "Valmis",
+                    "reserved": "Varattu",
+                    "unavailable": "Ei saatavilla",
+                    "unknown": "Tuntematon"
+                },
+                "availableUntil": "Asti",
+                "copyAvalaible": "Saatavilla oleva määrä",
+                "copyTotal": "Kopioiden määrä",
+                "holdPosition": "Varauksesi tila",
+                "holdTotal": "Varattuna",
+                "numberOfItems": "Kappalemäärä",
+                "priveValue": "Hinta",
+                "state": "Tila"
+            }
+        },
+        "publisher": "Julkaisija",
+        "readBook": "Lue",
+        "released": "Julkaistu",
+        "sort": "Lajittele",
+        "tag": "Tunniste",
+        "tagCount": "Tunnistemäärä",
+        "tags": "Tunnisteet",
+        "update": "Muokkaa"
     },
-    "expired": "Laina-aika on päättynyt",
-    "expiredLcp": "LCP-käyttöoikeus on päättynyt.",
-    "lcpEnd": "Loppu",
-    "lcpRightsCopy": "Kopioidut merkit",
-    "lcpRightsPrint": "Tulostetut sivut",
-    "lcpStart": "Aloita",
-    "licenceLCP": "Käyttöoikeus (LCP)",
-    "licenseOutOfDate": "LCP-käyttöoikeus on vanhentunut.",
-    "licenseSignatureDateInvalid": "LCP-käyttöoikeuden allekirjoituksen päiväys ei kelpaa",
-    "licenseSignatureInvalid": "LCP-käyttöoikeuden allekirjoitus ei kelpaa",
-    "licensed": "Lisensoitu",
-    "markAsRead": "Merkitse luetuksi",
-    "notStarted": "Ei ole aloitettu",
-    "onGoing": "Luettavana",
-    "progression": {
-      "title": "Eteneminen"
+    "dialog": {
+        "cancel": "Peru",
+        "deleteAnnotations": "",
+        "deleteAnnotationsText": "",
+        "deleteFeed": "Haluatko poistaa tämän luettelon?",
+        "deletePublication": "Haluatko poistaa tämän julkaisun?",
+        "import": "Haluatko tuoda nämä tiedostot:",
+        "importError": "Virhe havaittiin. Varmista tiedostopääte ({{acceptedExtension}})",
+        "renew": "Haluatko uusia tämän lainan?",
+        "return": "Haluatko palauttaa tämän lainan?",
+        "yes": "Kyllä"
     },
-    "read": "Luettu",
-    "remainingTime": "Laina (aikaa jäljellä)",
-    "renewButton": "Uudista",
-    "returnButton": "Palauta",
-    "returnedLcp": "Tämä LCP-suojattu julkaisu on palautettu.",
-    "revokedLcp": "LCP-käyttöoikeus on kumottu",
-    "seeLess": "Näytä vähemmän",
-    "seeMore": "Näytä enemmän",
-    "timeLeft": "Aikaa jäljellä",
-    "title": "Nimike",
-    "userKeyCheckInvalid": "Salasana on väärä"
-  },
-  "reader": {
-    "annotations": {
-      "Color": "Väri",
-      "addNote": "Lisää muistiinpano",
-      "advancedMode": "Välitön tila (luo suoraan valinnasta)",
-      "annotationsOptions": "Asetukset",
-      "hide": "Älä näytä",
-      "highlight": "Korosta",
-      "noSelectionToast": "Ei valintaa",
-      "quickAnnotations": "Pikatila (ohita muokkausikkuna)",
-      "saveNote": "Tallenna",
-      "toggleMarginMarks": "Näytä marginaalissa",
-      "type": {
-        "outline": "Reunaviiva",
-        "solid": "Värikorostus",
-        "strikethrough": "Yliviivaus",
-        "underline": "Alleviivaus"
-      }
+    "error": {
+        "errorBox": {
+            "error": "Virheilmoitus:",
+            "message": "Virhe tiedostossa {{- filename}}",
+            "title": "Sisäinen ohjelman {{- appName}} virhe"
+        }
     },
-    "divina": {
-      "mute": "mykistä",
-      "unmute": "poista mykistys"
+    "header": {
+        "allBooks": "Kaikki kirjat",
+        "catalogs": "Luettelot",
+        "downloads": "Lataukset",
+        "fitlerTagTitle": "Suodata tunnisteen mukaan",
+        "gridTitle": "Ruudukkonäkymä",
+        "home": "Kirjahyllyn näkymä",
+        "homeTitle": "Koti",
+        "importTitle": "Tuo julkaisu",
+        "listTitle": "Taulukkonäkymä",
+        "myCatalogs": "Omat luettelot",
+        "refreshTitle": "Lataa uudestaan",
+        "searchPlaceholder": "Hae",
+        "searchTitle": "Hae",
+        "settings": "Asetukset",
+        "viewMode": "Näkymätila"
     },
-    "fxl": {
-      "fit": "Sovita"
+    "library": {
+        "lcp": {
+            "hint": "Vihje: {{- hint}}",
+            "password": "Salasana",
+            "sentence": "Julkaisun avaamiseen tarvitaan LCP-salasana: ",
+            "urlHint": "Unohtuiko salasana? Lisätietoja:",
+            "whatIsLcp?": "Mikä on LCP?",
+            "whatIsLcpInfoDetails": "LCP (Licensed Content Protection) on sisällön suojaustapa.",
+            "whatIsLcpInfoDetailsLink": "Lisätietoja EDRLabin sivustolla."
+        }
     },
-    "marks": {
-      "annotations": "Muistiinpanot",
-      "bookmarks": "Kirjanmerkit",
-      "delete": "Poista",
-      "edit": "Muokkaa",
-      "goTo": "Siirry sivulle",
-      "landmarks": "Kiintopisteet",
-      "saveMark": "Tallenna kirjanmerkki",
-      "search": "Hae",
-      "searchResult": "Hae [{{- searchText}}]",
-      "toc": "Sisällysluettelo"
+    "message": {
+        "download": {
+            "error": "Julkaisun {{- title}} lataus epäonnistui: [{{- err}}]"
+        },
+        "import": {
+            "alreadyImport": "Julkaisu {{- title}} on jo tuotu.",
+            "fail": "Julkaisun {{- path}} tuonti epäonnistui. {{- err}}",
+            "success": "Julkaisun {{- title}} tuonti on valmis."
+        },
+        "open": {
+            "error": "Julkaisua ei voi avata: {{- err}}"
+        }
     },
-    "media-overlays": {
-      "activate": "Käynnistä luenta",
-      "captions": "Synkronoitu teksti: pelkistetty",
-      "captionsDescription": "Pelkistetty tekstinäkymä.",
-      "next": "Seuraava",
-      "pause": "Pysäytä",
-      "play": "Jatka",
-      "previous": "Edellinen",
-      "skip": "Ohita toissijainen sisältö",
-      "skipDescription": "Ohita toissijainen sisältö kuten sivunvaihdot tai ala- ja loppuviitteet.\n",
-      "speed": "Luennan nopeus",
-      "stop": "Lopeta luenta",
-      "title": "Luenta"
-    },
-    "navigation": {
-      "annotationTitle": "muistiinpano",
-      "backHomeTitle": "Takaisin kirjahyllyyn",
-      "bookmarkTitle": "Kirjanmerkki",
-      "currentPage": "Nykyinen sivu: {{- current}}",
-      "currentPageTotal": "Nykyinen sivu: {{- current}}/{{- total}}",
-      "detachWindowTitle": "Näytä kirjaston / kirjahyllyn ikkuna",
-      "fullscreenTitle": "Avaa kokoruudun tilassa",
-      "goTo": "Siirry",
-      "goToError": "Sivua ei löydy",
-      "goToPlaceHolder": "Syötä sivunumero",
-      "goToTitle": "Siirry sivulle",
-      "historyNext": "Hyppää eteenpäin",
-      "historyPrevious": "Hyppää taaksepäin",
-      "infoTitle": "Tiedot",
-      "magnifyingGlassButton": "Hae julkaisusta",
-      "openTableOfContentsTitle": "Navigaatio",
-      "page": "Sivu",
-      "pdfscalemode": "Sovita sivu tai leveyteen",
-      "settingsTitle": "Asetukset"
-    },
-    "picker": {
-      "search": {
-        "founds": "{{- nResults}} osuma(a)",
-        "input": "etsittävä teksti",
+    "opds": {
+        "addForm": {
+            "addButton": "Lisää",
+            "name": "Nimi:",
+            "namePlaceholder": "Nimi",
+            "url": "Linkki:",
+            "urlPlaceholder": "Linkki"
+        },
+        "addFormApiapp": {
+            "title": "Lisää kirjastotili"
+        },
+        "addMenu": "Lisää OPDS-syöte",
+        "breadcrumbRoot": "Luettelot",
+        "documentation": "OPDS:n verkkosivu",
+        "empty": "Julkaisuja ei löytynyt",
+        "firstPage": "Ensimmäinen",
+        "informations": "Open Publication Distribution System (OPDS) -luettelomuoto tarjoaa mahdollisuuden tutkia ja ladata digitaalisia julkaisuja yleisistä kirjastoista ja digitaalisista kirjakaupoista vain muutamalla napsautuksella. OPDS:n avulla voit selata eri e-kirjojen tarjoajien luetteloita, rekisteröityä, lainata, ostaa julkaisun tai vierailla henkilökohtaisessa kirjahyllyssäsi. Voit jopa ladata e-kirjan tai äänikirjan suoraan Thorium Readeriin lukemista varten.\nMiten sitten löydät OPDS-luettelon? Etsi luetteloon johtava hyperlinkki (URL). Kopioi tämä URL-osoite yllä olevaan Linkki-kenttään. Muista, että kaikille aktiivisille OPDS-luetteloille ei ole keskitettyä palvelua. Sinun on otettava yhteyttä haluamaasi kirjastoon tai kirjakauppiaaseen ja pyydettävä heidän OPDS-luettelonsa URL-osoite. Jos et ole varma, mistä aloittaa, Wikipediassa on muutamia OPDS-luetteloita eri kielillä, mistä voi olla apua.\nNimi-kentän voit täydentää itse. Voit valita nimen, jolla helposti tunnistat syötteen Thorium Readerissa.",
+        "lastPage": "Viimeinen",
+        "menu": {
+            "aboutBook": "Tietoja tästä kirjasta",
+            "addExtract": "Tuo näyte",
+            "goBuyBook": "Osta kirja",
+            "goLoanBook": "Lainaa kirja",
+            "goRevokeLoanBook": "Peruuta laina",
+            "goSubBook": "Tilaa"
+        },
+        "network": {
+            "error": "OPDS-syöte ei ole saatavilla",
+            "noInternet": "Ei internetyhteyttä",
+            "noInternetMessage": "Tarkista verkkokaapeli, modeemi, reititin tai langaton verkko",
+            "reject": "Odottamaton virhe!",
+            "timeout": "Verkkoyhteyden aikakatkaisu. Yritä myöhemmin uudestaan."
+        },
         "next": "Seuraava",
-        "notFound": "ei osumia",
         "previous": "Edellinen",
-        "results": "Tulokset",
-        "submit": "Etsi"
-      },
-      "searchTitle": "Hae:"
+        "shelf": "Hylly",
+        "updateForm": {
+            "name": "Nimi:",
+            "title": "Muokkaa OPDS-syötettä",
+            "updateButton": "Muokkaa",
+            "url": "Linkki:"
+        },
+        "whatIsOpds": "Mikä OPDS on?"
+    },
+    "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": "Yhteensopiva tekstistä puheeksi -toiminnon ja ruudunlukuohjelmien kanssa"
+            },
+            "accessibilityFeature": {
+                "alternativeText": "Kuvilla on vaihtoehtoiset tekstit",
+                "displayTransformability": "Tekstin ulkoasua voi mukauttaa",
+                "longDescription": "Kuvallisella sisällöllä on kattavia selostuksia",
+                "printPageNumbers": "Sisältää painetun kirjan sivunumeroinnin",
+                "readingOrder": "Lukemisjärjestys on määritelty",
+                "synchronizedAudioText": "Tekstin kanssa synkronoitu äänite",
+                "tableOfContents": "Sisältää sisällysluettelon"
+            },
+            "accessibilityHazard": {
+                "flashing": "Välähdyksiä",
+                "motionSimulation": "Simuloitua liikettä",
+                "name": "Vaaratekijä:",
+                "noFlashing": "Ei välähdyksiä",
+                "noMotionSimulation": "Ei simuloitua liikettä",
+                "noSound": "Ei ääntä",
+                "none": "Ei mitään",
+                "sound": "Ääni",
+                "unknown": "Tuntematon"
+            },
+            "certifierReport": "Arviointiraportti",
+            "conformsTo": "Noudattaa:",
+            "moreInformation": "Lisätietoja",
+            "name": "Saavutettavuus",
+            "noA11y": "Saavutettavuustietoja ei ole saatavilla."
+        },
+        "actions": "Toiminnot",
+        "audio": {
+            "tracks": "Osat"
+        },
+        "author": "Tekijä",
+        "cancelledLcp": "Tämän julkaisun LCP-käyttöoikeus on peruttu.",
+        "certificateRevoked": "Varmenne on kumottu",
+        "certificateSignatureInvalid": "Varmenteen allekirjoitus ei kelpaa",
+        "cover": {
+            "img": "kansikuva"
+        },
+        "day": "päivä",
+        "days": "päivää",
+        "duration": {
+            "title": "Kesto"
+        },
+        "expired": "Laina-aika on päättynyt",
+        "expiredLcp": "LCP-käyttöoikeus on päättynyt.",
+        "lcpEnd": "Loppu",
+        "lcpRightsCopy": "Kopioidut merkit",
+        "lcpRightsPrint": "Tulostetut sivut",
+        "lcpStart": "Aloita",
+        "licenceLCP": "Käyttöoikeus (LCP)",
+        "licenseOutOfDate": "LCP-käyttöoikeus on vanhentunut.",
+        "licenseSignatureDateInvalid": "LCP-käyttöoikeuden allekirjoituksen päiväys ei kelpaa",
+        "licenseSignatureInvalid": "LCP-käyttöoikeuden allekirjoitus ei kelpaa",
+        "licensed": "Lisensoitu",
+        "markAsRead": "Merkitse luetuksi",
+        "notStarted": "Ei ole aloitettu",
+        "onGoing": "Luettavana",
+        "progression": {
+            "title": "Eteneminen"
+        },
+        "read": "Luettu",
+        "remainingTime": "Laina (aikaa jäljellä)",
+        "renewButton": "Uudista",
+        "returnButton": "Palauta",
+        "returnedLcp": "Tämä LCP-suojattu julkaisu on palautettu.",
+        "revokedLcp": "LCP-käyttöoikeus on kumottu",
+        "seeLess": "Näytä vähemmän",
+        "seeMore": "Näytä enemmän",
+        "timeLeft": "Aikaa jäljellä",
+        "title": "Nimike",
+        "userKeyCheckInvalid": "Salasana on väärä"
+    },
+    "reader": {
+        "annotations": {
+            "Color": "Väri",
+            "addNote": "Lisää muistiinpano",
+            "advancedMode": "Välitön tila (luo suoraan valinnasta)",
+            "annotationsOptions": "Asetukset",
+            "colors": {
+                "bluegreen": "",
+                "cyan": "",
+                "green": "",
+                "lightblue": "",
+                "orange": "",
+                "purple": "",
+                "red": "",
+                "yellow": ""
+            },
+            "filter": {
+                "all": "",
+                "filterByColor": "",
+                "filterByDrawtype": "",
+                "filterByTag": "",
+                "filterOptions": "",
+                "none": ""
+            },
+            "hide": "Älä näytä",
+            "highlight": "Korosta",
+            "noSelectionToast": "Ei valintaa",
+            "quickAnnotations": "Pikatila (ohita muokkausikkuna)",
+            "saveNote": "Tallenna",
+            "toggleMarginMarks": "Näytä marginaalissa",
+            "type": {
+                "outline": "Reunaviiva",
+                "solid": "Värikorostus",
+                "strikethrough": "Yliviivaus",
+                "underline": "Alleviivaus"
+            }
+        },
+        "divina": {
+            "mute": "mykistä",
+            "unmute": "poista mykistys"
+        },
+        "fxl": {
+            "fit": "Sovita"
+        },
+        "marks": {
+            "annotations": "Muistiinpanot",
+            "bookmarks": "Kirjanmerkit",
+            "delete": "Poista",
+            "edit": "Muokkaa",
+            "goTo": "Siirry sivulle",
+            "landmarks": "Kiintopisteet",
+            "saveMark": "Tallenna kirjanmerkki",
+            "search": "Hae",
+            "searchResult": "Hae [{{- searchText}}]",
+            "toc": "Sisällysluettelo"
+        },
+        "media-overlays": {
+            "activate": "Käynnistä luenta",
+            "captions": "Synkronoitu teksti: pelkistetty",
+            "captionsDescription": "Pelkistetty tekstinäkymä.",
+            "next": "Seuraava",
+            "pause": "Pysäytä",
+            "play": "Jatka",
+            "previous": "Edellinen",
+            "skip": "Ohita toissijainen sisältö",
+            "skipDescription": "Ohita toissijainen sisältö kuten sivunvaihdot tai ala- ja loppuviitteet.\n",
+            "speed": "Luennan nopeus",
+            "stop": "Lopeta luenta",
+            "title": "Luenta"
+        },
+        "navigation": {
+            "annotationTitle": "muistiinpano",
+            "backHomeTitle": "Takaisin kirjahyllyyn",
+            "bookmarkTitle": "Kirjanmerkki",
+            "currentPage": "Nykyinen sivu: {{- current}}",
+            "currentPageTotal": "Nykyinen sivu: {{- current}}/{{- total}}",
+            "detachWindowTitle": "Näytä kirjaston / kirjahyllyn ikkuna",
+            "fullscreenTitle": "Avaa kokoruudun tilassa",
+            "goTo": "Siirry",
+            "goToError": "Sivua ei löydy",
+            "goToPlaceHolder": "Syötä sivunumero",
+            "goToTitle": "Siirry sivulle",
+            "historyNext": "Hyppää eteenpäin",
+            "historyPrevious": "Hyppää taaksepäin",
+            "infoTitle": "Tiedot",
+            "magnifyingGlassButton": "Hae julkaisusta",
+            "openTableOfContentsTitle": "Navigaatio",
+            "page": "Sivu",
+            "pdfscalemode": "Sovita sivu tai leveyteen",
+            "settingsTitle": "Asetukset"
+        },
+        "picker": {
+            "search": {
+                "founds": "{{- nResults}} osuma(a)",
+                "input": "etsittävä teksti",
+                "next": "Seuraava",
+                "notFound": "ei osumia",
+                "previous": "Edellinen",
+                "results": "Tulokset",
+                "submit": "Etsi"
+            },
+            "searchTitle": "Hae:"
+        },
+        "settings": {
+            "column": {
+                "auto": "Oletus",
+                "one": "1 palsta",
+                "title": "Palstat",
+                "two": "2 palstaa"
+            },
+            "customizeReader": "Mukauta tekstin ulkoasua",
+            "disabled": "ei käytössä",
+            "display": "Näyttöasetukset",
+            "disposition": {
+                "title": "Asettelu"
+            },
+            "font": "Fontti",
+            "fontSize": "Fonttikoko",
+            "infoCustomFont": "Valitse fontti käyttöjärjestelmästä kirjoittamalla sen nimi. ",
+            "justification": "Tasaus",
+            "justify": "Tasareunainen",
+            "letterSpacing": "Kirjainvälistys",
+            "lineSpacing": "Riviväli",
+            "margin": "Marginaali",
+            "noFootnotes": "Alaviitteet pois käytöstä",
+            "noRTLFlip": "Estä oikealta vasemmalle -käyttöliittymä",
+            "noRuby": "Piilota japanin rubi-merkit",
+            "paginated": "Sivuiksi jaettu",
+            "paraSpacing": "Kappaleväli",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "100 %",
+                    "150pct": "150 %",
+                    "200pct": "200 %",
+                    "300pct": "300 %",
+                    "500pct": "500 %",
+                    "50pct": "50 %",
+                    "fit": "yksi sivu",
+                    "width": "sivun leveys"
+                },
+                "title": "Zoomaus"
+            },
+            "preset": {
+                "apply": "",
+                "reset": "",
+                "save": "",
+                "title": ""
+            },
+            "preview": "Esikatselu",
+            "reduceMotion": "Vähennä liikettä",
+            "scrolled": "Vieritettävä",
+            "spacing": "Välit",
+            "text": "Teksti",
+            "theme": {
+                "name": {
+                    "Contrast1": "Kontrasti 1",
+                    "Contrast2": "Kontrasti 2",
+                    "Contrast3": "Kontrasti 3",
+                    "Contrast4": "Kontrasti 4",
+                    "Neutral": "Neutraali",
+                    "Night": "Yö",
+                    "Paper": "Paperi",
+                    "Sepia": "Seepia"
+                },
+                "title": "Teema"
+            },
+            "wordSpacing": "Sanaväli"
+        },
+        "svg": {
+            "left": "Vasen",
+            "right": "Oikea"
+        },
+        "toc": {
+            "publicationNoToc": "Julkaisussa ei ole sisällysluetteloa"
+        },
+        "tts": {
+            "activate": "Käynnistä tekstistä puheeksi",
+            "default": "Ääni: järjestelmän oletus",
+            "next": "Seuraava",
+            "pause": "Pysäytä",
+            "play": "Jatka",
+            "previous": "Edellinen",
+            "sentenceDetect": "Korosta tekstistä puheeksi virketasolla.",
+            "sentenceDetectDescription": "Pilko pitkät kappaleet virkkeiksi.",
+            "speed": "Tekstistä puheeksi -nopeus",
+            "stop": "Lopeta tekstistä puheeksi",
+            "voice": "Tekstistä puheeksi -ääni"
+        }
     },
     "settings": {
-      "column": {
-        "auto": "Oletus",
-        "one": "1 palsta",
-        "title": "Palstat",
-        "two": "2 palstaa"
-      },
-      "customizeReader": "Mukauta tekstin ulkoasua",
-      "disabled": "ei käytössä",
-      "display": "Näyttöasetukset",
-      "disposition": {
-        "title": "Asettelu"
-      },
-      "font": "Fontti",
-      "fontSize": "Fonttikoko",
-      "infoCustomFont": "Valitse fontti käyttöjärjestelmästä kirjoittamalla sen nimi. ",
-      "justification": "Tasaus",
-      "justify": "Tasareunainen",
-      "letterSpacing": "Kirjainvälistys",
-      "lineSpacing": "Riviväli",
-      "margin": "Marginaali",
-      "noFootnotes": "Alaviitteet pois käytöstä",
-      "noRTLFlip": "Estä oikealta vasemmalle -käyttöliittymä",
-      "noRuby": "Piilota japanin rubi-merkit",
-      "paginated": "Sivuiksi jaettu",
-      "paraSpacing": "Kappaleväli",
-      "pdfZoom": {
-        "name": {
-          "100pct": "100 %",
-          "150pct": "150 %",
-          "200pct": "200 %",
-          "300pct": "300 %",
-          "500pct": "500 %",
-          "50pct": "50 %",
-          "fit": "yksi sivu",
-          "width": "sivun leveys"
+        "auth": {
+            "wipeData": "Poista kirjautumistiedot"
         },
-        "title": "Zoomaus"
-      },
-      "preview": "Esikatselu",
-      "reduceMotion": "Vähennä liikettä",
-      "scrolled": "Vieritettävä",
-      "spacing": "Välit",
-      "text": "Teksti",
-      "theme": {
-        "name": {
-          "Contrast1": "Kontrasti 1",
-          "Contrast2": "Kontrasti 2",
-          "Contrast3": "Kontrasti 3",
-          "Contrast4": "Kontrasti 4",
-          "Neutral": "Neutraali",
-          "Night": "Yö",
-          "Paper": "Paperi",
-          "Sepia": "Seepia"
+        "keyboard": {
+            "advancedMenu": "Valikko",
+            "cancel": "Peruuta",
+            "disclaimer": "Pikanäppäimet perustuvat QWERTY-näppäinasetteluun.",
+            "editUserJson": "Muokkaa käyttäjän tiedostoa...",
+            "keyboardShortcuts": "Pikanäppäimet",
+            "loadUserJson": "Lataa käyttäjän tiedostosta",
+            "resetDefaults": "Palauta (lataa oletusasetukset)",
+            "save": "Tallenna"
         },
-        "title": "Teema"
-      },
-      "wordSpacing": "Sanaväli"
+        "language": {
+            "languageChoice": "Kieli"
+        },
+        "session": {
+            "no": "Keskeytä",
+            "title": "Tallenna istunto",
+            "yes": "Jatka"
+        },
+        "tabs": {
+            "appearance": "Ulkoasu",
+            "general": "Yleiset",
+            "keyboardShortcuts": "Pikanäppäimet"
+        },
+        "theme": {
+            "auto": "Automaattinen",
+            "dark": "Tumma",
+            "description": "Sovelluksen teema vastaa käyttöjärjestelmän asetuksia.",
+            "light": "Vaalea",
+            "title": "Sovelluksen teema"
+        }
     },
-    "svg": {
-      "left": "Vasen",
-      "right": "Oikea"
-    },
-    "toc": {
-      "publicationNoToc": "Julkaisussa ei ole sisällysluetteloa"
-    },
-    "tts": {
-      "activate": "Käynnistä tekstistä puheeksi",
-      "default": "Ääni: järjestelmän oletus",
-      "next": "Seuraava",
-      "pause": "Pysäytä",
-      "play": "Jatka",
-      "previous": "Edellinen",
-      "sentenceDetect": "Korosta tekstistä puheeksi virketasolla.",
-      "sentenceDetectDescription": "Pilko pitkät kappaleet virkkeiksi.",
-      "speed": "Tekstistä puheeksi -nopeus",
-      "stop": "Lopeta tekstistä puheeksi",
-      "voice": "Tekstistä puheeksi -ääni"
+    "wizard": {
+        "buttons": {
+            "discover": "Mikä on muuttunut",
+            "goToBooks": "Siirry omiin julkaisuihin",
+            "next": "Seuraava"
+        },
+        "description": {
+            "annotations": "Korosta asiakirjan tekstiä eri tyyleillä ja väreillä tai tee muistiinpanoja. Luo muistiinpanoja pikatilassa, jossa voi ohittaa editorin (voit kirjoittaa tekstiä ja muokata ulkonäköä myöhemmin). Voit myös käyttää välitöntä tilaa, joka luo muistiinpanon heti, kun olet korostanut tekstin.",
+            "catalogs": "Lainaa julkaisuja paikallisesta kirjastostasi tai löydä julkaisuja OPDS-syötteiden kautta. Verkkoluetteloiden ansiosta pääset käsiksi julkaisuihin useista lähteistä.",
+            "home": "Thorium näyttää erilaiselta! Katso mikä on muuttunut...",
+            "readingView1": "Mukauta luku- ja kuunteluasetuksiasi: Thorium tarjoaa useita väriteemoja sekä käyttöliittymään että julkaisuihin. Nyt voit myös entistä paremmin säätää sekä tekstistä puheeksi -toiminnon että synkronoidun tekstin ja äänen asetuksia.",
+            "readingView2": "Thoriumin parannettu käyttöliittymä helpottaa tekstin löytämistä julkaisuista, hakutulosten tutkimista, tietyille sivuille siirtymistä, sisällysluettelon selaamista, kirjanmerkkien luomista jne. siirrettävien valintaikkunoiden avulla. Koko näytön lukutila tarjoaa edelleen häiriöttömän ympäristön.",
+            "yourBooks": "Tervetuloa uudistettuun henkilökohtaiseen kirjahyllyysi! Ruudukkonäkymässä voit suodattaa helposti tunnisteiden mukaan tai etsiä julkaisuja avainsanojen perusteella. Tarkennetussa taulukkonäkymässä voit valita ja lajitella julkaisuja tekijän, otsikon, päivämäärän, muodon jne. mukaan."
+        },
+        "dontShow": "Älä näytä uudestaan",
+        "tab": {
+            "annotations": "Muistiinpanot",
+            "catalogs": "Luettelot",
+            "home": "Koti",
+            "readingView": "Lukunäkymä",
+            "yourBooks": "Omat julkaisut"
+        },
+        "title": {
+            "allBooks": "Kaikki omat julkaisut",
+            "newFeature": "Uusi ominaisuus: Muistiinpanot",
+            "welcome": "Tervetuloa Thorium 3.0 -sovellukseen"
+        }
     }
-  },
-  "settings": {
-    "auth": {
-      "wipeData": "Poista kirjautumistiedot"
-    },
-    "keyboard": {
-      "advancedMenu": "Valikko",
-      "cancel": "Peruuta",
-      "disclaimer": "Pikanäppäimet perustuvat QWERTY-näppäinasetteluun.",
-      "editUserJson": "Muokkaa käyttäjän tiedostoa...",
-      "keyboardShortcuts": "Pikanäppäimet",
-      "loadUserJson": "Lataa käyttäjän tiedostosta",
-      "resetDefaults": "Palauta (lataa oletusasetukset)",
-      "save": "Tallenna"
-    },
-    "language": {
-      "languageChoice": "Kieli"
-    },
-    "session": {
-      "no": "Keskeytä",
-      "title": "Tallenna istunto",
-      "yes": "Jatka"
-    },
-    "tabs": {
-      "appearance": "Ulkoasu",
-      "general": "Yleiset",
-      "keyboardShortcuts": "Pikanäppäimet"
-    },
-    "theme": {
-      "auto": "Automaattinen",
-      "dark": "Tumma",
-      "description": "Sovelluksen teema vastaa käyttöjärjestelmän asetuksia.",
-      "light": "Vaalea",
-      "title": "Sovelluksen teema"
-    }
-  },
-  "wizard": {
-    "buttons": {
-      "discover": "Mikä on muuttunut",
-      "goToBooks": "Siirry omiin julkaisuihin",
-      "next": "Seuraava"
-    },
-    "description": {
-      "annotations": "Korosta asiakirjan tekstiä eri tyyleillä ja väreillä tai tee muistiinpanoja. Luo muistiinpanoja pikatilassa, jossa voi ohittaa editorin (voit kirjoittaa tekstiä ja muokata ulkonäköä myöhemmin). Voit myös käyttää välitöntä tilaa, joka luo muistiinpanon heti, kun olet korostanut tekstin.",
-      "catalogs": "Lainaa julkaisuja paikallisesta kirjastostasi tai löydä julkaisuja OPDS-syötteiden kautta. Verkkoluetteloiden ansiosta pääset käsiksi julkaisuihin useista lähteistä.",
-      "home": "Thorium näyttää erilaiselta! Katso mikä on muuttunut...",
-      "readingView1": "Mukauta luku- ja kuunteluasetuksiasi: Thorium tarjoaa useita väriteemoja sekä käyttöliittymään että julkaisuihin. Nyt voit myös entistä paremmin säätää sekä tekstistä puheeksi -toiminnon että synkronoidun tekstin ja äänen asetuksia.",
-      "readingView2": "Thoriumin parannettu käyttöliittymä helpottaa tekstin löytämistä julkaisuista, hakutulosten tutkimista, tietyille sivuille siirtymistä, sisällysluettelon selaamista, kirjanmerkkien luomista jne. siirrettävien valintaikkunoiden avulla. Koko näytön lukutila tarjoaa edelleen häiriöttömän ympäristön.",
-      "yourBooks": "Tervetuloa uudistettuun henkilökohtaiseen kirjahyllyysi! Ruudukkonäkymässä voit suodattaa helposti tunnisteiden mukaan tai etsiä julkaisuja avainsanojen perusteella. Tarkennetussa taulukkonäkymässä voit valita ja lajitella julkaisuja tekijän, otsikon, päivämäärän, muodon jne. mukaan."
-    },
-    "dontShow": "Älä näytä uudestaan",
-    "tab": {
-      "annotations": "Muistiinpanot",
-      "catalogs": "Luettelot",
-      "home": "Koti",
-      "readingView": "Lukunäkymä",
-      "yourBooks": "Omat julkaisut"
-    },
-    "title": {
-      "allBooks": "Kaikki omat julkaisut",
-      "newFeature": "Uusi ominaisuus: Muistiinpanot",
-      "welcome": "Tervetuloa Thorium 3.0 -sovellukseen"
-    }
-  }
 }

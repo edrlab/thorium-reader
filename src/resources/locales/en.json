@@ -124,6 +124,8 @@
     },
     "dialog": {
         "cancel": "Cancel",
+        "deleteAnnotations": "Delete annotations?",
+        "deleteAnnotationsText": "Do you want to delete {{- annotationListLength}} annotation(s)?",
         "deleteFeed": "Delete catalog?",
         "deletePublication": "Delete publication?",
         "import": "Confirm import:",
@@ -306,6 +308,24 @@
             "addNote": "Annotate",
             "advancedMode": "Instant mode (auto create after select)",
             "annotationsOptions": "Options",
+            "colors": {
+                "bluegreen": "Blue-green",
+                "cyan": "Cyan",
+                "green": "Green",
+                "lightblue": "Light Blue",
+                "orange": "Orange",
+                "purple": "Purple",
+                "red": "Red",
+                "yellow": "Yellow"
+            },
+            "filter": {
+                "all": "All",
+                "filterByColor": "Filter by Color",
+                "filterByDrawtype": "Filter by Drawtype",
+                "filterByTag": "Filter by Tag",
+                "filterOptions": "Filter Options",
+                "none": "None"
+            },
             "hide": "Do not display",
             "highlight": "Highlight",
             "noSelectionToast": "No selection",
@@ -424,6 +444,12 @@
                 },
                 "title": "Zoom"
             },
+            "preset": {
+                "apply": "Apply the preferred reading settings preset to the current reading settings",
+                "reset": "Reset preferred reading settings preset to the initial state",
+                "save": "Save the current reading settings to the preferred reading settings preset",
+                "title": "Preset"
+            },
             "preview": "Preview",
             "reduceMotion": "Reduce motion",
             "scrolled": "Scrollable",
@@ -442,13 +468,7 @@
                 },
                 "title": "Theme"
             },
-            "wordSpacing": "Word spacing",
-            "preset": {
-              "title": "Preset",
-              "save": "Save the current reading settings to the preferred reading settings preset",
-              "apply": "Apply the preferred reading settings preset to the current reading settings",
-              "reset": "Reset preferred reading settings preset to the initial state"
-            }
+            "wordSpacing": "Word spacing"
         },
         "svg": {
             "left": "Left",

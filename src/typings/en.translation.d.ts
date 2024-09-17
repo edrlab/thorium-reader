@@ -306,6 +306,8 @@ declare namespace typed_i18n {
   (_: "dialog", __?: {}): {
   readonly "cancel": string,
   readonly "deleteFeed": string,
+  readonly "deleteAnnotations": string,
+  readonly "deleteAnnotationsText": string,
   readonly "deletePublication": string,
   readonly "import": string,
   readonly "importError": string,
@@ -315,6 +317,8 @@ declare namespace typed_i18n {
 };
   (_: "dialog.cancel", __?: {}): string;
   (_: "dialog.deleteFeed", __?: {}): string;
+  (_: "dialog.deleteAnnotations", __?: {}): string;
+  (_: "dialog.deleteAnnotationsText", __?: {}): string;
   (_: "dialog.deletePublication", __?: {}): string;
   (_: "dialog.import", __?: {}): string;
   (_: "dialog.importError", __?: {}): string;
@@ -710,6 +714,24 @@ declare namespace typed_i18n {
       readonly "solid": string,
       readonly "strikethrough": string,
       readonly "underline": string
+    },
+    readonly "colors": {
+      readonly "bluegreen": string,
+      readonly "cyan": string,
+      readonly "green": string,
+      readonly "lightblue": string,
+      readonly "orange": string,
+      readonly "purple": string,
+      readonly "red": string,
+      readonly "yellow": string
+    },
+    readonly "filter": {
+      readonly "filterByColor": string,
+      readonly "filterByDrawtype": string,
+      readonly "filterByTag": string,
+      readonly "filterOptions": string,
+      readonly "all": string,
+      readonly "none": string
     }
   },
   readonly "divina": { readonly "mute": string, readonly "unmute": string },
@@ -868,6 +890,24 @@ declare namespace typed_i18n {
     readonly "solid": string,
     readonly "strikethrough": string,
     readonly "underline": string
+  },
+  readonly "colors": {
+    readonly "bluegreen": string,
+    readonly "cyan": string,
+    readonly "green": string,
+    readonly "lightblue": string,
+    readonly "orange": string,
+    readonly "purple": string,
+    readonly "red": string,
+    readonly "yellow": string
+  },
+  readonly "filter": {
+    readonly "filterByColor": string,
+    readonly "filterByDrawtype": string,
+    readonly "filterByTag": string,
+    readonly "filterOptions": string,
+    readonly "all": string,
+    readonly "none": string
   }
 };
   (_: "reader.annotations.Color", __?: {}): string;
@@ -890,6 +930,38 @@ declare namespace typed_i18n {
   (_: "reader.annotations.type.solid", __?: {}): string;
   (_: "reader.annotations.type.strikethrough", __?: {}): string;
   (_: "reader.annotations.type.underline", __?: {}): string;
+  (_: "reader.annotations.colors", __?: {}): {
+  readonly "bluegreen": string,
+  readonly "cyan": string,
+  readonly "green": string,
+  readonly "lightblue": string,
+  readonly "orange": string,
+  readonly "purple": string,
+  readonly "red": string,
+  readonly "yellow": string
+};
+  (_: "reader.annotations.colors.bluegreen", __?: {}): string;
+  (_: "reader.annotations.colors.cyan", __?: {}): string;
+  (_: "reader.annotations.colors.green", __?: {}): string;
+  (_: "reader.annotations.colors.lightblue", __?: {}): string;
+  (_: "reader.annotations.colors.orange", __?: {}): string;
+  (_: "reader.annotations.colors.purple", __?: {}): string;
+  (_: "reader.annotations.colors.red", __?: {}): string;
+  (_: "reader.annotations.colors.yellow", __?: {}): string;
+  (_: "reader.annotations.filter", __?: {}): {
+  readonly "filterByColor": string,
+  readonly "filterByDrawtype": string,
+  readonly "filterByTag": string,
+  readonly "filterOptions": string,
+  readonly "all": string,
+  readonly "none": string
+};
+  (_: "reader.annotations.filter.filterByColor", __?: {}): string;
+  (_: "reader.annotations.filter.filterByDrawtype", __?: {}): string;
+  (_: "reader.annotations.filter.filterByTag", __?: {}): string;
+  (_: "reader.annotations.filter.filterOptions", __?: {}): string;
+  (_: "reader.annotations.filter.all", __?: {}): string;
+  (_: "reader.annotations.filter.none", __?: {}): string;
   (_: "reader.divina", __?: {}): { readonly "mute": string, readonly "unmute": string };
   (_: "reader.divina.mute", __?: {}): string;
   (_: "reader.divina.unmute", __?: {}): string;

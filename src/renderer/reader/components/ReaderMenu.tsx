@@ -29,9 +29,7 @@ import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/compo
 import * as DockLeftIcon from "readium-desktop/renderer/assets/icons/dockleft-icon.svg";
 import * as DockRightIcon from "readium-desktop/renderer/assets/icons/dockright-icon.svg";
 import * as DockModalIcon from "readium-desktop/renderer/assets/icons/dockmodal-icon.svg";
-import * as ChevronIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
-import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
 import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
@@ -68,7 +66,7 @@ import { Locator } from "r2-shared-js/dist/es8-es2017/src/models/locator";
 // import { DialogTrigger as DialogTriggerReactAria, Popover as PopoverReactAria, Dialog as DialogReactAria } from "react-aria-components";
 import { TextArea } from "react-aria-components";
 import { AnnotationEdit } from "./AnnotationEdit";
-import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
+import { IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
@@ -77,6 +75,22 @@ import * as Popover from "@radix-ui/react-popover";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
+import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
+import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
+import * as MenuIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
+import * as OptionsIcon from "readium-desktop/renderer/assets/icons/filter2-icon.svg";
+import * as HighLightIcon from "readium-desktop/renderer/assets/icons/highlight-icon.svg";
+import * as UnderLineIcon from "readium-desktop/renderer/assets/icons/underline-icon.svg";
+import * as TextStrikeThroughtIcon from "readium-desktop/renderer/assets/icons/TextStrikethrough-icon.svg";
+import * as TextOutlineIcon from "readium-desktop/renderer/assets/icons/TextOutline-icon.svg";
+import { TagGroup, TagList, Tag, Label } from "react-aria-components";
+import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+
+import type { Selection } from "react-aria-components";
+import { rgbToHex } from "readium-desktop/common/rgb";
+
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -398,9 +412,9 @@ const HardWrapComment: React.FC<{ comment: string }> = (props) => {
     );
 };
 
-const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, isEdited: boolean, triggerEdition: (v: boolean) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
-    const { goToLocator } = props;
+    const { goToLocator, setTagFilter } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
     // const setReaderConfig = useSaveReaderConfig();
@@ -409,21 +423,29 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     // }, [setReaderConfig]);
     const dockedMode = dockingMode !== "full";
     const { timestamp, annotation, isEdited, triggerEdition } = props;
-    const { uuid, comment, locatorExtended } = annotation;
+    const { uuid, comment, tags: tagsStringArrayMaybeUndefined } = annotation;
+    const tagsStringArray = tagsStringArrayMaybeUndefined || [];
+    const tagName = tagsStringArray[0] || "";
     const dockedEditAnnotation = isEdited && dockedMode;
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
-    const save = React.useCallback((color: IColor, comment: string, drawType: TDrawType) => {
-        dispatch(readerActions.annotation.update.build({
-            uuid,
-            locatorExtended,
-            color,
-            comment,
-            drawType,
-        }));
+    const save = React.useCallback((color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
+        dispatch(readerActions.annotation.update.build(
+            {
+                ...annotation,
+            },
+            {
+                uuid: annotation.uuid,
+                locatorExtended: annotation.locatorExtended,
+                color,
+                comment,
+                drawType,
+                tags,
+            },
+        ));
         triggerEdition(false);
-    }, [dispatch, locatorExtended, uuid, triggerEdition]);
+    }, [dispatch, annotation, triggerEdition]);
 
     const date = new Date(timestamp);
     const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;
@@ -522,7 +544,26 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                     <AnnotationEdit uuid={uuid} save={save} cancel={() => triggerEdition(false)} dockedMode={dockedMode} btext={dockedEditAnnotation && btext} />
                     // </FocusLock>
                     :
-                    <HardWrapComment comment={comment} />
+                    // <HardWrapComment comment={comment} />
+                    <>
+                        <HardWrapComment comment={comment} />
+                        {tagName ? <div className={stylesTags.tags_wrapper}>
+                            <div className={classNames(
+                                stylesTags.tag, stylesTags.no_hover,
+                            )}>
+                                <a onClick={() => setTagFilter(tagName)}
+                                    onKeyUp={(e) => {
+                                        if (e.key === "Enter" || e.key === "Space") {
+                                            e.preventDefault();
+                                            setTagFilter(tagName);
+                                        }
+                                    }}>
+                                    {tagName}
+                                </a>
+                            </div>
+                        </div>
+                            : <></>}
+                    </>
             }
         </div>
         <div className={stylesAnnotations.annotation_edit}>
@@ -600,41 +641,83 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     </div>);
 };
 
-const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const selectionIsSet = (a: Selection): a is Set<string> => typeof a === "object";
+const MAX_MATCHES_PER_PAGE = 5;
 
-    const { goToLocator, annotationUUIDFocused } = props;
+const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+
+    const { goToLocator, annotationUUIDFocused, resetAnnotationUUID } = props;
 
     const [__] = useTranslator();
-    // const [bookmarkToUpdate, setBookmarkToUpdate] = React.useState(undefined);
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
-    // const previousFocusUuid = useSelector((state: IReaderRootState) => state.annotationControlMode.focus.previousFocusUuid);
 
-    const MAX_MATCHES_PER_PAGE = 5;
+    const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
+    const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
+    const [drawTypeArrayFilter, setDrawTypeArrayFilter] = React.useState<Selection>(new Set([]));
 
-    const pageTotal = Math.ceil(annotationsQueue.length / MAX_MATCHES_PER_PAGE) || 1;
-
+    let annotationList: TAnnotationState = [];
     let startPage = 1;
+    const [pageNumber, setPageNumber] = React.useState(startPage);
+
+    annotationList = (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
+        (selectionIsSet(colorArrayFilter) && colorArrayFilter.size) ||
+        (selectionIsSet(drawTypeArrayFilter) && drawTypeArrayFilter.size)
+        ? annotationsQueue.filter(([, { tags, color, drawType }]) => {
+
+            const colorHex = rgbToHex(color);
+
+            return (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags.some((tagsValueName) => tagArrayFilter.has(tagsValueName))) &&
+                (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
+                (!selectionIsSet(drawTypeArrayFilter) || !drawTypeArrayFilter.size || drawTypeArrayFilter.has(drawType));
+
+        })
+        : annotationsQueue;
+
     if (annotationUUIDFocused) {
-        const annotationFocusItemFindIndex = annotationsQueue.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused);
+
+        const annotationFocusItemFindIndex = annotationList.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused);
         if (annotationFocusItemFindIndex > -1) {
             const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
             startPage = annotationFocusItemPageNumber;
+            if (startPage !== pageNumber)
+                setPageNumber(startPage);
+
+        } else if (annotationList !== annotationsQueue) {
+            annotationList = annotationsQueue;
+            const annotationFocusItemFindIndex = annotationList.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused);
+            if (annotationFocusItemFindIndex > -1) {
+                const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
+                startPage = annotationFocusItemPageNumber;
+                if (startPage !== pageNumber)
+                    setPageNumber(startPage);
+
+                const [, annotationFound] = annotationList[annotationFocusItemFindIndex];
+
+                // reset filters
+                if (tagArrayFilter !== "all" && !tagArrayFilter.has((annotationFound.tags || [])[0]) && tagArrayFilter.size !== 0) {
+                    setTagArrayFilter(new Set([]));
+                }
+                if (colorArrayFilter !== "all" && !colorArrayFilter.has(rgbToHex(annotationFound.color)) && colorArrayFilter.size !== 0) {
+                    setColorArrayFilter(new Set([]));
+                }
+                if (drawTypeArrayFilter !== "all" && !drawTypeArrayFilter.has(annotationFound.drawType) && drawTypeArrayFilter.size !== 0) {
+                    setDrawTypeArrayFilter(new Set([]));
+                }
+            }
         }
+        resetAnnotationUUID();
     }
 
-    const startPageRef = React.useRef<number>();
+    const pageTotal = Math.ceil(annotationList.length / MAX_MATCHES_PER_PAGE) || 1;
 
-    const [pageNumber, setPageNumber] = React.useState(startPage);
-
-    if (pageNumber <= 0 || startPageRef.current !== startPage) {
+    if (pageNumber <= 0) {
         setPageNumber(startPage);
-        startPageRef.current = startPage;
     } else if (pageNumber > pageTotal) {
         setPageNumber(pageTotal);
     }
 
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
-    const annotationsPagedArray = annotationsQueue.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE);
+    const annotationsPagedArray = annotationList.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE);
 
     const isLastPage = pageTotal === pageNumber;
     const isFirstPage = pageNumber === 1;
@@ -643,13 +726,226 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number 
 
 
     const begin = startIndex + 1;
-    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationsQueue.length);
+    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationList.length);
 
     const [annotationItemEditedUUID, setannotationItemEditedUUID] = React.useState("");
     const paginatorAnnotationsRef = React.useRef<HTMLSelectElement>();
 
+    const triggerEdition = (annotationItem: IAnnotationState) =>
+        (value: boolean) => value ? setannotationItemEditedUUID(annotationItem.uuid) : setannotationItemEditedUUID("");
+
+    const dispatch = useDispatch();
+
+    const tagsIndexList = useSelector((state: IReaderRootState) => state.annotationTagsIndex);
+    const selectTagOption = ObjectKeys(tagsIndexList).map((v, i) => ({ id: i, name: v }));
+
+    // if tagArrayFilter value not include in the selectTagOption then take only the intersection between tagArrayFilter and selectTagOption
+    const selectTagOptionFilteredNameArray = selectTagOption.map((v) => v.name);
+    const tagArrayFilterArray = selectionIsSet(tagArrayFilter) ? Array(...tagArrayFilter) : [];
+    if (tagArrayFilterArray.filter((tagValue) => !selectTagOptionFilteredNameArray.includes(tagValue)).length) {
+        const tagArrayFilterArrayDifference = tagArrayFilterArray.filter((tagValue) => selectTagOptionFilteredNameArray.includes(tagValue));
+        setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
+    }
+
+    const annotationsColorsLight = [
+        { hex: "#eb9694", name: `${__("reader.annotations.colors.red")}` },
+        { hex: "#fad0c3", name: `${__("reader.annotations.colors.orange")}` },
+        { hex: "#fef3bd", name: `${__("reader.annotations.colors.yellow")}` },
+        { hex: "#c1eac5", name: `${__("reader.annotations.colors.green")}` },
+        { hex: "#bedadc", name: `${__("reader.annotations.colors.bluegreen")}` },
+        { hex: "#c4def6", name: `${__("reader.annotations.colors.lightblue")}` },
+        { hex: "#bed3f3", name: `${__("reader.annotations.colors.cyan")}` },
+        { hex: "#d4c4fb", name: `${__("reader.annotations.colors.purple")}` },
+    ];
+
+    // I'm disable this feature for performance reason, push new Colors from incoming publicaiton annotation, not used for the moment. So let's commented it for the moment.
+    // Need to be optimised in the future.
+    // annotationsQueue.forEach(([, annotation]) => {
+    //     const colorHex = rgbToHex(annotation.color);
+    //     if (!annotationsColorsLight.find((annotationColor) => annotationColor.hex === colorHex)) {
+    //         annotationsColorsLight.push({ hex: colorHex, name: colorHex });
+    //     }
+    // });
+
+    const selectDrawtypesOptions = [
+        { name: "solid_background", svg: HighLightIcon },
+        { name: "underline", svg: UnderLineIcon },
+        { name: "strikethrough", svg: TextStrikeThroughtIcon },
+        { name: "outline", svg: TextOutlineIcon },
+    ];
+
+    const nbOfFilters = ((tagArrayFilter === "all") ? selectTagOption.length : tagArrayFilter.size) + ((colorArrayFilter === "all") ? annotationsColorsLight.length : colorArrayFilter.size) + ((drawTypeArrayFilter === "all") ? selectDrawtypesOptions.length : drawTypeArrayFilter.size);
+
     return (
         <>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "end", width: "100%", gap: "20px", marginTop: "-35px" }}>
+                <AlertDialog.Root>
+                    <AlertDialog.Trigger className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationList.length}>
+                        <SVG svg={TrashIcon} ariaHidden />
+                    </AlertDialog.Trigger>
+                    <AlertDialog.Portal>
+                        <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
+                        <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
+                            <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deleteAnnotations")}</AlertDialog.Title>
+                            <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
+                                {__("dialog.deleteAnnotationsText", { annotationListLength: annotationList.length })}
+                            </AlertDialog.Description>
+                            <div className={stylesAlertModals.AlertDialogButtonContainer}>
+                                <AlertDialog.Cancel asChild>
+                                    <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                                </AlertDialog.Cancel>
+                                <AlertDialog.Action asChild>
+                                    <button className={stylesButtons.button_primary_blue} onClick={() => {
+                                        for (const [, annotation] of annotationList) {
+
+                                            dispatch(readerActions.annotation.pop.build(annotation));
+                                            setannotationItemEditedUUID("");
+                                        }
+
+                                        // reset filters
+                                        setTagArrayFilter(new Set([]));
+                                        setColorArrayFilter(new Set([]));
+                                        setDrawTypeArrayFilter(new Set([]));
+                                    }} type="button">
+                                        <SVG ariaHidden svg={TrashIcon} />
+                                        {__("dialog.yes")}</button>
+                                </AlertDialog.Action>
+                            </div>
+                        </AlertDialog.Content>
+                    </AlertDialog.Portal>
+                </AlertDialog.Root>
+                <Popover.Root>
+                    <Popover.Trigger asChild>
+                        <button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button}
+                            title={__("reader.annotations.filter.filterOptions")}>
+                            <SVG svg={MenuIcon} />
+                            {nbOfFilters > 0 ?
+                                <p className={stylesAnnotations.annotations_filter_nbOfFilters} style={{ fontSize: nbOfFilters > 9 ? "10px" : "12px", paddingLeft: nbOfFilters > 9 ? "3px" : "4px" }}>{nbOfFilters}</p>
+                                : <></>
+                            }
+                        </button>
+                    </Popover.Trigger>
+                    <Popover.Portal>
+                        <Popover.Content collisionPadding={{ top: 200, bottom: 100 }} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_filter_container} style={{ maxHeight: Math.round(window.innerHeight / 2) }}>
+                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                            <TagGroup
+                                selectionMode="multiple"
+                                selectedKeys={tagArrayFilter}
+                                onSelectionChange={setTagArrayFilter}
+                                aria-label={__("reader.annotations.filter.filterByTag")}
+                                style={{ marginBottom: "20px" }}
+                            >
+                                <details open id="annotationListTagDetails">
+                                    <summary className={stylesAnnotations.annotations_filter_tagGroup}>
+                                        <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByTag")}</Label>
+                                        <div style={{ display: "flex", gap: "10px" }}>
+                                            <button
+                                                style={{ padding: "6px" }}
+                                                onClick={() => {
+                                                    setTagArrayFilter("all");
+                                                    const detailsElement = document.getElementById("annotationListTagDetails") as HTMLDetailsElement;
+                                                    if (detailsElement) {
+                                                        detailsElement.open = true;
+                                                    }
+
+                                                }}>
+                                                {__("reader.annotations.filter.all")}
+                                            </button>
+                                            <button
+                                                style={{ padding: "6px" }}
+                                                onClick={() => {
+                                                    setTagArrayFilter(new Set([]));
+
+                                                }}>
+                                                {__("reader.annotations.filter.none")}
+                                            </button>
+                                        </div>
+                                    </summary>
+                                    <TagList items={selectTagOption} className={stylesAnnotations.annotations_filter_taglist}>
+                                        {(item) => <Tag className={stylesAnnotations.annotations_filter_tag} id={item.name} textValue={item.name}>{item.name}</Tag>}
+                                    </TagList>
+                                </details>
+                            </TagGroup>
+                            <TagGroup
+                                selectionMode="multiple"
+                                selectedKeys={colorArrayFilter}
+                                onSelectionChange={setColorArrayFilter}
+                                aria-label={__("reader.annotations.filter.filterByColor")}
+                                style={{ marginBottom: "20px" }}
+                            >
+                                <details open id="annotationListColorDetails">
+                                    <summary className={stylesAnnotations.annotations_filter_tagGroup}>
+                                        <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByColor")}</Label>
+                                        <div style={{ display: "flex", gap: "10px" }}>
+                                            <button
+                                                style={{ padding: "6px" }}
+                                                onClick={() => {
+                                                    setColorArrayFilter("all");
+                                                    const detailsElement = document.getElementById("annotationListColorDetails") as HTMLDetailsElement;
+                                                    if (detailsElement) {
+                                                        detailsElement.open = true;
+                                                    }
+
+                                                }}>
+                                                {__("reader.annotations.filter.all")}
+                                            </button>
+                                            <button
+                                                style={{ padding: "6px" }}
+                                                onClick={() => {
+                                                    setColorArrayFilter(new Set([]));
+
+                                                }}>
+                                                {__("reader.annotations.filter.none")}
+                                            </button>
+                                        </div>
+                                    </summary>
+                                    <TagList items={annotationsColorsLight} className={stylesAnnotations.annotations_filter_taglist}>
+                                        {(item) => <Tag className={stylesAnnotations.annotations_filter_color} style={{ backgroundColor: item.hex, outlineColor: item.hex }} id={item.hex} textValue={item.name}></Tag>}
+                                    </TagList>
+                                </details>
+                            </TagGroup>
+                            <TagGroup
+                                selectionMode="multiple"
+                                selectedKeys={drawTypeArrayFilter}
+                                onSelectionChange={setDrawTypeArrayFilter}
+                                aria-label={__("reader.annotations.filter.filterByDrawtype")}
+                                style={{ marginBottom: "20px" }}
+                            >
+                                <details open id="annotationListDrawDetails">
+                                    <summary className={stylesAnnotations.annotations_filter_tagGroup}>
+                                        <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByDrawtype")}</Label>
+                                        <div style={{ display: "flex", gap: "10px" }}>
+                                            <button
+                                                style={{ padding: "6px" }}
+                                                onClick={() => {
+                                                    setDrawTypeArrayFilter("all");
+                                                    const detailsElement = document.getElementById("annotationListDrawDetails") as HTMLDetailsElement;
+                                                    if (detailsElement) {
+                                                        detailsElement.open = true;
+                                                    }
+
+                                                }}>
+                                                {__("reader.annotations.filter.all")}
+                                            </button>
+                                            <button
+                                                style={{ padding: "6px" }}
+                                                onClick={() => {
+                                                    setDrawTypeArrayFilter(new Set([]));
+
+                                                }}>
+                                                {__("reader.annotations.filter.none")}
+                                            </button>
+                                        </div>
+                                    </summary>
+                                    <TagList items={selectDrawtypesOptions} className={stylesAnnotations.annotations_filter_taglist}>
+                                        {(item) => <Tag id={item.name} className={stylesAnnotations.annotations_filter_drawtype} textValue={item.name}><SVG svg={item.svg} /></Tag>}
+                                    </TagList>
+                                </details>
+                            </TagGroup>
+                        </Popover.Content>
+                    </Popover.Portal>
+                </Popover.Root>
+            </div>
             {annotationsPagedArray.map(([timestamp, annotationItem], _i) =>
                 <AnnotationCard
                     key={`annotation-card_${annotationItem.uuid}`}
@@ -657,7 +953,8 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number 
                     annotation={annotationItem}
                     goToLocator={goToLocator}
                     isEdited={annotationItem.uuid === annotationItemEditedUUID}
-                    triggerEdition={(value: boolean) => value ? setannotationItemEditedUUID(annotationItem.uuid) : setannotationItemEditedUUID("")}
+                    triggerEdition={triggerEdition(annotationItem)}
+                    setTagFilter={(v) => setTagArrayFilter(new Set([v]))}
                 />,
             )}
             {
@@ -728,7 +1025,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number 
                         </button>
                     </div>
                     {
-                        annotationsQueue.length &&
+                        annotationList.length &&
                         <p
                             style={{
                                 textAlign: "center",
@@ -736,7 +1033,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, doFocus: number 
                                 margin: 0,
                                 marginTop: "-16px",
                                 marginBottom: "20px",
-                            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${annotationsQueue.length}`}</p>
+                            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${annotationList.length}`}</p>
                     }
                 </>
                     : <></>
@@ -1465,7 +1762,7 @@ const TabTitle = ({ value }: { value: string }) => {
 export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const { /* toggleMenu */ pdfToc, isPdf, focusMainAreaLandmarkAndCloseMenu,
         pdfNumberOfPages, currentLocation, goToLocator, openedSection: tabValue, setOpenedSection: setTabValue } = props;
-    const { doFocus, annotationUUID, handleLinkClick } = props;
+    const { doFocus, annotationUUID, handleLinkClick, resetAnnotationUUID } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
     const dockedMode = dockingMode !== "full";
@@ -1683,25 +1980,23 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         setSerialAnnotatorMode(!serialAnnotator);
     };
     const quickAnnotationsOnChange = () => {
-        dispatch(readerLocalActionSetConfig.build({ ...readerConfig, annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking }));
+        dispatch(readerLocalActionSetConfig.build({ annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking }));
     };
     const marginAnnotationsOnChange = () => {
-        const newReaderConfig = { ...readerConfig };
-        newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "margin" ? "annotation" : "margin";
+        const annotation_defaultDrawView = readerConfig.annotation_defaultDrawView === "margin" ? "annotation" : "margin";
 
-        console.log(`marginAnnotationsToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
-        dispatch(readerLocalActionSetConfig.build(newReaderConfig));
+        console.log(`marginAnnotationsToggleSwitch : highlight=${annotation_defaultDrawView}`);
+        dispatch(readerLocalActionSetConfig.build({ annotation_defaultDrawView }));
 
         const href1 = currentLocation?.locator?.href;
         const href2 = currentLocation?.secondWebViewHref;
         dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
     };
     const hideAnnotationOnChange = () => {
-        const newReaderConfig = { ...readerConfig };
-        newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "hide" ? "annotation" : "hide";
+        const annotation_defaultDrawView = readerConfig.annotation_defaultDrawView === "hide" ? "annotation" : "hide";
 
-        console.log(`hideAnnotationsToggleSwitch : highlight=${newReaderConfig.annotation_defaultDrawView}`);
-        dispatch(readerLocalActionSetConfig.build(newReaderConfig));
+        console.log(`hideAnnotationsToggleSwitch : highlight=${annotation_defaultDrawView}`);
+        dispatch(readerLocalActionSetConfig.build({ annotation_defaultDrawView }));
 
         const href1 = currentLocation?.locator?.href;
         const href2 = currentLocation?.secondWebViewHref;
@@ -1814,147 +2109,147 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         <TabHeader />
                         <div className={classNames(stylesSettings.settings_tab, stylesAnnotations.annotations_tab)}>
 
+                            <Popover.Root>
+                                <Popover.Trigger className={stylesAnnotations.annotations_filter_trigger_button}>
+                                    <SVG ariaHidden svg={OptionsIcon} title={__("reader.annotations.annotationsOptions")} />
+                                </Popover.Trigger>
+                                <Popover.Portal>
+                                    <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesAnnotations.annotations_filter_container} hideWhenDetached>
+                                        <div className={stylesAnnotations.annotations_checkbox}>
+                                            <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={serialAnnotator} onChange={advancedAnnotationsOnChange} />
+                                            <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
+                                                <div
+                                                    tabIndex={0}
+                                                    role="checkbox"
+                                                    aria-checked={serialAnnotator}
+                                                    aria-label={__("reader.annotations.advancedMode")}
+                                                    onKeyDown={(e) => {
+                                                        // if (e.code === "Space") {
+                                                        if (e.key === " ") {
+                                                            e.preventDefault(); // prevent scroll
+                                                        }
+                                                    }}
+                                                    onKeyUp={(e) => {
+                                                        // if (e.code === "Space") {
+                                                        if (e.key === " ") {
+                                                            e.preventDefault();
+                                                            advancedAnnotationsOnChange();
+                                                        }
+                                                    }}
+                                                    className={stylesGlobal.checkbox_custom}
+                                                    style={{ border: serialAnnotator ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: serialAnnotator ? "var(--color-blue)" : "transparent" }}>
+                                                    {serialAnnotator ?
+                                                        <SVG ariaHidden svg={CheckIcon} />
+                                                        :
+                                                        <></>
+                                                    }
+                                                </div>
+                                                <div aria-hidden>
+                                                    <h4>{__("reader.annotations.advancedMode")}</h4>
+                                                </div>
+                                            </label>
+                                        </div>
+                                        {/* : <></>} */}
+                                        <div className={stylesAnnotations.annotations_checkbox}>
+                                            <input type="checkbox" id="quickAnnotations" name="quickAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
+                                                onChange={quickAnnotationsOnChange}
+                                            />
+                                            <label htmlFor="quickAnnotations" className={stylesGlobal.checkbox_custom_label}>
+                                                <div
+                                                    tabIndex={0}
+                                                    role="checkbox"
+                                                    aria-checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
+                                                    aria-label={__("reader.annotations.quickAnnotations")}
+                                                    onKeyDown={(e) => {
+                                                        // if (e.code === "Space") {
+                                                        if (e.key === " ") {
+                                                            e.preventDefault(); // prevent scroll
+                                                        }
+                                                    }}
+                                                    onKeyUp={(e) => {
+                                                        // if (e.code === "Space") {
+                                                        if (e.key === " ") {
+                                                            e.preventDefault();
+                                                            quickAnnotationsOnChange();
+                                                        }
+                                                    }}
+                                                    className={stylesGlobal.checkbox_custom}
+                                                    style={{ border: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "var(--color-blue)" : "transparent" }}>
+                                                    {readerConfig.annotation_popoverNotOpenOnNoteTaking ?
+                                                        <SVG ariaHidden svg={CheckIcon} />
+                                                        :
+                                                        <></>
+                                                    } </div>
+                                                <h4 aria-hidden>{__("reader.annotations.quickAnnotations")}</h4></label>
+                                        </div>
+                                        <div className={stylesAnnotations.annotations_checkbox}>
+                                            <input type="checkbox" id="marginAnnotations" name="marginAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={marginAnnotationsOnChange} />
+                                            <label htmlFor="marginAnnotations" className={stylesGlobal.checkbox_custom_label}>
+                                                <div
+                                                    tabIndex={0}
+                                                    role="checkbox"
+                                                    aria-checked={readerConfig.annotation_defaultDrawView === "margin"}
+                                                    aria-label={__("reader.annotations.toggleMarginMarks")}
+                                                    onKeyDown={(e) => {
+                                                        // if (e.code === "Space") {
+                                                        if (e.key === " ") {
+                                                            e.preventDefault(); // prevent scroll
+                                                        }
+                                                    }}
+                                                    onKeyUp={(e) => {
+                                                        // if (e.code === "Space") {
+                                                        if (e.key === " ") {
+                                                            e.preventDefault();
+                                                            marginAnnotationsOnChange();
+                                                        }
+                                                    }}
+                                                    className={stylesGlobal.checkbox_custom}
+                                                    style={{ border: readerConfig.annotation_defaultDrawView === "margin" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "margin" ? "var(--color-blue)" : "transparent" }}>
+                                                    {readerConfig.annotation_defaultDrawView === "margin" ?
+                                                        <SVG ariaHidden svg={CheckIcon} />
+                                                        :
+                                                        <></>
+                                                    }
+                                                </div>
+                                                <h4 aria-hidden>{__("reader.annotations.toggleMarginMarks")}</h4></label>
+                                        </div>
+                                        <div className={stylesAnnotations.annotations_checkbox}>
+                                            <input type="checkbox" id="hideAnnotation" name="hideAnnotation" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "hide"} onChange={hideAnnotationOnChange} />
+                                            <label htmlFor="hideAnnotation" className={stylesGlobal.checkbox_custom_label}>
+                                                <div
+                                                    tabIndex={0}
+                                                    role="checkbox"
+                                                    aria-checked={readerConfig.annotation_defaultDrawView === "hide"}
+                                                    aria-label={__("reader.annotations.hide")}
+                                                    onKeyDown={(e) => {
+                                                        // if (e.code === "Space") {
+                                                        if (e.key === " ") {
+                                                            e.preventDefault(); // prevent scroll
+                                                        }
+                                                    }}
+                                                    onKeyUp={(e) => {
+                                                        // if (e.code === "Space") {
+                                                        if (e.key === " ") {
+                                                            e.preventDefault();
+                                                            hideAnnotationOnChange();
+                                                        }
+                                                    }}
+                                                    className={stylesGlobal.checkbox_custom}
+                                                    style={{ border: readerConfig.annotation_defaultDrawView === "hide" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "hide" ? "var(--color-blue)" : "transparent" }}>
+                                                    {readerConfig.annotation_defaultDrawView === "hide" ?
+                                                        <SVG ariaHidden svg={CheckIcon} />
+                                                        :
+                                                        <></>
+                                                    }
+                                                </div>
+                                                <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
+                                        </div>
+                                        <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                                    </Popover.Content>
+                                </Popover.Portal>
+                            </Popover.Root>
 
-                            <details className={stylesAnnotations.annotations_options}>
-                                <summary>
-                                    <SVG ariaHidden svg={InfoIcon} />
-                                    {__("reader.annotations.annotationsOptions")}
-                                    <span>
-                                        <SVG ariaHidden svg={ChevronIcon} />
-                                    </span>
-                                </summary>
-                                {/* {dockedMode ? */}
-                                <div className={stylesAnnotations.annotations_checkbox}>
-                                    <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={serialAnnotator} onChange={advancedAnnotationsOnChange} />
-                                    <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div
-                                            tabIndex={0}
-                                            role="checkbox"
-                                            aria-checked={serialAnnotator}
-                                            aria-label={__("reader.annotations.advancedMode")}
-                                            onKeyDown={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault(); // prevent scroll
-                                                }
-                                            }}
-                                            onKeyUp={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault();
-                                                    advancedAnnotationsOnChange();
-                                                }
-                                            }}
-                                            className={stylesGlobal.checkbox_custom}
-                                            style={{ border: serialAnnotator ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: serialAnnotator ? "var(--color-blue)" : "transparent" }}>
-                                            {serialAnnotator ?
-                                                <SVG ariaHidden svg={CheckIcon} />
-                                                :
-                                                <></>
-                                            }
-                                        </div>
-                                        <div aria-hidden>
-                                            <h4>{__("reader.annotations.advancedMode")}</h4>
-                                        </div>
-                                    </label>
-                                </div>
-                                {/* : <></>} */}
-                                <div className={stylesAnnotations.annotations_checkbox}>
-                                    <input type="checkbox" id="quickAnnotations" name="quickAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
-                                        onChange={quickAnnotationsOnChange}
-                                    />
-                                    <label htmlFor="quickAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div
-                                            tabIndex={0}
-                                            role="checkbox"
-                                            aria-checked={readerConfig.annotation_popoverNotOpenOnNoteTaking}
-                                            aria-label={__("reader.annotations.quickAnnotations")}
-                                            onKeyDown={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault(); // prevent scroll
-                                                }
-                                            }}
-                                            onKeyUp={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault();
-                                                    quickAnnotationsOnChange();
-                                                }
-                                            }}
-                                            className={stylesGlobal.checkbox_custom}
-                                            style={{ border: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "var(--color-blue)" : "transparent" }}>
-                                            {readerConfig.annotation_popoverNotOpenOnNoteTaking ?
-                                                <SVG ariaHidden svg={CheckIcon} />
-                                                :
-                                                <></>
-                                            } </div>
-                                        <h4 aria-hidden>{__("reader.annotations.quickAnnotations")}</h4></label>
-                                </div>
-                                <div className={stylesAnnotations.annotations_checkbox}>
-                                    <input type="checkbox" id="marginAnnotations" name="marginAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={marginAnnotationsOnChange} />
-                                    <label htmlFor="marginAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div
-                                            tabIndex={0}
-                                            role="checkbox"
-                                            aria-checked={readerConfig.annotation_defaultDrawView === "margin"}
-                                            aria-label={__("reader.annotations.toggleMarginMarks")}
-                                            onKeyDown={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault(); // prevent scroll
-                                                }
-                                            }}
-                                            onKeyUp={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault();
-                                                    marginAnnotationsOnChange();
-                                                }
-                                            }}
-                                            className={stylesGlobal.checkbox_custom}
-                                            style={{ border: readerConfig.annotation_defaultDrawView === "margin" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "margin" ? "var(--color-blue)" : "transparent" }}>
-                                            {readerConfig.annotation_defaultDrawView === "margin" ?
-                                                <SVG ariaHidden svg={CheckIcon} />
-                                                :
-                                                <></>
-                                            }
-                                        </div>
-                                        <h4 aria-hidden>{__("reader.annotations.toggleMarginMarks")}</h4></label>
-                                </div>
-                                <div className={stylesAnnotations.annotations_checkbox}>
-                                    <input type="checkbox" id="hideAnnotation" name="hideAnnotation" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "hide"} onChange={hideAnnotationOnChange} />
-                                    <label htmlFor="hideAnnotation" className={stylesGlobal.checkbox_custom_label}>
-                                        <div
-                                            tabIndex={0}
-                                            role="checkbox"
-                                            aria-checked={readerConfig.annotation_defaultDrawView === "hide"}
-                                            aria-label={__("reader.annotations.hide")}
-                                            onKeyDown={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault(); // prevent scroll
-                                                }
-                                            }}
-                                            onKeyUp={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault();
-                                                    hideAnnotationOnChange();
-                                                }
-                                            }}
-                                            className={stylesGlobal.checkbox_custom}
-                                            style={{ border: readerConfig.annotation_defaultDrawView === "hide" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "hide" ? "var(--color-blue)" : "transparent" }}>
-                                            {readerConfig.annotation_defaultDrawView === "hide" ?
-                                                <SVG ariaHidden svg={CheckIcon} />
-                                                :
-                                                <></>
-                                            }
-                                        </div>
-                                        <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
-                                </div>
-                            </details>
-                            <AnnotationList goToLocator={goToLocator} annotationUUIDFocused={annotationUUID} doFocus={doFocus} />
+                            <AnnotationList goToLocator={goToLocator} annotationUUIDFocused={annotationUUID} resetAnnotationUUID={resetAnnotationUUID} doFocus={doFocus} />
                         </div>
                     </Tabs.Content>
 
