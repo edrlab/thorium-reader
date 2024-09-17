@@ -75,6 +75,7 @@
             "lastAdditions": "Nedavno dodano"
         },
         "export": "Izvezi",
+        "exportAnnotation": "",
         "format": "Formatiraj",
         "lang": "Jezik",
         "lastRead": "Zadnje čitano",
@@ -123,6 +124,8 @@
     },
     "dialog": {
         "cancel": "Poništi",
+        "deleteAnnotations": "",
+        "deleteAnnotationsText": "",
         "deleteFeed": "Želiš li stvarno izbrisati ovaj katalog ?",
         "deletePublication": "Želiš li stvarno izbrisati ovu građu ?",
         "import": "Želiš li stvarno uvesti ove dokumente:",
@@ -305,11 +308,36 @@
             "addNote": "",
             "advancedMode": "",
             "annotationsOptions": "",
+            "colors": {
+                "bluegreen": "",
+                "cyan": "",
+                "green": "",
+                "lightblue": "",
+                "orange": "",
+                "purple": "",
+                "red": "",
+                "yellow": ""
+            },
+            "filter": {
+                "all": "",
+                "filterByColor": "",
+                "filterByDrawtype": "",
+                "filterByTag": "",
+                "filterOptions": "",
+                "none": ""
+            },
+            "hide": "",
             "highlight": "",
             "noSelectionToast": "",
             "quickAnnotations": "",
             "saveNote": "",
-            "toggleMarginMarks": ""
+            "toggleMarginMarks": "",
+            "type": {
+                "outline": "",
+                "solid": "",
+                "strikethrough": "",
+                "underline": ""
+            }
         },
         "divina": {
             "mute": "isključi zvuk",
@@ -415,6 +443,12 @@
                     "width": "širina stranice"
                 },
                 "title": "Uvećanje"
+            },
+            "preset": {
+                "apply": "",
+                "reset": "",
+                "save": "",
+                "title": ""
             },
             "preview": "",
             "reduceMotion": "Smanji kretanje",
