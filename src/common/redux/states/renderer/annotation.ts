@@ -22,6 +22,7 @@ export interface IAnnotationState {
     comment: string;
     color: IColor;
     drawType: TDrawType;
+    tags?: string[] | undefined;
 }
 
 export type TAnnotationState = TPQueueState<number, IAnnotationState>;
@@ -42,3 +43,5 @@ export interface IAnnotationReaderConfigState {
     annotation_defaultDrawType: TDrawType;
     annotation_defaultDrawView: TDrawView;
 }
+
+export type TAnnotationTagsIndex = Record<string, number>;
