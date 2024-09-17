@@ -75,7 +75,7 @@
             "lastAdditions": "Adicionados recentemente"
         },
         "export": "Guardar como",
-        "exportAnnotation": "",
+        "exportAnnotation": "Guardar anotação como",
         "format": "Formato",
         "lang": "Idioma",
         "lastRead": "Última leitura",
@@ -445,10 +445,10 @@
                 "title": "Zoom"
             },
             "preset": {
-                "apply": "",
-                "reset": "",
-                "save": "",
-                "title": ""
+                "apply": "Aplicar a predefinição preferida de configurações de leitura às configurações de leitura atuais",
+                "reset": "Redefinir a predefinição das configurações preferidas de leitura para o estado inicial",
+                "save": "Guardar as configurações de leitura atuais na predefinição preferida de configurações de leitura",
+                "title": "Predefinição"
             },
             "preview": "Pré-visualização",
             "reduceMotion": "Reduzir movimento",
