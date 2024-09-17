@@ -52,6 +52,8 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { usePublisherReaderConfig, useReaderConfig, useReaderConfigAll, useSavePublisherReaderConfig, useSavePublisherReaderConfigDebounced, useSaveReaderConfig, useSaveReaderConfigDebounced } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import { comparePublisherReaderConfig } from "../../../common/publisherConfig";
+import debounce from "debounce";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps {
@@ -1027,27 +1029,49 @@ const SaveResetApplyPreset = () => {
 
     const dispatch = useDispatch();
     const readerConfig = useSelector((state: IReaderRootState) => state.reader.config);
-    const setReaderConfigDebounced = useSaveReaderConfigDebounced();
+    const setReaderConfig = useSaveReaderConfig();
+    const setPublisherConfig = useSavePublisherReaderConfig();
     const readerDefaultConfig = useSelector((state: IReaderRootState) => state.reader.defaultConfig);
+    const allowCustomCheckboxChecked = useSelector((state: IReaderRootState) => state.reader.allowCustomConfig.state);
+    const publisherConfigOverrided = !comparePublisherReaderConfig(readerDefaultConfig, readerConfigInitialState);
 
     const dockingMode = useReaderConfig("readerDockingMode");
     const dockedMode = dockingMode !== "full";
+
+    const cb = React.useCallback(() => {
+
+        setReaderConfig(readerDefaultConfig);
+
+        if (allowCustomCheckboxChecked) {
+            if (publisherConfigOverrided) {
+                setPublisherConfig(readerDefaultConfig);
+            } else {
+                dispatch(readerLocalActionReader.allowCustom.build(false));
+            }
+        } else {
+            if (publisherConfigOverrided) {
+                setPublisherConfig(readerDefaultConfig);
+                dispatch(readerLocalActionReader.allowCustom.build(true));
+            } else {
+                // nothing to do
+            }
+        }
+    }, [allowCustomCheckboxChecked, dispatch, publisherConfigOverrided, readerDefaultConfig, setPublisherConfig, setReaderConfig]);
+    const applyPreferredConfig = React.useMemo(() => debounce(cb, 400), [cb]);
 
     const [__] = useTranslator();
     return (
 
         <>
-            <button className={stylesButtons.button_nav_primary} style={{ width: dockedMode ? "98%" : "100%", padding: "10px", marginBottom: "10px" }} onClick={() => {
+            <button className={stylesButtons.button_nav_primary} style={{ width: dockedMode ? "98%" : "99%", padding: "10px", marginBottom: "10px" }} onClick={() => {
                 dispatch(readerActions.configSetDefault.build(readerConfig));
             }}>{__("reader.settings.preset.save")}</button>
 
-            <button className={stylesButtons.button_nav_primary} style={{ width: dockedMode ? "98%" : "100%", padding: "10px", marginBottom: "10px" }} onClick={() => {
-                setReaderConfigDebounced(readerDefaultConfig);
-            }}>{__("reader.settings.preset.apply")}</button>
+            <button className={stylesButtons.button_nav_primary} style={{ width: dockedMode ? "98%" : "99%", padding: "10px", marginBottom: "10px" }} onClick={applyPreferredConfig}>{__("reader.settings.preset.apply")}</button>
 
             <button className={stylesButtons.button_nav_primary} style={{ position: "absolute", bottom: "10px", width: dockedMode ? "83%" : "58%", padding: "10px" }} onClick={() => {
                 dispatch(readerActions.configSetDefault.build(readerConfigInitialState));
-                setReaderConfigDebounced(readerConfigInitialState);
+                applyPreferredConfig();
             }}>{__("reader.settings.preset.reset")}</button>
         </>
     );
