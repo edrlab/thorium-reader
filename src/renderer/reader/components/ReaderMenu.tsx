@@ -758,12 +758,14 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
         { hex: "#d4c4fb", name: `${__("reader.annotations.colors.purple")}` },
     ];
 
-    annotationsQueue.forEach(([, annotation]) => {
-        const colorHex = rgbToHex(annotation.color);
-        if (!annotationsColorsLight.find((annotationColor) => annotationColor.hex === colorHex)) {
-            annotationsColorsLight.push({ hex: colorHex, name: colorHex });
-        }
-    });
+    // I'm disable this feature for performance reason, push new Colors from incoming publicaiton annotation, not used for the moment. So let's commented it for the moment.
+    // Need to be optimised in the future.
+    // annotationsQueue.forEach(([, annotation]) => {
+    //     const colorHex = rgbToHex(annotation.color);
+    //     if (!annotationsColorsLight.find((annotationColor) => annotationColor.hex === colorHex)) {
+    //         annotationsColorsLight.push({ hex: colorHex, name: colorHex });
+    //     }
+    // });
 
     const selectDrawtypesOptions = [
         { name: "solid_background", svg: HighLightIcon },
