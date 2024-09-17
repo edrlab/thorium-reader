@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { HoverEvent } from "@react-types/shared";
 import classNames from "classnames";
 import * as debug_ from "debug";
 import * as React from "react";
@@ -71,8 +70,8 @@ import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/componen
 import { readerLocalActionAnnotations } from "../redux/actions";
 import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { AnnotationEdit } from "./AnnotationEdit";
-import { Collection, Header as ReactAriaHeader, Section } from "react-aria-components";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
+import { VoiceSelection } from "./header/voiceSelection";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 // import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 
@@ -351,58 +350,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             tabValue: this.state.tabValue,
             setTabValue: (value: string) => this.setState({ tabValue: value}),
         };
-
-        type VoiceWithIndex = SpeechSynthesisVoice & { id: number };
-        const voicesWithIndex = speechSynthesis.getVoices()
-        .reduce((acc, curr) => {
-            const found = acc.find((voice) => {
-                return voice.lang === curr.lang &&
-                    voice.name === curr.name &&
-                    voice.localService === curr.localService &&
-                    voice.voiceURI === curr.voiceURI
-                    // voice.default === curr.default
-                ;
-            });
-            if (!found) {
-                acc.push(curr);
-            }
-            return acc;
-        }, [] as SpeechSynthesisVoice[])
-        // WARNING: .sort() is in-place same-array mutation! (not a new array)
-        .sort((voice1, voice2) => {
-            if(voice1.lang < voice2.lang) { return -1; }
-            if(voice1.lang > voice2.lang) { return 1; }
-            // a.lang === b.lang ...
-            if(voice1.name < voice2.name) { return -1; }
-            if(voice1.name > voice2.name) { return 1; }
-            return 0;
-        }).map<VoiceWithIndex>((voice, i) => (
-            {id: i, name: voice.name, default: voice.default, lang: voice.lang, localService: voice.localService, voiceURI: voice.voiceURI}
-        ));
-        voicesWithIndex.unshift({
-            id: -1,
-            name: __("reader.tts.default"),
-            default: false,
-            lang: "",
-            localService: false,
-            voiceURI: "",
-        });
-
-        interface ILangToVoicesMap {
-            [key: string]: VoiceWithIndex[];
-        }
-        const langToVoicesMap = voicesWithIndex.reduce((acc, voice) => {
-            if (!acc[voice.lang]) {
-                acc[voice.lang] = [] as Array<VoiceWithIndex>;
-            }
-            acc[voice.lang].push(voice);
-            return acc;
-        }, {} as ILangToVoicesMap);
-
-        const voiceComboBoxDefaultItems = Object.keys(langToVoicesMap).map(lang => ({
-            lang,
-            voices: langToVoicesMap[lang], // .map<VoiceWithIndex>((voice, i) => ({ id: i, name: voice.name, default: voice.default, lang: voice.lang, localService: voice.localService, voiceURI: voice.voiceURI })),
-        }));
 
         const playbackRate = [
             { id: 0, value: 0.5, name: "0.5x" },
@@ -744,52 +691,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                             </ComboBox>
                                                                         </div>
                                                                         {!useMO && (
-                                                                            <div className={stylesReader.ttsSelectVoice}>
-                                                                                <ComboBox
-                                                                                    label={__("reader.tts.voice")}
-                                                                                    defaultItems={voiceComboBoxDefaultItems}
-                                                                                    defaultInputValue={
-                                                                                        this.props.ttsVoice ?
-                                                                                            this.props.ttsVoice.name : voicesWithIndex[0].name}
-                                                                                    selectedKey={
-                                                                                        this.props.ttsVoice ?
-                                                                                            `TTSID${(voicesWithIndex.find((voice) =>
-                                                                                                voice.name === this.props.ttsVoice.name
-                                                                                                && voice.lang === this.props.ttsVoice.lang
-                                                                                                && voice.voiceURI === this.props.ttsVoice.voiceURI,
-                                                                                            ) || { id: -1 }).id}` :
-                                                                                            "TTSID-1"
-                                                                                    }
-                                                                                    onSelectionChange={(key) => {
-                                                                                        if (!key) return;
-
-                                                                                        key = key.toString();
-                                                                                        const id = parseInt(key.replace("TTSID", ""), 10);
-                                                                                        const v = id === -1 ? null : (voicesWithIndex.find((voice) => voice.id === id)  || null);
-                                                                                        this.props.handleTTSVoice(v);
-                                                                                    }}
-                                                                                    style={{ paddingBottom: "0", margin: "0" }}
-                                                                                >
-                                                                                    {section => (
-                                                                                        <Section id={section.lang} key={`section-${section.lang}`}>
-                                                                                            <ReactAriaHeader style={{ paddingLeft: "5px", fontSize: "16px", color: "var(--color-blue)", borderBottom: "1px solid var(--color-light-blue)" }}>
-                                                                                                {section.lang}
-                                                                                            </ReactAriaHeader>
-                                                                                            <Collection items={section.voices} key={`collection-${section.lang}`}>
-                                                                                                {voice => <ComboBoxItem
-                                                                                                    onHoverStart={(e: HoverEvent) => {
-                                                                                                        if (!e.target.getAttribute("title")) {
-                                                                                                            e.target.setAttribute("title", voice.name);
-                                                                                                        }
-                                                                                                    }}
-                                                                                                    // aria-label={item.name}
-                                                                                                
-                                                                                                    id={`TTSID${voice.id}`} key={`TTSKEY${voice.id}`}>{`${voice.name}${voice.default ? " *" : ""}`}
-                                                                                                    </ComboBoxItem>}
-                                                                                            </Collection>
-                                                                                        </Section>)}
-                                                                                </ComboBox>
-                                                                            </div>
+                                                                            <VoiceSelection />
                                                                         )}
                                                                     </div>
                                                                     <ReadingAudio useMO={useMO}/>

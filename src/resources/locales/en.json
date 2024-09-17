@@ -468,7 +468,8 @@
             "sentenceDetectDescription": "Break long paragraphs into sentences.",
             "speed": "TTS playback rate",
             "stop": "Stop TTS",
-            "voice": "TTS voice"
+            "voice": "TTS voice",
+            "language": "TTS language"
         }
     },
     "settings": {
