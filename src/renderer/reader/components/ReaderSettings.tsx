@@ -1048,7 +1048,7 @@ const SaveResetApplyPreset = () => {
             } else {
                 dispatch(readerLocalActionReader.allowCustom.build(false));
             }
-        } {
+        } else {
             if (publisherConfigOverrided) {
                 setPublisherConfig(readerDefaultConfig);
                 dispatch(readerLocalActionReader.allowCustom.build(true));
