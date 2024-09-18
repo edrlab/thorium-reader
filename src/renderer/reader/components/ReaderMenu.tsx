@@ -817,7 +817,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         </AlertDialog.Content>
                     </AlertDialog.Portal>
                 </AlertDialog.Root>
-                <button className={stylesAnnotations.annotations_filter_trigger_button}
+                <button className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationList.length}
                     onClick={async () => {
 
                         try {
