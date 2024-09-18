@@ -123,22 +123,23 @@
 
   &_tagGroup {
     font-family: inherit;
-      background-color: var(--color-secondary);
-      border-radius: 5px;
-      padding: 0 20px;
-      height: 45px;
-      font-size: 15px;
-      line-height: 1;
-      box-shadow: 0 3px 3px var(--color-verylight-grey-alt2);
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    background-color: var(--color-secondary);
+    border-radius: 5px;
+    padding: 0 20px;
+    height: 45px;
+    font-size: 15px;
+    line-height: 1;
+    box-shadow: 0 3px 3px var(--color-verylight-grey-alt2);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--color-primary);
 
-      &:hover {
-        background-color: var(--color-light-blue);
-      }
+    &:hover {
+      background-color: var(--color-light-blue);
     }
+  }
 
   &_tag {
     font-size: 13px;
