@@ -76,6 +76,8 @@
         },
         "export": "내보내기",
         "exportAnnotation": "",
+        "exportAnnotationFailure": "",
+        "exportAnnotationSuccess": "",
         "format": "포맷",
         "lang": "언어선택",
         "lastRead": "최근 읽은 자료",

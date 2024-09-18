@@ -76,6 +76,8 @@
         },
         "export": "导出",
         "exportAnnotation": "",
+        "exportAnnotationFailure": "",
+        "exportAnnotationSuccess": "",
         "format": "格式",
         "lang": "语言",
         "lastRead": "上次阅读",

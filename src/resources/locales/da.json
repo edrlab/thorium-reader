@@ -76,6 +76,8 @@
         },
         "export": "Gem som",
         "exportAnnotation": "",
+        "exportAnnotationFailure": "",
+        "exportAnnotationSuccess": "",
         "format": "Format",
         "lang": "Sprog",
         "lastRead": "Senest læst",

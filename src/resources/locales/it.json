@@ -76,6 +76,8 @@
         },
         "export": "Esporta",
         "exportAnnotation": "",
+        "exportAnnotationFailure": "",
+        "exportAnnotationSuccess": "",
         "format": "Formato",
         "lang": "Lingua",
         "lastRead": "Ultimi letti",

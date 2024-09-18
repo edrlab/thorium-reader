@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IW3CAnnotationModel, IW3CAnnotationModelSet, IW3CAnnotationSetAboutView } from "./annotationModel.type";
+import { IW3CAnnotationModel, IW3CAnnotationModelSet } from "./annotationModel.type";
 import { v4 as uuidv4 } from "uuid";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -72,11 +72,8 @@ export function convertAnnotationToW3CAnnotationModel(annotation: IAnnotationSta
     };
 }
 
-export function convertAnnotationListToW3CAnnotationModelSet(annotationArray: IAnnotationState[],
-    publicationMetadata: IW3CAnnotationSetAboutView,
-): IW3CAnnotationModelSet {
+export function convertAnnotationListToW3CAnnotationSet(annotationArray: IAnnotationState[], publicationView: PublicationView): IW3CAnnotationModelSet {
 
-    const { identiferArrayString, mimeType, title, publisher, creator, publishedAt, source } = publicationMetadata;
     const currentDate = new Date();
     const dateString: string = currentDate.toISOString();
 
@@ -93,28 +90,15 @@ export function convertAnnotationListToW3CAnnotationModelSet(annotationArray: IA
         generated: dateString,
         label: "Annotations set",
         about: {
-            "dc:identifier": identiferArrayString || [],
-            "dc:format": mimeType || "",
-            "dc:title": title || "",
-            "dc:publisher": publisher || [],
-            "dc:creator": creator || [],
-            "dc:date": publishedAt || "",
-            "dc:source": source || "",
+            "dc:identifier": [publicationView.workIdentifier ? ((publicationView.workIdentifier.startsWith("urn:") ? "" : "urn:isbn:") + publicationView.workIdentifier) : ""],
+            "dc:format": "application/epub+zip",
+            "dc:title": publicationView.documentTitle || "",
+            "dc:publisher": publicationView.publishers || [],
+            "dc:creator": publicationView.authors || [],
+            "dc:date": publicationView.publishedAt || "",
+            "dc:source": "urn:uuid:" + publicationView.identifier,
         },
         total: annotationArray.length,
         items: (annotationArray || []).map((v) => convertAnnotationToW3CAnnotationModel(v)),
-    };
-}
-
-export function convertPublicationToAnnotationStateAbout(publicationView: PublicationView, publicationIdentifier: string): IW3CAnnotationSetAboutView {
-
-    return {
-        identiferArrayString: ["urn:isbn:" + publicationView.workIdentifier || ""],
-        mimeType: "application/epub+zip",
-        title: publicationView.documentTitle || "",
-        publisher: publicationView.publishers || [],
-        creator: publicationView.authors || [],
-        publishedAt: publicationView.publishedAt || "",
-        source: "urn:uuid:" + publicationIdentifier,
     };
 }

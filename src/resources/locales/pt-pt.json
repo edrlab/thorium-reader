@@ -76,6 +76,8 @@
         },
         "export": "Guardar como",
         "exportAnnotation": "Guardar anotação como",
+        "exportAnnotationFailure": "",
+        "exportAnnotationSuccess": "",
         "format": "Formato",
         "lang": "Idioma",
         "lastRead": "Última leitura",

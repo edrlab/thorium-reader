@@ -76,6 +76,8 @@
         },
         "export": "Save as",
         "exportAnnotation": "Save annotation as",
+        "exportAnnotationFailure": "Cannot save annotation list: {{- errorTxt }}",
+        "exportAnnotationSuccess": "Annotation list saved to {{- fileName }}",
         "format": "Format",
         "lang": "Language",
         "lastRead": "Last Read",

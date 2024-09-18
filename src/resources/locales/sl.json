@@ -76,6 +76,8 @@
         },
         "export": "Shrani kot",
         "exportAnnotation": "",
+        "exportAnnotationFailure": "",
+        "exportAnnotationSuccess": "",
         "format": "Format",
         "lang": "Jezik",
         "lastRead": "Nazadnje brano",

@@ -76,6 +76,8 @@
         },
         "export": "Esportatu",
         "exportAnnotation": "",
+        "exportAnnotationFailure": "",
+        "exportAnnotationSuccess": "",
         "format": "Formatua",
         "lang": "Hizkuntza",
         "lastRead": "Azken Irakurketa",
