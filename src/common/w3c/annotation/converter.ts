@@ -16,10 +16,12 @@ export function convertAnnotationToW3CAnnotationModel(annotation: IAnnotationSta
 
     const currentDate = new Date();
     const dateString: string = currentDate.toISOString();
-    const { uuid, color, locatorExtended: def } = annotation;
+    const { uuid, color, locatorExtended: def, tags, drawType } = annotation;
     const { selectionInfo, locator, headings, epubPage } = def;
     const { cleanText, rawText, rawBefore, rawAfter } = selectionInfo;
     const { href } = locator;
+
+    const highlight: IW3CAnnotationModel["body"]["highlight"] = drawType === "solid_background" ? "solid" : drawType;
 
     return {
         "@context": "http://www.w3.org/ns/anno.jsonld",
@@ -33,6 +35,8 @@ export function convertAnnotationToW3CAnnotationModel(annotation: IAnnotationSta
             value: cleanText || "",
             format: "text/plain",
             color: rgbToHex(color),
+            tag: (tags || [])[0] || "",
+            highlight,
             //   textDirection: "ltr",
             //   language: "fr",
         },
