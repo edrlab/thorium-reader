@@ -76,6 +76,8 @@
         },
         "export": "Spara som",
         "exportAnnotation": "",
+        "exportAnnotationFailure": "",
+        "exportAnnotationSuccess": "",
         "format": "Format",
         "lang": "Språk",
         "lastRead": "Senast läst",

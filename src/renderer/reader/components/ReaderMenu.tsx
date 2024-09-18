@@ -67,7 +67,7 @@ import { Locator } from "r2-shared-js/dist/es8-es2017/src/models/locator";
 import { TextArea } from "react-aria-components";
 import { AnnotationEdit } from "./AnnotationEdit";
 import { IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
@@ -90,6 +90,8 @@ import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 import type { Selection } from "react-aria-components";
 import { rgbToHex } from "readium-desktop/common/rgb";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { convertAnnotationListToW3CAnnotationSet } from "readium-desktop/common/w3c/annotation/converter";
 
 
 
@@ -650,6 +652,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
 
     const [__] = useTranslator();
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
+    const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
 
     const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
     const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
@@ -814,6 +817,29 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         </AlertDialog.Content>
                     </AlertDialog.Portal>
                 </AlertDialog.Root>
+                <button className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationList.length}
+                    onClick={async () => {
+
+                        try {
+                            const fileHandle = await (window as any).showSaveFilePicker({ excludeAcceptAllOption: true, id: publicationView.identifier.slice(0, 32), suggestedName: "myAnnotationSet.annotation", types: [{ description: ".annotation", accept: { "application/rd-annotations+json": [".annotation"] } }] });
+                            const writable = await fileHandle.createWritable();
+
+                            const annotations = annotationList.map(([, anno]) => anno);
+                            const contents = convertAnnotationListToW3CAnnotationSet(annotations, publicationView);
+                            const jsonData = JSON.stringify(contents, null, 2);
+                            await writable.write(jsonData);
+                            await writable.close();
+
+                            dispatch(toastActions.openRequest.build(ToastType.Success, __("catalog.exportAnnotationSuccess", {fileName: fileHandle.name})));
+
+                        } catch (e) {
+                            dispatch(toastActions.openRequest.build(ToastType.Error, __("catalog.exportAnnotationFailure", { errorTxt: e?.toString() })));
+                        }
+
+                    }}
+                    title={__("catalog.exportAnnotation")}>
+                    <SVG svg={SaveIcon} />
+                </button>
                 <Popover.Root>
                     <Popover.Trigger asChild>
                         <button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button}

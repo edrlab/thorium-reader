@@ -76,6 +76,8 @@
         },
         "export": "別の場所に保存",
         "exportAnnotation": "",
+        "exportAnnotationFailure": "",
+        "exportAnnotationSuccess": "",
         "format": "形式",
         "lang": "言語",
         "lastRead": "最終閲覧",

@@ -76,6 +76,8 @@
         },
         "export": "Gem som",
         "exportAnnotation": "Gem noter som",
+        "exportAnnotationFailure": "",
+        "exportAnnotationSuccess": "",
         "format": "Format",
         "lang": "Sprog",
         "lastRead": "Senest læst",
@@ -445,10 +447,10 @@
                 "title": "Zoom"
             },
             "preset": {
-                "title": "Læsetema",
-                "save": "Gem de nuværende læse-indstillinger som mit foretrukne læsetema",
                 "apply": "Anvend mit foretrukne læsetema som nuværende læse-indstillinger",
-                "reset": "Nulstil mit foretrukne læsetema til standard indstillingerne"
+                "reset": "Nulstil mit foretrukne læsetema til standard indstillingerne",
+                "save": "Gem de nuværende læse-indstillinger som mit foretrukne læsetema",
+                "title": "Læsetema"
             },
             "preview": "Forhåndsvisning",
             "reduceMotion": "Reducer bevægelser",

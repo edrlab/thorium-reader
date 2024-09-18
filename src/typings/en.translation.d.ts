@@ -128,6 +128,8 @@ declare namespace typed_i18n {
   },
   readonly "export": string,
   readonly "exportAnnotation": string,
+  readonly "exportAnnotationSuccess": string,
+  readonly "exportAnnotationFailure": string,
   readonly "format": string,
   readonly "lang": string,
   readonly "lastRead": string,
@@ -208,6 +210,8 @@ declare namespace typed_i18n {
   (_: "catalog.entry.lastAdditions", __?: {}): string;
   (_: "catalog.export", __?: {}): string;
   (_: "catalog.exportAnnotation", __?: {}): string;
+  (_: "catalog.exportAnnotationSuccess", __?: {}): string;
+  (_: "catalog.exportAnnotationFailure", __?: {}): string;
   (_: "catalog.format", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.lastRead", __?: {}): string;
@@ -305,9 +309,9 @@ declare namespace typed_i18n {
   (_: "catalog.update", __?: {}): string;
   (_: "dialog", __?: {}): {
   readonly "cancel": string,
-  readonly "deleteFeed": string,
   readonly "deleteAnnotations": string,
   readonly "deleteAnnotationsText": string,
+  readonly "deleteFeed": string,
   readonly "deletePublication": string,
   readonly "import": string,
   readonly "importError": string,
@@ -316,9 +320,9 @@ declare namespace typed_i18n {
   readonly "yes": string
 };
   (_: "dialog.cancel", __?: {}): string;
-  (_: "dialog.deleteFeed", __?: {}): string;
   (_: "dialog.deleteAnnotations", __?: {}): string;
   (_: "dialog.deleteAnnotationsText", __?: {}): string;
+  (_: "dialog.deleteFeed", __?: {}): string;
   (_: "dialog.deletePublication", __?: {}): string;
   (_: "dialog.import", __?: {}): string;
   (_: "dialog.importError", __?: {}): string;
@@ -703,18 +707,6 @@ declare namespace typed_i18n {
     readonly "addNote": string,
     readonly "advancedMode": string,
     readonly "annotationsOptions": string,
-    readonly "hide": string,
-    readonly "highlight": string,
-    readonly "noSelectionToast": string,
-    readonly "quickAnnotations": string,
-    readonly "saveNote": string,
-    readonly "toggleMarginMarks": string,
-    readonly "type": {
-      readonly "outline": string,
-      readonly "solid": string,
-      readonly "strikethrough": string,
-      readonly "underline": string
-    },
     readonly "colors": {
       readonly "bluegreen": string,
       readonly "cyan": string,
@@ -726,12 +718,24 @@ declare namespace typed_i18n {
       readonly "yellow": string
     },
     readonly "filter": {
+      readonly "all": string,
       readonly "filterByColor": string,
       readonly "filterByDrawtype": string,
       readonly "filterByTag": string,
       readonly "filterOptions": string,
-      readonly "all": string,
       readonly "none": string
+    },
+    readonly "hide": string,
+    readonly "highlight": string,
+    readonly "noSelectionToast": string,
+    readonly "quickAnnotations": string,
+    readonly "saveNote": string,
+    readonly "toggleMarginMarks": string,
+    readonly "type": {
+      readonly "outline": string,
+      readonly "solid": string,
+      readonly "strikethrough": string,
+      readonly "underline": string
     }
   },
   readonly "divina": { readonly "mute": string, readonly "unmute": string },
@@ -832,6 +836,12 @@ declare namespace typed_i18n {
       },
       readonly "title": string
     },
+    readonly "preset": {
+      readonly "apply": string,
+      readonly "reset": string,
+      readonly "save": string,
+      readonly "title": string
+    },
     readonly "preview": string,
     readonly "reduceMotion": string,
     readonly "scrolled": string,
@@ -850,13 +860,7 @@ declare namespace typed_i18n {
       },
       readonly "title": string
     },
-    readonly "wordSpacing": string,
-    readonly "preset": {
-      readonly "title": string,
-      readonly "save": string,
-      readonly "apply": string,
-      readonly "reset": string
-    }
+    readonly "wordSpacing": string
   },
   readonly "svg": { readonly "left": string, readonly "right": string },
   readonly "toc": { readonly "publicationNoToc": string },
@@ -879,18 +883,6 @@ declare namespace typed_i18n {
   readonly "addNote": string,
   readonly "advancedMode": string,
   readonly "annotationsOptions": string,
-  readonly "hide": string,
-  readonly "highlight": string,
-  readonly "noSelectionToast": string,
-  readonly "quickAnnotations": string,
-  readonly "saveNote": string,
-  readonly "toggleMarginMarks": string,
-  readonly "type": {
-    readonly "outline": string,
-    readonly "solid": string,
-    readonly "strikethrough": string,
-    readonly "underline": string
-  },
   readonly "colors": {
     readonly "bluegreen": string,
     readonly "cyan": string,
@@ -902,34 +894,30 @@ declare namespace typed_i18n {
     readonly "yellow": string
   },
   readonly "filter": {
+    readonly "all": string,
     readonly "filterByColor": string,
     readonly "filterByDrawtype": string,
     readonly "filterByTag": string,
     readonly "filterOptions": string,
-    readonly "all": string,
     readonly "none": string
+  },
+  readonly "hide": string,
+  readonly "highlight": string,
+  readonly "noSelectionToast": string,
+  readonly "quickAnnotations": string,
+  readonly "saveNote": string,
+  readonly "toggleMarginMarks": string,
+  readonly "type": {
+    readonly "outline": string,
+    readonly "solid": string,
+    readonly "strikethrough": string,
+    readonly "underline": string
   }
 };
   (_: "reader.annotations.Color", __?: {}): string;
   (_: "reader.annotations.addNote", __?: {}): string;
   (_: "reader.annotations.advancedMode", __?: {}): string;
   (_: "reader.annotations.annotationsOptions", __?: {}): string;
-  (_: "reader.annotations.hide", __?: {}): string;
-  (_: "reader.annotations.highlight", __?: {}): string;
-  (_: "reader.annotations.noSelectionToast", __?: {}): string;
-  (_: "reader.annotations.quickAnnotations", __?: {}): string;
-  (_: "reader.annotations.saveNote", __?: {}): string;
-  (_: "reader.annotations.toggleMarginMarks", __?: {}): string;
-  (_: "reader.annotations.type", __?: {}): {
-  readonly "outline": string,
-  readonly "solid": string,
-  readonly "strikethrough": string,
-  readonly "underline": string
-};
-  (_: "reader.annotations.type.outline", __?: {}): string;
-  (_: "reader.annotations.type.solid", __?: {}): string;
-  (_: "reader.annotations.type.strikethrough", __?: {}): string;
-  (_: "reader.annotations.type.underline", __?: {}): string;
   (_: "reader.annotations.colors", __?: {}): {
   readonly "bluegreen": string,
   readonly "cyan": string,
@@ -949,19 +937,35 @@ declare namespace typed_i18n {
   (_: "reader.annotations.colors.red", __?: {}): string;
   (_: "reader.annotations.colors.yellow", __?: {}): string;
   (_: "reader.annotations.filter", __?: {}): {
+  readonly "all": string,
   readonly "filterByColor": string,
   readonly "filterByDrawtype": string,
   readonly "filterByTag": string,
   readonly "filterOptions": string,
-  readonly "all": string,
   readonly "none": string
 };
+  (_: "reader.annotations.filter.all", __?: {}): string;
   (_: "reader.annotations.filter.filterByColor", __?: {}): string;
   (_: "reader.annotations.filter.filterByDrawtype", __?: {}): string;
   (_: "reader.annotations.filter.filterByTag", __?: {}): string;
   (_: "reader.annotations.filter.filterOptions", __?: {}): string;
-  (_: "reader.annotations.filter.all", __?: {}): string;
   (_: "reader.annotations.filter.none", __?: {}): string;
+  (_: "reader.annotations.hide", __?: {}): string;
+  (_: "reader.annotations.highlight", __?: {}): string;
+  (_: "reader.annotations.noSelectionToast", __?: {}): string;
+  (_: "reader.annotations.quickAnnotations", __?: {}): string;
+  (_: "reader.annotations.saveNote", __?: {}): string;
+  (_: "reader.annotations.toggleMarginMarks", __?: {}): string;
+  (_: "reader.annotations.type", __?: {}): {
+  readonly "outline": string,
+  readonly "solid": string,
+  readonly "strikethrough": string,
+  readonly "underline": string
+};
+  (_: "reader.annotations.type.outline", __?: {}): string;
+  (_: "reader.annotations.type.solid", __?: {}): string;
+  (_: "reader.annotations.type.strikethrough", __?: {}): string;
+  (_: "reader.annotations.type.underline", __?: {}): string;
   (_: "reader.divina", __?: {}): { readonly "mute": string, readonly "unmute": string };
   (_: "reader.divina.mute", __?: {}): string;
   (_: "reader.divina.unmute", __?: {}): string;
@@ -1121,6 +1125,12 @@ declare namespace typed_i18n {
     },
     readonly "title": string
   },
+  readonly "preset": {
+    readonly "apply": string,
+    readonly "reset": string,
+    readonly "save": string,
+    readonly "title": string
+  },
   readonly "preview": string,
   readonly "reduceMotion": string,
   readonly "scrolled": string,
@@ -1139,13 +1149,7 @@ declare namespace typed_i18n {
     },
     readonly "title": string
   },
-  readonly "wordSpacing": string,
-  readonly "preset": {
-    readonly "title": string,
-    readonly "save": string,
-    readonly "apply": string,
-    readonly "reset": string
-  }
+  readonly "wordSpacing": string
 };
   (_: "reader.settings.column", __?: {}): {
   readonly "auto": string,
@@ -1207,6 +1211,16 @@ declare namespace typed_i18n {
   (_: "reader.settings.pdfZoom.name.fit", __?: {}): string;
   (_: "reader.settings.pdfZoom.name.width", __?: {}): string;
   (_: "reader.settings.pdfZoom.title", __?: {}): string;
+  (_: "reader.settings.preset", __?: {}): {
+  readonly "apply": string,
+  readonly "reset": string,
+  readonly "save": string,
+  readonly "title": string
+};
+  (_: "reader.settings.preset.apply", __?: {}): string;
+  (_: "reader.settings.preset.reset", __?: {}): string;
+  (_: "reader.settings.preset.save", __?: {}): string;
+  (_: "reader.settings.preset.title", __?: {}): string;
   (_: "reader.settings.preview", __?: {}): string;
   (_: "reader.settings.reduceMotion", __?: {}): string;
   (_: "reader.settings.scrolled", __?: {}): string;
@@ -1245,16 +1259,6 @@ declare namespace typed_i18n {
   (_: "reader.settings.theme.name.Sepia", __?: {}): string;
   (_: "reader.settings.theme.title", __?: {}): string;
   (_: "reader.settings.wordSpacing", __?: {}): string;
-  (_: "reader.settings.preset", __?: {}): {
-  readonly "title": string,
-  readonly "save": string,
-  readonly "apply": string,
-  readonly "reset": string
-};
-  (_: "reader.settings.preset.title", __?: {}): string;
-  (_: "reader.settings.preset.save", __?: {}): string;
-  (_: "reader.settings.preset.apply", __?: {}): string;
-  (_: "reader.settings.preset.reset", __?: {}): string;
   (_: "reader.svg", __?: {}): { readonly "left": string, readonly "right": string };
   (_: "reader.svg.left", __?: {}): string;
   (_: "reader.svg.right", __?: {}): string;

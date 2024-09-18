@@ -76,6 +76,8 @@
         },
         "export": "Αποθήκευση ως",
         "exportAnnotation": "",
+        "exportAnnotationFailure": "",
+        "exportAnnotationSuccess": "",
         "format": "Διαμόρφωση (format)",
         "lang": "Γλώσσα",
         "lastRead": "Τελευταία ανάγνωση",
