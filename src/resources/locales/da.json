@@ -75,7 +75,7 @@
             "lastAdditions": "Senest tilføjet"
         },
         "export": "Gem som",
-        "exportAnnotation": "",
+        "exportAnnotation": "Gem noter som",
         "exportAnnotationFailure": "",
         "exportAnnotationSuccess": "",
         "format": "Format",
@@ -85,8 +85,8 @@
         "myBooks": "Mine bøger",
         "noPublicationHelpL1": "Træk en bog hertil",
         "noPublicationHelpL2": "eller brug \"{{- importTitle }}\" knappen ovenfor.",
-        "noPublicationHelpL3": "LCP beskyttede filer understøttes.",
-        "noPublicationHelpL4": "Understøttede udvidelser:",
+        "noPublicationHelpL3": "Understøtter LCP-beskyttede filer.",
+        "noPublicationHelpL4": "Understøttede filtyper:",
         "numberOfPages": "Antal sider",
         "opds": {
             "auth": {
@@ -150,7 +150,7 @@
         "fitlerTagTitle": "Filtrer efter tag",
         "gridTitle": "Gittervisning",
         "home": "Boghylde menu",
-        "homeTitle": "hjem",
+        "homeTitle": "Hjem",
         "importTitle": "Importer en bog",
         "listTitle": "Listevisning",
         "myCatalogs": "Mine kataloger",
@@ -162,7 +162,7 @@
     },
     "library": {
         "lcp": {
-            "hint": "(Hjælp til nøgleord: {{- hint}})",
+            "hint": "Hint til nøgleord: {{- hint}}",
             "password": "Nøgleord",
             "sentence": "Denne bog kræver et LCP nøgleord for at åbne: ",
             "urlHint": "Har du glemt dit nøgleord? Få hjælp her",
@@ -375,7 +375,7 @@
             "title": "Oplæsning"
         },
         "navigation": {
-            "annotationTitle": "note",
+            "annotationTitle": "lav note",
             "backHomeTitle": "tilbage til boghylden",
             "bookmarkTitle": "bogmærke",
             "currentPage": "Nuværende side: {{- current}}",
@@ -447,10 +447,10 @@
                 "title": "Zoom"
             },
             "preset": {
-                "apply": "",
-                "reset": "",
-                "save": "",
-                "title": ""
+                "apply": "Anvend mit foretrukne læsetema som nuværende læse-indstillinger",
+                "reset": "Nulstil mit foretrukne læsetema til standard indstillingerne",
+                "save": "Gem de nuværende læse-indstillinger som mit foretrukne læsetema",
+                "title": "Læsetema"
             },
             "preview": "Forhåndsvisning",
             "reduceMotion": "Reducer bevægelser",
@@ -523,7 +523,7 @@
         "theme": {
             "auto": "Automatisk",
             "dark": "Mørk",
-            "description": "Match operativsystemets farvetilstand.",
+            "description": "Tilpasser sig operativsystemets farvetilstand.",
             "light": "Lys",
             "title": "Programmets farvetema"
         }
