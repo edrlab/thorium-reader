@@ -661,6 +661,10 @@
   padding-right: 0 !important;
   background-color: inherit;
   color: var(--color-primary);
+
+  option {
+    color: var(--color-primary);
+  }
 }
 
 .modal_dialog_reader, .popover_dialog_reader {
