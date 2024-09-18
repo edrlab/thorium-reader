@@ -42,7 +42,6 @@ import * as TargetIcon from "readium-desktop/renderer/assets/icons/target-icon.s
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
 import * as AnnotationIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar-icon.svg";
-// import * as ImportIcon from "readium-desktop/renderer/assets/icons/import.svg";
 // import * as DuplicateIcon from "readium-desktop/renderer/assets/icons/duplicate-icon.svg";
 
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
@@ -841,14 +840,6 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                     title={__("catalog.exportAnnotation")}>
                     <SVG svg={SaveIcon} />
                 </button>
-                {/* <button className={stylesAnnotations.annotations_filter_trigger_button}
-                    onClick={async () => {
-
-
-                    }}
-                    title={__("catalog.exportAnnotation")}>
-                    <SVG svg={ImportIcon} />
-                </button> */}
                 <Popover.Root>
                     <Popover.Trigger asChild>
                         <button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button}
