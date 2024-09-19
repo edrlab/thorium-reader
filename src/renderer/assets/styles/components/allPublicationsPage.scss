@@ -8,9 +8,10 @@
 .allBooks {
     &_header {
         font-size: 18px;
-        max-width: 300px;
+        max-width: 80%;
         text-overflow: ellipsis;
         overflow: hidden;
+        text-wrap: nowrap;
 
 
         &_navigation {
@@ -127,6 +128,15 @@
                 padding: 0;
                 width: 30px;
                 color: var(--color-blue);
+                height: 32px;
+
+                &:nth-child(1), &:nth-child(5) {
+                    padding-top: 4px;
+                }
+
+                &:nth-child(2), &:nth-child(4) {
+                    padding-top: 2px;
+                }
 
                 a {
                     color: var(--color-blue);

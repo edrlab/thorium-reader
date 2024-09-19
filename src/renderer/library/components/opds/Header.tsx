@@ -50,7 +50,7 @@ class Header extends React.Component<IProps, undefined> {
 
         // FIXME : css in code
         return (
-            <SecondaryHeader style={{display: "flex", gap: "10px", alignItems: "end", height: "65px", justifyContent: "end", margin: "0px"}}>
+            <SecondaryHeader style={{display: "flex", gap: "10px", alignItems: "end", height: "53px", justifyContent: "end", margin: "0px"}}>
                 <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
                     <OpdsFeedAddForm />
                     <ApiappAddFormDialog />

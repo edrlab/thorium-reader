@@ -295,11 +295,13 @@
 
 .opds_browserResults {
     overflow: auto;
-    inset: 300px 20px 30px 30px;
+    inset: 260px 20px 30px 30px;
     padding: 0;
     position: absolute;
     padding-right: 25px;
     margin: 2px;
+    padding-top: 40px;
+    margin-top: 15px;
 
     .button_transparency {
         margin: 4px;
