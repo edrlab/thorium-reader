@@ -7,6 +7,15 @@
   gap: 5px;
 }
 
+.popover_dialog_reader .settings_tab.annotations_tab {
+  margin-top: 15px !important;
+}
+
+.separator {
+  border-bottom: 1px solid var(--color-extralight-grey-alt);
+  padding-bottom: 10px;
+}
+
 .annotations_options {
   z-index: 10;
   width: fit-content;

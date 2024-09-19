@@ -947,6 +947,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                     </Popover.Portal>
                 </Popover.Root>
             </div>
+            <div className={stylesAnnotations.separator} />
             {annotationsPagedArray.map(([timestamp, annotationItem], _i) =>
                 <AnnotationCard
                     key={`annotation-card_${annotationItem.uuid}`}
