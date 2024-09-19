@@ -909,7 +909,6 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                 selectedKeys={drawTypeArrayFilter}
                                 onSelectionChange={setDrawTypeArrayFilter}
                                 aria-label={__("reader.annotations.filter.filterByDrawtype")}
-                                style={{ marginBottom: "20px" }}
                             >
                                 <details open id="annotationListDrawDetails">
                                     <summary className={stylesAnnotations.annotations_filter_tagGroup}>
