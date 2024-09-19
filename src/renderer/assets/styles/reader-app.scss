@@ -1049,11 +1049,12 @@ input[type="radio"] + label {
 }
 
 .exitZen_container {
-  width: 100dvw;
-  height: 10%;
+  width: 150px;
+  height: 150px;
   z-index: 10;
   position: absolute;
   top: 0;
+  right: 0;
 
   &:hover {
     .button_exitZen {
