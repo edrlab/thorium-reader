@@ -429,6 +429,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     const tagsStringArray = tagsStringArrayMaybeUndefined || [];
     const tagName = tagsStringArray[0] || "";
     const dockedEditAnnotation = isEdited && dockedMode;
+    const annotationColor = rgbToHex(annotation.color);
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
@@ -482,7 +483,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
 
     return (<div
         className={stylesAnnotations.annotations_line}
-        style={{ backgroundColor: dockedEditAnnotation ? "var(--color-extralight-grey)" : "", borderLeft: dockedEditAnnotation && "none" }}
+        style={{ backgroundColor: dockedEditAnnotation ? "var(--color-extralight-grey)" : "", borderLeft: dockedEditAnnotation ? "none" : `4px solid ${annotationColor}` }}
         onKeyDown={isEdited ? (e) => {
             if (e.key === "Escape") {
                 e.preventDefault();
@@ -972,6 +973,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                     </Popover.Portal>
                 </Popover.Root>
             </div>
+            <div className={stylesAnnotations.separator} />
             {annotationsPagedArray.map(([timestamp, annotationItem], _i) =>
                 <AnnotationCard
                     key={`annotation-card_${annotationItem.uuid}`}
