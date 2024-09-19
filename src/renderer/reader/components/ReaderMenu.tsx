@@ -92,6 +92,7 @@ import type { Selection } from "react-aria-components";
 import { rgbToHex } from "readium-desktop/common/rgb";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { convertAnnotationListToW3CAnnotationSet } from "readium-desktop/common/w3c/annotation/converter";
+import { IW3CAnnotationModelSet } from "readium-desktop/common/w3c/annotation/annotationModel.type";
 
 
 
@@ -820,21 +821,56 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                 <button className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationList.length}
                     onClick={async () => {
 
+                        const downloadAnnotationJSON = (contents: IW3CAnnotationModelSet, filename: string) => {
+
+                            const data = JSON.stringify(contents, null, 2);
+                            const blob = new Blob([data], { type: "application/rd-annotations+json" });
+                            const jsonObjectUrl = URL.createObjectURL(blob);
+                            const anchorEl = document.createElement("a");
+                            anchorEl.href = jsonObjectUrl;
+                            anchorEl.download = `${filename}.annotation`;
+                            anchorEl.click();
+                            URL.revokeObjectURL(jsonObjectUrl);
+                        };
+
                         try {
-                            const fileHandle = await (window as any).showSaveFilePicker({ excludeAcceptAllOption: true, id: publicationView.identifier.slice(0, 32), suggestedName: "myAnnotationSet.annotation", types: [{ description: ".annotation", accept: { "application/rd-annotations+json": [".annotation"] } }] });
-                            const writable = await fileHandle.createWritable();
 
                             const annotations = annotationList.map(([, anno]) => anno);
                             const contents = convertAnnotationListToW3CAnnotationSet(annotations, publicationView);
-                            const jsonData = JSON.stringify(contents, null, 2);
-                            await writable.write(jsonData);
-                            await writable.close();
-
-                            dispatch(toastActions.openRequest.build(ToastType.Success, __("catalog.exportAnnotationSuccess", {fileName: fileHandle.name})));
-
+                            downloadAnnotationJSON(contents, "myAnnotationSet");
                         } catch (e) {
                             dispatch(toastActions.openRequest.build(ToastType.Error, __("catalog.exportAnnotationFailure", { errorTxt: e?.toString() })));
                         }
+
+                        // On Chromium implementation, and specially in MacOS when the title is visible to the user. There is a Warning message "Warning: This site can see edits you make"
+                        // This Warning Message is very annoying, In thorium we run like a native application, and moreover we didn't read the file choosen by the user, we just overwrite and dump the annotations content generated.
+                        // The implementation in chromium is here, it's actually a new api, In progress, And not implemented everywhere
+                        // Chromium issue : https://issues.chromium.org/issues/40061219
+                        // source code : https://github.com/electron/electron/blob/0ac8ff6439a5448d5f883ef6656a3e9be753a7e2/shell/browser/file_system_access/file_system_access_permission_context.cc#L800
+                        // https://issues.chromium.org/issues/40061219#:~:text=This%20change%20adds%20a%20title%20for%20the%20file%20picker%20when%0Athe%20showSaveFilePicker%20is%20used.%20This%20title%20should%20be%0Aupdated%20again%20if%20we%20decide%20to%20separate%20read/write%20access.
+                        // " This change adds a title for the file picker when
+                        //      the showSaveFilePicker is used. This title should be
+                        //      updated again if we decide to separate read/write access.
+                        // "
+                        // For me I cannot choose to separate read or write access from the API (https://developer.mozilla.org/en-US/docs/Web/API/Window/showSaveFilePicker)
+
+                        // I comment this for the moment, and I switch on a simpler method to just create a download link with the blob content, electron catch the download blob file and ask to user when he want to save it.
+                        // try {
+                        //     const fileHandle = await (window as any).showSaveFilePicker({ excludeAcceptAllOption: true, id: publicationView.identifier.slice(0, 32), suggestedName: "myAnnotationSet.annotation", types: [{ description: ".annotation", accept: { "application/rd-annotations+json": [".annotation"] } }] });
+                        //     const writable = await fileHandle.createWritable();
+
+                        //     const annotations = annotationList.map(([, anno]) => anno);
+                        //     const contents = convertAnnotationListToW3CAnnotationSet(annotations, publicationView);
+                        //     const jsonData = JSON.stringify(contents, null, 2);
+                        //     await writable.write(jsonData);
+                        //     await writable.close();
+
+
+                        //     dispatch(toastActions.openRequest.build(ToastType.Success, __("catalog.exportAnnotationSuccess", {fileName: /*fileHandle.name*/""})));
+
+                        // } catch (e) {
+                        //     dispatch(toastActions.openRequest.build(ToastType.Error, __("catalog.exportAnnotationFailure", { errorTxt: e?.toString() })));
+                        // }
 
                     }}
                     title={__("catalog.exportAnnotation")}>
