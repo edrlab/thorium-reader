@@ -702,7 +702,7 @@ class Reader extends React.Component<IProps, IState> {
         const isAudioBook = isAudiobookFn(this.props.r2Publication);
         const arrowDisabledNotEpub = isAudioBook || this.props.isPdf || this.props.isDivina;
         // const isFXL = this.isFixedLayout();
-        // const isPaginated = this.props.readerConfig.paged;
+        const isPaginated = this.props.readerConfig.paged;
 
         // console.log(arrowDisabledNotEpub, isFXL, isPaginated);
         // epub non fxl (page)      : false false true  : true
@@ -788,10 +788,12 @@ class Reader extends React.Component<IProps, IState> {
                         disableRTLFlip={this.props.disableRTLFlip}
                         isRTLFlip={this.isRTLFlip}
                     />
-                    :
-                    <button onClick={() => this.setState({ zenMode : false})} className={stylesReader.button_exitZen}>
+                    : 
+                    <div className={stylesReader.exitZen_container}>
+                    <button onClick={() => this.setState({ zenMode : false})} className={stylesReader.button_exitZen} style={{ opacity: isPaginated ? "1" : "0"}}>
                         <SVG ariaHidden svg={exitZenModeIcon} />
                     </button>
+                    </div>
                     }
 
                     <div
@@ -850,6 +852,7 @@ class Reader extends React.Component<IProps, IState> {
                                         }}
                                             title={this.props.__("reader.svg.left")}
                                             className={(this.state.settingsOpen || this.state.menuOpen) ? (this.props.readerConfig.readerDockingMode === "left" ? stylesReaderFooter.navigation_arrow_docked_left :  stylesReaderFooter.navigation_arrow_left) : stylesReaderFooter.navigation_arrow_left}
+                                            style={{ opacity: isPaginated ? "1" : "0"}}
                                         >
                                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                                         </button>
@@ -913,6 +916,7 @@ class Reader extends React.Component<IProps, IState> {
                                         }}
                                             title={this.props.__("reader.svg.right")}
                                             className={(this.state.settingsOpen || this.state.menuOpen) ? (this.props.readerConfig.readerDockingMode === "right" ? stylesReaderFooter.navigation_arrow_docked_right :  stylesReaderFooter.navigation_arrow_right) : stylesReaderFooter.navigation_arrow_right}
+                                            style={{ opacity: isPaginated ? "1" : "0"}}
                                         >
                                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                                         </button>

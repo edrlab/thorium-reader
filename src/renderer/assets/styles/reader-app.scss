@@ -1048,6 +1048,21 @@ input[type="radio"] + label {
   display: none;
 }
 
+.exitZen_container {
+  width: 150px;
+  height: 150px;
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  &:hover {
+    .button_exitZen {
+    opacity: 1 !important;
+    }
+  }
+}
+
 .button_exitZen {
     width: 25px;
     height: 25px;
@@ -1055,6 +1070,8 @@ input[type="radio"] + label {
     right: 25px;
     top: 12px;
     z-index: 10;
+    transition: 200ms;
+
 
     svg {
       color: var(--color-blue);
