@@ -128,6 +128,8 @@ declare namespace typed_i18n {
   },
   readonly "export": string,
   readonly "exportAnnotation": string,
+  readonly "exportAnnotationSuccess": string,
+  readonly "exportAnnotationFailure": string,
   readonly "format": string,
   readonly "lang": string,
   readonly "lastRead": string,
@@ -208,6 +210,8 @@ declare namespace typed_i18n {
   (_: "catalog.entry.lastAdditions", __?: {}): string;
   (_: "catalog.export", __?: {}): string;
   (_: "catalog.exportAnnotation", __?: {}): string;
+  (_: "catalog.exportAnnotationSuccess", __?: {}): string;
+  (_: "catalog.exportAnnotationFailure", __?: {}): string;
   (_: "catalog.format", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.lastRead", __?: {}): string;
@@ -305,6 +309,8 @@ declare namespace typed_i18n {
   (_: "catalog.update", __?: {}): string;
   (_: "dialog", __?: {}): {
   readonly "cancel": string,
+  readonly "deleteAnnotations": string,
+  readonly "deleteAnnotationsText": string,
   readonly "deleteFeed": string,
   readonly "deletePublication": string,
   readonly "import": string,
@@ -314,6 +320,8 @@ declare namespace typed_i18n {
   readonly "yes": string
 };
   (_: "dialog.cancel", __?: {}): string;
+  (_: "dialog.deleteAnnotations", __?: {}): string;
+  (_: "dialog.deleteAnnotationsText", __?: {}): string;
   (_: "dialog.deleteFeed", __?: {}): string;
   (_: "dialog.deletePublication", __?: {}): string;
   (_: "dialog.import", __?: {}): string;
@@ -699,6 +707,24 @@ declare namespace typed_i18n {
     readonly "addNote": string,
     readonly "advancedMode": string,
     readonly "annotationsOptions": string,
+    readonly "colors": {
+      readonly "bluegreen": string,
+      readonly "cyan": string,
+      readonly "green": string,
+      readonly "lightblue": string,
+      readonly "orange": string,
+      readonly "purple": string,
+      readonly "red": string,
+      readonly "yellow": string
+    },
+    readonly "filter": {
+      readonly "all": string,
+      readonly "filterByColor": string,
+      readonly "filterByDrawtype": string,
+      readonly "filterByTag": string,
+      readonly "filterOptions": string,
+      readonly "none": string
+    },
     readonly "hide": string,
     readonly "highlight": string,
     readonly "noSelectionToast": string,
@@ -810,6 +836,12 @@ declare namespace typed_i18n {
       },
       readonly "title": string
     },
+    readonly "preset": {
+      readonly "apply": string,
+      readonly "reset": string,
+      readonly "save": string,
+      readonly "title": string
+    },
     readonly "preview": string,
     readonly "reduceMotion": string,
     readonly "scrolled": string,
@@ -851,6 +883,24 @@ declare namespace typed_i18n {
   readonly "addNote": string,
   readonly "advancedMode": string,
   readonly "annotationsOptions": string,
+  readonly "colors": {
+    readonly "bluegreen": string,
+    readonly "cyan": string,
+    readonly "green": string,
+    readonly "lightblue": string,
+    readonly "orange": string,
+    readonly "purple": string,
+    readonly "red": string,
+    readonly "yellow": string
+  },
+  readonly "filter": {
+    readonly "all": string,
+    readonly "filterByColor": string,
+    readonly "filterByDrawtype": string,
+    readonly "filterByTag": string,
+    readonly "filterOptions": string,
+    readonly "none": string
+  },
   readonly "hide": string,
   readonly "highlight": string,
   readonly "noSelectionToast": string,
@@ -868,6 +918,38 @@ declare namespace typed_i18n {
   (_: "reader.annotations.addNote", __?: {}): string;
   (_: "reader.annotations.advancedMode", __?: {}): string;
   (_: "reader.annotations.annotationsOptions", __?: {}): string;
+  (_: "reader.annotations.colors", __?: {}): {
+  readonly "bluegreen": string,
+  readonly "cyan": string,
+  readonly "green": string,
+  readonly "lightblue": string,
+  readonly "orange": string,
+  readonly "purple": string,
+  readonly "red": string,
+  readonly "yellow": string
+};
+  (_: "reader.annotations.colors.bluegreen", __?: {}): string;
+  (_: "reader.annotations.colors.cyan", __?: {}): string;
+  (_: "reader.annotations.colors.green", __?: {}): string;
+  (_: "reader.annotations.colors.lightblue", __?: {}): string;
+  (_: "reader.annotations.colors.orange", __?: {}): string;
+  (_: "reader.annotations.colors.purple", __?: {}): string;
+  (_: "reader.annotations.colors.red", __?: {}): string;
+  (_: "reader.annotations.colors.yellow", __?: {}): string;
+  (_: "reader.annotations.filter", __?: {}): {
+  readonly "all": string,
+  readonly "filterByColor": string,
+  readonly "filterByDrawtype": string,
+  readonly "filterByTag": string,
+  readonly "filterOptions": string,
+  readonly "none": string
+};
+  (_: "reader.annotations.filter.all", __?: {}): string;
+  (_: "reader.annotations.filter.filterByColor", __?: {}): string;
+  (_: "reader.annotations.filter.filterByDrawtype", __?: {}): string;
+  (_: "reader.annotations.filter.filterByTag", __?: {}): string;
+  (_: "reader.annotations.filter.filterOptions", __?: {}): string;
+  (_: "reader.annotations.filter.none", __?: {}): string;
   (_: "reader.annotations.hide", __?: {}): string;
   (_: "reader.annotations.highlight", __?: {}): string;
   (_: "reader.annotations.noSelectionToast", __?: {}): string;
@@ -1043,6 +1125,12 @@ declare namespace typed_i18n {
     },
     readonly "title": string
   },
+  readonly "preset": {
+    readonly "apply": string,
+    readonly "reset": string,
+    readonly "save": string,
+    readonly "title": string
+  },
   readonly "preview": string,
   readonly "reduceMotion": string,
   readonly "scrolled": string,
@@ -1123,6 +1211,16 @@ declare namespace typed_i18n {
   (_: "reader.settings.pdfZoom.name.fit", __?: {}): string;
   (_: "reader.settings.pdfZoom.name.width", __?: {}): string;
   (_: "reader.settings.pdfZoom.title", __?: {}): string;
+  (_: "reader.settings.preset", __?: {}): {
+  readonly "apply": string,
+  readonly "reset": string,
+  readonly "save": string,
+  readonly "title": string
+};
+  (_: "reader.settings.preset.apply", __?: {}): string;
+  (_: "reader.settings.preset.reset", __?: {}): string;
+  (_: "reader.settings.preset.save", __?: {}): string;
+  (_: "reader.settings.preset.title", __?: {}): string;
   (_: "reader.settings.preview", __?: {}): string;
   (_: "reader.settings.reduceMotion", __?: {}): string;
   (_: "reader.settings.scrolled", __?: {}): string;

@@ -75,6 +75,9 @@
             "lastAdditions": "최근에 추가한 도서"
         },
         "export": "내보내기",
+        "exportAnnotation": "",
+        "exportAnnotationFailure": "",
+        "exportAnnotationSuccess": "",
         "format": "포맷",
         "lang": "언어선택",
         "lastRead": "최근 읽은 자료",
@@ -123,6 +126,8 @@
     },
     "dialog": {
         "cancel": "취소",
+        "deleteAnnotations": "",
+        "deleteAnnotationsText": "",
         "deleteFeed": "카탈로그를 제거하겠습니까?",
         "deletePublication": "출판물을 제거하겠습니까?",
         "import": "파일들을 열겠습니까:",
@@ -305,11 +310,36 @@
             "addNote": "",
             "advancedMode": "",
             "annotationsOptions": "",
+            "colors": {
+                "bluegreen": "",
+                "cyan": "",
+                "green": "",
+                "lightblue": "",
+                "orange": "",
+                "purple": "",
+                "red": "",
+                "yellow": ""
+            },
+            "filter": {
+                "all": "",
+                "filterByColor": "",
+                "filterByDrawtype": "",
+                "filterByTag": "",
+                "filterOptions": "",
+                "none": ""
+            },
+            "hide": "",
             "highlight": "",
             "noSelectionToast": "",
             "quickAnnotations": "",
             "saveNote": "",
-            "toggleMarginMarks": ""
+            "toggleMarginMarks": "",
+            "type": {
+                "outline": "",
+                "solid": "",
+                "strikethrough": "",
+                "underline": ""
+            }
         },
         "divina": {
             "mute": "오디오 음소거",
@@ -415,6 +445,12 @@
                     "width": "너비 맞춤"
                 },
                 "title": "확대/축소"
+            },
+            "preset": {
+                "apply": "",
+                "reset": "",
+                "save": "",
+                "title": ""
             },
             "preview": "",
             "reduceMotion": "모션 줄이기",

@@ -76,6 +76,8 @@
         },
         "export": "Save as",
         "exportAnnotation": "Save annotation as",
+        "exportAnnotationFailure": "Cannot save annotation list: {{- errorTxt }}",
+        "exportAnnotationSuccess": "Annotation list saved to {{- fileName }}",
         "format": "Format",
         "lang": "Language",
         "lastRead": "Last Read",
@@ -124,6 +126,8 @@
     },
     "dialog": {
         "cancel": "Cancel",
+        "deleteAnnotations": "Delete annotations?",
+        "deleteAnnotationsText": "Do you want to delete {{- annotationListLength}} annotation(s)?",
         "deleteFeed": "Delete catalog?",
         "deletePublication": "Delete publication?",
         "import": "Confirm import:",
@@ -306,6 +310,24 @@
             "addNote": "Annotate",
             "advancedMode": "Instant mode (auto create after select)",
             "annotationsOptions": "Options",
+            "colors": {
+                "bluegreen": "Blue-green",
+                "cyan": "Cyan",
+                "green": "Green",
+                "lightblue": "Light Blue",
+                "orange": "Orange",
+                "purple": "Purple",
+                "red": "Red",
+                "yellow": "Yellow"
+            },
+            "filter": {
+                "all": "All",
+                "filterByColor": "Filter by Color",
+                "filterByDrawtype": "Filter by Drawtype",
+                "filterByTag": "Filter by Tag",
+                "filterOptions": "Filter Options",
+                "none": "None"
+            },
             "hide": "Do not display",
             "highlight": "Highlight",
             "noSelectionToast": "No selection",
@@ -423,6 +445,12 @@
                     "width": "page width"
                 },
                 "title": "Zoom"
+            },
+            "preset": {
+                "apply": "Apply the preferred reading settings preset to the current reading settings",
+                "reset": "Reset preferred reading settings preset to the initial state",
+                "save": "Save the current reading settings to the preferred reading settings preset",
+                "title": "Preset"
             },
             "preview": "Preview",
             "reduceMotion": "Reduce motion",

@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as exportW3CAnnotationSetFromAnnotations from "./exportW3CAnnotationSet";
 
-export {
-    exportW3CAnnotationSetFromAnnotations,
-};
+export const isNil = (a: any) => (a == null);
+export const isNotNil = (a: any) => !isNil(a);

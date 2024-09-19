@@ -11,23 +11,23 @@ import { sessionActions } from "../actions";
 import { ISessionState } from "../states/session";
 
 const initialState: ISessionState = {
-    state: false,
+    // state: false,
     save: false,
 };
 
 function sessionReducer_(
     state = initialState,
-    action: sessionActions.enable.TAction | sessionActions.save.TAction,
+    action: /*sessionActions.enable.TAction |*/ sessionActions.save.TAction,
 ): ISessionState {
     switch (action.type) {
-        case sessionActions.enable.ID:
-            return {
-                state: action.payload.value,
-                save: state.save,
-            };
+        // case sessionActions.enable.ID:
+        //     return {
+        //         state: action.payload.value,
+        //         save: state.save,
+        //     };
         case sessionActions.save.ID:
             return {
-                state: state.state,
+                // state: state.state,
                 save: action.payload.value,
             };
         default:

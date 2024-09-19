@@ -23,7 +23,6 @@ import { applyPatch } from "rfc6902";
 
 import { reduxPersistMiddleware } from "../middleware/persistence";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
-import { defaultDisableRTLFLip } from "readium-desktop/common/redux/states/renderer/rtlFlip";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -212,22 +211,38 @@ export async function initStore()
     debug("REDUX STATE VALUE :: ", typeof reduxState, reduxState ? Object.keys(reduxState) : "nil");
     // debug(reduxState);
 
-    const forceDisableReaderDefaultConfigAndSessionForTheNewUI: Partial<PersistRootState> = {
-        reader: {
-            defaultConfig: readerConfigInitialState,
-            disableRTLFlip: reduxState?.reader?.disableRTLFlip || { disabled: defaultDisableRTLFLip },
-        },
-        session: {
-            state: true,
-            save: reduxState?.session?.save || false,
-        },
-    };
-    const preloadedState = reduxState ? {
+    // const forceDisableReaderDefaultConfigAndSessionForTheNewUI: Partial<PersistRootState> = {
+        // reader: {
+
+        //     // reader default config could be removed
+        //     // defaultConfig: readerConfigInitialState,
+
+        //     // just disableRTLFlip use yet
+        //     disableRTLFlip: reduxState?.reader?.disableRTLFlip || { disabled: defaultDisableRTLFLip },
+        // },
+        // session: {
+
+        //     // not used anymore, just force to true in main and lib, but not declared in reader (false by default)
+        //     // state: true,
+
+        //     // save is used to know if the session must be saved at the end
+        //     // save: reduxState?.session?.save || false,
+        // },
+    // };
+    // const preloadedState = reduxState ? {
+    //     ...reduxState,
+    //     ...forceDisableReaderDefaultConfigAndSessionForTheNewUI,
+    // } : {
+    //     ...forceDisableReaderDefaultConfigAndSessionForTheNewUI,
+    // };
+    const preloadedState: Partial<PersistRootState> = reduxState ? {
         ...reduxState,
-        ...forceDisableReaderDefaultConfigAndSessionForTheNewUI,
-    } : {
-        ...forceDisableReaderDefaultConfigAndSessionForTheNewUI,
-    };
+    } : {};
+
+    // defaultConfig state initialization from older database thorium version 2.x, 3.0
+    if (preloadedState?.reader?.defaultConfig) {
+        preloadedState.reader.defaultConfig = { ...readerConfigInitialState, ...preloadedState.reader.defaultConfig };
+    }
 
     const sagaMiddleware = createSagaMiddleware();
 

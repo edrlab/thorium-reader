@@ -15,8 +15,10 @@ export interface IW3CAnnotationModel {
     body: {
         type: string;
         value: string;
-        format: string;
-        color: string;
+        tag?: string;
+        highlight?: "solid" | "underline" | "strikethrough" | "outline";
+        format?: string;
+        color?: string;
         textDirection?: string;
         language?: string;
     };

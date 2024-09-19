@@ -20,6 +20,7 @@ import {
 } from "@r2-shared-js/init-globals";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { publicationHasMediaOverlays } from "@r2-navigator-js/electron/renderer";
+import { pushTags } from "./tags";
 
 // let devTron: any;
 let axe: any;
@@ -60,6 +61,13 @@ ipcRenderer.on(readerIpc.CHANNEL,
                 data.payload.reader.info.navigator = {
                     r2PublicationHasMediaOverlays: publicationHasMediaOverlays(r2Publication),
                 };
+
+                const annotationList = data.payload.reader.annotation || [];
+                const annotationTagsList = [];
+                for (const [_, {tags}] of annotationList) {
+                    annotationTagsList.push(...(tags || []));
+                }
+                data.payload.annotationTagsIndex = pushTags({}, annotationTagsList);
 
                 createStoreFromDi(data.payload)
                     .then(

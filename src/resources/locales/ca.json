@@ -1,530 +1,559 @@
 {
-  "accessibility": {
-    "bookMenu": "Menú",
-    "closeDialog": "Tancar",
-    "importFile": "Importar publicació",
-    "leftSlideButton": "Lliscar llista a l'esquerra",
-    "mainContent": "Contingut principal",
-    "rightSlideButton": "Lliscar llista a la dreta",
-    "searchBook": "Cercar per títol",
-    "skipLink": "Passar el contingut",
-    "toolbar": "Barra d'eines"
-  },
-  "apiapp": {
-    "documentation": "Documentació de Thorium",
-    "howItWorks": "Com funciona?",
-    "informations": "A França, moltes biblioteques públiques proporcionen un catàleg llegible per màquina (similar a OPDS però no idèntic), permetent als usuaris descarregar publicacions digitals de la seva biblioteca personal. La integració d'aquesta tecnologia en el Thorium Reader permet descarregar un llibre electrònic o audiollibre directament en el Thorium Reader per a la lectura instantània.\nCom connecteu el vostre compte de la biblioteca pública francesa amb Thorium Reader? És senzill. Introduïu una ciutat francesa ('París') o part del nom de la biblioteca al camp Cerca i premeu el botó Cerca. Apareixerà una llista de biblioteques públiques corresponents a la vostra cerca. Seleccioneu una biblioteca i premeu Afegeix. A la llista actualitzada de catàlegs, seleccioneu aquesta biblioteca: es mostrarà un formulari d'autenticació. Introdueix el teu nom d'usuari/email i contrasenya i prem Inici de sessió. Ja pots veure el contingut de la teva prestatgeria personal, des de la qual podràs descarregar i llegir els llibres electrònics i audiollibres que has prestat prèviament.",
-    "noLibraryFound": "Biblioteca no trobada ({{- name}})"
-  },
-  "app": {
-    "edit": {
-      "copy": "Copiar",
-      "cut": "Tallar",
-      "paste": "Pegar",
-      "redo": "Refer",
-      "selectAll": "Seleccionar tot",
-      "title": "Editar",
-      "undo": "Desfer"
-    },
-    "hide": "Ocultar {{- appName}}",
-    "quit": "Sortir de {{- appName}}",
-    "session": {
-      "exit": {
-        "askBox": {
-          "button": {
-            "no": "No",
-            "yes": "Sí"
-          },
-          "message": "Vols guardar la sessió?",
-          "title": "Guardar sessió"
-        }
-      }
-    },
-    "update": {
-      "message": "Hi ha una nova versió disponible, feu clic per obtenir més informació.",
-      "title": "{{- appName}} software actualitzat."
-    },
-    "window": {
-      "showLibrary": "Mostrar biblioteca"
-    }
-  },
-  "catalog": {
-    "about": {
-      "title": "Sobre {{appName}}"
-    },
-    "addBookToLib": "Importar",
-    "addTags": "Afegir etiqueta",
-    "addTagsButton": "Afegir",
-    "allBooks": "Tots els llibres",
-    "bookInfo": "Sobre aquest llibre",
-    "column": {
-      "ascending": "ascendent",
-      "descending": "descendent",
-      "unsorted": "sense ordenar"
-    },
-    "delete": "Eliminar",
-    "deleteBook": "Eliminar",
-    "deleteTag": "Eliminar etiqueta",
-    "description": "Descripció",
-    "emptyTagList": "No tens llibres etiquetats.",
-    "entry": {
-      "continueReading": "Reprendre lectura",
-      "continueReadingAudioBooks": "Reprendre reproducción",
-      "continueReadingDivina": "Reprendre divina",
-      "continueReadingPdf": "Rependre PDF",
-      "lastAdditions": "Afegits recentment"
-    },
-    "export": "Exportar",
-    "format": "Format",
-    "lang": "Idioma",
-    "lastRead": "Última lectura",
-    "moreInfo": "Més información",
-    "myBooks": "Els meus llibres",
-    "noPublicationHelpL1": "Deposita els arxius aquí",
-    "noPublicationHelpL2": "o utiltza el botó \"{{- importTitle }}\" de dalt.",
-    "noPublicationHelpL3": "S'admiteixen fitxers protegits LCP.",
-    "noPublicationHelpL4": "Extensions admitides:",
-    "numberOfPages": "Nombre de pàgines",
-    "opds": {
-      "auth": {
-        "cancel": "Cancel·lar",
-        "login": "Iniciar sessió",
-        "password": "Contrasenya",
-        "register": "Registre",
-        "username": "Usuari / Direcció de correu eletrònic"
-      },
-      "info": {
-        "availableSince": "Des de",
-        "availableState": {
-          "available": "Disponible",
-          "ready": "Llest",
-          "reserved": "Reservat",
-          "unavailable": "No disponible",
-          "unknown": "Desconegut"
-        },
-        "availableUntil": "Fins",
-        "copyAvalaible": "Número de disponibles",
-        "copyTotal": "Número de còpies",
-        "holdPosition": "La teua ubicació",
-        "holdTotal": "Reservats",
-        "numberOfItems": "Número d'elements",
-        "priveValue": "Preu",
-        "state": "Estat"
-      }
-    },
-    "publisher": "Editor",
-    "readBook": "Llegir",
-    "released": "Publicat en",
-    "sort": "Ordenar per",
-    "tag": "Etiqueta",
-    "tagCount": "Número d'etiquetes",
-    "tags": "Etiquetes",
-    "update": "Editar"
-  },
-  "dialog": {
-    "cancel": "Cancel·lar",
-    "deleteFeed": "Segur que vols eliminar aquest catàleg?",
-    "deletePublication": "Segur que vols eliminar aquesta publicació?",
-    "import": "Segur que vols importar aquests fitxers?",
-    "importError": "S'ha produït un error, comprova l'extensió del teu fitxer ({{acceptedExtension}})",
-    "renew": "Segur que vols renovar d'aquest préstec?",
-    "return": "Segur que vols retornar la llicència per a aquesta publicació?",
-    "yes": "Sí"
-  },
-  "error": {
-    "errorBox": {
-      "error": "Missatge d'error",
-      "message": "S'ha produït un error en {{- filename}}",
-      "title": "Error intern de {{- appName}}"
-    }
-  },
-  "header": {
-    "allBooks": "Tots els llibres",
-    "catalogs": "Catàlegs",
-    "downloads": "Descàrregues",
-    "fitlerTagTitle": "Filtrar per etiqueta",
-    "gridTitle": "Presentació en quadrícula",
-    "home": "Menú biblioteca",
-    "homeTitle": "Inici",
-    "importTitle": "Importar publicació",
-    "listTitle": "Presentació en llista",
-    "myCatalogs": "Els meus catàlegs",
-    "refreshTitle": "Recarregar",
-    "searchPlaceholder": "Cercar",
-    "searchTitle": "Iniciar cerca",
-    "settings": "Opcions de configuració",
-    "viewMode": "Mode de visualització"
-  },
-  "library": {
-    "lcp": {
-      "hint": "Suggeriment : {{- hint}})",
-      "password": "Contrassenya",
-      "sentence": "Aquesta publicació requereix una contrassenya LCP per obrir-se: ",
-      "urlHint": "Has olvidat la contrassenya? Clica si necessites ajuda",
-      "whatIsLcp?": "Què és LCP?",
-      "whatIsLcpInfoDetails": "LCP significa 'Protecció del contingut llicenciat'.",
-      "whatIsLcpInfoDetailsLink": "Per saber-ne més, feu clic en aquest enllaç a la pàgina web de l'EDRLab."
-    }
-  },
-  "message": {
-    "download": {
-      "error": "La descàrrega de {{- title}} ha fallat: [{{- err}}]"
-    },
-    "import": {
-      "alreadyImport": "{{- title}} ja estava importat",
-      "fail": "La importació de {{- path}} ha fallat. {{- err}}",
-      "success": "La importació de {{- title}} ha acabat."
-    },
-    "open": {
-      "error": "No es pot obrir la publicació: {{- err}}"
-    }
-  },
-  "opds": {
-    "addForm": {
-      "addButton": "Afegir",
-      "name": "Nom:",
-      "namePlaceholder": "Nom",
-      "url": "Enllaç:",
-      "urlPlaceholder": "Enllaç"
-    },
-    "addFormApiapp": {
-      "title": "Afegeix un compte de biblioteca"
-    },
-    "addMenu": "Afegir catàleg OPDS",
-    "breadcrumbRoot": "Catàlegs",
-    "documentation": "Lloc web oficial de l'OPDS",
-    "empty": "No s'han trovat publicacions",
-    "firstPage": "Primera",
-    "informations": "Imagina't un món on explorar i descarregar publicacions digitals de biblioteques públiques i llibreters digitals amb pocs clics. Això és exactament el que ofereix el format de catàleg Open Publication Distribution System (OPDS). Amb OPDS, pots navegar a través de catàlegs de diversos proveïdors de llibres electrònics, registrar-te, demanar en préstec, comprar una publicació o visitar la teva biblioteca personal. Fins i tot pots descarregar un llibre electrònic o un audiollibre directament al Thorium Reader per a la lectura instantània.\nLlavors, com trobes un catàleg OPDS? És senzill. Cerca un enllaç (URL) que condueixi al catàleg. Copia aquest URL al camp Enllaç anterior. Tingues en compte que no hi ha una finestreta única per a tots els catàlegs d'OPDS actius. Hauràs de contactar amb la teva biblioteca o llibreter preferits i demanar la seva URL del catàleg OPDS. Si no esteu segur d'on començar, la Viquipèdia té alguns registres de catàlegs OPDS en diversos idiomes que poden ser útils.\nEl camp Nom es deixa a la vostra conveniència; proporciona una manera fàcil d'identificar el canal en el lector de Thorium.",
-    "lastPage": "Última",
-    "menu": {
-      "aboutBook": "Sobre aquest llibre",
-      "addExtract": "Importar mostra",
-      "goBuyBook": "Comprar aquest llibre",
-      "goLoanBook": "Demanar prestat aquest llibre",
-      "goRevokeLoanBook": "Cancel·lar préstamo",
-      "goSubBook": "Subscriure's"
-    },
-    "network": {
-      "error": "No es pot accedir al catàleg OPDS",
-      "noInternet": "No hi ha internet",
-      "noInternetMessage": "Intenta: comprovar el cable de xarxa, mòdem, router o wifi",
-      "reject": "Ho sentim, s'ha produït un error inesperat al intentar processar el catàleg OPDS",
-      "timeout": "S'ha acabat el temps d'espera de la xarxa; per favor, intenta-ho més tard"
-    },
-    "next": "Següent",
-    "previous": "Anterior",
-    "shelf": "Prestatge",
-    "updateForm": {
-      "name": "Nom:",
-      "title": "Edita el canal OPDS",
-      "updateButton": "Editar",
-      "url": "Enllaç:"
-    },
-    "whatIsOpds": "Què és OPDS?"
-  },
-  "publication": {
     "accessibility": {
-      "accessModeSufficient": {
-        "textual": "TTS i lector de pantalla amigable"
-      },
-      "accessibilityFeature": {
-        "alternativeText": "Conté text alternatiu",
-        "displayTransformability": "Text i disposició adaptables",
-        "longDescription": "Recursos gràfics completament descrits",
-        "printPageNumbers": "Referència de paginació del llibre imprès",
-        "readingOrder": "Conté un ordre de lectura",
-        "synchronizedAudioText": "Text i àudio sincronitzats",
-        "tableOfContents": "Conté una taula de continguts"
-      },
-      "accessibilityHazard": {
-        "flashing": "Flaix",
-        "motionSimulation": "Simulació de moviment",
-        "name": "Perill:",
-        "noFlashing": "Sense flaix",
-        "noMotionSimulation": "Sense simulació de moviment",
-        "noSound": "Sense so",
-        "none": "Cap",
-        "sound": "So",
-        "unknown": "Desconegut"
-      },
-      "certifierReport": "Informe de certificador",
-      "conformsTo": "Conforma a:",
-      "moreInformation": "Més informació",
-      "name": "Accessibilitat",
-      "noA11y": "No hi ha informació d'accessibilitat disponible"
+        "bookMenu": "Menú",
+        "closeDialog": "Tancar",
+        "importFile": "Importar publicació",
+        "leftSlideButton": "Lliscar llista a l'esquerra",
+        "mainContent": "Contingut principal",
+        "rightSlideButton": "Lliscar llista a la dreta",
+        "searchBook": "Cercar per títol",
+        "skipLink": "Passar el contingut",
+        "toolbar": "Barra d'eines"
     },
-    "actions": "Accions",
-    "audio": {
-      "tracks": "Pistes"
+    "apiapp": {
+        "documentation": "Documentació de Thorium",
+        "howItWorks": "Com funciona?",
+        "informations": "A França, moltes biblioteques públiques proporcionen un catàleg llegible per màquina (similar a OPDS però no idèntic), permetent als usuaris descarregar publicacions digitals de la seva biblioteca personal. La integració d'aquesta tecnologia en el Thorium Reader permet descarregar un llibre electrònic o audiollibre directament en el Thorium Reader per a la lectura instantània.\nCom connecteu el vostre compte de la biblioteca pública francesa amb Thorium Reader? És senzill. Introduïu una ciutat francesa ('París') o part del nom de la biblioteca al camp Cerca i premeu el botó Cerca. Apareixerà una llista de biblioteques públiques corresponents a la vostra cerca. Seleccioneu una biblioteca i premeu Afegeix. A la llista actualitzada de catàlegs, seleccioneu aquesta biblioteca: es mostrarà un formulari d'autenticació. Introdueix el teu nom d'usuari/email i contrasenya i prem Inici de sessió. Ja pots veure el contingut de la teva prestatgeria personal, des de la qual podràs descarregar i llegir els llibres electrònics i audiollibres que has prestat prèviament.",
+        "noLibraryFound": "Biblioteca no trobada ({{- name}})"
     },
-    "author": "Autor",
-    "cancelledLcp": "Aquest llibre no es pot llegir perquè la llicència LCP s'ha cancel·lat.",
-    "certificateRevoked": "El certificat està cancel·lat",
-    "certificateSignatureInvalid": "La firma del certificat no és vàlida",
-    "cover": {
-      "img": "Imatge de portada"
+    "app": {
+        "edit": {
+            "copy": "Copiar",
+            "cut": "Tallar",
+            "paste": "Pegar",
+            "redo": "Refer",
+            "selectAll": "Seleccionar tot",
+            "title": "Editar",
+            "undo": "Desfer"
+        },
+        "hide": "Ocultar {{- appName}}",
+        "quit": "Sortir de {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "No",
+                        "yes": "Sí"
+                    },
+                    "message": "Vols guardar la sessió?",
+                    "title": "Guardar sessió"
+                }
+            }
+        },
+        "update": {
+            "message": "Hi ha una nova versió disponible, feu clic per obtenir més informació.",
+            "title": "{{- appName}} software actualitzat."
+        },
+        "window": {
+            "showLibrary": "Mostrar biblioteca"
+        }
     },
-    "day": "dia",
-    "days": "dies",
-    "duration": {
-      "title": "Duració"
+    "catalog": {
+        "about": {
+            "title": "Sobre {{appName}}"
+        },
+        "addBookToLib": "Importar",
+        "addTags": "Afegir etiqueta",
+        "addTagsButton": "Afegir",
+        "allBooks": "Tots els llibres",
+        "bookInfo": "Sobre aquest llibre",
+        "column": {
+            "ascending": "ascendent",
+            "descending": "descendent",
+            "unsorted": "sense ordenar"
+        },
+        "delete": "Eliminar",
+        "deleteBook": "Eliminar",
+        "deleteTag": "Eliminar etiqueta",
+        "description": "Descripció",
+        "emptyTagList": "No tens llibres etiquetats.",
+        "entry": {
+            "continueReading": "Reprendre lectura",
+            "continueReadingAudioBooks": "Reprendre reproducción",
+            "continueReadingDivina": "Reprendre divina",
+            "continueReadingPdf": "Rependre PDF",
+            "lastAdditions": "Afegits recentment"
+        },
+        "export": "Exportar",
+        "exportAnnotation": "",
+        "exportAnnotationFailure": "",
+        "exportAnnotationSuccess": "",
+        "format": "Format",
+        "lang": "Idioma",
+        "lastRead": "Última lectura",
+        "moreInfo": "Més información",
+        "myBooks": "Els meus llibres",
+        "noPublicationHelpL1": "Deposita els arxius aquí",
+        "noPublicationHelpL2": "o utiltza el botó \"{{- importTitle }}\" de dalt.",
+        "noPublicationHelpL3": "S'admiteixen fitxers protegits LCP.",
+        "noPublicationHelpL4": "Extensions admitides:",
+        "numberOfPages": "Nombre de pàgines",
+        "opds": {
+            "auth": {
+                "cancel": "Cancel·lar",
+                "login": "Iniciar sessió",
+                "password": "Contrasenya",
+                "register": "Registre",
+                "username": "Usuari / Direcció de correu eletrònic"
+            },
+            "info": {
+                "availableSince": "Des de",
+                "availableState": {
+                    "available": "Disponible",
+                    "ready": "Llest",
+                    "reserved": "Reservat",
+                    "unavailable": "No disponible",
+                    "unknown": "Desconegut"
+                },
+                "availableUntil": "Fins",
+                "copyAvalaible": "Número de disponibles",
+                "copyTotal": "Número de còpies",
+                "holdPosition": "La teua ubicació",
+                "holdTotal": "Reservats",
+                "numberOfItems": "Número d'elements",
+                "priveValue": "Preu",
+                "state": "Estat"
+            }
+        },
+        "publisher": "Editor",
+        "readBook": "Llegir",
+        "released": "Publicat en",
+        "sort": "Ordenar per",
+        "tag": "Etiqueta",
+        "tagCount": "Número d'etiquetes",
+        "tags": "Etiquetes",
+        "update": "Editar"
     },
-    "expired": "Préstec expirat",
-    "expiredLcp": "Aquest llibre no es pot llegir perquè la llicència LCP ha expirat.",
-    "lcpEnd": "Fi",
-    "lcpRightsCopy": "Còpia de personatges",
-    "lcpRightsPrint": "Còpia d'impressora",
-    "lcpStart": "Inici",
-    "licenceLCP": "Llicència (LCP)",
-    "licenseOutOfDate": "La llicència està desactualitzada",
-    "licenseSignatureDateInvalid": "La data de la firma de la llicència no és vàlida",
-    "licenseSignatureInvalid": "La firma de la llicència no és vàlida",
-    "licensed": "Llicenciat",
-    "markAsRead": "Marca com a llegit",
-    "notStarted": "No s'ha iniciat",
-    "onGoing": "En curs",
-    "progression": {
-      "title": "Progrés"
+    "dialog": {
+        "cancel": "Cancel·lar",
+        "deleteAnnotations": "",
+        "deleteAnnotationsText": "",
+        "deleteFeed": "Segur que vols eliminar aquest catàleg?",
+        "deletePublication": "Segur que vols eliminar aquesta publicació?",
+        "import": "Segur que vols importar aquests fitxers?",
+        "importError": "S'ha produït un error, comprova l'extensió del teu fitxer ({{acceptedExtension}})",
+        "renew": "Segur que vols renovar d'aquest préstec?",
+        "return": "Segur que vols retornar la llicència per a aquesta publicació?",
+        "yes": "Sí"
     },
-    "read": "Finalitzat",
-    "remainingTime": "Préstecs (dies restants)",
-    "renewButton": "Renovar",
-    "returnButton": "Tornar",
-    "returnedLcp": "Aquest llibre no es pot llegir perquè la llicència LCP s'ha retornat.",
-    "revokedLcp": "Aquest llibre no es pot llegir perquè la llicència LCP s'ha cancel·lat.",
-    "seeLess": "Veure menys",
-    "seeMore": "Veure més",
-    "timeLeft": "Esquerra",
-    "title": "Títol",
-    "userKeyCheckInvalid": "Contrasenya incorrecta"
-  },
-  "reader": {
-    "annotations": {
-      "Color": "Color",
-      "addNote": "Anotació",
-      "advancedMode": "Mode instantani (creació automàtica després de seleccionar)",
-      "annotationsOptions": "Opcions",
-      "hide": "No ho mostris",
-      "highlight": "Ressaltat",
-      "noSelectionToast": "Sense selecció",
-      "quickAnnotations": "Creació ràpida (omet l'editor)",
-      "saveNote": "Desa",
-      "toggleMarginMarks": "Mostra als marges",
-      "type": {
-        "outline": "Contorn",
-        "solid": "Fons sòlid",
-        "strikethrough": "Ratllat",
-        "underline": "Subratllat"
-      }
+    "error": {
+        "errorBox": {
+            "error": "Missatge d'error",
+            "message": "S'ha produït un error en {{- filename}}",
+            "title": "Error intern de {{- appName}}"
+        }
     },
-    "divina": {
-      "mute": "silenciar",
-      "unmute": "deixar de silenciar"
+    "header": {
+        "allBooks": "Tots els llibres",
+        "catalogs": "Catàlegs",
+        "downloads": "Descàrregues",
+        "fitlerTagTitle": "Filtrar per etiqueta",
+        "gridTitle": "Presentació en quadrícula",
+        "home": "Menú biblioteca",
+        "homeTitle": "Inici",
+        "importTitle": "Importar publicació",
+        "listTitle": "Presentació en llista",
+        "myCatalogs": "Els meus catàlegs",
+        "refreshTitle": "Recarregar",
+        "searchPlaceholder": "Cercar",
+        "searchTitle": "Iniciar cerca",
+        "settings": "Opcions de configuració",
+        "viewMode": "Mode de visualització"
     },
-    "fxl": {
-      "fit": "Ajusta"
+    "library": {
+        "lcp": {
+            "hint": "Suggeriment : {{- hint}})",
+            "password": "Contrassenya",
+            "sentence": "Aquesta publicació requereix una contrassenya LCP per obrir-se: ",
+            "urlHint": "Has olvidat la contrassenya? Clica si necessites ajuda",
+            "whatIsLcp?": "Què és LCP?",
+            "whatIsLcpInfoDetails": "LCP significa 'Protecció del contingut llicenciat'.",
+            "whatIsLcpInfoDetailsLink": "Per saber-ne més, feu clic en aquest enllaç a la pàgina web de l'EDRLab."
+        }
     },
-    "marks": {
-      "annotations": "Anotacions",
-      "bookmarks": "Marcadors",
-      "delete": "Eliminar",
-      "edit": "Editar",
-      "goTo": "Anar a la pàgina",
-      "landmarks": "Punts de referència",
-      "saveMark": "Desa el marcador",
-      "search": "Cercar",
-      "searchResult": "Cercar [{{- searchText}}]",
-      "toc": "Taula de contingut"
+    "message": {
+        "download": {
+            "error": "La descàrrega de {{- title}} ha fallat: [{{- err}}]"
+        },
+        "import": {
+            "alreadyImport": "{{- title}} ja estava importat",
+            "fail": "La importació de {{- path}} ha fallat. {{- err}}",
+            "success": "La importació de {{- title}} ha acabat."
+        },
+        "open": {
+            "error": "No es pot obrir la publicació: {{- err}}"
+        }
     },
-    "media-overlays": {
-      "activate": "Activar lectura en veu alta",
-      "captions": "Text sincronitzat/presentació diàfana",
-      "captionsDescription": "Vista de text simplificada amb estil de llegenda mínim.",
-      "next": "Sigüent (Lectura en veu alta)",
-      "pause": "Pausar (Lectura en veu alta)",
-      "play": "Reproduir (Lectura en veu alta)",
-      "previous": "Anterior (Lectura en veu alta)",
-      "skip": "Ometre informació auxiliar",
-      "skipDescription": "Salta sobre / ignora el contingut auxiliar com salts de pàgina, notes al peu/notes finals, etc.",
-      "speed": "Velocitat de reproducció per la lectura en veu alta",
-      "stop": "Detendre lectura en veu alta",
-      "title": "Lectura en veu alta"
-    },
-    "navigation": {
-      "annotationTitle": "anotació",
-      "backHomeTitle": "Tornar a la biblioteca",
-      "bookmarkTitle": "Marcador",
-      "currentPage": "Pàgina actual: {{- current}}",
-      "currentPageTotal": "Pàgina actual: {{- current}}/{{- total}}",
-      "detachWindowTitle": "Mostrar finestra de biblioteca",
-      "fullscreenTitle": "Obrir mode pantalla completa",
-      "goTo": "Anar a",
-      "goToError": "Aquest salt de pàgina no existeix",
-      "goToPlaceHolder": "Introdueix un número de pàgina",
-      "goToTitle": "Anar a pàgina",
-      "historyNext": "Salta endavant",
-      "historyPrevious": "Salta enrere",
-      "infoTitle": "Informació",
-      "magnifyingGlassButton": "cercar a la publicació",
-      "openTableOfContentsTitle": "Navegació",
-      "page": "Pàgina",
-      "pdfscalemode": "Ajust o ample de pàgina",
-      "settingsTitle": "Opcions de configuració"
-    },
-    "picker": {
-      "search": {
-        "founds": "{{- nResults}} trobat/s",
-        "input": "text de cerca",
+    "opds": {
+        "addForm": {
+            "addButton": "Afegir",
+            "name": "Nom:",
+            "namePlaceholder": "Nom",
+            "url": "Enllaç:",
+            "urlPlaceholder": "Enllaç"
+        },
+        "addFormApiapp": {
+            "title": "Afegeix un compte de biblioteca"
+        },
+        "addMenu": "Afegir catàleg OPDS",
+        "breadcrumbRoot": "Catàlegs",
+        "documentation": "Lloc web oficial de l'OPDS",
+        "empty": "No s'han trovat publicacions",
+        "firstPage": "Primera",
+        "informations": "Imagina't un món on explorar i descarregar publicacions digitals de biblioteques públiques i llibreters digitals amb pocs clics. Això és exactament el que ofereix el format de catàleg Open Publication Distribution System (OPDS). Amb OPDS, pots navegar a través de catàlegs de diversos proveïdors de llibres electrònics, registrar-te, demanar en préstec, comprar una publicació o visitar la teva biblioteca personal. Fins i tot pots descarregar un llibre electrònic o un audiollibre directament al Thorium Reader per a la lectura instantània.\nLlavors, com trobes un catàleg OPDS? És senzill. Cerca un enllaç (URL) que condueixi al catàleg. Copia aquest URL al camp Enllaç anterior. Tingues en compte que no hi ha una finestreta única per a tots els catàlegs d'OPDS actius. Hauràs de contactar amb la teva biblioteca o llibreter preferits i demanar la seva URL del catàleg OPDS. Si no esteu segur d'on començar, la Viquipèdia té alguns registres de catàlegs OPDS en diversos idiomes que poden ser útils.\nEl camp Nom es deixa a la vostra conveniència; proporciona una manera fàcil d'identificar el canal en el lector de Thorium.",
+        "lastPage": "Última",
+        "menu": {
+            "aboutBook": "Sobre aquest llibre",
+            "addExtract": "Importar mostra",
+            "goBuyBook": "Comprar aquest llibre",
+            "goLoanBook": "Demanar prestat aquest llibre",
+            "goRevokeLoanBook": "Cancel·lar préstamo",
+            "goSubBook": "Subscriure's"
+        },
+        "network": {
+            "error": "No es pot accedir al catàleg OPDS",
+            "noInternet": "No hi ha internet",
+            "noInternetMessage": "Intenta: comprovar el cable de xarxa, mòdem, router o wifi",
+            "reject": "Ho sentim, s'ha produït un error inesperat al intentar processar el catàleg OPDS",
+            "timeout": "S'ha acabat el temps d'espera de la xarxa; per favor, intenta-ho més tard"
+        },
         "next": "Següent",
-        "notFound": "no hi ha coincidències",
         "previous": "Anterior",
-        "results": "Resultats",
-        "submit": "Trobar"
-      },
-      "searchTitle": "Cercar:"
+        "shelf": "Prestatge",
+        "updateForm": {
+            "name": "Nom:",
+            "title": "Edita el canal OPDS",
+            "updateButton": "Editar",
+            "url": "Enllaç:"
+        },
+        "whatIsOpds": "Què és OPDS?"
+    },
+    "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": "TTS i lector de pantalla amigable"
+            },
+            "accessibilityFeature": {
+                "alternativeText": "Conté text alternatiu",
+                "displayTransformability": "Text i disposició adaptables",
+                "longDescription": "Recursos gràfics completament descrits",
+                "printPageNumbers": "Referència de paginació del llibre imprès",
+                "readingOrder": "Conté un ordre de lectura",
+                "synchronizedAudioText": "Text i àudio sincronitzats",
+                "tableOfContents": "Conté una taula de continguts"
+            },
+            "accessibilityHazard": {
+                "flashing": "Flaix",
+                "motionSimulation": "Simulació de moviment",
+                "name": "Perill:",
+                "noFlashing": "Sense flaix",
+                "noMotionSimulation": "Sense simulació de moviment",
+                "noSound": "Sense so",
+                "none": "Cap",
+                "sound": "So",
+                "unknown": "Desconegut"
+            },
+            "certifierReport": "Informe de certificador",
+            "conformsTo": "Conforma a:",
+            "moreInformation": "Més informació",
+            "name": "Accessibilitat",
+            "noA11y": "No hi ha informació d'accessibilitat disponible"
+        },
+        "actions": "Accions",
+        "audio": {
+            "tracks": "Pistes"
+        },
+        "author": "Autor",
+        "cancelledLcp": "Aquest llibre no es pot llegir perquè la llicència LCP s'ha cancel·lat.",
+        "certificateRevoked": "El certificat està cancel·lat",
+        "certificateSignatureInvalid": "La firma del certificat no és vàlida",
+        "cover": {
+            "img": "Imatge de portada"
+        },
+        "day": "dia",
+        "days": "dies",
+        "duration": {
+            "title": "Duració"
+        },
+        "expired": "Préstec expirat",
+        "expiredLcp": "Aquest llibre no es pot llegir perquè la llicència LCP ha expirat.",
+        "lcpEnd": "Fi",
+        "lcpRightsCopy": "Còpia de personatges",
+        "lcpRightsPrint": "Còpia d'impressora",
+        "lcpStart": "Inici",
+        "licenceLCP": "Llicència (LCP)",
+        "licenseOutOfDate": "La llicència està desactualitzada",
+        "licenseSignatureDateInvalid": "La data de la firma de la llicència no és vàlida",
+        "licenseSignatureInvalid": "La firma de la llicència no és vàlida",
+        "licensed": "Llicenciat",
+        "markAsRead": "Marca com a llegit",
+        "notStarted": "No s'ha iniciat",
+        "onGoing": "En curs",
+        "progression": {
+            "title": "Progrés"
+        },
+        "read": "Finalitzat",
+        "remainingTime": "Préstecs (dies restants)",
+        "renewButton": "Renovar",
+        "returnButton": "Tornar",
+        "returnedLcp": "Aquest llibre no es pot llegir perquè la llicència LCP s'ha retornat.",
+        "revokedLcp": "Aquest llibre no es pot llegir perquè la llicència LCP s'ha cancel·lat.",
+        "seeLess": "Veure menys",
+        "seeMore": "Veure més",
+        "timeLeft": "Esquerra",
+        "title": "Títol",
+        "userKeyCheckInvalid": "Contrasenya incorrecta"
+    },
+    "reader": {
+        "annotations": {
+            "Color": "Color",
+            "addNote": "Anotació",
+            "advancedMode": "Mode instantani (creació automàtica després de seleccionar)",
+            "annotationsOptions": "Opcions",
+            "colors": {
+                "bluegreen": "",
+                "cyan": "",
+                "green": "",
+                "lightblue": "",
+                "orange": "",
+                "purple": "",
+                "red": "",
+                "yellow": ""
+            },
+            "filter": {
+                "all": "",
+                "filterByColor": "",
+                "filterByDrawtype": "",
+                "filterByTag": "",
+                "filterOptions": "",
+                "none": ""
+            },
+            "hide": "No ho mostris",
+            "highlight": "Ressaltat",
+            "noSelectionToast": "Sense selecció",
+            "quickAnnotations": "Creació ràpida (omet l'editor)",
+            "saveNote": "Desa",
+            "toggleMarginMarks": "Mostra als marges",
+            "type": {
+                "outline": "Contorn",
+                "solid": "Fons sòlid",
+                "strikethrough": "Ratllat",
+                "underline": "Subratllat"
+            }
+        },
+        "divina": {
+            "mute": "silenciar",
+            "unmute": "deixar de silenciar"
+        },
+        "fxl": {
+            "fit": "Ajusta"
+        },
+        "marks": {
+            "annotations": "Anotacions",
+            "bookmarks": "Marcadors",
+            "delete": "Eliminar",
+            "edit": "Editar",
+            "goTo": "Anar a la pàgina",
+            "landmarks": "Punts de referència",
+            "saveMark": "Desa el marcador",
+            "search": "Cercar",
+            "searchResult": "Cercar [{{- searchText}}]",
+            "toc": "Taula de contingut"
+        },
+        "media-overlays": {
+            "activate": "Activar lectura en veu alta",
+            "captions": "Text sincronitzat/presentació diàfana",
+            "captionsDescription": "Vista de text simplificada amb estil de llegenda mínim.",
+            "next": "Sigüent (Lectura en veu alta)",
+            "pause": "Pausar (Lectura en veu alta)",
+            "play": "Reproduir (Lectura en veu alta)",
+            "previous": "Anterior (Lectura en veu alta)",
+            "skip": "Ometre informació auxiliar",
+            "skipDescription": "Salta sobre / ignora el contingut auxiliar com salts de pàgina, notes al peu/notes finals, etc.",
+            "speed": "Velocitat de reproducció per la lectura en veu alta",
+            "stop": "Detendre lectura en veu alta",
+            "title": "Lectura en veu alta"
+        },
+        "navigation": {
+            "annotationTitle": "anotació",
+            "backHomeTitle": "Tornar a la biblioteca",
+            "bookmarkTitle": "Marcador",
+            "currentPage": "Pàgina actual: {{- current}}",
+            "currentPageTotal": "Pàgina actual: {{- current}}/{{- total}}",
+            "detachWindowTitle": "Mostrar finestra de biblioteca",
+            "fullscreenTitle": "Obrir mode pantalla completa",
+            "goTo": "Anar a",
+            "goToError": "Aquest salt de pàgina no existeix",
+            "goToPlaceHolder": "Introdueix un número de pàgina",
+            "goToTitle": "Anar a pàgina",
+            "historyNext": "Salta endavant",
+            "historyPrevious": "Salta enrere",
+            "infoTitle": "Informació",
+            "magnifyingGlassButton": "cercar a la publicació",
+            "openTableOfContentsTitle": "Navegació",
+            "page": "Pàgina",
+            "pdfscalemode": "Ajust o ample de pàgina",
+            "settingsTitle": "Opcions de configuració"
+        },
+        "picker": {
+            "search": {
+                "founds": "{{- nResults}} trobat/s",
+                "input": "text de cerca",
+                "next": "Següent",
+                "notFound": "no hi ha coincidències",
+                "previous": "Anterior",
+                "results": "Resultats",
+                "submit": "Trobar"
+            },
+            "searchTitle": "Cercar:"
+        },
+        "settings": {
+            "column": {
+                "auto": "Automàtic",
+                "one": "1 col.",
+                "title": "Columnes",
+                "two": "2 cols."
+            },
+            "customizeReader": "Personalitza el format del text",
+            "disabled": "desactivat",
+            "display": "Visualització",
+            "disposition": {
+                "title": "Disposició"
+            },
+            "font": "Font",
+            "fontSize": "Grandària de font",
+            "infoCustomFont": "Seleccioneu el tipus de lletra personalitzat del sistema operatiu escrivint el seu nom",
+            "justification": "Alineació",
+            "justify": "Justificar",
+            "letterSpacing": "Espaiat de lletres",
+            "lineSpacing": "Interlineat",
+            "margin": "Marge",
+            "noFootnotes": "Desactivar notes al peu",
+            "noRTLFlip": "Desactiva la IU de dreta a esquerra",
+            "noRuby": "Oculta el Ruby japonès",
+            "paginated": "Paginat",
+            "paraSpacing": "Espaiat de paràgrafs",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "100%",
+                    "150pct": "150%",
+                    "200pct": "200%",
+                    "300pct": "300%",
+                    "500pct": "500%",
+                    "50pct": "50%",
+                    "fit": "ajust de pàgina",
+                    "width": "ample de pàgina"
+                },
+                "title": "Zoom"
+            },
+            "preset": {
+                "apply": "",
+                "reset": "",
+                "save": "",
+                "title": ""
+            },
+            "preview": "Previsualització",
+            "reduceMotion": "Disminuir moviment",
+            "scrolled": "Desplaçable",
+            "spacing": "Espaiat",
+            "text": "Text",
+            "theme": {
+                "name": {
+                    "Contrast1": "Contrast 1",
+                    "Contrast2": "Contrast 2",
+                    "Contrast3": "Contrast 3",
+                    "Contrast4": "Contrast 4",
+                    "Neutral": "Neutral",
+                    "Night": "Nit",
+                    "Paper": "Paper",
+                    "Sepia": "Sèpia"
+                },
+                "title": "Disposició"
+            },
+            "wordSpacing": "Espaiat de paraules"
+        },
+        "svg": {
+            "left": "Esquerra",
+            "right": "Dreta"
+        },
+        "toc": {
+            "publicationNoToc": "aquesta publicació no proporciona taula de contingut"
+        },
+        "tts": {
+            "activate": "Activar text a veu",
+            "default": "Veu: predeterminada en el sistema",
+            "next": "Següent (Text a veu)",
+            "pause": "Pausar text a veu",
+            "play": "Reproduir (Text a veu)",
+            "previous": "Anterior (Text a veu)",
+            "sentenceDetect": "Dividir (Text a veu)",
+            "sentenceDetectDescription": "Trenca els paràgrafs llargs en frases.",
+            "speed": "Velocitat de reproducció per a text a veu",
+            "stop": "Detenir text a veu",
+            "voice": "Veu per a TTS"
+        }
     },
     "settings": {
-      "column": {
-        "auto": "Automàtic",
-        "one": "1 col.",
-        "title": "Columnes",
-        "two": "2 cols."
-      },
-      "customizeReader": "Personalitza el format del text",
-      "disabled": "desactivat",
-      "display": "Visualització",
-      "disposition": {
-        "title": "Disposició"
-      },
-      "font": "Font",
-      "fontSize": "Grandària de font",
-      "infoCustomFont": "Seleccioneu el tipus de lletra personalitzat del sistema operatiu escrivint el seu nom",
-      "justification": "Alineació",
-      "justify": "Justificar",
-      "letterSpacing": "Espaiat de lletres",
-      "lineSpacing": "Interlineat",
-      "margin": "Marge",
-      "noFootnotes": "Desactivar notes al peu",
-      "noRTLFlip": "Desactiva la IU de dreta a esquerra",
-      "noRuby": "Oculta el Ruby japonès",
-      "paginated": "Paginat",
-      "paraSpacing": "Espaiat de paràgrafs",
-      "pdfZoom": {
-        "name": {
-          "100pct": "100%",
-          "150pct": "150%",
-          "200pct": "200%",
-          "300pct": "300%",
-          "500pct": "500%",
-          "50pct": "50%",
-          "fit": "ajust de pàgina",
-          "width": "ample de pàgina"
+        "auth": {
+            "wipeData": "Netejar dades d'autenticació"
         },
-        "title": "Zoom"
-      },
-      "preview": "Previsualització",
-      "reduceMotion": "Disminuir moviment",
-      "scrolled": "Desplaçable",
-      "spacing": "Espaiat",
-      "text": "Text",
-      "theme": {
-        "name": {
-          "Contrast1": "Contrast 1",
-          "Contrast2": "Contrast 2",
-          "Contrast3": "Contrast 3",
-          "Contrast4": "Contrast 4",
-          "Neutral": "Neutral",
-          "Night": "Nit",
-          "Paper": "Paper",
-          "Sepia": "Sèpia"
+        "keyboard": {
+            "advancedMenu": "Menú",
+            "cancel": "Cancel·lar",
+            "disclaimer": "Les dreceres es van definir a partir de la disposició de teclat QWERTY.",
+            "editUserJson": "Editar arxiu d'usuari",
+            "keyboardShortcuts": "Dreceres de teclat",
+            "loadUserJson": "Cargar arxiu d'usuari",
+            "resetDefaults": "Restablir valors predeterminats",
+            "save": "Guardar"
         },
-        "title": "Disposició"
-      },
-      "wordSpacing": "Espaiat de paraules"
+        "language": {
+            "languageChoice": "Selecció d'idioma"
+        },
+        "session": {
+            "no": "Deshabilitar",
+            "title": "Guardar sessió",
+            "yes": "Habilitar"
+        },
+        "tabs": {
+            "appearance": "Aparença",
+            "general": "General",
+            "keyboardShortcuts": "Dreceres del teclat"
+        },
+        "theme": {
+            "auto": "Automàtic",
+            "dark": "Fosc",
+            "description": "El tema de l'aplicació coincideix amb el sistema operatiu.",
+            "light": "Llum",
+            "title": "Tema d'aplicació"
+        }
     },
-    "svg": {
-      "left": "Esquerra",
-      "right": "Dreta"
-    },
-    "toc": {
-      "publicationNoToc": "aquesta publicació no proporciona taula de contingut"
-    },
-    "tts": {
-      "activate": "Activar text a veu",
-      "default": "Veu: predeterminada en el sistema",
-      "next": "Següent (Text a veu)",
-      "pause": "Pausar text a veu",
-      "play": "Reproduir (Text a veu)",
-      "previous": "Anterior (Text a veu)",
-      "sentenceDetect": "Dividir (Text a veu)",
-      "sentenceDetectDescription": "Trenca els paràgrafs llargs en frases.",
-      "speed": "Velocitat de reproducció per a text a veu",
-      "stop": "Detenir text a veu",
-      "voice": "Veu per a TTS"
+    "wizard": {
+        "buttons": {
+            "discover": "Descobreix les novetats",
+            "goToBooks": "Ves a les meves publicacions",
+            "next": "Següent"
+        },
+        "description": {
+            "annotations": "Ressalta el text del document, tria l'estil i el color, adjunta les notes personals. Creeu anotacions en mode «ràpid» per a saltar-vos l'editor (podeu introduir text i personalitzar els estils més tard). Per a una velocitat addicional, utilitzeu el mode «instant» que crea anotacions immediatament després de ressaltar el text del document!",
+            "catalogs": "Presteu les publicacions de la vostra biblioteca local o descobriu les publicacions a través dels canals OPDS. Accedeix a una varietat de publicacions de múltiples fonts gràcies als catàlegs en línia.",
+            "home": "Thorium sembla diferent! Anem a descobrir que hi ha nou... ",
+            "readingView1": "Personalitzeu les vostres preferències de lectura i escolta: Thorium ara ofereix diversos temes de color tant per a la interfície d'usuari com per als documents de publicació. Ara també és més fàcil configurar els llibres electrònics \"readaloud\" amb parla sintètica i narració sincronitzada de text/àudio.",
+            "readingView2": "La millora de la interfície d'usuari de Thorium facilita trobar text en publicacions, explorar resultats de cerca, anar a pàgines específiques, navegar per la taula de continguts, crear marcadors, etc. gràcies als nous panells \"acoblats\". El mode de lectura a pantalla completa continua oferint un entorn lliure de distracció.",
+            "yourBooks": "Us donem la benvinguda a la vostra biblioteca personal redissenyada! A la vista de «quadrícula», filtrar fàcilment per etiquetes o trobar publicacions per paraules clau. A la vista avançada de la taula, seleccioneu i ordeneu les publicacions per autors, títol, data, format, etc."
+        },
+        "dontShow": "No mostreu de nou",
+        "tab": {
+            "annotations": "Anotacions",
+            "catalogs": "Catàlegs",
+            "home": "Inici",
+            "readingView": "Vista de lectura",
+            "yourBooks": "Les vostres publicacions"
+        },
+        "title": {
+            "allBooks": "Totes les meves publicacions",
+            "newFeature": "Nova característica: Anotacions",
+            "welcome": "Benvinguts a Thorium 3.0"
+        }
     }
-  },
-  "settings": {
-    "auth": {
-      "wipeData": "Netejar dades d'autenticació"
-    },
-    "keyboard": {
-      "advancedMenu": "Menú",
-      "cancel": "Cancel·lar",
-      "disclaimer": "Les dreceres es van definir a partir de la disposició de teclat QWERTY.",
-      "editUserJson": "Editar arxiu d'usuari",
-      "keyboardShortcuts": "Dreceres de teclat",
-      "loadUserJson": "Cargar arxiu d'usuari",
-      "resetDefaults": "Restablir valors predeterminats",
-      "save": "Guardar"
-    },
-    "language": {
-      "languageChoice": "Selecció d'idioma"
-    },
-    "session": {
-      "no": "Deshabilitar",
-      "title": "Guardar sessió",
-      "yes": "Habilitar"
-    },
-    "tabs": {
-      "appearance": "Aparença",
-      "general": "General",
-      "keyboardShortcuts": "Dreceres del teclat"
-    },
-    "theme": {
-      "auto": "Automàtic",
-      "dark": "Fosc",
-      "description": "El tema de l'aplicació coincideix amb el sistema operatiu.",
-      "light": "Llum",
-      "title": "Tema d'aplicació"
-    }
-  },
-  "wizard": {
-    "buttons": {
-      "discover": "Descobreix les novetats",
-      "goToBooks": "Ves a les meves publicacions",
-      "next": "Següent"
-    },
-    "description": {
-      "annotations": "Ressalta el text del document, tria l'estil i el color, adjunta les notes personals. Creeu anotacions en mode «ràpid» per a saltar-vos l'editor (podeu introduir text i personalitzar els estils més tard). Per a una velocitat addicional, utilitzeu el mode «instant» que crea anotacions immediatament després de ressaltar el text del document!",
-      "catalogs": "Presteu les publicacions de la vostra biblioteca local o descobriu les publicacions a través dels canals OPDS. Accedeix a una varietat de publicacions de múltiples fonts gràcies als catàlegs en línia.",
-      "home": "Thorium sembla diferent! Anem a descobrir que hi ha nou... ",
-      "readingView1": "Personalitzeu les vostres preferències de lectura i escolta: Thorium ara ofereix diversos temes de color tant per a la interfície d'usuari com per als documents de publicació. Ara també és més fàcil configurar els llibres electrònics \"readaloud\" amb parla sintètica i narració sincronitzada de text/àudio.",
-      "readingView2": "La millora de la interfície d'usuari de Thorium facilita trobar text en publicacions, explorar resultats de cerca, anar a pàgines específiques, navegar per la taula de continguts, crear marcadors, etc. gràcies als nous panells \"acoblats\". El mode de lectura a pantalla completa continua oferint un entorn lliure de distracció.",
-      "yourBooks": "Us donem la benvinguda a la vostra biblioteca personal redissenyada! A la vista de «quadrícula», filtrar fàcilment per etiquetes o trobar publicacions per paraules clau. A la vista avançada de la taula, seleccioneu i ordeneu les publicacions per autors, títol, data, format, etc."
-    },
-    "dontShow": "No mostreu de nou",
-    "tab": {
-      "annotations": "Anotacions",
-      "catalogs": "Catàlegs",
-      "home": "Inici",
-      "readingView": "Vista de lectura",
-      "yourBooks": "Les vostres publicacions"
-    },
-    "title": {
-      "allBooks": "Totes les meves publicacions",
-      "newFeature": "Nova característica: Anotacions",
-      "welcome": "Benvinguts a Thorium 3.0"
-    }
-  }
 }

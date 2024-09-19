@@ -55,7 +55,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     // authActions.done.ID, // not used
     authActions.cancel.ID,
 
-    sessionActions.enable.ID,
+    // sessionActions.enable.ID,
 
     lcpActions.unlockPublicationWithPassphrase.ID,
 
