@@ -178,11 +178,15 @@
     svg {
       width: 20px;
       height: 20px;
+      color: var(--color-primary);
     }
     
     &[data-selected] {
-      color: var(--color-secondary);
       background-color: var(--color-blue);
+      
+      svg {
+        color: var(--color-secondary);
+      }
     }
   }
 }
