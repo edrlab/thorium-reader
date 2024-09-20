@@ -33,7 +33,9 @@ import hrCatalog from "readium-desktop/resources/locales/hr.json";
 import daCatalog from "readium-desktop/resources/locales/da.json";
 import slCatalog from "readium-desktop/resources/locales/sl.json";
 
-import { TFunction } from "readium-desktop/typings/en.translation";
+// import { TFunction } from "readium-desktop/typings/en.translation";
+import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
+
 
 import i18next, { TOptions } from "i18next";
 
@@ -196,11 +198,11 @@ interface LocalizedContent {
     [locale: string]: string;
 }
 
-export type I18nTyped = TFunction;
+export type I18nFunction = (_: TTranslatorKeyParameter, __?: {}) => string;
 
 @injectable()
 export class Translator {
-    public translate = this._translate as I18nTyped;
+    public translate = this._translate as I18nFunction;
     public subscribe = this._subscribe.bind(this);
     private locale = "en";
     private listeners: Set<() => void>;

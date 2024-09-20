@@ -128,8 +128,8 @@ declare namespace typed_i18n {
   },
   readonly "export": string,
   readonly "exportAnnotation": string,
-  readonly "exportAnnotationSuccess": string,
   readonly "exportAnnotationFailure": string,
+  readonly "exportAnnotationSuccess": string,
   readonly "format": string,
   readonly "lang": string,
   readonly "lastRead": string,
@@ -210,8 +210,8 @@ declare namespace typed_i18n {
   (_: "catalog.entry.lastAdditions", __?: {}): string;
   (_: "catalog.export", __?: {}): string;
   (_: "catalog.exportAnnotation", __?: {}): string;
-  (_: "catalog.exportAnnotationSuccess", __?: {}): string;
   (_: "catalog.exportAnnotationFailure", __?: {}): string;
+  (_: "catalog.exportAnnotationSuccess", __?: {}): string;
   (_: "catalog.format", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.lastRead", __?: {}): string;
