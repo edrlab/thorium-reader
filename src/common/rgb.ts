@@ -12,12 +12,12 @@ export function rgbToHex(color: { red: number; green: number; blue: number }): s
     const redHex = Math.min(255, Math.max(0, red)).toString(16).padStart(2, "0");
     const greenHex = Math.min(255, Math.max(0, green)).toString(16).padStart(2, "0");
     const blueHex = Math.min(255, Math.max(0, blue)).toString(16).padStart(2, "0");
-    return `#${redHex}${greenHex}${blueHex}`;
+    return `#${redHex}${greenHex}${blueHex}`.toUpperCase();
 }
 
 export function hexToRgb(hex: string): IColor | undefined {
 
-    const rgbresultmatch = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    const rgbresultmatch = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex.toLowerCase());
     const colorObj = rgbresultmatch ? {
         red: parseInt(rgbresultmatch[1], 16),
         green: parseInt(rgbresultmatch[2], 16),
