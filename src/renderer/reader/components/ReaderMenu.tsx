@@ -751,6 +751,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
         setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
     }
 
+    // TODO: it could be better to separate the color set to a table outside of the view
     const annotationsColorsLight = [
         { hex: "#eb9694", name: `${__("reader.annotations.colors.red")}` },
         { hex: "#fad0c3", name: `${__("reader.annotations.colors.orange")}` },
@@ -761,6 +762,8 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
         { hex: "#bed3f3", name: `${__("reader.annotations.colors.cyan")}` },
         { hex: "#d4c4fb", name: `${__("reader.annotations.colors.purple")}` },
     ];
+    // hex comparaison in Thorium is on upper case
+    annotationsColorsLight.forEach((obj) => obj.hex = obj.hex.toUpperCase());
 
     // I'm disable this feature for performance reason, push new Colors from incoming publicaiton annotation, not used for the moment. So let's commented it for the moment.
     // Need to be optimised in the future.
