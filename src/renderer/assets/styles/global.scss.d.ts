@@ -1,4 +1,3 @@
-export declare const __LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__: string;
 export declare const acceptedExtension: string;
 export declare const align_items_center: string;
 export declare const anchor_link: string;
@@ -10,8 +9,10 @@ export declare const checkbox_custom_label: string;
 export declare const color_red: string;
 export declare const CSS_END_global: string;
 export declare const CSS_END_partials_focus: string;
+export declare const CSS_END_partials_variables: string;
 export declare const CSS_START_global: string;
 export declare const CSS_START_partials_focus: string;
+export declare const CSS_START_partials_variables: string;
 export declare const d_flex: string;
 export declare const d_none: string;
 export declare const emptyLibraryIcon: string;
