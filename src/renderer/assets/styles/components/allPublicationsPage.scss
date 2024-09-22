@@ -305,6 +305,13 @@
 */
 
 .allBook_table {
+    border-radius: 8px;
+    padding: 4px;
+    margin: 0;
+    border-spacing: 0;
+    width: 100%;
+    position: relative;
+
     &_wrapper {
         overflow: auto;
         inset: 280px 20px 75px 26px;
@@ -357,13 +364,6 @@
             padding: 0;
         }
     }
-
-    border-radius: 8px;
-    padding: 4px;
-    margin: 0;
-    border-spacing: 0;
-    width: 100%;
-    position: relative;
 }
 
 .filter_container {
