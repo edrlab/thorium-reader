@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+// import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 import * as React from "react";
 import { connect } from "react-redux";
@@ -12,7 +13,6 @@ import { connect } from "react-redux";
 
 // import * as GridIcon from "readium-desktop/renderer/assets/icons/grid-icon.svg";
 // import * as ListIcon from "readium-desktop/renderer/assets/icons/list-icon.svg";
-// import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";

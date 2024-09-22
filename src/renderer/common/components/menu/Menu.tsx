@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
-
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+
+import * as React from "react";
 import * as Popover from "@radix-ui/react-popover";
 import classNames from "classnames";
 

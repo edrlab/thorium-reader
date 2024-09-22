@@ -1,6 +1,6 @@
-/*
-=-=-= aboutFooter.scss
-*/
+.CSS_START_components_aboutFooter {
+    display: none;
+}
 
 // .footer_wrapper{
 //     display: flex;
@@ -60,4 +60,8 @@
           color: var(--color-primary);
         }
     }
+}
+
+.CSS_END_components_aboutFooter {
+    display: none;
 }

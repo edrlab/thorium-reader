@@ -1,6 +1,6 @@
-/*
-=-=-= publicationInfo.scss
-*/
+.CSS_START_publicationInfos {
+    display: none;
+}
 
 .publicationInfo_container {
     display: flex;
@@ -307,4 +307,8 @@
            }
         }
     }
+}
+
+.CSS_END_publicationInfos {
+    display: none;
 }

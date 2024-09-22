@@ -1,6 +1,8 @@
 export declare const arrow_box: string;
 export declare const arrows: string;
 export declare const chapters_markers: string;
+export declare const CSS_END_components_readerFooter: string;
+export declare const CSS_START_components_readerFooter: string;
 export declare const currentSpineItem: string;
 export declare const disabled: string;
 export declare const finishedIcon: string;

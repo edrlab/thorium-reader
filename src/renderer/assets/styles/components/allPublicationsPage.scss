@@ -1,9 +1,8 @@
-/*
-=-=-= allPublicationsPage.scss
-*/
+@import '../partials/mixin';
 
-@import 'src/renderer/assets/styles/partials/mixin';
-
+.CSS_START_components_allPublicationsPage {
+    display: none;
+}
 
 .allBooks {
     &_header {
@@ -405,4 +404,8 @@
             }
         }
     }
+}
+
+.CSS_END_components_allPublicationsPage {
+    display: none;
 }

@@ -1,6 +1,10 @@
 @use "sass:map";
 @use 'sass:color';
 
+.CSS_START_partials_variables {
+  display: none;
+}
+
 $color-palette: (
   light: (
     --color-primary: #4d4d4d,
@@ -125,6 +129,6 @@ $color-palette: (
   }
 }
 
-.___DEBUG___PARTIALS_VARIABLES_CSS {
+.CSS_END_partials_variables {
   display: none;
 }

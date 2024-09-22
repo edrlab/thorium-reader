@@ -7,6 +7,12 @@
 
 import "reflect-metadata";
 
+// import "readium-desktop/renderer/assets/styles/partials/variables.scss";
+// import * as globalScssStyle from "readium-desktop/renderer/assets/styles/global.scss";
+import "readium-desktop/renderer/assets/styles/global.scss";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+
+import classNames from "classnames";
 import { HistoryRouter } from "redux-first-history/rr6";
 import * as path from "path";
 import * as React from "react";
@@ -15,7 +21,6 @@ import { Provider } from "react-redux";
 import { acceptedExtension, acceptedExtensionObject } from "readium-desktop/common/extension";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
 import { ensureKeyboardListenerIsInstalled } from "readium-desktop/renderer/common/keyboard";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
@@ -32,9 +37,9 @@ import { acceptedExtensionArray } from "readium-desktop/common/extension";
 import Nunito from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-Regular.ttf";
 import NunitoBold from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-SemiBold.ttf";
 
-import * as globalScssStyle from "readium-desktop/renderer/assets/styles/global.scss";
 import { WizardModal } from "./Wizard";
-globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
+// eslintxx-disable-next-line @typescript-eslint/no-unused-expressions
+// globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -145,7 +150,7 @@ export default class App extends React.Component<{}, undefined> {
                                 rootProps.tabIndex = -1;
                                 return <div
                                     {...rootProps}
-                                    className={stylesInputs.dropzone}
+                                    className={classNames(stylesInputs.dropzone)}
                                     onFocus={null}
                                     onBlur={null}
                                 >
