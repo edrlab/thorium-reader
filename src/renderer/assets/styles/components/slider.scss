@@ -1,6 +1,6 @@
-/*
-=-=-= slider.scss
-*/
+.CSS_START_components_slider {
+  display: none;
+}
 
 .slider {
   display: block;
@@ -8,7 +8,7 @@
 
   &_wrapper {
     position: relative;
-    overflow: hidden hidden;
+    overflow: hidden;
     min-height: 400px;
   }
 
@@ -93,6 +93,6 @@
   margin: 20px;
 }
 
-.___DEBUG___COMPONENTS_SLIDER_CSS {
+.CSS_END_components_slider {
   display: none;
 }

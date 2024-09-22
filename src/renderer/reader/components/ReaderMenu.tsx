@@ -5,6 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
+
 import classNames from "classnames";
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -19,12 +30,6 @@ import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.sv
 import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as BookmarkIcon from "readium-desktop/renderer/assets/icons/bookmarkMultiple-icon.svg";
 import * as BookOpenIcon from "readium-desktop/renderer/assets/icons/bookOpen-icon.svg";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
-import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
-import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
-import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 
 import * as DockLeftIcon from "readium-desktop/renderer/assets/icons/dockleft-icon.svg";
 import * as DockRightIcon from "readium-desktop/renderer/assets/icons/dockright-icon.svg";
@@ -69,15 +74,13 @@ import { AnnotationEdit } from "./AnnotationEdit";
 import { IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import * as Popover from "@radix-ui/react-popover";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
-import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
+
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
 import * as OptionsIcon from "readium-desktop/renderer/assets/icons/filter2-icon.svg";

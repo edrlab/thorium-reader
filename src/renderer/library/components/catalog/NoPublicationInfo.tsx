@@ -5,10 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
-import { acceptedExtensionArray } from "readium-desktop/common/extension";
 // import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+
+import * as React from "react";
+import { acceptedExtensionArray } from "readium-desktop/common/extension";
 
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as EmptyLibraryIcon from "readium-desktop/renderer/assets/icons/emptylibrary-icon.svg";

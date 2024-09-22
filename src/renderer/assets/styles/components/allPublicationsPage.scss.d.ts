@@ -1,4 +1,3 @@
-export declare const ___DEBUG___PARTIALS_MIXINS_CSS: string;
 export declare const allBook_table: string;
 export declare const allBook_table_body: string;
 export declare const allBook_table_head: string;
@@ -20,6 +19,8 @@ export declare const cell_description: string;
 export declare const cell_link: string;
 export declare const cell_multi_langs: string;
 export declare const cell_wrapper: string;
+export declare const CSS_END_components_allPublicationsPage: string;
+export declare const CSS_START_components_allPublicationsPage: string;
 export declare const dropdown_trigger: string;
 export declare const filter_container: string;
 export declare const form_group: string;

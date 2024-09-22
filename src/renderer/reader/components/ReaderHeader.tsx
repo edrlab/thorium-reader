@@ -5,13 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
+import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
+// import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
+
 import { HoverEvent } from "@react-types/shared";
 import classNames from "classnames";
 import * as debug_ from "debug";
 import * as React from "react";
 import * as Popover from "@radix-ui/react-popover";
 import * as Dialog from "@radix-ui/react-dialog";
-import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
+
 // import * as ReactDOM from "react-dom";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
@@ -38,8 +43,6 @@ import * as ExitFullscreenIcon from "readium-desktop/renderer/assets/icons/fulls
 // import * as FloppyDiskIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
 // import * as ChevronUpIcon from "readium-desktop/renderer/assets/icons/chevron-up.svg";
 // import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
-import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -74,7 +77,6 @@ import { AnnotationEdit } from "./AnnotationEdit";
 import { Collection, Header as ReactAriaHeader, Section } from "react-aria-components";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
-// import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 

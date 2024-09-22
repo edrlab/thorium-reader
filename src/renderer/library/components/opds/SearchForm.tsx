@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+
 import * as debug_ from "debug";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -24,7 +26,6 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { dispatchHistoryPush, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
-import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 

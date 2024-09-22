@@ -5,15 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link, matchPath } from "react-router-dom";
 import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
-import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {

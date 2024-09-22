@@ -7,6 +7,10 @@
 
 import "reflect-metadata";
 
+// import "readium-desktop/renderer/assets/styles/partials/variables.scss";
+// import * as globalScssStyle from "readium-desktop/renderer/assets/styles/global.scss";
+import "readium-desktop/renderer/assets/styles/global.scss";
+
 import * as path from "path";
 import * as React from "react";
 import { Provider } from "react-redux";
@@ -20,8 +24,8 @@ import { diReaderGet } from "readium-desktop/renderer/reader/di";
 import Nunito from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-Regular.ttf";
 import NunitoBold from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-SemiBold.ttf";
 
-import * as globalScssStyle from "readium-desktop/renderer/assets/styles/global.scss";
-globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
+// eslintxx-disable-next-line @typescript-eslint/no-unused-expressions
+// globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
 
 import Reader from "./Reader";
 

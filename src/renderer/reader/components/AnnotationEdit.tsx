@@ -5,13 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
+
 import * as React from "react";
 import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 
 import * as Popover from "@radix-ui/react-popover";
 // import * as PenIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";

@@ -1,6 +1,6 @@
-/*
-=-=-= popoverDialog.scss
-*/
+.CSS_START_components_popoverDialog {
+  display: none;
+}
 
 .modal_dialog_reader {
   transform: translate(-50%, -50%);
@@ -726,4 +726,8 @@
       width: 10px;
     }
   }
+}
+
+.CSS_END_components_popoverDialog {
+  display: none;
 }

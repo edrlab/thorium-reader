@@ -1,9 +1,8 @@
-/*
-=-=-= inouts.scss
-*/
+@import '../partials/mixin';
 
-@import 'src/renderer/assets/styles/partials/mixin';
-
+.CSS_START_components_inputs {
+  display: none;
+}
 
 input[type="text"],
 input[type="number"],
@@ -165,11 +164,6 @@ select {
   inset: 0;
 }
 
-.___DEBUG___COMPONENTS_INPUTS_CSS {
-  display: none;
-}
-
-
 .passphrase_error {
   color: var(--color-error-dark);
   display: flex;
@@ -181,4 +175,8 @@ select {
     fill: var(--color-error-dark);
     height: 12px;
   }
+}
+
+.CSS_END_components_inputs {
+  display: none;
 }

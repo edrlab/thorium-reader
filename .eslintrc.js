@@ -59,6 +59,12 @@ module.exports = {
         "eol-last": ["error", "always"],
         semi: ["error", "always"],
 
+        // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+        "@typescript-eslint/no-empty-object-type": 0,
+
+        "@typescript-eslint/prefer-promise-reject-errors": 0,
+        "@typescript-eslint/only-throw-error": 0,
+
         "@typescript-eslint/no-unsafe-member-access": 0,
         "@typescript-eslint/no-unsafe-return": 0,
         "@typescript-eslint/no-unsafe-assignment": 0,

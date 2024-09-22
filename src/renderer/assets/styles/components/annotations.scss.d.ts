@@ -1,6 +1,3 @@
-export declare const ___DEBUG___FOCUS_CSS: string;
-export declare const ___DEBUG___FOCUS_MIXIN_CSS: string;
-export declare const ___DEBUG___PARTIALS_MIXINS_CSS: string;
 export declare const annnotation_container: string;
 export declare const annotation_actions: string;
 export declare const annotation_actions_buttons: string;
@@ -31,6 +28,10 @@ export declare const annotations_tab: string;
 export declare const body_element: string;
 export declare const button_primary_blue: string;
 export declare const colorPicker: string;
+export declare const CSS_END_components_annotations: string;
+export declare const CSS_END_focus: string;
+export declare const CSS_START_components_annotations: string;
+export declare const CSS_START_focus: string;
 export declare const docked_annotation_line: string;
 export declare const drawType_active: string;
 export declare const my_combobox_container: string;

@@ -5,13 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
+
 import classNames from "classnames";
 import * as React from "react";
 import { Translator } from "readium-desktop/common/services/translator";
 import { IOpdsContributorView } from "readium-desktop/common/views/opds";
-import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesPublications from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 
 interface IProps {
     contributors: string[] | IOpdsContributorView[] | undefined;

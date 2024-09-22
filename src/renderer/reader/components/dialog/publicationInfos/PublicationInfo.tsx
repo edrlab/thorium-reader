@@ -5,6 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 import * as Dialog from "@radix-ui/react-dialog";
 import * as debug_ from "debug";
 import * as React from "react";
@@ -17,8 +20,6 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import { PublicationInfoContent } from "readium-desktop/renderer/common/components/dialog/publicationInfos/publicationInfoContent";
 
 // Logger

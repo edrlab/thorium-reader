@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
+
 // import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
 // import * as ForwardIcon from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
 // import * as BackIcon from "readium-desktop/renderer/assets/icons/double_arrow_left_black_24dp.svg";
@@ -16,7 +18,6 @@ import classNames from "classnames";
 import * as React from "react";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { formatTime } from "readium-desktop/common/utils/time";
-import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";

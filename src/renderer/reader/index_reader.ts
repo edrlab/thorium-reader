@@ -30,7 +30,7 @@ if (IS_DEV) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     // devTron = require("devtron");
 
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
     axe = require("@axe-core/react");
 }
 

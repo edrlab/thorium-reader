@@ -1,6 +1,6 @@
-/*
-=-=-= readerFooter.scss
-*/
+.CSS_START_components_readerFooter {
+    display: none;
+}
 
 .RTL_FLIP {
     transform: scale(-1, 1);
@@ -327,4 +327,8 @@ text-align: left;
         fill: #1BAF01;
         color: #1BAF01;
     }
+}
+
+.CSS_END_components_readerFooter {
+    display: none;
 }

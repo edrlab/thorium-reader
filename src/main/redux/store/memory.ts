@@ -252,7 +252,7 @@ export async function initStore()
         reduxPersistMiddleware,
     );
 
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
     const middleware = IS_DEV ? require("remote-redux-devtools").composeWithDevTools(
         {
             port: REDUX_REMOTE_DEVTOOLS_PORT,

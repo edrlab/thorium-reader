@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
 import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.scss";
 
+import * as React from "react";
 import { TranslatorProps, withTranslator } from "../../common/components/hoc/translator";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

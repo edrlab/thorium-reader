@@ -5,11 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
+
 import * as React from "react";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
 import CatalogMenu from "readium-desktop/renderer/library/components/publication/menu/CatalogMenu";
 import OpdsMenu from "readium-desktop/renderer/library/components/publication/menu/OpdsMenu";
 import PublicationListElement from "readium-desktop/renderer/library/components/publication/PublicationListElement";
