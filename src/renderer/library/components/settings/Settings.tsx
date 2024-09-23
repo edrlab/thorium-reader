@@ -103,9 +103,12 @@ const ConnectionSettings: React.FC<{}> = () => {
     };
 
     return (
+        <>
         <section className={stylesSettings.section} style={{ position: "relative", borderTop: "2px solid var(--color-extralight-grey)", gap: "10px", paddingTop: "15px" }}>
             <h4>{__("catalog.opds.auth.manageAccess")}</h4>
             <Auth />
+        </section>
+        <section className={stylesSettings.section} style={{ gap: "10px" }}>
             <h4>{__("opds.addFormApiapp.title")}</h4>
             {/* <div>
                 <input type="checkbox" id="addForm"></input>
@@ -168,6 +171,7 @@ const ConnectionSettings: React.FC<{}> = () => {
                     : <></>}
                 </div>
         </section>
+        </>
     );
 };
 
