@@ -70,9 +70,9 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "r2-shared-js/dist/es8-es2017/src/models/locator";
 // import { DialogTrigger as DialogTriggerReactAria, Popover as PopoverReactAria, Dialog as DialogReactAria } from "react-aria-components";
 import { TextArea } from "react-aria-components";
-import { AnnotationEdit } from "./AnnotationEdit";
+import { AnnotationEdit, annotationsColorsLight } from "./AnnotationEdit";
 import { IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
-import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
+import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
@@ -93,8 +93,8 @@ import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 import type { Selection } from "react-aria-components";
 import { rgbToHex } from "readium-desktop/common/rgb";
-import { ToastType } from "readium-desktop/common/models/toast";
-import { convertAnnotationListToW3CAnnotationSet } from "readium-desktop/common/w3c/annotation/converter";
+import { IReadiumAnnotationModelSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { convertAnnotationListToReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/converter";
 
 
 
@@ -650,6 +650,18 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
 const selectionIsSet = (a: Selection): a is Set<string> => typeof a === "object";
 const MAX_MATCHES_PER_PAGE = 5;
 
+const downloadAnnotationJSON = (contents: IReadiumAnnotationModelSet, filename: string) => {
+
+    const data = JSON.stringify(contents, null, 2);
+    const blob = new Blob([data], { type: "application/rd-annotations+json" });
+    const jsonObjectUrl = URL.createObjectURL(blob);
+    const anchorEl = document.createElement("a");
+    anchorEl.href = jsonObjectUrl;
+    anchorEl.download = `${filename}.annotation`;
+    anchorEl.click();
+    URL.revokeObjectURL(jsonObjectUrl);
+};
+
 const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
     const { goToLocator, annotationUUIDFocused, resetAnnotationUUID } = props;
@@ -754,19 +766,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
         setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
     }
 
-    // TODO: it could be better to separate the color set to a table outside of the view
-    const annotationsColorsLight = [
-        { hex: "#eb9694", name: `${__("reader.annotations.colors.red")}` },
-        { hex: "#fad0c3", name: `${__("reader.annotations.colors.orange")}` },
-        { hex: "#fef3bd", name: `${__("reader.annotations.colors.yellow")}` },
-        { hex: "#c1eac5", name: `${__("reader.annotations.colors.green")}` },
-        { hex: "#bedadc", name: `${__("reader.annotations.colors.bluegreen")}` },
-        { hex: "#c4def6", name: `${__("reader.annotations.colors.lightblue")}` },
-        { hex: "#bed3f3", name: `${__("reader.annotations.colors.cyan")}` },
-        { hex: "#d4c4fb", name: `${__("reader.annotations.colors.purple")}` },
-    ];
-    // hex comparaison in Thorium is on upper case
-    annotationsColorsLight.forEach((obj) => obj.hex = obj.hex.toUpperCase());
+    const annotationsColors = React.useMemo(() => Object.entries(annotationsColorsLight).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
 
     // I'm disable this feature for performance reason, push new Colors from incoming publicaiton annotation, not used for the moment. So let's commented it for the moment.
     // Need to be optimised in the future.
@@ -784,7 +784,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
         { name: "outline", svg: TextOutlineIcon },
     ];
 
-    const nbOfFilters = ((tagArrayFilter === "all") ? selectTagOption.length : tagArrayFilter.size) + ((colorArrayFilter === "all") ? annotationsColorsLight.length : colorArrayFilter.size) + ((drawTypeArrayFilter === "all") ? selectDrawtypesOptions.length : drawTypeArrayFilter.size);
+    const nbOfFilters = ((tagArrayFilter === "all") ? selectTagOption.length : tagArrayFilter.size) + ((colorArrayFilter === "all") ? annotationsColors.length : colorArrayFilter.size) + ((drawTypeArrayFilter === "all") ? selectDrawtypesOptions.length : drawTypeArrayFilter.size);
 
     return (
         <>
@@ -826,23 +826,9 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                 </AlertDialog.Root>
                 <button className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationList.length}
                     onClick={async () => {
-
-                        try {
-                            const fileHandle = await (window as any).showSaveFilePicker({ excludeAcceptAllOption: true, id: publicationView.identifier.slice(0, 32), suggestedName: "myAnnotationSet.annotation", types: [{ description: ".annotation", accept: { "application/rd-annotations+json": [".annotation"] } }] });
-                            const writable = await fileHandle.createWritable();
-
-                            const annotations = annotationList.map(([, anno]) => anno);
-                            const contents = convertAnnotationListToW3CAnnotationSet(annotations, publicationView);
-                            const jsonData = JSON.stringify(contents, null, 2);
-                            await writable.write(jsonData);
-                            await writable.close();
-
-                            dispatch(toastActions.openRequest.build(ToastType.Success, __("catalog.exportAnnotationSuccess", {fileName: fileHandle.name})));
-
-                        } catch (e) {
-                            dispatch(toastActions.openRequest.build(ToastType.Error, __("catalog.exportAnnotationFailure", { errorTxt: e?.toString() })));
-                        }
-
+                        const annotations = annotationList.map(([, anno]) => anno);
+                        const contents = convertAnnotationListToReadiumAnnotationSet(annotations, publicationView);
+                        downloadAnnotationJSON(contents, "myAnnotationSet");
                     }}
                     title={__("catalog.exportAnnotation")}>
                     <SVG svg={SaveIcon} />
@@ -932,7 +918,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                             </button>
                                         </div>
                                     </summary>
-                                    <TagList items={annotationsColorsLight} className={stylesAnnotations.annotations_filter_taglist}>
+                                    <TagList items={annotationsColors} className={stylesAnnotations.annotations_filter_taglist}>
                                         {(item) => <Tag className={stylesAnnotations.annotations_filter_color} style={{ backgroundColor: item.hex, outlineColor: item.hex }} id={item.hex} textValue={item.name}></Tag>}
                                     </TagList>
                                 </details>

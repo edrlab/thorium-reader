@@ -106,6 +106,12 @@ import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 // thoriumhttps
 // import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/main/streamer/streamerNoHttp";
 
+// TODO: key not used but translation kept for potential future use
+// discard some not used key from i18n-scan cmd
+// translate("catalog.sort")
+// translate("catalog.emptyTagList")
+// translate("reader.picker.search.results")
+
 interface IWindowHistory extends History {
     _readerInstance: Reader | undefined;
     _length: number | undefined;

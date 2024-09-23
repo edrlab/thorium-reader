@@ -76,8 +76,6 @@
         },
         "export": "Tallenna nimellä",
         "exportAnnotation": "",
-        "exportAnnotationFailure": "",
-        "exportAnnotationSuccess": "",
         "format": "Formaatti",
         "lang": "Kieli",
         "lastRead": "Luettu viimeksi",

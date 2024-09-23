@@ -12,7 +12,7 @@ import classNames from "classnames";
 import * as debug_ from "debug";
 import DOMPurify from "dompurify";
 import * as React from "react";
-import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
+import { I18nFunction, Translator } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import SVG from "../../SVG";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
@@ -25,7 +25,7 @@ debug("_");
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps {
     publicationViewMaybeOpds: TPublication;
-    __: I18nTyped;
+    __: I18nFunction;
     translator: Translator;
 }
 

@@ -9,12 +9,12 @@ import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles
 
 import * as moment from "moment";
 import * as React from "react";
-import { I18nTyped } from "readium-desktop/common/services/translator";
+import { I18nFunction } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 
 export interface IProps {
     publicationViewMaybeOpds: TPublication;
-    __: I18nTyped;
+    __: I18nFunction;
 }
 
 export const FormatPublisherDate: React.FC<IProps> = (props) => {
