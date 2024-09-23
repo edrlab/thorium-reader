@@ -128,8 +128,8 @@ declare namespace typed_i18n {
   },
   readonly "export": string,
   readonly "exportAnnotation": string,
-  readonly "exportAnnotationSuccess": string,
   readonly "exportAnnotationFailure": string,
+  readonly "exportAnnotationSuccess": string,
   readonly "format": string,
   readonly "lang": string,
   readonly "lastRead": string,
@@ -144,6 +144,7 @@ declare namespace typed_i18n {
     readonly "auth": {
       readonly "cancel": string,
       readonly "login": string,
+      readonly "manageAccess": string,
       readonly "password": string,
       readonly "register": string,
       readonly "username": string
@@ -210,8 +211,8 @@ declare namespace typed_i18n {
   (_: "catalog.entry.lastAdditions", __?: {}): string;
   (_: "catalog.export", __?: {}): string;
   (_: "catalog.exportAnnotation", __?: {}): string;
-  (_: "catalog.exportAnnotationSuccess", __?: {}): string;
   (_: "catalog.exportAnnotationFailure", __?: {}): string;
+  (_: "catalog.exportAnnotationSuccess", __?: {}): string;
   (_: "catalog.format", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.lastRead", __?: {}): string;
@@ -226,6 +227,7 @@ declare namespace typed_i18n {
   readonly "auth": {
     readonly "cancel": string,
     readonly "login": string,
+    readonly "manageAccess": string,
     readonly "password": string,
     readonly "register": string,
     readonly "username": string
@@ -252,12 +254,14 @@ declare namespace typed_i18n {
   (_: "catalog.opds.auth", __?: {}): {
   readonly "cancel": string,
   readonly "login": string,
+  readonly "manageAccess": string,
   readonly "password": string,
   readonly "register": string,
   readonly "username": string
 };
   (_: "catalog.opds.auth.cancel", __?: {}): string;
   (_: "catalog.opds.auth.login", __?: {}): string;
+  (_: "catalog.opds.auth.manageAccess", __?: {}): string;
   (_: "catalog.opds.auth.password", __?: {}): string;
   (_: "catalog.opds.auth.register", __?: {}): string;
   (_: "catalog.opds.auth.username", __?: {}): string;
@@ -431,7 +435,10 @@ declare namespace typed_i18n {
     readonly "url": string,
     readonly "urlPlaceholder": string
   },
-  readonly "addFormApiapp": { readonly "title": string },
+  readonly "addFormApiapp": {
+    readonly "title": string,
+    readonly "activeDilicom": string
+  },
   readonly "addMenu": string,
   readonly "breadcrumbRoot": string,
   readonly "documentation": string,
@@ -477,8 +484,9 @@ declare namespace typed_i18n {
   (_: "opds.addForm.namePlaceholder", __?: {}): string;
   (_: "opds.addForm.url", __?: {}): string;
   (_: "opds.addForm.urlPlaceholder", __?: {}): string;
-  (_: "opds.addFormApiapp", __?: {}): { readonly "title": string };
+  (_: "opds.addFormApiapp", __?: {}): { readonly "title": string, readonly "activeDilicom": string };
   (_: "opds.addFormApiapp.title", __?: {}): string;
+  (_: "opds.addFormApiapp.activeDilicom", __?: {}): string;
   (_: "opds.addMenu", __?: {}): string;
   (_: "opds.breadcrumbRoot", __?: {}): string;
   (_: "opds.documentation", __?: {}): string;

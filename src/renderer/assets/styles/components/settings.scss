@@ -336,6 +336,10 @@ $setting_color: var(--color-blue);
 .settings_tab {
     margin: 30px 25px 0!important;
 
+    .button_catalog_infos {
+        margin: 0;
+    }
+
     &_container {
     margin: 35px;
 

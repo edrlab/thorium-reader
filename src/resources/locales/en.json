@@ -92,6 +92,7 @@
             "auth": {
                 "cancel": "Cancel",
                 "login": "Login",
+                "manageAccess": "Manage access to catalogs",
                 "password": "Password",
                 "register": "Register",
                 "username": "Username / Email Address"
@@ -193,7 +194,8 @@
             "urlPlaceholder": "Link"
         },
         "addFormApiapp": {
-            "title": "Add library account"
+            "title": "Add library account",
+            "activeDilicom": "Activate access to Dilicom PNB API"
         },
         "addMenu": "Add OPDS feed",
         "breadcrumbRoot": "Catalogs",

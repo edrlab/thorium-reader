@@ -38,6 +38,10 @@ import * as BrushIcon from "readium-desktop/renderer/assets/icons/paintbrush-ico
 import KeyboardSettings, { AdvancedTrigger } from "readium-desktop/renderer/library/components/settings/KeyboardSettings";
 import * as GearIcon from "readium-desktop/renderer/assets/icons/gear-icon.svg";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
+import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLink-icon.svg";
+import { shell } from "electron";
 
 interface ISettingsProps {};
 
@@ -87,10 +91,82 @@ export const Auth = () => {
 
 const ConnectionSettings: React.FC<{}> = () => {
     const [__] = useTranslator();
+    const [accessDilicom, setAccessDilicom] = React.useState(false);
+    const onChange = () => {
+        setAccessDilicom(!accessDilicom);
+    };
+    const [infoOpen, setInfoOpen] = React.useState(false);
+
+    const openInfo = (e: any) => {
+        e.preventDefault();
+        setInfoOpen(!infoOpen);
+    };
+
     return (
-        <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4>{__("catalog.opds.auth.login")}</h4>
+        <section className={stylesSettings.section} style={{ position: "relative", borderTop: "2px solid var(--color-extralight-grey)", gap: "10px", paddingTop: "15px" }}>
+            <h4>{__("catalog.opds.auth.manageAccess")}</h4>
             <Auth />
+            <h4>{__("opds.addFormApiapp.title")}</h4>
+            {/* <div>
+                <input type="checkbox" id="addForm"></input>
+                <label htmlFor="addForm">{__("opds.addFormApiapp.activeDilicom")}</label>
+            </div> */}
+            <div className={stylesAnnotations.annotations_checkbox}>
+                <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={accessDilicom} onChange={onChange} />
+                <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
+                    <div
+                        tabIndex={0}
+                        role="checkbox"
+                        aria-checked={accessDilicom}
+                        aria-label={__("settings.session.title")}
+                        onKeyDown={(e) => {
+                            // if (e.code === "Space") {
+                            if (e.key === " ") {
+                                e.preventDefault(); // prevent scroll
+                            }
+                        }}
+                        onKeyUp={(e) => {
+                            // if (e.code === "Space") {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                                onChange();
+                            }
+                        }}
+                        className={stylesGlobal.checkbox_custom}
+                        style={{ border: accessDilicom ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: accessDilicom ? "var(--color-blue)" : "transparent" }}>
+                        {accessDilicom ?
+                            <SVG ariaHidden svg={CheckIcon} />
+                            :
+                            <></>
+                        }
+                    </div>
+                    <div aria-hidden>
+                        <h4>{__("opds.addFormApiapp.activeDilicom")}</h4>
+                    </div>
+                </label>
+            </div>
+            <div>
+                    <button className="button_catalog_infos" onClick={(e) => openInfo(e)}>
+                        <SVG ariaHidden svg={InfoIcon} />
+                        {__("apiapp.howItWorks")}
+                        <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
+                    </button>
+                    { infoOpen ?
+                    <div className="catalog_infos_text">
+                        <p>
+                        {__("apiapp.informations")}
+                        </p>
+                        <a href=""
+                            onClick={async (ev) => {
+                                ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
+                                await shell.openExternal("https://thorium.edrlab.org/docs/");
+                            }}>
+                        {__("apiapp.documentation")}
+                            <SVG ariaHidden svg={FollowLinkIcon} />
+                        </a>
+                    </div>
+                    : <></>}
+                </div>
         </section>
     );
 };
