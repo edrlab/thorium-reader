@@ -76,8 +76,6 @@
         },
         "export": "Экспорт",
         "exportAnnotation": "",
-        "exportAnnotationFailure": "",
-        "exportAnnotationSuccess": "",
         "format": "Формат",
         "lang": "Язык",
         "lastRead": "Последнее чтение",
