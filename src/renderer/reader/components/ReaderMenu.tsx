@@ -26,6 +26,7 @@ import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
+import * as ImportIcon from "readium-desktop/renderer/assets/icons/import.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as BookmarkIcon from "readium-desktop/renderer/assets/icons/bookmarkMultiple-icon.svg";
@@ -72,7 +73,7 @@ import { Locator } from "r2-shared-js/dist/es8-es2017/src/models/locator";
 import { TextArea } from "react-aria-components";
 import { AnnotationEdit, annotationsColorsLight } from "./AnnotationEdit";
 import { IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { annotationActions, readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
@@ -669,6 +670,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
     const [__] = useTranslator();
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
     const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
+    const winId = useSelector((state: IReaderRootState) => state.win.identifier);
 
     const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
     const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
@@ -825,13 +827,20 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                     </AlertDialog.Portal>
                 </AlertDialog.Root>
                 <button className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationList.length}
-                    onClick={async () => {
+                    onClick={() => {
                         const annotations = annotationList.map(([, anno]) => anno);
                         const contents = convertAnnotationListToReadiumAnnotationSet(annotations, publicationView);
                         downloadAnnotationJSON(contents, "myAnnotationSet");
                     }}
                     title={__("catalog.exportAnnotation")}>
                     <SVG svg={SaveIcon} />
+                </button>
+                <button className={stylesAnnotations.annotations_filter_trigger_button}
+                    onClick={() => {
+                        dispatch(annotationActions.importAnnotationSet.build(publicationView.identifier, winId));
+                    }}
+                    title={__("catalog.importAnnotation")}>
+                    <SVG svg={ImportIcon} />
                 </button>
                 <Popover.Root>
                     <Popover.Trigger asChild>

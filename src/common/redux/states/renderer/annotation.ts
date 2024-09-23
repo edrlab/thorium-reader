@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { LocatorExtended } from "r2-navigator-js/dist/es8-es2017/src/electron/renderer";
-import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
+import { IPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 
 export interface IColor {
     red: number;
@@ -25,7 +25,8 @@ export interface IAnnotationState {
     tags?: string[] | undefined;
 }
 
-export type TAnnotationState = TPQueueState<number, IAnnotationState>;
+export type TAnnotationState = IQueueAnnotationState[];
+export type IQueueAnnotationState = IPQueueState<number, IAnnotationState>;
 
 export type IAnnotationModeState = {
     enable: true;

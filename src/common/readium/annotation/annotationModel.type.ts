@@ -31,35 +31,71 @@ export interface IReadiumAnnotationModel {
             }[];
             page: string;
         };
-        selector: (
-            | {
-                type: "TextQuoteSelector";
-                exact: string;
-                prefix: string;
-                suffix: string;
-                clean?: string;
-            }
-            | {
-                type: "ProgressionSelector";
-                value: number;
-            }
-            | {
-                type: "DomRangeSelector";
-                startContainerElementCssSelector: string;
-                startContainerChildTextNodeIndex: number;
-                startOffset: number;
-                endContainerElementCssSelector: string;
-                endContainerChildTextNodeIndex: number;
-                endOffset: number;
-            }
-            | {
-                type: "FragmentSelector";
-                conformsTo: string;
-                value: string;
-            }
-        )[];
+        selector: Array<(
+            ITextQuoteSelector
+            | IProgressionSelector
+            | IDomRangeSelector
+            | IFragmentSelector
+        )>;
     };
 }
+
+export interface ITextQuoteSelector {
+    type: "TextQuoteSelector";
+    exact: string;
+    prefix: string;
+    suffix: string;
+    clean ?: string;
+}
+export function isTextQuoteSelector(a: any): a is ITextQuoteSelector {
+    return typeof a === "object" && a.type === "TextQuoteSelector"
+    && typeof a.exact === "string"
+    && typeof a.prefix === "string"
+    && typeof a.suffix === "string";
+}
+
+export interface IProgressionSelector {
+    type: "ProgressionSelector";
+    value: number;
+}
+export function isProgressionSelector(a: any): a is IProgressionSelector {
+    return typeof a === "object" && a.type === "ProgressionSelector"
+    && typeof a.value === "number";
+}
+
+export interface IDomRangeSelector {
+    type: "DomRangeSelector";
+    startContainerElementCssSelector: string;
+    startContainerChildTextNodeIndex: number;
+    startOffset: number;
+    endContainerElementCssSelector: string;
+    endContainerChildTextNodeIndex: number;
+    endOffset: number;
+}
+export function isDomRangeSelector(a: any): a is IDomRangeSelector {
+    return typeof a === "object"
+        && a.type === "DomRangeSelector"
+        && typeof a.startContainerElementCssSelector === "string"
+        && typeof a.startContainerChildTextNodeIndex === "number"
+        && typeof a.startOffset === "number"
+        && typeof a.endContainerElementCssSelector === "string"
+        && typeof a.endContainerChildTextNodeIndex === "number"
+        && typeof a.endOffset === "number";
+}
+
+export interface IFragmentSelector {
+    type: "FragmentSelector";
+    conformsTo: string;
+    value: string;
+}
+export function isFragmentSelector(a: any): a is IFragmentSelector {
+    return typeof a === "object"
+        && a.type === "FragmentSelector"
+        && typeof a.conformsTo === "string"
+        && typeof a.value === "string";
+}
+
+
 
 interface Generator {
     id: string;
@@ -99,3 +135,10 @@ export interface IReadiumAnnotationModelSet {
     total: number,
     items: IReadiumAnnotationModel[];
 }
+
+
+export function isIReadiumAnnotationModelSet(a: any): a is IReadiumAnnotationModelSet {
+
+    return typeof a === "object";
+}
+

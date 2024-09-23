@@ -7,6 +7,7 @@
 
 import {
     apiActions, authActions, catalogActions, downloadActions, i18nActions, keyboardActions, lcpActions, readerActions, sessionActions, themeActions, publicationActions, wizardActions,
+    annotationActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
@@ -54,6 +55,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     wizardActions.setWizard.ID,
 
     sessionActions.save.ID,
+
+    annotationActions.importAnnotationSet.ID,
 
 ];
 

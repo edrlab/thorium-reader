@@ -5,12 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as registerReaderPublication from "./registerReaderPublication";
-import * as unregisterReaderPublication from "./unregisterReaderPublication";
-import * as addAnnotationToReaderPublication from "./addAnnotationToReaderPublication";
+import * as importAnnotationSet from "./importAnnotationSet";
 
 export {
-    registerReaderPublication,
-    unregisterReaderPublication,
-    addAnnotationToReaderPublication,
+    importAnnotationSet,
 };
