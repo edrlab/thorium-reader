@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export interface IW3CAnnotationModel {
+export interface IReadiumAnnotationModel {
     "@context": string;
     id: string;
     created: string;
@@ -37,6 +37,7 @@ export interface IW3CAnnotationModel {
                 exact: string;
                 prefix: string;
                 suffix: string;
+                clean?: string;
             }
             | {
                 type: "ProgressionSelector";
@@ -67,7 +68,7 @@ interface Generator {
     homepage: string;
 }
 
-export interface IW3CAnnotationSetAboutView {
+export interface IReadiumAnnotationSetAboutView {
     identiferArrayString: string[];
     mimeType: string;
     title: string;
@@ -87,7 +88,7 @@ interface About {
     "dc:source"?: string;
 }
 
-export interface IW3CAnnotationModelSet {
+export interface IReadiumAnnotationModelSet {
     "@context": string;
     id: string;
     type: string;
@@ -96,5 +97,5 @@ export interface IW3CAnnotationModelSet {
     label: string;
     about: About;
     total: number,
-    items: IW3CAnnotationModel[];
+    items: IReadiumAnnotationModel[];
 }

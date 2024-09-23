@@ -5,23 +5,23 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IW3CAnnotationModel, IW3CAnnotationModelSet } from "./annotationModel.type";
+import { IReadiumAnnotationModel, IReadiumAnnotationModelSet } from "./annotationModel.type";
 import { v4 as uuidv4 } from "uuid";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { rgbToHex } from "readium-desktop/common/rgb";
 
-export function convertAnnotationToW3CAnnotationModel(annotation: IAnnotationState): IW3CAnnotationModel {
+export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotationState): IReadiumAnnotationModel {
 
     const currentDate = new Date();
     const dateString: string = currentDate.toISOString();
-    const { uuid, color, locatorExtended: def, tags, drawType } = annotation;
+    const { uuid, color, locatorExtended: def, tags, drawType, comment } = annotation;
     const { selectionInfo, locator, headings, epubPage } = def;
-    const { cleanText, rawText, rawBefore, rawAfter } = selectionInfo;
+    const { cleanText, rawText, rawBefore, rawAfter } = selectionInfo || {};
     const { href } = locator;
 
-    const highlight: IW3CAnnotationModel["body"]["highlight"] = drawType === "solid_background" ? "solid" : drawType;
+    const highlight: IReadiumAnnotationModel["body"]["highlight"] = drawType === "solid_background" ? "solid" : drawType;
 
     return {
         "@context": "http://www.w3.org/ns/anno.jsonld",
@@ -32,7 +32,7 @@ export function convertAnnotationToW3CAnnotationModel(annotation: IAnnotationSta
         hash: "",
         body: {
             type: "TextualBody",
-            value: cleanText || "",
+            value: comment || "",
             format: "text/plain",
             color: rgbToHex(color),
             tag: (tags || [])[0] || "",
@@ -52,6 +52,7 @@ export function convertAnnotationToW3CAnnotationModel(annotation: IAnnotationSta
                     exact: rawText || "",
                     prefix: rawBefore || "",
                     suffix: rawAfter || "",
+                    clean: cleanText || "",
                 },
                 {
                     type: "ProgressionSelector",
@@ -76,7 +77,7 @@ export function convertAnnotationToW3CAnnotationModel(annotation: IAnnotationSta
     };
 }
 
-export function convertAnnotationListToW3CAnnotationSet(annotationArray: IAnnotationState[], publicationView: PublicationView): IW3CAnnotationModelSet {
+export function convertAnnotationListToReadiumAnnotationSet(annotationArray: IAnnotationState[], publicationView: PublicationView): IReadiumAnnotationModelSet {
 
     const currentDate = new Date();
     const dateString: string = currentDate.toISOString();
@@ -103,6 +104,6 @@ export function convertAnnotationListToW3CAnnotationSet(annotationArray: IAnnota
             "dc:source": "urn:uuid:" + publicationView.identifier,
         },
         total: annotationArray.length,
-        items: (annotationArray || []).map((v) => convertAnnotationToW3CAnnotationModel(v)),
+        items: (annotationArray || []).map((v) => convertAnnotationToReadiumAnnotationModel(v)),
     };
 }
