@@ -1,6 +1,6 @@
-/*
-=-=-= keyboardsShortcuts.scss
-*/
+.CSS_START_components_keyboardsShortcuts {
+    display: none;
+}
 
 .keyshortElement {
     &_container {
@@ -150,4 +150,8 @@
         background-color: var(--color-light-blue);
         border-color: var(--color-blue);
     }
+}
+
+.CSS_END_components_keyboardsShortcuts {
+    display: none;
 }

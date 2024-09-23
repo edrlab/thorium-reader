@@ -5,6 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+
 import classNames from "classnames";
 import * as React from "react";
 import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
@@ -12,9 +17,6 @@ import { I18nFunction, Translator } from "readium-desktop/common/services/transl
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import { formatTime } from "readium-desktop/common/utils/time";
 import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
-import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
@@ -30,7 +32,6 @@ import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop
 import PublicationInfoA11y from "./publicationInfoA11y";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as Dialog from "@radix-ui/react-dialog";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import SVG from "../../SVG";
 import * as OnGoingBookIcon from "readium-desktop/renderer/assets/icons/ongoingBook-icon.svg";
 import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";

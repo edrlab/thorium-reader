@@ -5,12 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.scss";
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
-import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.scss";
 import { v4 as uuidv4 } from "uuid";
 
 import { TranslatorProps, withTranslator } from "../hoc/translator";

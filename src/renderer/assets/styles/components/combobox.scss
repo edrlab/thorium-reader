@@ -1,8 +1,8 @@
-/*
-=-=-= combobox.scss
-*/
+@import '../partials/mixin';
 
-@import 'src/renderer/assets/styles/partials/mixin';
+.CSS_START_components_combobox {
+  display: none;
+}
 
 .react_aria_ComboBox {
   color: var(--text-color);
@@ -156,3 +156,7 @@
       color: HighlightText;
     }
   }
+
+.CSS_END_components_combobox {
+  display: none;
+}

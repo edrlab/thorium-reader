@@ -5,12 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesBreadcrumb from "readium-desktop/renderer/assets/styles/components/breadcrumb.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 import * as React from "react";
 import { Link } from "react-router-dom";
 import * as BreacrmbsNavIcon from "readium-desktop/renderer/assets/icons/breadcrumbsNav-icon.svg";
 import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-right.svg";
-import * as stylesBreadcrumb from "readium-desktop/renderer/assets/styles/components/breadcrumb.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
@@ -25,7 +26,9 @@ function useSize<T extends Element>(target: React.RefObject<T>) {
     React.useLayoutEffect(() => {
         // The useLayoutEffect documentation states that this fires synchronously after all DOM mutations,
         // so practically-speaking the target.current sanity check is not needed here (but with strictNullChecks the compiler should identify null as a possible value)
-        target.current && setSize(target.current.getBoundingClientRect());
+        if (target.current) {
+            setSize(target.current.getBoundingClientRect());
+        }
         // TODO: "destructor" needed?
         // return () => {
         //     setSize(undefined);

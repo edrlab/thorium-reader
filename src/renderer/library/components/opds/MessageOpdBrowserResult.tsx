@@ -5,8 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+
+import * as React from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {

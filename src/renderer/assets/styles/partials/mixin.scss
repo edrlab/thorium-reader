@@ -1,3 +1,9 @@
+/*
+.CSS_START_partials_mixin {
+  display: none;
+}
+*/
+
 @mixin main_navigation_library {
   z-index: 102;
   width: 100%;
@@ -58,6 +64,8 @@
   }
 }
 
-.___DEBUG___PARTIALS_MIXINS_CSS {
+/*
+.CSS_END_partials_mixin {
   display: none;
 }
+*/

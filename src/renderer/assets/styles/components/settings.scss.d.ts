@@ -1,10 +1,11 @@
-export declare const ___DEBUG___PARTIALS_MIXINS_CSS: string;
 export declare const advanced_trigger: string;
 export declare const allowCustom: string;
 export declare const btn_primary: string;
 export declare const button_transparency_icon: string;
 export declare const close_button_div: string;
 export declare const container: string;
+export declare const CSS_END_components_settings: string;
+export declare const CSS_START_components_settings: string;
 export declare const display_options: string;
 export declare const display_options_item: string;
 export declare const focus: string;

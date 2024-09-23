@@ -5,13 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.scss";
+
 import { clipboard } from "electron";
 import classNames from "classnames";
 import * as React from "react";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 

@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
@@ -21,7 +23,6 @@ import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import { readerLocalActionSearch } from "../../redux/actions";
-import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 import LoaderSearch from "./LoaderSearch";

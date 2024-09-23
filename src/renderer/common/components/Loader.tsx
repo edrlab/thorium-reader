@@ -5,9 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesLoader from "readium-desktop/renderer/assets/styles/loader.scss";
+
 import * as React from "react";
 import * as LoaderIcon from "readium-desktop/renderer/assets/icons/loader.svg";
-import * as stylesLoader from "readium-desktop/renderer/assets/styles/loader.scss";
 
 import SVG from "./SVG";
 
