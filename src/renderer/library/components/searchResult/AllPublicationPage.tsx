@@ -62,7 +62,7 @@ import { Column, useTable, useFilters, useSortBy, usePagination, useGlobalFilter
 import { formatTime } from "readium-desktop/common/utils/time";
 import * as DOMPurify from "dompurify";
 import * as moment from "moment";
-import { AvailableLanguages, I18nTyped, Translator } from "readium-desktop/common/services/translator";
+import { AvailableLanguages, I18nFunction, Translator } from "readium-desktop/common/services/translator";
 import * as React from "react";
 import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -361,7 +361,7 @@ const commonCellStyles = (props: ITableCellProps_Column & ITableCellProps_Generi
 };
 
 interface ITableCellProps_GlobalFilter {
-    __: I18nTyped;
+    __: I18nFunction;
     translator: Translator;
     displayType: DisplayType;
 
@@ -446,7 +446,7 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
 };
 
 interface ITableCellProps_Filter {
-    __: I18nTyped;
+    __: I18nFunction;
     translator: Translator;
     displayType: DisplayType;
 
@@ -1357,7 +1357,7 @@ type MyTableInstance<T extends object> =
     };
 
 interface ITableCellProps_Common {
-    __: I18nTyped;
+    __: I18nFunction;
     translator: Translator;
     displayType: DisplayType;
 
@@ -1960,11 +1960,11 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 if (!bodyWidth) {
                     return;
                 }
-                
+
                 const coverWidth = 205;
                 const col = Math.floor(bodyWidth/coverWidth);
                 const nbItemMissing = col - PAGESIZE%col;
-                
+
                 tableInstance.setPageSize(PAGESIZE+nbItemMissing);
             } else {
                 tableInstance.setPageSize(PAGESIZE);
@@ -1975,7 +1975,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         const cdDebounce = debounce(cb, 500);
 
         window.addEventListener("resize", cdDebounce);
-        
+
         return () => {
             window.removeEventListener("resize", cdDebounce);
         };
@@ -2055,7 +2055,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                     if (currentShow && !show) {
                                         for (const col of tableInstance.allColumns) {
                                             tableInstance.setFilter(col.id, "");
-                                            
+
                                         }
                                     }
                                 }, 200);
@@ -2410,7 +2410,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                 console.log("####");
                                 return (<tr key={index}></tr>);
                             }
-                        
+
                             return (
                                 displayType === DisplayType.Grid ?
                                     <tr key={index}>

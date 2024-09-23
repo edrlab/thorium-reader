@@ -11,7 +11,7 @@ import * as stylesInputs from "readium-desktop/renderer/assets/styles/components
 
 import * as debug_ from "debug";
 import * as React from "react";
-import { I18nTyped } from "readium-desktop/common/services/translator";
+import { I18nFunction } from "readium-desktop/common/services/translator";
 import { IOpdsTagView } from "readium-desktop/common/views/opds";
 import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
 import SVG from "../../../SVG";
@@ -23,7 +23,7 @@ import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps {
     pubId: string;
-    __: I18nTyped;
+    __: I18nFunction;
     tagArray: string[] | IOpdsTagView[];
     setTags: (tagsArray: string[]) => void;
 }

@@ -38,7 +38,6 @@ import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-// import { I18nTyped } from "readium-desktop/common/services/translator";
 
 const isFixedLayout = (link: Link, publication: R2Publication): boolean => {
     if (link && link.Properties) {
@@ -452,7 +451,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     private getTotalChapters(): number {
         const { r2Publication, isDivina, isPdf } = this.props;
 
-        const totalChapters = 
+        const totalChapters =
         isPdf ?
         (r2Publication.Metadata?.NumberOfPages ? r2Publication.Metadata.NumberOfPages : 0) :
         isDivina

@@ -70,7 +70,7 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "r2-shared-js/dist/es8-es2017/src/models/locator";
 // import { DialogTrigger as DialogTriggerReactAria, Popover as PopoverReactAria, Dialog as DialogReactAria } from "react-aria-components";
 import { TextArea } from "react-aria-components";
-import { AnnotationEdit } from "./AnnotationEdit";
+import { AnnotationEdit, annotationsColorsLight } from "./AnnotationEdit";
 import { IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
@@ -766,19 +766,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
         setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
     }
 
-    // TODO: it could be better to separate the color set to a table outside of the view
-    const annotationsColorsLight = [
-        { hex: "#eb9694", name: `${__("reader.annotations.colors.red")}` },
-        { hex: "#fad0c3", name: `${__("reader.annotations.colors.orange")}` },
-        { hex: "#fef3bd", name: `${__("reader.annotations.colors.yellow")}` },
-        { hex: "#c1eac5", name: `${__("reader.annotations.colors.green")}` },
-        { hex: "#bedadc", name: `${__("reader.annotations.colors.bluegreen")}` },
-        { hex: "#c4def6", name: `${__("reader.annotations.colors.lightblue")}` },
-        { hex: "#bed3f3", name: `${__("reader.annotations.colors.cyan")}` },
-        { hex: "#d4c4fb", name: `${__("reader.annotations.colors.purple")}` },
-    ];
-    // hex comparaison in Thorium is on upper case
-    annotationsColorsLight.forEach((obj) => obj.hex = obj.hex.toUpperCase());
+    const annotationsColors = React.useMemo(() => Object.entries(annotationsColorsLight).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
 
     // I'm disable this feature for performance reason, push new Colors from incoming publicaiton annotation, not used for the moment. So let's commented it for the moment.
     // Need to be optimised in the future.
@@ -796,7 +784,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
         { name: "outline", svg: TextOutlineIcon },
     ];
 
-    const nbOfFilters = ((tagArrayFilter === "all") ? selectTagOption.length : tagArrayFilter.size) + ((colorArrayFilter === "all") ? annotationsColorsLight.length : colorArrayFilter.size) + ((drawTypeArrayFilter === "all") ? selectDrawtypesOptions.length : drawTypeArrayFilter.size);
+    const nbOfFilters = ((tagArrayFilter === "all") ? selectTagOption.length : tagArrayFilter.size) + ((colorArrayFilter === "all") ? annotationsColors.length : colorArrayFilter.size) + ((drawTypeArrayFilter === "all") ? selectDrawtypesOptions.length : drawTypeArrayFilter.size);
 
     return (
         <>
@@ -930,7 +918,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                             </button>
                                         </div>
                                     </summary>
-                                    <TagList items={annotationsColorsLight} className={stylesAnnotations.annotations_filter_taglist}>
+                                    <TagList items={annotationsColors} className={stylesAnnotations.annotations_filter_taglist}>
                                         {(item) => <Tag className={stylesAnnotations.annotations_filter_color} style={{ backgroundColor: item.hex, outlineColor: item.hex }} id={item.hex} textValue={item.name}></Tag>}
                                     </TagList>
                                 </details>

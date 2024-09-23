@@ -31,6 +31,7 @@ import { TextArea } from "react-aria-components";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
+import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
 
 // import { readiumCSSDefaults } from "@r2-navigator-js/electron/common/readium-css-settings";
 
@@ -42,26 +43,16 @@ interface IProps {
     btext?: string;
 }
 
-// const annotationsColors = [
-//     "#B80000",
-//     "#DB3E00",
-//     "#FCCB00",
-//     "#008B02",
-//     "#006B76",
-//     "#1273DE",
-//     "#004DCF",
-//     "#5300EB"];
-
-const annotationsColorsLight = [
-    "#EB9694",
-    "#FAD0C3",
-    "#FEF3BD",
-    "#C1EAC5",
-    "#BEDADC",
-    "#C4DEF6",
-    "#BED3F3",
-    "#D4C4FB",
-];
+export const annotationsColorsLight: Record<string, TTranslatorKeyParameter> = {
+    "#EB9694": "reader.annotations.colors.red",
+    "#FAD0C3": "reader.annotations.colors.orange",
+    "#FEF3BD": "reader.annotations.colors.yellow",
+    "#C1EAC5": "reader.annotations.colors.green",
+    "#BEDADC": "reader.annotations.colors.bluegreen",
+    "#C4DEF6": "reader.annotations.colors.lightblue",
+    "#BED3F3": "reader.annotations.colors.cyan",
+    "#D4C4FB": "reader.annotations.colors.purple",
+};
 
 const drawType: TDrawType[] = [
     "solid_background",
@@ -180,17 +171,17 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                 <h4>{__("reader.annotations.Color")}</h4>
                 <div className={stylesAnnotations.colorPicker}
                     role="radiogroup">
-                    {annotationsColorsLight.map((color, i) => (
-                        <div key={color}>
-                            <input type="radio"  id={`anno_color_${uuid}_${color}`} name="colorpicker" value={color}
-                                onChange={() => setColor(color)}
-                                checked={colorSelected === color}
-                                aria-label={`${__("reader.annotations.Color")} ${i} (${color.split("").join(" ")})`}
+                    {Object.entries(annotationsColorsLight).map(([colorHex, translatorKey]) => (
+                        <div key={`anno_color_${uuid}_${colorHex}_key`}>
+                            <input type="radio"  id={`anno_color_${uuid}_${colorHex}`} name="colorpicker" value={colorHex}
+                                onChange={() => setColor(colorHex)}
+                                checked={colorSelected === colorHex}
+                                aria-label={__(translatorKey)}
                             />
-                            <label htmlFor={`anno_color_${uuid}_${color}`}
-                                style={{ backgroundColor: color, border: colorSelected === color ? "1px solid var(--color-dark-grey)" : "" }}
+                            <label htmlFor={`anno_color_${uuid}_${colorHex}`}
+                                style={{ backgroundColor: colorHex, border: colorSelected === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
                             >
-                                {colorSelected === color ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
+                                {colorSelected === colorHex ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
                             </label>
                         </div>
                     ),

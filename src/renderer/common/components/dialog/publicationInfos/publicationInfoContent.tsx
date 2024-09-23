@@ -13,7 +13,7 @@ import * as stylesModals from "readium-desktop/renderer/assets/styles/components
 import classNames from "classnames";
 import * as React from "react";
 import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
-import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
+import { I18nFunction, Translator } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import { formatTime } from "readium-desktop/common/utils/time";
 import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
@@ -61,7 +61,7 @@ export interface IProps {
 
 const Duration = (props: {
     duration: number;
-    __: I18nTyped;
+    __: I18nFunction;
 }) => {
 
     const { duration, __ } = props;
@@ -93,7 +93,7 @@ const Progression = (props: {
     pdfPlayerNumberOfPages: number | undefined, // super hacky :(
     divinaNumberOfPages: number | undefined, // super hacky :(
     divinaContinousEqualTrue: boolean,
-    __: I18nTyped;
+    __: I18nFunction;
     closeDialogCb: () => void;
 }) => {
     const { __, closeDialogCb, locatorExt, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication, manifestUrlR2Protocol, handleLinkUrl } = props;
