@@ -1,4 +1,8 @@
-@import "src/renderer/assets/styles/partials/mixin";
+@import './mixin';
+
+.CSS_START_partials_focus {
+  display: none;
+}
 
 :root *:focus {
   outline: none;
@@ -44,6 +48,6 @@
   outline: inherit !important;
 }
 
-.___DEBUG___PARTIALS_FOCUS_CSS {
+.CSS_END_partials_focus {
   display: none;
 }

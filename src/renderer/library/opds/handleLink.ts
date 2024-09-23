@@ -24,7 +24,7 @@ const REL_NAVIGATION_TYPES: string[] = [
 
 export const dispatchOpdsLink =
     (dispatch: TDispatch) =>
-        async (ln: IOpdsLinkView, location: Location, title?: string | undefined) => {
+        async (ln: IOpdsLinkView, location: Location, title?: string) => {
 
             dispatch(dialogActions.closeRequest.build());
 

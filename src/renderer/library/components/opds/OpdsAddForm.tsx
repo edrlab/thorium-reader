@@ -5,10 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.scss";
+
 import * as React from "react";
 import ApiappAddFormDialog from "readium-desktop/renderer/library/components/dialog/ApiappAddForm";
 import OpdsFeedAddForm from "../dialog/OpdsFeedAddForm";
-import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.scss";
 
 const OpdsAddForm: React.FC = () => {
     return (

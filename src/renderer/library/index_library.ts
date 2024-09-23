@@ -22,7 +22,7 @@ import {
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
 if (IS_DEV) {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
     const cr = require("@r2-navigator-js/electron/renderer/common/console-redirect");
     // const releaseConsoleRedirect =
     cr.consoleRedirect("readium-desktop:renderer:bookshelf", process.stdout, process.stderr, true);
@@ -45,7 +45,7 @@ if (IS_DEV) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     // devTron = require("devtron");
 
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
     axe = require("@axe-core/react");
 }
 

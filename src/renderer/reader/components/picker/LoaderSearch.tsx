@@ -5,11 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesLoader from "readium-desktop/renderer/assets/styles/loader.scss";
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as LoaderIcon from "readium-desktop/renderer/assets/icons/loader.svg";
-import * as stylesLoader from "readium-desktop/renderer/assets/styles/loader.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

@@ -1,10 +1,23 @@
-@import "src/renderer/assets/styles/focus";
-@import 'src/renderer/assets/styles/partials/mixin';
+// @import '../focus';
+@import '../partials/mixin';
+
+.CSS_START_components_annotations {
+  display: none;
+}
 
 .annotations_tab {
   display: flex;
   flex-direction: column;
   gap: 5px;
+}
+
+.popover_dialog_reader .settings_tab.annotations_tab {
+  margin-top: 15px !important;
+}
+
+.separator {
+  border-bottom: 1px solid var(--color-extralight-grey-alt);
+  padding-bottom: 10px;
 }
 
 .annotations_options {
@@ -57,7 +70,9 @@
     background-color: var(--color-extralight-grey);
     width: 290px;
     // border: 1px solid var(--color-light-grey);
-    padding: 10px 20px;
+    padding: 15px;
+    padding-right: 5px;
+    padding-bottom: 0;
     box-shadow: 0 0 5px var(--color-light-grey);
     z-index: 1000;
     border-radius: 5px;
@@ -123,22 +138,23 @@
 
   &_tagGroup {
     font-family: inherit;
-      background-color: var(--color-secondary);
-      border-radius: 5px;
-      padding: 0 20px;
-      height: 45px;
-      font-size: 15px;
-      line-height: 1;
-      box-shadow: 0 3px 3px var(--color-verylight-grey-alt2);
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    background-color: var(--color-secondary);
+    border-radius: 5px;
+    padding: 0 20px;
+    height: 45px;
+    font-size: 15px;
+    line-height: 1;
+    box-shadow: 0 3px 3px var(--color-verylight-grey-alt2);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--color-primary);
 
-      &:hover {
-        background-color: var(--color-light-blue);
-      }
+    &:hover {
+      background-color: var(--color-light-blue);
     }
+  }
 
   &_tag {
     font-size: 13px;
@@ -175,11 +191,15 @@
     svg {
       width: 20px;
       height: 20px;
+      color: var(--color-primary);
     }
     
     &[data-selected] {
-      color: var(--color-secondary);
       background-color: var(--color-blue);
+      
+      svg {
+        color: var(--color-secondary);
+      }
     }
   }
 }
@@ -611,4 +631,8 @@
   border-left: 2px solid var(--color-blue);
   padding: 0 10px;
   margin-top: 5px;
+}
+
+.CSS_END_components_annotations {
+  display: none;
 }

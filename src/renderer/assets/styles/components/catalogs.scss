@@ -1,9 +1,8 @@
-/*
-=-=-= catalogs.scss
-*/
+@import '../partials/mixin';
 
-@import 'src/renderer/assets/styles/partials/mixin';
-
+.CSS_START_components_catalogs {
+    display: none;
+}
 
 .catalog_wrapper {
     display: flex;
@@ -314,4 +313,8 @@
     .loader {
         margin: 20%;
     }
+}
+
+.CSS_END_components_catalogs {
+    display: none;
 }

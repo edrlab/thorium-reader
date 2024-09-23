@@ -1,6 +1,6 @@
-/*
-=-=-= popoverDialog.scss
-*/
+.CSS_START_components_popoverDialog {
+  display: none;
+}
 
 .modal_dialog_reader {
   transform: translate(-50%, -50%);
@@ -661,6 +661,10 @@
   padding-right: 0 !important;
   background-color: inherit;
   color: var(--color-primary);
+
+  option {
+    background-color: var(--color-secondary);
+  }
 }
 
 .modal_dialog_reader, .popover_dialog_reader {
@@ -722,4 +726,8 @@
       width: 10px;
     }
   }
+}
+
+.CSS_END_components_popoverDialog {
+  display: none;
 }

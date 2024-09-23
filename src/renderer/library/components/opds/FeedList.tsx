@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -14,7 +16,6 @@ import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
-import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";

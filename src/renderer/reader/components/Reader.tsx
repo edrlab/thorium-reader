@@ -5,6 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
+import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
+
 import { ipcRenderer } from "electron";
 import classNames from "classnames";
 import divinaPlayer from "divina-player-js";
@@ -35,8 +38,6 @@ import * as DoubleArrowLeftIcon from "readium-desktop/renderer/assets/icons/doub
 import * as DoubleArrowRightIcon from "readium-desktop/renderer/assets/icons/double_arrow_right_black_24dp.svg";
 import * as DoubleArrowUpIcon from "readium-desktop/renderer/assets/icons/double_arrow_up_black_24dp.svg";
 import * as exitZenModeIcon from "readium-desktop/renderer/assets/icons/fullscreenExit-icon.svg";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
-import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -708,7 +709,7 @@ class Reader extends React.Component<IProps, IState> {
         const isAudioBook = isAudiobookFn(this.props.r2Publication);
         const arrowDisabledNotEpub = isAudioBook || this.props.isPdf || this.props.isDivina;
         // const isFXL = this.isFixedLayout();
-        // const isPaginated = this.props.readerConfig.paged;
+        const isPaginated = this.props.readerConfig.paged;
 
         // console.log(arrowDisabledNotEpub, isFXL, isPaginated);
         // epub non fxl (page)      : false false true  : true
@@ -794,10 +795,12 @@ class Reader extends React.Component<IProps, IState> {
                         disableRTLFlip={this.props.disableRTLFlip}
                         isRTLFlip={this.isRTLFlip}
                     />
-                    :
-                    <button onClick={() => this.setState({ zenMode : false})} className={stylesReader.button_exitZen}>
+                    : 
+                    <div className={stylesReader.exitZen_container}>
+                    <button onClick={() => this.setState({ zenMode : false})} className={stylesReader.button_exitZen} style={{ opacity: isPaginated ? "1" : "0"}}>
                         <SVG ariaHidden svg={exitZenModeIcon} />
                     </button>
+                    </div>
                     }
 
                     <div
@@ -856,6 +859,7 @@ class Reader extends React.Component<IProps, IState> {
                                         }}
                                             title={this.props.__("reader.svg.left")}
                                             className={(this.state.settingsOpen || this.state.menuOpen) ? (this.props.readerConfig.readerDockingMode === "left" ? stylesReaderFooter.navigation_arrow_docked_left :  stylesReaderFooter.navigation_arrow_left) : stylesReaderFooter.navigation_arrow_left}
+                                            style={{ opacity: isPaginated ? "1" : "0"}}
                                         >
                                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                                         </button>
@@ -919,6 +923,7 @@ class Reader extends React.Component<IProps, IState> {
                                         }}
                                             title={this.props.__("reader.svg.right")}
                                             className={(this.state.settingsOpen || this.state.menuOpen) ? (this.props.readerConfig.readerDockingMode === "right" ? stylesReaderFooter.navigation_arrow_docked_right :  stylesReaderFooter.navigation_arrow_right) : stylesReaderFooter.navigation_arrow_right}
+                                            style={{ opacity: isPaginated ? "1" : "0"}}
                                         >
                                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                                         </button>
@@ -1904,6 +1909,8 @@ class Reader extends React.Component<IProps, IState> {
                 publicationViewport.setAttribute("style", "display: block; position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: 0; padding: 0; box-sizing: border-box; background: white; overflow: hidden;");
             }
 
+            // @----ts-ignore TS2578
+            // @ts-expect-error TS2872
             const readingModeFromPersistence = "test" || this.props.divinaReadingMode;
             console.log("Reading mode from persistence : ", readingModeFromPersistence);
             const locale = this.props.locale;

@@ -1,5 +1,3 @@
-export declare const ___DEBUG___COMPONENTS_BUTTONS_CSS: string;
-export declare const ___DEBUG___PARTIALS_MIXINS_CSS: string;
 export declare const block_line: string;
 export declare const button_catalog_infos: string;
 export declare const button_icon: string;
@@ -23,6 +21,8 @@ export declare const buttons_list: string;
 export declare const catalog_infos_text: string;
 export declare const col_book_img: string;
 export declare const col_filter: string;
+export declare const CSS_END_components_buttons: string;
+export declare const CSS_START_components_buttons: string;
 export declare const disabled: string;
 export declare const icon_end: string;
 export declare const skip_link: string;

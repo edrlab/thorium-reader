@@ -5,13 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
+
 import * as React from "react";
 import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 
 import * as Popover from "@radix-ui/react-popover";
 // import * as PenIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
@@ -29,6 +30,7 @@ import classNames from "classnames";
 import { TextArea } from "react-aria-components";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 
 // import { readiumCSSDefaults } from "@r2-navigator-js/electron/common/readium-css-settings";
 
@@ -74,13 +76,12 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
 
     const displayFromReaderMenu = !!uuid;
     const [__] = useTranslator();
-    const { annotation_defaultColor, annotation_defaultDrawType } = useSelector((state: IReaderRootState) => state.reader.defaultConfig);
+    const { annotation_defaultColor, annotation_defaultDrawType } = useSelector((state: IReaderRootState) => state.reader.config);
 
     const { locatorExtended } = useSelector((state: IReaderRootState) => state.annotation);
     const annotationReaderState = useSelector((state: IReaderRootState) => state.reader.annotation);
 
-    const annotationStateDEFAULT: Omit<IAnnotationState, "uuid"> = { color: annotation_defaultColor, comment: "", drawType: annotation_defaultDrawType, locatorExtended };
-    let annotationState: typeof annotationStateDEFAULT = annotationStateDEFAULT;
+    let annotationState: IAnnotationState = { uuid: "", color: annotation_defaultColor, comment: "", drawType: annotation_defaultDrawType, locatorExtended };
     if (uuid) {
         const tpl = annotationReaderState.find(([, annotationState]) => annotationState.uuid === uuid);
         if (tpl) {
@@ -91,18 +92,13 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         }
     }
 
-    const colorStr = `#${annotationState.color.red.toString(16).padStart(2, "0")}${annotationState.color.green.toString(16).padStart(2, "0")}${annotationState.color.blue.toString(16).padStart(2, "0")}`.toUpperCase();
+    const colorStr = rgbToHex(annotationState.color);
 
     const [colorSelected, setColor] = React.useState(colorStr);
 
     const dispatch = useDispatch();
 
-    const rgbresultmatch = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(colorSelected);
-    const colorObj = rgbresultmatch ? {
-        red: parseInt(rgbresultmatch[1], 16),
-        green: parseInt(rgbresultmatch[2], 16),
-        blue: parseInt(rgbresultmatch[3], 16),
-      } : annotationState.color;
+    const colorObj = hexToRgb(colorSelected) || annotationState.color;
 
     const previousColorSelected = React.useRef<IColor>(colorObj);
 

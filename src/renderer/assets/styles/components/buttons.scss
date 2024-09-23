@@ -1,8 +1,8 @@
-/*
-=-=-= buttons.scss
-*/
+@import '../partials/mixin';
 
-@import "src/renderer/assets/styles/partials/mixin";
+.CSS_START_components_buttons {
+  display: none;
+}
 
 button {
   padding: 0;
@@ -551,6 +551,6 @@ button {
   }
 }
 
-.___DEBUG___COMPONENTS_BUTTONS_CSS {
+.CSS_END_components_buttons {
   display: none;
 }

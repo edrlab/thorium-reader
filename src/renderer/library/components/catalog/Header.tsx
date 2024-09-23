@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 // import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
 // import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
 import * as React from "react";
@@ -14,7 +16,6 @@ import * as GridIcon from "readium-desktop/renderer/assets/icons/grid-icon.svg";
 // import * as ListIcon from "readium-desktop/renderer/assets/icons/list-icon.svg";
 import * as TableIcon from "readium-desktop/renderer/assets/icons/table-icon.svg";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
