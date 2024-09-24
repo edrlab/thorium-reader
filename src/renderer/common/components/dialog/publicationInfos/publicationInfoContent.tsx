@@ -19,7 +19,9 @@ import { formatTime } from "readium-desktop/common/utils/time";
 import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import Cover, { CoverWithForwardedRef } from "../../Cover";
@@ -53,7 +55,7 @@ export interface IProps {
     pdfPlayerNumberOfPages: number | undefined; // super hacky :(
     divinaNumberOfPages: number | undefined; // super hacky :(
     divinaContinousEqualTrue: boolean;
-    readerReadingLocation: LocatorExtended;
+    readerReadingLocation: MiniLocatorExtended;
     translator: Translator;
     onClikLinkCb?: (tag: IOpdsBaseLinkView) => () => void | undefined;
     closeDialogCb: () => void;
@@ -88,7 +90,7 @@ const Progression = (props: {
     r2Publication: R2Publication | null,
     manifestUrlR2Protocol: string | null,
     handleLinkUrl: ((url: string) => void) | undefined;
-    locatorExt: LocatorExtended,
+    locatorExt: MiniLocatorExtended,
     focusWhereAmI: boolean,
     pdfPlayerNumberOfPages: number | undefined, // super hacky :(
     divinaNumberOfPages: number | undefined, // super hacky :(
@@ -167,7 +169,7 @@ const Progression = (props: {
                     txtPagination = __("reader.navigation.currentPage", { current: `${pageNum}` });
                 }
 
-                // see (locations as any ).totalProgression Divina HACK
+                // SEE isDivinaLocation duck typing hack with totalProgression injection!!
                 if (typeof locatorExt.locator.locations.progression === "number") {
                     const percent = Math.round(locatorExt.locator.locations.progression * 100);
                     txtProgression = `${percent}%`;

@@ -16,8 +16,11 @@ import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
-import { LocatorExtended, highlightsDrawMargin } from "@r2-navigator-js/electron/renderer";
-import { HighlightDrawTypeBackground, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline } from "r2-navigator-js/dist/es8-es2017/src/electron/common/highlight";
+
+import { highlightsDrawMargin } from "@r2-navigator-js/electron/renderer";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+
+import { HighlightDrawTypeBackground, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { diReaderGet } from "../../di";
 
@@ -91,7 +94,7 @@ function* annotationPop(action: readerActions.annotation.pop.TAction) {
     yield* put(readerLocalActionHighlights.handler.pop.build([{uuid}]));
 }
 
-function* createAnnotation(locatorExtended: LocatorExtended, color: IColor, comment: string, drawType: TDrawType, tags: string[]) {
+function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, comment: string, drawType: TDrawType, tags: string[]) {
 
     // clean __selection global variable state
     __selectionInfoGlobal.locatorExtended = undefined;
@@ -109,7 +112,7 @@ function* createAnnotation(locatorExtended: LocatorExtended, color: IColor, comm
     yield* put(readerLocalActionAnnotations.enableMode.build(false, undefined));
 }
 
-function* newLocatorEditAndSaveTheNote(locatorExtended: LocatorExtended): SagaGenerator<void> {
+function* newLocatorEditAndSaveTheNote(locatorExtended: MiniLocatorExtended): SagaGenerator<void> {
     const defaultColor = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_defaultColor);
     const defaultDrawType = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_defaultDrawType);
 
@@ -172,7 +175,7 @@ function* annotationButtonTrigger(_action: readerLocalActionAnnotations.trigger.
 
 }
 
-const __selectionInfoGlobal: {locatorExtended: LocatorExtended | undefined} = {locatorExtended: undefined};
+const __selectionInfoGlobal: {locatorExtended: MiniLocatorExtended | undefined} = {locatorExtended: undefined};
 function* setLocator(action: readerLocalActionSetLocator.TAction) {
 
     const locatorExtended = action.payload;

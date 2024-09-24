@@ -13,7 +13,7 @@ import { LSD, StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { httpGet, httpPost, httpPut } from "../network/http";
 import { contentTypeisApiProblem, contentTypeisLcp, contentTypeisLsd, parseContentType } from "readium-desktop/utils/contentType";
-import { TaJsonDeserialize } from "r2-lcp-js/dist/es8-es2017/src/serializable";
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import URITemplate from "urijs/src/URITemplate";
 import URI from "urijs";
 import moment from "moment";

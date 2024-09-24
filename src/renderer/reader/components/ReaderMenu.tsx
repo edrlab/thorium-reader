@@ -49,7 +49,8 @@ import * as AnnotationIcon from "readium-desktop/renderer/assets/icons/annotatio
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar-icon.svg";
 // import * as DuplicateIcon from "readium-desktop/renderer/assets/icons/duplicate-icon.svg";
 
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -67,7 +68,7 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { Locator } from "r2-shared-js/dist/es8-es2017/src/models/locator";
+import { Locator } from "@r2-shared-js/models/locator";
 // import { DialogTrigger as DialogTriggerReactAria, Popover as PopoverReactAria, Dialog as DialogReactAria } from "react-aria-components";
 import { TextArea } from "react-aria-components";
 import { AnnotationEdit, annotationsColorsLight } from "./AnnotationEdit";
@@ -101,7 +102,7 @@ import { convertAnnotationListToReadiumAnnotationSet } from "readium-desktop/com
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderMenuProps {
     // focusNaviguationMenu: () => void;
-    currentLocation: LocatorExtended;
+    currentLocation: MiniLocatorExtended;
     isDivina: boolean;
     isPdf: boolean;
     pdfNumberOfPages: number;
@@ -200,7 +201,7 @@ const renderLinkList = (isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBa
     return T;
 };
 
-const renderLinkTree = (currentLocation: LocatorExtended, isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBaseProps["handleLinkClick"], dockedMode: boolean) => {
+const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBaseProps["handleLinkClick"], dockedMode: boolean) => {
     const RenderLinkTree = (label: string | undefined, links: TToc, level: number, headingTrailLink: ILink | undefined): JSX.Element => {
         // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
         const useTree = false;
