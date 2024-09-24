@@ -43,6 +43,15 @@ interface IProps {
     btext?: string;
 }
 
+// __("reader.annotations.colors.red")
+// __("reader.annotations.colors.orange")
+// __("reader.annotations.colors.yellow")
+// __("reader.annotations.colors.green")
+// __("reader.annotations.colors.bluegreen")
+// __("reader.annotations.colors.lightblue")
+// __("reader.annotations.colors.cyan")
+// __("reader.annotations.colors.purple")
+
 export const annotationsColorsLight: Record<string, TTranslatorKeyParameter> = {
     "#EB9694": "reader.annotations.colors.red",
     "#FAD0C3": "reader.annotations.colors.orange",
