@@ -12,6 +12,7 @@ import "reflect-metadata";
 import "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 
+import { webUtils } from "electron";
 import classNames from "classnames";
 import { HistoryRouter } from "redux-first-history/rr6";
 import * as path from "path";
@@ -53,20 +54,37 @@ export default class App extends React.Component<{}, undefined> {
     public onDrop(acceptedFiles: File[]) {
         const store = diLibraryGet("store");
 
+        console.log(acceptedFiles);
+
         const filez = acceptedFiles
             .filter(
-                (file) => file.path.replace(/\\/g, "/").endsWith("/" + acceptedExtensionObject.nccHtml) || acceptedExtension(path.extname(file.path)),
+                (file) => {
+                    // with drag-and-drop (unlike input@type=file) the File `path` property is equal to `name`!
+                    // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
+                    const absolutePath = webUtils.getPathForFile(file);
+                    return absolutePath.replace(/\\/g, "/").endsWith("/" + acceptedExtensionObject.nccHtml) || acceptedExtension(path.extname(absolutePath));
+                },
             )
             .map(
-                (file) => ({
-                    name: file.name,
-                    path: file.path,
-                }),
+                (file) => {
+                    // with drag-and-drop (unlike input@type=file) the File `path` property is equal to `name`!
+                    // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
+                    const absolutePath = webUtils.getPathForFile(file);
+                    return {
+                        name: file.name,
+                        path: absolutePath,
+                    }
+                },
             );
 
         if (filez.length === 0) {
+            const file = acceptedFiles[0];
+            // with drag-and-drop (unlike input@type=file) the File `path` property is equal to `name`!
+            // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
+            const absolutePath = webUtils.getPathForFile(file);
+            const acceptedExtension = acceptedFiles.length === 1 ? `[${path.extname(absolutePath)}] ${acceptedExtensionArray.join(" ")}` : acceptedExtensionArray.join(" ");
             store.dispatch(toastActions.openRequest.build(ToastType.Error, diLibraryGet("translator").translate("dialog.importError", {
-                acceptedExtension: acceptedFiles.length === 1 ? `[${path.extname(acceptedFiles[0].path)}] ${acceptedExtensionArray.join(" ")}` : acceptedExtensionArray.join(" "),
+                acceptedExtension,
             })));
             return;
         }
