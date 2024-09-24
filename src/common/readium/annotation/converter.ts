@@ -42,7 +42,7 @@ export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotatio
         creator: { // TODO !!!
             id: "urn:uuid:123TODO123",
             type: "Organization",
-            name: "Thorium"
+            name: "Thorium",
         },
         target: {
             source: href || "",

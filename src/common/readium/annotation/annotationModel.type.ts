@@ -135,43 +135,43 @@ export const readiumAnnotationModelSetJSONSchema3 = {
     "properties": {
         "@context": {
             "type": "string",
-            "const": "http://www.w3.org/ns/anno.jsonld"
+            "const": "http://www.w3.org/ns/anno.jsonld",
         },
         "id": {
             "type": "string",
-            "format": "uri"
+            "format": "uri",
         },
         "type": {
             "type": "string",
-            "const": "AnnotationSet"
+            "const": "AnnotationSet",
         },
         "generator": {
             "type": "object",
             "properties": {
                 "id": {
-                    "type": "string"
+                    "type": "string",
                 },
                 "type": {
-                    "type": "string"
+                    "type": "string",
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
                 },
                 "homepage": {
                     "type": "string",
-                    "nullable": true
-                }
+                    "nullable": true,
+                },
             },
-            "required": ["id", "type", "name"]
+            "required": ["id", "type", "name"],
         },
         "generated": {
             "type": "string",
             "format": "date-time",
-            "nullable": true
+            "nullable": true,
         },
         "title": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
         },
         "about": {
             "type": "object",
@@ -179,44 +179,44 @@ export const readiumAnnotationModelSetJSONSchema3 = {
                 "dc:identifier": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "string",
                     },
-                    "nullable": true
+                    "nullable": true,
                 },
                 "dc:format": {
                     "type": "string",
-                    "nullable": true
+                    "nullable": true,
                 },
                 "dc:title": {
                     "type": "string",
-                    "nullable": true
+                    "nullable": true,
                 },
                 "dc:publisher": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "string",
                     },
-                    "nullable": true
+                    "nullable": true,
                 },
                 "dc:creator": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "string",
                     },
-                    "nullable": true
+                    "nullable": true,
                 },
                 "dc:date": {
                     "type": "string",
-                    "nullable": true
-                }
-            }
+                    "nullable": true,
+                },
+            },
         },
         "items": {
             "type": "array",
             "items": {
-                "$ref": "#/definitions/IReadiumAnnotationModel"
-            }
-        }
+                "$ref": "#/definitions/IReadiumAnnotationModel",
+            },
+        },
     },
     "required": ["@context", "id", "type", "about", "items"],
     "definitions": {
@@ -227,87 +227,87 @@ export const readiumAnnotationModelSetJSONSchema3 = {
             "properties": {
                 "@context": {
                     "type": "string",
-                    "const": "http://www.w3.org/ns/anno.jsonld"
+                    "const": "http://www.w3.org/ns/anno.jsonld",
                 },
                 "id": {
                     "type": "string",
-                    "format": "uri"
+                    "format": "uri",
                 },
                 "created": {
                     "type": "string",
                     "nullable": true,
-                    "format": "date-time"
+                    "format": "date-time",
                 },
                 "modified": {
                     "type": "string",
-                    "format": "date-time"
+                    "format": "date-time",
                 },
                 "type": {
                     "type": "string",
-                    "const": "Annotation"
+                    "const": "Annotation",
                 },
                 "creator": {
                     "type": "object",
                     "properties": {
                         "id": {
                             "type": "string",
-                            "format": "uri"
+                            "format": "uri",
                         },
                         "type": {
                             "type": "string",
-                            "enum": ["Person", "Organization"]
+                            "enum": ["Person", "Organization"],
                         },
                         "name": {
                             "type": "string",
-                            "nullable": true
-                        }
+                            "nullable": true,
+                        },
                     },
-                    "required": ["id", "type"]
+                    "required": ["id", "type"],
                 },
                 "body": {
                     "type": "object",
                     "properties": {
                         "type": {
                             "type": "string",
-                            "const": "TextualBody"
+                            "const": "TextualBody",
                         },
                         "value": {
-                            "type": "string"
+                            "type": "string",
                         },
                         "tag": {
                             "type": "string",
-                            "nullable": true
+                            "nullable": true,
                         },
                         "highlight": {
                             "type": "string",
                             "enum": ["solid", "underline", "strikethrough", "outline"],
-                            "nullable": true
+                            "nullable": true,
                         },
                         "format": {
                             "type": "string",
-                            "nullable": true
+                            "nullable": true,
                         },
                         "color": {
                             "type": "string",
-                            "nullable": true
+                            "nullable": true,
                         },
                         "textDirection": {
                             "type": "string",
                             "enum": ["ltr", "rtl"],
-                            "nullable": true
+                            "nullable": true,
                         },
                         "language": {
                             "type": "string",
-                            "nullable": true
-                        }
+                            "nullable": true,
+                        },
                     },
-                    "required": ["type", "value"]
+                    "required": ["type", "value"],
                 },
                 "target": {
                     "type": "object",
                     "properties": {
                         "source": {
-                            "type": "string"
+                            "type": "string",
                         },
                         "meta": {
                             "type": "object",
@@ -318,43 +318,43 @@ export const readiumAnnotationModelSetJSONSchema3 = {
                                         "type": "object",
                                         "properties": {
                                             "level": {
-                                                "type": "number"
+                                                "type": "number",
                                             },
                                             "txt": {
-                                                "type": "string"
-                                            }
+                                                "type": "string",
+                                            },
                                         },
-                                        "required": ["level", "txt"]
-                                    }
+                                        "required": ["level", "txt"],
+                                    },
                                 },
                                 "page": {
                                     "type": "string",
-                                    "nullable": true
-                                }
-                            }
+                                    "nullable": true,
+                                },
+                            },
                         },
                         "selector": {
                             "type": "array",
                             "items": {
                                 "oneOf": [
                                     {
-                                        "$ref": "#/definitions/ITextQuoteSelector"
+                                        "$ref": "#/definitions/ITextQuoteSelector",
                                     },
                                     {
-                                        "$ref": "#/definitions/IProgressionSelector"
+                                        "$ref": "#/definitions/IProgressionSelector",
                                     },
                                     {
-                                        "$ref": "#/definitions/IDomRangeSelector"
+                                        "$ref": "#/definitions/IDomRangeSelector",
                                     },
                                     {
-                                        "$ref": "#/definitions/IFragmentSelector"
-                                    }
-                                ]
-                            }
-                        }
+                                        "$ref": "#/definitions/IFragmentSelector",
+                                    },
+                                ],
+                            },
+                        },
                     },
-                    "required": ["source", "selector"]
-                }
+                    "required": ["source", "selector"],
+                },
             },
             "required": ["@context", "id", "modified", "type", "creator", "body", "target"],
         },
@@ -362,56 +362,56 @@ export const readiumAnnotationModelSetJSONSchema3 = {
             "type": "object",
             "properties": {
                 "type": {
-                    "const": "TextQuoteSelector"
+                    "const": "TextQuoteSelector",
                 },
                 "exact": {
-                    "type": "string"
+                    "type": "string",
                 },
                 "prefix": {
-                    "type": "string"
+                    "type": "string",
                 },
                 "suffix": {
-                    "type": "string"
-                }
+                    "type": "string",
+                },
             },
-            "required": ["type", "exact", "prefix", "suffix"]
+            "required": ["type", "exact", "prefix", "suffix"],
         },
         "IProgressionSelector": {
             "type": "object",
             "properties": {
                 "type": {
-                    "const": "ProgressionSelector"
+                    "const": "ProgressionSelector",
                 },
                 "value": {
-                    "type": "number"
-                }
+                    "type": "number",
+                },
             },
-            "required": ["type", "value"]
+            "required": ["type", "value"],
         },
         "IDomRangeSelector": {
             "type": "object",
             "properties": {
                 "type": {
-                    "const": "DomRangeSelector"
+                    "const": "DomRangeSelector",
                 },
                 "startContainerElementCssSelector": {
-                    "type": "string"
+                    "type": "string",
                 },
                 "startContainerChildTextNodeIndex": {
-                    "type": "number"
+                    "type": "number",
                 },
                 "startOffset": {
-                    "type": "number"
+                    "type": "number",
                 },
                 "endContainerElementCssSelector": {
-                    "type": "string"
+                    "type": "string",
                 },
                 "endContainerChildTextNodeIndex": {
-                    "type": "number"
+                    "type": "number",
                 },
                 "endOffset": {
-                    "type": "number"
-                }
+                    "type": "number",
+                },
             },
             "required": [
                 "type",
@@ -420,32 +420,32 @@ export const readiumAnnotationModelSetJSONSchema3 = {
                 "startOffset",
                 "endContainerElementCssSelector",
                 "endContainerChildTextNodeIndex",
-                "endOffset"
-            ]
+                "endOffset",
+            ],
         },
         "IFragmentSelector": {
             "type": "object",
             "properties": {
                 "type": {
-                    "const": "FragmentSelector"
+                    "const": "FragmentSelector",
                 },
                 "conformsTo": {
-                    "type": "string"
+                    "type": "string",
                 },
                 "value": {
-                    "type": "string"
-                }
+                    "type": "string",
+                },
             },
-            "required": ["type", "conformsTo", "value"]
-        }
-    }
+            "required": ["type", "conformsTo", "value"],
+        },
+    },
 };
 
 
 export let __READIUM_ANNOTATION_AJV_ERRORS = "";
 export function isIReadiumAnnotationModelSet(data: any): data is IReadiumAnnotationModelSet {
 
-    const ajv = new Ajv()
+    const ajv = new Ajv();
     addFormats(ajv);
 
     const valid = ajv.validate(readiumAnnotationModelSetJSONSchema3, data);
