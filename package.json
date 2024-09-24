@@ -267,6 +267,8 @@
     "@radix-ui/react-tooltip": "^1.1.2",
     "@react-hook/resize-observer": "^2.0.2",
     "@xmldom/xmldom": "^0.9.3",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
     "classnames": "^2.5.1",
     "commonmark": "^0.31.2",
     "debounce": "^2.1.1",

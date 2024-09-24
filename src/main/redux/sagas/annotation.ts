@@ -18,7 +18,7 @@ import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/a
 import { hexToRgb } from "readium-desktop/common/rgb";
 import { isNil } from "readium-desktop/utils/nil";
 import { RootState } from "../states";
-import { isDomRangeSelector, isFragmentSelector, isIReadiumAnnotationModelSet, isProgressionSelector, isTextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { __READIUM_ANNOTATION_AJV_ERRORS, isDomRangeSelector, isFragmentSelector, isIReadiumAnnotationModelSet, isProgressionSelector, isTextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { SenderType } from "readium-desktop/common/models/sync";
@@ -88,7 +88,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
             }
 
             // check if it is the same publication ID
-            const sourceUUID = (data.about["dc:source"] || "").split("urn:uuid:")[1] || "";
+            const sourceUUID = data.about["dc:identifier"].find((v) => v.startsWith("urn:thorium:"))?.split("urn:thorium:")[1] || "";
             if (sourceUUID === publicationIdentifier) {
 
                 debug("OK Publication identified : same publicationIndentifier");
@@ -279,7 +279,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
             }
         } else {
 
-            debug("TODO: need to update the typescript guard");
+            debug("Error: ", __READIUM_ANNOTATION_AJV_ERRORS);
             yield* put(toastActions.openRequest.build(ToastType.Error, "Error: " + "File format", publicationIdentifier));
             return;
         }

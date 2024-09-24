@@ -18,7 +18,7 @@ export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotatio
     const dateString: string = currentDate.toISOString();
     const { uuid, color, locatorExtended: def, tags, drawType, comment } = annotation;
     const { selectionInfo, locator, headings, epubPage } = def;
-    const { cleanText, rawText, rawBefore, rawAfter } = selectionInfo || {};
+    const { rawText, rawBefore, rawAfter } = selectionInfo || {};
     const { href } = locator;
 
     const highlight: IReadiumAnnotationModel["body"]["highlight"] = drawType === "solid_background" ? "solid" : drawType;
@@ -29,7 +29,6 @@ export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotatio
         created: dateString,
         modified: dateString,
         type: "Annotation",
-        hash: "",
         body: {
             type: "TextualBody",
             value: comment || "",
@@ -39,6 +38,11 @@ export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotatio
             highlight,
             //   textDirection: "ltr",
             //   language: "fr",
+        },
+        creator: { // TODO !!!
+            id: "urn:uuid:123TODO123",
+            type: "Organization",
+            name: "Thorium"
         },
         target: {
             source: href || "",
@@ -52,7 +56,6 @@ export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotatio
                     exact: rawText || "",
                     prefix: rawBefore || "",
                     suffix: rawAfter || "",
-                    clean: cleanText || "",
                 },
                 {
                     type: "ProgressionSelector",
@@ -93,17 +96,15 @@ export function convertAnnotationListToReadiumAnnotationSet(annotationArray: IAn
             homepage: "https://thorium.edrlab.org",
         },
         generated: dateString,
-        label: "Annotations set",
+        title: "Annotations set",
         about: {
-            "dc:identifier": [publicationView.workIdentifier ? ((publicationView.workIdentifier.startsWith("urn:") ? "" : "urn:isbn:") + publicationView.workIdentifier) : ""],
+            "dc:identifier": ["urn:thorium:" + publicationView.identifier, publicationView.workIdentifier ? ((publicationView.workIdentifier.startsWith("urn:") ? "" : "urn:isbn:") + publicationView.workIdentifier) : ""],
             "dc:format": "application/epub+zip",
             "dc:title": publicationView.documentTitle || "",
             "dc:publisher": publicationView.publishers || [],
             "dc:creator": publicationView.authors || [],
             "dc:date": publicationView.publishedAt || "",
-            "dc:source": "urn:uuid:" + publicationView.identifier,
         },
-        total: annotationArray.length,
         items: (annotationArray || []).map((v) => convertAnnotationToReadiumAnnotationModel(v)),
     };
 }
