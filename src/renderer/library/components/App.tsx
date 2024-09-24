@@ -73,7 +73,7 @@ export default class App extends React.Component<{}, undefined> {
                     return {
                         name: file.name,
                         path: absolutePath,
-                    }
+                    };
                 },
             );
 
