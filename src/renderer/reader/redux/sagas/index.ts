@@ -21,7 +21,7 @@ import * as winInit from "./win";
 import * as annotation from "./annotation";
 import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { setTheme } from "readium-desktop/common/redux/actions/theme";
-import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } from "r2-navigator-js/dist/es8-es2017/src/electron/renderer";
+import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } from "@r2-navigator-js/electron/renderer";
 import { eventChannel } from "redux-saga";
 import { put } from "typed-redux-saga";
 import { readerLocalActionReader } from "../actions";

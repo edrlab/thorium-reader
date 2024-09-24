@@ -52,8 +52,9 @@ import { fixedLayoutZoomPercent,
     // stealFocusDisable
 } from "@r2-navigator-js/electron/renderer/dom";
 import {
-    LocatorExtended, MediaOverlaysStateEnum, TTSStateEnum,
+    MediaOverlaysStateEnum, TTSStateEnum,
 } from "@r2-navigator-js/electron/renderer/index";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 import { IPdfPlayerScale } from "../pdf/common/pdfReader.type";
 import HeaderSearch from "./header/HeaderSearch";
@@ -132,7 +133,7 @@ interface IBaseProps extends TranslatorProps {
     handlePublicationInfo: () => void;
     readerMenuProps: IReaderMenuProps;
     ReaderSettingsProps: IReaderSettingsProps;
-    currentLocation: LocatorExtended;
+    currentLocation: MiniLocatorExtended;
     isDivina: boolean;
     isPdf: boolean;
     divinaSoundPlay: (play: boolean) => void;

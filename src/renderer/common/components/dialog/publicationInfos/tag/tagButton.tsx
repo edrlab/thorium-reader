@@ -15,7 +15,7 @@ import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as Popover from "@radix-ui/react-popover";
 import { Link } from "react-router-dom";
-import { encodeURIComponent_RFC3986 } from "r2-utils-js/dist/es8-es2017/src/_utils/http/UrlUtils";
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 // import { DisplayType } from "readium-desktop/renderer/library/routing";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
