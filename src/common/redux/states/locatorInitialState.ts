@@ -94,8 +94,7 @@ export type MiniLocatorExtended = Omit<LocatorExtended, "followingElementIDs">;
 
 export const minimizeLocatorExtended = (locatorExtended: LocatorExtended): MiniLocatorExtended => {
 
-    if (typeof locatorExtended.followingElementIDs === "undefined"
-        && typeof locatorExtended.selectionIsNew === "undefined" ) {
+    if (typeof locatorExtended.followingElementIDs === "undefined") {
         return locatorExtended;
     }
     // locatorExtended = r.clone(locatorExtended);
