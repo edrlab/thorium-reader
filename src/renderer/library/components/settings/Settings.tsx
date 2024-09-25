@@ -162,7 +162,7 @@ const SaveCreatorSettings: React.FC<{}> = () => {
             , 1000)
         , [dispatch]);
     React.useEffect(() => {
-        if (name && name !== creator.name || type !== creator.type) {
+        if (name !== creator.name || type !== creator.type) {
             onChangeDebounced(name, type);
         }
     }, [name, type, creator, onChangeDebounced]);
