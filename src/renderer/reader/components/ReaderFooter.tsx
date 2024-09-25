@@ -26,7 +26,8 @@ import {
     TKeyboardEventOnAnchor, TMouseEventOnAnchor, TMouseEventOnSpan,
 } from "readium-desktop/typings/react";
 
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
@@ -79,11 +80,12 @@ interface IBaseProps extends TranslatorProps {
     fullscreen: boolean;
     historyCanGoBack: boolean;
     historyCanGoForward: boolean;
-    currentLocation: LocatorExtended;
+    currentLocation: MiniLocatorExtended;
     goToLocator: (locator: R2Locator, closeNavPanel?: boolean, isFromOnPopState?: boolean) => void;
     // tslint:disable-next-line: max-line-length
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor, url: string, closeNavPanel?: boolean, isFromOnPopState?: boolean) => void;
     isDivina: boolean;
+    isDivinaLocation: (data: any) => data is { pageIndex: number | undefined, nbOfPages: number | undefined, locator: R2Locator };
     divinaNumberOfPages: number;
     divinaContinousEqualTrue: boolean;
 
@@ -136,10 +138,11 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
         let spineTitle = currentLocation.locator?.title || currentLocation.locator.href;
 
-        if (isDivina) {
+        // SEE isDivinaLocation duck typing hack with totalProgression injection!!
+        if (isDivina && this.props.isDivinaLocation(currentLocation)) {
             try {
                 spineTitle = this.props.divinaContinousEqualTrue
-                    ? `${Math.floor((currentLocation.locator.locations as any).totalProgression * r2Publication.Spine.length)}`
+                    ? `${Math.floor(currentLocation.locator.locations.progression * r2Publication.Spine.length)}`
                     : `${(currentLocation.locator?.locations.position || 0) + 1}`;
             } catch (_e) {
                 // ignore
@@ -266,9 +269,10 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                         ).map((link, index) => {
 
                                             let atCurrentLocation = false;
-                                            if (isDivina) {
+                                            // SEE isDivinaLocation duck typing hack with totalProgression injection!!
+                                            if (isDivina && this.props.isDivinaLocation(currentLocation)) {
                                                 atCurrentLocation = this.props.divinaContinousEqualTrue
-                                                    ? (Math.floor((currentLocation.locator.locations as any).totalProgression * r2Publication.Spine.length)-1) === index
+                                                    ? (Math.floor(currentLocation.locator.locations.progression * r2Publication.Spine.length)-1) === index
                                                     : (currentLocation.locator?.locations.position || 0) === index; // see divinaNumberOfPages
                                             } else if (isPdf) {
                                                 // let href = link.Href;
@@ -423,10 +427,11 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         const { r2Publication, isDivina, isPdf } = this.props;
 
         // let spineTitle = currentLocation.locator?.title || currentLocation.locator.href;
-        // if (isDivina) {
+        // SEE isDivinaLocation duck typing hack with totalProgression injection!!
+        // if (isDivina && isDivinaLocation(currentLocation)) {
         //     try {
         //         spineTitle = this.props.divinaContinousEqualTrue
-        //             ? `${Math.floor((currentLocation.locator.locations as any).totalProgression * r2Publication.Spine.length)}`
+        //             ? `${Math.floor(currentLocation.locator.locations.progression * r2Publication.Spine.length)}`
         //             : `${(currentLocation.locator?.locations.position || 0) + 1}`;
         //     } catch (_e) {
         //         // ignore

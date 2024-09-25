@@ -7,6 +7,7 @@
 
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
+import { webUtils } from "electron";
 import * as React from "react";
 import { connect } from "react-redux";
 import { acceptedExtensionArray, acceptedExtensionObject } from "readium-desktop/common/extension";
@@ -69,8 +70,11 @@ export class PublicationAddButton extends React.Component<IProps, undefined> {
         const files = event.target.files;
         const paths: string[] = [];
 
-        for (const f of files) {
-            paths.push(f.path);
+        for (const file of files) {
+            // with drag-and-drop (unlike input@type=file) the File `path` property is equal to `name`!
+            // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
+            const absolutePath = webUtils.getPathForFile(file);
+            paths.push(absolutePath);
         }
 
         event.target.value = "";

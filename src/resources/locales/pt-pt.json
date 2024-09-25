@@ -125,8 +125,8 @@
   },
   "dialog": {
     "cancel": "Cancelar",
-    "deleteAnnotations": "",
-    "deleteAnnotationsText": "",
+    "deleteAnnotations": "Eliminar anotações?",
+    "deleteAnnotationsText": "Quer eliminar {{- annotationListLength}} anotações?",
     "deleteFeed": "Eliminar catálogo?",
     "deletePublication": "Eliminar documento?",
     "import": "Confirmar importação:",
@@ -310,22 +310,22 @@
       "advancedMode": "Modo instantâneo (criação automática após seleção)",
       "annotationsOptions": "Opções",
       "colors": {
-        "bluegreen": "",
-        "cyan": "",
-        "green": "",
-        "lightblue": "",
-        "orange": "",
-        "purple": "",
-        "red": "",
-        "yellow": ""
+        "bluegreen": "Azul-esverdeado",
+        "cyan": "Ciano",
+        "green": "Verde",
+        "lightblue": "Azul claro",
+        "orange": "Laranja",
+        "purple": "Roxo",
+        "red": "Vermelho",
+        "yellow": "Amarelo"
       },
       "filter": {
-        "all": "",
-        "filterByColor": "",
-        "filterByDrawtype": "",
-        "filterByTag": "",
-        "filterOptions": "",
-        "none": ""
+        "all": "Tudo",
+        "filterByColor": "Filtrar por cor",
+        "filterByDrawtype": "Filtrar por tipo de desenho",
+        "filterByTag": "Filtrar por etiqueta",
+        "filterOptions": "Opções de filtro",
+        "none": "Nenhum"
       },
       "hide": "Não exibir",
       "highlight": "Realçar",

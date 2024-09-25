@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { LocatorExtended } from "r2-navigator-js/dist/es8-es2017/src/electron/renderer";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { IPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 
 export interface IColor {
@@ -18,7 +18,7 @@ export type TDrawType = "solid_background" | "underline" | "strikethrough" | "ou
 
 export interface IAnnotationState {
     uuid: string;
-    locatorExtended: LocatorExtended;
+    locatorExtended: MiniLocatorExtended;
     comment: string;
     color: IColor;
     drawType: TDrawType;
@@ -30,7 +30,7 @@ export type IQueueAnnotationState = IPQueueState<number, IAnnotationState>;
 
 export type IAnnotationModeState = {
     enable: true;
-    locatorExtended: LocatorExtended;
+    locatorExtended: MiniLocatorExtended;
 } | {
     enable: false;
     locatorExtended: undefined;
