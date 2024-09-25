@@ -7,11 +7,11 @@
 
 import * as debug_ from "debug";
 import { app, dialog, shell } from "electron";
-import { keyboardActions, versionUpdateActions } from "readium-desktop/common/redux/actions";
+import { creatorActions, keyboardActions, versionUpdateActions } from "readium-desktop/common/redux/actions";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
-import { select, call as callTyped } from "typed-redux-saga";
+import { select, call as callTyped, spawn } from "typed-redux-saga";
 import { RootState } from "../states";
 import { _APP_VERSION, _APP_NAME, _PACK_NAME } from "readium-desktop/preprocessor-directives";
 // import { THttpGetCallback } from "readium-desktop/common/utils/http";
@@ -37,6 +37,8 @@ import * as lcp from "./lcp";
 import * as catalog from "./catalog";
 
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import { creatorInitGetUsernameFromWin32Promise } from "readium-desktop/common/redux/reducers/creator";
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
 const debug = debug_(filename_);
@@ -113,6 +115,25 @@ export function* rootSaga() {
 
     // get/set catalog in library win
     yield catalog.saga();
+
+    // creator initialization for Win32
+    yield spawn(function* () {
+
+        const creator = yield* select((_state: ICommonRootState) => _state.creator);
+        if (creator?.name) {
+            return ;
+        }
+
+        try {
+            const username = yield* callTyped(() => creatorInitGetUsernameFromWin32Promise());
+            if (username) {
+                debug("Creator Username in Win32 plafform, username found with powershell [", username, "]");
+                yield put(creatorActions.set.build(username, creator.type));
+            }
+        } catch (e) {
+            debug("ERROR: Creator Username in Win32 platform, cannot get the username with powershell !! :", e);
+        }
+    });
 
     // rehydrate shorcuts in redux
     yield put(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll(), false));
