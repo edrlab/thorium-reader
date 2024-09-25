@@ -10,6 +10,7 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
+import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -28,7 +29,7 @@ import { AvailableLanguages } from "readium-desktop/common/services/translator";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { authActions, i18nActions, sessionActions, themeActions } from "readium-desktop/common/redux/actions";
+import { authActions, creatorActions, i18nActions, sessionActions, themeActions } from "readium-desktop/common/redux/actions";
 import * as BinIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { TTheme } from "readium-desktop/common/redux/states/theme";
@@ -38,6 +39,8 @@ import * as BrushIcon from "readium-desktop/renderer/assets/icons/paintbrush-ico
 import KeyboardSettings, { AdvancedTrigger } from "readium-desktop/renderer/library/components/settings/KeyboardSettings";
 import * as GearIcon from "readium-desktop/renderer/assets/icons/gear-icon.svg";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+import debounce from "debounce";
+import { IAnnotationCreator } from "readium-desktop/common/redux/states/creator";
 
 interface ISettingsProps {};
 
@@ -145,6 +148,63 @@ const SaveSessionSettings: React.FC<{}> = () => {
 
 
 
+const SaveCreatorSettings: React.FC<{}> = () => {
+    const [__] = useTranslator();
+    const dispatch = useDispatch();
+    const creator = useSelector((state: ICommonRootState) => state.creator);
+
+    const [name, setName] = React.useState(creator.name);
+    const [type, setType] = React.useState(creator.type);
+
+    const onChangeDebounced = React.useMemo(() =>
+        debounce(
+            (name: string, type: IAnnotationCreator["type"]) => dispatch(creatorActions.set.build(name, type))
+            , 1000)
+        , [dispatch]);
+    React.useEffect(() => {
+        if (name && name !== creator.name || type !== creator.type) {
+            onChangeDebounced(name, type);
+        }
+    }, [name, type, creator, onChangeDebounced]);
+
+    return (
+        <section className={stylesSettings.section} style={{ position: "relative" }}>
+            <h4>Creator</h4>
+            <div className={stylesInput.form_group} style={{marginTop: "20px"}}>
+                <input type="text" name="creator-name" value={name} onChange={(e) => {
+                    const v = e.target.value;
+                    setName(v);
+                }} />
+                {/* <SVG ariaHidden svg={SearchIcon} /> */}
+                <label htmlFor="creator-name">Name</label>
+            </div>
+            <div className={stylesAnnotations.annotations_checkbox} style={{ marginTop: "20px" }}>
+                <fieldset>
+                    <legend>Type:</legend>
+                    <div>
+                        <input type="radio" id="creator-organizationType" name="creator-type" value="Organization" checked={type === "Organization"} onChange={(e) => {
+                            const t = e.target.value;
+                            if (t === "Organization") {
+                                setType(t);
+                            }
+                        }}/>
+                            <label htmlFor="creator-organizationType">Organization</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="creator-personType" name="creator-type" value="Person" checked={type === "Person"} onChange={(e) => {
+                            const t = e.target.value;
+                            if (t === "Person") {
+                                setType(t);
+                            }
+                        }}/>
+                            <label htmlFor="creator-personType">Person</label>
+                    </div>
+                </fieldset>
+            </div>
+        </section>
+    );
+};
+
 
 const Themes = () => {
     const [__] = useTranslator();
@@ -234,6 +294,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                                 <LanguageSettings />
                                 <ConnectionSettings />
                                 <SaveSessionSettings />
+                                <SaveCreatorSettings />
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab2" tabIndex={-1}>
