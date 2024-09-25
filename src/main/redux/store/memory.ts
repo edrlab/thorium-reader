@@ -254,15 +254,15 @@ export async function initStore()
                 state.reduxState.locator = minimizeLocatorExtended(locatorExtended);
 
                 // SEE isDivinaLocation duck typing hack with totalProgression injection!!
-                const locations = state.reduxState.locator.locator.locations as any;
-                if (locations.totalProgression) {
+                const locations = state.reduxState.locator.locator?.locations as any;
+                if (locations?.totalProgression) {
                     debug("INFO DIVINA preloadedState.win.registry.reader[id].reduxState.locator.locations.totalProgression: ", locations.totalProgression);
                 }
             }
 
             if (state?.reduxState?.annotation) {
                 for (const annotation of state.reduxState.annotation) {
-                    if (annotation[1]) {
+                    if (annotation[1]?.locatorExtended) {
                         const locatorExtended = annotation[1].locatorExtended as LocatorExtended;
                         if (locatorExtended.followingElementIDs) {
                             debug("REMOVE preloadedState.win.registry.reader[id].reduxState.annotation[i].locatorExtended.followingElementIDs (LocatorExtended): ", locatorExtended.followingElementIDs.length);
