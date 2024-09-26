@@ -419,6 +419,24 @@ const HardWrapComment: React.FC<{ comment: string }> = (props) => {
     );
 };
 
+export const computeProgression = (spineItemLinks: Link[], locator: Locator) => {
+
+    let percent = 100;
+    if (spineItemLinks.length && locator.href) {
+        const index = spineItemLinks.findIndex((item) => item.Href === locator.href);
+        if (index >= 0) {
+            if (typeof locator.locations?.progression === "number") {
+                percent = 100 * ((index + locator.locations.progression) / spineItemLinks.length);
+            } else {
+                percent = 100 * (index / spineItemLinks.length);
+            }
+            percent = Math.round(percent * 100) / 100;
+        }
+    }
+
+    return percent;
+}
+
 const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
     const { goToLocator, setTagFilter } = props;
@@ -459,21 +477,8 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;
 
     const { style, percentRounded } = React.useMemo(() => {
-
-        let percent = 100;
-        let percentRounded = -1;
-        if (r2Publication.Spine?.length && annotation.locatorExtended.locator?.href) {
-            const index = r2Publication.Spine.findIndex((item) => item.Href === annotation.locatorExtended.locator.href);
-            if (index >= 0) {
-                if (typeof annotation.locatorExtended.locator?.locations?.progression === "number") {
-                    percent = 100 * ((index + annotation.locatorExtended.locator.locations.progression) / r2Publication.Spine.length);
-                } else {
-                    percent = 100 * (index / r2Publication.Spine.length);
-                }
-                percent = Math.round(percent * 100) / 100;
-                percentRounded = Math.round(percent);
-            }
-        }
+        const percent = computeProgression(r2Publication.Spine || [], annotation.locatorExtended.locator);
+        const percentRounded = Math.round(percent);
         return { style: { width: `${percent}%` }, percentRounded };
     }, [r2Publication, annotation]);
 
@@ -671,6 +676,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
     const [__] = useTranslator();
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
     const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
+    const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
 
     const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
     const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
@@ -729,16 +735,15 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
         resetAnnotationUUID();
     }
 
-    const [sortType, setSortType] = React.useState<Selection>(new Set("progression"));
-
-    // sort annotationList
+    const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
     if (sortType !== "all" && sortType.has("progression")) {
-        annotationList.sort((a, b) => {
-            const [, {locatorExtended: {locator: {locations: {progression: pa}}}}] = a;
-            const [, {locatorExtended: {locator: {locations: {progression: pb}}}}] = b;
-            console.log(pa, pb);
 
-            return pa - pb;
+        annotationList.sort((a, b) => {
+            const [, {locatorExtended: {locator: la}}] = a;
+            const [, {locatorExtended: {locator: lb}}] = b;
+            const pcta = computeProgression(r2Publication.Spine, la);
+            const pctb = computeProgression(r2Publication.Spine, lb);
+            return pcta - pctb;
         });
     } else if (sortType !== "all" && sortType.has("lastCreated")) {
         annotationList.sort((a, b) => {
@@ -874,6 +879,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                 onSelectionChange={setSortType}
                                 selectionMode="multiple"
                                 selectionBehavior="replace"
+                                aria-label="kind-of-sort"
                             >
                                 <ListBoxItem id="progression" key="progression" aria-label="progression" className={({ isFocused, isSelected }) =>
                                     classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
