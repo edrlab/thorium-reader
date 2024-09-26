@@ -28,6 +28,7 @@ import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+import classNames from "classnames";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -77,7 +78,7 @@ class SearchForm extends React.Component<IProps, undefined> {
 
         return (
             <form
-                className={stylesInput.form_group}
+                className={classNames(stylesInput.form_group, stylesInput.form_group_allPubSearch)}
                 onSubmit={this.submitSearch}
                 role="search"
             >
