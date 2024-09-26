@@ -479,9 +479,12 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;
 
     const { style, percentRounded } = React.useMemo(() => {
-        const percent = computeProgression(r2Publication.Spine || [], annotation.locatorExtended.locator);
-        const percentRounded = Math.round(percent);
-        return { style: { width: `${percent}%` }, percentRounded };
+        if (r2Publication.Spine && annotation.locatorExtended.locator) {
+            const percent = computeProgression(r2Publication.Spine || [], annotation.locatorExtended.locator);
+            const percentRounded = Math.round(percent);
+            return { style: { width: `${percent}%` }, percentRounded };
+        }
+        return { style: { width: `100%` }, percentRounded: 100 };
     }, [r2Publication, annotation]);
 
     // const bname = (annotation?.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText.slice(0, 20)}` : `${__("reader.navigation.annotationTitle")} ${index}`);
