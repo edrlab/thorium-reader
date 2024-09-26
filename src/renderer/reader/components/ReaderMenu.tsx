@@ -90,7 +90,7 @@ import * as HighLightIcon from "readium-desktop/renderer/assets/icons/highlight-
 import * as UnderLineIcon from "readium-desktop/renderer/assets/icons/underline-icon.svg";
 import * as TextStrikeThroughtIcon from "readium-desktop/renderer/assets/icons/TextStrikethrough-icon.svg";
 import * as TextOutlineIcon from "readium-desktop/renderer/assets/icons/TextOutline-icon.svg";
-import { TagGroup, TagList, Tag, Label, Tooltip, TooltipTrigger } from "react-aria-components";
+import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 import type { Selection } from "react-aria-components";
@@ -435,7 +435,7 @@ export const computeProgression = (spineItemLinks: Link[], locator: Locator) => 
     }
 
     return percent;
-}
+};
 
 const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
@@ -468,6 +468,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 comment,
                 drawType,
                 tags,
+                modified: (new Date()).getTime(),
             },
         ));
         triggerEdition(false);
@@ -755,7 +756,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
         annotationList.sort((a, b) => {
             const [, {modified: ma}] = a;
             const [, {modified: mb}] = b;
-            return mb - ma;
+            return ma && mb ? mb - ma : ma ? -1 : mb ? 1 : 0;
         });
     }
 
