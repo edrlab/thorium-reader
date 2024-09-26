@@ -484,7 +484,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
             const percentRounded = Math.round(percent);
             return { style: { width: `${percent}%` }, percentRounded };
         }
-        return { style: { width: `100%` }, percentRounded: 100 };
+        return { style: { width: "100%" }, percentRounded: 100 };
     }, [r2Publication, annotation]);
 
     // const bname = (annotation?.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText.slice(0, 20)}` : `${__("reader.navigation.annotationTitle")} ${index}`);
@@ -885,7 +885,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                 onSelectionChange={setSortType}
                                 selectionMode="multiple"
                                 selectionBehavior="replace"
-                                aria-label="kind-of-sort"
+                                aria-label={__("reader.annotations.sorting.sortingOptions")}
                             >
                                 <ListBoxItem id="progression" key="progression" aria-label="progression" className={({ isFocused, isSelected }) =>
                                     classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
