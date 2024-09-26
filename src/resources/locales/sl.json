@@ -331,6 +331,12 @@
       "noSelectionToast": "Brez izbire",
       "quickAnnotations": "Hitro ustvarjanje (preskoči urejevalnik)",
       "saveNote": "Shrani",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Prikaži v robovih",
       "type": {
         "outline": "Oriši",

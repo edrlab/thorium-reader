@@ -331,6 +331,12 @@
       "noSelectionToast": "Nessuna selezione",
       "quickAnnotations": "Creazione rapida (salta editor)",
       "saveNote": "Salva",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Visualizzazione ai margini",
       "type": {
         "outline": "Contorno",

@@ -24,6 +24,7 @@ export declare const annotations_filter_taglist: string;
 export declare const annotations_filter_trigger_button: string;
 export declare const annotations_line: string;
 export declare const annotations_options: string;
+export declare const annotations_sorting_container: string;
 export declare const annotations_tab: string;
 export declare const button_primary_blue: string;
 export declare const colorPicker: string;

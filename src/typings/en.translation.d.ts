@@ -721,6 +721,12 @@ declare namespace typed_i18n {
       readonly "filterOptions": string,
       readonly "none": string
     },
+    readonly "sorting": {
+      readonly "sortingOptions": string,
+      readonly "progression": string,
+      readonly "lastcreated": string,
+      readonly "lastmodified": string
+    },
     readonly "hide": string,
     readonly "highlight": string,
     readonly "noSelectionToast": string,
@@ -897,6 +903,12 @@ declare namespace typed_i18n {
     readonly "filterOptions": string,
     readonly "none": string
   },
+  readonly "sorting": {
+    readonly "sortingOptions": string,
+    readonly "progression": string,
+    readonly "lastcreated": string,
+    readonly "lastmodified": string
+  },
   readonly "hide": string,
   readonly "highlight": string,
   readonly "noSelectionToast": string,
@@ -946,6 +958,16 @@ declare namespace typed_i18n {
   (_: "reader.annotations.filter.filterByTag", __?: {}): string;
   (_: "reader.annotations.filter.filterOptions", __?: {}): string;
   (_: "reader.annotations.filter.none", __?: {}): string;
+  (_: "reader.annotations.sorting", __?: {}): {
+  readonly "sortingOptions": string,
+  readonly "progression": string,
+  readonly "lastcreated": string,
+  readonly "lastmodified": string
+};
+  (_: "reader.annotations.sorting.sortingOptions", __?: {}): string;
+  (_: "reader.annotations.sorting.progression", __?: {}): string;
+  (_: "reader.annotations.sorting.lastcreated", __?: {}): string;
+  (_: "reader.annotations.sorting.lastmodified", __?: {}): string;
   (_: "reader.annotations.hide", __?: {}): string;
   (_: "reader.annotations.highlight", __?: {}): string;
   (_: "reader.annotations.noSelectionToast", __?: {}): string;

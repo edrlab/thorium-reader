@@ -331,6 +331,12 @@
       "noSelectionToast": "Ingen markering",
       "quickAnnotations": "Snabbskapa (hoppa över redigeraren)",
       "saveNote": "Spara",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Visa i marginalen",
       "type": {
         "outline": "Kontur",

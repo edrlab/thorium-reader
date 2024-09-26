@@ -331,6 +331,12 @@
       "noSelectionToast": "Καμία επιλογή",
       "quickAnnotations": "Γρήγορη δημιουργία (παράβλεψη επεξεργασίας)",
       "saveNote": "Αποθήκευση",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Εμφάνιση στα περιθώρια",
       "type": {
         "outline": "Περίγραμμα",

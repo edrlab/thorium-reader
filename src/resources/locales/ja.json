@@ -331,6 +331,12 @@
       "noSelectionToast": "選択されていません",
       "quickAnnotations": "クイック作成（注釈編集画面をスキップ）",
       "saveNote": "保存",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "ページ余白に注釈マークを表示",
       "type": {
         "outline": "枠線",

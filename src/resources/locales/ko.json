@@ -331,6 +331,12 @@
       "noSelectionToast": "",
       "quickAnnotations": "",
       "saveNote": "",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "",
       "type": {
         "outline": "",

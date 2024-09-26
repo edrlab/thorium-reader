@@ -86,6 +86,7 @@ import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
 import * as OptionsIcon from "readium-desktop/renderer/assets/icons/filter2-icon.svg";
+import * as SortIcon from "readium-desktop/renderer/assets/icons/sort-icon.svg";
 import * as HighLightIcon from "readium-desktop/renderer/assets/icons/highlight-icon.svg";
 import * as UnderLineIcon from "readium-desktop/renderer/assets/icons/underline-icon.svg";
 import * as TextStrikeThroughtIcon from "readium-desktop/renderer/assets/icons/TextStrikethrough-icon.svg";
@@ -869,13 +870,14 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                 <Popover.Root>
                     <Popover.Trigger asChild>
                         <button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button}
-                            title={__("reader.annotations.filter.filterOptions")}>
-                            <SVG svg={MenuIcon} />
+                            title={__("reader.annotations.sorting.sortingOptions")}>
+                            <SVG svg={SortIcon} />
                         </button>
                     </Popover.Trigger>
                     <Popover.Portal>
-                        <Popover.Content collisionPadding={{ top: 200, bottom: 100 }} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_filter_container} style={{ maxHeight: Math.round(window.innerHeight / 2) }}>
-                            <ListBox className={StylesCombobox.react_aria_ListBox}
+                        <Popover.Content collisionPadding={{ top: 200, bottom: 100 }} avoidCollisions alignOffset={-10} align="end" hideWhenDetached={true} sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2)}}>
+                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                            <ListBox
                                 selectedKeys={sortType}
                                 onSelectionChange={setSortType}
                                 selectionMode="multiple"
@@ -884,18 +886,20 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                             >
                                 <ListBoxItem id="progression" key="progression" aria-label="progression" className={({ isFocused, isSelected }) =>
                                     classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
+                                style={{marginBottom: "5px"}}
                                     >
-                                    Progression
+                                    {__("reader.annotations.sorting.progression")}
                                 </ListBoxItem>
                                 <ListBoxItem id="lastCreated" key="lastCreated" aria-label="lastCreated" className={({ isFocused, isSelected }) =>
                                     classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
+                                style={{marginBottom: "5px"}}
                                     >
-                                    Last created
+                                    {__("reader.annotations.sorting.lastcreated")}
                                 </ListBoxItem>
                                 <ListBoxItem id="lastModified" key="lastModified" aria-label="lastModified" className={({ isFocused, isSelected }) =>
                                     classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
                                     >
-                                    Last modified
+                                    {__("reader.annotations.sorting.lastmodified")}
                                 </ListBoxItem>
                             </ListBox>
                         </Popover.Content>

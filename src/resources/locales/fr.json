@@ -331,6 +331,12 @@
       "noSelectionToast": "Aucun texte sélectionné",
       "quickAnnotations": "Annotation rapide (sans édition)",
       "saveNote": "Sauvegarder",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Afficher dans la marge",
       "type": {
         "outline": "Encadré",

@@ -331,6 +331,12 @@
       "noSelectionToast": "لم يتم اختيار شيء",
       "quickAnnotations": "إنشاء سريع (تخطي المحرِّر)",
       "saveNote": "حفظ",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "إظهار في الهوامش",
       "type": {
         "outline": "حدود",

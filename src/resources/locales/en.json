@@ -331,6 +331,12 @@
       "noSelectionToast": "No selection",
       "quickAnnotations": "Quick create (skip editor)",
       "saveNote": "Save",
+      "sorting": {
+        "lastcreated": "Last created",
+        "lastmodified": "Last modified",
+        "progression": "Progression",
+        "sortingOptions": "Sorting Options"
+      },
       "toggleMarginMarks": "Display in margins",
       "type": {
         "outline": "Outline",

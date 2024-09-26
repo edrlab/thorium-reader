@@ -331,6 +331,12 @@
       "noSelectionToast": "Ei valintaa",
       "quickAnnotations": "Pikatila (ohita muokkausikkuna)",
       "saveNote": "Tallenna",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Näytä marginaalissa",
       "type": {
         "outline": "Reunaviiva",
