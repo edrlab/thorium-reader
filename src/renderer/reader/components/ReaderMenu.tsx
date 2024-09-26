@@ -15,6 +15,7 @@ import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scs
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
+import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 
 import classNames from "classnames";
 import * as React from "react";
@@ -70,7 +71,7 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "@r2-shared-js/models/locator";
 // import { DialogTrigger as DialogTriggerReactAria, Popover as PopoverReactAria, Dialog as DialogReactAria } from "react-aria-components";
-import { TextArea } from "react-aria-components";
+import { ListBox, ListBoxItem, TextArea } from "react-aria-components";
 import { AnnotationEdit, annotationsColorsLight } from "./AnnotationEdit";
 import { IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { readerActions } from "readium-desktop/common/redux/actions";
@@ -89,7 +90,7 @@ import * as HighLightIcon from "readium-desktop/renderer/assets/icons/highlight-
 import * as UnderLineIcon from "readium-desktop/renderer/assets/icons/underline-icon.svg";
 import * as TextStrikeThroughtIcon from "readium-desktop/renderer/assets/icons/TextStrikethrough-icon.svg";
 import * as TextOutlineIcon from "readium-desktop/renderer/assets/icons/TextOutline-icon.svg";
-import { TagGroup, TagList, Tag, Label } from "react-aria-components";
+import { TagGroup, TagList, Tag, Label, Tooltip, TooltipTrigger } from "react-aria-components";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 import type { Selection } from "react-aria-components";
@@ -728,6 +729,31 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
         resetAnnotationUUID();
     }
 
+    const [sortType, setSortType] = React.useState<Selection>(new Set("progression"));
+
+    // sort annotationList
+    if (sortType !== "all" && sortType.has("progression")) {
+        annotationList.sort((a, b) => {
+            const [, {locatorExtended: {locator: {locations: {progression: pa}}}}] = a;
+            const [, {locatorExtended: {locator: {locations: {progression: pb}}}}] = b;
+            console.log(pa, pb);
+
+            return pa - pb;
+        });
+    } else if (sortType !== "all" && sortType.has("lastCreated")) {
+        annotationList.sort((a, b) => {
+            const [ta] = a;
+            const [tb] = b;
+            return tb - ta;
+        });
+    } else if (sortType !== "all" && sortType.has("lastModified")) {
+        annotationList.sort((a, b) => {
+            const [, {modified: ma}] = a;
+            const [, {modified: mb}] = b;
+            return mb - ma;
+        });
+    }
+
     const pageTotal = Math.ceil(annotationList.length / MAX_MATCHES_PER_PAGE) || 1;
 
     if (pageNumber <= 0) {
@@ -834,6 +860,40 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                     title={__("catalog.exportAnnotation")}>
                     <SVG svg={SaveIcon} />
                 </button>
+                <Popover.Root>
+                    <Popover.Trigger asChild>
+                        <button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button}
+                            title={__("reader.annotations.filter.filterOptions")}>
+                            <SVG svg={MenuIcon} />
+                        </button>
+                    </Popover.Trigger>
+                    <Popover.Portal>
+                        <Popover.Content collisionPadding={{ top: 200, bottom: 100 }} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_filter_container} style={{ maxHeight: Math.round(window.innerHeight / 2) }}>
+                            <ListBox className={StylesCombobox.react_aria_ListBox}
+                                selectedKeys={sortType}
+                                onSelectionChange={setSortType}
+                                selectionMode="multiple"
+                                selectionBehavior="replace"
+                            >
+                                <ListBoxItem id="progression" key="progression" aria-label="progression" className={({ isFocused, isSelected }) =>
+                                    classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
+                                    >
+                                    Progression
+                                </ListBoxItem>
+                                <ListBoxItem id="lastCreated" key="lastCreated" aria-label="lastCreated" className={({ isFocused, isSelected }) =>
+                                    classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
+                                    >
+                                    Last created
+                                </ListBoxItem>
+                                <ListBoxItem id="lastModified" key="lastModified" aria-label="lastModified" className={({ isFocused, isSelected }) =>
+                                    classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
+                                    >
+                                    Last modified
+                                </ListBoxItem>
+                            </ListBox>
+                        </Popover.Content>
+                    </Popover.Portal>
+                </Popover.Root>
                 <Popover.Root>
                     <Popover.Trigger asChild>
                         <button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button}
