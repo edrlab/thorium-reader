@@ -331,6 +331,12 @@
       "noSelectionToast": "未选择",
       "quickAnnotations": "快速创建（跳过编辑器）",
       "saveNote": "保存",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "在页边距中显示",
       "type": {
         "outline": "大纲",

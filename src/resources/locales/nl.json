@@ -331,6 +331,12 @@
       "noSelectionToast": "Geen selectie",
       "quickAnnotations": "Maak snel (editor overslaan)",
       "saveNote": "Bewaar",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Weergave in marges",
       "type": {
         "outline": "Overzicht",

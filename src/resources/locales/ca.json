@@ -331,6 +331,12 @@
       "noSelectionToast": "Sense selecció",
       "quickAnnotations": "Creació ràpida (omet l'editor)",
       "saveNote": "Desa",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Mostra als marges",
       "type": {
         "outline": "Contorn",

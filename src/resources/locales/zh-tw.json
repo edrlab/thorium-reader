@@ -331,6 +331,12 @@
       "noSelectionToast": "沒有選擇",
       "quickAnnotations": "快速建立（跳過編輯）",
       "saveNote": "保存",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "在頁邊距中顯示",
       "type": {
         "outline": "輪廓",

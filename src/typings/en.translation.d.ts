@@ -726,6 +726,12 @@ declare namespace typed_i18n {
     readonly "noSelectionToast": string,
     readonly "quickAnnotations": string,
     readonly "saveNote": string,
+    readonly "sorting": {
+      readonly "lastcreated": string,
+      readonly "lastmodified": string,
+      readonly "progression": string,
+      readonly "sortingOptions": string
+    },
     readonly "toggleMarginMarks": string,
     readonly "type": {
       readonly "outline": string,
@@ -902,6 +908,12 @@ declare namespace typed_i18n {
   readonly "noSelectionToast": string,
   readonly "quickAnnotations": string,
   readonly "saveNote": string,
+  readonly "sorting": {
+    readonly "lastcreated": string,
+    readonly "lastmodified": string,
+    readonly "progression": string,
+    readonly "sortingOptions": string
+  },
   readonly "toggleMarginMarks": string,
   readonly "type": {
     readonly "outline": string,
@@ -951,6 +963,16 @@ declare namespace typed_i18n {
   (_: "reader.annotations.noSelectionToast", __?: {}): string;
   (_: "reader.annotations.quickAnnotations", __?: {}): string;
   (_: "reader.annotations.saveNote", __?: {}): string;
+  (_: "reader.annotations.sorting", __?: {}): {
+  readonly "lastcreated": string,
+  readonly "lastmodified": string,
+  readonly "progression": string,
+  readonly "sortingOptions": string
+};
+  (_: "reader.annotations.sorting.lastcreated", __?: {}): string;
+  (_: "reader.annotations.sorting.lastmodified", __?: {}): string;
+  (_: "reader.annotations.sorting.progression", __?: {}): string;
+  (_: "reader.annotations.sorting.sortingOptions", __?: {}): string;
   (_: "reader.annotations.toggleMarginMarks", __?: {}): string;
   (_: "reader.annotations.type", __?: {}): {
   readonly "outline": string,

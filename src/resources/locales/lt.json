@@ -331,6 +331,12 @@
       "noSelectionToast": "Niekas nepasirinkta",
       "quickAnnotations": "Greitasis kūrimas (praleidžiant rengyklę)",
       "saveNote": "Išsaugoti",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Atvaizduoti paraštėse",
       "type": {
         "outline": "Kontūras",

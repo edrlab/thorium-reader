@@ -331,6 +331,12 @@
       "noSelectionToast": "Intet markeret",
       "quickAnnotations": "Hurtig-oprettelse (spring redigering over)",
       "saveNote": "Gem",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Vis noter i marginen",
       "type": {
         "outline": "Omrids",

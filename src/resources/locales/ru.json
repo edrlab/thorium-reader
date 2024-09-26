@@ -331,6 +331,12 @@
       "noSelectionToast": "Нет выбора",
       "quickAnnotations": "Быстрое создание (пропуск редактора)",
       "saveNote": "Сохранить",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Отображение на полях",
       "type": {
         "outline": "",
