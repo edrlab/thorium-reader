@@ -498,6 +498,13 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
       "wipeData": "Effacer les données d'authentification"
     },

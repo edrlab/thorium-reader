@@ -498,6 +498,13 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
       "wipeData": "Izbriši podatke za prijavu"
     },

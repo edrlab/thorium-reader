@@ -43,6 +43,7 @@ import { readerTTSReducer } from "./tts";
 import { readerTransientConfigReducer } from "./readerTransientConfig";
 import { readerAllowCustomConfigReducer } from "readium-desktop/common/redux/reducers/reader/allowCustom";
 import { annotationTagsIndexReducer } from "./annotationTagsIndex";
+import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 
 export const rootReducer = () => {
 
@@ -186,5 +187,6 @@ export const rootReducer = () => {
         toast: toastReducer,
         keyboard: keyboardReducer,
         mode: winModeReducer,
+        creator: creatorReducer,
     });
 };
