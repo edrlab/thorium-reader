@@ -492,6 +492,13 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
       "wipeData": "Διαγραφή δεδομένων ελέγχου ταυτότητας"
     },

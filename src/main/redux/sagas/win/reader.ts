@@ -43,6 +43,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const theme = yield* selectTyped((state: RootState) => state.theme);
     const config = reader?.reduxState?.config || readerConfigInitialState;
     const transientConfigMerge = {...readerConfigInitialState, ...config};
+    const creator = yield* selectTyped((_state: RootState) => _state.creator);
 
     webContents.send(readerIpc.CHANNEL, {
         type: readerIpc.EventType.request,
@@ -74,6 +75,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
             keyboard,
             mode,
             theme,
+            creator,
         },
     } as readerIpc.EventPayload);
 }
