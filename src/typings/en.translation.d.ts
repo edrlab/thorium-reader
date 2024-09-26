@@ -1285,6 +1285,13 @@ declare namespace typed_i18n {
   (_: "reader.tts.stop", __?: {}): string;
   (_: "reader.tts.voice", __?: {}): string;
   (_: "settings", __?: {}): {
+  readonly "annotationCreator": {
+    readonly "creator": string,
+    readonly "name": string,
+    readonly "organization": string,
+    readonly "person": string,
+    readonly "type": string
+  },
   readonly "auth": { readonly "wipeData": string },
   readonly "keyboard": {
     readonly "advancedMenu": string,
@@ -1315,6 +1322,18 @@ declare namespace typed_i18n {
     readonly "title": string
   }
 };
+  (_: "settings.annotationCreator", __?: {}): {
+  readonly "creator": string,
+  readonly "name": string,
+  readonly "organization": string,
+  readonly "person": string,
+  readonly "type": string
+};
+  (_: "settings.annotationCreator.creator", __?: {}): string;
+  (_: "settings.annotationCreator.name", __?: {}): string;
+  (_: "settings.annotationCreator.organization", __?: {}): string;
+  (_: "settings.annotationCreator.person", __?: {}): string;
+  (_: "settings.annotationCreator.type", __?: {}): string;
   (_: "settings.auth", __?: {}): { readonly "wipeData": string };
   (_: "settings.auth.wipeData", __?: {}): string;
   (_: "settings.keyboard", __?: {}): {

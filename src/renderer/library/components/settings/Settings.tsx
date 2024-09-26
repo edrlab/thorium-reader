@@ -41,6 +41,7 @@ import * as GearIcon from "readium-desktop/renderer/assets/icons/gear-icon.svg";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import debounce from "debounce";
 import { IAnnotationCreator } from "readium-desktop/common/redux/states/creator";
+// import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 
 interface ISettingsProps {};
 
@@ -169,37 +170,34 @@ const SaveCreatorSettings: React.FC<{}> = () => {
 
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4>Creator</h4>
-            <div className={stylesInput.form_group} style={{marginTop: "20px"}}>
-                <input type="text" name="creator-name" value={name} onChange={(e) => {
+            <h4>{__("settings.annotationCreator.creator")}</h4>
+            <div className={stylesInput.form_group} style={{marginTop: "20px", width: "360px"}}>
+                <input type="text" name="creator-name" style={{width: "100%", marginLeft: "10px"}} title={name} value={name} onChange={(e) => {
                     const v = e.target.value;
                     setName(v);
                 }} />
-                {/* <SVG ariaHidden svg={SearchIcon} /> */}
-                <label htmlFor="creator-name">Name</label>
+                <label htmlFor="creator-name">{__("settings.annotationCreator.name")}</label>
             </div>
-            <div className={stylesAnnotations.annotations_checkbox} style={{ marginTop: "20px" }}>
-                <fieldset>
-                    <legend>Type:</legend>
-                    <div>
-                        <input type="radio" id="creator-organizationType" name="creator-type" value="Organization" checked={type === "Organization"} onChange={(e) => {
+            <div className={stylesAnnotations.annotations_filter_taglist} style={{ margin: "10px" }}>
+                    <p>{__("settings.annotationCreator.type")}</p>
+                    <div className={stylesAnnotations.annotations_filter_tag}>
+                        <input type="radio" id="creator-organizationType" style={{display: "none"}} name="creator-type" value="Organization" checked={type === "Organization"} onChange={(e) => {
                             const t = e.target.value;
                             if (t === "Organization") {
                                 setType(t);
                             }
                         }}/>
-                            <label htmlFor="creator-organizationType">Organization</label>
+                            <label htmlFor="creator-organizationType">{__("settings.annotationCreator.organization")}</label>
                     </div>
-                    <div>
-                        <input type="radio" id="creator-personType" name="creator-type" value="Person" checked={type === "Person"} onChange={(e) => {
+                    <div className={stylesAnnotations.annotations_filter_tag}>
+                        <input type="radio" id="creator-personType" style={{display: "none"}} name="creator-type" value="Person" checked={type === "Person"} onChange={(e) => {
                             const t = e.target.value;
                             if (t === "Person") {
                                 setType(t);
                             }
                         }}/>
-                            <label htmlFor="creator-personType">Person</label>
+                            <label htmlFor="creator-personType">{__("settings.annotationCreator.person")}</label>
                     </div>
-                </fieldset>
             </div>
         </section>
     );
