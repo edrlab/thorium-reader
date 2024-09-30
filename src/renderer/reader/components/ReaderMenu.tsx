@@ -674,9 +674,9 @@ const downloadAnnotationJSON = (contents: IReadiumAnnotationModelSet, filename: 
     URL.revokeObjectURL(jsonObjectUrl);
 };
 
-const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number, popoverBoundary: HTMLDivElement } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
-    const { goToLocator, annotationUUIDFocused, resetAnnotationUUID } = props;
+    const { goToLocator, annotationUUIDFocused, resetAnnotationUUID, popoverBoundary } = props;
 
     const [__] = useTranslator();
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
@@ -878,7 +878,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         </button>
                     </Popover.Trigger>
                     <Popover.Portal>
-                        <Popover.Content collisionPadding={{ top: 200, bottom: 100 }} avoidCollisions alignOffset={-10} align="end" hideWhenDetached={true} sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2)}}>
+                        <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2)}}>
                             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
                             <ListBox
                                 selectedKeys={sortType}
@@ -920,7 +920,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         </button>
                     </Popover.Trigger>
                     <Popover.Portal>
-                        <Popover.Content collisionPadding={{ top: 200, bottom: 100 }} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_filter_container} style={{ maxHeight: Math.round(window.innerHeight / 2) }}>
+                        <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_filter_container} style={{ maxHeight: Math.round(window.innerHeight / 2) }}>
                             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
                             <TagGroup
                                 selectionMode="multiple"
@@ -1862,6 +1862,8 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const dockedMode = dockingMode !== "full";
     const [__] = useTranslator();
 
+    const popoverBoundary = React.useRef<HTMLDivElement>();
+
     // const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     const searchEnable = useSelector((state: IReaderRootState) => state.search.enable);
     // const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
@@ -2172,6 +2174,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </Tabs.List>
                 }
                 <div className={stylesSettings.settings_content}
+                ref={popoverBoundary}
                     style={{ marginTop: dockedMode && "0" }}>
                     <Tabs.Content value="tab-toc" tabIndex={-1} id={"readerMenu_tabs-tab-toc"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
@@ -2208,7 +2211,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                     <SVG ariaHidden svg={OptionsIcon} title={__("reader.annotations.annotationsOptions")} />
                                 </Popover.Trigger>
                                 <Popover.Portal>
-                                    <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesAnnotations.annotations_filter_container} hideWhenDetached>
+                                    <Popover.Content collisionBoundary={popoverBoundary.current} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesAnnotations.annotations_filter_container} hideWhenDetached>
                                         <div className={stylesAnnotations.annotations_checkbox}>
                                             <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={serialAnnotator} onChange={advancedAnnotationsOnChange} />
                                             <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
@@ -2343,7 +2346,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 </Popover.Portal>
                             </Popover.Root>
 
-                            <AnnotationList goToLocator={goToLocator} annotationUUIDFocused={annotationUUID} resetAnnotationUUID={resetAnnotationUUID} doFocus={doFocus} />
+                            <AnnotationList goToLocator={goToLocator} annotationUUIDFocused={annotationUUID} resetAnnotationUUID={resetAnnotationUUID} doFocus={doFocus} popoverBoundary={popoverBoundary.current} />
                         </div>
                     </Tabs.Content>
 
