@@ -40,7 +40,17 @@
         }
       }
     },
+    "update": {
+      "edit": "Edit",
+      "message": "New version available, click to learn more.",
+      "title": "{{- appName}} software update."
+    },
+    "window": {
+      "showLibrary": "Show library / bookshelf"
+    }
+  },
     "catalog": {
+      "update": "Edit",
         "about": {
             "title": "About {{- appName}}"
         },
@@ -112,121 +122,7 @@
         "sort": "Sort by",
         "tag": "Tag",
         "tagCount": "Tag count",
-        "tags": "Tags",
-        "update": "Edit"
-    "update": {
-      "message": "New version available, click to learn more.",
-      "title": "{{- appName}} software update."
-    },
-    "window": {
-      "showLibrary": "Show library / bookshelf"
-    }
-  },
-  "catalog": {
-    "about": {
-      "title": "About {{- appName}}"
-    },
-    "addBookToLib": "Import",
-    "addTags": "Add tag",
-    "addTagsButton": "Add",
-    "allBooks": "All publications",
-    "bookInfo": "About publication",
-    "column": {
-      "ascending": "ascending",
-      "descending": "descending",
-      "unsorted": "unsorted"
-    },
-    "delete": "Delete",
-    "deleteBook": "Delete",
-    "deleteTag": "Delete tag",
-    "description": "Description",
-    "emptyTagList": "No tagged publications.",
-    "entry": {
-      "continueReading": "Resume reading",
-      "continueReadingAudioBooks": "Resume listening",
-      "continueReadingDivina": "Resume divina",
-      "continueReadingPdf": "Resume PDF",
-      "lastAdditions": "Recently added"
-    },
-    "export": "Save as",
-    "exportAnnotation": "Save annotation as",
-    "format": "Format",
-    "lang": "Language",
-    "lastRead": "Last Read",
-    "moreInfo": "Publication Details",
-    "myBooks": "My publications",
-    "noPublicationHelpL1": "Drop files here",
-    "noPublicationHelpL2": "or use the \"{{- importTitle }}\" button above.",
-    "noPublicationHelpL3": "LCP-protected publications are supported.",
-    "noPublicationHelpL4": "Supported extensions:",
-    "numberOfPages": "Number of pages",
-    "opds": {
-        "addForm": {
-            "addButton": "Add",
-            "name": "Name:",
-            "namePlaceholder": "Name",
-            "url": "Link:",
-            "urlPlaceholder": "Link"
-        },
-        "addFormApiapp": {
-            "title": "Add library account",
-            "activeDilicom": "Activate access to Dilicom PNB API"
-        },
-        "addMenu": "Add OPDS feed",
-        "breadcrumbRoot": "Catalogs",
-        "documentation": "OPDS official website",
-        "empty": "No publication found",
-        "firstPage": "First",
-        "informations": "Imagine a world where you can explore and download digital publications from public libraries and digital booksellers with just a few clicks. That's exactly what the Open Publication Distribution System (OPDS) catalog format offers. With OPDS, you can navigate through catalogs from various ebook providers, sign up, borrow, buy a publication, or visit your personal bookshelf. You can even download an ebook or audiobook directly into Thorium Reader for instant reading.\nSo, how do you find an OPDS catalog? It's simple. Look for a hyperlink (URL) leading to the catalog. Copy this URL into the Link field above. Keep in mind that there's no one-stop shop for all active OPDS catalogs. You'll need to contact your preferred library or bookseller and ask for their OPDS catalog URL. If you're not sure where to start, Wikipedia has a few registries of OPDS catalogs in various languages that might be helpful.\nThe Name field is left at your convenience; it provides an easy way to identify the feed in Thorium Reader.",
-        "lastPage": "Last",
-        "menu": {
-            "aboutBook": "About publication",
-            "addExtract": "Import extract",
-            "goBuyBook": "Buy publication",
-            "goLoanBook": "Borrow publication",
-            "goRevokeLoanBook": "Revoke loan",
-            "goSubBook": "Subscribe"
-        },
-        "network": {
-            "error": "Error accessing feed",
-            "noInternet": "No internet",
-            "noInternetMessage": "Try checking the network cable, modem, router or wifi",
-            "reject": "Sorry, unexpected error!",
-            "timeout": "Network timeout, please try again later"
-      "auth": {
-        "cancel": "Cancel",
-        "login": "Login",
-        "password": "Password",
-        "register": "Register",
-        "username": "Username / Email Address"
-      },
-      "info": {
-        "availableSince": "Since",
-        "availableState": {
-          "available": "Available",
-          "ready": "Ready",
-          "reserved": "Reserved",
-          "unavailable": "Unavailable",
-          "unknown": "Unknown"
-        },
-        "availableUntil": "Until",
-        "copyAvalaible": "Available",
-        "copyTotal": "Copies",
-        "holdPosition": "Hold position",
-        "holdTotal": "Held",
-        "numberOfItems": "Number of items",
-        "priveValue": "Price",
-        "state": "State"
-      }
-    },
-    "publisher": "Publisher",
-    "readBook": "Read",
-    "released": "Published on",
-    "sort": "Sort by",
-    "tag": "Tag",
-    "tagCount": "Tag count",
-    "tags": "Tags",
-    "update": "Edit"
+        "tags": "Tags"
   },
   "dialog": {
     "cancel": "Cancel",
@@ -297,7 +193,8 @@
       "urlPlaceholder": "Link"
     },
     "addFormApiapp": {
-      "title": "Add library account"
+      "title": "Add library account",
+      "activeDilicom": "Activate access to Dilicom PNB API"
     },
     "addMenu": "Add OPDS feed",
     "breadcrumbRoot": "Catalogs",

@@ -51,7 +51,11 @@ declare namespace typed_i18n {
       }
     }
   },
-  readonly "update": { readonly "message": string, readonly "title": string },
+  readonly "update": {
+    readonly "edit": string,
+    readonly "message": string,
+    readonly "title": string
+  },
   readonly "window": { readonly "showLibrary": string }
 };
   (_: "app.edit", __?: {}): {
@@ -97,12 +101,18 @@ declare namespace typed_i18n {
   (_: "app.session.exit.askBox.button.yes", __?: {}): string;
   (_: "app.session.exit.askBox.message", __?: {}): string;
   (_: "app.session.exit.askBox.title", __?: {}): string;
-  (_: "app.update", __?: {}): { readonly "message": string, readonly "title": string };
+  (_: "app.update", __?: {}): {
+  readonly "edit": string,
+  readonly "message": string,
+  readonly "title": string
+};
+  (_: "app.update.edit", __?: {}): string;
   (_: "app.update.message", __?: {}): string;
   (_: "app.update.title", __?: {}): string;
   (_: "app.window", __?: {}): { readonly "showLibrary": string };
   (_: "app.window.showLibrary", __?: {}): string;
   (_: "catalog", __?: {}): {
+  readonly "update": string,
   readonly "about": { readonly "title": string },
   readonly "addBookToLib": string,
   readonly "addTags": string,
@@ -172,9 +182,9 @@ declare namespace typed_i18n {
   readonly "sort": string,
   readonly "tag": string,
   readonly "tagCount": string,
-  readonly "tags": string,
-  readonly "update": string
+  readonly "tags": string
 };
+  (_: "catalog.update", __?: {}): string;
   (_: "catalog.about", __?: {}): { readonly "title": string };
   (_: "catalog.about.title", __?: {}): string;
   (_: "catalog.addBookToLib", __?: {}): string;
@@ -306,7 +316,6 @@ declare namespace typed_i18n {
   (_: "catalog.sort", __?: {}): string; (_: "catalog.tag", __?: {}): string;
   (_: "catalog.tagCount", __?: {}): string;
   (_: "catalog.tags", __?: {}): string;
-  (_: "catalog.update", __?: {}): string;
   (_: "dialog", __?: {}): {
   readonly "cancel": string,
   readonly "deleteAnnotations": string,
