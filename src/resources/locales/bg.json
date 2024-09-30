@@ -332,6 +332,12 @@
       "noSelectionToast": "",
       "quickAnnotations": "",
       "saveNote": "",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "",
       "type": {
         "outline": "",
@@ -493,7 +499,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Изтриване на данните за удостоверяване"
     },
     "keyboard": {
@@ -508,6 +522,10 @@
     },
     "language": {
       "languageChoice": "Избор на език"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Деактивирай",

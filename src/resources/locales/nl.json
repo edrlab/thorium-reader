@@ -332,6 +332,12 @@
       "noSelectionToast": "Geen selectie",
       "quickAnnotations": "Maak snel (editor overslaan)",
       "saveNote": "Bewaar",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Weergave in marges",
       "type": {
         "outline": "Overzicht",
@@ -493,7 +499,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Wis authenticatie gegevens"
     },
     "keyboard": {
@@ -508,6 +522,10 @@
     },
     "language": {
       "languageChoice": "Taal keuze"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Schakel uit",

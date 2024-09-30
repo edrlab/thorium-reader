@@ -332,6 +332,12 @@
       "noSelectionToast": "لم يتم اختيار شيء",
       "quickAnnotations": "إنشاء سريع (تخطي المحرِّر)",
       "saveNote": "حفظ",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "إظهار في الهوامش",
       "type": {
         "outline": "حدود",
@@ -493,7 +499,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "حذف بيانات تسجيل الدخول"
     },
     "keyboard": {
@@ -508,6 +522,10 @@
     },
     "language": {
       "languageChoice": "اللغة"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "تعطيل",

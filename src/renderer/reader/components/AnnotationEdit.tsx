@@ -111,6 +111,9 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
     const tagsIndexList = useSelector((state: IReaderRootState) => state.annotationTagsIndex);
     const selectTagOption = ObjectKeys(tagsIndexList).map((v, i) => ({id: i, name: v}));
 
+    const annotationMaxLength = 1500;
+    const [annotationLength, setAnnotationLength] = React.useState(annotationState.comment.length);
+
     const drawIcon = [
         HighLightIcon,
         UnderLineIcon,
@@ -170,8 +173,9 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         <div
             className={classNames(displayFromReaderMenu ? "" : stylesAnnotations.annotations_line, dockedMode ? stylesAnnotations.docked_annotation_line : "")} style={{backgroundColor: !displayFromReaderMenu ? "var(--color-extralight-grey)" : ""}}>
             <p>{annotationState.locatorExtended ? (annotationState.locatorExtended.selectionInfo.cleanText.length > (200-3) ? `${annotationState.locatorExtended.selectionInfo.cleanText.slice(0, 200)}...` : annotationState.locatorExtended.selectionInfo.cleanText) : ""}</p>
-            <TextArea id="addNote" name="addNote" wrap="hard" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef}
+            <TextArea id="addNote" name="addNote" wrap="hard" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef} maxLength={annotationMaxLength} onChange={(a) => setAnnotationLength(a.currentTarget.value.length)}
             ></TextArea>
+            <span style={{fontSize: "10px", color: "var(--color-medium-grey)", width: "420px", textAlign: "end"}}>{annotationLength}/{annotationMaxLength}</span>
 
         </div>
         <div className={stylesAnnotations.annotation_actions}>

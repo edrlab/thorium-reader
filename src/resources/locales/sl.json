@@ -332,6 +332,12 @@
       "noSelectionToast": "Brez izbire",
       "quickAnnotations": "Hitro ustvarjanje (preskoči urejevalnik)",
       "saveNote": "Shrani",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Prikaži v robovih",
       "type": {
         "outline": "Oriši",
@@ -493,7 +499,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Izbriši avtentikacijske podatke"
     },
     "keyboard": {
@@ -508,6 +522,10 @@
     },
     "language": {
       "languageChoice": "Izbira jezika"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Onemogoči",

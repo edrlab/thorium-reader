@@ -332,6 +332,12 @@
       "noSelectionToast": "選択されていません",
       "quickAnnotations": "クイック作成（注釈編集画面をスキップ）",
       "saveNote": "保存",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "ページ余白に注釈マークを表示",
       "type": {
         "outline": "枠線",
@@ -493,7 +499,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "ログインデータを消去する"
     },
     "keyboard": {
@@ -508,6 +522,10 @@
     },
     "language": {
       "languageChoice": "言語の選択"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "無効",

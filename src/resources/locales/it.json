@@ -332,6 +332,12 @@
       "noSelectionToast": "Nessuna selezione",
       "quickAnnotations": "Creazione rapida (salta editor)",
       "saveNote": "Salva",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Visualizzazione ai margini",
       "type": {
         "outline": "Contorno",
@@ -493,7 +499,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Elimina dati di autenticazione"
     },
     "keyboard": {
@@ -508,6 +522,10 @@
     },
     "language": {
       "languageChoice": "Scelta della lingua"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Disabilita",

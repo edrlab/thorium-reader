@@ -332,6 +332,12 @@
       "noSelectionToast": "Ez dago aukeraketarik",
       "quickAnnotations": "Sortu azkarra (saltatu editorea)",
       "saveNote": "Gorde",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Marjinetan bistaratzea",
       "type": {
         "outline": "Eskema",
@@ -493,7 +499,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Autentifikazio-datuak garbitzea"
     },
     "keyboard": {
@@ -508,6 +522,10 @@
     },
     "language": {
       "languageChoice": "Hizkuntza hautatzea"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Desgaitu",
