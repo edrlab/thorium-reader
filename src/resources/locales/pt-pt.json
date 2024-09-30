@@ -332,10 +332,10 @@
       "quickAnnotations": "Criação rápida (saltar editor)",
       "saveNote": "Guardar",
       "sorting": {
-        "lastcreated": "",
-        "lastmodified": "",
-        "progression": "",
-        "sortingOptions": ""
+        "lastcreated": "Última vez criado",
+        "lastmodified": "Última alteração",
+        "progression": "Progresso",
+        "sortingOptions": "Opções de ordenação"
       },
       "toggleMarginMarks": "Exibir nas margens",
       "type": {
@@ -499,11 +499,11 @@
   },
   "settings": {
     "annotationCreator": {
-      "creator": "",
-      "name": "",
-      "organization": "",
-      "person": "",
-      "type": ""
+      "creator": "Criador",
+      "name": "Nome",
+      "organization": "Organização",
+      "person": "Pessoa",
+      "type": "Tipo:"
     },
     "auth": {
       "title": "",
