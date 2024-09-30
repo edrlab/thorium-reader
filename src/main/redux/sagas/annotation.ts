@@ -28,6 +28,7 @@ import path from "path";
 import { getPublication } from "./api/publication/getPublication";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 
 
 // Logger
@@ -38,16 +39,15 @@ debug("_");
 function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAction): SagaGenerator<void> {
 
     const { payload: { publicationIdentifier, winId } } = action;
-
     debug("Start annotations Importer");
 
-    let win = getLibraryWindowFromDi();
-    try {
-        if (winId) {
-            win = getReaderWindowFromDi(winId);
-        }
-    } catch {
-        // nothing
+    const readerPublicationIdentifier = winId ? publicationIdentifier : undefined; // if undefined toast notification will be displayed in library win
+    const currentTimestamp = (new Date()).getTime();
+
+    const win = winId ? getReaderWindowFromDi(winId) : getLibraryWindowFromDi();
+    if (!win) {
+        debug("ERROR!! No Browser window !!! exit");
+        return ;
     }
 
     let filePath = "";
@@ -62,7 +62,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         }
     } catch (e) {
         debug("Error!!! to open a file, exit", e);
-        yield* put(toastActions.openRequest.build(ToastType.Error, "Error" + e, publicationIdentifier));
+        yield* put(toastActions.openRequest.build(ToastType.Error, "Error" + e, readerPublicationIdentifier));
         return ;
     }
 
@@ -86,20 +86,16 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
             if (!annotationsIncommingArray.length) {
                 debug("there are no annotations in the file, exit");
-                yield* put(toastActions.openRequest.build(ToastType.Success, "Success !, there are no annotations in the file and nothing is imported", publicationIdentifier));
+                yield* put(toastActions.openRequest.build(ToastType.Success, "Success !, there are no annotations in the file and nothing is imported", readerPublicationIdentifier));
                 return;
             }
 
-            // check if it is the same publication ID
 
-            // don't worry with the publication UUID
-            // now we do not try to reconcicialte the annotationList target to the selected publication
             // we just check if each annotation href source belongs to the R2Publication Spine items
-            // const sourceUUID = data.about["dc:identifier"].find((v) => v.startsWith("urn:thorium:"))?.split("urn:thorium:")[1] || "";
-            // if at least one annotation in the list doesn't match with the current spice item, then reject the importation
+            // if at least one annotation in the list doesn't match with the current spine item, then reject the set importation
 
             const pubView = yield* call(getPublication, publicationIdentifier);
-            const r2PublicationJson = pubView.r2PublicationJson
+            const r2PublicationJson = pubView.r2PublicationJson;
             const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
             const spineItem = r2Publication.Spine;
             const hrefFromSpineItem = spineItem.map((v) => v.Href);
@@ -221,9 +217,22 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                         drawType: (isNil(incommingAnnotation.body.highlight) || incommingAnnotation.body.highlight === "solid") ? "solid_background" : incommingAnnotation.body.highlight,
                         // TODO need to ask to user if the incomming tag is kept or the fileName is used
                         tags: [fileName], // incommingAnnotation.body.tag ? [incommingAnnotation.body.tag] : [],
+                        modified: tryCatchSync(() => new Date(incommingAnnotation.modified).getTime(), fileName) || currentTimestamp,
+                        created: tryCatchSync(() => new Date(incommingAnnotation.created).getTime(), fileName) || currentTimestamp,
                     };
 
-                    debug("incomming annotation Parsed And Formated (", annotationParsed.uuid, "), ready to be imported");
+                    if (annotationParsed.modified > currentTimestamp) {
+                        annotationParsed.modified = currentTimestamp;
+                    }
+                    if (annotationParsed.created > currentTimestamp) {
+                        annotationParsed.created = currentTimestamp;
+                    }
+                    if (annotationParsed.created > annotationParsed.modified) {
+                        annotationParsed.modified = currentTimestamp;
+                    }
+
+                    debug("incomming annotation Parsed And Formated (", annotationParsed.uuid, "), and now ready to be imported in the publication!");
+                    debug(JSON.stringify(annotationParsed));
 
                     if (annotations.find(({ uuid }) => uuid === annotationParsed.uuid)) {
 
@@ -241,7 +250,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 if (!annotationsParsedBuffer.length) {
 
                     debug("there are no annotations ready to be imported, exit");
-                    yield* put(toastActions.openRequest.build(ToastType.Success, `Success !, the ${annotationsIncommingArray.length} annotation(s) are already present in the publication, nothing has been imported`, publicationIdentifier));
+                    yield* put(toastActions.openRequest.build(ToastType.Success, `Success !, the ${annotationsIncommingArray.length} annotation(s) are already present in the publication, nothing has been imported`, readerPublicationIdentifier));
                     return;
 
                 }
@@ -289,25 +298,25 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
             } else {
 
                 debug("ERROR: At least one annotation is rejected and not match with the current publication SpineItem, see above");
-                yield* put(toastActions.openRequest.build(ToastType.Error, "Error: " + "Cannot import annotations Set, at least one annotation does not belong to the publication"));
+                yield* put(toastActions.openRequest.build(ToastType.Error, "Error: " + "Cannot import annotations Set, at least one annotation does not belong to the publication", readerPublicationIdentifier));
                 return;
             }
         } else {
 
             debug("Error: ", __READIUM_ANNOTATION_AJV_ERRORS);
-            yield* put(toastActions.openRequest.build(ToastType.Error, "Error: " + "File format", publicationIdentifier));
+            yield* put(toastActions.openRequest.build(ToastType.Error, "Error: " + "File format", readerPublicationIdentifier));
             return;
         }
 
     } catch (e) {
 
         debug("Error!!! ", e);
-        yield* put(toastActions.openRequest.build(ToastType.Error, "Error" + e, publicationIdentifier));
+        yield* put(toastActions.openRequest.build(ToastType.Error, "Error" + e, readerPublicationIdentifier));
         return;
     }
 
     debug("Annotations importer success and exit");
-    yield* put(toastActions.openRequest.build(ToastType.Success, "Success !", publicationIdentifier));
+    yield* put(toastActions.openRequest.build(ToastType.Success, "Success !", readerPublicationIdentifier));
     return ;
 }
 

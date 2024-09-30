@@ -67,7 +67,7 @@ function winRegistryReaderReducer_(
                                         annotation: [
                                             ...annotations.map<IQueueAnnotationState>((anno) =>
                                                 // TODO: allow to import the annotatiton with the original created date
-                                                [(new Date()).getTime(), anno]),
+                                                [anno.created || (new Date()).getTime(), anno]),
                                             ...state[id].reduxState.annotation,
                                         ],
                                     },
