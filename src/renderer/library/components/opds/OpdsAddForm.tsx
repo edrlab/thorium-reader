@@ -8,14 +8,14 @@
 import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.scss";
 
 import * as React from "react";
-import ApiappAddFormDialog from "readium-desktop/renderer/library/components/dialog/ApiappAddForm";
-import OpdsFeedAddForm from "../dialog/OpdsFeedAddForm";
+import { OpdsFeedAddFormDialog } from "../dialog/OpdsFeedAddForm";
+import { ApiappAddFormDialog } from "../dialog/ApiappAddForm";
 
 const OpdsAddForm: React.FC = () => {
     return (
         <section style={{display: "flex", gap: "10px", alignItems: "end", height: "65px", justifyContent: "end", margin: "0"}}
         className={stylesHeader.nav_secondary}>
-            <OpdsFeedAddForm/>
+            <OpdsFeedAddFormDialog/>
             <ApiappAddFormDialog/>
         </section>
     );

@@ -506,6 +506,7 @@
       "type": ""
     },
     "auth": {
+      "title": "",
       "wipeData": "Effacer les données d'authentification"
     },
     "keyboard": {
@@ -520,6 +521,10 @@
     },
     "language": {
       "languageChoice": "Choix de la langue"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Désactiver",

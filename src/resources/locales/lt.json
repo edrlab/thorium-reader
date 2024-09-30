@@ -506,6 +506,7 @@
       "type": ""
     },
     "auth": {
+      "title": "",
       "wipeData": "Išvalyti prisijungimo duomenis"
     },
     "keyboard": {
@@ -520,6 +521,10 @@
     },
     "language": {
       "languageChoice": "Kalba"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Išjungti",

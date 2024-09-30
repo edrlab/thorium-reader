@@ -506,6 +506,7 @@
       "type": ""
     },
     "auth": {
+      "title": "",
       "wipeData": "ログインデータを消去する"
     },
     "keyboard": {
@@ -520,6 +521,10 @@
     },
     "language": {
       "languageChoice": "言語の選択"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "無効",

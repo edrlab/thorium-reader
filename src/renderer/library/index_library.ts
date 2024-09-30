@@ -72,6 +72,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
             const preloadedState: Partial<ILibraryRootState> = {
                 theme: data.payload.theme,
                 wizard: data.payload.wizard,
+                settings: data.payload.settings,
                 publication: data.payload.publication,
                 session: data.payload.session,
             };

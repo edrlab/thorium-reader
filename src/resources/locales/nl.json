@@ -506,6 +506,7 @@
       "type": ""
     },
     "auth": {
+      "title": "",
       "wipeData": "Wis authenticatie gegevens"
     },
     "keyboard": {
@@ -520,6 +521,10 @@
     },
     "language": {
       "languageChoice": "Taal keuze"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Schakel uit",

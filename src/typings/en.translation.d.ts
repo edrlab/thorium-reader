@@ -1314,7 +1314,7 @@ declare namespace typed_i18n {
     readonly "person": string,
     readonly "type": string
   },
-  readonly "auth": { readonly "wipeData": string },
+  readonly "auth": { readonly "title": string, readonly "wipeData": string },
   readonly "keyboard": {
     readonly "advancedMenu": string,
     readonly "cancel": string,
@@ -1342,6 +1342,10 @@ declare namespace typed_i18n {
     readonly "description": string,
     readonly "light": string,
     readonly "title": string
+  },
+  readonly "library": {
+    readonly "title": string,
+    readonly "enableAPIAPP": string
   }
 };
   (_: "settings.annotationCreator", __?: {}): {
@@ -1356,7 +1360,8 @@ declare namespace typed_i18n {
   (_: "settings.annotationCreator.organization", __?: {}): string;
   (_: "settings.annotationCreator.person", __?: {}): string;
   (_: "settings.annotationCreator.type", __?: {}): string;
-  (_: "settings.auth", __?: {}): { readonly "wipeData": string };
+  (_: "settings.auth", __?: {}): { readonly "title": string, readonly "wipeData": string };
+  (_: "settings.auth.title", __?: {}): string;
   (_: "settings.auth.wipeData", __?: {}): string;
   (_: "settings.keyboard", __?: {}): {
   readonly "advancedMenu": string,
@@ -1402,6 +1407,9 @@ declare namespace typed_i18n {
   (_: "settings.theme.description", __?: {}): string;
   (_: "settings.theme.light", __?: {}): string;
   (_: "settings.theme.title", __?: {}): string;
+  (_: "settings.library", __?: {}): { readonly "title": string, readonly "enableAPIAPP": string };
+  (_: "settings.library.title", __?: {}): string;
+  (_: "settings.library.enableAPIAPP", __?: {}): string;
   (_: "wizard", __?: {}): {
   readonly "buttons": {
     readonly "discover": string,

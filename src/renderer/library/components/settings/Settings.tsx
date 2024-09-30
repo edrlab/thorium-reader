@@ -29,7 +29,7 @@ import { AvailableLanguages } from "readium-desktop/common/services/translator";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { authActions, creatorActions, i18nActions, sessionActions, themeActions } from "readium-desktop/common/redux/actions";
+import { authActions, creatorActions, i18nActions, sessionActions, settingsActions, themeActions } from "readium-desktop/common/redux/actions";
 import * as BinIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { TTheme } from "readium-desktop/common/redux/states/theme";
@@ -41,6 +41,8 @@ import * as GearIcon from "readium-desktop/renderer/assets/icons/gear-icon.svg";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import debounce from "debounce";
 import { IAnnotationCreator } from "readium-desktop/common/redux/states/creator";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import { ApiappHowDoesItWorkInfoBox } from "../dialog/ApiappAddForm";
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 
 interface ISettingsProps {};
@@ -93,7 +95,7 @@ const ConnectionSettings: React.FC<{}> = () => {
     const [__] = useTranslator();
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4>{__("catalog.opds.auth.login")}</h4>
+            <h4>{__("settings.auth.title")}</h4>
             <Auth />
         </section>
     );
@@ -110,8 +112,8 @@ const SaveSessionSettings: React.FC<{}> = () => {
         <section className={stylesSettings.section} style={{ position: "relative" }}>
             <h4>{__("app.session.exit.askBox.message")}</h4>
             <div className={stylesAnnotations.annotations_checkbox}>
-                <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={sessionSaveState} onChange={onChange} />
-                <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
+                <input type="checkbox" id="saveSessionSettings" className={stylesGlobal.checkbox_custom_input} name="saveSessionSettings" checked={sessionSaveState} onChange={onChange} />
+                <label htmlFor="saveSessionSettings" className={stylesGlobal.checkbox_custom_label}>
                     <div
                         tabIndex={0}
                         role="checkbox"
@@ -203,6 +205,57 @@ const SaveCreatorSettings: React.FC<{}> = () => {
     );
 };
 
+const ManageAccessToCatalogSettings = () => {
+
+    const [__] = useTranslator();
+    const dispatch = useDispatch();
+    const enableAPIAPP = useSelector((state: ILibraryRootState) => state.settings.enableAPIAPP);
+
+    const toggleEnableAPIAPP = () => {
+        dispatch(settingsActions.enableAPIAPP.build(!enableAPIAPP));
+    };
+
+    return (
+        <section className={stylesSettings.section} style={{ gap: "10px" }}>
+            <h4>{__("settings.library.title")}</h4>
+            <div className={stylesAnnotations.annotations_checkbox}>
+                <input type="checkbox" id="enableAPIAPP" className={stylesGlobal.checkbox_custom_input} name="enableAPIAPP" checked={enableAPIAPP} onChange={toggleEnableAPIAPP} />
+                <label htmlFor="enableAPIAPP" className={stylesGlobal.checkbox_custom_label}>
+                    <div
+                        tabIndex={0}
+                        role="checkbox"
+                        aria-checked={enableAPIAPP}
+                        aria-label={__("settings.library.enableAPIAPP")}
+                        onKeyDown={(e) => {
+                            // if (e.code === "Space") {
+                            if (e.key === " ") {
+                                e.preventDefault(); // prevent scroll
+                            }
+                        }}
+                        onKeyUp={(e) => {
+                            // if (e.code === "Space") {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                                toggleEnableAPIAPP();
+                            }
+                        }}
+                        className={stylesGlobal.checkbox_custom}
+                        style={{ border: enableAPIAPP ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: enableAPIAPP ? "var(--color-blue)" : "transparent" }}>
+                        {enableAPIAPP ?
+                            <SVG ariaHidden svg={CheckIcon} />
+                            :
+                            <></>
+                        }
+                    </div>
+                    <div aria-hidden>
+                        <h4>{__("settings.library.enableAPIAPP")}</h4>
+                    </div>
+                </label>
+            </div>
+            <ApiappHowDoesItWorkInfoBox />
+        </section>
+    );
+};
 
 const Themes = () => {
     const [__] = useTranslator();
@@ -292,6 +345,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                                 <LanguageSettings />
                                 <ConnectionSettings />
                                 <SaveSessionSettings />
+                                <ManageAccessToCatalogSettings />
                                 <SaveCreatorSettings />
                             </div>
                         </Tabs.Content>

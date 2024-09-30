@@ -41,6 +41,7 @@ const persistStateToFs = async (nextState: RootState) => {
         opds: nextState.opds,
         version: nextState.version,
         wizard: nextState.wizard,
+        settings: nextState.settings,
         creator: nextState.creator,
     };
 

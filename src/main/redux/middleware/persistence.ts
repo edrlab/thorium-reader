@@ -41,6 +41,7 @@ export const reduxPersistMiddleware: Middleware
                     opds: prevState.opds,
                     version: prevState.version,
                     wizard: prevState.wizard,
+                    settings: prevState.settings,
                     creator: prevState.creator,
                 };
 
@@ -59,6 +60,7 @@ export const reduxPersistMiddleware: Middleware
                     opds: nextState.opds,
                     version: nextState.version,
                     wizard: nextState.wizard,
+                    settings: nextState.settings,
                     creator: nextState.creator,
                 };
 

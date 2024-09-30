@@ -19,10 +19,10 @@ import {
 // import SVG from "readium-desktop/renderer/common/components/SVG";
 import SecondaryHeader from "readium-desktop/renderer/library/components/SecondaryHeader";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import { OpdsFeedAddFormDialog } from "../dialog/OpdsFeedAddForm";
+import { ApiappAddFormDialog } from "../dialog/ApiappAddForm";
 // import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 // import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
-import ApiappAddFormDialog from "readium-desktop/renderer/library/components/dialog/ApiappAddForm";
-import OpdsFeedAddForm from "../dialog/OpdsFeedAddForm";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -52,7 +52,7 @@ class Header extends React.Component<IProps, undefined> {
         return (
             <SecondaryHeader style={{display: "flex", gap: "10px", alignItems: "end", height: "65px", justifyContent: "end", margin: "0px"}}>
                 <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
-                    <OpdsFeedAddForm />
+                    <OpdsFeedAddFormDialog />
                     <ApiappAddFormDialog />
                 </div>
             </SecondaryHeader>
