@@ -25,6 +25,9 @@ import { SenderType } from "readium-desktop/common/models/sync";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { cleanupStr } from "readium-desktop/utils/search/transliteration";
 import path from "path";
+import { getPublication } from "./api/publication/getPublication";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 
 
 // Logger
@@ -88,10 +91,28 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
             }
 
             // check if it is the same publication ID
-            const sourceUUID = data.about["dc:identifier"].find((v) => v.startsWith("urn:thorium:"))?.split("urn:thorium:")[1] || "";
-            if (sourceUUID === publicationIdentifier) {
 
-                debug("OK Publication identified : same publicationIndentifier");
+            // don't worry with the publication UUID
+            // now we do not try to reconcicialte the annotationList target to the selected publication
+            // we just check if each annotation href source belongs to the R2Publication Spine items
+            // const sourceUUID = data.about["dc:identifier"].find((v) => v.startsWith("urn:thorium:"))?.split("urn:thorium:")[1] || "";
+            // if at least one annotation in the list doesn't match with the current spice item, then reject the importation
+
+            const pubView = yield* call(getPublication, publicationIdentifier);
+            const r2PublicationJson = pubView.r2PublicationJson
+            const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
+            const spineItem = r2Publication.Spine;
+            const hrefFromSpineItem = spineItem.map((v) => v.Href);
+            debug("Current Publcation (", publicationIdentifier, ") SpineItems(hrefs):", hrefFromSpineItem);
+            const annotationsIncommingArraySourceHrefs = annotationsIncommingArray.map(({ target: {source} }) => source);
+            debug("Incomming Annotations target.source(hrefs):", annotationsIncommingArraySourceHrefs);
+            const annotationsIncommingMatchPublicationSpineItem = annotationsIncommingArraySourceHrefs.reduce((acc, source) => {
+                return acc && hrefFromSpineItem.includes(source);
+            }, true);
+
+            if (annotationsIncommingMatchPublicationSpineItem) {
+
+                debug("GOOD ! spineItemHref matched : publication identified, let's continue the importation");
 
                 // OK publication identified
 
@@ -220,7 +241,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 if (!annotationsParsedBuffer.length) {
 
                     debug("there are no annotations ready to be imported, exit");
-                    yield* put(toastActions.openRequest.build(ToastType.Success, `Success !, there are ${annotationsIncommingArray.length} annotations and nothing has been imported`, publicationIdentifier));
+                    yield* put(toastActions.openRequest.build(ToastType.Success, `Success !, the ${annotationsIncommingArray.length} annotation(s) are already present in the publication, nothing has been imported`, publicationIdentifier));
                     return;
 
                 }
@@ -267,14 +288,8 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
             } else {
 
-                // TODO matching with the title and authors ?
-
-                // TODO: ask to user if he want to continue the import
-
-                // For the moment, exit with error message
-
-                debug("TODO: need to enhance this part and update the publication matching");
-                yield* put(toastActions.openRequest.build(ToastType.Error, "Error: " + "Not the same publication Identifier", publicationIdentifier));
+                debug("ERROR: At least one annotation is rejected and not match with the current publication SpineItem, see above");
+                yield* put(toastActions.openRequest.build(ToastType.Error, "Error: " + "Cannot import annotations Set, at least one annotation does not belong to the publication"));
                 return;
             }
         } else {
