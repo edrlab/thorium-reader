@@ -1,557 +1,570 @@
 {
-    "accessibility": {
-        "bookMenu": "Meniu",
-        "closeDialog": "Užverti",
-        "importFile": "Importuoti leidinį",
-        "leftSlideButton": "Paslinkti sąrašą į kairę",
-        "mainContent": "pagrindinis turinys",
-        "rightSlideButton": "Paslinkti sąrašą į dešinę",
-        "searchBook": "Ieškoti pagal pavadinimą",
-        "skipLink": "Peršokti į turinį",
-        "toolbar": "įrankių juosta"
+  "accessibility": {
+    "bookMenu": "Meniu",
+    "closeDialog": "Užverti",
+    "importFile": "Importuoti leidinį",
+    "leftSlideButton": "Paslinkti sąrašą į kairę",
+    "mainContent": "pagrindinis turinys",
+    "rightSlideButton": "Paslinkti sąrašą į dešinę",
+    "searchBook": "Ieškoti pagal pavadinimą",
+    "skipLink": "Peršokti į turinį",
+    "toolbar": "įrankių juosta"
+  },
+  "apiapp": {
+    "documentation": "Thorium dokumentacija",
+    "howItWorks": "Kaip tai veikia?",
+    "informations": "Prancūzijoje daugelis viešųjų bibliotekų pateikia kompiuteriams skirtą katalogą (panašų į OPDS, tačiau ne identišką), leidžiantį skaitytojams atsisiųsti skaitmeninius leidinius iš savo asmeninės knygų lentynos. Integravus šią technologiją į Thorium Reader, galite atsisiųsti el. knygą arba garsinę knygą tiesiai į Thorium Reader, kad galėtumėte greitai skaityti. Kaip susieti savo Prancūzijos viešosios bibliotekos paskyrą su Thorium Reader? Tai paprasta. Į paieškos laukelį įveskite Prancūzijos miestą (pvz. „Paryžius“) arba bibliotekos pavadinimo dalį ir paspauskite mygtuką „Ieškoti“. Bus atvaizduotas jūsų paiešką atitinkančių viešųjų bibliotekų sąrašas. Pasirinkite biblioteką ir paspauskite mygtuką „Pridėti“. Pasirinkite šią biblioteką atnaujintame katalogų sąraše: bus atvaizduojamas tapatybės nustatymo dialogo langas. Įveskite savo naudotojo vardą / el. pašto adresą ir slaptažodį ir spustelėkite „Prisijungti“. Dabar galite matyti savo asmeninės knygų lentynos turinį, iš kurios galite atsisiųsti ir skaityti anksčiau pasiskolintas el. ir garsines knygas.",
+    "noLibraryFound": "Biblioteka „({{- name}})“ nerasta"
+  },
+  "app": {
+    "edit": {
+      "copy": "Kopijuoti",
+      "cut": "Iškirpti",
+      "paste": "Įklijuoti",
+      "redo": "Atkurti",
+      "selectAll": "Pažymėti viską",
+      "title": "Keisti",
+      "undo": "Atšaukti"
     },
-    "apiapp": {
-        "documentation": "Thorium dokumentacija",
-        "howItWorks": "Kaip tai veikia?",
-        "informations": "Prancūzijoje daugelis viešųjų bibliotekų pateikia kompiuteriams skirtą katalogą (panašų į OPDS, tačiau ne identišką), leidžiantį skaitytojams atsisiųsti skaitmeninius leidinius iš savo asmeninės knygų lentynos. Integravus šią technologiją į Thorium Reader, galite atsisiųsti el. knygą arba garsinę knygą tiesiai į Thorium Reader, kad galėtumėte greitai skaityti. Kaip susieti savo Prancūzijos viešosios bibliotekos paskyrą su Thorium Reader? Tai paprasta. Į paieškos laukelį įveskite Prancūzijos miestą (pvz. „Paryžius“) arba bibliotekos pavadinimo dalį ir paspauskite mygtuką „Ieškoti“. Bus atvaizduotas jūsų paiešką atitinkančių viešųjų bibliotekų sąrašas. Pasirinkite biblioteką ir paspauskite mygtuką „Pridėti“. Pasirinkite šią biblioteką atnaujintame katalogų sąraše: bus atvaizduojamas tapatybės nustatymo dialogo langas. Įveskite savo naudotojo vardą / el. pašto adresą ir slaptažodį ir spustelėkite „Prisijungti“. Dabar galite matyti savo asmeninės knygų lentynos turinį, iš kurios galite atsisiųsti ir skaityti anksčiau pasiskolintas el. ir garsines knygas.",
-        "noLibraryFound": "Biblioteka „({{- name}})“ nerasta"
-    },
-    "app": {
-        "edit": {
-            "copy": "Kopijuoti",
-            "cut": "Iškirpti",
-            "paste": "Įklijuoti",
-            "redo": "Atkurti",
-            "selectAll": "Pažymėti viską",
-            "title": "Keisti",
-            "undo": "Atšaukti"
-        },
-        "hide": "Slėpti {{- appName}}",
-        "quit": "Uždaryti {{- appName}}",
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "Ne",
-                        "yes": "Taip"
-                    },
-                    "message": "Ar norite išsaugoti sesiją?",
-                    "title": "Sesijos išsaugojimas"
-                }
-            }
-        },
-        "update": {
-            "message": "Prieinama nauja versija, paspauskite, jei norite sužinoti daugiau.",
-            "title": "{{- appName}} programinės įrangos naujinys."
-        },
-        "window": {
-            "showLibrary": "Rodyti biblioteką / lentyną"
+    "hide": "Slėpti {{- appName}}",
+    "quit": "Uždaryti {{- appName}}",
+    "session": {
+      "exit": {
+        "askBox": {
+          "button": {
+            "no": "Ne",
+            "yes": "Taip"
+          },
+          "message": "Ar norite išsaugoti sesiją?",
+          "title": "Sesijos išsaugojimas"
         }
+      }
     },
-    "catalog": {
-        "about": {
-            "title": "Apie {{- appName}}"
-        },
-        "addBookToLib": "Importuoti",
-        "addTags": "Pridėti žymę",
-        "addTagsButton": "Pridėti",
-        "allBooks": "Visi leidiniai",
-        "bookInfo": "Apie leidinį",
-        "column": {
-            "ascending": "didėjančia tvarka",
-            "descending": "mažėjančia tvarka",
-            "unsorted": "nerikiuoti"
-        },
-        "delete": "Šalinti",
-        "deleteBook": "Šalinti",
-        "deleteTag": "Šalinti žymę",
-        "description": "Aprašymas",
-        "emptyTagList": "Nėra leidinių, turinčių žymių",
-        "entry": {
-            "continueReading": "Skaityti toliau",
-            "continueReadingAudioBooks": "Klausyti toliau",
-            "continueReadingDivina": "Skaityti divina toliau",
-            "continueReadingPdf": "Skaityti PDF toliau",
-            "lastAdditions": "Paskiausiai pridėti"
-        },
-        "export": "Eksportuoti",
-        "exportAnnotation": "",
-        "format": "Formatas",
-        "lang": "Kalba",
-        "lastRead": "Pask. kartą skaityta",
-        "moreInfo": "Daugiau informacijos",
-        "myBooks": "Mano leidiniai",
-        "noPublicationHelpL1": "Nutempkite leidinį čia",
-        "noPublicationHelpL2": "arba naudokite \"{{- importTitle }}\" mygtuką viršuje.",
-        "noPublicationHelpL3": "Failai, apsaugoti LCP, yra palaikomi.",
-        "noPublicationHelpL4": "Palaikomi plėtiniai:",
-        "numberOfPages": "Puslapių skaičius",
-        "opds": {
-            "auth": {
-                "cancel": "Atšaukti",
-                "login": "Prisijungimas",
-                "password": "Slaptažodis",
-                "register": "Užsiregistruoti",
-                "username": "Naudotojo vardas / El. pašto adresas"
-            },
-            "info": {
-                "availableSince": "Prieinama nuo",
-                "availableState": {
-                    "available": "Prieinama",
-                    "ready": "Paruošta",
-                    "reserved": "Rezervuota",
-                    "unavailable": "Neprieinama",
-                    "unknown": "Nežinoma"
-                },
-                "availableUntil": "Prieinama iki",
-                "copyAvalaible": "Prieinamų kopijų skaičius",
-                "copyTotal": "Kopijų skaičius",
-                "holdPosition": "Jūsų vieta eilėje",
-                "holdTotal": "Viso eilėje",
-                "numberOfItems": "Elementų skaičius",
-                "priveValue": "Kaina",
-                "state": "Būsena"
-            }
-        },
-        "publisher": "Leidėjas",
-        "readBook": "Skaityti",
-        "released": "Išleidimo data",
-        "sort": "Rikiuoti pagal",
-        "tag": "Žymė",
-        "tagCount": "Žymių skaičius",
-        "tags": "Žymės",
-        "update": "Keisti"
+    "update": {
+      "message": "Prieinama nauja versija, paspauskite, jei norite sužinoti daugiau.",
+      "title": "{{- appName}} programinės įrangos naujinys."
     },
-    "dialog": {
-        "cancel": "Nutraukti",
-        "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
-        "deleteFeed": "Ar tikrai norite pašalinti šį katalogą?",
-        "deletePublication": "Ar tikrai norite pašalinti šį leidinį?",
-        "import": "Ar tikrai norite importuoti šiuos failus:",
-        "importError": "Įvyko klaida, patikrinkite failo plėtinį ({{acceptedExtension}})",
-        "renew": "Ar tikrai norite atnaujinti šio leidinio licenciją?",
-        "return": "Ar tikrai norite grąžinti šį leidinį?",
-        "yes": "Taip"
+    "window": {
+      "showLibrary": "Rodyti biblioteką / lentyną"
+    }
+  },
+  "catalog": {
+    "about": {
+      "title": "Apie {{- appName}}"
     },
-    "error": {
-        "errorBox": {
-            "error": "Klaidos pranešimas:",
-            "message": "Įvyko klaida faile {{- filename}}",
-            "title": "Vidinė {{- appName}} klaida"
-        }
+    "addBookToLib": "Importuoti",
+    "addTags": "Pridėti žymę",
+    "addTagsButton": "Pridėti",
+    "allBooks": "Visi leidiniai",
+    "bookInfo": "Apie leidinį",
+    "column": {
+      "ascending": "didėjančia tvarka",
+      "descending": "mažėjančia tvarka",
+      "unsorted": "nerikiuoti"
     },
-    "header": {
-        "allBooks": "Visi leidiniai",
-        "catalogs": "Katalogai",
-        "downloads": "Atsiuntimai",
-        "fitlerTagTitle": "Filtruoti pagal žymę",
-        "gridTitle": "Tinklelis",
-        "home": "Lentynos meniu",
-        "homeTitle": "Pradžia",
-        "importTitle": "Importuoti leidinį",
-        "listTitle": "Sąrašas",
-        "myCatalogs": "Mano katalogai",
-        "refreshTitle": "įkelti iš naujo",
-        "searchPlaceholder": "Paieška",
-        "searchTitle": "Ieškoti",
-        "settings": "Nuostatos",
-        "viewMode": "Peržiūros režimas"
+    "delete": "Šalinti",
+    "deleteBook": "Šalinti",
+    "deleteTag": "Šalinti žymę",
+    "description": "Aprašymas",
+    "emptyTagList": "Nėra leidinių, turinčių žymių",
+    "entry": {
+      "continueReading": "Skaityti toliau",
+      "continueReadingAudioBooks": "Klausyti toliau",
+      "continueReadingDivina": "Skaityti divina toliau",
+      "continueReadingPdf": "Skaityti PDF toliau",
+      "lastAdditions": "Paskiausiai pridėti"
     },
-    "library": {
-        "lcp": {
-            "hint": "(Užuomina : {{- hint}})",
-            "password": "Slaptažodis",
-            "sentence": "Šiam leidiniui atverti reikalingas LCP slaptažodis: ",
-            "urlHint": "Pamiršote slaptažodį? Pagalbos ieškokite čia",
-            "whatIsLcp?": "LCP - kas tai?",
-            "whatIsLcpInfoDetails": "LCP yra termino „Licensed Content Protection“ (licencijuoto turinio apsauga) santrumpa.",
-            "whatIsLcpInfoDetailsLink": "Jei norite sužinoti daugiau, paspauskite ant šios nuorodos į EDRLab svetainę."
-        }
-    },
-    "message": {
-        "download": {
-            "error": "{{- title}} atsiuntimas nepavyko: [{{- err}}]"
-        },
-        "import": {
-            "alreadyImport": "{{- title}} jau importuotas",
-            "fail": "{{- path}} importas nepavyko. Įsitikinkite, jog failas taisyklingas",
-            "success": "{{- title}} importas baigtas."
-        },
-        "open": {
-            "error": "Nepavyko atverti leidinio : {{- err}}"
-        }
-    },
+    "export": "Eksportuoti",
+    "exportAnnotation": "",
+    "format": "Formatas",
+    "lang": "Kalba",
+    "lastRead": "Pask. kartą skaityta",
+    "moreInfo": "Daugiau informacijos",
+    "myBooks": "Mano leidiniai",
+    "noPublicationHelpL1": "Nutempkite leidinį čia",
+    "noPublicationHelpL2": "arba naudokite \"{{- importTitle }}\" mygtuką viršuje.",
+    "noPublicationHelpL3": "Failai, apsaugoti LCP, yra palaikomi.",
+    "noPublicationHelpL4": "Palaikomi plėtiniai:",
+    "numberOfPages": "Puslapių skaičius",
     "opds": {
-        "addForm": {
-            "addButton": "Pridėti",
-            "name": "Pavadinimas:",
-            "namePlaceholder": "Pavadinimas",
-            "url": "Nuoroda:",
-            "urlPlaceholder": "Nuoroda"
+      "auth": {
+        "cancel": "Atšaukti",
+        "login": "Prisijungimas",
+        "password": "Slaptažodis",
+        "register": "Užsiregistruoti",
+        "username": "Naudotojo vardas / El. pašto adresas"
+      },
+      "info": {
+        "availableSince": "Prieinama nuo",
+        "availableState": {
+          "available": "Prieinama",
+          "ready": "Paruošta",
+          "reserved": "Rezervuota",
+          "unavailable": "Neprieinama",
+          "unknown": "Nežinoma"
         },
-        "addFormApiapp": {
-            "title": "Pridėti bibliotekos paskyrą"
-        },
-        "addMenu": "Pridėti OPDS sklaidos kanalą",
-        "breadcrumbRoot": "Katalogai",
-        "documentation": "Oficiali OPDS svetainė",
-        "empty": "Leidinių nerasta",
-        "firstPage": "Pirmas",
-        "informations": "Įsivaizduokite pasaulį, kuriame vos keliais paspaudimais galite naršyti ir atsisiųsti skaitmeninius leidinius iš viešųjų bibliotekų ir skaitmeninių knygų pardavėjų. Atvirų leidinių platinimo sistemos (Open Publication Distribution System, OPDS) katalogo formatas siūlo būtent tai. Naudodami OPDS galite naršyti po įvairių el. knygų tiekėjų katalogus, užsiregistruoti, pasiskolinti, nusipirkti leidinį arba apsilankyti savo asmeninėje knygų lentynoje. Jūs netgi galite atsisiųsti el. ar garsinę knygą tiesiai į Thorium Reader, kad galėtumėte skaityti iškart. Taigi, kaip rasti OPDS katalogą? Tai paprasta. Ieškokite saito (URL), vedančio į katalogą. Nukopijuokite šį URL į aukščiau esantį „Nuorodos“ laukelį. Atminkite, kad nėra vieno bendro visų aktyvių OPDS katalogų sąrašo. Turėsite susisiekti su pageidaujama biblioteka ar knygų pardavėju ir paprašyti jų OPDS katalogo adreso. Jei nežinote, nuo ko pradėti, Vikipedijoje yra keli OPDS katalogų registrai įvairiomis kalbomis, kurie gali praversti. Laukas „Pavadinimas“ paliekamas jūsų patogumui; jis leidžia lengviau identifikuoti sklaidos kanalus Thorium Reader skaitytuvėje.",
-        "lastPage": "Paskutinis",
-        "menu": {
-            "aboutBook": "Apie leidinį",
-            "addExtract": "Importuoti ištrauką",
-            "goBuyBook": "Pirkti šį leidinį",
-            "goLoanBook": "Pasiskolinti leidinį",
-            "goRevokeLoanBook": "Atšaukti pasiskolinimą",
-            "goSubBook": "Prenumeruoti"
-        },
-        "network": {
-            "error": "Nepavyko pasiekti OPDS sklaidos kanalo",
-            "noInternet": "Nėra interneto",
-            "noInternetMessage": "Patikrinkite tinklo kabelį, modemą, maršrutizatorių ar belaidį tinklą",
-            "reject": "Atsiprašome, apdorojant OPDS sklaidos kanalą įvyko nenumatyta klaida",
-            "timeout": "Baigėsi tinklo laukimo laikas, prašome pabandyti vėliau"
-        },
-        "next": "Tolesnis",
+        "availableUntil": "Prieinama iki",
+        "copyAvalaible": "Prieinamų kopijų skaičius",
+        "copyTotal": "Kopijų skaičius",
+        "holdPosition": "Jūsų vieta eilėje",
+        "holdTotal": "Viso eilėje",
+        "numberOfItems": "Elementų skaičius",
+        "priveValue": "Kaina",
+        "state": "Būsena"
+      }
+    },
+    "publisher": "Leidėjas",
+    "readBook": "Skaityti",
+    "released": "Išleidimo data",
+    "sort": "Rikiuoti pagal",
+    "tag": "Žymė",
+    "tagCount": "Žymių skaičius",
+    "tags": "Žymės",
+    "update": "Keisti"
+  },
+  "dialog": {
+    "cancel": "Nutraukti",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
+    "deleteFeed": "Ar tikrai norite pašalinti šį katalogą?",
+    "deletePublication": "Ar tikrai norite pašalinti šį leidinį?",
+    "import": "Ar tikrai norite importuoti šiuos failus:",
+    "importError": "Įvyko klaida, patikrinkite failo plėtinį ({{acceptedExtension}})",
+    "renew": "Ar tikrai norite atnaujinti šio leidinio licenciją?",
+    "return": "Ar tikrai norite grąžinti šį leidinį?",
+    "yes": "Taip"
+  },
+  "error": {
+    "errorBox": {
+      "error": "Klaidos pranešimas:",
+      "message": "Įvyko klaida faile {{- filename}}",
+      "title": "Vidinė {{- appName}} klaida"
+    }
+  },
+  "header": {
+    "allBooks": "Visi leidiniai",
+    "catalogs": "Katalogai",
+    "downloads": "Atsiuntimai",
+    "fitlerTagTitle": "Filtruoti pagal žymę",
+    "gridTitle": "Tinklelis",
+    "home": "Lentynos meniu",
+    "homeTitle": "Pradžia",
+    "importTitle": "Importuoti leidinį",
+    "listTitle": "Sąrašas",
+    "myCatalogs": "Mano katalogai",
+    "refreshTitle": "įkelti iš naujo",
+    "searchPlaceholder": "Paieška",
+    "searchTitle": "Ieškoti",
+    "settings": "Nuostatos",
+    "viewMode": "Peržiūros režimas"
+  },
+  "library": {
+    "lcp": {
+      "hint": "(Užuomina : {{- hint}})",
+      "password": "Slaptažodis",
+      "sentence": "Šiam leidiniui atverti reikalingas LCP slaptažodis: ",
+      "urlHint": "Pamiršote slaptažodį? Pagalbos ieškokite čia",
+      "whatIsLcp?": "LCP - kas tai?",
+      "whatIsLcpInfoDetails": "LCP yra termino „Licensed Content Protection“ (licencijuoto turinio apsauga) santrumpa.",
+      "whatIsLcpInfoDetailsLink": "Jei norite sužinoti daugiau, paspauskite ant šios nuorodos į EDRLab svetainę."
+    }
+  },
+  "message": {
+    "download": {
+      "error": "{{- title}} atsiuntimas nepavyko: [{{- err}}]"
+    },
+    "import": {
+      "alreadyImport": "{{- title}} jau importuotas",
+      "fail": "{{- path}} importas nepavyko. Įsitikinkite, jog failas taisyklingas",
+      "success": "{{- title}} importas baigtas."
+    },
+    "open": {
+      "error": "Nepavyko atverti leidinio : {{- err}}"
+    }
+  },
+  "opds": {
+    "addForm": {
+      "addButton": "Pridėti",
+      "name": "Pavadinimas:",
+      "namePlaceholder": "Pavadinimas",
+      "url": "Nuoroda:",
+      "urlPlaceholder": "Nuoroda"
+    },
+    "addFormApiapp": {
+      "title": "Pridėti bibliotekos paskyrą"
+    },
+    "addMenu": "Pridėti OPDS sklaidos kanalą",
+    "breadcrumbRoot": "Katalogai",
+    "documentation": "Oficiali OPDS svetainė",
+    "empty": "Leidinių nerasta",
+    "firstPage": "Pirmas",
+    "informations": "Įsivaizduokite pasaulį, kuriame vos keliais paspaudimais galite naršyti ir atsisiųsti skaitmeninius leidinius iš viešųjų bibliotekų ir skaitmeninių knygų pardavėjų. Atvirų leidinių platinimo sistemos (Open Publication Distribution System, OPDS) katalogo formatas siūlo būtent tai. Naudodami OPDS galite naršyti po įvairių el. knygų tiekėjų katalogus, užsiregistruoti, pasiskolinti, nusipirkti leidinį arba apsilankyti savo asmeninėje knygų lentynoje. Jūs netgi galite atsisiųsti el. ar garsinę knygą tiesiai į Thorium Reader, kad galėtumėte skaityti iškart. Taigi, kaip rasti OPDS katalogą? Tai paprasta. Ieškokite saito (URL), vedančio į katalogą. Nukopijuokite šį URL į aukščiau esantį „Nuorodos“ laukelį. Atminkite, kad nėra vieno bendro visų aktyvių OPDS katalogų sąrašo. Turėsite susisiekti su pageidaujama biblioteka ar knygų pardavėju ir paprašyti jų OPDS katalogo adreso. Jei nežinote, nuo ko pradėti, Vikipedijoje yra keli OPDS katalogų registrai įvairiomis kalbomis, kurie gali praversti. Laukas „Pavadinimas“ paliekamas jūsų patogumui; jis leidžia lengviau identifikuoti sklaidos kanalus Thorium Reader skaitytuvėje.",
+    "lastPage": "Paskutinis",
+    "menu": {
+      "aboutBook": "Apie leidinį",
+      "addExtract": "Importuoti ištrauką",
+      "goBuyBook": "Pirkti šį leidinį",
+      "goLoanBook": "Pasiskolinti leidinį",
+      "goRevokeLoanBook": "Atšaukti pasiskolinimą",
+      "goSubBook": "Prenumeruoti"
+    },
+    "network": {
+      "error": "Nepavyko pasiekti OPDS sklaidos kanalo",
+      "noInternet": "Nėra interneto",
+      "noInternetMessage": "Patikrinkite tinklo kabelį, modemą, maršrutizatorių ar belaidį tinklą",
+      "reject": "Atsiprašome, apdorojant OPDS sklaidos kanalą įvyko nenumatyta klaida",
+      "timeout": "Baigėsi tinklo laukimo laikas, prašome pabandyti vėliau"
+    },
+    "next": "Tolesnis",
+    "previous": "Ankstesnis",
+    "shelf": "Lentyna",
+    "updateForm": {
+      "name": "Pavadinimas:",
+      "title": "Keisti OPDS sklaidos kanalą",
+      "updateButton": "Keisti",
+      "url": "Nuoroda:"
+    },
+    "whatIsOpds": "OPDS - kas tai?"
+  },
+  "publication": {
+    "accessibility": {
+      "accessModeSufficient": {
+        "textual": "Tinka įgarsinimui ir ekrano skaitytuvėms"
+      },
+      "accessibilityFeature": {
+        "alternativeText": "Yra alternatyvusis tekstas",
+        "displayTransformability": "Galima keisti teksto dydį ir išdėstymą",
+        "longDescription": "Pilnai aprašyti grafikos ištekliai",
+        "printPageNumbers": "Spausdintinės knygos puslapių nuorodos",
+        "readingOrder": "Yra sudaryta skaitymo tvarka",
+        "synchronizedAudioText": "Sinchronizuotas tekstas ir garsas",
+        "tableOfContents": "Yra turinys"
+      },
+      "accessibilityHazard": {
+        "flashing": "Blykčiojimas",
+        "motionSimulation": "Judesių imitavimas",
+        "name": "Rizika:",
+        "noFlashing": "Be blykčiojimo",
+        "noMotionSimulation": "Be judesių imitavimo",
+        "noSound": "Be garso",
+        "none": "Nėra",
+        "sound": "Garsas",
+        "unknown": "Nežinoma"
+      },
+      "certifierReport": "Patikrinimo ataskaita",
+      "conformsTo": "Atitinka:",
+      "moreInformation": "Daugiau informacijos",
+      "name": "Prieinamumas",
+      "noA11y": "Nėra informacijos apie prieinamumą"
+    },
+    "actions": "Veiksmai",
+    "audio": {
+      "tracks": "Takeliai"
+    },
+    "author": "Autorius",
+    "cancelledLcp": "Šio leidinio negalima skaityti, nes LCP licencija buvo nutraukta.",
+    "certificateRevoked": "Sertifikato galiojimas sustabdytas",
+    "certificateSignatureInvalid": "Negaliojantis sertifikato parašas",
+    "cover": {
+      "img": "viršelio paveikslas"
+    },
+    "day": "diena",
+    "days": "dienos",
+    "duration": {
+      "title": "Trukmė"
+    },
+    "expired": "Skolinimo terminas baigėsi",
+    "expiredLcp": "Šio leidinio negalima skaityti, nes baigėsi LCP licencijos galiojimo laikas.",
+    "lcpEnd": "Pabaiga",
+    "lcpRightsCopy": "Ženklų kopijos",
+    "lcpRightsPrint": "Spausdintos kopijos",
+    "lcpStart": "Pradžia",
+    "licenceLCP": "Licencija (LCP)",
+    "licenseOutOfDate": "Licencijos galiojimas pasibaigęs",
+    "licenseSignatureDateInvalid": "Negaliojanti licencijos parašo data",
+    "licenseSignatureInvalid": "Negaliojantis licencijos parašas",
+    "licensed": "Licencijuotas",
+    "markAsRead": "Žymėti kaip perskaitytą",
+    "notStarted": "Nepradėtas",
+    "onGoing": "Skaitomas",
+    "progression": {
+      "title": "Eiga"
+    },
+    "read": "Užbaigtas",
+    "remainingTime": "Paskolinta (liko dienų)",
+    "renewButton": "Atnaujinti",
+    "returnButton": "Grąžinti",
+    "returnedLcp": "Šio leidinio negalima skaityti, nes LCP licencija buvo grąžinta.",
+    "revokedLcp": "Šio leidinio negalima skaityti, nes LCP licencijos galiojimas buvo sustabdytas.",
+    "seeLess": "Rodyti mažiau",
+    "seeMore": "Rodyti daugiau",
+    "timeLeft": "Liko",
+    "title": "Pavadinimas",
+    "userKeyCheckInvalid": "Neteisingas slaptažodis"
+  },
+  "reader": {
+    "annotations": {
+      "Color": "Spalva",
+      "addNote": "Pridėti pastabą",
+      "advancedMode": "Momentinis režimas (pažymėjus sukurti automatiškai)",
+      "annotationsOptions": "Parinktys",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
+      "hide": "Neatvaizduoti",
+      "highlight": "Paryškinimas",
+      "noSelectionToast": "Niekas nepasirinkta",
+      "quickAnnotations": "Greitasis kūrimas (praleidžiant rengyklę)",
+      "saveNote": "Išsaugoti",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
+      "toggleMarginMarks": "Atvaizduoti paraštėse",
+      "type": {
+        "outline": "Kontūras",
+        "solid": "Vientisas fonas",
+        "strikethrough": "Perbraukimas",
+        "underline": "Pabraukimas"
+      }
+    },
+    "divina": {
+      "mute": "išjungti garsą",
+      "unmute": "įjungti garsą"
+    },
+    "fxl": {
+      "fit": "Talpinti"
+    },
+    "marks": {
+      "annotations": "Pastabos",
+      "bookmarks": "Žymės",
+      "delete": "Šalinti",
+      "edit": "Keisti",
+      "goTo": "Eiti į puslapį",
+      "landmarks": "Gairės",
+      "saveMark": "Išsaugoti žymę",
+      "search": "Paieška",
+      "searchResult": "Ieškoti [{{- searchText}}]",
+      "toc": "Turinys"
+    },
+    "media-overlays": {
+      "activate": "Aktyvuoti „Readaloud“",
+      "captions": "Titrai / paprastas rodinys",
+      "captionsDescription": "Supaprastintas tekstas su minimaliu pavadinimų stilizavimu.",
+      "next": "Tolesnis „Readaloud“",
+      "pause": "Pristabdyti „Readaloud“",
+      "play": "Atkurti „Readaloud“",
+      "previous": "Ankstesnis „Readaloud“",
+      "skip": "Prašokimas",
+      "skipDescription": "Peršokti / ignoruoti pagalbinį turinį, pvz. puslapio skirtukus, išnašas/galines išnašas ir t.t.",
+      "speed": "„Readaloud“ atkūrimo sparta",
+      "stop": "Sustabdyti „Readaloud“",
+      "title": "Readaloud"
+    },
+    "navigation": {
+      "annotationTitle": "pastaba",
+      "backHomeTitle": "grįžti į lentyną",
+      "bookmarkTitle": "sukurti žymę",
+      "currentPage": "Dabartinis puslapis: {{- current}}",
+      "currentPageTotal": "Dabartinis puslapis: {{- current}}/{{- total}}",
+      "detachWindowTitle": "rodyti bibliotekos / lentynos langą",
+      "fullscreenTitle": "įjungti viso ekrano režimą",
+      "goTo": "Eiti į",
+      "goToError": "Toks puslapių skirtukas neegzistuoja",
+      "goToPlaceHolder": "Įveskite puslapio numerį",
+      "goToTitle": "Eiti į puslapį",
+      "historyNext": "Peršokti į priekį",
+      "historyPrevious": "Peršokti atgal",
+      "infoTitle": "informacija",
+      "magnifyingGlassButton": "ieškoti leidinyje",
+      "openTableOfContentsTitle": "naršymas",
+      "page": "Puslapis",
+      "pdfscalemode": "talpinti pritaikant prie puslapio aukščio/pločio",
+      "settingsTitle": "nuostatos"
+    },
+    "picker": {
+      "search": {
+        "founds": "{{- nResults}} atitikmuo(-ys, -ų)",
+        "input": "ieškomas tekstas",
+        "next": "Kitas",
+        "notFound": "atitikmenų nėra",
         "previous": "Ankstesnis",
-        "shelf": "Lentyna",
-        "updateForm": {
-            "name": "Pavadinimas:",
-            "title": "Keisti OPDS sklaidos kanalą",
-            "updateButton": "Keisti",
-            "url": "Nuoroda:"
-        },
-        "whatIsOpds": "OPDS - kas tai?"
-    },
-    "publication": {
-        "accessibility": {
-            "accessModeSufficient": {
-                "textual": "Tinka įgarsinimui ir ekrano skaitytuvėms"
-            },
-            "accessibilityFeature": {
-                "alternativeText": "Yra alternatyvusis tekstas",
-                "displayTransformability": "Galima keisti teksto dydį ir išdėstymą",
-                "longDescription": "Pilnai aprašyti grafikos ištekliai",
-                "printPageNumbers": "Spausdintinės knygos puslapių nuorodos",
-                "readingOrder": "Yra sudaryta skaitymo tvarka",
-                "synchronizedAudioText": "Sinchronizuotas tekstas ir garsas",
-                "tableOfContents": "Yra turinys"
-            },
-            "accessibilityHazard": {
-                "flashing": "Blykčiojimas",
-                "motionSimulation": "Judesių imitavimas",
-                "name": "Rizika:",
-                "noFlashing": "Be blykčiojimo",
-                "noMotionSimulation": "Be judesių imitavimo",
-                "noSound": "Be garso",
-                "none": "Nėra",
-                "sound": "Garsas",
-                "unknown": "Nežinoma"
-            },
-            "certifierReport": "Patikrinimo ataskaita",
-            "conformsTo": "Atitinka:",
-            "moreInformation": "Daugiau informacijos",
-            "name": "Prieinamumas",
-            "noA11y": "Nėra informacijos apie prieinamumą"
-        },
-        "actions": "Veiksmai",
-        "audio": {
-            "tracks": "Takeliai"
-        },
-        "author": "Autorius",
-        "cancelledLcp": "Šio leidinio negalima skaityti, nes LCP licencija buvo nutraukta.",
-        "certificateRevoked": "Sertifikato galiojimas sustabdytas",
-        "certificateSignatureInvalid": "Negaliojantis sertifikato parašas",
-        "cover": {
-            "img": "viršelio paveikslas"
-        },
-        "day": "diena",
-        "days": "dienos",
-        "duration": {
-            "title": "Trukmė"
-        },
-        "expired": "Skolinimo terminas baigėsi",
-        "expiredLcp": "Šio leidinio negalima skaityti, nes baigėsi LCP licencijos galiojimo laikas.",
-        "lcpEnd": "Pabaiga",
-        "lcpRightsCopy": "Ženklų kopijos",
-        "lcpRightsPrint": "Spausdintos kopijos",
-        "lcpStart": "Pradžia",
-        "licenceLCP": "Licencija (LCP)",
-        "licenseOutOfDate": "Licencijos galiojimas pasibaigęs",
-        "licenseSignatureDateInvalid": "Negaliojanti licencijos parašo data",
-        "licenseSignatureInvalid": "Negaliojantis licencijos parašas",
-        "licensed": "Licencijuotas",
-        "markAsRead": "Žymėti kaip perskaitytą",
-        "notStarted": "Nepradėtas",
-        "onGoing": "Skaitomas",
-        "progression": {
-            "title": "Eiga"
-        },
-        "read": "Užbaigtas",
-        "remainingTime": "Paskolinta (liko dienų)",
-        "renewButton": "Atnaujinti",
-        "returnButton": "Grąžinti",
-        "returnedLcp": "Šio leidinio negalima skaityti, nes LCP licencija buvo grąžinta.",
-        "revokedLcp": "Šio leidinio negalima skaityti, nes LCP licencijos galiojimas buvo sustabdytas.",
-        "seeLess": "Rodyti mažiau",
-        "seeMore": "Rodyti daugiau",
-        "timeLeft": "Liko",
-        "title": "Pavadinimas",
-        "userKeyCheckInvalid": "Neteisingas slaptažodis"
-    },
-    "reader": {
-        "annotations": {
-            "Color": "Spalva",
-            "addNote": "Pridėti pastabą",
-            "advancedMode": "Momentinis režimas (pažymėjus sukurti automatiškai)",
-            "annotationsOptions": "Parinktys",
-            "colors": {
-                "bluegreen": "",
-                "cyan": "",
-                "green": "",
-                "lightblue": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
-            },
-            "filter": {
-                "all": "",
-                "filterByColor": "",
-                "filterByDrawtype": "",
-                "filterByTag": "",
-                "filterOptions": "",
-                "none": ""
-            },
-            "hide": "Neatvaizduoti",
-            "highlight": "Paryškinimas",
-            "noSelectionToast": "Niekas nepasirinkta",
-            "quickAnnotations": "Greitasis kūrimas (praleidžiant rengyklę)",
-            "saveNote": "Išsaugoti",
-            "toggleMarginMarks": "Atvaizduoti paraštėse",
-            "type": {
-                "outline": "Kontūras",
-                "solid": "Vientisas fonas",
-                "strikethrough": "Perbraukimas",
-                "underline": "Pabraukimas"
-            }
-        },
-        "divina": {
-            "mute": "išjungti garsą",
-            "unmute": "įjungti garsą"
-        },
-        "fxl": {
-            "fit": "Talpinti"
-        },
-        "marks": {
-            "annotations": "Pastabos",
-            "bookmarks": "Žymės",
-            "delete": "Šalinti",
-            "edit": "Keisti",
-            "goTo": "Eiti į puslapį",
-            "landmarks": "Gairės",
-            "saveMark": "Išsaugoti žymę",
-            "search": "Paieška",
-            "searchResult": "Ieškoti [{{- searchText}}]",
-            "toc": "Turinys"
-        },
-        "media-overlays": {
-            "activate": "Aktyvuoti „Readaloud“",
-            "captions": "Titrai / paprastas rodinys",
-            "captionsDescription": "Supaprastintas tekstas su minimaliu pavadinimų stilizavimu.",
-            "next": "Tolesnis „Readaloud“",
-            "pause": "Pristabdyti „Readaloud“",
-            "play": "Atkurti „Readaloud“",
-            "previous": "Ankstesnis „Readaloud“",
-            "skip": "Prašokimas",
-            "skipDescription": "Peršokti / ignoruoti pagalbinį turinį, pvz. puslapio skirtukus, išnašas/galines išnašas ir t.t.",
-            "speed": "„Readaloud“ atkūrimo sparta",
-            "stop": "Sustabdyti „Readaloud“",
-            "title": "Readaloud"
-        },
-        "navigation": {
-            "annotationTitle": "pastaba",
-            "backHomeTitle": "grįžti į lentyną",
-            "bookmarkTitle": "sukurti žymę",
-            "currentPage": "Dabartinis puslapis: {{- current}}",
-            "currentPageTotal": "Dabartinis puslapis: {{- current}}/{{- total}}",
-            "detachWindowTitle": "rodyti bibliotekos / lentynos langą",
-            "fullscreenTitle": "įjungti viso ekrano režimą",
-            "goTo": "Eiti į",
-            "goToError": "Toks puslapių skirtukas neegzistuoja",
-            "goToPlaceHolder": "Įveskite puslapio numerį",
-            "goToTitle": "Eiti į puslapį",
-            "historyNext": "Peršokti į priekį",
-            "historyPrevious": "Peršokti atgal",
-            "infoTitle": "informacija",
-            "magnifyingGlassButton": "ieškoti leidinyje",
-            "openTableOfContentsTitle": "naršymas",
-            "page": "Puslapis",
-            "pdfscalemode": "talpinti pritaikant prie puslapio aukščio/pločio",
-            "settingsTitle": "nuostatos"
-        },
-        "picker": {
-            "search": {
-                "founds": "{{- nResults}} atitikmuo(-ys, -ų)",
-                "input": "ieškomas tekstas",
-                "next": "Kitas",
-                "notFound": "atitikmenų nėra",
-                "previous": "Ankstesnis",
-                "results": "Rezultatai",
-                "submit": "Ieškoti"
-            },
-            "searchTitle": "Paieška:"
-        },
-        "settings": {
-            "column": {
-                "auto": "Automatinis",
-                "one": "1 stulpelis",
-                "title": "Stulpeliai",
-                "two": "2 stulpeliai"
-            },
-            "customizeReader": "Tinkinti teksto formatavimą",
-            "disabled": "išjungta",
-            "display": "Atvaizdavimas",
-            "disposition": {
-                "title": "Išdėstymas"
-            },
-            "font": "Šriftas",
-            "fontSize": "Šrifto dydis",
-            "infoCustomFont": "Pasirinkite tinkintą operacinės sistemos šriftą įvedę jo pavadinimą",
-            "justification": "Lygiavimas",
-            "justify": "Lygiuoti abi puses",
-            "letterSpacing": "Raidžių išretinimas",
-            "lineSpacing": "Eilučių išretinimas",
-            "margin": "Paraštė",
-            "noFootnotes": "Išjungti išnašas",
-            "noRTLFlip": "Išjungti iš-dešinės-į-kairę naudotojo sąsają",
-            "noRuby": "Slėpti japonų kalbos Ruby simbolius",
-            "paginated": "Skaidyti į puslapius",
-            "paraSpacing": "Tarpas tarp pastraipų",
-            "pdfZoom": {
-                "name": {
-                    "100pct": "100 %",
-                    "150pct": "150 %",
-                    "200pct": "200 %",
-                    "300pct": "300 %",
-                    "500pct": "500 %",
-                    "50pct": "50 %",
-                    "fit": "talpinti puslapį",
-                    "width": "puslapio plotis"
-                },
-                "title": "Mastelis"
-            },
-            "preset": {
-                "apply": "",
-                "reset": "",
-                "save": "",
-                "title": ""
-            },
-            "preview": "Peržiūrėti",
-            "reduceMotion": "Mažinti judesių kiekį",
-            "scrolled": "Slenkantis",
-            "spacing": "Išretinimas",
-            "text": "Tekstas",
-            "theme": {
-                "name": {
-                    "Contrast1": "Kontrastas 1",
-                    "Contrast2": "Kontrastas 2",
-                    "Contrast3": "Kontrastas 3",
-                    "Contrast4": "Kontrastas 4",
-                    "Neutral": "Neutrali",
-                    "Night": "Naktis",
-                    "Paper": "Popierius",
-                    "Sepia": "Sepija"
-                },
-                "title": "Tema"
-            },
-            "wordSpacing": "Tarpas tarp žodžių"
-        },
-        "svg": {
-            "left": "Kairė",
-            "right": "Dešinė"
-        },
-        "toc": {
-            "publicationNoToc": "Šis leidinys nepateikia turinio"
-        },
-        "tts": {
-            "activate": "Aktyvuoti teksto įgarsinimą",
-            "default": "Balsas: sistemos numatytasis",
-            "next": "Tolesnis teksto įgarsinimas",
-            "pause": "Pristabdyti teksto įgarsinimą",
-            "play": "Atkurti teksto įgarsinimą",
-            "previous": "Ankstesnis teksto įgarsinimas",
-            "sentenceDetect": "Skaidyti įgarsinamą tekstą",
-            "sentenceDetectDescription": "Išskaidyti ilgas pastraipas į sakinius.",
-            "speed": "Teksto įgarsinimo atkūrimo sparta",
-            "stop": "Sustabdyti teksto įgarsinimą",
-            "voice": "Įgarsinimo balsas"
-        }
+        "results": "Rezultatai",
+        "submit": "Ieškoti"
+      },
+      "searchTitle": "Paieška:"
     },
     "settings": {
-        "auth": {
-            "wipeData": "Išvalyti prisijungimo duomenis"
+      "column": {
+        "auto": "Automatinis",
+        "one": "1 stulpelis",
+        "title": "Stulpeliai",
+        "two": "2 stulpeliai"
+      },
+      "customizeReader": "Tinkinti teksto formatavimą",
+      "disabled": "išjungta",
+      "display": "Atvaizdavimas",
+      "disposition": {
+        "title": "Išdėstymas"
+      },
+      "font": "Šriftas",
+      "fontSize": "Šrifto dydis",
+      "infoCustomFont": "Pasirinkite tinkintą operacinės sistemos šriftą įvedę jo pavadinimą",
+      "justification": "Lygiavimas",
+      "justify": "Lygiuoti abi puses",
+      "letterSpacing": "Raidžių išretinimas",
+      "lineSpacing": "Eilučių išretinimas",
+      "margin": "Paraštė",
+      "noFootnotes": "Išjungti išnašas",
+      "noRTLFlip": "Išjungti iš-dešinės-į-kairę naudotojo sąsają",
+      "noRuby": "Slėpti japonų kalbos Ruby simbolius",
+      "paginated": "Skaidyti į puslapius",
+      "paraSpacing": "Tarpas tarp pastraipų",
+      "pdfZoom": {
+        "name": {
+          "100pct": "100 %",
+          "150pct": "150 %",
+          "200pct": "200 %",
+          "300pct": "300 %",
+          "500pct": "500 %",
+          "50pct": "50 %",
+          "fit": "talpinti puslapį",
+          "width": "puslapio plotis"
         },
-        "keyboard": {
-            "advancedMenu": "Meniu",
-            "cancel": "Nutraukti",
-            "disclaimer": "Spartieji klavišai nustatyti remiantis QWERTY klaviatūros išdėstymu.",
-            "editUserJson": "Keisti naudotojo failą...",
-            "keyboardShortcuts": "Spartieji klavišai",
-            "loadUserJson": "Įkelti iš naudotojo failo",
-            "resetDefaults": "Atkurti numatytąsias reikšmes",
-            "save": "Įrašyti"
+        "title": "Mastelis"
+      },
+      "preset": {
+        "apply": "",
+        "reset": "",
+        "save": "",
+        "title": ""
+      },
+      "preview": "Peržiūrėti",
+      "reduceMotion": "Mažinti judesių kiekį",
+      "scrolled": "Slenkantis",
+      "spacing": "Išretinimas",
+      "text": "Tekstas",
+      "theme": {
+        "name": {
+          "Contrast1": "Kontrastas 1",
+          "Contrast2": "Kontrastas 2",
+          "Contrast3": "Kontrastas 3",
+          "Contrast4": "Kontrastas 4",
+          "Neutral": "Neutrali",
+          "Night": "Naktis",
+          "Paper": "Popierius",
+          "Sepia": "Sepija"
         },
-        "language": {
-            "languageChoice": "Kalba"
-        },
-        "session": {
-            "no": "Išjungti",
-            "title": "Sesijos išsaugojimas",
-            "yes": "Įjungti"
-        },
-        "tabs": {
-            "appearance": "Išvaizda",
-            "general": "Bendros",
-            "keyboardShortcuts": "Spartieji klavišai"
-        },
-        "theme": {
-            "auto": "Automatinė",
-            "dark": "Tamsi",
-            "description": "Programos tema atitinka operacinės sistemos temą.",
-            "light": "Šviesi",
-            "title": "Programos tema"
-        }
+        "title": "Tema"
+      },
+      "wordSpacing": "Tarpas tarp žodžių"
     },
-    "wizard": {
-        "buttons": {
-            "discover": "Sužinoti, kas naujo",
-            "goToBooks": "Eiti į mano leidinius",
-            "next": "Kitas"
-        },
-        "description": {
-            "annotations": "Pažymėkite dokumento tekstą, pasirinkite stilių ir spalvą, pridėkite asmeninių pastabų. Kurkite pastabas „greitajame“ režime, praleisdami rengyklę (įvesti tekstą ir tinkinti stilių galėsite vėliau). Jei vis dar trūksta greičio, naudokitės „momentiniu“ režimu, kuriame pastabos sukuriamos iškart pažymėjus tekstą!",
-            "catalogs": "Pasiskolinkite leidinius iš savo vietinės bibliotekos bei atraskite leidinius OPDS sklaidos kanaluose. Internetinių katalogų dėka gaukite prieigą prie gausybės leidinių iš skirtingų šaltinių.",
-            "home": "Thorium atrodo kitaip! Sužinokite, kas naujo...",
-            "readingView1": "Tinkinkite savo skaitymo ir klausymosi nuostatas: nuo šiol Thorium siūlo keletą spalvų temų naudotojo sąsajai bei leidinių dokumentams. Dabar taip pat tapo lengviau konfigūruoti „readaloud“ el. knygas su sintetinio balso ir sinchronizuoto teksto/garso skaitymu.",
-            "readingView2": "Patobulinta Thorium naudotojo sąsaja leidžia lengviau rasti tekstą leidiniuose, peržvelgti paieškos rezultatus, atversti tam tikrą puslapį, naršyti turinyje, kurti žymes ir t.t. naujų „pritvirtintų“ skydelių dėka, o viso ekrano skaitymo režimas ir toliau suteikia aplinką be dėmesio išblaškymo.",
-            "yourBooks": "Su jumis sveikinasi iš naujo suprojektuota asmeninė knygų lentyna! „Tinklelio“ peržiūros režime be vargo galėsite filtruoti pagal žymes arba rasti leidinius pagal raktinius žodžius. „Sąrašo“ režime galėsite peržiurėti, pažymėti ir rikiuoti leidinius pagal konkretų autorių, pavadinimą, datą, formatą ir t.t."
-        },
-        "dontShow": "Daugiau neberodyti",
-        "tab": {
-            "annotations": "Pastabos",
-            "catalogs": "Katalogai",
-            "home": "Pradžia",
-            "readingView": "Skaitymo rodinys",
-            "yourBooks": "Jūsų leidiniai"
-        },
-        "title": {
-            "allBooks": "Visi mano leidiniai",
-            "newFeature": "Nauja funkcija: Pastabos",
-            "welcome": "Su jumis sveikinasi Thorium 3.0"
-        }
+    "svg": {
+      "left": "Kairė",
+      "right": "Dešinė"
+    },
+    "toc": {
+      "publicationNoToc": "Šis leidinys nepateikia turinio"
+    },
+    "tts": {
+      "activate": "Aktyvuoti teksto įgarsinimą",
+      "default": "Balsas: sistemos numatytasis",
+      "next": "Tolesnis teksto įgarsinimas",
+      "pause": "Pristabdyti teksto įgarsinimą",
+      "play": "Atkurti teksto įgarsinimą",
+      "previous": "Ankstesnis teksto įgarsinimas",
+      "sentenceDetect": "Skaidyti įgarsinamą tekstą",
+      "sentenceDetectDescription": "Išskaidyti ilgas pastraipas į sakinius.",
+      "speed": "Teksto įgarsinimo atkūrimo sparta",
+      "stop": "Sustabdyti teksto įgarsinimą",
+      "voice": "Įgarsinimo balsas"
     }
+  },
+  "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
+    "auth": {
+      "wipeData": "Išvalyti prisijungimo duomenis"
+    },
+    "keyboard": {
+      "advancedMenu": "Meniu",
+      "cancel": "Nutraukti",
+      "disclaimer": "Spartieji klavišai nustatyti remiantis QWERTY klaviatūros išdėstymu.",
+      "editUserJson": "Keisti naudotojo failą...",
+      "keyboardShortcuts": "Spartieji klavišai",
+      "loadUserJson": "Įkelti iš naudotojo failo",
+      "resetDefaults": "Atkurti numatytąsias reikšmes",
+      "save": "Įrašyti"
+    },
+    "language": {
+      "languageChoice": "Kalba"
+    },
+    "session": {
+      "no": "Išjungti",
+      "title": "Sesijos išsaugojimas",
+      "yes": "Įjungti"
+    },
+    "tabs": {
+      "appearance": "Išvaizda",
+      "general": "Bendros",
+      "keyboardShortcuts": "Spartieji klavišai"
+    },
+    "theme": {
+      "auto": "Automatinė",
+      "dark": "Tamsi",
+      "description": "Programos tema atitinka operacinės sistemos temą.",
+      "light": "Šviesi",
+      "title": "Programos tema"
+    }
+  },
+  "wizard": {
+    "buttons": {
+      "discover": "Sužinoti, kas naujo",
+      "goToBooks": "Eiti į mano leidinius",
+      "next": "Kitas"
+    },
+    "description": {
+      "annotations": "Pažymėkite dokumento tekstą, pasirinkite stilių ir spalvą, pridėkite asmeninių pastabų. Kurkite pastabas „greitajame“ režime, praleisdami rengyklę (įvesti tekstą ir tinkinti stilių galėsite vėliau). Jei vis dar trūksta greičio, naudokitės „momentiniu“ režimu, kuriame pastabos sukuriamos iškart pažymėjus tekstą!",
+      "catalogs": "Pasiskolinkite leidinius iš savo vietinės bibliotekos bei atraskite leidinius OPDS sklaidos kanaluose. Internetinių katalogų dėka gaukite prieigą prie gausybės leidinių iš skirtingų šaltinių.",
+      "home": "Thorium atrodo kitaip! Sužinokite, kas naujo...",
+      "readingView1": "Tinkinkite savo skaitymo ir klausymosi nuostatas: nuo šiol Thorium siūlo keletą spalvų temų naudotojo sąsajai bei leidinių dokumentams. Dabar taip pat tapo lengviau konfigūruoti „readaloud“ el. knygas su sintetinio balso ir sinchronizuoto teksto/garso skaitymu.",
+      "readingView2": "Patobulinta Thorium naudotojo sąsaja leidžia lengviau rasti tekstą leidiniuose, peržvelgti paieškos rezultatus, atversti tam tikrą puslapį, naršyti turinyje, kurti žymes ir t.t. naujų „pritvirtintų“ skydelių dėka, o viso ekrano skaitymo režimas ir toliau suteikia aplinką be dėmesio išblaškymo.",
+      "yourBooks": "Su jumis sveikinasi iš naujo suprojektuota asmeninė knygų lentyna! „Tinklelio“ peržiūros režime be vargo galėsite filtruoti pagal žymes arba rasti leidinius pagal raktinius žodžius. „Sąrašo“ režime galėsite peržiurėti, pažymėti ir rikiuoti leidinius pagal konkretų autorių, pavadinimą, datą, formatą ir t.t."
+    },
+    "dontShow": "Daugiau neberodyti",
+    "tab": {
+      "annotations": "Pastabos",
+      "catalogs": "Katalogai",
+      "home": "Pradžia",
+      "readingView": "Skaitymo rodinys",
+      "yourBooks": "Jūsų leidiniai"
+    },
+    "title": {
+      "allBooks": "Visi mano leidiniai",
+      "newFeature": "Nauja funkcija: Pastabos",
+      "welcome": "Su jumis sveikinasi Thorium 3.0"
+    }
+  }
 }

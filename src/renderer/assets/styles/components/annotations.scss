@@ -65,6 +65,34 @@
   }
 }
 
+.annotations_sorting {
+  &_container {
+    background-color: var(--color-extralight-grey);
+    width: fit-content;
+    // border: 1px solid var(--color-light-grey);
+    padding: 15px 5px;
+    box-shadow: 0 0 5px var(--color-light-grey);
+    z-index: 1000;
+    border-radius: 5px;
+
+    @include scrollbar_styling;
+
+    &::-webkit-scrollbar-track {
+      background-color: var(--color-extralight-grey);
+    }
+
+    & .my_item {
+      font-weight: 600;
+      outline: solid 2px transparent !important;
+      border-radius: 4px;
+
+      &::before {
+        background-color: var(--color-blue) !important;
+      }
+    }
+  }
+}
+
 .annotations_filter {
   &_container {
     background-color: var(--color-extralight-grey);
@@ -164,7 +192,7 @@
     background-color: var(--color-light-blue);
     color: var(--color-blue);
 
-    &[data-selected] {
+    &[data-selected], &:has(input:checked) {
       color: var(--color-secondary);
       background-color: var(--color-blue);
     }

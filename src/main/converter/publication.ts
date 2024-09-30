@@ -233,7 +233,6 @@ export class PublicationViewConverter {
         const duration = typeof r2Publication.Metadata.Duration === "number" ? r2Publication.Metadata.Duration : undefined;
         const nbOfTracks = typeof r2Publication.Metadata.AdditionalJSON?.tracks === "number" ? r2Publication.Metadata.AdditionalJSON?.tracks : undefined;
 
-
         const isAudio = r2Publication.Metadata.RDFType?.toLowerCase().includes("audio") || isAudiobookFn(r2Publication.Metadata) || (
             readerStateLocator?.audioPlaybackInfo
                 && readerStateLocator?.audioPlaybackInfo.globalDuration

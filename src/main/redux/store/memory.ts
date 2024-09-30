@@ -23,6 +23,8 @@ import { applyPatch } from "rfc6902";
 
 import { reduxPersistMiddleware } from "../middleware/persistence";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+import { minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -238,6 +240,40 @@ export async function initStore()
     const preloadedState: Partial<PersistRootState> = reduxState ? {
         ...reduxState,
     } : {};
+
+    if (preloadedState.win?.registry?.reader) {
+        for (const id in preloadedState.win.registry.reader) {
+            const state = preloadedState.win.registry.reader[id];
+
+            if (state?.reduxState?.locator) {
+                const locatorExtended = state.reduxState.locator as LocatorExtended;
+                if (locatorExtended.followingElementIDs) {
+                    debug("REMOVE preloadedState.win.registry.reader[id].reduxState.locator.followingElementIDs (LocatorExtended): ", locatorExtended.followingElementIDs.length);
+                }
+                // REMOVE locatorExtended.followingElementIDs, no-op if property does not exist (same object returned)
+                state.reduxState.locator = minimizeLocatorExtended(locatorExtended);
+
+                // SEE isDivinaLocation duck typing hack with totalProgression injection!!
+                const locations = state.reduxState.locator.locator?.locations as any;
+                if (locations?.totalProgression) {
+                    debug("INFO DIVINA preloadedState.win.registry.reader[id].reduxState.locator.locations.totalProgression: ", locations.totalProgression);
+                }
+            }
+
+            if (state?.reduxState?.annotation) {
+                for (const annotation of state.reduxState.annotation) {
+                    if (annotation[1]?.locatorExtended) {
+                        const locatorExtended = annotation[1].locatorExtended as LocatorExtended;
+                        if (locatorExtended.followingElementIDs) {
+                            debug("REMOVE preloadedState.win.registry.reader[id].reduxState.annotation[i].locatorExtended.followingElementIDs (LocatorExtended): ", locatorExtended.followingElementIDs.length);
+                        }
+                        // REMOVE locatorExtended.followingElementIDs, no-op if property does not exist (same object returned)
+                        annotation[1].locatorExtended = minimizeLocatorExtended(annotation[1].locatorExtended);
+                    }
+                }
+            }
+        }
+    }
 
     // defaultConfig state initialization from older database thorium version 2.x, 3.0
     if (preloadedState?.reader?.defaultConfig) {

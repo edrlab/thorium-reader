@@ -15,6 +15,7 @@ import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scs
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
+import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 
 import classNames from "classnames";
 import * as React from "react";
@@ -49,7 +50,8 @@ import * as AnnotationIcon from "readium-desktop/renderer/assets/icons/annotatio
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar-icon.svg";
 // import * as DuplicateIcon from "readium-desktop/renderer/assets/icons/duplicate-icon.svg";
 
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -67,9 +69,9 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { Locator } from "r2-shared-js/dist/es8-es2017/src/models/locator";
+import { Locator } from "@r2-shared-js/models/locator";
 // import { DialogTrigger as DialogTriggerReactAria, Popover as PopoverReactAria, Dialog as DialogReactAria } from "react-aria-components";
-import { TextArea } from "react-aria-components";
+import { ListBox, ListBoxItem, TextArea } from "react-aria-components";
 import { AnnotationEdit, annotationsColorsLight } from "./AnnotationEdit";
 import { IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { readerActions } from "readium-desktop/common/redux/actions";
@@ -84,6 +86,7 @@ import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
 import * as OptionsIcon from "readium-desktop/renderer/assets/icons/filter2-icon.svg";
+import * as SortIcon from "readium-desktop/renderer/assets/icons/sort-icon.svg";
 import * as HighLightIcon from "readium-desktop/renderer/assets/icons/highlight-icon.svg";
 import * as UnderLineIcon from "readium-desktop/renderer/assets/icons/underline-icon.svg";
 import * as TextStrikeThroughtIcon from "readium-desktop/renderer/assets/icons/TextStrikethrough-icon.svg";
@@ -101,7 +104,7 @@ import { convertAnnotationListToReadiumAnnotationSet } from "readium-desktop/com
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderMenuProps {
     // focusNaviguationMenu: () => void;
-    currentLocation: LocatorExtended;
+    currentLocation: MiniLocatorExtended;
     isDivina: boolean;
     isPdf: boolean;
     pdfNumberOfPages: number;
@@ -200,7 +203,7 @@ const renderLinkList = (isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBa
     return T;
 };
 
-const renderLinkTree = (currentLocation: LocatorExtended, isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBaseProps["handleLinkClick"], dockedMode: boolean) => {
+const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: ILink) => boolean, handleLinkClick: IBaseProps["handleLinkClick"], dockedMode: boolean) => {
     const RenderLinkTree = (label: string | undefined, links: TToc, level: number, headingTrailLink: ILink | undefined): JSX.Element => {
         // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
         const useTree = false;
@@ -417,6 +420,24 @@ const HardWrapComment: React.FC<{ comment: string }> = (props) => {
     );
 };
 
+export const computeProgression = (spineItemLinks: Link[], locator: Locator) => {
+
+    let percent = 100;
+    if (spineItemLinks.length && locator.href) {
+        const index = spineItemLinks.findIndex((item) => item.Href === locator.href);
+        if (index >= 0) {
+            if (typeof locator.locations?.progression === "number") {
+                percent = 100 * ((index + locator.locations.progression) / spineItemLinks.length);
+            } else {
+                percent = 100 * (index / spineItemLinks.length);
+            }
+            percent = Math.round(percent * 100) / 100;
+        }
+    }
+
+    return percent;
+};
+
 const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
     const { goToLocator, setTagFilter } = props;
@@ -448,6 +469,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 comment,
                 drawType,
                 tags,
+                modified: (new Date()).getTime(),
             },
         ));
         triggerEdition(false);
@@ -457,22 +479,12 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;
 
     const { style, percentRounded } = React.useMemo(() => {
-
-        let percent = 100;
-        let percentRounded = -1;
-        if (r2Publication.Spine?.length && annotation.locatorExtended.locator?.href) {
-            const index = r2Publication.Spine.findIndex((item) => item.Href === annotation.locatorExtended.locator.href);
-            if (index >= 0) {
-                if (typeof annotation.locatorExtended.locator?.locations?.progression === "number") {
-                    percent = 100 * ((index + annotation.locatorExtended.locator.locations.progression) / r2Publication.Spine.length);
-                } else {
-                    percent = 100 * (index / r2Publication.Spine.length);
-                }
-                percent = Math.round(percent * 100) / 100;
-                percentRounded = Math.round(percent);
-            }
+        if (r2Publication.Spine && annotation.locatorExtended.locator) {
+            const percent = computeProgression(r2Publication.Spine || [], annotation.locatorExtended.locator);
+            const percentRounded = Math.round(percent);
+            return { style: { width: `${percent}%` }, percentRounded };
         }
-        return { style: { width: `${percent}%` }, percentRounded };
+        return { style: { width: "100%" }, percentRounded: 100 };
     }, [r2Publication, annotation]);
 
     // const bname = (annotation?.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText.slice(0, 20)}` : `${__("reader.navigation.annotationTitle")} ${index}`);
@@ -669,6 +681,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
     const [__] = useTranslator();
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
     const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
+    const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
 
     const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
     const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
@@ -725,6 +738,30 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
             }
         }
         resetAnnotationUUID();
+    }
+
+    const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
+    if (sortType !== "all" && sortType.has("progression")) {
+
+        annotationList.sort((a, b) => {
+            const [, {locatorExtended: {locator: la}}] = a;
+            const [, {locatorExtended: {locator: lb}}] = b;
+            const pcta = computeProgression(r2Publication.Spine, la);
+            const pctb = computeProgression(r2Publication.Spine, lb);
+            return pcta - pctb;
+        });
+    } else if (sortType !== "all" && sortType.has("lastCreated")) {
+        annotationList.sort((a, b) => {
+            const [ta] = a;
+            const [tb] = b;
+            return tb - ta;
+        });
+    } else if (sortType !== "all" && sortType.has("lastModified")) {
+        annotationList.sort((a, b) => {
+            const [, {modified: ma}] = a;
+            const [, {modified: mb}] = b;
+            return ma && mb ? mb - ma : ma ? -1 : mb ? 1 : 0;
+        });
     }
 
     const pageTotal = Math.ceil(annotationList.length / MAX_MATCHES_PER_PAGE) || 1;
@@ -833,6 +870,44 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                     title={__("catalog.exportAnnotation")}>
                     <SVG svg={SaveIcon} />
                 </button>
+                <Popover.Root>
+                    <Popover.Trigger asChild>
+                        <button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button}
+                            title={__("reader.annotations.sorting.sortingOptions")}>
+                            <SVG svg={SortIcon} />
+                        </button>
+                    </Popover.Trigger>
+                    <Popover.Portal>
+                        <Popover.Content collisionPadding={{ top: 200, bottom: 100 }} avoidCollisions alignOffset={-10} align="end" hideWhenDetached={true} sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2)}}>
+                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                            <ListBox
+                                selectedKeys={sortType}
+                                onSelectionChange={setSortType}
+                                selectionMode="multiple"
+                                selectionBehavior="replace"
+                                aria-label={__("reader.annotations.sorting.sortingOptions")}
+                            >
+                                <ListBoxItem id="progression" key="progression" aria-label="progression" className={({ isFocused, isSelected }) =>
+                                    classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
+                                style={{marginBottom: "5px"}}
+                                    >
+                                    {__("reader.annotations.sorting.progression")}
+                                </ListBoxItem>
+                                <ListBoxItem id="lastCreated" key="lastCreated" aria-label="lastCreated" className={({ isFocused, isSelected }) =>
+                                    classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
+                                style={{marginBottom: "5px"}}
+                                    >
+                                    {__("reader.annotations.sorting.lastcreated")}
+                                </ListBoxItem>
+                                <ListBoxItem id="lastModified" key="lastModified" aria-label="lastModified" className={({ isFocused, isSelected }) =>
+                                    classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
+                                    >
+                                    {__("reader.annotations.sorting.lastmodified")}
+                                </ListBoxItem>
+                            </ListBox>
+                        </Popover.Content>
+                    </Popover.Portal>
+                </Popover.Root>
                 <Popover.Root>
                     <Popover.Trigger asChild>
                         <button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button}
