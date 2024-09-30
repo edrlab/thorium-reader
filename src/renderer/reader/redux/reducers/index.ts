@@ -44,6 +44,7 @@ import { readerTransientConfigReducer } from "./readerTransientConfig";
 import { readerAllowCustomConfigReducer } from "readium-desktop/common/redux/reducers/reader/allowCustom";
 import { annotationTagsIndexReducer } from "./annotationTagsIndex";
 import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
+import { importAnnotationReducer } from "readium-desktop/renderer/common/redux/reducers/importAnnotation";
 
 export const rootReducer = () => {
 
@@ -188,5 +189,6 @@ export const rootReducer = () => {
         keyboard: keyboardReducer,
         mode: winModeReducer,
         creator: creatorReducer,
+        importAnnotations: importAnnotationReducer,
     });
 };

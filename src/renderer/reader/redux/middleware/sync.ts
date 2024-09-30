@@ -50,6 +50,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.annotation.update.ID,
 
     annotationActions.importAnnotationSet.ID,
+    annotationActions.importConfirmOrAbort.ID,
+
     creatorActions.set.ID,
 ];
 

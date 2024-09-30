@@ -99,6 +99,7 @@ import type { Selection } from "react-aria-components";
 import { rgbToHex } from "readium-desktop/common/rgb";
 import { IReadiumAnnotationModelSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { convertAnnotationListToReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/converter";
+import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/components/ImportAnnotationsDialog";
 
 
 
@@ -872,13 +873,15 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                     title={__("catalog.exportAnnotation")}>
                     <SVG svg={SaveIcon} />
                 </button>
-                <button className={stylesAnnotations.annotations_filter_trigger_button}
-                    onClick={() => {
-                        dispatch(annotationActions.importAnnotationSet.build(publicationView.identifier, winId));
-                    }}
-                    title={__("catalog.importAnnotation")}>
-                    <SVG svg={ImportIcon} />
-                </button>
+                <ImportAnnotationsDialog>
+                    <button className={stylesAnnotations.annotations_filter_trigger_button}
+                        onClick={() => {
+                            dispatch(annotationActions.importAnnotationSet.build(publicationView.identifier, winId));
+                        }}
+                        title={__("catalog.importAnnotation")}>
+                        <SVG svg={ImportIcon} />
+                    </button>
+                </ImportAnnotationsDialog>
                 <Popover.Root>
                     <Popover.Trigger asChild>
                         <button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button}
@@ -887,7 +890,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         </button>
                     </Popover.Trigger>
                     <Popover.Portal>
-                        <Popover.Content collisionPadding={{ top: 200, bottom: 100 }} avoidCollisions alignOffset={-10} align="end" hideWhenDetached={true} sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2)}}>
+                        <Popover.Content collisionPadding={{ top: 200, bottom: 100 }} avoidCollisions alignOffset={-10} align="end" hideWhenDetached={true} sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2) }}>
                             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
                             <ListBox
                                 selectedKeys={sortType}
@@ -898,19 +901,19 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                             >
                                 <ListBoxItem id="progression" key="progression" aria-label="progression" className={({ isFocused, isSelected }) =>
                                     classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
-                                style={{marginBottom: "5px"}}
-                                    >
+                                    style={{ marginBottom: "5px" }}
+                                >
                                     {__("reader.annotations.sorting.progression")}
                                 </ListBoxItem>
                                 <ListBoxItem id="lastCreated" key="lastCreated" aria-label="lastCreated" className={({ isFocused, isSelected }) =>
                                     classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
-                                style={{marginBottom: "5px"}}
-                                    >
+                                    style={{ marginBottom: "5px" }}
+                                >
                                     {__("reader.annotations.sorting.lastcreated")}
                                 </ListBoxItem>
                                 <ListBoxItem id="lastModified" key="lastModified" aria-label="lastModified" className={({ isFocused, isSelected }) =>
                                     classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
-                                    >
+                                >
                                     {__("reader.annotations.sorting.lastmodified")}
                                 </ListBoxItem>
                             </ListBox>

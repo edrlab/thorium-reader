@@ -13,7 +13,7 @@ import { annotationActions, readerActions, toastActions } from "readium-desktop/
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
-import { call, SagaGenerator, put, select } from "typed-redux-saga";
+import { call, SagaGenerator, put, select, take } from "typed-redux-saga";
 import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { hexToRgb } from "readium-desktop/common/rgb";
 import { isNil } from "readium-desktop/utils/nil";
@@ -29,6 +29,7 @@ import { getPublication } from "./api/publication/getPublication";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
+import { v4 as uuidv4 } from "uuid";
 
 
 // Logger
@@ -134,7 +135,8 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 }
 
 
-                const annotationsParsedBuffer: IAnnotationState[] = [];
+                const annotationsParsedNoConflictArray: IAnnotationState[] = [];
+                const annotationsParsedAllArray: IAnnotationState[] = [];
 
                 debug("There are", annotationsIncommingArray.length, "incomming annotations to be imported");
 
@@ -147,7 +149,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                     const fragmentSelector = incommingAnnotation.target.selector.find(isFragmentSelector);
 
                     const annotationParsed: IAnnotationState = {
-                        uuid: incommingAnnotation.id.split("urn:uuid:")[1], // TODO : may not be an uuid format and maybe we should hash the uuid to get a unique identifier based on the original uuid
+                        uuid: incommingAnnotation.id.split("urn:uuid:")[1] || uuidv4(), // TODO : may not be an uuid format and maybe we should hash the uuid to get a unique identifier based on the original uuid
                         locatorExtended: {
                             locator: {
                                 href: incommingAnnotation.target.source,
@@ -234,25 +236,61 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                     debug("incomming annotation Parsed And Formated (", annotationParsed.uuid, "), and now ready to be imported in the publication!");
                     debug(JSON.stringify(annotationParsed));
 
-                    if (annotations.find(({ uuid }) => uuid === annotationParsed.uuid)) {
+                    annotationsParsedAllArray.push(annotationParsed);
 
-                        // Oups there is a conflict !
-                        // ask to user how to reconciliate
+
+                    // check conflict and for the moment it's just an uuid conflict, but in the future the conflict may be the modified date
+                    if (annotations.find(({ uuid }) => uuid === annotationParsed.uuid)) {
 
                         debug(`ANNOTATION CONFLICT WITH ${annotationParsed.uuid} !`);
                     } else {
 
-                        annotationsParsedBuffer.push(annotationParsed);
+                        annotationsParsedNoConflictArray.push(annotationParsed);
                     }
 
                 }
 
-                if (!annotationsParsedBuffer.length) {
+                // TODO re-enable this
+                // if (!annotationsParsedBuffer.length) {
 
-                    debug("there are no annotations ready to be imported, exit");
-                    yield* put(toastActions.openRequest.build(ToastType.Success, `Success !, the ${annotationsIncommingArray.length} annotation(s) are already present in the publication, nothing has been imported`, readerPublicationIdentifier));
+                //     debug("there are no annotations ready to be imported, exit");
+                //     yield* put(toastActions.openRequest.build(ToastType.Success, `Success !, the ${annotationsIncommingArray.length} annotation(s) are already present in the publication, nothing has been imported`, readerPublicationIdentifier));
+                //     return;
+
+                // }
+
+                const annotationsParsedConflictList = annotationsParsedAllArray.filter((v) => !annotationsParsedNoConflictArray.includes(v));
+
+                // dispatch data to the user modal
+                yield* put(annotationActions.importTriggerModal.build(
+                    {
+                        about: data.about ? {...data.about} : undefined,
+                        title: data.title || "",
+                        generated: data.generated || "",
+                        generator: data.generator ? { ...data.generator} : undefined,
+                    },
+                    annotationsParsedNoConflictArray,
+                    annotationsParsedConflictList,
+                ));
+
+                // wait the modal confirmation or abort
+                const actionConfirmOrAbort = yield* take(annotationActions.importConfirmOrAbort.build);
+                if (!actionConfirmOrAbort?.payload || actionConfirmOrAbort.payload.state === "abort") {
+                    // aborted
+
+                    debug("ABORTED, exit");
                     return;
+                }
 
+                const annotationsParsedBuffer = actionConfirmOrAbort.payload.state === "importNoConflict"
+                    ? annotationsParsedNoConflictArray
+                    : annotationsParsedAllArray;
+
+                // if the user force import annotations in conflict
+                if (actionConfirmOrAbort.payload.state === "importAll") {
+                    annotationsParsedConflictList.forEach((anno) => {
+                        anno.uuid = uuidv4();
+                    });
                 }
 
                 debug("ready to send", annotationsParsedBuffer.length, "annotation(s) to the reader");

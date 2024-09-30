@@ -13,6 +13,7 @@ import {
     publicationActions, themeActions,
     readerActions, sessionActions, toastActions, versionUpdateActions,
     creatorActions,
+    annotationActions,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
@@ -82,6 +83,9 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     sessionActions.save.ID,
 
     creatorActions.set.ID,
+
+    annotationActions.importTriggerModal.ID,
+
 ];
 
 export const reduxSyncMiddleware: Middleware

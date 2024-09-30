@@ -6,7 +6,11 @@
 // ==LICENSE-END==
 
 import * as importAnnotationSet from "./importAnnotationSet";
+import * as importTriggerModal from "./importTriggerModal";
+import * as importConfirmOrAbort from "./importConfirmOrAbort";
 
 export {
     importAnnotationSet,
+    importTriggerModal,
+    importConfirmOrAbort,
 };

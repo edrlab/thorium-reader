@@ -59,6 +59,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     sessionActions.save.ID,
 
     annotationActions.importAnnotationSet.ID,
+    annotationActions.importConfirmOrAbort.ID,
 
     creatorActions.set.ID,
 
