@@ -174,7 +174,7 @@ const SaveCreatorSettings: React.FC<{}> = () => {
         <section className={stylesSettings.section} style={{ position: "relative" }}>
             <h4>{__("settings.annotationCreator.creator")}</h4>
             <div className={stylesInput.form_group} style={{marginTop: "20px", width: "360px"}}>
-                <input type="text" name="creator-name" style={{width: "100%", marginLeft: "10px"}} title={name} value={name} onChange={(e) => {
+                <input type="text" name="creator-name" style={{width: "100%", marginLeft: "10px"}} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={name} value={name} onChange={(e) => {
                     const v = e.target.value;
                     setName(v);
                 }} />
