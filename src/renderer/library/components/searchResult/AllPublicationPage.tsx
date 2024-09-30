@@ -397,11 +397,11 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
     // className={classNames(classStyleExample)}
 
     return (
-        <div className={stylesInput.form_group}>
+        <div className={classNames(stylesInput.form_group, stylesInput.form_group_allPubSearch)}>
             <label
                 id="globalSearchLabel"
                 htmlFor="globalSearchInput"
-                style={{ display: "flex", gap: "5px" }}>
+                style={{ display: "flex", gap: "2px" }}>
                 {`${props.__("header.searchPlaceholder")}`}
                 <div
                     aria-live="assertive">

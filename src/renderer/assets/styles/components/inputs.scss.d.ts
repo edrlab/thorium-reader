@@ -2,6 +2,7 @@ export declare const CSS_END_components_inputs: string;
 export declare const CSS_START_components_inputs: string;
 export declare const dropzone: string;
 export declare const form_group: string;
+export declare const form_group_allPubSearch: string;
 export declare const form_group_catalog: string;
 export declare const form_group_wrapper: string;
 export declare const outline: string;
