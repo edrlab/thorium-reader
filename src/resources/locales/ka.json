@@ -331,6 +331,12 @@
       "noSelectionToast": "",
       "quickAnnotations": "",
       "saveNote": "",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "",
       "type": {
         "outline": "",
@@ -492,7 +498,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "აუტენტიფიკაციის მონაცემების გასუფთავება"
     },
     "keyboard": {
@@ -507,6 +521,10 @@
     },
     "language": {
       "languageChoice": "ენის არჩევანი"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "გამორთულია",

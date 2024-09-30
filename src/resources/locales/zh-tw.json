@@ -331,6 +331,12 @@
       "noSelectionToast": "沒有選擇",
       "quickAnnotations": "快速建立（跳過編輯）",
       "saveNote": "保存",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "在頁邊距中顯示",
       "type": {
         "outline": "輪廓",
@@ -492,7 +498,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "清除登入數據"
     },
     "keyboard": {
@@ -507,6 +521,10 @@
     },
     "language": {
       "languageChoice": "選擇語言"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "禁用",

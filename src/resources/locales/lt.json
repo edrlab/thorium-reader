@@ -331,6 +331,12 @@
       "noSelectionToast": "Niekas nepasirinkta",
       "quickAnnotations": "Greitasis kūrimas (praleidžiant rengyklę)",
       "saveNote": "Išsaugoti",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Atvaizduoti paraštėse",
       "type": {
         "outline": "Kontūras",
@@ -492,7 +498,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Išvalyti prisijungimo duomenis"
     },
     "keyboard": {
@@ -507,6 +521,10 @@
     },
     "language": {
       "languageChoice": "Kalba"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Išjungti",

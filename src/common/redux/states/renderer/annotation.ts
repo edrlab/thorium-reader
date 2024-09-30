@@ -24,6 +24,7 @@ export interface IAnnotationState {
     color: IColor;
     drawType: TDrawType;
     tags?: string[] | undefined;
+    modified?: number;
 }
 
 export type TAnnotationState = TPQueueState<number, IAnnotationState>;

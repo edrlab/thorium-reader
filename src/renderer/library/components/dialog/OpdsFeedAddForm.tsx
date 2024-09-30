@@ -27,19 +27,49 @@ import * as penIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as linkIcon from "readium-desktop/renderer/assets/icons/link-icon.svg";
 import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon-bold.svg";
 
-export const ApiappAddFormDialog = () => {
+export const OpdsFeedHowDoesItWorksInfoBox = () => {
+
+    const [__] = useTranslator();
+    const [infoOpen, setInfoOpen] = React.useState(false);
+
+
+    return (<div>
+        <button className={stylesButtons.button_catalog_infos} onClick={(e) => { e.preventDefault(); setInfoOpen(!infoOpen); }}>
+            <SVG ariaHidden svg={InfoIcon} />
+            {__("opds.whatIsOpds")}
+            <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
+        </button>
+        {infoOpen ?
+            <div className={stylesCatalogs.catalog_infos_text}>
+                <p>
+                    {__("opds.informations")}
+                </p>
+                <a href=""
+                    onClick={async (ev) => {
+                        ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
+                        await shell.openExternal("https://opds.io/");
+                    }}>
+                    {__("opds.documentation")}
+                    <SVG ariaHidden svg={FollowLinkIcon} />
+                </a>
+            </div>
+            : <></>}
+    </div>);
+};
+
+export const OpdsFeedAddFormDialog = () => {
     const [__] = useTranslator();
     const [, apiAddFeedAction] = useApi(undefined, "opds/addFeed");
 
     const [title, setTitle] = React.useState("");
     const [url, setUrl] = React.useState("");
-    const [infoOpen, setInfoOpen] = React.useState(false);
     const addAction = () => {
         if (!title || !url) {
             return;
         }
         apiAddFeedAction({ title, url });
     };
+
 
     return <Dialog.Root>
         <Dialog.Trigger asChild>
@@ -96,28 +126,7 @@ export const ApiappAddFormDialog = () => {
                                 required
                             />
                         </div>
-                        <div>
-                            <button className={stylesButtons.button_catalog_infos} onClick={(e) => {e.preventDefault(); setInfoOpen(!infoOpen);}}>
-                                <SVG ariaHidden svg={InfoIcon} />
-                                {__("opds.whatIsOpds")}
-                                <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
-                            </button>
-                            {infoOpen ?
-                                <div className={stylesCatalogs.catalog_infos_text}>
-                                    <p>
-                                    {__("opds.informations")}
-                                    </p>
-                                    <a href=""
-                                        onClick={async (ev) => {
-                                            ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                                            await shell.openExternal("https://opds.io/");
-                                        }}>
-                                    {__("opds.documentation")}
-                                        <SVG ariaHidden svg={FollowLinkIcon} />
-                                    </a>
-                                </div>
-                                : <></>}
-                        </div>
+                        <OpdsFeedHowDoesItWorksInfoBox />
                     </div>
                     <div className={stylesModals.modal_dialog_footer}>
                         <Dialog.Close asChild>
@@ -135,5 +144,3 @@ export const ApiappAddFormDialog = () => {
         </Dialog.Portal>
     </Dialog.Root>;
 };
-
-export default ApiappAddFormDialog;

@@ -726,6 +726,12 @@ declare namespace typed_i18n {
     readonly "noSelectionToast": string,
     readonly "quickAnnotations": string,
     readonly "saveNote": string,
+    readonly "sorting": {
+      readonly "lastcreated": string,
+      readonly "lastmodified": string,
+      readonly "progression": string,
+      readonly "sortingOptions": string
+    },
     readonly "toggleMarginMarks": string,
     readonly "type": {
       readonly "outline": string,
@@ -902,6 +908,12 @@ declare namespace typed_i18n {
   readonly "noSelectionToast": string,
   readonly "quickAnnotations": string,
   readonly "saveNote": string,
+  readonly "sorting": {
+    readonly "lastcreated": string,
+    readonly "lastmodified": string,
+    readonly "progression": string,
+    readonly "sortingOptions": string
+  },
   readonly "toggleMarginMarks": string,
   readonly "type": {
     readonly "outline": string,
@@ -951,6 +963,16 @@ declare namespace typed_i18n {
   (_: "reader.annotations.noSelectionToast", __?: {}): string;
   (_: "reader.annotations.quickAnnotations", __?: {}): string;
   (_: "reader.annotations.saveNote", __?: {}): string;
+  (_: "reader.annotations.sorting", __?: {}): {
+  readonly "lastcreated": string,
+  readonly "lastmodified": string,
+  readonly "progression": string,
+  readonly "sortingOptions": string
+};
+  (_: "reader.annotations.sorting.lastcreated", __?: {}): string;
+  (_: "reader.annotations.sorting.lastmodified", __?: {}): string;
+  (_: "reader.annotations.sorting.progression", __?: {}): string;
+  (_: "reader.annotations.sorting.sortingOptions", __?: {}): string;
   (_: "reader.annotations.toggleMarginMarks", __?: {}): string;
   (_: "reader.annotations.type", __?: {}): {
   readonly "outline": string,
@@ -1285,7 +1307,14 @@ declare namespace typed_i18n {
   (_: "reader.tts.stop", __?: {}): string;
   (_: "reader.tts.voice", __?: {}): string;
   (_: "settings", __?: {}): {
-  readonly "auth": { readonly "wipeData": string },
+  readonly "annotationCreator": {
+    readonly "creator": string,
+    readonly "name": string,
+    readonly "organization": string,
+    readonly "person": string,
+    readonly "type": string
+  },
+  readonly "auth": { readonly "title": string, readonly "wipeData": string },
   readonly "keyboard": {
     readonly "advancedMenu": string,
     readonly "cancel": string,
@@ -1313,9 +1342,26 @@ declare namespace typed_i18n {
     readonly "description": string,
     readonly "light": string,
     readonly "title": string
+  },
+  readonly "library": {
+    readonly "title": string,
+    readonly "enableAPIAPP": string
   }
 };
-  (_: "settings.auth", __?: {}): { readonly "wipeData": string };
+  (_: "settings.annotationCreator", __?: {}): {
+  readonly "creator": string,
+  readonly "name": string,
+  readonly "organization": string,
+  readonly "person": string,
+  readonly "type": string
+};
+  (_: "settings.annotationCreator.creator", __?: {}): string;
+  (_: "settings.annotationCreator.name", __?: {}): string;
+  (_: "settings.annotationCreator.organization", __?: {}): string;
+  (_: "settings.annotationCreator.person", __?: {}): string;
+  (_: "settings.annotationCreator.type", __?: {}): string;
+  (_: "settings.auth", __?: {}): { readonly "title": string, readonly "wipeData": string };
+  (_: "settings.auth.title", __?: {}): string;
   (_: "settings.auth.wipeData", __?: {}): string;
   (_: "settings.keyboard", __?: {}): {
   readonly "advancedMenu": string,
@@ -1361,6 +1407,9 @@ declare namespace typed_i18n {
   (_: "settings.theme.description", __?: {}): string;
   (_: "settings.theme.light", __?: {}): string;
   (_: "settings.theme.title", __?: {}): string;
+  (_: "settings.library", __?: {}): { readonly "title": string, readonly "enableAPIAPP": string };
+  (_: "settings.library.title", __?: {}): string;
+  (_: "settings.library.enableAPIAPP", __?: {}): string;
   (_: "wizard", __?: {}): {
   readonly "buttons": {
     readonly "discover": string,

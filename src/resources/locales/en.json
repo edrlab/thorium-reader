@@ -331,6 +331,12 @@
       "noSelectionToast": "No selection",
       "quickAnnotations": "Quick create (skip editor)",
       "saveNote": "Save",
+      "sorting": {
+        "lastcreated": "Last created",
+        "lastmodified": "Last modified",
+        "progression": "Progression",
+        "sortingOptions": "Sorting Options"
+      },
       "toggleMarginMarks": "Display in margins",
       "type": {
         "outline": "Outline",
@@ -492,7 +498,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "Creator",
+      "name": "Name",
+      "organization": "Organization",
+      "person": "Person",
+      "type": "Type:"
+    },
     "auth": {
+      "title": "Manage access to catalogs",
       "wipeData": "Clear login data"
     },
     "keyboard": {
@@ -507,6 +521,10 @@
     },
     "language": {
       "languageChoice": "Language"
+    },
+    "library": {
+      "enableAPIAPP": "Activate access to Dilicom PNB API",
+      "title": "Add a library account"
     },
     "session": {
       "no": "Disable",

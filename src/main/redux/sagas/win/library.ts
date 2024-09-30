@@ -110,6 +110,8 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
             // state: state.session.state,
             save: state.session.save,
         },
+        creator: state.creator,
+        settings: state.settings,
     };
     try {
         const publication = yield* callTyped(getCatalog);
