@@ -556,13 +556,10 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
             {
                 isEdited
                     ?
-                    //  <FocusLock disabled={dockedMode} autoFocus={true}>
-                    // TODO fix issue with focusLock on modal not docked
-                    // <FocusLock disabled={true} autoFocus={true}>
-                    <AnnotationEdit uuid={uuid} save={save} cancel={() => triggerEdition(false)} dockedMode={dockedMode} btext={dockedEditAnnotation && btext} />
-                    // </FocusLock>
+                    <FocusLock disabled={false} autoFocus={true}>
+                        <AnnotationEdit uuid={uuid} save={save} cancel={() => triggerEdition(false)} dockedMode={dockedMode} btext={dockedEditAnnotation && btext} />
+                    </FocusLock>
                     :
-                    // <HardWrapComment comment={comment} />
                     <>
                         <HardWrapComment comment={comment} />
                         {tagName ? <div className={stylesTags.tags_wrapper}>
