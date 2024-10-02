@@ -17,7 +17,7 @@
     "clean": "rimraf dist && rimraf release",
     "test": "cross-env JEST_TESTS=1 jest --config=jest.config.js --verbose --runInBand --bail=1 --no-cache \"test\"",
     "testFile": "cross-env JEST_TESTS=1 jest --config=jest.config.js --verbose --runInBand --bail=1 --no-cache ",
-    "postinstall": "node ./scripts/adobe-spectrum-react-aria-components-patch.js",
+    "postinstall": "node ./scripts/adobe-spectrum-react-aria-components-patch.js && node ./scripts/r2-navigator-js-touch-selection-patch.js",
     "_NOT_NEEDED_postinstall": "npm run pinCompromisedColorPackage && npm run electron-build",
     "_NOT_NEEDED_pinCompromisedColorPackage": "(npm ls colors || echo \"NPM LS?\") && rimraf node_modules/electron-rebuild/node_modules/colors && rimraf node_modules/dir-compare/node_modules/colors",
     "_NOT_NEEDED_pinCompromisedColorPackage_": "find node_modules -maxdepth 100 -type d -name \"colors\" && npm ls colors",
