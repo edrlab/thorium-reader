@@ -1248,11 +1248,11 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const optionTextItem = { id: 0, value: "tab-text", name: __("reader.settings.text"), disabled: !overridePublisherDefault, svg: TextAreaIcon };
 
     const DivinaTrigger =
-        <Tabs.Trigger value="tab-divina" disabled={!overridePublisherDefault} title={__("reader.settings.disposition.title")} key={"tab-divina"}>
+        <Tabs.Trigger value="tab-divina" disabled={false} title={__("reader.settings.disposition.title")} key={"tab-divina"}>
             <SVG ariaHidden svg={TextAreaIcon} />
             <h3>{__("reader.settings.disposition.title")}</h3>
         </Tabs.Trigger>;
-    const optionDivinaItem = { id: 1, value: "tab-divina", name: __("reader.settings.disposition.title"), disabled: !overridePublisherDefault, svg: TextAreaIcon };
+    const optionDivinaItem = { id: 1, value: "tab-divina", name: __("reader.settings.disposition.title"), disabled: false, svg: TextAreaIcon };
 
     const SpacingTrigger =
         <Tabs.Trigger value="tab-spacing" disabled={!overridePublisherDefault} key={"tab-spacing"} title={__("reader.settings.spacing")} data-value={"tab-spacing"}>
@@ -1317,8 +1317,10 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         sections.push(SpacingTrigger);
         options.push(optionSpacingItem);
     }
-    sections.push(PresetTrigger);
-    options.push(optionPresetItem);
+    if (isPdf || isEpub) {
+        sections.push(PresetTrigger);
+        options.push(optionPresetItem);
+    }
 
 
     const setDockingModeFull = () => setDockingMode("full");
