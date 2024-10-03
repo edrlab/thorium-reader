@@ -105,6 +105,7 @@ import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import * as ValidatedIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as OnGoingBookIcon from "readium-desktop/renderer/assets/icons/ongoingBook-icon.svg";
 import debounce from "debounce";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 
 // import GridTagButton from "../catalog/GridTagButton";
 
@@ -1950,6 +1951,87 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     };
     const tableInstance =
         useTable<IColumns>(opts, useFilters, useGlobalFilter, useSortBy, usePagination) as MyTableInstance<IColumns>;
+
+    const keyboardShortcuts = useSelector((state: ILibraryRootState) => state.keyboard.shortcuts);
+
+    const onKeyboardNavigateFirst = React.useCallback(() => {
+        tableInstance.gotoPage(0);
+    }, [tableInstance]);
+    const onKeyboardNavigatePrevious = React.useCallback(() => {
+        tableInstance.previousPage();
+    }, [tableInstance]);
+    const onKeyboardNavigateNext = React.useCallback(() => {
+        tableInstance.nextPage();
+    }, [tableInstance]);
+    const onKeyboardNavigateLast = React.useCallback(() => {
+        tableInstance.gotoPage(tableInstance.pageCount - 1);
+    }, [tableInstance]);
+
+    const registerAllKeyboardListeners = React.useCallback(() => {
+
+        console.log(" MOUNTED ~!!!!");
+        console.log(" MOUNTED ~!!!!");
+        console.log(" MOUNTED ~!!!!");
+        console.log(" MOUNTED ~!!!!");
+        console.log(" MOUNTED ~!!!!");
+        console.log(" MOUNTED ~!!!!");
+        console.log(" MOUNTED ~!!!!");
+        console.log(" MOUNTED ~!!!!");
+        console.log(" MOUNTED ~!!!!");
+        console.log(" MOUNTED ~!!!!");
+        console.log(" MOUNTED ~!!!!");
+        console.log(" MOUNTED ~!!!!");
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            keyboardShortcuts.NavigatePreviousLibraryPageAlt,
+            onKeyboardNavigateFirst);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            keyboardShortcuts.NavigatePreviousLibraryPage,
+            onKeyboardNavigatePrevious);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            keyboardShortcuts.NavigateNextLibraryPage,
+            onKeyboardNavigateNext);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            keyboardShortcuts.NavigateNextLibraryPageAlt,
+            onKeyboardNavigateLast);
+    }, [onKeyboardNavigateFirst, onKeyboardNavigateLast, onKeyboardNavigateNext, onKeyboardNavigatePrevious,
+        keyboardShortcuts.NavigatePreviousLibraryPageAlt,
+        keyboardShortcuts.NavigatePreviousLibraryPage,
+        keyboardShortcuts.NavigateNextLibraryPage,
+        keyboardShortcuts.NavigateNextLibraryPageAlt,
+    ]);
+
+    const unregisterAllKeyboardListeners = React.useCallback(() => {
+        unregisterKeyboardListener(onKeyboardNavigateFirst);
+        unregisterKeyboardListener(onKeyboardNavigateLast);
+        unregisterKeyboardListener(onKeyboardNavigatePrevious);
+        unregisterKeyboardListener(onKeyboardNavigateNext);
+    }, [onKeyboardNavigateFirst, onKeyboardNavigateLast, onKeyboardNavigateNext, onKeyboardNavigatePrevious]);
+
+    // const firstMountRef = React.useRef(true);
+    // const keyboardShortcutsRef = React.useRef(keyboardShortcuts);
+    React.useEffect(() => {
+        ensureKeyboardListenerIsInstalled();
+
+        // if (firstMountRef.current) {
+        //     registerAllKeyboardListeners();
+        //     firstMountRef.current = false;
+        // }
+
+        // if (!keyboardShortcutsMatch(keyboardShortcutsRef.current, keyboardShortcuts)) {
+            unregisterAllKeyboardListeners();
+            registerAllKeyboardListeners();
+            // keyboardShortcutsRef.current = keyboardShortcuts;
+        // }
+
+        return () => {
+            unregisterAllKeyboardListeners();
+        };
+    }, [registerAllKeyboardListeners, unregisterAllKeyboardListeners, keyboardShortcuts]);
 
     React.useEffect(() => {
 
