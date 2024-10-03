@@ -97,10 +97,10 @@ class PageNavigation extends React.Component<IProps, undefined> {
                     <button
                         className={stylesPublication.allBooks_header_pagination_arrow}
                         aria-label={`${__("opds.firstPage")}`}
-                        disabled={!pageLinks?.first[0]?.url }
+                        disabled={!pageLinks?.first[0]?.url || pageInfo?.currentPage === 0 }
                         tabIndex={-1}
                     >
-                        {pageLinks?.first[0]?.url || pageInfo?.currentPage === 0 ?
+                        {pageLinks?.first[0]?.url ?
                             <Link
                                 to={{
                                     ...this.props.location,
