@@ -95,7 +95,7 @@ class Header extends React.Component<IProps, undefined> {
                 label={__("accessibility.skipLink")}
             />
             <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
-                <h1 className={stylesHeader.appName}></h1>
+                <h1 className={stylesHeader.appName} aria-label="Thorium"></h1>
                 <ul style={{paddingTop: "10px"}}>
                     <div>
                     {
