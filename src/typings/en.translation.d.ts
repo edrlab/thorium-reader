@@ -1326,6 +1326,10 @@ declare namespace typed_i18n {
     readonly "save": string
   },
   readonly "language": { readonly "languageChoice": string },
+  readonly "library": {
+    readonly "enableAPIAPP": string,
+    readonly "title": string
+  },
   readonly "session": {
     readonly "no": string,
     readonly "title": string,
@@ -1342,10 +1346,6 @@ declare namespace typed_i18n {
     readonly "description": string,
     readonly "light": string,
     readonly "title": string
-  },
-  readonly "library": {
-    readonly "title": string,
-    readonly "enableAPIAPP": string
   }
 };
   (_: "settings.annotationCreator", __?: {}): {
@@ -1383,6 +1383,9 @@ declare namespace typed_i18n {
   (_: "settings.keyboard.save", __?: {}): string;
   (_: "settings.language", __?: {}): { readonly "languageChoice": string };
   (_: "settings.language.languageChoice", __?: {}): string;
+  (_: "settings.library", __?: {}): { readonly "enableAPIAPP": string, readonly "title": string };
+  (_: "settings.library.enableAPIAPP", __?: {}): string;
+  (_: "settings.library.title", __?: {}): string;
   (_: "settings.session", __?: {}): { readonly "no": string, readonly "title": string, readonly "yes": string };
   (_: "settings.session.no", __?: {}): string;
   (_: "settings.session.title", __?: {}): string;
@@ -1407,9 +1410,6 @@ declare namespace typed_i18n {
   (_: "settings.theme.description", __?: {}): string;
   (_: "settings.theme.light", __?: {}): string;
   (_: "settings.theme.title", __?: {}): string;
-  (_: "settings.library", __?: {}): { readonly "title": string, readonly "enableAPIAPP": string };
-  (_: "settings.library.title", __?: {}): string;
-  (_: "settings.library.enableAPIAPP", __?: {}): string;
   (_: "wizard", __?: {}): {
   readonly "buttons": {
     readonly "discover": string,

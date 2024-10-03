@@ -510,7 +510,7 @@
       "wipeData": "Clear login data"
     },
     "keyboard": {
-      "advancedMenu": "Menu",
+      "advancedMenu": "Keyboard shortcuts advanced menu",
       "cancel": "Cancel",
       "disclaimer": "Shortcuts were defined from QWERTY keyboard layout.",
       "editUserJson": "Edit user file...",
