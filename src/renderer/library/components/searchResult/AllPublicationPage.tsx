@@ -1969,19 +1969,6 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
     const registerAllKeyboardListeners = React.useCallback(() => {
 
-        console.log(" MOUNTED ~!!!!");
-        console.log(" MOUNTED ~!!!!");
-        console.log(" MOUNTED ~!!!!");
-        console.log(" MOUNTED ~!!!!");
-        console.log(" MOUNTED ~!!!!");
-        console.log(" MOUNTED ~!!!!");
-        console.log(" MOUNTED ~!!!!");
-        console.log(" MOUNTED ~!!!!");
-        console.log(" MOUNTED ~!!!!");
-        console.log(" MOUNTED ~!!!!");
-        console.log(" MOUNTED ~!!!!");
-        console.log(" MOUNTED ~!!!!");
-
         registerKeyboardListener(
             true, // listen for key up (not key down)
             keyboardShortcuts.NavigatePreviousLibraryPageAlt,
