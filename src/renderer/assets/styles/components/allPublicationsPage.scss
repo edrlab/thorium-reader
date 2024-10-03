@@ -129,14 +129,6 @@
                 color: var(--color-blue);
                 height: 32px;
 
-                &:nth-child(1), &:nth-child(5) {
-                    padding-top: 4px;
-                }
-
-                &:nth-child(2), &:nth-child(4) {
-                    padding-top: 2px;
-                }
-
                 a {
                     color: var(--color-blue);
                 }
@@ -176,6 +168,20 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+
+    .allBooks_header_pagination_arrow:nth-child(2), .allBooks_header_pagination_arrow {
+        padding-top: 0;
+
+        &:not(:disabled) {
+            &:nth-child(1), &:nth-child(5) {
+            padding-top: 4px;
+            }
+
+            &:nth-child(2), &:nth-child(4) {
+                padding-top: 2px;
+            }
+        }
+    }
 }
 
 .showColFilters {
