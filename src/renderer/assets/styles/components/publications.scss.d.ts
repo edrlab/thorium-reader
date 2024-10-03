@@ -1,4 +1,3 @@
-export declare const ___DEBUG___COMPONENTS_PUBLICATIONS_CSS: string;
 export declare const author: string;
 export declare const block_book: string;
 export declare const block_book_list: string;
@@ -8,6 +7,8 @@ export declare const box: string;
 export declare const corner: string;
 export declare const cover: string;
 export declare const cover_img: string;
+export declare const CSS_END_components_publications: string;
+export declare const CSS_START_components_publications: string;
 export declare const expired: string;
 export declare const gradient: string;
 export declare const hasEnded: string;

@@ -14,7 +14,8 @@ import { ISearchState } from "./search";
 import { TMapState } from "readium-desktop/utils/redux-reducers/map.reducer";
 
 // import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 import { TBookmarkState } from "../bookmark";
 import { IRTLFlipState } from "./rtlFlip";
@@ -35,7 +36,7 @@ export interface IReaderRootState extends IRendererCommonRootState {
 export interface IReaderStateReader {
     config: ReaderConfig;
     info: ReaderInfo;
-    locator: LocatorExtended;
+    locator: MiniLocatorExtended;
     bookmark: TBookmarkState;
     annotation: TAnnotationState;
     highlight: {

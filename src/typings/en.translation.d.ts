@@ -128,8 +128,6 @@ declare namespace typed_i18n {
   },
   readonly "export": string,
   readonly "exportAnnotation": string,
-  readonly "exportAnnotationSuccess": string,
-  readonly "exportAnnotationFailure": string,
   readonly "format": string,
   readonly "lang": string,
   readonly "lastRead": string,
@@ -210,8 +208,6 @@ declare namespace typed_i18n {
   (_: "catalog.entry.lastAdditions", __?: {}): string;
   (_: "catalog.export", __?: {}): string;
   (_: "catalog.exportAnnotation", __?: {}): string;
-  (_: "catalog.exportAnnotationSuccess", __?: {}): string;
-  (_: "catalog.exportAnnotationFailure", __?: {}): string;
   (_: "catalog.format", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.lastRead", __?: {}): string;
@@ -730,6 +726,12 @@ declare namespace typed_i18n {
     readonly "noSelectionToast": string,
     readonly "quickAnnotations": string,
     readonly "saveNote": string,
+    readonly "sorting": {
+      readonly "lastcreated": string,
+      readonly "lastmodified": string,
+      readonly "progression": string,
+      readonly "sortingOptions": string
+    },
     readonly "toggleMarginMarks": string,
     readonly "type": {
       readonly "outline": string,
@@ -906,6 +908,12 @@ declare namespace typed_i18n {
   readonly "noSelectionToast": string,
   readonly "quickAnnotations": string,
   readonly "saveNote": string,
+  readonly "sorting": {
+    readonly "lastcreated": string,
+    readonly "lastmodified": string,
+    readonly "progression": string,
+    readonly "sortingOptions": string
+  },
   readonly "toggleMarginMarks": string,
   readonly "type": {
     readonly "outline": string,
@@ -955,6 +963,16 @@ declare namespace typed_i18n {
   (_: "reader.annotations.noSelectionToast", __?: {}): string;
   (_: "reader.annotations.quickAnnotations", __?: {}): string;
   (_: "reader.annotations.saveNote", __?: {}): string;
+  (_: "reader.annotations.sorting", __?: {}): {
+  readonly "lastcreated": string,
+  readonly "lastmodified": string,
+  readonly "progression": string,
+  readonly "sortingOptions": string
+};
+  (_: "reader.annotations.sorting.lastcreated", __?: {}): string;
+  (_: "reader.annotations.sorting.lastmodified", __?: {}): string;
+  (_: "reader.annotations.sorting.progression", __?: {}): string;
+  (_: "reader.annotations.sorting.sortingOptions", __?: {}): string;
   (_: "reader.annotations.toggleMarginMarks", __?: {}): string;
   (_: "reader.annotations.type", __?: {}): {
   readonly "outline": string,
@@ -1289,7 +1307,14 @@ declare namespace typed_i18n {
   (_: "reader.tts.stop", __?: {}): string;
   (_: "reader.tts.voice", __?: {}): string;
   (_: "settings", __?: {}): {
-  readonly "auth": { readonly "wipeData": string },
+  readonly "annotationCreator": {
+    readonly "creator": string,
+    readonly "name": string,
+    readonly "organization": string,
+    readonly "person": string,
+    readonly "type": string
+  },
+  readonly "auth": { readonly "title": string, readonly "wipeData": string },
   readonly "keyboard": {
     readonly "advancedMenu": string,
     readonly "cancel": string,
@@ -1301,6 +1326,10 @@ declare namespace typed_i18n {
     readonly "save": string
   },
   readonly "language": { readonly "languageChoice": string },
+  readonly "library": {
+    readonly "enableAPIAPP": string,
+    readonly "title": string
+  },
   readonly "session": {
     readonly "no": string,
     readonly "title": string,
@@ -1319,7 +1348,20 @@ declare namespace typed_i18n {
     readonly "title": string
   }
 };
-  (_: "settings.auth", __?: {}): { readonly "wipeData": string };
+  (_: "settings.annotationCreator", __?: {}): {
+  readonly "creator": string,
+  readonly "name": string,
+  readonly "organization": string,
+  readonly "person": string,
+  readonly "type": string
+};
+  (_: "settings.annotationCreator.creator", __?: {}): string;
+  (_: "settings.annotationCreator.name", __?: {}): string;
+  (_: "settings.annotationCreator.organization", __?: {}): string;
+  (_: "settings.annotationCreator.person", __?: {}): string;
+  (_: "settings.annotationCreator.type", __?: {}): string;
+  (_: "settings.auth", __?: {}): { readonly "title": string, readonly "wipeData": string };
+  (_: "settings.auth.title", __?: {}): string;
   (_: "settings.auth.wipeData", __?: {}): string;
   (_: "settings.keyboard", __?: {}): {
   readonly "advancedMenu": string,
@@ -1341,6 +1383,9 @@ declare namespace typed_i18n {
   (_: "settings.keyboard.save", __?: {}): string;
   (_: "settings.language", __?: {}): { readonly "languageChoice": string };
   (_: "settings.language.languageChoice", __?: {}): string;
+  (_: "settings.library", __?: {}): { readonly "enableAPIAPP": string, readonly "title": string };
+  (_: "settings.library.enableAPIAPP", __?: {}): string;
+  (_: "settings.library.title", __?: {}): string;
   (_: "settings.session", __?: {}): { readonly "no": string, readonly "title": string, readonly "yes": string };
   (_: "settings.session.no", __?: {}): string;
   (_: "settings.session.title", __?: {}): string;

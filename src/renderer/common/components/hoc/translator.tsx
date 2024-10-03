@@ -6,11 +6,11 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
+import { I18nFunction, Translator } from "readium-desktop/common/services/translator";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
 
 export interface TranslatorProps {
-    __?: I18nTyped;
+    __?: I18nFunction;
     translator?: Translator;
 }
 
@@ -49,7 +49,7 @@ export function withTranslator<Props>(WrappedComponent: TComponentConstructor<Re
                 <TranslatorContext.Consumer>
                     {
                         (translator) => {
-                            // const translate = translator.translate.bind(translator) as I18nTyped;
+                            // const translate = translator.translate.bind(translator) as I18nFunction;
 
                             // const newProps = Object.assign(
                             //     {},

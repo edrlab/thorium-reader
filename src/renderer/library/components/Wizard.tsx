@@ -5,16 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Tabs from "@radix-ui/react-tabs";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
-import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import HomeImage from "readium-desktop/renderer/assets/images/thorium_guided_1.png";
 import BooksImage from "readium-desktop/renderer/assets/images/thorium_guided_2.png";
@@ -30,7 +32,6 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { wizardActions } from "readium-desktop/common/redux/actions";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 
 

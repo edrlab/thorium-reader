@@ -1,4 +1,5 @@
-export declare const ___DEBUG___COMPONENTS_DROPDOWN_CSS: string;
+export declare const CSS_END_components_dropdown: string;
+export declare const CSS_START_components_dropdown: string;
 export declare const dropdown_description: string;
 export declare const dropdown_menu: string;
 export declare const dropdown_publication: string;

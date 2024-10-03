@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+// import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 import * as React from "react";
 import { connect } from "react-redux";
@@ -12,17 +13,16 @@ import { connect } from "react-redux";
 
 // import * as GridIcon from "readium-desktop/renderer/assets/icons/grid-icon.svg";
 // import * as ListIcon from "readium-desktop/renderer/assets/icons/list-icon.svg";
-// import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 // import SVG from "readium-desktop/renderer/common/components/SVG";
 import SecondaryHeader from "readium-desktop/renderer/library/components/SecondaryHeader";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import { OpdsFeedAddFormDialog } from "../dialog/OpdsFeedAddForm";
+import { ApiappAddFormDialog } from "../dialog/ApiappAddForm";
 // import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 // import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
-import ApiappAddFormDialog from "readium-desktop/renderer/library/components/dialog/ApiappAddForm";
-import OpdsFeedAddForm from "../dialog/OpdsFeedAddForm";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -52,7 +52,7 @@ class Header extends React.Component<IProps, undefined> {
         return (
             <SecondaryHeader style={{display: "flex", gap: "10px", alignItems: "end", height: "53px", justifyContent: "end", margin: "0px"}}>
                 <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
-                    <OpdsFeedAddForm />
+                    <OpdsFeedAddFormDialog />
                     <ApiappAddFormDialog />
                 </div>
             </SecondaryHeader>

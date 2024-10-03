@@ -1,6 +1,6 @@
-/*
-=-=-= bookDetailsDialog.scss
-*/
+.CSS_START_bookDetailsDialog {
+  display: none;
+}
 
 .c_dialog {
   position: fixed;
@@ -309,11 +309,6 @@
   user-select: text;
 }
 
-.___DEBUG___BOOK_DETAILS_DIALOG_CSS {
-  display: none;
-}
-
-
 .opds_book{
   &_infos {
     margin-left: 25%;
@@ -346,4 +341,8 @@
   &_unavailable {
     color: var(--color-error-dark);
   }
+}
+
+.CSS_END_bookDetailsDialog {
+  display: none;
 }

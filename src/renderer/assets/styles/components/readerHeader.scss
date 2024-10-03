@@ -1,6 +1,6 @@
-/*
-=-=-= readerHeader.scss
-*/
+.CSS_START_components_readerHeader {
+    display: none;
+}
 
 [data-theme="dark"] {
     .toolbar_navigation, .picker_container {
@@ -345,4 +345,8 @@
         width: 100%;
         border-bottom: 2px solid var(--color-blue);
     }
+}
+
+.CSS_END_components_readerHeader {
+    display: none;
 }

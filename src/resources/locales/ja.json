@@ -1,559 +1,575 @@
 {
-    "accessibility": {
-        "bookMenu": "メニュー",
-        "closeDialog": "閉じる",
-        "importFile": "本を追加",
-        "leftSlideButton": "左にスライド",
-        "mainContent": "メインコンテンツ",
-        "rightSlideButton": "右にスライド",
-        "searchBook": "書名から検索",
-        "skipLink": "コンテンツに移動",
-        "toolbar": "ツールバー"
+  "accessibility": {
+    "bookMenu": "メニュー",
+    "closeDialog": "閉じる",
+    "importFile": "本を追加",
+    "leftSlideButton": "左にスライド",
+    "mainContent": "メインコンテンツ",
+    "rightSlideButton": "右にスライド",
+    "searchBook": "書名から検索",
+    "skipLink": "コンテンツに移動",
+    "toolbar": "ツールバー"
+  },
+  "apiapp": {
+    "documentation": "Thoriumの説明書",
+    "howItWorks": "どのように機能しますか？",
+    "informations": "フランスでは、多くの公共図書館がデジタル図書目録を提供していて（OPDSに似ていますが異なります）、利用者はそこにある自身の本棚から電子出版物をダウンロードできます。このテクノロジーをThorium Readerに統合することで、電子書籍またはオーディオブックをThorium Readerに直接ダウンロードして、すぐに読めるようになります。\nフランスの公共図書館のアカウントをThorium Readerに接続するにはどうすればよいですか？ それは簡単です。検索フィールドにフランスの都市（「Paris」）または図書館の名前の一部を入力し、検索ボタンを押してください。検索結果に公共図書館の一覧が表示されますので、該当する図書館を選択して「追加」をクリックします。デジタル図書目録の更新一覧において、その図書館を選択してください。その際、認証フォームが表示されますので、ユーザー名/メールアドレスとパスワードを入力し、「ログイン」をクリックしてください。あなたの本棚の内容が表示され、そこから借りた電子書籍やオーディオブックをダウンロードして読むことができます。\n",
+    "noLibraryFound": "蔵書は見つかりませんでした（{{- name}}）"
+  },
+  "app": {
+    "edit": {
+      "copy": "コピー",
+      "cut": "切り取り",
+      "paste": "貼り付け",
+      "redo": "やり直し",
+      "selectAll": "すべて選択",
+      "title": "編集",
+      "undo": "元に戻す"
     },
-    "apiapp": {
-        "documentation": "Thoriumの説明書",
-        "howItWorks": "どのように機能しますか？",
-        "informations": "フランスでは、多くの公共図書館がデジタル図書目録を提供していて（OPDSに似ていますが異なります）、利用者はそこにある自身の本棚から電子出版物をダウンロードできます。このテクノロジーをThorium Readerに統合することで、電子書籍またはオーディオブックをThorium Readerに直接ダウンロードして、すぐに読めるようになります。\nフランスの公共図書館のアカウントをThorium Readerに接続するにはどうすればよいですか？ それは簡単です。検索フィールドにフランスの都市（「Paris」）または図書館の名前の一部を入力し、検索ボタンを押してください。検索結果に公共図書館の一覧が表示されますので、該当する図書館を選択して「追加」をクリックします。デジタル図書目録の更新一覧において、その図書館を選択してください。その際、認証フォームが表示されますので、ユーザー名/メールアドレスとパスワードを入力し、「ログイン」をクリックしてください。あなたの本棚の内容が表示され、そこから借りた電子書籍やオーディオブックをダウンロードして読むことができます。\n",
-        "noLibraryFound": "蔵書は見つかりませんでした（{{- name}}）"
-    },
-    "app": {
-        "edit": {
-            "copy": "コピー",
-            "cut": "切り取り",
-            "paste": "貼り付け",
-            "redo": "やり直し",
-            "selectAll": "すべて選択",
-            "title": "編集",
-            "undo": "元に戻す"
-        },
-        "hide": "隠す {{appName}}",
-        "quit": "終了 {{appName}}",
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "いいえ",
-                        "yes": "はい"
-                    },
-                    "message": "セッションを保存しますか？",
-                    "title": "セッションを保存"
-                }
-            }
-        },
-        "update": {
-            "message": "新しいバージョンが利用できます。詳細はクリックしてください。",
-            "title": "{{- appName}} ソフトウェア アップデート"
-        },
-        "window": {
-            "showLibrary": "蔵書/本棚を表示"
+    "hide": "隠す {{appName}}",
+    "quit": "終了 {{appName}}",
+    "session": {
+      "exit": {
+        "askBox": {
+          "button": {
+            "no": "いいえ",
+            "yes": "はい"
+          },
+          "message": "セッションを保存しますか？",
+          "title": "セッションを保存"
         }
+      }
     },
-    "catalog": {
-        "about": {
-            "title": "{{appName}} について"
-        },
-        "addBookToLib": "追加",
-        "addTags": "タグを追加",
-        "addTagsButton": "追加",
-        "allBooks": "すべての本",
-        "bookInfo": "本の情報",
-        "column": {
-            "ascending": "昇順（A-Z）",
-            "descending": "降順（Z-A）",
-            "unsorted": "並べ替えない"
-        },
-        "delete": "削除",
-        "deleteBook": "削除",
-        "deleteTag": "タグを削除",
-        "description": "概要",
-        "emptyTagList": "タグがついた本はありません",
-        "entry": {
-            "continueReading": "読書にもどる",
-            "continueReadingAudioBooks": "再生を続ける",
-            "continueReadingDivina": "DiViNaを再開する",
-            "continueReadingPdf": "PDFを開きなおす",
-            "lastAdditions": "最近追加したもの"
-        },
-        "export": "別の場所に保存",
-        "exportAnnotation": "",
-        "exportAnnotationFailure": "",
-        "exportAnnotationSuccess": "",
-        "format": "形式",
-        "lang": "言語",
-        "lastRead": "最終閲覧",
-        "moreInfo": "本の詳細",
-        "myBooks": "わたしの本",
-        "noPublicationHelpL1": "ファイルをここにおいてください",
-        "noPublicationHelpL2": "または、画面上部にある［{{- importTitle }}］ボタンを押してください。",
-        "noPublicationHelpL3": "LCPで保護されたファイルにも対応しています。",
-        "noPublicationHelpL4": "対応している拡張子：",
-        "numberOfPages": "ページ数",
-        "opds": {
-            "auth": {
-                "cancel": "キャンセル",
-                "login": "ログイン",
-                "password": "パスワード",
-                "register": "登録",
-                "username": "ユーザーネーム / メールアドレス"
-            },
-            "info": {
-                "availableSince": "いつから",
-                "availableState": {
-                    "available": "利用できます",
-                    "ready": "準備中",
-                    "reserved": "予約済み",
-                    "unavailable": "利用できません",
-                    "unknown": "利用可能か不明です"
-                },
-                "availableUntil": "いつまで",
-                "copyAvalaible": "利用できます",
-                "copyTotal": "コピー",
-                "holdPosition": "待機順番",
-                "holdTotal": "待機",
-                "numberOfItems": "品数",
-                "priveValue": "価格",
-                "state": "状態"
-            }
-        },
-        "publisher": "出版社",
-        "readBook": "本を読む",
-        "released": "出版日",
-        "sort": "並び替え",
-        "tag": "タグ",
-        "tagCount": "タグの数",
-        "tags": "タグ",
-        "update": "編集"
+    "update": {
+      "message": "新しいバージョンが利用できます。詳細はクリックしてください。",
+      "title": "{{- appName}} ソフトウェア アップデート"
     },
-    "dialog": {
-        "cancel": "キャンセル",
-        "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
-        "deleteFeed": "この図書目録を削除しますか？",
-        "deletePublication": "この本を削除しますか？",
-        "import": "追加します：",
-        "importError": "エラーが発生しました。拡張子を確認してください（{{acceptedExtension}}）",
-        "renew": "貸出期間を更新/延長しますか？",
-        "return": "本を返しますか？",
-        "yes": "はい"
+    "window": {
+      "showLibrary": "蔵書/本棚を表示"
+    }
+  },
+  "catalog": {
+    "about": {
+      "title": "{{appName}} について"
     },
-    "error": {
-        "errorBox": {
-            "error": "エラーメッセージ：",
-            "message": "エラーが起きました：{{- filename}}",
-            "title": "内部エラー：{{- appName}}"
-        }
+    "addBookToLib": "追加",
+    "addTags": "タグを追加",
+    "addTagsButton": "追加",
+    "allBooks": "すべての本",
+    "bookInfo": "本の情報",
+    "column": {
+      "ascending": "昇順（A-Z）",
+      "descending": "降順（Z-A）",
+      "unsorted": "並べ替えない"
     },
-    "header": {
-        "allBooks": "すべての本",
-        "catalogs": "図書目録",
-        "downloads": "ダウンロード",
-        "fitlerTagTitle": "タグで絞りこむ",
-        "gridTitle": "格子状で表示",
-        "home": "本棚のメニュー",
-        "homeTitle": "ホーム",
-        "importTitle": "本を追加",
-        "listTitle": "一覧表で表示",
-        "myCatalogs": "図書目録",
-        "refreshTitle": "再読み込み",
-        "searchPlaceholder": "検索",
-        "searchTitle": "検索する",
-        "settings": "設定",
-        "viewMode": "表示モード"
+    "delete": "削除",
+    "deleteBook": "削除",
+    "deleteTag": "タグを削除",
+    "description": "概要",
+    "emptyTagList": "タグがついた本はありません",
+    "entry": {
+      "continueReading": "読書にもどる",
+      "continueReadingAudioBooks": "再生を続ける",
+      "continueReadingDivina": "DiViNaを再開する",
+      "continueReadingPdf": "PDFを開きなおす",
+      "lastAdditions": "最近追加したもの"
     },
-    "library": {
-        "lcp": {
-            "hint": "ヒント：{{- hint}}",
-            "password": "パスワード",
-            "sentence": "この本はLCPで保護されています。パスワードを入力してください： ",
-            "urlHint": "パスワードを忘れましたか？ サポート窓口で確認してください：",
-            "whatIsLcp?": "LCPとはなんですか？",
-            "whatIsLcpInfoDetails": "LCPはLicensed Content Protectionの略です。",
-            "whatIsLcpInfoDetailsLink": "詳しくは、EDRLabのWebサイトを参照してください。"
-        }
-    },
-    "message": {
-        "download": {
-            "error": "『{{- title}}』のダウンロードに失敗しました：{{- err}}"
-        },
-        "import": {
-            "alreadyImport": "『{{- title}}』はすでに追加されています。",
-            "fail": "[{{- path}}]の追加に失敗しました：[{{- err}}]",
-            "success": "『{{- title}}』の追加が完了しました。"
-        },
-        "open": {
-            "error": "本を開けません：{{- err}}"
-        }
-    },
+    "export": "別の場所に保存",
+    "exportAnnotation": "",
+    "format": "形式",
+    "lang": "言語",
+    "lastRead": "最終閲覧",
+    "moreInfo": "本の詳細",
+    "myBooks": "わたしの本",
+    "noPublicationHelpL1": "ファイルをここにおいてください",
+    "noPublicationHelpL2": "または、画面上部にある［{{- importTitle }}］ボタンを押してください。",
+    "noPublicationHelpL3": "LCPで保護されたファイルにも対応しています。",
+    "noPublicationHelpL4": "対応している拡張子：",
+    "numberOfPages": "ページ数",
     "opds": {
-        "addForm": {
-            "addButton": "追加",
-            "name": "名前：",
-            "namePlaceholder": "名前",
-            "url": "URL：",
-            "urlPlaceholder": "URL"
+      "auth": {
+        "cancel": "キャンセル",
+        "login": "ログイン",
+        "password": "パスワード",
+        "register": "登録",
+        "username": "ユーザーネーム / メールアドレス"
+      },
+      "info": {
+        "availableSince": "いつから",
+        "availableState": {
+          "available": "利用できます",
+          "ready": "準備中",
+          "reserved": "予約済み",
+          "unavailable": "利用できません",
+          "unknown": "利用可能か不明です"
         },
-        "addFormApiapp": {
-            "title": "図書館アカウントを追加"
-        },
-        "addMenu": "OPDSフィードを追加",
-        "breadcrumbRoot": "図書目録",
-        "documentation": "OPDSの公式Webサイト",
-        "empty": "本が見つかりません",
-        "firstPage": "最初",
-        "informations": "数回クリックするだけで、公共の図書館や電子書店から電子出版物を検索してダウンロードできる世界を想像してみてください。それがまさにOpen Publication Distribution System（OPDS）形式の図書目録が提供するものです。OPDSを通して、いろいろな電子書籍提供元の図書目録を閲覧したり、サインアップしたり、借りたり、購入したり、自分の本棚にアクセスしたりできます。それによって電子書籍やオーディオブックをThorium Readerに直接ダウンロードでき、すぐに本を読めるようになります。\nそれでは、OPDS図書目録を見つけるにはどうすればよいでしょうか？ それは簡単です。その図書目録のアドレス（URL）を知るだけです。そして、そのアドレスを［URL］フィールドにコピーします。ひとつ注意したいこととして、随時更新されているOPDS図書目録すべてが、どこかでまとまって紹介されているわけではありません。お気に入りの図書館または書店に連絡して、OPDS図書目録のURLを尋ねる必要があります。どこから始めればよいかわからない場合は、Wikipediaにさまざまな言語のOPDS図書目録を収集しているページがいくつかあるので、役に立つかもしれません。\n［名前］フィールドは自由に使ってください。Thorium Readerでフィードを簡単に識別するためのものです。\n",
-        "lastPage": "最後",
-        "menu": {
-            "aboutBook": "本の情報",
-            "addExtract": "本の抜粋を追加する",
-            "goBuyBook": "本を購入する",
-            "goLoanBook": "本を借りる",
-            "goRevokeLoanBook": "返却する",
-            "goSubBook": "購読する"
-        },
-        "network": {
-            "error": "OPDSフィードにアクセスできません",
-            "noInternet": "インターネットにつながりません",
-            "noInternetMessage": "ネットワークケーブル、モデム、ルーター、Wi-Fiを確認してください。",
-            "reject": "予期しないエラーが発生しました！",
-            "timeout": "ネットワーク接続がタイムアウトしました。あとで再度試してください"
-        },
+        "availableUntil": "いつまで",
+        "copyAvalaible": "利用できます",
+        "copyTotal": "コピー",
+        "holdPosition": "待機順番",
+        "holdTotal": "待機",
+        "numberOfItems": "品数",
+        "priveValue": "価格",
+        "state": "状態"
+      }
+    },
+    "publisher": "出版社",
+    "readBook": "本を読む",
+    "released": "出版日",
+    "sort": "並び替え",
+    "tag": "タグ",
+    "tagCount": "タグの数",
+    "tags": "タグ",
+    "update": "編集"
+  },
+  "dialog": {
+    "cancel": "キャンセル",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
+    "deleteFeed": "この図書目録を削除しますか？",
+    "deletePublication": "この本を削除しますか？",
+    "import": "追加します：",
+    "importError": "エラーが発生しました。拡張子を確認してください（{{acceptedExtension}}）",
+    "renew": "貸出期間を更新/延長しますか？",
+    "return": "本を返しますか？",
+    "yes": "はい"
+  },
+  "error": {
+    "errorBox": {
+      "error": "エラーメッセージ：",
+      "message": "エラーが起きました：{{- filename}}",
+      "title": "内部エラー：{{- appName}}"
+    }
+  },
+  "header": {
+    "allBooks": "すべての本",
+    "catalogs": "図書目録",
+    "downloads": "ダウンロード",
+    "fitlerTagTitle": "タグで絞りこむ",
+    "gridTitle": "格子状で表示",
+    "home": "本棚のメニュー",
+    "homeTitle": "ホーム",
+    "importTitle": "本を追加",
+    "listTitle": "一覧表で表示",
+    "myCatalogs": "図書目録",
+    "refreshTitle": "再読み込み",
+    "searchPlaceholder": "検索",
+    "searchTitle": "検索する",
+    "settings": "設定",
+    "viewMode": "表示モード"
+  },
+  "library": {
+    "lcp": {
+      "hint": "ヒント：{{- hint}}",
+      "password": "パスワード",
+      "sentence": "この本はLCPで保護されています。パスワードを入力してください： ",
+      "urlHint": "パスワードを忘れましたか？ サポート窓口で確認してください：",
+      "whatIsLcp?": "LCPとはなんですか？",
+      "whatIsLcpInfoDetails": "LCPはLicensed Content Protectionの略です。",
+      "whatIsLcpInfoDetailsLink": "詳しくは、EDRLabのWebサイトを参照してください。"
+    }
+  },
+  "message": {
+    "download": {
+      "error": "『{{- title}}』のダウンロードに失敗しました：{{- err}}"
+    },
+    "import": {
+      "alreadyImport": "『{{- title}}』はすでに追加されています。",
+      "fail": "[{{- path}}]の追加に失敗しました：[{{- err}}]",
+      "success": "『{{- title}}』の追加が完了しました。"
+    },
+    "open": {
+      "error": "本を開けません：{{- err}}"
+    }
+  },
+  "opds": {
+    "addForm": {
+      "addButton": "追加",
+      "name": "名前：",
+      "namePlaceholder": "名前",
+      "url": "URL：",
+      "urlPlaceholder": "URL"
+    },
+    "addFormApiapp": {
+      "title": "図書館アカウントを追加"
+    },
+    "addMenu": "OPDSフィードを追加",
+    "breadcrumbRoot": "図書目録",
+    "documentation": "OPDSの公式Webサイト",
+    "empty": "本が見つかりません",
+    "firstPage": "最初",
+    "informations": "数回クリックするだけで、公共の図書館や電子書店から電子出版物を検索してダウンロードできる世界を想像してみてください。それがまさにOpen Publication Distribution System（OPDS）形式の図書目録が提供するものです。OPDSを通して、いろいろな電子書籍提供元の図書目録を閲覧したり、サインアップしたり、借りたり、購入したり、自分の本棚にアクセスしたりできます。それによって電子書籍やオーディオブックをThorium Readerに直接ダウンロードでき、すぐに本を読めるようになります。\nそれでは、OPDS図書目録を見つけるにはどうすればよいでしょうか？ それは簡単です。その図書目録のアドレス（URL）を知るだけです。そして、そのアドレスを［URL］フィールドにコピーします。ひとつ注意したいこととして、随時更新されているOPDS図書目録すべてが、どこかでまとまって紹介されているわけではありません。お気に入りの図書館または書店に連絡して、OPDS図書目録のURLを尋ねる必要があります。どこから始めればよいかわからない場合は、Wikipediaにさまざまな言語のOPDS図書目録を収集しているページがいくつかあるので、役に立つかもしれません。\n［名前］フィールドは自由に使ってください。Thorium Readerでフィードを簡単に識別するためのものです。\n",
+    "lastPage": "最後",
+    "menu": {
+      "aboutBook": "本の情報",
+      "addExtract": "本の抜粋を追加する",
+      "goBuyBook": "本を購入する",
+      "goLoanBook": "本を借りる",
+      "goRevokeLoanBook": "返却する",
+      "goSubBook": "購読する"
+    },
+    "network": {
+      "error": "OPDSフィードにアクセスできません",
+      "noInternet": "インターネットにつながりません",
+      "noInternetMessage": "ネットワークケーブル、モデム、ルーター、Wi-Fiを確認してください。",
+      "reject": "予期しないエラーが発生しました！",
+      "timeout": "ネットワーク接続がタイムアウトしました。あとで再度試してください"
+    },
+    "next": "次へ",
+    "previous": "前へ",
+    "shelf": "本棚",
+    "updateForm": {
+      "name": "名前：",
+      "title": "OPDSフィードの編集",
+      "updateButton": "編集",
+      "url": "URL："
+    },
+    "whatIsOpds": "OPDSとはなんですか？"
+  },
+  "publication": {
+    "accessibility": {
+      "accessModeSufficient": {
+        "textual": "「音声読み上げ機能（TTS）」「スクリーンリーダー」が使いやすい"
+      },
+      "accessibilityFeature": {
+        "alternativeText": "代替テキストが含まれてる",
+        "displayTransformability": "テキストやレイアウトを変更できる",
+        "longDescription": "画像や図版を正確に説明している",
+        "printPageNumbers": "紙の書籍のページ番号を参照できる",
+        "readingOrder": "読み上げ順序が組み込まれている",
+        "synchronizedAudioText": "テキストと音声が同期する",
+        "tableOfContents": "目次がある"
+      },
+      "accessibilityHazard": {
+        "flashing": "光る（点滅する）",
+        "motionSimulation": "動きのあるシミュレーションがある",
+        "name": "危険要因：",
+        "noFlashing": "光らない（点滅しない）",
+        "noMotionSimulation": "動きのあるシミュレーションはない",
+        "noSound": "音は出ない",
+        "none": "ありません",
+        "sound": "音が出る",
+        "unknown": "不明"
+      },
+      "certifierReport": "認証書",
+      "conformsTo": "準拠：",
+      "moreInformation": "より詳しい情報",
+      "name": "アクセシビリティ",
+      "noA11y": "アクセシビリティ情報はありません"
+    },
+    "actions": "アクション",
+    "audio": {
+      "tracks": "トラック"
+    },
+    "author": "著者",
+    "cancelledLcp": "この本のLCPライセンスが取り消されました。",
+    "certificateRevoked": "LCPライセンス証明書が取り消されています。",
+    "certificateSignatureInvalid": "LCPライセンス証明書の署名が無効です。",
+    "cover": {
+      "img": "カバー画像"
+    },
+    "day": "日",
+    "days": "日中",
+    "duration": {
+      "title": "期間"
+    },
+    "expired": "貸出の期限切れ",
+    "expiredLcp": "この本のLCPライセンスの有効期限が切れました。",
+    "lcpEnd": "終了",
+    "lcpRightsCopy": "文字列のコピー",
+    "lcpRightsPrint": "ページを印刷",
+    "lcpStart": "開始",
+    "licenceLCP": "ライセンス（LCP）",
+    "licenseOutOfDate": "LCPライセンスの期限切れです",
+    "licenseSignatureDateInvalid": "LCPライセンスの署名の日付が無効です",
+    "licenseSignatureInvalid": "LCPライセンスの署名が無効です",
+    "licensed": "ライセンスが付与されています",
+    "markAsRead": "既読にする",
+    "notStarted": "まだ開いていません",
+    "onGoing": "進行中",
+    "progression": {
+      "title": "進行度"
+    },
+    "read": "既読",
+    "remainingTime": "借受中（残り日数）",
+    "renewButton": "更新",
+    "returnButton": "返却",
+    "returnedLcp": "このLCPライセンスは返却されました。",
+    "revokedLcp": "このLCPライセンスが取り消されています。",
+    "seeLess": "折りたたむ",
+    "seeMore": "続きを見る",
+    "timeLeft": "残り",
+    "title": "書名",
+    "userKeyCheckInvalid": "パスワードが間違っています"
+  },
+  "reader": {
+    "annotations": {
+      "Color": "色",
+      "addNote": "注釈をつける",
+      "advancedMode": "インスタントモード（本文を選択するだけで自動作成）",
+      "annotationsOptions": "オプション",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
+      "hide": "注釈を表示しない",
+      "highlight": "ハイライト",
+      "noSelectionToast": "選択されていません",
+      "quickAnnotations": "クイック作成（注釈編集画面をスキップ）",
+      "saveNote": "保存",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
+      "toggleMarginMarks": "ページ余白に注釈マークを表示",
+      "type": {
+        "outline": "枠線",
+        "solid": "背景",
+        "strikethrough": "取り消し線",
+        "underline": "下線"
+      }
+    },
+    "divina": {
+      "mute": "音を鳴らさない",
+      "unmute": "音を鳴らす"
+    },
+    "fxl": {
+      "fit": "合わせる"
+    },
+    "marks": {
+      "annotations": "注釈",
+      "bookmarks": "しおり",
+      "delete": "削除",
+      "edit": "編集",
+      "goTo": "ページ移動",
+      "landmarks": "構成",
+      "saveMark": "しおりを挟む",
+      "search": "検索",
+      "searchResult": "検索 [{{- searchText}}]",
+      "toc": "目次"
+    },
+    "media-overlays": {
+      "activate": "朗読機能を起動",
+      "captions": "字幕 / 明確な表示",
+      "captionsDescription": "字幕のスタイルを最小限にした、シンプルなテキスト表示",
+      "next": "次に進む（朗読）",
+      "pause": "一時停止（朗読）",
+      "play": "再生（朗読）",
+      "previous": "前にもどる（朗読）",
+      "skip": "補足情報の読み飛ばし",
+      "skipDescription": "改ページ、脚注や文末脚注などの補助コンテンツをスキップまたは無視します。",
+      "speed": "再生速度（朗読）",
+      "stop": "停止（朗読）",
+      "title": "朗読"
+    },
+    "navigation": {
+      "annotationTitle": "注釈",
+      "backHomeTitle": "本棚にもどる",
+      "bookmarkTitle": "しおりを挟む",
+      "currentPage": "現在のページ：{{- current}}",
+      "currentPageTotal": "現在のページ：（{{- current}}/{{- total}}）",
+      "detachWindowTitle": "蔵書/本棚を表示",
+      "fullscreenTitle": "画面全体で本を表示",
+      "goTo": "移動",
+      "goToError": "そのページは存在しません",
+      "goToPlaceHolder": "移動先のページ番号",
+      "goToTitle": "ページを移動",
+      "historyNext": "先に飛ぶ",
+      "historyPrevious": "前にもどる",
+      "infoTitle": "本の情報",
+      "magnifyingGlassButton": "この本を検索",
+      "openTableOfContentsTitle": "ナビゲーション",
+      "page": "ページ",
+      "pdfscalemode": "画面にページを収める / 画面横幅にページを合わせる",
+      "settingsTitle": "設定"
+    },
+    "picker": {
+      "search": {
+        "founds": "（一致した数：{{- nResults}}）",
+        "input": "検索したい語句",
         "next": "次へ",
+        "notFound": "一致しませんでした",
         "previous": "前へ",
-        "shelf": "本棚",
-        "updateForm": {
-            "name": "名前：",
-            "title": "OPDSフィードの編集",
-            "updateButton": "編集",
-            "url": "URL："
-        },
-        "whatIsOpds": "OPDSとはなんですか？"
-    },
-    "publication": {
-        "accessibility": {
-            "accessModeSufficient": {
-                "textual": "「音声読み上げ機能（TTS）」「スクリーンリーダー」が使いやすい"
-            },
-            "accessibilityFeature": {
-                "alternativeText": "代替テキストが含まれてる",
-                "displayTransformability": "テキストやレイアウトを変更できる",
-                "longDescription": "画像や図版を正確に説明している",
-                "printPageNumbers": "紙の書籍のページ番号を参照できる",
-                "readingOrder": "読み上げ順序が組み込まれている",
-                "synchronizedAudioText": "テキストと音声が同期する",
-                "tableOfContents": "目次がある"
-            },
-            "accessibilityHazard": {
-                "flashing": "光る（点滅する）",
-                "motionSimulation": "動きのあるシミュレーションがある",
-                "name": "危険要因：",
-                "noFlashing": "光らない（点滅しない）",
-                "noMotionSimulation": "動きのあるシミュレーションはない",
-                "noSound": "音は出ない",
-                "none": "ありません",
-                "sound": "音が出る",
-                "unknown": "不明"
-            },
-            "certifierReport": "認証書",
-            "conformsTo": "準拠：",
-            "moreInformation": "より詳しい情報",
-            "name": "アクセシビリティ",
-            "noA11y": "アクセシビリティ情報はありません"
-        },
-        "actions": "アクション",
-        "audio": {
-            "tracks": "トラック"
-        },
-        "author": "著者",
-        "cancelledLcp": "この本のLCPライセンスが取り消されました。",
-        "certificateRevoked": "LCPライセンス証明書が取り消されています。",
-        "certificateSignatureInvalid": "LCPライセンス証明書の署名が無効です。",
-        "cover": {
-            "img": "カバー画像"
-        },
-        "day": "日",
-        "days": "日中",
-        "duration": {
-            "title": "期間"
-        },
-        "expired": "貸出の期限切れ",
-        "expiredLcp": "この本のLCPライセンスの有効期限が切れました。",
-        "lcpEnd": "終了",
-        "lcpRightsCopy": "文字列のコピー",
-        "lcpRightsPrint": "ページを印刷",
-        "lcpStart": "開始",
-        "licenceLCP": "ライセンス（LCP）",
-        "licenseOutOfDate": "LCPライセンスの期限切れです",
-        "licenseSignatureDateInvalid": "LCPライセンスの署名の日付が無効です",
-        "licenseSignatureInvalid": "LCPライセンスの署名が無効です",
-        "licensed": "ライセンスが付与されています",
-        "markAsRead": "既読にする",
-        "notStarted": "まだ開いていません",
-        "onGoing": "進行中",
-        "progression": {
-            "title": "進行度"
-        },
-        "read": "既読",
-        "remainingTime": "借受中（残り日数）",
-        "renewButton": "更新",
-        "returnButton": "返却",
-        "returnedLcp": "このLCPライセンスは返却されました。",
-        "revokedLcp": "このLCPライセンスが取り消されています。",
-        "seeLess": "折りたたむ",
-        "seeMore": "続きを見る",
-        "timeLeft": "残り",
-        "title": "書名",
-        "userKeyCheckInvalid": "パスワードが間違っています"
-    },
-    "reader": {
-        "annotations": {
-            "Color": "色",
-            "addNote": "注釈をつける",
-            "advancedMode": "インスタントモード（本文を選択するだけで自動作成）",
-            "annotationsOptions": "オプション",
-            "colors": {
-                "bluegreen": "",
-                "cyan": "",
-                "green": "",
-                "lightblue": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
-            },
-            "filter": {
-                "all": "",
-                "filterByColor": "",
-                "filterByDrawtype": "",
-                "filterByTag": "",
-                "filterOptions": "",
-                "none": ""
-            },
-            "hide": "注釈を表示しない",
-            "highlight": "ハイライト",
-            "noSelectionToast": "選択されていません",
-            "quickAnnotations": "クイック作成（注釈編集画面をスキップ）",
-            "saveNote": "保存",
-            "toggleMarginMarks": "ページ余白に注釈マークを表示",
-            "type": {
-                "outline": "枠線",
-                "solid": "背景",
-                "strikethrough": "取り消し線",
-                "underline": "下線"
-            }
-        },
-        "divina": {
-            "mute": "音を鳴らさない",
-            "unmute": "音を鳴らす"
-        },
-        "fxl": {
-            "fit": "合わせる"
-        },
-        "marks": {
-            "annotations": "注釈",
-            "bookmarks": "しおり",
-            "delete": "削除",
-            "edit": "編集",
-            "goTo": "ページ移動",
-            "landmarks": "構成",
-            "saveMark": "しおりを挟む",
-            "search": "検索",
-            "searchResult": "検索 [{{- searchText}}]",
-            "toc": "目次"
-        },
-        "media-overlays": {
-            "activate": "朗読機能を起動",
-            "captions": "字幕 / 明確な表示",
-            "captionsDescription": "字幕のスタイルを最小限にした、シンプルなテキスト表示",
-            "next": "次に進む（朗読）",
-            "pause": "一時停止（朗読）",
-            "play": "再生（朗読）",
-            "previous": "前にもどる（朗読）",
-            "skip": "補足情報の読み飛ばし",
-            "skipDescription": "改ページ、脚注や文末脚注などの補助コンテンツをスキップまたは無視します。",
-            "speed": "再生速度（朗読）",
-            "stop": "停止（朗読）",
-            "title": "朗読"
-        },
-        "navigation": {
-            "annotationTitle": "注釈",
-            "backHomeTitle": "本棚にもどる",
-            "bookmarkTitle": "しおりを挟む",
-            "currentPage": "現在のページ：{{- current}}",
-            "currentPageTotal": "現在のページ：（{{- current}}/{{- total}}）",
-            "detachWindowTitle": "蔵書/本棚を表示",
-            "fullscreenTitle": "画面全体で本を表示",
-            "goTo": "移動",
-            "goToError": "そのページは存在しません",
-            "goToPlaceHolder": "移動先のページ番号",
-            "goToTitle": "ページを移動",
-            "historyNext": "先に飛ぶ",
-            "historyPrevious": "前にもどる",
-            "infoTitle": "本の情報",
-            "magnifyingGlassButton": "この本を検索",
-            "openTableOfContentsTitle": "ナビゲーション",
-            "page": "ページ",
-            "pdfscalemode": "画面にページを収める / 画面横幅にページを合わせる",
-            "settingsTitle": "設定"
-        },
-        "picker": {
-            "search": {
-                "founds": "（一致した数：{{- nResults}}）",
-                "input": "検索したい語句",
-                "next": "次へ",
-                "notFound": "一致しませんでした",
-                "previous": "前へ",
-                "results": "検索結果",
-                "submit": "検索"
-            },
-            "searchTitle": "検索："
-        },
-        "settings": {
-            "column": {
-                "auto": "自動",
-                "one": "1列",
-                "title": "縦列",
-                "two": "2列"
-            },
-            "customizeReader": "本文のスタイル",
-            "disabled": "無効",
-            "display": "画面表示",
-            "disposition": {
-                "title": "割り付け"
-            },
-            "font": "書体",
-            "fontSize": "文字の大きさ",
-            "infoCustomFont": "変更したいフォントの名前を入力してください。OSにインストールされているそのフォントを選択できます。",
-            "justification": "位置揃え",
-            "justify": "両端揃え",
-            "letterSpacing": "文字の間隔",
-            "lineSpacing": "行の間隔",
-            "margin": "ページの余白",
-            "noFootnotes": "脚注を表示しない",
-            "noRTLFlip": "右から左へ進むUIを無効にする",
-            "noRuby": "ルビを表示しない",
-            "paginated": "ページ型",
-            "paraSpacing": "段落の間隔",
-            "pdfZoom": {
-                "name": {
-                    "100pct": "100%",
-                    "150pct": "150%",
-                    "200pct": "200%",
-                    "300pct": "300%",
-                    "500pct": "500%",
-                    "50pct": "50%",
-                    "fit": "画面にページを収める",
-                    "width": "画面横幅にページを合わせる"
-                },
-                "title": "拡大"
-            },
-            "preset": {
-                "apply": "",
-                "reset": "",
-                "save": "",
-                "title": ""
-            },
-            "preview": "プレビュー",
-            "reduceMotion": "視差効果を減らす",
-            "scrolled": "スクロール型",
-            "spacing": "余白・間隔",
-            "text": "文字",
-            "theme": {
-                "name": {
-                    "Contrast1": "コントラスト 1",
-                    "Contrast2": "コントラスト 2",
-                    "Contrast3": "コントラスト 3",
-                    "Contrast4": "コントラスト 4",
-                    "Neutral": "無彩",
-                    "Night": "夜間",
-                    "Paper": "紙",
-                    "Sepia": "セピア"
-                },
-                "title": "テーマ"
-            },
-            "wordSpacing": "単語間の間隔"
-        },
-        "svg": {
-            "left": "左",
-            "right": "右"
-        },
-        "toc": {
-            "publicationNoToc": "目次がありません"
-        },
-        "tts": {
-            "activate": "音声読み上げ機能（TTS）を起動",
-            "default": "音声: システム標準",
-            "next": "次に進む（TTS）",
-            "pause": "一時停止（TTS）",
-            "play": "再生（TTS）",
-            "previous": "前にもどる（TTS）",
-            "sentenceDetect": "音声読み上げ（TTS）語句の分割",
-            "sentenceDetectDescription": "長い段落を複数の文に分割",
-            "speed": "再生速度（TTS）",
-            "stop": "停止（TTS）",
-            "voice": "音声（TTS）"
-        }
+        "results": "検索結果",
+        "submit": "検索"
+      },
+      "searchTitle": "検索："
     },
     "settings": {
-        "auth": {
-            "wipeData": "ログインデータを消去する"
+      "column": {
+        "auto": "自動",
+        "one": "1列",
+        "title": "縦列",
+        "two": "2列"
+      },
+      "customizeReader": "本文のスタイル",
+      "disabled": "無効",
+      "display": "画面表示",
+      "disposition": {
+        "title": "割り付け"
+      },
+      "font": "書体",
+      "fontSize": "文字の大きさ",
+      "infoCustomFont": "変更したいフォントの名前を入力してください。OSにインストールされているそのフォントを選択できます。",
+      "justification": "位置揃え",
+      "justify": "両端揃え",
+      "letterSpacing": "文字の間隔",
+      "lineSpacing": "行の間隔",
+      "margin": "ページの余白",
+      "noFootnotes": "脚注を表示しない",
+      "noRTLFlip": "右から左へ進むUIを無効にする",
+      "noRuby": "ルビを表示しない",
+      "paginated": "ページ型",
+      "paraSpacing": "段落の間隔",
+      "pdfZoom": {
+        "name": {
+          "100pct": "100%",
+          "150pct": "150%",
+          "200pct": "200%",
+          "300pct": "300%",
+          "500pct": "500%",
+          "50pct": "50%",
+          "fit": "画面にページを収める",
+          "width": "画面横幅にページを合わせる"
         },
-        "keyboard": {
-            "advancedMenu": "メニュー",
-            "cancel": "キャンセル",
-            "disclaimer": "ショートカットは、QWERTY配列のキーボードレイアウトから定義されました。",
-            "editUserJson": "編集：ユーザーファイル",
-            "keyboardShortcuts": "キーボードショートカット",
-            "loadUserJson": "読込：ユーザーファイル",
-            "resetDefaults": "リセット（初期設定に戻す）",
-            "save": "保存"
+        "title": "拡大"
+      },
+      "preset": {
+        "apply": "",
+        "reset": "",
+        "save": "",
+        "title": ""
+      },
+      "preview": "プレビュー",
+      "reduceMotion": "視差効果を減らす",
+      "scrolled": "スクロール型",
+      "spacing": "余白・間隔",
+      "text": "文字",
+      "theme": {
+        "name": {
+          "Contrast1": "コントラスト 1",
+          "Contrast2": "コントラスト 2",
+          "Contrast3": "コントラスト 3",
+          "Contrast4": "コントラスト 4",
+          "Neutral": "無彩",
+          "Night": "夜間",
+          "Paper": "紙",
+          "Sepia": "セピア"
         },
-        "language": {
-            "languageChoice": "言語の選択"
-        },
-        "session": {
-            "no": "無効",
-            "title": "セッションを保存",
-            "yes": "有効"
-        },
-        "tabs": {
-            "appearance": "外観",
-            "general": "一般",
-            "keyboardShortcuts": "キーボード ショートカット"
-        },
-        "theme": {
-            "auto": "自動",
-            "dark": "ダーク（暗色）",
-            "description": "アプリケーションのテーマは、OS（オペレーティングシステム）と一致するようにします。",
-            "light": "ライト（明色）",
-            "title": "アプリケーション テーマ"
-        }
+        "title": "テーマ"
+      },
+      "wordSpacing": "単語間の間隔"
     },
-    "wizard": {
-        "buttons": {
-            "discover": "新しい情報を見る",
-            "goToBooks": "わたしの本を一覧する",
-            "next": "次へ"
-        },
-        "description": {
-            "annotations": "文書の本文を、スタイルと色を選択してハイライトできます。その際、個人的なメモも添付できます。オプションの「クイック」作成を有効にすると、注釈編集画面を飛ばすことができます（あとでメモを入力したり、スタイルをカスタマイズしたりできます)。さらなる高速化を求めたい方は、本文を選択するだけで、すぐにハイライトできる「インスタント」モードをあわせて使ってください！",
-            "catalogs": "地元の図書館から本を借りたり、OPDSフィード経由で本を見つけたりできます。オンラインの図書目録により、複数のところにある、さまざまな本にアクセスできます。",
-            "home": "Thoriumの見た目が違います！ 何が新しいのか見てみましょう...",
-            "readingView1": "読書と聴き方の設定をカスタマイズ： Thoriumでは、ソフトウェアの外観（ユーザーインターフェイス）と電子書籍の両方に複数のカラーテーマが提供されるようになりました。また、電子書籍を合成音声で朗読したり同期される本文/音声ナレーションについての設定もより簡単になりました。",
-            "readingView2": "Thoriumのユーザーインターフェイスが改良されました。本文検索、検索結果の探索、指定したページへの移動、目次の参照、しおりの作成などがより簡単になりました。これは、新しい「ドックド（docked）」パネルによるものです。また、アプリケーション画面全体での読書モードはこれまでどおり、気を散らすことのない読書環境を提供します。\n\n",
-            "yourBooks": "再設計されたあなた自身の本棚へようこそ！ 「格子状（grid）」の表示では、タグで簡単にフィルタリングしたり、キーワードで本を検索したりできます。より高機能な「一覧表（table）」での表示では、著者、書名、日付、ファイル形式などで並べ替えてから本を選択できます。"
-        },
-        "dontShow": "次回以降は表示しない",
-        "tab": {
-            "annotations": "注釈",
-            "catalogs": "図書目録",
-            "home": "ホーム",
-            "readingView": "読書画面",
-            "yourBooks": "あなたの本"
-        },
-        "title": {
-            "allBooks": "自分の本棚",
-            "newFeature": "新機能：注釈",
-            "welcome": "Thorium 3.0へようこそ"
-        }
+    "svg": {
+      "left": "左",
+      "right": "右"
+    },
+    "toc": {
+      "publicationNoToc": "目次がありません"
+    },
+    "tts": {
+      "activate": "音声読み上げ機能（TTS）を起動",
+      "default": "音声: システム標準",
+      "next": "次に進む（TTS）",
+      "pause": "一時停止（TTS）",
+      "play": "再生（TTS）",
+      "previous": "前にもどる（TTS）",
+      "sentenceDetect": "音声読み上げ（TTS）語句の分割",
+      "sentenceDetectDescription": "長い段落を複数の文に分割",
+      "speed": "再生速度（TTS）",
+      "stop": "停止（TTS）",
+      "voice": "音声（TTS）"
     }
+  },
+  "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
+    "auth": {
+      "title": "",
+      "wipeData": "ログインデータを消去する"
+    },
+    "keyboard": {
+      "advancedMenu": "メニュー",
+      "cancel": "キャンセル",
+      "disclaimer": "ショートカットは、QWERTY配列のキーボードレイアウトから定義されました。",
+      "editUserJson": "編集：ユーザーファイル",
+      "keyboardShortcuts": "キーボードショートカット",
+      "loadUserJson": "読込：ユーザーファイル",
+      "resetDefaults": "リセット（初期設定に戻す）",
+      "save": "保存"
+    },
+    "language": {
+      "languageChoice": "言語の選択"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
+    },
+    "session": {
+      "no": "無効",
+      "title": "セッションを保存",
+      "yes": "有効"
+    },
+    "tabs": {
+      "appearance": "外観",
+      "general": "一般",
+      "keyboardShortcuts": "キーボード ショートカット"
+    },
+    "theme": {
+      "auto": "自動",
+      "dark": "ダーク（暗色）",
+      "description": "アプリケーションのテーマは、OS（オペレーティングシステム）と一致するようにします。",
+      "light": "ライト（明色）",
+      "title": "アプリケーション テーマ"
+    }
+  },
+  "wizard": {
+    "buttons": {
+      "discover": "新しい情報を見る",
+      "goToBooks": "わたしの本を一覧する",
+      "next": "次へ"
+    },
+    "description": {
+      "annotations": "文書の本文を、スタイルと色を選択してハイライトできます。その際、個人的なメモも添付できます。オプションの「クイック」作成を有効にすると、注釈編集画面を飛ばすことができます（あとでメモを入力したり、スタイルをカスタマイズしたりできます)。さらなる高速化を求めたい方は、本文を選択するだけで、すぐにハイライトできる「インスタント」モードをあわせて使ってください！",
+      "catalogs": "地元の図書館から本を借りたり、OPDSフィード経由で本を見つけたりできます。オンラインの図書目録により、複数のところにある、さまざまな本にアクセスできます。",
+      "home": "Thoriumの見た目が違います！ 何が新しいのか見てみましょう...",
+      "readingView1": "読書と聴き方の設定をカスタマイズ： Thoriumでは、ソフトウェアの外観（ユーザーインターフェイス）と電子書籍の両方に複数のカラーテーマが提供されるようになりました。また、電子書籍を合成音声で朗読したり同期される本文/音声ナレーションについての設定もより簡単になりました。",
+      "readingView2": "Thoriumのユーザーインターフェイスが改良されました。本文検索、検索結果の探索、指定したページへの移動、目次の参照、しおりの作成などがより簡単になりました。これは、新しい「ドックド（docked）」パネルによるものです。また、アプリケーション画面全体での読書モードはこれまでどおり、気を散らすことのない読書環境を提供します。\n\n",
+      "yourBooks": "再設計されたあなた自身の本棚へようこそ！ 「格子状（grid）」の表示では、タグで簡単にフィルタリングしたり、キーワードで本を検索したりできます。より高機能な「一覧表（table）」での表示では、著者、書名、日付、ファイル形式などで並べ替えてから本を選択できます。"
+    },
+    "dontShow": "次回以降は表示しない",
+    "tab": {
+      "annotations": "注釈",
+      "catalogs": "図書目録",
+      "home": "ホーム",
+      "readingView": "読書画面",
+      "yourBooks": "あなたの本"
+    },
+    "title": {
+      "allBooks": "自分の本棚",
+      "newFeature": "新機能：注釈",
+      "welcome": "Thorium 3.0へようこそ"
+    }
+  }
 }

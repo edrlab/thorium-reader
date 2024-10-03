@@ -5,15 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
+import * as stylesAllBooks from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
-import * as stylesAllBooks from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
+
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -31,7 +34,6 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/rou
 import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 import { Link, matchPath } from "react-router-dom";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 

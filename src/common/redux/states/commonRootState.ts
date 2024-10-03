@@ -11,6 +11,7 @@ import { IRTLFlipState } from "readium-desktop/common/redux/states/renderer/rtlF
 import { IKeyboardState } from "readium-desktop/common/redux/states/keyboard";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { ITheme } from "./theme";
+import { IAnnotationCreator } from "./creator";
 
 export interface ICommonRootState {
     session: ISessionState;
@@ -21,4 +22,5 @@ export interface ICommonRootState {
         disableRTLFlip: IRTLFlipState,
     };
     theme: ITheme;
+    creator: IAnnotationCreator;
 }

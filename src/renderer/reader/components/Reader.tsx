@@ -5,6 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
+import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
+
 import { ipcRenderer } from "electron";
 import classNames from "classnames";
 import divinaPlayer from "divina-player-js";
@@ -35,8 +38,6 @@ import * as DoubleArrowLeftIcon from "readium-desktop/renderer/assets/icons/doub
 import * as DoubleArrowRightIcon from "readium-desktop/renderer/assets/icons/double_arrow_right_black_24dp.svg";
 import * as DoubleArrowUpIcon from "readium-desktop/renderer/assets/icons/double_arrow_up_black_24dp.svg";
 import * as exitZenModeIcon from "readium-desktop/renderer/assets/icons/fullscreenExit-icon.svg";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
-import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -100,10 +101,17 @@ import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driv
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { diReaderGet } from "../di";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
+import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 // main process code!
 // thoriumhttps
 // import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/main/streamer/streamerNoHttp";
+
+// TODO: key not used but translation kept for potential future use
+// discard some not used key from i18n-scan cmd
+// translate("catalog.sort")
+// translate("catalog.emptyTagList")
+// translate("reader.picker.search.results")
 
 interface IWindowHistory extends History {
     _readerInstance: Reader | undefined;
@@ -169,18 +177,25 @@ const handleLinkUrl_UpdateHistoryState = (url: string, isFromOnPopState = false)
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
-const isDivinaLocation = (data: any): data is { pageIndex: number, nbOfPages: number, locator: R2Locator } => {
+const isDivinaLocation = (data: any): data is { pageIndex: number | undefined, nbOfPages: number | undefined, locator: R2Locator } => {
 
-    return typeof data === "object"
+    // isDivinaLocationduck typing hack with totalProgression injection!!
+    const isDivina = typeof data === "object"
         // && typeof data.pageIndex === "number"
         // && typeof data.nbOfPages === "number"
         && typeof data.locator === "object"
-        && typeof data.locator.href === "string"
-        && typeof data.locator.locations === "object"
-        && typeof data.locator.locations.position === "number"
-        && typeof data.locator.locations.totalProgression === "number"
-        && data.locator.locations.totalProgression >= 0
-        && data.locator.locations.totalProgression <= 1;
+        && typeof (data.locator as R2Locator).href === "string"
+        && typeof (data.locator as R2Locator).locations === "object"
+        && typeof (data.locator as R2Locator).locations.position === "number"
+        // && typeof (data.locator as R2Locator).locations.progression === "number"
+        && typeof ((data.locator as R2Locator).locations as any).totalProgression === "number"
+        && ((data.locator as R2Locator).locations as any).totalProgression >= 0
+        && ((data.locator as R2Locator).locations as any).totalProgression <= 1
+        ;
+    if (isDivina) {
+        (data.locator as R2Locator).locations.progression = ((data.locator as R2Locator).locations as any).totalProgression;
+    }
+    return isDivina;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -207,7 +222,7 @@ interface IState {
     zenMode: boolean;
 
     visibleBookmarkList: IBookmarkState[];
-    currentLocation: LocatorExtended;
+    currentLocation: MiniLocatorExtended;
 
     divinaReadingModeSupported: TdivinaReadingMode[];
     divinaNumberOfPages: number;
@@ -427,25 +442,30 @@ class Reader extends React.Component<IProps, IState> {
             createOrGetPdfEventBus().subscribe("page",
                 (pageIndex) => {
                     // const numberOfPages = this.props.r2Publication?.Metadata?.NumberOfPages;
-                    const loc = {
+                    const locatorExtended: LocatorExtended = {
+                        audioPlaybackInfo: undefined,
+                        paginationInfo: undefined,
+                        selectionInfo: undefined,
+                        selectionIsNew: undefined,
+                        docInfo: undefined,
+                        epubPage: undefined,
+                        epubPageID: undefined,
+                        headings: undefined,
+                        secondWebViewHref: undefined,
+                        followingElementIDs: undefined,
                         locator: {
                             href: pageIndex.toString(),
                             locations: {
-                                position: pageIndex,
+                                position: parseInt(pageIndex, 10),
                                 // progression: numberOfPages ? (pageIndex / numberOfPages) : 0,
                                 progression: 0,
                             },
                         },
                     };
+
                     console.log("pdf pageChange", pageIndex);
 
-                    // TODO: this is a hack! Forcing type LocatorExtended on this non-matching object shape
-                    // only "works" because data going into the persistent store (see saveReadingLocation())
-                    // is used appropriately and selectively when extracted back out ...
-                    // however this may trip / crash future code
-                    // if strict LocatorExtended model structure is expected when
-                    // reading from the persistence layer.
-                    this.handleReadingLocationChange(loc as unknown as LocatorExtended);
+                    this.handleReadingLocationChange(locatorExtended);
                 });
 
             const page = this.props.locator?.locator?.href || "";
@@ -702,7 +722,7 @@ class Reader extends React.Component<IProps, IState> {
         const isAudioBook = isAudiobookFn(this.props.r2Publication);
         const arrowDisabledNotEpub = isAudioBook || this.props.isPdf || this.props.isDivina;
         // const isFXL = this.isFixedLayout();
-        // const isPaginated = this.props.readerConfig.paged;
+        const isPaginated = this.props.readerConfig.paged;
 
         // console.log(arrowDisabledNotEpub, isFXL, isPaginated);
         // epub non fxl (page)      : false false true  : true
@@ -788,10 +808,12 @@ class Reader extends React.Component<IProps, IState> {
                         disableRTLFlip={this.props.disableRTLFlip}
                         isRTLFlip={this.isRTLFlip}
                     />
-                    :
-                    <button onClick={() => this.setState({ zenMode : false})} className={stylesReader.button_exitZen}>
+                    : 
+                    <div className={stylesReader.exitZen_container}>
+                    <button onClick={() => this.setState({ zenMode : false})} className={stylesReader.button_exitZen} style={{ opacity: isPaginated ? "1" : "0"}}>
                         <SVG ariaHidden svg={exitZenModeIcon} />
                     </button>
+                    </div>
                     }
 
                     <div
@@ -850,6 +872,7 @@ class Reader extends React.Component<IProps, IState> {
                                         }}
                                             title={this.props.__("reader.svg.left")}
                                             className={(this.state.settingsOpen || this.state.menuOpen) ? (this.props.readerConfig.readerDockingMode === "left" ? stylesReaderFooter.navigation_arrow_docked_left :  stylesReaderFooter.navigation_arrow_left) : stylesReaderFooter.navigation_arrow_left}
+                                            style={{ opacity: isPaginated ? "1" : "0"}}
                                         >
                                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                                         </button>
@@ -913,6 +936,7 @@ class Reader extends React.Component<IProps, IState> {
                                         }}
                                             title={this.props.__("reader.svg.right")}
                                             className={(this.state.settingsOpen || this.state.menuOpen) ? (this.props.readerConfig.readerDockingMode === "right" ? stylesReaderFooter.navigation_arrow_docked_right :  stylesReaderFooter.navigation_arrow_right) : stylesReaderFooter.navigation_arrow_right}
+                                            style={{ opacity: isPaginated ? "1" : "0"}}
                                         >
                                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                                         </button>
@@ -936,6 +960,7 @@ class Reader extends React.Component<IProps, IState> {
                     handleLinkClick={this.handleLinkClick}
                     goToLocator={this.goToLocator}
                     isDivina={this.props.isDivina}
+                    isDivinaLocation={isDivinaLocation}
                     divinaNumberOfPages={this.state.divinaNumberOfPages}
                     divinaContinousEqualTrue={this.state.divinaContinousEqualTrue}
                     isPdf={this.props.isPdf}
@@ -1752,10 +1777,9 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private divinaSetLocation = (data: any) => {
+    private divinaSetLocation = (data: { percent: number | undefined, pageIndex: number | undefined, nbOfPages: number | undefined, locator: R2Locator }) => {
 
-
-        if (isDivinaLocation(data)) {
+        // if (isDivinaLocation(data)) {
 
             // const loc = {
             //     locator: {
@@ -1768,10 +1792,10 @@ class Reader extends React.Component<IProps, IState> {
             // };
             // console.log("pageChange", pageIndex, nbOfPages);
 
-            data.locator.locations.progression = (data.locator.locations as any).totalProgression;
-            const LocatorExtended: LocatorExtended = {
+            // SEE isDivinaLocation duck typing hack with totalProgression injection!!
+            // data.locator.locations.progression = (data.locator.locations as any).totalProgression;
+            const locatorExtended: LocatorExtended = {
                 audioPlaybackInfo: undefined,
-                locator: data.locator,
                 paginationInfo: undefined,
                 selectionInfo: undefined,
                 selectionIsNew: undefined,
@@ -1780,13 +1804,15 @@ class Reader extends React.Component<IProps, IState> {
                 epubPageID: undefined,
                 headings: undefined,
                 secondWebViewHref: undefined,
+                followingElementIDs: undefined,
+
+                locator: data.locator,
             };
             // console.log(JSON.stringify(LocatorExtended, null, 4));
-            this.handleReadingLocationChange(LocatorExtended);
-        } else {
-            console.log("DIVINA: location bad formated ", data);
-        }
-
+            this.handleReadingLocationChange(locatorExtended);
+        // } else {
+        //     console.log("DIVINA: location bad formated ", data);
+        // }
     };
 
     private loadPublicationIntoViewport() {
@@ -1898,6 +1924,8 @@ class Reader extends React.Component<IProps, IState> {
                 publicationViewport.setAttribute("style", "display: block; position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: 0; padding: 0; box-sizing: border-box; background: white; overflow: hidden;");
             }
 
+            // @----ts-ignore TS2578
+            // @ts-expect-error TS2872
             const readingModeFromPersistence = "test" || this.props.divinaReadingMode;
             console.log("Reading mode from persistence : ", readingModeFromPersistence);
             const locale = this.props.locale;
@@ -2110,9 +2138,10 @@ class Reader extends React.Component<IProps, IState> {
 
                 this.setState({ divinaArrowEnabled: false });
 
-                const isInPageChangeData = (data: any): data is { percent: number, locator: R2Locator } => {
-                    return typeof data === "object" &&
-                        isDivinaLocation(data);
+                const isInPageChangeData = (data: any): data is { percent: number | undefined, pageIndex: number | undefined, nbOfPages: number | undefined, locator: R2Locator } => {
+                    return isDivinaLocation(data)
+                        // && typeof data.percent === "number"
+                    ;
                 };
 
                 if (isInPageChangeData(data)) {
@@ -2137,10 +2166,11 @@ class Reader extends React.Component<IProps, IState> {
                     return;
                 }
                 this.setState({ divinaArrowEnabled: false });
-                const isInPagesScrollData = (data: any): data is { percent: number, locator: R2Locator } => {
-                    return typeof data === "object" &&
-                        // typeof data.percent === "number" &&
-                        isDivinaLocation(data);
+
+                const isInPagesScrollData = (data: any): data is { percent: number | undefined, pageIndex: number | undefined, nbOfPages: number | undefined, locator: R2Locator } => {
+                    return isDivinaLocation(data)
+                        // && typeof data.percent === "number"
+                    ;
                 };
 
                 if (isInPagesScrollData(data)) {
@@ -2244,18 +2274,15 @@ class Reader extends React.Component<IProps, IState> {
         });
     }
 
-    private saveReadingLocation(loc: LocatorExtended) {
-        this.props.setLocator(loc);
+    private saveReadingLocation(miniLocatorExtended: MiniLocatorExtended) {
+        this.props.setMiniLocatorExtended(miniLocatorExtended);
     }
 
-    // TODO: WARNING, see code comments alongisde usage of this function for Divina and PDF
-    // (forced type despite different object shape / data model)
-    // See saveReadingLocation() => dispatch(readerLocalActionSetLocator.build(locator))
-    // See Reader RootState reader.locator (readerLocatorReducer merges the action data payload
-    // as-is, without type checking ... but consumers might expect strict LocatorExtended!)
-    private handleReadingLocationChange(loc: LocatorExtended) {
+    private handleReadingLocationChange(locatorExtended: LocatorExtended) {
 
-        ok(loc, "handleReadingLocationChange loc KO");
+        ok(locatorExtended, "handleReadingLocationChange loc KO");
+
+        const miniLocatorExtended = minimizeLocatorExtended(locatorExtended);
 
         if (!this.props.isDivina && !this.props.isPdf && this.ttsOverlayEnableNeedsSync) {
             ttsOverlayEnable(this.props.readerConfig.ttsEnableOverlayMode);
@@ -2264,18 +2291,17 @@ class Reader extends React.Component<IProps, IState> {
         }
         this.ttsOverlayEnableNeedsSync = false;
 
-        // note that with Divina, loc has locator.locations.progression set to totalProgression
-        this.saveReadingLocation(loc);
+        this.saveReadingLocation(miniLocatorExtended);
 
-        const l = (this.props.isDivina || isDivinaLocation(loc)) ? loc : (this.props.isPdf ? loc : (getCurrentReadingLocation() || loc));
+        const l = (this.props.isDivina || isDivinaLocation(locatorExtended)) ? locatorExtended : (this.props.isPdf ? locatorExtended : (getCurrentReadingLocation() || locatorExtended));
         this.setState({ currentLocation: l });
 
-        if (loc?.locator?.href && window.history.length === 1 && !window.history.state) {
+        if (locatorExtended?.locator?.href && window.history.length === 1 && !window.history.state) {
 
             // console.log("#+$%".repeat(5)  + " handleReadingLocationChange (INIT history state) => window history replaceState() ...", JSON.stringify(loc.locator), JSON.stringify(window.history.state), window.history.length, windowHistory._length, JSON.stringify(document.location), JSON.stringify(window.location));
             windowHistory._length = 1;
             // does not trigger onPopState!
-            window.history.replaceState({ data: loc.locator, index: windowHistory._length - 1 }, "");
+            window.history.replaceState({ data: locatorExtended.locator, index: windowHistory._length - 1 }, "");
         }
 
         // No need to explicitly refresh the bookmarks status here,
@@ -2884,7 +2910,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(readerActions.detachModeRequest.build());
         },
 
-        displayPublicationInfo: (pubId: string, pdfPlayerNumberOfPages: number | undefined, divinaNumberOfPages: number | undefined, divinaContinousEqualTrue: boolean, readerReadingLocation: LocatorExtended | undefined, handleLinkUrl: ((url: string) => void) | undefined, focusWhereAmI?: boolean) => {
+        displayPublicationInfo: (pubId: string, pdfPlayerNumberOfPages: number | undefined, divinaNumberOfPages: number | undefined, divinaContinousEqualTrue: boolean, readerReadingLocation: MiniLocatorExtended | undefined, handleLinkUrl: ((url: string) => void) | undefined, focusWhereAmI?: boolean) => {
             dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoReader,
                 {
                     publicationIdentifier: pubId,
@@ -2900,8 +2926,8 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         closePublicationInfo: () => {
             dispatch(dialogActions.closeRequest.build());
         },
-        setLocator: (locator: LocatorExtended) => {
-            dispatch(readerLocalActionSetLocator.build(locator));
+        setMiniLocatorExtended: (miniLocatorExtended: MiniLocatorExtended) => {
+            dispatch(readerLocalActionSetLocator.build(miniLocatorExtended));
 
             // just to refresh allPublicationPage.tsx
 

@@ -5,10 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { shell } from "electron";
-import classNames from "classnames";
 import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.scss";
 import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
+import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
+
+import { shell } from "electron";
+import classNames from "classnames";
 import * as debug_ from "debug";
 import DOMPurify from "dompurify";
 import * as React from "react";
@@ -16,7 +18,6 @@ import { TPublication } from "readium-desktop/common/type/publication.type";
 import { convertMultiLangStringToString } from "readium-desktop/renderer/common/language-string";
 import { TranslatorProps, withTranslator } from "../../hoc/translator";
 import isURL from "validator/lib/isURL";
-import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:publicationA11y");

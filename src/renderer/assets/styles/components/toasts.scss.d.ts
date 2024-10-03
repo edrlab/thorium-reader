@@ -1,5 +1,6 @@
-export declare const ___DEBUG___COMPONENTS_TOASTS_CSS: string;
 export declare const closeButton: string;
+export declare const CSS_END_components_toasts: string;
+export declare const CSS_START_components_toasts: string;
 export declare const error: string;
 export declare const icon: string;
 export declare const leave: string;

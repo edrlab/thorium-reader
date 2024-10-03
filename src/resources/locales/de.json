@@ -1,559 +1,575 @@
 {
-    "accessibility": {
-        "bookMenu": "Menü",
-        "closeDialog": "Schließen",
-        "importFile": "Importieren einer EPUB-Datei",
-        "leftSlideButton": "Scrolle nach links",
-        "mainContent": "Hauptinhalt",
-        "rightSlideButton": "Scrolle nach rechts",
-        "searchBook": "Suche nach einem Buch",
-        "skipLink": "Gehe zum Inhalt",
-        "toolbar": "Symbolleiste"
+  "accessibility": {
+    "bookMenu": "Menü",
+    "closeDialog": "Schließen",
+    "importFile": "Importieren einer EPUB-Datei",
+    "leftSlideButton": "Scrolle nach links",
+    "mainContent": "Hauptinhalt",
+    "rightSlideButton": "Scrolle nach rechts",
+    "searchBook": "Suche nach einem Buch",
+    "skipLink": "Gehe zum Inhalt",
+    "toolbar": "Symbolleiste"
+  },
+  "apiapp": {
+    "documentation": "Thorium Dokumentation",
+    "howItWorks": "Wie funktioniert es?",
+    "informations": "In Frankreich bieten viele öffentliche Bibliotheken einen maschinenlesbaren Katalog (ähnlich wie OPDS, aber nicht identisch), sodass Benutzer digitale Publikationen aus ihrem persönlichen Bücherregal herunterladen können. Durch die Integration dieser Technologie in Thorium Reader können Sie ein E-Book oder Hörbuch direkt in Thorium Reader herunterladen und sofort lesen.\nWie verbinden Sie Ihr französisches öffentliches Bibliothekskonto mit Thorium Reader? Das ist ganz einfach. Geben Sie eine französische Stadt („Paris“) oder einen Teil des Bibliotheksnamens in das Suchfeld ein und klicken Sie auf die Schaltfläche „Suchen“. Eine Liste der öffentlichen Bibliotheken, die Ihrer Suche entsprechen, wird angezeigt. Wählen Sie eine Bibliothek aus und klicken Sie auf „Hinzufügen“. Wählen Sie in der aktualisierten Liste der Kataloge diese Bibliothek aus: Ein Authentifizierungsformular wird angezeigt. Geben Sie Ihren Benutzernamen/Ihre E-Mail-Adresse und Ihr Passwort ein und klicken Sie auf „Anmelden“. Sie können jetzt den Inhalt Ihres persönlichen Bücherregals sehen, von dem Sie die zuvor ausgeliehenen E-Books und Hörbücher herunterladen und lesen können.",
+    "noLibraryFound": "Keine Bibliothek gefunden ({{- name}})"
+  },
+  "app": {
+    "edit": {
+      "copy": "Kopieren",
+      "cut": "Ausschneiden",
+      "paste": "Einfügen",
+      "redo": "Wiederherstellen",
+      "selectAll": "Alle auswählen",
+      "title": "Bearbeiten",
+      "undo": "Rückgängig"
     },
-    "apiapp": {
-        "documentation": "Thorium Dokumentation",
-        "howItWorks": "Wie funktioniert es?",
-        "informations": "In Frankreich bieten viele öffentliche Bibliotheken einen maschinenlesbaren Katalog (ähnlich wie OPDS, aber nicht identisch), sodass Benutzer digitale Publikationen aus ihrem persönlichen Bücherregal herunterladen können. Durch die Integration dieser Technologie in Thorium Reader können Sie ein E-Book oder Hörbuch direkt in Thorium Reader herunterladen und sofort lesen.\nWie verbinden Sie Ihr französisches öffentliches Bibliothekskonto mit Thorium Reader? Das ist ganz einfach. Geben Sie eine französische Stadt („Paris“) oder einen Teil des Bibliotheksnamens in das Suchfeld ein und klicken Sie auf die Schaltfläche „Suchen“. Eine Liste der öffentlichen Bibliotheken, die Ihrer Suche entsprechen, wird angezeigt. Wählen Sie eine Bibliothek aus und klicken Sie auf „Hinzufügen“. Wählen Sie in der aktualisierten Liste der Kataloge diese Bibliothek aus: Ein Authentifizierungsformular wird angezeigt. Geben Sie Ihren Benutzernamen/Ihre E-Mail-Adresse und Ihr Passwort ein und klicken Sie auf „Anmelden“. Sie können jetzt den Inhalt Ihres persönlichen Bücherregals sehen, von dem Sie die zuvor ausgeliehenen E-Books und Hörbücher herunterladen und lesen können.",
-        "noLibraryFound": "Keine Bibliothek gefunden ({{- name}})"
-    },
-    "app": {
-        "edit": {
-            "copy": "Kopieren",
-            "cut": "Ausschneiden",
-            "paste": "Einfügen",
-            "redo": "Wiederherstellen",
-            "selectAll": "Alle auswählen",
-            "title": "Bearbeiten",
-            "undo": "Rückgängig"
-        },
-        "hide": "{{- appName}} ausblenden",
-        "quit": "Beende {{- appName}}",
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "Nein",
-                        "yes": "Ja"
-                    },
-                    "message": "Möchten Sie die Sitzung speichern?",
-                    "title": "Sitzung sichern"
-                }
-            }
-        },
-        "update": {
-            "message": "Neue Version verfügbar. Klicken Sie hier, um mehr zu erfahren.",
-            "title": "{{- appName}} Software-Update."
-        },
-        "window": {
-            "showLibrary": "Bibliothek / Bücherregal anzeigen"
+    "hide": "{{- appName}} ausblenden",
+    "quit": "Beende {{- appName}}",
+    "session": {
+      "exit": {
+        "askBox": {
+          "button": {
+            "no": "Nein",
+            "yes": "Ja"
+          },
+          "message": "Möchten Sie die Sitzung speichern?",
+          "title": "Sitzung sichern"
         }
+      }
     },
-    "catalog": {
-        "about": {
-            "title": "Über {{appName}}"
-        },
-        "addBookToLib": "Import",
-        "addTags": "Ein Tag hinzufügen",
-        "addTagsButton": "Hinzufügen",
-        "allBooks": "Alle Bücher",
-        "bookInfo": "Über dieses Buch",
-        "column": {
-            "ascending": "aufsteigend",
-            "descending": "absteigend",
-            "unsorted": "unsortiert"
-        },
-        "delete": "Löschen",
-        "deleteBook": "Löschen",
-        "deleteTag": "Tag löschen",
-        "description": "Beschreibung",
-        "emptyTagList": "Keine Bücher wurden mit Tags versehen.",
-        "entry": {
-            "continueReading": "Lesen Sie weiter",
-            "continueReadingAudioBooks": "Weiter zuhören",
-            "continueReadingDivina": "Divina fortsetzen",
-            "continueReadingPdf": "PDF weiterlesen",
-            "lastAdditions": "Kürzlich hinzugefügt"
-        },
-        "export": "Export",
-        "exportAnnotation": "",
-        "exportAnnotationFailure": "",
-        "exportAnnotationSuccess": "",
-        "format": "Format",
-        "lang": "Sprache",
-        "lastRead": "Zuletzt gelesen",
-        "moreInfo": "Mehr Informationen",
-        "myBooks": "Meine Bücher",
-        "noPublicationHelpL1": "Legen Sie Ihre Bücher hier ab",
-        "noPublicationHelpL2": "oder fügen Sie neu Bücher über den \"{{- importTitle }}\"-Button hinzu.",
-        "noPublicationHelpL3": "LCP-geschützte Dateien werden unterstützt.",
-        "noPublicationHelpL4": "Unterstützte Dateiformate:",
-        "numberOfPages": "Seitenzahl",
-        "opds": {
-            "auth": {
-                "cancel": "Abbrechen",
-                "login": "Login",
-                "password": "Passwort",
-                "register": "Registrieren",
-                "username": "Benutzername / E-Mail-Adresse"
-            },
-            "info": {
-                "availableSince": "Verfügbar seit",
-                "availableState": {
-                    "available": "Verfügbar",
-                    "ready": "Bereit",
-                    "reserved": "Reserviert",
-                    "unavailable": "Nicht verfügbar",
-                    "unknown": "Unbekannt"
-                },
-                "availableUntil": "Verfügbar bis",
-                "copyAvalaible": "Anzahl der verfügbaren",
-                "copyTotal": "Anzahl der Kopien",
-                "holdPosition": "Ihre Halteposition",
-                "holdTotal": "Gehalten",
-                "numberOfItems": "Anzahl der Teile",
-                "priveValue": "Preis",
-                "state": "Zustand"
-            }
-        },
-        "publisher": "Herausgeber",
-        "readBook": "Lesen",
-        "released": "Veröffentlicht am",
-        "sort": "Sortieren nach",
-        "tag": "Tag",
-        "tagCount": "Anzahl der Tags",
-        "tags": "Tags",
-        "update": "Bearbeiten"
+    "update": {
+      "message": "Neue Version verfügbar. Klicken Sie hier, um mehr zu erfahren.",
+      "title": "{{- appName}} Software-Update."
     },
-    "dialog": {
-        "cancel": "Abbrechen",
-        "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
-        "deleteFeed": "Willst du diesen Katalog wirklich löschen?",
-        "deletePublication": "Willst du diese Publikation wirklich löschen?",
-        "import": "Willst du diese EPUB-Dateien wirklich importieren?",
-        "importError": "Ein Fehler ist aufgetreten, überprüfen Sie die Dateiendung ({{acceptedExtension}})",
-        "renew": "Ausleihe verlängern?",
-        "return": "Publikation zurückgeben?",
-        "yes": "Ja"
+    "window": {
+      "showLibrary": "Bibliothek / Bücherregal anzeigen"
+    }
+  },
+  "catalog": {
+    "about": {
+      "title": "Über {{appName}}"
     },
-    "error": {
-        "errorBox": {
-            "error": "Fehlermeldung:",
-            "message": "In [{{- filename}}] ist ein Fehler aufgetreten",
-            "title": "Interner {{- appName}}-Fehler"
-        }
+    "addBookToLib": "Import",
+    "addTags": "Ein Tag hinzufügen",
+    "addTagsButton": "Hinzufügen",
+    "allBooks": "Alle Bücher",
+    "bookInfo": "Über dieses Buch",
+    "column": {
+      "ascending": "aufsteigend",
+      "descending": "absteigend",
+      "unsorted": "unsortiert"
     },
-    "header": {
-        "allBooks": "Alle Bücher",
-        "catalogs": "Kataloge",
-        "downloads": "Downloads",
-        "fitlerTagTitle": "Nach Tag filtern",
-        "gridTitle": "Bücher in einem Raster präsentieren",
-        "home": "Hauptmenü",
-        "homeTitle": "Start",
-        "importTitle": "Publikation importieren",
-        "listTitle": "Bücher in einer Liste präsentieren",
-        "myCatalogs": "Meine Kataloge",
-        "refreshTitle": "Feeds neu laden",
-        "searchPlaceholder": "Suche",
-        "searchTitle": "Suche starten",
-        "settings": "Einstellungen",
-        "viewMode": "Ansichtsmodus"
+    "delete": "Löschen",
+    "deleteBook": "Löschen",
+    "deleteTag": "Tag löschen",
+    "description": "Beschreibung",
+    "emptyTagList": "Keine Bücher wurden mit Tags versehen.",
+    "entry": {
+      "continueReading": "Lesen Sie weiter",
+      "continueReadingAudioBooks": "Weiter zuhören",
+      "continueReadingDivina": "Divina fortsetzen",
+      "continueReadingPdf": "PDF weiterlesen",
+      "lastAdditions": "Kürzlich hinzugefügt"
     },
-    "library": {
-        "lcp": {
-            "hint": "Dein Kennwort",
-            "password": "Passwort",
-            "sentence": "Diese LCP-geschütze Publikation benötigt zum Öffnen ein Password: ",
-            "urlHint": "Passwort vergessen? Support ist verfügbar unter:",
-            "whatIsLcp?": "Was ist LCP?",
-            "whatIsLcpInfoDetails": "LCP steht für „Licensed Content Protection“.",
-            "whatIsLcpInfoDetailsLink": "Um mehr zu erfahren, klicken Sie auf diesen Link zur EDRLab-Website."
-        }
-    },
-    "message": {
-        "download": {
-            "error": "Der Download von [{{- title}}] ist fehlgeschlagen: {{- err}}"
-        },
-        "import": {
-            "alreadyImport": "Es scheint, dass Sie die Publikation [{{- title}}] bereits in Ihren Katalog aufgenommen haben.",
-            "fail": "Der Import von {{- path}} ist fehlgeschlagen. {{- err}}",
-            "success": "Der Import von {{- title}} ist abgeschlossen."
-        },
-        "open": {
-            "error": "Die Publikation kann nicht geöffnet werden: {{- err}}"
-        }
-    },
+    "export": "Export",
+    "exportAnnotation": "",
+    "format": "Format",
+    "lang": "Sprache",
+    "lastRead": "Zuletzt gelesen",
+    "moreInfo": "Mehr Informationen",
+    "myBooks": "Meine Bücher",
+    "noPublicationHelpL1": "Legen Sie Ihre Bücher hier ab",
+    "noPublicationHelpL2": "oder fügen Sie neu Bücher über den \"{{- importTitle }}\"-Button hinzu.",
+    "noPublicationHelpL3": "LCP-geschützte Dateien werden unterstützt.",
+    "noPublicationHelpL4": "Unterstützte Dateiformate:",
+    "numberOfPages": "Seitenzahl",
     "opds": {
-        "addForm": {
-            "addButton": "Hinzufügen",
-            "name": "Feed-Name:",
-            "namePlaceholder": "Name",
-            "url": "Feed-Link:",
-            "urlPlaceholder": "Link"
+      "auth": {
+        "cancel": "Abbrechen",
+        "login": "Login",
+        "password": "Passwort",
+        "register": "Registrieren",
+        "username": "Benutzername / E-Mail-Adresse"
+      },
+      "info": {
+        "availableSince": "Verfügbar seit",
+        "availableState": {
+          "available": "Verfügbar",
+          "ready": "Bereit",
+          "reserved": "Reserviert",
+          "unavailable": "Nicht verfügbar",
+          "unknown": "Unbekannt"
         },
-        "addFormApiapp": {
-            "title": "Bibliotheks-Account hinzufügen"
-        },
-        "addMenu": "OPDS-Feed hinzufügen",
-        "breadcrumbRoot": "Kataloge",
-        "documentation": "Offizielle OPDS-Website",
-        "empty": "Keine Publikation gefunden",
-        "firstPage": "Erste Seite",
-        "informations": "Stellen Sie sich eine Welt vor, in der Sie mit nur wenigen Klicks digitale Publikationen von öffentlichen Bibliotheken und digitalen Buchhändlern erkunden und herunterladen können. Genau das bietet das Katalogformat Open Publication Distribution System (OPDS). Mit OPDS können Sie durch Kataloge verschiedener E-Book-Anbieter navigieren, sich anmelden, eine Publikation ausleihen, kaufen oder Ihr persönliches Bücherregal besuchen. Sie können sogar ein E-Book oder Hörbuch direkt in Thorium Reader herunterladen, um es sofort zu lesen.\nWie finden Sie also einen OPDS-Katalog? Das ist ganz einfach. Suchen Sie nach einem Hyperlink (URL), der zum Katalog führt. Kopieren Sie diese URL in das Link-Feld oben. Denken Sie daran, dass es keinen One-Stop-Shop für alle aktiven OPDS-Kataloge gibt. Sie müssen Ihre bevorzugte Bibliothek oder Ihren Buchhändler kontaktieren und nach der URL ihres OPDS-Katalogs fragen. Wenn Sie nicht sicher sind, wo Sie anfangen sollen, hat Wikipedia einige Verzeichnisse von OPDS-Katalogen in verschiedenen Sprachen, die hilfreich sein könnten.\nDas Feld Name können Sie frei lassen; es bietet eine einfache Möglichkeit, den Feed in Thorium Reader zu identifizieren.",
-        "lastPage": "Letzte Seite",
-        "menu": {
-            "aboutBook": "Über dieses Buch",
-            "addExtract": "Zur Bibliothek hinzufügen",
-            "goBuyBook": "Dieses Buch kaufen",
-            "goLoanBook": "Dieses Buch ausleihen",
-            "goRevokeLoanBook": "Ausleihe widerrufen",
-            "goSubBook": "Abonnieren"
-        },
-        "network": {
-            "error": "Ein Fehler ist aufgetreten",
-            "noInternet": "Kein Internet",
-            "noInternetMessage": "Überprüfen Sie das Netzwerkkabel, das Modem, den Router oder das WLAN",
-            "reject": "Beim Versuch, den OPDS-Feed zu verarbeiten, ist ein unerwarteter Fehler aufgetreten.",
-            "timeout": "Es ist eine Netzwerk-Zeitüberschreitung aufgetreten. Bitte versuchen Sie es später erneut"
-        },
-        "next": "Nächster",
-        "previous": "Vorheriger",
-        "shelf": "Bücherregal",
-        "updateForm": {
-            "name": "Name:",
-            "title": "Bearbeite OPDS-Feed",
-            "updateButton": "Bearbeiten",
-            "url": "Link:"
-        },
-        "whatIsOpds": "Was ist OPDS?"
+        "availableUntil": "Verfügbar bis",
+        "copyAvalaible": "Anzahl der verfügbaren",
+        "copyTotal": "Anzahl der Kopien",
+        "holdPosition": "Ihre Halteposition",
+        "holdTotal": "Gehalten",
+        "numberOfItems": "Anzahl der Teile",
+        "priveValue": "Preis",
+        "state": "Zustand"
+      }
     },
-    "publication": {
-        "accessibility": {
-            "accessModeSufficient": {
-                "textual": "TTS- und Screenreader-freundlich"
-            },
-            "accessibilityFeature": {
-                "alternativeText": "Enthält Alternativtexte",
-                "displayTransformability": "Anpassbarer Text und Layout",
-                "longDescription": "Vollständig beschriebene grafische Ressourcen",
-                "printPageNumbers": "Seitennummerierungsreferenz für gedruckte Bücher",
-                "readingOrder": "Enthält eine Lesereihenfolge",
-                "synchronizedAudioText": "Text und Audio synchronisiert",
-                "tableOfContents": "Enthält ein Inhaltsverzeichnis"
-            },
-            "accessibilityHazard": {
-                "flashing": "Blinkt",
-                "motionSimulation": "Bewegungssimulation",
-                "name": "Gefahr:",
-                "noFlashing": "Kein Blinken",
-                "noMotionSimulation": "Keine Bewegungssimulation",
-                "noSound": "Kein Audio",
-                "none": "Keine",
-                "sound": "Audio",
-                "unknown": "Unbekannt"
-            },
-            "certifierReport": "Zertifiziererbericht",
-            "conformsTo": "Entspricht:",
-            "moreInformation": "Mehr Informationen",
-            "name": "Barrierefreiheit",
-            "noA11y": "Keine Informationen zur Barrierefreiheit verfügbar"
-        },
-        "actions": "Aktionen",
-        "audio": {
-            "tracks": "Titel"
-        },
-        "author": "Autor",
-        "cancelledLcp": "Die LCP-Lizenz dieser Veröffentlichung wurde gekündigt.",
-        "certificateRevoked": "LCP-Lizenzzertifikat wurde widerrufen.",
-        "certificateSignatureInvalid": "Ungültige LCP-Lizenzzertifikatssignatur.",
-        "cover": {
-            "img": "Titelbild"
-        },
-        "day": "Tag",
-        "days": "Tage",
-        "duration": {
-            "title": "Dauer"
-        },
-        "expired": "Ausleihe abgelaufen",
-        "expiredLcp": "Die LCP-Lizenz dieser Veröffentlichung ist abgelaufen.",
-        "lcpEnd": "Ende",
-        "lcpRightsCopy": "Kopierte Zeichen",
-        "lcpRightsPrint": "Gedruckte Seiten",
-        "lcpStart": "Start",
-        "licenceLCP": "Lizenz (LCP)",
-        "licenseOutOfDate": "Veraltete LCP-Lizenz.",
-        "licenseSignatureDateInvalid": "Ungültiges Signaturdatum der LCP-Lizenz.",
-        "licenseSignatureInvalid": "Invalid LCP license signature.",
-        "licensed": "Lizenziert",
-        "markAsRead": "Als gelesen markieren",
-        "notStarted": "Nicht begonnen",
-        "onGoing": "Im Gange",
-        "progression": {
-            "title": "Fortschritt"
-        },
-        "read": "Fertig gelesen",
-        "remainingTime": "Ausleihe (verbleibende Tage)",
-        "renewButton": "Verlängern",
-        "returnButton": "Zurückgeben",
-        "returnedLcp": "Diese LCP-geschützte Veröffentlichung wird zurückgegeben.",
-        "revokedLcp": "Die LCP-Lizenz dieser Veröffentlichung wurde widerrufen.",
-        "seeLess": "Weniger Infos",
-        "seeMore": "Mehr Infos",
-        "timeLeft": "Links",
-        "title": "Titel",
-        "userKeyCheckInvalid": "Falsches Passwort"
+    "publisher": "Herausgeber",
+    "readBook": "Lesen",
+    "released": "Veröffentlicht am",
+    "sort": "Sortieren nach",
+    "tag": "Tag",
+    "tagCount": "Anzahl der Tags",
+    "tags": "Tags",
+    "update": "Bearbeiten"
+  },
+  "dialog": {
+    "cancel": "Abbrechen",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
+    "deleteFeed": "Willst du diesen Katalog wirklich löschen?",
+    "deletePublication": "Willst du diese Publikation wirklich löschen?",
+    "import": "Willst du diese EPUB-Dateien wirklich importieren?",
+    "importError": "Ein Fehler ist aufgetreten, überprüfen Sie die Dateiendung ({{acceptedExtension}})",
+    "renew": "Ausleihe verlängern?",
+    "return": "Publikation zurückgeben?",
+    "yes": "Ja"
+  },
+  "error": {
+    "errorBox": {
+      "error": "Fehlermeldung:",
+      "message": "In [{{- filename}}] ist ein Fehler aufgetreten",
+      "title": "Interner {{- appName}}-Fehler"
+    }
+  },
+  "header": {
+    "allBooks": "Alle Bücher",
+    "catalogs": "Kataloge",
+    "downloads": "Downloads",
+    "fitlerTagTitle": "Nach Tag filtern",
+    "gridTitle": "Bücher in einem Raster präsentieren",
+    "home": "Hauptmenü",
+    "homeTitle": "Start",
+    "importTitle": "Publikation importieren",
+    "listTitle": "Bücher in einer Liste präsentieren",
+    "myCatalogs": "Meine Kataloge",
+    "refreshTitle": "Feeds neu laden",
+    "searchPlaceholder": "Suche",
+    "searchTitle": "Suche starten",
+    "settings": "Einstellungen",
+    "viewMode": "Ansichtsmodus"
+  },
+  "library": {
+    "lcp": {
+      "hint": "Dein Kennwort",
+      "password": "Passwort",
+      "sentence": "Diese LCP-geschütze Publikation benötigt zum Öffnen ein Password: ",
+      "urlHint": "Passwort vergessen? Support ist verfügbar unter:",
+      "whatIsLcp?": "Was ist LCP?",
+      "whatIsLcpInfoDetails": "LCP steht für „Licensed Content Protection“.",
+      "whatIsLcpInfoDetailsLink": "Um mehr zu erfahren, klicken Sie auf diesen Link zur EDRLab-Website."
+    }
+  },
+  "message": {
+    "download": {
+      "error": "Der Download von [{{- title}}] ist fehlgeschlagen: {{- err}}"
     },
-    "reader": {
-        "annotations": {
-            "Color": "Farbe",
-            "addNote": "Notiz hinzufügen",
-            "advancedMode": "Sofortmodus (automatisch erstellen nach Auswahl)",
-            "annotationsOptions": "Optionen",
-            "colors": {
-                "bluegreen": "",
-                "cyan": "",
-                "green": "",
-                "lightblue": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
-            },
-            "filter": {
-                "all": "",
-                "filterByColor": "",
-                "filterByDrawtype": "",
-                "filterByTag": "",
-                "filterOptions": "",
-                "none": ""
-            },
-            "hide": "Ausblenden",
-            "highlight": "Markieren",
-            "noSelectionToast": "Keine Auswahl",
-            "quickAnnotations": "Schnell erstellen (Editor überspringen)",
-            "saveNote": "Speichern",
-            "toggleMarginMarks": "Anzeige in Rändern",
-            "type": {
-                "outline": "Umranden",
-                "solid": "Hintergrundfarbe",
-                "strikethrough": "Durchstreichen",
-                "underline": "Unterstreichen"
-            }
-        },
-        "divina": {
-            "mute": "Audio stummschalten",
-            "unmute": "Ton einschalten"
-        },
-        "fxl": {
-            "fit": "Einpassen"
-        },
-        "marks": {
-            "annotations": "Meine Anmerkungen",
-            "bookmarks": "Meine Lesezeichen",
-            "delete": "Löschen",
-            "edit": "Bearbeiten",
-            "goTo": "Gehe zu Seite",
-            "landmarks": "Navigationspunkte",
-            "saveMark": "Lesezeichen speichern",
-            "search": "Suche",
-            "searchResult": "Suche [{{- searchText}}]",
-            "toc": "Inhaltsverzeichnis"
-        },
-        "media-overlays": {
-            "activate": "Vorlesen aktivieren",
-            "captions": "Bildunterschriften / störungsfreie Ansicht",
-            "captionsDescription": "Vereinfachte Textansicht mit minimalem Untertitel-Styling.",
-            "next": "Nächstes Vorlesen",
-            "pause": "Vorlesen pausieren",
-            "play": "Vorlesen",
-            "previous": "Vorheriges Vorlesen",
-            "skip": "Überspringbarkeit",
-            "skipDescription": "Überspringen/ignorieren Sie zusätzlichen Inhalt wie Seitenumbrüche, Fußnoten, Endnoten usw.",
-            "speed": "Vorlese-Wiedergabegeschwindigkeit",
-            "stop": "Vorlesen beenden",
-            "title": "Vorlesen"
-        },
-        "navigation": {
-            "annotationTitle": "Notizen",
-            "backHomeTitle": "Zurück zum Bücherregal",
-            "bookmarkTitle": "Lesezeichen setzen",
-            "currentPage": "Aktuelle Seite: {{- current}}",
-            "currentPageTotal": "Aktuelle Seite: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Fenster loslösen",
-            "fullscreenTitle": "Vollbildmodus",
-            "goTo": "Gehe zu",
-            "goToError": "Diese Seite existiert nicht",
-            "goToPlaceHolder": "Eingabe der Seitenzahl",
-            "goToTitle": "Gehe zur Seite",
-            "historyNext": "Vorwärts springen",
-            "historyPrevious": "Zurückspringen",
-            "infoTitle": "Informationen",
-            "magnifyingGlassButton": "Publikation durchsuchen",
-            "openTableOfContentsTitle": "Navigation",
-            "page": "Seite",
-            "pdfscalemode": "Seitenbreite / Seitenanpassung",
-            "settingsTitle": "Einstellungen"
-        },
-        "picker": {
-            "search": {
-                "founds": "{{- nResults}} Fundstelle(n)",
-                "input": "Text suchen",
-                "next": "Nächste",
-                "notFound": "keine Treffer",
-                "previous": "Vorherige",
-                "results": "Ergebnisse",
-                "submit": "Suchen"
-            },
-            "searchTitle": "Suche:"
-        },
-        "settings": {
-            "column": {
-                "auto": "Automatisch",
-                "one": "1 Spalte",
-                "title": "Spaltendarstellung",
-                "two": "2 Spalten"
-            },
-            "customizeReader": "Anpassen der Textformatierung",
-            "disabled": "deaktiviert",
-            "display": "Lesefluss",
-            "disposition": {
-                "title": "Layout"
-            },
-            "font": "Schriftart",
-            "fontSize": "Schriftgröße",
-            "infoCustomFont": "Wählen Sie eine benutzerdefinierte Schriftart aus dem Betriebssystem aus, indem Sie ihren Namen eingeben",
-            "justification": "Textausrichtung",
-            "justify": "Blocksatz",
-            "letterSpacing": "Buchstabenabstand",
-            "lineSpacing": "Zeilenabstand",
-            "margin": "Seitenränder",
-            "noFootnotes": "Fußnoten deaktivieren",
-            "noRTLFlip": "Rechts-nach-links-Benutzeroberfläche deaktivieren",
-            "noRuby": "Japanische Ruby-Notationen ausblenden",
-            "paginated": "Seitendarstellung",
-            "paraSpacing": "Absatzabstand",
-            "pdfZoom": {
-                "name": {
-                    "100pct": "100%",
-                    "150pct": "150%",
-                    "200pct": "200%",
-                    "300pct": "300%",
-                    "500pct": "500%",
-                    "50pct": "50%",
-                    "fit": "Seite einpassen",
-                    "width": "Seitenbreite"
-                },
-                "title": "Zoom"
-            },
-            "preset": {
-                "apply": "",
-                "reset": "",
-                "save": "",
-                "title": ""
-            },
-            "preview": "Vorschau",
-            "reduceMotion": "Bewegung reduzieren",
-            "scrolled": "Fortlaufend",
-            "spacing": "Abstand",
-            "text": "Text",
-            "theme": {
-                "name": {
-                    "Contrast1": "Kontrast 1",
-                    "Contrast2": "Kontrast 2",
-                    "Contrast3": "Kontrast 3",
-                    "Contrast4": "Kontrast 4",
-                    "Neutral": "Neutral",
-                    "Night": "Nachtzeit",
-                    "Paper": "Papier",
-                    "Sepia": "Sepia"
-                },
-                "title": "Motiv"
-            },
-            "wordSpacing": "Wortabstand"
-        },
-        "svg": {
-            "left": "Links",
-            "right": "Rechts"
-        },
-        "toc": {
-            "publicationNoToc": "Kein Inhaltsverzeichnis"
-        },
-        "tts": {
-            "activate": "Text-to-Speech (TTS) aktivieren",
-            "default": "Stimme: Systemstandard",
-            "next": "Nächstes TTS",
-            "pause": "TTS pausieren",
-            "play": "TTS abspielen",
-            "previous": "Vorheriges TTS",
-            "sentenceDetect": "TTS-Text aufteilen",
-            "sentenceDetectDescription": "Lange Absätze in Sätze aufteilen.",
-            "speed": "TTS-Wiedergaberate",
-            "stop": "TTS stoppen",
-            "voice": "TTS-Stimme"
-        }
+    "import": {
+      "alreadyImport": "Es scheint, dass Sie die Publikation [{{- title}}] bereits in Ihren Katalog aufgenommen haben.",
+      "fail": "Der Import von {{- path}} ist fehlgeschlagen. {{- err}}",
+      "success": "Der Import von {{- title}} ist abgeschlossen."
+    },
+    "open": {
+      "error": "Die Publikation kann nicht geöffnet werden: {{- err}}"
+    }
+  },
+  "opds": {
+    "addForm": {
+      "addButton": "Hinzufügen",
+      "name": "Feed-Name:",
+      "namePlaceholder": "Name",
+      "url": "Feed-Link:",
+      "urlPlaceholder": "Link"
+    },
+    "addFormApiapp": {
+      "title": "Bibliotheks-Account hinzufügen"
+    },
+    "addMenu": "OPDS-Feed hinzufügen",
+    "breadcrumbRoot": "Kataloge",
+    "documentation": "Offizielle OPDS-Website",
+    "empty": "Keine Publikation gefunden",
+    "firstPage": "Erste Seite",
+    "informations": "Stellen Sie sich eine Welt vor, in der Sie mit nur wenigen Klicks digitale Publikationen von öffentlichen Bibliotheken und digitalen Buchhändlern erkunden und herunterladen können. Genau das bietet das Katalogformat Open Publication Distribution System (OPDS). Mit OPDS können Sie durch Kataloge verschiedener E-Book-Anbieter navigieren, sich anmelden, eine Publikation ausleihen, kaufen oder Ihr persönliches Bücherregal besuchen. Sie können sogar ein E-Book oder Hörbuch direkt in Thorium Reader herunterladen, um es sofort zu lesen.\nWie finden Sie also einen OPDS-Katalog? Das ist ganz einfach. Suchen Sie nach einem Hyperlink (URL), der zum Katalog führt. Kopieren Sie diese URL in das Link-Feld oben. Denken Sie daran, dass es keinen One-Stop-Shop für alle aktiven OPDS-Kataloge gibt. Sie müssen Ihre bevorzugte Bibliothek oder Ihren Buchhändler kontaktieren und nach der URL ihres OPDS-Katalogs fragen. Wenn Sie nicht sicher sind, wo Sie anfangen sollen, hat Wikipedia einige Verzeichnisse von OPDS-Katalogen in verschiedenen Sprachen, die hilfreich sein könnten.\nDas Feld Name können Sie frei lassen; es bietet eine einfache Möglichkeit, den Feed in Thorium Reader zu identifizieren.",
+    "lastPage": "Letzte Seite",
+    "menu": {
+      "aboutBook": "Über dieses Buch",
+      "addExtract": "Zur Bibliothek hinzufügen",
+      "goBuyBook": "Dieses Buch kaufen",
+      "goLoanBook": "Dieses Buch ausleihen",
+      "goRevokeLoanBook": "Ausleihe widerrufen",
+      "goSubBook": "Abonnieren"
+    },
+    "network": {
+      "error": "Ein Fehler ist aufgetreten",
+      "noInternet": "Kein Internet",
+      "noInternetMessage": "Überprüfen Sie das Netzwerkkabel, das Modem, den Router oder das WLAN",
+      "reject": "Beim Versuch, den OPDS-Feed zu verarbeiten, ist ein unerwarteter Fehler aufgetreten.",
+      "timeout": "Es ist eine Netzwerk-Zeitüberschreitung aufgetreten. Bitte versuchen Sie es später erneut"
+    },
+    "next": "Nächster",
+    "previous": "Vorheriger",
+    "shelf": "Bücherregal",
+    "updateForm": {
+      "name": "Name:",
+      "title": "Bearbeite OPDS-Feed",
+      "updateButton": "Bearbeiten",
+      "url": "Link:"
+    },
+    "whatIsOpds": "Was ist OPDS?"
+  },
+  "publication": {
+    "accessibility": {
+      "accessModeSufficient": {
+        "textual": "TTS- und Screenreader-freundlich"
+      },
+      "accessibilityFeature": {
+        "alternativeText": "Enthält Alternativtexte",
+        "displayTransformability": "Anpassbarer Text und Layout",
+        "longDescription": "Vollständig beschriebene grafische Ressourcen",
+        "printPageNumbers": "Seitennummerierungsreferenz für gedruckte Bücher",
+        "readingOrder": "Enthält eine Lesereihenfolge",
+        "synchronizedAudioText": "Text und Audio synchronisiert",
+        "tableOfContents": "Enthält ein Inhaltsverzeichnis"
+      },
+      "accessibilityHazard": {
+        "flashing": "Blinkt",
+        "motionSimulation": "Bewegungssimulation",
+        "name": "Gefahr:",
+        "noFlashing": "Kein Blinken",
+        "noMotionSimulation": "Keine Bewegungssimulation",
+        "noSound": "Kein Audio",
+        "none": "Keine",
+        "sound": "Audio",
+        "unknown": "Unbekannt"
+      },
+      "certifierReport": "Zertifiziererbericht",
+      "conformsTo": "Entspricht:",
+      "moreInformation": "Mehr Informationen",
+      "name": "Barrierefreiheit",
+      "noA11y": "Keine Informationen zur Barrierefreiheit verfügbar"
+    },
+    "actions": "Aktionen",
+    "audio": {
+      "tracks": "Titel"
+    },
+    "author": "Autor",
+    "cancelledLcp": "Die LCP-Lizenz dieser Veröffentlichung wurde gekündigt.",
+    "certificateRevoked": "LCP-Lizenzzertifikat wurde widerrufen.",
+    "certificateSignatureInvalid": "Ungültige LCP-Lizenzzertifikatssignatur.",
+    "cover": {
+      "img": "Titelbild"
+    },
+    "day": "Tag",
+    "days": "Tage",
+    "duration": {
+      "title": "Dauer"
+    },
+    "expired": "Ausleihe abgelaufen",
+    "expiredLcp": "Die LCP-Lizenz dieser Veröffentlichung ist abgelaufen.",
+    "lcpEnd": "Ende",
+    "lcpRightsCopy": "Kopierte Zeichen",
+    "lcpRightsPrint": "Gedruckte Seiten",
+    "lcpStart": "Start",
+    "licenceLCP": "Lizenz (LCP)",
+    "licenseOutOfDate": "Veraltete LCP-Lizenz.",
+    "licenseSignatureDateInvalid": "Ungültiges Signaturdatum der LCP-Lizenz.",
+    "licenseSignatureInvalid": "Invalid LCP license signature.",
+    "licensed": "Lizenziert",
+    "markAsRead": "Als gelesen markieren",
+    "notStarted": "Nicht begonnen",
+    "onGoing": "Im Gange",
+    "progression": {
+      "title": "Fortschritt"
+    },
+    "read": "Fertig gelesen",
+    "remainingTime": "Ausleihe (verbleibende Tage)",
+    "renewButton": "Verlängern",
+    "returnButton": "Zurückgeben",
+    "returnedLcp": "Diese LCP-geschützte Veröffentlichung wird zurückgegeben.",
+    "revokedLcp": "Die LCP-Lizenz dieser Veröffentlichung wurde widerrufen.",
+    "seeLess": "Weniger Infos",
+    "seeMore": "Mehr Infos",
+    "timeLeft": "Links",
+    "title": "Titel",
+    "userKeyCheckInvalid": "Falsches Passwort"
+  },
+  "reader": {
+    "annotations": {
+      "Color": "Farbe",
+      "addNote": "Notiz hinzufügen",
+      "advancedMode": "Sofortmodus (automatisch erstellen nach Auswahl)",
+      "annotationsOptions": "Optionen",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
+      "hide": "Ausblenden",
+      "highlight": "Markieren",
+      "noSelectionToast": "Keine Auswahl",
+      "quickAnnotations": "Schnell erstellen (Editor überspringen)",
+      "saveNote": "Speichern",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
+      "toggleMarginMarks": "Anzeige in Rändern",
+      "type": {
+        "outline": "Umranden",
+        "solid": "Hintergrundfarbe",
+        "strikethrough": "Durchstreichen",
+        "underline": "Unterstreichen"
+      }
+    },
+    "divina": {
+      "mute": "Audio stummschalten",
+      "unmute": "Ton einschalten"
+    },
+    "fxl": {
+      "fit": "Einpassen"
+    },
+    "marks": {
+      "annotations": "Meine Anmerkungen",
+      "bookmarks": "Meine Lesezeichen",
+      "delete": "Löschen",
+      "edit": "Bearbeiten",
+      "goTo": "Gehe zu Seite",
+      "landmarks": "Navigationspunkte",
+      "saveMark": "Lesezeichen speichern",
+      "search": "Suche",
+      "searchResult": "Suche [{{- searchText}}]",
+      "toc": "Inhaltsverzeichnis"
+    },
+    "media-overlays": {
+      "activate": "Vorlesen aktivieren",
+      "captions": "Bildunterschriften / störungsfreie Ansicht",
+      "captionsDescription": "Vereinfachte Textansicht mit minimalem Untertitel-Styling.",
+      "next": "Nächstes Vorlesen",
+      "pause": "Vorlesen pausieren",
+      "play": "Vorlesen",
+      "previous": "Vorheriges Vorlesen",
+      "skip": "Überspringbarkeit",
+      "skipDescription": "Überspringen/ignorieren Sie zusätzlichen Inhalt wie Seitenumbrüche, Fußnoten, Endnoten usw.",
+      "speed": "Vorlese-Wiedergabegeschwindigkeit",
+      "stop": "Vorlesen beenden",
+      "title": "Vorlesen"
+    },
+    "navigation": {
+      "annotationTitle": "Notizen",
+      "backHomeTitle": "Zurück zum Bücherregal",
+      "bookmarkTitle": "Lesezeichen setzen",
+      "currentPage": "Aktuelle Seite: {{- current}}",
+      "currentPageTotal": "Aktuelle Seite: {{- current}}/{{- total}}",
+      "detachWindowTitle": "Fenster loslösen",
+      "fullscreenTitle": "Vollbildmodus",
+      "goTo": "Gehe zu",
+      "goToError": "Diese Seite existiert nicht",
+      "goToPlaceHolder": "Eingabe der Seitenzahl",
+      "goToTitle": "Gehe zur Seite",
+      "historyNext": "Vorwärts springen",
+      "historyPrevious": "Zurückspringen",
+      "infoTitle": "Informationen",
+      "magnifyingGlassButton": "Publikation durchsuchen",
+      "openTableOfContentsTitle": "Navigation",
+      "page": "Seite",
+      "pdfscalemode": "Seitenbreite / Seitenanpassung",
+      "settingsTitle": "Einstellungen"
+    },
+    "picker": {
+      "search": {
+        "founds": "{{- nResults}} Fundstelle(n)",
+        "input": "Text suchen",
+        "next": "Nächste",
+        "notFound": "keine Treffer",
+        "previous": "Vorherige",
+        "results": "Ergebnisse",
+        "submit": "Suchen"
+      },
+      "searchTitle": "Suche:"
     },
     "settings": {
-        "auth": {
-            "wipeData": "Login-Daten löschen"
+      "column": {
+        "auto": "Automatisch",
+        "one": "1 Spalte",
+        "title": "Spaltendarstellung",
+        "two": "2 Spalten"
+      },
+      "customizeReader": "Anpassen der Textformatierung",
+      "disabled": "deaktiviert",
+      "display": "Lesefluss",
+      "disposition": {
+        "title": "Layout"
+      },
+      "font": "Schriftart",
+      "fontSize": "Schriftgröße",
+      "infoCustomFont": "Wählen Sie eine benutzerdefinierte Schriftart aus dem Betriebssystem aus, indem Sie ihren Namen eingeben",
+      "justification": "Textausrichtung",
+      "justify": "Blocksatz",
+      "letterSpacing": "Buchstabenabstand",
+      "lineSpacing": "Zeilenabstand",
+      "margin": "Seitenränder",
+      "noFootnotes": "Fußnoten deaktivieren",
+      "noRTLFlip": "Rechts-nach-links-Benutzeroberfläche deaktivieren",
+      "noRuby": "Japanische Ruby-Notationen ausblenden",
+      "paginated": "Seitendarstellung",
+      "paraSpacing": "Absatzabstand",
+      "pdfZoom": {
+        "name": {
+          "100pct": "100%",
+          "150pct": "150%",
+          "200pct": "200%",
+          "300pct": "300%",
+          "500pct": "500%",
+          "50pct": "50%",
+          "fit": "Seite einpassen",
+          "width": "Seitenbreite"
         },
-        "keyboard": {
-            "advancedMenu": "Menü",
-            "cancel": "Abbrechen",
-            "disclaimer": "Tastenkombinationen orientieren sich am QWERTZ-Tastaturlayout.",
-            "editUserJson": "Benutzerdatei bearbeiten ...",
-            "keyboardShortcuts": "Tastaturkürzel",
-            "loadUserJson": "Aus Benutzerdatei laden",
-            "resetDefaults": "Zurücksetzen (auf Standard)",
-            "save": "Speichern"
+        "title": "Zoom"
+      },
+      "preset": {
+        "apply": "",
+        "reset": "",
+        "save": "",
+        "title": ""
+      },
+      "preview": "Vorschau",
+      "reduceMotion": "Bewegung reduzieren",
+      "scrolled": "Fortlaufend",
+      "spacing": "Abstand",
+      "text": "Text",
+      "theme": {
+        "name": {
+          "Contrast1": "Kontrast 1",
+          "Contrast2": "Kontrast 2",
+          "Contrast3": "Kontrast 3",
+          "Contrast4": "Kontrast 4",
+          "Neutral": "Neutral",
+          "Night": "Nachtzeit",
+          "Paper": "Papier",
+          "Sepia": "Sepia"
         },
-        "language": {
-            "languageChoice": "Sprachauswahl"
-        },
-        "session": {
-            "no": "Deaktivieren",
-            "title": "Sitzung speichern",
-            "yes": "Aktivieren"
-        },
-        "tabs": {
-            "appearance": "Erscheinungsbild",
-            "general": "Allgemein",
-            "keyboardShortcuts": "Tastaturkürzel"
-        },
-        "theme": {
-            "auto": "Automatisch",
-            "dark": "Dunkel",
-            "description": "Das Erscheinungsbild entspricht der Betriebssystem-Einstellung.",
-            "light": "Hell",
-            "title": "Erscheinungsbild"
-        }
+        "title": "Motiv"
+      },
+      "wordSpacing": "Wortabstand"
     },
-    "wizard": {
-        "buttons": {
-            "discover": "Entdecken Sie die Neuheiten",
-            "goToBooks": "Zu meinen Publikationen",
-            "next": "Nächste"
-        },
-        "description": {
-            "annotations": "Markieren Sie Dokumenttext, wählen Sie Stil und Farbe aus und fügen Sie persönliche Notizen hinzu. Erstellen Sie Anmerkungen im „Schnellmodus“, um den Editor zu umgehen (Sie können Text eingeben und Stile später anpassen). Für noch mehr Geschwindigkeit verwenden Sie den „Sofortmodus“, der Anmerkungen sofort nach dem Markieren von Dokumenttext erstellt!",
-            "catalogs": "Leihen Sie Publikationen aus Ihrer örtlichen Bibliothek aus oder entdecken Sie Publikationen über OPDS-Feeds. Dank Online-Katalogen haben Sie Zugriff auf eine Vielzahl von Publikationen aus mehreren Quellen.",
-            "home": "Thorium sieht anders aus! Entdecken wir, was es Neues gibt…",
-            "readingView1": "Passen Sie Ihre Lese- und Höreinstellungen an: Thorium bietet jetzt mehrere Farbmotive sowohl für die Benutzeroberfläche als auch für Publikationen. Es ist jetzt auch noch einfacher, E-Books mit synthetischer Sprache und synchronisierter Text-/Audioerzählung vorlesen zu lassen.",
-            "readingView2": "Die verbesserte Benutzeroberfläche von Thorium erleichtert dank der neuen „angedockten“ Bedienfelder das Auffinden von Texten in Publikationen, das Durchsuchen von Suchergebnissen, das Aufrufen bestimmter Seiten, das Durchsuchen des Inhaltsverzeichnisses, das Erstellen von Lesezeichen usw. Der Vollbild-Lesemodus bietet weiterhin eine ablenkungsfreie Umgebung.",
-            "yourBooks": "Willkommen in Ihrem neu gestalteten persönlichen Bücherregal! In der \"Rasteransicht\" können Sie ganz einfach nach Tags filtern oder Publikationen anhand von Schlüsselwörtern finden. In der erweiterten \"Tabellenansicht\" können Sie Publikationen nach bestimmten Autoren, Titeln, Datum, Format usw. auswählen und sortieren."
-        },
-        "dontShow": "Nicht mehr anzeigen",
-        "tab": {
-            "annotations": "Notizen",
-            "catalogs": "Kataloge",
-            "home": "Start",
-            "readingView": "Leseansicht",
-            "yourBooks": "Ihre Publikationen"
-        },
-        "title": {
-            "allBooks": "Alle meine Publikationen",
-            "newFeature": "Neue Funktion: Anmerkungen",
-            "welcome": "Willkommen bei Thorium 3.0"
-        }
+    "svg": {
+      "left": "Links",
+      "right": "Rechts"
+    },
+    "toc": {
+      "publicationNoToc": "Kein Inhaltsverzeichnis"
+    },
+    "tts": {
+      "activate": "Text-to-Speech (TTS) aktivieren",
+      "default": "Stimme: Systemstandard",
+      "next": "Nächstes TTS",
+      "pause": "TTS pausieren",
+      "play": "TTS abspielen",
+      "previous": "Vorheriges TTS",
+      "sentenceDetect": "TTS-Text aufteilen",
+      "sentenceDetectDescription": "Lange Absätze in Sätze aufteilen.",
+      "speed": "TTS-Wiedergaberate",
+      "stop": "TTS stoppen",
+      "voice": "TTS-Stimme"
     }
+  },
+  "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
+    "auth": {
+      "title": "",
+      "wipeData": "Login-Daten löschen"
+    },
+    "keyboard": {
+      "advancedMenu": "Menü",
+      "cancel": "Abbrechen",
+      "disclaimer": "Tastenkombinationen orientieren sich am QWERTZ-Tastaturlayout.",
+      "editUserJson": "Benutzerdatei bearbeiten ...",
+      "keyboardShortcuts": "Tastaturkürzel",
+      "loadUserJson": "Aus Benutzerdatei laden",
+      "resetDefaults": "Zurücksetzen (auf Standard)",
+      "save": "Speichern"
+    },
+    "language": {
+      "languageChoice": "Sprachauswahl"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
+    },
+    "session": {
+      "no": "Deaktivieren",
+      "title": "Sitzung speichern",
+      "yes": "Aktivieren"
+    },
+    "tabs": {
+      "appearance": "Erscheinungsbild",
+      "general": "Allgemein",
+      "keyboardShortcuts": "Tastaturkürzel"
+    },
+    "theme": {
+      "auto": "Automatisch",
+      "dark": "Dunkel",
+      "description": "Das Erscheinungsbild entspricht der Betriebssystem-Einstellung.",
+      "light": "Hell",
+      "title": "Erscheinungsbild"
+    }
+  },
+  "wizard": {
+    "buttons": {
+      "discover": "Entdecken Sie die Neuheiten",
+      "goToBooks": "Zu meinen Publikationen",
+      "next": "Nächste"
+    },
+    "description": {
+      "annotations": "Markieren Sie Dokumenttext, wählen Sie Stil und Farbe aus und fügen Sie persönliche Notizen hinzu. Erstellen Sie Anmerkungen im „Schnellmodus“, um den Editor zu umgehen (Sie können Text eingeben und Stile später anpassen). Für noch mehr Geschwindigkeit verwenden Sie den „Sofortmodus“, der Anmerkungen sofort nach dem Markieren von Dokumenttext erstellt!",
+      "catalogs": "Leihen Sie Publikationen aus Ihrer örtlichen Bibliothek aus oder entdecken Sie Publikationen über OPDS-Feeds. Dank Online-Katalogen haben Sie Zugriff auf eine Vielzahl von Publikationen aus mehreren Quellen.",
+      "home": "Thorium sieht anders aus! Entdecken wir, was es Neues gibt…",
+      "readingView1": "Passen Sie Ihre Lese- und Höreinstellungen an: Thorium bietet jetzt mehrere Farbmotive sowohl für die Benutzeroberfläche als auch für Publikationen. Es ist jetzt auch noch einfacher, E-Books mit synthetischer Sprache und synchronisierter Text-/Audioerzählung vorlesen zu lassen.",
+      "readingView2": "Die verbesserte Benutzeroberfläche von Thorium erleichtert dank der neuen „angedockten“ Bedienfelder das Auffinden von Texten in Publikationen, das Durchsuchen von Suchergebnissen, das Aufrufen bestimmter Seiten, das Durchsuchen des Inhaltsverzeichnisses, das Erstellen von Lesezeichen usw. Der Vollbild-Lesemodus bietet weiterhin eine ablenkungsfreie Umgebung.",
+      "yourBooks": "Willkommen in Ihrem neu gestalteten persönlichen Bücherregal! In der \"Rasteransicht\" können Sie ganz einfach nach Tags filtern oder Publikationen anhand von Schlüsselwörtern finden. In der erweiterten \"Tabellenansicht\" können Sie Publikationen nach bestimmten Autoren, Titeln, Datum, Format usw. auswählen und sortieren."
+    },
+    "dontShow": "Nicht mehr anzeigen",
+    "tab": {
+      "annotations": "Notizen",
+      "catalogs": "Kataloge",
+      "home": "Start",
+      "readingView": "Leseansicht",
+      "yourBooks": "Ihre Publikationen"
+    },
+    "title": {
+      "allBooks": "Alle meine Publikationen",
+      "newFeature": "Neue Funktion: Anmerkungen",
+      "welcome": "Willkommen bei Thorium 3.0"
+    }
+  }
 }

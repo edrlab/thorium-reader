@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
+
 import * as React from "react";
 import { connect } from "react-redux";
 import {
@@ -17,7 +19,6 @@ import BreadCrumb from "../layout/BreadCrumb";
 import BrowserResult from "./BrowserResult";
 import Header from "./Header";
 import SearchForm from "./SearchForm";
-import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as ForbiddenIcon from "readium-desktop/renderer/assets/icons/forbidden-icon.svg";
 

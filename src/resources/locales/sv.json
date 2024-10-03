@@ -1,559 +1,575 @@
 {
-    "accessibility": {
-        "bookMenu": "Meny",
-        "closeDialog": "Stäng",
-        "importFile": "Importera publikation",
-        "leftSlideButton": "Dra åt vänster",
-        "mainContent": "huvudinnehåll",
-        "rightSlideButton": "Dra åt höger",
-        "searchBook": "Sök på titel",
-        "skipLink": "Hoppa till innehåll",
-        "toolbar": "vektygsfält"
+  "accessibility": {
+    "bookMenu": "Meny",
+    "closeDialog": "Stäng",
+    "importFile": "Importera publikation",
+    "leftSlideButton": "Dra åt vänster",
+    "mainContent": "huvudinnehåll",
+    "rightSlideButton": "Dra åt höger",
+    "searchBook": "Sök på titel",
+    "skipLink": "Hoppa till innehåll",
+    "toolbar": "vektygsfält"
+  },
+  "apiapp": {
+    "documentation": "Thorium-dokumentation",
+    "howItWorks": "Hur fungerar det?",
+    "informations": "I Frankrike erbjuder många offentliga bibliotek en maskinläsbar katalog (liknande OPDS men inte identisk), som låter låntagare ladda ner digitala publikationer från deras personliga bokhylla. Med denna teknik integrerad i Thorium Reader kan du ladda ner en e-bok eller ljudbok direkt till Thorium Reader för omedelbar läsning. Hur ansluter du ditt konto från ett franskt offentligt bibliotek till Thorium Reader? Det är enkelt. Ange en fransk stad eller en del av bibliotekets namn i sökfältet och tryck på sökknappen. En lista med offentliga bibliotek som motsvarar din sökning visas. Välj ett bibliotek och tryck på Lägg till. I den uppdaterade listan med kataloger, välj detta bibliotek: ett inloggningsformulär visas. Ange ditt användarnamn/e-postadress och lösenord, och tryck på Logga in. Du kan nu se innehållet i din personliga bokhylla, från vilken du kan ladda ner och läsa de e-böcker och ljudböcker du tidigare lånat.",
+    "noLibraryFound": "Inget bibliotek hittades ({{- name}})"
+  },
+  "app": {
+    "edit": {
+      "copy": "Kopiera",
+      "cut": "Klipp ut",
+      "paste": "Klistra in",
+      "redo": "Gör om",
+      "selectAll": "Markera allt",
+      "title": "Redigera",
+      "undo": "Ångra"
     },
-    "apiapp": {
-        "documentation": "Thorium-dokumentation",
-        "howItWorks": "Hur fungerar det?",
-        "informations": "I Frankrike erbjuder många offentliga bibliotek en maskinläsbar katalog (liknande OPDS men inte identisk), som låter låntagare ladda ner digitala publikationer från deras personliga bokhylla. Med denna teknik integrerad i Thorium Reader kan du ladda ner en e-bok eller ljudbok direkt till Thorium Reader för omedelbar läsning. Hur ansluter du ditt konto från ett franskt offentligt bibliotek till Thorium Reader? Det är enkelt. Ange en fransk stad eller en del av bibliotekets namn i sökfältet och tryck på sökknappen. En lista med offentliga bibliotek som motsvarar din sökning visas. Välj ett bibliotek och tryck på Lägg till. I den uppdaterade listan med kataloger, välj detta bibliotek: ett inloggningsformulär visas. Ange ditt användarnamn/e-postadress och lösenord, och tryck på Logga in. Du kan nu se innehållet i din personliga bokhylla, från vilken du kan ladda ner och läsa de e-böcker och ljudböcker du tidigare lånat.",
-        "noLibraryFound": "Inget bibliotek hittades ({{- name}})"
-    },
-    "app": {
-        "edit": {
-            "copy": "Kopiera",
-            "cut": "Klipp ut",
-            "paste": "Klistra in",
-            "redo": "Gör om",
-            "selectAll": "Markera allt",
-            "title": "Redigera",
-            "undo": "Ångra"
-        },
-        "hide": "Dölj {{- appName}}",
-        "quit": "Avsluta {{- appName}}",
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "Nej",
-                        "yes": "Ja"
-                    },
-                    "message": "Vill du spara sessionen?",
-                    "title": "Spara session"
-                }
-            }
-        },
-        "update": {
-            "message": "Ny version tillgänglig, klicka för mer information.",
-            "title": "{{- appName}}-programuppdatering."
-        },
-        "window": {
-            "showLibrary": "Visa bibliotek/bokhylla"
+    "hide": "Dölj {{- appName}}",
+    "quit": "Avsluta {{- appName}}",
+    "session": {
+      "exit": {
+        "askBox": {
+          "button": {
+            "no": "Nej",
+            "yes": "Ja"
+          },
+          "message": "Vill du spara sessionen?",
+          "title": "Spara session"
         }
+      }
     },
-    "catalog": {
-        "about": {
-            "title": "Om {{- appName}}"
-        },
-        "addBookToLib": "Importera",
-        "addTags": "Lägg till tagg",
-        "addTagsButton": "Lägg till",
-        "allBooks": "Alla böcker",
-        "bookInfo": "Om boken",
-        "column": {
-            "ascending": "stigande",
-            "descending": "fallande",
-            "unsorted": "osorterat"
-        },
-        "delete": "Ta bort",
-        "deleteBook": "Ta bort",
-        "deleteTag": "Ta bort taggen",
-        "description": "Beskrivning",
-        "emptyTagList": "Du har inga böcker med taggar.",
-        "entry": {
-            "continueReading": "Fortsätt läsa",
-            "continueReadingAudioBooks": "Fortsätt lyssna",
-            "continueReadingDivina": "Fortsätt läsa divina",
-            "continueReadingPdf": "Fortsätt läsa pdf",
-            "lastAdditions": "Nyligen tillagt"
-        },
-        "export": "Spara som",
-        "exportAnnotation": "",
-        "exportAnnotationFailure": "",
-        "exportAnnotationSuccess": "",
-        "format": "Format",
-        "lang": "Språk",
-        "lastRead": "Senast läst",
-        "moreInfo": "Information om publikationen",
-        "myBooks": "Mina böcker",
-        "noPublicationHelpL1": "Släpp en publikation här",
-        "noPublicationHelpL2": "eller använd \"{{- importTitle }}\"-knappen ovanför.",
-        "noPublicationHelpL3": "LCP-skyddade filer stöds.",
-        "noPublicationHelpL4": "Filtyper som stöds:",
-        "numberOfPages": "Antal sidor",
-        "opds": {
-            "auth": {
-                "cancel": "Avbryt",
-                "login": "Logga in",
-                "password": "Lösenord",
-                "register": "Registrera dig",
-                "username": "Användarnamn/e-postadress"
-            },
-            "info": {
-                "availableSince": "Sedan",
-                "availableState": {
-                    "available": "Tillgänglig",
-                    "ready": "Redo",
-                    "reserved": "Reserverad",
-                    "unavailable": "Otillgänglig",
-                    "unknown": "Okänt"
-                },
-                "availableUntil": "Till",
-                "copyAvalaible": "Antal tillgängliga",
-                "copyTotal": "Antal exemplar",
-                "holdPosition": "Din plats i reservationskön",
-                "holdTotal": "Reserverade",
-                "numberOfItems": "Antal exemplar",
-                "priveValue": "Pris",
-                "state": "Status"
-            }
-        },
-        "publisher": "Utgivare",
-        "readBook": "Läs",
-        "released": "Publicerad den",
-        "sort": "Sortera efter",
-        "tag": "Tagg",
-        "tagCount": "Antal taggar",
-        "tags": "Taggar",
-        "update": "Redigera"
+    "update": {
+      "message": "Ny version tillgänglig, klicka för mer information.",
+      "title": "{{- appName}}-programuppdatering."
     },
-    "dialog": {
-        "cancel": "Avbryt",
-        "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
-        "deleteFeed": "Vill du ta bort den här katalogen?",
-        "deletePublication": "Vill du ta bort den här publikationen?",
-        "import": "Vill du importera följande filer:",
-        "importError": "Det uppstod ett fel, kontrollera filtypen ({{acceptedExtension}})",
-        "renew": "Vill du förnya lånet?",
-        "return": "Vill du lämna tillbaka den här publikationen?",
-        "yes": "Ja"
+    "window": {
+      "showLibrary": "Visa bibliotek/bokhylla"
+    }
+  },
+  "catalog": {
+    "about": {
+      "title": "Om {{- appName}}"
     },
-    "error": {
-        "errorBox": {
-            "error": "Felmeddelande:",
-            "message": "Ett fel uppstod i {{- filename}}",
-            "title": "Internt {{- appName}}-fel"
-        }
+    "addBookToLib": "Importera",
+    "addTags": "Lägg till tagg",
+    "addTagsButton": "Lägg till",
+    "allBooks": "Alla böcker",
+    "bookInfo": "Om boken",
+    "column": {
+      "ascending": "stigande",
+      "descending": "fallande",
+      "unsorted": "osorterat"
     },
-    "header": {
-        "allBooks": "Alla böcker",
-        "catalogs": "Kataloger",
-        "downloads": "Nedladdningar",
-        "fitlerTagTitle": "Filtrera efter tagg",
-        "gridTitle": "Gallerivy",
-        "home": "Huvudmeny",
-        "homeTitle": "Hem",
-        "importTitle": "Importera en publikation",
-        "listTitle": "Tabellvy",
-        "myCatalogs": "Mina kataloger",
-        "refreshTitle": "Uppdatera",
-        "searchPlaceholder": "Sök",
-        "searchTitle": "Sök",
-        "settings": "Inställningar",
-        "viewMode": "Visningsläge"
+    "delete": "Ta bort",
+    "deleteBook": "Ta bort",
+    "deleteTag": "Ta bort taggen",
+    "description": "Beskrivning",
+    "emptyTagList": "Du har inga böcker med taggar.",
+    "entry": {
+      "continueReading": "Fortsätt läsa",
+      "continueReadingAudioBooks": "Fortsätt lyssna",
+      "continueReadingDivina": "Fortsätt läsa divina",
+      "continueReadingPdf": "Fortsätt läsa pdf",
+      "lastAdditions": "Nyligen tillagt"
     },
-    "library": {
-        "lcp": {
-            "hint": "Tips: {{- hint}}",
-            "password": "Lösenord",
-            "sentence": "Den här publikationer behöver ett LCP-lösenord för att kunna öppnas: ",
-            "urlHint": "Har du glömt ditt lösenord? Här kan du få hjälp:",
-            "whatIsLcp?": "Vad är LCP?",
-            "whatIsLcpInfoDetails": "LCP står för \"Licensed Content Protection\".",
-            "whatIsLcpInfoDetailsLink": "För mer information, klicka på denna länk till EDRLabs webbplats."
-        }
-    },
-    "message": {
-        "download": {
-            "error": "Nedladdningen av {{- title}} misslyckades: [{{- err}}]"
-        },
-        "import": {
-            "alreadyImport": "{{- title}} var redan importerad",
-            "fail": "Importen av {{- path}} misslyckades. {{- err}}",
-            "success": "Importen av {{- title}} är slutförd."
-        },
-        "open": {
-            "error": "Publikationen kan inte öppnas: {{- err}}"
-        }
-    },
+    "export": "Spara som",
+    "exportAnnotation": "",
+    "format": "Format",
+    "lang": "Språk",
+    "lastRead": "Senast läst",
+    "moreInfo": "Information om publikationen",
+    "myBooks": "Mina böcker",
+    "noPublicationHelpL1": "Släpp en publikation här",
+    "noPublicationHelpL2": "eller använd \"{{- importTitle }}\"-knappen ovanför.",
+    "noPublicationHelpL3": "LCP-skyddade filer stöds.",
+    "noPublicationHelpL4": "Filtyper som stöds:",
+    "numberOfPages": "Antal sidor",
     "opds": {
-        "addForm": {
-            "addButton": "Lägg till",
-            "name": "Namn:",
-            "namePlaceholder": "Namn",
-            "url": "Länk:",
-            "urlPlaceholder": "Länk"
+      "auth": {
+        "cancel": "Avbryt",
+        "login": "Logga in",
+        "password": "Lösenord",
+        "register": "Registrera dig",
+        "username": "Användarnamn/e-postadress"
+      },
+      "info": {
+        "availableSince": "Sedan",
+        "availableState": {
+          "available": "Tillgänglig",
+          "ready": "Redo",
+          "reserved": "Reserverad",
+          "unavailable": "Otillgänglig",
+          "unknown": "Okänt"
         },
-        "addFormApiapp": {
-            "title": "Lägg till bibliotekskonto"
-        },
-        "addMenu": "Lägg till ett OPDS-flöde",
-        "breadcrumbRoot": "Kataloger",
-        "documentation": "OPDS officiella webbplats",
-        "empty": "Inga publikationer hittades",
-        "firstPage": "Första",
-        "informations": "Föreställ dig en värld där du kan utforska och ladda ner digitala publikationer från offentliga bibliotek och digitala bokhandlar med bara några få klick. Det är precis vad katalogformatet Open Publication Distribution System (OPDS) erbjuder. Med OPDS kan du navigera genom kataloger från olika e-boksleverantörer, registrera dig, låna, köpa en publikation eller besöka din personliga bokhylla. Du kan till och med ladda ner en e-bok eller ljudbok direkt till Thorium Reader för omedelbar läsning. Så, hur hittar du en OPDS-katalog? Det är enkelt. Leta efter en länk (URL) som leder till katalogen. Kopiera denna URL till länkfältet ovan. Tänk på att det inte finns någon central plats för alla aktiva OPDS-kataloger. Du måste kontakta ditt föredragna bibliotek eller bokhandlare och be om deras OPDS-katalog-URL. Om du är osäker på var du ska börja, har Wikipedia några register över OPDS-kataloger på olika språk som kan vara till hjälp. I namnfältet kan du ange ett valfritt namn för att enkelt identifiera flödet i Thorium Reader.",
-        "lastPage": "Sista",
-        "menu": {
-            "aboutBook": "Om boken",
-            "addExtract": "Importera utdraget",
-            "goBuyBook": "Köp den här boken",
-            "goLoanBook": "Låna den här boken",
-            "goRevokeLoanBook": "Återkalla lånet",
-            "goSubBook": "Prenumerera"
-        },
-        "network": {
-            "error": "Kunde inte nå OPDS-flödet",
-            "noInternet": "Inget internet",
-            "noInternetMessage": "Prova detta: kolla nätverkssladden, modemet, routern eller det trådlösa nätverket",
-            "reject": "Ett oväntat fel uppstod!",
-            "timeout": "Nätverksanslutningen gav inget svar, försök igen senare"
-        },
+        "availableUntil": "Till",
+        "copyAvalaible": "Antal tillgängliga",
+        "copyTotal": "Antal exemplar",
+        "holdPosition": "Din plats i reservationskön",
+        "holdTotal": "Reserverade",
+        "numberOfItems": "Antal exemplar",
+        "priveValue": "Pris",
+        "state": "Status"
+      }
+    },
+    "publisher": "Utgivare",
+    "readBook": "Läs",
+    "released": "Publicerad den",
+    "sort": "Sortera efter",
+    "tag": "Tagg",
+    "tagCount": "Antal taggar",
+    "tags": "Taggar",
+    "update": "Redigera"
+  },
+  "dialog": {
+    "cancel": "Avbryt",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
+    "deleteFeed": "Vill du ta bort den här katalogen?",
+    "deletePublication": "Vill du ta bort den här publikationen?",
+    "import": "Vill du importera följande filer:",
+    "importError": "Det uppstod ett fel, kontrollera filtypen ({{acceptedExtension}})",
+    "renew": "Vill du förnya lånet?",
+    "return": "Vill du lämna tillbaka den här publikationen?",
+    "yes": "Ja"
+  },
+  "error": {
+    "errorBox": {
+      "error": "Felmeddelande:",
+      "message": "Ett fel uppstod i {{- filename}}",
+      "title": "Internt {{- appName}}-fel"
+    }
+  },
+  "header": {
+    "allBooks": "Alla böcker",
+    "catalogs": "Kataloger",
+    "downloads": "Nedladdningar",
+    "fitlerTagTitle": "Filtrera efter tagg",
+    "gridTitle": "Gallerivy",
+    "home": "Huvudmeny",
+    "homeTitle": "Hem",
+    "importTitle": "Importera en publikation",
+    "listTitle": "Tabellvy",
+    "myCatalogs": "Mina kataloger",
+    "refreshTitle": "Uppdatera",
+    "searchPlaceholder": "Sök",
+    "searchTitle": "Sök",
+    "settings": "Inställningar",
+    "viewMode": "Visningsläge"
+  },
+  "library": {
+    "lcp": {
+      "hint": "Tips: {{- hint}}",
+      "password": "Lösenord",
+      "sentence": "Den här publikationer behöver ett LCP-lösenord för att kunna öppnas: ",
+      "urlHint": "Har du glömt ditt lösenord? Här kan du få hjälp:",
+      "whatIsLcp?": "Vad är LCP?",
+      "whatIsLcpInfoDetails": "LCP står för \"Licensed Content Protection\".",
+      "whatIsLcpInfoDetailsLink": "För mer information, klicka på denna länk till EDRLabs webbplats."
+    }
+  },
+  "message": {
+    "download": {
+      "error": "Nedladdningen av {{- title}} misslyckades: [{{- err}}]"
+    },
+    "import": {
+      "alreadyImport": "{{- title}} var redan importerad",
+      "fail": "Importen av {{- path}} misslyckades. {{- err}}",
+      "success": "Importen av {{- title}} är slutförd."
+    },
+    "open": {
+      "error": "Publikationen kan inte öppnas: {{- err}}"
+    }
+  },
+  "opds": {
+    "addForm": {
+      "addButton": "Lägg till",
+      "name": "Namn:",
+      "namePlaceholder": "Namn",
+      "url": "Länk:",
+      "urlPlaceholder": "Länk"
+    },
+    "addFormApiapp": {
+      "title": "Lägg till bibliotekskonto"
+    },
+    "addMenu": "Lägg till ett OPDS-flöde",
+    "breadcrumbRoot": "Kataloger",
+    "documentation": "OPDS officiella webbplats",
+    "empty": "Inga publikationer hittades",
+    "firstPage": "Första",
+    "informations": "Föreställ dig en värld där du kan utforska och ladda ner digitala publikationer från offentliga bibliotek och digitala bokhandlar med bara några få klick. Det är precis vad katalogformatet Open Publication Distribution System (OPDS) erbjuder. Med OPDS kan du navigera genom kataloger från olika e-boksleverantörer, registrera dig, låna, köpa en publikation eller besöka din personliga bokhylla. Du kan till och med ladda ner en e-bok eller ljudbok direkt till Thorium Reader för omedelbar läsning. Så, hur hittar du en OPDS-katalog? Det är enkelt. Leta efter en länk (URL) som leder till katalogen. Kopiera denna URL till länkfältet ovan. Tänk på att det inte finns någon central plats för alla aktiva OPDS-kataloger. Du måste kontakta ditt föredragna bibliotek eller bokhandlare och be om deras OPDS-katalog-URL. Om du är osäker på var du ska börja, har Wikipedia några register över OPDS-kataloger på olika språk som kan vara till hjälp. I namnfältet kan du ange ett valfritt namn för att enkelt identifiera flödet i Thorium Reader.",
+    "lastPage": "Sista",
+    "menu": {
+      "aboutBook": "Om boken",
+      "addExtract": "Importera utdraget",
+      "goBuyBook": "Köp den här boken",
+      "goLoanBook": "Låna den här boken",
+      "goRevokeLoanBook": "Återkalla lånet",
+      "goSubBook": "Prenumerera"
+    },
+    "network": {
+      "error": "Kunde inte nå OPDS-flödet",
+      "noInternet": "Inget internet",
+      "noInternetMessage": "Prova detta: kolla nätverkssladden, modemet, routern eller det trådlösa nätverket",
+      "reject": "Ett oväntat fel uppstod!",
+      "timeout": "Nätverksanslutningen gav inget svar, försök igen senare"
+    },
+    "next": "Nästa",
+    "previous": "Föregående",
+    "shelf": "Hylla",
+    "updateForm": {
+      "name": "Namn:",
+      "title": "Redigera OPDS-flödet",
+      "updateButton": "Redigera",
+      "url": "Länk:"
+    },
+    "whatIsOpds": "Vad är OPDS?"
+  },
+  "publication": {
+    "accessibility": {
+      "accessModeSufficient": {
+        "textual": "Talsyntes- och skärmläsarvänlig"
+      },
+      "accessibilityFeature": {
+        "alternativeText": "Innehåller alternativtext",
+        "displayTransformability": "Möjlighet att justera text och layout",
+        "longDescription": "Fullständiga bildbeskrivningar",
+        "printPageNumbers": "Sidnumrering från tryckt upplaga",
+        "readingOrder": "Läsordning definierad",
+        "synchronizedAudioText": "Synkroniserat text och ljud",
+        "tableOfContents": "Innehåller innehållsförteckning"
+      },
+      "accessibilityHazard": {
+        "flashing": "Blinkande",
+        "motionSimulation": "Rörelsesimulering",
+        "name": "Risk:",
+        "noFlashing": "Inget blinkande",
+        "noMotionSimulation": "Ingen rörelsesimulering",
+        "noSound": "Inget ljud",
+        "none": "Inga",
+        "sound": "Ljud",
+        "unknown": "Okänt"
+      },
+      "certifierReport": "Rapport från certifierande instans",
+      "conformsTo": "Följer:",
+      "moreInformation": "Mer information",
+      "name": "Tillgänglighet",
+      "noA11y": "Det finns ingen uppgift om tillgänglighet."
+    },
+    "actions": "Åtgärder",
+    "audio": {
+      "tracks": "Spår"
+    },
+    "author": "Författare",
+    "cancelledLcp": "Den här bokens LCP-licens är annullerad.",
+    "certificateRevoked": "Certifikatet är återkallat.",
+    "certificateSignatureInvalid": "Certifikatets signatur är ogiltig.",
+    "cover": {
+      "img": "omslagsbild"
+    },
+    "day": "dag",
+    "days": "dagar",
+    "duration": {
+      "title": "Längd"
+    },
+    "expired": "Lånet har gått ut.",
+    "expiredLcp": "Den här boken går inte att läsa eftersom LCP-licensen har löpt ut.",
+    "lcpEnd": "Slut",
+    "lcpRightsCopy": "Kopiera tecken",
+    "lcpRightsPrint": "Kopiera utskrift",
+    "lcpStart": "Start",
+    "licenceLCP": "Licens (LCP)",
+    "licenseOutOfDate": "Licensen har löpt ut.",
+    "licenseSignatureDateInvalid": "Licensens signeringsdatum är ogiltigt.",
+    "licenseSignatureInvalid": "Licensens signatur är ogiltig.",
+    "licensed": "Licensierad",
+    "markAsRead": "Markera som läst",
+    "notStarted": "Ej påbörjad",
+    "onGoing": "Pågående",
+    "progression": {
+      "title": "Läsförlopp"
+    },
+    "read": "Färdigläst",
+    "remainingTime": "Lån (tid kvar)",
+    "renewButton": "Låna om",
+    "returnButton": "Lämna tillbaka",
+    "returnedLcp": "Den här LCP-skyddade publikationen är återlämnad.",
+    "revokedLcp": "Den här publikationens LCP-licens har återkallats.",
+    "seeLess": "Visa mindre",
+    "seeMore": "Visa mer",
+    "timeLeft": "Tid kvar",
+    "title": "Titel",
+    "userKeyCheckInvalid": "Lösenordet är felaktigt"
+  },
+  "reader": {
+    "annotations": {
+      "Color": "Färg",
+      "addNote": "Anteckna",
+      "advancedMode": "Omedelbart-läge (skapa automatiskt efter markering)",
+      "annotationsOptions": "Alternativ",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
+      "hide": "Visa inte",
+      "highlight": "Markera",
+      "noSelectionToast": "Ingen markering",
+      "quickAnnotations": "Snabbskapa (hoppa över redigeraren)",
+      "saveNote": "Spara",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
+      "toggleMarginMarks": "Visa i marginalen",
+      "type": {
+        "outline": "Kontur",
+        "solid": "Färgöverstrykning",
+        "strikethrough": "Genomstrykning",
+        "underline": "Understrykning"
+      }
+    },
+    "divina": {
+      "mute": "stäng av ljud",
+      "unmute": "slå på ljud"
+    },
+    "fxl": {
+      "fit": "Anpassa"
+    },
+    "marks": {
+      "annotations": "Anteckningar",
+      "bookmarks": "Bokmärken",
+      "delete": "Ta bort",
+      "edit": "Redigera",
+      "goTo": "Gå till sida",
+      "landmarks": "Landmärken",
+      "saveMark": "Spara bokmärke",
+      "search": "Sök",
+      "searchResult": "Sök [{{- searchText}}]",
+      "toc": "Innehållsförteckning"
+    },
+    "media-overlays": {
+      "activate": "Aktivera uppläsning",
+      "captions": "Textremsa/Enkel vy",
+      "captionsDescription": "Förenklad textvy med minimal formatering.",
+      "next": "Nästa",
+      "pause": "Pausa",
+      "play": "Läs upp",
+      "previous": "Föregående",
+      "skip": "Överhoppning",
+      "skipDescription": "Hoppa över sekundärt innehåll såsom sidbrytningar, fotnoter och slutnoter.",
+      "speed": "Spelhastighet uppläsning",
+      "stop": "Stoppa uppläsning",
+      "title": "Uppläsning"
+    },
+    "navigation": {
+      "annotationTitle": "Anteckning",
+      "backHomeTitle": "Tillbaka till bokhyllan",
+      "bookmarkTitle": "Bokmärke",
+      "currentPage": "Aktuell sida: {{- current}}",
+      "currentPageTotal": "Aktuell sida: {{- current}}/{{- total}}",
+      "detachWindowTitle": "Visa biblioteks-/bokhyllefönstret",
+      "fullscreenTitle": "Aktivera helskärmsläge",
+      "goTo": "Gå till",
+      "goToError": "Sidnumret finns inte",
+      "goToPlaceHolder": "Ange ett sidnummer",
+      "goToTitle": "Gå till sida",
+      "historyNext": "Hoppa framåt",
+      "historyPrevious": "Hoppa tillbaka",
+      "infoTitle": "Information",
+      "magnifyingGlassButton": "Sök i publikationen",
+      "openTableOfContentsTitle": "Navigation",
+      "page": "Sida",
+      "pdfscalemode": "Anpassa till hel sida eller sidbredd",
+      "settingsTitle": "Inställningar"
+    },
+    "picker": {
+      "search": {
+        "founds": "{{- nResults}} träff(ar)",
+        "input": "text att söka på",
         "next": "Nästa",
+        "notFound": "inga träffar",
         "previous": "Föregående",
-        "shelf": "Hylla",
-        "updateForm": {
-            "name": "Namn:",
-            "title": "Redigera OPDS-flödet",
-            "updateButton": "Redigera",
-            "url": "Länk:"
-        },
-        "whatIsOpds": "Vad är OPDS?"
-    },
-    "publication": {
-        "accessibility": {
-            "accessModeSufficient": {
-                "textual": "Talsyntes- och skärmläsarvänlig"
-            },
-            "accessibilityFeature": {
-                "alternativeText": "Innehåller alternativtext",
-                "displayTransformability": "Möjlighet att justera text och layout",
-                "longDescription": "Fullständiga bildbeskrivningar",
-                "printPageNumbers": "Sidnumrering från tryckt upplaga",
-                "readingOrder": "Läsordning definierad",
-                "synchronizedAudioText": "Synkroniserat text och ljud",
-                "tableOfContents": "Innehåller innehållsförteckning"
-            },
-            "accessibilityHazard": {
-                "flashing": "Blinkande",
-                "motionSimulation": "Rörelsesimulering",
-                "name": "Risk:",
-                "noFlashing": "Inget blinkande",
-                "noMotionSimulation": "Ingen rörelsesimulering",
-                "noSound": "Inget ljud",
-                "none": "Inga",
-                "sound": "Ljud",
-                "unknown": "Okänt"
-            },
-            "certifierReport": "Rapport från certifierande instans",
-            "conformsTo": "Följer:",
-            "moreInformation": "Mer information",
-            "name": "Tillgänglighet",
-            "noA11y": "Det finns ingen uppgift om tillgänglighet."
-        },
-        "actions": "Åtgärder",
-        "audio": {
-            "tracks": "Spår"
-        },
-        "author": "Författare",
-        "cancelledLcp": "Den här bokens LCP-licens är annullerad.",
-        "certificateRevoked": "Certifikatet är återkallat.",
-        "certificateSignatureInvalid": "Certifikatets signatur är ogiltig.",
-        "cover": {
-            "img": "omslagsbild"
-        },
-        "day": "dag",
-        "days": "dagar",
-        "duration": {
-            "title": "Längd"
-        },
-        "expired": "Lånet har gått ut.",
-        "expiredLcp": "Den här boken går inte att läsa eftersom LCP-licensen har löpt ut.",
-        "lcpEnd": "Slut",
-        "lcpRightsCopy": "Kopiera tecken",
-        "lcpRightsPrint": "Kopiera utskrift",
-        "lcpStart": "Start",
-        "licenceLCP": "Licens (LCP)",
-        "licenseOutOfDate": "Licensen har löpt ut.",
-        "licenseSignatureDateInvalid": "Licensens signeringsdatum är ogiltigt.",
-        "licenseSignatureInvalid": "Licensens signatur är ogiltig.",
-        "licensed": "Licensierad",
-        "markAsRead": "Markera som läst",
-        "notStarted": "Ej påbörjad",
-        "onGoing": "Pågående",
-        "progression": {
-            "title": "Läsförlopp"
-        },
-        "read": "Färdigläst",
-        "remainingTime": "Lån (tid kvar)",
-        "renewButton": "Låna om",
-        "returnButton": "Lämna tillbaka",
-        "returnedLcp": "Den här LCP-skyddade publikationen är återlämnad.",
-        "revokedLcp": "Den här publikationens LCP-licens har återkallats.",
-        "seeLess": "Visa mindre",
-        "seeMore": "Visa mer",
-        "timeLeft": "Tid kvar",
-        "title": "Titel",
-        "userKeyCheckInvalid": "Lösenordet är felaktigt"
-    },
-    "reader": {
-        "annotations": {
-            "Color": "Färg",
-            "addNote": "Anteckna",
-            "advancedMode": "Omedelbart-läge (skapa automatiskt efter markering)",
-            "annotationsOptions": "Alternativ",
-            "colors": {
-                "bluegreen": "",
-                "cyan": "",
-                "green": "",
-                "lightblue": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
-            },
-            "filter": {
-                "all": "",
-                "filterByColor": "",
-                "filterByDrawtype": "",
-                "filterByTag": "",
-                "filterOptions": "",
-                "none": ""
-            },
-            "hide": "Visa inte",
-            "highlight": "Markera",
-            "noSelectionToast": "Ingen markering",
-            "quickAnnotations": "Snabbskapa (hoppa över redigeraren)",
-            "saveNote": "Spara",
-            "toggleMarginMarks": "Visa i marginalen",
-            "type": {
-                "outline": "Kontur",
-                "solid": "Färgöverstrykning",
-                "strikethrough": "Genomstrykning",
-                "underline": "Understrykning"
-            }
-        },
-        "divina": {
-            "mute": "stäng av ljud",
-            "unmute": "slå på ljud"
-        },
-        "fxl": {
-            "fit": "Anpassa"
-        },
-        "marks": {
-            "annotations": "Anteckningar",
-            "bookmarks": "Bokmärken",
-            "delete": "Ta bort",
-            "edit": "Redigera",
-            "goTo": "Gå till sida",
-            "landmarks": "Landmärken",
-            "saveMark": "Spara bokmärke",
-            "search": "Sök",
-            "searchResult": "Sök [{{- searchText}}]",
-            "toc": "Innehållsförteckning"
-        },
-        "media-overlays": {
-            "activate": "Aktivera uppläsning",
-            "captions": "Textremsa/Enkel vy",
-            "captionsDescription": "Förenklad textvy med minimal formatering.",
-            "next": "Nästa",
-            "pause": "Pausa",
-            "play": "Läs upp",
-            "previous": "Föregående",
-            "skip": "Överhoppning",
-            "skipDescription": "Hoppa över sekundärt innehåll såsom sidbrytningar, fotnoter och slutnoter.",
-            "speed": "Spelhastighet uppläsning",
-            "stop": "Stoppa uppläsning",
-            "title": "Uppläsning"
-        },
-        "navigation": {
-            "annotationTitle": "Anteckning",
-            "backHomeTitle": "Tillbaka till bokhyllan",
-            "bookmarkTitle": "Bokmärke",
-            "currentPage": "Aktuell sida: {{- current}}",
-            "currentPageTotal": "Aktuell sida: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Visa biblioteks-/bokhyllefönstret",
-            "fullscreenTitle": "Aktivera helskärmsläge",
-            "goTo": "Gå till",
-            "goToError": "Sidnumret finns inte",
-            "goToPlaceHolder": "Ange ett sidnummer",
-            "goToTitle": "Gå till sida",
-            "historyNext": "Hoppa framåt",
-            "historyPrevious": "Hoppa tillbaka",
-            "infoTitle": "Information",
-            "magnifyingGlassButton": "Sök i publikationen",
-            "openTableOfContentsTitle": "Navigation",
-            "page": "Sida",
-            "pdfscalemode": "Anpassa till hel sida eller sidbredd",
-            "settingsTitle": "Inställningar"
-        },
-        "picker": {
-            "search": {
-                "founds": "{{- nResults}} träff(ar)",
-                "input": "text att söka på",
-                "next": "Nästa",
-                "notFound": "inga träffar",
-                "previous": "Föregående",
-                "results": "Resultat",
-                "submit": "Sök"
-            },
-            "searchTitle": "Sök:"
-        },
-        "settings": {
-            "column": {
-                "auto": "Standard",
-                "one": "1 kolumn",
-                "title": "Kolumner",
-                "two": "2 kolumner"
-            },
-            "customizeReader": "Anpassa textformatering",
-            "disabled": "inaktiverad",
-            "display": "Visning",
-            "disposition": {
-                "title": "Layout"
-            },
-            "font": "Typsnitt",
-            "fontSize": "Textstorlek",
-            "infoCustomFont": "Välj ett typsnitt från operativsystemet genom att skriva dess namn",
-            "justification": "Justering",
-            "justify": "Justerad",
-            "letterSpacing": "Teckenavstånd",
-            "lineSpacing": "Radavstånd",
-            "margin": "Marginaler",
-            "noFootnotes": "Inaktivera fotnoter",
-            "noRTLFlip": "Inaktivera vänster-till-höger-gränssnitt",
-            "noRuby": "Dölj japanska ruby-tecken",
-            "paginated": "Sidindelad",
-            "paraSpacing": "Styckesavstånd",
-            "pdfZoom": {
-                "name": {
-                    "100pct": "100 %",
-                    "150pct": "150 %",
-                    "200pct": "200 %",
-                    "300pct": "300 %",
-                    "500pct": "500 %",
-                    "50pct": "50 %",
-                    "fit": "sidstorlek",
-                    "width": "sidbredd"
-                },
-                "title": "Zooma"
-            },
-            "preset": {
-                "apply": "",
-                "reset": "",
-                "save": "",
-                "title": ""
-            },
-            "preview": "Förhandsvisning",
-            "reduceMotion": "Minska rörelser",
-            "scrolled": "Rullningsbar",
-            "spacing": "Avstånd",
-            "text": "Text",
-            "theme": {
-                "name": {
-                    "Contrast1": "Kontrast 1",
-                    "Contrast2": "Kontrast 2",
-                    "Contrast3": "Kontrast 3",
-                    "Contrast4": "Kontrast 4",
-                    "Neutral": "Neutral",
-                    "Night": "Natt",
-                    "Paper": "Papper",
-                    "Sepia": "Sepia"
-                },
-                "title": "Tema"
-            },
-            "wordSpacing": "Ordavstånd"
-        },
-        "svg": {
-            "left": "Vänster",
-            "right": "Höger"
-        },
-        "toc": {
-            "publicationNoToc": "Den här publikationen saknar innehållsförteckning"
-        },
-        "tts": {
-            "activate": "Aktivera text-till-tal",
-            "default": "Röst: systemstandard",
-            "next": "Nästa",
-            "pause": "Pausa",
-            "play": "Läs upp",
-            "previous": "Föregående",
-            "sentenceDetect": "Markera text-till-tal på meningsnivå",
-            "sentenceDetectDescription": "Dela upp långa stycken i meningar.",
-            "speed": "Spelhastighet text-till-tal",
-            "stop": "Stoppa text-till-tal",
-            "voice": "Text-till-tal-röst"
-        }
+        "results": "Resultat",
+        "submit": "Sök"
+      },
+      "searchTitle": "Sök:"
     },
     "settings": {
-        "auth": {
-            "wipeData": "Rensa inloggningsuppgifter"
+      "column": {
+        "auto": "Standard",
+        "one": "1 kolumn",
+        "title": "Kolumner",
+        "two": "2 kolumner"
+      },
+      "customizeReader": "Anpassa textformatering",
+      "disabled": "inaktiverad",
+      "display": "Visning",
+      "disposition": {
+        "title": "Layout"
+      },
+      "font": "Typsnitt",
+      "fontSize": "Textstorlek",
+      "infoCustomFont": "Välj ett typsnitt från operativsystemet genom att skriva dess namn",
+      "justification": "Justering",
+      "justify": "Justerad",
+      "letterSpacing": "Teckenavstånd",
+      "lineSpacing": "Radavstånd",
+      "margin": "Marginaler",
+      "noFootnotes": "Inaktivera fotnoter",
+      "noRTLFlip": "Inaktivera vänster-till-höger-gränssnitt",
+      "noRuby": "Dölj japanska ruby-tecken",
+      "paginated": "Sidindelad",
+      "paraSpacing": "Styckesavstånd",
+      "pdfZoom": {
+        "name": {
+          "100pct": "100 %",
+          "150pct": "150 %",
+          "200pct": "200 %",
+          "300pct": "300 %",
+          "500pct": "500 %",
+          "50pct": "50 %",
+          "fit": "sidstorlek",
+          "width": "sidbredd"
         },
-        "keyboard": {
-            "advancedMenu": "Meny",
-            "cancel": "Avbryt",
-            "disclaimer": "Kortkommandona baserar sig på QWERTY-tangentbordslayouten.",
-            "editUserJson": "Redigera användarfil ...",
-            "keyboardShortcuts": "Kortkommandon",
-            "loadUserJson": "Läs in från användarfil",
-            "resetDefaults": "Återställ (läs in standard)",
-            "save": "Spara"
+        "title": "Zooma"
+      },
+      "preset": {
+        "apply": "",
+        "reset": "",
+        "save": "",
+        "title": ""
+      },
+      "preview": "Förhandsvisning",
+      "reduceMotion": "Minska rörelser",
+      "scrolled": "Rullningsbar",
+      "spacing": "Avstånd",
+      "text": "Text",
+      "theme": {
+        "name": {
+          "Contrast1": "Kontrast 1",
+          "Contrast2": "Kontrast 2",
+          "Contrast3": "Kontrast 3",
+          "Contrast4": "Kontrast 4",
+          "Neutral": "Neutral",
+          "Night": "Natt",
+          "Paper": "Papper",
+          "Sepia": "Sepia"
         },
-        "language": {
-            "languageChoice": "Språk"
-        },
-        "session": {
-            "no": "Inaktivera",
-            "title": "Spara session",
-            "yes": "Aktivera"
-        },
-        "tabs": {
-            "appearance": "Utseende",
-            "general": "Allmänt",
-            "keyboardShortcuts": "Kortkommandon"
-        },
-        "theme": {
-            "auto": "Automatiskt",
-            "dark": "Mörkt",
-            "description": "Applikationens tema matchar operativsystemet.",
-            "light": "Ljust",
-            "title": "Applikationens tema\n"
-        }
+        "title": "Tema"
+      },
+      "wordSpacing": "Ordavstånd"
     },
-    "wizard": {
-        "buttons": {
-            "discover": "Upptäck vad som är nytt",
-            "goToBooks": "Gå till mina publikationer",
-            "next": "Nästa"
-        },
-        "description": {
-            "annotations": "Markera text i dokumentet, välj stil och färg, bifoga egna anteckningar. Skapa anteckningar i snabbläge för att kringgå redigeraren (du kan ange text och markeringsstil senare). Du kan också använda omedelbart-läget som skapar en anteckning direkt efter att du markerat texten i dokumentet.",
-            "catalogs": "Låna publikationer från ditt lokala bibliotek eller upptäck publikationer via OPDS-flöden. Få tillgång till en mängd olika publikationer från flera källor tack vare onlinekataloger.",
-            "home": "Thorium ser annorlunda ut! Upptäck vad som är nytt ...",
-            "readingView1": "Ställ in Thorium efter dina läs- och lyssningspreferenser: Du kan välja mellan flera färgteman för både användargränssnitt och publikationer. Du kan också bättre än tidigare anpassa uppläsningen av e-böcker med syntetiskt tal eller synkroniserat text och ljud.",
-            "readingView2": "Thoriums förbättrade användargränssnitt gör det lättare att hitta text i publikationer, utforska sökresultat, gå till specifika sidor, bläddra i innehållsförteckningen och skapa bokmärken tack vare de nya dockade panelerna. Helskärmsläsläget erbjuder en distraktionsfri läsupplevelse.",
-            "yourBooks": "Välkommen till din omdesignade personliga bokhylla! I gallerivyn kan du enkelt filtrera efter taggar eller hitta publikationer med nyckelord. I den avancerade tabellvyn kan du välja och sortera publikationer efter författare, titel, datum, format med mera."
-        },
-        "dontShow": "Visa inte igen",
-        "tab": {
-            "annotations": "Anteckningar",
-            "catalogs": "Kataloger",
-            "home": "Hem",
-            "readingView": "Läsvy",
-            "yourBooks": "Dina publikationer"
-        },
-        "title": {
-            "allBooks": "Alla mina publikationer",
-            "newFeature": "Ny funktion: Anteckningar",
-            "welcome": "Välkommen till Thorium 3.0"
-        }
+    "svg": {
+      "left": "Vänster",
+      "right": "Höger"
+    },
+    "toc": {
+      "publicationNoToc": "Den här publikationen saknar innehållsförteckning"
+    },
+    "tts": {
+      "activate": "Aktivera text-till-tal",
+      "default": "Röst: systemstandard",
+      "next": "Nästa",
+      "pause": "Pausa",
+      "play": "Läs upp",
+      "previous": "Föregående",
+      "sentenceDetect": "Markera text-till-tal på meningsnivå",
+      "sentenceDetectDescription": "Dela upp långa stycken i meningar.",
+      "speed": "Spelhastighet text-till-tal",
+      "stop": "Stoppa text-till-tal",
+      "voice": "Text-till-tal-röst"
     }
+  },
+  "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
+    "auth": {
+      "title": "",
+      "wipeData": "Rensa inloggningsuppgifter"
+    },
+    "keyboard": {
+      "advancedMenu": "Meny",
+      "cancel": "Avbryt",
+      "disclaimer": "Kortkommandona baserar sig på QWERTY-tangentbordslayouten.",
+      "editUserJson": "Redigera användarfil ...",
+      "keyboardShortcuts": "Kortkommandon",
+      "loadUserJson": "Läs in från användarfil",
+      "resetDefaults": "Återställ (läs in standard)",
+      "save": "Spara"
+    },
+    "language": {
+      "languageChoice": "Språk"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
+    },
+    "session": {
+      "no": "Inaktivera",
+      "title": "Spara session",
+      "yes": "Aktivera"
+    },
+    "tabs": {
+      "appearance": "Utseende",
+      "general": "Allmänt",
+      "keyboardShortcuts": "Kortkommandon"
+    },
+    "theme": {
+      "auto": "Automatiskt",
+      "dark": "Mörkt",
+      "description": "Applikationens tema matchar operativsystemet.",
+      "light": "Ljust",
+      "title": "Applikationens tema\n"
+    }
+  },
+  "wizard": {
+    "buttons": {
+      "discover": "Upptäck vad som är nytt",
+      "goToBooks": "Gå till mina publikationer",
+      "next": "Nästa"
+    },
+    "description": {
+      "annotations": "Markera text i dokumentet, välj stil och färg, bifoga egna anteckningar. Skapa anteckningar i snabbläge för att kringgå redigeraren (du kan ange text och markeringsstil senare). Du kan också använda omedelbart-läget som skapar en anteckning direkt efter att du markerat texten i dokumentet.",
+      "catalogs": "Låna publikationer från ditt lokala bibliotek eller upptäck publikationer via OPDS-flöden. Få tillgång till en mängd olika publikationer från flera källor tack vare onlinekataloger.",
+      "home": "Thorium ser annorlunda ut! Upptäck vad som är nytt ...",
+      "readingView1": "Ställ in Thorium efter dina läs- och lyssningspreferenser: Du kan välja mellan flera färgteman för både användargränssnitt och publikationer. Du kan också bättre än tidigare anpassa uppläsningen av e-böcker med syntetiskt tal eller synkroniserat text och ljud.",
+      "readingView2": "Thoriums förbättrade användargränssnitt gör det lättare att hitta text i publikationer, utforska sökresultat, gå till specifika sidor, bläddra i innehållsförteckningen och skapa bokmärken tack vare de nya dockade panelerna. Helskärmsläsläget erbjuder en distraktionsfri läsupplevelse.",
+      "yourBooks": "Välkommen till din omdesignade personliga bokhylla! I gallerivyn kan du enkelt filtrera efter taggar eller hitta publikationer med nyckelord. I den avancerade tabellvyn kan du välja och sortera publikationer efter författare, titel, datum, format med mera."
+    },
+    "dontShow": "Visa inte igen",
+    "tab": {
+      "annotations": "Anteckningar",
+      "catalogs": "Kataloger",
+      "home": "Hem",
+      "readingView": "Läsvy",
+      "yourBooks": "Dina publikationer"
+    },
+    "title": {
+      "allBooks": "Alla mina publikationer",
+      "newFeature": "Ny funktion: Anteckningar",
+      "welcome": "Välkommen till Thorium 3.0"
+    }
+  }
 }

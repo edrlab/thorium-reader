@@ -5,13 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
+
 import * as React from "react";
 import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 
 import * as Popover from "@radix-ui/react-popover";
 // import * as PenIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
@@ -29,6 +30,8 @@ import classNames from "classnames";
 import { TextArea } from "react-aria-components";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
+import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
 
 // import { readiumCSSDefaults } from "@r2-navigator-js/electron/common/readium-css-settings";
 
@@ -40,26 +43,25 @@ interface IProps {
     btext?: string;
 }
 
-// const annotationsColors = [
-//     "#B80000",
-//     "#DB3E00",
-//     "#FCCB00",
-//     "#008B02",
-//     "#006B76",
-//     "#1273DE",
-//     "#004DCF",
-//     "#5300EB"];
+// __("reader.annotations.colors.red")
+// __("reader.annotations.colors.orange")
+// __("reader.annotations.colors.yellow")
+// __("reader.annotations.colors.green")
+// __("reader.annotations.colors.bluegreen")
+// __("reader.annotations.colors.lightblue")
+// __("reader.annotations.colors.cyan")
+// __("reader.annotations.colors.purple")
 
-const annotationsColorsLight = [
-    "#EB9694",
-    "#FAD0C3",
-    "#FEF3BD",
-    "#C1EAC5",
-    "#BEDADC",
-    "#C4DEF6",
-    "#BED3F3",
-    "#D4C4FB",
-];
+export const annotationsColorsLight: Record<string, TTranslatorKeyParameter> = {
+    "#EB9694": "reader.annotations.colors.red",
+    "#FAD0C3": "reader.annotations.colors.orange",
+    "#FEF3BD": "reader.annotations.colors.yellow",
+    "#C1EAC5": "reader.annotations.colors.green",
+    "#BEDADC": "reader.annotations.colors.bluegreen",
+    "#C4DEF6": "reader.annotations.colors.lightblue",
+    "#BED3F3": "reader.annotations.colors.cyan",
+    "#D4C4FB": "reader.annotations.colors.purple",
+};
 
 const drawType: TDrawType[] = [
     "solid_background",
@@ -74,13 +76,12 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
 
     const displayFromReaderMenu = !!uuid;
     const [__] = useTranslator();
-    const { annotation_defaultColor, annotation_defaultDrawType } = useSelector((state: IReaderRootState) => state.reader.defaultConfig);
+    const { annotation_defaultColor, annotation_defaultDrawType } = useSelector((state: IReaderRootState) => state.reader.config);
 
     const { locatorExtended } = useSelector((state: IReaderRootState) => state.annotation);
     const annotationReaderState = useSelector((state: IReaderRootState) => state.reader.annotation);
 
-    const annotationStateDEFAULT: Omit<IAnnotationState, "uuid"> = { color: annotation_defaultColor, comment: "", drawType: annotation_defaultDrawType, locatorExtended };
-    let annotationState: typeof annotationStateDEFAULT = annotationStateDEFAULT;
+    let annotationState: IAnnotationState = { uuid: "", color: annotation_defaultColor, comment: "", drawType: annotation_defaultDrawType, locatorExtended };
     if (uuid) {
         const tpl = annotationReaderState.find(([, annotationState]) => annotationState.uuid === uuid);
         if (tpl) {
@@ -91,18 +92,13 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         }
     }
 
-    const colorStr = `#${annotationState.color.red.toString(16).padStart(2, "0")}${annotationState.color.green.toString(16).padStart(2, "0")}${annotationState.color.blue.toString(16).padStart(2, "0")}`.toUpperCase();
+    const colorStr = rgbToHex(annotationState.color);
 
     const [colorSelected, setColor] = React.useState(colorStr);
 
     const dispatch = useDispatch();
 
-    const rgbresultmatch = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(colorSelected);
-    const colorObj = rgbresultmatch ? {
-        red: parseInt(rgbresultmatch[1], 16),
-        green: parseInt(rgbresultmatch[2], 16),
-        blue: parseInt(rgbresultmatch[3], 16),
-      } : annotationState.color;
+    const colorObj = hexToRgb(colorSelected) || annotationState.color;
 
     const previousColorSelected = React.useRef<IColor>(colorObj);
 
@@ -114,6 +110,9 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
     const [tag, setTag] = React.useState<string>((annotationState.tags || [])[0] || "");
     const tagsIndexList = useSelector((state: IReaderRootState) => state.annotationTagsIndex);
     const selectTagOption = ObjectKeys(tagsIndexList).map((v, i) => ({id: i, name: v}));
+
+    const annotationMaxLength = 1500;
+    const [annotationLength, setAnnotationLength] = React.useState(annotationState.comment.length);
 
     const drawIcon = [
         HighLightIcon,
@@ -174,8 +173,9 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         <div
             className={classNames(displayFromReaderMenu ? "" : stylesAnnotations.annotations_line, dockedMode ? stylesAnnotations.docked_annotation_line : "")} style={{backgroundColor: !displayFromReaderMenu ? "var(--color-extralight-grey)" : ""}}>
             <p>{annotationState.locatorExtended ? (annotationState.locatorExtended.selectionInfo.cleanText.length > (200-3) ? `${annotationState.locatorExtended.selectionInfo.cleanText.slice(0, 200)}...` : annotationState.locatorExtended.selectionInfo.cleanText) : ""}</p>
-            <TextArea id="addNote" name="addNote" wrap="hard" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef}
+            <TextArea id="addNote" name="addNote" wrap="hard" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef} maxLength={annotationMaxLength} onChange={(a) => setAnnotationLength(a.currentTarget.value.length)}
             ></TextArea>
+            <span style={{fontSize: "10px", color: "var(--color-medium-grey)", width: "420px", textAlign: "end"}}>{annotationLength}/{annotationMaxLength}</span>
 
         </div>
         <div className={stylesAnnotations.annotation_actions}>
@@ -184,17 +184,17 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                 <h4>{__("reader.annotations.Color")}</h4>
                 <div className={stylesAnnotations.colorPicker}
                     role="radiogroup">
-                    {annotationsColorsLight.map((color, i) => (
-                        <div key={color}>
-                            <input type="radio"  id={`anno_color_${uuid}_${color}`} name="colorpicker" value={color}
-                                onChange={() => setColor(color)}
-                                checked={colorSelected === color}
-                                aria-label={`${__("reader.annotations.Color")} ${i} (${color.split("").join(" ")})`}
+                    {Object.entries(annotationsColorsLight).map(([colorHex, translatorKey]) => (
+                        <div key={`anno_color_${uuid}_${colorHex}_key`}>
+                            <input type="radio"  id={`anno_color_${uuid}_${colorHex}`} name="colorpicker" value={colorHex}
+                                onChange={() => setColor(colorHex)}
+                                checked={colorSelected === colorHex}
+                                aria-label={__(translatorKey)}
                             />
-                            <label htmlFor={`anno_color_${uuid}_${color}`}
-                                style={{ backgroundColor: color, border: colorSelected === color ? "1px solid var(--color-dark-grey)" : "" }}
+                            <label htmlFor={`anno_color_${uuid}_${colorHex}`}
+                                style={{ backgroundColor: colorHex, border: colorSelected === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
                             >
-                                {colorSelected === color ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
+                                {colorSelected === colorHex ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
                             </label>
                         </div>
                     ),
