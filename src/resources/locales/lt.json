@@ -75,6 +75,7 @@
       "lastAdditions": "Paskiausiai pridėti"
     },
     "export": "Eksportuoti",
+    "exportAnnotation": "",
     "format": "Formatas",
     "lang": "Kalba",
     "lastRead": "Pask. kartą skaityta",
@@ -123,6 +124,8 @@
   },
   "dialog": {
     "cancel": "Nutraukti",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Ar tikrai norite pašalinti šį katalogą?",
     "deletePublication": "Ar tikrai norite pašalinti šį leidinį?",
     "import": "Ar tikrai norite importuoti šiuos failus:",
@@ -305,11 +308,35 @@
       "addNote": "Pridėti pastabą",
       "advancedMode": "Momentinis režimas (pažymėjus sukurti automatiškai)",
       "annotationsOptions": "Parinktys",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Neatvaizduoti",
       "highlight": "Paryškinimas",
       "noSelectionToast": "Niekas nepasirinkta",
       "quickAnnotations": "Greitasis kūrimas (praleidžiant rengyklę)",
       "saveNote": "Išsaugoti",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Atvaizduoti paraštėse",
       "type": {
         "outline": "Kontūras",
@@ -423,6 +450,12 @@
         },
         "title": "Mastelis"
       },
+      "preset": {
+        "apply": "",
+        "reset": "",
+        "save": "",
+        "title": ""
+      },
       "preview": "Peržiūrėti",
       "reduceMotion": "Mažinti judesių kiekį",
       "scrolled": "Slenkantis",
@@ -465,7 +498,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Išvalyti prisijungimo duomenis"
     },
     "keyboard": {
@@ -480,6 +521,10 @@
     },
     "language": {
       "languageChoice": "Kalba"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Išjungti",

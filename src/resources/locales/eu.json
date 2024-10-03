@@ -75,6 +75,7 @@
       "lastAdditions": "Berriki gehitutakoak"
     },
     "export": "Esportatu",
+    "exportAnnotation": "",
     "format": "Formatua",
     "lang": "Hizkuntza",
     "lastRead": "Azken Irakurketa",
@@ -123,6 +124,8 @@
   },
   "dialog": {
     "cancel": "Ezeztatu",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Ziur zaude katalogo hau ezabatu nahi duzula?",
     "deletePublication": "Ziur zaude argitalpen hau ezabatu nahi duzula?",
     "import": "Ziur zaude fitxategi hauek inportatu nahi dituzula?",
@@ -288,12 +291,14 @@
       "title": "Aurrerapena"
     },
     "read": "Bukatuta",
+    "remainingTime": "",
     "renewButton": "Berritu",
     "returnButton": "Itzuli",
     "returnedLcp": "Liburu hau ezin da irakurri LCP lizentzia itzuli delako.",
     "revokedLcp": "Liburu hau ezin da irakurri LCP lizentzia bertan behera utzi delako.",
     "seeLess": "Ikusi gutxiago",
     "seeMore": "Gehiago ikusi",
+    "timeLeft": "",
     "title": "Titulua",
     "userKeyCheckInvalid": "Pasahitza ez da zuzena"
   },
@@ -303,11 +308,35 @@
       "addNote": "Apuntatu",
       "advancedMode": "Berehalako modua (sortu automatikoki hautatu ondoren)",
       "annotationsOptions": "Aukerak",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Ez erakutsi",
       "highlight": "Nabarmendu",
       "noSelectionToast": "Ez dago aukeraketarik",
       "quickAnnotations": "Sortu azkarra (saltatu editorea)",
       "saveNote": "Gorde",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Marjinetan bistaratzea",
       "type": {
         "outline": "Eskema",
@@ -421,6 +450,12 @@
         },
         "title": "Zoom"
       },
+      "preset": {
+        "apply": "",
+        "reset": "",
+        "save": "",
+        "title": ""
+      },
       "preview": "Aurrebista",
       "reduceMotion": "Mugimendua gutxitu",
       "scrolled": "Desplazagarria",
@@ -463,7 +498,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Autentifikazio-datuak garbitzea"
     },
     "keyboard": {
@@ -478,6 +521,10 @@
     },
     "language": {
       "languageChoice": "Hizkuntza hautatzea"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Desgaitu",

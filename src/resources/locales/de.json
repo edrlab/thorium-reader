@@ -75,6 +75,7 @@
       "lastAdditions": "Kürzlich hinzugefügt"
     },
     "export": "Export",
+    "exportAnnotation": "",
     "format": "Format",
     "lang": "Sprache",
     "lastRead": "Zuletzt gelesen",
@@ -123,6 +124,8 @@
   },
   "dialog": {
     "cancel": "Abbrechen",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Willst du diesen Katalog wirklich löschen?",
     "deletePublication": "Willst du diese Publikation wirklich löschen?",
     "import": "Willst du diese EPUB-Dateien wirklich importieren?",
@@ -305,11 +308,35 @@
       "addNote": "Notiz hinzufügen",
       "advancedMode": "Sofortmodus (automatisch erstellen nach Auswahl)",
       "annotationsOptions": "Optionen",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Ausblenden",
       "highlight": "Markieren",
       "noSelectionToast": "Keine Auswahl",
       "quickAnnotations": "Schnell erstellen (Editor überspringen)",
       "saveNote": "Speichern",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Anzeige in Rändern",
       "type": {
         "outline": "Umranden",
@@ -423,6 +450,12 @@
         },
         "title": "Zoom"
       },
+      "preset": {
+        "apply": "",
+        "reset": "",
+        "save": "",
+        "title": ""
+      },
       "preview": "Vorschau",
       "reduceMotion": "Bewegung reduzieren",
       "scrolled": "Fortlaufend",
@@ -465,7 +498,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Login-Daten löschen"
     },
     "keyboard": {
@@ -480,6 +521,10 @@
     },
     "language": {
       "languageChoice": "Sprachauswahl"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Deaktivieren",

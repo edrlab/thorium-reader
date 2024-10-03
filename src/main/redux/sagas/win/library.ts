@@ -107,9 +107,11 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
             tag: [],
         },
         session: {
-            state: state.session.state,
+            // state: state.session.state,
             save: state.session.save,
         },
+        creator: state.creator,
+        settings: state.settings,
     };
     try {
         const publication = yield* callTyped(getCatalog);
@@ -195,9 +197,10 @@ function* winClose(_action: winActions.library.closed.TAction) {
 
         if (readersArray.length) {
 
-            const sessionIsEnabled = yield* selectTyped((state: RootState) => state.session.state);
-            debug(sessionIsEnabled ? "session enabled destroy reader" : "session not enabled close reader");
-            if (sessionIsEnabled) {
+            // session always enabled by default
+            // const sessionIsEnabled = yield* selectTyped((state: RootState) => state.session.state);
+            // debug(sessionIsEnabled ? "session enabled destroy reader" : "session not enabled close reader");
+            // if (sessionIsEnabled) {
 
 
                 delay(100);
@@ -224,7 +227,7 @@ function* winClose(_action: winActions.library.closed.TAction) {
                 // );
                 // debug("result:", messageValue.response);
                 // value = messageValue.response;
-            }
+            // }
 
             yield all(
                 readersArray.map(

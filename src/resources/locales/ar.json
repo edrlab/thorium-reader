@@ -75,6 +75,7 @@
       "lastAdditions": "المضافة مؤخراً"
     },
     "export": "حفظ بإسم",
+    "exportAnnotation": "",
     "format": "التنسيق",
     "lang": "اللغة",
     "lastRead": "آخر منشور مقروء",
@@ -104,6 +105,9 @@
         },
         "availableUntil": "حتى",
         "copyAvalaible": "متوفر",
+        "copyTotal": "",
+        "holdPosition": "",
+        "holdTotal": "",
         "numberOfItems": "عدد البنود",
         "priveValue": "السعر",
         "state": "الحالة"
@@ -120,6 +124,8 @@
   },
   "dialog": {
     "cancel": "إلغاء الأمر",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "حذف الكتالوغ؟",
     "deletePublication": "حذف المنشور؟",
     "import": "تأكيد الاستيراد:",
@@ -269,8 +275,10 @@
     },
     "expired": "انتهت مدة الاستعارة",
     "expiredLcp": "انتهت صلاحية ترخيص LCP الخاص بهذا المنشور.",
+    "lcpEnd": "",
     "lcpRightsCopy": "الأحرف المنسوخة",
     "lcpRightsPrint": "الصفحات المطبوعة",
+    "lcpStart": "",
     "licenceLCP": "الترخيص (LCP)",
     "licenseOutOfDate": "ترخيص LCP قديم.",
     "licenseSignatureDateInvalid": "تاريخ توقيع ترخيص LCP غير صالح.",
@@ -283,12 +291,14 @@
       "title": "مقدار التقدّم"
     },
     "read": "انتهى",
+    "remainingTime": "",
     "renewButton": "تجديد",
     "returnButton": "إرجاع",
     "returnedLcp": "تم إرجاع هذا المنشور المحمي بـ LCP.",
     "revokedLcp": "تم إبطال ترخيص LCP الخاص بهذا المنشور.",
     "seeLess": "رؤية مقدار أقل",
     "seeMore": "رؤية مقدار أكثر",
+    "timeLeft": "",
     "title": "العنوان",
     "userKeyCheckInvalid": "عبارة المرور غير صحيحة"
   },
@@ -298,11 +308,35 @@
       "addNote": "تعليق",
       "advancedMode": "الصيغة الفورية (إنشاء تلقائي بعد الاختيار)",
       "annotationsOptions": "خيارات",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "عدم الإظهار",
       "highlight": "تمييز",
       "noSelectionToast": "لم يتم اختيار شيء",
       "quickAnnotations": "إنشاء سريع (تخطي المحرِّر)",
       "saveNote": "حفظ",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "إظهار في الهوامش",
       "type": {
         "outline": "حدود",
@@ -416,6 +450,12 @@
         },
         "title": "تكبير/تصغير"
       },
+      "preset": {
+        "apply": "",
+        "reset": "",
+        "save": "",
+        "title": ""
+      },
       "preview": "معاينة تمهيدية",
       "reduceMotion": "تقليل الحركة",
       "scrolled": "قابل للتمرير",
@@ -458,7 +498,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "حذف بيانات تسجيل الدخول"
     },
     "keyboard": {
@@ -473,6 +521,10 @@
     },
     "language": {
       "languageChoice": "اللغة"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "تعطيل",

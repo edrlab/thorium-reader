@@ -1,8 +1,8 @@
-/*
-=-=-= settings.scss
-*/
+@import '../partials/mixin';
 
-@import 'src/renderer/assets/styles/partials/mixin';
+.CSS_START_components_settings {
+    display: none;
+}
 
 $settings_bg: var(--color-light-blue);
 $setting_color: var(--color-blue);
@@ -875,4 +875,8 @@ div[data-radix-popper-content-wrapper] {
         top: 2px;
         right: 5px;
     }
+}
+
+.CSS_END_components_settings {
+    display: none;
 }

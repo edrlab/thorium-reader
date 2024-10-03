@@ -7,14 +7,18 @@
 
 import "regenerator-runtime/runtime"; // for react-table (useAsyncDebounce()) see: https://github.com/TanStack/react-table/issues/2071#issuecomment-679999096
 
+import * as stylesPublication from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
+import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+// import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
+
 import { HoverEvent } from "@react-types/shared";
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Location } from "history";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as stylesPublication from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
-import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
 import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
@@ -58,7 +62,7 @@ import { Column, useTable, useFilters, useSortBy, usePagination, useGlobalFilter
 import { formatTime } from "readium-desktop/common/utils/time";
 import * as DOMPurify from "dompurify";
 import * as moment from "moment";
-import { AvailableLanguages, I18nTyped, Translator } from "readium-desktop/common/services/translator";
+import { AvailableLanguages, I18nFunction, Translator } from "readium-desktop/common/services/translator";
 import * as React from "react";
 import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -82,12 +86,11 @@ import { ipcRenderer } from "electron";
 import PublicationCard from "../publication/PublicationCard";
 import classNames from "classnames";
 import * as Popover from "@radix-ui/react-popover";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+
 // import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
 import { useSearchParams } from "react-router-dom";
 // import * as FilterIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
 // import * as DeleteFilter from "readium-desktop/renderer/assets/icons/deleteFilter-icon.svg";
-// import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-icon.svg";
@@ -95,7 +98,6 @@ import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-i
 // import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
 import AboutThoriumButton from "../catalog/AboutThoriumButton";
-import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
 import Menu from "readium-desktop/renderer/common/components/menu/Menu";
 import CatalogMenu from "../publication/menu/CatalogMenu";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
@@ -359,7 +361,7 @@ const commonCellStyles = (props: ITableCellProps_Column & ITableCellProps_Generi
 };
 
 interface ITableCellProps_GlobalFilter {
-    __: I18nTyped;
+    __: I18nFunction;
     translator: Translator;
     displayType: DisplayType;
 
@@ -395,11 +397,11 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
     // className={classNames(classStyleExample)}
 
     return (
-        <div className={stylesInput.form_group}>
+        <div className={classNames(stylesInput.form_group, stylesInput.form_group_allPubSearch)}>
             <label
                 id="globalSearchLabel"
                 htmlFor="globalSearchInput"
-                style={{ display: "flex", gap: "5px" }}>
+                style={{ display: "flex", gap: "2px" }}>
                 {`${props.__("header.searchPlaceholder")}`}
                 <div
                     aria-live="assertive">
@@ -444,7 +446,7 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
 };
 
 interface ITableCellProps_Filter {
-    __: I18nTyped;
+    __: I18nFunction;
     translator: Translator;
     displayType: DisplayType;
 
@@ -1355,7 +1357,7 @@ type MyTableInstance<T extends object> =
     };
 
 interface ITableCellProps_Common {
-    __: I18nTyped;
+    __: I18nFunction;
     translator: Translator;
     displayType: DisplayType;
 
@@ -1958,11 +1960,11 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 if (!bodyWidth) {
                     return;
                 }
-                
+
                 const coverWidth = 205;
                 const col = Math.floor(bodyWidth/coverWidth);
                 const nbItemMissing = col - PAGESIZE%col;
-                
+
                 tableInstance.setPageSize(PAGESIZE+nbItemMissing);
             } else {
                 tableInstance.setPageSize(PAGESIZE);
@@ -1973,7 +1975,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         const cdDebounce = debounce(cb, 500);
 
         window.addEventListener("resize", cdDebounce);
-        
+
         return () => {
             window.removeEventListener("resize", cdDebounce);
         };
@@ -2053,7 +2055,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                     if (currentShow && !show) {
                                         for (const col of tableInstance.allColumns) {
                                             tableInstance.setFilter(col.id, "");
-                                            
+
                                         }
                                     }
                                 }, 200);
@@ -2408,7 +2410,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                 console.log("####");
                                 return (<tr key={index}></tr>);
                             }
-                        
+
                             return (
                                 displayType === DisplayType.Grid ?
                                     <tr key={index}>

@@ -6,22 +6,20 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
+import { IAnnotationCreator } from "../../states/creator";
 
-export const ID = "ANNOTATION_EXPORT_W3CANNOTATIONSET";
+export const ID = "CREATOR_SET";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface Payload {
-    publicationIdentifier: string;
-    // filePath: string,
+export interface Payload extends Pick<IAnnotationCreator, "name" | "type"> {
 }
 
-export function build(publicationIdentifier: string/*, filePath: string*/): Action<typeof ID, Payload> {
+export function build(name: string, type: IAnnotationCreator["type"]): Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            publicationIdentifier,
-            // filePath,
+            name,
+            type,
         },
     };
 }

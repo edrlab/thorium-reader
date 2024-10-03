@@ -29,6 +29,8 @@ import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/version-update";
 import { wizardReducer } from "readium-desktop/common/redux/reducers/wizard";
 import { versionReducer } from "readium-desktop/common/redux/reducers/version";
+import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
+import { settingsReducer } from "readium-desktop/common/redux/reducers/settings";
 
 export const rootReducer = combineReducers({ // RootState
     versionUpdate: versionUpdateReducer,
@@ -101,4 +103,6 @@ export const rootReducer = combineReducers({ // RootState
     }),
     version: versionReducer,
     wizard: wizardReducer,
+    settings: settingsReducer,
+    creator: creatorReducer,
 });

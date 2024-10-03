@@ -6,6 +6,6 @@
 // ==LICENSE-END==
 
 export interface ISessionState {
-    state: boolean;
+    // state: boolean;
     save: boolean;
 }

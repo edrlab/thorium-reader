@@ -75,6 +75,7 @@
       "lastAdditions": "Récemment ajouté"
     },
     "export": "Sauvegarder sous",
+    "exportAnnotation": "",
     "format": "Format",
     "lang": "Langue",
     "lastRead": "Dernière lecture",
@@ -123,6 +124,8 @@
   },
   "dialog": {
     "cancel": "Annuler",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Supprimer ce catalogue ?",
     "deletePublication": "Supprimer ce livre ?",
     "import": "Confirmer l'ajout :",
@@ -305,11 +308,35 @@
       "addNote": "Annoter",
       "advancedMode": "Mode instantané (création automatique après sélection)",
       "annotationsOptions": "Options",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Ne pas afficher",
       "highlight": "Surligner",
       "noSelectionToast": "Aucun texte sélectionné",
       "quickAnnotations": "Annotation rapide (sans édition)",
       "saveNote": "Sauvegarder",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Afficher dans la marge",
       "type": {
         "outline": "Encadré",
@@ -423,6 +450,12 @@
         },
         "title": "Loupe"
       },
+      "preset": {
+        "apply": "Appliquer les paramètres de lecture préférés",
+        "reset": "Réinitialiser les paramètres de lecture préférés à l'état initial",
+        "save": "Enregistrer les paramètres de lecture préférés",
+        "title": "Préréglage"
+      },
       "preview": "Aperçu",
       "reduceMotion": "Réduire la vitesse",
       "scrolled": "Défilement vertical",
@@ -465,11 +498,19 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Effacer les données d'authentification"
     },
     "keyboard": {
-      "advancedMenu": "Menu",
+      "advancedMenu": "Menu avancé raccourcis clavier",
       "cancel": "Annuler",
       "disclaimer": "Les raccourcis clavier sont actuellement basés sur une disposition QWERTY.",
       "editUserJson": "Éditer le fichier ...",
@@ -480,6 +521,10 @@
     },
     "language": {
       "languageChoice": "Choix de la langue"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Désactiver",

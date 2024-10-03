@@ -10,7 +10,7 @@ import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { LcpInfo } from "readium-desktop/common/models/lcp";
 import { JsonMap } from "readium-desktop/typings/json";
 
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 import { Identifiable } from "../models/identifiable";
 
@@ -76,5 +76,5 @@ export interface PublicationView extends Identifiable {
     // Legacy Base64 data blobs
     // r2PublicationBase64: string;
 
-    lastReadingLocation?: LocatorExtended;
+    lastReadingLocation?: MiniLocatorExtended;
 }

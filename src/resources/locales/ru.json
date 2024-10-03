@@ -75,6 +75,7 @@
       "lastAdditions": "Недавно добавленные"
     },
     "export": "Экспорт",
+    "exportAnnotation": "",
     "format": "Формат",
     "lang": "Язык",
     "lastRead": "Последнее чтение",
@@ -123,6 +124,8 @@
   },
   "dialog": {
     "cancel": "Отменить",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Вы действительно хотите удалить этот каталог ?",
     "deletePublication": "Вы действительно хотите удалить эту книгу ?",
     "import": "Подтвердите импорт:",
@@ -305,11 +308,42 @@
       "addNote": "Комментировать",
       "advancedMode": "Мгновенный режим (автоматическое создание после выбора)",
       "annotationsOptions": "Параметры",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
+      "hide": "",
       "highlight": "Выделить",
       "noSelectionToast": "Нет выбора",
       "quickAnnotations": "Быстрое создание (пропуск редактора)",
       "saveNote": "Сохранить",
-      "toggleMarginMarks": "Отображение на полях"
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
+      "toggleMarginMarks": "Отображение на полях",
+      "type": {
+        "outline": "",
+        "solid": "",
+        "strikethrough": "",
+        "underline": ""
+      }
     },
     "divina": {
       "mute": "отключить звук",
@@ -416,6 +450,12 @@
         },
         "title": "Увеличить"
       },
+      "preset": {
+        "apply": "",
+        "reset": "",
+        "save": "",
+        "title": ""
+      },
       "preview": "Предпросмотр ",
       "reduceMotion": "Уменьшить движение",
       "scrolled": "Прокручивающаяся",
@@ -458,7 +498,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Очистить данные для входа"
     },
     "keyboard": {
@@ -473,6 +521,10 @@
     },
     "language": {
       "languageChoice": "Выбор языка"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Отключить",

@@ -5,19 +5,23 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import classNames from "classnames";
-import * as React from "react";
-import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
-import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
-import { TPublication } from "readium-desktop/common/type/publication.type";
-import { formatTime } from "readium-desktop/common/utils/time";
-import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
 import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+
+import classNames from "classnames";
+import * as React from "react";
+import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
+import { I18nFunction, Translator } from "readium-desktop/common/services/translator";
+import { TPublication } from "readium-desktop/common/type/publication.type";
+import { formatTime } from "readium-desktop/common/utils/time";
+import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import Cover, { CoverWithForwardedRef } from "../../Cover";
@@ -30,7 +34,6 @@ import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop
 import PublicationInfoA11y from "./publicationInfoA11y";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as Dialog from "@radix-ui/react-dialog";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import SVG from "../../SVG";
 import * as OnGoingBookIcon from "readium-desktop/renderer/assets/icons/ongoingBook-icon.svg";
 import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
@@ -52,7 +55,7 @@ export interface IProps {
     pdfPlayerNumberOfPages: number | undefined; // super hacky :(
     divinaNumberOfPages: number | undefined; // super hacky :(
     divinaContinousEqualTrue: boolean;
-    readerReadingLocation: LocatorExtended;
+    readerReadingLocation: MiniLocatorExtended;
     translator: Translator;
     onClikLinkCb?: (tag: IOpdsBaseLinkView) => () => void | undefined;
     closeDialogCb: () => void;
@@ -60,7 +63,7 @@ export interface IProps {
 
 const Duration = (props: {
     duration: number;
-    __: I18nTyped;
+    __: I18nFunction;
 }) => {
 
     const { duration, __ } = props;
@@ -87,12 +90,12 @@ const Progression = (props: {
     r2Publication: R2Publication | null,
     manifestUrlR2Protocol: string | null,
     handleLinkUrl: ((url: string) => void) | undefined;
-    locatorExt: LocatorExtended,
+    locatorExt: MiniLocatorExtended,
     focusWhereAmI: boolean,
     pdfPlayerNumberOfPages: number | undefined, // super hacky :(
     divinaNumberOfPages: number | undefined, // super hacky :(
     divinaContinousEqualTrue: boolean,
-    __: I18nTyped;
+    __: I18nFunction;
     closeDialogCb: () => void;
 }) => {
     const { __, closeDialogCb, locatorExt, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication, manifestUrlR2Protocol, handleLinkUrl } = props;
@@ -166,7 +169,7 @@ const Progression = (props: {
                     txtPagination = __("reader.navigation.currentPage", { current: `${pageNum}` });
                 }
 
-                // see (locations as any ).totalProgression Divina HACK
+                // SEE isDivinaLocation duck typing hack with totalProgression injection!!
                 if (typeof locatorExt.locator.locations.progression === "number") {
                     const percent = Math.round(locatorExt.locator.locations.progression * 100);
                     txtProgression = `${percent}%`;

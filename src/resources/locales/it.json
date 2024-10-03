@@ -75,6 +75,7 @@
       "lastAdditions": "Aggiunti di recente"
     },
     "export": "Esporta",
+    "exportAnnotation": "",
     "format": "Formato",
     "lang": "Lingua",
     "lastRead": "Ultimi letti",
@@ -123,6 +124,8 @@
   },
   "dialog": {
     "cancel": "Annulla",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Vuoi davvero eliminare questo catalogo ?",
     "deletePublication": "Vuoi davvero eliminare questa pubblicazione ?",
     "import": "Vuoi davvero importare questi files:",
@@ -305,11 +308,35 @@
       "addNote": "Annotare",
       "advancedMode": "Modalità istantanea (creazione automatica dopo la selezione)",
       "annotationsOptions": "Opzioni",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Non mostrare",
       "highlight": "Evidenziare",
       "noSelectionToast": "Nessuna selezione",
       "quickAnnotations": "Creazione rapida (salta editor)",
       "saveNote": "Salva",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Visualizzazione ai margini",
       "type": {
         "outline": "Contorno",
@@ -423,6 +450,12 @@
         },
         "title": "Zoom"
       },
+      "preset": {
+        "apply": "",
+        "reset": "",
+        "save": "",
+        "title": ""
+      },
       "preview": "Anteprima",
       "reduceMotion": "Riduci movimento",
       "scrolled": "Scrollabile",
@@ -465,7 +498,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Elimina dati di autenticazione"
     },
     "keyboard": {
@@ -480,6 +521,10 @@
     },
     "language": {
       "languageChoice": "Scelta della lingua"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Disabilita",

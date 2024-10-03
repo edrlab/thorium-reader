@@ -7,6 +7,13 @@
 
 import "reflect-metadata";
 
+// import "readium-desktop/renderer/assets/styles/partials/variables.scss";
+// import * as globalScssStyle from "readium-desktop/renderer/assets/styles/global.scss";
+import "readium-desktop/renderer/assets/styles/global.scss";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+
+import { webUtils } from "electron";
+import classNames from "classnames";
 import { HistoryRouter } from "redux-first-history/rr6";
 import * as path from "path";
 import * as React from "react";
@@ -15,7 +22,6 @@ import { Provider } from "react-redux";
 import { acceptedExtension, acceptedExtensionObject } from "readium-desktop/common/extension";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
 import { ensureKeyboardListenerIsInstalled } from "readium-desktop/renderer/common/keyboard";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
@@ -32,9 +38,9 @@ import { acceptedExtensionArray } from "readium-desktop/common/extension";
 import Nunito from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-Regular.ttf";
 import NunitoBold from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-SemiBold.ttf";
 
-import * as globalScssStyle from "readium-desktop/renderer/assets/styles/global.scss";
 import { WizardModal } from "./Wizard";
-globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
+// eslintxx-disable-next-line @typescript-eslint/no-unused-expressions
+// globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -48,20 +54,37 @@ export default class App extends React.Component<{}, undefined> {
     public onDrop(acceptedFiles: File[]) {
         const store = diLibraryGet("store");
 
+        console.log(acceptedFiles);
+
         const filez = acceptedFiles
             .filter(
-                (file) => file.path.replace(/\\/g, "/").endsWith("/" + acceptedExtensionObject.nccHtml) || acceptedExtension(path.extname(file.path)),
+                (file) => {
+                    // with drag-and-drop (unlike input@type=file) the File `path` property is equal to `name`!
+                    // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
+                    const absolutePath = webUtils.getPathForFile(file);
+                    return absolutePath.replace(/\\/g, "/").endsWith("/" + acceptedExtensionObject.nccHtml) || acceptedExtension(path.extname(absolutePath));
+                },
             )
             .map(
-                (file) => ({
-                    name: file.name,
-                    path: file.path,
-                }),
+                (file) => {
+                    // with drag-and-drop (unlike input@type=file) the File `path` property is equal to `name`!
+                    // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
+                    const absolutePath = webUtils.getPathForFile(file);
+                    return {
+                        name: file.name,
+                        path: absolutePath,
+                    };
+                },
             );
 
         if (filez.length === 0) {
+            const file = acceptedFiles[0];
+            // with drag-and-drop (unlike input@type=file) the File `path` property is equal to `name`!
+            // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
+            const absolutePath = webUtils.getPathForFile(file);
+            const acceptedExtension = acceptedFiles.length === 1 ? `[${path.extname(absolutePath)}] ${acceptedExtensionArray.join(" ")}` : acceptedExtensionArray.join(" ");
             store.dispatch(toastActions.openRequest.build(ToastType.Error, diLibraryGet("translator").translate("dialog.importError", {
-                acceptedExtension: acceptedFiles.length === 1 ? `[${path.extname(acceptedFiles[0].path)}] ${acceptedExtensionArray.join(" ")}` : acceptedExtensionArray.join(" "),
+                acceptedExtension,
             })));
             return;
         }
@@ -145,7 +168,7 @@ export default class App extends React.Component<{}, undefined> {
                                 rootProps.tabIndex = -1;
                                 return <div
                                     {...rootProps}
-                                    className={stylesInputs.dropzone}
+                                    className={classNames(stylesInputs.dropzone)}
                                     onFocus={null}
                                     onBlur={null}
                                 >

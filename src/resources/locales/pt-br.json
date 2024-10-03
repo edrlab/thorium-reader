@@ -75,6 +75,7 @@
       "lastAdditions": "Adicionado recentemente"
     },
     "export": "Exportar",
+    "exportAnnotation": "",
     "format": "Formato",
     "lang": "Idioma",
     "lastRead": "Última leitura",
@@ -123,6 +124,8 @@
   },
   "dialog": {
     "cancel": "Cancelar",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Deseja excluir este catálogo?",
     "deletePublication": "Deseja excluir esta publicação?",
     "import": "Deseja importar estes arquivos:",
@@ -305,11 +308,35 @@
       "addNote": "Anotar",
       "advancedMode": "Modo instantâneo (criação automática após seleção)",
       "annotationsOptions": "Opções",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Não mostrar",
       "highlight": "Destaque",
       "noSelectionToast": "Nenhuma seleção",
       "quickAnnotations": "Criação rápida (pular editor)",
       "saveNote": "Salvar",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Exibir nas margens",
       "type": {
         "outline": "Contorno",
@@ -423,6 +450,12 @@
         },
         "title": "Ampliação"
       },
+      "preset": {
+        "apply": "",
+        "reset": "",
+        "save": "",
+        "title": ""
+      },
       "preview": "pré-visualização",
       "reduceMotion": "Reduzir o movimento",
       "scrolled": "Escroleável",
@@ -465,7 +498,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Limpar dados de login"
     },
     "keyboard": {
@@ -480,6 +521,10 @@
     },
     "language": {
       "languageChoice": "Idioma"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Desabilitar",

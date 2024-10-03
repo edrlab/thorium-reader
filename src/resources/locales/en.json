@@ -1,531 +1,575 @@
 {
-    "accessibility": {
-        "bookMenu": "Menu",
-        "closeDialog": "Close",
-        "importFile": "Import publication",
-        "leftSlideButton": "Slide to the left",
-        "mainContent": "main content",
-        "rightSlideButton": "Slide to the right",
-        "searchBook": "Search by title",
-        "skipLink": "Skip to content",
-        "toolbar": "toolbar"
+  "accessibility": {
+    "bookMenu": "Menu",
+    "closeDialog": "Close",
+    "importFile": "Import publication",
+    "leftSlideButton": "Slide to the left",
+    "mainContent": "main content",
+    "rightSlideButton": "Slide to the right",
+    "searchBook": "Search by title",
+    "skipLink": "Skip to content",
+    "toolbar": "toolbar"
+  },
+  "apiapp": {
+    "documentation": "Thorium Documentation",
+    "howItWorks": "How does it work?",
+    "informations": "In France, many public libraries provide a machine-readable catalog (similar to OPDS but not identical), letting patrons download digital publications from their personal bookshelf. Integrating this technology in Thorium Reader allows you to download an ebook or audiobook directly into Thorium Reader for instant reading.\nHow do you connect your French public library account to Thorium Reader? It's simple. Enter a French city ('Paris') or part of the library name in the Search field and hit the Search button. A list of public libraries corresponding to your search will appear. Select a library and hit Add. In the updated list of catalogs, select this library: an authentication form is displayed. Enter your username/email address and password, and hit Login. You can now see the content of your personal bookshelf, from which you can download and read the ebooks and audiobooks you previously borrowed.",
+    "noLibraryFound": "No library found ({{- name}})"
+  },
+  "app": {
+    "edit": {
+      "copy": "Copy",
+      "cut": "Cut",
+      "paste": "Paste",
+      "redo": "Redo",
+      "selectAll": "Select all",
+      "title": "Edit",
+      "undo": "Undo"
     },
-    "apiapp": {
-        "documentation": "Thorium Documentation",
-        "howItWorks": "How does it work?",
-        "informations": "In France, many public libraries provide a machine-readable catalog (similar to OPDS but not identical), letting patrons download digital publications from their personal bookshelf. Integrating this technology in Thorium Reader allows you to download an ebook or audiobook directly into Thorium Reader for instant reading.\nHow do you connect your French public library account to Thorium Reader? It's simple. Enter a French city ('Paris') or part of the library name in the Search field and hit the Search button. A list of public libraries corresponding to your search will appear. Select a library and hit Add. In the updated list of catalogs, select this library: an authentication form is displayed. Enter your username/email address and password, and hit Login. You can now see the content of your personal bookshelf, from which you can download and read the ebooks and audiobooks you previously borrowed.",
-        "noLibraryFound": "No library found ({{- name}})"
-    },
-    "app": {
-        "edit": {
-            "copy": "Copy",
-            "cut": "Cut",
-            "paste": "Paste",
-            "redo": "Redo",
-            "selectAll": "Select all",
-            "title": "Edit",
-            "undo": "Undo"
-        },
-        "hide": "Hide {{- appName}}",
-        "quit": "Quit {{- appName}}",
-        "session": {
-            "exit": {
-                "askBox": {
-                    "button": {
-                        "no": "No",
-                        "yes": "Yes"
-                    },
-                    "message": "Do you want to save the session?",
-                    "title": "Save session"
-                }
-            }
-        },
-        "update": {
-            "message": "New version available, click to learn more.",
-            "title": "{{- appName}} software update."
-        },
-        "window": {
-            "showLibrary": "Show library / bookshelf"
+    "hide": "Hide {{- appName}}",
+    "quit": "Quit {{- appName}}",
+    "session": {
+      "exit": {
+        "askBox": {
+          "button": {
+            "no": "No",
+            "yes": "Yes"
+          },
+          "message": "Do you want to save the session?",
+          "title": "Save session"
         }
+      }
     },
-    "catalog": {
-        "about": {
-            "title": "About {{- appName}}"
-        },
-        "addBookToLib": "Import",
-        "addTags": "Add tag",
-        "addTagsButton": "Add",
-        "allBooks": "All publications",
-        "bookInfo": "About publication",
-        "column": {
-            "ascending": "ascending",
-            "descending": "descending",
-            "unsorted": "unsorted"
-        },
-        "delete": "Delete",
-        "deleteBook": "Delete",
-        "deleteTag": "Delete tag",
-        "description": "Description",
-        "emptyTagList": "No tagged publications.",
-        "entry": {
-            "continueReading": "Resume reading",
-            "continueReadingAudioBooks": "Resume listening",
-            "continueReadingDivina": "Resume divina",
-            "continueReadingPdf": "Resume PDF",
-            "lastAdditions": "Recently added"
-        },
-        "export": "Save as",
-        "exportAnnotation": "Save annotation as",
-        "format": "Format",
-        "lang": "Language",
-        "lastRead": "Last Read",
-        "moreInfo": "Publication Details",
-        "myBooks": "My publications",
-        "noPublicationHelpL1": "Drop files here",
-        "noPublicationHelpL2": "or use the \"{{- importTitle }}\" button above.",
-        "noPublicationHelpL3": "LCP-protected publications are supported.",
-        "noPublicationHelpL4": "Supported extensions:",
-        "numberOfPages": "Number of pages",
-        "opds": {
-            "auth": {
-                "cancel": "Cancel",
-                "login": "Login",
-                "password": "Password",
-                "register": "Register",
-                "username": "Username / Email Address"
-            },
-            "info": {
-                "availableSince": "Since",
-                "availableState": {
-                    "available": "Available",
-                    "ready": "Ready",
-                    "reserved": "Reserved",
-                    "unavailable": "Unavailable",
-                    "unknown": "Unknown"
-                },
-                "availableUntil": "Until",
-                "copyAvalaible": "Available",
-                "copyTotal": "Copies",
-                "holdPosition": "Hold position",
-                "holdTotal": "Held",
-                "numberOfItems": "Number of items",
-                "priveValue": "Price",
-                "state": "State"
-            }
-        },
-        "publisher": "Publisher",
-        "readBook": "Read",
-        "released": "Published on",
-        "sort": "Sort by",
-        "tag": "Tag",
-        "tagCount": "Tag count",
-        "tags": "Tags",
-        "update": "Edit"
+    "update": {
+      "message": "New version available, click to learn more.",
+      "title": "{{- appName}} software update."
     },
-    "dialog": {
-        "cancel": "Cancel",
-        "deleteFeed": "Delete catalog?",
-        "deletePublication": "Delete publication?",
-        "import": "Confirm import:",
-        "importError": "An error occurred, verify the file extension ({{acceptedExtension}})",
-        "renew": "Renew/extend loan?",
-        "return": "Return publication?",
-        "yes": "Yes"
+    "window": {
+      "showLibrary": "Show library / bookshelf"
+    }
+  },
+  "catalog": {
+    "about": {
+      "title": "About {{- appName}}"
     },
-    "error": {
-        "errorBox": {
-            "error": "Error message:",
-            "message": "Error in {{- filename}}",
-            "title": "Internal {{- appName}} Error"
-        }
+    "addBookToLib": "Import",
+    "addTags": "Add tag",
+    "addTagsButton": "Add",
+    "allBooks": "All publications",
+    "bookInfo": "About publication",
+    "column": {
+      "ascending": "ascending",
+      "descending": "descending",
+      "unsorted": "unsorted"
     },
-    "header": {
-        "allBooks": "All publications",
-        "catalogs": "Catalogs",
-        "downloads": "Downloads",
-        "fitlerTagTitle": "Filter by tag",
-        "gridTitle": "Grid",
-        "home": "Bookshelf menu",
-        "homeTitle": "Home",
-        "importTitle": "Import publication",
-        "listTitle": "Table",
-        "myCatalogs": "My catalogs",
-        "refreshTitle": "reload",
-        "searchPlaceholder": "Search",
-        "searchTitle": "Search",
-        "settings": "Settings",
-        "viewMode": "View mode"
+    "delete": "Delete",
+    "deleteBook": "Delete",
+    "deleteTag": "Delete tag",
+    "description": "Description",
+    "emptyTagList": "No tagged publications.",
+    "entry": {
+      "continueReading": "Resume reading",
+      "continueReadingAudioBooks": "Resume listening",
+      "continueReadingDivina": "Resume divina",
+      "continueReadingPdf": "Resume PDF",
+      "lastAdditions": "Recently added"
     },
-    "library": {
-        "lcp": {
-            "hint": "Hint: {{- hint}}",
-            "password": "Passphrase",
-            "sentence": "Enter the passphrase for this LCP-protected publication:",
-            "urlHint": "Forgot your passphrase? Support is available:",
-            "whatIsLcp?": "What is LCP?",
-            "whatIsLcpInfoDetails": "LCP stands for 'Licensed Content Protection'.",
-            "whatIsLcpInfoDetailsLink": "To learn more, click this link to the EDRLab website."
-        }
-    },
-    "message": {
-        "download": {
-            "error": "Downloading [{{- title}}] failed: [{{- err}}]"
-        },
-        "import": {
-            "alreadyImport": "[{{- title}}] was already imported.",
-            "fail": "Importing [{{- path}}] failed: [{{- err}}]",
-            "success": "Importing [{{- title}}] completed."
-        },
-        "open": {
-            "error": "Loading publication failed: [{{- err}}]"
-        }
-    },
+    "export": "Save as",
+    "exportAnnotation": "Save annotation as",
+    "format": "Format",
+    "lang": "Language",
+    "lastRead": "Last Read",
+    "moreInfo": "Publication Details",
+    "myBooks": "My publications",
+    "noPublicationHelpL1": "Drop files here",
+    "noPublicationHelpL2": "or use the \"{{- importTitle }}\" button above.",
+    "noPublicationHelpL3": "LCP-protected publications are supported.",
+    "noPublicationHelpL4": "Supported extensions:",
+    "numberOfPages": "Number of pages",
     "opds": {
-        "addForm": {
-            "addButton": "Add",
-            "name": "Name:",
-            "namePlaceholder": "Name",
-            "url": "Link:",
-            "urlPlaceholder": "Link"
+      "auth": {
+        "cancel": "Cancel",
+        "login": "Login",
+        "password": "Password",
+        "register": "Register",
+        "username": "Username / Email Address"
+      },
+      "info": {
+        "availableSince": "Since",
+        "availableState": {
+          "available": "Available",
+          "ready": "Ready",
+          "reserved": "Reserved",
+          "unavailable": "Unavailable",
+          "unknown": "Unknown"
         },
-        "addFormApiapp": {
-            "title": "Add library account"
-        },
-        "addMenu": "Add OPDS feed",
-        "breadcrumbRoot": "Catalogs",
-        "documentation": "OPDS official website",
-        "empty": "No publication found",
-        "firstPage": "First",
-        "informations": "Imagine a world where you can explore and download digital publications from public libraries and digital booksellers with just a few clicks. That's exactly what the Open Publication Distribution System (OPDS) catalog format offers. With OPDS, you can navigate through catalogs from various ebook providers, sign up, borrow, buy a publication, or visit your personal bookshelf. You can even download an ebook or audiobook directly into Thorium Reader for instant reading.\nSo, how do you find an OPDS catalog? It's simple. Look for a hyperlink (URL) leading to the catalog. Copy this URL into the Link field above. Keep in mind that there's no one-stop shop for all active OPDS catalogs. You'll need to contact your preferred library or bookseller and ask for their OPDS catalog URL. If you're not sure where to start, Wikipedia has a few registries of OPDS catalogs in various languages that might be helpful.\nThe Name field is left at your convenience; it provides an easy way to identify the feed in Thorium Reader.",
-        "lastPage": "Last",
-        "menu": {
-            "aboutBook": "About publication",
-            "addExtract": "Import extract",
-            "goBuyBook": "Buy publication",
-            "goLoanBook": "Borrow publication",
-            "goRevokeLoanBook": "Revoke loan",
-            "goSubBook": "Subscribe"
-        },
-        "network": {
-            "error": "Error accessing feed",
-            "noInternet": "No internet",
-            "noInternetMessage": "Try checking the network cable, modem, router or wifi",
-            "reject": "Sorry, unexpected error!",
-            "timeout": "Network timeout, please try again later"
-        },
+        "availableUntil": "Until",
+        "copyAvalaible": "Available",
+        "copyTotal": "Copies",
+        "holdPosition": "Hold position",
+        "holdTotal": "Held",
+        "numberOfItems": "Number of items",
+        "priveValue": "Price",
+        "state": "State"
+      }
+    },
+    "publisher": "Publisher",
+    "readBook": "Read",
+    "released": "Published on",
+    "sort": "Sort by",
+    "tag": "Tag",
+    "tagCount": "Tag count",
+    "tags": "Tags",
+    "update": "Edit"
+  },
+  "dialog": {
+    "cancel": "Cancel",
+    "deleteAnnotations": "Delete annotations?",
+    "deleteAnnotationsText": "Do you want to delete {{- annotationListLength}} annotation(s)?",
+    "deleteFeed": "Delete catalog?",
+    "deletePublication": "Delete publication?",
+    "import": "Confirm import:",
+    "importError": "An error occurred, verify the file extension ({{acceptedExtension}})",
+    "renew": "Renew/extend loan?",
+    "return": "Return publication?",
+    "yes": "Yes"
+  },
+  "error": {
+    "errorBox": {
+      "error": "Error message:",
+      "message": "Error in {{- filename}}",
+      "title": "Internal {{- appName}} Error"
+    }
+  },
+  "header": {
+    "allBooks": "All publications",
+    "catalogs": "Catalogs",
+    "downloads": "Downloads",
+    "fitlerTagTitle": "Filter by tag",
+    "gridTitle": "Grid",
+    "home": "Bookshelf menu",
+    "homeTitle": "Home",
+    "importTitle": "Import publication",
+    "listTitle": "Table",
+    "myCatalogs": "My catalogs",
+    "refreshTitle": "reload",
+    "searchPlaceholder": "Search",
+    "searchTitle": "Search",
+    "settings": "Settings",
+    "viewMode": "View mode"
+  },
+  "library": {
+    "lcp": {
+      "hint": "Hint: {{- hint}}",
+      "password": "Passphrase",
+      "sentence": "Enter the passphrase for this LCP-protected publication:",
+      "urlHint": "Forgot your passphrase? Support is available:",
+      "whatIsLcp?": "What is LCP?",
+      "whatIsLcpInfoDetails": "LCP stands for 'Licensed Content Protection'.",
+      "whatIsLcpInfoDetailsLink": "To learn more, click this link to the EDRLab website."
+    }
+  },
+  "message": {
+    "download": {
+      "error": "Downloading [{{- title}}] failed: [{{- err}}]"
+    },
+    "import": {
+      "alreadyImport": "[{{- title}}] was already imported.",
+      "fail": "Importing [{{- path}}] failed: [{{- err}}]",
+      "success": "Importing [{{- title}}] completed."
+    },
+    "open": {
+      "error": "Loading publication failed: [{{- err}}]"
+    }
+  },
+  "opds": {
+    "addForm": {
+      "addButton": "Add",
+      "name": "Name:",
+      "namePlaceholder": "Name",
+      "url": "Link:",
+      "urlPlaceholder": "Link"
+    },
+    "addFormApiapp": {
+      "title": "Add library account"
+    },
+    "addMenu": "Add OPDS feed",
+    "breadcrumbRoot": "Catalogs",
+    "documentation": "OPDS official website",
+    "empty": "No publication found",
+    "firstPage": "First",
+    "informations": "Imagine a world where you can explore and download digital publications from public libraries and digital booksellers with just a few clicks. That's exactly what the Open Publication Distribution System (OPDS) catalog format offers. With OPDS, you can navigate through catalogs from various ebook providers, sign up, borrow, buy a publication, or visit your personal bookshelf. You can even download an ebook or audiobook directly into Thorium Reader for instant reading.\nSo, how do you find an OPDS catalog? It's simple. Look for a hyperlink (URL) leading to the catalog. Copy this URL into the Link field above. Keep in mind that there's no one-stop shop for all active OPDS catalogs. You'll need to contact your preferred library or bookseller and ask for their OPDS catalog URL. If you're not sure where to start, Wikipedia has a few registries of OPDS catalogs in various languages that might be helpful.\nThe Name field is left at your convenience; it provides an easy way to identify the feed in Thorium Reader.",
+    "lastPage": "Last",
+    "menu": {
+      "aboutBook": "About publication",
+      "addExtract": "Import extract",
+      "goBuyBook": "Buy publication",
+      "goLoanBook": "Borrow publication",
+      "goRevokeLoanBook": "Revoke loan",
+      "goSubBook": "Subscribe"
+    },
+    "network": {
+      "error": "Error accessing feed",
+      "noInternet": "No internet",
+      "noInternetMessage": "Try checking the network cable, modem, router or wifi",
+      "reject": "Sorry, unexpected error!",
+      "timeout": "Network timeout, please try again later"
+    },
+    "next": "Next",
+    "previous": "Previous",
+    "shelf": "Shelf",
+    "updateForm": {
+      "name": "Name:",
+      "title": "Edit OPDS feed",
+      "updateButton": "Edit",
+      "url": "Link:"
+    },
+    "whatIsOpds": "What Is OPDS?"
+  },
+  "publication": {
+    "accessibility": {
+      "accessModeSufficient": {
+        "textual": "TTS & Screen reader friendly"
+      },
+      "accessibilityFeature": {
+        "alternativeText": "Contains alternative text",
+        "displayTransformability": "Adaptable text and layout",
+        "longDescription": "Fully described graphical resources",
+        "printPageNumbers": "Printed book pagination reference",
+        "readingOrder": "Contains a reading order",
+        "synchronizedAudioText": "Text & audio synchronised",
+        "tableOfContents": "Contains a Table Of Contents"
+      },
+      "accessibilityHazard": {
+        "flashing": "Flashing",
+        "motionSimulation": "Motion simulation",
+        "name": "Hazard:",
+        "noFlashing": "No flashing",
+        "noMotionSimulation": "No motion simulation",
+        "noSound": "No sound",
+        "none": "None",
+        "sound": "Sound",
+        "unknown": "Unknown"
+      },
+      "certifierReport": "Certifier report:",
+      "conformsTo": "Conforms to:",
+      "moreInformation": "More information",
+      "name": "Accessibility",
+      "noA11y": "No accessibility information available"
+    },
+    "actions": "Actions",
+    "audio": {
+      "tracks": "Tracks"
+    },
+    "author": "Author",
+    "cancelledLcp": "This publication's LCP license is cancelled.",
+    "certificateRevoked": "Revoked LCP license certificate.",
+    "certificateSignatureInvalid": "Invalid LCP license certificate signature.",
+    "cover": {
+      "img": "cover image"
+    },
+    "day": "day",
+    "days": "days",
+    "duration": {
+      "title": "Duration"
+    },
+    "expired": "Loan expired",
+    "expiredLcp": "This publication's LCP license is expired.",
+    "lcpEnd": "End",
+    "lcpRightsCopy": "Copied characters",
+    "lcpRightsPrint": "Printed pages",
+    "lcpStart": "Start",
+    "licenceLCP": "License (LCP)",
+    "licenseOutOfDate": "Out of date LCP License.",
+    "licenseSignatureDateInvalid": "Invalid LCP license signature date.",
+    "licenseSignatureInvalid": "Invalid LCP license signature.",
+    "licensed": "Licensed",
+    "markAsRead": "Mark as read",
+    "notStarted": "Not Started",
+    "onGoing": "In Progress",
+    "progression": {
+      "title": "Progression"
+    },
+    "read": "Finished",
+    "remainingTime": "Loan (remaining time)",
+    "renewButton": "Renew",
+    "returnButton": "Return",
+    "returnedLcp": "This LCP-protected publication is returned.",
+    "revokedLcp": "This publication's LCP license is revoked.",
+    "seeLess": "See less",
+    "seeMore": "See more",
+    "timeLeft": "Remaining time",
+    "title": "Title",
+    "userKeyCheckInvalid": "Incorrect passphrase"
+  },
+  "reader": {
+    "annotations": {
+      "Color": "Color",
+      "addNote": "Annotate",
+      "advancedMode": "Instant mode (auto create after select)",
+      "annotationsOptions": "Options",
+      "colors": {
+        "bluegreen": "Blue-green",
+        "cyan": "Cyan",
+        "green": "Green",
+        "lightblue": "Light Blue",
+        "orange": "Orange",
+        "purple": "Purple",
+        "red": "Red",
+        "yellow": "Yellow"
+      },
+      "filter": {
+        "all": "All",
+        "filterByColor": "Filter by Color",
+        "filterByDrawtype": "Filter by Drawtype",
+        "filterByTag": "Filter by Tag",
+        "filterOptions": "Filter Options",
+        "none": "None"
+      },
+      "hide": "Do not display",
+      "highlight": "Highlight",
+      "noSelectionToast": "No selection",
+      "quickAnnotations": "Quick create (skip editor)",
+      "saveNote": "Save",
+      "sorting": {
+        "lastcreated": "Last created",
+        "lastmodified": "Last modified",
+        "progression": "Progression",
+        "sortingOptions": "Sorting Options"
+      },
+      "toggleMarginMarks": "Display in margins",
+      "type": {
+        "outline": "Outline",
+        "solid": "Solid background",
+        "strikethrough": "Strikethrough",
+        "underline": "Underline"
+      }
+    },
+    "divina": {
+      "mute": "mute audio",
+      "unmute": "unmute audio"
+    },
+    "fxl": {
+      "fit": "Fit"
+    },
+    "marks": {
+      "annotations": "Annotations",
+      "bookmarks": "Bookmarks",
+      "delete": "Delete",
+      "edit": "Edit",
+      "goTo": "Go to page",
+      "landmarks": "Landmarks",
+      "saveMark": "Save bookmark",
+      "search": "Search",
+      "searchResult": "Search [{{- searchText}}]",
+      "toc": "Table of Contents"
+    },
+    "media-overlays": {
+      "activate": "Activate Readaloud",
+      "captions": "Captions / clean view",
+      "captionsDescription": "Simplified text view with minimal captions styling.",
+      "next": "Next Readaloud",
+      "pause": "Pause Readaloud",
+      "play": "Play Readaloud",
+      "previous": "Previous Readaloud",
+      "skip": "Skippability",
+      "skipDescription": "Jump over / ignore auxiliary content such as pagebreaks, footnotes/endnotes, etc.",
+      "speed": "Readaloud playback rate",
+      "stop": "Stop Readaloud",
+      "title": "Readaloud"
+    },
+    "navigation": {
+      "annotationTitle": "annotation",
+      "backHomeTitle": "back to bookshelf",
+      "bookmarkTitle": "bookmark",
+      "currentPage": "Current page: {{- current}}",
+      "currentPageTotal": "Current page: {{- current}}/{{- total}}",
+      "detachWindowTitle": "show library / bookshelf window",
+      "fullscreenTitle": "go fullscreen",
+      "goTo": "Go to",
+      "goToError": "Page break does not exist",
+      "goToPlaceHolder": "Enter page number",
+      "goToTitle": "Go to page",
+      "historyNext": "Jump forward",
+      "historyPrevious": "Jump back",
+      "infoTitle": "information",
+      "magnifyingGlassButton": "search publication",
+      "openTableOfContentsTitle": "navigation",
+      "page": "Page",
+      "pdfscalemode": "Page fit or width",
+      "settingsTitle": "settings"
+    },
+    "picker": {
+      "search": {
+        "founds": "{{- nResults}} match(es)",
+        "input": "text to match",
         "next": "Next",
+        "notFound": "no matches",
         "previous": "Previous",
-        "shelf": "Shelf",
-        "updateForm": {
-            "name": "Name:",
-            "title": "Edit OPDS feed",
-            "updateButton": "Edit",
-            "url": "Link:"
-        },
-        "whatIsOpds": "What Is OPDS?"
-    },
-    "publication": {
-        "accessibility": {
-            "accessModeSufficient": {
-                "textual": "TTS & Screen reader friendly"
-            },
-            "accessibilityFeature": {
-                "alternativeText": "Contains alternative text",
-                "displayTransformability": "Adaptable text and layout",
-                "longDescription": "Fully described graphical resources",
-                "printPageNumbers": "Printed book pagination reference",
-                "readingOrder": "Contains a reading order",
-                "synchronizedAudioText": "Text & audio synchronised",
-                "tableOfContents": "Contains a Table Of Contents"
-            },
-            "accessibilityHazard": {
-                "flashing": "Flashing",
-                "motionSimulation": "Motion simulation",
-                "name": "Hazard:",
-                "noFlashing": "No flashing",
-                "noMotionSimulation": "No motion simulation",
-                "noSound": "No sound",
-                "none": "None",
-                "sound": "Sound",
-                "unknown": "Unknown"
-            },
-            "certifierReport": "Certifier report",
-            "conformsTo": "Conforms to:",
-            "moreInformation": "More information",
-            "name": "Accessibility",
-            "noA11y": "No accessibility information available"
-        },
-        "actions": "Actions",
-        "audio": {
-            "tracks": "Tracks"
-        },
-        "author": "Author",
-        "cancelledLcp": "This publication's LCP license is cancelled.",
-        "certificateRevoked": "Revoked LCP license certificate.",
-        "certificateSignatureInvalid": "Invalid LCP license certificate signature.",
-        "cover": {
-            "img": "cover image"
-        },
-        "day": "day",
-        "days": "days",
-        "duration": {
-            "title": "Duration"
-        },
-        "expired": "Loan expired",
-        "expiredLcp": "This publication's LCP license is expired.",
-        "lcpEnd": "End",
-        "lcpRightsCopy": "Copied characters",
-        "lcpRightsPrint": "Printed pages",
-        "lcpStart": "Start",
-        "licenceLCP": "License (LCP)",
-        "licenseOutOfDate": "Out of date LCP License.",
-        "licenseSignatureDateInvalid": "Invalid LCP license signature date.",
-        "licenseSignatureInvalid": "Invalid LCP license signature.",
-        "licensed": "Licensed",
-        "markAsRead": "Mark as read",
-        "notStarted": "Not Started",
-        "onGoing": "In Progress",
-        "progression": {
-            "title": "Progression"
-        },
-        "read": "Finished",
-        "remainingTime": "Loan (remaining time)",
-        "renewButton": "Renew",
-        "returnButton": "Return",
-        "returnedLcp": "This LCP-protected publication is returned.",
-        "revokedLcp": "This publication's LCP license is revoked.",
-        "seeLess": "See less",
-        "seeMore": "See more",
-        "timeLeft": "Remaining time",
-        "title": "Title",
-        "userKeyCheckInvalid": "Incorrect passphrase"
-    },
-    "reader": {
-        "annotations": {
-            "Color": "Color",
-            "addNote": "Annotate",
-            "advancedMode": "Instant mode (auto create after select)",
-            "annotationsOptions": "Options",
-            "hide": "Do not display",
-            "highlight": "Highlight",
-            "noSelectionToast": "No selection",
-            "quickAnnotations": "Quick create (skip editor)",
-            "saveNote": "Save",
-            "toggleMarginMarks": "Display in margins",
-            "type": {
-                "outline": "Outline",
-                "solid": "Solid background",
-                "strikethrough": "Strikethrough",
-                "underline": "Underline"
-            }
-        },
-        "divina": {
-            "mute": "mute audio",
-            "unmute": "unmute audio"
-        },
-        "fxl": {
-            "fit": "Fit"
-        },
-        "marks": {
-            "annotations": "Annotations",
-            "bookmarks": "Bookmarks",
-            "delete": "Delete",
-            "edit": "Edit",
-            "goTo": "Go to page",
-            "landmarks": "Landmarks",
-            "saveMark": "Save bookmark",
-            "search": "Search",
-            "searchResult": "Search [{{- searchText}}]",
-            "toc": "Table of Contents"
-        },
-        "media-overlays": {
-            "activate": "Activate Readaloud",
-            "captions": "Captions / clean view",
-            "captionsDescription": "Simplified text view with minimal captions styling.",
-            "next": "Next Readaloud",
-            "pause": "Pause Readaloud",
-            "play": "Play Readaloud",
-            "previous": "Previous Readaloud",
-            "skip": "Skippability",
-            "skipDescription": "Jump over / ignore auxiliary content such as pagebreaks, footnotes/endnotes, etc.",
-            "speed": "Readaloud playback rate",
-            "stop": "Stop Readaloud",
-            "title": "Readaloud"
-        },
-        "navigation": {
-            "annotationTitle": "annotation",
-            "backHomeTitle": "back to bookshelf",
-            "bookmarkTitle": "bookmark",
-            "currentPage": "Current page: {{- current}}",
-            "currentPageTotal": "Current page: {{- current}}/{{- total}}",
-            "detachWindowTitle": "show library / bookshelf window",
-            "fullscreenTitle": "go fullscreen",
-            "goTo": "Go to",
-            "goToError": "Page break does not exist",
-            "goToPlaceHolder": "Enter page number",
-            "goToTitle": "Go to page",
-            "historyNext": "Jump forward",
-            "historyPrevious": "Jump back",
-            "infoTitle": "information",
-            "magnifyingGlassButton": "search publication",
-            "openTableOfContentsTitle": "navigation",
-            "page": "Page",
-            "pdfscalemode": "Page fit or width",
-            "settingsTitle": "settings"
-        },
-        "picker": {
-            "search": {
-                "founds": "{{- nResults}} match(es)",
-                "input": "text to match",
-                "next": "Next",
-                "notFound": "no matches",
-                "previous": "Previous",
-                "results": "Results",
-                "submit": "Find"
-            },
-            "searchTitle": "Search:"
-        },
-        "settings": {
-            "column": {
-                "auto": "Default",
-                "one": "1 col",
-                "title": "Columns",
-                "two": "2 cols"
-            },
-            "customizeReader": "Customize text formatting",
-            "disabled": "disabled",
-            "display": "Display",
-            "disposition": {
-                "title": "Layout"
-            },
-            "font": "Font",
-            "fontSize": "Font size",
-            "infoCustomFont": "Select custom font from operating system by typing its name",
-            "justification": "Alignment",
-            "justify": "Justify",
-            "letterSpacing": "Letter spacing",
-            "lineSpacing": "Line spacing",
-            "margin": "Margin",
-            "noFootnotes": "Disable footnotes",
-            "noRTLFlip": "Disable Right-To-Left UI",
-            "noRuby": "Hide Japanese Ruby",
-            "paginated": "Paginated",
-            "paraSpacing": "Paragraph spacing",
-            "pdfZoom": {
-                "name": {
-                    "100pct": "100%",
-                    "150pct": "150%",
-                    "200pct": "200%",
-                    "300pct": "300%",
-                    "500pct": "500%",
-                    "50pct": "50%",
-                    "fit": "page fit",
-                    "width": "page width"
-                },
-                "title": "Zoom"
-            },
-            "preview": "Preview",
-            "reduceMotion": "Reduce motion",
-            "scrolled": "Scrollable",
-            "spacing": "Spacing",
-            "text": "Text",
-            "theme": {
-                "name": {
-                    "Contrast1": "Contrast 1",
-                    "Contrast2": "Contrast 2",
-                    "Contrast3": "Contrast 3",
-                    "Contrast4": "Contrast 4",
-                    "Neutral": "Neutral",
-                    "Night": "Night",
-                    "Paper": "Paper",
-                    "Sepia": "Sepia"
-                },
-                "title": "Theme"
-            },
-            "wordSpacing": "Word spacing"
-        },
-        "svg": {
-            "left": "Left",
-            "right": "Right"
-        },
-        "toc": {
-            "publicationNoToc": "No table of contents"
-        },
-        "tts": {
-            "activate": "Activate Text To Speech (TTS)",
-            "default": "Voice: system default",
-            "next": "Next TTS",
-            "pause": "Pause TTS",
-            "play": "Play TTS",
-            "previous": "Previous TTS",
-            "sentenceDetect": "Split TTS text",
-            "sentenceDetectDescription": "Break long paragraphs into sentences.",
-            "speed": "TTS playback rate",
-            "stop": "Stop TTS",
-            "voice": "TTS voice"
-        }
+        "results": "Results",
+        "submit": "Find"
+      },
+      "searchTitle": "Search:"
     },
     "settings": {
-        "auth": {
-            "wipeData": "Clear login data"
+      "column": {
+        "auto": "Default",
+        "one": "1 col",
+        "title": "Columns",
+        "two": "2 cols"
+      },
+      "customizeReader": "Customize text formatting",
+      "disabled": "disabled",
+      "display": "Display",
+      "disposition": {
+        "title": "Layout"
+      },
+      "font": "Font",
+      "fontSize": "Font size",
+      "infoCustomFont": "Select custom font from operating system by typing its name",
+      "justification": "Alignment",
+      "justify": "Justify",
+      "letterSpacing": "Letter spacing",
+      "lineSpacing": "Line spacing",
+      "margin": "Margin",
+      "noFootnotes": "Disable footnotes",
+      "noRTLFlip": "Disable Right-To-Left UI",
+      "noRuby": "Hide Japanese Ruby",
+      "paginated": "Paginated",
+      "paraSpacing": "Paragraph spacing",
+      "pdfZoom": {
+        "name": {
+          "100pct": "100%",
+          "150pct": "150%",
+          "200pct": "200%",
+          "300pct": "300%",
+          "500pct": "500%",
+          "50pct": "50%",
+          "fit": "page fit",
+          "width": "page width"
         },
-        "keyboard": {
-            "advancedMenu": "Menu",
-            "cancel": "Cancel",
-            "disclaimer": "Shortcuts were defined from QWERTY keyboard layout.",
-            "editUserJson": "Edit user file...",
-            "keyboardShortcuts": "Keyboard shortcuts",
-            "loadUserJson": "Load from user file",
-            "resetDefaults": "Reset (load defaults)",
-            "save": "Save"
+        "title": "Zoom"
+      },
+      "preset": {
+        "apply": "Apply the preferred reading settings preset to the current reading settings",
+        "reset": "Reset preferred reading settings preset to the initial state",
+        "save": "Save the current reading settings to the preferred reading settings preset",
+        "title": "Preset"
+      },
+      "preview": "Preview",
+      "reduceMotion": "Reduce motion",
+      "scrolled": "Scrollable",
+      "spacing": "Spacing",
+      "text": "Text",
+      "theme": {
+        "name": {
+          "Contrast1": "Contrast 1",
+          "Contrast2": "Contrast 2",
+          "Contrast3": "Contrast 3",
+          "Contrast4": "Contrast 4",
+          "Neutral": "Neutral",
+          "Night": "Night",
+          "Paper": "Paper",
+          "Sepia": "Sepia"
         },
-        "language": {
-            "languageChoice": "Language"
-        },
-        "session": {
-            "no": "Disable",
-            "title": "Save session",
-            "yes": "Enable"
-        },
-        "tabs": {
-            "appearance": "Appearance",
-            "general": "General",
-            "keyboardShortcuts": "Keyboard shortcuts"
-        },
-        "theme": {
-            "auto": "Automatic",
-            "dark": "Dark",
-            "description": "Application theme matches operating system.",
-            "light": "Light",
-            "title": "Application Theme"
-        }
+        "title": "Theme"
+      },
+      "wordSpacing": "Word spacing"
     },
-    "wizard": {
-        "buttons": {
-            "discover": "Discover what's new",
-            "goToBooks": "Go to my publications",
-            "next": "Next"
-        },
-        "description": {
-            "annotations": "Highlight document text, choose style and color, attach personal notes. Create annotations in 'quick' mode to bypass the editor (you can enter text and customize styles later). For extra speed, use the 'instant' mode which creates annotations immediately after highlighting document text!",
-            "catalogs": "Borrow publications from your local library or discover publications via OPDS feeds. Access a variety of publications from multiple sources thanks to online catalogs.",
-            "home": "Thorium looks different! Let's discover what's new...",
-            "readingView1": "Customize your reading and listening preferences: Thorium now offers multiple color themes for both the user interface and publication documents. It is now also easier to configure 'readaloud' ebooks with synthetic speech and synchronized text/audio narration.",
-            "readingView2": "Thorium's improved user interface makes it easier to find text in publications, explore search results, go to specific pages, browse the table of contents, create bookmarks, etc. thanks to the new 'docked' panels. The fullscreen reading mode continues to offer a distraction-free environment.",
-            "yourBooks": "Welcome to your redesigned personal bookshelf! In the 'grid' view, easily filter by tags or find publications by keywords. In the advanced 'table' view, select and sort publications by specific authors, title, date, format, etc."
-        },
-        "dontShow": "Don't show again",
-        "tab": {
-            "annotations": "Annotations",
-            "catalogs": "Catalogs",
-            "home": "Home",
-            "readingView": "Reading view",
-            "yourBooks": "Your publications"
-        },
-        "title": {
-            "allBooks": "All my publications",
-            "newFeature": "New feature: Annotations",
-            "welcome": "Welcome to Thorium 3.0"
-        }
+    "svg": {
+      "left": "Left",
+      "right": "Right"
+    },
+    "toc": {
+      "publicationNoToc": "No table of contents"
+    },
+    "tts": {
+      "activate": "Activate Text To Speech (TTS)",
+      "default": "Voice: system default",
+      "next": "Next TTS",
+      "pause": "Pause TTS",
+      "play": "Play TTS",
+      "previous": "Previous TTS",
+      "sentenceDetect": "Split TTS text",
+      "sentenceDetectDescription": "Break long paragraphs into sentences.",
+      "speed": "TTS playback rate",
+      "stop": "Stop TTS",
+      "voice": "TTS voice"
     }
+  },
+  "settings": {
+    "annotationCreator": {
+      "creator": "Creator",
+      "name": "Name",
+      "organization": "Organization",
+      "person": "Person",
+      "type": "Type:"
+    },
+    "auth": {
+      "title": "Manage access to catalogs",
+      "wipeData": "Clear login data"
+    },
+    "keyboard": {
+      "advancedMenu": "Keyboard shortcuts advanced menu",
+      "cancel": "Cancel",
+      "disclaimer": "Shortcuts were defined from QWERTY keyboard layout.",
+      "editUserJson": "Edit user file...",
+      "keyboardShortcuts": "Keyboard shortcuts",
+      "loadUserJson": "Load from user file",
+      "resetDefaults": "Reset (load defaults)",
+      "save": "Save"
+    },
+    "language": {
+      "languageChoice": "Language"
+    },
+    "library": {
+      "enableAPIAPP": "Activate access to Dilicom PNB API",
+      "title": "Add a library account"
+    },
+    "session": {
+      "no": "Disable",
+      "title": "Save session",
+      "yes": "Enable"
+    },
+    "tabs": {
+      "appearance": "Appearance",
+      "general": "General",
+      "keyboardShortcuts": "Keyboard shortcuts"
+    },
+    "theme": {
+      "auto": "Automatic",
+      "dark": "Dark",
+      "description": "Application theme matches operating system.",
+      "light": "Light",
+      "title": "Application Theme"
+    }
+  },
+  "wizard": {
+    "buttons": {
+      "discover": "Discover what's new",
+      "goToBooks": "Go to my publications",
+      "next": "Next"
+    },
+    "description": {
+      "annotations": "Highlight document text, choose style and color, attach personal notes. Create annotations in 'quick' mode to bypass the editor (you can enter text and customize styles later). For extra speed, use the 'instant' mode which creates annotations immediately after highlighting document text!",
+      "catalogs": "Borrow publications from your local library or discover publications via OPDS feeds. Access a variety of publications from multiple sources thanks to online catalogs.",
+      "home": "Thorium looks different! Let's discover what's new...",
+      "readingView1": "Customize your reading and listening preferences: Thorium now offers multiple color themes for both the user interface and publication documents. It is now also easier to configure 'readaloud' ebooks with synthetic speech and synchronized text/audio narration.",
+      "readingView2": "Thorium's improved user interface makes it easier to find text in publications, explore search results, go to specific pages, browse the table of contents, create bookmarks, etc. thanks to the new 'docked' panels. The fullscreen reading mode continues to offer a distraction-free environment.",
+      "yourBooks": "Welcome to your redesigned personal bookshelf! In the 'grid' view, easily filter by tags or find publications by keywords. In the advanced 'table' view, select and sort publications by specific authors, title, date, format, etc."
+    },
+    "dontShow": "Don't show again",
+    "tab": {
+      "annotations": "Annotations",
+      "catalogs": "Catalogs",
+      "home": "Home",
+      "readingView": "Reading view",
+      "yourBooks": "Your publications"
+    },
+    "title": {
+      "allBooks": "All my publications",
+      "newFeature": "New feature: Annotations",
+      "welcome": "Welcome to Thorium 3.0"
+    }
+  }
 }

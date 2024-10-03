@@ -42,6 +42,8 @@ import { readerMediaOverlayReducer } from "./mediaOverlay";
 import { readerTTSReducer } from "./tts";
 import { readerTransientConfigReducer } from "./readerTransientConfig";
 import { readerAllowCustomConfigReducer } from "readium-desktop/common/redux/reducers/reader/allowCustom";
+import { annotationTagsIndexReducer } from "./annotationTagsIndex";
+import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 
 export const rootReducer = () => {
 
@@ -111,11 +113,13 @@ export const rootReducer = () => {
                         sortFct: (a, b) => b[0] - a[0],
                         update: {
                             type: readerActions.annotation.update.ID,
-                            selector: (action, queue) =>
-                                [
-                                    queue.reduce<number>((pv, [k, v]) => v.uuid === action.payload.uuid ? k : pv, undefined),
-                                    action.payload,
-                                ],
+                            selector: (action, queue) => {
+                                const [_, newAnnot] = action.payload;
+                                return [
+                                    queue.reduce<number>((pv, [k, v]) => v.uuid === newAnnot.uuid ? k : pv, undefined),
+                                    newAnnot,
+                                ];
+                            },
                         },
                     },
                 ),
@@ -176,11 +180,13 @@ export const rootReducer = () => {
         }),
         search: searchReducer,
         annotation: annotationModeEnableReducer,
+        annotationTagsIndex: annotationTagsIndexReducer,
         picker: pickerReducer,
         win: winReducer,
         dialog: dialogReducer,
         toast: toastReducer,
         keyboard: keyboardReducer,
         mode: winModeReducer,
+        creator: creatorReducer,
     });
 };

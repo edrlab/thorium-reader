@@ -6,11 +6,13 @@
 // ==LICENSE-END==
 
 import "reflect-metadata";
+
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
+
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
 import {
     formatContributorToString,
 } from "readium-desktop/renderer/common/logics/formatContributor";

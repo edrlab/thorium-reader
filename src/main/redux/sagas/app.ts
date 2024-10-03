@@ -123,7 +123,7 @@ export function* init() {
             default: installExtension,
             REACT_DEVELOPER_TOOLS,
             REDUX_DEVTOOLS,
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
         } = require("electron-devtools-installer");
 
         [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {

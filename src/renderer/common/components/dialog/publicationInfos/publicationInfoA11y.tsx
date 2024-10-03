@@ -5,10 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { shell } from "electron";
-import classNames from "classnames";
 import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.scss";
 import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
+import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
+
+import { shell } from "electron";
+import classNames from "classnames";
 import * as debug_ from "debug";
 import DOMPurify from "dompurify";
 import * as React from "react";
@@ -16,7 +18,6 @@ import { TPublication } from "readium-desktop/common/type/publication.type";
 import { convertMultiLangStringToString } from "readium-desktop/renderer/common/language-string";
 import { TranslatorProps, withTranslator } from "../../hoc/translator";
 import isURL from "validator/lib/isURL";
-import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:publicationA11y");
@@ -64,8 +65,8 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
 
         debug(a11y_certifiedBy);
 
-        const findStrInArrayArray = (array: string[][], str: string): boolean => array?.findIndex((a) => a.findIndex((b) => b === str) > -1) > -1;
-        const findStrInArray = (array: string[], str: string): boolean => array?.findIndex((a) => a === str) > -1;
+        const findStrInArrayArray = (array: string[][] | string[] | undefined, str: string): boolean => Array.isArray(array) && array.findIndex((a) => (Array.isArray(a) ? a : [a]).findIndex((b) => b === str) > -1) > -1;
+        const findStrInArray = (array: string[] | undefined, str: string): boolean => Array.isArray(array) && array.findIndex((a) => a === str) > -1;
 
         const AccessModeSufficient = (() => {
 
@@ -187,7 +188,7 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
                                         : value;
                             return <li key={i}>{__("publication.accessibility.conformsTo")} {label}</li>;
                         }
-                        return <li key={i}>{__("publication.accessibility.conformsTo")} {value}</li>;
+                        return <li key={`conf-to${i}`}>{__("publication.accessibility.conformsTo")} {value}</li>;
                     })
                 }
             </>;
@@ -210,7 +211,7 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
                             }}
                             href={value} title={value} aria-label={__("publication.accessibility.certifierReport")}>{__("publication.accessibility.certifierReport")}</a></li>;
                         }
-                        return <li key={i}>{__("publication.accessibility.certifierReport")} {value}</li>;
+                        return <li key={`certi-report${i}`}>{__("publication.accessibility.certifierReport")} {value}</li>;
                     })
                 }
             </>;

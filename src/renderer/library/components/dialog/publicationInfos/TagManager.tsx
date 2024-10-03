@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
+
 import * as debug_ from "debug";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -27,7 +29,6 @@ import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
-import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 import classNames from "classnames";
 import { InputPredict } from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/TagPredict";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";

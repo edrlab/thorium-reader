@@ -5,10 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export interface SectionData {
-    title?: string;
-    content: React.ReactElement | React.ReactElement[]; // JSX.Element;
-    disabled?: boolean;
-    notExtendable?: boolean;
-    skipMaxHeight?: boolean;
-}
+// import * as enable from "./enable";
+import * as set from "./set";
+
+export {
+    set,
+    // enable,
+};

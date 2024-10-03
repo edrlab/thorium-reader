@@ -16,8 +16,11 @@ import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
-import { LocatorExtended, highlightsDrawMargin } from "@r2-navigator-js/electron/renderer";
-import { HighlightDrawTypeBackground, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline } from "r2-navigator-js/dist/es8-es2017/src/electron/common/highlight";
+
+import { highlightsDrawMargin } from "@r2-navigator-js/electron/renderer";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+
+import { HighlightDrawTypeBackground, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { diReaderGet } from "../../di";
 
@@ -54,7 +57,9 @@ const convertDrawTypeToNumber = (drawType: TDrawType) => {
 
 function* annotationUpdate(action: readerActions.annotation.update.TAction) {
     debug(`annotationUpdate-- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
-    const {payload: {uuid, locatorExtended: {locator: {href}, selectionInfo}, color: newColor, drawType}} = action;
+
+    const [_, newAnnot] = action.payload;
+    const {uuid, locatorExtended: {locator: {href}, selectionInfo}, color: newColor, drawType, tags: _tags} = newAnnot;
 
     const item = yield* selectTyped((store: IReaderRootState) => store.reader.highlight.handler.find(([_, highlightState]) => highlightState.uuid === uuid));
 
@@ -89,7 +94,7 @@ function* annotationPop(action: readerActions.annotation.pop.TAction) {
     yield* put(readerLocalActionHighlights.handler.pop.build([{uuid}]));
 }
 
-function* createAnnotation(locatorExtended: LocatorExtended, color: IColor, comment: string, drawType: TDrawType) {
+function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, comment: string, drawType: TDrawType, tags: string[]) {
 
     // clean __selection global variable state
     __selectionInfoGlobal.locatorExtended = undefined;
@@ -100,20 +105,21 @@ function* createAnnotation(locatorExtended: LocatorExtended, color: IColor, comm
         comment,
         locatorExtended,
         drawType,
+        tags,
     }));
 
     // sure! close the popover
     yield* put(readerLocalActionAnnotations.enableMode.build(false, undefined));
 }
 
-function* newLocatorEditAndSaveTheNote(locatorExtended: LocatorExtended): SagaGenerator<void> {
+function* newLocatorEditAndSaveTheNote(locatorExtended: MiniLocatorExtended): SagaGenerator<void> {
     const defaultColor = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_defaultColor);
     const defaultDrawType = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_defaultDrawType);
 
     // check the boolean value of annotation_popoverNotOpenOnNoteTaking
     const annotation_popoverNotOpenOnNoteTaking = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_popoverNotOpenOnNoteTaking);
     if (annotation_popoverNotOpenOnNoteTaking) {
-        yield* call(createAnnotation, locatorExtended, {...defaultColor}, "", defaultDrawType);
+        yield* call(createAnnotation, locatorExtended, {...defaultColor}, "", defaultDrawType, []);
         return;
     }
 
@@ -134,11 +140,12 @@ function* newLocatorEditAndSaveTheNote(locatorExtended: LocatorExtended): SagaGe
         return;
     } else if (noteTakenAction) {
 
-        const { color, comment, drawType } = noteTakenAction.payload;
-        debug(`annotation save the note with the color: ${color} and comment: ${comment.slice(0, 20)}`);
+        const { color, comment, drawType, tags } = noteTakenAction.payload;
+        debug(`annotation save the note with the color: ${color} , comment: ${comment.slice(0, 20)} , drawType: ${drawType} , tags: ${tags}`);
+
 
         // get color and comment and save the note
-        yield* call(createAnnotation, locatorExtended, color, comment, drawType);
+        yield* call(createAnnotation, locatorExtended, color, comment, drawType, tags);
 
     } else {
         debug("ERROR: second yield RACE not worked !!?!!");
@@ -151,7 +158,7 @@ function* annotationButtonTrigger(_action: readerLocalActionAnnotations.trigger.
     if (!locatorExtended) {
         const translator = yield* callTyped(
             () => diReaderGet("translator"));
-    
+
         debug("annotationBtnTriggerRequestedAction received");
         // trigger a Toast notification to user
         yield* put(
@@ -168,7 +175,7 @@ function* annotationButtonTrigger(_action: readerLocalActionAnnotations.trigger.
 
 }
 
-const __selectionInfoGlobal: {locatorExtended: LocatorExtended | undefined} = {locatorExtended: undefined};
+const __selectionInfoGlobal: {locatorExtended: MiniLocatorExtended | undefined} = {locatorExtended: undefined};
 function* setLocator(action: readerLocalActionSetLocator.TAction) {
 
     const locatorExtended = action.payload;
@@ -236,6 +243,9 @@ function* readerStart() {
 
 function* captureHightlightDrawMargin(action: readerLocalActionSetConfig.TAction) {
 
+    const { annotation_defaultDrawView } = action.payload;
+    if (!annotation_defaultDrawView) return ;
+
     // divina,
     const { info, locator } = yield* selectTyped((state: IReaderRootState) => state.reader);
     // typeof divina !== "undefined" ||
@@ -247,8 +257,6 @@ function* captureHightlightDrawMargin(action: readerLocalActionSetConfig.TAction
         debug("captureHightlightDrawMargin SKIP annot", skip, info?.publicationView?.isDivina, locator?.audioPlaybackInfo, info?.publicationView?.isAudio, info?.publicationView?.isPDF);
         return;
     }
-
-    const { annotation_defaultDrawView } = action.payload;
 
     debug(`captureHightlightDrawMargin : readerLocalActionSetConfig CHANGED apply=${annotation_defaultDrawView}`);
     if (annotation_defaultDrawView === "margin") {

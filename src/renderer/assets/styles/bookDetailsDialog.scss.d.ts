@@ -1,10 +1,11 @@
-export declare const ___DEBUG___BOOK_DETAILS_DIALOG_CSS: string;
 export declare const addTagButton: string;
 export declare const allowUserSelect: string;
 export declare const author: string;
 export declare const c_dialog: string;
 export declare const c_dialog__box: string;
 export declare const c_dialog_background: string;
+export declare const CSS_END_bookDetailsDialog: string;
+export declare const CSS_START_bookDetailsDialog: string;
 export declare const description: string;
 export declare const descriptionWrapper: string;
 export declare const dialog_left: string;

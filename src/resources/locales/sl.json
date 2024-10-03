@@ -75,6 +75,7 @@
       "lastAdditions": "Nedavno dodano"
     },
     "export": "Shrani kot",
+    "exportAnnotation": "",
     "format": "Format",
     "lang": "Jezik",
     "lastRead": "Nazadnje brano",
@@ -123,6 +124,8 @@
   },
   "dialog": {
     "cancel": "Prekliči",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Ali res želiš izbrisati katalog?",
     "deletePublication": "Ali res želiš izbrisati publikacijo?",
     "import": "Ali res želiš uvoziti te datoteke:",
@@ -305,11 +308,35 @@
       "addNote": "Dodaj opombo",
       "advancedMode": "Takojšnji način (samodejno ustvarjanje po izbiri)",
       "annotationsOptions": "Možnosti",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Ne prikaži",
       "highlight": "Poudari",
       "noSelectionToast": "Brez izbire",
       "quickAnnotations": "Hitro ustvarjanje (preskoči urejevalnik)",
       "saveNote": "Shrani",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Prikaži v robovih",
       "type": {
         "outline": "Oriši",
@@ -423,6 +450,12 @@
         },
         "title": "Povečava"
       },
+      "preset": {
+        "apply": "",
+        "reset": "",
+        "save": "",
+        "title": ""
+      },
       "preview": "Predogled",
       "reduceMotion": "Zmanjšaj gibanje",
       "scrolled": "Pomikanje",
@@ -465,7 +498,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Izbriši avtentikacijske podatke"
     },
     "keyboard": {
@@ -480,6 +521,10 @@
     },
     "language": {
       "languageChoice": "Izbira jezika"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Onemogoči",

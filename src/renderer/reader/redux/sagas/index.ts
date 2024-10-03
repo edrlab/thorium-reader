@@ -21,11 +21,10 @@ import * as winInit from "./win";
 import * as annotation from "./annotation";
 import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { setTheme } from "readium-desktop/common/redux/actions/theme";
-import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } from "r2-navigator-js/dist/es8-es2017/src/electron/renderer";
+import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } from "@r2-navigator-js/electron/renderer";
 import { eventChannel } from "redux-saga";
-import { put, select } from "typed-redux-saga";
-import { readerLocalActionReader, readerLocalActionSetTransientConfig } from "../actions";
-import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { put } from "typed-redux-saga";
+import { readerLocalActionReader } from "../actions";
 
 // Logger
 const filename_ = "readium-desktop:renderer:reader:saga:index";
@@ -122,27 +121,6 @@ export function* rootSaga() {
         ),
     ]);
 
-
-    // Copy reader config to reader transcient config at reader start
-    const {
-        font,
-        fontSize,
-        pageMargins,
-        wordSpacing,
-        letterSpacing,
-        paraSpacing,
-        lineHeight,
-    } = yield* select((state: IReaderRootState) => state.reader.config);
-
-    yield* put(readerLocalActionSetTransientConfig.build({
-                        font,
-                        fontSize,
-                        pageMargins,
-                        wordSpacing,
-                        letterSpacing,
-                        paraSpacing,
-                        lineHeight,
-    }));
 
     console.log("SAGA-rootSaga() INIT SUCCESS");
 

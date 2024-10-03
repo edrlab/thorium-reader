@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesPublication from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -23,8 +25,6 @@ import { buildOpdsBrowserRouteWithLink } from "readium-desktop/renderer/library/
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { dispatchHistoryPush, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 import { TDispatch } from "readium-desktop/typings/redux";
-
-import * as stylesPublication from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
 import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-right.svg";
 
 interface IBaseProps extends TranslatorProps {
@@ -68,7 +68,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
             this.registerAllKeyboardListeners();
         }
     }
- 
+
     public  adjustElementPosition = () => {
         const element = this.fixedElementRef.current;
         const container = document.getElementById("opds_browserResults");
@@ -238,7 +238,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                 ...this.props.location,
                 pathname: buildRoute(pageLinks.previous[0]),
             }, this.props.location.state as IRouterLocationState);
-        } else if (pageLinks?.next[0]?.url) { // TODO RTL
+        } else if (pageLinks?.next[0]?.url && !isPrevious) { // TODO RTL
             this.props.historyPush({
                 ...this.props.location,
                 pathname: buildRoute(pageLinks.next[0]),

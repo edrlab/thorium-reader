@@ -5,11 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
-import { connect } from "react-redux";
 import * as stylesColumns from "readium-desktop/renderer/assets/styles/components/columns.scss";
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+
+import * as React from "react";
+import { connect } from "react-redux";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";

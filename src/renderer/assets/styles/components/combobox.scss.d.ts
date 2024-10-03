@@ -1,4 +1,5 @@
-export declare const ___DEBUG___PARTIALS_MIXINS_CSS: string;
+export declare const CSS_END_components_combobox: string;
+export declare const CSS_START_components_combobox: string;
 export declare const focused: string;
 export declare const my_combobox_container: string;
 export declare const my_item: string;

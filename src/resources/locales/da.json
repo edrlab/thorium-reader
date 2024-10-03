@@ -75,6 +75,7 @@
       "lastAdditions": "Senest tilføjet"
     },
     "export": "Gem som",
+    "exportAnnotation": "Gem noter som",
     "format": "Format",
     "lang": "Sprog",
     "lastRead": "Senest læst",
@@ -82,8 +83,8 @@
     "myBooks": "Mine bøger",
     "noPublicationHelpL1": "Træk en bog hertil",
     "noPublicationHelpL2": "eller brug \"{{- importTitle }}\" knappen ovenfor.",
-    "noPublicationHelpL3": "LCP beskyttede filer understøttes.",
-    "noPublicationHelpL4": "Understøttede udvidelser:",
+    "noPublicationHelpL3": "Understøtter LCP-beskyttede filer.",
+    "noPublicationHelpL4": "Understøttede filtyper:",
     "numberOfPages": "Antal sider",
     "opds": {
       "auth": {
@@ -123,6 +124,8 @@
   },
   "dialog": {
     "cancel": "Annuller",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Bekræft at du vil slette dette katalog",
     "deletePublication": "Bekræft at du vil slette bogen",
     "import": "Bekræft at du vil importere disse filer:",
@@ -145,7 +148,7 @@
     "fitlerTagTitle": "Filtrer efter tag",
     "gridTitle": "Gittervisning",
     "home": "Boghylde menu",
-    "homeTitle": "hjem",
+    "homeTitle": "Hjem",
     "importTitle": "Importer en bog",
     "listTitle": "Listevisning",
     "myCatalogs": "Mine kataloger",
@@ -157,7 +160,7 @@
   },
   "library": {
     "lcp": {
-      "hint": "(Hjælp til nøgleord: {{- hint}})",
+      "hint": "Hint til nøgleord: {{- hint}}",
       "password": "Nøgleord",
       "sentence": "Denne bog kræver et LCP nøgleord for at åbne: ",
       "urlHint": "Har du glemt dit nøgleord? Få hjælp her",
@@ -305,11 +308,35 @@
       "addNote": "Lav note",
       "advancedMode": "Øjeblikkelige noter (oprettes automatisk ved markering)",
       "annotationsOptions": "Indstillinger",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Skjul",
       "highlight": "Overstregning",
       "noSelectionToast": "Intet markeret",
       "quickAnnotations": "Hurtig-oprettelse (spring redigering over)",
       "saveNote": "Gem",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Vis noter i marginen",
       "type": {
         "outline": "Omrids",
@@ -352,7 +379,7 @@
       "title": "Oplæsning"
     },
     "navigation": {
-      "annotationTitle": "note",
+      "annotationTitle": "lav note",
       "backHomeTitle": "tilbage til boghylden",
       "bookmarkTitle": "bogmærke",
       "currentPage": "Nuværende side: {{- current}}",
@@ -423,6 +450,12 @@
         },
         "title": "Zoom"
       },
+      "preset": {
+        "apply": "Anvend mit foretrukne læsetema som nuværende læse-indstillinger",
+        "reset": "Nulstil mit foretrukne læsetema til standard indstillingerne",
+        "save": "Gem de nuværende læse-indstillinger som mit foretrukne læsetema",
+        "title": "Læsetema"
+      },
       "preview": "Forhåndsvisning",
       "reduceMotion": "Reducer bevægelser",
       "scrolled": "Scrollbart",
@@ -465,7 +498,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Nulstil login data"
     },
     "keyboard": {
@@ -481,6 +522,10 @@
     "language": {
       "languageChoice": "Valg af sprog"
     },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
+    },
     "session": {
       "no": "Fra",
       "title": "Gem session",
@@ -494,7 +539,7 @@
     "theme": {
       "auto": "Automatisk",
       "dark": "Mørk",
-      "description": "Match operativsystemets farvetilstand.",
+      "description": "Tilpasser sig operativsystemets farvetilstand.",
       "light": "Lys",
       "title": "Programmets farvetema"
     }

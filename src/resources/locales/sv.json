@@ -75,6 +75,7 @@
       "lastAdditions": "Nyligen tillagt"
     },
     "export": "Spara som",
+    "exportAnnotation": "",
     "format": "Format",
     "lang": "Språk",
     "lastRead": "Senast läst",
@@ -123,6 +124,8 @@
   },
   "dialog": {
     "cancel": "Avbryt",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Vill du ta bort den här katalogen?",
     "deletePublication": "Vill du ta bort den här publikationen?",
     "import": "Vill du importera följande filer:",
@@ -305,11 +308,35 @@
       "addNote": "Anteckna",
       "advancedMode": "Omedelbart-läge (skapa automatiskt efter markering)",
       "annotationsOptions": "Alternativ",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Visa inte",
       "highlight": "Markera",
       "noSelectionToast": "Ingen markering",
       "quickAnnotations": "Snabbskapa (hoppa över redigeraren)",
       "saveNote": "Spara",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Visa i marginalen",
       "type": {
         "outline": "Kontur",
@@ -423,6 +450,12 @@
         },
         "title": "Zooma"
       },
+      "preset": {
+        "apply": "",
+        "reset": "",
+        "save": "",
+        "title": ""
+      },
       "preview": "Förhandsvisning",
       "reduceMotion": "Minska rörelser",
       "scrolled": "Rullningsbar",
@@ -465,7 +498,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Rensa inloggningsuppgifter"
     },
     "keyboard": {
@@ -480,6 +521,10 @@
     },
     "language": {
       "languageChoice": "Språk"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Inaktivera",

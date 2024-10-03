@@ -5,28 +5,23 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IW3CAnnotationModel, IW3CAnnotationModelSet, IW3CAnnotationSetAboutView } from "./annotationModel.type";
+import { IReadiumAnnotationModel, IReadiumAnnotationModelSet } from "./annotationModel.type";
 import { v4 as uuidv4 } from "uuid";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { rgbToHex } from "readium-desktop/common/rgb";
 
-function rgbToHex(color: { red: number; green: number; blue: number }): string {
-    const { red, green, blue } = color;
-    const redHex = Math.min(255, Math.max(0, red)).toString(16).padStart(2, "0");
-    const greenHex = Math.min(255, Math.max(0, green)).toString(16).padStart(2, "0");
-    const blueHex = Math.min(255, Math.max(0, blue)).toString(16).padStart(2, "0");
-    return `#${redHex}${greenHex}${blueHex}`;
-}
-
-export function convertAnnotationToW3CAnnotationModel(annotation: IAnnotationState): IW3CAnnotationModel {
+export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotationState): IReadiumAnnotationModel {
 
     const currentDate = new Date();
     const dateString: string = currentDate.toISOString();
-    const { uuid, color, locatorExtended: def } = annotation;
+    const { uuid, color, locatorExtended: def, tags, drawType, comment } = annotation;
     const { selectionInfo, locator, headings, epubPage } = def;
-    const { cleanText, rawText, rawBefore, rawAfter } = selectionInfo;
+    const { cleanText, rawText, rawBefore, rawAfter } = selectionInfo || {};
     const { href } = locator;
+
+    const highlight: IReadiumAnnotationModel["body"]["highlight"] = drawType === "solid_background" ? "solid" : drawType;
 
     return {
         "@context": "http://www.w3.org/ns/anno.jsonld",
@@ -37,9 +32,11 @@ export function convertAnnotationToW3CAnnotationModel(annotation: IAnnotationSta
         hash: "",
         body: {
             type: "TextualBody",
-            value: cleanText || "",
+            value: comment || "",
             format: "text/plain",
             color: rgbToHex(color),
+            tag: (tags || [])[0] || "",
+            highlight,
             //   textDirection: "ltr",
             //   language: "fr",
         },
@@ -55,6 +52,7 @@ export function convertAnnotationToW3CAnnotationModel(annotation: IAnnotationSta
                     exact: rawText || "",
                     prefix: rawBefore || "",
                     suffix: rawAfter || "",
+                    clean: cleanText || "",
                 },
                 {
                     type: "ProgressionSelector",
@@ -79,11 +77,8 @@ export function convertAnnotationToW3CAnnotationModel(annotation: IAnnotationSta
     };
 }
 
-export function convertAnnotationListToW3CAnnotationModelSet(annotationArray: IAnnotationState[],
-    publicationMetadata: IW3CAnnotationSetAboutView,
-): IW3CAnnotationModelSet {
+export function convertAnnotationListToReadiumAnnotationSet(annotationArray: IAnnotationState[], publicationView: PublicationView): IReadiumAnnotationModelSet {
 
-    const { identiferArrayString, mimeType, title, publisher, creator, publishedAt, source } = publicationMetadata;
     const currentDate = new Date();
     const dateString: string = currentDate.toISOString();
 
@@ -100,28 +95,15 @@ export function convertAnnotationListToW3CAnnotationModelSet(annotationArray: IA
         generated: dateString,
         label: "Annotations set",
         about: {
-            "dc:identifier": identiferArrayString || [],
-            "dc:format": mimeType || "",
-            "dc:title": title || "",
-            "dc:publisher": publisher || [],
-            "dc:creator": creator || [],
-            "dc:date": publishedAt || "",
-            "dc:source": source || "",
+            "dc:identifier": [publicationView.workIdentifier ? ((publicationView.workIdentifier.startsWith("urn:") ? "" : "urn:isbn:") + publicationView.workIdentifier) : ""],
+            "dc:format": "application/epub+zip",
+            "dc:title": publicationView.documentTitle || "",
+            "dc:publisher": publicationView.publishers || [],
+            "dc:creator": publicationView.authors || [],
+            "dc:date": publicationView.publishedAt || "",
+            "dc:source": "urn:uuid:" + publicationView.identifier,
         },
         total: annotationArray.length,
-        items: (annotationArray || []).map((v) => convertAnnotationToW3CAnnotationModel(v)),
-    };
-}
-
-export function convertPublicationToAnnotationStateAbout(publicationView: PublicationView, publicationIdentifier: string): IW3CAnnotationSetAboutView {
-
-    return {
-        identiferArrayString: ["urn:isbn:" + publicationView.workIdentifier || ""],
-        mimeType: "application/epub+zip",
-        title: publicationView.documentTitle || "",
-        publisher: publicationView.publishers || [],
-        creator: publicationView.authors || [],
-        publishedAt: publicationView.publishedAt || "",
-        source: "urn:uuid:" + publicationIdentifier,
+        items: (annotationArray || []).map((v) => convertAnnotationToReadiumAnnotationModel(v)),
     };
 }
