@@ -53,7 +53,7 @@ class Header extends React.Component<IProps, undefined> {
         return (
             <SecondaryHeader>
                 <div>
-                    <p style={{fontWeight: "600", margin: "0 0 5px"}}>{__("header.viewMode")}</p>
+                    <p style={{ fontWeight: "600", margin: "0 0 5px" }}>{__("header.viewMode")}</p>
                     <div style={{ display: "flex", gap: "10px" }}>
                         <Link
                             to={this.props.location}
@@ -66,6 +66,28 @@ class Header extends React.Component<IProps, undefined> {
                             title={__("header.gridTitle")}
                             aria-pressed={displayType === DisplayType.Grid}
                             role={"button"}
+                            onClick={(e) => {
+                                if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                    e.preventDefault();
+                                    e.currentTarget.click();
+                                }
+                            }}
+                            onKeyDown={(e) => {
+                                // if (e.code === "Space") {
+                                if (e.key === " " || e.altKey || e.ctrlKey) {
+                                    e.preventDefault(); // prevent scroll
+                                }
+                            }}
+                            onKeyUp={(e) => {
+                                // Includes screen reader tests:
+                                // if (e.code === "Space") { WORKS
+                                // if (e.key === "Space") { DOES NOT WORK
+                                // if (e.key === "Enter") { WORKS
+                                if (e.key === " ") { // WORKS
+                                    e.preventDefault();
+                                    e.currentTarget.click();
+                                }
+                            }}
                         >
                             {(displayType === DisplayType.Grid) ?
                                 <SVG svg={CheckIcon} ariaHidden /> :
@@ -84,6 +106,28 @@ class Header extends React.Component<IProps, undefined> {
                             title={__("header.listTitle")}
                             aria-pressed={displayType === DisplayType.List}
                             role={"button"}
+                            onClick={(e) => {
+                                if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                    e.preventDefault();
+                                    e.currentTarget.click();
+                                }
+                            }}
+                            onKeyDown={(e) => {
+                                // if (e.code === "Space") {
+                                if (e.key === " " || e.altKey || e.ctrlKey) {
+                                    e.preventDefault(); // prevent scroll
+                                }
+                            }}
+                            onKeyUp={(e) => {
+                                // Includes screen reader tests:
+                                // if (e.code === "Space") { WORKS
+                                // if (e.key === "Space") { DOES NOT WORK
+                                // if (e.key === "Enter") { WORKS
+                                if (e.key === " ") { // WORKS
+                                    e.preventDefault();
+                                    e.currentTarget.click();
+                                }
+                            }}
                         >
                             {(displayType === DisplayType.List) ?
                                 <SVG svg={CheckIcon} ariaHidden /> :
