@@ -65,8 +65,8 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
 
         debug(a11y_certifiedBy);
 
-        const findStrInArrayArray = (array: string[][], str: string): boolean => array?.findIndex((a) => a.findIndex((b) => b === str) > -1) > -1;
-        const findStrInArray = (array: string[], str: string): boolean => array?.findIndex((a) => a === str) > -1;
+        const findStrInArrayArray = (array: string[][] | string[] | undefined, str: string): boolean => Array.isArray(array) && array.findIndex((a) => (Array.isArray(a) ? a : [a]).findIndex((b) => b === str) > -1) > -1;
+        const findStrInArray = (array: string[] | undefined, str: string): boolean => Array.isArray(array) && array.findIndex((a) => a === str) > -1;
 
         const AccessModeSufficient = (() => {
 
@@ -188,7 +188,7 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
                                         : value;
                             return <li key={i}>{__("publication.accessibility.conformsTo")} {label}</li>;
                         }
-                        return <li key={i}>{__("publication.accessibility.conformsTo")} {value}</li>;
+                        return <li key={`conf-to${i}`}>{__("publication.accessibility.conformsTo")} {value}</li>;
                     })
                 }
             </>;
@@ -211,7 +211,7 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
                             }}
                             href={value} title={value} aria-label={__("publication.accessibility.certifierReport")}>{__("publication.accessibility.certifierReport")}</a></li>;
                         }
-                        return <li key={i}>{__("publication.accessibility.certifierReport")} {value}</li>;
+                        return <li key={`certi-report${i}`}>{__("publication.accessibility.certifierReport")} {value}</li>;
                     })
                 }
             </>;
