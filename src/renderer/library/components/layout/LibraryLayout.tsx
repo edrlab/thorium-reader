@@ -378,7 +378,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                                 e.preventDefault();
                                 e.currentTarget.click();
                             }
-                        }
+                        }}
                     >
                         <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
                     </Link>
