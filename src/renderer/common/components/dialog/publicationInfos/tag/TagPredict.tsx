@@ -17,7 +17,7 @@ import SVG from "../../../SVG";
 import * as AddTagIcon from "readium-desktop/renderer/assets/icons/addTag-icon.svg";
 import classNames from "classnames";
 import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
-import { I18nTyped } from "readium-desktop/common/services/translator";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 
 interface IProps {
     suggestion?: string;
@@ -31,7 +31,6 @@ interface IProps {
     tagArray: string[] | IOpdsTagView[];
     setTags: (tagsArray: string[]) => void;
     pubId: string;
-    __: I18nTyped;
 }
 
 export const InputPredict: React.FC<IProps> = (props) => {
@@ -40,6 +39,7 @@ export const InputPredict: React.FC<IProps> = (props) => {
     const [index, setIndex] = React.useState<number>(0);
     const [newTagName, setNewTagName] = React.useState("");
     const [textOverflow, setTextOverflow] = React.useState(false);
+    const [__] = useTranslator();
 
     const containerStyle: React.CSSProperties = {
         position: "relative",
@@ -207,13 +207,13 @@ export const InputPredict: React.FC<IProps> = (props) => {
         props.pubId
             ? <form onSubmit={addTag}>
                 <div className={stylesInputs.form_group} style={containerStyle}>
-                    <label>{props.__("catalog.tag")}</label>
+                    <label>{__("catalog.tag")}</label>
                     <SVG ariaHidden svg={TagIcon} />
                     <input
                         type="text"
                         className={classNames(stylesTags.tag_inputs, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
-                        title={props.__("catalog.addTags")}
-                        placeholder={props.__("catalog.addTags")}
+                        title={__("catalog.addTags")}
+                        placeholder={__("catalog.addTags")}
                         onChange={handleInputChange}
                         onKeyDown={handleKeyDown}
                         value={value}
@@ -233,7 +233,7 @@ export const InputPredict: React.FC<IProps> = (props) => {
                     className={stylesButtons.button_secondary_blue}
                 >
                     <SVG ariaHidden svg={AddTagIcon} />
-                    {props.__("catalog.addTagsButton")}
+                    {__("catalog.addTagsButton")}
                 </button>
             </form>
             : <></>

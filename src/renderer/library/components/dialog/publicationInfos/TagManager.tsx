@@ -30,7 +30,7 @@ import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLi
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 import classNames from "classnames";
-import { InputPredict } from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/TagPredict";
+// import { InputPredict } from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/TagPredict";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { HoverEvent } from "react-aria";
 // import GridTagButton from "../../catalog/GridTagButton";
@@ -114,20 +114,21 @@ class TagManager extends React.Component<IProps, IState> {
                     __={__}
                     setTags={setTagsCb}
                 /> */}
-                <InputPredict dictionary={this.props.tags} pubId={this.props.pubId}
+                {/* <InputPredict dictionary={this.props.tags} pubId={this.props.pubId}
                     tagArray={this.props.tagArray}
-                    __={__}
-                    setTags={setTagsCb} />
+                    setTags={setTagsCb} /> */}
                 <ComboBox
                     defaultItems={tagsOptions}
                     onSelectionChange={this.handleSelectionChange}
                     svg={TagIcon}
                     allowsCustomValue
+                    placeholder={this.props.__("catalog.addTags")}
                     onKeyUp={(e) => {
                         if (e.key === "Enter") {
                             this.handleKeyUp(e);
                         }
                     }}
+                    style={{width: "250px"}}
                 >
                     {item => <ComboBoxItem
                         onHoverStart={(e: HoverEvent) => {

@@ -5,15 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+// import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
+// import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 
 import * as React from "react";
 import { IOpdsTagView } from "readium-desktop/common/views/opds";
-import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
-import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
+// import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
+import * as DeleteIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
+// import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as Popover from "@radix-ui/react-popover";
+// import * as Popover from "@radix-ui/react-popover";
 import { Link } from "react-router-dom";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 // import { DisplayType } from "readium-desktop/renderer/library/routing";
@@ -57,7 +58,16 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
                 >
                     {tag as string}
                 </Link>
-                <Popover.Root>
+                <button
+                    onClick={
+                        // () => this.deleteTag(index)
+                        onClickDeleteCb(index)
+                    }
+                    title={__("catalog.deleteTag")}
+                >
+                    <SVG ariaHidden={true} svg={DeleteIcon} />
+                </button>
+                {/* <Popover.Root>
                     <Popover.Trigger asChild>
                         <button>
                             <SVG ariaHidden={true} svg={EditIcon} />
@@ -80,7 +90,7 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
                             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
                         </Popover.Content>
                     </Popover.Portal>
-                </Popover.Root>
+                </Popover.Root> */}
             </>
         );
     } else if (typeof tag === "object" && tag?.link?.length && onClickLinkCb) {
