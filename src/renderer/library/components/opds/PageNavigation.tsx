@@ -68,7 +68,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
             this.registerAllKeyboardListeners();
         }
     }
- 
+
     public  adjustElementPosition = () => {
         const element = this.fixedElementRef.current;
         const container = document.getElementById("opds_browserResults");
@@ -286,7 +286,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                 ...this.props.location,
                 pathname: buildRoute(pageLinks.previous[0]),
             }, this.props.location.state as IRouterLocationState);
-        } else if (pageLinks?.next[0]?.url) { // TODO RTL
+        } else if (pageLinks?.next[0]?.url && !isPrevious) { // TODO RTL
             this.props.historyPush({
                 ...this.props.location,
                 pathname: buildRoute(pageLinks.next[0]),
