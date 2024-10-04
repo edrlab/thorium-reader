@@ -13,7 +13,7 @@ import { ApiappAddFormDialog } from "../dialog/ApiappAddForm";
 
 const OpdsAddForm: React.FC = () => {
     return (
-        <section style={{display: "flex", gap: "10px", alignItems: "end", height: "65px", justifyContent: "end", margin: "0"}}
+        <section style={{display: "flex", gap: "10px", alignItems: "end", height: "53px", justifyContent: "end", margin: "0"}}
         className={stylesHeader.nav_secondary}>
             <OpdsFeedAddFormDialog/>
             <ApiappAddFormDialog/>

@@ -506,7 +506,7 @@
       "type": "Tipo:"
     },
     "auth": {
-      "title": "",
+      "title": "Gerir acesso aos catálogos",
       "wipeData": "Limpar dados de autenticação"
     },
     "keyboard": {
@@ -523,8 +523,8 @@
       "languageChoice": "Idioma"
     },
     "library": {
-      "enableAPIAPP": "",
-      "title": ""
+      "enableAPIAPP": "Ativar acesso à API Dilicom PNB",
+      "title": "Adicionar conta de biblioteca"
     },
     "session": {
       "no": "Desativar",
