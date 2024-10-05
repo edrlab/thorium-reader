@@ -43,7 +43,7 @@ import { lcpHashesFilePath } from "../di";
 import { lcpActions } from "../redux/actions";
 import { extractCrc32OnZip } from "../tools/crc";
 import { LSDManager } from "./lsd";
-import { translate } from "readium-desktop/common/services/translator";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // import { Server } from "@r2-streamer-js/http/server";
 
@@ -84,9 +84,7 @@ export class LcpManager {
     @inject(diSymbolTable["lsd-manager"])
     private readonly lsdManager!: LSDManager;
 
-    private translator = {
-        translate: translate,
-    };
+    private translator = getTranslator();
 
     public async absorbDBToJson() {
         await this.getAllSecrets();

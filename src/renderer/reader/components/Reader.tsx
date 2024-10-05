@@ -2880,9 +2880,6 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         readerMode: state.mode,
         divinaReadingMode: state.reader.divina.readingMode,
         locale: state.i18n.locale,
-        // HERE
-        // session: state.session.state,
-
         disableRTLFlip: !!state.reader.disableRTLFlip?.disabled,
         r2PublicationHasMediaOverlays: state.reader.info.navigator.r2PublicationHasMediaOverlays,
         ttsState: state.reader.tts.state,

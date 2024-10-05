@@ -208,7 +208,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
 
     return {
         // here
-        locale: state.i18n.locale,
+        locale: state.i18n.locale, // refresh
         newVersionURL: state.versionUpdate.newVersionURL,
         newVersion: state.versionUpdate.newVersion,
     };

@@ -344,7 +344,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     location: state.router.location,
     headerLinks: state.opds.browser.header,
     breadcrumb: state.opds.browser.breadcrumb,
-    locale: state.i18n.locale,
+    locale: state.i18n.locale, // refresh
 });
 
 export default connect(mapStateToProps)(withTranslator(LibraryLayout));

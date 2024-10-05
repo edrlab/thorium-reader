@@ -105,7 +105,7 @@ const mapStateToProps = (state: ILibraryRootState) => ({
     catalog: state.publication.catalog,
     tags: state.publication.tag,
     keyboardShortcuts: state.keyboard.shortcuts,
-    locale: state.i18n.locale,
+    locale: state.i18n.locale, // refresh
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

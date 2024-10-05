@@ -106,7 +106,7 @@ export class ToastManager extends React.Component<IProps, IState> {
 const mapStateToProps = (state: IRendererCommonRootState, _props: IBaseProps) => {
     return {
         toast: state.toast,
-        locale: state.i18n.locale,
+        locale: state.i18n.locale, // refresh
     };
 };
 

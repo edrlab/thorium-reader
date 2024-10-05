@@ -210,7 +210,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
         browserData: apiBrowseData?.data,
         location: state.router.location,
         level: state.opds.browser.breadcrumb.length + 1,
-        locale: state.i18n.locale,
+        locale: state.i18n.locale, // refresh
     };
 };
 
