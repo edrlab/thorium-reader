@@ -42,7 +42,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
 
     const publicationRepository = yield* callTyped(
         () => diMainGet("publication-repository"));
-    const translator = getTranslator()
+    const translator = getTranslator();
 
     // Get publication
     let publicationDocument: PublicationDocument = null;

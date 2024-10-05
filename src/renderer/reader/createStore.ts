@@ -102,9 +102,9 @@ export const getStore = () => {
         return store;
     }
     throw new Error("STORE is UNDEFINED !!!");
-}
+};
 export const setStore = (_store: Store<IReaderRootState>) => {
     if (!store) {
         store = _store;
     }
-}
+};

@@ -29,12 +29,12 @@ export const getStore = () => {
         return store;
     }
     throw new Error("STORE is UNDEFINED !!!");
-}
+};
 export const setStore = (_store: Store<ILibraryRootState>) => {
     if (!store) {
         store = _store;
     }
-}
+};
 
 
 let __reduxHistory: ReturnType<IHistoryContext["createReduxHistory"]>;
@@ -43,4 +43,4 @@ export const getReduxHistory = () => {
         return __reduxHistory;
     }
     throw new Error("reduxHistory is UNDEFINED !!!");
-}
+};

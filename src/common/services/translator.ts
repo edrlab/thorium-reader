@@ -207,7 +207,7 @@ export const setLocale = async (newLocale: keyof typeof availableLanguages) => {
         await i18nextInstance.changeLanguage(newLocale);
     }
     return ;
-}
+};
 
 export const translate = (message: string, options: TOptions = {}): string => {
     const label = i18nextInstance.t(message, options);
@@ -215,7 +215,7 @@ export const translate = (message: string, options: TOptions = {}): string => {
         return i18nextInstanceEN.t(message, options);
     }
     return label;
-}
+};
 
 export const translateContentFieldHelper = (field: string | LocalizedContent, locale: keyof typeof availableLanguages): string => {
     if (!field) {
@@ -254,11 +254,11 @@ export const translateContentFieldHelper = (field: string | LocalizedContent, lo
     }
 
     return "";
-}
+};
 
 export const translator = {
     __: translate,
     setLocale,
     translate,
-}
+};
 export const getTranslator = () => translator;

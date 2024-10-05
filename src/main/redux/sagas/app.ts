@@ -236,7 +236,7 @@ export function* init() {
 
             store.dispatch(i18nActions.setLocale.build("en")); // default language
         }
-    })
+    });
 }
 
 function* closeProcess() {

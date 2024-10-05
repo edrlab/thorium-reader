@@ -70,7 +70,7 @@ ipcRenderer.on(readerIpc.CHANNEL,
                 }
                 data.payload.annotationTagsIndex = pushTags({}, annotationTagsList);
 
-                const store = createStoreFromDi(data.payload)
+                const store = createStoreFromDi(data.payload);
                 const locale = store.getState().i18n.locale;
                 getTranslator().setLocale(locale);
 
