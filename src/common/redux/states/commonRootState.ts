@@ -12,8 +12,10 @@ import { IKeyboardState } from "readium-desktop/common/redux/states/keyboard";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { ITheme } from "./theme";
 import { IAnnotationCreator } from "./creator";
+import { I18NState } from "readium-desktop/common/redux/states/i18n";
 
 export interface ICommonRootState {
+    i18n: I18NState;
     session: ISessionState;
     versionUpdate: IVersionUpdateState;
     keyboard: IKeyboardState;

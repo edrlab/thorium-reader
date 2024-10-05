@@ -36,6 +36,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const readerWin = action.payload.win;
     const webContents = readerWin.webContents;
     const locale = yield* selectTyped((_state: RootState) => _state.i18n.locale);
+    // HERE
     const reader = yield* selectTyped((_state: RootState) => _state.win.session.reader[identifier]);
     const readerDefaultConfig = yield* selectTyped((_state: RootState) => _state.reader.defaultConfig);
     const keyboard = yield* selectTyped((_state: RootState) => _state.keyboard);

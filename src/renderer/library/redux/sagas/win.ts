@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { createRoot } from "react-dom/client";
-import { diLibraryGet } from "readium-desktop/renderer/library/di";
+import App from "../../components/App";
 
 export function render() {
     // React 17 --> 18
@@ -16,5 +16,5 @@ export function render() {
     // ReactDOM.render()
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const root = createRoot(document.getElementById("app")!);
-    root.render(React.createElement(diLibraryGet("react-library-app"), null));
+    root.render(React.createElement(App, null));
 }

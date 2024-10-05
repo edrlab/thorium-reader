@@ -31,6 +31,7 @@ import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg
 import * as ReadBook from "readium-desktop/renderer/assets/icons/readBook-icon.svg";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -92,7 +93,7 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
                     </button>
                     : <></>
                 }
-                {this.props.isReading ? 
+                {this.props.isReading ?
                 <button disabled>
                     <SVG ariaHidden svg={DoubleCheckIcon} />
                     {__("publication.markAsRead")}
@@ -166,7 +167,11 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(CatalogLcpControls));
+const mapStateToProps = (state: IRendererCommonRootState) => ({
+    locale: state.i18n.locale, // refresh
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(CatalogLcpControls));
 
 const RenewLsdConfirm = (props: { publicationView: PublicationView, trigger: React.ReactNode } & AlertDialog.AlertDialogProps) => {
     const [__] = useTranslator();

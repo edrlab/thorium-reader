@@ -24,6 +24,7 @@ import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
@@ -41,8 +42,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
 
     const publicationRepository = yield* callTyped(
         () => diMainGet("publication-repository"));
-    const translator = yield* callTyped(
-        () => diMainGet("translator"));
+    const translator = getTranslator()
 
     // Get publication
     let publicationDocument: PublicationDocument = null;

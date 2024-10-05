@@ -583,6 +583,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         readerConfig: state.reader.config,
         r2Publication: state.reader.info.r2Publication,
+        locale: state.i18n.locale, // refresh
     };
 };
 

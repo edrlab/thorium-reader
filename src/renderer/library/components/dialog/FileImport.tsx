@@ -115,6 +115,7 @@ class FileImport extends React.Component<IProps, undefined> {
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     open: state.dialog.type === DialogTypeName.FileImport,
     files: (state.dialog.data as DialogType[DialogTypeName.FileImport]).files,
+    locale: state.i18n.locale,
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {

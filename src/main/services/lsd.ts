@@ -33,8 +33,11 @@ export class LSDManager {
     @inject(diSymbolTable.store)
     private readonly store!: Store<RootState>;
 
+    // @inject(diSymbolTable.translator)
+    // private readonly translator!: Translator;
+
     public async launchStatusDocumentProcessing(lcp: LCP): Promise<string | undefined> {
-    
+
         if (!lcp || !lcp.Links) {
             return undefined;
         }
@@ -48,11 +51,11 @@ export class LSDManager {
 
         const locale = this.store.getState().i18n.locale;
         const httpDataReceived = await httpGet(linkStatus.Href, undefined, undefined, locale);
-    
+
         const {
             url: _baseUrl,
             contentType: _contentType, isSuccess, isFailure,
-            isAbort, isNetworkError, isTimeout, statusMessage, 
+            isAbort, isNetworkError, isTimeout, statusMessage,
         } = httpDataReceived;
 
         const contentType = parseContentType(_contentType);
@@ -98,25 +101,25 @@ export class LSDManager {
         //         debug(event.id);
         //     });
         // }
-    
+
         const licenseUpdateResponseJson = await this.lsdLcpUpdate(lcp);
         if (licenseUpdateResponseJson) {
             return licenseUpdateResponseJson;
         }
-    
+
         // lcp.LSD.Status !== StatusEnum.Active && lcp.LSD.Status !== StatusEnum.Ready
         if (lcp.LSD.Status === StatusEnum.Revoked
             || lcp.LSD.Status === StatusEnum.Returned
             || lcp.LSD.Status === StatusEnum.Cancelled
             || lcp.LSD.Status === StatusEnum.Expired) {
-    
+
             debug("What?! LSD status:" + lcp.LSD.Status);
             // This should really never happen,
             // as the LCP license should not even have passed validation
             // due to expired end date / timestamp
             return undefined;
         }
-    
+
         const registerResponse = await this.lsdRegister(lcp.LSD);
         if (registerResponse) {
             lcp.LSD = registerResponse;
@@ -128,11 +131,11 @@ export class LSDManager {
     }
 
     private async lsdLcpUpdate(lcp: LCP): Promise<string | undefined> {
-    
+
         if (!lcp.LSD) {
             throw new Error("LCP LSD data is missing.");
         }
-    
+
         if (!(lcp.LSD.Updated && lcp.LSD.Updated.License &&
             (lcp.Updated || lcp.Issued))) {
             debug("No LSD LCP update.");
@@ -169,15 +172,15 @@ export class LSDManager {
             const {
                 url: _baseUrl,
                 contentType: _contentType, isSuccess, isFailure,
-                isAbort, isNetworkError, isTimeout, statusMessage, 
+                isAbort, isNetworkError, isTimeout, statusMessage,
             } = httpDataReceived;
-    
+
             const contentType = parseContentType(_contentType);
             if (contentTypeisApiProblem(contentType)) {
                 const {title, type} = await parseProblemDetails(httpDataReceived.response);
                 throw new Error(`${title} (${type})`);
             }
-    
+
             const baseUrl = `${_baseUrl}`;
             ok(isSuccess, `message: ${statusMessage} | url: ${baseUrl} | type: ${_contentType} | code: ${+isFailure}${+isNetworkError}${+isAbort}${+isTimeout}`);
             if (!contentTypeisLcp(contentType)) {
@@ -188,7 +191,7 @@ export class LSDManager {
             const tryLcpJson = JSON.parse(lcplStr);
             if (!tryLcpJson.id || !tryLcpJson.issued || !tryLcpJson.provider || !tryLcpJson.encryption || !tryLcpJson.encryption.profile) {
                 debug(tryLcpJson);
-                debug("NOT AN LCP LICENSE!"); // Some LCP servers respond 200 with error message! 
+                debug("NOT AN LCP LICENSE!"); // Some LCP servers respond 200 with error message!
                 throw new Error("LCP not an lcp license fetched !");
             }
 
@@ -263,7 +266,7 @@ export class LSDManager {
         const {
             url: _baseUrl,
             contentType: _contentType, isSuccess, isFailure,
-            isAbort, isNetworkError, isTimeout, statusMessage, 
+            isAbort, isNetworkError, isTimeout, statusMessage,
         } = httpDataReceived;
 
         const contentType = parseContentType(_contentType);
@@ -296,30 +299,30 @@ export class LSDManager {
     }
 
     public async lsdRenew(end: Date | undefined, lsd: LSD): Promise<LSD> {
-    
+
         if (!lsd) {
             throw new Error("LCP LSD data is missing.");
         }
         if (!lsd.Links) {
             throw new Error("No LSD links!");
         }
-    
+
         const licenseRenew = lsd.Links.find((link) => {
             return link.Rel === "renew";
         });
         if (!licenseRenew) {
             throw new Error("No LSD renew link!");
         }
-    
+
         const deviceID = await this.deviceIdManager.getDeviceID();
         const deviceNAME = await this.deviceIdManager.getDeviceNAME();
-    
+
         let renewURL: string = licenseRenew.Href;
         if (licenseRenew.Templated) {
             const urlTemplate = new URITemplate(renewURL);
             const uri1 = urlTemplate.expand({ end: "xxx", id: deviceID, name: deviceNAME }, { strict: false });
             renewURL = uri1.toString();
-    
+
             const uri2 = new URI(renewURL); // URIjs necessary for .search() to work
             // TODO: urijs types broke this! (lib remains unchanged)
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -328,12 +331,12 @@ export class LSDManager {
                 data.end = end?.toISOString(); // can be undefined
             });
             renewURL = uri2.toString();
-    
+
             // url = url.replace("{?end,id,name}", ""); // TODO: smarter regexp?
             // url = new URI(url).setQuery("id", deviceID).setQuery("name", deviceNAME).toString();
         }
         debug("RENEW: " + renewURL);
-    
+
         const locale = this.store.getState().i18n.locale;
         const httpDataReceived = await httpPut(renewURL, undefined, undefined, locale);
 
@@ -362,35 +365,35 @@ export class LSDManager {
     }
 
     public async lsdReturn(lsd: LSD): Promise<LSD> {
-    
+
         if (!lsd) {
             throw new Error("LCP LSD data is missing.");
         }
         if (!lsd.Links) {
             throw new Error("No LSD links!");
         }
-    
+
         const licenseReturn = lsd.Links.find((link) => {
             return link.Rel === "return";
         });
         if (!licenseReturn) {
             throw new Error("No LSD return link!");
         }
-    
+
         const deviceID = await this.deviceIdManager.getDeviceID();
         const deviceNAME = await this.deviceIdManager.getDeviceNAME();
-    
+
         let returnURL: string = licenseReturn.Href;
         if (licenseReturn.Templated) {
             const urlTemplate = new URITemplate(returnURL);
             const uri1 = urlTemplate.expand({ id: deviceID, name: deviceNAME }, { strict: true });
             returnURL = uri1.toString();
-    
+
             // url = url.replace("{?end,id,name}", ""); // TODO: smarter regexp?
             // url = new URI(url).setQuery("id", deviceID).setQuery("name", deviceNAME).toString();
         }
         debug("RETURN: " + returnURL);
-    
+
         const locale = this.store.getState().i18n.locale;
         const httpDataReceived = await httpPut(returnURL, undefined, undefined, locale);
 

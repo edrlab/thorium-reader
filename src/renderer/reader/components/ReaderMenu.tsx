@@ -1819,7 +1819,7 @@ const GoToPageSection: React.FC<IBaseProps & { totalPages?: number }> = (props) 
 
 const TabTitle = ({ value }: { value: string }) => {
     let title: string;
-    const [__, translator] = useTranslator();
+    const [__] = useTranslator();
     const searchText = useSelector((state: IReaderRootState) => state.search.textSearch);
 
     switch (value) {
@@ -1833,7 +1833,7 @@ const TabTitle = ({ value }: { value: string }) => {
             title = __("reader.marks.bookmarks");
             break;
         case "tab-search":
-            title = searchText ? translator.translate("reader.marks.searchResult", { searchText: searchText.slice(0, 20) })
+            title = searchText ? __("reader.marks.searchResult", { searchText: searchText.slice(0, 20) })
                 : (__("reader.marks.search"));;
             break;
         case "tab-gotopage":

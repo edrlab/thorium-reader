@@ -44,7 +44,7 @@ class Browser extends React.Component<IProps, undefined> {
         const breadCrumb = <BreadCrumb />;
         const search = <SearchForm />;
         const catalogTitle = this.props.breadrumb[1]?.name;
-        
+
 
         return (
             <LibraryLayout
@@ -70,6 +70,7 @@ class Browser extends React.Component<IProps, undefined> {
 const mapStateToProps = (state: ILibraryRootState) => ({
     breadrumb: state.opds.browser.breadcrumb,
     location: state.router.location,
+    locale: state.i18n.locale, // refresh
 });
 
 export default connect(mapStateToProps, undefined)(withTranslator(Browser));

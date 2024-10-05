@@ -5,18 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Translator } from "readium-desktop/common/services/translator";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { BCP47_UNKNOWN_LANG } from "@r2-shared-js/parser/epub";
+import { availableLanguages } from "readium-desktop/common/services/translator";
 
-// MAIN process only, not RENDERER, because of diMainGet("translator")
 // import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
-export function convertMultiLangStringToString(translator: Translator, items: string | IStringMap | undefined): [lang: string, str: string] {
+export function convertMultiLangStringToString(items: string | IStringMap | undefined, locale: keyof typeof availableLanguages): [lang: string, str: string] {
     if (typeof items === "object") {
         // see translator.translateContentField() ?
         const langs = Object.keys(items);
         const lang = langs.filter((l) =>
-            l.toLowerCase().includes(translator.getLocale().toLowerCase()));
+            l.toLowerCase().includes(locale.toLowerCase()));
         const localeLang = lang[0];
 
         if (items[localeLang]) {

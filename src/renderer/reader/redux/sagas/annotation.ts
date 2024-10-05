@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { all, call, put, take} from "typed-redux-saga/macro";
-import { select as selectTyped, take as takeTyped, race as raceTyped, SagaGenerator, call as callTyped} from "typed-redux-saga";
+import { select as selectTyped, take as takeTyped, race as raceTyped, SagaGenerator } from "typed-redux-saga";
 import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionSetConfig, readerLocalActionSetLocator } from "../actions";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -22,7 +22,7 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 
 import { HighlightDrawTypeBackground, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
-import { diReaderGet } from "../../di";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
@@ -156,15 +156,12 @@ function* annotationButtonTrigger(_action: readerLocalActionAnnotations.trigger.
 
     const { locatorExtended } = __selectionInfoGlobal;
     if (!locatorExtended) {
-        const translator = yield* callTyped(
-            () => diReaderGet("translator"));
-
         debug("annotationBtnTriggerRequestedAction received");
         // trigger a Toast notification to user
         yield* put(
             toastActions.openRequest.build(
                 ToastType.Error,
-                translator.translate("reader.annotations.noSelectionToast"),
+                getTranslator().__("reader.annotations.noSelectionToast"),
             ),
         );
         return ;

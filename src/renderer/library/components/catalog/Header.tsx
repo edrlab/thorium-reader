@@ -129,6 +129,7 @@ class Header extends React.Component<IProps, undefined> {
 
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
+    locale: state.i18n.locale,
 });
 
 export default connect(mapStateToProps)(withTranslator(Header));

@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { injectable } from "inversify";
-
 import deCatalog from "readium-desktop/resources/locales/de.json";
 import enCatalog from "readium-desktop/resources/locales/en.json";
 import esCatalog from "readium-desktop/resources/locales/es.json";
@@ -166,7 +164,7 @@ i18nextInstanceEN.changeLanguage("en").then((_t) => {
 // can use ObjectValues or ObjectKeys from
 // src/utils/object-keys-values.ts
 // to benefit from compile-type TypeScript typesafe key enum
-export const AvailableLanguages = {
+export const availableLanguages = {
     "en": "English",
     "fr": "Français (French)",
     "fi": "Suomi (Finnish)",
@@ -200,107 +198,67 @@ interface LocalizedContent {
 
 export type I18nFunction = (_: TTranslatorKeyParameter, __?: {}) => string;
 
-@injectable()
-export class Translator {
-    public translate = this._translate as I18nFunction;
-    public subscribe = this._subscribe.bind(this);
-    private locale = "en";
-    private listeners: Set<() => void>;
+export const setLocale = async (newLocale: keyof typeof availableLanguages) => {
 
-    constructor() {
-        this.listeners = new Set();
+    if (i18nextInstance.language !== newLocale) {
+        // https://github.com/i18next/i18next/blob/master/CHANGELOG.md#1800
+        // i18nextInstance.language not instantly ready (because async loadResources()),
+        // but i18nextInstance.isLanguageChangingTo immediately informs which locale i18next is switching to.
+        await i18nextInstance.changeLanguage(newLocale);
     }
+    return ;
+}
 
-    private _subscribe(fn: () => void) {
-        if (fn) {
-            this.listeners.add(fn);
-            return () => {
-                this.listeners.delete(fn);
-            };
-        }
-        return () => {};
+export const translate = (message: string, options: TOptions = {}): string => {
+    const label = i18nextInstance.t(message, options);
+    if (!label || !label.length) {
+        return i18nextInstanceEN.t(message, options);
     }
+    return label;
+}
 
-    public getLocale(): string {
-        return this.locale;
-    }
-
-    public async setLocale(locale: string) {
-        this.locale = locale;
-
-        return new Promise<void>((resolve, reject) => {
-
-            if (i18nextInstance.language !== this.locale) {
-                // https://github.com/i18next/i18next/blob/master/CHANGELOG.md#1800
-                // i18nextInstance.language not instantly ready (because async loadResources()),
-                // but i18nextInstance.isLanguageChangingTo immediately informs which locale i18next is switching to.
-                i18nextInstance.changeLanguage(this.locale).then((_t) => {
-                    resolve();
-                }).catch((err) => {
-                    console.log(err);
-                    reject(err);
-                });
-            } else {
-                resolve();
-            }
-        }).finally(() => {
-            for (const listener of this.listeners) {
-                listener();
-            }
-        });
-    }
-
-    /**
-     * Translate content field that is not provided
-     * by an i18n catalog
-     * Field could be a string or an array
-     *
-     * @param text
-     */
-    public translateContentField(field: string | LocalizedContent) {
-        if (!field) {
-            return "";
-        }
-
-        if (typeof field === "string") {
-            return field;
-        }
-
-        if (field[this.locale]) {
-            return field[this.locale];
-        }
-
-        // Check if there is no composed locale names matching with the current locale
-        const simplifiedFieldLocales = Object.keys(field).filter(
-            (locale) => locale.split("-")[0] === this.locale.split("-")[0],
-        );
-        if (simplifiedFieldLocales.length) {
-            return field[simplifiedFieldLocales[0]];
-        }
-
-        // If nothing try to take an english locale
-        const englishFieldLocales = Object.keys(field).filter(
-            (locale) => locale.split("-")[0] === "en",
-        );
-        if (englishFieldLocales.length) {
-            return field[englishFieldLocales[0]];
-        }
-
-        // Take the first locale if nothing match with current locale or english
-        const keys = Object.keys(field);
-
-        if (keys && keys.length) {
-            return field[keys[0]];
-        }
-
+export const translateContentFieldHelper = (field: string | LocalizedContent, locale: keyof typeof availableLanguages): string => {
+    if (!field) {
         return "";
     }
 
-    private _translate(message: string, options: TOptions = {}): string {
-        const label = i18nextInstance.t(message, options);
-        if (!label || !label.length) {
-            return i18nextInstanceEN.t(message, options);
-        }
-        return label;
+    if (typeof field === "string") {
+        return field;
     }
+
+    if (field[locale]) {
+        return field[locale];
+    }
+
+    // Check if there is no composed locale names matching with the current locale
+    const simplifiedFieldLocales = Object.keys(field).filter(
+        (locale) => locale.split("-")[0] === locale.split("-")[0],
+    );
+    if (simplifiedFieldLocales.length) {
+        return field[simplifiedFieldLocales[0]];
+    }
+
+    // If nothing try to take an english locale
+    const englishFieldLocales = Object.keys(field).filter(
+        (locale) => locale.split("-")[0] === "en",
+    );
+    if (englishFieldLocales.length) {
+        return field[englishFieldLocales[0]];
+    }
+
+    // Take the first locale if nothing match with current locale or english
+    const keys = Object.keys(field);
+
+    if (keys && keys.length) {
+        return field[keys[0]];
+    }
+
+    return "";
 }
+
+export const translator = {
+    __: translate,
+    setLocale,
+    translate,
+}
+export const getTranslator = () => translator;

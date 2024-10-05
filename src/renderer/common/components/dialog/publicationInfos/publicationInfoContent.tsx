@@ -13,7 +13,7 @@ import * as stylesModals from "readium-desktop/renderer/assets/styles/components
 import classNames from "classnames";
 import * as React from "react";
 import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
-import { I18nFunction, Translator } from "readium-desktop/common/services/translator";
+import { I18nFunction } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import { formatTime } from "readium-desktop/common/utils/time";
 import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
@@ -38,6 +38,9 @@ import SVG from "../../SVG";
 import * as OnGoingBookIcon from "readium-desktop/renderer/assets/icons/ongoingBook-icon.svg";
 import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 
 
 
@@ -56,7 +59,6 @@ export interface IProps {
     divinaNumberOfPages: number | undefined; // super hacky :(
     divinaContinousEqualTrue: boolean;
     readerReadingLocation: MiniLocatorExtended;
-    translator: Translator;
     onClikLinkCb?: (tag: IOpdsBaseLinkView) => () => void | undefined;
     closeDialogCb: () => void;
 }
@@ -95,10 +97,9 @@ const Progression = (props: {
     pdfPlayerNumberOfPages: number | undefined, // super hacky :(
     divinaNumberOfPages: number | undefined, // super hacky :(
     divinaContinousEqualTrue: boolean,
-    __: I18nFunction;
     closeDialogCb: () => void;
 }) => {
-    const { __, closeDialogCb, locatorExt, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication, manifestUrlR2Protocol, handleLinkUrl } = props;
+    const { closeDialogCb, locatorExt, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication, manifestUrlR2Protocol, handleLinkUrl } = props;
 
     const focusRef = React.useRef<HTMLHeadingElement>(null);
     React.useEffect(() => {
@@ -106,6 +107,7 @@ const Progression = (props: {
             focusRef.current.focus();
         }
     }, [focusWhereAmI]);
+    const [__] = useTranslator();
 
     if (typeof locatorExt?.locator?.locations?.progression === "number") {
 
@@ -364,8 +366,7 @@ const ProgressionDetails: React.FC<{summary: React.ReactElement[], details: Reac
 export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> = (props) => {
 
     // tslint:disable-next-line: max-line-length
-    const { closeDialogCb, readerReadingLocation, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication: r2Publication_, manifestUrlR2Protocol, handleLinkUrl, publicationViewMaybeOpds, ControlComponent, TagManagerComponent, translator, onClikLinkCb, focusWhereAmI } = props;
-    const __ = translator.translate;
+    const { closeDialogCb, readerReadingLocation, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication: r2Publication_, manifestUrlR2Protocol, handleLinkUrl, publicationViewMaybeOpds, ControlComponent, TagManagerComponent, onClikLinkCb, focusWhereAmI } = props;
 
     const r2Publication = React.useMemo(() => {
         if (!r2Publication_ && publicationViewMaybeOpds.r2PublicationJson) {
@@ -378,12 +379,14 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
 
     }, [publicationViewMaybeOpds, r2Publication_]);
 
-    const pubTitleLangStr = convertMultiLangStringToString(translator, (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const pubTitleLangStr = convertMultiLangStringToString((publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle, locale);
     const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
     const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
     const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
 
     const [openCoverDialog, setOpenCoverDialog] = React.useState(false);
+    const [__] = useTranslator();
 
     return (
         <>
@@ -439,14 +442,13 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                         </h2>
                         <FormatContributorWithLink
                             contributors={publicationViewMaybeOpds.authors}
-                            translator={translator}
                             onClickLinkCb={onClikLinkCb}
                             className={"authors"}
                         />
                     </section>
 
                     <section>
-                        <PublicationInfoDescription publicationViewMaybeOpds={publicationViewMaybeOpds} __={__} translator={props.translator} />
+                        <PublicationInfoDescription publicationViewMaybeOpds={publicationViewMaybeOpds} __={__} />
                     </section>
                     <section>
                         <div className={stylePublication.publicationInfo_heading}>
@@ -461,7 +463,6 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                                         <span className={stylesBookDetailsDialog.allowUserSelect}>
                                             <FormatContributorWithLink
                                                 contributors={publicationViewMaybeOpds.publishers}
-                                                translator={translator}
                                                 onClickLinkCb={onClikLinkCb}
                                             />
                                         </span>
@@ -517,7 +518,6 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                     </section> : <></>)}
                     <TagManagerComponent />
                     <Progression
-                        __={__}
                         closeDialogCb={closeDialogCb}
                         r2Publication={r2Publication}
                         manifestUrlR2Protocol={manifestUrlR2Protocol}

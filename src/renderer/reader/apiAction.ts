@@ -6,6 +6,6 @@
 // ==LICENSE-END==
 
 import { apiActionFactory } from "readium-desktop/renderer/common/apiAction";
-import { diReaderGet } from "./di";
+import { getStore } from "./createStore";
 
-export const apiAction = apiActionFactory(() => diReaderGet("store"));
+export const apiAction = apiActionFactory(getStore);

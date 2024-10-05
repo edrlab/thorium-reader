@@ -23,8 +23,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
-import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
-import { AvailableLanguages } from "readium-desktop/common/services/translator";
+import { availableLanguages } from "readium-desktop/common/services/translator";
 // import * as LanguageIcon from "readium-desktop/renderer/assets/icons/language.svg";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
@@ -58,11 +57,17 @@ const TabTitle = (props: React.PropsWithChildren<{title: string}>) => {
 
 const LanguageSettings: React.FC<{}> = () => {
     const [__] = useTranslator();
-    const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
-    const currentLanguageISO = locale as keyof typeof AvailableLanguages;
-    const currentLanguageString = AvailableLanguages[currentLanguageISO];
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+
+    const currentLanguageISO = locale as keyof typeof availableLanguages;
+    const currentLanguageString = availableLanguages[currentLanguageISO];
     const dispatch = useDispatch();
-    const [options] = React.useState(() => Object.entries(AvailableLanguages).sort().map(([k,v], i) => ({id: i, name: v, iso: k})));
+    const [options] = React.useState(() => (Object.entries(availableLanguages) as Array<[keyof typeof availableLanguages, string]>)
+        .sort()
+        .map<{ id: number, name: string, iso: keyof typeof availableLanguages }>(
+            ([k, v], i) => ({ id: i, name: v, iso: k })
+        ));
     const setLang = (localeSelected: React.Key) => {
 
         if (typeof localeSelected !== "number") return;

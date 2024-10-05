@@ -165,6 +165,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
+    locale: state.i18n.locale,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(FeedList));

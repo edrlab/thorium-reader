@@ -18,8 +18,6 @@ import {
     _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
-import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
-import { diReaderGet } from "readium-desktop/renderer/reader/di";
 
 import Nunito from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-Regular.ttf";
 import NunitoBold from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-SemiBold.ttf";
@@ -28,16 +26,20 @@ import NunitoBold from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-Se
 // globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
 
 import Reader from "./Reader";
+import { Store } from "redux";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { getTranslator } from "readium-desktop/common/services/translator";
+import { getStore } from "../createStore";
+import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
 
-export default class App extends React.Component<{}, undefined> {
+interface IProps { store: Store<IReaderRootState> };
+export default class App extends React.Component<IProps, undefined> {
 
-    constructor(props: {}) {
+    constructor(props: IProps) {
         super(props);
     }
 
     public render(): React.ReactElement<{}> {
-        const store = diReaderGet("store");
-        const translator = diReaderGet("translator");
 
         try {
             const readiumCssFontFaceStyleID = "readiumCssFontFaceStyleID";
@@ -189,8 +191,8 @@ url("${rcssPath}/fonts/iAWriterDuospace-Regular.ttf") format("truetype");
         }
 
         return (
-            <Provider store={store}>
-                <TranslatorContext.Provider value={translator}>
+            <Provider store={getStore()}>
+                <TranslatorContext.Provider value={getTranslator()}>
                     <Reader />
                     <ToastManager />
                 </TranslatorContext.Provider>

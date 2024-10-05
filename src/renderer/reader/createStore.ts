@@ -7,32 +7,22 @@
 
 import "reflect-metadata";
 
-import { Container } from "inversify";
-import getDecorators from "inversify-inject-decorators";
-import { Translator } from "readium-desktop/common/services/translator";
 import { initStore } from "readium-desktop/renderer/reader/redux/store/memory";
-import { type Store } from "redux";
+// import { type Store } from "redux";
 
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import App from "./components/App";
-import { diReaderSymbolTable } from "./diSymbolTable";
+// import { diReaderSymbolTable } from "./diSymbolTable";
 import { readerLocalActionSetConfig } from "./redux/actions";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
+import { Store } from "redux";
 
 // Create container used for dependency injection
-const container = new Container();
+// const container = new Container();
 
-const createStoreFromDi = async (preloadedState: Partial<IReaderRootState>) => {
+export const createStoreFromDi = (preloadedState: Partial<IReaderRootState>): Store<IReaderRootState> => {
 
     const store = initStore(preloadedState);
-
-    container.bind<Store<IReaderRootState>>(diReaderSymbolTable.store).toConstantValue(store);
-
-    const locale = store.getState().i18n.locale;
-    await translator.setLocale(locale);
-
-    // migration from defaultConfig to config if new keyValue added
-    // const defaultConfig = store.getState().reader.defaultConfig;
+    setStore(store);
 
     // see issue https://github.com/edrlab/thorium-reader/issues/2532
     const defaultConfig = readerConfigInitialState;
@@ -106,35 +96,15 @@ const createStoreFromDi = async (preloadedState: Partial<IReaderRootState>) => {
     return store;
 };
 
-// Create translator
-const translator = new Translator();
-container.bind<Translator>(diReaderSymbolTable.translator).toConstantValue(translator);
-
-container.bind<typeof App>(diReaderSymbolTable["react-reader-app"]).toConstantValue(App);
-
-// local interface to force type return
-interface IGet {
-    (s: "store"): Store<IReaderRootState>;
-    (s: "translator"): Translator;
-    (s: "react-reader-app"): typeof App;
+let store: Store<IReaderRootState> | undefined;
+export const getStore = () => {
+    if (store) {
+        return store;
+    }
+    throw new Error("STORE is UNDEFINED !!!");
 }
-
-// export function to get back depedency from container
-// the type any for container.get is overloaded by IGet
-const diGet: IGet = (symbol: keyof typeof diReaderSymbolTable) => container.get<any>(diReaderSymbolTable[symbol]);
-
-const {
-    lazyInject,
-    lazyInjectNamed,
-    lazyInjectTagged,
-    lazyMultiInject,
-} = getDecorators(container);
-
-export {
-    diGet as diReaderGet,
-    createStoreFromDi,
-    lazyInject,
-    lazyInjectNamed,
-    lazyInjectTagged,
-    lazyMultiInject,
-};
+export const setStore = (_store: Store<IReaderRootState>) => {
+    if (!store) {
+        store = _store;
+    }
+}
