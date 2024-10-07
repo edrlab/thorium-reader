@@ -23,6 +23,8 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 import { HighlightDrawTypeBackground, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { diReaderGet } from "../../di";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
@@ -99,6 +101,8 @@ function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, 
     // clean __selection global variable state
     __selectionInfoGlobal.locatorExtended = undefined;
 
+    const creator = useSelector((state: IReaderRootState) => state.creator);
+
     debug(`Create an annotation for, [${locatorExtended.selectionInfo.cleanText.slice(0, 10)}]`);
     yield* put(readerActions.annotation.push.build({
         color,
@@ -106,6 +110,10 @@ function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, 
         locatorExtended,
         drawType,
         tags,
+        creator: {
+            id: creator.id,
+            type: creator.type, // not used but required https://github.com/readium/annotations/?tab=readme-ov-file#11-creator
+        },
     }));
 
     // sure! close the popover
