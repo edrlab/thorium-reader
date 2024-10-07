@@ -19,10 +19,12 @@ import { Store } from "redux";
 // Create container used for dependency injection
 // const container = new Container();
 
+let __store: Store<IReaderRootState> | undefined;
+
 export const createStoreFromDi = (preloadedState: Partial<IReaderRootState>): Store<IReaderRootState> => {
 
     const store = initStore(preloadedState);
-    setStore(store);
+    __store = store;
 
     // see issue https://github.com/edrlab/thorium-reader/issues/2532
     const defaultConfig = readerConfigInitialState;
@@ -96,15 +98,9 @@ export const createStoreFromDi = (preloadedState: Partial<IReaderRootState>): St
     return store;
 };
 
-let store: Store<IReaderRootState> | undefined;
 export const getStore = () => {
-    if (store) {
-        return store;
+    if (__store) {
+        return __store;
     }
     throw new Error("STORE is UNDEFINED !!!");
-};
-export const setStore = (_store: Store<IReaderRootState>) => {
-    if (!store) {
-        store = _store;
-    }
 };

@@ -12,32 +12,27 @@ import { initStore } from "readium-desktop/renderer/library/redux/store/memory";
 import { Store } from "redux";
 import { IHistoryContext } from "redux-first-history";
 
+let __store: Store<ILibraryRootState> | undefined;
+
+let __reduxHistory: ReturnType<IHistoryContext["createReduxHistory"]>;
+
 export const createStoreFromDi = (preloadedState: Partial<ILibraryRootState>): ReturnType<typeof initStore> => {
 
     const [store, reduxHistory] = initStore(preloadedState);
 
-    setStore(store);
+    __store = store;
     __reduxHistory = reduxHistory;
 
     return [store, reduxHistory];
 };
 
-
-let store: Store<ILibraryRootState> | undefined;
 export const getStore = () => {
-    if (store) {
-        return store;
+    if (__store) {
+        return __store;
     }
     throw new Error("STORE is UNDEFINED !!!");
 };
-export const setStore = (_store: Store<ILibraryRootState>) => {
-    if (!store) {
-        store = _store;
-    }
-};
 
-
-let __reduxHistory: ReturnType<IHistoryContext["createReduxHistory"]>;
 export const getReduxHistory = () => {
     if (__reduxHistory) {
         return __reduxHistory;
