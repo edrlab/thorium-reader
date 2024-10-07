@@ -77,7 +77,7 @@ export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotatio
     };
 }
 
-export function convertAnnotationListToReadiumAnnotationSet(annotationArray: IAnnotationState[], publicationView: PublicationView): IReadiumAnnotationModelSet {
+export function convertAnnotationListToReadiumAnnotationSet(annotationArray: IAnnotationState[], publicationView: PublicationView, label?: string): IReadiumAnnotationModelSet {
 
     const currentDate = new Date();
     const dateString: string = currentDate.toISOString();
@@ -93,7 +93,7 @@ export function convertAnnotationListToReadiumAnnotationSet(annotationArray: IAn
             homepage: "https://thorium.edrlab.org",
         },
         generated: dateString,
-        label: "Annotations set",
+        label: label || "Annotations set",
         about: {
             "dc:identifier": [publicationView.workIdentifier ? ((publicationView.workIdentifier.startsWith("urn:") ? "" : "urn:isbn:") + publicationView.workIdentifier) : ""],
             "dc:format": "application/epub+zip",

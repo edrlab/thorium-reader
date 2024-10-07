@@ -307,6 +307,10 @@
       "Color": "Χρώμα",
       "addNote": "Σχόλιο",
       "advancedMode": "Άμεση λειτουργία (αυτόματη δημιουργία μετά την επιλογή)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Επιλογές",
       "colors": {
         "bluegreen": "",

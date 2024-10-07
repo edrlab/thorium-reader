@@ -307,6 +307,10 @@
       "Color": "色",
       "addNote": "注釈をつける",
       "advancedMode": "インスタントモード（本文を選択するだけで自動作成）",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "オプション",
       "colors": {
         "bluegreen": "",

@@ -702,6 +702,10 @@ declare namespace typed_i18n {
     readonly "Color": string,
     readonly "addNote": string,
     readonly "advancedMode": string,
+    readonly "annotationsExport": {
+      readonly "description": string,
+      readonly "title": string
+    },
     readonly "annotationsOptions": string,
     readonly "colors": {
       readonly "bluegreen": string,
@@ -885,6 +889,10 @@ declare namespace typed_i18n {
   readonly "Color": string,
   readonly "addNote": string,
   readonly "advancedMode": string,
+  readonly "annotationsExport": {
+    readonly "description": string,
+    readonly "title": string
+  },
   readonly "annotationsOptions": string,
   readonly "colors": {
     readonly "bluegreen": string,
@@ -927,6 +935,9 @@ declare namespace typed_i18n {
   (_: "reader.annotations.Color", __?: {}): string;
   (_: "reader.annotations.addNote", __?: {}): string;
   (_: "reader.annotations.advancedMode", __?: {}): string;
+  (_: "reader.annotations.annotationsExport", __?: {}): { readonly "description": string, readonly "title": string };
+  (_: "reader.annotations.annotationsExport.description", __?: {}): string;
+  (_: "reader.annotations.annotationsExport.title", __?: {}): string;
   (_: "reader.annotations.annotationsOptions", __?: {}): string;
   (_: "reader.annotations.colors", __?: {}): {
   readonly "bluegreen": string,
