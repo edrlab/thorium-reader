@@ -325,6 +325,7 @@
       "filter": {
         "all": "Tudo",
         "filterByColor": "Filtrar por cor",
+        "filterByCreator": "",
         "filterByDrawtype": "Filtrar por tipo de desenho",
         "filterByTag": "Filtrar por etiqueta",
         "filterOptions": "Opções de filtro",

@@ -8,5 +8,5 @@
 export interface IAnnotationCreator {
     id: string,
     type: "Organization" | "Person",
-    name: string,
+    name?: string,
 }

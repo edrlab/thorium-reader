@@ -325,6 +325,7 @@
       "filter": {
         "all": "All",
         "filterByColor": "Filter by Color",
+        "filterByCreator": "Filter by Creator",
         "filterByDrawtype": "Filter by Drawtype",
         "filterByTag": "Filter by Tag",
         "filterOptions": "Filter Options",
