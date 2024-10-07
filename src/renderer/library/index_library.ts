@@ -75,6 +75,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
                 settings: data.payload.settings,
                 publication: data.payload.publication,
                 session: data.payload.session,
+                creator: data.payload.creator,
             };
             createStoreFromDi(preloadedState)
                 .then((store) => store.dispatch(winActions.initRequest.build(data.payload.win.identifier)))
