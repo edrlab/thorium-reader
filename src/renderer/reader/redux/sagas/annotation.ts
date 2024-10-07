@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { all, call, put, take} from "typed-redux-saga/macro";
+import { all, call, put, select, take} from "typed-redux-saga/macro";
 import { select as selectTyped, take as takeTyped, race as raceTyped, SagaGenerator, call as callTyped} from "typed-redux-saga";
 import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionSetConfig, readerLocalActionSetLocator } from "../actions";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
@@ -23,8 +23,6 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 import { HighlightDrawTypeBackground, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { diReaderGet } from "../../di";
-import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
-import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
@@ -101,7 +99,7 @@ function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, 
     // clean __selection global variable state
     __selectionInfoGlobal.locatorExtended = undefined;
 
-    const creator = useSelector((state: IReaderRootState) => state.creator);
+    const creator = yield* select((state: IReaderRootState) => state.creator);
 
     debug(`Create an annotation for, [${locatorExtended.selectionInfo.cleanText.slice(0, 10)}]`);
     yield* put(readerActions.annotation.push.build({

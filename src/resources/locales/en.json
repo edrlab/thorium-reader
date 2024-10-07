@@ -324,6 +324,7 @@
         "filterByDrawtype": "Filter by Drawtype",
         "filterByTag": "Filter by Tag",
         "filterOptions": "Filter Options",
+        "filterByCreator": "Filter by Creator",
         "none": "None"
       },
       "hide": "Do not display",

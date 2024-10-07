@@ -671,6 +671,8 @@ const downloadAnnotationJSON = (contents: IReadiumAnnotationModelSet, filename: 
     URL.revokeObjectURL(jsonObjectUrl);
 };
 
+const userNumber: Record<string, number> = {};
+
 const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number, popoverBoundary: HTMLDivElement } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
     const { goToLocator, annotationUUIDFocused, resetAnnotationUUID, popoverBoundary } = props;
@@ -806,9 +808,13 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
         setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
     }
 
-    const creatorList = annotationList.map(([,{creator}]) => creator);
+    const meMyselfandI = useSelector((state: IReaderRootState) => state.creator);
+    const creatorList = annotationList.map(([,{creator}]) => creator).filter(v => v);
     const creatorSet = creatorList.reduce<Record<string, string>>((acc, {id, name}) => {
-        if (!acc[id]) return {...acc, [id]: name || ""};
+        if (!acc[id]) {
+            if (!userNumber[id]) userNumber[id] = ObjectKeys(userNumber).length + 1;
+            return {...acc, [id]: (id !== meMyselfandI.id ? name : meMyselfandI.name) || `unknown${userNumber[id]}`};
+        }
         return acc;
     }, {});
 
@@ -1019,6 +1025,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                 selectedKeys={drawTypeArrayFilter}
                                 onSelectionChange={setDrawTypeArrayFilter}
                                 aria-label={__("reader.annotations.filter.filterByDrawtype")}
+                                style={{ marginBottom: "20px" }}
                             >
                                 <details open id="annotationListDrawDetails">
                                     <summary className={stylesAnnotations.annotations_filter_tagGroup}>
@@ -1047,7 +1054,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                         </div>
                                     </summary>
                                     <TagList items={selectDrawtypesOptions} className={stylesAnnotations.annotations_filter_taglist}>
-                                        {(item) => <Tag id={item.name} className={stylesAnnotations.annotations_filter_drawtype} textValue={item.name}></Tag>}
+                                        {(item) => <Tag id={item.name} className={stylesAnnotations.annotations_filter_drawtype} textValue={item.name}><SVG svg={item.svg} /></Tag>}
                                     </TagList>
                                 </details>
                             </TagGroup>
@@ -1056,9 +1063,10 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                 selectedKeys={creatorArrayFilter}
                                 onSelectionChange={setCreatorArrayFilter}
                                 aria-label={__("reader.annotations.filter.filterByCreator")}
+                                style={{ marginBottom: "20px" }}
                             >
-                                <details open id="annotationListCreator">
-                                    <summary className={stylesAnnotations.annotations_filter_tagGroup}>
+                                <details id="annotationListCreator">
+                                    <summary className={stylesAnnotations.annotations_filter_tagGroup} style={{pointerEvents : selectCreatorOptions.length < 2 ? "none": "auto", opacity:  selectCreatorOptions.length < 2 ? "0.5" : "1"}}>
                                         <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByCreator")}</Label>
                                         <div style={{ display: "flex", gap: "10px" }}>
                                             <button
@@ -1083,7 +1091,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                             </button>
                                         </div>
                                     </summary>
-                                    <TagList items={selectCreatorOptions} className={stylesAnnotations.annotations_filter_taglist}>
+                                    <TagList items={selectCreatorOptions} className={stylesAnnotations.annotations_filter_taglist}  style={{margin : selectCreatorOptions.length < 2 ? "0": "20px 0"}}>
                                         {(item) => <Tag className={stylesAnnotations.annotations_filter_tag} id={item.name} textValue={item.name}>{item.name}</Tag>}
                                     </TagList>
                                 </details>

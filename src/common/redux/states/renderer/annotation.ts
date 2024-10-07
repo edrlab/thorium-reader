@@ -8,7 +8,6 @@
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
-import { creatorActions } from "../../actions";
 import { IAnnotationCreator } from "../creator";
 
 export interface IColor {
