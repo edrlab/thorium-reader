@@ -203,7 +203,7 @@
     height: 20px;
     border-radius: 50%;
     border: 2px solid var(--color-extralight-grey);
-    
+
     &[data-selected] {
       outline: 2px solid;
       outline-offset: 2px;
@@ -221,10 +221,10 @@
       height: 20px;
       color: var(--color-primary);
     }
-    
+
     &[data-selected] {
       background-color: var(--color-blue);
-      
+
       svg {
         color: var(--color-secondary);
       }
@@ -670,6 +670,7 @@
     flex-direction: column;
     gap: 15px;
     margin: 0 15px;
+    color: var(--color-primary);
 
     .form_group {
       width: unset;
