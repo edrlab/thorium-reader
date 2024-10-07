@@ -307,6 +307,10 @@
       "Color": "Kolore",
       "addNote": "Apuntatu",
       "advancedMode": "Berehalako modua (sortu automatikoki hautatu ondoren)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Aukerak",
       "colors": {
         "bluegreen": "",

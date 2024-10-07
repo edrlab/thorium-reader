@@ -307,6 +307,10 @@
       "Color": "Color",
       "addNote": "Annotate",
       "advancedMode": "Instant mode (auto create after select)",
+      "annotationsExport": {
+        "description": "Name this set of annotations",
+        "title": "Title"
+      },
       "annotationsOptions": "Options",
       "colors": {
         "bluegreen": "Blue-green",

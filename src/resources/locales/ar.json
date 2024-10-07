@@ -307,6 +307,10 @@
       "Color": "اللون",
       "addNote": "تعليق",
       "advancedMode": "الصيغة الفورية (إنشاء تلقائي بعد الاختيار)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "خيارات",
       "colors": {
         "bluegreen": "",

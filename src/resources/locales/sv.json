@@ -307,6 +307,10 @@
       "Color": "Färg",
       "addNote": "Anteckna",
       "advancedMode": "Omedelbart-läge (skapa automatiskt efter markering)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Alternativ",
       "colors": {
         "bluegreen": "",

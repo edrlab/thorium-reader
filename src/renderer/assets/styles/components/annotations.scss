@@ -661,6 +661,43 @@
   margin-top: 5px;
 }
 
+.annotationsTitle_form {
+  &_container {
+    width: fit-content;
+    height: fit-content;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 0 15px;
+
+    .form_group {
+      width: unset;
+    }
+
+    input {
+      width: 100%;
+      padding: 0;
+      height: 25px;
+      margin-left: 5px;
+    }
+
+    label {
+      background-color: var(--color-extralight-grey);
+    }
+
+    button {
+      width: 100%;
+      height: 25px;
+    }
+
+    p {
+      margin: 0;
+    }
+
+  }
+}
+
 .CSS_END_components_annotations {
   display: none;
 }
