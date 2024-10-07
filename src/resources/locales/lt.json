@@ -307,6 +307,10 @@
       "Color": "Spalva",
       "addNote": "Pridėti pastabą",
       "advancedMode": "Momentinis režimas (pažymėjus sukurti automatiškai)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Parinktys",
       "colors": {
         "bluegreen": "",

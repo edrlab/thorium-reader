@@ -307,6 +307,10 @@
       "Color": "Barva",
       "addNote": "Dodaj opombo",
       "advancedMode": "Takojšnji način (samodejno ustvarjanje po izbiri)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Možnosti",
       "colors": {
         "bluegreen": "",

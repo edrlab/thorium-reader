@@ -307,6 +307,10 @@
       "Color": "",
       "addNote": "",
       "advancedMode": "",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "",
       "colors": {
         "bluegreen": "",

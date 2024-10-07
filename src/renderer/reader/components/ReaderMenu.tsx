@@ -820,6 +820,8 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
 
     const nbOfFilters = ((tagArrayFilter === "all") ? selectTagOption.length : tagArrayFilter.size) + ((colorArrayFilter === "all") ? annotationsColors.length : colorArrayFilter.size) + ((drawTypeArrayFilter === "all") ? selectDrawtypesOptions.length : drawTypeArrayFilter.size);
 
+    const annotationTitle = React.useRef<HTMLInputElement>(null);
+
     return (
         <>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "end", width: "100%", gap: "20px", marginTop: "-35px" }}>
@@ -858,15 +860,44 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         </AlertDialog.Content>
                     </AlertDialog.Portal>
                 </AlertDialog.Root>
-                <button className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationList.length}
-                    onClick={async () => {
-                        const annotations = annotationList.map(([, anno]) => anno);
-                        const contents = convertAnnotationListToReadiumAnnotationSet(annotations, publicationView);
-                        downloadAnnotationJSON(contents, "myAnnotationSet");
-                    }}
-                    title={__("catalog.exportAnnotation")}>
-                    <SVG svg={SaveIcon} />
-                </button>
+                <Popover.Root>
+                    <Popover.Trigger asChild>
+                        <button className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationList.length}
+                            title={__("catalog.exportAnnotation")}>
+                            <SVG svg={SaveIcon} />
+                        </button>
+                    </Popover.Trigger>
+                    <Popover.Portal>
+                        <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2), padding: "15px 0"}}>
+                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                            <form 
+                            className={stylesAnnotations.annotationsTitle_form_container}
+                            onSubmit={async (e) => {
+                                e.preventDefault();
+                                const annotations = annotationList.map(([, anno]) => anno);
+                                const label = annotationTitle?.current.value || "Annotations_set";
+                                const contents = convertAnnotationListToReadiumAnnotationSet(annotations, publicationView, label);
+                                downloadAnnotationJSON(contents, label);
+                            }}
+                            >
+                                <p>{__("reader.annotations.annotationsExport.description")}</p>
+                                <div className={stylesInputs.form_group}>
+                                    <label htmlFor="annotationsTitle">{__("reader.annotations.annotationsExport.title")}</label>
+                                    <input 
+                                    type="text"
+                                    name="annotationsTitle"
+                                    id="annotationsTitle"
+                                    ref={annotationTitle} 
+                                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" />
+                                </div>
+                                <button type="submit" className={stylesButtons.button_primary_blue}>
+                                    <SVG svg={SaveIcon} />
+                                    {__("catalog.export")}
+                                </button>
+                            </form>
+                        </Popover.Content>
+                    </Popover.Portal>
+                </Popover.Root>
                 <Popover.Root>
                     <Popover.Trigger asChild>
                         <button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button}
