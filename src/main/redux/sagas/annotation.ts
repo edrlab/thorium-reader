@@ -136,6 +136,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
 
                 const annotationsParsedNoConflictArray: IAnnotationState[] = [];
+                const annotationsParsedConflictArray: IAnnotationState[] = [];
                 const annotationsParsedAllArray: IAnnotationState[] = [];
 
                 debug("There are", annotationsIncommingArray.length, "incomming annotations to be imported");
@@ -238,28 +239,28 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
                     annotationsParsedAllArray.push(annotationParsed);
 
-
-                    // check conflict and for the moment it's just an uuid conflict, but in the future the conflict may be the modified date
                     if (annotations.find(({ uuid }) => uuid === annotationParsed.uuid)) {
 
-                        debug(`ANNOTATION CONFLICT WITH ${annotationParsed.uuid} !`);
+                        // ok same annotation,
+                        // we need to check if same uuid but modified date ahead of time
+
+                        if (annotations.find(({ uuid, modified }) => uuid === annotationParsed.uuid && modified < annotationParsed.modified)) {
+                            // so we want to import an annotation with a conflict, let's user mitigate it
+                            annotationsParsedConflictArray.push(annotationParsed);
+                        }
                     } else {
 
                         annotationsParsedNoConflictArray.push(annotationParsed);
                     }
-
                 }
 
-                // TODO re-enable this
-                // if (!annotationsParsedBuffer.length) {
+                if (!annotationsParsedAllArray.length) {
 
-                //     debug("there are no annotations ready to be imported, exit");
-                //     yield* put(toastActions.openRequest.build(ToastType.Success, `Success !, the ${annotationsIncommingArray.length} annotation(s) are already present in the publication, nothing has been imported`, readerPublicationIdentifier));
-                //     return;
+                    debug("there are no annotations ready to be imported, exit");
+                    yield* put(toastActions.openRequest.build(ToastType.Success, `There are no annotations ready to be imported, aborting the importation`, readerPublicationIdentifier));
+                    return;
 
-                // }
-
-                const annotationsParsedConflictList = annotationsParsedAllArray.filter((v) => !annotationsParsedNoConflictArray.includes(v));
+                }
 
                 // dispatch data to the user modal
                 yield* put(annotationActions.importTriggerModal.build(
@@ -270,7 +271,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                         generator: data.generator ? { ...data.generator} : undefined,
                     },
                     annotationsParsedNoConflictArray,
-                    annotationsParsedConflictList,
+                    annotationsParsedConflictArray,
                 ));
 
                 // wait the modal confirmation or abort
@@ -285,13 +286,6 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 const annotationsParsedBuffer = actionConfirmOrAbort.payload.state === "importNoConflict"
                     ? annotationsParsedNoConflictArray
                     : annotationsParsedAllArray;
-
-                // if the user force import annotations in conflict
-                if (actionConfirmOrAbort.payload.state === "importAll") {
-                    annotationsParsedConflictList.forEach((anno) => {
-                        anno.uuid = uuidv4();
-                    });
-                }
 
                 debug("ready to send", annotationsParsedBuffer.length, "annotation(s) to the reader");
                 if (winSessionReaderStateArray.length) {

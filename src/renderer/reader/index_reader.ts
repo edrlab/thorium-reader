@@ -63,6 +63,14 @@ ipcRenderer.on(readerIpc.CHANNEL,
                 };
 
                 const annotationList = data.payload.reader.annotation || [];
+                for (const [,anno] of annotationList) {
+                    if (!anno.created && anno.modified) {
+                        anno.created = anno.modified;
+                    }
+                    if (!anno.created) {
+                        anno.created = (new Date()).getTime();
+                    }
+                }
                 const annotationTagsList = [];
                 for (const [_, {tags}] of annotationList) {
                     annotationTagsList.push(...(tags || []));

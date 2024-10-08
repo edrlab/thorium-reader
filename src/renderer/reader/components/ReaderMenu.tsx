@@ -910,6 +910,9 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
                             <form
                                 className={stylesAnnotations.annotationsTitle_form_container}
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                }}
                             >
                                 <p>{__("reader.annotations.annotationsExport.description")}</p>
                                 <div className={stylesInputs.form_group}>
@@ -926,7 +929,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                         const annotations = annotationList.map(([, anno]) => {
                                             const { creator } = anno;
                                             if (creator?.id === creatorMyself.id) {
-                                                return { ...anno, creator: { ...creatorMyself } };
+                                                return { ...anno, creator: { ...creatorMyself, id: "urn:uuid:" + creatorMyself.id } };
                                             }
                                             return anno;
                                         });

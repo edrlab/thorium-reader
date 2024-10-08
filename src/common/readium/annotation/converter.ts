@@ -92,7 +92,7 @@ export function convertAnnotationListToReadiumAnnotationSet(annotationArray: IAn
         generated: dateString,
         title: label || "Annotations set",
         about: {
-            "dc:identifier": ["urn:thorium:" + publicationView.identifier, publicationView.workIdentifier ? ((publicationView.workIdentifier.startsWith("urn:") ? "" : "urn:isbn:") + publicationView.workIdentifier) : ""],
+            "dc:identifier": ["urn:thorium:" + publicationView.identifier, publicationView.workIdentifier ? publicationView.workIdentifier : ""], // TODO workIdentifier urn ?
             "dc:format": "application/epub+zip",
             "dc:title": publicationView.documentTitle || "",
             "dc:publisher": publicationView.publishers || [],

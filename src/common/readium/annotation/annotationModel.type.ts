@@ -356,7 +356,7 @@ export const readiumAnnotationModelSetJSONSchema3 = {
                     "required": ["source", "selector"],
                 },
             },
-            "required": ["@context", "id", "modified", "type", "creator", "body", "target"],
+            "required": ["@context", "id", "created", "type", "creator", "body", "target"],
         },
         "ITextQuoteSelector": {
             "type": "object",
@@ -450,7 +450,7 @@ export function isIReadiumAnnotationModelSet(data: any): data is IReadiumAnnotat
 
     const valid = ajv.validate(readiumAnnotationModelSetJSONSchema3, data);
 
-    __READIUM_ANNOTATION_AJV_ERRORS = ajv.errors.length ? JSON.stringify(ajv.errors, null, 2) : "";
+    __READIUM_ANNOTATION_AJV_ERRORS = ajv.errors?.length ? JSON.stringify(ajv.errors, null, 2) : "";
 
     return valid;
 }

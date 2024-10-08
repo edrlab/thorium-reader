@@ -44,7 +44,7 @@ try {
 }
 
 const initialState: IAnnotationCreator = {
-    id: "urn:uuid:" + uuidv4(),
+    id: uuidv4(),
     type: "Organization",
     name: username,
 };
