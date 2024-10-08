@@ -704,6 +704,10 @@ declare namespace typed_i18n {
     readonly "Color": string,
     readonly "addNote": string,
     readonly "advancedMode": string,
+    readonly "annotationsExport": {
+      readonly "description": string,
+      readonly "title": string
+    },
     readonly "annotationsOptions": string,
     readonly "colors": {
       readonly "bluegreen": string,
@@ -718,6 +722,7 @@ declare namespace typed_i18n {
     readonly "filter": {
       readonly "all": string,
       readonly "filterByColor": string,
+      readonly "filterByCreator": string,
       readonly "filterByDrawtype": string,
       readonly "filterByTag": string,
       readonly "filterOptions": string,
@@ -886,6 +891,10 @@ declare namespace typed_i18n {
   readonly "Color": string,
   readonly "addNote": string,
   readonly "advancedMode": string,
+  readonly "annotationsExport": {
+    readonly "description": string,
+    readonly "title": string
+  },
   readonly "annotationsOptions": string,
   readonly "colors": {
     readonly "bluegreen": string,
@@ -900,6 +909,7 @@ declare namespace typed_i18n {
   readonly "filter": {
     readonly "all": string,
     readonly "filterByColor": string,
+    readonly "filterByCreator": string,
     readonly "filterByDrawtype": string,
     readonly "filterByTag": string,
     readonly "filterOptions": string,
@@ -927,6 +937,9 @@ declare namespace typed_i18n {
   (_: "reader.annotations.Color", __?: {}): string;
   (_: "reader.annotations.addNote", __?: {}): string;
   (_: "reader.annotations.advancedMode", __?: {}): string;
+  (_: "reader.annotations.annotationsExport", __?: {}): { readonly "description": string, readonly "title": string };
+  (_: "reader.annotations.annotationsExport.description", __?: {}): string;
+  (_: "reader.annotations.annotationsExport.title", __?: {}): string;
   (_: "reader.annotations.annotationsOptions", __?: {}): string;
   (_: "reader.annotations.colors", __?: {}): {
   readonly "bluegreen": string,
@@ -949,6 +962,7 @@ declare namespace typed_i18n {
   (_: "reader.annotations.filter", __?: {}): {
   readonly "all": string,
   readonly "filterByColor": string,
+  readonly "filterByCreator": string,
   readonly "filterByDrawtype": string,
   readonly "filterByTag": string,
   readonly "filterOptions": string,
@@ -956,6 +970,7 @@ declare namespace typed_i18n {
 };
   (_: "reader.annotations.filter.all", __?: {}): string;
   (_: "reader.annotations.filter.filterByColor", __?: {}): string;
+  (_: "reader.annotations.filter.filterByCreator", __?: {}): string;
   (_: "reader.annotations.filter.filterByDrawtype", __?: {}): string;
   (_: "reader.annotations.filter.filterByTag", __?: {}): string;
   (_: "reader.annotations.filter.filterOptions", __?: {}): string;

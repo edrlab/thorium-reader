@@ -68,7 +68,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
             this.registerAllKeyboardListeners();
         }
     }
- 
+
     public  adjustElementPosition = () => {
         const element = this.fixedElementRef.current;
         const container = document.getElementById("opds_browserResults");
@@ -98,6 +98,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                         className={stylesPublication.allBooks_header_pagination_arrow}
                         aria-label={`${__("opds.firstPage")}`}
                         disabled={!pageLinks?.first[0]?.url || pageInfo?.currentPage === 0}
+                        tabIndex={-1}
                     >
                         {pageLinks?.first[0]?.url ?
                             <Link
@@ -117,7 +118,9 @@ class PageNavigation extends React.Component<IProps, undefined> {
                             transform: "rotate(180deg)",
                         }}
                         aria-label={`${__("opds.previous")}`}
-                        disabled={!pageLinks?.previous[0]?.url || pageInfo?.currentPage === 0}>
+                        disabled={!pageLinks?.previous[0]?.url || pageInfo?.currentPage === 0}
+                        tabIndex={-1}
+                    >
                         {
                             pageLinks?.previous[0]?.url ?
                                 <Link
@@ -164,7 +167,9 @@ class PageNavigation extends React.Component<IProps, undefined> {
                     <button
                         className={stylesPublication.allBooks_header_pagination_arrow}
                         aria-label={`${__("opds.next")}`}
-                        disabled={!pageLinks?.next[0]?.url || pageInfo?.currentPage === Math.ceil(pageInfo?.numberOfItems / (pageInfo?.itemsPerPage || 1))}>
+                        disabled={!pageLinks?.next[0]?.url || pageInfo?.currentPage === Math.ceil(pageInfo?.numberOfItems / (pageInfo?.itemsPerPage || 1))}
+                        tabIndex={-1}
+                    >
                         {pageLinks?.next[0]?.url ?
                             <Link
                                 to={{
@@ -180,7 +185,9 @@ class PageNavigation extends React.Component<IProps, undefined> {
                     <button
                         className={stylesPublication.allBooks_header_pagination_arrow}
                         aria-label={`${__("opds.lastPage")}`}
-                        disabled={!pageLinks?.last[0]?.url || pageInfo?.currentPage === Math.ceil(pageInfo?.numberOfItems / (pageInfo?.itemsPerPage || 1))}>
+                        disabled={!pageLinks?.last[0]?.url || pageInfo?.currentPage === Math.ceil(pageInfo?.numberOfItems / (pageInfo?.itemsPerPage || 1))}
+                        tabIndex={-1}
+                    >
                         {
                             pageLinks?.last[0]?.url ?
                                 <Link
@@ -238,7 +245,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                 ...this.props.location,
                 pathname: buildRoute(pageLinks.previous[0]),
             }, this.props.location.state as IRouterLocationState);
-        } else if (pageLinks?.next[0]?.url) { // TODO RTL
+        } else if (pageLinks?.next[0]?.url && !isPrevious) { // TODO RTL
             this.props.historyPush({
                 ...this.props.location,
                 pathname: buildRoute(pageLinks.next[0]),

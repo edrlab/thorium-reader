@@ -6,7 +6,9 @@
 // ==LICENSE-END==
 
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+
 import { IPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
+import { IAnnotationCreator } from "../creator";
 
 export interface IColor {
     red: number;
@@ -24,7 +26,7 @@ export interface IAnnotationState {
     drawType: TDrawType;
     tags?: string[] | undefined;
     modified?: number;
-    created?: number;
+    creator?: IAnnotationCreator;
 }
 
 export type TAnnotationState = IQueueAnnotationState[];

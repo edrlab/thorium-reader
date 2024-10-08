@@ -308,6 +308,10 @@
       "Color": "Spalva",
       "addNote": "Pridėti pastabą",
       "advancedMode": "Momentinis režimas (pažymėjus sukurti automatiškai)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Parinktys",
       "colors": {
         "bluegreen": "",
@@ -322,6 +326,7 @@
       "filter": {
         "all": "",
         "filterByColor": "",
+        "filterByCreator": "",
         "filterByDrawtype": "",
         "filterByTag": "",
         "filterOptions": "",

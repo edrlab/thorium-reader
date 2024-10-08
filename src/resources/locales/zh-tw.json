@@ -308,6 +308,10 @@
       "Color": "顏色",
       "addNote": "註解",
       "advancedMode": "即時模式（選擇後自動建立）",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "選項",
       "colors": {
         "bluegreen": "",
@@ -322,6 +326,7 @@
       "filter": {
         "all": "",
         "filterByColor": "",
+        "filterByCreator": "",
         "filterByDrawtype": "",
         "filterByTag": "",
         "filterOptions": "",

@@ -308,6 +308,10 @@
       "Color": "Farve",
       "addNote": "Lav note",
       "advancedMode": "Øjeblikkelige noter (oprettes automatisk ved markering)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Indstillinger",
       "colors": {
         "bluegreen": "",
@@ -322,6 +326,7 @@
       "filter": {
         "all": "",
         "filterByColor": "",
+        "filterByCreator": "",
         "filterByDrawtype": "",
         "filterByTag": "",
         "filterOptions": "",

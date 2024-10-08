@@ -308,6 +308,10 @@
       "Color": "Цвет",
       "addNote": "Комментировать",
       "advancedMode": "Мгновенный режим (автоматическое создание после выбора)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Параметры",
       "colors": {
         "bluegreen": "",
@@ -322,6 +326,7 @@
       "filter": {
         "all": "",
         "filterByColor": "",
+        "filterByCreator": "",
         "filterByDrawtype": "",
         "filterByTag": "",
         "filterOptions": "",

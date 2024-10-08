@@ -308,6 +308,10 @@
       "Color": "Farbe",
       "addNote": "Notiz hinzufügen",
       "advancedMode": "Sofortmodus (automatisch erstellen nach Auswahl)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Optionen",
       "colors": {
         "bluegreen": "",
@@ -322,6 +326,7 @@
       "filter": {
         "all": "",
         "filterByColor": "",
+        "filterByCreator": "",
         "filterByDrawtype": "",
         "filterByTag": "",
         "filterOptions": "",

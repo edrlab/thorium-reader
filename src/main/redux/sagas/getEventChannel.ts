@@ -80,9 +80,14 @@ export function getShutdownEventChannel() {
         (emit) => {
 
             const handler = (e: Electron.Event) => emit(e);
+
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error TS 2769
             powerMonitor.on("shutdown", handler);
 
             return () => {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error TS 2769
                 powerMonitor.removeListener("shutdown", handler);
             };
         },

@@ -558,13 +558,10 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
             {
                 isEdited
                     ?
-                    //  <FocusLock disabled={dockedMode} autoFocus={true}>
-                    // TODO fix issue with focusLock on modal not docked
-                    // <FocusLock disabled={true} autoFocus={true}>
-                    <AnnotationEdit uuid={uuid} save={save} cancel={() => triggerEdition(false)} dockedMode={dockedMode} btext={dockedEditAnnotation && btext} />
-                    // </FocusLock>
+                    <FocusLock disabled={false} autoFocus={true}>
+                        <AnnotationEdit uuid={uuid} save={save} cancel={() => triggerEdition(false)} dockedMode={dockedMode} btext={dockedEditAnnotation && btext} />
+                    </FocusLock>
                     :
-                    // <HardWrapComment comment={comment} />
                     <>
                         <HardWrapComment comment={comment} />
                         {tagName ? <div className={stylesTags.tags_wrapper}>
@@ -676,9 +673,11 @@ const downloadAnnotationJSON = (contents: IReadiumAnnotationModelSet, filename: 
     URL.revokeObjectURL(jsonObjectUrl);
 };
 
-const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const userNumber: Record<string, number> = {};
 
-    const { goToLocator, annotationUUIDFocused, resetAnnotationUUID } = props;
+const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number, popoverBoundary: HTMLDivElement } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+
+    const { goToLocator, annotationUUIDFocused, resetAnnotationUUID, popoverBoundary } = props;
 
     const [__] = useTranslator();
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
@@ -689,6 +688,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
     const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
     const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
     const [drawTypeArrayFilter, setDrawTypeArrayFilter] = React.useState<Selection>(new Set([]));
+    const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
 
     let annotationList: TAnnotationState = [];
     let startPage = 1;
@@ -696,14 +696,16 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
 
     annotationList = (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
         (selectionIsSet(colorArrayFilter) && colorArrayFilter.size) ||
-        (selectionIsSet(drawTypeArrayFilter) && drawTypeArrayFilter.size)
-        ? annotationsQueue.filter(([, { tags, color, drawType }]) => {
+        (selectionIsSet(drawTypeArrayFilter) && drawTypeArrayFilter.size) ||
+        (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size)
+        ? annotationsQueue.filter(([, { tags, color, drawType, creator }]) => {
 
             const colorHex = rgbToHex(color);
 
             return (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags.some((tagsValueName) => tagArrayFilter.has(tagsValueName))) &&
                 (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
-                (!selectionIsSet(drawTypeArrayFilter) || !drawTypeArrayFilter.size || drawTypeArrayFilter.has(drawType));
+                (!selectionIsSet(drawTypeArrayFilter) || !drawTypeArrayFilter.size || drawTypeArrayFilter.has(drawType)) &&
+                (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(creator?.id));
 
         })
         : annotationsQueue;
@@ -737,6 +739,9 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                 }
                 if (drawTypeArrayFilter !== "all" && !drawTypeArrayFilter.has(annotationFound.drawType) && drawTypeArrayFilter.size !== 0) {
                     setDrawTypeArrayFilter(new Set([]));
+                }
+                if (creatorArrayFilter !== "all" && !creatorArrayFilter.has(annotationFound.creator?.id) && creatorArrayFilter.size !== 0) {
+                    setCreatorArrayFilter(new Set([]));
                 }
             }
         }
@@ -806,6 +811,18 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
         setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
     }
 
+    const meMyselfandI = useSelector((state: IReaderRootState) => state.creator);
+    const creatorList = annotationList.map(([,{creator}]) => creator).filter(v => v);
+    const creatorSet = creatorList.reduce<Record<string, string>>((acc, {id, name}) => {
+        if (!acc[id]) {
+            if (!userNumber[id]) userNumber[id] = ObjectKeys(userNumber).length + 1;
+            return {...acc, [id]: (id !== meMyselfandI.id ? name : meMyselfandI.name) || `unknown${userNumber[id]}`};
+        }
+        return acc;
+    }, {});
+
+    const selectCreatorOptions = Object.entries(creatorSet).map(([k, v]) => ({ id: k, name: v }));
+
     const annotationsColors = React.useMemo(() => Object.entries(annotationsColorsLight).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
 
     // I'm disable this feature for performance reason, push new Colors from incoming publicaiton annotation, not used for the moment. So let's commented it for the moment.
@@ -824,7 +841,13 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
         { name: "outline", svg: TextOutlineIcon },
     ];
 
-    const nbOfFilters = ((tagArrayFilter === "all") ? selectTagOption.length : tagArrayFilter.size) + ((colorArrayFilter === "all") ? annotationsColors.length : colorArrayFilter.size) + ((drawTypeArrayFilter === "all") ? selectDrawtypesOptions.length : drawTypeArrayFilter.size);
+    const nbOfFilters = ((tagArrayFilter === "all") ?
+        selectTagOption.length : tagArrayFilter.size) + ((colorArrayFilter === "all") ?
+            annotationsColors.length : colorArrayFilter.size) + ((drawTypeArrayFilter === "all") ?
+                selectDrawtypesOptions.length : drawTypeArrayFilter.size) + ((creatorArrayFilter === "all") ?
+                    selectCreatorOptions.length : creatorArrayFilter.size);
+
+    const annotationTitle = React.useRef<HTMLInputElement>(null);
 
     return (
         <>
@@ -856,6 +879,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                         setTagArrayFilter(new Set([]));
                                         setColorArrayFilter(new Set([]));
                                         setDrawTypeArrayFilter(new Set([]));
+                                        setCreatorArrayFilter(new Set([]));
                                     }} type="button">
                                         <SVG ariaHidden svg={TrashIcon} />
                                         {__("dialog.yes")}</button>
@@ -884,13 +908,51 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                 </ImportAnnotationsDialog>
                 <Popover.Root>
                     <Popover.Trigger asChild>
+                        <button className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationList.length}
+                            title={__("catalog.exportAnnotation")}>
+                            <SVG svg={SaveIcon} />
+                        </button>
+                    </Popover.Trigger>
+                    <Popover.Portal>
+                        <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2), padding: "15px 0"}}>
+                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                            <form
+                            className={stylesAnnotations.annotationsTitle_form_container}
+                            onSubmit={async (e) => {
+                                e.preventDefault();
+                                const annotations = annotationList.map(([, anno]) => anno);
+                                const label = annotationTitle?.current.value || "Annotations_set";
+                                const contents = convertAnnotationListToReadiumAnnotationSet(annotations, publicationView, label);
+                                downloadAnnotationJSON(contents, label);
+                            }}
+                            >
+                                <p>{__("reader.annotations.annotationsExport.description")}</p>
+                                <div className={stylesInputs.form_group}>
+                                    <label htmlFor="annotationsTitle">{__("reader.annotations.annotationsExport.title")}</label>
+                                    <input
+                                    type="text"
+                                    name="annotationsTitle"
+                                    id="annotationsTitle"
+                                    ref={annotationTitle}
+                                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" />
+                                </div>
+                                <button type="submit" className={stylesButtons.button_primary_blue}>
+                                    <SVG svg={SaveIcon} />
+                                    {__("catalog.export")}
+                                </button>
+                            </form>
+                        </Popover.Content>
+                    </Popover.Portal>
+                </Popover.Root>
+                <Popover.Root>
+                    <Popover.Trigger asChild>
                         <button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button}
                             title={__("reader.annotations.sorting.sortingOptions")}>
                             <SVG svg={SortIcon} />
                         </button>
                     </Popover.Trigger>
                     <Popover.Portal>
-                        <Popover.Content collisionPadding={{ top: 200, bottom: 100 }} avoidCollisions alignOffset={-10} align="end" hideWhenDetached={true} sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2) }}>
+                        <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2)}}>
                             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
                             <ListBox
                                 selectedKeys={sortType}
@@ -932,7 +994,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         </button>
                     </Popover.Trigger>
                     <Popover.Portal>
-                        <Popover.Content collisionPadding={{ top: 200, bottom: 100 }} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_filter_container} style={{ maxHeight: Math.round(window.innerHeight / 2) }}>
+                        <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_filter_container} style={{ maxHeight: Math.round(window.innerHeight / 2) }}>
                             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
                             <TagGroup
                                 selectionMode="multiple"
@@ -1015,6 +1077,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                 selectedKeys={drawTypeArrayFilter}
                                 onSelectionChange={setDrawTypeArrayFilter}
                                 aria-label={__("reader.annotations.filter.filterByDrawtype")}
+                                style={{ marginBottom: "20px" }}
                             >
                                 <details open id="annotationListDrawDetails">
                                     <summary className={stylesAnnotations.annotations_filter_tagGroup}>
@@ -1044,6 +1107,44 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                     </summary>
                                     <TagList items={selectDrawtypesOptions} className={stylesAnnotations.annotations_filter_taglist}>
                                         {(item) => <Tag id={item.name} className={stylesAnnotations.annotations_filter_drawtype} textValue={item.name}><SVG svg={item.svg} /></Tag>}
+                                    </TagList>
+                                </details>
+                            </TagGroup>
+                            <TagGroup
+                                selectionMode="multiple"
+                                selectedKeys={creatorArrayFilter}
+                                onSelectionChange={setCreatorArrayFilter}
+                                aria-label={__("reader.annotations.filter.filterByCreator")}
+                                style={{ marginBottom: "20px" }}
+                            >
+                                <details id="annotationListCreator">
+                                    <summary className={stylesAnnotations.annotations_filter_tagGroup} style={{pointerEvents : selectCreatorOptions.length < 2 ? "none": "auto", opacity:  selectCreatorOptions.length < 2 ? "0.5" : "1"}}>
+                                        <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByCreator")}</Label>
+                                        <div style={{ display: "flex", gap: "10px" }}>
+                                            <button
+                                                style={{ padding: "6px" }}
+                                                onClick={() => {
+                                                    setCreatorArrayFilter("all");
+                                                    const detailsElement = document.getElementById("annotationListCreator") as HTMLDetailsElement;
+                                                    if (detailsElement) {
+                                                        detailsElement.open = true;
+                                                    }
+
+                                                }}>
+                                                {__("reader.annotations.filter.all")}
+                                            </button>
+                                            <button
+                                                style={{ padding: "6px" }}
+                                                onClick={() => {
+                                                    setCreatorArrayFilter(new Set([]));
+
+                                                }}>
+                                                {__("reader.annotations.filter.none")}
+                                            </button>
+                                        </div>
+                                    </summary>
+                                    <TagList items={selectCreatorOptions} className={stylesAnnotations.annotations_filter_taglist}  style={{margin : selectCreatorOptions.length < 2 ? "0": "20px 0"}}>
+                                        {(item) => <Tag className={stylesAnnotations.annotations_filter_tag} id={item.name} textValue={item.name}>{item.name}</Tag>}
                                     </TagList>
                                 </details>
                             </TagGroup>
@@ -1874,6 +1975,8 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const dockedMode = dockingMode !== "full";
     const [__] = useTranslator();
 
+    const popoverBoundary = React.useRef<HTMLDivElement>();
+
     // const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     const searchEnable = useSelector((state: IReaderRootState) => state.search.enable);
     // const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
@@ -2184,6 +2287,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </Tabs.List>
                 }
                 <div className={stylesSettings.settings_content}
+                ref={popoverBoundary}
                     style={{ marginTop: dockedMode && "0" }}>
                     <Tabs.Content value="tab-toc" tabIndex={-1} id={"readerMenu_tabs-tab-toc"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
@@ -2220,7 +2324,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                     <SVG ariaHidden svg={OptionsIcon} title={__("reader.annotations.annotationsOptions")} />
                                 </Popover.Trigger>
                                 <Popover.Portal>
-                                    <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesAnnotations.annotations_filter_container} hideWhenDetached>
+                                    <Popover.Content collisionBoundary={popoverBoundary.current} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesAnnotations.annotations_filter_container} hideWhenDetached>
                                         <div className={stylesAnnotations.annotations_checkbox}>
                                             <input type="checkbox" id="advancedAnnotations" className={stylesGlobal.checkbox_custom_input} name="advancedAnnotations" checked={serialAnnotator} onChange={advancedAnnotationsOnChange} />
                                             <label htmlFor="advancedAnnotations" className={stylesGlobal.checkbox_custom_label}>
@@ -2355,7 +2459,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 </Popover.Portal>
                             </Popover.Root>
 
-                            <AnnotationList goToLocator={goToLocator} annotationUUIDFocused={annotationUUID} resetAnnotationUUID={resetAnnotationUUID} doFocus={doFocus} />
+                            <AnnotationList goToLocator={goToLocator} annotationUUIDFocused={annotationUUID} resetAnnotationUUID={resetAnnotationUUID} doFocus={doFocus} popoverBoundary={popoverBoundary.current} />
                         </div>
                     </Tabs.Content>
 

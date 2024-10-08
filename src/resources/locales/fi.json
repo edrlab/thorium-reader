@@ -308,6 +308,10 @@
       "Color": "Väri",
       "addNote": "Lisää muistiinpano",
       "advancedMode": "Välitön tila (luo suoraan valinnasta)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Asetukset",
       "colors": {
         "bluegreen": "",
@@ -322,6 +326,7 @@
       "filter": {
         "all": "",
         "filterByColor": "",
+        "filterByCreator": "",
         "filterByDrawtype": "",
         "filterByTag": "",
         "filterOptions": "",

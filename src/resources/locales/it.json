@@ -308,6 +308,10 @@
       "Color": "Colore",
       "addNote": "Annotare",
       "advancedMode": "Modalità istantanea (creazione automatica dopo la selezione)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Opzioni",
       "colors": {
         "bluegreen": "",
@@ -322,6 +326,7 @@
       "filter": {
         "all": "",
         "filterByColor": "",
+        "filterByCreator": "",
         "filterByDrawtype": "",
         "filterByTag": "",
         "filterOptions": "",
