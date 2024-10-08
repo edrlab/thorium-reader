@@ -811,12 +811,12 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
         setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
     }
 
-    const meMyselfandI = useSelector((state: IReaderRootState) => state.creator);
+    const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
     const creatorList = annotationList.map(([,{creator}]) => creator).filter(v => v);
     const creatorSet = creatorList.reduce<Record<string, string>>((acc, {id, name}) => {
         if (!acc[id]) {
             if (!userNumber[id]) userNumber[id] = ObjectKeys(userNumber).length + 1;
-            return {...acc, [id]: (id !== meMyselfandI.id ? name : meMyselfandI.name) || `unknown${userNumber[id]}`};
+            return {...acc, [id]: (id !== creatorMyself.id ? name : creatorMyself.name) || `unknown${userNumber[id]}`};
         }
         return acc;
     }, {});

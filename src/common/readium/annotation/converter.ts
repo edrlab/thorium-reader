@@ -16,7 +16,7 @@ export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotatio
 
     const currentDate = new Date();
     const dateString: string = currentDate.toISOString();
-    const { uuid, color, locatorExtended: def, tags, drawType, comment } = annotation;
+    const { uuid, color, locatorExtended: def, tags, drawType, comment, creator } = annotation;
     const { selectionInfo, locator, headings, epubPage } = def;
     const { rawText, rawBefore, rawAfter } = selectionInfo || {};
     const { href } = locator;
@@ -39,11 +39,7 @@ export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotatio
             //   textDirection: "ltr",
             //   language: "fr",
         },
-        creator: { // TODO !!!
-            id: "urn:uuid:123TODO123",
-            type: "Organization",
-            name: "Thorium",
-        },
+        creator: creator ? {...creator} : undefined,
         target: {
             source: href || "",
             meta: {
