@@ -11,8 +11,8 @@ import addFormats from "ajv-formats";
 export interface IReadiumAnnotationModel {
     "@context": "http://www.w3.org/ns/anno.jsonld";
     id: string;
-    created?: string;
-    modified: string;
+    created: string;
+    modified?: string;
     type: "Annotation";
     creator: {
         id: string;
@@ -235,11 +235,11 @@ export const readiumAnnotationModelSetJSONSchema3 = {
                 },
                 "created": {
                     "type": "string",
-                    "nullable": true,
                     "format": "date-time",
                 },
                 "modified": {
                     "type": "string",
+                    "nullable": true,
                     "format": "date-time",
                 },
                 "type": {
@@ -450,7 +450,7 @@ export function isIReadiumAnnotationModelSet(data: any): data is IReadiumAnnotat
 
     const valid = ajv.validate(readiumAnnotationModelSetJSONSchema3, data);
 
-    __READIUM_ANNOTATION_AJV_ERRORS = JSON.stringify(ajv.errors, null, 2) || "";
+    __READIUM_ANNOTATION_AJV_ERRORS = ajv.errors.length ? JSON.stringify(ajv.errors, null, 2) : "";
 
     return valid;
 }

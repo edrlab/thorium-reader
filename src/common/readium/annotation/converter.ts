@@ -14,9 +14,7 @@ import { rgbToHex } from "readium-desktop/common/rgb";
 
 export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotationState): IReadiumAnnotationModel {
 
-    const currentDate = new Date();
-    const dateString: string = currentDate.toISOString();
-    const { uuid, color, locatorExtended: def, tags, drawType, comment, creator } = annotation;
+    const { uuid, color, locatorExtended: def, tags, drawType, comment, creator, created, modified } = annotation;
     const { selectionInfo, locator, headings, epubPage } = def;
     const { rawText, rawBefore, rawAfter } = selectionInfo || {};
     const { href } = locator;
@@ -26,8 +24,8 @@ export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotatio
     return {
         "@context": "http://www.w3.org/ns/anno.jsonld",
         id: uuid ? "urn:uuid:" + uuid : "",
-        created: dateString,
-        modified: dateString,
+        created: new Date(created).toISOString(),
+        modified: modified ? new Date(modified).toISOString() : undefined,
         type: "Annotation",
         body: {
             type: "TextualBody",

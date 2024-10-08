@@ -472,6 +472,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 drawType,
                 tags,
                 modified: (new Date()).getTime(),
+                created: annotation.created,
             },
         ));
         triggerEdition(false);

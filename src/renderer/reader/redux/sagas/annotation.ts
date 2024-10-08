@@ -110,8 +110,9 @@ function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, 
         tags,
         creator: {
             id: creator.id,
-            type: creator.type, // not used but required https://github.com/readium/annotations/?tab=readme-ov-file#11-creator
+            type: creator.type, // not used, only the id is used to target the self creator ,, but required in models : https://github.com/readium/annotations/?tab=readme-ov-file#11-creator
         },
+        created: (new Date()).getTime(),
     }));
 
     // sure! close the popover

@@ -26,6 +26,7 @@ export interface IAnnotationState {
     drawType: TDrawType;
     tags?: string[] | undefined;
     modified?: number;
+    created: number;
     creator?: IAnnotationCreator;
 }
 
