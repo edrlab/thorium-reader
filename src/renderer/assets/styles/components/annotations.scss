@@ -106,6 +106,10 @@
     border-radius: 5px;
     overflow-y: scroll;
 
+    .annotations_checkbox {
+      color: var(--color-primary);
+    }
+
     @include scrollbar_styling;
 
     &::-webkit-scrollbar-track {
