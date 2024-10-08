@@ -847,7 +847,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                 selectDrawtypesOptions.length : drawTypeArrayFilter.size) + ((creatorArrayFilter === "all") ?
                     selectCreatorOptions.length : creatorArrayFilter.size);
 
-    const annotationTitle = React.useRef<HTMLInputElement>(null);
+    const annotationTitleRef = React.useRef<HTMLInputElement>();
 
     return (
         <>
@@ -888,15 +888,6 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         </AlertDialog.Content>
                     </AlertDialog.Portal>
                 </AlertDialog.Root>
-                <button className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationList.length}
-                    onClick={() => {
-                        const annotations = annotationList.map(([, anno]) => anno);
-                        const contents = convertAnnotationListToReadiumAnnotationSet(annotations, publicationView);
-                        downloadAnnotationJSON(contents, "myAnnotationSet");
-                    }}
-                    title={__("catalog.exportAnnotation")}>
-                    <SVG svg={SaveIcon} />
-                </button>
                 <ImportAnnotationsDialog>
                     <button className={stylesAnnotations.annotations_filter_trigger_button}
                         onClick={() => {
@@ -917,29 +908,41 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2), padding: "15px 0"}}>
                             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
                             <form
-                            className={stylesAnnotations.annotationsTitle_form_container}
-                            onSubmit={async (e) => {
-                                e.preventDefault();
-                                const annotations = annotationList.map(([, anno]) => anno);
-                                const label = annotationTitle?.current.value || "Annotations_set";
-                                const contents = convertAnnotationListToReadiumAnnotationSet(annotations, publicationView, label);
-                                downloadAnnotationJSON(contents, label);
-                            }}
+                                className={stylesAnnotations.annotationsTitle_form_container}
                             >
                                 <p>{__("reader.annotations.annotationsExport.description")}</p>
                                 <div className={stylesInputs.form_group}>
                                     <label htmlFor="annotationsTitle">{__("reader.annotations.annotationsExport.title")}</label>
                                     <input
-                                    type="text"
-                                    name="annotationsTitle"
-                                    id="annotationsTitle"
-                                    ref={annotationTitle}
-                                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" />
+                                        type="text"
+                                        name="annotationsTitle"
+                                        id="annotationsTitle"
+                                        ref={annotationTitleRef}
+                                        className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" />
                                 </div>
-                                <button type="submit" className={stylesButtons.button_primary_blue}>
-                                    <SVG svg={SaveIcon} />
-                                    {__("catalog.export")}
-                                </button>
+                                <Popover.Close aria-label={__("catalog.export")} asChild>
+                                    <button type="submit" onClick={() => {
+                                        const annotations = annotationList.map(([, anno]) => {
+                                            const { creator } = anno;
+                                            if (creator?.id === creatorMyself.id) {
+                                                return { ...anno, creator: { ...creatorMyself } };
+                                            }
+                                            return anno;
+                                        });
+                                        const title = annotationTitleRef?.current.value || "myAnnotationsSet";
+                                        let label = title;
+                                        label = label.trim();
+                                        label = label.replace(/[^a-z0-9_-]/gi, "_");
+                                        label = label.replace(/^_+|_+$/g, ""); // leading and trailing underscore
+                                        label = label.replace(/^\./, ""); // remove dot start
+                                        label = label.toLowerCase();
+                                        const contents = convertAnnotationListToReadiumAnnotationSet(annotations, publicationView, title);
+                                        downloadAnnotationJSON(contents, label);
+                                    }} className={stylesButtons.button_primary_blue}>
+                                        <SVG svg={SaveIcon} />
+                                        {__("catalog.export")}
+                                    </button>
+                                </Popover.Close>
                             </form>
                         </Popover.Content>
                     </Popover.Portal>
@@ -952,7 +955,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         </button>
                     </Popover.Trigger>
                     <Popover.Portal>
-                        <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2)}}>
+                        <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2) }}>
                             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
                             <ListBox
                                 selectedKeys={sortType}
