@@ -27,6 +27,7 @@ import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
+import * as ImportIcon from "readium-desktop/renderer/assets/icons/import.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as BookmarkIcon from "readium-desktop/renderer/assets/icons/bookmarkMultiple-icon.svg";
@@ -74,7 +75,7 @@ import { Locator } from "@r2-shared-js/models/locator";
 import { ListBox, ListBoxItem, TextArea } from "react-aria-components";
 import { AnnotationEdit, annotationsColorsLight } from "./AnnotationEdit";
 import { IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { annotationActions, readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
@@ -98,6 +99,7 @@ import type { Selection } from "react-aria-components";
 import { rgbToHex } from "readium-desktop/common/rgb";
 import { IReadiumAnnotationModelSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { convertAnnotationListToReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/converter";
+import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/components/ImportAnnotationsDialog";
 
 
 
@@ -470,6 +472,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 drawType,
                 tags,
                 modified: (new Date()).getTime(),
+                created: annotation.created,
             },
         ));
         triggerEdition(false);
@@ -680,6 +683,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
     const [__] = useTranslator();
     const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
     const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
+    const winId = useSelector((state: IReaderRootState) => state.win.identifier);
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
 
     const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
@@ -808,12 +812,12 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
         setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
     }
 
-    const meMyselfandI = useSelector((state: IReaderRootState) => state.creator);
+    const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
     const creatorList = annotationList.map(([,{creator}]) => creator).filter(v => v);
     const creatorSet = creatorList.reduce<Record<string, string>>((acc, {id, name}) => {
         if (!acc[id]) {
             if (!userNumber[id]) userNumber[id] = ObjectKeys(userNumber).length + 1;
-            return {...acc, [id]: (id !== meMyselfandI.id ? name : meMyselfandI.name) || `unknown${userNumber[id]}`};
+            return {...acc, [id]: (id !== creatorMyself.id ? name : creatorMyself.name) || `unknown${userNumber[id]}`};
         }
         return acc;
     }, {});
@@ -844,7 +848,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                 selectDrawtypesOptions.length : drawTypeArrayFilter.size) + ((creatorArrayFilter === "all") ?
                     selectCreatorOptions.length : creatorArrayFilter.size);
 
-    const annotationTitle = React.useRef<HTMLInputElement>(null);
+    const annotationTitleRef = React.useRef<HTMLInputElement>();
 
     return (
         <>
@@ -885,6 +889,15 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         </AlertDialog.Content>
                     </AlertDialog.Portal>
                 </AlertDialog.Root>
+                <ImportAnnotationsDialog winId={winId}>
+                    <button className={stylesAnnotations.annotations_filter_trigger_button}
+                        onClick={() => {
+                            dispatch(annotationActions.importAnnotationSet.build(publicationView.identifier, winId));
+                        }}
+                        title={__("catalog.importAnnotation")}>
+                        <SVG svg={ImportIcon} />
+                    </button>
+                </ImportAnnotationsDialog>
                 <Popover.Root>
                     <Popover.Trigger asChild>
                         <button className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationList.length}
@@ -895,30 +908,45 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                     <Popover.Portal>
                         <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2), padding: "15px 0"}}>
                             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
-                            <form 
-                            className={stylesAnnotations.annotationsTitle_form_container}
-                            onSubmit={async (e) => {
-                                e.preventDefault();
-                                const annotations = annotationList.map(([, anno]) => anno);
-                                const label = annotationTitle?.current.value || "Annotations_set";
-                                const contents = convertAnnotationListToReadiumAnnotationSet(annotations, publicationView, label);
-                                downloadAnnotationJSON(contents, label);
-                            }}
+                            <form
+                                className={stylesAnnotations.annotationsTitle_form_container}
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                }}
                             >
                                 <p>{__("reader.annotations.annotationsExport.description")}</p>
                                 <div className={stylesInputs.form_group}>
                                     <label htmlFor="annotationsTitle">{__("reader.annotations.annotationsExport.title")}</label>
-                                    <input 
-                                    type="text"
-                                    name="annotationsTitle"
-                                    id="annotationsTitle"
-                                    ref={annotationTitle} 
-                                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" />
+                                    <input
+                                        type="text"
+                                        name="annotationsTitle"
+                                        id="annotationsTitle"
+                                        ref={annotationTitleRef}
+                                        className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" />
                                 </div>
-                                <button type="submit" className={stylesButtons.button_primary_blue}>
-                                    <SVG svg={SaveIcon} />
-                                    {__("catalog.export")}
-                                </button>
+                                <Popover.Close aria-label={__("catalog.export")} asChild>
+                                    <button type="submit" onClick={() => {
+                                        const annotations = annotationList.map(([, anno]) => {
+                                            const { creator } = anno;
+                                            if (creator?.id === creatorMyself.id) {
+                                                return { ...anno, creator: { ...creatorMyself, id: "urn:uuid:" + creatorMyself.id } };
+                                            }
+                                            return anno;
+                                        });
+                                        const title = annotationTitleRef?.current.value || "myAnnotationsSet";
+                                        let label = title;
+                                        label = label.trim();
+                                        label = label.replace(/[^a-z0-9_-]/gi, "_");
+                                        label = label.replace(/^_+|_+$/g, ""); // leading and trailing underscore
+                                        label = label.replace(/^\./, ""); // remove dot start
+                                        label = label.toLowerCase();
+                                        const contents = convertAnnotationListToReadiumAnnotationSet(annotations, publicationView, title);
+                                        downloadAnnotationJSON(contents, label);
+                                    }} className={stylesButtons.button_primary_blue}>
+                                        <SVG svg={SaveIcon} />
+                                        {__("catalog.export")}
+                                    </button>
+                                </Popover.Close>
                             </form>
                         </Popover.Content>
                     </Popover.Portal>
@@ -931,7 +959,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         </button>
                     </Popover.Trigger>
                     <Popover.Portal>
-                        <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2)}}>
+                        <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2) }}>
                             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
                             <ListBox
                                 selectedKeys={sortType}
@@ -942,19 +970,19 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                             >
                                 <ListBoxItem id="progression" key="progression" aria-label="progression" className={({ isFocused, isSelected }) =>
                                     classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
-                                style={{marginBottom: "5px"}}
-                                    >
+                                    style={{ marginBottom: "5px" }}
+                                >
                                     {__("reader.annotations.sorting.progression")}
                                 </ListBoxItem>
                                 <ListBoxItem id="lastCreated" key="lastCreated" aria-label="lastCreated" className={({ isFocused, isSelected }) =>
                                     classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
-                                style={{marginBottom: "5px"}}
-                                    >
+                                    style={{ marginBottom: "5px" }}
+                                >
                                     {__("reader.annotations.sorting.lastcreated")}
                                 </ListBoxItem>
                                 <ListBoxItem id="lastModified" key="lastModified" aria-label="lastModified" className={({ isFocused, isSelected }) =>
                                     classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
-                                    >
+                                >
                                     {__("reader.annotations.sorting.lastmodified")}
                                 </ListBoxItem>
                             </ListBox>

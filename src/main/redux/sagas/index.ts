@@ -35,6 +35,7 @@ import * as win from "./win";
 import * as telemetry from "./telemetry";
 import * as lcp from "./lcp";
 import * as catalog from "./catalog";
+import * as annotation from "./annotation";
 
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 
@@ -111,6 +112,9 @@ export function* rootSaga() {
 
     // LCP saga
     yield lcp.saga();
+
+    // Annotation saga
+    yield annotation.saga();
 
     // get/set catalog in library win
     yield catalog.saga();

@@ -77,6 +77,7 @@
     "export": "Tallenna nimellä",
     "exportAnnotation": "",
     "format": "Formaatti",
+    "importAnnotation": "",
     "lang": "Kieli",
     "lastRead": "Luettu viimeksi",
     "moreInfo": "Tietoa julkaisusta",

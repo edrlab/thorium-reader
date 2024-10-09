@@ -77,6 +77,7 @@
     "export": "Save as",
     "exportAnnotation": "Save annotation as",
     "format": "Format",
+    "importAnnotation": "Import annotation",
     "lang": "Language",
     "lastRead": "Last Read",
     "moreInfo": "Publication Details",

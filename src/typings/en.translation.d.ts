@@ -129,6 +129,7 @@ declare namespace typed_i18n {
   readonly "export": string,
   readonly "exportAnnotation": string,
   readonly "format": string,
+  readonly "importAnnotation": string,
   readonly "lang": string,
   readonly "lastRead": string,
   readonly "moreInfo": string,
@@ -209,6 +210,7 @@ declare namespace typed_i18n {
   (_: "catalog.export", __?: {}): string;
   (_: "catalog.exportAnnotation", __?: {}): string;
   (_: "catalog.format", __?: {}): string;
+  (_: "catalog.importAnnotation", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.lastRead", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
@@ -720,10 +722,10 @@ declare namespace typed_i18n {
     readonly "filter": {
       readonly "all": string,
       readonly "filterByColor": string,
+      readonly "filterByCreator": string,
       readonly "filterByDrawtype": string,
       readonly "filterByTag": string,
       readonly "filterOptions": string,
-      readonly "filterByCreator": string,
       readonly "none": string
     },
     readonly "hide": string,
@@ -907,10 +909,10 @@ declare namespace typed_i18n {
   readonly "filter": {
     readonly "all": string,
     readonly "filterByColor": string,
+    readonly "filterByCreator": string,
     readonly "filterByDrawtype": string,
     readonly "filterByTag": string,
     readonly "filterOptions": string,
-    readonly "filterByCreator": string,
     readonly "none": string
   },
   readonly "hide": string,
@@ -960,18 +962,18 @@ declare namespace typed_i18n {
   (_: "reader.annotations.filter", __?: {}): {
   readonly "all": string,
   readonly "filterByColor": string,
+  readonly "filterByCreator": string,
   readonly "filterByDrawtype": string,
   readonly "filterByTag": string,
   readonly "filterOptions": string,
-  readonly "filterByCreator": string,
   readonly "none": string
 };
   (_: "reader.annotations.filter.all", __?: {}): string;
   (_: "reader.annotations.filter.filterByColor", __?: {}): string;
+  (_: "reader.annotations.filter.filterByCreator", __?: {}): string;
   (_: "reader.annotations.filter.filterByDrawtype", __?: {}): string;
   (_: "reader.annotations.filter.filterByTag", __?: {}): string;
   (_: "reader.annotations.filter.filterOptions", __?: {}): string;
-  (_: "reader.annotations.filter.filterByCreator", __?: {}): string;
   (_: "reader.annotations.filter.none", __?: {}): string;
   (_: "reader.annotations.hide", __?: {}): string;
   (_: "reader.annotations.highlight", __?: {}): string;

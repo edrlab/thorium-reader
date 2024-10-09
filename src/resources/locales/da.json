@@ -77,6 +77,7 @@
     "export": "Gem som",
     "exportAnnotation": "Gem noter som",
     "format": "Format",
+    "importAnnotation": "",
     "lang": "Sprog",
     "lastRead": "Senest læst",
     "moreInfo": "Bogdetaljer",
