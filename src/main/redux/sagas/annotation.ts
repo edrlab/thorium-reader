@@ -180,7 +180,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                                         ? {
                                             startContainerElementCssSelector: domRangeSelector.startContainerElementCssSelector,
                                             startContainerElementCFI: undefined,
-                                            startContainerChildTextNodeIndex: domRangeSelector.endContainerChildTextNodeIndex,
+                                            startContainerChildTextNodeIndex: domRangeSelector.startContainerChildTextNodeIndex,
                                             startOffset: domRangeSelector.startOffset,
                                             endContainerElementCssSelector: domRangeSelector.endContainerElementCssSelector,
                                             endContainerElementCFI: undefined,
@@ -203,7 +203,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                                 rangeInfo: {
                                     startContainerElementCssSelector: domRangeSelector.startContainerElementCssSelector,
                                     startContainerElementCFI: undefined,
-                                    startContainerChildTextNodeIndex: domRangeSelector.endContainerChildTextNodeIndex,
+                                    startContainerChildTextNodeIndex: domRangeSelector.startContainerChildTextNodeIndex,
                                     startOffset: domRangeSelector.startOffset,
                                     endContainerElementCssSelector: domRangeSelector.endContainerElementCssSelector,
                                     endContainerElementCFI: undefined,
