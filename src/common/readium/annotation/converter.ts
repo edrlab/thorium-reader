@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IReadiumAnnotationModel, IReadiumAnnotationModelSet } from "./annotationModel.type";
+import { IReadiumAnnotationModel, IReadiumAnnotationModelSet, isDomRangeSelector } from "./annotationModel.type";
 import { v4 as uuidv4 } from "uuid";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -15,11 +15,60 @@ import { rgbToHex } from "readium-desktop/common/rgb";
 export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotationState): IReadiumAnnotationModel {
 
     const { uuid, color, locatorExtended: def, tags, drawType, comment, creator, created, modified } = annotation;
-    const { selectionInfo, locator, headings, epubPage } = def;
-    const { rawText, rawBefore, rawAfter } = selectionInfo || {};
-    const { href } = locator;
+    const { locator, headings, epubPage } = def;
+    const { href, text, locations } = locator;
+    const { afterRaw, beforeRaw, highlightRaw } = text || {};
+    const { progression, rangeInfo } = locations;
+    const { startContainerChildTextNodeIndex,
+        startContainerElementCssSelector,
+        endContainerChildTextNodeIndex,
+        endContainerElementCssSelector,
+        startOffset,
+        endOffset,
+        cfi } = rangeInfo || {};
 
     const highlight: IReadiumAnnotationModel["body"]["highlight"] = drawType === "solid_background" ? "solid" : drawType;
+
+    const selector: IReadiumAnnotationModel["target"]["selector"] = [];
+
+    if (highlightRaw && afterRaw && beforeRaw) {
+        selector.push({
+            type: "TextQuoteSelector",
+            exact: highlightRaw,
+            prefix: beforeRaw,
+            suffix: afterRaw,
+        });
+    }
+    if (progression) {
+        selector.push({
+            type: "ProgressionSelector",
+            value: progression,
+        });
+    }
+    if (startContainerElementCssSelector &&
+        typeof startContainerChildTextNodeIndex === "number" &&
+        endContainerElementCssSelector &&
+        typeof endContainerChildTextNodeIndex === "number" &&
+        typeof startOffset === "number" &&
+        typeof endOffset === "number"
+    ) {
+        selector.push({
+            type: "DomRangeSelector",
+            startContainerElementCssSelector: startContainerElementCssSelector,
+            startContainerChildTextNodeIndex: startContainerChildTextNodeIndex,
+            startOffset: startOffset,
+            endContainerElementCssSelector: endContainerElementCssSelector,
+            endContainerChildTextNodeIndex: endContainerChildTextNodeIndex,
+            endOffset: endOffset,
+        });
+    }
+    if (cfi) {
+        selector.push({
+            type: "FragmentSelector",
+            conformsTo: "http://www.idpf.org/epub/linking/cfi/epub-cfi.html",
+            value: `epubcfi(${cfi || ""})`, // TODO not the complete cfi
+        });
+    }
 
     return {
         "@context": "http://www.w3.org/ns/anno.jsonld",
@@ -41,35 +90,10 @@ export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotatio
         target: {
             source: href || "",
             meta: {
-                headings: (headings || []).map(({ txt, level }) => ({ level, txt })),
+                headings: (headings || []).map(({ txt, level }) => ({ txt, level })),
                 page: epubPage || "",
             },
-            selector: [
-                {
-                    type: "TextQuoteSelector",
-                    exact: rawText || "",
-                    prefix: rawBefore || "",
-                    suffix: rawAfter || "",
-                },
-                {
-                    type: "ProgressionSelector",
-                    value: locator.locations?.progression || 0,
-                },
-                {
-                    type: "DomRangeSelector",
-                    startContainerElementCssSelector: selectionInfo?.rangeInfo?.startContainerElementCssSelector || "",
-                    startContainerChildTextNodeIndex: selectionInfo?.rangeInfo?.startContainerChildTextNodeIndex || 0,
-                    startOffset: selectionInfo?.rangeInfo?.startOffset || 0,
-                    endContainerElementCssSelector: selectionInfo?.rangeInfo?.endContainerElementCssSelector || "",
-                    endContainerChildTextNodeIndex: selectionInfo?.rangeInfo?.endContainerChildTextNodeIndex || 0,
-                    endOffset: selectionInfo?.rangeInfo?.endOffset || 0,
-                },
-                {
-                    type: "FragmentSelector",
-                    conformsTo: "http://www.idpf.org/epub/linking/cfi/epub-cfi.html",
-                    value: `epubcfi(${selectionInfo?.rangeInfo?.cfi || locator.locations?.cfi || ""})`,
-                },
-            ],
+            selector,
         },
     };
 }

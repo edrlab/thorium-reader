@@ -148,6 +148,14 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                     const progressionSelector = incommingAnnotation.target.selector.find(isProgressionSelector);
                     const domRangeSelector = incommingAnnotation.target.selector.find(isDomRangeSelector);
                     const fragmentSelector = incommingAnnotation.target.selector.find(isFragmentSelector);
+                    const { headings, page } = incommingAnnotation.target.meta || {};
+
+                    const cfi = fragmentSelector.conformsTo === "http://www.idpf.org/epub/linking/cfi/epub-cfi.html"
+                                        ? fragmentSelector.value.startsWith("epubcfi(")
+                                            ? fragmentSelector.value.slice("epubcfi(".length, -1)
+                                            : fragmentSelector.value
+                                        : undefined;
+                    const firstPartOfCfi = cfi.split(",")[0]; // TODO need to check cfi computation
 
                     const annotationParsed: IAnnotationState = {
                         uuid: incommingAnnotation.id.split("urn:uuid:")[1] || uuidv4(), // TODO : may not be an uuid format and maybe we should hash the uuid to get a unique identifier based on the original uuid
@@ -159,17 +167,13 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                                     beforeRaw: textQuoteSelector?.prefix,
                                     afterRaw: textQuoteSelector?.suffix,
                                     highlightRaw: textQuoteSelector?.exact,
-                                    after: textQuoteSelector?.prefix && cleanupStr(textQuoteSelector.prefix),
-                                    before: textQuoteSelector?.suffix && cleanupStr(textQuoteSelector.suffix),
-                                    highlight: textQuoteSelector?.exact && cleanupStr(textQuoteSelector.exact),
+                                    before: textQuoteSelector?.prefix ? cleanupStr(textQuoteSelector.prefix) : undefined,
+                                    after: textQuoteSelector?.suffix ? cleanupStr(textQuoteSelector.suffix) : undefined,
+                                    highlight: textQuoteSelector?.exact ? cleanupStr(textQuoteSelector.exact) : undefined,
                                 },
                                 locations: {
-                                    cfi: fragmentSelector.conformsTo === "http://www.idpf.org/epub/linking/cfi/epub-cfi.html"
-                                        ? fragmentSelector.value.startsWith("epubcfi(")
-                                            ? fragmentSelector.value.slice("epubcfi(".length, -1)
-                                            : fragmentSelector.value
-                                        : undefined,
-                                    cssSelector: undefined,
+                                    cfi: firstPartOfCfi,
+                                    cssSelector: domRangeSelector.startContainerElementCssSelector, // TODO just for debug, need to understand how to get this information if needed
                                     position: undefined,
                                     progression: progressionSelector?.value,
                                     rangeInfo: domRangeSelector
@@ -182,7 +186,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                                             endContainerElementCFI: undefined,
                                             endContainerChildTextNodeIndex: domRangeSelector.endContainerChildTextNodeIndex,
                                             endOffset: domRangeSelector.endOffset,
-                                            cfi: undefined,
+                                            cfi: cfi,
                                         }
                                         : undefined,
                                 },
@@ -193,26 +197,26 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                                 rawBefore: textQuoteSelector?.prefix,
                                 rawAfter: textQuoteSelector?.suffix,
                                 rawText: textQuoteSelector?.exact,
-                                cleanAfter: textQuoteSelector?.prefix && cleanupStr(textQuoteSelector.prefix),
-                                cleanBefore: textQuoteSelector?.suffix && cleanupStr(textQuoteSelector.suffix),
-                                cleanText: textQuoteSelector?.exact && cleanupStr(textQuoteSelector.exact),
+                                cleanAfter: textQuoteSelector?.prefix ? cleanupStr(textQuoteSelector.prefix) : undefined,
+                                cleanBefore: textQuoteSelector?.suffix ? cleanupStr(textQuoteSelector.suffix) : undefined,
+                                cleanText: textQuoteSelector?.exact ? cleanupStr(textQuoteSelector.exact) : undefined,
                                 rangeInfo: {
-                                    startContainerElementCssSelector: domRangeSelector?.startContainerElementCssSelector || "",
+                                    startContainerElementCssSelector: domRangeSelector.startContainerElementCssSelector,
                                     startContainerElementCFI: undefined,
-                                    startContainerChildTextNodeIndex: domRangeSelector?.endContainerChildTextNodeIndex || 0,
-                                    startOffset: domRangeSelector?.startOffset || 0,
-                                    endContainerElementCssSelector: domRangeSelector?.endContainerElementCssSelector || "",
+                                    startContainerChildTextNodeIndex: domRangeSelector.endContainerChildTextNodeIndex,
+                                    startOffset: domRangeSelector.startOffset,
+                                    endContainerElementCssSelector: domRangeSelector.endContainerElementCssSelector,
                                     endContainerElementCFI: undefined,
-                                    endContainerChildTextNodeIndex: domRangeSelector?.endContainerChildTextNodeIndex || 0,
-                                    endOffset: domRangeSelector?.endOffset || 0,
-                                    cfi: undefined,
+                                    endContainerChildTextNodeIndex: domRangeSelector.endContainerChildTextNodeIndex,
+                                    endOffset: domRangeSelector.endOffset,
+                                    cfi: cfi,
                                 },
                             },
-                            selectionIsNew: undefined,
-                            docInfo: undefined,
-                            epubPage: undefined,
+                            selectionIsNew: false,
+                            docInfo: undefined, // {isFixedLayout: false, isRightToLeft: false, isVerticalWritingMode: false},  // TODO how to complete these informations
+                            epubPage: page,
                             epubPageID: undefined,
-                            headings: undefined,
+                            headings: headings.map(({ txt, level }) => ({ id: undefined, txt, level })),
                             secondWebViewHref: undefined,
                         },
                         comment: incommingAnnotation.body.value,
@@ -257,7 +261,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 if (!annotationsParsedAllArray.length) {
 
                     debug("there are no annotations ready to be imported, exit");
-                    yield* put(toastActions.openRequest.build(ToastType.Success, `There are no annotations ready to be imported, aborting the importation`, readerPublicationIdentifier));
+                    yield* put(toastActions.openRequest.build(ToastType.Success, "There are no annotations ready to be imported, aborting the importation", readerPublicationIdentifier));
                     return;
 
                 }
