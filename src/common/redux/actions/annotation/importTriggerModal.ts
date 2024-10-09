@@ -17,14 +17,16 @@ export interface IReadiumAnnotationModelSetView extends Partial<Pick<IReadiumAnn
 export interface Payload extends IReadiumAnnotationModelSetView {
     annotationsList: IAnnotationState[]
     annotationsConflictList: IAnnotationState[];
+    winId?: string | undefined;
 }
-export function build(readiumAnnotationViewData: IReadiumAnnotationModelSetView, annotationListArray: IAnnotationState[], annotationsConflictListArray: IAnnotationState[]): Action<typeof ID, Payload> {
+export function build(readiumAnnotationViewData: IReadiumAnnotationModelSetView, annotationListArray: IAnnotationState[], annotationsConflictListArray: IAnnotationState[], winId?: string  ): Action<typeof ID, Payload> {
     return {
         type: ID,
         payload: {
             ...readiumAnnotationViewData,
             annotationsList: annotationListArray,
             annotationsConflictList: annotationsConflictListArray,
+            winId,
         },
     };
 }

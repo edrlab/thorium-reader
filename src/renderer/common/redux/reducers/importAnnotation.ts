@@ -17,6 +17,7 @@ const initialState: IImportAnnotationState = {
     title: "",
     generated: "",
     generator: undefined,
+    winId: undefined,
 };
 
 function importAnnotationReducer_(

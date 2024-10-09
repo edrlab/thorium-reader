@@ -75,7 +75,7 @@ const CatalogMenu: React.FC<{publicationView: PublicationView}> = (props) => {
                 publicationView={props.publicationView}
             />
             <div style={{ borderBottom: "1px solid var(--color-blue)" }}></div>
-            <ImportAnnotationsDialog>
+            <ImportAnnotationsDialog winId={undefined}>
                 <button
                     className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                     onClick={() => {

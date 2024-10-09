@@ -15,4 +15,5 @@ export interface IImportAnnotationState extends IReadiumAnnotationModelSetView {
     open: boolean;
     annotationsConflictList: IAnnotationState[]
     annotationsList: IAnnotationState[]
+    winId?: string | undefined;
 }

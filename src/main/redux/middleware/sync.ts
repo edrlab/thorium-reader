@@ -85,6 +85,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     creatorActions.set.ID,
 
     annotationActions.importTriggerModal.ID,
+    // annotationActions.importConfirmOrAbort.ID,
 
 ];
 

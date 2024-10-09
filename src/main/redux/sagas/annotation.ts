@@ -282,6 +282,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                     },
                     annotationsParsedNoConflictArray,
                     annotationsParsedConflictArray,
+                    winId,
                 ));
 
                 // wait the modal confirmation or abort

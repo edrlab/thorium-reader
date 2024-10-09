@@ -889,7 +889,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         </AlertDialog.Content>
                     </AlertDialog.Portal>
                 </AlertDialog.Root>
-                <ImportAnnotationsDialog>
+                <ImportAnnotationsDialog winId={winId}>
                     <button className={stylesAnnotations.annotations_filter_trigger_button}
                         onClick={() => {
                             dispatch(annotationActions.importAnnotationSet.build(publicationView.identifier, winId));

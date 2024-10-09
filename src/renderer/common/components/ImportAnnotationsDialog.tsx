@@ -17,11 +17,10 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
-export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{}>> = (props) => {
-
+export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{winId: string | undefined}>> = (props) => {
 
     const importAnnotationState = useSelector((state: IRendererCommonRootState) => state.importAnnotations);
-    const { open, about: about, title, generated, generator, annotationsList, annotationsConflictList } = importAnnotationState;
+    const { open, about: about, title, generated, generator, annotationsList, annotationsConflictList, winId } = importAnnotationState;
     const dispatch = useDispatch();
     const [__] = useTranslator();
 
@@ -38,7 +37,7 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{}>> = (p
     }, [open, dispatch]);
 
     return (
-        <Dialog.Root open={open} onOpenChange={(isOpen) => {
+        <Dialog.Root open={props.winId === winId && open} onOpenChange={(isOpen) => {
             if (isOpen) {
                 // nothing,  triggered by main process
             } else {
