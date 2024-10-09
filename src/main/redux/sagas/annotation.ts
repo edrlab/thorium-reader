@@ -149,6 +149,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                     const domRangeSelector = incommingAnnotation.target.selector.find(isDomRangeSelector);
                     const fragmentSelector = incommingAnnotation.target.selector.find(isFragmentSelector);
                     const { headings, page } = incommingAnnotation.target.meta || {};
+                    const creator = incommingAnnotation.creator;
 
                     const cfi = fragmentSelector.conformsTo === "http://www.idpf.org/epub/linking/cfi/epub-cfi.html"
                                         ? fragmentSelector.value.startsWith("epubcfi(")
@@ -226,6 +227,11 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                         tags: [fileName], // incommingAnnotation.body.tag ? [incommingAnnotation.body.tag] : [],
                         modified: incommingAnnotation.modified ? tryCatchSync(() => new Date(incommingAnnotation.modified).getTime(), fileName) : undefined,
                         created: tryCatchSync(() => new Date(incommingAnnotation.created).getTime(), fileName) || currentTimestamp,
+                        creator: creator ? {
+                            id: creator.id,
+                            type: creator.type,
+                            name: creator.name,
+                        } : undefined,
                     };
 
                     if (annotationParsed.modified > currentTimestamp) {
@@ -287,11 +293,11 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                     return;
                 }
 
-                const annotationsParsedBuffer = actionConfirmOrAbort.payload.state === "importNoConflict"
+                const annotationsParsedReadyToBeImportedArray = actionConfirmOrAbort.payload.state === "importNoConflict"
                     ? annotationsParsedNoConflictArray
-                    : annotationsParsedAllArray;
+                    : [...annotationsParsedNoConflictArray, ...annotationsParsedConflictArray];
 
-                debug("ready to send", annotationsParsedBuffer.length, "annotation(s) to the reader");
+                debug("ready to send", annotationsParsedReadyToBeImportedArray.length, "annotation(s) to the reader");
                 if (winSessionReaderStateArray.length) {
 
                     debug("send to", winSessionReaderStateArray.length, "readerWin with the same publicationId (", publicationIdentifier, ")");
@@ -300,8 +306,8 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
                         const readerWin = getReaderWindowFromDi(winSessionReaderState.identifier);
 
-                        for (const annotationParsed of annotationsParsedBuffer) {
-                            const a = ActionSerializer.serialize(readerActions.annotation.push.build(annotationParsed));
+                        for (const annotationParsedReadyToBeImported of annotationsParsedReadyToBeImportedArray) {
+                            const a = ActionSerializer.serialize(readerActions.annotation.push.build(annotationParsedReadyToBeImported));
                             try {
                                 readerWin.webContents.send(syncIpc.CHANNEL, {
                                     type: syncIpc.EventType.MainAction,
@@ -327,7 +333,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                     debug("Dispatch an action to save to the publicationIdentifier registry");
                     debug("new AnnotationList is appended to the persisted publication reduxState in main process");
 
-                    yield* put(winActions.registry.addAnnotationToReaderPublication.build(publicationIdentifier, annotationsParsedBuffer));
+                    yield* put(winActions.registry.addAnnotationToReaderPublication.build(publicationIdentifier, annotationsParsedReadyToBeImportedArray));
 
                 }
 

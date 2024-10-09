@@ -15,6 +15,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import classNames from "classnames";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{}>> = (props) => {
 
@@ -53,19 +54,19 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{}>> = (p
                 <Dialog.Content className={classNames(stylesModals.modal_dialog)}>
                     <Dialog.Title>Import Annotations</Dialog.Title>
 
-                    <div id="annotations-import">
+                    <form className={stylesModals.modal_dialog_body} onSubmit={(e) => e.preventDefault()}>
                         <fieldset>
                             <legend>Annotations Set Information</legend>
                             <ul>
-                                <li><strong>Title:</strong> { title }</li>
-                                <li><strong>Generated:</strong> { generated }</li>
+                                <li><strong>Title:</strong> {title}</li>
+                                <li><strong>Generated:</strong> {generated}</li>
                                 <li><strong>Generator:</strong></li>
                                 {generator ?
                                     <ul>
                                         <li><strong>ID:</strong> {generator?.id}</li>
                                         <li><strong>Type:</strong> {generator?.type}</li>
                                         <li><strong>Name:</strong> {generator?.name}</li>
-                                        <li><strong>Homepage:</strong> {generator?.homepage }</li>
+                                        <li><strong>Homepage:</strong> {generator?.homepage}</li>
                                     </ul>
                                     : <></>}
                             </ul>
@@ -77,7 +78,7 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{}>> = (p
                                 {about ? <>
                                     <li><strong>dc:identifier:</strong>
                                         <ul>
-                                            {about["dc:identifier"].map((v, i) => <li key={"dcid"+i}>{v}</li>)}
+                                            {about["dc:identifier"].map((v, i) => <li key={"dcid" + i}>{v}</li>)}
                                         </ul>
                                     </li>
                                     <li><strong>dc:format:</strong> {about["dc:format"]}</li>
@@ -98,7 +99,7 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{}>> = (p
                                 {
                                     annotationsList.map(({ uuid, locatorExtended, color, drawType, tags, modified, created, comment }, i) => {
                                         return (
-                                            <li key={"an"+i}>
+                                            <li key={"an" + i}>
                                                 <strong>UUID:</strong> {uuid}
                                                 <ul>
                                                     <li><strong>Locator:</strong> {locatorExtended?.locator?.href}</li>
@@ -122,7 +123,7 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{}>> = (p
                                 {
                                     annotationsConflictList.map(({ uuid, locatorExtended, color, drawType, tags, modified, created, comment }, i) => {
                                         return (
-                                            <li key={"ac"+i}>
+                                            <li key={"ac" + i}>
                                                 <strong>UUID:</strong> {uuid}
                                                 <ul>
                                                     <li><strong>Locator:</strong> {locatorExtended?.locator?.href}</li>
@@ -140,24 +141,20 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{}>> = (p
                                 }
                             </ul>
                         </fieldset>
-                    </div>
 
-                        <div style={{ display: "flex", marginTop: 24, justifyContent: "flex-end" }}>
+                        <div className={stylesModals.modal_dialog_footer}>
                             <Dialog.Close asChild>
-                                <button className="Button green" onClick={() => (closeState = "importAll")}>Import All</button>
+                                <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                            </Dialog.Close>
+                            <Dialog.Close asChild>
+                                <button className={stylesButtons.button_primary_blue} onClick={() => (closeState = "importAll")}>Import All</button>
+                            </Dialog.Close>
+                            <Dialog.Close asChild>
+                                <button className={stylesButtons.button_primary_blue} onClick={() => (closeState = "importNoConflict")}>Import No Conflict</button>
                             </Dialog.Close>
                         </div>
-                        <div style={{ display: "flex", marginTop: 24, justifyContent: "flex-end" }}>
-                            <Dialog.Close asChild>
-                            <button className="Button green" onClick={() => (closeState = "importNoConflict")}>Import No Conflict</button>
-                            </Dialog.Close>
-                        </div>
-                        <Dialog.Close asChild>
-                            <button aria-label="Close">
-                                Abort
-                            </button>
-                        </Dialog.Close>
-                    </Dialog.Content>
+                    </form>
+                </Dialog.Content>
                 </Dialog.Portal>
             </Dialog.Root >
     );

@@ -248,6 +248,7 @@ export const readiumAnnotationModelSetJSONSchema3 = {
                 },
                 "creator": {
                     "type": "object",
+                    "nullable": true,
                     "properties": {
                         "id": {
                             "type": "string",
@@ -266,6 +267,7 @@ export const readiumAnnotationModelSetJSONSchema3 = {
                 },
                 "body": {
                     "type": "object",
+                    "nullable": true,
                     "properties": {
                         "type": {
                             "type": "string",
@@ -356,7 +358,7 @@ export const readiumAnnotationModelSetJSONSchema3 = {
                     "required": ["source", "selector"],
                 },
             },
-            "required": ["@context", "id", "created", "type", "creator", "body", "target"],
+            "required": ["@context", "id", "created", "type", "target"],
         },
         "ITextQuoteSelector": {
             "type": "object",
