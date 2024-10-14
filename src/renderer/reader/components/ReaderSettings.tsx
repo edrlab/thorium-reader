@@ -13,7 +13,6 @@ import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/com
 
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import * as Tabs from "@radix-ui/react-tabs";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import classNames from "classnames";
 import * as GuearIcon from "readium-desktop/renderer/assets/icons/gear-icon.svg";
@@ -55,6 +54,8 @@ import { usePublisherReaderConfig, useReaderConfig, useReaderConfigAll, useSaveP
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { comparePublisherReaderConfig } from "../../../common/publisherConfig";
 import debounce from "debounce";
+import { TabPanel, Collection, TabList, Tab, Tabs } from "react-aria-components";
+import { TabHeader } from "readium-desktop/renderer/common/components/Tabs";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps {
@@ -69,37 +70,6 @@ interface IState {
     pdfView?: IPdfPlayerView | undefined;
     pdfCol?: IPdfPlayerColumn | undefined;
 }
-
-const TabTitle = ({value}: {value: string}) => {
-    let title: string;
-    const [__] = useTranslator();
-
-    switch (value) {
-        case "tab-divina":
-        title=__("reader.settings.disposition.title");
-        break;
-        case "tab-pdfZoom":
-            title=__("reader.settings.disposition.title");
-            break;
-        case "tab-text":
-            title=__("reader.settings.text");
-            break;
-        case "tab-spacing":
-            title=__("reader.settings.spacing");
-            break;
-        case "tab-display":
-            title=__("reader.settings.display");
-            break;
-        case "tab-audio":
-            title=__("reader.media-overlays.title");
-            break;
-    }
-    return (
-        <div className={stylesSettings.settings_tab_title}>
-            <h2>{title}</h2>
-        </div>
-    );
-};
 
 const Theme = () => {
     const [__] = useTranslator();
@@ -1240,33 +1210,33 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const options: Array<{ id: number, value: string, name: string, disabled: boolean, svg: {} }> = [];
 
     const TextTrigger =
-        <Tabs.Trigger value="tab-text" disabled={!overridePublisherDefault} title={__("reader.settings.text")} key={"tab-text"} data-value={"tab-text"}>
+        <Tab id="tab-text" key="tab-text" isDisabled={!overridePublisherDefault}>
             <SVG ariaHidden svg={TextAreaIcon} />
             <h3>{__("reader.settings.text")}</h3>
             {overridePublisherDefault ? <></> : <i>{__("reader.settings.disabled")}</i>}
-        </Tabs.Trigger>;
+        </Tab>;
     const optionTextItem = { id: 0, value: "tab-text", name: __("reader.settings.text"), disabled: !overridePublisherDefault, svg: TextAreaIcon };
 
     const DivinaTrigger =
-        <Tabs.Trigger value="tab-divina" disabled={false} title={__("reader.settings.disposition.title")} key={"tab-divina"}>
+        <Tab id="tab-divina" key="tab-divina" isDisabled={false}>
             <SVG ariaHidden svg={TextAreaIcon} />
             <h3>{__("reader.settings.disposition.title")}</h3>
-        </Tabs.Trigger>;
+        </Tab>;
     const optionDivinaItem = { id: 1, value: "tab-divina", name: __("reader.settings.disposition.title"), disabled: false, svg: TextAreaIcon };
 
     const SpacingTrigger =
-        <Tabs.Trigger value="tab-spacing" disabled={!overridePublisherDefault} key={"tab-spacing"} title={__("reader.settings.spacing")} data-value={"tab-spacing"}>
+        <Tab id="tab-spacing" key="tab-spacing" isDisabled={!overridePublisherDefault}>
             <SVG ariaHidden svg={LayoutIcon} />
             <h3>{__("reader.settings.spacing")}</h3>
             {overridePublisherDefault ? <></> : <i>{__("reader.settings.disabled")}</i>}
-        </Tabs.Trigger>;
+       </Tab>;
     const optionSpacingItem = { id: 2, value: "tab-spacing", name: __("reader.settings.spacing"), disabled: !overridePublisherDefault, svg: LayoutIcon };
 
     const DisplayTrigger =
-        <Tabs.Trigger value="tab-display" key={"tab-display"} title={__("reader.settings.display")}>
+        <Tab id="tab-display" key={"tab-display"} >
             <SVG ariaHidden svg={AlignLeftIcon} />
             <h3>{__("reader.settings.display")}</h3>
-        </Tabs.Trigger>;
+        </Tab>;
     const optionDisplayItem = { id: 3, value: "tab-display", name: __("reader.settings.display"), disabled: false, svg: AlignLeftIcon };
 
     // const AudioTrigger =
@@ -1277,24 +1247,23 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     // const optionAudioItem = { id: 4, value: "tab-audio", name: __("reader.media-overlays.title"), disabled: false, svg: VolumeUpIcon };
 
     const PdfZoomTrigger =
-        <Tabs.Trigger value="tab-pdfzoom" key={"tab-pdfzoom"} title={__("reader.settings.pdfZoom.title")}>
+        <Tab id="tab-pdfzoom" key={"tab-pdfzoom"}>
             <SVG ariaHidden svg={VolumeUpIcon} />
             <h3>{__("reader.settings.pdfZoom.title")}</h3>
-        </Tabs.Trigger>;
+        </Tab>;
     const optionPdfZoomItem = { id: 5, value: "tab-pdfzoom", name: __("reader.settings.pdfZoom.title"), disabled: false, svg: VolumeUpIcon };
 
     const PresetTrigger =
-        <Tabs.Trigger value="tab-preset" disabled={false} title={__("reader.settings.preset.title")} key="tab-preset" data-value="tab-preset">
+    <Tab id="tab-preset" key="tab-preset" isDisabled={false}>
             <SVG ariaHidden svg={GuearIcon} />
             <h3>Preset</h3>
-        </Tabs.Trigger>;
+        </Tab>;
     const optionPresetItem = { id: 6, value: "tab-preset", name: __("reader.settings.preset.title"), disabled: false, svg: GuearIcon };
-
+    
     const AllowCustomContainer = () =>
         <div className={stylesSettings.allowCustom} key={"allowCustom"}>
             <AllowCustom />
         </div>;
-
 
     if (isDivina) {
         sections.push(DivinaTrigger);
@@ -1311,7 +1280,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     if (isEpub) {
         // sections.push(AudioTrigger);
         // options.push(optionAudioItem);
-        sections.push(AllowCustomContainer());
+        // sections.push(AllowCustomContainer());
         sections.push(TextTrigger);
         options.push(optionTextItem);
         sections.push(SpacingTrigger);
@@ -1323,10 +1292,11 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     }
 
 
-    const setDockingModeFull = () => setDockingMode("full");
-    const setDockingModeLeftSide = () => setDockingMode("left");
-    const setDockingModeRightSide = () => setDockingMode("right");
-
+    const dockingModeActions = {
+        setDockingModeFull: () => setDockingMode("full"),
+        setDockingModeLeftSide: () => setDockingMode("left"),
+        setDockingModeRightSide: () => setDockingMode("right"),
+      };
     const optionSelected = options.find(({ value }) => value === tabValue)?.id;
     const optionDisabled = options.map(({ id, disabled }) => disabled ? id : -1).filter((v) => v > -1);
     const optionSelectedIsOnOptionDisabled = optionDisabled.includes(optionSelected);
@@ -1334,36 +1304,13 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         setTabValue("tab-display");
     }
 
+    console.log(sections);
 
     // console.log("RENDER");
 
     const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     SelectRef.displayName = "ComboBox";
 
-    const TabHeader = () => {
-        return (
-            dockedMode ? <></> :
-                <div key="modal-header" className={stylesSettings.close_button_div}>
-                    <TabTitle value={tabValue}/>
-                    <div>
-                    <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.svg.left")} onClick={setDockingModeLeftSide}>
-                        <SVG ariaHidden={true} svg={DockLeftIcon} />
-                    </button>
-                    <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.svg.right")} onClick={setDockingModeRightSide}>
-                        <SVG ariaHidden={true} svg={DockRightIcon} />
-                    </button>
-                    <button className={stylesButtons.button_transparency_icon} disabled aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
-                        <SVG ariaHidden={true} svg={DockModalIcon} />
-                    </button>
-                    <Dialog.Close asChild>
-                        <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                            <SVG ariaHidden={true} svg={QuitIcon} />
-                        </button>
-                    </Dialog.Close>
-                    </div>
-                </div>
-        );
-    };
     return (
         <div>
             {
@@ -1374,13 +1321,13 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                                 (dockedMode && isEpub) ? <AllowCustomContainer /> : <></>
                             }
                             <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls}>
-                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label={__("reader.svg.left")} onClick={setDockingModeLeftSide}>
+                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label={__("reader.svg.left")} onClick={dockingModeActions.setDockingModeLeftSide}>
                                     <SVG ariaHidden={true} svg={DockLeftIcon} />
                                 </button>
-                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label={__("reader.svg.right")} onClick={setDockingModeRightSide}>
+                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label={__("reader.svg.right")} onClick={dockingModeActions.setDockingModeRightSide}>
                                     <SVG ariaHidden={true} svg={DockRightIcon} />
                                 </button>
-                                <button className={stylesButtons.button_transparency_icon} disabled={false} aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
+                                <button className={stylesButtons.button_transparency_icon} disabled={false} aria-label={__("reader.settings.column.auto")} onClick={dockingModeActions.setDockingModeFull}>
                                     <SVG ariaHidden={true} svg={DockModalIcon} />
                                 </button>
 
@@ -1432,58 +1379,62 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                     </>
                     : <></>
             }
-            <Tabs.Root value={tabValue} defaultValue={tabValue} onValueChange={dockedMode ? null : setTabValue} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
-                {
-                    dockedMode ? <></> :
-                        <Tabs.List ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
+
+
+            <Tabs orientation="vertical" className={stylesSettings.settings_container}>
+                {dockedMode ? <></> :
+                    <>
+                        <TabList ref={tabModeRef}  className={stylesSettings.settings_tabslist}>
                             {sections}
-                        </Tabs.List>
-                }
-                <div className={stylesSettings.settings_content}
-                    style={{ marginTop: dockedMode && "0" }}>
-                    <Tabs.Content value="tab-divina" tabIndex={-1} id="readerSettings_tabs-tab-divina" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <TabHeader />
-                        <div className={stylesSettings.settings_tab}>
-                            <DivinaSetReadingMode handleDivinaReadingMode={handleDivinaReadingMode} divinaReadingMode={divinaReadingMode} divinaReadingModeSupported={divinaReadingModeSupported} />
-                        </div>
-                    </Tabs.Content>
-                    <Tabs.Content value="tab-pdfzoom" tabIndex={-1} id="readerSettings_tabs-tab-pdfzoom" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <TabHeader />
-                        <div className={stylesSettings.settings_tab}>
-                            <PdfZoom pdfScale={pdfState.pdfScale} pdfView={pdfState.pdfView} />
-                        </div>
-                    </Tabs.Content>
-                    <Tabs.Content value="tab-text" tabIndex={-1} id="readerSettings_tabs-tab-text" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <TabHeader />
-                        <div className={classNames(stylesSettings.settings_tab, stylesSettings.settings_reading_text, stylesSettings.section)}>
-                            <FontSize />
-                            <FontFamily />
-                        </div>
-                    </Tabs.Content>
-                    <Tabs.Content value="tab-spacing" tabIndex={-1} id="readerSettings_tabs-tab-spacing" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <TabHeader />
-                        <div className={stylesSettings.settings_tab}>
-                            <ReadingSpacing />
-                        </div>
-                    </Tabs.Content>
-                    <Tabs.Content value="tab-display" tabIndex={-1} id="readerSettings_tabs-tab-display" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <TabHeader />
-                        <section className={stylesSettings.settings_tab}>
-                            {isPdf ? <></> : <Theme />}
-                            {isPdf ? <></> : <ReadingDisplayLayout isFXL={props.isFXL} />}
-                            {isPdf ? <></> : <ReadingDisplayAlign />}
-                            <ReadingDisplayCol isPdf={props.isPdf} pdfCol={pdfState.pdfCol} />
-                            {isPdf ? <></> : <ReadingDisplayCheckboxSettings disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />}
-                        </section>
-                    </Tabs.Content>
-                    <Tabs.Content value="tab-preset" tabIndex={-1} id="readerSettings_tab-preset" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <TabHeader />
-                        <section className={stylesSettings.settings_tab}>
-                            <SaveResetApplyPreset />
-                        </section>
-                    </Tabs.Content>
+                        </TabList>
+                    </>
+                    }
+                <div className={stylesSettings.settings_content} style={{ marginTop: "70px" }}>
+                    <Collection>
+                        <TabPanel id="tab-divina" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                            <TabHeader dockingModeActions={dockingModeActions} title={__("reader.settings.disposition.title")} />
+                            <div className={stylesSettings.settings_tab}>
+                                <DivinaSetReadingMode handleDivinaReadingMode={handleDivinaReadingMode} divinaReadingMode={divinaReadingMode} divinaReadingModeSupported={divinaReadingModeSupported} />
+                            </div>
+                        </TabPanel>
+                        <TabPanel id="tab-pdfzoom" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                            <TabHeader dockingModeActions={dockingModeActions} title={__("reader.settings.pdfZoom.title")} />
+                            <div className={stylesSettings.settings_tab}>
+                                <PdfZoom pdfScale={pdfState.pdfScale} pdfView={pdfState.pdfView} />
+                            </div>
+                        </TabPanel>
+                        <TabPanel id="tab-text" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                            <TabHeader dockingModeActions={dockingModeActions} title={__("reader.settings.text")} />
+                            <div className={classNames(stylesSettings.settings_tab, stylesSettings.settings_reading_text, stylesSettings.section)}>
+                                <FontSize />
+                                <FontFamily />
+                            </div>
+                        </TabPanel>
+                        <TabPanel id="tab-spacing" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                            <TabHeader dockingModeActions={dockingModeActions} title={__("reader.settings.spacing")} />
+                            <div className={stylesSettings.settings_tab}>
+                                <ReadingSpacing />
+                            </div>
+                        </TabPanel>
+                        <TabPanel id="tab-display" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                            <TabHeader dockingModeActions={dockingModeActions} title={__("reader.settings.display")} />
+                            <section className={stylesSettings.settings_tab}>
+                                {isPdf ? <></> : <Theme />}
+                                {isPdf ? <></> : <ReadingDisplayLayout isFXL={props.isFXL} />}
+                                {isPdf ? <></> : <ReadingDisplayAlign />}
+                                <ReadingDisplayCol isPdf={props.isPdf} pdfCol={pdfState.pdfCol} />
+                                {isPdf ? <></> : <ReadingDisplayCheckboxSettings disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />}
+                            </section>
+                        </TabPanel>
+                        <TabPanel id="tab-preset" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                            <TabHeader dockingModeActions={dockingModeActions} title={__("reader.settings.preset.title")} />
+                            <section className={stylesSettings.settings_tab}>
+                                <SaveResetApplyPreset />
+                            </section>
+                        </TabPanel>
+                    </Collection>
                 </div>
-            </Tabs.Root>
+            </Tabs>
         </div>
     );
 };

@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+// import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
@@ -14,8 +14,8 @@ import * as stylesInput from "readium-desktop/renderer/assets/styles/components/
 
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import * as Tabs from "@radix-ui/react-tabs";
-import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
+// import * as Tabs from "@radix-ui/react-tabs";
+// import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import * as CogIcon from "readium-desktop/renderer/assets/icons/cog-icon.svg";
 import * as PaletteIcon from "readium-desktop/renderer/assets/icons/palette-icon.svg";
 import * as KeyReturnIcon from "readium-desktop/renderer/assets/icons/keyreturn-icon.svg";
@@ -44,17 +44,11 @@ import { IAnnotationCreator } from "readium-desktop/common/redux/states/creator"
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { ApiappHowDoesItWorkInfoBox } from "../dialog/ApiappAddForm";
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
+import { TabPanel, Collection } from "react-aria-components";
+import { TabHeader, TabsComponent } from "readium-desktop/renderer/common/components/Tabs";
+
 
 interface ISettingsProps {};
-
-const TabTitle = (props: React.PropsWithChildren<{title: string}>) => {
-    return (
-        <div className={stylesSettings.settings_tab_title}>
-            <h2>{props.title}</h2>
-            {props.children}
-        </div>
-    );
-};
 
 const LanguageSettings: React.FC<{}> = () => {
     const [__] = useTranslator();
@@ -293,25 +287,26 @@ const Themes = () => {
     );
 };
 
-const TabHeader = (props: React.PropsWithChildren<{title: string}>) => {
-    const [__] = useTranslator();
-    return (
-        <div key="modal-header" className={stylesSettings.close_button_div}>
-            <TabTitle title={props.title}>
-            {props.children}
-            </TabTitle>
-            <Dialog.Close asChild>
-                <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                    <SVG ariaHidden={true} svg={QuitIcon} />
-                </button>
-            </Dialog.Close>
-        </div>
-    );
-};
-
-
 export const Settings: React.FC<ISettingsProps> = () => {
     const [__] = useTranslator();
+
+    const tabs = [
+        {
+            id: "tab1",
+            title: `${__("settings.tabs.general")}`,
+            svg: CogIcon,
+        },
+        {
+            id: "tab2",
+            title: `${__("settings.tabs.appearance")}`,
+            svg: PaletteIcon,
+        },
+        {
+            id: "tab3",
+            title: `${__("settings.tabs.keyboardShortcuts")}`,
+            svg: KeyReturnIcon,
+        },
+    ];
 
     return <Dialog.Root>
         <Dialog.Trigger asChild>
@@ -323,56 +318,34 @@ export const Settings: React.FC<ISettingsProps> = () => {
         <Dialog.Portal>
             <div className={stylesModals.modal_dialog_overlay}></div>
             <Dialog.Content className={classNames(stylesModals.modal_dialog)}>
-                <Tabs.Root defaultValue="tab1" data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
-                    <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
-                        <Tabs.Trigger value="tab1">
-                            <SVG ariaHidden svg={CogIcon} />
-                            <h4>{__("settings.tabs.general")}</h4>
-                        </Tabs.Trigger>
-                        <Tabs.Trigger value="tab2">
-                            <SVG ariaHidden svg={PaletteIcon} />
-                            <h4>{__("settings.tabs.appearance")}</h4>
-                        </Tabs.Trigger>
-                        <Tabs.Trigger value="tab4">
-                            <SVG ariaHidden svg={KeyReturnIcon} />
-                            <h4>{__("settings.tabs.keyboardShortcuts")}</h4>
-                        </Tabs.Trigger>
-                    </Tabs.List>
-                    <div className={stylesSettings.settings_content} style={{marginTop: "70px"}}>
-                        <Tabs.Content value="tab1" title="General" tabIndex={-1}>
+                <TabsComponent tabs={tabs}>
+                    <Collection>
+                        <TabPanel id={"tab1"}>
                             <TabHeader title={__("settings.tabs.general")} />
-                            <div className={stylesSettings.settings_tab}>
-                                <LanguageSettings />
-                                <ConnectionSettings />
-                                <SaveSessionSettings />
-                                <ManageAccessToCatalogSettings />
-                                <SaveCreatorSettings />
-                            </div>
-                        </Tabs.Content>
-                        <Tabs.Content value="tab2" tabIndex={-1}>
+                                <div className={stylesSettings.settings_tab}>
+                                    <LanguageSettings />
+                                    <ConnectionSettings />
+                                    <SaveSessionSettings />
+                                    <ManageAccessToCatalogSettings />
+                                    <SaveCreatorSettings />
+                                </div>
+                            </TabPanel>
+                        <TabPanel id={"tab2"}>
                             <TabHeader title={__("settings.tabs.appearance")} />
                             <div className={stylesSettings.settings_tab}>
                                 <Themes />
                             </div>
-                        </Tabs.Content>
-                        <Tabs.Content value="tab4" tabIndex={-1}>
+                        </TabPanel>
+                        <TabPanel id={"tab3"}>
                             <TabHeader title={__("settings.tabs.keyboardShortcuts")}>
                                 <AdvancedTrigger />
                             </TabHeader>
                             <div className={stylesSettings.settings_tab}>
                                 <KeyboardSettings />
                             </div>
-                        </Tabs.Content>
-                    </div>
-                </Tabs.Root>
-
-                {/* <div className={stylesSettings.close_button_div}>
-                    <Dialog.Close asChild>
-                        <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                            <SVG ariaHidden={true} svg={QuitIcon} />
-                        </button>
-                    </Dialog.Close>
-                </div> */}
+                            </TabPanel>
+                    </Collection>
+                </TabsComponent>
             </Dialog.Content>
         </Dialog.Portal>
     </Dialog.Root>;

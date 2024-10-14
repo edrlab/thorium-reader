@@ -116,7 +116,7 @@ $setting_color: var(--color-blue);
     background-color: var(--color-extralight-grey);
     gap: 10px;
 
-    button {
+    button, > div {
         height: 30px;
         transition: 200ms;
         // width: 80%;
@@ -149,7 +149,7 @@ $setting_color: var(--color-blue);
             }
         }
 
-        &[data-state="active"]{ 
+        &[data-state="active"], &[data-selected="true"]{ 
             color: $setting_color;
             background-color: $settings_bg;
             border: 1px solid $setting_color;
