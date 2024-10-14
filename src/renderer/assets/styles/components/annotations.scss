@@ -642,6 +642,13 @@
       justify-content: space-between;
       padding: 0 5px;
 
+      p {
+        padding-left: 0;
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
       >div {
         display: inherit;
         align-items: center;

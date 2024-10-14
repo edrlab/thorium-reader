@@ -53,6 +53,7 @@ import * as HighLightIcon from "readium-desktop/renderer/assets/icons/highlight-
 import * as UnderLineIcon from "readium-desktop/renderer/assets/icons/underline-icon.svg";
 import * as TextStrikeThroughtIcon from "readium-desktop/renderer/assets/icons/TextStrikethrough-icon.svg";
 import * as TextOutlineIcon from "readium-desktop/renderer/assets/icons/TextOutline-icon.svg";
+import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar-icon.svg";
 // import * as DuplicateIcon from "readium-desktop/renderer/assets/icons/duplicate-icon.svg";
 
 import * as Tabs from "@radix-ui/react-tabs";
@@ -449,6 +450,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     const tagName = tagsStringArray[0] || "";
     const dockedEditAnnotation = isEdited && dockedMode;
     const annotationColor = rgbToHex(annotation.color);
+    const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
@@ -491,6 +493,8 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     if (!uuid) {
         return <></>;
     }
+    
+    const creatorName = (annotation.creator?.id !== creatorMyself.id ? annotation.creator?.name : creatorMyself.name) || "";
 
     return (<div
         className={stylesAnnotations.annotations_line}
@@ -587,6 +591,14 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                     <SVG ariaHidden svg={BookOpenIcon} />
                     <p>{bprogression}</p>
                 </div>
+                {creatorName
+                ?
+                    <div>
+                        <SVG ariaHidden svg={AvatarIcon} />
+                        <p>{creatorName}</p>
+                    </div>
+                : <></>
+                }
             </div>
             <div className={stylesAnnotations.annotation_actions_buttons}>
                 <button
