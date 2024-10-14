@@ -457,9 +457,12 @@
         "title": "Zoom"
       },
       "preset": {
-        "apply": "Apply the preferred reading settings preset to the current reading settings",
-        "reset": "Reset preferred reading settings preset to the initial state",
-        "save": "Save the current reading settings to the preferred reading settings preset",
+        "apply": "Apply the preferred reading parameters",
+        "applyDetails": "Apply the preferred reading settings preset to the current book",
+        "reset": "Reset preferred reading settings",
+        "resetDetails": "Reset preferred reading settings preset and display choices for the app to the initial state",
+        "save": "Save the preferred reading parameters",
+        "saveDetails": "Save the modifications applied to the current book and display choices for the app. These parameters might be applied to other books, once open, by clikcing on the button below",
         "title": "Preset"
       },
       "preview": "Preview",

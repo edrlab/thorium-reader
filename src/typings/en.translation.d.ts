@@ -847,8 +847,11 @@ declare namespace typed_i18n {
     },
     readonly "preset": {
       readonly "apply": string,
+      readonly "applyDetails": string,
       readonly "reset": string,
+      readonly "resetDetails": string,
       readonly "save": string,
+      readonly "saveDetails": string,
       readonly "title": string
     },
     readonly "preview": string,
@@ -1162,8 +1165,11 @@ declare namespace typed_i18n {
   },
   readonly "preset": {
     readonly "apply": string,
+    readonly "applyDetails": string,
     readonly "reset": string,
+    readonly "resetDetails": string,
     readonly "save": string,
+    readonly "saveDetails": string,
     readonly "title": string
   },
   readonly "preview": string,
@@ -1248,13 +1254,19 @@ declare namespace typed_i18n {
   (_: "reader.settings.pdfZoom.title", __?: {}): string;
   (_: "reader.settings.preset", __?: {}): {
   readonly "apply": string,
+  readonly "applyDetails": string,
   readonly "reset": string,
+  readonly "resetDetails": string,
   readonly "save": string,
+  readonly "saveDetails": string,
   readonly "title": string
 };
   (_: "reader.settings.preset.apply", __?: {}): string;
+  (_: "reader.settings.preset.applyDetails", __?: {}): string;
   (_: "reader.settings.preset.reset", __?: {}): string;
+  (_: "reader.settings.preset.resetDetails", __?: {}): string;
   (_: "reader.settings.preset.save", __?: {}): string;
+  (_: "reader.settings.preset.saveDetails", __?: {}): string;
   (_: "reader.settings.preset.title", __?: {}): string;
   (_: "reader.settings.preview", __?: {}): string;
   (_: "reader.settings.reduceMotion", __?: {}): string;

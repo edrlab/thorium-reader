@@ -15,7 +15,10 @@ import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Tabs from "@radix-ui/react-tabs";
 import * as RadioGroup from "@radix-ui/react-radio-group";
-import classNames from "classnames";
+import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
+
+import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import * as GuearIcon from "readium-desktop/renderer/assets/icons/gear-icon.svg";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import * as TextAreaIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
@@ -30,15 +33,7 @@ import * as DockLeftIcon from "readium-desktop/renderer/assets/icons/dockleft-ic
 import * as DockRightIcon from "readium-desktop/renderer/assets/icons/dockright-icon.svg";
 import * as DockModalIcon from "readium-desktop/renderer/assets/icons/dockmodal-icon.svg";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
-import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
-import { IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../pdf/common/pdfReader.type";
-import { IReaderSettingsProps } from "./options-values";
-import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
-import { ReaderConfig, TTheme } from "readium-desktop/common/models/reader";
-import { FONT_LIST, FONT_LIST_WITH_JA } from "readium-desktop/utils/fontList";
-import { createOrGetPdfEventBus } from "../pdf/driver";
-import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
+import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import * as ResetIcon from "readium-desktop/renderer/assets/icons/clock-reverse-icon.svg";
@@ -46,6 +41,14 @@ import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-bold.svg";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as DefaultPageIcon from "readium-desktop/renderer/assets/icons/defaultPage-icon.svg";
+
+import classNames from "classnames";
+import { IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../pdf/common/pdfReader.type";
+import { IReaderSettingsProps } from "./options-values";
+import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { ReaderConfig, TTheme } from "readium-desktop/common/models/reader";
+import { FONT_LIST, FONT_LIST_WITH_JA } from "readium-desktop/utils/fontList";
+import { createOrGetPdfEventBus } from "../pdf/driver";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { readerLocalActionReader } from "../redux/actions";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
@@ -93,6 +96,9 @@ const TabTitle = ({value}: {value: string}) => {
         case "tab-audio":
             title=__("reader.media-overlays.title");
             break;
+            case "tab-preset":
+                title=__("reader.settings.preset.title");
+                break;
     }
     return (
         <div className={stylesSettings.settings_tab_title}>
@@ -1049,8 +1055,8 @@ const SaveResetApplyPreset = () => {
     const allowCustomCheckboxChecked = useSelector((state: IReaderRootState) => state.reader.allowCustomConfig.state);
     const publisherConfigOverrided = !comparePublisherReaderConfig(readerDefaultConfig, readerConfigInitialState);
 
-    const dockingMode = useReaderConfig("readerDockingMode");
-    const dockedMode = dockingMode !== "full";
+    // const dockingMode = useReaderConfig("readerDockingMode");
+    // const dockedMode = dockingMode !== "full";
 
     const cb = React.useCallback(() => {
 
@@ -1077,16 +1083,33 @@ const SaveResetApplyPreset = () => {
     return (
 
         <>
-            <button className={stylesButtons.button_nav_primary} style={{ width: dockedMode ? "98%" : "99%", padding: "10px", marginBottom: "10px" }} onClick={() => {
-                dispatch(readerActions.configSetDefault.build(readerConfig));
-            }}>{__("reader.settings.preset.save")}</button>
+            <div style={{marginBottom: "20px"}}>
+                <button className={stylesButtons.button_nav_primary} style={{marginBottom: "10px"}} onClick={() => {
+                    dispatch(readerActions.configSetDefault.build(readerConfig));
+                }}>
+                    <SVG ariaHidden={true} svg={SaveIcon} />
+                    {__("reader.settings.preset.save")}</button>
+                <p>{__("reader.settings.preset.saveDetails")}</p>
+            </div>
 
-            <button className={stylesButtons.button_nav_primary} style={{ width: dockedMode ? "98%" : "99%", padding: "10px", marginBottom: "10px" }} onClick={applyPreferredConfig}>{__("reader.settings.preset.apply")}</button>
+            <div style={{marginBottom: "20px"}}>
+                <button className={stylesButtons.button_nav_primary} style={{marginBottom: "10px"}} onClick={applyPreferredConfig}>
+                    <SVG ariaHidden={true} svg={DoubleCheckIcon} />
+                    {__("reader.settings.preset.apply")}
+                    </button>
+                <p>{__("reader.settings.preset.applyDetails")}</p>
+            </div>
 
-            <button className={stylesButtons.button_nav_primary} style={{ position: "absolute", bottom: "10px", width: dockedMode ? "83%" : "58%", padding: "10px" }} onClick={() => {
-                dispatch(readerActions.configSetDefault.build(readerConfigInitialState));
-                applyPreferredConfig();
-            }}>{__("reader.settings.preset.reset")}</button>
+            <div style={{ position: "absolute", bottom: "10px"}}>
+                <button className={stylesButtons.button_nav_primary} style={{marginBottom: "10px"}} onClick={() => {
+                    dispatch(readerActions.configSetDefault.build(readerConfigInitialState));
+                    applyPreferredConfig();
+                }}>
+                    <SVG ariaHidden={true} svg={ResetIcon} />
+                    {__("reader.settings.preset.reset")}
+                </button>
+                <p>{__("reader.settings.preset.resetDetails")}</p>
+            </div>
         </>
     );
 };
@@ -1286,7 +1309,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const PresetTrigger =
         <Tabs.Trigger value="tab-preset" disabled={false} title={__("reader.settings.preset.title")} key="tab-preset" data-value="tab-preset">
             <SVG ariaHidden svg={GuearIcon} />
-            <h3>Preset</h3>
+            <h3>{__("reader.settings.preset.title")}</h3>
         </Tabs.Trigger>;
     const optionPresetItem = { id: 6, value: "tab-preset", name: __("reader.settings.preset.title"), disabled: false, svg: GuearIcon };
 
@@ -1341,6 +1364,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     SelectRef.displayName = "ComboBox";
 
     const TabHeader = () => {
+
         return (
             dockedMode ? <></> :
                 <div key="modal-header" className={stylesSettings.close_button_div}>
