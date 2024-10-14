@@ -16,18 +16,14 @@ export interface IReadiumAnnotationModelSetView extends Partial<Pick<IReadiumAnn
 }
 export interface Payload extends IReadiumAnnotationModelSetView {
     annotationsList: IAnnotationState[]
-    annotationsConflictList: IAnnotationState[];
+    annotationsConflictListOlder: IAnnotationState[];
+    annotationsConflictListNewer: IAnnotationState[];
     winId?: string | undefined;
 }
-export function build(readiumAnnotationViewData: IReadiumAnnotationModelSetView, annotationListArray: IAnnotationState[], annotationsConflictListArray: IAnnotationState[], winId?: string  ): Action<typeof ID, Payload> {
+export function build(payload: Payload): Action<typeof ID, Payload> {
     return {
         type: ID,
-        payload: {
-            ...readiumAnnotationViewData,
-            annotationsList: annotationListArray,
-            annotationsConflictList: annotationsConflictListArray,
-            winId,
-        },
+        payload,
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

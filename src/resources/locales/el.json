@@ -124,6 +124,16 @@
     "update": "Επεξεργασία"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Ακύρωση",
     "deleteAnnotations": "",
     "deleteAnnotationsText": "",
@@ -171,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Η λήψη του {{- title}} απέτυχε: [{{- err}}]"
     },
