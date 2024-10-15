@@ -6,65 +6,86 @@
 // ==LICENSE-END==
 
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
-import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 
 import * as debug_ from "debug";
 import * as React from "react";
-import { I18nFunction } from "readium-desktop/common/services/translator";
 import { IOpdsTagView } from "readium-desktop/common/views/opds";
-import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
+import { TFormEvent } from "readium-desktop/typings/react";
 import SVG from "../../../SVG";
 import * as AddTagIcon from "readium-desktop/renderer/assets/icons/addTag-icon.svg";
-import classNames from "classnames";
 import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
+import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+import { connect } from "react-redux";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { TranslatorProps, withTranslator } from "../../../hoc/translator";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps {
+interface IProps extends ReturnType<typeof mapStateToProps>, TranslatorProps {
     pubId: string;
-    __: I18nFunction;
     tagArray: string[] | IOpdsTagView[];
     setTags: (tagsArray: string[]) => void;
 }
 
 interface IState {
-    newTagName: string;
+    tagName: string;
 }
 
 // Logger
 const debug = debug_("readium-desktop:renderer:common:publication-info:AddTag");
 debug("_");
 
-export default class AddTag extends React.Component<IProps, IState> {
+class AddTag extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
 
         this.state = {
-            newTagName: "",
+            tagName: "",
         };
     }
 
     public render() {
+
         const { __ } = this.props;
+        const tagsOptions = this.props.tags.filter((name) => !this.props.tagArray.includes(name as any)).map((v, i) => ({ id: i, value: i, name: v }));
 
         return (
             this.props.pubId
-                ? <form onSubmit={this.addTag}>
-                    <div className={stylesInputs.form_group}>
-                        <label>{__("catalog.tag")}</label>
-                        <SVG ariaHidden svg={TagIcon} />
-                        <input
-                            type="text"
-                            className={classNames(stylesTags.tag_inputs, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
-                            title={__("catalog.addTags")}
-                            // placeholder={__("catalog.addTags")}
-                            onChange={this.handleChangeName}
-                            value={this.state.newTagName}
-                        />
-                    </div>
-                    <button
+                ? <form onSubmit={this.addTag} style={{minWidth: "unset"}}>
+                    <ComboBox
+                        label={__("catalog.tag")}
+                        defaultItems={tagsOptions}
+                        defaultSelectedKey={
+                            tagsOptions.findIndex((tag) =>
+                                tag.name?.toLowerCase() === this.state.tagName.toLowerCase())
+                        }
+                        selectedKey={
+                            tagsOptions.findIndex((tag) =>
+                                tag.name?.toLowerCase() === this.state.tagName.toLowerCase())
+                        }
+                        onSelectionChange={(key) => {
+
+                            if (key === null) {
+                                // nothing
+                            } else {
+
+                                const found = tagsOptions.find((tag) => tag.id === key);
+                                if (found) {
+                                    this.setState({ tagName: found.name });
+                                }
+                            }
+                        }}
+                        svg={TagIcon}
+                        allowsCustomValue
+                        onInputChange={(v) => this.setState({ tagName: v })}
+                        inputValue={this.state.tagName}
+                        defaultInputValue={this.state.tagName}
+                        aria-labe={__("catalog.addTags")}
+                    >
+                        {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                    </ComboBox>
+                    <button style={{marginTop: "9px"}}
                         type="submit"
                         className={stylesButtons.button_secondary_blue}
                     >
@@ -81,9 +102,9 @@ export default class AddTag extends React.Component<IProps, IState> {
         const { tagArray } = this.props;
 
         const tags = Array.isArray(tagArray) ? tagArray.slice() : [];
-        const tagName = this.state.newTagName.trim().replace(/\s\s+/g, " ");
+        const tagName = this.state.tagName.trim().replace(/\s\s+/g, " ").toLowerCase();
 
-        this.setState({ newTagName: "" });
+        this.setState({ tagName: "" });
 
         if (tagName) {
 
@@ -108,9 +129,12 @@ export default class AddTag extends React.Component<IProps, IState> {
             this.props.setTags(tagsName);
         }
     };
-
-    private handleChangeName = (e: TChangeEventOnInput) => {
-        this.setState({ newTagName: e.target.value });
-    };
-
 }
+
+const mapStateToProps = (state: IRendererCommonRootState) => ({
+    tags: state.publication.tag,
+    locale: state.i18n.locale, // refresh
+});
+
+
+export default connect(mapStateToProps)(withTranslator(AddTag));

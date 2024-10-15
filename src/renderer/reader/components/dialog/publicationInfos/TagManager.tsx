@@ -91,7 +91,6 @@ export class TagManager extends React.Component<IProps> {
                 <AddTag
                     pubId={this.props.pubId}
                     tagArray={this.props.tagArray}
-                    __={__}
                     setTags={setTagsCb}
                 />
             </section>

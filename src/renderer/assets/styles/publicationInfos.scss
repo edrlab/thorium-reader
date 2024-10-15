@@ -91,7 +91,7 @@
         background-color: var(--color-extralight-grey);
         border: 1px solid var(--color-light-grey);
         border-radius: 6px;
-        
+
           .no_img_wrapper {
             height: 350px;
             width: 100%;
@@ -103,7 +103,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-        
+
             & .no_img {
               border: 1px black solid;
               width: 100%;
@@ -113,7 +113,7 @@
               flex-direction: column;
               justify-content: center;
               align-items: center;
-        
+
               & p {
                 word-break: break-all;
                 display: -webkit-inline-box;
@@ -123,7 +123,7 @@
                 text-align: center;
                 margin: 10px 5%;
                 color: var(--color-primary);
-        
+
                 &:not(:first-child) {
                   font-size: 90%;
                 }
@@ -145,7 +145,7 @@
         }
 
         button {
-            flex: 1 0 25%; 
+            flex: 1 0 25%;
             margin: 5px 0;
         }
     }
@@ -225,7 +225,6 @@
 
         button {
             width: fit-content;
-            min-width: 50px;
 
             svg {
                 fill: white;
