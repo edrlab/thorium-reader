@@ -198,7 +198,8 @@ class Header extends React.Component<IProps, undefined> {
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
     history: state.history,
-    locale: state.i18n.locale, // used for automatic refresh to force the rendering of header
+
+    locale: state.i18n.locale, // refresh
 });
 
 export default connect(mapStateToProps)(withTranslator(Header));

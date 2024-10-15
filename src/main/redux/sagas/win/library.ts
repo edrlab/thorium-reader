@@ -6,8 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { syncIpc, winIpc } from "readium-desktop/common/ipc";
-import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions";
+import { winIpc } from "readium-desktop/common/ipc";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import {
@@ -95,6 +94,8 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
     const state = yield* selectTyped((_state: RootState) => _state);
 
     const payload: Partial<ILibraryRootState> = {
+        i18n: state.i18n,
+        keyboard: state.keyboard,
         theme: state.theme,
         wizard: state.wizard,
         win: {
@@ -129,21 +130,23 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
     // TODO
     // will be replaced with preloaded state injection in Redux createStore.
 
-    // Send locale
-    webContents.send(syncIpc.CHANNEL, {
-        type: syncIpc.EventType.MainAction,
-        payload: {
-            action: i18nActions.setLocale.build(state.i18n.locale),
-        },
-    } as syncIpc.EventPayload);
+    // // Send locale
+    // webContents.send(syncIpc.CHANNEL, {
+    //     type: syncIpc.EventType.MainAction,
+    //     payload: {
+    //         action: i18nActions.setLocale.build(state.i18n.locale),
+    //         // useful ?
+    //         // need ot at least pass it in payload instead
+    //     },
+    // } as syncIpc.EventPayload);
 
-    // Send keyboard shortcuts
-    webContents.send(syncIpc.CHANNEL, {
-        type: syncIpc.EventType.MainAction,
-        payload: {
-            action: keyboardActions.setShortcuts.build(state.keyboard.shortcuts, false),
-        },
-    } as syncIpc.EventPayload);
+    // // Send keyboard shortcuts
+    // webContents.send(syncIpc.CHANNEL, {
+    //     type: syncIpc.EventType.MainAction,
+    //     payload: {
+    //         action: keyboardActions.setShortcuts.build(state.keyboard.shortcuts, false),
+    //     },
+    // } as syncIpc.EventPayload);
 
     // // Init network on window
     // let actionNet = null;
@@ -208,7 +211,7 @@ function* winClose(_action: winActions.library.closed.TAction) {
                 // const messageValue = yield* callTyped(
                 //     async () => {
 
-                //         const translator = diMainGet("translator");
+                //         const translator = getTranslator();
 
                 //         return dialog.showMessageBox(
                 //             library,

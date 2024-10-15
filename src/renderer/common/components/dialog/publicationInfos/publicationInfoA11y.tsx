@@ -16,15 +16,17 @@ import DOMPurify from "dompurify";
 import * as React from "react";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import { convertMultiLangStringToString } from "readium-desktop/renderer/common/language-string";
-import { TranslatorProps, withTranslator } from "../../hoc/translator";
 import isURL from "validator/lib/isURL";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { connect } from "react-redux";
+import { TranslatorProps, withTranslator } from "../../hoc/translator";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:publicationA11y");
 debug("_");
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends TranslatorProps {
+interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps> {
     publicationViewMaybeOpds: TPublication;
 }
 
@@ -108,7 +110,7 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
             if (!a11y_accessibilitySummary) return undefined;
 
             let textSanitize_a11y = "";
-            const [, text] = convertMultiLangStringToString(this.props.translator, a11y_accessibilitySummary);
+            const [, text] = convertMultiLangStringToString(a11y_accessibilitySummary, this.props.locale);
             if (text) {
                 textSanitize_a11y = DOMPurify.sanitize(text).replace(/font-size:/g, "font-sizexx:");
             }
@@ -249,4 +251,8 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
 
 }
 
-export default withTranslator(PublicationInfoA11y);
+const mapStateToProps = (state: IRendererCommonRootState) => ({
+    locale: state.i18n.locale, // refresh
+});
+
+export default connect(mapStateToProps)(withTranslator(PublicationInfoA11y));

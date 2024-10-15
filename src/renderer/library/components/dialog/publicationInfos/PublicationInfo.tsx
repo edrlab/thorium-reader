@@ -187,7 +187,6 @@ export const PublicationInfoOpdsWithRadixContent = React.forwardRef<HTMLDivEleme
 PublicationInfoOpdsWithRadixContent.displayName = "PublicationInfoOpdsWithRadixContent";
 
 const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPublication | undefined, closeDialog: () => void, isOpds?: boolean}) => {
-    const [, translator] = useTranslator(); // FIXME in reader.tsx
     const dispatch = useDispatch();
     const link = dispatchOpdsLink(dispatch);
     const location = useLocation();
@@ -218,7 +217,6 @@ const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPubl
             ControlComponent={controlsComponent}
             TagManagerComponent={TagManager}
             // coverZoom={coverZoom}
-            translator={translator}
             onClikLinkCb={
                 (_link) => () => link(
                         _link.link[0], location, _link.name)

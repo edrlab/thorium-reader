@@ -39,6 +39,7 @@ import { getOpdsRequestCustomProtocolEventChannel, getOpdsRequestMediaCustomProt
 import { initClientSecretToken } from "./apiapp";
 import { digestAuthentication } from "readium-desktop/utils/digest";
 import isURL from "validator/lib/isURL";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:auth";
@@ -809,8 +810,8 @@ const LoginIcon = `<svg width="9" height="9" viewBox="0 0 9 9" fill="currentColo
 // tslint:disable-next-line: max-line-length
 const htmlLoginTemplate = (
     urlToSubmit = "",
-    loginLabel = diMainGet("translator").translate("catalog.opds.auth.username"),
-    passLabel = diMainGet("translator").translate("catalog.opds.auth.password"),
+    loginLabel = getTranslator().translate("catalog.opds.auth.username"),
+    passLabel = getTranslator().translate("catalog.opds.auth.password"),
     title: string | undefined,
     logoUrl?: string,
     registerUrl?: string,
@@ -821,7 +822,7 @@ const htmlLoginTemplate = (
     realm?: string,
 ) => {
     if (!title) { // includes empty string
-        title = diMainGet("translator").translate("catalog.opds.auth.login");
+        title = getTranslator().translate("catalog.opds.auth.login");
     }
 
     return `
@@ -832,9 +833,9 @@ const htmlLoginTemplate = (
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-    
+
         <title>${title}</title>
-    
+
         <!-- Custom styles for this template -->
         <style>
         body {
@@ -848,7 +849,7 @@ const htmlLoginTemplate = (
                 align-items: center;
                 justify-content: center;
             }
-    
+
             .login {
                 display: flex;
                 align-items: center;
@@ -864,12 +865,12 @@ const htmlLoginTemplate = (
                 position: relative;
                 gap: 50px;
                 flex-wrap: wrap;
-    
+
                 @media only screen and (max-width: 1000px) {
                     flex-direction: column;
                 }
             }
-    
+
             .container {
                 display: flex;
                 flex-direction: column;
@@ -879,7 +880,7 @@ const htmlLoginTemplate = (
                 flex-wrap: wrap;
                 width: 100%;
             }
-    
+
             .presentation {
                 display: flex;
                 flex-direction: column;
@@ -887,7 +888,7 @@ const htmlLoginTemplate = (
                 justify-content: start;
                 width: 100%;
             }
-    
+
             .presentation h1 {
                 line-height: 40px;
                 font-size: 30px;
@@ -897,7 +898,7 @@ const htmlLoginTemplate = (
                 padding-right: 30px;
                 border-bottom: 1px solid #e5e5e5;
             }
-    
+
             .content_wrapper {
                 width: 100%;
                 display: flex;
@@ -916,7 +917,7 @@ const htmlLoginTemplate = (
                 align-items: start;
                 gap: 10px;
             }
-    
+
             .logo {
                 max-height: 200px;
                 display: flex;
@@ -924,7 +925,7 @@ const htmlLoginTemplate = (
                 align-items: center;
                 justify-content: center;
                 flex: 1;
-    
+
                 @media only screen and (max-width: 1000px) {
                     // display: none;
                     position: absolute;
@@ -939,7 +940,7 @@ const htmlLoginTemplate = (
                     display: none;
                 }
             }
-    
+
             .login form {
                 flex: 2;
                 border-bottom: 1px solid #e5e5e5;
@@ -954,7 +955,7 @@ const htmlLoginTemplate = (
                     align-items: start;
                 }
             }
-    
+
             .login p {
                 margin: 0;
                 position: relative;
@@ -967,7 +968,7 @@ const htmlLoginTemplate = (
             }
 
             .login p:has(input[name=password]):has(+ .register_button) {
-                margin: 10px 0 0; 
+                margin: 10px 0 0;
             }
 
             .login p:has(input[name=password]) {
@@ -990,18 +991,18 @@ const htmlLoginTemplate = (
                 top: 50%;
                 left: 20px;
             }
-    
+
             .login p:first-child {
                 margin-top: 0;
             }
-    
+
             .login input[type=text], .login input[type=password] {
                 width: 100%;
                 height: 35px;
                 border: 1px solid black;
                 border-radius: 5px;
             }
-    
+
             .login .submit {
                 text-align: right;
                 position: absolute;
@@ -1039,7 +1040,7 @@ const htmlLoginTemplate = (
                 fill: white;
                 transition: 200ms linear;
             }
-    
+
             .register_button {
                 display: flex;
                 align-items: center;
@@ -1050,12 +1051,12 @@ const htmlLoginTemplate = (
                 color: #1053C8;
                 margin: 5px 5px 10px;
             }
-    
+
             .register_button svg {
                 height: 12px;
                 fill: #1053C8;
             }
-    
+
             .help_links {
                 display: flex;
                 flex-direction: column;
@@ -1064,7 +1065,7 @@ const htmlLoginTemplate = (
                 gap: 10px;
                 width: fit-content;
                 position: relative;
-    
+
                 @media only screen and (max-width: 1000px) {
                     position: absolute;
                     flex-direction: row;
@@ -1072,30 +1073,30 @@ const htmlLoginTemplate = (
                     left: 10px;
                 }
             }
-    
+
             .help_links a {
                 color: #1053C8;
             }
-            
+
             .help_links a:visited {
                 color: #1053C8;
             }
-    
+
             :-moz-placeholder {
                 color: #c9c9c9 !important;
                 font-size: 13px;
             }
-    
+
             ::-webkit-input-placeholder {
                 color: #ccc;
                 font-size: 13px;
             }
-    
+
             input {
                 font-family: 'Lucida Grande', Tahoma, Verdana, sans-serif;
                 font-size: 14px;
             }
-    
+
             input[type=text], input[type=password] {
                 margin: 5px;
                 padding: 0 10px 0 25px;
@@ -1108,13 +1109,13 @@ const htmlLoginTemplate = (
                 border-radius: 2px;
                 -moz-outline-radius: 3px;
             }
-    
+
             input[type=text]:focus, input[type=password]:focus {
                 border-color: #1053C8;
                 outline-color: #1053C8;
                 outline-offset: 0;
             }
-    
+
             input[type=submit] {
                 padding: 0 18px;
                 height: 29px;
@@ -1133,12 +1134,12 @@ const htmlLoginTemplate = (
                 gap: 5px;
                 cursor: pointer;
             }
-    
+
             input[type=submit] > svg {
                 height: 15px;
                 fill: white;
             }
-    
+
             input[type=button] {
                 padding: 0 18px;
                 height: 29px;
@@ -1154,7 +1155,7 @@ const htmlLoginTemplate = (
                 transition: 200ms;
                 cursor: pointer;
             }
-    
+
             input[type=submit]:hover {
                 background: #ECF2FD;
                 border-color: #1053C8;
@@ -1164,17 +1165,17 @@ const htmlLoginTemplate = (
             input[type=submit]:hover + label svg {
                 fill: #1053C8;
             }
-    
+
             input[type=button]:hover {
                 background: white;
             }
-    
+
             .lt-ie9 input[type=text], .lt-ie9 input[type=password] {
                 line-height: 34px;
             }
         </style>
         </head>
-    
+
         <body class="text-center">
             <div class="login">
                 <div class="container">
@@ -1182,7 +1183,7 @@ const htmlLoginTemplate = (
                         <h1>${title}</h1>
                     </div>
                     <div class="content_wrapper">
-                    ${(logoUrl || help.length > 0) ? 
+                    ${(logoUrl || help.length > 0) ?
                         `<div class="content_informations">
                             ${logoUrl ? `<img class="logo" src="${logoUrl}" alt="login logo">` : ""}
                             <div class="help_links">
@@ -1205,16 +1206,16 @@ const htmlLoginTemplate = (
                             </p>
                             ${registerUrl ? `<a href="${registerUrl}" target="_blank" class="register_button">
                                 ${AddIcon}
-                                ${diMainGet("translator").translate("catalog.opds.auth.register")}
+                                ${getTranslator().translate("catalog.opds.auth.register")}
                             </a>` : ""}
                             <p><input hidden type="text" name="nonce" value="${nonce}"></p>
                             <p><input hidden type="text" name="qop" value="${qop}"></p>
                             <p><input hidden type="text" name="algorithm" value="${algorithm}"></p>
                             <p><input hidden type="text" name="realm" value="${realm}"></p>
                             <div class="submit">
-                                <input type="button" name="cancel" value="${diMainGet("translator").translate("catalog.opds.auth.cancel")}" onClick="window.location.href='${urlToSubmit}';">
+                                <input type="button" name="cancel" value="${getTranslator().translate("catalog.opds.auth.cancel")}" onClick="window.location.href='${urlToSubmit}';">
                                 <div class="submit_button">
-                                    <input type="submit" name="commit" value="${diMainGet("translator").translate("catalog.opds.auth.login")}">
+                                    <input type="submit" name="commit" value="${getTranslator().translate("catalog.opds.auth.login")}">
                                     <label for="commit">${LoginIcon}</label>
                                 </div>
                             </div>
@@ -1223,6 +1224,6 @@ const htmlLoginTemplate = (
                 </div>
             </div>
         </body>
-    
+
     </html>`;
 };

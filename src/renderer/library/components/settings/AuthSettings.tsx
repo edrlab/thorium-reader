@@ -55,7 +55,7 @@ class AuthSettings extends React.Component<IProps> {
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
-        locale: state.i18n.locale,
+        locale: state.i18n.locale, // refresh
     };
 };
 

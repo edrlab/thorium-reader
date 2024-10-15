@@ -6,9 +6,9 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { diReaderGet } from "readium-desktop/renderer/reader/di";
 
 import { ISearchState } from "readium-desktop/common/redux/states/renderer/search";
+import { getStore } from "readium-desktop/renderer/reader/createStore";
 
 export const ID = "READER_SEARCH_FOCUS";
 
@@ -19,7 +19,7 @@ export interface Payload extends Partial<ISearchState> {
 export function build(focusUUId: ISearchState["newFocusUUId"]):
     Action<typeof ID, Payload> {
 
-    const store = diReaderGet("store");
+    const store = getStore();
     const { newFocusUUId: oldFocusUUId } = store.getState().search;
     return {
         type: ID,

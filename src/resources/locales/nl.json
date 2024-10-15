@@ -77,6 +77,7 @@
     "export": "Exporteer",
     "exportAnnotation": "",
     "format": "Formaat",
+    "importAnnotation": "",
     "lang": "Taal",
     "lastRead": "Laatst gelezen",
     "moreInfo": "Meer Informatie",
@@ -123,6 +124,16 @@
     "update": "Wijzig"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Annuleer",
     "deleteAnnotations": "",
     "deleteAnnotationsText": "",
@@ -170,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Het downloaden van{{- title}} is mislukt: [{{- err}}]"
     },
@@ -307,6 +326,10 @@
       "Color": "Kleur",
       "addNote": "Annoteren",
       "advancedMode": "Instantmodus (automatisch maken na selectie)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Opties",
       "colors": {
         "bluegreen": "",
@@ -321,6 +344,7 @@
       "filter": {
         "all": "",
         "filterByColor": "",
+        "filterByCreator": "",
         "filterByDrawtype": "",
         "filterByTag": "",
         "filterOptions": "",

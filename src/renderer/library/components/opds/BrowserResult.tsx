@@ -161,7 +161,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                             : <></>
                                         }
                                         {
-                                            group.publications?.length > 1 ? 
+                                            group.publications?.length > 1 ?
                                                     <Slider
                                                         content={group.publications.map((pub, pubId) =>
                                                             <PublicationCard
@@ -210,6 +210,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
         browserData: apiBrowseData?.data,
         location: state.router.location,
         level: state.opds.browser.breadcrumb.length + 1,
+        locale: state.i18n.locale, // refresh
     };
 };
 

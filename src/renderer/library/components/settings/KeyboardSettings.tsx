@@ -570,7 +570,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
         keyboardShortcuts: state.keyboard.shortcuts,
-        locale: state.i18n.locale,
+        locale: state.i18n.locale, // refresh
     };
 };
 

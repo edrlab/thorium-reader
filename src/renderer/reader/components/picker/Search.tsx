@@ -235,6 +235,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         load: state.search.state === "busy",
         notFound: !state.search.foundArray?.length,
         foundNumber: state.search.foundArray?.length || 0,
+        locale: state.i18n.locale, // refresh
     };
 };
 

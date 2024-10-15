@@ -77,6 +77,7 @@
     "export": "Экспорт",
     "exportAnnotation": "",
     "format": "Формат",
+    "importAnnotation": "",
     "lang": "Язык",
     "lastRead": "Последнее чтение",
     "moreInfo": "Дополнительные сведения",
@@ -123,6 +124,16 @@
     "update": "Изменить"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Отменить",
     "deleteAnnotations": "",
     "deleteAnnotationsText": "",
@@ -170,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Загрузка {{- title}} не удалась: [{{- err}}]"
     },
@@ -307,6 +326,10 @@
       "Color": "Цвет",
       "addNote": "Комментировать",
       "advancedMode": "Мгновенный режим (автоматическое создание после выбора)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Параметры",
       "colors": {
         "bluegreen": "",
@@ -321,6 +344,7 @@
       "filter": {
         "all": "",
         "filterByColor": "",
+        "filterByCreator": "",
         "filterByDrawtype": "",
         "filterByTag": "",
         "filterOptions": "",

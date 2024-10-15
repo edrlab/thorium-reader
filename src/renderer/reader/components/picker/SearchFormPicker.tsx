@@ -122,7 +122,7 @@ class SearchFormPicker extends React.Component<IProps, IState> {
             </form>
         );
     }
-    
+
     private focusoutSearch = () =>  {
         this.inputRef?.current?.focus();
         setTimeout(() => this.inputRef?.current?.removeEventListener("focusout", this.focusoutSearch), 1000);
@@ -161,6 +161,7 @@ class SearchFormPicker extends React.Component<IProps, IState> {
 const mapStateToProps = (state: IReaderRootState) => ({
     keyboardShortcuts: state.keyboard.shortcuts,
     textSearch: state.search.textSearch,
+    locale: state.i18n.locale, // refresh
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => ({

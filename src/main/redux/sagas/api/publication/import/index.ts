@@ -21,6 +21,7 @@ import { importFromLinkService } from "./importFromLink";
 import { importFromStringService } from "./importFromString";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/import");
@@ -34,7 +35,7 @@ export function* importFromLink(
     pub?: IOpdsPublicationView,
 ): SagaGenerator<PublicationView | undefined> {
 
-    const translate = diMainGet("translator").translate;
+    const translate = getTranslator().translate;
 
     try {
 
@@ -122,7 +123,7 @@ export function* importFromFs(
         (fpath: string) =>
             callTyped(function*(): SagaGenerator<PublicationView> {
 
-                const translate = diMainGet("translator").translate;
+                const translate = getTranslator().translate;
 
                 try {
 

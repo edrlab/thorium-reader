@@ -322,6 +322,7 @@ const mapStateToProps = (state: ILibraryRootState, props: IBaseProps) => {
                 ),
             );
         },
+        locale: state.i18n.locale, // refresh
     };
 };
 

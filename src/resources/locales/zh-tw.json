@@ -77,6 +77,7 @@
     "export": "匯出",
     "exportAnnotation": "",
     "format": "格式",
+    "importAnnotation": "",
     "lang": "語言",
     "lastRead": "最後閱讀",
     "moreInfo": "更多訊息",
@@ -123,6 +124,16 @@
     "update": "編輯"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "取消",
     "deleteAnnotations": "",
     "deleteAnnotationsText": "",
@@ -170,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "下載 [{{- title}}] 失敗：[{{- err}}]"
     },
@@ -307,6 +326,10 @@
       "Color": "顏色",
       "addNote": "註解",
       "advancedMode": "即時模式（選擇後自動建立）",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "選項",
       "colors": {
         "bluegreen": "",
@@ -321,6 +344,7 @@
       "filter": {
         "all": "",
         "filterByColor": "",
+        "filterByCreator": "",
         "filterByDrawtype": "",
         "filterByTag": "",
         "filterOptions": "",
