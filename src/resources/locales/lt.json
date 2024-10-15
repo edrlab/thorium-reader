@@ -77,6 +77,7 @@
     "export": "Eksportuoti",
     "exportAnnotation": "",
     "format": "Formatas",
+    "importAnnotation": "",
     "lang": "Kalba",
     "lastRead": "Pask. kartą skaityta",
     "moreInfo": "Daugiau informacijos",
@@ -123,6 +124,16 @@
     "update": "Keisti"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Nutraukti",
     "deleteAnnotations": "",
     "deleteAnnotationsText": "",
@@ -170,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "{{- title}} atsiuntimas nepavyko: [{{- err}}]"
     },
@@ -307,6 +326,10 @@
       "Color": "Spalva",
       "addNote": "Pridėti pastabą",
       "advancedMode": "Momentinis režimas (pažymėjus sukurti automatiškai)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Parinktys",
       "colors": {
         "bluegreen": "",
@@ -321,6 +344,7 @@
       "filter": {
         "all": "",
         "filterByColor": "",
+        "filterByCreator": "",
         "filterByDrawtype": "",
         "filterByTag": "",
         "filterOptions": "",

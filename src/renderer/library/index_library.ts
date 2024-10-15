@@ -78,6 +78,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
                 settings: data.payload.settings,
                 publication: data.payload.publication,
                 session: data.payload.session,
+                creator: data.payload.creator,
             };
             const [store, _reduxHistory] = createStoreFromDi(preloadedState);
             const locale = store.getState().i18n.locale;

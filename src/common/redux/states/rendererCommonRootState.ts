@@ -10,10 +10,12 @@ import { ToastState } from "readium-desktop/common/redux/states/toast";
 import { ApiState } from "readium-desktop/common/redux/states/api";
 import { WinState } from "readium-desktop/common/redux/states/win";
 import { ICommonRootState } from "./commonRootState";
+import { IImportAnnotationState } from "./importAnnotation";
 
 export interface IRendererCommonRootState extends ICommonRootState {
     api: ApiState<any>;
     win: WinState;
     dialog: DialogState;
     toast: ToastState;
+    importAnnotations: IImportAnnotationState,
 }

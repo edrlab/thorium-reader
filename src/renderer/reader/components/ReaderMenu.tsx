@@ -27,6 +27,7 @@ import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
+import * as ImportIcon from "readium-desktop/renderer/assets/icons/import.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as BookmarkIcon from "readium-desktop/renderer/assets/icons/bookmarkMultiple-icon.svg";
@@ -98,6 +99,7 @@ import type { Selection } from "react-aria-components";
 import { rgbToHex } from "readium-desktop/common/rgb";
 import { IReadiumAnnotationModelSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { convertAnnotationListToReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/converter";
+import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/components/ImportAnnotationsDialog";
 
 
 
@@ -470,6 +472,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 drawType,
                 tags,
                 modified: (new Date()).getTime(),
+                created: annotation.created,
             },
         ));
         triggerEdition(false);
@@ -671,56 +674,62 @@ const downloadAnnotationJSON = (contents: IReadiumAnnotationModelSet, filename: 
     URL.revokeObjectURL(jsonObjectUrl);
 };
 
+const userNumber: Record<string, number> = {};
+
 const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number, popoverBoundary: HTMLDivElement } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
     const { goToLocator, annotationUUIDFocused, resetAnnotationUUID, popoverBoundary } = props;
 
     const [__] = useTranslator();
-    const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
+    const annotationsListAll = useSelector((state: IReaderRootState) => state.reader.annotation);
     const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
+    const winId = useSelector((state: IReaderRootState) => state.win.identifier);
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
 
     const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
     const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
     const [drawTypeArrayFilter, setDrawTypeArrayFilter] = React.useState<Selection>(new Set([]));
+    const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
 
-    let annotationList: TAnnotationState = [];
+    let annotationListFiltered: TAnnotationState = [];
     let startPage = 1;
     const [pageNumber, setPageNumber] = React.useState(startPage);
 
-    annotationList = (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
+    annotationListFiltered = (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
         (selectionIsSet(colorArrayFilter) && colorArrayFilter.size) ||
-        (selectionIsSet(drawTypeArrayFilter) && drawTypeArrayFilter.size)
-        ? annotationsQueue.filter(([, { tags, color, drawType }]) => {
+        (selectionIsSet(drawTypeArrayFilter) && drawTypeArrayFilter.size) ||
+        (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size)
+        ? annotationsListAll.filter(([, { tags, color, drawType, creator }]) => {
 
             const colorHex = rgbToHex(color);
 
             return (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags.some((tagsValueName) => tagArrayFilter.has(tagsValueName))) &&
                 (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
-                (!selectionIsSet(drawTypeArrayFilter) || !drawTypeArrayFilter.size || drawTypeArrayFilter.has(drawType));
+                (!selectionIsSet(drawTypeArrayFilter) || !drawTypeArrayFilter.size || drawTypeArrayFilter.has(drawType)) &&
+                (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(creator?.id));
 
         })
-        : annotationsQueue;
+        : annotationsListAll;
 
     if (annotationUUIDFocused) {
 
-        const annotationFocusItemFindIndex = annotationList.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused);
+        const annotationFocusItemFindIndex = annotationListFiltered.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused);
         if (annotationFocusItemFindIndex > -1) {
             const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
             startPage = annotationFocusItemPageNumber;
             if (startPage !== pageNumber)
                 setPageNumber(startPage);
 
-        } else if (annotationList !== annotationsQueue) {
-            annotationList = annotationsQueue;
-            const annotationFocusItemFindIndex = annotationList.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused);
+        } else if (annotationListFiltered !== annotationsListAll) {
+            annotationListFiltered = annotationsListAll;
+            const annotationFocusItemFindIndex = annotationListFiltered.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused);
             if (annotationFocusItemFindIndex > -1) {
                 const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
                 startPage = annotationFocusItemPageNumber;
                 if (startPage !== pageNumber)
                     setPageNumber(startPage);
 
-                const [, annotationFound] = annotationList[annotationFocusItemFindIndex];
+                const [, annotationFound] = annotationListFiltered[annotationFocusItemFindIndex];
 
                 // reset filters
                 if (tagArrayFilter !== "all" && !tagArrayFilter.has((annotationFound.tags || [])[0]) && tagArrayFilter.size !== 0) {
@@ -732,6 +741,9 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                 if (drawTypeArrayFilter !== "all" && !drawTypeArrayFilter.has(annotationFound.drawType) && drawTypeArrayFilter.size !== 0) {
                     setDrawTypeArrayFilter(new Set([]));
                 }
+                if (creatorArrayFilter !== "all" && !creatorArrayFilter.has(annotationFound.creator?.id) && creatorArrayFilter.size !== 0) {
+                    setCreatorArrayFilter(new Set([]));
+                }
             }
         }
         resetAnnotationUUID();
@@ -740,28 +752,28 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
     const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
     if (sortType !== "all" && sortType.has("progression")) {
 
-        annotationList.sort((a, b) => {
-            const [, {locatorExtended: {locator: la}}] = a;
-            const [, {locatorExtended: {locator: lb}}] = b;
+        annotationListFiltered.sort((a, b) => {
+            const [, { locatorExtended: { locator: la } }] = a;
+            const [, { locatorExtended: { locator: lb } }] = b;
             const pcta = computeProgression(r2Publication.Spine, la);
             const pctb = computeProgression(r2Publication.Spine, lb);
             return pcta - pctb;
         });
     } else if (sortType !== "all" && sortType.has("lastCreated")) {
-        annotationList.sort((a, b) => {
+        annotationListFiltered.sort((a, b) => {
             const [ta] = a;
             const [tb] = b;
             return tb - ta;
         });
     } else if (sortType !== "all" && sortType.has("lastModified")) {
-        annotationList.sort((a, b) => {
-            const [, {modified: ma}] = a;
-            const [, {modified: mb}] = b;
+        annotationListFiltered.sort((a, b) => {
+            const [, { modified: ma }] = a;
+            const [, { modified: mb }] = b;
             return ma && mb ? mb - ma : ma ? -1 : mb ? 1 : 0;
         });
     }
 
-    const pageTotal = Math.ceil(annotationList.length / MAX_MATCHES_PER_PAGE) || 1;
+    const pageTotal = Math.ceil(annotationListFiltered.length / MAX_MATCHES_PER_PAGE) || 1;
 
     if (pageNumber <= 0) {
         setPageNumber(startPage);
@@ -770,7 +782,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
     }
 
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
-    const annotationsPagedArray = annotationList.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE);
+    const annotationsPagedArray = annotationListFiltered.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE);
 
     const isLastPage = pageTotal === pageNumber;
     const isFirstPage = pageNumber === 1;
@@ -779,7 +791,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
 
 
     const begin = startIndex + 1;
-    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationList.length);
+    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationListFiltered.length);
 
     const [annotationItemEditedUUID, setannotationItemEditedUUID] = React.useState("");
     const paginatorAnnotationsRef = React.useRef<HTMLSelectElement>();
@@ -800,6 +812,18 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
         setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
     }
 
+    const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
+    const creatorList = annotationsListAll.map(([, { creator }]) => creator).filter(v => v);
+    const creatorSet = creatorList.reduce<Record<string, string>>((acc, { id, name }) => {
+        if (!acc[id]) {
+            if (!userNumber[id]) userNumber[id] = ObjectKeys(userNumber).length + 1;
+            return { ...acc, [id]: (id !== creatorMyself.id ? name : creatorMyself.name) || `unknown${userNumber[id]}` };
+        }
+        return acc;
+    }, {});
+
+    const selectCreatorOptions = Object.entries(creatorSet).map(([k, v]) => ({ id: k, name: v }));
+
     const annotationsColors = React.useMemo(() => Object.entries(annotationsColorsLight).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
 
     // I'm disable this feature for performance reason, push new Colors from incoming publicaiton annotation, not used for the moment. So let's commented it for the moment.
@@ -818,13 +842,19 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
         { name: "outline", svg: TextOutlineIcon },
     ];
 
-    const nbOfFilters = ((tagArrayFilter === "all") ? selectTagOption.length : tagArrayFilter.size) + ((colorArrayFilter === "all") ? annotationsColors.length : colorArrayFilter.size) + ((drawTypeArrayFilter === "all") ? selectDrawtypesOptions.length : drawTypeArrayFilter.size);
+    const nbOfFilters = ((tagArrayFilter === "all") ?
+        selectTagOption.length : tagArrayFilter.size) + ((colorArrayFilter === "all") ?
+            annotationsColors.length : colorArrayFilter.size) + ((drawTypeArrayFilter === "all") ?
+                selectDrawtypesOptions.length : drawTypeArrayFilter.size) + ((creatorArrayFilter === "all") ?
+                    selectCreatorOptions.length : creatorArrayFilter.size);
+
+    const annotationTitleRef = React.useRef<HTMLInputElement>();
 
     return (
         <>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "end", width: "100%", gap: "20px", marginTop: "-35px" }}>
                 <AlertDialog.Root>
-                    <AlertDialog.Trigger className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationList.length}>
+                    <AlertDialog.Trigger className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationListFiltered.length}>
                         <SVG svg={TrashIcon} ariaHidden />
                     </AlertDialog.Trigger>
                     <AlertDialog.Portal>
@@ -832,7 +862,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                             <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deleteAnnotations")}</AlertDialog.Title>
                             <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
-                                {__("dialog.deleteAnnotationsText", { annotationListLength: annotationList.length })}
+                                {__("dialog.deleteAnnotationsText", { annotationListLength: annotationListFiltered.length })}
                             </AlertDialog.Description>
                             <div className={stylesAlertModals.AlertDialogButtonContainer}>
                                 <AlertDialog.Cancel asChild>
@@ -840,7 +870,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                 </AlertDialog.Cancel>
                                 <AlertDialog.Action asChild>
                                     <button className={stylesButtons.button_primary_blue} onClick={() => {
-                                        for (const [, annotation] of annotationList) {
+                                        for (const [, annotation] of annotationListFiltered) {
 
                                             dispatch(readerActions.annotation.pop.build(annotation));
                                             setannotationItemEditedUUID("");
@@ -850,6 +880,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                         setTagArrayFilter(new Set([]));
                                         setColorArrayFilter(new Set([]));
                                         setDrawTypeArrayFilter(new Set([]));
+                                        setCreatorArrayFilter(new Set([]));
                                     }} type="button">
                                         <SVG ariaHidden svg={TrashIcon} />
                                         {__("dialog.yes")}</button>
@@ -858,15 +889,65 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         </AlertDialog.Content>
                     </AlertDialog.Portal>
                 </AlertDialog.Root>
-                <button className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationList.length}
-                    onClick={async () => {
-                        const annotations = annotationList.map(([, anno]) => anno);
-                        const contents = convertAnnotationListToReadiumAnnotationSet(annotations, publicationView);
-                        downloadAnnotationJSON(contents, "myAnnotationSet");
-                    }}
-                    title={__("catalog.exportAnnotation")}>
-                    <SVG svg={SaveIcon} />
-                </button>
+                <ImportAnnotationsDialog winId={winId} publicationView={publicationView}>
+                    <button className={stylesAnnotations.annotations_filter_trigger_button}
+                        title={__("catalog.importAnnotation")}>
+                        <SVG svg={ImportIcon} />
+                    </button>
+                </ImportAnnotationsDialog>
+                <Popover.Root>
+                    <Popover.Trigger asChild>
+                        <button className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationListFiltered.length}
+                            title={__("catalog.exportAnnotation")}>
+                            <SVG svg={SaveIcon} />
+                        </button>
+                    </Popover.Trigger>
+                    <Popover.Portal>
+                        <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2), padding: "15px 0" }}>
+                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                            <form
+                                className={stylesAnnotations.annotationsTitle_form_container}
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                }}
+                            >
+                                <p>{__("reader.annotations.annotationsExport.description")}</p>
+                                <div className={stylesInputs.form_group}>
+                                    <label htmlFor="annotationsTitle">{__("reader.annotations.annotationsExport.title")}</label>
+                                    <input
+                                        type="text"
+                                        name="annotationsTitle"
+                                        id="annotationsTitle"
+                                        ref={annotationTitleRef}
+                                        className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" />
+                                </div>
+                                <Popover.Close aria-label={__("catalog.export")} asChild>
+                                    <button type="submit" onClick={() => {
+                                        const annotations = annotationListFiltered.map(([, anno]) => {
+                                            const { creator } = anno;
+                                            if (creator?.id === creatorMyself.id) {
+                                                return { ...anno, creator: { ...creatorMyself, id: "urn:uuid:" + creatorMyself.id } };
+                                            }
+                                            return anno;
+                                        });
+                                        const title = annotationTitleRef?.current.value || "myAnnotationsSet";
+                                        let label = title;
+                                        label = label.trim();
+                                        label = label.replace(/[^a-z0-9_-]/gi, "_");
+                                        label = label.replace(/^_+|_+$/g, ""); // leading and trailing underscore
+                                        label = label.replace(/^\./, ""); // remove dot start
+                                        label = label.toLowerCase();
+                                        const contents = convertAnnotationListToReadiumAnnotationSet(annotations, publicationView, title);
+                                        downloadAnnotationJSON(contents, label);
+                                    }} className={stylesButtons.button_primary_blue}>
+                                        <SVG svg={SaveIcon} />
+                                        {__("catalog.export")}
+                                    </button>
+                                </Popover.Close>
+                            </form>
+                        </Popover.Content>
+                    </Popover.Portal>
+                </Popover.Root>
                 <Popover.Root>
                     <Popover.Trigger asChild>
                         <button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button}
@@ -875,7 +956,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         </button>
                     </Popover.Trigger>
                     <Popover.Portal>
-                        <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2)}}>
+                        <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2) }}>
                             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
                             <ListBox
                                 selectedKeys={sortType}
@@ -886,19 +967,19 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                             >
                                 <ListBoxItem id="progression" key="progression" aria-label="progression" className={({ isFocused, isSelected }) =>
                                     classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
-                                style={{marginBottom: "5px"}}
-                                    >
+                                    style={{ marginBottom: "5px" }}
+                                >
                                     {__("reader.annotations.sorting.progression")}
                                 </ListBoxItem>
                                 <ListBoxItem id="lastCreated" key="lastCreated" aria-label="lastCreated" className={({ isFocused, isSelected }) =>
                                     classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
-                                style={{marginBottom: "5px"}}
-                                    >
+                                    style={{ marginBottom: "5px" }}
+                                >
                                     {__("reader.annotations.sorting.lastcreated")}
                                 </ListBoxItem>
                                 <ListBoxItem id="lastModified" key="lastModified" aria-label="lastModified" className={({ isFocused, isSelected }) =>
                                     classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
-                                    >
+                                >
                                     {__("reader.annotations.sorting.lastmodified")}
                                 </ListBoxItem>
                             </ListBox>
@@ -1000,6 +1081,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                 selectedKeys={drawTypeArrayFilter}
                                 onSelectionChange={setDrawTypeArrayFilter}
                                 aria-label={__("reader.annotations.filter.filterByDrawtype")}
+                                style={{ marginBottom: "20px" }}
                             >
                                 <details open id="annotationListDrawDetails">
                                     <summary className={stylesAnnotations.annotations_filter_tagGroup}>
@@ -1029,6 +1111,44 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                     </summary>
                                     <TagList items={selectDrawtypesOptions} className={stylesAnnotations.annotations_filter_taglist}>
                                         {(item) => <Tag id={item.name} className={stylesAnnotations.annotations_filter_drawtype} textValue={item.name}><SVG svg={item.svg} /></Tag>}
+                                    </TagList>
+                                </details>
+                            </TagGroup>
+                            <TagGroup
+                                selectionMode="multiple"
+                                selectedKeys={creatorArrayFilter}
+                                onSelectionChange={setCreatorArrayFilter}
+                                aria-label={__("reader.annotations.filter.filterByCreator")}
+                                style={{ marginBottom: "20px" }}
+                            >
+                                <details id="annotationListCreator">
+                                    <summary className={stylesAnnotations.annotations_filter_tagGroup} style={{ pointerEvents: selectCreatorOptions.length < 2 ? "none" : "auto", opacity: selectCreatorOptions.length < 2 ? "0.5" : "1" }}>
+                                        <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByCreator")}</Label>
+                                        <div style={{ display: "flex", gap: "10px" }}>
+                                            <button
+                                                style={{ padding: "6px" }}
+                                                onClick={() => {
+                                                    setCreatorArrayFilter("all");
+                                                    const detailsElement = document.getElementById("annotationListCreator") as HTMLDetailsElement;
+                                                    if (detailsElement) {
+                                                        detailsElement.open = true;
+                                                    }
+
+                                                }}>
+                                                {__("reader.annotations.filter.all")}
+                                            </button>
+                                            <button
+                                                style={{ padding: "6px" }}
+                                                onClick={() => {
+                                                    setCreatorArrayFilter(new Set([]));
+
+                                                }}>
+                                                {__("reader.annotations.filter.none")}
+                                            </button>
+                                        </div>
+                                    </summary>
+                                    <TagList items={selectCreatorOptions} className={stylesAnnotations.annotations_filter_taglist} style={{ margin: selectCreatorOptions.length < 2 ? "0" : "20px 0" }}>
+                                        {(item) => <Tag className={stylesAnnotations.annotations_filter_tag} id={item.id} textValue={item.name}>{item.name}</Tag>}
                                     </TagList>
                                 </details>
                             </TagGroup>
@@ -1116,7 +1236,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         </button>
                     </div>
                     {
-                        annotationList.length &&
+                        annotationListFiltered.length &&
                         <p
                             style={{
                                 textAlign: "center",
@@ -1124,7 +1244,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                 margin: 0,
                                 marginTop: "-16px",
                                 marginBottom: "20px",
-                            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${annotationList.length}`}</p>
+                            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${annotationListFiltered.length}`}</p>
                     }
                 </>
                     : <></>
@@ -2171,7 +2291,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </Tabs.List>
                 }
                 <div className={stylesSettings.settings_content}
-                ref={popoverBoundary}
+                    ref={popoverBoundary}
                     style={{ marginTop: dockedMode && "0" }}>
                     <Tabs.Content value="tab-toc" tabIndex={-1} id={"readerMenu_tabs-tab-toc"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
