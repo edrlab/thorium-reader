@@ -227,7 +227,12 @@ export function* init() {
         if (locale === "") {
 
             const isAnAvailableLanguage = (a: string): a is keyof typeof availableLanguages => a in availableLanguages;
-            for (const lang of app.getPreferredSystemLanguages()) {
+            for (const bcp47 of app.getPreferredSystemLanguages()) {
+                if (isAnAvailableLanguage(bcp47)) {
+                    store.dispatch(i18nActions.setLocale.build(bcp47));
+                    return;
+                }
+                const lang = bcp47.split("-")[0];
                 if (isAnAvailableLanguage(lang)) {
                     store.dispatch(i18nActions.setLocale.build(lang));
                     return;
