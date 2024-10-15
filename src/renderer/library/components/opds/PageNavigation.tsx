@@ -306,41 +306,67 @@ class PageNavigation extends React.Component<IProps, undefined> {
         registerKeyboardListener(
             false, // listen for key down (not key up)
             this.props.keyboardShortcuts.NavigatePreviousOPDSPageAlt,
-            this.onKeyboardPageNavigationPrevious);
+            this.onKeyboardPageNavigationFirst);
         registerKeyboardListener(
             false, // listen for key down (not key up)
             this.props.keyboardShortcuts.NavigateNextOPDSPageAlt,
-            this.onKeyboardPageNavigationNext);
+            this.onKeyboardPageNavigationLast);
     }
 
     private unregisterAllKeyboardListeners() {
+        unregisterKeyboardListener(this.onKeyboardPageNavigationFirst);
+        unregisterKeyboardListener(this.onKeyboardPageNavigationLast);
         unregisterKeyboardListener(this.onKeyboardPageNavigationPrevious);
         unregisterKeyboardListener(this.onKeyboardPageNavigationNext);
     }
 
-    private onKeyboardPageNavigationNext = () => {
-        this.onKeyboardPageNavigationPreviousNext(false);
-    };
-    private onKeyboardPageNavigationPrevious = () => {
-        this.onKeyboardPageNavigationPreviousNext(true);
-    };
-    private onKeyboardPageNavigationPreviousNext = (isPrevious: boolean) => {
+    private onKeyboardPageNavigationFirst = () => {
+
         const { pageLinks } = this.props;
-
         const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
-
-        if (pageLinks?.previous[0]?.url && isPrevious) { // TODO RTL
+        if (pageLinks?.first[0]?.url) { // TODO RTL
             this.props.historyPush({
                 ...this.props.location,
-                pathname: buildRoute(pageLinks.previous[0]),
+                pathname: buildRoute(pageLinks.first[0]),
             }, this.props.location.state as IRouterLocationState);
-        } else if (pageLinks?.next[0]?.url && !isPrevious) { // TODO RTL
+        }
+    };
+    private onKeyboardPageNavigationLast = () => {
+
+        const { pageLinks } = this.props;
+        const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
+
+        if (pageLinks?.last[0]?.url) { // TODO RTL
+            this.props.historyPush({
+                ...this.props.location,
+                pathname: buildRoute(pageLinks.last[0]),
+            }, this.props.location.state as IRouterLocationState);
+        }
+    };
+    private onKeyboardPageNavigationNext = () => {
+
+        const { pageLinks } = this.props;
+        const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
+        if (pageLinks?.next[0]?.url) { // TODO RTL
             this.props.historyPush({
                 ...this.props.location,
                 pathname: buildRoute(pageLinks.next[0]),
             }, this.props.location.state as IRouterLocationState);
         }
     };
+    private onKeyboardPageNavigationPrevious = () => {
+
+        const { pageLinks } = this.props;
+        const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
+
+        if (pageLinks?.previous[0]?.url) { // TODO RTL
+            this.props.historyPush({
+                ...this.props.location,
+                pathname: buildRoute(pageLinks.previous[0]),
+            }, this.props.location.state as IRouterLocationState);
+        }
+    };
+
 }
 
 const mapStateToProps = (state: ILibraryRootState) => ({
