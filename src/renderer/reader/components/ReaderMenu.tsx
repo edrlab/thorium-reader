@@ -686,7 +686,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
     const { goToLocator, annotationUUIDFocused, resetAnnotationUUID, popoverBoundary } = props;
 
     const [__] = useTranslator();
-    const annotationsQueue = useSelector((state: IReaderRootState) => state.reader.annotation);
+    const annotationsListAll = useSelector((state: IReaderRootState) => state.reader.annotation);
     const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
     const winId = useSelector((state: IReaderRootState) => state.win.identifier);
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
@@ -696,15 +696,15 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
     const [drawTypeArrayFilter, setDrawTypeArrayFilter] = React.useState<Selection>(new Set([]));
     const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
 
-    let annotationList: TAnnotationState = [];
+    let annotationListFiltered: TAnnotationState = [];
     let startPage = 1;
     const [pageNumber, setPageNumber] = React.useState(startPage);
 
-    annotationList = (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
+    annotationListFiltered = (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
         (selectionIsSet(colorArrayFilter) && colorArrayFilter.size) ||
         (selectionIsSet(drawTypeArrayFilter) && drawTypeArrayFilter.size) ||
         (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size)
-        ? annotationsQueue.filter(([, { tags, color, drawType, creator }]) => {
+        ? annotationsListAll.filter(([, { tags, color, drawType, creator }]) => {
 
             const colorHex = rgbToHex(color);
 
@@ -714,27 +714,27 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                 (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(creator?.id));
 
         })
-        : annotationsQueue;
+        : annotationsListAll;
 
     if (annotationUUIDFocused) {
 
-        const annotationFocusItemFindIndex = annotationList.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused);
+        const annotationFocusItemFindIndex = annotationListFiltered.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused);
         if (annotationFocusItemFindIndex > -1) {
             const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
             startPage = annotationFocusItemPageNumber;
             if (startPage !== pageNumber)
                 setPageNumber(startPage);
 
-        } else if (annotationList !== annotationsQueue) {
-            annotationList = annotationsQueue;
-            const annotationFocusItemFindIndex = annotationList.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused);
+        } else if (annotationListFiltered !== annotationsListAll) {
+            annotationListFiltered = annotationsListAll;
+            const annotationFocusItemFindIndex = annotationListFiltered.findIndex(([, annotationItem]) => annotationItem.uuid === annotationUUIDFocused);
             if (annotationFocusItemFindIndex > -1) {
                 const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
                 startPage = annotationFocusItemPageNumber;
                 if (startPage !== pageNumber)
                     setPageNumber(startPage);
 
-                const [, annotationFound] = annotationList[annotationFocusItemFindIndex];
+                const [, annotationFound] = annotationListFiltered[annotationFocusItemFindIndex];
 
                 // reset filters
                 if (tagArrayFilter !== "all" && !tagArrayFilter.has((annotationFound.tags || [])[0]) && tagArrayFilter.size !== 0) {
@@ -757,7 +757,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
     const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
     if (sortType !== "all" && sortType.has("progression")) {
 
-        annotationList.sort((a, b) => {
+        annotationListFiltered.sort((a, b) => {
             const [, { locatorExtended: { locator: la } }] = a;
             const [, { locatorExtended: { locator: lb } }] = b;
             const pcta = computeProgression(r2Publication.Spine, la);
@@ -765,20 +765,20 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
             return pcta - pctb;
         });
     } else if (sortType !== "all" && sortType.has("lastCreated")) {
-        annotationList.sort((a, b) => {
+        annotationListFiltered.sort((a, b) => {
             const [ta] = a;
             const [tb] = b;
             return tb - ta;
         });
     } else if (sortType !== "all" && sortType.has("lastModified")) {
-        annotationList.sort((a, b) => {
+        annotationListFiltered.sort((a, b) => {
             const [, { modified: ma }] = a;
             const [, { modified: mb }] = b;
             return ma && mb ? mb - ma : ma ? -1 : mb ? 1 : 0;
         });
     }
 
-    const pageTotal = Math.ceil(annotationList.length / MAX_MATCHES_PER_PAGE) || 1;
+    const pageTotal = Math.ceil(annotationListFiltered.length / MAX_MATCHES_PER_PAGE) || 1;
 
     if (pageNumber <= 0) {
         setPageNumber(startPage);
@@ -787,7 +787,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
     }
 
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
-    const annotationsPagedArray = annotationList.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE);
+    const annotationsPagedArray = annotationListFiltered.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE);
 
     const isLastPage = pageTotal === pageNumber;
     const isFirstPage = pageNumber === 1;
@@ -796,7 +796,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
 
 
     const begin = startIndex + 1;
-    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationList.length);
+    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationListFiltered.length);
 
     const [annotationItemEditedUUID, setannotationItemEditedUUID] = React.useState("");
     const paginatorAnnotationsRef = React.useRef<HTMLSelectElement>();
@@ -818,7 +818,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
     }
 
     const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
-    const creatorList = annotationList.map(([, { creator }]) => creator).filter(v => v);
+    const creatorList = annotationListFiltered.map(([, { creator }]) => creator).filter(v => v);
     const creatorSet = creatorList.reduce<Record<string, string>>((acc, { id, name }) => {
         if (!acc[id]) {
             if (!userNumber[id]) userNumber[id] = ObjectKeys(userNumber).length + 1;
@@ -1088,7 +1088,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
 
                     <Popover.Root>
                         <Popover.Trigger asChild>
-                            <button className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationList.length}
+                            <button className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationListFiltered.length}
                                 title={__("catalog.exportAnnotation")}>
                                 <SVG svg={SaveIcon} />
                             </button>
@@ -1114,7 +1114,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                     </div>
                                     <Popover.Close aria-label={__("catalog.export")} asChild>
                                         <button type="submit" onClick={() => {
-                                            const annotations = annotationList.map(([, anno]) => {
+                                            const annotations = annotationListFiltered.map(([, anno]) => {
                                                 const { creator } = anno;
                                                 if (creator?.id === creatorMyself.id) {
                                                     return { ...anno, creator: { ...creatorMyself, id: "urn:uuid:" + creatorMyself.id } };
@@ -1141,7 +1141,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                     </Popover.Root>
 
                     <AlertDialog.Root>
-                        <AlertDialog.Trigger className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationList.length}>
+                        <AlertDialog.Trigger className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationListFiltered.length}>
                             <SVG svg={TrashIcon} ariaHidden />
                         </AlertDialog.Trigger>
                         <AlertDialog.Portal>
@@ -1149,7 +1149,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                             <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                                 <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deleteAnnotations")}</AlertDialog.Title>
                                 <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
-                                    {__("dialog.deleteAnnotationsText", { annotationListLength: annotationList.length })}
+                                    {__("dialog.deleteAnnotationsText", { annotationListLength: annotationListFiltered.length })}
                                 </AlertDialog.Description>
                                 <div className={stylesAlertModals.AlertDialogButtonContainer}>
                                     <AlertDialog.Cancel asChild>
@@ -1157,7 +1157,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                     </AlertDialog.Cancel>
                                     <AlertDialog.Action asChild>
                                         <button className={stylesButtons.button_primary_blue} onClick={() => {
-                                            for (const [, annotation] of annotationList) {
+                                            for (const [, annotation] of annotationListFiltered) {
 
                                                 dispatch(readerActions.annotation.pop.build(annotation));
                                                 setannotationItemEditedUUID("");
@@ -1258,7 +1258,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         </button>
                     </div>
                     {
-                        annotationList.length &&
+                        annotationListFiltered.length &&
                         <p
                             style={{
                                 textAlign: "center",
@@ -1266,7 +1266,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                 margin: 0,
                                 marginTop: "-16px",
                                 marginBottom: "20px",
-                            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${annotationList.length}`}</p>
+                            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${annotationListFiltered.length}`}</p>
                     }
                 </>
                     : <></>
