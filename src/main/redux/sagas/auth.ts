@@ -478,7 +478,9 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
                 // client_id: Required.
                 // Any Authentication Provider that supports OPDS Authentication 1.0 and exposes an Authentication Flow based on OAuth
                 // must identify all OPDS clients using the client_id "http://opds-spec.org/auth/client"
-                browserUrlParsed.searchParams.set("client_id", "http://opds-spec.org/auth/client");
+                if (!browserUrlParsed.searchParams.get("client_id")) {
+                    browserUrlParsed.searchParams.set("client_id", "http://opds-spec.org/auth/client");
+                }
 
                 // response_type: Mandatory for Implicit Flow
                 browserUrlParsed.searchParams.set("response_type", "token");
