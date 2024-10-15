@@ -10,7 +10,7 @@ import { dialog } from "electron";
 import { readFile } from "fs/promises";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
-import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { call, SagaGenerator, put, select, take } from "typed-redux-saga";
 import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
@@ -30,6 +30,7 @@ import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { v4 as uuidv4 } from "uuid";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 
 // Logger
@@ -41,7 +42,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
     const { payload: { publicationIdentifier, winId } } = action;
     debug("Start annotations Importer");
-    const __ = diMainGet("translator").translate;
+    const { __ } = getTranslator();
 
     const readerPublicationIdentifier = winId ? publicationIdentifier : undefined; // if undefined toast notification will be displayed in library win
     const currentTimestamp = (new Date()).getTime();
