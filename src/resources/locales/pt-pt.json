@@ -124,6 +124,16 @@
     "update": "Atualizar"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Cancelar",
     "deleteAnnotations": "Eliminar anotações?",
     "deleteAnnotationsText": "Quer eliminar {{- annotationListLength}} anotações?",
@@ -171,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Falha ao descarregar {{- title}}: [{{- err}}]"
     },

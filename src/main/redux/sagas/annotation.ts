@@ -10,8 +10,7 @@ import { dialog } from "electron";
 import { readFile } from "fs/promises";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
-import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { call, SagaGenerator, put, select, take } from "typed-redux-saga";
 import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
@@ -30,6 +29,7 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { v4 as uuidv4 } from "uuid";
+import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 
 
 // Logger
@@ -41,6 +41,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
     const { payload: { publicationIdentifier, winId } } = action;
     debug("Start annotations Importer");
+    const __ = diMainGet("translator").translate;
 
     const readerPublicationIdentifier = winId ? publicationIdentifier : undefined; // if undefined toast notification will be displayed in library win
     const currentTimestamp = (new Date()).getTime();
@@ -63,7 +64,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         }
     } catch (e) {
         debug("Error!!! to open a file, exit", e);
-        yield* put(toastActions.openRequest.build(ToastType.Error, "Error" + e, readerPublicationIdentifier));
+        yield* put(toastActions.openRequest.build(ToastType.Error, "" + e, readerPublicationIdentifier));
         return ;
     }
 
@@ -87,7 +88,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
             if (!annotationsIncommingArray.length) {
                 debug("there are no annotations in the file, exit");
-                yield* put(toastActions.openRequest.build(ToastType.Success, "Success !, there are no annotations in the file and nothing is imported", readerPublicationIdentifier));
+                yield* put(toastActions.openRequest.build(ToastType.Success, __("message.annotations.emptyFile"), readerPublicationIdentifier));
                 return;
             }
 
@@ -136,7 +137,8 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
 
                 const annotationsParsedNoConflictArray: IAnnotationState[] = [];
-                const annotationsParsedConflictArray: IAnnotationState[] = [];
+                const annotationsParsedConflictOlderArray: IAnnotationState[] = [];
+                const annotationsParsedConflictNewerArray: IAnnotationState[] = [];
                 const annotationsParsedAllArray: IAnnotationState[] = [];
 
                 debug("There are", annotationsIncommingArray.length, "incomming annotations to be imported");
@@ -234,14 +236,16 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                         } : undefined,
                     };
 
-                    if (annotationParsed.modified > currentTimestamp) {
-                        annotationParsed.modified = currentTimestamp;
+                    if (annotationParsed.modified) {
+                        if (annotationParsed.modified > currentTimestamp) {
+                            annotationParsed.modified = currentTimestamp;
+                        }
+                        if (annotationParsed.created > annotationParsed.modified) {
+                            annotationParsed.modified = currentTimestamp;
+                        }
                     }
                     if (annotationParsed.created > currentTimestamp) {
                         annotationParsed.created = currentTimestamp;
-                    }
-                    if (annotationParsed.created > annotationParsed.modified) {
-                        annotationParsed.modified = currentTimestamp;
                     }
 
                     debug("incomming annotation Parsed And Formated (", annotationParsed.uuid, "), and now ready to be imported in the publication!");
@@ -249,14 +253,23 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
                     annotationsParsedAllArray.push(annotationParsed);
 
-                    if (annotations.find(({ uuid }) => uuid === annotationParsed.uuid)) {
+                    const annotationSameUUIDFound = annotations.find(({ uuid }) => uuid === annotationParsed.uuid);
+                    if (annotationSameUUIDFound) {
 
-                        // ok same annotation,
-                        // we need to check if same uuid but modified date ahead of time
+                        if (annotationSameUUIDFound.modified && annotationParsed.modified) {
 
-                        if (annotations.find(({ uuid, modified }) => uuid === annotationParsed.uuid && modified < annotationParsed.modified)) {
-                            // so we want to import an annotation with a conflict, let's user mitigate it
-                            annotationsParsedConflictArray.push(annotationParsed);
+                            if (annotationSameUUIDFound.modified < annotationParsed.modified) {
+                                annotationsParsedConflictNewerArray.push(annotationParsed);
+                            }
+                            if (annotationSameUUIDFound.modified > annotationParsed.modified) {
+                                annotationsParsedConflictOlderArray.push(annotationParsed);
+                            }
+
+                        } else if (annotationSameUUIDFound.modified) {
+                            annotationsParsedConflictOlderArray.push(annotationParsed);
+
+                        } else if (annotationParsed.modified) {
+                            annotationsParsedConflictNewerArray.push(annotationParsed);
                         }
                     } else {
 
@@ -267,10 +280,18 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 if (!annotationsParsedAllArray.length) {
 
                     debug("there are no annotations ready to be imported, exit");
-                    yield* put(toastActions.openRequest.build(ToastType.Success, "There are no annotations ready to be imported, aborting the importation", readerPublicationIdentifier));
+                    yield* put(toastActions.openRequest.build(ToastType.Success, __("message.annotations.nothing"), readerPublicationIdentifier));
                     return;
 
                 }
+
+                if (!(annotationsParsedConflictNewerArray.length || annotationsParsedConflictOlderArray.length || annotationsParsedNoConflictArray.length)) {
+
+                    debug("all annotations are already imported, exit");
+                    yield* put(toastActions.openRequest.build(ToastType.Success, __("message.annotations.alreadyImported"), readerPublicationIdentifier));
+                    return;
+                }
+
 
                 // dispatch data to the user modal
                 yield* put(annotationActions.importTriggerModal.build(
@@ -279,10 +300,11 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                         title: data.title || "",
                         generated: data.generated || "",
                         generator: data.generator ? { ...data.generator} : undefined,
+                        annotationsList: annotationsParsedNoConflictArray,
+                        annotationsConflictListOlder: annotationsParsedConflictOlderArray,
+                        annotationsConflictListNewer: annotationsParsedConflictNewerArray,
+                        winId,
                     },
-                    annotationsParsedNoConflictArray,
-                    annotationsParsedConflictArray,
-                    winId,
                 ));
 
                 // wait the modal confirmation or abort
@@ -294,9 +316,11 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                     return;
                 }
 
+                const annotationsParsedConflictNeedToBeUpdated = [...annotationsParsedConflictNewerArray, ...annotationsParsedConflictOlderArray];
                 const annotationsParsedReadyToBeImportedArray = actionConfirmOrAbort.payload.state === "importNoConflict"
                     ? annotationsParsedNoConflictArray
-                    : [...annotationsParsedNoConflictArray, ...annotationsParsedConflictArray];
+                    : [...annotationsParsedNoConflictArray, ...annotationsParsedConflictOlderArray, ...annotationsParsedConflictNewerArray];
+
 
                 debug("ready to send", annotationsParsedReadyToBeImportedArray.length, "annotation(s) to the reader");
                 if (winSessionReaderStateArray.length) {
@@ -307,7 +331,29 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
                         const readerWin = getReaderWindowFromDi(winSessionReaderState.identifier);
 
-                        for (const annotationParsedReadyToBeImported of annotationsParsedReadyToBeImportedArray) {
+                        if (actionConfirmOrAbort.payload.state === "importAll") {
+
+                            for (const annotationToUpdate of annotationsParsedConflictNeedToBeUpdated) {
+                                const annotationToUpdateOld = annotations.find(({ uuid }) => uuid === annotationToUpdate.uuid);
+                                const a = ActionSerializer.serialize(readerActions.annotation.update.build(annotationToUpdateOld, annotationToUpdate));
+                                try {
+                                    readerWin.webContents.send(syncIpc.CHANNEL, {
+                                        type: syncIpc.EventType.MainAction,
+                                        payload: {
+                                            action: a,
+                                        },
+                                        sender: {
+                                            type: SenderType.Main,
+                                        },
+                                    } as syncIpc.EventPayload);
+
+                                } catch (error) {
+                                    debug("ERROR in SYNC ACTION", error);
+                                }
+                            }
+                        }
+
+                        for (const annotationParsedReadyToBeImported of annotationsParsedNoConflictArray) {
                             const a = ActionSerializer.serialize(readerActions.annotation.push.build(annotationParsedReadyToBeImported));
                             try {
                                 readerWin.webContents.send(syncIpc.CHANNEL, {
@@ -341,31 +387,32 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
             } else {
 
                 debug("ERROR: At least one annotation is rejected and not match with the current publication SpineItem, see above");
-                yield* put(toastActions.openRequest.build(ToastType.Error, "Error: " + "Cannot import annotations Set, at least one annotation does not belong to the publication", readerPublicationIdentifier));
+                yield* put(toastActions.openRequest.build(ToastType.Error, __("message.annotations.noBelongTo"), readerPublicationIdentifier));
                 return;
             }
         } else {
 
             debug("Error: ", __READIUM_ANNOTATION_AJV_ERRORS);
-            yield* put(toastActions.openRequest.build(ToastType.Error, "Error: " + "File format", readerPublicationIdentifier));
+            yield* put(toastActions.openRequest.build(ToastType.Error, __("message.annotations.errorParsing"), readerPublicationIdentifier));
             return;
         }
 
     } catch (e) {
-
-        debug("Error!!! ", e);
-        yield* put(toastActions.openRequest.build(ToastType.Error, "Error" + e, readerPublicationIdentifier));
+        debug("Error to read the file: ", e);
+        if (e?.path !== "") {
+            yield* put(toastActions.openRequest.build(ToastType.Error, "" + e, readerPublicationIdentifier));
+        }
         return;
     }
 
     debug("Annotations importer success and exit");
-    yield* put(toastActions.openRequest.build(ToastType.Success, "Success !", readerPublicationIdentifier));
+    yield* put(toastActions.openRequest.build(ToastType.Success, __("message.annotations.success"), readerPublicationIdentifier));
     return ;
 }
 
 
 export function saga() {
-    return takeSpawnLeading(
+    return takeSpawnLatest(
         annotationActions.importAnnotationSet.ID,
         importAnnotationSet,
         (e) => error(filename_, e),

@@ -55,6 +55,10 @@ function winRegistryReaderReducer_(
             const { publicationIdentifier: id, annotations } = action.payload;
 
             if (annotations.length && Array.isArray(state[id]?.reduxState?.annotation)) {
+
+                const oldAnno = state[id].reduxState.annotation;
+                const oldAnnoUniq = oldAnno.filter(([, {uuid}]) => !annotations.find(({uuid: uuid2}) => uuid2 === uuid));
+                const newAnno = annotations.map<IQueueAnnotationState>((anno) => [anno.created || (new Date()).getTime(), anno]);
                 return {
                     ...state,
                     ...{
@@ -65,9 +69,8 @@ function winRegistryReaderReducer_(
                                     ...state[id].reduxState,
                                     ...{
                                         annotation: [
-                                            ...annotations.map<IQueueAnnotationState>((anno) =>
-                                                [anno.created || (new Date()).getTime(), anno]),
-                                            ...state[id].reduxState.annotation,
+                                            ...oldAnnoUniq,
+                                            ...newAnno,
                                         ],
                                     },
                                 },

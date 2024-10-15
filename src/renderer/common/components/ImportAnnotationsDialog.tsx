@@ -5,26 +5,27 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
-
 import * as React from "react";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { annotationActions } from "readium-desktop/common/redux/actions";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import * as Dialog from "@radix-ui/react-dialog";
-import classNames from "classnames";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-bold.svg";
 
-export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{winId: string | undefined}>> = (props) => {
+export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{ winId: string | undefined, publicationView: PublicationView }>> = (props) => {
 
     const importAnnotationState = useSelector((state: IRendererCommonRootState) => state.importAnnotations);
-    const { open, about: about, title, generated, generator, annotationsList, annotationsConflictList, winId } = importAnnotationState;
+    const { open, title, annotationsList, annotationsConflictListOlder, annotationsConflictListNewer, winId } = importAnnotationState;
+    const { publicationView } = props;
+    const { publicationTitle, authors, identifier } = publicationView;
     const dispatch = useDispatch();
     const [__] = useTranslator();
-
-    let closeState: annotationActions.importConfirmOrAbort.TAction["payload"]["state"] = "abort";
 
     React.useEffect(() => {
 
@@ -36,126 +37,67 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{winId: s
         };
     }, [open, dispatch]);
 
+    const creatorNameList = [...annotationsList].reduce<string[]>((acc, {creator}) => {
+        if (creator?.name && !acc.includes(creator?.name)) {
+            return [...acc, creator.name];
+        }
+        return acc;
+    }, []);
+
     return (
-        <Dialog.Root open={props.winId === winId && open} onOpenChange={(isOpen) => {
-            if (isOpen) {
-                // nothing,  triggered by main process
+        <AlertDialog.Root open={props.winId === winId && open} onOpenChange={(requestOpen) => {
+            if (requestOpen) {
+                dispatch(annotationActions.importAnnotationSet.build(identifier, props.winId));
             } else {
                 // dispatch it only on esc
-                dispatch(annotationActions.importConfirmOrAbort.build(closeState));
+
+                if (open) {
+                    dispatch(annotationActions.importConfirmOrAbort.build("abort"));
+
+                }
             }
         }}>
-            <Dialog.Trigger asChild>
+            <AlertDialog.Trigger asChild>
                 {props.children}
-            </Dialog.Trigger>
-            <Dialog.Portal>
-                <div className={classNames(stylesModals.modal_dialog_overlay)}></div>
-                <Dialog.Content className={classNames(stylesModals.modal_dialog)}>
-                    <Dialog.Title>Import Annotations</Dialog.Title>
-
-                    <form className={stylesModals.modal_dialog_body} onSubmit={(e) => e.preventDefault()}>
-                        <fieldset>
-                            <legend>Annotations Set Information</legend>
-                            <ul>
-                                <li><strong>Title:</strong> {title}</li>
-                                <li><strong>Generated:</strong> {generated}</li>
-                                <li><strong>Generator:</strong></li>
-                                {generator ?
-                                    <ul>
-                                        <li><strong>ID:</strong> {generator?.id}</li>
-                                        <li><strong>Type:</strong> {generator?.type}</li>
-                                        <li><strong>Name:</strong> {generator?.name}</li>
-                                        <li><strong>Homepage:</strong> {generator?.homepage}</li>
-                                    </ul>
-                                    : <></>}
-                            </ul>
-                        </fieldset>
-
-                        <fieldset>
-                            <legend>About the Book</legend>
-                            <ul>
-                                {about ? <>
-                                    <li><strong>dc:identifier:</strong>
-                                        <ul>
-                                            {about["dc:identifier"].map((v, i) => <li key={"dcid" + i}>{v}</li>)}
-                                        </ul>
-                                    </li>
-                                    <li><strong>dc:format:</strong> {about["dc:format"]}</li>
-                                    <li><strong>dc:title:</strong> {about["dc:title"]}</li>
-                                    <li><strong>dc:publisher:</strong> {about["dc:publisher"]}</li>
-                                    <li><strong>dc:creator:</strong> {about["dc:creator"]}</li>
-                                    <li><strong>dc:date:</strong> {about["dc:date"]}</li>
-                                </>
-
-                                    : <></>}
-
-                            </ul>
-                        </fieldset>
-
-                        <fieldset>
-                            <legend>Annotations List</legend>
-                            <ul id="annotationsList">
-                                {
-                                    annotationsList.map(({ uuid, locatorExtended, color, drawType, tags, modified, created, comment }, i) => {
-                                        return (
-                                            <li key={"an" + i}>
-                                                <strong>UUID:</strong> {uuid}
-                                                <ul>
-                                                    <li><strong>Locator:</strong> {locatorExtended?.locator?.href}</li>
-                                                    <li><strong>Highlight:</strong> {locatorExtended?.locator?.text?.highlight}</li>
-                                                    <li><strong>Comment:</strong> {comment}</li>
-                                                    <li><strong>Color:</strong> RGB({color.red}, {color.green}, {color.blue})</li>
-                                                    <li><strong>Draw Type:</strong> {drawType}</li>
-                                                    <li><strong>Tags:</strong> {tags?.join(", ")}</li>
-                                                    <li><strong>Modified:</strong> {modified}</li>
-                                                    <li><strong>Created:</strong> {created}</li>
-                                                </ul>
-                                            </li>
-                                        );
-                                    })
-                                }
-                            </ul>
-                        </fieldset>
-                        <fieldset>
-                            <legend>Annotations With A Conflict</legend>
-                            <ul id="annotationsListConflict">
-                                {
-                                    annotationsConflictList.map(({ uuid, locatorExtended, color, drawType, tags, modified, created, comment }, i) => {
-                                        return (
-                                            <li key={"ac" + i}>
-                                                <strong>UUID:</strong> {uuid}
-                                                <ul>
-                                                    <li><strong>Locator:</strong> {locatorExtended?.locator?.href}</li>
-                                                    <li><strong>Highlight:</strong> {locatorExtended?.locator?.text?.highlight}</li>
-                                                    <li><strong>Comment:</strong> {comment}</li>
-                                                    <li><strong>Color:</strong> RGB({color.red}, {color.green}, {color.blue})</li>
-                                                    <li><strong>Draw Type:</strong> {drawType}</li>
-                                                    <li><strong>Tags:</strong> {tags?.join(", ")}</li>
-                                                    <li><strong>Modified:</strong> {modified}</li>
-                                                    <li><strong>Created:</strong> {created}</li>
-                                                </ul>
-                                            </li>
-                                        );
-                                    })
-                                }
-                            </ul>
-                        </fieldset>
-
-                        <div className={stylesModals.modal_dialog_footer}>
-                            <Dialog.Close asChild>
-                                <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
-                            </Dialog.Close>
-                            <Dialog.Close asChild>
-                                <button className={stylesButtons.button_primary_blue} onClick={() => (closeState = "importAll")}>Import All</button>
-                            </Dialog.Close>
-                            <Dialog.Close asChild>
-                                <button className={stylesButtons.button_primary_blue} onClick={() => (closeState = "importNoConflict")}>Import No Conflict</button>
-                            </Dialog.Close>
-                        </div>
-                    </form>
-                </Dialog.Content>
-                </Dialog.Portal>
-            </Dialog.Root >
+            </AlertDialog.Trigger>
+            <AlertDialog.Portal>
+                <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
+                <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
+                    <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.annotations.title")}</AlertDialog.Title>
+                    <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription} style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+                        <span>{title ? `${__("dialog.annotations.descTitle")}${title}` : ""}</span>
+                        <span>{annotationsList.length ? __("dialog.annotations.descList", {
+                            nb: annotationsList.length,
+                            creator: creatorNameList.length ? creatorNameList.join(", ") : "\"\"",
+                            title: publicationTitle,
+                            author: authors[0] ? __("dialog.annotations.descAuthor", { author: authors[0] }) : "",
+                        }) : <></>}</span>
+                        <span>{annotationsConflictListNewer.length ? __("dialog.annotations.descNewer", { nb: annotationsConflictListNewer.length }) : <></>}</span>
+                        <span>{annotationsConflictListOlder.length ? __("dialog.annotations.descOlder", { nb: annotationsConflictListOlder.length }) : <></>}</span>
+                    </AlertDialog.Description>
+                    <div className={stylesAlertModals.AlertDialogButtonContainer}>
+                        <AlertDialog.Cancel asChild onClick={() => dispatch(annotationActions.importConfirmOrAbort.build("abort"))}>
+                            <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                        </AlertDialog.Cancel>
+                        <AlertDialog.Action asChild>
+                            <button className={stylesButtons.button_primary_blue} onClick={() => dispatch(annotationActions.importConfirmOrAbort.build("importAll"))}>
+                                <SVG ariaHidden svg={PlusIcon} />
+                                {__("dialog.annotations.importAll")}
+                            </button>
+                        </AlertDialog.Action>
+                        {
+                            annotationsConflictListNewer.length || annotationsConflictListOlder.length
+                                ? <AlertDialog.Action asChild>
+                                    <button className={stylesButtons.button_primary_blue} onClick={() => dispatch(annotationActions.importConfirmOrAbort.build("importNoConflict"))}>
+                                        <SVG ariaHidden svg={PlusIcon} />
+                                        {__("dialog.annotations.importWithoutConflict")}
+                                    </button>
+                                </AlertDialog.Action>
+                                : <></>
+                        }
+                    </div>
+                </AlertDialog.Content>
+            </AlertDialog.Portal>
+        </AlertDialog.Root>
     );
-
 };

@@ -6,13 +6,14 @@
 // ==LICENSE-END==
 
 import { type Reducer } from "redux";
-import { IImportAnnotationState } from "../../../../common/redux/states/importAnnotation";
+import { IImportAnnotationState } from "readium-desktop/common/redux/states/importAnnotation";
 import { annotationActions } from "readium-desktop/common/redux/actions";
 
 const initialState: IImportAnnotationState = {
     open: false,
     annotationsList: [],
-    annotationsConflictList: [],
+    annotationsConflictListOlder: [],
+    annotationsConflictListNewer: [],
     about: undefined,
     title: "",
     generated: "",

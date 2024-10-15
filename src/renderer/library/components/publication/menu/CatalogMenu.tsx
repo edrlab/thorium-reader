@@ -17,7 +17,7 @@ import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as ImportIcon from "readium-desktop/renderer/assets/icons/import.svg";
-import { annotationActions, publicationActions } from "readium-desktop/common/redux/actions";
+import { publicationActions } from "readium-desktop/common/redux/actions";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { ImportAnnotationsDialog } from "../../../../common/components/ImportAnnotationsDialog";
@@ -75,13 +75,10 @@ const CatalogMenu: React.FC<{publicationView: PublicationView}> = (props) => {
                 publicationView={props.publicationView}
             />
             <div style={{ borderBottom: "1px solid var(--color-blue)" }}></div>
-            <ImportAnnotationsDialog winId={undefined}>
+            <ImportAnnotationsDialog winId={undefined} publicationView={props.publicationView}>
                 <button
                     className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
-                    onClick={() => {
-                        const pubId = props.publicationView.identifier;
-                        dispatch(annotationActions.importAnnotationSet.build(pubId));
-                    }}>
+                >
                     <SVG ariaHidden svg={ImportIcon} />
                     {__("catalog.importAnnotation")}
                 </button>
