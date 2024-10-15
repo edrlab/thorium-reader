@@ -6,24 +6,28 @@
 // ==LICENSE-END==
 
 import "reflect-metadata";
+
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
+
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
 import {
     formatContributorToString,
 } from "readium-desktop/renderer/common/logics/formatContributor";
 
-import { TranslatorProps, withTranslator } from "./hoc/translator";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
 import { useTranslator } from "../hooks/useTranslator";
+import { connect } from "react-redux";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { TranslatorProps, withTranslator } from "./hoc/translator";
 // import * as ValidateIcon from "readium-desktop/renderer/assets/icons/validated-icon.svg";
 // import SVG from "./SVG";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
+interface IBaseProps {
     publicationViewMaybeOpds: TPublication;
     coverType?: "cover" | "thumbnail" | undefined;
     onClick?: () => void;
@@ -38,7 +42,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, TranslatorProps {
 }
 
 interface IState {
@@ -96,7 +100,7 @@ class Cover extends React.Component<IProps, IState> {
     }
 
     public render() {
-        const { publicationViewMaybeOpds, translator } = this.props;
+        const { publicationViewMaybeOpds } = this.props;
 
         // let tagString = "";
         // for (const tag of publicationViewMaybeOpds.tags) {
@@ -123,15 +127,15 @@ class Cover extends React.Component<IProps, IState> {
                     onError={this.imageOnError}
                     {...this.props.imgRadixProp}
                 />
-                {/* {tagString === "/finished/"  ? 
-                <div className={stylesPublications.corner}><SVG ariaHidden svg={ValidateIcon} /></div> 
+                {/* {tagString === "/finished/"  ?
+                <div className={stylesPublications.corner}><SVG ariaHidden svg={ValidateIcon} /></div>
                 : <></>} */}
                 <div className={stylesPublications.gradient}></div>
                 </>
             );
         }
 
-        const authors = formatContributorToString(publicationViewMaybeOpds.authors, translator);
+        const authors = formatContributorToString(publicationViewMaybeOpds.authors, this.props.locale);
         let colors = publicationViewMaybeOpds.customCover;
         if (!colors) {
             colors = RandomCustomCovers[0];
@@ -139,7 +143,7 @@ class Cover extends React.Component<IProps, IState> {
         const backgroundStyle: React.CSSProperties = {
             backgroundImage: `linear-gradient(${colors.topColor}, ${colors.bottomColor})`,
         };
-        const pubTitleLangStr = convertMultiLangStringToString(translator, (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle);
+        const pubTitleLangStr = convertMultiLangStringToString((publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle, this.props.locale);
         const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
         const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
@@ -153,8 +157,8 @@ class Cover extends React.Component<IProps, IState> {
                     </p>
                     <p aria-hidden>{authors}</p>
                 </div>
-                {/* {!this.props.publicationViewMaybeOpds.lastReadTimeStamp ? 
-                <div className={stylesPublications.corner}></div> 
+                {/* {!this.props.publicationViewMaybeOpds.lastReadTimeStamp ?
+                <div className={stylesPublications.corner}></div>
                 : <></>} */}
                 <div className={stylesPublications.gradient}></div>
             </div>
@@ -172,10 +176,15 @@ class Cover extends React.Component<IProps, IState> {
     }
 }
 
-const CoverWithTranslator = withTranslator(Cover);
+const mapStateToProps = (state: IRendererCommonRootState) => ({
+    locale: state.i18n.locale, // refresh
+});
+
+
+const CoverWithTranslator = connect(mapStateToProps)(withTranslator(Cover));
 export default CoverWithTranslator;
 
-export const CoverWithForwardedRef = React.forwardRef<HTMLImageElement, IProps>(({publicationViewMaybeOpds, coverType, ...props}, forwardedRef) => {
+export const CoverWithForwardedRef = React.forwardRef<HTMLImageElement, IBaseProps>(({publicationViewMaybeOpds, coverType, ...props}, forwardedRef) => {
     const [__] = useTranslator();
 
     return (

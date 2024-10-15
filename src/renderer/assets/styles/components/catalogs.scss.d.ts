@@ -1,4 +1,3 @@
-export declare const ___DEBUG___PARTIALS_MIXINS_CSS: string;
 export declare const button_delete: string;
 export declare const button_edit: string;
 export declare const button_transparency: string;
@@ -9,6 +8,8 @@ export declare const catalog_infos_text: string;
 export declare const catalog_title: string;
 export declare const catalog_wrapper: string;
 export declare const col_filter: string;
+export declare const CSS_END_components_catalogs: string;
+export declare const CSS_START_components_catalogs: string;
 export declare const entryList_item: string;
 export declare const entryList_ul: string;
 export declare const form_group: string;

@@ -75,7 +75,9 @@
       "lastAdditions": "Nyligen tillagt"
     },
     "export": "Spara som",
+    "exportAnnotation": "",
     "format": "Format",
+    "importAnnotation": "",
     "lang": "Språk",
     "lastRead": "Senast läst",
     "moreInfo": "Information om publikationen",
@@ -122,7 +124,19 @@
     "update": "Redigera"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Avbryt",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Vill du ta bort den här katalogen?",
     "deletePublication": "Vill du ta bort den här publikationen?",
     "import": "Vill du importera följande filer:",
@@ -167,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Nedladdningen av {{- title}} misslyckades: [{{- err}}]"
     },
@@ -304,12 +326,41 @@
       "Color": "Färg",
       "addNote": "Anteckna",
       "advancedMode": "Omedelbart-läge (skapa automatiskt efter markering)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Alternativ",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Visa inte",
       "highlight": "Markera",
       "noSelectionToast": "Ingen markering",
       "quickAnnotations": "Snabbskapa (hoppa över redigeraren)",
       "saveNote": "Spara",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Visa i marginalen",
       "type": {
         "outline": "Kontur",
@@ -423,6 +474,12 @@
         },
         "title": "Zooma"
       },
+      "preset": {
+        "apply": "",
+        "reset": "",
+        "save": "",
+        "title": ""
+      },
       "preview": "Förhandsvisning",
       "reduceMotion": "Minska rörelser",
       "scrolled": "Rullningsbar",
@@ -465,7 +522,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Rensa inloggningsuppgifter"
     },
     "keyboard": {
@@ -480,6 +545,10 @@
     },
     "language": {
       "languageChoice": "Språk"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Inaktivera",

@@ -1,8 +1,8 @@
-/*
-=-=-= breadcrumbs.scss
-*/
+@import '../partials/mixin';
 
-@import 'src/renderer/assets/styles/partials/mixin';
+.CSS_START_components_breadcrumbs {
+  display: none;
+}
 
 #spaceLeft {
   // background-color: blue;
@@ -118,6 +118,6 @@
   }
 }
 
-.___DEBUG___COMPONENTS_BREADCRUMB_CSS {
+.CSS_END_components_breadcrumbs {
   display: none;
 }

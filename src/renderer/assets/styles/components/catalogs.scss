@@ -1,9 +1,8 @@
-/*
-=-=-= catalogs.scss
-*/
+@import '../partials/mixin';
 
-@import 'src/renderer/assets/styles/partials/mixin';
-
+.CSS_START_components_catalogs {
+    display: none;
+}
 
 .catalog_wrapper {
     display: flex;
@@ -295,11 +294,13 @@
 
 .opds_browserResults {
     overflow: auto;
-    inset: 300px 20px 30px 30px;
+    inset: 260px 20px 30px 30px;
     padding: 0;
     position: absolute;
     padding-right: 25px;
     margin: 2px;
+    padding-top: 40px;
+    margin-top: 15px;
 
     .button_transparency {
         margin: 4px;
@@ -314,4 +315,8 @@
     .loader {
         margin: 20%;
     }
+}
+
+.CSS_END_components_catalogs {
+    display: none;
 }

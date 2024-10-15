@@ -75,7 +75,9 @@
       "lastAdditions": "最近追加したもの"
     },
     "export": "別の場所に保存",
+    "exportAnnotation": "",
     "format": "形式",
+    "importAnnotation": "",
     "lang": "言語",
     "lastRead": "最終閲覧",
     "moreInfo": "本の詳細",
@@ -122,7 +124,19 @@
     "update": "編集"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "キャンセル",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "この図書目録を削除しますか？",
     "deletePublication": "この本を削除しますか？",
     "import": "追加します：",
@@ -167,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "『{{- title}}』のダウンロードに失敗しました：{{- err}}"
     },
@@ -304,12 +326,41 @@
       "Color": "色",
       "addNote": "注釈をつける",
       "advancedMode": "インスタントモード（本文を選択するだけで自動作成）",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "オプション",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "注釈を表示しない",
       "highlight": "ハイライト",
       "noSelectionToast": "選択されていません",
       "quickAnnotations": "クイック作成（注釈編集画面をスキップ）",
       "saveNote": "保存",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "ページ余白に注釈マークを表示",
       "type": {
         "outline": "枠線",
@@ -423,6 +474,12 @@
         },
         "title": "拡大"
       },
+      "preset": {
+        "apply": "",
+        "reset": "",
+        "save": "",
+        "title": ""
+      },
       "preview": "プレビュー",
       "reduceMotion": "視差効果を減らす",
       "scrolled": "スクロール型",
@@ -465,7 +522,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "ログインデータを消去する"
     },
     "keyboard": {
@@ -480,6 +545,10 @@
     },
     "language": {
       "languageChoice": "言語の選択"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "無効",

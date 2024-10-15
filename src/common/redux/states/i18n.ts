@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { availableLanguages } from "readium-desktop/common/services/translator";
+
 export interface I18NState {
-    locale: string;
+    locale: keyof typeof availableLanguages;
 }

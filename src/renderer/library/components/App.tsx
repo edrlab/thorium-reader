@@ -7,6 +7,13 @@
 
 import "reflect-metadata";
 
+// import "readium-desktop/renderer/assets/styles/partials/variables.scss";
+// import * as globalScssStyle from "readium-desktop/renderer/assets/styles/global.scss";
+import "readium-desktop/renderer/assets/styles/global.scss";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+
+import { webUtils } from "electron";
+import classNames from "classnames";
 import { HistoryRouter } from "redux-first-history/rr6";
 import * as path from "path";
 import * as React from "react";
@@ -15,14 +22,12 @@ import { Provider } from "react-redux";
 import { acceptedExtension, acceptedExtensionObject } from "readium-desktop/common/extension";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
 import { ensureKeyboardListenerIsInstalled } from "readium-desktop/renderer/common/keyboard";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import DialogManager from "readium-desktop/renderer/library/components/dialog/DialogManager";
 import PageManager from "readium-desktop/renderer/library/components/PageManager";
-import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import DownloadsPanel from "./DownloadsPanel";
 import LoaderMainLoad from "./LoaderMainLoad";
 import { toastActions } from "readium-desktop/common/redux/actions";
@@ -32,9 +37,11 @@ import { acceptedExtensionArray } from "readium-desktop/common/extension";
 import Nunito from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-Regular.ttf";
 import NunitoBold from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-SemiBold.ttf";
 
-import * as globalScssStyle from "readium-desktop/renderer/assets/styles/global.scss";
 import { WizardModal } from "./Wizard";
-globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
+import { getReduxHistory, getStore } from "../createStore";
+import { getTranslator } from "readium-desktop/common/services/translator";
+// eslintxx-disable-next-line @typescript-eslint/no-unused-expressions
+// globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -46,22 +53,39 @@ export default class App extends React.Component<{}, undefined> {
 
     // Called when files are droped on the dropzone
     public onDrop(acceptedFiles: File[]) {
-        const store = diLibraryGet("store");
+        const store = getStore();
+
+        console.log(acceptedFiles);
 
         const filez = acceptedFiles
             .filter(
-                (file) => file.path.replace(/\\/g, "/").endsWith("/" + acceptedExtensionObject.nccHtml) || acceptedExtension(path.extname(file.path)),
+                (file) => {
+                    // with drag-and-drop (unlike input@type=file) the File `path` property is equal to `name`!
+                    // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
+                    const absolutePath = webUtils.getPathForFile(file);
+                    return absolutePath.replace(/\\/g, "/").endsWith("/" + acceptedExtensionObject.nccHtml) || acceptedExtension(path.extname(absolutePath));
+                },
             )
             .map(
-                (file) => ({
-                    name: file.name,
-                    path: file.path,
-                }),
+                (file) => {
+                    // with drag-and-drop (unlike input@type=file) the File `path` property is equal to `name`!
+                    // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
+                    const absolutePath = webUtils.getPathForFile(file);
+                    return {
+                        name: file.name,
+                        path: absolutePath,
+                    };
+                },
             );
 
         if (filez.length === 0) {
-            store.dispatch(toastActions.openRequest.build(ToastType.Error, diLibraryGet("translator").translate("dialog.importError", {
-                acceptedExtension: acceptedFiles.length === 1 ? `[${path.extname(acceptedFiles[0].path)}] ${acceptedExtensionArray.join(" ")}` : acceptedExtensionArray.join(" "),
+            const file = acceptedFiles[0];
+            // with drag-and-drop (unlike input@type=file) the File `path` property is equal to `name`!
+            // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
+            const absolutePath = webUtils.getPathForFile(file);
+            const acceptedExtension = acceptedFiles.length === 1 ? `[${path.extname(absolutePath)}] ${acceptedExtensionArray.join(" ")}` : acceptedExtensionArray.join(" ");
+            store.dispatch(toastActions.openRequest.build(ToastType.Error, getTranslator().__("dialog.importError", {
+                acceptedExtension,
             })));
             return;
         }
@@ -88,15 +112,11 @@ export default class App extends React.Component<{}, undefined> {
     public async componentDidMount() {
         ensureKeyboardListenerIsInstalled();
 
-        const store = diLibraryGet("store"); // diRendererSymbolTable.store
+        const store = getStore();
         document.body.setAttribute("data-theme", store.getState().theme.name);
     }
 
     public render(): React.ReactElement<{}> {
-        const store = diLibraryGet("store"); // diRendererSymbolTable.store
-        const history = diLibraryGet("history"); // diRendererSymbolTable.history
-        const translator = diLibraryGet("translator"); // diRendererSymbolTable.translator
-
 
         // FIXME: try a better way to import Nunito in CSS font face instead of in React render function.
         // One possibility is to add css font in ejs html template file from webpack
@@ -132,9 +152,9 @@ export default class App extends React.Component<{}, undefined> {
         }
 
         return (
-            <Provider store={store} >
-                <TranslatorContext.Provider value={translator}>
-                    <HistoryRouter history={history}>
+            <Provider store={getStore()} >
+                <TranslatorContext.Provider value={getTranslator()}>
+                    <HistoryRouter history={getReduxHistory()}>
                         <Dropzone
                             onDrop={this.onDrop}
                             noClick={true}
@@ -145,7 +165,7 @@ export default class App extends React.Component<{}, undefined> {
                                 rootProps.tabIndex = -1;
                                 return <div
                                     {...rootProps}
-                                    className={stylesInputs.dropzone}
+                                    className={classNames(stylesInputs.dropzone)}
                                     onFocus={null}
                                     onBlur={null}
                                 >

@@ -5,17 +5,20 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.scss";
+
 import { clipboard } from "electron";
 import classNames from "classnames";
 import * as React from "react";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
-
 import { TranslatorProps, withTranslator } from "../hoc/translator";
+import { connect } from "react-redux";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -113,7 +116,7 @@ export class Toast extends React.Component<IProps, IState> {
             return (<></>);
         }
 
-        const { type } = this.props;
+        const { type, __ } = this.props;
         const { willLeave, toRemove } = this.state;
 
         let typeClassName: string;
@@ -140,7 +143,7 @@ export class Toast extends React.Component<IProps, IState> {
                 }}
                 onMouseOut={() => {
                     this.triggerTimer(true);
-                    
+
                 }}
                 onBlur={() => {
                     this.ignoreTimer = false;
@@ -174,7 +177,7 @@ export class Toast extends React.Component<IProps, IState> {
                             // https://www.electronjs.org/docs/latest/tutorial/notifications
                             // tslint:disable-next-line: no-unused-expression
                             new Notification(capitalizedAppName, {
-                                body: `${this.props.translator.translate("app.edit.copy")} [${this.props.message}]`,
+                                body: `${__("app.edit.copy")} [${this.props.message}]`,
                             });
                             // this.triggerTimer(true);
                             // this.handleClose();
@@ -222,4 +225,8 @@ export class Toast extends React.Component<IProps, IState> {
     }
 }
 
-export default withTranslator(Toast);
+const mapStateToProps = (state: IRendererCommonRootState) => ({
+    locale: state.i18n.locale, // refresh
+});
+
+export default connect(mapStateToProps)(withTranslator(Toast));

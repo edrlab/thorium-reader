@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
+
 import classNames from "classnames";
 import * as debug_ from "debug";
 import * as React from "react";
@@ -25,7 +27,6 @@ import {
 // import { deleteTag } from "readium-desktop/renderer/common/logics/publicationInfos/tags/deleteTag";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { TDispatch } from "readium-desktop/typings/redux";
-import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 
 
 // Logger
@@ -102,6 +103,7 @@ const mapStateToProps = (state: IReaderRootState) => ({
     tagArray: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication?.tags,
     pubId: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication?.identifier,
     publication: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication,
+    locale: state.i18n.locale, // refresh
 });
 
 const mapDispatchToProps = (dispatch: TDispatch) => ({

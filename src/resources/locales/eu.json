@@ -75,7 +75,9 @@
       "lastAdditions": "Berriki gehitutakoak"
     },
     "export": "Esportatu",
+    "exportAnnotation": "",
     "format": "Formatua",
+    "importAnnotation": "",
     "lang": "Hizkuntza",
     "lastRead": "Azken Irakurketa",
     "moreInfo": "Informazio gehiago",
@@ -122,7 +124,19 @@
     "update": "Editatu"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Ezeztatu",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Ziur zaude katalogo hau ezabatu nahi duzula?",
     "deletePublication": "Ziur zaude argitalpen hau ezabatu nahi duzula?",
     "import": "Ziur zaude fitxategi hauek inportatu nahi dituzula?",
@@ -167,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "{- title}}-ren deskargak huts egin du [{- err}]"
     },
@@ -288,12 +310,14 @@
       "title": "Aurrerapena"
     },
     "read": "Bukatuta",
+    "remainingTime": "",
     "renewButton": "Berritu",
     "returnButton": "Itzuli",
     "returnedLcp": "Liburu hau ezin da irakurri LCP lizentzia itzuli delako.",
     "revokedLcp": "Liburu hau ezin da irakurri LCP lizentzia bertan behera utzi delako.",
     "seeLess": "Ikusi gutxiago",
     "seeMore": "Gehiago ikusi",
+    "timeLeft": "",
     "title": "Titulua",
     "userKeyCheckInvalid": "Pasahitza ez da zuzena"
   },
@@ -302,12 +326,41 @@
       "Color": "Kolore",
       "addNote": "Apuntatu",
       "advancedMode": "Berehalako modua (sortu automatikoki hautatu ondoren)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Aukerak",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Ez erakutsi",
       "highlight": "Nabarmendu",
       "noSelectionToast": "Ez dago aukeraketarik",
       "quickAnnotations": "Sortu azkarra (saltatu editorea)",
       "saveNote": "Gorde",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Marjinetan bistaratzea",
       "type": {
         "outline": "Eskema",
@@ -421,6 +474,12 @@
         },
         "title": "Zoom"
       },
+      "preset": {
+        "apply": "",
+        "reset": "",
+        "save": "",
+        "title": ""
+      },
       "preview": "Aurrebista",
       "reduceMotion": "Mugimendua gutxitu",
       "scrolled": "Desplazagarria",
@@ -463,7 +522,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Autentifikazio-datuak garbitzea"
     },
     "keyboard": {
@@ -478,6 +545,10 @@
     },
     "language": {
       "languageChoice": "Hizkuntza hautatzea"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Desgaitu",

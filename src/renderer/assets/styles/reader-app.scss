@@ -1,8 +1,14 @@
-@import "src/renderer/assets/styles/focus";
+/* @import './partials/variables'; */
+// @import './focus';
+@import './partials/mixin';
 
-/*
-=-=-= reader-app.scss
-*/
+.CSS_START_readerApp {
+  display: none;
+}
+
+.rootDiv {
+  display: block;
+}
 
 /* :global */
 
@@ -1044,8 +1050,19 @@ input[type="radio"] + label {
   background-color: #d8d8d8;
 }
 
-.___DEBUG___READER_APP_CSS {
-  display: none;
+.exitZen_container {
+  width: 150px;
+  height: 150px;
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  &:hover {
+    .button_exitZen {
+    opacity: 1 !important;
+    }
+  }
 }
 
 .button_exitZen {
@@ -1055,6 +1072,8 @@ input[type="radio"] + label {
     right: 25px;
     top: 12px;
     z-index: 10;
+    transition: 200ms;
+
 
     svg {
       color: var(--color-blue);
@@ -1126,4 +1145,8 @@ input[type="radio"] + label {
     outline: var(--color-blue) solid 2px !important;
     outline-offset: -2px;
   }
+}
+
+.CSS_END_readerApp {
+  display: none;
 }

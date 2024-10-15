@@ -75,7 +75,9 @@
       "lastAdditions": "Nedavno dodano"
     },
     "export": "Shrani kot",
+    "exportAnnotation": "",
     "format": "Format",
+    "importAnnotation": "",
     "lang": "Jezik",
     "lastRead": "Nazadnje brano",
     "moreInfo": "Osnovni podatki",
@@ -122,7 +124,19 @@
     "update": "Uredi"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Prekliči",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Ali res želiš izbrisati katalog?",
     "deletePublication": "Ali res želiš izbrisati publikacijo?",
     "import": "Ali res želiš uvoziti te datoteke:",
@@ -167,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Prenos {{- title}} ni uspel: [{{- err}}]"
     },
@@ -304,12 +326,41 @@
       "Color": "Barva",
       "addNote": "Dodaj opombo",
       "advancedMode": "Takojšnji način (samodejno ustvarjanje po izbiri)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Možnosti",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Ne prikaži",
       "highlight": "Poudari",
       "noSelectionToast": "Brez izbire",
       "quickAnnotations": "Hitro ustvarjanje (preskoči urejevalnik)",
       "saveNote": "Shrani",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Prikaži v robovih",
       "type": {
         "outline": "Oriši",
@@ -423,6 +474,12 @@
         },
         "title": "Povečava"
       },
+      "preset": {
+        "apply": "",
+        "reset": "",
+        "save": "",
+        "title": ""
+      },
       "preview": "Predogled",
       "reduceMotion": "Zmanjšaj gibanje",
       "scrolled": "Pomikanje",
@@ -465,7 +522,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Izbriši avtentikacijske podatke"
     },
     "keyboard": {
@@ -480,6 +545,10 @@
     },
     "language": {
       "languageChoice": "Izbira jezika"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Onemogoči",

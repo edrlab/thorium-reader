@@ -1,17 +1,20 @@
 /*** be careful this file is imported in library and reader windows ***/
 
-/*
-=-=-= global.scss
-*/
+@import './partials/variables';
+@import './partials/mixin';
+@import './partials/focus';
 
-@import 'src/renderer/assets/styles/partials/mixin';
-@import 'src/renderer/assets/styles/partials/focus';
+.CSS_START_global {
+  display: none;
+}
 
 /* ============ GLOBAL ELEMENTS =============== */
 
+/*
 .__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__ {
     display: none;
 }
+*/
 
 :root {
   user-select: none;
@@ -24,6 +27,11 @@
   -webkit-user-drag: none;
   -webkit-app-region: no-drag;
 }
+
+// https://github.com/radix-ui/primitives/issues/1496#issuecomment-1962839229
+html body[data-scroll-locked] {
+  position: unset !important;
+} 
 
 body {
   margin: 0;
@@ -447,6 +455,10 @@ nav + nav + .breadcrumb + .main {
     align-items: center;
     gap: 10px;
     cursor: pointer;
+
+    h4 {
+      margin: 10px 0;
+    }
   }
 
   &_input {
@@ -461,7 +473,6 @@ li.no_list_style {
   list-style: none;
 }
 
-.___DEBUG___GLOBAL_CSS {
+.CSS_END_global {
   display: none;
 }
-

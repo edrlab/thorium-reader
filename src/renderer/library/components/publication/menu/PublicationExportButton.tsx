@@ -13,6 +13,8 @@ import {
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/SaveAs-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { connect } from "react-redux";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -54,4 +56,8 @@ class PublicationExportButton extends React.Component<IProps, undefined> {
     };
 }
 
-export default withTranslator(PublicationExportButton);
+const mapStateToProps = (state: IRendererCommonRootState) => ({
+    locale: state.i18n.locale, // refresh
+});
+
+export default connect(mapStateToProps)(withTranslator(PublicationExportButton));

@@ -75,7 +75,9 @@
       "lastAdditions": "Adicionado recentemente"
     },
     "export": "Exportar",
+    "exportAnnotation": "",
     "format": "Formato",
+    "importAnnotation": "",
     "lang": "Idioma",
     "lastRead": "Última leitura",
     "moreInfo": "Detalhes da publicação",
@@ -122,7 +124,19 @@
     "update": "Editar"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Cancelar",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Deseja excluir este catálogo?",
     "deletePublication": "Deseja excluir esta publicação?",
     "import": "Deseja importar estes arquivos:",
@@ -167,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "O download de {{- title}} falhou: [{{- err}}]"
     },
@@ -304,12 +326,41 @@
       "Color": "Cor",
       "addNote": "Anotar",
       "advancedMode": "Modo instantâneo (criação automática após seleção)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Opções",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Não mostrar",
       "highlight": "Destaque",
       "noSelectionToast": "Nenhuma seleção",
       "quickAnnotations": "Criação rápida (pular editor)",
       "saveNote": "Salvar",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Exibir nas margens",
       "type": {
         "outline": "Contorno",
@@ -423,6 +474,12 @@
         },
         "title": "Ampliação"
       },
+      "preset": {
+        "apply": "",
+        "reset": "",
+        "save": "",
+        "title": ""
+      },
       "preview": "pré-visualização",
       "reduceMotion": "Reduzir o movimento",
       "scrolled": "Escroleável",
@@ -465,7 +522,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Limpar dados de login"
     },
     "keyboard": {
@@ -480,6 +545,10 @@
     },
     "language": {
       "languageChoice": "Idioma"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Desabilitar",

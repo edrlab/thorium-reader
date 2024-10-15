@@ -8,6 +8,8 @@
 import {
     apiActions, authActions, catalogActions, downloadActions, i18nActions, keyboardActions, lcpActions, readerActions, sessionActions, themeActions, publicationActions, wizardActions,
     annotationActions,
+    creatorActions,
+    settingsActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
@@ -33,7 +35,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     downloadActions.abort.ID,
 
-    sessionActions.enable.ID,
+    // sessionActions.enable.ID,
 
     lcpActions.renewPublicationLicense.ID,
     lcpActions.returnPublication.ID,
@@ -56,7 +58,12 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     sessionActions.save.ID,
 
-    annotationActions.exportW3CAnnotationSetFromAnnotations.ID,
+    annotationActions.importAnnotationSet.ID,
+    annotationActions.importConfirmOrAbort.ID,
+
+    creatorActions.set.ID,
+
+    settingsActions.enableAPIAPP.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

@@ -1,8 +1,8 @@
-/*
-=-=-= modals.scss
-*/
+@import '../partials/mixin';
 
-@import 'src/renderer/assets/styles/partials/mixin';
+.CSS_START_components_modals {
+  display: none;
+}
 
 .modal_dialog_overlay {
   position: fixed;
@@ -257,4 +257,8 @@
       margin: 20px 0;
     }
   }
+}
+
+.CSS_END_components_modals {
+  display: none;
 }

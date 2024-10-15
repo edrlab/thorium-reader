@@ -16,6 +16,7 @@ import { THistoryState } from "./history";
 import { IOpdsHeaderState, IOpdsSearchState } from "./opds";
 import { CatalogView } from "readium-desktop/common/views/catalog";
 import { IWizardState } from "../wizard";
+import { ISettingsState } from "../settings";
 
 export interface ILibraryRootState extends IRendererCommonRootState {
     opds: {
@@ -34,4 +35,5 @@ export interface ILibraryRootState extends IRendererCommonRootState {
         tag: string[],
     }
     wizard: IWizardState;
+    settings: ISettingsState;
 }

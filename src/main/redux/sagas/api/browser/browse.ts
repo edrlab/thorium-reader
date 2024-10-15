@@ -63,7 +63,7 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
 
         // this does not work, because auth flow leaves blank JSX comp until refreshed with correct credentials
         // if (!loansPubArray) { // note: empty array is not falsy
-        //     const translator = diMainGet("translator");
+        //     const translator = getTranslator();
         //     return {
         //         url: "",
         //         isFailure: true,

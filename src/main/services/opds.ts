@@ -343,7 +343,7 @@ export class OpdsService {
         }
 
         const str = removeUTF8BOM(buffer.toString());
-        const xmlDom = new xmldom.DOMParser().parseFromString(str);
+        const xmlDom = new xmldom.DOMParser().parseFromString(str, "application/xml");
 
         if (!xmlDom || !xmlDom.documentElement) {
             debug(`Unable to parse ${baseUrl}`);
@@ -354,7 +354,7 @@ export class OpdsService {
         if (isEntry) {
             // It's a single publication entry and not an OpdsFeed
 
-            const opds1Entry = XML.deserialize<Entry>(xmlDom, Entry);
+            const opds1Entry = XML.deserialize<Entry>(xmlDom as unknown as Document, Entry);
             const r2OpdsPublication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
             const pubView = this.opdsFeedViewConverter.convertOpdsPublicationToView(
                 r2OpdsPublication,
@@ -367,7 +367,7 @@ export class OpdsService {
 
         }
 
-        const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
+        const opds1Feed = XML.deserialize<OPDS>(xmlDom as unknown as Document, OPDS);
         const r2OpdsFeed = convertOpds1ToOpds2(opds1Feed);
         return this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, baseUrl);
     }

@@ -5,10 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
+
 import classNames from "classnames";
 import * as React from "react";
 import { IOpdsTagView } from "readium-desktop/common/views/opds";
-import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
 
 interface IProps {
     tagArray: string[] | IOpdsTagView[];
