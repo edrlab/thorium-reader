@@ -753,8 +753,8 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
     if (sortType !== "all" && sortType.has("progression")) {
 
         annotationListFiltered.sort((a, b) => {
-            const [, {locatorExtended: {locator: la}}] = a;
-            const [, {locatorExtended: {locator: lb}}] = b;
+            const [, { locatorExtended: { locator: la } }] = a;
+            const [, { locatorExtended: { locator: lb } }] = b;
             const pcta = computeProgression(r2Publication.Spine, la);
             const pctb = computeProgression(r2Publication.Spine, lb);
             return pcta - pctb;
@@ -767,8 +767,8 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
         });
     } else if (sortType !== "all" && sortType.has("lastModified")) {
         annotationListFiltered.sort((a, b) => {
-            const [, {modified: ma}] = a;
-            const [, {modified: mb}] = b;
+            const [, { modified: ma }] = a;
+            const [, { modified: mb }] = b;
             return ma && mb ? mb - ma : ma ? -1 : mb ? 1 : 0;
         });
     }
@@ -813,11 +813,11 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
     }
 
     const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
-    const creatorList = annotationsListAll.map(([,{creator}]) => creator).filter(v => v);
-    const creatorSet = creatorList.reduce<Record<string, string>>((acc, {id, name}) => {
+    const creatorList = annotationsListAll.map(([, { creator }]) => creator).filter(v => v);
+    const creatorSet = creatorList.reduce<Record<string, string>>((acc, { id, name }) => {
         if (!acc[id]) {
             if (!userNumber[id]) userNumber[id] = ObjectKeys(userNumber).length + 1;
-            return {...acc, [id]: (id !== creatorMyself.id ? name : creatorMyself.name) || `unknown${userNumber[id]}`};
+            return { ...acc, [id]: (id !== creatorMyself.id ? name : creatorMyself.name) || `unknown${userNumber[id]}` };
         }
         return acc;
     }, {});
@@ -903,7 +903,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         </button>
                     </Popover.Trigger>
                     <Popover.Portal>
-                        <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2), padding: "15px 0"}}>
+                        <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2), padding: "15px 0" }}>
                             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
                             <form
                                 className={stylesAnnotations.annotationsTitle_form_container}
@@ -1122,7 +1122,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                 style={{ marginBottom: "20px" }}
                             >
                                 <details id="annotationListCreator">
-                                    <summary className={stylesAnnotations.annotations_filter_tagGroup} style={{pointerEvents : selectCreatorOptions.length < 2 ? "none": "auto", opacity:  selectCreatorOptions.length < 2 ? "0.5" : "1"}}>
+                                    <summary className={stylesAnnotations.annotations_filter_tagGroup} style={{ pointerEvents: selectCreatorOptions.length < 2 ? "none" : "auto", opacity: selectCreatorOptions.length < 2 ? "0.5" : "1" }}>
                                         <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByCreator")}</Label>
                                         <div style={{ display: "flex", gap: "10px" }}>
                                             <button
@@ -1147,7 +1147,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                             </button>
                                         </div>
                                     </summary>
-                                    <TagList items={selectCreatorOptions} className={stylesAnnotations.annotations_filter_taglist}  style={{margin : selectCreatorOptions.length < 2 ? "0": "20px 0"}}>
+                                    <TagList items={selectCreatorOptions} className={stylesAnnotations.annotations_filter_taglist} style={{ margin: selectCreatorOptions.length < 2 ? "0" : "20px 0" }}>
                                         {(item) => <Tag className={stylesAnnotations.annotations_filter_tag} id={item.id} textValue={item.name}>{item.name}</Tag>}
                                     </TagList>
                                 </details>
@@ -2291,7 +2291,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </Tabs.List>
                 }
                 <div className={stylesSettings.settings_content}
-                ref={popoverBoundary}
+                    ref={popoverBoundary}
                     style={{ marginTop: dockedMode && "0" }}>
                     <Tabs.Content value="tab-toc" tabIndex={-1} id={"readerMenu_tabs-tab-toc"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
