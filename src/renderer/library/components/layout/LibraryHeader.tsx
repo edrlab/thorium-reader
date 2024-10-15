@@ -158,12 +158,34 @@ class Header extends React.Component<IProps, undefined> {
             <li className={classNames(...styleClasses, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={index}>
                 <Link
                     to={nextLocation}
-                    state = {{displayType: (nextLocation.state && (nextLocation.state as IRouterLocationState).displayType) ? (nextLocation.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                    state={{ displayType: (nextLocation.state && (nextLocation.state as IRouterLocationState).displayType) ? (nextLocation.state as IRouterLocationState).displayType : DisplayType.Grid }}
                     replace={true}
                     aria-pressed={active}
                     role={"button"}
                     className={classNames(active ? stylesButtons.button_nav_primary : "", !active ? "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" : "")}
                     title={item.label}
+                    onClick={(e) => {
+                        if (e.altKey || e.shiftKey || e.ctrlKey) {
+                            e.preventDefault();
+                            e.currentTarget.click();
+                        }
+                    }}
+                    onKeyDown={(e) => {
+                        // if (e.code === "Space") {
+                        if (e.key === " " || e.altKey || e.ctrlKey) {
+                            e.preventDefault(); // prevent scroll
+                        }
+                    }}
+                    onKeyUp={(e) => {
+                        // Includes screen reader tests:
+                        // if (e.code === "Space") { WORKS
+                        // if (e.key === "Space") { DOES NOT WORK
+                        // if (e.key === "Enter") { WORKS
+                        if (e.key === " ") { // WORKS
+                            e.preventDefault();
+                            e.currentTarget.click();
+                        }
+                    }}
                 >
                     <SVG ariaHidden svg={item.svg} />
                     <h3>{item.label}</h3>
