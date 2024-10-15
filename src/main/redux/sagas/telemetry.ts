@@ -68,6 +68,7 @@ function* collectAndSave() {
 
     // fresh install is equal to en language ?
     const locale = yield* select((state: RootState) => state.i18n.locale);
+    // const locale = getTranslator().getLocale();
 
     // see src/main/redux/sagas/index.ts:107
     // see src/main/redux/reducers/index.ts:74

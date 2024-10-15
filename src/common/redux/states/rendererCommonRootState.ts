@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import { DialogState } from "readium-desktop/common/redux/states/dialog";
-import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
 import { ApiState } from "readium-desktop/common/redux/states/api";
 import { WinState } from "readium-desktop/common/redux/states/win";
@@ -15,7 +14,6 @@ import { IImportAnnotationState } from "./importAnnotation";
 
 export interface IRendererCommonRootState extends ICommonRootState {
     api: ApiState<any>;
-    i18n: I18NState;
     win: WinState;
     dialog: DialogState;
     toast: ToastState;

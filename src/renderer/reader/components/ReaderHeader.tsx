@@ -1322,6 +1322,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         readerConfig: state.reader.config,
         r2Publication: state.reader.info.r2Publication,
         selectionIsNew: state.reader.locator.selectionIsNew,
+        locale: state.i18n.locale, // refresh
     };
 };
 

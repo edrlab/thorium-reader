@@ -71,6 +71,7 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
         downloadState: state.download,
+        locale: state.i18n.locale, // refresh
     };
 };
 

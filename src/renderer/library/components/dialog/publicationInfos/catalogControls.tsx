@@ -25,6 +25,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import DeletePublicationConfirm from "../DeletePublicationConfirm";
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -103,6 +104,10 @@ export class CatalogControls extends React.Component<IProps, undefined> {
     }
 }
 
+const mapStateToProps = (state: IRendererCommonRootState) => ({
+    locale: state.i18n.locale, // refresh
+});
+
 const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
         openReader: () => {
@@ -112,4 +117,4 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(CatalogControls));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(CatalogControls));

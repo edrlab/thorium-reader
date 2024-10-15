@@ -12,7 +12,6 @@ import { app, BrowserWindow } from "electron";
 import * as fs from "fs";
 import { Container } from "inversify";
 import * as path from "path";
-import { Translator } from "readium-desktop/common/services/translator";
 import { ok } from "readium-desktop/common/utils/assert";
 // import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
@@ -182,9 +181,6 @@ const createStoreFromDi = async () => {
 // Create window registry
 // container.bind<WinRegistry>(diSymbolTable["win-registry"]).to(WinRegistry).inSingletonScope();
 
-// Create translator
-container.bind<Translator>(diSymbolTable.translator).to(Translator).inSingletonScope();
-
 // Create repositories
 container.bind<PublicationRepository>(diSymbolTable["publication-repository"]).toConstantValue(
     publicationRepository,
@@ -261,7 +257,6 @@ const getAllReaderWindowFromDi =
 interface IGet {
     (s: "store"): Store<RootState>;
     // (s: "win-registry"): WinRegistry;
-    (s: "translator"): Translator;
     (s: "publication-repository"): PublicationRepository;
     (s: "opds-feed-repository"): OpdsFeedRepository;
     (s: "publication-view-converter"): PublicationViewConverter;

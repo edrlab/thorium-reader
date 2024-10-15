@@ -15,8 +15,8 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 import { ToastState } from "readium-desktop/common/redux/states/toast";
 import { v4 as uuidv4 } from "uuid";
 
-import { TranslatorProps, withTranslator } from "../hoc/translator";
 import Toast from "./Toast";
+import { TranslatorProps, withTranslator } from "../hoc/translator";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -107,6 +107,7 @@ export class ToastManager extends React.Component<IProps, IState> {
 const mapStateToProps = (state: IRendererCommonRootState & IReaderRootState, _props: IBaseProps) => {
     return {
         toast: state.toast,
+        locale: state.i18n.locale, // refresh
         pubId: state?.reader?.info?.publicationIdentifier,
     };
 };

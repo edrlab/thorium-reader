@@ -8,7 +8,7 @@
 import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
 
 import * as React from "react";
-import { AvailableLanguages } from "readium-desktop/common/services/translator";
+import { availableLanguages } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 
 export interface IProps {
@@ -30,8 +30,8 @@ export const FormatPublicationLanguage: React.FC<IProps> = (props) => {
                 // Also: pt-pt vs. pt-PT case sensitivity
                 // Also zh-CN (mandarin chinese)
 
-                const l = lang.split("-")[0] as keyof typeof AvailableLanguages;
-                const ll = AvailableLanguages[l] || lang;
+                const l = lang.split("-")[0] as keyof typeof availableLanguages;
+                const ll = availableLanguages[l] || lang;
 
                 const note = (lang !== ll) ? ` (${lang})` : "";
                 const suffix = ((index < (publicationViewMaybeOpds.languages.length - 1)) ? ", " : "");

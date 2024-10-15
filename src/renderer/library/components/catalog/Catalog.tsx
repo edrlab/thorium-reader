@@ -7,9 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/common/components/hoc/translator";
 import {
     apiClean, apiDispatch,
 } from "readium-desktop/renderer/common/redux/api/api";
@@ -107,6 +105,7 @@ const mapStateToProps = (state: ILibraryRootState) => ({
     catalog: state.publication.catalog,
     tags: state.publication.tag,
     keyboardShortcuts: state.keyboard.shortcuts,
+    locale: state.i18n.locale, // refresh
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

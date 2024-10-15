@@ -13,6 +13,8 @@ import LibraryLayout from "readium-desktop/renderer/library/components/layout/Li
 
 import FeedList from "./FeedList";
 import OpdsAddForm from "./OpdsAddForm";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { connect } from "react-redux";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -44,4 +46,8 @@ class Opds extends React.Component<IProps, undefined> {
     }
 }
 
-export default withTranslator(Opds);
+const mapStateToProps = (state: IRendererCommonRootState) => ({
+    locale: state.i18n.locale, // refresh
+});
+
+export default connect(mapStateToProps)(withTranslator(Opds));
