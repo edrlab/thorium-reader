@@ -244,6 +244,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                     allowsCustomValue
                     onInputChange={(v) => setTag(v)}
                     inputValue={tag}
+                    aria-label={__("catalog.tag")}
                 >
                     {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                 </ComboBox>
