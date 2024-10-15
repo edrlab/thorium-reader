@@ -168,6 +168,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     search: state.opds.browser.search,
     location: state.router.location,
     keyboardShortcuts: state.keyboard.shortcuts,
+    locale: state.i18n.locale, // refresh
 });
 
 const mapDispatchToProps = (dispatch: TDispatch) => ({

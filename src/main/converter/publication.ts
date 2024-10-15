@@ -28,6 +28,8 @@ import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser
 import { diMainGet } from "../di";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
+import { type Store } from "redux";
+import { RootState } from "../redux/states";
 
 // import { type Store } from "redux";
 // import { RootState } from "../redux/states";
@@ -47,8 +49,8 @@ export class PublicationViewConverter {
     @inject(diSymbolTable["publication-storage"])
     private readonly publicationStorage!: PublicationStorage;
 
-    // @inject(diSymbolTable.store)
-    // private readonly store!: Store<RootState>;
+    @inject(diSymbolTable.store)
+    private readonly store!: Store<RootState>;
 
     public removeFromMemoryCache(identifier: string) {
         if (_pubCache[identifier]) {
@@ -201,9 +203,11 @@ export class PublicationViewConverter {
         // and apply convertMultiLangStringToString() only downstream / at rendering time.
         const publishers = convertContributorArrayToStringArray(
             r2Publication.Metadata.Publisher,
+            this.store.getState().i18n.locale,
         );
         const authors = convertContributorArrayToStringArray(
             r2Publication.Metadata.Author,
+            this.store.getState().i18n.locale,
         );
 
         let publishedAt: string | undefined;

@@ -77,6 +77,7 @@
     "export": "Guardar como",
     "exportAnnotation": "Guardar anotação como",
     "format": "Formato",
+    "importAnnotation": "",
     "lang": "Idioma",
     "lastRead": "Última leitura",
     "moreInfo": "Mais informações",
@@ -123,6 +124,16 @@
     "update": "Atualizar"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Cancelar",
     "deleteAnnotations": "Eliminar anotações?",
     "deleteAnnotationsText": "Quer eliminar {{- annotationListLength}} anotações?",
@@ -170,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Falha ao descarregar {{- title}}: [{{- err}}]"
     },
@@ -307,6 +326,10 @@
       "Color": "Cor",
       "addNote": "Anotar",
       "advancedMode": "Modo instantâneo (criação automática após seleção)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Opções",
       "colors": {
         "bluegreen": "Azul-esverdeado",
@@ -321,6 +344,7 @@
       "filter": {
         "all": "Tudo",
         "filterByColor": "Filtrar por cor",
+        "filterByCreator": "",
         "filterByDrawtype": "Filtrar por tipo de desenho",
         "filterByTag": "Filtrar por etiqueta",
         "filterOptions": "Opções de filtro",
@@ -506,7 +530,7 @@
       "type": "Tipo:"
     },
     "auth": {
-      "title": "",
+      "title": "Gerir acesso aos catálogos",
       "wipeData": "Limpar dados de autenticação"
     },
     "keyboard": {
@@ -523,8 +547,8 @@
       "languageChoice": "Idioma"
     },
     "library": {
-      "enableAPIAPP": "",
-      "title": ""
+      "enableAPIAPP": "Ativar acesso à API Dilicom PNB",
+      "title": "Adicionar conta de biblioteca"
     },
     "session": {
       "no": "Desativar",

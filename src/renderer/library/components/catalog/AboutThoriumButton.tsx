@@ -67,7 +67,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
     public render() {
         const { __ } = this.props;
         const displayVersionToast = !!(this.state.versionInfo && this.props.newVersionURL && this.props.newVersion);
-        
+
         return (
             <section className={stylesFooter.footer_wrapper} style={{justifyContent: displayVersionToast ? "space-between" : "end"}}>
                                 {
@@ -207,7 +207,8 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
 
     return {
-        locale: state.i18n.locale,
+        // here
+        locale: state.i18n.locale, // refresh
         newVersionURL: state.versionUpdate.newVersionURL,
         newVersion: state.versionUpdate.newVersion,
     };

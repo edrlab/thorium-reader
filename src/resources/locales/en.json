@@ -77,6 +77,7 @@
     "export": "Save as",
     "exportAnnotation": "Save annotation as",
     "format": "Format",
+    "importAnnotation": "Import annotation",
     "lang": "Language",
     "lastRead": "Last Read",
     "moreInfo": "Publication Details",
@@ -123,6 +124,16 @@
     "update": "Edit"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "of {{- author}}",
+      "descList": "{{- nb}} note(s) from {{- creator}} will be associated with {{- title}} {{- author}}",
+      "descNewer": "{{- nb}} newer versions of these notes are already associated with the publication.",
+      "descOlder": "{{- nb}} older versions of these notes are already associated with the publication.",
+      "descTitle": "Annotation Set Title: ",
+      "importAll": "Import all notes",
+      "importWithoutConflict": "Import notes without conflict",
+      "title": "Do you want to import these notes ?"
+    },
     "cancel": "Cancel",
     "deleteAnnotations": "Delete annotations?",
     "deleteAnnotationsText": "Do you want to delete {{- annotationListLength}} annotation(s)?",
@@ -170,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "All annotations already imported, aborting the importation",
+      "emptyFile": "No annotations available in the file",
+      "errorParsing": "Error file format parsing: ",
+      "noBelongTo": "Unable to import annotations set, at least one annotation does not belong to the publication",
+      "nothing": "There are no annotations ready to be imported, aborting the importation",
+      "success": "Success !"
+    },
     "download": {
       "error": "Downloading [{{- title}}] failed: [{{- err}}]"
     },
@@ -307,6 +326,10 @@
       "Color": "Color",
       "addNote": "Annotate",
       "advancedMode": "Instant mode (auto create after select)",
+      "annotationsExport": {
+        "description": "Name this set of annotations",
+        "title": "Title"
+      },
       "annotationsOptions": "Options",
       "colors": {
         "bluegreen": "Blue-green",
@@ -321,6 +344,7 @@
       "filter": {
         "all": "All",
         "filterByColor": "Filter by Color",
+        "filterByCreator": "Filter by Creator",
         "filterByDrawtype": "Filter by Drawtype",
         "filterByTag": "Filter by Tag",
         "filterOptions": "Filter Options",

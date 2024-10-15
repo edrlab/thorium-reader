@@ -77,6 +77,7 @@
     "export": "Spara som",
     "exportAnnotation": "",
     "format": "Format",
+    "importAnnotation": "",
     "lang": "Språk",
     "lastRead": "Senast läst",
     "moreInfo": "Information om publikationen",
@@ -123,6 +124,16 @@
     "update": "Redigera"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Avbryt",
     "deleteAnnotations": "",
     "deleteAnnotationsText": "",
@@ -170,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Nedladdningen av {{- title}} misslyckades: [{{- err}}]"
     },
@@ -307,6 +326,10 @@
       "Color": "Färg",
       "addNote": "Anteckna",
       "advancedMode": "Omedelbart-läge (skapa automatiskt efter markering)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Alternativ",
       "colors": {
         "bluegreen": "",
@@ -321,6 +344,7 @@
       "filter": {
         "all": "",
         "filterByColor": "",
+        "filterByCreator": "",
         "filterByDrawtype": "",
         "filterByTag": "",
         "filterOptions": "",

@@ -56,6 +56,28 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
                     }}
                     state={{ displayType: "list" }}
                     className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                    onClick={(e) => {
+                        if (e.altKey || e.shiftKey || e.ctrlKey) {
+                            e.preventDefault();
+                            e.currentTarget.click();
+                        }
+                    }}
+                    onKeyDown={(e) => {
+                        // if (e.code === "Space") {
+                        if (e.key === " " || e.altKey || e.ctrlKey) {
+                            e.preventDefault(); // prevent scroll
+                        }
+                    }}
+                    onKeyUp={(e) => {
+                        // Includes screen reader tests:
+                        // if (e.code === "Space") { WORKS
+                        // if (e.key === "Space") { DOES NOT WORK
+                        // if (e.key === "Enter") { WORKS
+                        if (e.key === " ") { // WORKS
+                            e.preventDefault();
+                            e.currentTarget.click();
+                        }
+                    }}
                 >
                     {tag as string}
                 </Link>
@@ -117,7 +139,7 @@ export const TagReaderButton: React.FC<React.PropsWithChildren<IBaseProps>> = (p
     } else {
         tagString = tag.name;
     }
-/* 
+/*
     if (pubId && onClickDeleteCb && __) {
         button = (
             <>

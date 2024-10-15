@@ -77,6 +77,7 @@
     "export": "Αποθήκευση ως",
     "exportAnnotation": "",
     "format": "Διαμόρφωση (format)",
+    "importAnnotation": "",
     "lang": "Γλώσσα",
     "lastRead": "Τελευταία ανάγνωση",
     "moreInfo": "Λεπτομέρειες βιβλίου",
@@ -123,6 +124,16 @@
     "update": "Επεξεργασία"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Ακύρωση",
     "deleteAnnotations": "",
     "deleteAnnotationsText": "",
@@ -170,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Η λήψη του {{- title}} απέτυχε: [{{- err}}]"
     },
@@ -307,6 +326,10 @@
       "Color": "Χρώμα",
       "addNote": "Σχόλιο",
       "advancedMode": "Άμεση λειτουργία (αυτόματη δημιουργία μετά την επιλογή)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Επιλογές",
       "colors": {
         "bluegreen": "",
@@ -321,6 +344,7 @@
       "filter": {
         "all": "",
         "filterByColor": "",
+        "filterByCreator": "",
         "filterByDrawtype": "",
         "filterByTag": "",
         "filterOptions": "",

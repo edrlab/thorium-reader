@@ -77,6 +77,7 @@
     "export": "Експортиране",
     "exportAnnotation": "",
     "format": "Форматиране",
+    "importAnnotation": "",
     "lang": "Език",
     "lastRead": "Последно четено",
     "moreInfo": "Подробности за книгата",
@@ -123,6 +124,16 @@
     "update": "Редактирай"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Отказ",
     "deleteAnnotations": "",
     "deleteAnnotationsText": "",
@@ -170,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Изтеглянето на {{- title}} е неуспешно: [{{- err}}]"
     },
@@ -307,6 +326,10 @@
       "Color": "",
       "addNote": "",
       "advancedMode": "",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "",
       "colors": {
         "bluegreen": "",
@@ -321,6 +344,7 @@
       "filter": {
         "all": "",
         "filterByColor": "",
+        "filterByCreator": "",
         "filterByDrawtype": "",
         "filterByTag": "",
         "filterOptions": "",

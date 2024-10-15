@@ -77,6 +77,7 @@
     "export": "Esportatu",
     "exportAnnotation": "",
     "format": "Formatua",
+    "importAnnotation": "",
     "lang": "Hizkuntza",
     "lastRead": "Azken Irakurketa",
     "moreInfo": "Informazio gehiago",
@@ -123,6 +124,16 @@
     "update": "Editatu"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Ezeztatu",
     "deleteAnnotations": "",
     "deleteAnnotationsText": "",
@@ -170,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "{- title}}-ren deskargak huts egin du [{- err}]"
     },
@@ -307,6 +326,10 @@
       "Color": "Kolore",
       "addNote": "Apuntatu",
       "advancedMode": "Berehalako modua (sortu automatikoki hautatu ondoren)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Aukerak",
       "colors": {
         "bluegreen": "",
@@ -321,6 +344,7 @@
       "filter": {
         "all": "",
         "filterByColor": "",
+        "filterByCreator": "",
         "filterByDrawtype": "",
         "filterByTag": "",
         "filterOptions": "",

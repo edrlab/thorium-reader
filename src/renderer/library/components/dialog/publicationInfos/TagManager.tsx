@@ -197,6 +197,7 @@ const mapStateToProps = (state: ILibraryRootState) => ({
     publication: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication,
     location: state.router.location,
     tags: state.publication.tag,
+    locale: state.i18n.locale, // refresh
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => ({

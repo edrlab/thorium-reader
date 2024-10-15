@@ -7,8 +7,8 @@
 
 import { Contributor } from "@r2-shared-js/models/metadata-contributor";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
-import { diMainGet } from "readium-desktop/main/di";
 import { BCP47_UNKNOWN_LANG } from "@r2-shared-js/parser/epub";
+import { availableLanguages } from "readium-desktop/common/services/translator";
 
 // https://github.com/IDPF/epub3-samples/blob/master/30/regime-anticancer-arabic/EPUB/package.opf
 //
@@ -43,13 +43,12 @@ import { BCP47_UNKNOWN_LANG } from "@r2-shared-js/parser/epub";
 // https://github.com/readium/webpub-manifest/blob/ff5c1e9e76ccc184d4d670179cfb70ced691fcec/schema/contributor-object.schema.json#L7-L24
 // tslint:disable-next-line: max-line-length
 // https://github.com/readium/webpub-manifest/blob/ff5c1e9e76ccc184d4d670179cfb70ced691fcec/schema/metadata.schema.json#L15-L32
-export function convertMultiLangStringToString(items: string | IStringMap | undefined): string {
+export function convertMultiLangStringToString(items: string | IStringMap | undefined, locale: keyof typeof availableLanguages): string {
     if (typeof items === "object") {
         // see translator.translateContentField() ?
-        const translator = diMainGet("translator");
         const langs = Object.keys(items);
         const lang = langs.filter((l) =>
-            l.toLowerCase().includes(translator.getLocale().toLowerCase()));
+            l.toLowerCase().includes(locale.toLowerCase()));
         const localeLang = lang[0];
         return items[localeLang] ||
             items._ || items[BCP47_UNKNOWN_LANG] ||
@@ -69,14 +68,14 @@ export function convertMultiLangStringToString(items: string | IStringMap | unde
 // https://github.com/readium/r2-shared-js/blob/develop/test/test-JSON-Contributor.ts
 // https://github.com/readium/r2-shared-js/blob/develop/src/models/metadata-contributor-json-converter.ts
 // https://github.com/readium/r2-shared-js/blob/develop/src/models/metadata-contributor.ts
-export function convertContributorArrayToStringArray(items: Contributor[] | undefined): string[] {
+export function convertContributorArrayToStringArray(items: Contributor[] | undefined, locale: keyof typeof availableLanguages): string[] {
     if (!items) {
         return  [];
     }
 
     return items.map((item) => {
         if (typeof item.Name === "object") {
-            return convertMultiLangStringToString(item.Name);
+            return convertMultiLangStringToString(item.Name, locale);
         }
         return item.Name;
     });

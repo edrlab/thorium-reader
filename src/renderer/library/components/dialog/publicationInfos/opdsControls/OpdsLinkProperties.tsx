@@ -19,6 +19,8 @@ import { findMimeTypeWithExtension, ADOBE_ADEPT_XML } from "readium-desktop/util
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as AvailableIcon from "readium-desktop/renderer/assets/icons/available-icon.svg";
 import * as UnvavailableIcon from "readium-desktop/renderer/assets/icons/stop-icon.svg";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { connect } from "react-redux";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -150,4 +152,8 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
     }
 }
 
-export default withTranslator(OpdsLinkProperties);
+const mapStateToProps = (state: IRendererCommonRootState) => ({
+    locale: state.i18n.locale, // refresh
+});
+
+export default connect(mapStateToProps)(withTranslator(OpdsLinkProperties));
