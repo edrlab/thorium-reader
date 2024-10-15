@@ -39,6 +39,7 @@ import { getOpdsRequestCustomProtocolEventChannel, getOpdsRequestMediaCustomProt
 import { initClientSecretToken } from "./apiapp";
 import { digestAuthentication } from "readium-desktop/utils/digest";
 import isURL from "validator/lib/isURL";
+import { nanoid } from "nanoid";
 import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
@@ -453,14 +454,51 @@ async function opdsSetAuthCredentials(
     return [, new Error("")];
 }
 
-function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
+const _implicitAuthData = { authenticationDocumentId: "", nonce: "" };
+const setAndGetImplicitNonceForImplicitAuthentication = () => (_implicitAuthData.nonce = nanoid(16), _implicitAuthData.nonce);
+const getImplicitAuthData = () => _implicitAuthData;
 
+function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
     let browserUrl: string;
     switch (auth.authenticationType) {
-
         case "http://opds-spec.org/auth/oauth/implicit": {
+            try {
+                if (!auth.links?.authenticate?.url) {
+                    debug("OPDS Authentication Document Authentication Object property `authentication.links.href` null, empty, or missing.", auth.links?.authenticate?.url ?? "undefined");
+                    browserUrl = "";
+                    break;
+                }
 
-            browserUrl = auth.links?.authenticate?.url;
+                const browserUrlParsed = new URL(auth.links?.authenticate?.url);
+
+                // Record the OPDS Authentication Document's Id for later verification
+                const implicitAuthData = getImplicitAuthData();
+                implicitAuthData.authenticationDocumentId = auth.id;
+
+                // client_id: Required.
+                // Any Authentication Provider that supports OPDS Authentication 1.0 and exposes an Authentication Flow based on OAuth
+                // must identify all OPDS clients using the client_id "http://opds-spec.org/auth/client"
+                if (!browserUrlParsed.searchParams.get("client_id")) {
+                    browserUrlParsed.searchParams.set("client_id", "http://opds-spec.org/auth/client");
+                }
+
+                // response_type: Mandatory for Implicit Flow
+                browserUrlParsed.searchParams.set("response_type", "token");
+
+                // state: Optional, but helps to prevent unsolicited flows
+                browserUrlParsed.searchParams.set("state", encodeURIComponent_RFC3986(setAndGetImplicitNonceForImplicitAuthentication()));
+
+                // redirect_uri: Optional, but good to include since it's mandatory if a client has more than one redirect URI configurated
+                // Note: Trailing slash is necessary as it is specified in the OPDS Authentication 1.0 specification
+                browserUrlParsed.searchParams.set("redirect_uri", "opds://authorize/");
+
+                browserUrl = browserUrlParsed.toString();
+
+            } catch {
+                debug("Error parsing browserUrl", auth.links?.authenticate?.url);
+                browserUrl = "";
+            }
+
             break;
         }
 
@@ -497,7 +535,6 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
         }
 
         default: {
-
             debug("authentication method not found", auth.authenticationType);
             return undefined;
         }
@@ -534,16 +571,24 @@ interface IOPDSAuthDocParsed {
 
 }
 function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPDSAuthDocParsed | undefined {
-
     if (!doc || !(doc instanceof OPDSAuthenticationDoc)) {
-
-        debug("opds authentication doc is not an instance of the model");
+        // Todo: Return typed error so user-friendly message can be displayed
+        debug("OPDS Authentication Document is not an instance of the model");
         return undefined;
     }
 
-    if (!doc.Authentication) {
+    // https://drafts.opds.io/authentication-for-opds-1.0#231-core-properties
+    if (!doc.Id || doc.Id === "") {
+        debug("OPDS Authentication Document missing required `id` property. IGNORED and bypassed to ensure legacy compatibility with misconfigured OPDS OAuth 2.0 servers");
+    }
 
-        debug("no authentication data in the opds authentication doc");
+    if (!doc.Title || doc.Title === "") {
+        debug("OPDS Authentication Document missing required `title` property. IGNORED and bypassed to ensure legacy compatibility with misconfigured OPDS OAuth 2.0 servers");
+    }
+
+    if (!doc.Authentication) {
+        // Todo: Return typed error so user-friendly message can be displayed
+        debug("OPDS Authentication Document missing required `authentication` property.");
         return undefined;
     }
 
@@ -552,7 +597,6 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
     }, filename_);
 
     if (!viewConvert) {
-
         debug("no viewConverter !!");
         return undefined;
     }
@@ -774,11 +818,50 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
 
         if (method === "GET") {
             if (host === "authorize") {
+                // OPDS Authentication Document Specification is at odds with the OAuth 2.0 Implicit Grant Flow Specification:
+                //     OPDS Auth wants the response parameters in the query component of the Redirection URI
+                //     OAuth 2.0 Implicit Grant Flow wants the response parameters in the fragment component of the Redirection URI
+                // Solution: Replace the fragment component with a query component to ensure the response parameters are parsed correctly
                 const urlSearchParam = url.replace("#", "?");
+
                 const urlObject = new URL(urlSearchParam);
                 const data: Record<string, string> = {};
                 for (const [key, value] of urlObject.searchParams) {
                     data[key] = value;
+                }
+
+                // https://openid.net/specs/openid-connect-core-1_0.html#ImplicitAuthError
+                // When using the Implicit Flow, Authorization Error Responses are made in the same manner
+                // as for the Authorization Code Flow:
+                //     When using the Authorization Code Flow, the error response parameters are added to the
+                //     query component of the Redirection URI, unless a different Response Mode was specified.
+                if (data.error) {
+                    debug("OAuth Error Response", "error:", { error: data.error, error_description: data.error_description });
+                    return undefined;
+                }
+
+                const implicitAuthData = getImplicitAuthData();
+
+                // Only validate the Id if it is present in the response
+                // This should ensure backwards compatibility with existing OPDS Authentication Providers
+                // who may be omitting it
+                if (data.id && data.id !== implicitAuthData.authenticationDocumentId) {
+                    debug("OAuth 2.0 implicit grant flow contained an id but it did not match the id in the OPDS Authentication Document", "expected:", implicitAuthData.authenticationDocumentId, "actual:", data.id);
+                    return undefined;
+                }
+                else {
+                    debug("OAuth 2.0 implicit grant flow does not contain an id, validation IGNORED and bypassed to ensure legacy compatibility with OPDS OAuth 2.0 servers");
+                }
+
+                 if (data.state !== implicitAuthData.nonce) {
+                    debug("OAuth 2.0 implicit grant flow response state parameter is not equal to the nonce sent", "expected:", implicitAuthData.nonce, "value=", data.state);
+                    debug("state nonce verification IGNORED and bypassed to ensure legacy compatibility with OPDS OAuth 2.0 servers");
+                    // TODO: improve this and enable the state verification
+
+                    // https://auth0.com/docs/secure/attack-protection/state-parameters
+                    // https://github.com/edrlab/thorium-reader/issues/2506
+                } else {
+                    debug("OAuth 2.0 implicit grant flow response parameters VERIFIED and CORRECT");
                 }
 
                 return {
