@@ -190,5 +190,8 @@ export const rootReducer = () => {
         mode: winModeReducer,
         creator: creatorReducer,
         importAnnotations: importAnnotationReducer,
+        publication: combineReducers({
+            tag: (state: string[] = []) => state,
+        }),
     });
 };
