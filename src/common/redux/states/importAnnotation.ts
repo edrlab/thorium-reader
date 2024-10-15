@@ -13,7 +13,8 @@ interface IReadiumAnnotationModelSetView extends Partial<Pick<IReadiumAnnotation
 }
 export interface IImportAnnotationState extends IReadiumAnnotationModelSetView {
     open: boolean;
-    annotationsConflictList: IAnnotationState[]
+    annotationsConflictListOlder: IAnnotationState[]
+    annotationsConflictListNewer: IAnnotationState[]
     annotationsList: IAnnotationState[]
     winId?: string | undefined;
 }
