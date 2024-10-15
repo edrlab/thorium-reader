@@ -81,7 +81,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
     const { locatorExtended } = useSelector((state: IReaderRootState) => state.annotation);
     const annotationReaderState = useSelector((state: IReaderRootState) => state.reader.annotation);
 
-    let annotationState: IAnnotationState = { uuid: "", color: annotation_defaultColor, comment: "", drawType: annotation_defaultDrawType, locatorExtended };
+    let annotationState: IAnnotationState = { uuid: "", color: annotation_defaultColor, comment: "", drawType: annotation_defaultDrawType, locatorExtended, created: 0 };
     if (uuid) {
         const tpl = annotationReaderState.find(([, annotationState]) => annotationState.uuid === uuid);
         if (tpl) {

@@ -186,6 +186,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     ...{
         open: state.dialog.type === DialogTypeName.LcpAuthentication,
     }, ...state.dialog.data as DialogType[DialogTypeName.LcpAuthentication],
+    locale: state.i18n.locale, // refresh
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {

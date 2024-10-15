@@ -11,21 +11,21 @@ import { i18nActions } from "readium-desktop/common/redux/actions";
 
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
 
-const initialState: I18NState = {
-    locale: "en",
+const initialState: I18NState | { locale: "" } = {
+    locale: "", // not initialized
 };
 
 function i18nReducer_(
-    state: I18NState = initialState,
+    state: I18NState | { locale: "" } = initialState,
     action: i18nActions.setLocale.TAction,
-    ): I18NState {
+): I18NState {
     switch (action.type) {
         case i18nActions.setLocale.ID:
             return Object.assign({}, state, {
                 locale: action.payload.locale,
             } as I18NState);
         default:
-            return state;
+            return state as I18NState;
     }
 }
 

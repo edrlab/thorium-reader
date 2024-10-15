@@ -6,12 +6,12 @@
 // ==LICENSE-END==
 
 import { KeyboardEvent, BaseWindow, BrowserWindow, Menu, MenuItem, webContents } from "electron";
-import { diMainGet } from "readium-desktop/main/di";
 import {
     _APP_NAME, _CONTINUOUS_INTEGRATION_DEPLOY, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 
 import { showLibrary } from "./tools/showLibrary";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -153,7 +153,7 @@ function setMenuWindowsLinux(win: BrowserWindow, isReaderView: boolean) {
 }
 
 function setMenuDarwin(win: BrowserWindow, isReaderView: boolean) {
-    const translator = diMainGet("translator");
+    const translator = getTranslator();
     const template: Electron.MenuItemConstructorOptions[] = [
         {
             label: capitalizedAppName,

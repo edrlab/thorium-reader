@@ -55,6 +55,7 @@ import { usePublisherReaderConfig, useReaderConfig, useReaderConfigAll, useSaveP
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { comparePublisherReaderConfig } from "../../../common/publisherConfig";
 import debounce from "debounce";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps {
@@ -275,12 +276,13 @@ export const FontSize = () => {
 };
 
 export const FontFamily = () => {
-    const [__, translator] = useTranslator();
+    const [__] = useTranslator();
 
     const font = usePublisherReaderConfig("font");
     const set = useSavePublisherReaderConfig();
 
-    const fontList = translator.getLocale() === "ja" ? FONT_LIST_WITH_JA : FONT_LIST;
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const fontList = locale === "ja" ? FONT_LIST_WITH_JA : FONT_LIST;
     const options = fontList.map((fontItem, id) => ({ id, value: fontItem.id, name: fontItem.label, fontFamily: fontItem.fontFamily }));
     // if (fontList.findIndex((v) => v.id === font) < 0) {
     //     options.push({

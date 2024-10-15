@@ -129,6 +129,7 @@ declare namespace typed_i18n {
   readonly "export": string,
   readonly "exportAnnotation": string,
   readonly "format": string,
+  readonly "importAnnotation": string,
   readonly "lang": string,
   readonly "lastRead": string,
   readonly "moreInfo": string,
@@ -209,6 +210,7 @@ declare namespace typed_i18n {
   (_: "catalog.export", __?: {}): string;
   (_: "catalog.exportAnnotation", __?: {}): string;
   (_: "catalog.format", __?: {}): string;
+  (_: "catalog.importAnnotation", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.lastRead", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
@@ -313,7 +315,17 @@ declare namespace typed_i18n {
   readonly "importError": string,
   readonly "renew": string,
   readonly "return": string,
-  readonly "yes": string
+  readonly "yes": string,
+  readonly "annotations": {
+    readonly "title": string,
+    readonly "descTitle": string,
+    readonly "descList": string,
+    readonly "descAuthor": string,
+    readonly "descOlder": string,
+    readonly "descNewer": string,
+    readonly "importAll": string,
+    readonly "importWithoutConflict": string
+  }
 };
   (_: "dialog.cancel", __?: {}): string;
   (_: "dialog.deleteAnnotations", __?: {}): string;
@@ -324,6 +336,24 @@ declare namespace typed_i18n {
   (_: "dialog.importError", __?: {}): string;
   (_: "dialog.renew", __?: {}): string;
   (_: "dialog.return", __?: {}): string; (_: "dialog.yes", __?: {}): string;
+  (_: "dialog.annotations", __?: {}): {
+  readonly "title": string,
+  readonly "descTitle": string,
+  readonly "descList": string,
+  readonly "descAuthor": string,
+  readonly "descOlder": string,
+  readonly "descNewer": string,
+  readonly "importAll": string,
+  readonly "importWithoutConflict": string
+};
+  (_: "dialog.annotations.title", __?: {}): string;
+  (_: "dialog.annotations.descTitle", __?: {}): string;
+  (_: "dialog.annotations.descList", __?: {}): string;
+  (_: "dialog.annotations.descAuthor", __?: {}): string;
+  (_: "dialog.annotations.descOlder", __?: {}): string;
+  (_: "dialog.annotations.descNewer", __?: {}): string;
+  (_: "dialog.annotations.importAll", __?: {}): string;
+  (_: "dialog.annotations.importWithoutConflict", __?: {}): string;
   (_: "error", __?: {}): {
   readonly "errorBox": {
     readonly "error": string,
@@ -405,7 +435,15 @@ declare namespace typed_i18n {
     readonly "fail": string,
     readonly "success": string
   },
-  readonly "open": { readonly "error": string }
+  readonly "open": { readonly "error": string },
+  readonly "annotations": {
+    readonly "emptyFile": string,
+    readonly "nothing": string,
+    readonly "alreadyImported": string,
+    readonly "noBelongTo": string,
+    readonly "errorParsing": string,
+    readonly "success": string
+  }
 };
   (_: "message.download", __?: {}): { readonly "error": string };
   (_: "message.download.error", __?: {}): string;
@@ -419,6 +457,20 @@ declare namespace typed_i18n {
   (_: "message.import.success", __?: {}): string;
   (_: "message.open", __?: {}): { readonly "error": string };
   (_: "message.open.error", __?: {}): string;
+  (_: "message.annotations", __?: {}): {
+  readonly "emptyFile": string,
+  readonly "nothing": string,
+  readonly "alreadyImported": string,
+  readonly "noBelongTo": string,
+  readonly "errorParsing": string,
+  readonly "success": string
+};
+  (_: "message.annotations.emptyFile", __?: {}): string;
+  (_: "message.annotations.nothing", __?: {}): string;
+  (_: "message.annotations.alreadyImported", __?: {}): string;
+  (_: "message.annotations.noBelongTo", __?: {}): string;
+  (_: "message.annotations.errorParsing", __?: {}): string;
+  (_: "message.annotations.success", __?: {}): string;
   (_: "opds", __?: {}): {
   readonly "addForm": {
     readonly "addButton": string,
@@ -702,6 +754,10 @@ declare namespace typed_i18n {
     readonly "Color": string,
     readonly "addNote": string,
     readonly "advancedMode": string,
+    readonly "annotationsExport": {
+      readonly "description": string,
+      readonly "title": string
+    },
     readonly "annotationsOptions": string,
     readonly "colors": {
       readonly "bluegreen": string,
@@ -716,6 +772,7 @@ declare namespace typed_i18n {
     readonly "filter": {
       readonly "all": string,
       readonly "filterByColor": string,
+      readonly "filterByCreator": string,
       readonly "filterByDrawtype": string,
       readonly "filterByTag": string,
       readonly "filterOptions": string,
@@ -884,6 +941,10 @@ declare namespace typed_i18n {
   readonly "Color": string,
   readonly "addNote": string,
   readonly "advancedMode": string,
+  readonly "annotationsExport": {
+    readonly "description": string,
+    readonly "title": string
+  },
   readonly "annotationsOptions": string,
   readonly "colors": {
     readonly "bluegreen": string,
@@ -898,6 +959,7 @@ declare namespace typed_i18n {
   readonly "filter": {
     readonly "all": string,
     readonly "filterByColor": string,
+    readonly "filterByCreator": string,
     readonly "filterByDrawtype": string,
     readonly "filterByTag": string,
     readonly "filterOptions": string,
@@ -925,6 +987,9 @@ declare namespace typed_i18n {
   (_: "reader.annotations.Color", __?: {}): string;
   (_: "reader.annotations.addNote", __?: {}): string;
   (_: "reader.annotations.advancedMode", __?: {}): string;
+  (_: "reader.annotations.annotationsExport", __?: {}): { readonly "description": string, readonly "title": string };
+  (_: "reader.annotations.annotationsExport.description", __?: {}): string;
+  (_: "reader.annotations.annotationsExport.title", __?: {}): string;
   (_: "reader.annotations.annotationsOptions", __?: {}): string;
   (_: "reader.annotations.colors", __?: {}): {
   readonly "bluegreen": string,
@@ -947,6 +1012,7 @@ declare namespace typed_i18n {
   (_: "reader.annotations.filter", __?: {}): {
   readonly "all": string,
   readonly "filterByColor": string,
+  readonly "filterByCreator": string,
   readonly "filterByDrawtype": string,
   readonly "filterByTag": string,
   readonly "filterOptions": string,
@@ -954,6 +1020,7 @@ declare namespace typed_i18n {
 };
   (_: "reader.annotations.filter.all", __?: {}): string;
   (_: "reader.annotations.filter.filterByColor", __?: {}): string;
+  (_: "reader.annotations.filter.filterByCreator", __?: {}): string;
   (_: "reader.annotations.filter.filterByDrawtype", __?: {}): string;
   (_: "reader.annotations.filter.filterByTag", __?: {}): string;
   (_: "reader.annotations.filter.filterOptions", __?: {}): string;

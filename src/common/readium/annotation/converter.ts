@@ -14,22 +14,62 @@ import { rgbToHex } from "readium-desktop/common/rgb";
 
 export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotationState): IReadiumAnnotationModel {
 
-    const currentDate = new Date();
-    const dateString: string = currentDate.toISOString();
-    const { uuid, color, locatorExtended: def, tags, drawType, comment } = annotation;
-    const { selectionInfo, locator, headings, epubPage } = def;
-    const { cleanText, rawText, rawBefore, rawAfter } = selectionInfo || {};
-    const { href } = locator;
+    const { uuid, color, locatorExtended: def, tags, drawType, comment, creator, created, modified } = annotation;
+    const { locator, headings, epubPage, selectionInfo } = def;
+    const { href, text, locations } = locator;
+    const { afterRaw, beforeRaw, highlightRaw } = text || {};
+    const { rangeInfo: rangeInfoSelection } = selectionInfo || {};
+    const { progression } = locations;
 
     const highlight: IReadiumAnnotationModel["body"]["highlight"] = drawType === "solid_background" ? "solid" : drawType;
+
+    const selector: IReadiumAnnotationModel["target"]["selector"] = [];
+
+    if (highlightRaw && afterRaw && beforeRaw) {
+        selector.push({
+            type: "TextQuoteSelector",
+            exact: highlightRaw,
+            prefix: beforeRaw,
+            suffix: afterRaw,
+        });
+    }
+    if (progression) {
+        selector.push({
+            type: "ProgressionSelector",
+            value: progression,
+        });
+    }
+    if (rangeInfoSelection.startContainerElementCssSelector &&
+        typeof rangeInfoSelection.startContainerChildTextNodeIndex === "number" &&
+        rangeInfoSelection.endContainerElementCssSelector &&
+        typeof rangeInfoSelection.endContainerChildTextNodeIndex === "number" &&
+        typeof rangeInfoSelection.startOffset === "number" &&
+        typeof rangeInfoSelection.endOffset === "number"
+    ) {
+        selector.push({
+            type: "DomRangeSelector",
+            startContainerElementCssSelector: rangeInfoSelection.startContainerElementCssSelector,
+            startContainerChildTextNodeIndex: rangeInfoSelection.startContainerChildTextNodeIndex,
+            startOffset: rangeInfoSelection.startOffset,
+            endContainerElementCssSelector: rangeInfoSelection.endContainerElementCssSelector,
+            endContainerChildTextNodeIndex: rangeInfoSelection.endContainerChildTextNodeIndex,
+            endOffset: rangeInfoSelection.endOffset,
+        });
+    }
+    if (rangeInfoSelection.cfi) {
+        selector.push({
+            type: "FragmentSelector",
+            conformsTo: "http://www.idpf.org/epub/linking/cfi/epub-cfi.html",
+            value: `epubcfi(${rangeInfoSelection.cfi || ""})`, // TODO not the complete cfi
+        });
+    }
 
     return {
         "@context": "http://www.w3.org/ns/anno.jsonld",
         id: uuid ? "urn:uuid:" + uuid : "",
-        created: dateString,
-        modified: dateString,
+        created: new Date(created).toISOString(),
+        modified: modified ? new Date(modified).toISOString() : undefined,
         type: "Annotation",
-        hash: "",
         body: {
             type: "TextualBody",
             value: comment || "",
@@ -40,44 +80,19 @@ export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotatio
             //   textDirection: "ltr",
             //   language: "fr",
         },
+        creator: creator ? {...creator} : undefined,
         target: {
             source: href || "",
             meta: {
-                headings: (headings || []).map(({ txt, level }) => ({ level, txt })),
+                headings: (headings || []).map(({ txt, level }) => ({ txt, level })),
                 page: epubPage || "",
             },
-            selector: [
-                {
-                    type: "TextQuoteSelector",
-                    exact: rawText || "",
-                    prefix: rawBefore || "",
-                    suffix: rawAfter || "",
-                    clean: cleanText || "",
-                },
-                {
-                    type: "ProgressionSelector",
-                    value: locator.locations?.progression || 0,
-                },
-                {
-                    type: "DomRangeSelector",
-                    startContainerElementCssSelector: selectionInfo?.rangeInfo?.startContainerElementCssSelector || "",
-                    startContainerChildTextNodeIndex: selectionInfo?.rangeInfo?.startContainerChildTextNodeIndex || 0,
-                    startOffset: selectionInfo?.rangeInfo?.startOffset || 0,
-                    endContainerElementCssSelector: selectionInfo?.rangeInfo?.endContainerElementCssSelector || "",
-                    endContainerChildTextNodeIndex: selectionInfo?.rangeInfo?.endContainerChildTextNodeIndex || 0,
-                    endOffset: selectionInfo?.rangeInfo?.endOffset || 0,
-                },
-                {
-                    type: "FragmentSelector",
-                    conformsTo: "http://www.idpf.org/epub/linking/cfi/epub-cfi.html",
-                    value: `epubcfi(${selectionInfo?.rangeInfo?.cfi || locator.locations?.cfi || ""})`,
-                },
-            ],
+            selector,
         },
     };
 }
 
-export function convertAnnotationListToReadiumAnnotationSet(annotationArray: IAnnotationState[], publicationView: PublicationView): IReadiumAnnotationModelSet {
+export function convertAnnotationListToReadiumAnnotationSet(annotationArray: IAnnotationState[], publicationView: PublicationView, label?: string): IReadiumAnnotationModelSet {
 
     const currentDate = new Date();
     const dateString: string = currentDate.toISOString();
@@ -93,17 +108,15 @@ export function convertAnnotationListToReadiumAnnotationSet(annotationArray: IAn
             homepage: "https://thorium.edrlab.org",
         },
         generated: dateString,
-        label: "Annotations set",
+        title: label || "Annotations set",
         about: {
-            "dc:identifier": [publicationView.workIdentifier ? ((publicationView.workIdentifier.startsWith("urn:") ? "" : "urn:isbn:") + publicationView.workIdentifier) : ""],
+            "dc:identifier": ["urn:thorium:" + publicationView.identifier, publicationView.workIdentifier ? publicationView.workIdentifier : ""], // TODO workIdentifier urn ?
             "dc:format": "application/epub+zip",
             "dc:title": publicationView.documentTitle || "",
             "dc:publisher": publicationView.publishers || [],
             "dc:creator": publicationView.authors || [],
             "dc:date": publicationView.publishedAt || "",
-            "dc:source": "urn:uuid:" + publicationView.identifier,
         },
-        total: annotationArray.length,
         items: (annotationArray || []).map((v) => convertAnnotationToReadiumAnnotationModel(v)),
     };
 }

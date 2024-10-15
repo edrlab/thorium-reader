@@ -223,7 +223,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
             __("reader.picker.search.notFound");
 
         const memoJsx = renderSearchLinks(label, this.props.foundArray, this.state.nMatchPage, this.props.readingOrder, this.props.toc, this.props.dockedMode, this);
-    
+
         const startIndex = this.state.nMatchPage * MAX_MATCHES_PER_PAGE;
         const begin = startIndex + 1;
         const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, this.props.foundArray?.length || 0);
@@ -530,6 +530,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         foundArray: state.search?.foundArray,
         readingOrder: state.reader?.info?.r2Publication?.Spine,
         toc: state.reader?.info?.r2Publication?.TOC,
+        locale: state.i18n.locale, // refresh
     };
 };
 

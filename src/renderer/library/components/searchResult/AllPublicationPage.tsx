@@ -62,7 +62,7 @@ import { Column, useTable, useFilters, useSortBy, usePagination, useGlobalFilter
 import { formatTime } from "readium-desktop/common/utils/time";
 import * as DOMPurify from "dompurify";
 import * as moment from "moment";
-import { AvailableLanguages, I18nFunction, Translator } from "readium-desktop/common/services/translator";
+import { availableLanguages, I18nFunction } from "readium-desktop/common/services/translator";
 import * as React from "react";
 import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -106,6 +106,7 @@ import * as ValidatedIcon from "readium-desktop/renderer/assets/icons/doubleChec
 import * as OnGoingBookIcon from "readium-desktop/renderer/assets/icons/ongoingBook-icon.svg";
 import debounce from "debounce";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 
 // import GridTagButton from "../catalog/GridTagButton";
 
@@ -218,7 +219,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
         const displayType = (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid;
 
-        const { __, location, translator, tags, openReader, displayPublicationInfo } = this.props;
+        const { __, location, tags, openReader, displayPublicationInfo } = this.props;
 
         const secondaryHeader = <Header />;
         // const breadCrumb = <BreadCrumb breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}/>;
@@ -236,7 +237,6 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
                             location={location}
                             displayType={displayType}
                             __={__}
-                            translator={translator}
                             publicationViews={this.state.publicationViews}
                             displayPublicationInfo={displayPublicationInfo}
                             openReader={openReader}
@@ -330,6 +330,7 @@ const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
     keyboardShortcuts: state.keyboard.shortcuts,
     tags: state.publication.tag,
+    locale: state.i18n.locale, // refresh
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
@@ -363,7 +364,6 @@ const commonCellStyles = (props: ITableCellProps_Column & ITableCellProps_Generi
 
 interface ITableCellProps_GlobalFilter {
     __: I18nFunction;
-    translator: Translator;
     displayType: DisplayType;
 
     preGlobalFilteredRows: Row<IColumns>[];
@@ -448,7 +448,6 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
 
 interface ITableCellProps_Filter {
     __: I18nFunction;
-    translator: Translator;
     displayType: DisplayType;
 
     showColumnFilters: boolean,
@@ -1157,8 +1156,10 @@ interface ITableCellProps_Value_Actions {
 
 const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Title> = (props) => {
 
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+
     // props.value.label
-    const pubTitleLangStr = convertMultiLangStringToString(props.translator, props.value.pubTitle);
+    const pubTitleLangStr = convertMultiLangStringToString(props.value.pubTitle, locale);
     const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
     const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
     const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
@@ -1359,7 +1360,6 @@ type MyTableInstance<T extends object> =
 
 interface ITableCellProps_Common {
     __: I18nFunction;
-    translator: Translator;
     displayType: DisplayType;
 
     displayPublicationInfo: ReturnType<typeof mapDispatchToProps>["displayPublicationInfo"];
@@ -1380,12 +1380,13 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
     const scrollToViewRef = React.useRef(null);
 
-    const { openReader, displayPublicationInfo, displayType, __, focusInputRef, translator, publicationViews, accessibilitySupportEnabled, tags } = props;
+    const { openReader, displayPublicationInfo, displayType, __, focusInputRef, publicationViews, accessibilitySupportEnabled, tags } = props;
+
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
 
     const renderProps_Filter: ITableCellProps_Filter =
     {
         __,
-        translator,
         displayType,
 
         showColumnFilters,
@@ -1398,7 +1399,6 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     const renderProps_Cell: ITableCellProps_GenericCell =
     {
         __,
-        translator,
         displayType,
 
         selectedTag,
@@ -1440,7 +1440,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             let publishedDateVisual = publishedDateCanonical;
             if (publishedDateCanonical) {
                 try {
-                    publishedDateVisual = new Intl.DateTimeFormat(translator.getLocale(), { dateStyle: "medium", timeStyle: undefined }).format(new Date(publishedDateCanonical));
+                    publishedDateVisual = new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: undefined }).format(new Date(publishedDateCanonical));
                 } catch (err) {
                     console.log(err);
                 }
@@ -1454,7 +1454,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             let lastReadDateVisual = lastReadDateCanonical;
             if (lastReadDateCanonical) {
                 try {
-                    lastReadDateVisual = new Intl.DateTimeFormat(translator.getLocale(), { dateStyle: "medium", timeStyle: "short" }).format(new Date(lastReadDateCanonical));
+                    lastReadDateVisual = new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(new Date(lastReadDateCanonical));
                 } catch (err) {
                     console.log(err);
                 }
@@ -1493,8 +1493,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 // Note: "pt-PT" in the i18next ResourceBundle is not captured because key match reduced to "pt"
                 // Also: pt-pt vs. pt-PT case sensitivity
                 // Also zh-CN (mandarin chinese)
-                const l = lang.split("-")[0] as keyof typeof AvailableLanguages;
-                const ll = AvailableLanguages[l] || lang;
+                const l = lang.split("-")[0] as keyof typeof availableLanguages;
+                const ll = availableLanguages[l] || lang;
 
                 const note = (lang !== ll) ? ` (${lang})` : "";
 
@@ -1515,7 +1515,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             let strA11Summary = "";
             if (publicationView.a11y_accessibilitySummary) {
 
-                const langStr = convertMultiLangStringToString(translator, publicationView.a11y_accessibilitySummary);
+                const langStr = convertMultiLangStringToString(publicationView.a11y_accessibilitySummary, locale);
 
                 if (langStr && langStr[1]) {
                     strA11Summary = DOMPurify.sanitize(langStr[1]).replace(/font-size:/g, "font-sizexx:");
@@ -1621,7 +1621,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             };
             return cols;
         });
-    }, [translator, publicationViews, __]);
+    }, [locale, publicationViews, __]);
 
     const sortFunction = (rowA: Row<IColumns>, rowB: Row<IColumns>, columnId: IdType<IColumns>, desc?: boolean) => {
         let res = 0;
@@ -2113,7 +2113,6 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                             globalFilter={tableInstance.state.globalFilter}
                             setGlobalFilter={tableInstance.setGlobalFilter}
                             __={__}
-                            translator={translator}
                             displayType={displayType}
                             focusInputRef={focusInputRef}
 

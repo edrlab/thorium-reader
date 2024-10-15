@@ -19,6 +19,8 @@ import {
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import classNames from "classnames";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { connect } from "react-redux";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -133,4 +135,8 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
 
 }
 
-export default withTranslator(OpdsFeedUpdateForm);
+const mapStateToProps = (state: IRendererCommonRootState) => ({
+    locale: state.i18n.locale, // refresh
+});
+
+export default connect(mapStateToProps)(withTranslator(OpdsFeedUpdateForm));

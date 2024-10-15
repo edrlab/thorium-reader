@@ -92,7 +92,6 @@ const PublicationInfoWithRadixContent = () => {
     const data = React.useContext(context);
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const manifestUrlR2Protocol = useSelector((state: IReaderRootState) => state.reader.info.manifestUrlR2Protocol);
-    const [, translator] = useTranslator(); // FIXME
     const dispatch = useDispatch();
 
     if (!data) {
@@ -111,7 +110,6 @@ const PublicationInfoWithRadixContent = () => {
             // toggleCoverZoomCb={toggleCoverZoom}
             TagManagerComponent={TagManager}
             // coverZoom={coverZoom}
-            translator={translator}
             focusWhereAmI={data.focusWhereAmI}
             pdfPlayerNumberOfPages={data.pdfPlayerNumberOfPages}
             divinaNumberOfPages={data.divinaNumberOfPages}

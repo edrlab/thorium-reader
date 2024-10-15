@@ -77,6 +77,7 @@
     "export": "حفظ بإسم",
     "exportAnnotation": "",
     "format": "التنسيق",
+    "importAnnotation": "",
     "lang": "اللغة",
     "lastRead": "آخر منشور مقروء",
     "moreInfo": "تفاصيل المنشور",
@@ -123,6 +124,16 @@
     "update": "تحرير"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "إلغاء الأمر",
     "deleteAnnotations": "",
     "deleteAnnotationsText": "",
@@ -170,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "فشل تنزيل [{{- title}}]: [{{- err}}]"
     },
@@ -307,6 +326,10 @@
       "Color": "اللون",
       "addNote": "تعليق",
       "advancedMode": "الصيغة الفورية (إنشاء تلقائي بعد الاختيار)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "خيارات",
       "colors": {
         "bluegreen": "",
@@ -321,6 +344,7 @@
       "filter": {
         "all": "",
         "filterByColor": "",
+        "filterByCreator": "",
         "filterByDrawtype": "",
         "filterByTag": "",
         "filterOptions": "",

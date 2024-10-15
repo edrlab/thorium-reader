@@ -5,12 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Translator } from "readium-desktop/common/services/translator";
+import { availableLanguages, translateContentFieldHelper } from "readium-desktop/common/services/translator";
 import { IOpdsContributorView } from "readium-desktop/common/views/opds";
 
 export const formatContributorToString = (
     contributors: string[] | IOpdsContributorView[] | undefined,
-    translator: Translator): string => {
+    locale: keyof typeof availableLanguages): string => {
 
     let retString = "";
 
@@ -23,9 +23,9 @@ export const formatContributorToString = (
             }
 
             if (typeof newContributor === "string") {
-                retString += translator.translateContentField(newContributor);
+                retString += translateContentFieldHelper(newContributor, locale);
             } else {
-                retString += translator.translateContentField(newContributor.name);
+                retString += translateContentFieldHelper(newContributor.name, locale);
             }
         }
     }

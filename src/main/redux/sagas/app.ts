@@ -30,6 +30,8 @@ import {
     getBeforeQuitEventChannel, getQuitEventChannel, getShutdownEventChannel,
     getWindowAllClosedEventChannel,
 } from "./getEventChannel";
+import { availableLanguages } from "readium-desktop/common/services/translator";
+import { i18nActions } from "readium-desktop/common/redux/actions";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -218,6 +220,28 @@ export function* init() {
         debug("CATALOGS URL FROM ENV NOT FOUND", e);
     }
 
+    // i18n setLocale first initialization
+    yield call(() => {
+        const store = diMainGet("store");
+        const locale = store.getState().i18n.locale as keyof typeof availableLanguages | "";
+        if (locale === "") {
+
+            const isAnAvailableLanguage = (a: string): a is keyof typeof availableLanguages => a in availableLanguages;
+            for (const bcp47 of app.getPreferredSystemLanguages()) {
+                if (isAnAvailableLanguage(bcp47)) {
+                    store.dispatch(i18nActions.setLocale.build(bcp47));
+                    return;
+                }
+                const lang = bcp47.split("-")[0];
+                if (isAnAvailableLanguage(lang)) {
+                    store.dispatch(i18nActions.setLocale.build(lang));
+                    return;
+                }
+            }
+
+            store.dispatch(i18nActions.setLocale.build("en")); // default language
+        }
+    });
 }
 
 function* closeProcess() {

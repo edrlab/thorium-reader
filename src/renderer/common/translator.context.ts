@@ -6,6 +6,6 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { Translator } from "readium-desktop/common/services/translator";
+import { translator } from "readium-desktop/common/services/translator";
 
-export const TranslatorContext = React.createContext<Translator>(null);
+export const TranslatorContext = React.createContext<typeof translator>(null);

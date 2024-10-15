@@ -77,6 +77,7 @@
     "export": "Sauvegarder sous",
     "exportAnnotation": "",
     "format": "Format",
+    "importAnnotation": "",
     "lang": "Langue",
     "lastRead": "Dernière lecture",
     "moreInfo": "Plus d'informations",
@@ -123,6 +124,16 @@
     "update": "Éditer"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Annuler",
     "deleteAnnotations": "",
     "deleteAnnotationsText": "",
@@ -170,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Le téléchargement de {{- title}} a échoué: [{{- err}}]"
     },
@@ -307,6 +326,10 @@
       "Color": "Couleur",
       "addNote": "Annoter",
       "advancedMode": "Mode instantané (création automatique après sélection)",
+      "annotationsExport": {
+        "description": "Nommez cette liste d'annotations",
+        "title": "Titre"
+      },
       "annotationsOptions": "Options",
       "colors": {
         "bluegreen": "",
@@ -321,6 +344,7 @@
       "filter": {
         "all": "",
         "filterByColor": "",
+        "filterByCreator": "",
         "filterByDrawtype": "",
         "filterByTag": "",
         "filterOptions": "",

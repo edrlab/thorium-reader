@@ -77,6 +77,7 @@
     "export": "別の場所に保存",
     "exportAnnotation": "",
     "format": "形式",
+    "importAnnotation": "",
     "lang": "言語",
     "lastRead": "最終閲覧",
     "moreInfo": "本の詳細",
@@ -123,6 +124,16 @@
     "update": "編集"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "キャンセル",
     "deleteAnnotations": "",
     "deleteAnnotationsText": "",
@@ -170,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "『{{- title}}』のダウンロードに失敗しました：{{- err}}"
     },
@@ -307,6 +326,10 @@
       "Color": "色",
       "addNote": "注釈をつける",
       "advancedMode": "インスタントモード（本文を選択するだけで自動作成）",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "オプション",
       "colors": {
         "bluegreen": "",
@@ -321,6 +344,7 @@
       "filter": {
         "all": "",
         "filterByColor": "",
+        "filterByCreator": "",
         "filterByDrawtype": "",
         "filterByTag": "",
         "filterOptions": "",

@@ -77,6 +77,7 @@
     "export": "내보내기",
     "exportAnnotation": "",
     "format": "포맷",
+    "importAnnotation": "",
     "lang": "언어선택",
     "lastRead": "최근 읽은 자료",
     "moreInfo": "상세정보",
@@ -123,6 +124,16 @@
     "update": "편집"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "취소",
     "deleteAnnotations": "",
     "deleteAnnotationsText": "",
@@ -170,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "{{- title}} 다운로드 실패하였습니다: [{{- err}}]"
     },
@@ -307,6 +326,10 @@
       "Color": "",
       "addNote": "",
       "advancedMode": "",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "",
       "colors": {
         "bluegreen": "",
@@ -321,6 +344,7 @@
       "filter": {
         "all": "",
         "filterByColor": "",
+        "filterByCreator": "",
         "filterByDrawtype": "",
         "filterByTag": "",
         "filterOptions": "",

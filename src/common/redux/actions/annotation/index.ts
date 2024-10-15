@@ -5,8 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export const diReaderSymbolTable = {
-    "store": Symbol("store"),
-    "translator": Symbol("translator"),
-    "react-reader-app": Symbol("react-reader-app"),
+import * as importAnnotationSet from "./importAnnotationSet";
+import * as importTriggerModal from "./importTriggerModal";
+import * as importConfirmOrAbort from "./importConfirmOrAbort";
+
+export {
+    importAnnotationSet,
+    importTriggerModal,
+    importConfirmOrAbort,
 };

@@ -7,8 +7,8 @@
 
 import * as debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { all, call, put, take} from "typed-redux-saga/macro";
-import { select as selectTyped, take as takeTyped, race as raceTyped, SagaGenerator, call as callTyped} from "typed-redux-saga";
+import { all, call, put, select, take} from "typed-redux-saga/macro";
+import { select as selectTyped, take as takeTyped, race as raceTyped, SagaGenerator } from "typed-redux-saga";
 import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionSetConfig, readerLocalActionSetLocator } from "../actions";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -22,7 +22,7 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 
 import { HighlightDrawTypeBackground, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
-import { diReaderGet } from "../../di";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
@@ -99,6 +99,8 @@ function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, 
     // clean __selection global variable state
     __selectionInfoGlobal.locatorExtended = undefined;
 
+    const creator = yield* select((state: IReaderRootState) => state.creator);
+
     debug(`Create an annotation for, [${locatorExtended.selectionInfo.cleanText.slice(0, 10)}]`);
     yield* put(readerActions.annotation.push.build({
         color,
@@ -106,6 +108,11 @@ function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, 
         locatorExtended,
         drawType,
         tags,
+        creator: {
+            id: creator.id,
+            type: creator.type, // not used, only the id is used to target the self creator ,, but required in models : https://github.com/readium/annotations/?tab=readme-ov-file#11-creator
+        },
+        created: (new Date()).getTime(),
     }));
 
     // sure! close the popover
@@ -156,15 +163,12 @@ function* annotationButtonTrigger(_action: readerLocalActionAnnotations.trigger.
 
     const { locatorExtended } = __selectionInfoGlobal;
     if (!locatorExtended) {
-        const translator = yield* callTyped(
-            () => diReaderGet("translator"));
-
         debug("annotationBtnTriggerRequestedAction received");
         // trigger a Toast notification to user
         yield* put(
             toastActions.openRequest.build(
                 ToastType.Error,
-                translator.translate("reader.annotations.noSelectionToast"),
+                getTranslator().__("reader.annotations.noSelectionToast"),
             ),
         );
         return ;
