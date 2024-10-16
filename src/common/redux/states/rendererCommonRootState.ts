@@ -18,4 +18,7 @@ export interface IRendererCommonRootState extends ICommonRootState {
     dialog: DialogState;
     toast: ToastState;
     importAnnotations: IImportAnnotationState,
+    publication: {
+        tag: string[]
+    }
 }

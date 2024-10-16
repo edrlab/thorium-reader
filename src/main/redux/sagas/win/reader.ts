@@ -10,7 +10,7 @@ import { readerIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
@@ -45,6 +45,14 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const transientConfigMerge = {...readerConfigInitialState, ...config};
     const creator = yield* selectTyped((_state: RootState) => _state.creator);
 
+    const publicationRepository = diMainGet("publication-repository");
+    let tag: string[] = [];
+    try {
+        tag = yield* callTyped(() => publicationRepository.getAllTags());
+    } catch {
+        // ignore
+    }
+
     webContents.send(readerIpc.CHANNEL, {
         type: readerIpc.EventType.request,
         payload: {
@@ -76,6 +84,9 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
             mode,
             theme,
             creator,
+            publication: {
+                tag,
+            },
         },
     } as readerIpc.EventPayload);
 }

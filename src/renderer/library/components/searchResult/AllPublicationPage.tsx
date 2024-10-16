@@ -2152,16 +2152,34 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
                                 <div className={stylesPublication.filter_container}>
                                     <ComboBox
-                                        label={__("header.fitlerTagTitle")}
                                         defaultItems={tagsOptions}
-                                        defaultSelectedKey={tagsOptions.find((tag) => tag.name?.toLowerCase().includes(selectedTag?.toLowerCase()))?.id || undefined}
-                                        onSelectionChange={(i) => {
-                                            setSelectedTag(tagsOptions.find((tag) => tag.id === i)?.name);
-                                            tableInstance.setFilter("colTags", tagsOptions.find((tag) => tag.id === i)?.name);
-                                            // console.log(tableInstance.columns.find((element) => element.Header === "Tags"))
+                                        defaultSelectedKey={
+                                            tagsOptions.findIndex((tag) =>
+                                                tag.name?.toLowerCase() === selectedTag.toLowerCase())
+                                        }
+                                        selectedKey={
+                                            tagsOptions.findIndex((tag) =>
+                                                tag.name?.toLowerCase() === selectedTag.toLowerCase())
+                                        }
+                                        onSelectionChange={(key) => {
+
+                                            if (key === null) {
+                                                // nothing
+                                            } else {
+
+                                                const found = tagsOptions.find((tag) => tag.id === key);
+                                                if (found) {
+                                                    setSelectedTag(found.name);
+                                                }
+                                                tableInstance.setFilter("colTags", found?.name || undefined);
+                                            }
                                         }}
                                         svg={TagIcon}
                                         allowsCustomValue
+                                        onInputChange={(v) => setSelectedTag(v)}
+                                        inputValue={selectedTag}
+                                        defaultInputValue={selectedTag}
+                                        aria-label={__("header.fitlerTagTitle")}
                                     >
                                         {item => <ComboBoxItem
                                             onHoverStart={(e: HoverEvent) => {
