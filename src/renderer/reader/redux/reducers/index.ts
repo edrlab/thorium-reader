@@ -45,6 +45,7 @@ import { readerAllowCustomConfigReducer } from "readium-desktop/common/redux/red
 import { annotationTagsIndexReducer } from "./annotationTagsIndex";
 import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 import { importAnnotationReducer } from "readium-desktop/renderer/common/redux/reducers/importAnnotation";
+import { tagReducer } from "readium-desktop/common/redux/reducers/tag";
 
 export const rootReducer = () => {
 
@@ -191,7 +192,7 @@ export const rootReducer = () => {
         creator: creatorReducer,
         importAnnotations: importAnnotationReducer,
         publication: combineReducers({
-            tag: (state: string[] = []) => state,
+            tag: tagReducer,
         }),
     });
 };
