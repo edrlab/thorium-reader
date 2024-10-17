@@ -33,6 +33,7 @@ export declare const CSS_END_components_annotations: string;
 export declare const CSS_START_components_annotations: string;
 export declare const docked_annotation_line: string;
 export declare const drawType_active: string;
+export declare const form_group: string;
 export declare const my_combobox_container: string;
 export declare const my_item: string;
 export declare const popover_dialog_reader: string;

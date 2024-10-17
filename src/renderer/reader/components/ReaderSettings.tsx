@@ -1055,8 +1055,8 @@ const SaveResetApplyPreset = () => {
     const allowCustomCheckboxChecked = useSelector((state: IReaderRootState) => state.reader.allowCustomConfig.state);
     const publisherConfigOverrided = !comparePublisherReaderConfig(readerDefaultConfig, readerConfigInitialState);
 
-    // const dockingMode = useReaderConfig("readerDockingMode");
-    // const dockedMode = dockingMode !== "full";
+    const dockingMode = useReaderConfig("readerDockingMode");
+    const dockedMode = dockingMode !== "full";
 
     const cb = React.useCallback(() => {
 
@@ -1082,9 +1082,9 @@ const SaveResetApplyPreset = () => {
     const [__] = useTranslator();
     return (
 
-        <>
-            <div style={{ marginBottom: "20px" }}>
-                <button className={stylesButtons.button_nav_primary} style={{ marginBottom: "10px" }} onClick={() => {
+        <div className={stylesSettings.preset_settings_container}>
+            <div>
+                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : ""}} onClick={() => {
                     dispatch(readerActions.configSetDefault.build(readerConfig));
                 }}>
                     <SVG ariaHidden={true} svg={SaveIcon} />
@@ -1092,16 +1092,16 @@ const SaveResetApplyPreset = () => {
                 <p>{__("reader.settings.preset.saveDetails")}</p>
             </div>
 
-            <div style={{ marginBottom: "20px" }}>
-                <button className={stylesButtons.button_nav_primary} style={{ marginBottom: "10px" }} onClick={applyPreferredConfig}>
+            <div>
+                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : ""}} onClick={applyPreferredConfig}>
                     <SVG ariaHidden={true} svg={DoubleCheckIcon} />
                     {__("reader.settings.preset.apply")}
                 </button>
                 <p>{__("reader.settings.preset.applyDetails")}</p>
             </div>
 
-            <div style={{ position: "absolute", bottom: "10px" }}>
-                <button className={stylesButtons.button_nav_primary} style={{ marginBottom: "10px" }} onClick={() => {
+            <div>
+                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : ""}} onClick={() => {
                     dispatch(readerActions.configSetDefault.build(readerConfigInitialState));
                     applyPreferredConfig();
                 }}>
@@ -1110,7 +1110,7 @@ const SaveResetApplyPreset = () => {
                 </button>
                 <p>{__("reader.settings.preset.resetDetails")}</p>
             </div>
-        </>
+        </div>
     );
 };
 

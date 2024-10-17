@@ -20,6 +20,7 @@ export declare const off: string;
 export declare const on: string;
 export declare const popover_dialog_reader: string;
 export declare const position: string;
+export declare const preset_settings_container: string;
 export declare const range_inactive: string;
 export declare const reset_button: string;
 export declare const scale_button: string;
