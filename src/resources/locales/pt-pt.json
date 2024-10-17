@@ -476,8 +476,11 @@
       },
       "preset": {
         "apply": "Aplicar a predefinição preferida de configurações de leitura às configurações de leitura atuais",
+        "applyDetails": "",
         "reset": "Redefinir a predefinição das configurações preferidas de leitura para o estado inicial",
+        "resetDetails": "",
         "save": "Guardar as configurações de leitura atuais na predefinição preferida de configurações de leitura",
+        "saveDetails": "",
         "title": "Predefinição"
       },
       "preview": "Pré-visualização",

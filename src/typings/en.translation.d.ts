@@ -306,6 +306,16 @@ declare namespace typed_i18n {
   (_: "catalog.tags", __?: {}): string;
   (_: "catalog.update", __?: {}): string;
   (_: "dialog", __?: {}): {
+  readonly "annotations": {
+    readonly "descAuthor": string,
+    readonly "descList": string,
+    readonly "descNewer": string,
+    readonly "descOlder": string,
+    readonly "descTitle": string,
+    readonly "importAll": string,
+    readonly "importWithoutConflict": string,
+    readonly "title": string
+  },
   readonly "cancel": string,
   readonly "deleteAnnotations": string,
   readonly "deleteAnnotationsText": string,
@@ -315,18 +325,26 @@ declare namespace typed_i18n {
   readonly "importError": string,
   readonly "renew": string,
   readonly "return": string,
-  readonly "yes": string,
-  readonly "annotations": {
-    readonly "title": string,
-    readonly "descTitle": string,
-    readonly "descList": string,
-    readonly "descAuthor": string,
-    readonly "descOlder": string,
-    readonly "descNewer": string,
-    readonly "importAll": string,
-    readonly "importWithoutConflict": string
-  }
+  readonly "yes": string
 };
+  (_: "dialog.annotations", __?: {}): {
+  readonly "descAuthor": string,
+  readonly "descList": string,
+  readonly "descNewer": string,
+  readonly "descOlder": string,
+  readonly "descTitle": string,
+  readonly "importAll": string,
+  readonly "importWithoutConflict": string,
+  readonly "title": string
+};
+  (_: "dialog.annotations.descAuthor", __?: {}): string;
+  (_: "dialog.annotations.descList", __?: {}): string;
+  (_: "dialog.annotations.descNewer", __?: {}): string;
+  (_: "dialog.annotations.descOlder", __?: {}): string;
+  (_: "dialog.annotations.descTitle", __?: {}): string;
+  (_: "dialog.annotations.importAll", __?: {}): string;
+  (_: "dialog.annotations.importWithoutConflict", __?: {}): string;
+  (_: "dialog.annotations.title", __?: {}): string;
   (_: "dialog.cancel", __?: {}): string;
   (_: "dialog.deleteAnnotations", __?: {}): string;
   (_: "dialog.deleteAnnotationsText", __?: {}): string;
@@ -336,24 +354,6 @@ declare namespace typed_i18n {
   (_: "dialog.importError", __?: {}): string;
   (_: "dialog.renew", __?: {}): string;
   (_: "dialog.return", __?: {}): string; (_: "dialog.yes", __?: {}): string;
-  (_: "dialog.annotations", __?: {}): {
-  readonly "title": string,
-  readonly "descTitle": string,
-  readonly "descList": string,
-  readonly "descAuthor": string,
-  readonly "descOlder": string,
-  readonly "descNewer": string,
-  readonly "importAll": string,
-  readonly "importWithoutConflict": string
-};
-  (_: "dialog.annotations.title", __?: {}): string;
-  (_: "dialog.annotations.descTitle", __?: {}): string;
-  (_: "dialog.annotations.descList", __?: {}): string;
-  (_: "dialog.annotations.descAuthor", __?: {}): string;
-  (_: "dialog.annotations.descOlder", __?: {}): string;
-  (_: "dialog.annotations.descNewer", __?: {}): string;
-  (_: "dialog.annotations.importAll", __?: {}): string;
-  (_: "dialog.annotations.importWithoutConflict", __?: {}): string;
   (_: "error", __?: {}): {
   readonly "errorBox": {
     readonly "error": string,
@@ -429,22 +429,36 @@ declare namespace typed_i18n {
   (_: "library.lcp.whatIsLcpInfoDetails", __?: {}): string;
   (_: "library.lcp.whatIsLcpInfoDetailsLink", __?: {}): string;
   (_: "message", __?: {}): {
+  readonly "annotations": {
+    readonly "alreadyImported": string,
+    readonly "emptyFile": string,
+    readonly "errorParsing": string,
+    readonly "noBelongTo": string,
+    readonly "nothing": string,
+    readonly "success": string
+  },
   readonly "download": { readonly "error": string },
   readonly "import": {
     readonly "alreadyImport": string,
     readonly "fail": string,
     readonly "success": string
   },
-  readonly "open": { readonly "error": string },
-  readonly "annotations": {
-    readonly "emptyFile": string,
-    readonly "nothing": string,
-    readonly "alreadyImported": string,
-    readonly "noBelongTo": string,
-    readonly "errorParsing": string,
-    readonly "success": string
-  }
+  readonly "open": { readonly "error": string }
 };
+  (_: "message.annotations", __?: {}): {
+  readonly "alreadyImported": string,
+  readonly "emptyFile": string,
+  readonly "errorParsing": string,
+  readonly "noBelongTo": string,
+  readonly "nothing": string,
+  readonly "success": string
+};
+  (_: "message.annotations.alreadyImported", __?: {}): string;
+  (_: "message.annotations.emptyFile", __?: {}): string;
+  (_: "message.annotations.errorParsing", __?: {}): string;
+  (_: "message.annotations.noBelongTo", __?: {}): string;
+  (_: "message.annotations.nothing", __?: {}): string;
+  (_: "message.annotations.success", __?: {}): string;
   (_: "message.download", __?: {}): { readonly "error": string };
   (_: "message.download.error", __?: {}): string;
   (_: "message.import", __?: {}): {
@@ -457,20 +471,6 @@ declare namespace typed_i18n {
   (_: "message.import.success", __?: {}): string;
   (_: "message.open", __?: {}): { readonly "error": string };
   (_: "message.open.error", __?: {}): string;
-  (_: "message.annotations", __?: {}): {
-  readonly "emptyFile": string,
-  readonly "nothing": string,
-  readonly "alreadyImported": string,
-  readonly "noBelongTo": string,
-  readonly "errorParsing": string,
-  readonly "success": string
-};
-  (_: "message.annotations.emptyFile", __?: {}): string;
-  (_: "message.annotations.nothing", __?: {}): string;
-  (_: "message.annotations.alreadyImported", __?: {}): string;
-  (_: "message.annotations.noBelongTo", __?: {}): string;
-  (_: "message.annotations.errorParsing", __?: {}): string;
-  (_: "message.annotations.success", __?: {}): string;
   (_: "opds", __?: {}): {
   readonly "addForm": {
     readonly "addButton": string,
@@ -897,8 +897,11 @@ declare namespace typed_i18n {
     },
     readonly "preset": {
       readonly "apply": string,
+      readonly "applyDetails": string,
       readonly "reset": string,
+      readonly "resetDetails": string,
       readonly "save": string,
+      readonly "saveDetails": string,
       readonly "title": string
     },
     readonly "preview": string,
@@ -1212,8 +1215,11 @@ declare namespace typed_i18n {
   },
   readonly "preset": {
     readonly "apply": string,
+    readonly "applyDetails": string,
     readonly "reset": string,
+    readonly "resetDetails": string,
     readonly "save": string,
+    readonly "saveDetails": string,
     readonly "title": string
   },
   readonly "preview": string,
@@ -1298,13 +1304,19 @@ declare namespace typed_i18n {
   (_: "reader.settings.pdfZoom.title", __?: {}): string;
   (_: "reader.settings.preset", __?: {}): {
   readonly "apply": string,
+  readonly "applyDetails": string,
   readonly "reset": string,
+  readonly "resetDetails": string,
   readonly "save": string,
+  readonly "saveDetails": string,
   readonly "title": string
 };
   (_: "reader.settings.preset.apply", __?: {}): string;
+  (_: "reader.settings.preset.applyDetails", __?: {}): string;
   (_: "reader.settings.preset.reset", __?: {}): string;
+  (_: "reader.settings.preset.resetDetails", __?: {}): string;
   (_: "reader.settings.preset.save", __?: {}): string;
+  (_: "reader.settings.preset.saveDetails", __?: {}): string;
   (_: "reader.settings.preset.title", __?: {}): string;
   (_: "reader.settings.preview", __?: {}): string;
   (_: "reader.settings.reduceMotion", __?: {}): string;
