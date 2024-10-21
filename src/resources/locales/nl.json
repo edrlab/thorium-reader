@@ -476,8 +476,11 @@
       },
       "preset": {
         "apply": "",
+        "applyDetails": "",
         "reset": "",
+        "resetDetails": "",
         "save": "",
+        "saveDetails": "",
         "title": ""
       },
       "preview": "Voorbeeld",

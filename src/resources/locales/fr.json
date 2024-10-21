@@ -476,8 +476,11 @@
       },
       "preset": {
         "apply": "Appliquer les paramètres de lecture préférés",
-        "reset": "Réinitialiser les paramètres de lecture préférés à l'état initial",
+        "applyDetails": "Appliquer au livre courant les paramètres de lecture précédemment enregistrés.",
+        "reset": "Réinitialiser les paramètres de lecture préférés",
+        "resetDetails": "Effacer les paramètres de lecture précédemment appliqués, et revenir à la mise en forme et aux choix d'affichage par défaut",
         "save": "Enregistrer les paramètres de lecture préférés",
+        "saveDetails": "Sauvegarder les modifications appliquées à la mise en forme du livre courant et les choix d'affichage du logiciel. Ces paramètres pourront être appliqués à d'autres livres, une fois ouverts, en cliquant sur le bouton ci-dessous.",
         "title": "Préréglage"
       },
       "preview": "Aperçu",
