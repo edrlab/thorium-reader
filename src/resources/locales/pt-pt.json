@@ -77,7 +77,7 @@
     "export": "Guardar como",
     "exportAnnotation": "Guardar anotação como",
     "format": "Formato",
-    "importAnnotation": "",
+    "importAnnotation": "Importar anotação",
     "lang": "Idioma",
     "lastRead": "Última leitura",
     "moreInfo": "Mais informações",
@@ -125,14 +125,14 @@
   },
   "dialog": {
     "annotations": {
-      "descAuthor": "",
-      "descList": "",
-      "descNewer": "",
-      "descOlder": "",
-      "descTitle": "",
-      "importAll": "",
-      "importWithoutConflict": "",
-      "title": ""
+      "descAuthor": "de {{- author}}",
+      "descList": "{{- nb}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
+      "descNewer": "{{- nb}} versões mais recentes destas anotações já estão associadas à publicação.",
+      "descOlder": "{{- nb}} versões mais antigas destas anotações já estão associadas à publicação..",
+      "descTitle": "Título do conjunto de anotações:",
+      "importAll": "Importar todas as anotações",
+      "importWithoutConflict": "Importar anotações sem conflitos",
+      "title": "Quer importar estas anotações?"
     },
     "cancel": "Cancelar",
     "deleteAnnotations": "Eliminar anotações?",
@@ -182,12 +182,12 @@
   },
   "message": {
     "annotations": {
-      "alreadyImported": "",
-      "emptyFile": "",
-      "errorParsing": "",
-      "noBelongTo": "",
-      "nothing": "",
-      "success": ""
+      "alreadyImported": "Todas as anotações já foram importadas. A abortar a importação",
+      "emptyFile": "Nenhuma anotação disponível no ficheiro",
+      "errorParsing": "Erro ao analisar o formato do ficheiro:",
+      "noBelongTo": "Não foi possível importar o conjunto de anotações. Pelo menos uma anotação não pertence à publicação",
+      "nothing": "Não existem anotações prontas para serem importadas. A abortar a importação",
+      "success": "Sucesso!"
     },
     "download": {
       "error": "Falha ao descarregar {{- title}}: [{{- err}}]"
@@ -327,8 +327,8 @@
       "addNote": "Anotar",
       "advancedMode": "Modo instantâneo (criação automática após seleção)",
       "annotationsExport": {
-        "description": "",
-        "title": ""
+        "description": "Dar um nome a este conjunto de anotações",
+        "title": "Título"
       },
       "annotationsOptions": "Opções",
       "colors": {
@@ -344,7 +344,7 @@
       "filter": {
         "all": "Tudo",
         "filterByColor": "Filtrar por cor",
-        "filterByCreator": "",
+        "filterByCreator": "Filtrar por criador",
         "filterByDrawtype": "Filtrar por tipo de desenho",
         "filterByTag": "Filtrar por etiqueta",
         "filterOptions": "Opções de filtro",
