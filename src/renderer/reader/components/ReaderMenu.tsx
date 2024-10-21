@@ -913,170 +913,172 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         <Popover.Portal>
                             <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_filter_container} style={{ maxHeight: Math.round(window.innerHeight / 2) }}>
                                 <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
-                                <TagGroup
-                                    selectionMode="multiple"
-                                    selectedKeys={tagArrayFilter}
-                                    onSelectionChange={setTagArrayFilter}
-                                    aria-label={__("reader.annotations.filter.filterByTag")}
-                                    style={{ marginBottom: "20px" }}
-                                >
-                                    <details open id="annotationListTagDetails">
-                                        <summary className={stylesAnnotations.annotations_filter_tagGroup}>
-                                            <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByTag")}</Label>
-                                            <div style={{ display: "flex", gap: "10px" }}>
-                                                <button
-                                                    style={{ width: "fit-content", minWidth: "unset" }}
-                                                    className={tagArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
-                                                    onClick={() => {
-                                                        setTagArrayFilter("all");
-                                                        const detailsElement = document.getElementById("annotationListTagDetails") as HTMLDetailsElement;
-                                                        if (detailsElement) {
-                                                            detailsElement.open = true;
-                                                        }
+                                <FocusLock>
+                                    <TagGroup
+                                        selectionMode="multiple"
+                                        selectedKeys={tagArrayFilter}
+                                        onSelectionChange={setTagArrayFilter}
+                                        aria-label={__("reader.annotations.filter.filterByTag")}
+                                        style={{ marginBottom: "20px" }}
+                                    >
+                                        <details open id="annotationListTagDetails">
+                                            <summary className={stylesAnnotations.annotations_filter_tagGroup}>
+                                                <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByTag")}</Label>
+                                                <div style={{ display: "flex", gap: "10px" }}>
+                                                    <button
+                                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                                        className={tagArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
+                                                        onClick={() => {
+                                                            setTagArrayFilter("all");
+                                                            const detailsElement = document.getElementById("annotationListTagDetails") as HTMLDetailsElement;
+                                                            if (detailsElement) {
+                                                                detailsElement.open = true;
+                                                            }
 
-                                                    }}>
-                                                    {__("reader.annotations.filter.all")}
-                                                </button>
-                                                <button
-                                                    style={{ width: "fit-content", minWidth: "unset" }}
-                                                    className={stylesButtons.button_secondary_blue}
-                                                    onClick={() => {
-                                                        setTagArrayFilter(new Set([]));
+                                                        }}>
+                                                        {__("reader.annotations.filter.all")}
+                                                    </button>
+                                                    <button
+                                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                                        className={stylesButtons.button_secondary_blue}
+                                                        onClick={() => {
+                                                            setTagArrayFilter(new Set([]));
 
-                                                    }}>
-                                                    {__("reader.annotations.filter.none")}
-                                                </button>
-                                            </div>
-                                        </summary>
-                                        <TagList items={selectTagOption} className={stylesAnnotations.annotations_filter_taglist}>
-                                            {(item) => <Tag className={stylesAnnotations.annotations_filter_tag} id={item.name} textValue={item.name}>{item.name}</Tag>}
-                                        </TagList>
-                                    </details>
-                                </TagGroup>
-                                <TagGroup
-                                    selectionMode="multiple"
-                                    selectedKeys={colorArrayFilter}
-                                    onSelectionChange={setColorArrayFilter}
-                                    aria-label={__("reader.annotations.filter.filterByColor")}
-                                    style={{ marginBottom: "20px" }}
-                                >
-                                    <details open id="annotationListColorDetails">
-                                        <summary className={stylesAnnotations.annotations_filter_tagGroup}>
-                                            <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByColor")}</Label>
-                                            <div style={{ display: "flex", gap: "10px" }}>
-                                                <button
-                                                    style={{ width: "fit-content", minWidth: "unset" }}
-                                                    className={colorArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
-                                                    onClick={() => {
-                                                        setColorArrayFilter("all");
-                                                        const detailsElement = document.getElementById("annotationListColorDetails") as HTMLDetailsElement;
-                                                        if (detailsElement) {
-                                                            detailsElement.open = true;
-                                                        }
+                                                        }}>
+                                                        {__("reader.annotations.filter.none")}
+                                                    </button>
+                                                </div>
+                                            </summary>
+                                            <TagList items={selectTagOption} className={stylesAnnotations.annotations_filter_taglist}>
+                                                {(item) => <Tag className={stylesAnnotations.annotations_filter_tag} id={item.name} textValue={item.name}>{item.name}</Tag>}
+                                            </TagList>
+                                        </details>
+                                    </TagGroup>
+                                    <TagGroup
+                                        selectionMode="multiple"
+                                        selectedKeys={colorArrayFilter}
+                                        onSelectionChange={setColorArrayFilter}
+                                        aria-label={__("reader.annotations.filter.filterByColor")}
+                                        style={{ marginBottom: "20px" }}
+                                    >
+                                        <details open id="annotationListColorDetails">
+                                            <summary className={stylesAnnotations.annotations_filter_tagGroup}>
+                                                <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByColor")}</Label>
+                                                <div style={{ display: "flex", gap: "10px" }}>
+                                                    <button
+                                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                                        className={colorArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
+                                                        onClick={() => {
+                                                            setColorArrayFilter("all");
+                                                            const detailsElement = document.getElementById("annotationListColorDetails") as HTMLDetailsElement;
+                                                            if (detailsElement) {
+                                                                detailsElement.open = true;
+                                                            }
 
-                                                    }}>
-                                                    {__("reader.annotations.filter.all")}
-                                                </button>
-                                                <button
-                                                    style={{ width: "fit-content", minWidth: "unset" }}
-                                                    className={stylesButtons.button_secondary_blue}
-                                                    onClick={() => {
-                                                        setColorArrayFilter(new Set([]));
+                                                        }}>
+                                                        {__("reader.annotations.filter.all")}
+                                                    </button>
+                                                    <button
+                                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                                        className={stylesButtons.button_secondary_blue}
+                                                        onClick={() => {
+                                                            setColorArrayFilter(new Set([]));
 
-                                                    }}>
-                                                    {__("reader.annotations.filter.none")}
-                                                </button>
-                                            </div>
-                                        </summary>
-                                        <TagList items={annotationsColors} className={stylesAnnotations.annotations_filter_taglist}>
-                                            {(item) => <Tag className={stylesAnnotations.annotations_filter_color} style={{ backgroundColor: item.hex, outlineColor: item.hex }} id={item.hex} textValue={item.name}></Tag>}
-                                        </TagList>
-                                    </details>
-                                </TagGroup>
-                                <TagGroup
-                                    selectionMode="multiple"
-                                    selectedKeys={drawTypeArrayFilter}
-                                    onSelectionChange={setDrawTypeArrayFilter}
-                                    aria-label={__("reader.annotations.filter.filterByDrawtype")}
-                                    style={{ marginBottom: "20px" }}
-                                >
-                                    <details open id="annotationListDrawDetails">
-                                        <summary className={stylesAnnotations.annotations_filter_tagGroup}>
-                                            <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByDrawtype")}</Label>
-                                            <div style={{ display: "flex", gap: "10px" }}>
-                                                <button
-                                                    style={{ width: "fit-content", minWidth: "unset" }}
-                                                    className={drawTypeArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
-                                                    onClick={() => {
-                                                        setDrawTypeArrayFilter("all");
-                                                        const detailsElement = document.getElementById("annotationListDrawDetails") as HTMLDetailsElement;
-                                                        if (detailsElement) {
-                                                            detailsElement.open = true;
-                                                        }
+                                                        }}>
+                                                        {__("reader.annotations.filter.none")}
+                                                    </button>
+                                                </div>
+                                            </summary>
+                                            <TagList items={annotationsColors} className={stylesAnnotations.annotations_filter_taglist}>
+                                                {(item) => <Tag className={stylesAnnotations.annotations_filter_color} style={{ backgroundColor: item.hex, outlineColor: item.hex }} id={item.hex} textValue={item.name}></Tag>}
+                                            </TagList>
+                                        </details>
+                                    </TagGroup>
+                                    <TagGroup
+                                        selectionMode="multiple"
+                                        selectedKeys={drawTypeArrayFilter}
+                                        onSelectionChange={setDrawTypeArrayFilter}
+                                        aria-label={__("reader.annotations.filter.filterByDrawtype")}
+                                        style={{ marginBottom: "20px" }}
+                                    >
+                                        <details open id="annotationListDrawDetails">
+                                            <summary className={stylesAnnotations.annotations_filter_tagGroup}>
+                                                <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByDrawtype")}</Label>
+                                                <div style={{ display: "flex", gap: "10px" }}>
+                                                    <button
+                                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                                        className={drawTypeArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
+                                                        onClick={() => {
+                                                            setDrawTypeArrayFilter("all");
+                                                            const detailsElement = document.getElementById("annotationListDrawDetails") as HTMLDetailsElement;
+                                                            if (detailsElement) {
+                                                                detailsElement.open = true;
+                                                            }
 
-                                                    }}>
-                                                    {__("reader.annotations.filter.all")}
-                                                </button>
-                                                <button
-                                                    style={{ width: "fit-content", minWidth: "unset" }}
-                                                    className={stylesButtons.button_secondary_blue}
-                                                    onClick={() => {
-                                                        setDrawTypeArrayFilter(new Set([]));
+                                                        }}>
+                                                        {__("reader.annotations.filter.all")}
+                                                    </button>
+                                                    <button
+                                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                                        className={stylesButtons.button_secondary_blue}
+                                                        onClick={() => {
+                                                            setDrawTypeArrayFilter(new Set([]));
 
-                                                    }}>
-                                                    {__("reader.annotations.filter.none")}
-                                                </button>
-                                            </div>
-                                        </summary>
-                                        <TagList items={selectDrawtypesOptions} className={stylesAnnotations.annotations_filter_taglist}>
-                                            {(item) => <Tag id={item.name} className={stylesAnnotations.annotations_filter_drawtype} textValue={item.name}><SVG svg={item.svg} /></Tag>}
-                                        </TagList>
-                                    </details>
-                                </TagGroup>
-                                <TagGroup
-                                    selectionMode="multiple"
-                                    selectedKeys={creatorArrayFilter}
-                                    onSelectionChange={setCreatorArrayFilter}
-                                    aria-label={__("reader.annotations.filter.filterByCreator")}
-                                    style={{ marginBottom: "20px" }}
-                                >
-                                    <details id="annotationListCreator">
-                                        <summary className={stylesAnnotations.annotations_filter_tagGroup} style={{ pointerEvents: selectCreatorOptions.length < 2 ? "none" : "auto", opacity: selectCreatorOptions.length < 2 ? "0.5" : "1" }}
-                                        tabIndex={selectCreatorOptions.length < 2 ? -1 : 0}
-                                        >
-                                            <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByCreator")}</Label>
-                                            <div style={{ display: "flex", gap: "10px" }}>
-                                                <button
+                                                        }}>
+                                                        {__("reader.annotations.filter.none")}
+                                                    </button>
+                                                </div>
+                                            </summary>
+                                            <TagList items={selectDrawtypesOptions} className={stylesAnnotations.annotations_filter_taglist}>
+                                                {(item) => <Tag id={item.name} className={stylesAnnotations.annotations_filter_drawtype} textValue={item.name}><SVG svg={item.svg} /></Tag>}
+                                            </TagList>
+                                        </details>
+                                    </TagGroup>
+                                    <TagGroup
+                                        selectionMode="multiple"
+                                        selectedKeys={creatorArrayFilter}
+                                        onSelectionChange={setCreatorArrayFilter}
+                                        aria-label={__("reader.annotations.filter.filterByCreator")}
+                                        style={{ marginBottom: "20px" }}
+                                    >
+                                        <details id="annotationListCreator">
+                                            <summary className={stylesAnnotations.annotations_filter_tagGroup} style={{ pointerEvents: selectCreatorOptions.length < 2 ? "none" : "auto", opacity: selectCreatorOptions.length < 2 ? "0.5" : "1" }}
                                                 tabIndex={selectCreatorOptions.length < 2 ? -1 : 0}
-                                                    style={{ width: "fit-content", minWidth: "unset" }}
-                                                    className={creatorArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
-                                                    onClick={() => {
-                                                        setCreatorArrayFilter("all");
-                                                        const detailsElement = document.getElementById("annotationListCreator") as HTMLDetailsElement;
-                                                        if (detailsElement) {
-                                                            detailsElement.open = true;
-                                                        }
+                                            >
+                                                <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByCreator")}</Label>
+                                                <div style={{ display: "flex", gap: "10px" }}>
+                                                    <button
+                                                        tabIndex={selectCreatorOptions.length < 2 ? -1 : 0}
+                                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                                        className={creatorArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
+                                                        onClick={() => {
+                                                            setCreatorArrayFilter("all");
+                                                            const detailsElement = document.getElementById("annotationListCreator") as HTMLDetailsElement;
+                                                            if (detailsElement) {
+                                                                detailsElement.open = true;
+                                                            }
 
-                                                    }}>
-                                                    {__("reader.annotations.filter.all")}
-                                                </button>
-                                                <button
-                                                tabIndex={selectCreatorOptions.length < 2 ? -1 : 0}
-                                                    style={{ width: "fit-content", minWidth: "unset" }}
-                                                    className={stylesButtons.button_secondary_blue}
-                                                    onClick={() => {
-                                                        setCreatorArrayFilter(new Set([]));
+                                                        }}>
+                                                        {__("reader.annotations.filter.all")}
+                                                    </button>
+                                                    <button
+                                                        tabIndex={selectCreatorOptions.length < 2 ? -1 : 0}
+                                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                                        className={stylesButtons.button_secondary_blue}
+                                                        onClick={() => {
+                                                            setCreatorArrayFilter(new Set([]));
 
-                                                    }}>
-                                                    {__("reader.annotations.filter.none")}
-                                                </button>
-                                            </div>
-                                        </summary>
-                                        <TagList items={selectCreatorOptions} className={stylesAnnotations.annotations_filter_taglist} style={{ margin: selectCreatorOptions.length < 2 ? "0" : "20px 0" }}>
-                                            {(item) => <Tag className={stylesAnnotations.annotations_filter_tag} id={item.name} textValue={item.name}>{item.name}</Tag>}
-                                        </TagList>
-                                    </details>
-                                </TagGroup>
+                                                        }}>
+                                                        {__("reader.annotations.filter.none")}
+                                                    </button>
+                                                </div>
+                                            </summary>
+                                            <TagList items={selectCreatorOptions} className={stylesAnnotations.annotations_filter_taglist} style={{ margin: selectCreatorOptions.length < 2 ? "0" : "20px 0" }}>
+                                                {(item) => <Tag className={stylesAnnotations.annotations_filter_tag} id={item.name} textValue={item.name}>{item.name}</Tag>}
+                                            </TagList>
+                                        </details>
+                                    </TagGroup>
+                                </FocusLock>
                             </Popover.Content>
                         </Popover.Portal>
                     </Popover.Root>
