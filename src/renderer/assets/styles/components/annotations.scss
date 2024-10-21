@@ -146,10 +146,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: calc(100% - 50px);
+    width: calc(100%);
     gap: 20px;
-    margin-top: -35px;
-    border-right: 2px solid var(--color-extralight-grey);
     padding-right: 10px;
   }
 
