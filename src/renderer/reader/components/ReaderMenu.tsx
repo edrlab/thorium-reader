@@ -753,8 +753,13 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                 }
             }
         }
-        resetAnnotationUUID();
     }
+
+    React.useEffect(() => {
+        if (annotationUUIDFocused) {
+            resetAnnotationUUID();
+        }
+    }, [annotationUUIDFocused, resetAnnotationUUID]);
 
     const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
     if (sortType !== "all" && sortType.has("progression")) {
