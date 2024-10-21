@@ -99,9 +99,10 @@ import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
-import { diReaderGet } from "../di";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { translateContentFieldHelper } from "readium-desktop/common/services/translator";
+import { getStore } from "../createStore";
 
 // main process code!
 // thoriumhttps
@@ -367,7 +368,7 @@ class Reader extends React.Component<IProps, IState> {
     public async componentDidMount() {
         windowHistory._readerInstance = this;
 
-        const store = diReaderGet("store"); // diRendererSymbolTable.store
+        const store = getStore(); // diRendererSymbolTable.store
         document.body.setAttribute("data-theme", store.getState().theme.name);
 
         const handleMouseKeyboard = (isKey: boolean) => {
@@ -552,7 +553,7 @@ class Reader extends React.Component<IProps, IState> {
             console.log("HIGHLIGHT Click from Reader.tsx");
             console.log(`href: ${href} | highlight: ${JSON.stringify(highlight, null, 4)} | event : ${JSON.stringify(event)}`);
 
-            const store = diReaderGet("store");
+            const store = getStore();
             const mounterStateMap = store.getState()?.reader.highlight.mounter;
             if (!mounterStateMap?.length) {
                 console.log(`highlightsClickListen MOUNTER STATE EMPTY -- mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
@@ -808,7 +809,7 @@ class Reader extends React.Component<IProps, IState> {
                         disableRTLFlip={this.props.disableRTLFlip}
                         isRTLFlip={this.isRTLFlip}
                     />
-                    : 
+                    :
                     <div className={stylesReader.exitZen_container}>
                     <button onClick={() => this.setState({ zenMode : false})} className={stylesReader.button_exitZen} style={{ opacity: isPaginated ? "1" : "0"}}>
                         <SVG ariaHidden svg={exitZenModeIcon} />
@@ -1818,7 +1819,7 @@ class Reader extends React.Component<IProps, IState> {
     private loadPublicationIntoViewport() {
 
         if (this.props.r2Publication?.Metadata?.Title) {
-            const title = this.props.translator.translateContentField(this.props.r2Publication.Metadata.Title);
+            const title = translateContentFieldHelper(this.props.r2Publication.Metadata.Title, this.props.locale);
 
             window.document.title = capitalizedAppName;
             if (title) {
@@ -2863,7 +2864,6 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         isDivina,
         isPdf,
-        lang: state.i18n.locale,
         publicationView: state.reader.info.publicationView,
         r2Publication: state.reader.info.r2Publication,
         readerConfig: state.reader.config,
@@ -2880,8 +2880,6 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         readerMode: state.mode,
         divinaReadingMode: state.reader.divina.readingMode,
         locale: state.i18n.locale,
-        // session: state.session.state,
-
         disableRTLFlip: !!state.reader.disableRTLFlip?.disabled,
         r2PublicationHasMediaOverlays: state.reader.info.navigator.r2PublicationHasMediaOverlays,
         ttsState: state.reader.tts.state,

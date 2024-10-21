@@ -11,9 +11,6 @@ import * as stylesSlider from "readium-desktop/renderer/assets/styles/components
 import * as React from "react";
 import { connect } from "react-redux";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
 import PublicationCard from "readium-desktop/renderer/library/components/publication/PublicationCard";
 import Slider from "readium-desktop/renderer/library/components/utils/Slider";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
@@ -27,7 +24,7 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IBaseProps extends TranslatorProps {
+interface IBaseProps {
     catalogEntries: CatalogEntryView[];
     tags?: string[];
 }
@@ -79,7 +76,7 @@ const EntrySection = ({entry, entryIndex}: {entry: CatalogEntryView, entryIndex:
             {
                 <Slider
                     className={classNames(stylesSlider.slider)}
-                    content={entry.publicationViews.map((pub: any) =>
+                    content={entry.publicationViews.map((pub) =>
                         <PublicationCard
                             key={pub.identifier}
                             publicationViewMaybeOpds={pub}
@@ -190,6 +187,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
+    locale: state.i18n.locale, // refresh
 });
 
-export default connect(mapStateToProps)(withTranslator(CatalogGridView));
+export default connect(mapStateToProps)(CatalogGridView);

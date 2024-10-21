@@ -84,7 +84,7 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "@r2-shared-js/models/locator";
 import { IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
-import { annotationActions, readerActions } from "readium-desktop/common/redux/actions";
+import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
@@ -825,7 +825,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
     }
 
     const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
-    const creatorList = annotationListFiltered.map(([, { creator }]) => creator).filter(v => v);
+    const creatorList = annotationsListAll.map(([, { creator }]) => creator).filter(v => v);
     const creatorSet = creatorList.reduce<Record<string, string>>((acc, { id, name }) => {
         if (!acc[id]) {
             if (!userNumber[id]) userNumber[id] = ObjectKeys(userNumber).length + 1;
@@ -1079,7 +1079,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                                 </div>
                                             </summary>
                                             <TagList items={selectCreatorOptions} className={stylesAnnotations.annotations_filter_taglist} style={{ margin: selectCreatorOptions.length < 2 ? "0" : "20px 0" }}>
-                                                {(item) => <Tag className={stylesAnnotations.annotations_filter_tag} id={item.name} textValue={item.name}>{item.name}</Tag>}
+                                                {(item) => <Tag className={stylesAnnotations.annotations_filter_tag} id={item.id} textValue={item.name}>{item.name}</Tag>}
                                             </TagList>
                                         </details>
                                     </TagGroup>
@@ -1089,11 +1089,8 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                     </Popover.Root>
                 </div>
                 <div style={{ display: "flex", gap: "10px" }}>
-                    <ImportAnnotationsDialog winId={winId}>
+                    <ImportAnnotationsDialog winId={winId} publicationView={publicationView}>
                         <button className={stylesAnnotations.annotations_filter_trigger_button}
-                            onClick={() => {
-                                dispatch(annotationActions.importAnnotationSet.build(publicationView.identifier, winId));
-                            }}
                             title={__("catalog.importAnnotation")}>
                             <SVG svg={ImportIcon} />
                         </button>
@@ -2114,7 +2111,7 @@ const GoToPageSection: React.FC<IBaseProps & { totalPages?: number }> = (props) 
 
 const TabTitle = ({ value }: { value: string }) => {
     let title: string;
-    const [__, translator] = useTranslator();
+    const [__] = useTranslator();
     const searchText = useSelector((state: IReaderRootState) => state.search.textSearch);
 
     switch (value) {
@@ -2128,7 +2125,7 @@ const TabTitle = ({ value }: { value: string }) => {
             title = __("reader.marks.bookmarks");
             break;
         case "tab-search":
-            title = searchText ? translator.translate("reader.marks.searchResult", { searchText: searchText.slice(0, 20) })
+            title = searchText ? __("reader.marks.searchResult", { searchText: searchText.slice(0, 20) })
                 : (__("reader.marks.search"));;
             break;
         case "tab-gotopage":

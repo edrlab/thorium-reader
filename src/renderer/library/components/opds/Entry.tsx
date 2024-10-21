@@ -60,7 +60,29 @@ class Entry extends React.Component<IProps, undefined> {
                     ...this.props.location,
                     pathname: route,
                 }}
-                state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                onClick={(e) => {
+                    if (e.altKey || e.shiftKey || e.ctrlKey) {
+                        e.preventDefault();
+                        e.currentTarget.click();
+                    }
+                }}
+                onKeyDown={(e) => {
+                    // if (e.code === "Space") {
+                    if (e.key === " " || e.altKey || e.ctrlKey) {
+                        e.preventDefault(); // prevent scroll
+                    }
+                }}
+                onKeyUp={(e) => {
+                    // Includes screen reader tests:
+                    // if (e.code === "Space") { WORKS
+                    // if (e.key === "Space") { DOES NOT WORK
+                    // if (e.key === "Enter") { WORKS
+                    if (e.key === " ") { // WORKS
+                        e.preventDefault();
+                        e.currentTarget.click();
+                    }
+                }}
             >
                 <span>
                     <span title={entry.subtitle ? entry.subtitle : entry.title}>{entry.title}</span>

@@ -6,6 +6,6 @@
 // ==LICENSE-END==
 
 import { apiSubscribeFactory } from "../common/apiSubscribe";
-import { diLibraryGet } from "./di";
+import { getStore } from "./createStore";
 
-export const apiSubscribe = apiSubscribeFactory(() => diLibraryGet("store"));
+export const apiSubscribe = apiSubscribeFactory(() => getStore());

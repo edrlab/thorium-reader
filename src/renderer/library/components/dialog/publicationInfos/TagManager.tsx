@@ -96,7 +96,6 @@ class TagManager extends React.Component<IProps> {
                 <AddTag
                     pubId={this.props.pubId}
                     tagArray={this.props.tagArray}
-                    __={__}
                     setTags={setTagsCb}
                 />
             </section>
@@ -109,6 +108,7 @@ const mapStateToProps = (state: ILibraryRootState) => ({
     pubId: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication?.identifier,
     publication: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication,
     location: state.router.location,
+    locale: state.i18n.locale, // refresh
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => ({

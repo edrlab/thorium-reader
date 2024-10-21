@@ -90,7 +90,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
 
 
         return (
-            <div className={stylesPublication.opds_publication_wrapper} ref={this.fixedElementRef} style={{width: "unset"}}>
+            <div className={stylesPublication.opds_publication_wrapper} ref={this.fixedElementRef} style={{ width: "unset" }}>
                 {/* <button className={stylesButtons.button_primary_blue} onClick={() => console.log(pageLinks)}>Log "pageLinks"</button> */}
                 {/* <p className={stylesPublication.allBooks_header_pagination_title}>{__("catalog.numberOfPages")}</p> */}
                 <div className={stylesPublication.allBooks_header_pagination_container}>
@@ -105,6 +105,28 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                 to={{
                                     ...this.props.location,
                                     pathname: buildRoute(pageLinks.first[0]),
+                                }}
+                                onClick={(e) => {
+                                    if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                        e.preventDefault();
+                                        e.currentTarget.click();
+                                    }
+                                }}
+                                onKeyDown={(e) => {
+                                    // if (e.code === "Space") {
+                                    if (e.key === " " || e.altKey || e.ctrlKey) {
+                                        e.preventDefault(); // prevent scroll
+                                    }
+                                }}
+                                onKeyUp={(e) => {
+                                    // Includes screen reader tests:
+                                    // if (e.code === "Space") { WORKS
+                                    // if (e.key === "Space") { DOES NOT WORK
+                                    // if (e.key === "Enter") { WORKS
+                                    if (e.key === " ") { // WORKS
+                                        e.preventDefault();
+                                        e.currentTarget.click();
+                                    }
                                 }}
                             >
                                 <SVG ariaHidden={true} svg={ArrowFirstIcon} />
@@ -127,6 +149,28 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                     to={{
                                         ...this.props.location,
                                         pathname: buildRoute(pageLinks.previous[0]),
+                                    }}
+                                    onClick={(e) => {
+                                        if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                            e.preventDefault();
+                                            e.currentTarget.click();
+                                        }
+                                    }}
+                                    onKeyDown={(e) => {
+                                        // if (e.code === "Space") {
+                                        if (e.key === " " || e.altKey || e.ctrlKey) {
+                                            e.preventDefault(); // prevent scroll
+                                        }
+                                    }}
+                                    onKeyUp={(e) => {
+                                        // Includes screen reader tests:
+                                        // if (e.code === "Space") { WORKS
+                                        // if (e.key === "Space") { DOES NOT WORK
+                                        // if (e.key === "Enter") { WORKS
+                                        if (e.key === " ") { // WORKS
+                                            e.preventDefault();
+                                            e.currentTarget.click();
+                                        }
                                     }}
                                 >
                                     <SVG ariaHidden={true} svg={ChevronRight} />
@@ -176,6 +220,28 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                     ...this.props.location,
                                     pathname: buildRoute(pageLinks.next[0]),
                                 }}
+                                onClick={(e) => {
+                                    if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                        e.preventDefault();
+                                        e.currentTarget.click();
+                                    }
+                                }}
+                                onKeyDown={(e) => {
+                                    // if (e.code === "Space") {
+                                    if (e.key === " " || e.altKey || e.ctrlKey) {
+                                        e.preventDefault(); // prevent scroll
+                                    }
+                                }}
+                                onKeyUp={(e) => {
+                                    // Includes screen reader tests:
+                                    // if (e.code === "Space") { WORKS
+                                    // if (e.key === "Space") { DOES NOT WORK
+                                    // if (e.key === "Enter") { WORKS
+                                    if (e.key === " ") { // WORKS
+                                        e.preventDefault();
+                                        e.currentTarget.click();
+                                    }
+                                }}
                             >
                                 <SVG ariaHidden={true} svg={ChevronRight} />
                             </Link>
@@ -194,7 +260,30 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                     to={{
                                         ...this.props.location,
                                         pathname: buildRoute(pageLinks.last[0]),
-                                    }}>
+                                    }}
+                                    onClick={(e) => {
+                                        if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                            e.preventDefault();
+                                            e.currentTarget.click();
+                                        }
+                                    }}
+                                    onKeyDown={(e) => {
+                                        // if (e.code === "Space") {
+                                        if (e.key === " " || e.altKey || e.ctrlKey) {
+                                            e.preventDefault(); // prevent scroll
+                                        }
+                                    }}
+                                    onKeyUp={(e) => {
+                                        // Includes screen reader tests:
+                                        // if (e.code === "Space") { WORKS
+                                        // if (e.key === "Space") { DOES NOT WORK
+                                        // if (e.key === "Enter") { WORKS
+                                        if (e.key === " ") { // WORKS
+                                            e.preventDefault();
+                                            e.currentTarget.click();
+                                        }
+                                    }}
+                                >
                                     <SVG ariaHidden={true} svg={ArrowLastIcon} />
                                 </Link>
                                 : <SVG ariaHidden={true} svg={ArrowLastIcon} />}
@@ -217,46 +306,73 @@ class PageNavigation extends React.Component<IProps, undefined> {
         registerKeyboardListener(
             false, // listen for key down (not key up)
             this.props.keyboardShortcuts.NavigatePreviousOPDSPageAlt,
-            this.onKeyboardPageNavigationPrevious);
+            this.onKeyboardPageNavigationFirst);
         registerKeyboardListener(
             false, // listen for key down (not key up)
             this.props.keyboardShortcuts.NavigateNextOPDSPageAlt,
-            this.onKeyboardPageNavigationNext);
+            this.onKeyboardPageNavigationLast);
     }
 
     private unregisterAllKeyboardListeners() {
+        unregisterKeyboardListener(this.onKeyboardPageNavigationFirst);
+        unregisterKeyboardListener(this.onKeyboardPageNavigationLast);
         unregisterKeyboardListener(this.onKeyboardPageNavigationPrevious);
         unregisterKeyboardListener(this.onKeyboardPageNavigationNext);
     }
 
-    private onKeyboardPageNavigationNext = () => {
-        this.onKeyboardPageNavigationPreviousNext(false);
-    };
-    private onKeyboardPageNavigationPrevious = () => {
-        this.onKeyboardPageNavigationPreviousNext(true);
-    };
-    private onKeyboardPageNavigationPreviousNext = (isPrevious: boolean) => {
+    private onKeyboardPageNavigationFirst = () => {
+
         const { pageLinks } = this.props;
-
         const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
-
-        if (pageLinks?.previous[0]?.url && isPrevious) { // TODO RTL
+        if (pageLinks?.first[0]?.url) { // TODO RTL
             this.props.historyPush({
                 ...this.props.location,
-                pathname: buildRoute(pageLinks.previous[0]),
+                pathname: buildRoute(pageLinks.first[0]),
             }, this.props.location.state as IRouterLocationState);
-        } else if (pageLinks?.next[0]?.url && !isPrevious) { // TODO RTL
+        }
+    };
+    private onKeyboardPageNavigationLast = () => {
+
+        const { pageLinks } = this.props;
+        const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
+
+        if (pageLinks?.last[0]?.url) { // TODO RTL
+            this.props.historyPush({
+                ...this.props.location,
+                pathname: buildRoute(pageLinks.last[0]),
+            }, this.props.location.state as IRouterLocationState);
+        }
+    };
+    private onKeyboardPageNavigationNext = () => {
+
+        const { pageLinks } = this.props;
+        const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
+        if (pageLinks?.next[0]?.url) { // TODO RTL
             this.props.historyPush({
                 ...this.props.location,
                 pathname: buildRoute(pageLinks.next[0]),
             }, this.props.location.state as IRouterLocationState);
         }
     };
+    private onKeyboardPageNavigationPrevious = () => {
+
+        const { pageLinks } = this.props;
+        const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
+
+        if (pageLinks?.previous[0]?.url) { // TODO RTL
+            this.props.historyPush({
+                ...this.props.location,
+                pathname: buildRoute(pageLinks.previous[0]),
+            }, this.props.location.state as IRouterLocationState);
+        }
+    };
+
 }
 
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
     keyboardShortcuts: state.keyboard.shortcuts,
+    locale: state.i18n.locale, // refresh
 });
 
 const mapDispatchToProps = (dispatch: TDispatch) => ({

@@ -11,7 +11,7 @@ import * as ReactDOM from "react-dom";
 import { readerIpc } from "readium-desktop/common/ipc";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
-import { createStoreFromDi } from "readium-desktop/renderer/reader/di";
+import { createStoreFromDi } from "readium-desktop/renderer/reader/createStore";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
@@ -21,6 +21,7 @@ import {
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { publicationHasMediaOverlays } from "@r2-navigator-js/electron/renderer";
 import { pushTags } from "./tags";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // let devTron: any;
 let axe: any;
@@ -77,15 +78,12 @@ ipcRenderer.on(readerIpc.CHANNEL,
                 }
                 data.payload.annotationTagsIndex = pushTags({}, annotationTagsList);
 
-                createStoreFromDi(data.payload)
-                    .then(
-                        (store) =>
-                            store.dispatch(winActions.initRequest.build(data.payload.win.identifier)),
-                    )
-                    .catch((e) => e);
-                // TODO display error ?
-                // // starting the ipc sync with redux
-                // ipcRenderer.on(syncIpc.CHANNEL, ipcSyncHandler);
+                const store = createStoreFromDi(data.payload);
+                const locale = store.getState().i18n.locale;
+                getTranslator().setLocale(locale);
+
+                store.dispatch(winActions.initRequest.build(data.payload.win.identifier));
+
                 break;
         }
     });

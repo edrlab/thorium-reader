@@ -57,7 +57,7 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
                             <ListView
                                 normalOrOpdsPublicationViews={this.props.opdsPublicationView}
                                 isOpdsView={true}
-                            /> 
+                            />
                         } */}
                         <PageNavigation
                             pageLinks={this.props.links}
@@ -76,6 +76,7 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     location: state.router.location,
+    locale: state.i18n.locale, // refresh
 });
 
 export default connect(mapStateToProps)(withTranslator(EntryPublicationList));

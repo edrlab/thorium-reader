@@ -25,7 +25,7 @@ import { combineReducers, Reducer } from "redux";
 import { RouterState } from "redux-first-history";
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { catalogViewReducer } from "./catalog";
-import { tagReducer } from "./tag";
+import { tagReducer } from "readium-desktop/common/redux/reducers/tag";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 

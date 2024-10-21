@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import { dialog } from "electron";
-import { diMainGet } from "readium-desktop/main/di";
+import { getTranslator } from "readium-desktop/common/services/translator";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { types } from "util";
 
@@ -30,7 +30,7 @@ export function error(filename: string, err: any) {
         errorMessage = JSON.stringify(err);
     }
 
-    const translator = diMainGet("translator");
+    const translator = getTranslator();
 
     dialog.showErrorBox(
         translator.translate("error.errorBox.title", { appName: _APP_NAME }),

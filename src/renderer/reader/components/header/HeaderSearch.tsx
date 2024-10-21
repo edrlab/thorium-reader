@@ -176,6 +176,7 @@ class HeaderSearch extends React.Component<IProps> {
 const mapStateToProps = (state: IReaderRootState) => ({
     keyboardShortcuts: state.keyboard.shortcuts,
     isOnSearch: state.search.enable,
+    locale: state.i18n.locale, // refresh
 });
 
 const mapDispatchToProps = (dispatch: TDispatch) => ({
