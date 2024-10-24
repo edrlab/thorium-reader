@@ -148,7 +148,7 @@ export const WizardModal = () => {
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("wizard.title.welcome")}</h3>
                                 <p>{__("wizard.description.home")}</p>
-                                <img src={HomeImage} />
+                                <img src={HomeImage} aria-hidden="true" />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Dialog.Close className={stylesButtons.button_nav_primary}>
                                         <SVG ariaHidden svg={ShelfIcon} />
@@ -171,7 +171,7 @@ export const WizardModal = () => {
                                 <p>
                                     {__("wizard.description.yourBooks")}
                                 </p>
-                                <img src={BooksImage} />
+                                <img src={BooksImage} aria-hidden="true" />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Tabs.List>
                                         <Tabs.Trigger value="tab3" className={stylesButtons.button_primary_blue} onFocus={(e) => e.preventDefault()}>
@@ -189,7 +189,7 @@ export const WizardModal = () => {
                                 <p>
                                     {__("wizard.description.catalogs")}
                                 </p>
-                                <img src={CatalogsImage} />
+                                <img src={CatalogsImage} aria-hidden="true" />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Tabs.List>
                                         <Tabs.Trigger value="tab4" className={stylesButtons.button_primary_blue} onFocus={(e) => e.preventDefault()}>
@@ -206,7 +206,7 @@ export const WizardModal = () => {
                                 <h3>{__("wizard.tab.readingView")}</h3>
                                 <p>{__("wizard.description.readingView1")}</p>
                                 <p>{__("wizard.description.readingView2")}</p>
-                                <img src={ReadingImage} />
+                                <img src={ReadingImage} aria-hidden="true" />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Tabs.List>
                                         <Tabs.Trigger value="tab5" className={stylesButtons.button_primary_blue} onFocus={(e) => e.preventDefault()}>
@@ -223,7 +223,7 @@ export const WizardModal = () => {
                                 <h3>{__("wizard.title.newFeature")}</h3>
                                 <p>
                                     {__("wizard.description.annotations")}</p>
-                                <img src={AnnotationsImage} />
+                                <img src={AnnotationsImage} aria-hidden="true" />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Dialog.Close className={stylesButtons.button_primary_blue}>
                                         <SVG ariaHidden svg={ShelfIcon} />
