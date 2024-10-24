@@ -332,15 +332,15 @@ export const Settings: React.FC<ISettingsProps> = () => {
                     <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
                         <Tabs.Trigger value="tab1">
                             <SVG ariaHidden svg={CogIcon} />
-                            <h4>{__("settings.tabs.general")}</h4>
+                            <h3>{__("settings.tabs.general")}</h3>
                         </Tabs.Trigger>
                         <Tabs.Trigger value="tab2">
                             <SVG ariaHidden svg={PaletteIcon} />
-                            <h4>{__("settings.tabs.appearance")}</h4>
+                            <h3>{__("settings.tabs.appearance")}</h3>
                         </Tabs.Trigger>
                         <Tabs.Trigger value="tab4">
                             <SVG ariaHidden svg={KeyReturnIcon} />
-                            <h4>{__("settings.tabs.keyboardShortcuts")}</h4>
+                            <h3>{__("settings.tabs.keyboardShortcuts")}</h3>
                         </Tabs.Trigger>
                     </Tabs.List>
                     <div className={stylesSettings.settings_content} style={{marginTop: "70px"}}>
