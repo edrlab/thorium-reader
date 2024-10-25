@@ -58,10 +58,13 @@
     "_NOT_NEEDED_package": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --x64 --publish never",
     "prepackage:win": "npm run package:build",
     "package:win": "cross-env DEBUG=* CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --win --x64 --publish never",
+    "postpackage:win": "npx @electron/fuses read --app ./release/win-unpacked/thorium.exe || echo ok",
     "prepackage:linux": "npm run package:build",
     "package:linux": "cross-env DEBUG=* CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --linux --x64 --publish never",
+    "postpackage:linux": "(ls -alsR ./release/linux-arm64-unpacked/ || ls -alsR ./release/linux-unpacked/) && (npx @electron/fuses read --app ./release/linux-arm64-unpacked/thorium || npx @electron/fuses read --app ./release/linux-unpacked/thorium) || echo ok",
     "prepackage:mac": "npm run package:build",
     "package:mac": "cross-env DEBUG=* electron-builder --mac --publish never",
+    "postpackage:mac": "(npx @electron/fuses read --app ./release/mac/Thorium.app || npx @electron/fuses read --app ./release/mac-arm64/Thorium.app) || echo ok",
     "package:mac:skip-notarize": "cross-env SKIP_NOTARIZE=1 npm run package:mac",
     "_NOT_NEEDED_prepackage:all": "npm run package:build",
     "_NOT_NEEDED_package:all": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder -mwl --x64 --publish never",
@@ -125,6 +128,7 @@
       }
     ],
     "afterSign": "scripts/notarize.js",
+    "afterPack": "scripts/afterPack.js",
     "dmg": {
       "sign": true,
       "contents": [
@@ -330,6 +334,7 @@
     "@axe-core/react": "^4.10.0",
     "@babel/generator": "^7.25.7",
     "@electron/notarize": "^2.5.0",
+    "@electron/fuses": "^1.8.0",
     "@electron/rebuild": "^3.7.0",
     "@kogai/typed_i18n": "^0.6.0",
     "@octokit/rest": "^21.0.2",
