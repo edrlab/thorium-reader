@@ -1,6 +1,6 @@
-/* @import './partials/variables'; */
-// @import './focus';
-@import './partials/mixin';
+/* @use './partials/variables'; */
+// @use './focus';
+@use './partials/mixin' as mx;
 
 .CSS_START_readerApp {
   display: none;
@@ -557,7 +557,7 @@ button {
         }
 
         &:focus + label.menu_button {
-          @include R2_MIXIN_FOCUS_OUTLINE;
+          @include mx.R2_MIXIN_FOCUS_OUTLINE;
         }
       }
 
@@ -570,7 +570,7 @@ button {
         }
 
         &:focus + label.menu_button {
-          @include R2_MIXIN_FOCUS_OUTLINE;
+          @include mx.R2_MIXIN_FOCUS_OUTLINE;
         }
       }
     }
@@ -808,7 +808,7 @@ p.chapters_description {
     left: -2000px;
 
     &:focus + label {
-      @include R2_MIXIN_FOCUS_OUTLINE;
+      @include mx.R2_MIXIN_FOCUS_OUTLINE;
     }
 
     &:disabled + label {
@@ -890,7 +890,7 @@ p.chapters_description {
     padding: 10px;
 
     &:focus + input {
-      @include R2_MIXIN_FOCUS_OUTLINE;
+      @include mx.R2_MIXIN_FOCUS_OUTLINE;
     }
   }
 
@@ -921,7 +921,7 @@ p.chapters_description {
     left: -20000px;
 
     &:focus + label {
-      @include R2_MIXIN_FOCUS_OUTLINE;
+      @include mx.R2_MIXIN_FOCUS_OUTLINE;
     }
   }
 

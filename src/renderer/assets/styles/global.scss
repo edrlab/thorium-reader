@@ -1,8 +1,8 @@
 /*** be careful this file is imported in library and reader windows ***/
 
-@import './partials/variables';
-@import './partials/mixin';
-@import './partials/focus';
+@use './partials/variables';
+@use './partials/mixin' as mx;
+@use './partials/focus';
 
 .CSS_START_global {
   display: none;
@@ -99,7 +99,7 @@ section {
     padding-bottom: 100px;
   }
 
-  @include scrollbar_styling;
+  @include mx.scrollbar_styling;
 }
 
 nav + nav + .main {

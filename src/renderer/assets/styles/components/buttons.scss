@@ -1,4 +1,4 @@
-@import '../partials/mixin';
+@use '../partials/mixin' as mx;
 
 .CSS_START_components_buttons {
   display: none;
@@ -89,7 +89,7 @@ button {
 }
 
 .button_primary {
-  @include button_primary;
+  @include mx.button_primary;
 
   padding: 10px 15px;
 
@@ -394,7 +394,7 @@ button {
   }
 
   &:focus-within {
-    @include R2_MIXIN_FOCUS_OUTLINE;
+    @include mx.R2_MIXIN_FOCUS_OUTLINE;
 
     outline: var(--color-blue) solid 1px !important;
     outline-offset: 2px;

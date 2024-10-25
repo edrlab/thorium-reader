@@ -1,4 +1,4 @@
-@import '../partials/mixin';
+@use '../partials/mixin' as mx;
 
 .CSS_START_components_modals {
   display: none;
@@ -96,7 +96,7 @@
     justify-content: center;
   }
 
-  @include scrollbar_styling;
+  @include mx.scrollbar_styling;
 }
 
 .modal_dialog_body_cover > img {

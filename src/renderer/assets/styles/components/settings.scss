@@ -1,4 +1,4 @@
-@import '../partials/mixin';
+@use '../partials/mixin' as mx;
 
 .CSS_START_components_settings {
     display: none;
@@ -251,7 +251,7 @@ $setting_color: var(--color-blue);
     margin-top: 50px;
     margin-bottom: 5px;
 
-    @include scrollbar_styling;
+    @include mx.scrollbar_styling;
 
     .button_transparency_icon {
         position: relative;

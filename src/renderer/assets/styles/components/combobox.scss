@@ -1,4 +1,4 @@
-@import '../partials/mixin';
+@use '../partials/mixin' as mx;
 
 .CSS_START_components_combobox {
   display: none;
@@ -90,7 +90,7 @@
   max-height: 350px!important;
   overflow: hidden auto;
 
-  @include scrollbar_styling;
+  @include mx.scrollbar_styling;
   
   &::-webkit-scrollbar {
     width: 10px;

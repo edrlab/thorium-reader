@@ -1,4 +1,4 @@
-@import '../partials/mixin';
+@use '../partials/mixin' as mx;
 
 .CSS_START_components_catalogs {
     display: none;
@@ -310,7 +310,7 @@
     //     inset: 330px 20px 30px 30px;
     // }
 
-    @include scrollbar_styling;
+    @include mx.scrollbar_styling;
 
     .loader {
         margin: 20%;

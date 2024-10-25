@@ -1,5 +1,5 @@
-// @import '../focus';
-@import '../partials/mixin';
+// @use '../focus';
+@use '../partials/mixin' as mx;
 
 .CSS_START_components_annotations {
   display: none;
@@ -75,7 +75,7 @@
     z-index: 1000;
     border-radius: 5px;
 
-    @include scrollbar_styling;
+    @include mx.scrollbar_styling;
 
     &::-webkit-scrollbar-track {
       background-color: var(--color-extralight-grey);
@@ -115,7 +115,7 @@
       background-color: var(--color-blue);
     }
 
-    @include scrollbar_styling;
+    @include mx.scrollbar_styling;
 
     &::-webkit-scrollbar-track {
       background-color: var(--color-extralight-grey);
@@ -444,7 +444,7 @@
     border-radius: 6px;
 
     &:has(input:focus) {
-      @include R2_MIXIN_FOCUS_OUTLINE;
+      @include mx.R2_MIXIN_FOCUS_OUTLINE;
     }
 
     div {
@@ -479,7 +479,7 @@
   border-radius: 5px;
 
   &:has(input:focus) {
-    @include R2_MIXIN_FOCUS_OUTLINE;
+    @include mx.R2_MIXIN_FOCUS_OUTLINE;
   }
 
   div {

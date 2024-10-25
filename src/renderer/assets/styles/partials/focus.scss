@@ -1,4 +1,4 @@
-@import './mixin';
+@use './mixin' as mx;
 
 .CSS_START_partials_focus {
   display: none;
@@ -27,7 +27,7 @@
 /* :global */
 
 :root.R2_CSS_CLASS__KEYBOARD_INTERACT *:focus {
-  @include R2_MIXIN_FOCUS_OUTLINE;
+  @include mx.R2_MIXIN_FOCUS_OUTLINE;
 }
 
 /* :global */

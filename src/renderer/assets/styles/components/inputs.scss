@@ -1,4 +1,4 @@
-@import '../partials/mixin';
+@use '../partials/mixin' as mx;
 
 .CSS_START_components_inputs {
   display: none;
@@ -57,7 +57,7 @@ input[type="color"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
 input[type="url"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
 input[type="search"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE) {
   &:focus {
-    @include R2_MIXIN_FOCUS_OUTLINE;
+    @include mx.R2_MIXIN_FOCUS_OUTLINE;
   }
 }
 

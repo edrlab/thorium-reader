@@ -1,4 +1,4 @@
-@import '../partials/mixin';
+@use '../partials/mixin' as mx;
 
 .CSS_START_components_breadcrumbs {
   display: none;
@@ -15,7 +15,7 @@
 }
 
 .breadcrumb_container {
-  @include scrollbar_styling;
+  @include mx.scrollbar_styling;
 }
 
 .breadcrumb {

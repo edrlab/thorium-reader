@@ -3,7 +3,7 @@
 }
 
 /*
-@import './partials/mixin';
+@use './partials/mixin' as mx;
 
 @mixin R2_MIXIN_FOCUS_OUTLINE {
   outline: var(--color-blue) solid 2px !important;
@@ -19,7 +19,7 @@
 }
 
 :root.R2_CSS_CLASS__KEYBOARD_INTERACT *:focus {
-  @include R2_MIXIN_FOCUS_OUTLINE;
+  @include mx.R2_MIXIN_FOCUS_OUTLINE;
 }
 
 :root:not(.R2_CSS_CLASS__KEYBOARD_INTERACT) #body_element *:focus + label {
