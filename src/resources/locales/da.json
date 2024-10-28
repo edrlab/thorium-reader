@@ -171,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "Hint til nøgleord: {{- hint}}",
+      "hint": "Hint til nøgleord: ",
+      "open": "",
       "password": "Nøgleord",
       "sentence": "Denne bog kræver et LCP-nøgleord for at åbne: ",
       "urlHint": "Har du glemt dit nøgleord? Få hjælp her",
@@ -294,6 +295,7 @@
     },
     "expired": "Lånet er udløbet",
     "expiredLcp": "Denne bog kan ikke læses, da LCP-licensen er udløbet.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Slut",
     "lcpRightsCopy": "Kopierede bogstaver",
     "lcpRightsPrint": "Printede sider",

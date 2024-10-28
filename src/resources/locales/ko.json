@@ -171,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "(힌트: {{- hint}})",
+      "hint": "힌트: ",
+      "open": "",
       "password": "암호",
       "sentence": "이 출판물을 열기 위해서는 LCP 암호가 필요합니다: ",
       "urlHint": "암호를 잊으셨습니까? 여기서 도움말을 확인하십시오",
@@ -294,6 +295,7 @@
     },
     "expired": "",
     "expiredLcp": "이 책은 LCP 라이선스가 만료되어서 읽을 수 없습니다",
+    "incorrectPassphrase": "",
     "lcpEnd": "종료",
     "lcpRightsCopy": "복사된 문자",
     "lcpRightsPrint": "인쇄된 페이지",

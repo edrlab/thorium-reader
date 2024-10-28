@@ -171,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "(Namig: {{- hint}})",
+      "hint": "Namig: ",
+      "open": "",
       "password": "Geslo",
       "sentence": "Za odprtje publikacije vnesi LCP geslo: ",
       "urlHint": "Pozabljeno geslo? Tu lahko poiščeš pomoč",
@@ -294,6 +295,7 @@
     },
     "expired": "Rok izposoje je potekel",
     "expiredLcp": "Knjige ni mogoče prebrati, ker je licenca LCP potekla.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Konec",
     "lcpRightsCopy": "Kopirani znaki",
     "lcpRightsPrint": "Tiskane strani",

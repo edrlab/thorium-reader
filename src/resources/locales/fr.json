@@ -171,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "Indice : {{- hint}}",
+      "hint": "Indice : ",
+      "open": "",
       "password": "Mot de passe",
       "sentence": "Entrez la clé LCP associée à cette publication :",
       "urlHint": "Vous avez oublié votre phrase d'accès ? Trouvez de l'aide avec ce lien",
@@ -294,6 +295,7 @@
     },
     "expired": "Prêt expiré",
     "expiredLcp": "Ce livre ne peut être lu car la licence LCP a expiré.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Fin",
     "lcpRightsCopy": "Caractères copiés",
     "lcpRightsPrint": "Pages imprimées",

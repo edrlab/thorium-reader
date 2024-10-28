@@ -404,6 +404,7 @@ declare namespace typed_i18n {
   (_: "library", __?: {}): {
   readonly "lcp": {
     readonly "hint": string,
+    readonly "open": string,
     readonly "password": string,
     readonly "sentence": string,
     readonly "urlHint": string,
@@ -414,6 +415,7 @@ declare namespace typed_i18n {
 };
   (_: "library.lcp", __?: {}): {
   readonly "hint": string,
+  readonly "open": string,
   readonly "password": string,
   readonly "sentence": string,
   readonly "urlHint": string,
@@ -422,6 +424,7 @@ declare namespace typed_i18n {
   readonly "whatIsLcpInfoDetailsLink": string
 };
   (_: "library.lcp.hint", __?: {}): string;
+  (_: "library.lcp.open", __?: {}): string;
   (_: "library.lcp.password", __?: {}): string;
   (_: "library.lcp.sentence", __?: {}): string;
   (_: "library.lcp.urlHint", __?: {}): string;
@@ -613,6 +616,7 @@ declare namespace typed_i18n {
   readonly "duration": { readonly "title": string },
   readonly "expired": string,
   readonly "expiredLcp": string,
+  readonly "incorrectPassphrase": string,
   readonly "lcpEnd": string,
   readonly "lcpRightsCopy": string,
   readonly "lcpRightsPrint": string,
@@ -724,6 +728,7 @@ declare namespace typed_i18n {
   (_: "publication.duration.title", __?: {}): string;
   (_: "publication.expired", __?: {}): string;
   (_: "publication.expiredLcp", __?: {}): string;
+  (_: "publication.incorrectPassphrase", __?: {}): string;
   (_: "publication.lcpEnd", __?: {}): string;
   (_: "publication.lcpRightsCopy", __?: {}): string;
   (_: "publication.lcpRightsPrint", __?: {}): string;

@@ -171,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "(Adierazi : {{- hint}})",
+      "hint": "Adierazi : ",
+      "open": "",
       "password": "Pasahitza",
       "sentence": "Argitalpen honek LCP pasahitza behar du irekitzeko: ",
       "urlHint": "Pasahitza ahaztu duzu? Bilatu laguntza hemen",
@@ -294,6 +295,7 @@
     },
     "expired": "Mailegua iraungi",
     "expiredLcp": "Liburu hau ezin da irakurri LCP lizentzia iraungi delako.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Amaiera",
     "lcpRightsCopy": "Pertsonaien kopia",
     "lcpRightsPrint": "Inprimagailuaren kopia",

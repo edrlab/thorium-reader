@@ -172,6 +172,7 @@
   "library": {
     "lcp": {
       "hint": "Dein Kennwort",
+      "open": "",
       "password": "Passwort",
       "sentence": "Diese LCP-geschütze Publikation benötigt zum Öffnen ein Password: ",
       "urlHint": "Passwort vergessen? Support ist verfügbar unter:",
@@ -294,6 +295,7 @@
     },
     "expired": "Ausleihe abgelaufen",
     "expiredLcp": "Die LCP-Lizenz dieser Veröffentlichung ist abgelaufen.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Ende",
     "lcpRightsCopy": "Kopierte Zeichen",
     "lcpRightsPrint": "Gedruckte Seiten",

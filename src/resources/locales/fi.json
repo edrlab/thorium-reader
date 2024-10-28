@@ -171,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "Vihje: {{- hint}}",
+      "hint": "Vihje: ",
+      "open": "",
       "password": "Salasana",
       "sentence": "Julkaisun avaamiseen tarvitaan LCP-salasana: ",
       "urlHint": "Unohtuiko salasana? Lisätietoja:",
@@ -294,6 +295,7 @@
     },
     "expired": "Laina-aika on päättynyt",
     "expiredLcp": "LCP-käyttöoikeus on päättynyt.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Loppu",
     "lcpRightsCopy": "Kopioidut merkit",
     "lcpRightsPrint": "Tulostetut sivut",

@@ -171,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "(Dica : {{- hint}})",
+      "hint": "Dica : ",
+      "open": "",
       "password": "Senha",
       "sentence": "Insira a senha desta publicação protegida por LCP:",
       "urlHint": "Esqueceu sua senha? O suporte está disponível:",
@@ -294,6 +295,7 @@
     },
     "expired": "Empréstimo expirado",
     "expiredLcp": "A licença LCP desta publicação expirou.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Fim",
     "lcpRightsCopy": "Caracteres copiados ",
     "lcpRightsPrint": "Páginas impressas",

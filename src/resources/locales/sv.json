@@ -171,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "Tips: {{- hint}}",
+      "hint": "Tips: ",
+      "open": "",
       "password": "Lösenord",
       "sentence": "Den här publikationer behöver ett LCP-lösenord för att kunna öppnas: ",
       "urlHint": "Har du glömt ditt lösenord? Här kan du få hjälp:",
@@ -294,6 +295,7 @@
     },
     "expired": "Lånet har gått ut.",
     "expiredLcp": "Den här boken går inte att läsa eftersom LCP-licensen har löpt ut.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Slut",
     "lcpRightsCopy": "Kopiera tecken",
     "lcpRightsPrint": "Kopiera utskrift",

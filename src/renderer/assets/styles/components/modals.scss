@@ -84,7 +84,7 @@
 
 .modal_dialog_body {
   flex: 1;
-  padding: 0 20px 0 30px;
+  padding: 0 20px;
   overflow: hidden auto;
   display: flex;
   flex-direction: column;
@@ -133,15 +133,15 @@
 
 .modal_dialog_footer {
   justify-content: end;
-  border-top: 1px solid var(--color-medium-grey);
+  border-top: 1px solid var(--color-light-grey);
   position: sticky;
   bottom: 0;
   right: 0;
   background-color: var(--color-secondary);
   gap: 10px;
 
-  & [type="submit"] {
-    min-width: 100px;
+  & [type="submit"], .button_secondary_blue {
+    min-width: 70px;
   }
 }
 
@@ -204,6 +204,7 @@
   align-items: center;
   gap: 5px;
   width: fit-content;
+  font-size: 14px;
 
   svg {
     height: 14px;

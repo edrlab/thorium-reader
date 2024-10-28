@@ -171,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "(Podsjetnik: {{- hint}})",
+      "hint": "Podsjetnik: ",
+      "open": "",
       "password": "Lozinka",
       "sentence": "Ova građa treba LCP lozinku za otvaranje: ",
       "urlHint": "Zaboravljena lozinka? Pomoć",
@@ -294,6 +295,7 @@
     },
     "expired": "",
     "expiredLcp": "Ova knjiga se ne može čitati jer je LCP licenca istekla.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Kraj",
     "lcpRightsCopy": "Kopirano znakova",
     "lcpRightsPrint": "Ispisano stranica",
