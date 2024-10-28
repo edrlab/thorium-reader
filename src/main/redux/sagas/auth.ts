@@ -931,6 +931,7 @@ const htmlLoginTemplate = (
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                margin: 0;
             }
 
             .login {
@@ -948,7 +949,8 @@ const htmlLoginTemplate = (
                 position: relative;
                 gap: 50px;
                 flex-wrap: wrap;
-
+                overflow: hidden;
+    
                 @media only screen and (max-width: 1000px) {
                     flex-direction: column;
                 }
@@ -1027,7 +1029,7 @@ const htmlLoginTemplate = (
             .login form {
                 flex: 2;
                 border-bottom: 1px solid #e5e5e5;
-                width: 100%;
+                width: fit-content;
                 align-items: end;
                 justify-content: center;
                 display: flex;
@@ -1088,18 +1090,15 @@ const htmlLoginTemplate = (
 
             .login .submit {
                 text-align: right;
-                position: absolute;
+                // position: absolute;
                 bottom: 20px;
                 right: 40px;
                 display: flex;
                 align-items: center;
                 gap: 10px;
-
-                @media only screen and (max-width: 1000px) {
-                    position: unset;
-                    width: 100%;
-                    justify-content: end;
-                }
+                justify-content: end;
+                width: 100%;
+                max-width: 400px;
             }
 
             .submit_button {
@@ -1107,14 +1106,14 @@ const htmlLoginTemplate = (
                 display: flex;
                 align-items: center;
                 gap: 5px;
-                padding: 0 5px;
+                padding: 0;
             }
 
             .submit_button label {
                 position: absolute;
                 transform: translate(-50%, -50%);
                 top: 50%;
-                left: 15px;
+                left: 10px;
             }
 
             .submit_button label svg {
