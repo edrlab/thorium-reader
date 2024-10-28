@@ -89,21 +89,13 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                 <Dialog.Content className={stylesModals.modal_dialog} style={{maxWidth: "600px"}} onOpenAutoFocus={(e) => {
                     e.preventDefault();
                     this.focusRef.current?.focus();
-                }}>
+                }} aria-describedby={__("library.lcp.sentence")}>
                     <div className={stylesModals.modal_dialog_header}>
                         <Dialog.Title>
                             {__("library.lcp.sentence")}
                         </Dialog.Title>
                     </div>
-                    <form className={stylesModals.modal_dialog_body} onSubmit={(e) => {
-                        e.preventDefault();
-
-                        // if (!this.state.password) {
-                        //     return ;
-                        // }
-                        this.props.unlockPublication(this.props.publicationView.identifier, this.state.password);
-
-                    }}>
+                    <form className={stylesModals.modal_dialog_body}>
                         <p>
                             <span className={stylesModals.lcp_hint}>
                                 <SVG ariaHidden svg={LightBulbIcon} />
@@ -167,7 +159,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
                             </Dialog.Close>
                             <Dialog.Close asChild>
-                                <button type="submit" className={stylesButtons.button_primary_blue}>
+                                <button type="submit" className={stylesButtons.button_primary_blue} onClick={this.submit}>
                                     <SVG ariaHidden svg={LockIcon} />
                                     {__("library.lcp.open")}</button>
                             </Dialog.Close>
@@ -180,6 +172,13 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
 
     private onPasswordChange = (e: TChangeEventOnInput) => {
         this.setState({ password: e.target.value });
+    };
+
+    private submit = () => {
+        // if (!this.state.password) {
+        //     return;
+        // }
+        this.props.unlockPublication(this.props.publicationView.identifier, this.state.password);
     };
 }
 
