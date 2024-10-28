@@ -295,7 +295,7 @@
     },
     "expired": "Prêt expiré",
     "expiredLcp": "Ce livre ne peut être lu car la licence LCP a expiré.",
-    "incorrectPassphrase": "",
+    "incorrectPassphrase": "Aucune clé LCP enregistrée ne correspond à la publication ou la clé saisie est incorrecte.",
     "lcpEnd": "Fin",
     "lcpRightsCopy": "Caractères copiés",
     "lcpRightsPrint": "Pages imprimées",

@@ -658,7 +658,7 @@ export class LcpManager {
                 }
                 case 1: {
                     // message = "INCORRECT PASSPHRASE: " + val;
-                    message = this.translator.translate("publication.userKeyCheckInvalid");
+                    message = this.translator.translate("publication.incorrectPassphrase");
                     break;
                 }
                 case 11: {
@@ -696,7 +696,7 @@ export class LcpManager {
                 }
                 case 141: {
                     // message = "USER_KEY_CHECK_INVALID: " + val;
-                    message = this.translator.translate("publication.incorrectPassphrase");
+                    message = this.translator.translate("publication.userKeyCheckInvalid");
                     break;
                 }
                 case 151: {
