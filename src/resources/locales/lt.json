@@ -171,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "(Užuomina : {{- hint}})",
+      "hint": "Užuomina : ",
+      "open": "",
       "password": "Slaptažodis",
       "sentence": "Šiam leidiniui atverti reikalingas LCP slaptažodis: ",
       "urlHint": "Pamiršote slaptažodį? Pagalbos ieškokite čia",
@@ -294,6 +295,7 @@
     },
     "expired": "Skolinimo terminas baigėsi",
     "expiredLcp": "Šio leidinio negalima skaityti, nes baigėsi LCP licencijos galiojimo laikas.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Pabaiga",
     "lcpRightsCopy": "Ženklų kopijos",
     "lcpRightsPrint": "Spausdintos kopijos",

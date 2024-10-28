@@ -182,6 +182,26 @@ select {
   inset: 0;
 }
 
+.passphrase_infos {
+  display: flex;
+  align-items: start;
+  justify-content: flex-start;
+  gap: 10px;
+  width: fit-content;
+  font-size: 14px;
+  background-color: var(--color-extralight-grey);
+  color: var(--color-primary);
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    color: var(--color-blue);
+  }
+}
+
 .passphrase_error {
   color: var(--color-error-dark);
   display: flex;

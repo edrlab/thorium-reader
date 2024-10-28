@@ -171,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "(Pista : {{- hint}})",
+      "hint": "Pista : ",
+      "open": "",
       "password": "Contraseña",
       "sentence": "Esta publicación requiere una contraseña LCP para abrirse: ",
       "urlHint": "¿Olvidaste tu contraseña? Encuentra ayuda aquí",
@@ -294,6 +295,7 @@
     },
     "expired": "Préstamo vencido",
     "expiredLcp": "Este libro no se puede leer porque la licencia LCP ha expirado.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Fin",
     "lcpRightsCopy": "Caracteres copiados",
     "lcpRightsPrint": "Páginas impresas",

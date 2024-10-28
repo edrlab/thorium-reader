@@ -171,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "ヒント：{{- hint}}",
+      "hint": "ヒント：",
+      "open": "",
       "password": "パスワード",
       "sentence": "この本はLCPで保護されています。パスワードを入力してください： ",
       "urlHint": "パスワードを忘れましたか？ サポート窓口で確認してください：",
@@ -294,6 +295,7 @@
     },
     "expired": "貸出の期限切れ",
     "expiredLcp": "この本のLCPライセンスの有効期限が切れました。",
+    "incorrectPassphrase": "",
     "lcpEnd": "終了",
     "lcpRightsCopy": "文字列のコピー",
     "lcpRightsPrint": "ページを印刷",

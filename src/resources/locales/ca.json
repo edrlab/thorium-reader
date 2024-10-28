@@ -171,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "Suggeriment : {{- hint}})",
+      "hint": "Suggeriment : ",
+      "open": "",
       "password": "Contrassenya",
       "sentence": "Aquesta publicació requereix una contrassenya LCP per obrir-se: ",
       "urlHint": "Has olvidat la contrassenya? Clica si necessites ajuda",
@@ -294,6 +295,7 @@
     },
     "expired": "Préstec expirat",
     "expiredLcp": "Aquest llibre no es pot llegir perquè la llicència LCP ha expirat.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Fi",
     "lcpRightsCopy": "Còpia de personatges",
     "lcpRightsPrint": "Còpia d'impressora",

@@ -171,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "(Suggerimento : {{- hint}})",
+      "hint": "Suggerimento : ",
+      "open": "",
       "password": "Passphrase",
       "sentence": "Questa pubblicazione ha bisogno di una passphrase LCP per essere aperta: ",
       "urlHint": "Hai dimenticato la tua passphrase? Ottieni un aiuto qui",
@@ -294,6 +295,7 @@
     },
     "expired": "Prestito scaduto",
     "expiredLcp": "Questo libro non può essere letto perchè la licenza LCP è scaduta.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Fine",
     "lcpRightsCopy": "Caratteri copiati",
     "lcpRightsPrint": "Pagine stampate",

@@ -171,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "提示：{{- hint}}",
+      "hint": "提示：",
+      "open": "",
       "password": "密碼",
       "sentence": "打開此出版物需要 LCP 密碼：",
       "urlHint": "忘記密碼？在此取得幫助",
@@ -294,6 +295,7 @@
     },
     "expired": "出借到期",
     "expiredLcp": "此書無法閱讀，因為 LCP 授權已到期。",
+    "incorrectPassphrase": "",
     "lcpEnd": "結束",
     "lcpRightsCopy": "複製的文字",
     "lcpRightsPrint": "列印頁數",

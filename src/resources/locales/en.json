@@ -171,10 +171,11 @@
   },
   "library": {
     "lcp": {
-      "hint": "Hint: {{- hint}}",
+      "hint": "Hint:",
+      "open": "Open",
       "password": "Passphrase",
-      "sentence": "Enter the passphrase for this LCP-protected publication:",
-      "urlHint": "Forgot your passphrase? Support is available:",
+      "sentence": "This publication needs an LCP passphrase to be opened",
+      "urlHint": "Forgot your passphrase? Click here to get support.",
       "whatIsLcp?": "What is LCP?",
       "whatIsLcpInfoDetails": "LCP stands for 'Licensed Content Protection'.",
       "whatIsLcpInfoDetailsLink": "To learn more, click this link to the EDRLab website."
@@ -294,6 +295,7 @@
     },
     "expired": "Loan expired",
     "expiredLcp": "This publication's LCP license is expired.",
+    "userKeyCheckInvalid": "Incorrect passphrase.",
     "lcpEnd": "End",
     "lcpRightsCopy": "Copied characters",
     "lcpRightsPrint": "Printed pages",
@@ -319,7 +321,7 @@
     "seeMore": "See more",
     "timeLeft": "Remaining time",
     "title": "Title",
-    "userKeyCheckInvalid": "Incorrect passphrase"
+    "incorrectPassphrase": "No stored passphrase fits the publication, or the entered passphrase is wrong."
   },
   "reader": {
     "annotations": {

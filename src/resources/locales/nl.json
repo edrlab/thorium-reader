@@ -171,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "(Hint : {{- hint}})",
+      "hint": "Hint : ",
+      "open": "",
       "password": "Wachtwoordzin",
       "sentence": "Deze publicatie vereist een LCP wachtwoordzin om te openen: ",
       "urlHint": "Wachtwoordzin vergeten? Vind hulp hier",
@@ -294,6 +295,7 @@
     },
     "expired": "Lening verlopen",
     "expiredLcp": "Dit boek kan niet gelezen worden omdat de LCP licentie verlopen is.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Einde",
     "lcpRightsCopy": "Toegestaan aantal te kopiëren karakters",
     "lcpRightsPrint": "Toegestaan aantal af te drukken pagina's",
