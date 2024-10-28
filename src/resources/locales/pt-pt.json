@@ -476,11 +476,11 @@
       },
       "preset": {
         "apply": "Aplicar a predefinição preferida de configurações de leitura às configurações de leitura atuais",
-        "applyDetails": "",
+        "applyDetails": "Aplicar as predefinições favoritas de definições de leitura ao livro atual.",
         "reset": "Redefinir a predefinição das configurações preferidas de leitura para o estado inicial",
-        "resetDetails": "",
+        "resetDetails": "Repor os parâmetros preferenciais de leitura e aplicar os parâmetros padrão ao livro atual.",
         "save": "Guardar as configurações de leitura atuais na predefinição preferida de configurações de leitura",
-        "saveDetails": "",
+        "saveDetails": "Guardar os parâmetros personalizados de texto para que possam ser aplicados a outros livros, uma vez abertos, clicando no botão abaixo.",
         "title": "Predefinição"
       },
       "preview": "Pré-visualização",
