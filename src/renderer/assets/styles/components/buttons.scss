@@ -437,7 +437,7 @@ button {
   width: fit-content;
 
   &[open] {
-    width: 100%;
+    width: calc(100% - 10px);
   }
 
   summary {

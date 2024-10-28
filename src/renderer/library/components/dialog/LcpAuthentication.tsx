@@ -102,7 +102,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 <b>{__("library.lcp.hint")}</b> {this.props.hint}
                             </span>
                         </p>
-                        <div className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)} style={{marginTop: "-10px", width: "99%"}}>
+                        <div className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)} style={{marginTop: "0", width: "99%"}}>
                             <label htmlFor="passphrase" style={{fontSize: "14px"}}>{__("library.lcp.password")}</label>
                             <SVG ariaHidden svg={KeyholeIcon} />
                             <input

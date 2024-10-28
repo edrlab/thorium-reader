@@ -172,7 +172,7 @@
   "library": {
     "lcp": {
       "hint": "Indice : ",
-      "open": "",
+      "open": "Ouvrir",
       "password": "Mot de passe",
       "sentence": "Entrez la clé LCP associée à cette publication :",
       "urlHint": "Vous avez oublié votre phrase d'accès ? Trouvez de l'aide avec ce lien",
