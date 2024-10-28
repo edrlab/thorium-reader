@@ -5,6 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 import * as Dialog from "@radix-ui/react-dialog";
 import * as React from "react";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -27,11 +31,9 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg"
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import Loader from "readium-desktop/renderer/common/components/Loader";
 import { useLocation } from "react-router";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps {
@@ -185,7 +187,6 @@ export const PublicationInfoOpdsWithRadixContent = React.forwardRef<HTMLDivEleme
 PublicationInfoOpdsWithRadixContent.displayName = "PublicationInfoOpdsWithRadixContent";
 
 const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPublication | undefined, closeDialog: () => void, isOpds?: boolean}) => {
-    const [, translator] = useTranslator(); // FIXME in reader.tsx
     const dispatch = useDispatch();
     const link = dispatchOpdsLink(dispatch);
     const location = useLocation();
@@ -216,7 +217,6 @@ const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPubl
             ControlComponent={controlsComponent}
             TagManagerComponent={TagManager}
             // coverZoom={coverZoom}
-            translator={translator}
             onClikLinkCb={
                 (_link) => () => link(
                         _link.link[0], location, _link.name)

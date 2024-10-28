@@ -12,14 +12,14 @@ export const ID = "READER_ANNOTATIONS_UPDATE";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 // interface IPayload extends Pick<IAnnotationState, "color"|"comment"|"uuid"> {
-interface IPayload extends IAnnotationState {
-}
-export function build(param: IAnnotationState):
+type IPayload = [IAnnotationState, IAnnotationState];
+
+export function build(oldAnnotation: IAnnotationState, newAnnotation: IAnnotationState):
     Action<typeof ID, IPayload> {
 
     return {
         type: ID,
-        payload: param,
+        payload: [oldAnnotation, newAnnotation],
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

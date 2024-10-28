@@ -5,6 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
+import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
+
 import { ipcRenderer } from "electron";
 import classNames from "classnames";
 import divinaPlayer from "divina-player-js";
@@ -35,8 +38,6 @@ import * as DoubleArrowLeftIcon from "readium-desktop/renderer/assets/icons/doub
 import * as DoubleArrowRightIcon from "readium-desktop/renderer/assets/icons/double_arrow_right_black_24dp.svg";
 import * as DoubleArrowUpIcon from "readium-desktop/renderer/assets/icons/double_arrow_up_black_24dp.svg";
 import * as exitZenModeIcon from "readium-desktop/renderer/assets/icons/fullscreenExit-icon.svg";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
-import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -74,7 +75,7 @@ import {
     setReadingLocationSaver, ttsClickEnable, ttsNext, ttsOverlayEnable, ttsPause,
     ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
     ttsStop, ttsVoice, highlightsClickListen,
-    stealFocusDisable,
+    // stealFocusDisable,
 } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
@@ -98,12 +99,20 @@ import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
-import { diReaderGet } from "../di";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
+import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { translateContentFieldHelper } from "readium-desktop/common/services/translator";
+import { getStore } from "../createStore";
 
 // main process code!
 // thoriumhttps
 // import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/main/streamer/streamerNoHttp";
+
+// TODO: key not used but translation kept for potential future use
+// discard some not used key from i18n-scan cmd
+// translate("catalog.sort")
+// translate("catalog.emptyTagList")
+// translate("reader.picker.search.results")
 
 interface IWindowHistory extends History {
     _readerInstance: Reader | undefined;
@@ -169,18 +178,25 @@ const handleLinkUrl_UpdateHistoryState = (url: string, isFromOnPopState = false)
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
-const isDivinaLocation = (data: any): data is { pageIndex: number, nbOfPages: number, locator: R2Locator } => {
+const isDivinaLocation = (data: any): data is { pageIndex: number | undefined, nbOfPages: number | undefined, locator: R2Locator } => {
 
-    return typeof data === "object"
+    // isDivinaLocationduck typing hack with totalProgression injection!!
+    const isDivina = typeof data === "object"
         // && typeof data.pageIndex === "number"
         // && typeof data.nbOfPages === "number"
         && typeof data.locator === "object"
-        && typeof data.locator.href === "string"
-        && typeof data.locator.locations === "object"
-        && typeof data.locator.locations.position === "number"
-        && typeof data.locator.locations.totalProgression === "number"
-        && data.locator.locations.totalProgression >= 0
-        && data.locator.locations.totalProgression <= 1;
+        && typeof (data.locator as R2Locator).href === "string"
+        && typeof (data.locator as R2Locator).locations === "object"
+        && typeof (data.locator as R2Locator).locations.position === "number"
+        // && typeof (data.locator as R2Locator).locations.progression === "number"
+        && typeof ((data.locator as R2Locator).locations as any).totalProgression === "number"
+        && ((data.locator as R2Locator).locations as any).totalProgression >= 0
+        && ((data.locator as R2Locator).locations as any).totalProgression <= 1
+        ;
+    if (isDivina) {
+        (data.locator as R2Locator).locations.progression = ((data.locator as R2Locator).locations as any).totalProgression;
+    }
+    return isDivina;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -207,7 +223,7 @@ interface IState {
     zenMode: boolean;
 
     visibleBookmarkList: IBookmarkState[];
-    currentLocation: LocatorExtended;
+    currentLocation: MiniLocatorExtended;
 
     divinaReadingModeSupported: TdivinaReadingMode[];
     divinaNumberOfPages: number;
@@ -352,7 +368,7 @@ class Reader extends React.Component<IProps, IState> {
     public async componentDidMount() {
         windowHistory._readerInstance = this;
 
-        const store = diReaderGet("store"); // diRendererSymbolTable.store
+        const store = getStore(); // diRendererSymbolTable.store
         document.body.setAttribute("data-theme", store.getState().theme.name);
 
         const handleMouseKeyboard = (isKey: boolean) => {
@@ -427,25 +443,30 @@ class Reader extends React.Component<IProps, IState> {
             createOrGetPdfEventBus().subscribe("page",
                 (pageIndex) => {
                     // const numberOfPages = this.props.r2Publication?.Metadata?.NumberOfPages;
-                    const loc = {
+                    const locatorExtended: LocatorExtended = {
+                        audioPlaybackInfo: undefined,
+                        paginationInfo: undefined,
+                        selectionInfo: undefined,
+                        selectionIsNew: undefined,
+                        docInfo: undefined,
+                        epubPage: undefined,
+                        epubPageID: undefined,
+                        headings: undefined,
+                        secondWebViewHref: undefined,
+                        followingElementIDs: undefined,
                         locator: {
                             href: pageIndex.toString(),
                             locations: {
-                                position: pageIndex,
+                                position: parseInt(pageIndex, 10),
                                 // progression: numberOfPages ? (pageIndex / numberOfPages) : 0,
                                 progression: 0,
                             },
                         },
                     };
+
                     console.log("pdf pageChange", pageIndex);
 
-                    // TODO: this is a hack! Forcing type LocatorExtended on this non-matching object shape
-                    // only "works" because data going into the persistent store (see saveReadingLocation())
-                    // is used appropriately and selectively when extracted back out ...
-                    // however this may trip / crash future code
-                    // if strict LocatorExtended model structure is expected when
-                    // reading from the persistence layer.
-                    this.handleReadingLocationChange(loc as unknown as LocatorExtended);
+                    this.handleReadingLocationChange(locatorExtended);
                 });
 
             const page = this.props.locator?.locator?.href || "";
@@ -532,37 +553,37 @@ class Reader extends React.Component<IProps, IState> {
             console.log("HIGHLIGHT Click from Reader.tsx");
             console.log(`href: ${href} | highlight: ${JSON.stringify(highlight, null, 4)} | event : ${JSON.stringify(event)}`);
 
-            const store = diReaderGet("store");
+            const store = getStore();
             const mounterStateMap = store.getState()?.reader.highlight.mounter;
             if (!mounterStateMap?.length) {
                 console.log(`highlightsClickListen MOUNTER STATE EMPTY -- mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
                 return;
             }
-        
+
             const mounterStateItem = mounterStateMap.find(([_uuid, mounterState]) => mounterState.ref.id === highlight.id && mounterState.href === href);
-        
+
             if (!mounterStateItem) {
                 console.log(`highlightsClickListen CANNOT FIND MOUNTER -- href: [${href}] ref.id: [${highlight.id}] mounterStateMap: [${JSON.stringify(mounterStateMap, null, 4)}]`);
                 return;
             }
-        
+
             const [mounterStateItemUuid] = mounterStateItem; // mounterStateItem[0]
-        
+
             const handlerStateMap = store.getState()?.reader.highlight.handler;
             if (!handlerStateMap?.length) {
                 console.log(`highlightsClickListen HANDLER STATE EMPTY -- handlerStateMap: [${JSON.stringify(handlerStateMap, null, 4)}]`);
                 return;
             }
-        
+
             const handlerStateItem = handlerStateMap.find(([uuid, _handlerState]) => uuid === mounterStateItemUuid);
-        
+
             if (!handlerStateItem) {
                 console.log(`dispatchClick CANNOT FIND HANDLER -- uuid: [${mounterStateItemUuid}] handlerStateMap: [${JSON.stringify(handlerStateMap, null, 4)}]`);
                 return;
             }
-        
+
             const [uuid, handlerState] = handlerStateItem;
-        
+
             console.log(`dispatchClick CLICK ACTION ... -- uuid: [${uuid}] handlerState: [${JSON.stringify(handlerState, null, 4)}]`);
 
             this.handleMenuButtonClick(true, "tab-annotation", true, uuid);
@@ -698,23 +719,23 @@ class Reader extends React.Component<IProps, IState> {
         //     {this.state.bookmarkMessage}
         // </div> : <></>}
 
-        
+
         const isAudioBook = isAudiobookFn(this.props.r2Publication);
         const arrowDisabledNotEpub = isAudioBook || this.props.isPdf || this.props.isDivina;
         // const isFXL = this.isFixedLayout();
-        // const isPaginated = this.props.readerConfig.paged;
+        const isPaginated = this.props.readerConfig.paged;
 
         // console.log(arrowDisabledNotEpub, isFXL, isPaginated);
         // epub non fxl (page)      : false false true  : true
         // epub non fxl (scroll)    : false false false : false
-        // epub fxl                 : false true true :   true 
+        // epub fxl                 : false true true :   true
         // epub fxl (scroll)        : false true false :  true
         // pdf                      : true false true :   false
         // audiobook                : true false true :   false
         // divina                   : true false true :   false
 
         const arrowEnabled = !arrowDisabledNotEpub /* && (isFXL || isPaginated) */;
-        
+
         return (
             <div className={classNames(
                 this.props.readerConfig.theme === "night" ? stylesReader.nightMode :
@@ -772,7 +793,8 @@ class Reader extends React.Component<IProps, IState> {
                         handleReaderDetach={this.handleReaderDetach}
                         handleReaderClose={this.handleReaderClose}
                         toggleBookmark={() => this.handleToggleBookmark(false)}
-                        isOnBookmark={this.state.visibleBookmarkList.length > 0}
+                        // isOnBookmark={this.state.visibleBookmarkList.length > 0}
+                        numberOfVisibleBookmarks={this.state.visibleBookmarkList.length}
                         isOnSearch={this.props.searchEnable}
                         ReaderSettingsProps={ReaderSettingsProps}
                         readerMenuProps={readerMenuProps}
@@ -787,13 +809,15 @@ class Reader extends React.Component<IProps, IState> {
                         disableRTLFlip={this.props.disableRTLFlip}
                         isRTLFlip={this.isRTLFlip}
                     />
-                    : 
-                    <button onClick={() => this.setState({ zenMode : false})} className={stylesReader.button_exitZen}>
+                    :
+                    <div className={stylesReader.exitZen_container}>
+                    <button onClick={() => this.setState({ zenMode : false})} className={stylesReader.button_exitZen} style={{ opacity: isPaginated ? "1" : "0"}}>
                         <SVG ariaHidden svg={exitZenModeIcon} />
                     </button>
+                    </div>
                     }
 
-                    <div 
+                    <div
                     style={{marginBottom: this.state.zenMode ? "0" : "44px"}}
                     className={classNames(stylesReader.content_root,
                         this.state.fullscreen ? stylesReader.content_root_fullscreen : undefined,
@@ -825,9 +849,9 @@ class Reader extends React.Component<IProps, IState> {
                                             this.props.readerConfig.readerDockingMode === "left" ? stylesReader.docked_left_pdf
                                             : this.props.readerConfig.readerDockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right_pdf
                                             : ""
-                                        ) : undefined, 
-                                        (this.props.searchEnable && !this.props.isPdf) ? stylesReader.isOnSearch 
-                                        : (this.props.searchEnable && this.props.isPdf) ? stylesReader.isOnSearchPdf 
+                                        ) : undefined,
+                                        (this.props.searchEnable && !this.props.isPdf) ? stylesReader.isOnSearch
+                                        : (this.props.searchEnable && this.props.isPdf) ? stylesReader.isOnSearchPdf
                                         : "")}
                                     ref={this.mainElRef}
                                     style={{ inset: isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : "75px 50px" }}>
@@ -849,11 +873,12 @@ class Reader extends React.Component<IProps, IState> {
                                         }}
                                             title={this.props.__("reader.svg.left")}
                                             className={(this.state.settingsOpen || this.state.menuOpen) ? (this.props.readerConfig.readerDockingMode === "left" ? stylesReaderFooter.navigation_arrow_docked_left :  stylesReaderFooter.navigation_arrow_left) : stylesReaderFooter.navigation_arrow_left}
+                                            style={{ opacity: isPaginated ? "1" : "0"}}
                                         >
                                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                                         </button>
                                     </div>
-                                    : 
+                                    :
                                     <></>}
 
                                 {
@@ -912,6 +937,7 @@ class Reader extends React.Component<IProps, IState> {
                                         }}
                                             title={this.props.__("reader.svg.right")}
                                             className={(this.state.settingsOpen || this.state.menuOpen) ? (this.props.readerConfig.readerDockingMode === "right" ? stylesReaderFooter.navigation_arrow_docked_right :  stylesReaderFooter.navigation_arrow_right) : stylesReaderFooter.navigation_arrow_right}
+                                            style={{ opacity: isPaginated ? "1" : "0"}}
                                         >
                                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                                         </button>
@@ -922,7 +948,7 @@ class Reader extends React.Component<IProps, IState> {
                         </div>
                     </div>
                 </div>
-                { !this.state.zenMode ? 
+                { !this.state.zenMode ?
                 <ReaderFooter
                     historyCanGoBack={this.state.historyCanGoBack}
                     historyCanGoForward={this.state.historyCanGoForward}
@@ -935,6 +961,7 @@ class Reader extends React.Component<IProps, IState> {
                     handleLinkClick={this.handleLinkClick}
                     goToLocator={this.goToLocator}
                     isDivina={this.props.isDivina}
+                    isDivinaLocation={isDivinaLocation}
                     divinaNumberOfPages={this.state.divinaNumberOfPages}
                     divinaContinousEqualTrue={this.state.divinaContinousEqualTrue}
                     isPdf={this.props.isPdf}
@@ -1173,11 +1200,10 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        const newReaderConfig = {...this.props.readerConfig};
-        newReaderConfig.annotation_defaultDrawView = newReaderConfig.annotation_defaultDrawView === "annotation" ? "margin" : "annotation";
+        const annotation_defaultDrawView = this.props.readerConfig.annotation_defaultDrawView === "annotation" ? "margin" : "annotation";
 
-        console.log(`onKeyboardAnnotationMargin : highlight=${newReaderConfig.annotation_defaultDrawView}`);
-        this.props.setConfig(newReaderConfig, this.props.session);
+        console.log(`onKeyboardAnnotationMargin : highlight=${annotation_defaultDrawView}`);
+        this.props.setConfig({ annotation_defaultDrawView });
     };
 
     private onKeyboardAnnotation = () => {
@@ -1204,18 +1230,18 @@ class Reader extends React.Component<IProps, IState> {
             return ;
         }
 
-        let newReaderConfig = {...this.props.readerConfig};
+        let newReaderConfig: Partial<ReaderConfig> = {};
         const { annotation_popoverNotOpenOnNoteTaking } = newReaderConfig;
         newReaderConfig.annotation_popoverNotOpenOnNoteTaking = true;
 
         console.log(`onKeyboardQuickAnnotation : popoverNotOpenOnNoteTaking=${annotation_popoverNotOpenOnNoteTaking}`);
-        this.props.setConfig(newReaderConfig, this.props.session);
+        this.props.setConfig(newReaderConfig);
 
         this.props.triggerAnnotationBtn();
 
-        newReaderConfig = {...this.props.readerConfig};
+        newReaderConfig = {};
         newReaderConfig.annotation_popoverNotOpenOnNoteTaking = annotation_popoverNotOpenOnNoteTaking;
-        this.props.setConfig(newReaderConfig, this.props.session);
+        this.props.setConfig(newReaderConfig);
     };
 
     private onKeyboardAudioStop = () => {
@@ -1572,10 +1598,11 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        if (this.fastLinkRef?.current) {
-            console.log("€€€€€ FOCUS READER MAIN");
-            this.fastLinkRef.current.focus();
-        }
+        this.focusMainArea();
+        // if (this.fastLinkRef?.current) {
+        //     console.log("€€€€€ FOCUS READER MAIN");
+        //     this.fastLinkRef.current.focus();
+        // }
     };
 
     private onKeyboardFocusToolbar = () => {
@@ -1751,10 +1778,9 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private divinaSetLocation = (data: any) => {
+    private divinaSetLocation = (data: { percent: number | undefined, pageIndex: number | undefined, nbOfPages: number | undefined, locator: R2Locator }) => {
 
-
-        if (isDivinaLocation(data)) {
+        // if (isDivinaLocation(data)) {
 
             // const loc = {
             //     locator: {
@@ -1767,10 +1793,10 @@ class Reader extends React.Component<IProps, IState> {
             // };
             // console.log("pageChange", pageIndex, nbOfPages);
 
-            data.locator.locations.progression = (data.locator.locations as any).totalProgression;
-            const LocatorExtended: LocatorExtended = {
+            // SEE isDivinaLocation duck typing hack with totalProgression injection!!
+            // data.locator.locations.progression = (data.locator.locations as any).totalProgression;
+            const locatorExtended: LocatorExtended = {
                 audioPlaybackInfo: undefined,
-                locator: data.locator,
                 paginationInfo: undefined,
                 selectionInfo: undefined,
                 selectionIsNew: undefined,
@@ -1779,19 +1805,21 @@ class Reader extends React.Component<IProps, IState> {
                 epubPageID: undefined,
                 headings: undefined,
                 secondWebViewHref: undefined,
+                followingElementIDs: undefined,
+
+                locator: data.locator,
             };
             // console.log(JSON.stringify(LocatorExtended, null, 4));
-            this.handleReadingLocationChange(LocatorExtended);
-        } else {
-            console.log("DIVINA: location bad formated ", data);
-        }
-
+            this.handleReadingLocationChange(locatorExtended);
+        // } else {
+        //     console.log("DIVINA: location bad formated ", data);
+        // }
     };
 
     private loadPublicationIntoViewport() {
 
         if (this.props.r2Publication?.Metadata?.Title) {
-            const title = this.props.translator.translateContentField(this.props.r2Publication.Metadata.Title);
+            const title = translateContentFieldHelper(this.props.r2Publication.Metadata.Title, this.props.locale);
 
             window.document.title = capitalizedAppName;
             if (title) {
@@ -1897,6 +1925,8 @@ class Reader extends React.Component<IProps, IState> {
                 publicationViewport.setAttribute("style", "display: block; position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: 0; padding: 0; box-sizing: border-box; background: white; overflow: hidden;");
             }
 
+            // @----ts-ignore TS2578
+            // @ts-expect-error TS2872
             const readingModeFromPersistence = "test" || this.props.divinaReadingMode;
             console.log("Reading mode from persistence : ", readingModeFromPersistence);
             const locale = this.props.locale;
@@ -2109,9 +2139,10 @@ class Reader extends React.Component<IProps, IState> {
 
                 this.setState({ divinaArrowEnabled: false });
 
-                const isInPageChangeData = (data: any): data is { percent: number, locator: R2Locator } => {
-                    return typeof data === "object" &&
-                        isDivinaLocation(data);
+                const isInPageChangeData = (data: any): data is { percent: number | undefined, pageIndex: number | undefined, nbOfPages: number | undefined, locator: R2Locator } => {
+                    return isDivinaLocation(data)
+                        // && typeof data.percent === "number"
+                    ;
                 };
 
                 if (isInPageChangeData(data)) {
@@ -2136,10 +2167,11 @@ class Reader extends React.Component<IProps, IState> {
                     return;
                 }
                 this.setState({ divinaArrowEnabled: false });
-                const isInPagesScrollData = (data: any): data is { percent: number, locator: R2Locator } => {
-                    return typeof data === "object" &&
-                        // typeof data.percent === "number" &&
-                        isDivinaLocation(data);
+
+                const isInPagesScrollData = (data: any): data is { percent: number | undefined, pageIndex: number | undefined, nbOfPages: number | undefined, locator: R2Locator } => {
+                    return isDivinaLocation(data)
+                        // && typeof data.percent === "number"
+                    ;
                 };
 
                 if (isInPagesScrollData(data)) {
@@ -2209,8 +2241,8 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        // Force webview to give the hand before Radix Dialog triggered
-        stealFocusDisable(true);
+        // // Force webview to give the hand before Radix Dialog triggered
+        // stealFocusDisable(true);
 
         this.handleMenuButtonClick(true, "tab-toc");
 
@@ -2243,18 +2275,15 @@ class Reader extends React.Component<IProps, IState> {
         });
     }
 
-    private saveReadingLocation(loc: LocatorExtended) {
-        this.props.setLocator(loc);
+    private saveReadingLocation(miniLocatorExtended: MiniLocatorExtended) {
+        this.props.setMiniLocatorExtended(miniLocatorExtended);
     }
 
-    // TODO: WARNING, see code comments alongisde usage of this function for Divina and PDF
-    // (forced type despite different object shape / data model)
-    // See saveReadingLocation() => dispatch(readerLocalActionSetLocator.build(locator))
-    // See Reader RootState reader.locator (readerLocatorReducer merges the action data payload
-    // as-is, without type checking ... but consumers might expect strict LocatorExtended!)
-    private handleReadingLocationChange(loc: LocatorExtended) {
+    private handleReadingLocationChange(locatorExtended: LocatorExtended) {
 
-        ok(loc, "handleReadingLocationChange loc KO");
+        ok(locatorExtended, "handleReadingLocationChange loc KO");
+
+        const miniLocatorExtended = minimizeLocatorExtended(locatorExtended);
 
         if (!this.props.isDivina && !this.props.isPdf && this.ttsOverlayEnableNeedsSync) {
             ttsOverlayEnable(this.props.readerConfig.ttsEnableOverlayMode);
@@ -2263,18 +2292,17 @@ class Reader extends React.Component<IProps, IState> {
         }
         this.ttsOverlayEnableNeedsSync = false;
 
-        // note that with Divina, loc has locator.locations.progression set to totalProgression
-        this.saveReadingLocation(loc);
+        this.saveReadingLocation(miniLocatorExtended);
 
-        const l = (this.props.isDivina || isDivinaLocation(loc)) ? loc : (this.props.isPdf ? loc : (getCurrentReadingLocation() || loc));
+        const l = (this.props.isDivina || isDivinaLocation(locatorExtended)) ? locatorExtended : (this.props.isPdf ? locatorExtended : (getCurrentReadingLocation() || locatorExtended));
         this.setState({ currentLocation: l });
 
-        if (loc?.locator?.href && window.history.length === 1 && !window.history.state) {
+        if (locatorExtended?.locator?.href && window.history.length === 1 && !window.history.state) {
 
             // console.log("#+$%".repeat(5)  + " handleReadingLocationChange (INIT history state) => window history replaceState() ...", JSON.stringify(loc.locator), JSON.stringify(window.history.state), window.history.length, windowHistory._length, JSON.stringify(document.location), JSON.stringify(window.location));
             windowHistory._length = 1;
             // does not trigger onPopState!
-            window.history.replaceState({ data: loc.locator, index: windowHistory._length - 1 }, "");
+            window.history.replaceState({ data: locatorExtended.locator, index: windowHistory._length - 1 }, "");
         }
 
         // No need to explicitly refresh the bookmarks status here,
@@ -2327,7 +2355,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private closeMenu() {
-        
+
         if (this.state.menuOpen) {
             this.handleMenuButtonClick(false);
         }
@@ -2350,9 +2378,9 @@ class Reader extends React.Component<IProps, IState> {
         //     // shortcutEnable must be true (see handleMenuButtonClick() above, and this.state.menuOpen))
         //     console.log("@@@@@@@@@@@@@@@");
         //     console.log();
-            
+
         //     console.log("@@@@@@@@@@@@@@@");
-            
+
         //     this.onKeyboardFocusMain();
         // }
     }
@@ -2399,7 +2427,8 @@ class Reader extends React.Component<IProps, IState> {
     private goToLocator(locator: R2Locator, closeNavPanel = true, isFromOnPopState = false) {
 
         if (closeNavPanel) {
-            this.closeMenu();
+            // this.closeMenu();
+            this.focusMainAreaLandmarkAndCloseMenu();
         }
 
         if (this.props.isPdf) {
@@ -2426,7 +2455,7 @@ class Reader extends React.Component<IProps, IState> {
         } else {
             this.handleLinkLocator(locator, isFromOnPopState);
 
-            this.focusMainArea();
+            // this.focusMainArea();
         }
 
     }
@@ -2648,7 +2677,7 @@ class Reader extends React.Component<IProps, IState> {
     private handleTTSPlaybackRate(speed: string) {
         ttsPlaybackRate(parseFloat(speed));
         // this.setState({ ttsPlaybackRate: speed });
-        this.props.setConfig({ ...this.props.readerConfig, ttsPlaybackRate: speed }, this.props.session);
+        this.props.setConfig({ ttsPlaybackRate: speed });
     }
     private handleTTSVoice(voice: SpeechSynthesisVoice | null) {
         // alert(`${voice.name} ${voice.lang} ${voice.default} ${voice.voiceURI} ${voice.localService}`);
@@ -2661,7 +2690,7 @@ class Reader extends React.Component<IProps, IState> {
         } : null;
         ttsVoice(v);
         // this.setState({ ttsVoice: v });
-        this.props.setConfig({ ...this.props.readerConfig, ttsVoice: v }, this.props.session);
+        this.props.setConfig({ ttsVoice: v });
     }
 
     private handleMediaOverlaysPlay() {
@@ -2687,7 +2716,7 @@ class Reader extends React.Component<IProps, IState> {
     private handleMediaOverlaysPlaybackRate(speed: string) {
         mediaOverlaysPlaybackRate(parseFloat(speed));
         // this.setState({ mediaOverlaysPlaybackRate: speed });
-        this.props.setConfig({ ...this.props.readerConfig, mediaOverlaysPlaybackRate: speed }, this.props.session);
+        this.props.setConfig({ mediaOverlaysPlaybackRate: speed });
     }
 
     // private handleSettingsSave(readerConfig: ReaderConfig) {
@@ -2715,7 +2744,7 @@ class Reader extends React.Component<IProps, IState> {
     //         }, 300);
     //     }
 
-    //     this.props.setConfig(readerConfig, this.props.session);
+    //     this.props.setConfig(readerConfig);
 
     //     if (this.props.r2Publication) {
     //         readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
@@ -2835,7 +2864,6 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         isDivina,
         isPdf,
-        lang: state.i18n.locale,
         publicationView: state.reader.info.publicationView,
         r2Publication: state.reader.info.r2Publication,
         readerConfig: state.reader.config,
@@ -2852,8 +2880,6 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         readerMode: state.mode,
         divinaReadingMode: state.reader.divina.readingMode,
         locale: state.i18n.locale,
-        session: state.session.state,
-
         disableRTLFlip: !!state.reader.disableRTLFlip?.disabled,
         r2PublicationHasMediaOverlays: state.reader.info.navigator.r2PublicationHasMediaOverlays,
         ttsState: state.reader.tts.state,
@@ -2882,7 +2908,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(readerActions.detachModeRequest.build());
         },
 
-        displayPublicationInfo: (pubId: string, pdfPlayerNumberOfPages: number | undefined, divinaNumberOfPages: number | undefined, divinaContinousEqualTrue: boolean, readerReadingLocation: LocatorExtended | undefined, handleLinkUrl: ((url: string) => void) | undefined, focusWhereAmI?: boolean) => {
+        displayPublicationInfo: (pubId: string, pdfPlayerNumberOfPages: number | undefined, divinaNumberOfPages: number | undefined, divinaContinousEqualTrue: boolean, readerReadingLocation: MiniLocatorExtended | undefined, handleLinkUrl: ((url: string) => void) | undefined, focusWhereAmI?: boolean) => {
             dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoReader,
                 {
                     publicationIdentifier: pubId,
@@ -2898,21 +2924,21 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         closePublicationInfo: () => {
             dispatch(dialogActions.closeRequest.build());
         },
-        setLocator: (locator: LocatorExtended) => {
-            dispatch(readerLocalActionSetLocator.build(locator));
+        setMiniLocatorExtended: (miniLocatorExtended: MiniLocatorExtended) => {
+            dispatch(readerLocalActionSetLocator.build(miniLocatorExtended));
 
             // just to refresh allPublicationPage.tsx
 
             // TODO: quick fix to refresh AllPublication component grid view
             // when a book is set as finished and then open / readed
-            // 
+            //
             // dispatch a stub api endpoint "readingFinishedRefresh" just to trigger
             // AllPublication grid view, this is a legacy usage of the ReduxApi
             // originaly developped. Now we should use the react/redux data update mechanism
             // instead to call a fake IPC API
             //
             // So call readingFinishedRefresh API at each call of setLocator function
-            // trigger too often the refresh, needed only at start or when the book is 
+            // trigger too often the refresh, needed only at start or when the book is
             // check as set as finished in library/AllPublication compoment during the reading
             // setLocator is heavealy called with tts enabled or in an audiobook
             // so we just called readingFinishedRefresh 2 times at start
@@ -2925,12 +2951,14 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                 apiDispatch(dispatch)()("publication/readingFinishedRefresh")();
             }
         },
-        setConfig: (config: ReaderConfig, sessionEnabled: boolean) => {
+        setConfig: (config: Partial<ReaderConfig>) => {
             dispatch(readerLocalActionSetConfig.build(config));
 
-            if (!sessionEnabled) {
-                dispatch(readerActions.configSetDefault.build(config));
-            }
+            // session never enabled in reader but always in main/lib
+            // if (!sessionEnabled) {
+                // called once in the readerConfigChanged saga function triggerd by the readerLocalActionSetConfig action just above.
+                // dispatch(readerActions.configSetDefault.build(config));
+            // }
         },
         addBookmark: (bookmark: IBookmarkStateWithoutUUID) => {
             dispatch(readerActions.bookmark.push.build(bookmark));

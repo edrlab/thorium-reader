@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
+
 import * as debug_ from "debug";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -26,7 +28,6 @@ import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
-import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 import classNames from "classnames";
 // import GridTagButton from "../../catalog/GridTagButton";
 
@@ -95,7 +96,6 @@ class TagManager extends React.Component<IProps> {
                 <AddTag
                     pubId={this.props.pubId}
                     tagArray={this.props.tagArray}
-                    __={__}
                     setTags={setTagsCb}
                 />
             </section>
@@ -108,6 +108,7 @@ const mapStateToProps = (state: ILibraryRootState) => ({
     pubId: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication?.identifier,
     publication: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication,
     location: state.router.location,
+    locale: state.i18n.locale, // refresh
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => ({

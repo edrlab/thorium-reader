@@ -9,12 +9,11 @@ import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
 import { appReducer } from "readium-desktop/main/redux/reducers/app";
 import { streamerReducer } from "readium-desktop/main/redux/reducers/streamer";
-import { RootState } from "readium-desktop/main/redux/states";
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { combineReducers } from "redux";
 
-import { appActions, publicationActions, winActions } from "../actions";
+import { publicationActions, winActions } from "../actions";
 import { publicationActions as publicationActionsFromCommonAction } from "readium-desktop/common/redux/actions";
 import { lcpReducer } from "./lcp";
 import { readerDefaultConfigReducer } from "../../../common/redux/reducers/reader/defaultConfig";
@@ -28,8 +27,10 @@ import { opdsDbReducers } from "./opds/db";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/version-update";
-import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { wizardReducer } from "readium-desktop/common/redux/reducers/wizard";
+import { versionReducer } from "readium-desktop/common/redux/reducers/version";
+import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
+import { settingsReducer } from "readium-desktop/common/redux/reducers/settings";
 
 export const rootReducer = combineReducers({ // RootState
     versionUpdate: versionUpdateReducer,
@@ -100,6 +101,8 @@ export const rootReducer = combineReducers({ // RootState
     opds: combineReducers({
         catalog: opdsDbReducers,
     }),
-    version: (state: RootState, action: ActionWithSender) => action.type === appActions.initSuccess.ID ? _APP_VERSION : (state?.version ? state.version : null),
+    version: versionReducer,
     wizard: wizardReducer,
+    settings: settingsReducer,
+    creator: creatorReducer,
 });

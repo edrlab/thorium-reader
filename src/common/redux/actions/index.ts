@@ -24,6 +24,9 @@ import * as publicationActions from "./publication";
 import * as themeActions from "./theme";
 import * as wizardActions from "./wizard";
 import * as versionUpdateActions from "./version-update";
+import * as annotationActions from "./annotation";
+import * as creatorActions from "./creator";
+import * as settingsActions from "./settings";
 
 export {
     historyActions,
@@ -45,4 +48,7 @@ export {
     themeActions,
     wizardActions,
     versionUpdateActions,
+    annotationActions,
+    creatorActions,
+    settingsActions,
 };

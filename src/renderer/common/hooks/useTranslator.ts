@@ -6,21 +6,19 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { Translator } from "readium-desktop/common/services/translator";
-import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
+import { useSelector } from "./useSelector";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import { I18nFunction } from "readium-desktop/common/services/translator";
+import { TranslatorContext } from "../translator.context";
 
-export function useTranslator(): [typeof Translator.prototype.translate, Translator] {
-
-    const translator = React.useContext(TranslatorContext);
-    const { translate: __, subscribe: translatorSubscribe } = translator;
+export function useTranslator(): [I18nFunction] {
 
     const [, forceUpdate] = React.useReducer(x => x + 1, 0);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
     React.useEffect(() => {
-        const handleLocaleChange = () => {
-            forceUpdate();
-        };
-        return translatorSubscribe(handleLocaleChange);
-    }, [translatorSubscribe]);
+        forceUpdate();
+    }, [locale]);
 
-    return [__, translator];
+    const translator = React.useContext(TranslatorContext);
+    return [translator.__];
 }

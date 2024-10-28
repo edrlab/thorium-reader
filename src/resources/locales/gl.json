@@ -75,7 +75,9 @@
       "lastAdditions": "Engadidos recentemente"
     },
     "export": "Exportar",
+    "exportAnnotation": "",
     "format": "Formato",
+    "importAnnotation": "",
     "lang": "Idioma",
     "lastRead": "Último Lido",
     "moreInfo": "Máis información",
@@ -122,7 +124,19 @@
     "update": "Edita"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Cancelar",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Seguro que queres eliminar este catálogo?",
     "deletePublication": "Seguro que queres eliminar esta publicación?",
     "import": "Seguro que queres importar estes ficheiros?",
@@ -167,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "A descarga de {{-  title}} fallou: [{{-  err}}]"
     },
@@ -288,12 +310,14 @@
       "title": "Progreso"
     },
     "read": "Finalizado",
+    "remainingTime": "",
     "renewButton": "Renovar",
     "returnButton": "Devolver",
     "returnedLcp": "Este libro non se pode ler porque a licenza LCP devolveuse.",
     "revokedLcp": "Este libro non se pode ler porque a licenza LCP cancelouse.",
     "seeLess": "Ver menos",
     "seeMore": "Ver máis",
+    "timeLeft": "",
     "title": "Título",
     "userKeyCheckInvalid": "Contrasinal incorrecto"
   },
@@ -302,12 +326,41 @@
       "Color": "Cor",
       "addNote": "Anotar",
       "advancedMode": "Modo instantáneo (creación automática ao seleccionar)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Opcións",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Non mostrar",
       "highlight": "Destacar",
       "noSelectionToast": "Sen selección",
       "quickAnnotations": "Creación rápida (omitir editor)",
       "saveNote": "Gardar",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Mostrar en marxes",
       "type": {
         "outline": "Describir",
@@ -421,6 +474,15 @@
         },
         "title": "Zoom"
       },
+      "preset": {
+        "apply": "",
+        "applyDetails": "",
+        "reset": "",
+        "resetDetails": "",
+        "save": "",
+        "saveDetails": "",
+        "title": ""
+      },
       "preview": "Previsualizar",
       "reduceMotion": "Diminuír movemento",
       "scrolled": "Desplazable",
@@ -463,7 +525,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Limpar datos de autenticación"
     },
     "keyboard": {
@@ -478,6 +548,10 @@
     },
     "language": {
       "languageChoice": "Selección de idioma"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Deshabilitar",

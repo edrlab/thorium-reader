@@ -13,16 +13,17 @@ import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
-import { createStoreFromDi, diLibraryGet } from "readium-desktop/renderer/library/di";
 
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import { getTranslator } from "readium-desktop/common/services/translator";
+import { createStoreFromDi, getStore } from "./createStore";
 
 if (IS_DEV) {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
     const cr = require("@r2-navigator-js/electron/renderer/common/console-redirect");
     // const releaseConsoleRedirect =
     cr.consoleRedirect("readium-desktop:renderer:bookshelf", process.stdout, process.stderr, true);
@@ -45,7 +46,7 @@ if (IS_DEV) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     // devTron = require("devtron");
 
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
     axe = require("@axe-core/react");
 }
 
@@ -70,14 +71,21 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
             // Initialize window
 
             const preloadedState: Partial<ILibraryRootState> = {
+                i18n: data.payload.i18n,
+                keyboard: data.payload.keyboard,
                 theme: data.payload.theme,
                 wizard: data.payload.wizard,
+                settings: data.payload.settings,
                 publication: data.payload.publication,
                 session: data.payload.session,
+                creator: data.payload.creator,
             };
-            createStoreFromDi(preloadedState)
-                .then((store) => store.dispatch(winActions.initRequest.build(data.payload.win.identifier)))
-                .catch((e) => console.error("CRITICAL ERROR!!", e));
+            const [store, _reduxHistory] = createStoreFromDi(preloadedState);
+            const locale = store.getState().i18n.locale;
+            getTranslator().setLocale(locale);
+
+            store.dispatch(winActions.initRequest.build(data.payload.win.identifier));
+
             break;
     }
 });
@@ -88,7 +96,7 @@ ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
     switch (data.type) {
         case syncIpc.EventType.MainAction:
             // Dispatch main action to renderer reducers
-            const store = diLibraryGet("store");
+            const store = getStore();
             store.dispatch(Object.assign(
                 {},
                 ActionSerializer.deserialize(data.payload.action),

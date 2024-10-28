@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import * as moment from "moment";
 import {
     IOpdsAuthView, IOpdsCoverView, IOpdsFeedMetadataView, IOpdsFeedView, IOpdsGroupView,
@@ -36,6 +36,9 @@ import { filterRelLink, filterTypeLink } from "./tools/filterLink";
 import { urlPathResolve } from "./tools/resolveUrl";
 import { TLinkMayBeOpds, TProperties } from "./type/link.type";
 import { ILinkFilter } from "./type/linkFilter.interface";
+import { diSymbolTable } from "../diSymbolTable";
+import { type Store } from "redux";
+import { RootState } from "../redux/states";
 
 // Logger
 const debug = debug_("readium-desktop:main/converter/opds");
@@ -55,10 +58,16 @@ const supportedFileTypeLinkArray = [
     ContentType.lcppdf,
     ContentType.Lpf,
     ContentType.Zip,
+
+    ContentType.Html, // https://github.com/edrlab/thorium-reader/issues/2208
+    ContentType.Xhtml,
 ];
 
 @injectable()
 export class OpdsFeedViewConverter {
+
+    @inject(diSymbolTable.store)
+    private readonly store!: Store<RootState>;
 
     public convertDocumentToView(document: OpdsFeedDocument): IOpdsFeedView {
         return {
@@ -168,7 +177,7 @@ export class OpdsFeedViewConverter {
     public convertOpdsTagToView(subject: Subject, baseUrl: string): IOpdsTagView | undefined {
 
         return (subject.Name || subject.Code) ? {
-            name: convertMultiLangStringToString(subject.Name || subject.Code),
+            name: convertMultiLangStringToString(subject.Name || subject.Code, this.store.getState().i18n.locale),
             link: this.convertFilterLinksToView(baseUrl, subject.Links || [], {
                 type: [
                     ContentType.AtomXml,
@@ -182,7 +191,7 @@ export class OpdsFeedViewConverter {
 
         return (contributor.Name) ? {
             name: typeof contributor.Name === "object"
-                ? convertMultiLangStringToString(contributor.Name)
+                ? convertMultiLangStringToString(contributor.Name, this.store.getState().i18n.locale)
                 : contributor.Name,
             link: this.convertFilterLinksToView(baseUrl, contributor.Links || [], {
                 type: [
@@ -271,7 +280,7 @@ export class OpdsFeedViewConverter {
         const description = metadata.Description;
         const languages = metadata.Language;
 
-        const title = convertMultiLangStringToString(metadata.Title);
+        const title = convertMultiLangStringToString(metadata.Title, this.store.getState().i18n.locale);
         // console.log(`=-=-==-=-${JSON.stringify(metadata.Title)}---${title}`);
 
         const publishedAt = metadata.PublicationDate &&
@@ -498,7 +507,7 @@ export class OpdsFeedViewConverter {
         });
 
         const title = r2OpdsGroup.Metadata?.Title
-            ? convertMultiLangStringToString(r2OpdsGroup.Metadata.Title)
+            ? convertMultiLangStringToString(r2OpdsGroup.Metadata.Title, this.store.getState().i18n.locale)
             : "";
 
         const nb = r2OpdsGroup.Metadata?.NumberOfItems;
@@ -520,7 +529,7 @@ export class OpdsFeedViewConverter {
 
     public convertOpdsFacetsToView(r2OpdsFacet: OPDSFacet, baseUrl: string): IOpdsFacetView {
         const title = r2OpdsFacet.Metadata?.Title
-            ? convertMultiLangStringToString(r2OpdsFacet.Metadata.Title)
+            ? convertMultiLangStringToString(r2OpdsFacet.Metadata.Title, this.store.getState().i18n.locale)
             : "";
 
         const links = r2OpdsFacet.Links?.map(
@@ -536,7 +545,7 @@ export class OpdsFeedViewConverter {
 
     public convertOpdsFeedToView(r2OpdsFeed: OPDSFeed, baseUrl: string): IOpdsResultView {
 
-        const title = convertMultiLangStringToString(r2OpdsFeed.Metadata?.Title);
+        const title = convertMultiLangStringToString(r2OpdsFeed.Metadata?.Title, this.store.getState().i18n.locale);
         const publications = r2OpdsFeed.Publications?.map(
             (item) =>
                 // warning: modifies item, makes relative URLs absolute with baseUrl!

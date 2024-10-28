@@ -1,8 +1,8 @@
-/*
-=-=-= modals.scss
-*/
+@use '../partials/mixin' as mx;
 
-@import 'src/renderer/assets/styles/partials/mixin';
+.CSS_START_components_modals {
+  display: none;
+}
 
 .modal_dialog_overlay {
   position: fixed;
@@ -96,7 +96,7 @@
     justify-content: center;
   }
 
-  @include scrollbar_styling;
+  @include mx.scrollbar_styling;
 }
 
 .modal_dialog_body_cover > img {
@@ -257,4 +257,8 @@
       margin: 20px 0;
     }
   }
+}
+
+.CSS_END_components_modals {
+  display: none;
 }

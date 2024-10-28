@@ -5,15 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link, matchPath } from "react-router-dom";
 import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
-import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -58,7 +60,29 @@ class Entry extends React.Component<IProps, undefined> {
                     ...this.props.location,
                     pathname: route,
                 }}
-                state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
+                onClick={(e) => {
+                    if (e.altKey || e.shiftKey || e.ctrlKey) {
+                        e.preventDefault();
+                        e.currentTarget.click();
+                    }
+                }}
+                onKeyDown={(e) => {
+                    // if (e.code === "Space") {
+                    if (e.key === " " || e.altKey || e.ctrlKey) {
+                        e.preventDefault(); // prevent scroll
+                    }
+                }}
+                onKeyUp={(e) => {
+                    // Includes screen reader tests:
+                    // if (e.code === "Space") { WORKS
+                    // if (e.key === "Space") { DOES NOT WORK
+                    // if (e.key === "Enter") { WORKS
+                    if (e.key === " ") { // WORKS
+                        e.preventDefault();
+                        e.currentTarget.click();
+                    }
+                }}
             >
                 <span>
                     <span title={entry.subtitle ? entry.subtitle : entry.title}>{entry.title}</span>

@@ -75,7 +75,9 @@
       "lastAdditions": "最近添加"
     },
     "export": "匯出",
+    "exportAnnotation": "",
     "format": "格式",
+    "importAnnotation": "",
     "lang": "語言",
     "lastRead": "最後閱讀",
     "moreInfo": "更多訊息",
@@ -122,7 +124,19 @@
     "update": "編輯"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "取消",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "你真的要刪除此出版目錄嗎？",
     "deletePublication": "你真的要刪除此出版物嗎？",
     "import": "你真的要匯入這些文件嗎：",
@@ -167,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "下載 [{{- title}}] 失敗：[{{- err}}]"
     },
@@ -304,12 +326,41 @@
       "Color": "顏色",
       "addNote": "註解",
       "advancedMode": "即時模式（選擇後自動建立）",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "選項",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "不顯示",
       "highlight": "重點標示",
       "noSelectionToast": "沒有選擇",
       "quickAnnotations": "快速建立（跳過編輯）",
       "saveNote": "保存",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "在頁邊距中顯示",
       "type": {
         "outline": "輪廓",
@@ -423,6 +474,15 @@
         },
         "title": "放大"
       },
+      "preset": {
+        "apply": "",
+        "applyDetails": "",
+        "reset": "",
+        "resetDetails": "",
+        "save": "",
+        "saveDetails": "",
+        "title": ""
+      },
       "preview": "預覽",
       "reduceMotion": "減少動態效果",
       "scrolled": "捲動",
@@ -465,7 +525,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "清除登入數據"
     },
     "keyboard": {
@@ -480,6 +548,10 @@
     },
     "language": {
       "languageChoice": "選擇語言"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "禁用",

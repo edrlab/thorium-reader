@@ -5,6 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
+
 import { shell } from "electron";
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -12,9 +17,6 @@ import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 // import * as InfoIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 // import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
@@ -22,7 +24,6 @@ import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLin
 import * as CrossIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import * as PassIcon from "readium-desktop/renderer/assets/icons/password-icon.svg";
 import * as LightBulbIcon from "readium-desktop/renderer/assets/icons/lightbulb-icon.svg";
-import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -185,6 +186,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     ...{
         open: state.dialog.type === DialogTypeName.LcpAuthentication,
     }, ...state.dialog.data as DialogType[DialogTypeName.LcpAuthentication],
+    locale: state.i18n.locale, // refresh
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {

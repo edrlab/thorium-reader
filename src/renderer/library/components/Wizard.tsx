@@ -5,16 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Tabs from "@radix-ui/react-tabs";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
-import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import HomeImage from "readium-desktop/renderer/assets/images/thorium_guided_1.png";
 import BooksImage from "readium-desktop/renderer/assets/images/thorium_guided_2.png";
@@ -30,7 +32,6 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { wizardActions } from "readium-desktop/common/redux/actions";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 
 
@@ -147,7 +148,7 @@ export const WizardModal = () => {
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("wizard.title.welcome")}</h3>
                                 <p>{__("wizard.description.home")}</p>
-                                <img src={HomeImage} />
+                                <img src={HomeImage} aria-hidden="true" />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Dialog.Close className={stylesButtons.button_nav_primary}>
                                         <SVG ariaHidden svg={ShelfIcon} />
@@ -170,7 +171,7 @@ export const WizardModal = () => {
                                 <p>
                                     {__("wizard.description.yourBooks")}
                                 </p>
-                                <img src={BooksImage} />
+                                <img src={BooksImage} aria-hidden="true" />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Tabs.List>
                                         <Tabs.Trigger value="tab3" className={stylesButtons.button_primary_blue} onFocus={(e) => e.preventDefault()}>
@@ -188,7 +189,7 @@ export const WizardModal = () => {
                                 <p>
                                     {__("wizard.description.catalogs")}
                                 </p>
-                                <img src={CatalogsImage} />
+                                <img src={CatalogsImage} aria-hidden="true" />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Tabs.List>
                                         <Tabs.Trigger value="tab4" className={stylesButtons.button_primary_blue} onFocus={(e) => e.preventDefault()}>
@@ -205,7 +206,7 @@ export const WizardModal = () => {
                                 <h3>{__("wizard.tab.readingView")}</h3>
                                 <p>{__("wizard.description.readingView1")}</p>
                                 <p>{__("wizard.description.readingView2")}</p>
-                                <img src={ReadingImage} />
+                                <img src={ReadingImage} aria-hidden="true" />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Tabs.List>
                                         <Tabs.Trigger value="tab5" className={stylesButtons.button_primary_blue} onFocus={(e) => e.preventDefault()}>
@@ -222,7 +223,7 @@ export const WizardModal = () => {
                                 <h3>{__("wizard.title.newFeature")}</h3>
                                 <p>
                                     {__("wizard.description.annotations")}</p>
-                                <img src={AnnotationsImage} />
+                                <img src={AnnotationsImage} aria-hidden="true" />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Dialog.Close className={stylesButtons.button_primary_blue}>
                                         <SVG ariaHidden svg={ShelfIcon} />

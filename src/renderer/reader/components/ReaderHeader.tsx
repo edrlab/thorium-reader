@@ -5,13 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
+import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
+// import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
+
 import { HoverEvent } from "@react-types/shared";
 import classNames from "classnames";
 import * as debug_ from "debug";
 import * as React from "react";
 import * as Popover from "@radix-ui/react-popover";
 import * as Dialog from "@radix-ui/react-dialog";
-import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
+
 // import * as ReactDOM from "react-dom";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
@@ -29,6 +34,8 @@ import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
 import * as MarkIcon from "readium-desktop/renderer/assets/icons/bookmarkSingle-icon.svg";
 import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
 import * as RemoveBookMarkIcon from "readium-desktop/renderer/assets/icons/BookmarkRemove-icon.svg";
+import * as PlusIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
+// import * as BookmarkFullIcon from "readium-desktop/renderer/assets/icons/.unused-icons/outline-bookmark-24px.svg";
 // import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
 import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
 import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/fullscreen-icon.svg";
@@ -36,17 +43,18 @@ import * as ExitFullscreenIcon from "readium-desktop/renderer/assets/icons/fulls
 // import * as FloppyDiskIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
 // import * as ChevronUpIcon from "readium-desktop/renderer/assets/icons/chevron-up.svg";
 // import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-down.svg";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
-import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
-import { fixedLayoutZoomPercent, stealFocusDisable } from "@r2-navigator-js/electron/renderer/dom";
+import { fixedLayoutZoomPercent,
+    // stealFocusDisable
+} from "@r2-navigator-js/electron/renderer/dom";
 import {
-    LocatorExtended, MediaOverlaysStateEnum, TTSStateEnum,
+    MediaOverlaysStateEnum, TTSStateEnum,
 } from "@r2-navigator-js/electron/renderer/index";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 import { IPdfPlayerScale } from "../pdf/common/pdfReader.type";
 import HeaderSearch from "./header/HeaderSearch";
@@ -70,7 +78,6 @@ import { AnnotationEdit } from "./AnnotationEdit";
 import { Collection, Header as ReactAriaHeader, Section } from "react-aria-components";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
-// import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -120,12 +127,13 @@ interface IBaseProps extends TranslatorProps {
     handleReaderClose: () => void;
     handleReaderDetach: () => void;
     toggleBookmark: () => void;
-    isOnBookmark: boolean;
+    // isOnBookmark: boolean;
+    numberOfVisibleBookmarks: number;
     isOnSearch: boolean;
     handlePublicationInfo: () => void;
     readerMenuProps: IReaderMenuProps;
     ReaderSettingsProps: IReaderSettingsProps;
-    currentLocation: LocatorExtended;
+    currentLocation: MiniLocatorExtended;
     isDivina: boolean;
     isPdf: boolean;
     divinaSoundPlay: (play: boolean) => void;
@@ -229,6 +237,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         }
 
         if (this.props.fullscreen !== oldProps.fullscreen) {
+            // TODO: why steal focus here? (for example if the fullscreen/zenmode feature is activated via keyboard shortcut instead of button click!)
             if (this.props.fullscreen && this.disableFullscreenRef?.current) {
                 this.disableFullscreenRef.current.focus();
             } else if (!this.props.fullscreen && this.enableFullscreenRef?.current) {
@@ -239,6 +248,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         if (this.props.infoOpen !== oldProps.infoOpen &&
             this.props.infoOpen === false &&
             this.infoMenuButtonRef?.current) {
+            // TODO: why steal focus here? (for example if the dialog was activated via keyboard shortcut instead of button click!)
             this.infoMenuButtonRef.current.focus();
         }
 
@@ -776,7 +786,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                                                         }
                                                                                                     }}
                                                                                                     // aria-label={item.name}
-                                                                                                
+
                                                                                                     id={`TTSID${voice.id}`} key={`TTSKEY${voice.id}`}>{`${voice.name}${voice.default ? " *" : ""}`}
                                                                                                     </ComboBoxItem>}
                                                                                             </Collection>
@@ -877,14 +887,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                <HeaderSearch shortcutEnable={this.props.shortcutEnable} isPdf={this.props.isPdf} showSearchResults={this.props.showSearchResults} isAudiobook={isAudioBook} isDivina={this.props.isDivina}></HeaderSearch>
                         </li>
                         <li
-                            {...(this.props.isOnBookmark &&
+                            {...(this.props.numberOfVisibleBookmarks > 0 &&
                                 { style: { backgroundColor: "var(--color-blue" } })}
                         >
                             <input
                                 id="bookmarkButton"
                                 className={stylesReader.bookmarkButton}
                                 type="checkbox"
-                                checked={this.props.isOnBookmark}
+                                checked={this.props.numberOfVisibleBookmarks > 0}
                                 onKeyUp={(e) => {
                                     if (e.key === "Enter") { this.props.toggleBookmark(); }
                                 }}
@@ -900,11 +910,23 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 aria-hidden="true"
                                 className={stylesReader.menu_button}
                                 id="bookmarkLabel"
-                                aria-label={__("reader.navigation.bookmarkTitle")}
-                                title={__("reader.navigation.bookmarkTitle")}
+
+                                aria-label={`${__("reader.navigation.bookmarkTitle")} (${
+                                    (this.props.numberOfVisibleBookmarks === 1 && !this.props.selectionIsNew) ? __("catalog.delete") : __("catalog.addTagsButton")
+                                })`}
+                                title={`${__("reader.navigation.bookmarkTitle")} (${
+                                    (this.props.numberOfVisibleBookmarks === 1 && !this.props.selectionIsNew) ? __("catalog.delete") : __("catalog.addTagsButton")
+                                })`}
                             >
-                                <SVG ariaHidden={true} svg={MarkIcon} className={classNames(stylesReaderHeader.bookmarkIcon, this.props.isOnBookmark ? stylesReaderHeader.active_svg : "")} />
-                                <SVG ariaHidden={true} svg={RemoveBookMarkIcon} className={classNames(stylesReaderHeader.bookmarkRemove, this.props.isOnBookmark ? stylesReaderHeader.active_svg : "")} />
+                                <SVG ariaHidden={true} svg={MarkIcon} className={classNames(stylesReaderHeader.bookmarkIcon,
+                                    this.props.numberOfVisibleBookmarks > 0
+                                    ? stylesReaderHeader.active_svg : "")} />
+                                <SVG ariaHidden={true} svg={RemoveBookMarkIcon} className={classNames(stylesReaderHeader.bookmarkRemove,
+                                    (this.props.numberOfVisibleBookmarks === 1 && !this.props.selectionIsNew)
+                                    ? stylesReaderHeader.active_svg : "")} />
+                                <SVG ariaHidden={true} svg={PlusIcon} className={classNames(stylesReaderHeader.bookmarkRemove,
+                                    this.props.numberOfVisibleBookmarks > 1 || (this.props.numberOfVisibleBookmarks === 1 && this.props.selectionIsNew)
+                                    ? stylesReaderHeader.active_svg : "")} />
                             </label>
                         </li>
 
@@ -975,14 +997,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     console.log("MENU DialogOnOpenChange", open);
                                     this.props.handleMenuClick(open);
                                     if (open) {
-                                        if (!this.props.isDivina  && !this.props.isPdf) {
-                                            stealFocusDisable(true);
-                                        }
+                                        // if (!this.props.isDivina  && !this.props.isPdf) {
+                                        //     stealFocusDisable(true);
+                                        // }
                                         this.__closeNavPanel = false;
                                     } else {
-                                        if (!this.props.isDivina  && !this.props.isPdf) {
-                                            stealFocusDisable(false);
-                                        }
+                                        // if (!this.props.isDivina  && !this.props.isPdf) {
+                                        //     stealFocusDisable(false);
+                                        // }
                                     }
                                 }}
                                 modal={!isDockedMode}
@@ -1026,7 +1048,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 // onFocusOutside={(e) => {
                                                 // console.log(e);
                                                 // }}
-                                                // onPointerDownOutside={(e) => { 
+                                                // onPointerDownOutside={(e) => {
                                                 //     if (this.props.readerPopoverDialogContext.dockedMode) {
                                                 //         e.preventDefault();
                                                 //     }
@@ -1081,16 +1103,16 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 onOpenChange={(open) => {
                                     console.log("SETTINGS DialogOnOpenChange", open);
                                     this.props.handleSettingsClick(open);
-                                    if (open) {
-                                        if (!this.props.isDivina  && !this.props.isPdf) {
-                                            stealFocusDisable(true);
-                                        }
-                                        // this.__closeNavPanel = false;
-                                    } else {
-                                        if (!this.props.isDivina  && !this.props.isPdf) {
-                                            stealFocusDisable(false);
-                                        }
-                                    }
+                                    // if (open) {
+                                    //     if (!this.props.isDivina  && !this.props.isPdf) {
+                                    //         stealFocusDisable(true);
+                                    //     }
+                                    //     // this.__closeNavPanel = false;
+                                    // } else {
+                                    //     if (!this.props.isDivina  && !this.props.isPdf) {
+                                    //         stealFocusDisable(false);
+                                    //     }
+                                    // }
                                 }}
                                 modal={!isDockedMode}
                             >
@@ -1121,7 +1143,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             }}
                                         >
                                             {/* TODO remove readerSettingsHeaderProps */}
-                                            <ReaderSettings 
+                                            <ReaderSettings
                                                 {...readerSettingsHeaderProps}
                                                 {...this.props.ReaderSettingsProps}
                                                 handleSettingsClick={this.props.handleSettingsClick} />
@@ -1299,6 +1321,8 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         ttsPlaybackRate: state.reader.config.ttsPlaybackRate,
         readerConfig: state.reader.config,
         r2Publication: state.reader.info.r2Publication,
+        selectionIsNew: state.reader.locator.selectionIsNew,
+        locale: state.i18n.locale, // refresh
     };
 };
 
@@ -1310,8 +1334,8 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         closeAnnotationEditionMode: () => {
             dispatch(readerLocalActionAnnotations.enableMode.build(false, undefined));
         },
-        saveAnnotation: (color: IColor, comment: string, drawType: TDrawType) => {
-            dispatch(readerLocalActionAnnotations.createNote.build(color, comment, drawType));
+        saveAnnotation: (color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
+            dispatch(readerLocalActionAnnotations.createNote.build(color, comment, drawType, tags));
         },
     };
 };

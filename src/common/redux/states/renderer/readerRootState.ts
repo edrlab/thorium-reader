@@ -14,11 +14,12 @@ import { ISearchState } from "./search";
 import { TMapState } from "readium-desktop/utils/redux-reducers/map.reducer";
 
 // import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 import { TBookmarkState } from "../bookmark";
 import { IRTLFlipState } from "./rtlFlip";
-import { IAnnotationModeState, TAnnotationState } from "./annotation";
+import { IAnnotationModeState, TAnnotationState, TAnnotationTagsIndex } from "./annotation";
 import { ITTSState } from "readium-desktop/renderer/reader/redux/state/tts";
 import { IMediaOverlayState } from "readium-desktop/renderer/reader/redux/state/mediaOverlay";
 import { IAllowCustomConfigState } from "readium-desktop/renderer/reader/redux/state/allowCustom";
@@ -29,12 +30,13 @@ export interface IReaderRootState extends IRendererCommonRootState {
     search: ISearchState;
     mode: ReaderMode;
     annotation: IAnnotationModeState;
+    annotationTagsIndex: TAnnotationTagsIndex;
 }
 
 export interface IReaderStateReader {
     config: ReaderConfig;
     info: ReaderInfo;
-    locator: LocatorExtended;
+    locator: MiniLocatorExtended;
     bookmark: TBookmarkState;
     annotation: TAnnotationState;
     highlight: {

@@ -7,9 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/common/components/hoc/translator";
 import {
     apiClean, apiDispatch,
 } from "readium-desktop/renderer/common/redux/api/api";
@@ -64,7 +62,7 @@ class Catalog extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __, catalog, tags } = this.props;
 
-        const secondaryHeader = <span style={{display: "flex", justifyContent: "end", alignItems: "end", height: "65px", borderBottom: "1px solid var(--color-verylight-grey-alt)", paddingBottom: "30px"}}><PublicationAddButton /></span>;
+        const secondaryHeader = <span style={{display: "flex", justifyContent: "end", alignItems: "end", height: "53px", borderBottom: "1px solid var(--color-verylight-grey-alt)", paddingBottom: "30px"}}><PublicationAddButton /></span>;
         return (
             <LibraryLayout
                 title={__("header.homeTitle")}
@@ -107,6 +105,7 @@ const mapStateToProps = (state: ILibraryRootState) => ({
     catalog: state.publication.catalog,
     tags: state.publication.tag,
     keyboardShortcuts: state.keyboard.shortcuts,
+    locale: state.i18n.locale, // refresh
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

@@ -1,9 +1,17 @@
-const fs = require("fs").promises;
-const path = require("path");
+// const fs = require("fs").promises;
+import { promises as fs } from "fs";
+
+// const path = require("path");
+import * as path from "path";
 
 // https://github.com/octokit/rest.js
 // https://octokit.github.io/rest.js/
-const { Octokit } = require("@octokit/rest");
+
+// const { Octokit } = require("@octokit/rest");
+import { Octokit } from "@octokit/rest";
+
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 console.log("process.cwd():");
 console.log(process.cwd());
@@ -11,6 +19,9 @@ console.log('path.resolve(".")');
 console.log(path.resolve("."));
 
 console.log("__dirname:");
+// console.log(__dirname);
+console.log(import.meta.dirname);
+const __dirname = dirname(fileURLToPath(import.meta.url));
 console.log(__dirname);
 
 const args = process.argv.slice(2);
@@ -22,7 +33,7 @@ console.log(process.env.GITHUB_SHA);
 if (!process.env.GITHUB_SHA) {
     console.log("Missing COMMIT_SHA! Abort.");
     process.exit(1);
-    return;
+    // return;
 }
 
 console.log("RELEASE_TAG:");
@@ -30,14 +41,14 @@ console.log(process.env.RELEASE_TAG);
 if (!process.env.RELEASE_TAG) {
     console.log("Missing RELEASE_TAG! Abort.");
     process.exit(1);
-    return;
+    // return;
 }
 
 const ghtoken = process.env.GITHUB_TOKEN_RELEASE_PUBLISH || process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
 if (!ghtoken) {
     console.log("Missing GITHUB_TOKEN! Abort.");
     process.exit(1);
-    return;
+    // return;
 }
 
 const octokit = new Octokit({

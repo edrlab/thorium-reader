@@ -5,6 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -13,13 +16,8 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
-import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 import Cover from "readium-desktop/renderer/common/components/Cover";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/common/components/hoc/translator";
 import Menu from "readium-desktop/renderer/common/components/menu/Menu";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import {
@@ -39,6 +37,8 @@ import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
 import classNames from "classnames";
 import * as moment from "moment";
 import { formatTime } from "readium-desktop/common/utils/time";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/common/components/hoc/translator";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -51,7 +51,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
 class PublicationCard extends React.Component<IProps> {
@@ -63,11 +63,11 @@ class PublicationCard extends React.Component<IProps> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, publicationViewMaybeOpds, translator, isOpds } = this.props;
+        const { __, locale, publicationViewMaybeOpds, isOpds } = this.props;
 
-        const authors = formatContributorToString(publicationViewMaybeOpds.authors, translator);
+        const authors = formatContributorToString(publicationViewMaybeOpds.authors, locale);
 
-        const pubTitleLangStr = convertMultiLangStringToString(translator, (publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle);
+        const pubTitleLangStr = convertMultiLangStringToString((publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle, locale);
         const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
         const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
@@ -272,4 +272,8 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(PublicationCard));
+const mapStateToProps = (state: IRendererCommonRootState) => ({
+    locale: state.i18n.locale, // refresh
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationCard));

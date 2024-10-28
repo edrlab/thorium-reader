@@ -5,16 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
+
 import { shell } from "electron";
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import classNames from "classnames";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
@@ -23,22 +25,51 @@ import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg
 import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLink-icon.svg";
 import * as penIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as linkIcon from "readium-desktop/renderer/assets/icons/link-icon.svg";
-import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon-bold.svg";
 
-export const ApiappAddFormDialog = () => {
+export const OpdsFeedHowDoesItWorksInfoBox = () => {
+
+    const [__] = useTranslator();
+    const [infoOpen, setInfoOpen] = React.useState(false);
+
+
+    return (<div>
+        <button className={stylesButtons.button_catalog_infos} onClick={(e) => { e.preventDefault(); setInfoOpen(!infoOpen); }}>
+            <SVG ariaHidden svg={InfoIcon} />
+            {__("opds.whatIsOpds")}
+            <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
+        </button>
+        {infoOpen ?
+            <div className={stylesCatalogs.catalog_infos_text}>
+                <p>
+                    {__("opds.informations")}
+                </p>
+                <a href=""
+                    onClick={async (ev) => {
+                        ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
+                        await shell.openExternal("https://opds.io/");
+                    }}>
+                    {__("opds.documentation")}
+                    <SVG ariaHidden svg={FollowLinkIcon} />
+                </a>
+            </div>
+            : <></>}
+    </div>);
+};
+
+export const OpdsFeedAddFormDialog = () => {
     const [__] = useTranslator();
     const [, apiAddFeedAction] = useApi(undefined, "opds/addFeed");
 
     const [title, setTitle] = React.useState("");
     const [url, setUrl] = React.useState("");
-    const [infoOpen, setInfoOpen] = React.useState(false);
     const addAction = () => {
         if (!title || !url) {
             return;
         }
         apiAddFeedAction({ title, url });
     };
+
 
     return <Dialog.Root>
         <Dialog.Trigger asChild>
@@ -95,28 +126,7 @@ export const ApiappAddFormDialog = () => {
                                 required
                             />
                         </div>
-                        <div>
-                            <button className={stylesButtons.button_catalog_infos} onClick={(e) => {e.preventDefault(); setInfoOpen(!infoOpen);}}>
-                                <SVG ariaHidden svg={InfoIcon} />
-                                {__("opds.whatIsOpds")}
-                                <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
-                            </button>
-                            {infoOpen ?
-                                <div className={stylesCatalogs.catalog_infos_text}>
-                                    <p>
-                                    {__("opds.informations")}
-                                    </p>
-                                    <a href=""
-                                        onClick={async (ev) => {
-                                            ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                                            await shell.openExternal("https://opds.io/");
-                                        }}>
-                                    {__("opds.documentation")}
-                                        <SVG ariaHidden svg={FollowLinkIcon} />
-                                    </a>
-                                </div>
-                                : <></>}
-                        </div>
+                        <OpdsFeedHowDoesItWorksInfoBox />
                     </div>
                     <div className={stylesModals.modal_dialog_footer}>
                         <Dialog.Close asChild>
@@ -134,5 +144,3 @@ export const ApiappAddFormDialog = () => {
         </Dialog.Portal>
     </Dialog.Root>;
 };
-
-export default ApiappAddFormDialog;

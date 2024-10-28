@@ -22,6 +22,7 @@ import { diMainGet, opdsAuthFilePath } from "../di";
 import { fetchWithCookie } from "./fetch";
 import { digestAuthentication, parseDigestString} from "readium-desktop/utils/digest";
 import { ProxyAgent } from "proxy-agent";
+import { availableLanguages } from "readium-desktop/common/services/translator";
 
 // Logger
 const filename_ = "readium-desktop:main/http";
@@ -178,7 +179,7 @@ export async function httpFetchRawResponse(
     url: string | URL,
     options: THttpOptions = {},
     // redirectCounter = 0,
-    locale = tryCatchSync(() => diMainGet("store")?.getState()?.i18n?.locale, filename_) || "en-US",
+    locale = tryCatchSync(() => diMainGet("store").getState().i18n.locale, filename_),
 ): Promise<THttpResponse> {
 
     url = new URL(url);
@@ -220,7 +221,7 @@ export async function httpFetchRawResponse(
         // }
     });
 
-    // seems already implemented in the ProxyAgent package: 
+    // seems already implemented in the ProxyAgent package:
     // https://github.com/TooTallNate/proxy-agents/blob/70023c12abe0d014004af6309ff7d0fdbaa60875/packages/proxy-agent/src/index.ts#L122
     // so not used anymore
     // options.agent = (parsedURL: URL) => {
@@ -398,7 +399,7 @@ export async function httpFetchFormattedResponse<TData = undefined>(
     url: string | URL,
     options?: THttpOptions,
     callback?: THttpGetCallback<TData>,
-    locale?: string,
+    locale?: keyof typeof availableLanguages,
 ): Promise<IHttpGetResult<TData>> {
 
     let result: IHttpGetResult<TData> = {

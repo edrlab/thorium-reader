@@ -7,16 +7,14 @@
 
 import { type Reducer } from "redux";
 
-import { locatorInitialState } from "readium-desktop/common/redux/states/locatorInitialState";
-
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+import { locatorInitialState, MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 import { readerLocalActionSetLocator } from "../actions";
 
 function readerLocatorReducer_(
-    state: LocatorExtended = locatorInitialState,
+    state = locatorInitialState,
     action: readerLocalActionSetLocator.TAction,
-): LocatorExtended {
+): MiniLocatorExtended {
 
     switch (action.type) {
         case readerLocalActionSetLocator.ID:

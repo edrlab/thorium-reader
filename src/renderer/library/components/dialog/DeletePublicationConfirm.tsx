@@ -5,18 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import SVG from "../../../common/components/SVG";
 import * as Trash from "readium-desktop/renderer/assets/icons/trash-icon.svg";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-
 
 const DeletePublicationConfirm = (props: { publicationView: PublicationView, trigger: React.ReactNode } & AlertDialog.AlertDialogProps) => {
     const [__] = useTranslator();
@@ -33,10 +33,7 @@ const DeletePublicationConfirm = (props: { publicationView: PublicationView, tri
                 {props.trigger}
             </AlertDialog.Trigger>
             <AlertDialog.Portal>
-
-                {/** Overlay Component doesn't work */}
-                {/* <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay}/> */}
-                <div className={stylesAlertModals.AlertDialogOverlay}></div>
+                <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay}/>
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deletePublication")}</AlertDialog.Title>
                     <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>

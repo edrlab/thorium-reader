@@ -5,6 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
+
 import classNames from "classnames";
 import debounce from "debounce";
 import * as React from "react";
@@ -14,8 +17,6 @@ import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
 import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
 import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
-import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
-import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -222,7 +223,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
             __("reader.picker.search.notFound");
 
         const memoJsx = renderSearchLinks(label, this.props.foundArray, this.state.nMatchPage, this.props.readingOrder, this.props.toc, this.props.dockedMode, this);
-    
+
         const startIndex = this.state.nMatchPage * MAX_MATCHES_PER_PAGE;
         const begin = startIndex + 1;
         const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, this.props.foundArray?.length || 0);
@@ -247,7 +248,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                 memoJsx
             }
             <div className={stylesPopoverDialog.navigation_container}>
-                {(this.props.foundArray && this.props.foundArray.length > MAX_MATCHES_PER_PAGE) &&
+                {(this.props.foundArray && this.props.foundArray.length > MAX_MATCHES_PER_PAGE) ?
                     <>
                         <button title={__("opds.firstPage")}
                             onClick={() => this.onPageFirst()}
@@ -288,11 +289,11 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                             disabled={end === this.props.foundArray?.length ? true : false}>
                             <SVG ariaHidden={true} svg={ArrowLastIcon} />
                         </button>
-                    </>
+                    </> : <></>
                 }
             </div>
             {
-            this.props.foundArray?.length &&
+            this.props.foundArray?.length ?
             <p
                 style={{
                     textAlign: "center",
@@ -301,6 +302,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                     marginTop: "-16px",
                     marginBottom: "20px",
             }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${__("reader.picker.search.founds", {nResults: this.props.foundArray.length})}`}</p>
+            : <></>
         }
         </>);
     }
@@ -443,7 +445,7 @@ const handleSearchClickFunc = (
         thiz.props.focusMainAreaLandmarkAndCloseMenu();
     }
 
-    thiz.props.focus(href); // search uuid
+    thiz.props.searchFocusCurrent(href); // search uuid
 };
 
 const handleSearchClickFuncDebounced = debounce(handleSearchClickFunc, 300);
@@ -528,11 +530,12 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         foundArray: state.search?.foundArray,
         readingOrder: state.reader?.info?.r2Publication?.Spine,
         toc: state.reader?.info?.r2Publication?.TOC,
+        locale: state.i18n.locale, // refresh
     };
 };
 
 const mapDispatchToProps = (dispatch: TDispatch) => ({
-    focus: (uuid: string) => {
+    searchFocusCurrent: (uuid: string) => {
         dispatch(readerLocalActionSearch.focus.build(uuid));
     },
 });

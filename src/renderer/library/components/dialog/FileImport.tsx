@@ -5,11 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
-import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -48,7 +49,7 @@ class FileImport extends React.Component<IProps, undefined> {
 
         return <AlertDialog.Root defaultOpen={true} onOpenChange={(b) => !b ? this.props.closeDialog() : undefined}>
             <AlertDialog.Portal>
-                <div className={stylesAlertModals.AlertDialogOverlay}></div>
+                <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay}/>
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent} style={{overflowY: "scroll"}}>
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>
                         {(files?.length > 0) ?
@@ -114,6 +115,7 @@ class FileImport extends React.Component<IProps, undefined> {
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     open: state.dialog.type === DialogTypeName.FileImport,
     files: (state.dialog.data as DialogType[DialogTypeName.FileImport]).files,
+    locale: state.i18n.locale, // refresh
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {

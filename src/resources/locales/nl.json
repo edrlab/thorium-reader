@@ -75,7 +75,9 @@
       "lastAdditions": "Recent toegevoegd"
     },
     "export": "Exporteer",
+    "exportAnnotation": "",
     "format": "Formaat",
+    "importAnnotation": "",
     "lang": "Taal",
     "lastRead": "Laatst gelezen",
     "moreInfo": "Meer Informatie",
@@ -122,7 +124,19 @@
     "update": "Wijzig"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Annuleer",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Wil je deze catalogus echt verwijderen ?",
     "deletePublication": "Wil je deze publicatie echt verwijderen ?",
     "import": "Wil je deze bestanden echt importeren :",
@@ -167,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Het downloaden van{{- title}} is mislukt: [{{- err}}]"
     },
@@ -304,12 +326,41 @@
       "Color": "Kleur",
       "addNote": "Annoteren",
       "advancedMode": "Instantmodus (automatisch maken na selectie)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Opties",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Geef niet weer",
       "highlight": "Markeer",
       "noSelectionToast": "Geen selectie",
       "quickAnnotations": "Maak snel (editor overslaan)",
       "saveNote": "Bewaar",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Weergave in marges",
       "type": {
         "outline": "Overzicht",
@@ -423,6 +474,15 @@
         },
         "title": "Uitvergroting"
       },
+      "preset": {
+        "apply": "",
+        "applyDetails": "",
+        "reset": "",
+        "resetDetails": "",
+        "save": "",
+        "saveDetails": "",
+        "title": ""
+      },
       "preview": "Voorbeeld",
       "reduceMotion": "Beperk beweging",
       "scrolled": "Doorlopend",
@@ -465,7 +525,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Wis authenticatie gegevens"
     },
     "keyboard": {
@@ -480,6 +548,10 @@
     },
     "language": {
       "languageChoice": "Taal keuze"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Schakel uit",

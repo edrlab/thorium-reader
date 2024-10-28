@@ -1,9 +1,8 @@
-/*
-=-=-= inouts.scss
-*/
+@use '../partials/mixin' as mx;
 
-@import 'src/renderer/assets/styles/partials/mixin';
-
+.CSS_START_components_inputs {
+  display: none;
+}
 
 input[type="text"],
 input[type="number"],
@@ -58,7 +57,7 @@ input[type="color"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
 input[type="url"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE),
 input[type="search"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE) {
   &:focus {
-    @include R2_MIXIN_FOCUS_OUTLINE;
+    @include mx.R2_MIXIN_FOCUS_OUTLINE;
   }
 }
 
@@ -78,7 +77,6 @@ select {
   appearance: none;
 }
 
-
 .form_group {
   width: 150px;
   height: 25px;
@@ -89,7 +87,7 @@ select {
   position: relative;
   display: flex;
   align-items: center;
-  background-color: var(--color-annotations-bg);
+  background-color: transparent;
 
   // @media (prefers-color-scheme: dark) {
   //   background-color: #2D2D2D;
@@ -103,11 +101,12 @@ select {
   & >label{
       position:absolute;
       line-height: 90%;
-      top: -12px;
+      top: -7px;
       left: 10px;
       background-color: var(--color-secondary);
       padding: 0 5px;
       z-index: 1;
+      font-size: 12px;
   }
 
   & >input{
@@ -115,7 +114,7 @@ select {
       width: calc(100% - 35px);
       height: 25px;
       margin-left: 30px;
-      background-color: var(--color-annotations-bg);
+      background-color: transparent;
   }
 
   & i {
@@ -124,6 +123,24 @@ select {
     position: absolute;
   }
       
+}
+
+.form_group_allPubSearch {
+  height: 28px !important;
+  background-color: var(--color-secondary);
+
+  label {
+    top: -20px;
+    left: 0;
+    line-height: unset;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 0;
+
+    > div {
+      margin-left: 0 !important;
+    }
+  }
 }
 
 .form_group_catalog {
@@ -160,15 +177,10 @@ select {
 /* 6. dropzone */
 
 .dropzone {
-  position: absolute;
+  position: fixed;
   overflow: hidden;
   inset: 0;
 }
-
-.___DEBUG___COMPONENTS_INPUTS_CSS {
-  display: none;
-}
-
 
 .passphrase_error {
   color: var(--color-error-dark);
@@ -181,4 +193,8 @@ select {
     fill: var(--color-error-dark);
     height: 12px;
   }
+}
+
+.CSS_END_components_inputs {
+  display: none;
 }

@@ -1,6 +1,12 @@
-/*
-=-=-= app.scss
-*/
+/* @use './partials/variables'; */
+
+.CSS_START_app {
+  display: none;
+}
+
+.rootDiv {
+  display: block;
+}
 
 .downloadsPanel {
   display: block;
@@ -79,6 +85,6 @@
   }
 }
 
-.___DEBUG___APP_CSS {
+.CSS_END_app {
   display: none;
 }

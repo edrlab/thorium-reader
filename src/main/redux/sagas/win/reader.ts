@@ -10,7 +10,7 @@ import { readerIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
@@ -20,6 +20,8 @@ import { all, put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { createReaderWindow } from "./browserWindow/createReaderWindow";
+import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
+import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:reader";
@@ -35,9 +37,21 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const webContents = readerWin.webContents;
     const locale = yield* selectTyped((_state: RootState) => _state.i18n.locale);
     const reader = yield* selectTyped((_state: RootState) => _state.win.session.reader[identifier]);
+    const readerDefaultConfig = yield* selectTyped((_state: RootState) => _state.reader.defaultConfig);
     const keyboard = yield* selectTyped((_state: RootState) => _state.keyboard);
     const mode = yield* selectTyped((state: RootState) => state.mode);
     const theme = yield* selectTyped((state: RootState) => state.theme);
+    const config = reader?.reduxState?.config || readerConfigInitialState;
+    const transientConfigMerge = {...readerConfigInitialState, ...config};
+    const creator = yield* selectTyped((_state: RootState) => _state.creator);
+
+    const publicationRepository = diMainGet("publication-repository");
+    let tag: string[] = [];
+    try {
+        tag = yield* callTyped(() => publicationRepository.getAllTags());
+    } catch {
+        // ignore
+    }
 
     webContents.send(readerIpc.CHANNEL, {
         type: readerIpc.EventType.request,
@@ -48,10 +62,31 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
             win: {
                 identifier,
             },
-            reader: reader?.reduxState,
+            reader: {
+                ...reader?.reduxState || {},
+                // see issue https://github.com/edrlab/thorium-reader/issues/2532
+                defaultConfig: readerDefaultConfig,
+                transientConfig: {
+                    font: transientConfigMerge.font,
+                    fontSize: transientConfigMerge.fontSize,
+                    pageMargins: transientConfigMerge.pageMargins,
+                    wordSpacing: transientConfigMerge.wordSpacing,
+                    letterSpacing: transientConfigMerge.letterSpacing,
+                    paraSpacing: transientConfigMerge.paraSpacing,
+                    lineHeight: transientConfigMerge.lineHeight,
+                },
+                allowCustomConfig: {
+                    state: !comparePublisherReaderConfig(config, readerConfigInitialState),
+                },
+                config,
+            },
             keyboard,
             mode,
             theme,
+            creator,
+            publication: {
+                tag,
+            },
         },
     } as readerIpc.EventPayload);
 }
@@ -93,8 +128,8 @@ function* winClose(action: winActions.reader.closed.TAction) {
 
                 const mode = yield* selectTyped((state: RootState) => state.mode);
                 if (mode === ReaderMode.Detached) {
-                    
-                    // disabled for the new UI refactoring by choice of the designer 
+
+                    // disabled for the new UI refactoring by choice of the designer
                     // yield put(readerActions.attachModeRequest.build());
 
                 } else {

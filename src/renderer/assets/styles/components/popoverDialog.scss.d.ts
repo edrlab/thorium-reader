@@ -11,6 +11,8 @@ export declare const button_transparency_icon: string;
 export declare const chapter_marker: string;
 export declare const chapters_content: string;
 export declare const correspondances: string;
+export declare const CSS_END_components_popoverDialog: string;
+export declare const CSS_START_components_popoverDialog: string;
 export declare const currentPage: string;
 export declare const delete_item: string;
 export declare const display_options_item: string;
