@@ -1,8 +1,8 @@
-/*
-=-=-= breadcrumbs.scss
-*/
+@use '../partials/mixin' as mx;
 
-@import 'src/renderer/assets/styles/partials/mixin';
+.CSS_START_components_breadcrumbs {
+  display: none;
+}
 
 #spaceLeft {
   // background-color: blue;
@@ -15,7 +15,7 @@
 }
 
 .breadcrumb_container {
-  @include scrollbar_styling;
+  @include mx.scrollbar_styling;
 }
 
 .breadcrumb {
@@ -118,6 +118,6 @@
   }
 }
 
-.___DEBUG___COMPONENTS_BREADCRUMB_CSS {
+.CSS_END_components_breadcrumbs {
   display: none;
 }

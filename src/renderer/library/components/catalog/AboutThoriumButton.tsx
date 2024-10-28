@@ -5,6 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesFooter from "readium-desktop/renderer/assets/styles/components/aboutFooter.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+
 import { shell } from "electron";
 import { existsSync, promises } from "fs";
 import * as path from "path";
@@ -14,7 +17,6 @@ import { ABOUT_BOOK_TITLE_PREFIX } from "readium-desktop/common/constant";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
-import * as stylesFooter from "readium-desktop/renderer/assets/styles/components/aboutFooter.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -31,7 +33,6 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import * as EdrlabLogo from "readium-desktop/renderer/assets/icons/logo_edrlab.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -66,7 +67,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
     public render() {
         const { __ } = this.props;
         const displayVersionToast = !!(this.state.versionInfo && this.props.newVersionURL && this.props.newVersion);
-        
+
         return (
             <section className={stylesFooter.footer_wrapper} style={{justifyContent: displayVersionToast ? "space-between" : "end"}}>
                                 {
@@ -206,7 +207,8 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
 
     return {
-        locale: state.i18n.locale,
+        // here
+        locale: state.i18n.locale, // refresh
         newVersionURL: state.versionUpdate.newVersionURL,
         newVersion: state.versionUpdate.newVersion,
     };

@@ -5,12 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 import {
     TranslatorProps, withTranslator,
@@ -94,7 +95,7 @@ class Header extends React.Component<IProps, undefined> {
                 label={__("accessibility.skipLink")}
             />
             <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
-                <h1 className={stylesHeader.appName}></h1>
+                <h1 className={stylesHeader.appName} aria-label="Thorium"></h1>
                 <ul style={{paddingTop: "10px"}}>
                     <div>
                     {
@@ -157,12 +158,34 @@ class Header extends React.Component<IProps, undefined> {
             <li className={classNames(...styleClasses, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={index}>
                 <Link
                     to={nextLocation}
-                    state = {{displayType: (nextLocation.state && (nextLocation.state as IRouterLocationState).displayType) ? (nextLocation.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                    state={{ displayType: (nextLocation.state && (nextLocation.state as IRouterLocationState).displayType) ? (nextLocation.state as IRouterLocationState).displayType : DisplayType.Grid }}
                     replace={true}
                     aria-pressed={active}
                     role={"button"}
                     className={classNames(active ? stylesButtons.button_nav_primary : "", !active ? "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" : "")}
                     title={item.label}
+                    onClick={(e) => {
+                        if (e.altKey || e.shiftKey || e.ctrlKey) {
+                            e.preventDefault();
+                            e.currentTarget.click();
+                        }
+                    }}
+                    onKeyDown={(e) => {
+                        // if (e.code === "Space") {
+                        if (e.key === " " || e.altKey || e.ctrlKey) {
+                            e.preventDefault(); // prevent scroll
+                        }
+                    }}
+                    onKeyUp={(e) => {
+                        // Includes screen reader tests:
+                        // if (e.code === "Space") { WORKS
+                        // if (e.key === "Space") { DOES NOT WORK
+                        // if (e.key === "Enter") { WORKS
+                        if (e.key === " ") { // WORKS
+                            e.preventDefault();
+                            e.currentTarget.click();
+                        }
+                    }}
                 >
                     <SVG ariaHidden svg={item.svg} />
                     <h3>{item.label}</h3>
@@ -175,7 +198,8 @@ class Header extends React.Component<IProps, undefined> {
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
     history: state.history,
-    locale: state.i18n.locale, // used for automatic refresh to force the rendering of header
+
+    locale: state.i18n.locale, // refresh
 });
 
 export default connect(mapStateToProps)(withTranslator(Header));

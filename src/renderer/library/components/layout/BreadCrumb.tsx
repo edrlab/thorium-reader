@@ -5,12 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesBreadcrumb from "readium-desktop/renderer/assets/styles/components/breadcrumb.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 import * as React from "react";
 import { Link } from "react-router-dom";
 import * as BreacrmbsNavIcon from "readium-desktop/renderer/assets/icons/breadcrumbsNav-icon.svg";
 import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-right.svg";
-import * as stylesBreadcrumb from "readium-desktop/renderer/assets/styles/components/breadcrumb.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
@@ -25,7 +26,9 @@ function useSize<T extends Element>(target: React.RefObject<T>) {
     React.useLayoutEffect(() => {
         // The useLayoutEffect documentation states that this fires synchronously after all DOM mutations,
         // so practically-speaking the target.current sanity check is not needed here (but with strictNullChecks the compiler should identify null as a possible value)
-        target.current && setSize(target.current.getBoundingClientRect());
+        if (target.current) {
+            setSize(target.current.getBoundingClientRect());
+        }
         // TODO: "destructor" needed?
         // return () => {
         //     setSize(undefined);
@@ -56,6 +59,28 @@ const LinkItemBreadcrumb = ({item: {name, path}, isTheFirstOne}: {item: IBreadCr
         state={{ displayType: (location.state && (location.state as IRouterLocationState).displayType) ? (location.state as IRouterLocationState).displayType : DisplayType.Grid }}
         title={name}
         className={stylesButtons.button_transparency}
+        onClick={(e) => {
+            if (e.altKey || e.shiftKey || e.ctrlKey) {
+                e.preventDefault();
+                e.currentTarget.click();
+            }
+        }}
+        onKeyDown={(e) => {
+            // if (e.code === "Space") {
+            if (e.key === " " || e.altKey || e.ctrlKey) {
+                e.preventDefault(); // prevent scroll
+            }
+        }}
+        onKeyUp={(e) => {
+            // Includes screen reader tests:
+            // if (e.code === "Space") { WORKS
+            // if (e.key === "Space") { DOES NOT WORK
+            // if (e.key === "Enter") { WORKS
+            if (e.key === " ") { // WORKS
+                e.preventDefault();
+                e.currentTarget.click();
+            }
+        }}
     >
         {isTheFirstOne ? <SVG ariaHidden={true} svg={BreacrmbsNavIcon} /> : <></>}
         <p >{name}</p>
@@ -199,7 +224,7 @@ const BreadCrumb = () => {
                     </li>
                 }
                 {
-                    // displayFullBreadcrumb && 
+                    // displayFullBreadcrumb &&
                     // (<li key={between.length+2} id="breadcrumb-li-plus">
                     //     <button onClick={() => {
                     //         setDisplayFullBreadcrumb(false);

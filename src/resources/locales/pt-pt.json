@@ -75,7 +75,9 @@
       "lastAdditions": "Adicionados recentemente"
     },
     "export": "Guardar como",
+    "exportAnnotation": "Guardar anotação como",
     "format": "Formato",
+    "importAnnotation": "Importar anotação",
     "lang": "Idioma",
     "lastRead": "Última leitura",
     "moreInfo": "Mais informações",
@@ -122,7 +124,19 @@
     "update": "Atualizar"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "de {{- author}}",
+      "descList": "{{- nb}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
+      "descNewer": "{{- nb}} versões mais recentes destas anotações já estão associadas à publicação.",
+      "descOlder": "{{- nb}} versões mais antigas destas anotações já estão associadas à publicação..",
+      "descTitle": "Título do conjunto de anotações:",
+      "importAll": "Importar todas as anotações",
+      "importWithoutConflict": "Importar anotações sem conflitos",
+      "title": "Quer importar estas anotações?"
+    },
     "cancel": "Cancelar",
+    "deleteAnnotations": "Eliminar anotações?",
+    "deleteAnnotationsText": "Quer eliminar {{- annotationListLength}} anotações?",
     "deleteFeed": "Eliminar catálogo?",
     "deletePublication": "Eliminar documento?",
     "import": "Confirmar importação:",
@@ -167,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "Todas as anotações já foram importadas. A abortar a importação",
+      "emptyFile": "Nenhuma anotação disponível no ficheiro",
+      "errorParsing": "Erro ao analisar o formato do ficheiro:",
+      "noBelongTo": "Não foi possível importar o conjunto de anotações. Pelo menos uma anotação não pertence à publicação",
+      "nothing": "Não existem anotações prontas para serem importadas. A abortar a importação",
+      "success": "Sucesso!"
+    },
     "download": {
       "error": "Falha ao descarregar {{- title}}: [{{- err}}]"
     },
@@ -304,12 +326,41 @@
       "Color": "Cor",
       "addNote": "Anotar",
       "advancedMode": "Modo instantâneo (criação automática após seleção)",
+      "annotationsExport": {
+        "description": "Dar um nome a este conjunto de anotações",
+        "title": "Título"
+      },
       "annotationsOptions": "Opções",
+      "colors": {
+        "bluegreen": "Azul-esverdeado",
+        "cyan": "Ciano",
+        "green": "Verde",
+        "lightblue": "Azul claro",
+        "orange": "Laranja",
+        "purple": "Roxo",
+        "red": "Vermelho",
+        "yellow": "Amarelo"
+      },
+      "filter": {
+        "all": "Tudo",
+        "filterByColor": "Filtrar por cor",
+        "filterByCreator": "Filtrar por criador",
+        "filterByDrawtype": "Filtrar por tipo de desenho",
+        "filterByTag": "Filtrar por etiqueta",
+        "filterOptions": "Opções de filtro",
+        "none": "Nenhum"
+      },
       "hide": "Não exibir",
       "highlight": "Realçar",
       "noSelectionToast": "Nenhuma seleção",
       "quickAnnotations": "Criação rápida (saltar editor)",
       "saveNote": "Guardar",
+      "sorting": {
+        "lastcreated": "Última vez criado",
+        "lastmodified": "Última alteração",
+        "progression": "Progresso",
+        "sortingOptions": "Opções de ordenação"
+      },
       "toggleMarginMarks": "Exibir nas margens",
       "type": {
         "outline": "Contornar",
@@ -423,6 +474,15 @@
         },
         "title": "Zoom"
       },
+      "preset": {
+        "apply": "Aplicar a predefinição preferida de configurações de leitura às configurações de leitura atuais",
+        "applyDetails": "",
+        "reset": "Redefinir a predefinição das configurações preferidas de leitura para o estado inicial",
+        "resetDetails": "",
+        "save": "Guardar as configurações de leitura atuais na predefinição preferida de configurações de leitura",
+        "saveDetails": "",
+        "title": "Predefinição"
+      },
       "preview": "Pré-visualização",
       "reduceMotion": "Reduzir movimento",
       "scrolled": "Rolável",
@@ -465,7 +525,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "Criador",
+      "name": "Nome",
+      "organization": "Organização",
+      "person": "Pessoa",
+      "type": "Tipo:"
+    },
     "auth": {
+      "title": "Gerir acesso aos catálogos",
       "wipeData": "Limpar dados de autenticação"
     },
     "keyboard": {
@@ -480,6 +548,10 @@
     },
     "language": {
       "languageChoice": "Idioma"
+    },
+    "library": {
+      "enableAPIAPP": "Ativar acesso à API Dilicom PNB",
+      "title": "Adicionar conta de biblioteca"
     },
     "session": {
       "no": "Desativar",

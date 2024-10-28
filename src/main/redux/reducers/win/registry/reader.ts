@@ -9,17 +9,19 @@ import { type Reducer } from "redux";
 
 import { winActions } from "readium-desktop/main/redux/actions";
 import { IDictWinRegistryReaderState } from "readium-desktop/main/redux/states/win/registry/reader";
+import { IQueueAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 
 const initialState: IDictWinRegistryReaderState = {};
 
 function winRegistryReaderReducer_(
     state: IDictWinRegistryReaderState = initialState,
     action: winActions.registry.registerReaderPublication.TAction
-    | winActions.registry.unregisterReaderPublication.TAction,
+    | winActions.registry.unregisterReaderPublication.TAction
+    | winActions.registry.addAnnotationToReaderPublication.TAction,
 ): IDictWinRegistryReaderState {
     switch (action.type) {
 
-        case winActions.registry.registerReaderPublication.ID:
+        case winActions.registry.registerReaderPublication.ID: {
             return {
                 ...state,
                 ...{
@@ -32,8 +34,9 @@ function winRegistryReaderReducer_(
                     },
                 },
             };
+        }
 
-        case winActions.registry.unregisterReaderPublication.ID:
+        case winActions.registry.unregisterReaderPublication.ID: {
 
             const id = action.payload.publicationIdentifier;
 
@@ -45,6 +48,40 @@ function winRegistryReaderReducer_(
                 return ret;
             }
             return state;
+        }
+
+        case winActions.registry.addAnnotationToReaderPublication.ID: {
+
+            const { publicationIdentifier: id, annotations } = action.payload;
+
+            if (annotations.length && Array.isArray(state[id]?.reduxState?.annotation)) {
+
+                const oldAnno = state[id].reduxState.annotation;
+                const oldAnnoUniq = oldAnno.filter(([, {uuid}]) => !annotations.find(({uuid: uuid2}) => uuid2 === uuid));
+                const newAnno = annotations.map<IQueueAnnotationState>((anno) => [anno.created || (new Date()).getTime(), anno]);
+                return {
+                    ...state,
+                    ...{
+                        [id]: {
+                            ...state[id],
+                            ...{
+                                reduxState: {
+                                    ...state[id].reduxState,
+                                    ...{
+                                        annotation: [
+                                            ...oldAnnoUniq,
+                                            ...newAnno,
+                                        ],
+                                    },
+                                },
+                            },
+                        },
+                    },
+                };
+
+            }
+            return state;
+        }
 
         default:
             return state;

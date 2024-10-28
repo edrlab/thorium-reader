@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+
 import * as debug_ from "debug";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -24,9 +26,9 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { dispatchHistoryPush, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
-import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+import classNames from "classnames";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -76,7 +78,7 @@ class SearchForm extends React.Component<IProps, undefined> {
 
         return (
             <form
-                className={stylesInput.form_group}
+                className={classNames(stylesInput.form_group, stylesInput.form_group_allPubSearch)}
                 onSubmit={this.submitSearch}
                 role="search"
             >
@@ -166,6 +168,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     search: state.opds.browser.search,
     location: state.router.location,
     keyboardShortcuts: state.keyboard.shortcuts,
+    locale: state.i18n.locale, // refresh
 });
 
 const mapDispatchToProps = (dispatch: TDispatch) => ({

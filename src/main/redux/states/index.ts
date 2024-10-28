@@ -20,6 +20,7 @@ import { IWinSessionLibraryState } from "./win/session/library";
 import { IDictWinSessionReaderState } from "./win/session/reader";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { IWizardState } from "readium-desktop/common/redux/states/wizard";
+import { ISettingsState } from "readium-desktop/common/redux/states/settings";
 
 export interface RootState extends ICommonRootState {
     app: AppState;
@@ -49,6 +50,7 @@ export interface RootState extends ICommonRootState {
     },
     version: string;
     wizard: IWizardState;
+    settings: ISettingsState;
 }
 
-export type PersistRootState = Pick<RootState, "win" | "publication" | "reader" | "session" | "i18n" | "opds" | "version" | "theme" | "wizard">;
+export type PersistRootState = Pick<RootState, "win" | "publication" | "reader" | "session" | "i18n" | "opds" | "version" | "theme" | "wizard" | "settings" | "creator">;

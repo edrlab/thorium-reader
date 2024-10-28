@@ -1,8 +1,8 @@
-/*
-=-=-= buttons.scss
-*/
+@use '../partials/mixin' as mx;
 
-@import "src/renderer/assets/styles/partials/mixin";
+.CSS_START_components_buttons {
+  display: none;
+}
 
 button {
   padding: 0;
@@ -89,7 +89,7 @@ button {
 }
 
 .button_primary {
-  @include button_primary;
+  @include mx.button_primary;
 
   padding: 10px 15px;
 
@@ -110,7 +110,7 @@ button {
       padding: 8px 20px;
       background: var(--color-secondary);
       overflow: visible;
-  
+
       & input {
         overflow: hidden;
         z-index: -1;
@@ -125,7 +125,7 @@ button {
         border-radius: 7px;
         border: 1px solid transparent;
       }
-  
+
       & svg {
         position: absolute;
         top: 50%;
@@ -312,7 +312,7 @@ button {
   &:hover {
     background-color: var(--color-button-hover);
   }
-  
+
   &:focus-within, &:focus {
     outline: var(--color-blue) solid 1px !important;
     outline-offset: 2px;
@@ -331,7 +331,7 @@ button {
     height: 15px;
     fill: var(--color-blue);
   }
-  
+
   input {
     position: absolute;
     right: 5px;
@@ -392,9 +392,9 @@ button {
   &:hover {
     border-color: var(--color-blue);
   }
-  
+
   &:focus-within {
-    @include R2_MIXIN_FOCUS_OUTLINE;
+    @include mx.R2_MIXIN_FOCUS_OUTLINE;
 
     outline: var(--color-blue) solid 1px !important;
     outline-offset: 2px;
@@ -417,7 +417,7 @@ button {
     transform: rotate(0);
     transition: 200ms;
   }
-  
+
   input {
     position: absolute;
     right: 0;
@@ -433,7 +433,7 @@ button {
   border-radius: 4px;
   padding: 5px;
   background-color: var(--color-light-blue);
-  margin: 30px 0;
+  margin: 10px 0;
   width: fit-content;
 
   &[open] {
@@ -551,6 +551,6 @@ button {
   }
 }
 
-.___DEBUG___COMPONENTS_BUTTONS_CSS {
+.CSS_END_components_buttons {
   display: none;
 }

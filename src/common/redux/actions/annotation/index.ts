@@ -5,8 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as exportW3CAnnotationSetFromAnnotations from "./exportW3CAnnotationSet";
+import * as importAnnotationSet from "./importAnnotationSet";
+import * as importTriggerModal from "./importTriggerModal";
+import * as importConfirmOrAbort from "./importConfirmOrAbort";
 
 export {
-    exportW3CAnnotationSetFromAnnotations,
+    importAnnotationSet,
+    importTriggerModal,
+    importConfirmOrAbort,
 };

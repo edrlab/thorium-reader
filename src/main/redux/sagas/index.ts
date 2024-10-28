@@ -11,7 +11,7 @@ import { keyboardActions, versionUpdateActions } from "readium-desktop/common/re
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
-import { select, call as callTyped } from "typed-redux-saga";
+import { select, call as callTyped  } from "typed-redux-saga";
 import { RootState } from "../states";
 import { _APP_VERSION, _APP_NAME, _PACK_NAME } from "readium-desktop/preprocessor-directives";
 // import { THttpGetCallback } from "readium-desktop/common/utils/http";
@@ -19,7 +19,6 @@ import { _APP_VERSION, _APP_NAME, _PACK_NAME } from "readium-desktop/preprocesso
 import { httpGet } from "readium-desktop/main/network/http";
 import * as semver from "semver";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
-import { diMainGet } from "readium-desktop/main/di";
 import { appActions, winActions } from "../actions";
 import * as api from "./api";
 import * as appSaga from "./app";
@@ -38,6 +37,8 @@ import * as catalog from "./catalog";
 import * as annotation from "./annotation";
 
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import { getTranslator } from "readium-desktop/common/services/translator";
+
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
 const debug = debug_(filename_);
@@ -54,6 +55,8 @@ export function* rootSaga() {
 
     try {
         yield all([
+
+            // wait for the app.whenReady()
             call(appSaga.init),
             call(keyboardShortcuts.init),
         ]);
@@ -112,8 +115,31 @@ export function* rootSaga() {
     // LCP saga
     yield lcp.saga();
 
+    // Annotation saga
+    yield annotation.saga();
+
     // get/set catalog in library win
     yield catalog.saga();
+
+    // creator initialization for Win32
+    // OS.userInfo seems to works fine on windows
+    // yield spawn(function* () {
+
+    //     const creator = yield* select((_state: ICommonRootState) => _state.creator);
+    //     if (creator?.name) {
+    //         return ;
+    //     }
+
+    //     try {
+    //         const username = yield* callTyped(() => creatorInitGetUsernameFromWin32Promise());
+    //         if (username) {
+    //             debug("Creator Username in Win32 plafform, username found with powershell [", username, "]");
+    //             yield put(creatorActions.set.build(username, creator.type));
+    //         }
+    //     } catch (e) {
+    //         debug("ERROR: Creator Username in Win32 platform, cannot get the username with powershell !! :", e);
+    //     }
+    // });
 
     // rehydrate shorcuts in redux
     yield put(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll(), false));
@@ -124,9 +150,6 @@ export function* rootSaga() {
     // call telemetry before app init state
     // need to track the previous state version before update in initSuccess.build
     yield call(telemetry.collectSaveAndSend);
-
-    // export annotations
-    yield annotation.saga();
 
     // app initialized
     yield put(appActions.initSuccess.build());
@@ -218,7 +241,7 @@ function* checkAppVersionUpdate() {
                     if (IS_DEV) {
                         yield call(async () => {
 
-                            const translate = diMainGet("translator").translate;
+                            const translate = getTranslator().translate;
                             const res = await dialog.showMessageBox(// browserWindow,
                                 {
                                 type: "question",

@@ -5,10 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
-import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
 import Entry from "./Entry";

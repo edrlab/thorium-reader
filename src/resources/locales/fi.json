@@ -75,7 +75,9 @@
       "lastAdditions": "Viimeksi lisätty"
     },
     "export": "Tallenna nimellä",
+    "exportAnnotation": "",
     "format": "Formaatti",
+    "importAnnotation": "",
     "lang": "Kieli",
     "lastRead": "Luettu viimeksi",
     "moreInfo": "Tietoa julkaisusta",
@@ -122,7 +124,19 @@
     "update": "Muokkaa"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Peru",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Haluatko poistaa tämän luettelon?",
     "deletePublication": "Haluatko poistaa tämän julkaisun?",
     "import": "Haluatko tuoda nämä tiedostot:",
@@ -167,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Julkaisun {{- title}} lataus epäonnistui: [{{- err}}]"
     },
@@ -304,12 +326,41 @@
       "Color": "Väri",
       "addNote": "Lisää muistiinpano",
       "advancedMode": "Välitön tila (luo suoraan valinnasta)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Asetukset",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Älä näytä",
       "highlight": "Korosta",
       "noSelectionToast": "Ei valintaa",
       "quickAnnotations": "Pikatila (ohita muokkausikkuna)",
       "saveNote": "Tallenna",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Näytä marginaalissa",
       "type": {
         "outline": "Reunaviiva",
@@ -423,6 +474,15 @@
         },
         "title": "Zoomaus"
       },
+      "preset": {
+        "apply": "",
+        "applyDetails": "",
+        "reset": "",
+        "resetDetails": "",
+        "save": "",
+        "saveDetails": "",
+        "title": ""
+      },
       "preview": "Esikatselu",
       "reduceMotion": "Vähennä liikettä",
       "scrolled": "Vieritettävä",
@@ -465,7 +525,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Poista kirjautumistiedot"
     },
     "keyboard": {
@@ -480,6 +548,10 @@
     },
     "language": {
       "languageChoice": "Kieli"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Keskeytä",

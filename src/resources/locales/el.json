@@ -75,7 +75,9 @@
       "lastAdditions": "Πρόσφατη προσθήκη"
     },
     "export": "Αποθήκευση ως",
+    "exportAnnotation": "",
     "format": "Διαμόρφωση (format)",
+    "importAnnotation": "",
     "lang": "Γλώσσα",
     "lastRead": "Τελευταία ανάγνωση",
     "moreInfo": "Λεπτομέρειες βιβλίου",
@@ -122,7 +124,19 @@
     "update": "Επεξεργασία"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Ακύρωση",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Διαγραφή καταλόγου;",
     "deletePublication": "Διαγραφή βιβλίου;",
     "import": "Επιβεβαίωση εισαγωγής:",
@@ -167,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Η λήψη του {{- title}} απέτυχε: [{{- err}}]"
     },
@@ -304,12 +326,41 @@
       "Color": "Χρώμα",
       "addNote": "Σχόλιο",
       "advancedMode": "Άμεση λειτουργία (αυτόματη δημιουργία μετά την επιλογή)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Επιλογές",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Να μην εμφανίζεται",
       "highlight": "Επισήμανση",
       "noSelectionToast": "Καμία επιλογή",
       "quickAnnotations": "Γρήγορη δημιουργία (παράβλεψη επεξεργασίας)",
       "saveNote": "Αποθήκευση",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Εμφάνιση στα περιθώρια",
       "type": {
         "outline": "Περίγραμμα",
@@ -423,6 +474,15 @@
         },
         "title": "Ρύθμιση μεγέθυνσης"
       },
+      "preset": {
+        "apply": "",
+        "applyDetails": "",
+        "reset": "",
+        "resetDetails": "",
+        "save": "",
+        "saveDetails": "",
+        "title": ""
+      },
       "preview": "Προεπισκόπηση",
       "reduceMotion": "Μείωση κίνησης",
       "scrolled": "Μετακυλίσιμο",
@@ -465,7 +525,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Διαγραφή δεδομένων ελέγχου ταυτότητας"
     },
     "keyboard": {
@@ -480,6 +548,10 @@
     },
     "language": {
       "languageChoice": "Επιλογή γλώσσας"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Ανενεργή",

@@ -5,10 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
 import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.scss";
 
-import { TranslatorProps, withTranslator } from "../../common/components/hoc/translator";
+import * as React from "react";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { connect } from "react-redux";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/common/components/hoc/translator";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -21,7 +23,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 export class SecondaryHeader extends React.Component<React.PropsWithChildren<IProps>, undefined> {
@@ -46,4 +48,8 @@ export class SecondaryHeader extends React.Component<React.PropsWithChildren<IPr
     }
 }
 
-export default withTranslator(SecondaryHeader);
+const mapStateToProps = (state: IRendererCommonRootState) => ({
+    locale: state.i18n.locale, // refresh
+});
+
+export default connect(mapStateToProps)(withTranslator(SecondaryHeader));

@@ -1,4 +1,8 @@
-@import "src/renderer/assets/styles/partials/mixin";
+@use './mixin' as mx;
+
+.CSS_START_partials_focus {
+  display: none;
+}
 
 :root *:focus {
   outline: none;
@@ -23,7 +27,7 @@
 /* :global */
 
 :root.R2_CSS_CLASS__KEYBOARD_INTERACT *:focus {
-  @include R2_MIXIN_FOCUS_OUTLINE;
+  @include mx.R2_MIXIN_FOCUS_OUTLINE;
 }
 
 /* :global */
@@ -44,6 +48,6 @@
   outline: inherit !important;
 }
 
-.___DEBUG___PARTIALS_FOCUS_CSS {
+.CSS_END_partials_focus {
   display: none;
 }

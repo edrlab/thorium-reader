@@ -31,6 +31,7 @@ import {
     ERROR_MESSAGE_ON_USERKEYCHECKREQUEST, streamerOpenPublicationAndReturnManifestUrl,
 } from "./publication/openPublication";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:reader";
@@ -178,9 +179,6 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
 
         if (e.toString() !== ERROR_MESSAGE_ON_USERKEYCHECKREQUEST) {
 
-            const translator = yield* callTyped(
-                () => diMainGet("translator"));
-
             if (types.isNativeError(e)) {
                 // disable "Error: "
                 e.name = "";
@@ -189,7 +187,7 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
             yield put(
                 toastActions.openRequest.build(
                     ToastType.Error,
-                    translator.translate("message.open.error", { err: e.toString() }),
+                    getTranslator().translate("message.open.error", { err: e.toString() }),
                 ),
             );
         }
@@ -203,15 +201,16 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
                 state.win.registry.reader[publicationIdentifier]?.reduxState || {} as IReaderStateReader,
         );
 
-        const sessionIsEnabled = yield* selectTyped(
-            (state: RootState) => state.session.state,
-        );
-        if (!sessionIsEnabled) {
-            const reduxDefaultConfig = yield* selectTyped(
-                (state: RootState) => state.reader.defaultConfig,
-            );
-            reduxState.config = reduxDefaultConfig;
-        }
+        // session always enabled
+        // const sessionIsEnabled = yield* selectTyped(
+        //     (state: RootState) => state.session.state,
+        // );
+        // if (!sessionIsEnabled) {
+        //     const reduxDefaultConfig = yield* selectTyped(
+        //         (state: RootState) => state.reader.defaultConfig,
+        //     );
+        //     reduxState.config = reduxDefaultConfig;
+        // }
 
         const winBound = yield* callTyped(getWinBound, publicationIdentifier);
 
@@ -345,7 +344,7 @@ function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction) {
     let textToCopy = clipboardData.txt;
 
     const publicationRepository = diMainGet("publication-repository");
-    const translator = diMainGet("translator");
+    const translator = getTranslator();
     const publicationDocument = yield* callTyped(() => publicationRepository.get(
         publicationIdentifier,
     ));

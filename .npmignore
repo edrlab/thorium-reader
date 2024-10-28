@@ -1,2 +1,6 @@
+.history
+release
 node_modules
 .DS_Store
+lcp.node
+external-assets/*

@@ -5,6 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 import * as React from "react";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
@@ -12,8 +15,6 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 import { useDispatch } from "react-redux";
 import { dialogActions } from "readium-desktop/common/redux/actions";
-import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 

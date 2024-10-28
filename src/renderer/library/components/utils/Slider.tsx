@@ -5,14 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesSlider from "readium-desktop/renderer/assets/styles/components/slider.scss";
+
 import classNames from "classnames";
 import * as React from "react";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesSlider from "readium-desktop/renderer/assets/styles/components/slider.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { connect } from "react-redux";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -136,19 +139,19 @@ class Slider extends React.Component<IProps, IState> {
     //     }
     //     const max = - this.wrapperRef.current.scrollWidth + this.wrapperRef.current.offsetWidth;
     //     let step = - e.currentTarget.scrollLeft;
-    
+
     //     if (this.state.position === max) {
     //         step = - step;
     //     }
-    
+
     //     let position =  Math.round((this.state.position + step) / 10) * 10;
-    
+
     //     if (position > 0) {
     //         position = 0;
     //     } else if (position < max) {
     //         position = max;
     //     }
-    
+
     //     this.setState({ position, refreshVisible: true });
     //     console.log(position, step);
     // }
@@ -228,4 +231,8 @@ class Slider extends React.Component<IProps, IState> {
     }
 }
 
-export default withTranslator(Slider);
+const mapStateToProps = (state: IRendererCommonRootState) => ({
+    locale: state.i18n.locale, // refresh
+});
+
+export default connect(mapStateToProps)(withTranslator(Slider));

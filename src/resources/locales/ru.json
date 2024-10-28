@@ -75,7 +75,9 @@
       "lastAdditions": "Недавно добавленные"
     },
     "export": "Экспорт",
+    "exportAnnotation": "",
     "format": "Формат",
+    "importAnnotation": "",
     "lang": "Язык",
     "lastRead": "Последнее чтение",
     "moreInfo": "Дополнительные сведения",
@@ -122,7 +124,19 @@
     "update": "Изменить"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Отменить",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Вы действительно хотите удалить этот каталог ?",
     "deletePublication": "Вы действительно хотите удалить эту книгу ?",
     "import": "Подтвердите импорт:",
@@ -167,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Загрузка {{- title}} не удалась: [{{- err}}]"
     },
@@ -304,12 +326,48 @@
       "Color": "Цвет",
       "addNote": "Комментировать",
       "advancedMode": "Мгновенный режим (автоматическое создание после выбора)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Параметры",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
+      "hide": "",
       "highlight": "Выделить",
       "noSelectionToast": "Нет выбора",
       "quickAnnotations": "Быстрое создание (пропуск редактора)",
       "saveNote": "Сохранить",
-      "toggleMarginMarks": "Отображение на полях"
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
+      "toggleMarginMarks": "Отображение на полях",
+      "type": {
+        "outline": "",
+        "solid": "",
+        "strikethrough": "",
+        "underline": ""
+      }
     },
     "divina": {
       "mute": "отключить звук",
@@ -416,6 +474,15 @@
         },
         "title": "Увеличить"
       },
+      "preset": {
+        "apply": "",
+        "applyDetails": "",
+        "reset": "",
+        "resetDetails": "",
+        "save": "",
+        "saveDetails": "",
+        "title": ""
+      },
       "preview": "Предпросмотр ",
       "reduceMotion": "Уменьшить движение",
       "scrolled": "Прокручивающаяся",
@@ -458,7 +525,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Очистить данные для входа"
     },
     "keyboard": {
@@ -473,6 +548,10 @@
     },
     "language": {
       "languageChoice": "Выбор языка"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Отключить",

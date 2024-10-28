@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 // import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
 // import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
 import * as React from "react";
@@ -14,7 +16,6 @@ import * as GridIcon from "readium-desktop/renderer/assets/icons/grid-icon.svg";
 // import * as ListIcon from "readium-desktop/renderer/assets/icons/list-icon.svg";
 import * as TableIcon from "readium-desktop/renderer/assets/icons/table-icon.svg";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -52,7 +53,7 @@ class Header extends React.Component<IProps, undefined> {
         return (
             <SecondaryHeader>
                 <div>
-                    <p style={{fontWeight: "600", margin: "0 0 5px"}}>{__("header.viewMode")}</p>
+                    <p style={{ fontWeight: "600", margin: "0 0 5px" }}>{__("header.viewMode")}</p>
                     <div style={{ display: "flex", gap: "10px" }}>
                         <Link
                             to={this.props.location}
@@ -65,6 +66,28 @@ class Header extends React.Component<IProps, undefined> {
                             title={__("header.gridTitle")}
                             aria-pressed={displayType === DisplayType.Grid}
                             role={"button"}
+                            onClick={(e) => {
+                                if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                    e.preventDefault();
+                                    e.currentTarget.click();
+                                }
+                            }}
+                            onKeyDown={(e) => {
+                                // if (e.code === "Space") {
+                                if (e.key === " " || e.altKey || e.ctrlKey) {
+                                    e.preventDefault(); // prevent scroll
+                                }
+                            }}
+                            onKeyUp={(e) => {
+                                // Includes screen reader tests:
+                                // if (e.code === "Space") { WORKS
+                                // if (e.key === "Space") { DOES NOT WORK
+                                // if (e.key === "Enter") { WORKS
+                                if (e.key === " ") { // WORKS
+                                    e.preventDefault();
+                                    e.currentTarget.click();
+                                }
+                            }}
                         >
                             {(displayType === DisplayType.Grid) ?
                                 <SVG svg={CheckIcon} ariaHidden /> :
@@ -83,6 +106,28 @@ class Header extends React.Component<IProps, undefined> {
                             title={__("header.listTitle")}
                             aria-pressed={displayType === DisplayType.List}
                             role={"button"}
+                            onClick={(e) => {
+                                if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                    e.preventDefault();
+                                    e.currentTarget.click();
+                                }
+                            }}
+                            onKeyDown={(e) => {
+                                // if (e.code === "Space") {
+                                if (e.key === " " || e.altKey || e.ctrlKey) {
+                                    e.preventDefault(); // prevent scroll
+                                }
+                            }}
+                            onKeyUp={(e) => {
+                                // Includes screen reader tests:
+                                // if (e.code === "Space") { WORKS
+                                // if (e.key === "Space") { DOES NOT WORK
+                                // if (e.key === "Enter") { WORKS
+                                if (e.key === " ") { // WORKS
+                                    e.preventDefault();
+                                    e.currentTarget.click();
+                                }
+                            }}
                         >
                             {(displayType === DisplayType.List) ?
                                 <SVG svg={CheckIcon} ariaHidden /> :
@@ -128,6 +173,7 @@ class Header extends React.Component<IProps, undefined> {
 
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
+    locale: state.i18n.locale, // refresh
 });
 
 export default connect(mapStateToProps)(withTranslator(Header));

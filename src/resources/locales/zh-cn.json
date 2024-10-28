@@ -13,6 +13,7 @@
   "apiapp": {
     "documentation": "Thorium 文档",
     "howItWorks": "如何工作的？",
+    "informations": "",
     "noLibraryFound": "未发现图书馆 ({{- name}})"
   },
   "app": {
@@ -74,7 +75,9 @@
       "lastAdditions": "最近添加"
     },
     "export": "导出",
+    "exportAnnotation": "",
     "format": "格式",
+    "importAnnotation": "",
     "lang": "语言",
     "lastRead": "上次阅读",
     "moreInfo": "更多信息",
@@ -121,7 +124,19 @@
     "update": "编辑"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "取消",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "你真的要删除此出版目录吗？",
     "deletePublication": "你真的要删除此出版物吗?",
     "import": "你真的要导入这些文件吗:",
@@ -166,6 +181,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "下载{{- title}}失败: [{{- err}}]"
     },
@@ -194,6 +217,7 @@
     "documentation": "OPDS 官方网站",
     "empty": "未找到出版物",
     "firstPage": "首页",
+    "informations": "",
     "lastPage": "尾页",
     "menu": {
       "aboutBook": "关于此书",
@@ -302,12 +326,41 @@
       "Color": "颜色",
       "addNote": "注解",
       "advancedMode": "即时模式（选择后自动创建）",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "选项",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "不显示",
       "highlight": "高亮",
       "noSelectionToast": "未选择",
       "quickAnnotations": "快速创建（跳过编辑器）",
       "saveNote": "保存",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "在页边距中显示",
       "type": {
         "outline": "大纲",
@@ -321,6 +374,7 @@
       "unmute": "取消静音"
     },
     "fxl": {
+      "fit": ""
     },
     "marks": {
       "annotations": "注解",
@@ -420,6 +474,15 @@
         },
         "title": "放大"
       },
+      "preset": {
+        "apply": "",
+        "applyDetails": "",
+        "reset": "",
+        "resetDetails": "",
+        "save": "",
+        "saveDetails": "",
+        "title": ""
+      },
       "preview": "预览",
       "reduceMotion": "减少动态效果",
       "scrolled": "滚屏",
@@ -462,7 +525,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "清除登录数据"
     },
     "keyboard": {
@@ -477,6 +548,10 @@
     },
     "language": {
       "languageChoice": "选择语言"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "禁用",
@@ -506,6 +581,7 @@
       "annotations": "突出显示文档中的文本，选择样式和颜色，并添加个人注释。在‘快速’模式下创建注解，无需经过编辑器（您可以稍后输入文本并自定义样式）。为了提高速度，您还可以使用‘即时’模式，该模式允许您在高亮文本后立即生成注解！",
       "catalogs": "从您的当地图书馆借阅出版物或通过 OPDS 源添加出版物。得益于在线目录，您可以从多个来源访问各种出版物。",
       "home": "Thorium 看起来不同了！让我们探索一下有什么新变化。",
+      "readingView1": "",
       "readingView2": "Thorium 改进的用户界面使得在出版物中查找文本、探索搜索结果、跳转到特定页面、浏览目录、创建书签等流程变得更加容易，这得益于新的‘固定’面板。在全屏阅读模式下继续提供无干扰的阅读体验。",
       "yourBooks": "欢迎来到重新设计的个人书架！在'网格'视图中，您可以轻松地通过标签筛选或通过关键词找到出版物。在高级的'表格'视图中，可以按特定作者、标题、日期、格式等选择并排序出版物。"
     },

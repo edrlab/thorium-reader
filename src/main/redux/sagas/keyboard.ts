@@ -10,12 +10,12 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { keyboardActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { diMainGet } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all } from "redux-saga/effects";
-import { call as callTyped, put as putTyped } from "typed-redux-saga/macro";
+import { put as putTyped } from "typed-redux-saga/macro";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 const filename_ = "readium-desktop:main:redux:sagas:keyboard";
 const debug = debug_(filename_);
@@ -59,9 +59,8 @@ function* keyboardReload(action: keyboardActions.reloadShortcuts.TAction) {
         const currentKeyboardShortcuts = keyboardShortcuts.getAll();
         yield* putTyped(keyboardActions.setShortcuts.build(currentKeyboardShortcuts, true)); // !action.payload.defaults
 
-        const translator = yield* callTyped(() => diMainGet("translator"));
         yield* putTyped(toastActions.openRequest.build(ToastType.Success,
-            `${translator.translate("settings.keyboard.keyboardShortcuts")}`));
+            `${getTranslator().__("settings.keyboard.keyboardShortcuts")}`));
     }
 }
 
