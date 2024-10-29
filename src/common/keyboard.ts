@@ -165,6 +165,32 @@ const _defaults_ = Object.freeze({
         key: "Period",
     }),
 
+    NavigatePreviousLibraryPage: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "ArrowLeft",
+    }),
+    NavigateNextLibraryPage: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "ArrowRight",
+    }),
+
+    NavigatePreviousLibraryPageAlt: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "Comma",
+    }),
+    NavigateNextLibraryPageAlt: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "Period",
+    }),
+
     CloseReader: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,

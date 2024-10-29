@@ -6,14 +6,15 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
+import { availableLanguages } from "readium-desktop/common/services/translator";
 
 export const ID = "LOCALE_SET";
 
 export interface Payload {
-    locale: string;
+    locale: keyof typeof availableLanguages;
 }
 
-export function build(locale: string): Action<typeof ID, Payload> {
+export function build(locale: keyof typeof availableLanguages): Action<typeof ID, Payload> {
 
     return {
         type: ID,

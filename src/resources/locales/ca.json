@@ -75,7 +75,9 @@
       "lastAdditions": "Afegits recentment"
     },
     "export": "Exportar",
+    "exportAnnotation": "",
     "format": "Format",
+    "importAnnotation": "",
     "lang": "Idioma",
     "lastRead": "Última lectura",
     "moreInfo": "Més información",
@@ -122,7 +124,19 @@
     "update": "Editar"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Cancel·lar",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Segur que vols eliminar aquest catàleg?",
     "deletePublication": "Segur que vols eliminar aquesta publicació?",
     "import": "Segur que vols importar aquests fitxers?",
@@ -157,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "Suggeriment : {{- hint}})",
+      "hint": "Suggeriment : ",
+      "open": "",
       "password": "Contrassenya",
       "sentence": "Aquesta publicació requereix una contrassenya LCP per obrir-se: ",
       "urlHint": "Has olvidat la contrassenya? Clica si necessites ajuda",
@@ -167,6 +182,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "La descàrrega de {{- title}} ha fallat: [{{- err}}]"
     },
@@ -272,6 +295,7 @@
     },
     "expired": "Préstec expirat",
     "expiredLcp": "Aquest llibre no es pot llegir perquè la llicència LCP ha expirat.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Fi",
     "lcpRightsCopy": "Còpia de personatges",
     "lcpRightsPrint": "Còpia d'impressora",
@@ -304,12 +328,41 @@
       "Color": "Color",
       "addNote": "Anotació",
       "advancedMode": "Mode instantani (creació automàtica després de seleccionar)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Opcions",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "No ho mostris",
       "highlight": "Ressaltat",
       "noSelectionToast": "Sense selecció",
       "quickAnnotations": "Creació ràpida (omet l'editor)",
       "saveNote": "Desa",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Mostra als marges",
       "type": {
         "outline": "Contorn",
@@ -423,6 +476,15 @@
         },
         "title": "Zoom"
       },
+      "preset": {
+        "apply": "",
+        "applyDetails": "",
+        "reset": "",
+        "resetDetails": "",
+        "save": "",
+        "saveDetails": "",
+        "title": ""
+      },
       "preview": "Previsualització",
       "reduceMotion": "Disminuir moviment",
       "scrolled": "Desplaçable",
@@ -465,7 +527,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Netejar dades d'autenticació"
     },
     "keyboard": {
@@ -480,6 +550,10 @@
     },
     "language": {
       "languageChoice": "Selecció d'idioma"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Deshabilitar",

@@ -7,14 +7,18 @@
 
 import "regenerator-runtime/runtime"; // for react-table (useAsyncDebounce()) see: https://github.com/TanStack/react-table/issues/2071#issuecomment-679999096
 
+import * as stylesPublication from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
+import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+// import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
+import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
+
 import { HoverEvent } from "@react-types/shared";
 import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Location } from "history";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as stylesPublication from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
-import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as ArrowLastIcon from "readium-desktop/renderer/assets/icons/arrowLast-icon.svg";
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/search-icon.svg";
 import * as ArrowFirstIcon from "readium-desktop/renderer/assets/icons/arrowFirst-icon.svg";
@@ -58,7 +62,7 @@ import { Column, useTable, useFilters, useSortBy, usePagination, useGlobalFilter
 import { formatTime } from "readium-desktop/common/utils/time";
 import * as DOMPurify from "dompurify";
 import * as moment from "moment";
-import { AvailableLanguages, I18nTyped, Translator } from "readium-desktop/common/services/translator";
+import { availableLanguages, I18nFunction } from "readium-desktop/common/services/translator";
 import * as React from "react";
 import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -82,12 +86,11 @@ import { ipcRenderer } from "electron";
 import PublicationCard from "../publication/PublicationCard";
 import classNames from "classnames";
 import * as Popover from "@radix-ui/react-popover";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+
 // import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
 import { useSearchParams } from "react-router-dom";
 // import * as FilterIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
 // import * as DeleteFilter from "readium-desktop/renderer/assets/icons/deleteFilter-icon.svg";
-// import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-icon.svg";
@@ -95,7 +98,6 @@ import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-i
 // import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
 import AboutThoriumButton from "../catalog/AboutThoriumButton";
-import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
 import Menu from "readium-desktop/renderer/common/components/menu/Menu";
 import CatalogMenu from "../publication/menu/CatalogMenu";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
@@ -103,6 +105,8 @@ import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import * as ValidatedIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as OnGoingBookIcon from "readium-desktop/renderer/assets/icons/ongoingBook-icon.svg";
 import debounce from "debounce";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 
 // import GridTagButton from "../catalog/GridTagButton";
 
@@ -215,7 +219,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
         const displayType = (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid;
 
-        const { __, location, translator, tags, openReader, displayPublicationInfo } = this.props;
+        const { __, location, tags, openReader, displayPublicationInfo } = this.props;
 
         const secondaryHeader = <Header />;
         // const breadCrumb = <BreadCrumb breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}/>;
@@ -233,7 +237,6 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
                             location={location}
                             displayType={displayType}
                             __={__}
-                            translator={translator}
                             publicationViews={this.state.publicationViews}
                             displayPublicationInfo={displayPublicationInfo}
                             openReader={openReader}
@@ -327,6 +330,7 @@ const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
     keyboardShortcuts: state.keyboard.shortcuts,
     tags: state.publication.tag,
+    locale: state.i18n.locale, // refresh
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
@@ -359,8 +363,7 @@ const commonCellStyles = (props: ITableCellProps_Column & ITableCellProps_Generi
 };
 
 interface ITableCellProps_GlobalFilter {
-    __: I18nTyped;
-    translator: Translator;
+    __: I18nFunction;
     displayType: DisplayType;
 
     preGlobalFilteredRows: Row<IColumns>[];
@@ -395,11 +398,11 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
     // className={classNames(classStyleExample)}
 
     return (
-        <div className={stylesInput.form_group}>
+        <div className={classNames(stylesInput.form_group, stylesInput.form_group_allPubSearch)}>
             <label
                 id="globalSearchLabel"
                 htmlFor="globalSearchInput"
-                style={{ display: "flex", gap: "5px" }}>
+                style={{ display: "flex", gap: "2px" }}>
                 {`${props.__("header.searchPlaceholder")}`}
                 <div
                     aria-live="assertive">
@@ -444,8 +447,7 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
 };
 
 interface ITableCellProps_Filter {
-    __: I18nTyped;
-    translator: Translator;
+    __: I18nFunction;
     displayType: DisplayType;
 
     showColumnFilters: boolean,
@@ -1154,8 +1156,10 @@ interface ITableCellProps_Value_Actions {
 
 const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Title> = (props) => {
 
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+
     // props.value.label
-    const pubTitleLangStr = convertMultiLangStringToString(props.translator, props.value.pubTitle);
+    const pubTitleLangStr = convertMultiLangStringToString(props.value.pubTitle, locale);
     const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
     const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
     const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
@@ -1355,8 +1359,7 @@ type MyTableInstance<T extends object> =
     };
 
 interface ITableCellProps_Common {
-    __: I18nTyped;
-    translator: Translator;
+    __: I18nFunction;
     displayType: DisplayType;
 
     displayPublicationInfo: ReturnType<typeof mapDispatchToProps>["displayPublicationInfo"];
@@ -1377,12 +1380,13 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
     const scrollToViewRef = React.useRef(null);
 
-    const { openReader, displayPublicationInfo, displayType, __, focusInputRef, translator, publicationViews, accessibilitySupportEnabled, tags } = props;
+    const { openReader, displayPublicationInfo, displayType, __, focusInputRef, publicationViews, accessibilitySupportEnabled, tags } = props;
+
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
 
     const renderProps_Filter: ITableCellProps_Filter =
     {
         __,
-        translator,
         displayType,
 
         showColumnFilters,
@@ -1395,7 +1399,6 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     const renderProps_Cell: ITableCellProps_GenericCell =
     {
         __,
-        translator,
         displayType,
 
         selectedTag,
@@ -1437,7 +1440,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             let publishedDateVisual = publishedDateCanonical;
             if (publishedDateCanonical) {
                 try {
-                    publishedDateVisual = new Intl.DateTimeFormat(translator.getLocale(), { dateStyle: "medium", timeStyle: undefined }).format(new Date(publishedDateCanonical));
+                    publishedDateVisual = new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: undefined }).format(new Date(publishedDateCanonical));
                 } catch (err) {
                     console.log(err);
                 }
@@ -1451,7 +1454,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             let lastReadDateVisual = lastReadDateCanonical;
             if (lastReadDateCanonical) {
                 try {
-                    lastReadDateVisual = new Intl.DateTimeFormat(translator.getLocale(), { dateStyle: "medium", timeStyle: "short" }).format(new Date(lastReadDateCanonical));
+                    lastReadDateVisual = new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(new Date(lastReadDateCanonical));
                 } catch (err) {
                     console.log(err);
                 }
@@ -1490,8 +1493,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 // Note: "pt-PT" in the i18next ResourceBundle is not captured because key match reduced to "pt"
                 // Also: pt-pt vs. pt-PT case sensitivity
                 // Also zh-CN (mandarin chinese)
-                const l = lang.split("-")[0] as keyof typeof AvailableLanguages;
-                const ll = AvailableLanguages[l] || lang;
+                const l = lang.split("-")[0] as keyof typeof availableLanguages;
+                const ll = availableLanguages[l] || lang;
 
                 const note = (lang !== ll) ? ` (${lang})` : "";
 
@@ -1512,7 +1515,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             let strA11Summary = "";
             if (publicationView.a11y_accessibilitySummary) {
 
-                const langStr = convertMultiLangStringToString(translator, publicationView.a11y_accessibilitySummary);
+                const langStr = convertMultiLangStringToString(publicationView.a11y_accessibilitySummary, locale);
 
                 if (langStr && langStr[1]) {
                     strA11Summary = DOMPurify.sanitize(langStr[1]).replace(/font-size:/g, "font-sizexx:");
@@ -1618,7 +1621,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             };
             return cols;
         });
-    }, [translator, publicationViews, __]);
+    }, [locale, publicationViews, __]);
 
     const sortFunction = (rowA: Row<IColumns>, rowB: Row<IColumns>, columnId: IdType<IColumns>, desc?: boolean) => {
         let res = 0;
@@ -1949,6 +1952,74 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     const tableInstance =
         useTable<IColumns>(opts, useFilters, useGlobalFilter, useSortBy, usePagination) as MyTableInstance<IColumns>;
 
+    const keyboardShortcuts = useSelector((state: ILibraryRootState) => state.keyboard.shortcuts);
+
+    const onKeyboardNavigateFirst = React.useCallback(() => {
+        tableInstance.gotoPage(0);
+    }, [tableInstance]);
+    const onKeyboardNavigatePrevious = React.useCallback(() => {
+        tableInstance.previousPage();
+    }, [tableInstance]);
+    const onKeyboardNavigateNext = React.useCallback(() => {
+        tableInstance.nextPage();
+    }, [tableInstance]);
+    const onKeyboardNavigateLast = React.useCallback(() => {
+        tableInstance.gotoPage(tableInstance.pageCount - 1);
+    }, [tableInstance]);
+
+    const registerAllKeyboardListeners = React.useCallback(() => {
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            keyboardShortcuts.NavigatePreviousLibraryPageAlt,
+            onKeyboardNavigateFirst);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            keyboardShortcuts.NavigatePreviousLibraryPage,
+            onKeyboardNavigatePrevious);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            keyboardShortcuts.NavigateNextLibraryPage,
+            onKeyboardNavigateNext);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            keyboardShortcuts.NavigateNextLibraryPageAlt,
+            onKeyboardNavigateLast);
+    }, [onKeyboardNavigateFirst, onKeyboardNavigateLast, onKeyboardNavigateNext, onKeyboardNavigatePrevious,
+        keyboardShortcuts.NavigatePreviousLibraryPageAlt,
+        keyboardShortcuts.NavigatePreviousLibraryPage,
+        keyboardShortcuts.NavigateNextLibraryPage,
+        keyboardShortcuts.NavigateNextLibraryPageAlt,
+    ]);
+
+    const unregisterAllKeyboardListeners = React.useCallback(() => {
+        unregisterKeyboardListener(onKeyboardNavigateFirst);
+        unregisterKeyboardListener(onKeyboardNavigateLast);
+        unregisterKeyboardListener(onKeyboardNavigatePrevious);
+        unregisterKeyboardListener(onKeyboardNavigateNext);
+    }, [onKeyboardNavigateFirst, onKeyboardNavigateLast, onKeyboardNavigateNext, onKeyboardNavigatePrevious]);
+
+    // const firstMountRef = React.useRef(true);
+    // const keyboardShortcutsRef = React.useRef(keyboardShortcuts);
+    React.useEffect(() => {
+        ensureKeyboardListenerIsInstalled();
+
+        // if (firstMountRef.current) {
+        //     registerAllKeyboardListeners();
+        //     firstMountRef.current = false;
+        // }
+
+        // if (!keyboardShortcutsMatch(keyboardShortcutsRef.current, keyboardShortcuts)) {
+            unregisterAllKeyboardListeners();
+            registerAllKeyboardListeners();
+            // keyboardShortcutsRef.current = keyboardShortcuts;
+        // }
+
+        return () => {
+            unregisterAllKeyboardListeners();
+        };
+    }, [registerAllKeyboardListeners, unregisterAllKeyboardListeners, keyboardShortcuts]);
+
     React.useEffect(() => {
 
         const cb = () => {
@@ -1958,11 +2029,11 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 if (!bodyWidth) {
                     return;
                 }
-                
+
                 const coverWidth = 205;
                 const col = Math.floor(bodyWidth/coverWidth);
                 const nbItemMissing = col - PAGESIZE%col;
-                
+
                 tableInstance.setPageSize(PAGESIZE+nbItemMissing);
             } else {
                 tableInstance.setPageSize(PAGESIZE);
@@ -1973,7 +2044,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         const cdDebounce = debounce(cb, 500);
 
         window.addEventListener("resize", cdDebounce);
-        
+
         return () => {
             window.removeEventListener("resize", cdDebounce);
         };
@@ -2042,7 +2113,6 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                             globalFilter={tableInstance.state.globalFilter}
                             setGlobalFilter={tableInstance.setGlobalFilter}
                             __={__}
-                            translator={translator}
                             displayType={displayType}
                             focusInputRef={focusInputRef}
 
@@ -2053,7 +2123,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                     if (currentShow && !show) {
                                         for (const col of tableInstance.allColumns) {
                                             tableInstance.setFilter(col.id, "");
-                                            
+
                                         }
                                     }
                                 }, 200);
@@ -2082,16 +2152,34 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
                                 <div className={stylesPublication.filter_container}>
                                     <ComboBox
-                                        label={__("header.fitlerTagTitle")}
                                         defaultItems={tagsOptions}
-                                        defaultSelectedKey={tagsOptions.find((tag) => tag.name?.toLowerCase().includes(selectedTag?.toLowerCase()))?.id || undefined}
-                                        onSelectionChange={(i) => {
-                                            setSelectedTag(tagsOptions.find((tag) => tag.id === i)?.name);
-                                            tableInstance.setFilter("colTags", tagsOptions.find((tag) => tag.id === i)?.name);
-                                            // console.log(tableInstance.columns.find((element) => element.Header === "Tags"))
+                                        defaultSelectedKey={
+                                            tagsOptions.findIndex((tag) =>
+                                                tag.name?.toLowerCase() === selectedTag.toLowerCase())
+                                        }
+                                        selectedKey={
+                                            tagsOptions.findIndex((tag) =>
+                                                tag.name?.toLowerCase() === selectedTag.toLowerCase())
+                                        }
+                                        onSelectionChange={(key) => {
+
+                                            if (key === null) {
+                                                // nothing
+                                            } else {
+
+                                                const found = tagsOptions.find((tag) => tag.id === key);
+                                                if (found) {
+                                                    setSelectedTag(found.name);
+                                                }
+                                                tableInstance.setFilter("colTags", found?.name || undefined);
+                                            }
                                         }}
                                         svg={TagIcon}
                                         allowsCustomValue
+                                        onInputChange={(v) => setSelectedTag(v)}
+                                        inputValue={selectedTag}
+                                        defaultInputValue={selectedTag}
+                                        aria-label={__("header.fitlerTagTitle")}
                                     >
                                         {item => <ComboBoxItem
                                             onHoverStart={(e: HoverEvent) => {
@@ -2408,7 +2496,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                 console.log("####");
                                 return (<tr key={index}></tr>);
                             }
-                        
+
                             return (
                                 displayType === DisplayType.Grid ?
                                     <tr key={index}>

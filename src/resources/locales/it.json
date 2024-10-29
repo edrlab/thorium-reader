@@ -75,7 +75,9 @@
       "lastAdditions": "Aggiunti di recente"
     },
     "export": "Esporta",
+    "exportAnnotation": "",
     "format": "Formato",
+    "importAnnotation": "",
     "lang": "Lingua",
     "lastRead": "Ultimi letti",
     "moreInfo": "Più info",
@@ -122,7 +124,19 @@
     "update": "Modifica"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Annulla",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Vuoi davvero eliminare questo catalogo ?",
     "deletePublication": "Vuoi davvero eliminare questa pubblicazione ?",
     "import": "Vuoi davvero importare questi files:",
@@ -157,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "(Suggerimento : {{- hint}})",
+      "hint": "Suggerimento : ",
+      "open": "",
       "password": "Passphrase",
       "sentence": "Questa pubblicazione ha bisogno di una passphrase LCP per essere aperta: ",
       "urlHint": "Hai dimenticato la tua passphrase? Ottieni un aiuto qui",
@@ -167,6 +182,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Il download di {{- title}} è fallito: [{{- err}}]"
     },
@@ -272,6 +295,7 @@
     },
     "expired": "Prestito scaduto",
     "expiredLcp": "Questo libro non può essere letto perchè la licenza LCP è scaduta.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Fine",
     "lcpRightsCopy": "Caratteri copiati",
     "lcpRightsPrint": "Pagine stampate",
@@ -304,12 +328,41 @@
       "Color": "Colore",
       "addNote": "Annotare",
       "advancedMode": "Modalità istantanea (creazione automatica dopo la selezione)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Opzioni",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Non mostrare",
       "highlight": "Evidenziare",
       "noSelectionToast": "Nessuna selezione",
       "quickAnnotations": "Creazione rapida (salta editor)",
       "saveNote": "Salva",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Visualizzazione ai margini",
       "type": {
         "outline": "Contorno",
@@ -423,6 +476,15 @@
         },
         "title": "Zoom"
       },
+      "preset": {
+        "apply": "",
+        "applyDetails": "",
+        "reset": "",
+        "resetDetails": "",
+        "save": "",
+        "saveDetails": "",
+        "title": ""
+      },
       "preview": "Anteprima",
       "reduceMotion": "Riduci movimento",
       "scrolled": "Scrollabile",
@@ -465,7 +527,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Elimina dati di autenticazione"
     },
     "keyboard": {
@@ -480,6 +550,10 @@
     },
     "language": {
       "languageChoice": "Scelta della lingua"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Disabilita",

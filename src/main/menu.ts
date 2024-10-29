@@ -5,13 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { BrowserWindow, Menu, MenuItem, webContents } from "electron";
-import { diMainGet } from "readium-desktop/main/di";
+import { KeyboardEvent, BaseWindow, BrowserWindow, Menu, MenuItem, webContents } from "electron";
 import {
     _APP_NAME, _CONTINUOUS_INTEGRATION_DEPLOY, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 
 import { showLibrary } from "./tools/showLibrary";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -55,9 +55,9 @@ function devMenu(win: BrowserWindow, _isReaderView: boolean): Electron.MenuItemC
             {
                 label: "RELOAD WINDOW",
                 accelerator: "CmdOrCtrl+R",
-                click: (_item: MenuItem, focusedWindow: BrowserWindow) => {
+                click: (_item: MenuItem, focusedWindow: BaseWindow, _event: KeyboardEvent) => {
                     if (focusedWindow) {
-                        focusedWindow.webContents.reload();
+                        (focusedWindow as BrowserWindow).webContents.reload();
                     } else {
                         const bw = BrowserWindow.getFocusedWindow();
                         if (bw) {
@@ -76,9 +76,9 @@ function devMenu(win: BrowserWindow, _isReaderView: boolean): Electron.MenuItemC
             {
                 label: "TOGGLE DEV TOOLS",
                 accelerator: "Alt+CmdOrCtrl+I",
-                click: (_item: MenuItem, focusedWindow: BrowserWindow) => {
+                click: (_item: MenuItem, focusedWindow: BaseWindow, _event: KeyboardEvent) => {
                     if (focusedWindow) {
-                        focusedWindow.webContents.toggleDevTools();
+                        (focusedWindow as BrowserWindow).webContents.toggleDevTools();
                     } else {
                         const bw = BrowserWindow.getFocusedWindow();
                         if (bw) {
@@ -100,7 +100,7 @@ function devMenu(win: BrowserWindow, _isReaderView: boolean): Electron.MenuItemC
             {
                 label: "OPEN ALL DEV TOOLS",
                 accelerator: "Shift+Alt+CmdOrCtrl+I",
-                click: (_item: MenuItem, _focusedWindow: BrowserWindow) => {
+                click: (_item: MenuItem, _focusedWindow: BaseWindow, _event: KeyboardEvent) => {
                     const arr = BrowserWindow.getAllWindows();
                     arr.forEach((bww) => {
                         bww.webContents.openDevTools({ activate: true, mode: "detach" });
@@ -110,7 +110,7 @@ function devMenu(win: BrowserWindow, _isReaderView: boolean): Electron.MenuItemC
             {
                 label: "OPEN ALL R2-NAVIGATOR DEV TOOLS",
                 accelerator: "Shift+Alt+CmdOrCtrl+I",
-                click: (_item: MenuItem, _focusedWindow: BrowserWindow) => {
+                click: (_item: MenuItem, _focusedWindow: BaseWindow, _event: KeyboardEvent) => {
                     for (const wc of webContents.getAllWebContents()) {
                         if (wc.hostWebContents) {
                             // wc.hostWebContents.id === readerWindow.webContents.id
@@ -125,7 +125,7 @@ function devMenu(win: BrowserWindow, _isReaderView: boolean): Electron.MenuItemC
             {
                 label: "INJECT AXE A11Y CHECKER",
                 accelerator: "Shift+Alt+CmdOrCtrl+A",
-                click: (_item: MenuItem, _focusedWindow: BrowserWindow) => {
+                click: (_item: MenuItem, _focusedWindow: BaseWindow, _event: KeyboardEvent) => {
                     const arr = BrowserWindow.getAllWindows();
                     arr.forEach((bww) => {
                         bww.webContents.openDevTools({ activate: true, mode: "detach" });
@@ -153,7 +153,7 @@ function setMenuWindowsLinux(win: BrowserWindow, isReaderView: boolean) {
 }
 
 function setMenuDarwin(win: BrowserWindow, isReaderView: boolean) {
-    const translator = diMainGet("translator");
+    const translator = getTranslator();
     const template: Electron.MenuItemConstructorOptions[] = [
         {
             label: capitalizedAppName,

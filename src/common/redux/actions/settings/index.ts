@@ -5,9 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export const diLibrarySymbolTable = {
-    "history": Symbol("history"),
-    "store": Symbol("store"),
-    "translator": Symbol("translator"),
-    "react-library-app": Symbol("react-library-app"),
+import * as enableAPIAPP from "./enableAPIAPP";
+
+export {
+    enableAPIAPP,
 };

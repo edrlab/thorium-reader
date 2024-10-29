@@ -22,6 +22,7 @@ import { importLcplFromFS } from "./importLcplFromFs";
 import { importPublicationFromFS } from "./importPublicationFromFs";
 
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/importFromFSService");
@@ -46,12 +47,12 @@ export function* importFromFsService(
 
     if (!acceptedExtensionArray.includes(ext) && !isNccHTML) {
         // const store = diMainGet("store");
-        // store.dispatch(toastActions.openRequest.build(ToastType.Error, diMainGet("translator").translate("dialog.importError", {
+        // store.dispatch(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("dialog.importError", {
         //     acceptedExtension: `[${ext}] ${acceptedExtensionArray.join(" ")}`,
         // })));
         // return [undefined, false];
 
-        throw new Error(diMainGet("translator").translate("dialog.importError", {
+        throw new Error(getTranslator().translate("dialog.importError", {
             acceptedExtension: `[${ext}] ${acceptedExtensionArray.join(" ")}`,
         }));
     }

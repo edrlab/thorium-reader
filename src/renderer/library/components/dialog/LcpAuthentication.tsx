@@ -5,24 +5,27 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
+
 import { shell } from "electron";
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
-import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+// import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 // import * as InfoIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 // import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
 import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLink-icon.svg";
-import * as CrossIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
-import * as PassIcon from "readium-desktop/renderer/assets/icons/password-icon.svg";
+// import * as CrossIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
+import * as InfosIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import * as LockIcon from "readium-desktop/renderer/assets/icons/lock-icon.svg";
+import * as KeyholeIcon from "readium-desktop/renderer/assets/icons/keyhole-icon.svg";
 import * as LightBulbIcon from "readium-desktop/renderer/assets/icons/lightbulb-icon.svg";
-import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -83,29 +86,25 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
         return <Dialog.Root defaultOpen={true} onOpenChange={(open) => { if (open === false) { this.props.closeDialog(); } }}>
             <Dialog.Portal>
                 <div className={stylesModals.modal_dialog_overlay}></div>
-                <Dialog.Content className={stylesModals.modal_dialog}>
+                <Dialog.Content className={stylesModals.modal_dialog} style={{maxWidth: "600px"}} onOpenAutoFocus={(e) => {
+                    e.preventDefault();
+                    this.focusRef.current?.focus();
+                }} aria-describedby={__("library.lcp.sentence")}>
                     <div className={stylesModals.modal_dialog_header}>
                         <Dialog.Title>
                             {__("library.lcp.sentence")}
                         </Dialog.Title>
-                        <div>
-                            <Dialog.Close asChild>
-                                <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                                    <SVG ariaHidden={true} svg={QuitIcon} />
-                                </button>
-                            </Dialog.Close>
-                        </div>
                     </div>
                     <form className={stylesModals.modal_dialog_body}>
                         <p>
                             <span className={stylesModals.lcp_hint}>
                                 <SVG ariaHidden svg={LightBulbIcon} />
-                                {__("library.lcp.hint", { hint: this.props.hint })}
+                                <b>{__("library.lcp.hint")}</b> {this.props.hint}
                             </span>
                         </p>
-                        <div className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)}>
-                            <label htmlFor="passphrase">{__("library.lcp.password")}</label>
-                            <SVG ariaHidden svg={PassIcon} />
+                        <div className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)} style={{marginTop: "0", width: "99%"}}>
+                            <label htmlFor="passphrase" style={{fontSize: "14px"}}>{__("library.lcp.password")}</label>
+                            <SVG ariaHidden svg={KeyholeIcon} />
                             <input
                                 id="passphrase"
                                 aria-label={__("library.lcp.password")}
@@ -117,9 +116,9 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                         </div>
                         {
                             typeof this.props.message === "string" ?
-                                <p className={stylesInputs.passphrase_error}>
-                                    <SVG ariaHidden svg={CrossIcon} />
-                                    <span>{this.props.message}.</span>
+                                <p className={stylesInputs.passphrase_infos}>
+                                    <SVG ariaHidden svg={InfosIcon} />
+                                    <span>{this.props.message}</span>
                                 </p>
                                 : <></>
                         }
@@ -160,7 +159,9 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
                             </Dialog.Close>
                             <Dialog.Close asChild>
-                                <button type="submit" className={stylesButtons.button_primary_blue} onClick={this.submit}>{__("opds.addForm.addButton")}</button>
+                                <button type="submit" className={stylesButtons.button_primary_blue} onClick={this.submit}>
+                                    <SVG ariaHidden svg={LockIcon} />
+                                    {__("library.lcp.open")}</button>
                             </Dialog.Close>
                         </div>
                     </form>
@@ -174,9 +175,9 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
     };
 
     private submit = () => {
-        if (!this.state.password) {
-            return;
-        }
+        // if (!this.state.password) {
+        //     return;
+        // }
         this.props.unlockPublication(this.props.publicationView.identifier, this.state.password);
     };
 }
@@ -185,6 +186,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     ...{
         open: state.dialog.type === DialogTypeName.LcpAuthentication,
     }, ...state.dialog.data as DialogType[DialogTypeName.LcpAuthentication],
+    locale: state.i18n.locale, // refresh
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {

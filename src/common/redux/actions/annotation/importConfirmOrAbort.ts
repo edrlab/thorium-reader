@@ -7,21 +7,16 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 
-export const ID = "ANNOTATION_EXPORT_W3CANNOTATIONSET";
+export const ID = "ANNOTATION_IMPORT_CONFIRM_OR_ABORT";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Payload {
-    publicationIdentifier: string;
-    // filePath: string,
+    state: "importAll" | "importNoConflict" | "abort";
 }
-
-export function build(publicationIdentifier: string/*, filePath: string*/): Action<typeof ID, Payload> {
-
+export function build(state: Payload["state"]): Action<typeof ID, Payload> {
     return {
         type: ID,
         payload: {
-            publicationIdentifier,
-            // filePath,
+            state,
         },
     };
 }

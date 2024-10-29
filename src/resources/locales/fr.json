@@ -75,7 +75,9 @@
       "lastAdditions": "Récemment ajouté"
     },
     "export": "Sauvegarder sous",
+    "exportAnnotation": "",
     "format": "Format",
+    "importAnnotation": "",
     "lang": "Langue",
     "lastRead": "Dernière lecture",
     "moreInfo": "Plus d'informations",
@@ -122,7 +124,19 @@
     "update": "Éditer"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Annuler",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Supprimer ce catalogue ?",
     "deletePublication": "Supprimer ce livre ?",
     "import": "Confirmer l'ajout :",
@@ -157,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "Indice : {{- hint}}",
+      "hint": "Indice : ",
+      "open": "Ouvrir",
       "password": "Mot de passe",
       "sentence": "Entrez la clé LCP associée à cette publication :",
       "urlHint": "Vous avez oublié votre phrase d'accès ? Trouvez de l'aide avec ce lien",
@@ -167,6 +182,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Le téléchargement de {{- title}} a échoué: [{{- err}}]"
     },
@@ -272,6 +295,7 @@
     },
     "expired": "Prêt expiré",
     "expiredLcp": "Ce livre ne peut être lu car la licence LCP a expiré.",
+    "incorrectPassphrase": "Aucune clé LCP enregistrée ne correspond à la publication ou la clé saisie est incorrecte.",
     "lcpEnd": "Fin",
     "lcpRightsCopy": "Caractères copiés",
     "lcpRightsPrint": "Pages imprimées",
@@ -304,12 +328,41 @@
       "Color": "Couleur",
       "addNote": "Annoter",
       "advancedMode": "Mode instantané (création automatique après sélection)",
+      "annotationsExport": {
+        "description": "Nommez cette liste d'annotations",
+        "title": "Titre"
+      },
       "annotationsOptions": "Options",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Ne pas afficher",
       "highlight": "Surligner",
       "noSelectionToast": "Aucun texte sélectionné",
       "quickAnnotations": "Annotation rapide (sans édition)",
       "saveNote": "Sauvegarder",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Afficher dans la marge",
       "type": {
         "outline": "Encadré",
@@ -423,6 +476,15 @@
         },
         "title": "Loupe"
       },
+      "preset": {
+        "apply": "Appliquer les paramètres de lecture préférés",
+        "applyDetails": "Appliquer au livre courant les paramètres de lecture précédemment enregistrés.",
+        "reset": "Réinitialiser les paramètres de lecture préférés",
+        "resetDetails": "Effacer les paramètres de lecture précédemment appliqués, et revenir à la mise en forme et aux choix d'affichage par défaut",
+        "save": "Enregistrer les paramètres de lecture préférés",
+        "saveDetails": "Sauvegarder les modifications appliquées à la mise en forme du livre courant et les choix d'affichage du logiciel. Ces paramètres pourront être appliqués à d'autres livres, une fois ouverts, en cliquant sur le bouton ci-dessous.",
+        "title": "Préréglage"
+      },
       "preview": "Aperçu",
       "reduceMotion": "Réduire la vitesse",
       "scrolled": "Défilement vertical",
@@ -465,11 +527,19 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Effacer les données d'authentification"
     },
     "keyboard": {
-      "advancedMenu": "Menu",
+      "advancedMenu": "Menu avancé raccourcis clavier",
       "cancel": "Annuler",
       "disclaimer": "Les raccourcis clavier sont actuellement basés sur une disposition QWERTY.",
       "editUserJson": "Éditer le fichier ...",
@@ -480,6 +550,10 @@
     },
     "language": {
       "languageChoice": "Choix de la langue"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Désactiver",

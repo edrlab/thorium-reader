@@ -5,11 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
+import * as React from "react";
+import * as Dialog from "@radix-ui/react-dialog";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import {
@@ -18,6 +19,8 @@ import {
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import classNames from "classnames";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { connect } from "react-redux";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -132,4 +135,8 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
 
 }
 
-export default withTranslator(OpdsFeedUpdateForm);
+const mapStateToProps = (state: IRendererCommonRootState) => ({
+    locale: state.i18n.locale, // refresh
+});
+
+export default connect(mapStateToProps)(withTranslator(OpdsFeedUpdateForm));

@@ -75,7 +75,9 @@
       "lastAdditions": "Paskiausiai pridėti"
     },
     "export": "Eksportuoti",
+    "exportAnnotation": "",
     "format": "Formatas",
+    "importAnnotation": "",
     "lang": "Kalba",
     "lastRead": "Pask. kartą skaityta",
     "moreInfo": "Daugiau informacijos",
@@ -122,7 +124,19 @@
     "update": "Keisti"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Nutraukti",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Ar tikrai norite pašalinti šį katalogą?",
     "deletePublication": "Ar tikrai norite pašalinti šį leidinį?",
     "import": "Ar tikrai norite importuoti šiuos failus:",
@@ -157,7 +171,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "(Užuomina : {{- hint}})",
+      "hint": "Užuomina : ",
+      "open": "",
       "password": "Slaptažodis",
       "sentence": "Šiam leidiniui atverti reikalingas LCP slaptažodis: ",
       "urlHint": "Pamiršote slaptažodį? Pagalbos ieškokite čia",
@@ -167,6 +182,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "{{- title}} atsiuntimas nepavyko: [{{- err}}]"
     },
@@ -272,6 +295,7 @@
     },
     "expired": "Skolinimo terminas baigėsi",
     "expiredLcp": "Šio leidinio negalima skaityti, nes baigėsi LCP licencijos galiojimo laikas.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Pabaiga",
     "lcpRightsCopy": "Ženklų kopijos",
     "lcpRightsPrint": "Spausdintos kopijos",
@@ -304,12 +328,41 @@
       "Color": "Spalva",
       "addNote": "Pridėti pastabą",
       "advancedMode": "Momentinis režimas (pažymėjus sukurti automatiškai)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Parinktys",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Neatvaizduoti",
       "highlight": "Paryškinimas",
       "noSelectionToast": "Niekas nepasirinkta",
       "quickAnnotations": "Greitasis kūrimas (praleidžiant rengyklę)",
       "saveNote": "Išsaugoti",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Atvaizduoti paraštėse",
       "type": {
         "outline": "Kontūras",
@@ -423,6 +476,15 @@
         },
         "title": "Mastelis"
       },
+      "preset": {
+        "apply": "",
+        "applyDetails": "",
+        "reset": "",
+        "resetDetails": "",
+        "save": "",
+        "saveDetails": "",
+        "title": ""
+      },
       "preview": "Peržiūrėti",
       "reduceMotion": "Mažinti judesių kiekį",
       "scrolled": "Slenkantis",
@@ -465,7 +527,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Išvalyti prisijungimo duomenis"
     },
     "keyboard": {
@@ -480,6 +550,10 @@
     },
     "language": {
       "languageChoice": "Kalba"
+    },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
     },
     "session": {
       "no": "Išjungti",
