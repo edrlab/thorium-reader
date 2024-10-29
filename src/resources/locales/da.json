@@ -444,6 +444,7 @@
         "title": "Kolonner",
         "two": "2 kolonner"
       },
+      "customFontSelected": "",
       "customizeReader": "Tilpas tekstformatering",
       "disabled": "slået fra",
       "display": "Visning",

@@ -616,7 +616,7 @@ declare namespace typed_i18n {
   readonly "duration": { readonly "title": string },
   readonly "expired": string,
   readonly "expiredLcp": string,
-  readonly "incorrectPassphrase": string,
+  readonly "userKeyCheckInvalid": string,
   readonly "lcpEnd": string,
   readonly "lcpRightsCopy": string,
   readonly "lcpRightsPrint": string,
@@ -640,7 +640,7 @@ declare namespace typed_i18n {
   readonly "seeMore": string,
   readonly "timeLeft": string,
   readonly "title": string,
-  readonly "userKeyCheckInvalid": string
+  readonly "incorrectPassphrase": string
 };
   (_: "publication.accessibility", __?: {}): {
   readonly "accessModeSufficient": { readonly "textual": string },
@@ -728,7 +728,7 @@ declare namespace typed_i18n {
   (_: "publication.duration.title", __?: {}): string;
   (_: "publication.expired", __?: {}): string;
   (_: "publication.expiredLcp", __?: {}): string;
-  (_: "publication.incorrectPassphrase", __?: {}): string;
+  (_: "publication.userKeyCheckInvalid", __?: {}): string;
   (_: "publication.lcpEnd", __?: {}): string;
   (_: "publication.lcpRightsCopy", __?: {}): string;
   (_: "publication.lcpRightsPrint", __?: {}): string;
@@ -753,7 +753,7 @@ declare namespace typed_i18n {
   (_: "publication.seeMore", __?: {}): string;
   (_: "publication.timeLeft", __?: {}): string;
   (_: "publication.title", __?: {}): string;
-  (_: "publication.userKeyCheckInvalid", __?: {}): string;
+  (_: "publication.incorrectPassphrase", __?: {}): string;
   (_: "reader", __?: {}): {
   readonly "annotations": {
     readonly "Color": string,
@@ -877,6 +877,7 @@ declare namespace typed_i18n {
     readonly "font": string,
     readonly "fontSize": string,
     readonly "infoCustomFont": string,
+    readonly "customFontSelected": string,
     readonly "justification": string,
     readonly "justify": string,
     readonly "letterSpacing": string,
@@ -1195,6 +1196,7 @@ declare namespace typed_i18n {
   readonly "font": string,
   readonly "fontSize": string,
   readonly "infoCustomFont": string,
+  readonly "customFontSelected": string,
   readonly "justification": string,
   readonly "justify": string,
   readonly "letterSpacing": string,
@@ -1265,6 +1267,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.font", __?: {}): string;
   (_: "reader.settings.fontSize", __?: {}): string;
   (_: "reader.settings.infoCustomFont", __?: {}): string;
+  (_: "reader.settings.customFontSelected", __?: {}): string;
   (_: "reader.settings.justification", __?: {}): string;
   (_: "reader.settings.justify", __?: {}): string;
   (_: "reader.settings.letterSpacing", __?: {}): string;

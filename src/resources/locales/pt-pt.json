@@ -444,6 +444,7 @@
         "title": "Colunas",
         "two": "2 cols."
       },
+      "customFontSelected": "",
       "customizeReader": "Personalizar formatação do texto",
       "disabled": "desativado",
       "display": "Visualização",

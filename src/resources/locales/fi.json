@@ -444,6 +444,7 @@
         "title": "Palstat",
         "two": "2 palstaa"
       },
+      "customFontSelected": "",
       "customizeReader": "Mukauta tekstin ulkoasua",
       "disabled": "ei käytössä",
       "display": "Näyttöasetukset",

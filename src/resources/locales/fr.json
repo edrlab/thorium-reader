@@ -444,6 +444,7 @@
         "title": "Colonnes",
         "two": "2 cols"
       },
+      "customFontSelected": "Vous avez sélectionné une police personnelle",
       "customizeReader": "Personnaliser la mise en forme",
       "disabled": "désactivé",
       "display": "Affichage",

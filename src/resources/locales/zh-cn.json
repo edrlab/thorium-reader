@@ -444,6 +444,7 @@
         "title": "栏",
         "two": "2栏"
       },
+      "customFontSelected": "",
       "customizeReader": "自定义文本格式",
       "disabled": "已禁用",
       "display": "显示",
