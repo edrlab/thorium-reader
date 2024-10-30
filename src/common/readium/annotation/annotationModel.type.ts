@@ -41,62 +41,105 @@ export interface IReadiumAnnotationModel {
         selector: Array<(
             ITextQuoteSelector
             | IProgressionSelector
-            | IDomRangeSelector
+            // | IDomRangeSelector
             | IFragmentSelector
         )>;
     };
 }
 
-export interface ITextQuoteSelector {
+export interface ISelector<T> {
+    type: string;
+    refinedBy?: T;
+}
+
+export interface ITextQuoteSelector extends ISelector<ITextQuoteSelector | ITextPositionSelector | IFragmentSelector> {
     type: "TextQuoteSelector";
     exact: string;
     prefix: string;
     suffix: string;
 }
 export function isTextQuoteSelector(a: any): a is ITextQuoteSelector {
-    return typeof a === "object" && a.type === "TextQuoteSelector"
+    return a?.type === "TextQuoteSelector"
     && typeof a.exact === "string"
     && typeof a.prefix === "string"
     && typeof a.suffix === "string";
 }
 
-export interface IProgressionSelector {
+export interface ITextPositionSelector extends ISelector<ITextQuoteSelector | ITextPositionSelector | IFragmentSelector> {
+    type: "TextPositionSelector";
+    start: number;
+    end: number;
+}
+export function isTextPositionSelector(a: any): a is ITextPositionSelector {
+    return a?.type === "TextPositionSelector"
+    && typeof a.start === "number"
+    && typeof a.end === "number";
+}
+
+export interface ICssSelector extends ISelector<ITextQuoteSelector | ITextPositionSelector | IFragmentSelector> {
+    type: "CssSelector",
+    value: string,
+}
+export function isCssSelector(a: any): a is ICssSelector {
+    return a?.type === "CssSelector"
+    && typeof a.value === "string";
+}
+
+export interface IXPathSelector extends ISelector<ITextQuoteSelector | ITextPositionSelector | IFragmentSelector> {
+    type: "XPathSelector",
+    value: string,
+}
+export function isXPathSelector(a: any): a is IXPathSelector {
+    return a?.type === "XPathSelector"
+    && typeof a.value === "string";
+}
+
+export interface IProgressionSelector extends ISelector<ITextQuoteSelector | ITextPositionSelector | IFragmentSelector> {
     type: "ProgressionSelector";
     value: number;
 }
 export function isProgressionSelector(a: any): a is IProgressionSelector {
-    return typeof a === "object" && a.type === "ProgressionSelector"
+    return a?.type === "ProgressionSelector"
     && typeof a.value === "number";
 }
 
-export interface IDomRangeSelector {
-    type: "DomRangeSelector";
-    startContainerElementCssSelector: string;
-    startContainerChildTextNodeIndex: number;
-    startOffset: number;
-    endContainerElementCssSelector: string;
-    endContainerChildTextNodeIndex: number;
-    endOffset: number;
+export interface IRangeSelector extends ISelector<ITextQuoteSelector | ITextPositionSelector | IFragmentSelector | IXPathSelector | ICssSelector> {
+    type: "RangeSelector",
+    startSelector:  ISelector<ITextQuoteSelector | ITextPositionSelector | IFragmentSelector | IXPathSelector | ICssSelector>,
+    endSelector:  ISelector<ITextQuoteSelector | ITextPositionSelector | IFragmentSelector | IXPathSelector | ICssSelector>,
 }
-export function isDomRangeSelector(a: any): a is IDomRangeSelector {
-    return typeof a === "object"
-        && a.type === "DomRangeSelector"
-        && typeof a.startContainerElementCssSelector === "string"
-        && typeof a.startContainerChildTextNodeIndex === "number"
-        && typeof a.startOffset === "number"
-        && typeof a.endContainerElementCssSelector === "string"
-        && typeof a.endContainerChildTextNodeIndex === "number"
-        && typeof a.endOffset === "number";
+export function isRangeSelector(a: any): a is IRangeSelector {
+    return a?.type === "RangeSelector"
+    && typeof a.startSelector?.type === "string"
+    && typeof a.endSelector?.type === "string";
 }
 
-export interface IFragmentSelector {
+// export interface IDomRangeSelector {
+//     type: "DomRangeSelector";
+//     startContainerElementCssSelector: string;
+//     startContainerChildTextNodeIndex: number;
+//     startOffset: number;
+//     endContainerElementCssSelector: string;
+//     endContainerChildTextNodeIndex: number;
+//     endOffset: number;
+// }
+// export function isDomRangeSelector(a: any): a is IDomRangeSelector {
+//     return a?.type === "DomRangeSelector"
+//         && typeof a.startContainerElementCssSelector === "string"
+//         && typeof a.startContainerChildTextNodeIndex === "number"
+//         && typeof a.startOffset === "number"
+//         && typeof a.endContainerElementCssSelector === "string"
+//         && typeof a.endContainerChildTextNodeIndex === "number"
+//         && typeof a.endOffset === "number";
+// }
+
+export interface IFragmentSelector extends ISelector<ITextQuoteSelector | ITextPositionSelector | IFragmentSelector> {
     type: "FragmentSelector";
     conformsTo: string;
     value: string;
 }
 export function isFragmentSelector(a: any): a is IFragmentSelector {
-    return typeof a === "object"
-        && a.type === "FragmentSelector"
+    return a?.type === "FragmentSelector"
         && typeof a.conformsTo === "string"
         && typeof a.value === "string";
 }
@@ -375,8 +418,99 @@ export const readiumAnnotationModelSetJSONSchema3 = {
                 "suffix": {
                     "type": "string",
                 },
+                "refinedBy": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/ITextQuoteSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/ITextPositionSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/IFragmentSelector",
+                        },
+                    ],
+                },
             },
             "required": ["type", "exact", "prefix", "suffix"],
+        },
+        "ITextPositionSelector": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "const": "TextQuoteSelector",
+                },
+                "start": {
+                    "type": "number",
+                },
+                "end": {
+                    "type": "number",
+                },
+                "refinedBy": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/ITextQuoteSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/ITextPositionSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/IFragmentSelector",
+                        },
+                    ],
+                },
+            },
+            "required": ["type", "start", "end"],
+        },
+        "IXpathSelector": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "const": "XPathSelector",
+                },
+                "value": {
+                    "type": "string",
+                },
+                "refinedBy": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/ITextQuoteSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/ITextPositionSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/IFragmentSelector",
+                        },
+                    ],
+                },
+            },
+            "required": ["type", "value"],
+        },
+        "ICssSelector": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "const": "CssSelector",
+                },
+                "value": {
+                    "type": "string",
+                },
+                "refinedBy": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/ITextQuoteSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/ITextPositionSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/IFragmentSelector",
+                        },
+                    ],
+                },
+            },
+            "required": ["type", "value"],
         },
         "IProgressionSelector": {
             "type": "object",
@@ -390,39 +524,74 @@ export const readiumAnnotationModelSetJSONSchema3 = {
             },
             "required": ["type", "value"],
         },
-        "IDomRangeSelector": {
+        "IRangeSelector": {
             "type": "object",
             "properties": {
                 "type": {
-                    "const": "DomRangeSelector",
+                    "const": "RangeSelector",
                 },
-                "startContainerElementCssSelector": {
-                    "type": "string",
+                "startSelector": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/ITextQuoteSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/ITextPositionSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/IFragmentSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/IXPathSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/ICssSelector",
+                        },
+                    ],
                 },
-                "startContainerChildTextNodeIndex": {
-                    "type": "number",
+                "endSelector": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/ITextQuoteSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/ITextPositionSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/IFragmentSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/IXPathSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/ICssSelector",
+                        },
+                    ],
                 },
-                "startOffset": {
-                    "type": "number",
-                },
-                "endContainerElementCssSelector": {
-                    "type": "string",
-                },
-                "endContainerChildTextNodeIndex": {
-                    "type": "number",
-                },
-                "endOffset": {
-                    "type": "number",
+                "refinedBy": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/ITextQuoteSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/ITextPositionSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/IFragmentSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/IXPathSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/ICssSelector",
+                        },
+                    ],
                 },
             },
             "required": [
                 "type",
-                "startContainerElementCssSelector",
-                "startContainerChildTextNodeIndex",
-                "startOffset",
-                "endContainerElementCssSelector",
-                "endContainerChildTextNodeIndex",
-                "endOffset",
+                "startSelector",
+                "endSelector",
             ],
         },
         "IFragmentSelector": {
@@ -436,6 +605,25 @@ export const readiumAnnotationModelSetJSONSchema3 = {
                 },
                 "value": {
                     "type": "string",
+                },
+                "refinedBy": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/ITextQuoteSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/ITextPositionSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/IFragmentSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/IXPathSelector",
+                        },
+                        {
+                            "$ref": "#/definitions/ICssSelector",
+                        },
+                    ],
                 },
             },
             "required": ["type", "conformsTo", "value"],
