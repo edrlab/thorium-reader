@@ -391,9 +391,6 @@ export const FontFamily = () => {
 interface ITable {
     title: string,
     ariaLabel: string,
-    min: number,
-    max: number,
-    step: number,
     ariaValuemin: number,
     defaultValue: string,
     parameter: keyof AdjustableSettingsStrings;
@@ -453,7 +450,6 @@ const Slider = ({ value, option, set }: { value: string, option: ITable, set: (a
                     aria-labelledby={option.ariaLabel}
                     min="0"
                     max={optionsValues[option.parameter].length - 1}
-                    step={option.step}
                     value={currentIndex}
                     aria-valuemin={option.ariaValuemin}
                     onChange={(e) => updateValue(parseInt(e.target.value, 10))}
@@ -479,9 +475,6 @@ const ReadingSpacing = () => {
         {
             title: `${__("reader.settings.margin")}`,
             ariaLabel: "label_pageMargins",
-            min: 0,
-            max: optionsValues.pageMargins.length - 1,
-            step: 1,
             ariaValuemin: 0,
             defaultValue: pageMargins,
             parameter: "pageMargins",
@@ -491,9 +484,6 @@ const ReadingSpacing = () => {
         {
             title: `${__("reader.settings.wordSpacing")}`,
             ariaLabel: "label_wordSpacing",
-            min: 0,
-            max: optionsValues.wordSpacing.length - 1,
-            step: 1,
             ariaValuemin: 0,
             defaultValue: wordSpacing,
             parameter: "wordSpacing",
@@ -503,9 +493,6 @@ const ReadingSpacing = () => {
         {
             title: `${__("reader.settings.letterSpacing")}`,
             ariaLabel: "label_letterSpacing",
-            min: 0,
-            max: optionsValues.letterSpacing.length - 1,
-            step: 1,
             ariaValuemin: 0,
             defaultValue: letterSpacing,
             parameter: "letterSpacing",
@@ -515,9 +502,6 @@ const ReadingSpacing = () => {
         {
             title: `${__("reader.settings.paraSpacing")}`,
             ariaLabel: "label_paraSpacing",
-            min: 0,
-            max: optionsValues.paraSpacing.length - 1,
-            step: 1,
             ariaValuemin: 0,
             defaultValue: paraSpacing,
             parameter: "paraSpacing",
@@ -527,9 +511,6 @@ const ReadingSpacing = () => {
         {
             title: `${__("reader.settings.lineSpacing")}`,
             ariaLabel: "label_lineHeight",
-            min: 0,
-            max: optionsValues.lineHeight.length - 1,
-            step: 1,
             ariaValuemin: 0,
             defaultValue: lineHeight,
             parameter: "lineHeight",
