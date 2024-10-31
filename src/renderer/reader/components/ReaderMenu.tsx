@@ -927,10 +927,13 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                         style={{ marginBottom: "20px" }}
                                     >
                                         <details open id="annotationListTagDetails">
-                                            <summary className={stylesAnnotations.annotations_filter_tagGroup}>
+                                            <summary className={stylesAnnotations.annotations_filter_tagGroup} style={{ pointerEvents: !selectTagOption.length ? "none" : "auto", opacity: !selectTagOption.length ? "0.5" : "1" }}
+                                             tabIndex={!selectTagOption.length ? -1 : 0}
+                                            >
                                                 <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByTag")}</Label>
                                                 <div style={{ display: "flex", gap: "10px" }}>
                                                     <button
+                                                        disabled={!selectTagOption.length}
                                                         style={{ width: "fit-content", minWidth: "unset" }}
                                                         className={tagArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
                                                         onClick={() => {
@@ -944,6 +947,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                                         {__("reader.annotations.filter.all")}
                                                     </button>
                                                     <button
+                                                        disabled={!selectTagOption.length}
                                                         style={{ width: "fit-content", minWidth: "unset" }}
                                                         className={stylesButtons.button_secondary_blue}
                                                         onClick={() => {
@@ -954,9 +958,13 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                                     </button>
                                                 </div>
                                             </summary>
-                                            <TagList items={selectTagOption} className={stylesAnnotations.annotations_filter_taglist}>
+                                            {
+                                                selectTagOption.length ?
+                                            <TagList items={selectTagOption} className={stylesAnnotations.annotations_filter_taglist} style={{ margin: !selectTagOption.length ? "0" : "20px 0" }}>
                                                 {(item) => <Tag className={stylesAnnotations.annotations_filter_tag} id={item.name} textValue={item.name}>{item.name}</Tag>}
                                             </TagList>
+                                            : <></>
+                                            }
                                         </details>
                                     </TagGroup>
                                     <TagGroup
