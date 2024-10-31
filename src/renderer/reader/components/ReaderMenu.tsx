@@ -928,7 +928,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                     >
                                         <details open id="annotationListTagDetails">
                                             <summary className={stylesAnnotations.annotations_filter_tagGroup} style={{ pointerEvents: !selectTagOption.length ? "none" : "auto", opacity: !selectTagOption.length ? "0.5" : "1" }}
-                                             tabIndex={!selectCreatorOptions.length ? -1 : 0}
+                                             tabIndex={!selectTagOption.length ? -1 : 0}
                                             >
                                                 <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByTag")}</Label>
                                                 <div style={{ display: "flex", gap: "10px" }}>
