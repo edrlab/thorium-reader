@@ -595,7 +595,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                     ?
                     <div>
                         <SVG ariaHidden svg={AvatarIcon} />
-                        <p>{creatorName}</p>
+                        <p style={{overflow: "hidden", textOverflow: "ellipsis", padding: "0"}} title={creatorName}>{creatorName}</p>
                     </div>
                     : <></>
                 }
