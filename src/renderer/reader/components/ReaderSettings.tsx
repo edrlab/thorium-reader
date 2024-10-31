@@ -343,7 +343,7 @@ export const FontFamily = () => {
 
     return (
         <div>
-            <ComboBox label={__("reader.settings.font")} defaultItems={options} selectedKey={defaultkey}
+            <ComboBox label={__("reader.settings.font")} defaultItems={options} selectedKey={defaultkey} placeholder={inputval}
                 onSelectionChange={
                     (key: React.Key) => {
                         // console.log("@@@@@");
@@ -370,7 +370,12 @@ export const FontFamily = () => {
             </ComboBox>
             <div className={stylesSettings.session_text} style={{ marginTop: "0", marginRight: "20px" }}>
                 <SVG ariaHidden svg={InfoIcon} />
-                <p>{__("reader.settings.infoCustomFont")}</p>
+                {
+                    options.find((v) => v.name === inputval) ? 
+                    <p>{__("reader.settings.infoCustomFont")}</p>
+                    :
+                    <p>{__("reader.settings.customFontSelected")}</p>
+                }
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "20px" }}>
                 <h4>{__("reader.settings.preview")}:</h4>

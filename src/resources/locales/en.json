@@ -295,7 +295,7 @@
     },
     "expired": "Loan expired",
     "expiredLcp": "This publication's LCP license is expired.",
-    "userKeyCheckInvalid": "Incorrect passphrase.",
+    "incorrectPassphrase": "No stored passphrase fits the publication, or the entered passphrase is wrong.",
     "lcpEnd": "End",
     "lcpRightsCopy": "Copied characters",
     "lcpRightsPrint": "Printed pages",
@@ -321,7 +321,7 @@
     "seeMore": "See more",
     "timeLeft": "Remaining time",
     "title": "Title",
-    "incorrectPassphrase": "No stored passphrase fits the publication, or the entered passphrase is wrong."
+    "userKeyCheckInvalid": "Incorrect passphrase."
   },
   "reader": {
     "annotations": {
@@ -444,6 +444,7 @@
         "title": "Columns",
         "two": "2 cols"
       },
+      "customFontSelected": "You have chosen a personal font",
       "customizeReader": "Customize text formatting",
       "disabled": "disabled",
       "display": "Display",

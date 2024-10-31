@@ -444,6 +444,7 @@
         "title": "Spaltendarstellung",
         "two": "2 Spalten"
       },
+      "customFontSelected": "",
       "customizeReader": "Anpassen der Textformatierung",
       "disabled": "deaktiviert",
       "display": "Lesefluss",

@@ -444,6 +444,7 @@
         "title": "Столбцы",
         "two": "2 столбца"
       },
+      "customFontSelected": "",
       "customizeReader": "Настройка форматирования текста",
       "disabled": "отключено",
       "display": "Отображение",
