@@ -88,14 +88,14 @@ export const lineHeight: string[] = [
     "2",
 ];
 
-const optionsValues = {
+const optionsValues: AdjustableSettingsStrings = {
     fontSize,
     pageMargins,
     wordSpacing,
     letterSpacing,
     paraSpacing,
     lineHeight,
-} as AdjustableSettingsStrings;
+};
 
 export type AdjustableSettingsStrings = {
     [key in keyof ReaderConfigStringsAdjustables]: string[];
