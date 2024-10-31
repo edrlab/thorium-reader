@@ -44,7 +44,7 @@ import * as DefaultPageIcon from "readium-desktop/renderer/assets/icons/defaultP
 
 import classNames from "classnames";
 import { IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView } from "../pdf/common/pdfReader.type";
-import { IReaderSettingsProps } from "./options-values";
+import optionsValues, { AdjustableSettingsStrings, IReaderSettingsProps } from "./options-values";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { ReaderConfig, TTheme } from "readium-desktop/common/models/reader";
 import { FONT_LIST, FONT_LIST_WITH_JA } from "readium-desktop/utils/fontList";
@@ -396,36 +396,38 @@ export const FontFamily = () => {
 interface ITable {
     title: string,
     ariaLabel: string,
-    min: number,
-    max: number,
-    step: number,
     ariaValuemin: number,
     defaultValue: string,
-    parameter: "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight",
+    parameter: keyof AdjustableSettingsStrings;
     altParameter: string,
     rem: boolean,
 }
 
 const Slider = ({ value, option, set }: { value: string, option: ITable, set: (a: Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">) => void }) => {
     const [currentSliderValue, setCurrentSliderValue] = React.useState(option.defaultValue);
+    const [currentIndex, setCurrentIndex] = React.useState(() => (optionsValues[option.parameter] ||  [] ).findIndex((el) => el === option.defaultValue) || 0);
 
     React.useEffect(() => {
-        setCurrentSliderValue(value.replace(/rem/g, ""));
-    }, [value]);
+        setCurrentSliderValue(value);
+        const newIndex = (optionsValues[option.parameter] || [] ).findIndex((el) => el === value) || 0;
+        setCurrentIndex(newIndex);
+    }, [value, option.parameter]);
+
+    const updateValue = (index: number) => {
+        const newValue = (optionsValues[option.parameter] || [])[index] || "0";
+        setCurrentSliderValue(newValue);
+        setCurrentIndex(index);
+        set({ [option.parameter]: newValue } as Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">);
+    };
 
     const click = (direction: string) => {
-        const step = option.step;
-        let newStepValue: number;
-
-        if (direction === "out") {
-            newStepValue = Number(currentSliderValue.replace(/rem/g, "")) - step;
-        } else {
-            newStepValue = Number(currentSliderValue.replace(/rem/g, "")) + step;
-        }
-        const clampedValue = Math.min(Math.max(newStepValue, option.min), option.max);
-        const valueToString = clampedValue.toFixed(2);
-        setCurrentSliderValue(valueToString);
-        set({ [option.parameter]: valueToString + (option.rem ? "rem" : "") } as Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">);
+        setCurrentIndex((prevIndex) => {
+            const newIndex = direction === "out" ? prevIndex - 1 : prevIndex + 1;
+            if (newIndex >= 0 && newIndex < optionsValues[option.parameter].length) {
+                updateValue(newIndex);
+            }
+            return prevIndex;
+        });
     };
 
     return (
@@ -433,38 +435,34 @@ const Slider = ({ value, option, set }: { value: string, option: ITable, set: (a
             <div className={stylesSettings.spacing_heading}>
                 <h4>{option.title}</h4>
                 <p>
-                    {
-                        currentSliderValue === "0" ? "auto" :
-                            currentSliderValue.includes("rem") ?
-                                currentSliderValue :
-                                currentSliderValue + (option.rem ? "rem" : "")
-                    }</p>
+                    {currentSliderValue === "0" ? "auto" : currentSliderValue}
+                </p>
             </div>
             <div className={stylesSettings.size_range}>
-                <button onClick={() => {
-                    const newValue = "0";
-                    setCurrentSliderValue(newValue);
-                    set({ [option.parameter]: newValue } as Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">);
-                }
-                } className={stylesSettings.reset_button} title="default value"><SVG ariaHidden svg={ResetIcon} /></button>
-                <button onClick={() => click("out")} className={stylesSettings.scale_button}><SVG ariaHidden svg={MinusIcon} /></button>
+                <button
+                    onClick={() => updateValue(0)}
+                    className={stylesSettings.reset_button}
+                    title="default value"
+                >
+                    <SVG ariaHidden svg={ResetIcon} />
+                </button>
+                <button onClick={() => click("out")} className={stylesSettings.scale_button}>
+                    <SVG ariaHidden svg={MinusIcon} />
+                </button>
                 <input
                     id={option.title}
                     type="range"
                     aria-labelledby={option.ariaLabel}
-                    min={option.min}
-                    max={option.max}
-                    step={option.step}
+                    min="0"
+                    max={optionsValues[option.parameter].length - 1}
+                    value={currentIndex}
                     aria-valuemin={option.ariaValuemin}
-                    value={currentSliderValue}
-                    onChange={(e) => {
-                        const newValue = e.target.value;
-                        setCurrentSliderValue(newValue);
-                        set({ [option.parameter]: newValue + (option.rem ? "rem" : "") } as Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">);
-                    }}
+                    onChange={(e) => updateValue(parseInt(e.target.value, 10))}
                     className={currentSliderValue === "0" ? stylesSettings.range_inactive : ""}
                 />
-                <button onClick={() => click("in")} className={stylesSettings.scale_button}><SVG ariaHidden svg={PlusIcon} /></button>
+                <button onClick={() => click("in")} className={stylesSettings.scale_button}>
+                    <SVG ariaHidden svg={PlusIcon} />
+                </button>
             </div>
         </section>
     );
@@ -482,9 +480,6 @@ const ReadingSpacing = () => {
         {
             title: `${__("reader.settings.margin")}`,
             ariaLabel: "label_pageMargins",
-            min: 0.5,
-            max: 2,
-            step: 0.25,
             ariaValuemin: 0,
             defaultValue: pageMargins,
             parameter: "pageMargins",
@@ -494,9 +489,6 @@ const ReadingSpacing = () => {
         {
             title: `${__("reader.settings.wordSpacing")}`,
             ariaLabel: "label_wordSpacing",
-            min: 0.05,
-            max: 1,
-            step: 0.05,
             ariaValuemin: 0,
             defaultValue: wordSpacing,
             parameter: "wordSpacing",
@@ -506,9 +498,6 @@ const ReadingSpacing = () => {
         {
             title: `${__("reader.settings.letterSpacing")}`,
             ariaLabel: "label_letterSpacing",
-            min: 0.05,
-            max: 0.5,
-            step: 0.05,
             ariaValuemin: 0,
             defaultValue: letterSpacing,
             parameter: "letterSpacing",
@@ -518,9 +507,6 @@ const ReadingSpacing = () => {
         {
             title: `${__("reader.settings.paraSpacing")}`,
             ariaLabel: "label_paraSpacing",
-            min: 0.5,
-            max: 3,
-            step: 0.5,
             ariaValuemin: 0,
             defaultValue: paraSpacing,
             parameter: "paraSpacing",
@@ -530,9 +516,6 @@ const ReadingSpacing = () => {
         {
             title: `${__("reader.settings.lineSpacing")}`,
             ariaLabel: "label_lineHeight",
-            min: 0.5,
-            max: 3,
-            step: 0.5,
             ariaValuemin: 0,
             defaultValue: lineHeight,
             parameter: "lineHeight",
