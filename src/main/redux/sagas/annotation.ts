@@ -198,6 +198,8 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                             audioPlaybackInfo: undefined,
                             paginationInfo: undefined,
                             selectionInfo: {
+                                textFragment: undefined,
+
                                 rawBefore: textQuoteSelector?.prefix,
                                 rawAfter: textQuoteSelector?.suffix,
                                 rawText: textQuoteSelector?.exact,

@@ -1104,11 +1104,11 @@ class Reader extends React.Component<IProps, IState> {
         registerKeyboardListener(
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.AudioPrevious,
-            this.onKeyboardAudioPrevious);
+            this.onKeyboardAudioPrevious_);
         registerKeyboardListener(
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.AudioNext,
-            this.onKeyboardAudioNext);
+            this.onKeyboardAudioNext_);
         registerKeyboardListener(
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.AudioPreviousAlt,
@@ -1156,8 +1156,8 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardShowTOC);
         unregisterKeyboardListener(this.onKeyboardCloseReader);
         unregisterKeyboardListener(this.onKeyboardAudioPlayPause);
-        unregisterKeyboardListener(this.onKeyboardAudioPrevious);
-        unregisterKeyboardListener(this.onKeyboardAudioNext);
+        unregisterKeyboardListener(this.onKeyboardAudioPrevious_);
+        unregisterKeyboardListener(this.onKeyboardAudioNext_);
         unregisterKeyboardListener(this.onKeyboardAudioPreviousAlt);
         unregisterKeyboardListener(this.onKeyboardAudioNextAlt);
         unregisterKeyboardListener(this.onKeyboardAudioStop);
@@ -1303,9 +1303,12 @@ class Reader extends React.Component<IProps, IState> {
     };
 
     private onKeyboardAudioPreviousAlt = () => {
-        this.onKeyboardAudioPrevious(true);
+        this.onKeyboardAudioPrevious(false, true);
     };
-    private onKeyboardAudioPrevious = (skipSentences = false) => {
+    private onKeyboardAudioPrevious_ = () => {
+        this.onKeyboardAudioPrevious(false, false);
+    };
+    private onKeyboardAudioPrevious = (skipSentences: boolean, escape: boolean) => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
                 console.log("!shortcutEnable (onKeyboardAudioPrevious)");
@@ -1324,14 +1327,17 @@ class Reader extends React.Component<IProps, IState> {
         } else {
             // const doc = document as TKeyboardDocument;
             // const skipSentences = doc._keyModifierShift && doc._keyModifierAlt;
-            this.handleTTSPrevious(skipSentences);
+            this.handleTTSPrevious(skipSentences, escape);
         }
     };
 
     private onKeyboardAudioNextAlt = () => {
-        this.onKeyboardAudioNext(true);
+        this.onKeyboardAudioNext(false, true);
     };
-    private onKeyboardAudioNext = (skipSentences = false) => {
+    private onKeyboardAudioNext_ = () => {
+        this.onKeyboardAudioNext(false, false);
+    };
+    private onKeyboardAudioNext = (skipSentences: boolean, escape: boolean) => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
                 console.log("!shortcutEnable (onKeyboardAudioNext)");
@@ -1350,7 +1356,7 @@ class Reader extends React.Component<IProps, IState> {
         } else {
             // const doc = document as TKeyboardDocument;
             // const skipSentences = doc._keyModifierShift && doc._keyModifierAlt;
-            this.handleTTSNext(skipSentences);
+            this.handleTTSNext(skipSentences, escape);
         }
     };
 
@@ -2668,11 +2674,11 @@ class Reader extends React.Component<IProps, IState> {
     private handleTTSResume() {
         ttsResume();
     }
-    private handleTTSNext(skipSentences = false) {
-        ttsNext(skipSentences);
+    private handleTTSNext(skipSentences: boolean, escape: boolean) {
+        ttsNext(skipSentences, escape);
     }
-    private handleTTSPrevious(skipSentences = false) {
-        ttsPrevious(skipSentences);
+    private handleTTSPrevious(skipSentences: boolean, escape: boolean) {
+        ttsPrevious(skipSentences, escape);
     }
     private handleTTSPlaybackRate(speed: string) {
         ttsPlaybackRate(parseFloat(speed));

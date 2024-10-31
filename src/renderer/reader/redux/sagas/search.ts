@@ -90,6 +90,8 @@ function converterSearchResultToHighlightHandlerState(v: ISearchResult, color = 
             group: "search",
             color,
             selectionInfo: {
+                textFragment: undefined,
+
                 cleanBefore: v.cleanBefore,
                 cleanText: v.cleanText,
                 cleanAfter: v.cleanAfter,
