@@ -178,6 +178,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                                 },
                                 locations: {
                                     cfi: firstPartOfCfi,
+                                    xpath: undefined,
                                     cssSelector: domRangeSelector.startContainerElementCssSelector, // TODO just for debug, need to understand how to get this information if needed
                                     position: undefined,
                                     progression: progressionSelector?.value,
@@ -185,10 +186,12 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                                         ? {
                                             startContainerElementCssSelector: domRangeSelector.startContainerElementCssSelector,
                                             startContainerElementCFI: undefined,
+                                            startContainerElementXPath: undefined,
                                             startContainerChildTextNodeIndex: domRangeSelector.startContainerChildTextNodeIndex,
                                             startOffset: domRangeSelector.startOffset,
                                             endContainerElementCssSelector: domRangeSelector.endContainerElementCssSelector,
                                             endContainerElementCFI: undefined,
+                                            endContainerElementXPath: undefined,
                                             endContainerChildTextNodeIndex: domRangeSelector.endContainerChildTextNodeIndex,
                                             endOffset: domRangeSelector.endOffset,
                                             cfi: cfi,
@@ -210,10 +213,12 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                                 rangeInfo: {
                                     startContainerElementCssSelector: domRangeSelector.startContainerElementCssSelector,
                                     startContainerElementCFI: undefined,
+                                    startContainerElementXPath: undefined,
                                     startContainerChildTextNodeIndex: domRangeSelector.startContainerChildTextNodeIndex,
                                     startOffset: domRangeSelector.startOffset,
                                     endContainerElementCssSelector: domRangeSelector.endContainerElementCssSelector,
                                     endContainerElementCFI: undefined,
+                                    endContainerElementXPath: undefined,
                                     endContainerChildTextNodeIndex: domRangeSelector.endContainerChildTextNodeIndex,
                                     endOffset: domRangeSelector.endOffset,
                                     cfi: cfi,
