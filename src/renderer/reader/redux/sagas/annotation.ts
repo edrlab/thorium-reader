@@ -136,8 +136,8 @@ function* newLocatorEditAndSaveTheNote(locatorExtended: MiniLocatorExtended): Sa
     // wait the action of the annotation popover, the user select the text, click on "take the note" button and then edit his note with the popover.
     // 2 choices: cancel (annotationModeEnabled = false) or takeNote with color and comment
     const { cancelAction, noteTakenAction } = yield* raceTyped({
-        cancelAction: takeTyped(readerLocalActionAnnotations.enableMode.build),
-        noteTakenAction: takeTyped(readerLocalActionAnnotations.createNote.build),
+        cancelAction: takeTyped(readerLocalActionAnnotations.enableMode.ID),
+        noteTakenAction: takeTyped(readerLocalActionAnnotations.createNote.build), // not .ID because we need Action return type
     });
 
     if (cancelAction) {
@@ -207,8 +207,8 @@ function* readerStart() {
     debug("iframe reader viewport waiting to start...");
 
     yield* all([
-        take(readerLocalActionSetLocator.build),
-        take(winActions.initSuccess.build),
+        take(readerLocalActionSetLocator.ID),
+        take(winActions.initSuccess.ID),
     ]);
 
     // divina,

@@ -311,7 +311,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 ));
 
                 // wait the modal confirmation or abort
-                const actionConfirmOrAbort = yield* take(annotationActions.importConfirmOrAbort.build);
+                const actionConfirmOrAbort = yield* take(annotationActions.importConfirmOrAbort.build); // not .ID because we need Action return type
                 if (!actionConfirmOrAbort?.payload || actionConfirmOrAbort.payload.state === "abort") {
                     // aborted
 

@@ -69,7 +69,7 @@ function* getApi(id: string) {
     while (true) {
         const action:
             apiActions.result.TAction<TReturnPromiseOrGeneratorType<TApiMethod["publication/get"]>>
-            = yield take(apiActions.result.build);
+            = yield take(apiActions.result.ID);
 
         const { requestId } = action.meta.api;
         if (requestId === REQUEST_ID) {
