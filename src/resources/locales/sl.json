@@ -6,7 +6,6 @@
     "leftSlideButton": "Premakni seznam v levo",
     "mainContent": "glavna vsebina",
     "rightSlideButton": "Premakni seznam v desno",
-    "searchBook": "Iskanje po naslovu",
     "skipLink": "Preskoči na vsebino",
     "toolbar": "orodna vrstica"
   },
@@ -119,7 +118,6 @@
     "released": "Objavljeno na",
     "sort": "Razvrsti po",
     "tag": "Oznaka",
-    "tagCount": "Število oznak",
     "tags": "Oznake",
     "update": "Uredi"
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "Trajanje"
     },
+    "encryptedNoLicense": "",
     "expired": "Rok izposoje je potekel",
     "expiredLcp": "Knjige ni mogoče prebrati, ker je licenca LCP potekla.",
     "incorrectPassphrase": "",
@@ -557,9 +556,7 @@
       "title": ""
     },
     "session": {
-      "no": "Onemogoči",
-      "title": "Shrani sejo",
-      "yes": "Omogoči"
+      "title": "Shrani sejo"
     },
     "tabs": {
       "appearance": "Izgled",

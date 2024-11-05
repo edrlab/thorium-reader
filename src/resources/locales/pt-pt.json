@@ -6,7 +6,6 @@
     "leftSlideButton": "Deslizar lista para a esquerda",
     "mainContent": "Conteúdo principal",
     "rightSlideButton": "Deslizar lista para a direita",
-    "searchBook": "Pesquisar por título",
     "skipLink": "Ir para o conteúdo",
     "toolbar": "Barra de ferramentas"
   },
@@ -119,7 +118,6 @@
     "released": "Publicado em",
     "sort": "Ordenar por",
     "tag": "Etiqueta",
-    "tagCount": "Contagem de etiquetas",
     "tags": "Etiquetas",
     "update": "Atualizar"
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "Duração"
     },
+    "encryptedNoLicense": "",
     "expired": "Empréstimo expirado",
     "expiredLcp": "A licença LCP deste documento está expirada.",
     "incorrectPassphrase": "",
@@ -557,9 +556,7 @@
       "title": "Adicionar conta de biblioteca"
     },
     "session": {
-      "no": "Desativar",
-      "title": "Guardar sessão",
-      "yes": "Ativar"
+      "title": "Guardar sessão"
     },
     "tabs": {
       "appearance": "Aparência",

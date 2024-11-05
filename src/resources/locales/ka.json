@@ -6,7 +6,6 @@
     "leftSlideButton": "სიის მარცხნივ ჩაწევა",
     "mainContent": "ძირითადი შიგთავსი",
     "rightSlideButton": "სიის მარჯვნივ ჩაწევა",
-    "searchBook": "სათაურით ძიება",
     "skipLink": "შიგთავსზე გადახტომა",
     "toolbar": "ინსტრუმენტთა პანელი"
   },
@@ -119,7 +118,6 @@
     "released": "გამოცემის თარიღი",
     "sort": "დალაგება",
     "tag": "",
-    "tagCount": "იარლიყების რაოდენობა",
     "tags": "იარლიყები",
     "update": ""
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "ხანგრძლივობა"
     },
+    "encryptedNoLicense": "",
     "expired": "",
     "expiredLcp": "ამ წიგნის წაკითხვა შეუძლებელია რადგან LCP ლიცენზიას ვადა გაუვიდა.",
     "incorrectPassphrase": "",
@@ -557,9 +556,7 @@
       "title": ""
     },
     "session": {
-      "no": "გამორთულია",
-      "title": "სესიის შენახვა",
-      "yes": "ჩართულია"
+      "title": "სესიის შენახვა"
     },
     "tabs": {
       "appearance": "",

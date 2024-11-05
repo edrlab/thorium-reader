@@ -6,7 +6,6 @@
     "leftSlideButton": "Scrolle nach links",
     "mainContent": "Hauptinhalt",
     "rightSlideButton": "Scrolle nach rechts",
-    "searchBook": "Suche nach einem Buch",
     "skipLink": "Gehe zum Inhalt",
     "toolbar": "Symbolleiste"
   },
@@ -119,7 +118,6 @@
     "released": "Veröffentlicht am",
     "sort": "Sortieren nach",
     "tag": "Tag",
-    "tagCount": "Anzahl der Tags",
     "tags": "Tags",
     "update": "Bearbeiten"
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "Dauer"
     },
+    "encryptedNoLicense": "",
     "expired": "Ausleihe abgelaufen",
     "expiredLcp": "Die LCP-Lizenz dieser Veröffentlichung ist abgelaufen.",
     "incorrectPassphrase": "",
@@ -557,9 +556,7 @@
       "title": ""
     },
     "session": {
-      "no": "Deaktivieren",
-      "title": "Sitzung speichern",
-      "yes": "Aktivieren"
+      "title": "Sitzung speichern"
     },
     "tabs": {
       "appearance": "Erscheinungsbild",

@@ -6,7 +6,6 @@
     "leftSlideButton": "목록 왼쪽으로 밀기 ",
     "mainContent": "메인 콘텐츠",
     "rightSlideButton": "목록 오른쪽으로 밀기",
-    "searchBook": "제목으로 검색",
     "skipLink": "콘텐츠로 건너뛰기",
     "toolbar": "툴바"
   },
@@ -119,7 +118,6 @@
     "released": "발행일",
     "sort": "정렬 기준",
     "tag": "",
-    "tagCount": "태그 개수",
     "tags": "태그",
     "update": "편집"
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "트랙 시간"
     },
+    "encryptedNoLicense": "",
     "expired": "",
     "expiredLcp": "이 책은 LCP 라이선스가 만료되어서 읽을 수 없습니다",
     "incorrectPassphrase": "",
@@ -557,9 +556,7 @@
       "title": ""
     },
     "session": {
-      "no": "비활성화",
-      "title": "세션 저장",
-      "yes": "활성화"
+      "title": "세션 저장"
     },
     "tabs": {
       "appearance": "",

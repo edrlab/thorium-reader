@@ -6,7 +6,6 @@
     "leftSlideButton": "Scorri la lista a sinistra",
     "mainContent": "contenuto principale",
     "rightSlideButton": "Scorri la lista a destra",
-    "searchBook": "Ricerca per titolo",
     "skipLink": "Salta al contenuto",
     "toolbar": "barra degli strumenti"
   },
@@ -119,7 +118,6 @@
     "released": "Pubblicato il",
     "sort": "Ordina per",
     "tag": "Tag",
-    "tagCount": "Contatore Tag",
     "tags": "Tags",
     "update": "Modifica"
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "Durata"
     },
+    "encryptedNoLicense": "",
     "expired": "Prestito scaduto",
     "expiredLcp": "Questo libro non può essere letto perchè la licenza LCP è scaduta.",
     "incorrectPassphrase": "",
@@ -557,9 +556,7 @@
       "title": ""
     },
     "session": {
-      "no": "Disabilita",
-      "title": "Salva sessione",
-      "yes": "Abilita"
+      "title": "Salva sessione"
     },
     "tabs": {
       "appearance": "Aspetto",

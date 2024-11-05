@@ -7,7 +7,6 @@ declare namespace typed_i18n {
   readonly "leftSlideButton": string,
   readonly "mainContent": string,
   readonly "rightSlideButton": string,
-  readonly "searchBook": string,
   readonly "skipLink": string,
   readonly "toolbar": string
 };
@@ -17,7 +16,6 @@ declare namespace typed_i18n {
   (_: "accessibility.leftSlideButton", __?: {}): string;
   (_: "accessibility.mainContent", __?: {}): string;
   (_: "accessibility.rightSlideButton", __?: {}): string;
-  (_: "accessibility.searchBook", __?: {}): string;
   (_: "accessibility.skipLink", __?: {}): string;
   (_: "accessibility.toolbar", __?: {}): string;
   (_: "apiapp", __?: {}): {
@@ -171,7 +169,6 @@ declare namespace typed_i18n {
   readonly "released": string,
   readonly "sort": string,
   readonly "tag": string,
-  readonly "tagCount": string,
   readonly "tags": string,
   readonly "update": string
 };
@@ -302,7 +299,6 @@ declare namespace typed_i18n {
   (_: "catalog.readBook", __?: {}): string;
   (_: "catalog.released", __?: {}): string;
   (_: "catalog.sort", __?: {}): string; (_: "catalog.tag", __?: {}): string;
-  (_: "catalog.tagCount", __?: {}): string;
   (_: "catalog.tags", __?: {}): string;
   (_: "catalog.update", __?: {}): string;
   (_: "dialog", __?: {}): {
@@ -614,9 +610,10 @@ declare namespace typed_i18n {
   readonly "day": string,
   readonly "days": string,
   readonly "duration": { readonly "title": string },
+  readonly "encryptedNoLicense": string,
   readonly "expired": string,
   readonly "expiredLcp": string,
-  readonly "userKeyCheckInvalid": string,
+  readonly "incorrectPassphrase": string,
   readonly "lcpEnd": string,
   readonly "lcpRightsCopy": string,
   readonly "lcpRightsPrint": string,
@@ -640,7 +637,7 @@ declare namespace typed_i18n {
   readonly "seeMore": string,
   readonly "timeLeft": string,
   readonly "title": string,
-  readonly "incorrectPassphrase": string
+  readonly "userKeyCheckInvalid": string
 };
   (_: "publication.accessibility", __?: {}): {
   readonly "accessModeSufficient": { readonly "textual": string },
@@ -726,9 +723,10 @@ declare namespace typed_i18n {
   (_: "publication.days", __?: {}): string;
   (_: "publication.duration", __?: {}): { readonly "title": string };
   (_: "publication.duration.title", __?: {}): string;
+  (_: "publication.encryptedNoLicense", __?: {}): string;
   (_: "publication.expired", __?: {}): string;
   (_: "publication.expiredLcp", __?: {}): string;
-  (_: "publication.userKeyCheckInvalid", __?: {}): string;
+  (_: "publication.incorrectPassphrase", __?: {}): string;
   (_: "publication.lcpEnd", __?: {}): string;
   (_: "publication.lcpRightsCopy", __?: {}): string;
   (_: "publication.lcpRightsPrint", __?: {}): string;
@@ -753,7 +751,7 @@ declare namespace typed_i18n {
   (_: "publication.seeMore", __?: {}): string;
   (_: "publication.timeLeft", __?: {}): string;
   (_: "publication.title", __?: {}): string;
-  (_: "publication.incorrectPassphrase", __?: {}): string;
+  (_: "publication.userKeyCheckInvalid", __?: {}): string;
   (_: "reader", __?: {}): {
   readonly "annotations": {
     readonly "Color": string,
@@ -870,6 +868,7 @@ declare namespace typed_i18n {
       readonly "title": string,
       readonly "two": string
     },
+    readonly "customFontSelected": string,
     readonly "customizeReader": string,
     readonly "disabled": string,
     readonly "display": string,
@@ -877,7 +876,6 @@ declare namespace typed_i18n {
     readonly "font": string,
     readonly "fontSize": string,
     readonly "infoCustomFont": string,
-    readonly "customFontSelected": string,
     readonly "justification": string,
     readonly "justify": string,
     readonly "letterSpacing": string,
@@ -1189,6 +1187,7 @@ declare namespace typed_i18n {
     readonly "title": string,
     readonly "two": string
   },
+  readonly "customFontSelected": string,
   readonly "customizeReader": string,
   readonly "disabled": string,
   readonly "display": string,
@@ -1196,7 +1195,6 @@ declare namespace typed_i18n {
   readonly "font": string,
   readonly "fontSize": string,
   readonly "infoCustomFont": string,
-  readonly "customFontSelected": string,
   readonly "justification": string,
   readonly "justify": string,
   readonly "letterSpacing": string,
@@ -1259,6 +1257,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.column.one", __?: {}): string;
   (_: "reader.settings.column.title", __?: {}): string;
   (_: "reader.settings.column.two", __?: {}): string;
+  (_: "reader.settings.customFontSelected", __?: {}): string;
   (_: "reader.settings.customizeReader", __?: {}): string;
   (_: "reader.settings.disabled", __?: {}): string;
   (_: "reader.settings.display", __?: {}): string;
@@ -1267,7 +1266,6 @@ declare namespace typed_i18n {
   (_: "reader.settings.font", __?: {}): string;
   (_: "reader.settings.fontSize", __?: {}): string;
   (_: "reader.settings.infoCustomFont", __?: {}): string;
-  (_: "reader.settings.customFontSelected", __?: {}): string;
   (_: "reader.settings.justification", __?: {}): string;
   (_: "reader.settings.justify", __?: {}): string;
   (_: "reader.settings.letterSpacing", __?: {}): string;
@@ -1417,11 +1415,7 @@ declare namespace typed_i18n {
     readonly "enableAPIAPP": string,
     readonly "title": string
   },
-  readonly "session": {
-    readonly "no": string,
-    readonly "title": string,
-    readonly "yes": string
-  },
+  readonly "session": { readonly "title": string },
   readonly "tabs": {
     readonly "appearance": string,
     readonly "general": string,
@@ -1473,10 +1467,8 @@ declare namespace typed_i18n {
   (_: "settings.library", __?: {}): { readonly "enableAPIAPP": string, readonly "title": string };
   (_: "settings.library.enableAPIAPP", __?: {}): string;
   (_: "settings.library.title", __?: {}): string;
-  (_: "settings.session", __?: {}): { readonly "no": string, readonly "title": string, readonly "yes": string };
-  (_: "settings.session.no", __?: {}): string;
+  (_: "settings.session", __?: {}): { readonly "title": string };
   (_: "settings.session.title", __?: {}): string;
-  (_: "settings.session.yes", __?: {}): string;
   (_: "settings.tabs", __?: {}): {
   readonly "appearance": string,
   readonly "general": string,

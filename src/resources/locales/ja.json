@@ -6,7 +6,6 @@
     "leftSlideButton": "左にスライド",
     "mainContent": "メインコンテンツ",
     "rightSlideButton": "右にスライド",
-    "searchBook": "書名から検索",
     "skipLink": "コンテンツに移動",
     "toolbar": "ツールバー"
   },
@@ -119,7 +118,6 @@
     "released": "出版日",
     "sort": "並び替え",
     "tag": "タグ",
-    "tagCount": "タグの数",
     "tags": "タグ",
     "update": "編集"
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "期間"
     },
+    "encryptedNoLicense": "",
     "expired": "貸出の期限切れ",
     "expiredLcp": "この本のLCPライセンスの有効期限が切れました。",
     "incorrectPassphrase": "",
@@ -557,9 +556,7 @@
       "title": ""
     },
     "session": {
-      "no": "無効",
-      "title": "セッションを保存",
-      "yes": "有効"
+      "title": "セッションを保存"
     },
     "tabs": {
       "appearance": "外観",

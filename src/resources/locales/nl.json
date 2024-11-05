@@ -6,7 +6,6 @@
     "leftSlideButton": "Schuif lijst naar links",
     "mainContent": "hoofd inhoud",
     "rightSlideButton": "Schuif lijst naar rechts",
-    "searchBook": "Zoek op titel",
     "skipLink": "Ga naar inhoud",
     "toolbar": "werkbalk"
   },
@@ -119,7 +118,6 @@
     "released": "Uitgegeven op",
     "sort": "Sorteer op",
     "tag": "Label",
-    "tagCount": "Label aantal",
     "tags": "Labels",
     "update": "Wijzig"
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "Duur"
     },
+    "encryptedNoLicense": "",
     "expired": "Lening verlopen",
     "expiredLcp": "Dit boek kan niet gelezen worden omdat de LCP licentie verlopen is.",
     "incorrectPassphrase": "",
@@ -557,9 +556,7 @@
       "title": ""
     },
     "session": {
-      "no": "Schakel uit",
-      "title": "Bewaar sessie",
-      "yes": "Schakel in"
+      "title": "Bewaar sessie"
     },
     "tabs": {
       "appearance": "Weergave",

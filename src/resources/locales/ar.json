@@ -6,7 +6,6 @@
     "leftSlideButton": "سحب إلى اليسار",
     "mainContent": "المحتوى الرئيسي",
     "rightSlideButton": "سحب إلى اليمين",
-    "searchBook": "بحث حسب العنوان",
     "skipLink": "تخطى الى المحتوى",
     "toolbar": "شريط الأدوات"
   },
@@ -119,7 +118,6 @@
     "released": "تم نشره بتاريخ",
     "sort": "الفرز حسب",
     "tag": "الوسم",
-    "tagCount": "عدد الوسوم",
     "tags": "الوسوم",
     "update": "تحرير"
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "المدة"
     },
+    "encryptedNoLicense": "",
     "expired": "انتهت مدة الاستعارة",
     "expiredLcp": "انتهت صلاحية ترخيص LCP الخاص بهذا المنشور.",
     "incorrectPassphrase": "",
@@ -557,9 +556,7 @@
       "title": ""
     },
     "session": {
-      "no": "تعطيل",
-      "title": "حفظ الجلسة",
-      "yes": "تمكين"
+      "title": "حفظ الجلسة"
     },
     "tabs": {
       "appearance": "المظهر",

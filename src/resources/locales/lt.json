@@ -6,7 +6,6 @@
     "leftSlideButton": "Paslinkti sąrašą į kairę",
     "mainContent": "pagrindinis turinys",
     "rightSlideButton": "Paslinkti sąrašą į dešinę",
-    "searchBook": "Ieškoti pagal pavadinimą",
     "skipLink": "Peršokti į turinį",
     "toolbar": "įrankių juosta"
   },
@@ -119,7 +118,6 @@
     "released": "Išleidimo data",
     "sort": "Rikiuoti pagal",
     "tag": "Žymė",
-    "tagCount": "Žymių skaičius",
     "tags": "Žymės",
     "update": "Keisti"
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "Trukmė"
     },
+    "encryptedNoLicense": "",
     "expired": "Skolinimo terminas baigėsi",
     "expiredLcp": "Šio leidinio negalima skaityti, nes baigėsi LCP licencijos galiojimo laikas.",
     "incorrectPassphrase": "",
@@ -557,9 +556,7 @@
       "title": ""
     },
     "session": {
-      "no": "Išjungti",
-      "title": "Sesijos išsaugojimas",
-      "yes": "Įjungti"
+      "title": "Sesijos išsaugojimas"
     },
     "tabs": {
       "appearance": "Išvaizda",

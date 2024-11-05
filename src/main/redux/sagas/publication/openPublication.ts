@@ -33,6 +33,33 @@ const filename_ = "readium-desktop:main:redux:sagas:publication:open";
 const debug = debug_(filename_);
 
 export const ERROR_MESSAGE_ON_USERKEYCHECKREQUEST = "ERROR_MESSAGE_ON_USERKEYCHECKREQUEST";
+export const ERROR_MESSAGE_ENCRYPTED_NO_LICENSE = "ERROR_MESSAGE_ENCRYPTED_NO_LICENSE";
+
+export const r2PublicationIsEncryptedAndHasNoLicense = (pub: R2Publication) => {
+    if (pub.LCP) {
+        return false;
+    }
+    let atLeastOneResourceIsEncrypted = false;
+    if (pub.Spine) {
+        for (const link of pub.Spine) {
+            // link.Properties?.Encrypted?.Scheme === "http://readium.org/2014/01/lcp"
+            if (link.Properties?.Encrypted?.Algorithm && link.Properties.Encrypted.Algorithm !== "http://www.idpf.org/2008/embedding" && link.Properties.Encrypted.Algorithm !== "http://ns.adobe.com/pdf/enc#RC") {
+                atLeastOneResourceIsEncrypted = true;
+                break;
+            }
+        }
+    }
+    if (!atLeastOneResourceIsEncrypted && pub.Resources) {
+        for (const link of pub.Resources) {
+            // link.Properties?.Encrypted?.Scheme === "http://readium.org/2014/01/lcp"
+            if (link.Properties?.Encrypted?.Algorithm && link.Properties.Encrypted.Algorithm !== "http://www.idpf.org/2008/embedding" && link.Properties.Encrypted.Algorithm !== "http://ns.adobe.com/pdf/enc#RC") {
+                atLeastOneResourceIsEncrypted = true;
+                break;
+            }
+        }
+    }
+    return atLeastOneResourceIsEncrypted;
+};
 
 const convertDoc = async (doc: PublicationDocument, publicationViewConverter: PublicationViewConverter) => {
     return await publicationViewConverter.convertDocumentToView(doc);
@@ -224,6 +251,11 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
         } catch (error) {
 
             throw error;
+        }
+    } else {
+        const isEncrypted = r2PublicationIsEncryptedAndHasNoLicense(r2Publication);
+        if (isEncrypted) {
+            throw ERROR_MESSAGE_ENCRYPTED_NO_LICENSE;
         }
     }
 

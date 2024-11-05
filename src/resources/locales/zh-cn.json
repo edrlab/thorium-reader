@@ -6,7 +6,6 @@
     "leftSlideButton": "将列表划至左侧",
     "mainContent": "主要内容",
     "rightSlideButton": "将列表划至右侧",
-    "searchBook": "按书名搜索",
     "skipLink": "跳转至内容",
     "toolbar": "工具栏"
   },
@@ -119,7 +118,6 @@
     "released": "出版日期",
     "sort": "排序方式",
     "tag": "标签",
-    "tagCount": "标签数",
     "tags": "标签",
     "update": "编辑"
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "播放时长"
     },
+    "encryptedNoLicense": "",
     "expired": "借阅已到期",
     "expiredLcp": "此书无法阅读，因为LCP许可证已到期。",
     "incorrectPassphrase": "",
@@ -557,9 +556,7 @@
       "title": ""
     },
     "session": {
-      "no": "禁用",
-      "title": "保存登录状态",
-      "yes": "启用"
+      "title": "保存登录状态"
     },
     "tabs": {
       "appearance": "外观",

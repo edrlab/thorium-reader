@@ -6,7 +6,6 @@
     "leftSlideButton": "Slide to the left",
     "mainContent": "main content",
     "rightSlideButton": "Slide to the right",
-    "searchBook": "Search by title",
     "skipLink": "Skip to content",
     "toolbar": "toolbar"
   },
@@ -119,7 +118,6 @@
     "released": "Published on",
     "sort": "Sort by",
     "tag": "Tag",
-    "tagCount": "Tag count",
     "tags": "Tags",
     "update": "Edit"
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "Duration"
     },
+    "encryptedNoLicense": "Publication is encrypted but lacks an LCP license!",
     "expired": "Loan expired",
     "expiredLcp": "This publication's LCP license is expired.",
     "incorrectPassphrase": "No stored passphrase fits the publication, or the entered passphrase is wrong.",
@@ -557,9 +556,7 @@
       "title": "Add a library account"
     },
     "session": {
-      "no": "Disable",
-      "title": "Save session",
-      "yes": "Enable"
+      "title": "Save session"
     },
     "tabs": {
       "appearance": "Appearance",

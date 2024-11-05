@@ -6,7 +6,6 @@
     "leftSlideButton": "Mugitu zerrenda ezkerrera",
     "mainContent": "Eduki nagusia",
     "rightSlideButton": "Mugitu zerrenda eskuinera",
-    "searchBook": "Bilatu izenburuaren arabera",
     "skipLink": "Pasatu edukira",
     "toolbar": "Tresna-barra"
   },
@@ -119,7 +118,6 @@
     "released": "Hemen argitaratua",
     "sort": "Ordenatu honen arabera",
     "tag": "Etiketa",
-    "tagCount": "Etiketa kopurua",
     "tags": "Etiketak",
     "update": "Editatu"
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "Iraupena"
     },
+    "encryptedNoLicense": "",
     "expired": "Mailegua iraungi",
     "expiredLcp": "Liburu hau ezin da irakurri LCP lizentzia iraungi delako.",
     "incorrectPassphrase": "",
@@ -557,9 +556,7 @@
       "title": ""
     },
     "session": {
-      "no": "Desgaitu",
-      "title": "Gorde saioa",
-      "yes": "Gaitu"
+      "title": "Gorde saioa"
     },
     "tabs": {
       "appearance": "Itxura",

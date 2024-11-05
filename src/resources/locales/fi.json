@@ -6,7 +6,6 @@
     "leftSlideButton": "Siirry listalla vasemmalle",
     "mainContent": "Pääsisältö",
     "rightSlideButton": "Siirry listalla oikealle",
-    "searchBook": "Hae kirjan nimellä",
     "skipLink": "Hyppää sisältöön",
     "toolbar": "Työkalurivi"
   },
@@ -119,7 +118,6 @@
     "released": "Julkaistu",
     "sort": "Lajittele",
     "tag": "Tunniste",
-    "tagCount": "Tunnistemäärä",
     "tags": "Tunnisteet",
     "update": "Muokkaa"
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "Kesto"
     },
+    "encryptedNoLicense": "",
     "expired": "Laina-aika on päättynyt",
     "expiredLcp": "LCP-käyttöoikeus on päättynyt.",
     "incorrectPassphrase": "",
@@ -557,9 +556,7 @@
       "title": ""
     },
     "session": {
-      "no": "Keskeytä",
-      "title": "Tallenna istunto",
-      "yes": "Jatka"
+      "title": "Tallenna istunto"
     },
     "tabs": {
       "appearance": "Ulkoasu",

@@ -6,7 +6,6 @@
     "leftSlideButton": "Desprazar lista á esquerda",
     "mainContent": "Contido principal",
     "rightSlideButton": "Desprazar lista á dereita",
-    "searchBook": "Buscar por título",
     "skipLink": "Pasar ao contido",
     "toolbar": "Barra de ferramentas"
   },
@@ -119,7 +118,6 @@
     "released": "Publicado en",
     "sort": "Ordenar por",
     "tag": "Etiqueta",
-    "tagCount": "Número de etiquetas",
     "tags": "Etiquetas",
     "update": "Edita"
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "Duración"
     },
+    "encryptedNoLicense": "",
     "expired": "Préstamo expirado",
     "expiredLcp": "Este libro non se pode ler porque a licenza  LCP expirou.",
     "incorrectPassphrase": "",
@@ -557,9 +556,7 @@
       "title": ""
     },
     "session": {
-      "no": "Deshabilitar",
-      "title": "Gardar sesión",
-      "yes": "Habilitar"
+      "title": "Gardar sesión"
     },
     "tabs": {
       "appearance": "Aspecto visual",

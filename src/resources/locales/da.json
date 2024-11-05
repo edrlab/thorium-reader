@@ -6,7 +6,6 @@
     "leftSlideButton": "Flyt listen til venstre",
     "mainContent": "hovedindhold",
     "rightSlideButton": "Flyt listen til højre",
-    "searchBook": "Søg efter titel",
     "skipLink": "Hop til indhold",
     "toolbar": "værktøjslinje"
   },
@@ -119,7 +118,6 @@
     "released": "Udgivelsesdato",
     "sort": "Sortér efter",
     "tag": "Tag",
-    "tagCount": "Antal tags",
     "tags": "Tags",
     "update": "Rediger"
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "Spilletid"
     },
+    "encryptedNoLicense": "",
     "expired": "Lånet er udløbet",
     "expiredLcp": "Denne bog kan ikke læses, da LCP-licensen er udløbet.",
     "incorrectPassphrase": "",
@@ -557,9 +556,7 @@
       "title": "Tilføj en bibliotekskonto"
     },
     "session": {
-      "no": "Fra",
-      "title": "Gem session",
-      "yes": "Til"
+      "title": "Gem session"
     },
     "tabs": {
       "appearance": "Udseende",

@@ -6,7 +6,6 @@
     "leftSlideButton": "Lliscar llista a l'esquerra",
     "mainContent": "Contingut principal",
     "rightSlideButton": "Lliscar llista a la dreta",
-    "searchBook": "Cercar per títol",
     "skipLink": "Passar el contingut",
     "toolbar": "Barra d'eines"
   },
@@ -119,7 +118,6 @@
     "released": "Publicat en",
     "sort": "Ordenar per",
     "tag": "Etiqueta",
-    "tagCount": "Número d'etiquetes",
     "tags": "Etiquetes",
     "update": "Editar"
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "Duració"
     },
+    "encryptedNoLicense": "",
     "expired": "Préstec expirat",
     "expiredLcp": "Aquest llibre no es pot llegir perquè la llicència LCP ha expirat.",
     "incorrectPassphrase": "",
@@ -557,9 +556,7 @@
       "title": ""
     },
     "session": {
-      "no": "Deshabilitar",
-      "title": "Guardar sessió",
-      "yes": "Habilitar"
+      "title": "Guardar sessió"
     },
     "tabs": {
       "appearance": "Aparença",
