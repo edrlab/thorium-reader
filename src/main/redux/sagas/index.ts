@@ -11,7 +11,7 @@ import { keyboardActions, versionUpdateActions } from "readium-desktop/common/re
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
-import { select, call as callTyped  } from "typed-redux-saga";
+import { select as selectTyped, call as callTyped  } from "typed-redux-saga/macro";
 import { RootState } from "../states";
 import { _APP_VERSION, _APP_NAME, _PACK_NAME } from "readium-desktop/preprocessor-directives";
 // import { THttpGetCallback } from "readium-desktop/common/utils/http";
@@ -171,7 +171,7 @@ function* checkAppVersionUpdate() {
     // Correct HTTP header content-type, but reliance on GitHack servers:
     // const JSON_URL = `https://raw.githack.com/edrlab/thorium-reader/${BRANCH}/latest.json`;
     try {
-        let version = IS_DEV ? yield* select((state: RootState) => state.version) : null;
+        let version = IS_DEV ? yield* selectTyped((state: RootState) => state.version) : null;
         // src/common/redux/reducers/version.ts
         // version is null (initial state) or current _APP_VERSION (package.json version)
         // telemetry.collectSaveAndSend (prev_version handling) is called before appActions.initSuccess, and finally this checkAppVersionUpdate Saga is called after appActions.initSuccess
@@ -184,7 +184,7 @@ function* checkAppVersionUpdate() {
             version = _APP_VERSION;
         }
 
-        // yield* call from "typed-redux-saga"
+        // yield* call from "typed-redux-saga/macro"
         // yield call from "redux-saga/effects"
         const json = yield* callTyped(async (url: string) => {
 

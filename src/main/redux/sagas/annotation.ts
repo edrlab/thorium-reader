@@ -12,7 +12,8 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
-import { call, SagaGenerator, put, select, take } from "typed-redux-saga";
+import { SagaGenerator } from "typed-redux-saga";
+import { call as callTyped, put as putTyped, select as selectTyped, take as takeTyped } from "typed-redux-saga/macro";
 import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { hexToRgb } from "readium-desktop/common/rgb";
 import { isNil } from "readium-desktop/utils/nil";
@@ -57,7 +58,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     try {
 
         debug("Open ShowOpenDialog and ask to user the filePath");
-        const res = yield* call(() => dialog.showOpenDialog(win, { filters: [{ extensions: ["annotation"], name: "Readium Annotation Set (.annotation)" }], properties: ["openFile"] }));
+        const res = yield* callTyped(() => dialog.showOpenDialog(win, { filters: [{ extensions: ["annotation"], name: "Readium Annotation Set (.annotation)" }], properties: ["openFile"] }));
 
         if (!res.canceled) {
             filePath = res.filePaths[0] || "";
@@ -65,7 +66,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         }
     } catch (e) {
         debug("Error!!! to open a file, exit", e);
-        yield* put(toastActions.openRequest.build(ToastType.Error, "" + e, readerPublicationIdentifier));
+        yield* putTyped(toastActions.openRequest.build(ToastType.Error, "" + e, readerPublicationIdentifier));
         return ;
     }
 
@@ -75,7 +76,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     try {
 
         // read filePath
-        const data = yield* call(() => readFile(filePath, { encoding: "utf8" }));
+        const data = yield* callTyped(() => readFile(filePath, { encoding: "utf8" }));
         const readiumAnnotationFormat = JSON.parse(data);
         debug("filePath size=", data.length);
         debug("filePath serialized and ready to pass the type checker");
@@ -89,7 +90,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
             if (!annotationsIncommingArray.length) {
                 debug("there are no annotations in the file, exit");
-                yield* put(toastActions.openRequest.build(ToastType.Success, __("message.annotations.emptyFile"), readerPublicationIdentifier));
+                yield* putTyped(toastActions.openRequest.build(ToastType.Success, __("message.annotations.emptyFile"), readerPublicationIdentifier));
                 return;
             }
 
@@ -97,7 +98,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
             // we just check if each annotation href source belongs to the R2Publication Spine items
             // if at least one annotation in the list doesn't match with the current spine item, then reject the set importation
 
-            const pubView = yield* call(getPublication, publicationIdentifier);
+            const pubView = yield* callTyped(getPublication, publicationIdentifier);
             const r2PublicationJson = pubView.r2PublicationJson;
             const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
             const spineItem = r2Publication.Spine;
@@ -116,7 +117,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 // OK publication identified
 
                 let annotations: IAnnotationState[] = [];
-                const sessionReader = yield* select((state: RootState) => state.win.session.reader);
+                const sessionReader = yield* selectTyped((state: RootState) => state.win.session.reader);
                 const winSessionReaderStateArray = Object.values(sessionReader).filter((v) => v.publicationIdentifier === publicationIdentifier);
                 if (winSessionReaderStateArray.length) {
                     const winSessionReaderState = winSessionReaderStateArray[0];
@@ -124,7 +125,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
                     debug("current publication AnnotationsList come from the readerSession (there are one or many readerWin currently open)");
                 } else {
-                    const sessionRegistry = yield* select((state: RootState) => state.win.registry.reader);
+                    const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
                     if (Object.keys(sessionRegistry).find((v) => v === publicationIdentifier)) {
                         annotations = (sessionRegistry[publicationIdentifier]?.reduxState?.annotation || []).map(([, v]) => v);
 
@@ -283,7 +284,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 if (!annotationsParsedAllArray.length) {
 
                     debug("there are no annotations ready to be imported, exit");
-                    yield* put(toastActions.openRequest.build(ToastType.Success, __("message.annotations.nothing"), readerPublicationIdentifier));
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Success, __("message.annotations.nothing"), readerPublicationIdentifier));
                     return;
 
                 }
@@ -291,13 +292,13 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 if (!(annotationsParsedConflictNewerArray.length || annotationsParsedConflictOlderArray.length || annotationsParsedNoConflictArray.length)) {
 
                     debug("all annotations are already imported, exit");
-                    yield* put(toastActions.openRequest.build(ToastType.Success, __("message.annotations.alreadyImported"), readerPublicationIdentifier));
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Success, __("message.annotations.alreadyImported"), readerPublicationIdentifier));
                     return;
                 }
 
 
                 // dispatch data to the user modal
-                yield* put(annotationActions.importTriggerModal.build(
+                yield* putTyped(annotationActions.importTriggerModal.build(
                     {
                         about: data.about ? {...data.about} : undefined,
                         title: data.title || "",
@@ -311,7 +312,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 ));
 
                 // wait the modal confirmation or abort
-                const actionConfirmOrAbort = yield* take(annotationActions.importConfirmOrAbort.build); // not .ID because we need Action return type
+                const actionConfirmOrAbort = yield* takeTyped(annotationActions.importConfirmOrAbort.build); // not .ID because we need Action return type
                 if (!actionConfirmOrAbort?.payload || actionConfirmOrAbort.payload.state === "abort") {
                     // aborted
 
@@ -385,33 +386,33 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                     debug("Dispatch an action to save to the publicationIdentifier registry");
                     debug("new AnnotationList is appended to the persisted publication reduxState in main process");
 
-                    yield* put(winActions.registry.addAnnotationToReaderPublication.build(publicationIdentifier, annotationsParsedReadyToBeImportedArray));
+                    yield* putTyped(winActions.registry.addAnnotationToReaderPublication.build(publicationIdentifier, annotationsParsedReadyToBeImportedArray));
 
                 }
 
             } else {
 
                 debug("ERROR: At least one annotation is rejected and not match with the current publication SpineItem, see above");
-                yield* put(toastActions.openRequest.build(ToastType.Error, __("message.annotations.noBelongTo"), readerPublicationIdentifier));
+                yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.annotations.noBelongTo"), readerPublicationIdentifier));
                 return;
             }
         } else {
 
             debug("Error: ", __READIUM_ANNOTATION_AJV_ERRORS);
-            yield* put(toastActions.openRequest.build(ToastType.Error, __("message.annotations.errorParsing"), readerPublicationIdentifier));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.annotations.errorParsing"), readerPublicationIdentifier));
             return;
         }
 
     } catch (e) {
         debug("Error to read the file: ", e);
         if (e?.path !== "") {
-            yield* put(toastActions.openRequest.build(ToastType.Error, "" + e, readerPublicationIdentifier));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, "" + e, readerPublicationIdentifier));
         }
         return;
     }
 
     debug("Annotations importer success and exit");
-    yield* put(toastActions.openRequest.build(ToastType.Success, __("message.annotations.success"), readerPublicationIdentifier));
+    yield* putTyped(toastActions.openRequest.build(ToastType.Success, __("message.annotations.success"), readerPublicationIdentifier));
     return ;
 }
 

@@ -34,12 +34,12 @@ module.exports = {
         }
         return {
             ImportDefaultSpecifier(node) {
-                if (node.parent.source.value === 'typed-redux-saga/macro') {
+                if (node.parent.source.value === 'typed-redux-saga/macro' || node.parent.source.value === 'typed-redux-saga') {
                     for (const key of effectKeys) typedNames[`${node.local.name}.${key}`] = key;
                 }
             },
             ImportSpecifier(node) {
-                if (node.parent.source.value === 'typed-redux-saga/macro')
+                if (node.parent.source.value === 'typed-redux-saga/macro' || node.parent.source.value === 'typed-redux-saga')
                     typedNames[node.local.name] = node.imported.name;
             },
             YieldExpression(node) {

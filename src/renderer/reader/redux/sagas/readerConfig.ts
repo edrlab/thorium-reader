@@ -14,7 +14,8 @@ import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysEnableCaptionsMode, 
 } from "@r2-navigator-js/electron/renderer";
 
 import { readerLocalActionReader, readerLocalActionSetConfig } from "../actions";
-import { SagaGenerator, all, put, select, spawn, take } from "typed-redux-saga";
+import { SagaGenerator } from "typed-redux-saga";
+import { all as allTyped, put as putTyped, select as selectTyped, spawn as spawnTyped, take as takeTyped } from "typed-redux-saga/macro";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
 import { isNotNil } from "readium-desktop/utils/nil";
@@ -34,7 +35,7 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
     }
 
 
-    const readerConfigFromReduxState = yield* select((state: IReaderRootState) => state.reader.config);
+    const readerConfigFromReduxState = yield* selectTyped((state: IReaderRootState) => state.reader.config);
     const readerConfig = {
         ...readerConfigFromReduxState,
         ...payload,
@@ -64,8 +65,8 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
 
     if (isNotNil(payload.mediaOverlaysEnableCaptionsMode) || isNotNil(payload.mediaOverlaysEnableSkippability) || isNotNil(payload.mediaOverlaysPlaybackRate)) {
 
-        const r2PublicationHasMediaOverlays = yield* select((state: IReaderRootState) => state.reader.info.navigator.r2PublicationHasMediaOverlays);
-        const mediaOverlaysState = yield* select((state: IReaderRootState) => state.reader.mediaOverlay.state);
+        const r2PublicationHasMediaOverlays = yield* selectTyped((state: IReaderRootState) => state.reader.info.navigator.r2PublicationHasMediaOverlays);
+        const mediaOverlaysState = yield* selectTyped((state: IReaderRootState) => state.reader.mediaOverlay.state);
         const moWasPlaying = r2PublicationHasMediaOverlays && mediaOverlaysState === MediaOverlaysStateEnum.PLAYING;
         if (moWasPlaying) {
             mediaOverlaysPause();
@@ -77,7 +78,7 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
 
     if (isNotNil(payload.ttsVoice) || isNotNil(payload.ttsPlaybackRate) || isNotNil(payload.ttsEnableOverlayMode) || isNotNil(payload.ttsEnableSentenceDetection)) {
 
-        const ttsState = yield* select((state: IReaderRootState) => state.reader.tts.state);
+        const ttsState = yield* selectTyped((state: IReaderRootState) => state.reader.tts.state);
         const ttsWasPlaying = ttsState !== TTSStateEnum.STOPPED;
         if (ttsWasPlaying) {
             ttsStop();
@@ -129,16 +130,16 @@ function* alowCustomTriggered(action: readerLocalActionReader.allowCustom.TActio
 
     if (checked) {
 
-        const transientConfig = yield* select((state: IReaderRootState) => state.reader.transientConfig);
-        yield* put(readerLocalActionSetConfig.build(transientConfig));
+        const transientConfig = yield* selectTyped((state: IReaderRootState) => state.reader.transientConfig);
+        yield* putTyped(readerLocalActionSetConfig.build(transientConfig));
 
     } else {
-        yield* put(readerLocalActionSetConfig.build(readerConfigInitialStateDefaultPublisher));
+        yield* putTyped(readerLocalActionSetConfig.build(readerConfigInitialStateDefaultPublisher));
     }
 }
 
 export function saga() {
-    return all([
+    return allTyped([
         takeSpawnEvery(
             readerLocalActionSetConfig.ID,
             readerConfigChanged,
@@ -147,11 +148,11 @@ export function saga() {
             readerLocalActionReader.allowCustom.ID,
             alowCustomTriggered,
         ),
-        spawn(function* () {
+        spawnTyped(function* () {
             while (true) {
-                const oldEnableMathJax = yield select((state: IReaderRootState) => state.reader.config.enableMathJax);
-                yield take(readerLocalActionSetConfig.ID);
-                const newEnableMathJax = yield select((state: IReaderRootState) => state.reader.config.enableMathJax);
+                const oldEnableMathJax = yield* selectTyped((state: IReaderRootState) => state.reader.config.enableMathJax);
+                yield* takeTyped(readerLocalActionSetConfig.ID);
+                const newEnableMathJax = yield* selectTyped((state: IReaderRootState) => state.reader.config.enableMathJax);
                 const shouldReload = oldEnableMathJax !== newEnableMathJax;
                 if (shouldReload) {
                     setTimeout(() => {

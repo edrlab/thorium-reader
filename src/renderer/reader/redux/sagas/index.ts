@@ -23,7 +23,7 @@ import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/re
 import { setTheme } from "readium-desktop/common/redux/actions/theme";
 import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } from "@r2-navigator-js/electron/renderer";
 import { eventChannel } from "redux-saga";
-import { put } from "typed-redux-saga";
+import { put as putTyped } from "typed-redux-saga/macro";
 import { readerLocalActionReader } from "../actions";
 
 // Logger
@@ -110,13 +110,13 @@ export function* rootSaga() {
         takeSpawnEveryChannel(
             MOChannel,
             function* (state: MediaOverlaysStateEnum) {
-                yield put(readerLocalActionReader.setMediaOverlayState.build(state));
+                yield* putTyped(readerLocalActionReader.setMediaOverlayState.build(state));
             },
         ),
         takeSpawnEveryChannel(
             TTSChannel,
             function* (state: TTSStateEnum) {
-                yield put(readerLocalActionReader.setTTSState.build(state));
+                yield* putTyped(readerLocalActionReader.setTTSState.build(state));
             },
         ),
     ]);
