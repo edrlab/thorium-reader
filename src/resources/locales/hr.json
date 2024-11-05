@@ -6,7 +6,6 @@
     "leftSlideButton": "Povuci popis ulijevo",
     "mainContent": "glavni sadržaj",
     "rightSlideButton": "Povuci popis udesno",
-    "searchBook": "Pretraži po naslovu",
     "skipLink": "Preskoči do sadržaja",
     "toolbar": "alatna traka"
   },
@@ -119,7 +118,6 @@
     "released": "Datum izdavanja",
     "sort": "Sortiraj po",
     "tag": "",
-    "tagCount": "Broj oznaka",
     "tags": "Oznake",
     "update": "Uredi"
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "Trajanje"
     },
+    "encryptedNoLicense": "",
     "expired": "",
     "expiredLcp": "Ova knjiga se ne može čitati jer je LCP licenca istekla.",
     "incorrectPassphrase": "",
@@ -557,9 +556,7 @@
       "title": ""
     },
     "session": {
-      "no": "Onemogući",
-      "title": "Spremi sesiju",
-      "yes": "Omogući"
+      "title": "Spremi sesiju"
     },
     "tabs": {
       "appearance": "",

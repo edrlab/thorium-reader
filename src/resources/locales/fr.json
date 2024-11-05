@@ -6,7 +6,6 @@
     "leftSlideButton": "Faire défiler vers la gauche",
     "mainContent": "contenu principal",
     "rightSlideButton": "Faire défiler vers la droite",
-    "searchBook": "Rechercher un livre",
     "skipLink": "Aller au contenu",
     "toolbar": "barre d'outils"
   },
@@ -119,7 +118,6 @@
     "released": "Publié le",
     "sort": "Trier par",
     "tag": "Mot-clef",
-    "tagCount": "Nombre de mots-clefs",
     "tags": "Mots-clefs",
     "update": "Éditer"
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "Durée"
     },
+    "encryptedNoLicense": "",
     "expired": "Prêt expiré",
     "expiredLcp": "Ce livre ne peut être lu car la licence LCP a expiré.",
     "incorrectPassphrase": "Aucune clé LCP enregistrée ne correspond à la publication ou la clé saisie est incorrecte.",
@@ -557,9 +556,7 @@
       "title": ""
     },
     "session": {
-      "no": "Désactiver",
-      "title": "Sauvegarder la session",
-      "yes": "Activer"
+      "title": "Sauvegarder la session"
     },
     "tabs": {
       "appearance": "Apparence",

@@ -28,7 +28,7 @@ import { call as callTyped, select as selectTyped, put as putTyped } from "typed
 import { types } from "util";
 
 import {
-    ERROR_MESSAGE_ON_USERKEYCHECKREQUEST, streamerOpenPublicationAndReturnManifestUrl,
+    ERROR_MESSAGE_ON_USERKEYCHECKREQUEST, ERROR_MESSAGE_ENCRYPTED_NO_LICENSE, streamerOpenPublicationAndReturnManifestUrl,
 } from "./publication/openPublication";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { getTranslator } from "readium-desktop/common/services/translator";
@@ -177,7 +177,15 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
 
     } catch (e) {
 
-        if (e.toString() !== ERROR_MESSAGE_ON_USERKEYCHECKREQUEST) {
+        const errMsg = e.toString();
+        if (errMsg === ERROR_MESSAGE_ENCRYPTED_NO_LICENSE) {
+            yield put(
+                toastActions.openRequest.build(
+                    ToastType.Error,
+                    getTranslator().translate("message.open.error", { err: getTranslator().translate("publication.encryptedNoLicense") }),
+                ),
+            );
+        } else if (errMsg !== ERROR_MESSAGE_ON_USERKEYCHECKREQUEST) {
 
             if (types.isNativeError(e)) {
                 // disable "Error: "
@@ -187,7 +195,7 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
             yield put(
                 toastActions.openRequest.build(
                     ToastType.Error,
-                    getTranslator().translate("message.open.error", { err: e.toString() }),
+                    getTranslator().translate("message.open.error", { err: errMsg }),
                 ),
             );
         }

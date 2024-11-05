@@ -6,7 +6,6 @@
     "leftSlideButton": "Dra åt vänster",
     "mainContent": "huvudinnehåll",
     "rightSlideButton": "Dra åt höger",
-    "searchBook": "Sök på titel",
     "skipLink": "Hoppa till innehåll",
     "toolbar": "vektygsfält"
   },
@@ -119,7 +118,6 @@
     "released": "Publicerad den",
     "sort": "Sortera efter",
     "tag": "Tagg",
-    "tagCount": "Antal taggar",
     "tags": "Taggar",
     "update": "Redigera"
   },
@@ -293,6 +291,7 @@
     "duration": {
       "title": "Längd"
     },
+    "encryptedNoLicense": "",
     "expired": "Lånet har gått ut.",
     "expiredLcp": "Den här boken går inte att läsa eftersom LCP-licensen har löpt ut.",
     "incorrectPassphrase": "",
@@ -557,9 +556,7 @@
       "title": ""
     },
     "session": {
-      "no": "Inaktivera",
-      "title": "Spara session",
-      "yes": "Aktivera"
+      "title": "Spara session"
     },
     "tabs": {
       "appearance": "Utseende",
