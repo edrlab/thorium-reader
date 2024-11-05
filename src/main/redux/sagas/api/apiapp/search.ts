@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import { IApiappSearchResultView } from "readium-desktop/common/api/interface/apiappApi.interface";
 import { call } from "typed-redux-saga/macro";
-import { SagaGenerator } from "typed-redux-saga/dist";
+import { SagaGenerator } from "typed-redux-saga";
 import { librarySearch } from "../../apiapp";
 
 const debug = debug_("readium-desktop:main/redux/sagas/api/apiapp/search");
