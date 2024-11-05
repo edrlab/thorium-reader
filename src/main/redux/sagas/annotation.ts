@@ -311,7 +311,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 ));
 
                 // wait the modal confirmation or abort
-                const actionConfirmOrAbort = yield* take(annotationActions.importConfirmOrAbort.build);
+                const actionConfirmOrAbort = yield* take(annotationActions.importConfirmOrAbort.build); // not .ID because we need Action return type
                 if (!actionConfirmOrAbort?.payload || actionConfirmOrAbort.payload.state === "abort") {
                     // aborted
 
@@ -340,6 +340,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                                 const annotationToUpdateOld = annotations.find(({ uuid }) => uuid === annotationToUpdate.uuid);
                                 const a = ActionSerializer.serialize(readerActions.annotation.update.build(annotationToUpdateOld, annotationToUpdate));
                                 try {
+                                    if (!readerWin.isDestroyed() && !readerWin.webContents.isDestroyed())
                                     readerWin.webContents.send(syncIpc.CHANNEL, {
                                         type: syncIpc.EventType.MainAction,
                                         payload: {
@@ -359,6 +360,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                         for (const annotationParsedReadyToBeImported of annotationsParsedNoConflictArray) {
                             const a = ActionSerializer.serialize(readerActions.annotation.push.build(annotationParsedReadyToBeImported));
                             try {
+                                if (!readerWin.isDestroyed() && !readerWin.webContents.isDestroyed())
                                 readerWin.webContents.send(syncIpc.CHANNEL, {
                                     type: syncIpc.EventType.MainAction,
                                     payload: {

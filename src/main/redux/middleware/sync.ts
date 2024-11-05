@@ -148,6 +148,7 @@ export const reduxSyncMiddleware: Middleware
                             const a = ActionSerializer.serialize(action as ActionWithSender);
                             // debug(a);
                             try {
+                                if (!win.isDestroyed() && !win.webContents.isDestroyed())
                                 win.webContents.send(syncIpc.CHANNEL, {
                                     type: syncIpc.EventType.MainAction,
                                     payload: {
@@ -177,7 +178,7 @@ export const reduxSyncMiddleware: Middleware
                 //     }
 
                 //     try {
-                //         appWindow.browserWindow.webContents.send(syncIpc.CHANNEL, {
+                //         !appWindow.isDestroyed() && !appWindow.webContents.isDestroyed() && appWindow.browserWindow.webContents.send(syncIpc.CHANNEL, {
                 //             type: syncIpc.EventType.MainAction,
                 //             payload: {
                 //                 action: actionSerializer.serialize(action),

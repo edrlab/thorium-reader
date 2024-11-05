@@ -79,7 +79,7 @@ export function* appActivate() {
         yield put(winActions.library.openRequest.build());
 
         // wait
-        yield take(winActions.library.openSucess.build);
+        yield take(winActions.library.openSucess.ID);
     }
 
 }

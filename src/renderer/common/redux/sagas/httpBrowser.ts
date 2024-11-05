@@ -25,7 +25,7 @@ export function* opdsBrowse(link: string, REQUEST_ID: string) {
     debug("http-browse", link);
     yield apiSaga("httpbrowser/browse", REQUEST_ID, link);
     while (true) {
-        const action: TA = yield take(apiActions.result.build);
+        const action: TA = yield take(apiActions.result.ID);
 
         const { requestId } = action.meta.api;
         if (requestId === REQUEST_ID) {

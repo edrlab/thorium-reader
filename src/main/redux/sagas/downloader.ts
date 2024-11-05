@@ -100,7 +100,7 @@ function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?:
         callTyped(function*() {
 
             while (true) {
-                const action = yield* takeTyped(downloadActions.abort.build);
+                const action = yield* takeTyped(downloadActions.abort.build); // not .ID because we need Action return type
                 if (action.payload.id === id) {
                     debug("cancel id (", id, ") with ", downloadProcessTasks.length, "tasks");
                     yield cancel(downloadProcessTasks);

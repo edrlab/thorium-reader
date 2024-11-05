@@ -68,7 +68,28 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         contextMenuSetup(wc, wc.id);
     }
 
-    if (IS_DEV) {
+    yield put(winActions.session.registerLibrary.build(libWindow, windowBound));
+
+    const readers = yield* selectTyped(
+        (state: RootState) => state.win.session.reader,
+    );
+    const readersArray = ObjectValues(readers);
+    if (readersArray.length === 1) {
+        libWindow.hide();
+    }
+
+    let rendererBaseUrl = _RENDERER_LIBRARY_BASE_URL;
+    if (rendererBaseUrl === "file://") {
+        // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
+        rendererBaseUrl += path.normalize(path.join(__dirname, "index_library.html"));
+    } else {
+        // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
+        rendererBaseUrl += "index_library.html";
+    }
+    rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
+
+    if (true) { // IS_DEV
+
         libWindow.webContents.on("did-finish-load", () => {
             // see app.whenReady() in src/main/redux/sagas/app.ts
             // // app.whenReady().then(() => {
@@ -92,13 +113,14 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
             // because webpack-dev-server automaticaly refresh the window.
             const store = diMainGet("store");
             const identifier = store.getState().win.session.library.identifier;
+            // const identifier = yield* selectTyped((state: RootState) => state.win.session.library.identifier);
             store.dispatch(winActions.library.openSucess.build(libWindow, identifier));
 
         });
 
         if (_VSCODE_LAUNCH !== "true" && OPEN_DEV_TOOLS) {
             setTimeout(() => {
-                if (!libWindow.isDestroyed()) {
+                if (!libWindow.isDestroyed() && !libWindow.webContents.isDestroyed()) {
                     debug("opening dev tools (library) ...");
                     libWindow.webContents.openDevTools({ activate: true, mode: "detach" });
                 }
@@ -106,35 +128,15 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         }
     }
 
-    yield put(winActions.session.registerLibrary.build(libWindow, windowBound));
-
-    const readers = yield* selectTyped(
-        (state: RootState) => state.win.session.reader,
-    );
-    const readersArray = ObjectValues(readers);
-    if (readersArray.length === 1) {
-        libWindow.hide();
-    }
-
-    let rendererBaseUrl = _RENDERER_LIBRARY_BASE_URL;
-    if (rendererBaseUrl === "file://") {
-        // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-        rendererBaseUrl += path.normalize(path.join(__dirname, "index_library.html"));
-    } else {
-        // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
-        rendererBaseUrl += "index_library.html";
-    }
-    rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
-
     yield* callTyped(() => libWindow.loadURL(rendererBaseUrl));
     // the promise will resolve when the page has finished loading (see did-finish-load)
     // and rejects if the page fails to load (see did-fail-load).
 
-    if (!IS_DEV) {
-        // see 'did-finish-load' otherwise
-        const identifier = yield* selectTyped((state: RootState) => state.win.session.library.identifier);
-        yield put(winActions.library.openSucess.build(libWindow, identifier));
-    }
+    // if (!IS_DEV) {
+    //     // see 'did-finish-load' otherwise
+    //     const identifier = yield* selectTyped((state: RootState) => state.win.session.library.identifier);
+    //     yield put(winActions.library.openSucess.build(libWindow, identifier));
+    // }
 
     setMenu(libWindow, false);
 

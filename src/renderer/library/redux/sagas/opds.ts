@@ -130,7 +130,7 @@ function* getUrlApi(links: IOpdsLinkView[]) {
     while (true) {
         const action:
             apiActions.result.TAction<TReturnPromiseOrGeneratorType<TApiMethod["opds/getUrlWithSearchLinks"]>>
-            = yield take(apiActions.result.build);
+            = yield take(apiActions.result.ID);
 
         const { requestId } = action.meta.api;
         if (requestId === SEARCH_OPDS_API_REQUEST_ID) {

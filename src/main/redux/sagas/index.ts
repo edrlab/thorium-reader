@@ -155,7 +155,7 @@ export function* rootSaga() {
     yield put(appActions.initSuccess.build());
 
     // wait library window fully opened before to throw events
-    yield take(winActions.library.openSucess.build);
+    yield take(winActions.library.openSucess.ID);
 
     if (!process.windowsStore && _APP_NAME === "Thorium" && _PACK_NAME === "EDRLab.ThoriumReader") {
         yield call(checkAppVersionUpdate);
