@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 
 import { _TELEMETRY_SECRET, _TELEMETRY_URL, _APP_VERSION } from "readium-desktop/preprocessor-directives";
-import { call, select } from "typed-redux-saga";
+import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { RootState } from "../states";
 import { version as osVersion } from "os";
 import * as fs from "fs";
@@ -64,10 +64,10 @@ try {
 
 function* collectAndSave() {
 
-    const version = yield* select((state: RootState) => state.version);
+    const version = yield* selectTyped((state: RootState) => state.version);
 
     // fresh install is equal to en language ?
-    const locale = yield* select((state: RootState) => state.i18n.locale);
+    const locale = yield* selectTyped((state: RootState) => state.i18n.locale);
     // const locale = getTranslator().getLocale();
 
     // see src/main/redux/sagas/index.ts:107
@@ -160,12 +160,12 @@ export function* collectSaveAndSend() {
     }
 
     try {
-        const queue = yield* call(collectAndSave);
+        const queue = yield* callTyped(collectAndSave);
 
         // try to send the queue to the server
         // if sucessfull 200 OK : clear the file queue
         // else : do nothing
-        if (yield* call(sendTelemetry, queue)) {
+        if (yield* callTyped(sendTelemetry, queue)) {
             clearQueue();
         }
     } catch {

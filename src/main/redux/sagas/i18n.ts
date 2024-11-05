@@ -10,7 +10,7 @@ import { i18nActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import {  getTranslator } from "readium-desktop/common/services/translator";
 import { error } from "readium-desktop/main/tools/error";
-import { call } from "typed-redux-saga";
+import { call as callTyped } from "typed-redux-saga/macro";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:i18n";
@@ -23,7 +23,7 @@ function* setLocale(action: i18nActions.setLocale.TAction) {
     debug("i18n setLocale called", action.payload);
     debug("$$$$$");
 
-    yield call(() => getTranslator().setLocale(action.payload.locale));
+    yield* callTyped(() => getTranslator().setLocale(action.payload.locale));
 }
 
 export function saga() {

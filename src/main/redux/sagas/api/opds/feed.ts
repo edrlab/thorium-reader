@@ -8,7 +8,8 @@
 import { OpdsFeed } from "readium-desktop/common/models/opds";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import { diMainGet } from "readium-desktop/main/di";
-import { call, SagaGenerator } from "typed-redux-saga";
+import { SagaGenerator } from "typed-redux-saga";
+import { call as callTyped } from "typed-redux-saga/macro";
 
 /*
 
@@ -48,14 +49,14 @@ export function* getFeed(identifier: string) {
     const opdsFeedViewConverter = diMainGet("opds-feed-view-converter");
     const opdsFeedRepository = diMainGet("opds-feed-repository");
 
-    const doc = yield* call(() => opdsFeedRepository.get(identifier));
+    const doc = yield* callTyped(() => opdsFeedRepository.get(identifier));
     return opdsFeedViewConverter.convertDocumentToView(doc);
 }
 
 export function* deleteFeed(identifier: string) {
 
     const opdsFeedRepository = diMainGet("opds-feed-repository");
-    yield* call(() => opdsFeedRepository.delete(identifier));
+    yield* callTyped(() => opdsFeedRepository.delete(identifier));
 }
 
 export function* addFeed(data: OpdsFeed): SagaGenerator<IOpdsFeedView> {
@@ -64,13 +65,13 @@ export function* addFeed(data: OpdsFeed): SagaGenerator<IOpdsFeedView> {
     const opdsFeedViewConverter = diMainGet("opds-feed-view-converter");
 
     // ensures no duplicates (same URL ... but may be different titles)
-    const opdsFeeds = yield* call(() => opdsFeedRepository.findAll());
+    const opdsFeeds = yield* callTyped(() => opdsFeedRepository.findAll());
     const found = opdsFeeds.find((o) => o.url === data.url);
     if (found) {
         return opdsFeedViewConverter.convertDocumentToView(found);
     }
 
-    const doc = yield* call(() => opdsFeedRepository.save(data));
+    const doc = yield* callTyped(() => opdsFeedRepository.save(data));
     return opdsFeedViewConverter.convertDocumentToView(doc);
 }
 
@@ -79,7 +80,7 @@ export function* findAllFeeds(): SagaGenerator<IOpdsFeedView[]> {
     const opdsFeedRepository = diMainGet("opds-feed-repository");
     const opdsFeedViewConverter = diMainGet("opds-feed-view-converter");
 
-    const docs = yield* call(() => opdsFeedRepository.findAll());
+    const docs = yield* callTyped(() => opdsFeedRepository.findAll());
     return docs.map((doc) =>
         opdsFeedViewConverter.convertDocumentToView(doc));
 }
