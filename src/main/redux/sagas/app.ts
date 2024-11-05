@@ -86,7 +86,7 @@ export function* init() {
             debug("getAllReaderWindowFromDi ERROR?", e);
         }
         browserWindows.forEach((win) => {
-            if (win.webContents) {
+            if (!win.isDestroyed() && !win.webContents.isDestroyed()) {
                 console.log("webContents.send - accessibility-support-changed: ", accessibilitySupportEnabled, win.id);
                 try {
                     win.webContents.send("accessibility-support-changed", accessibilitySupportEnabled);
