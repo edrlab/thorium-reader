@@ -256,10 +256,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                 if (firstVoiceFirstItemFromVoicesList) {
                     const firstVoice = firstVoiceFirstItemFromVoicesList;
                     if (this.props.ttsVoice) {
-                        if (firstVoice.voiceURI === this.props.ttsVoice.voiceURI && firstVoice.name === this.props.ttsVoice.name && firstVoice.language === this.props.ttsVoice.lang) {
+                        if (firstVoice.voiceURI && firstVoice.voiceURI === this.props.ttsVoice.voiceURI &&
+                            firstVoice.name && firstVoice.name === this.props.ttsVoice.name &&
+                            firstVoice.language && firstVoice.language === this.props.ttsVoice.lang
+                        ) {
                             // nothing
                         } else {
-                            if (firstVoice.language.split("-")[0] === this.props.ttsVoice.lang.split("-")[0]) {
+                            if (firstVoice.language?.split("-")[0] === this.props.ttsVoice.lang?.split("-")[0]) {
                                 // nothing
                             } else {
                                 // when language code switch, change the default ttsVoice
