@@ -1,50 +1,31 @@
 import * as React from "react";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
-import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
-import { ttsVoice as r2navigatorSetTTSVoice } from "@r2-navigator-js/electron/renderer/index";
+import { useReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { Collection, Header as ReactAriaHeader, Section } from "react-aria-components";
 import { HoverEvent } from "@react-types/shared";
-import { filterOnLanguage, getLanguages, getVoices, groupByRegions, IVoices } from "readium-speech";
+import { filterOnLanguage, groupByRegions, IVoices, getLanguages } from "readium-speech";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
-export interface IProps {}
+export interface IProps {
+    voices: IVoicesWithIndex[],
+    handleTTSVoice: (v: IVoicesWithIndex) => void,
+}
 
 type IVoicesWithIndex = IVoices & { id: number };
 
-export const VoiceSelection: React.FC<IProps> = () => {
+export const VoiceSelection: React.FC<IProps> = (props) => {
 
     const [__] = useTranslator();
 
     const ttsVoice = useReaderConfig("ttsVoice");
-    const setConfig = useSaveReaderConfig();
+    const { voices, handleTTSVoice } = props;
 
+    const [selectedLanguage, setSelectedLanguage] = React.useState<string>("");
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const locale = useSelector((state: IReaderRootState) => state.i18n.locale);
-    
-    const [voices, setVoices] = React.useState<IVoicesWithIndex[]>([]);
-    const [selectedLanguage, setSelectedLanguage] = React.useState<string>("");
-    const handleTTSVoice = (voice: IVoices) => {
-        const v = voice ? {
-            default: false,
-            lang: voice.language,
-            localService: voice.offlineAvailability,
-            name: voice.name,
-            voiceURI: voice.voiceURI,
-        } : null;
-        r2navigatorSetTTSVoice(v);
-        setConfig({ ttsVoice: v });
-    };
-
-    React.useEffect(() => {
-        getVoices().then((_voices) => {
-            if (Array.isArray(_voices)) {
-                setVoices(_voices.map((v, i) => ({...v, id: i+1})));
-            }
-        });
-    }, []);
 
     const languages = getLanguages(voices, r2Publication.Metadata?.Language || [], locale);
     const ttsVoiceDefaultLanguageCode = (ttsVoice?.lang || "").split("-")[0];
@@ -58,25 +39,6 @@ export const VoiceSelection: React.FC<IProps> = () => {
 
     const voicesFilteredOnLanguage = filterOnLanguage(voices, selectedLanguage || "") as IVoicesWithIndex[];
     const voicesGroupedByRegions = groupByRegions(voicesFilteredOnLanguage, r2Publication.Metadata?.Language || [], locale) as Map<string, IVoicesWithIndex[]>;
-
-    const firstVoice = ((Array.from(voicesGroupedByRegions)[0] || [])[1] || [])[0];
-    if (firstVoice) {
-        if (ttsVoice) {
-            if (firstVoice.voiceURI === ttsVoice.voiceURI && firstVoice.name === ttsVoice.name && firstVoice.language === ttsVoice.lang) {
-                // nothing
-            } else {
-                if (firstVoice.language.split("-")[0] === ttsVoice.lang.split("-")[0]) {
-                    // nothing
-                } else {
-                    // when language code switch, change the default ttsVoice
-                    handleTTSVoice(firstVoice);
-                }
-            }
-        } else {
-            // if there is no default TTSVoice, set the first voice returned par getVoices
-            handleTTSVoice(firstVoice);
-        }
-    }
 
     return (<div className={stylesReader.ttsSelectVoice}>
         <ComboBox

@@ -17,7 +17,7 @@ import * as Popover from "@radix-ui/react-popover";
 import * as Dialog from "@radix-ui/react-dialog";
 
 // import * as ReactDOM from "react-dom";
-import { ReaderMode } from "readium-desktop/common/models/reader";
+import { ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
 import * as viewMode from "readium-desktop/renderer/assets/icons/fullscreen-corners-icon.svg";
 import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
@@ -71,14 +71,18 @@ import { ReaderSettings, ReadingAudio } from "./ReaderSettings";
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
-import { readerLocalActionAnnotations } from "../redux/actions";
+import { readerLocalActionAnnotations, readerLocalActionSetConfig } from "../redux/actions";
 import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { AnnotationEdit } from "./AnnotationEdit";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { VoiceSelection } from "./header/voiceSelection";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import { filterOnLanguage, getVoices, groupByRegions, IVoices } from "readium-speech";
+import { ttsVoice as r2navigatorSetTTSVoice } from "@r2-navigator-js/electron/renderer/index";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
+
+type IVoicesWithIndex = IVoices & { id: number };
 
 // function throttle(callback: (...args: any) => void, limit: number) {
 //     let waiting = false;
@@ -157,6 +161,7 @@ interface IState {
     forceTTS: boolean;
     ttsPopoverOpen: boolean;
     tabValue: string;
+    voices: IVoicesWithIndex[];
 }
 
 export class ReaderHeader extends React.Component<IProps, IState> {
@@ -189,6 +194,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             forceTTS: false,
             ttsPopoverOpen: false,
             tabValue: this.props.ReaderSettingsProps.isDivina ? "tab-divina" : this.props.ReaderSettingsProps.isPdf ? "tab-pdfzoom" : "tab-display",
+            voices: [],
         };
 
         this.timerFXLZoomDebounce = undefined;
@@ -214,12 +220,60 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         // }, 200).bind(this);
     }
 
+    private handleTTSVoice = (voice: IVoices) => {
+        const v = voice ? {
+            default: false,
+            lang: voice.language,
+            localService: voice.offlineAvailability,
+            name: voice.name,
+            voiceURI: voice.voiceURI,
+        } : null;
+        r2navigatorSetTTSVoice(v);
+        this.props.setConfig({ ttsVoice: v });
+    };
+
     public componentDidMount() {
 
         ensureKeyboardListenerIsInstalled();
         this.registerAllKeyboardListeners();
 
         createOrGetPdfEventBus().subscribe("scale", this.setScaleMode);
+
+        getVoices().then((_voices) => {
+            if (Array.isArray(_voices)) {
+                this.setState({
+                    voices: _voices.map((v, i) => ({...v, id: i+1})),
+                });
+
+                const voicesFilteredOnLanguage = filterOnLanguage(_voices, this.props.r2Publication.Metadata?.Language || []) as IVoicesWithIndex[];
+                const voicesGroupedByRegions = groupByRegions(voicesFilteredOnLanguage, this.props.r2Publication.Metadata?.Language || [], this.props.locale) as Map<string, IVoicesWithIndex[]>;
+
+                // const firstVoice = ((Array.from(voicesGroupedByRegions)[0] || [])[1] || [])[0];
+                const firstVoiceArrayFromMap = Array.from(voicesGroupedByRegions);
+                const firstVoiceArrayFirst = firstVoiceArrayFromMap[0];
+                const firstVoiceArraySecondVoicesListItems = (firstVoiceArrayFirst || [])[1];
+                const firstVoiceFirstItemFromVoicesList = (firstVoiceArraySecondVoicesListItems || [])[0];
+                if (firstVoiceFirstItemFromVoicesList) {
+                    const firstVoice = firstVoiceFirstItemFromVoicesList;
+                    if (this.props.ttsVoice) {
+                        if (firstVoice.voiceURI === this.props.ttsVoice.voiceURI && firstVoice.name === this.props.ttsVoice.name && firstVoice.language === this.props.ttsVoice.lang) {
+                            // nothing
+                        } else {
+                            if (firstVoice.language.split("-")[0] === this.props.ttsVoice.lang.split("-")[0]) {
+                                // nothing
+                            } else {
+                                // when language code switch, change the default ttsVoice
+                                this.handleTTSVoice(firstVoice);
+                            }
+                        }
+                    } else {
+                        // if there is no default TTSVoice, set the first voice returned par getVoices
+                        this.handleTTSVoice(firstVoice);
+                    }
+                }
+            }
+        });
+
     }
 
     public componentWillUnmount() {
@@ -420,6 +474,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
           );
 
           const isAudioBook = isAudiobookFn(this.props.r2Publication);
+
+
 
         return (
             <nav
@@ -694,7 +750,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                             </ComboBox>
                                                                         </div>
                                                                         {!useMO && (
-                                                                            <VoiceSelection />
+                                                                            <VoiceSelection handleTTSVoice={this.handleTTSVoice} voices={this.state.voices}/>
                                                                         )}
                                                                     </div>
                                                                     <ReadingAudio useMO={useMO}/>
@@ -1230,6 +1286,9 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
+        setConfig: (state: Partial<ReaderConfig>) => {
+            dispatch(readerLocalActionSetConfig.build(state));
+        },
         triggerAnnotationBtn: () => {
             dispatch(readerLocalActionAnnotations.trigger.build());
         },
