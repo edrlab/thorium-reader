@@ -19,9 +19,15 @@ function readerTransientConfigReducer_(
     switch (action.type) {
         case readerLocalActionSetTransientConfig.ID:
 
+            const merge = { ...state, ...action.payload };
             return {
-                ...state,
-                ...action.payload,
+                font: merge.font,
+                fontSize: merge.fontSize,
+                pageMargins: merge.pageMargins,
+                wordSpacing: merge.wordSpacing,
+                letterSpacing: merge.letterSpacing,
+                paraSpacing: merge.paraSpacing,
+                lineHeight: merge.lineHeight,
             };
         default:
             return state;

@@ -5,14 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
-import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import { TextArea } from "react-aria-components";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import { readerActions } from "readium-desktop/common/redux/actions";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {

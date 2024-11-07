@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { readerActions } from "readium-desktop/common/redux/actions";
@@ -13,7 +15,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import * as SaveAsIcon from "readium-desktop/renderer/assets/icons/SaveAs-icon.svg";
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as ReadBook from "readium-desktop/renderer/assets/icons/readBook-icon.svg";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -23,6 +25,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import DeletePublicationConfirm from "../DeletePublicationConfirm";
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -101,6 +104,10 @@ export class CatalogControls extends React.Component<IProps, undefined> {
     }
 }
 
+const mapStateToProps = (state: IRendererCommonRootState) => ({
+    locale: state.i18n.locale, // refresh
+});
+
 const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
         openReader: () => {
@@ -110,4 +117,4 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(CatalogControls));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(CatalogControls));

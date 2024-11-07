@@ -246,7 +246,9 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
         const tuple = convertRange(
             range,
             (doc as any).getCssSelector,
-            (_node: Node) => ""); // computeElementCFI
+            (_node: Node) => "", // computeElementCFI
+            (_node: Node) => "", // computeElementXPath
+        );
 
         if (tuple) {
             const rangeInfo = tuple[0];

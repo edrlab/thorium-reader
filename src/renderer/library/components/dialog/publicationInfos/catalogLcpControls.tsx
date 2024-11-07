@@ -5,13 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
+
 import * as React from "react";
 import { connect, useDispatch } from "react-redux";
 import { lcpActions, readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as LoopIcon from "readium-desktop/renderer/assets/icons/loop.svg";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -23,13 +25,13 @@ import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import DeletePublicationConfirm from "../DeletePublicationConfirm";
 import * as SaveAsIcon from "readium-desktop/renderer/assets/icons/SaveAs-icon.svg";
 import * as TrashIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as ReadBook from "readium-desktop/renderer/assets/icons/readBook-icon.svg";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -91,7 +93,7 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
                     </button>
                     : <></>
                 }
-                {this.props.isReading ? 
+                {this.props.isReading ?
                 <button disabled>
                     <SVG ariaHidden svg={DoubleCheckIcon} />
                     {__("publication.markAsRead")}
@@ -165,7 +167,11 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(CatalogLcpControls));
+const mapStateToProps = (state: IRendererCommonRootState) => ({
+    locale: state.i18n.locale, // refresh
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(CatalogLcpControls));
 
 const RenewLsdConfirm = (props: { publicationView: PublicationView, trigger: React.ReactNode } & AlertDialog.AlertDialogProps) => {
     const [__] = useTranslator();

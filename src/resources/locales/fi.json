@@ -6,7 +6,6 @@
     "leftSlideButton": "Siirry listalla vasemmalle",
     "mainContent": "Pääsisältö",
     "rightSlideButton": "Siirry listalla oikealle",
-    "searchBook": "Hae kirjan nimellä",
     "skipLink": "Hyppää sisältöön",
     "toolbar": "Työkalurivi"
   },
@@ -75,7 +74,9 @@
       "lastAdditions": "Viimeksi lisätty"
     },
     "export": "Tallenna nimellä",
+    "exportAnnotation": "",
     "format": "Formaatti",
+    "importAnnotation": "",
     "lang": "Kieli",
     "lastRead": "Luettu viimeksi",
     "moreInfo": "Tietoa julkaisusta",
@@ -117,12 +118,23 @@
     "released": "Julkaistu",
     "sort": "Lajittele",
     "tag": "Tunniste",
-    "tagCount": "Tunnistemäärä",
     "tags": "Tunnisteet",
     "update": "Muokkaa"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Peru",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Haluatko poistaa tämän luettelon?",
     "deletePublication": "Haluatko poistaa tämän julkaisun?",
     "import": "Haluatko tuoda nämä tiedostot:",
@@ -157,7 +169,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "Vihje: {{- hint}}",
+      "hint": "Vihje: ",
+      "open": "",
       "password": "Salasana",
       "sentence": "Julkaisun avaamiseen tarvitaan LCP-salasana: ",
       "urlHint": "Unohtuiko salasana? Lisätietoja:",
@@ -167,6 +180,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Julkaisun {{- title}} lataus epäonnistui: [{{- err}}]"
     },
@@ -270,8 +291,10 @@
     "duration": {
       "title": "Kesto"
     },
+    "encryptedNoLicense": "",
     "expired": "Laina-aika on päättynyt",
     "expiredLcp": "LCP-käyttöoikeus on päättynyt.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Loppu",
     "lcpRightsCopy": "Kopioidut merkit",
     "lcpRightsPrint": "Tulostetut sivut",
@@ -304,12 +327,41 @@
       "Color": "Väri",
       "addNote": "Lisää muistiinpano",
       "advancedMode": "Välitön tila (luo suoraan valinnasta)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Asetukset",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Älä näytä",
       "highlight": "Korosta",
       "noSelectionToast": "Ei valintaa",
       "quickAnnotations": "Pikatila (ohita muokkausikkuna)",
       "saveNote": "Tallenna",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Näytä marginaalissa",
       "type": {
         "outline": "Reunaviiva",
@@ -391,6 +443,7 @@
         "title": "Palstat",
         "two": "2 palstaa"
       },
+      "customFontSelected": "",
       "customizeReader": "Mukauta tekstin ulkoasua",
       "disabled": "ei käytössä",
       "display": "Näyttöasetukset",
@@ -422,6 +475,15 @@
           "width": "sivun leveys"
         },
         "title": "Zoomaus"
+      },
+      "preset": {
+        "apply": "",
+        "applyDetails": "",
+        "reset": "",
+        "resetDetails": "",
+        "save": "",
+        "saveDetails": "",
+        "title": ""
       },
       "preview": "Esikatselu",
       "reduceMotion": "Vähennä liikettä",
@@ -465,7 +527,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Poista kirjautumistiedot"
     },
     "keyboard": {
@@ -481,10 +551,12 @@
     "language": {
       "languageChoice": "Kieli"
     },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
+    },
     "session": {
-      "no": "Keskeytä",
-      "title": "Tallenna istunto",
-      "yes": "Jatka"
+      "title": "Tallenna istunto"
     },
     "tabs": {
       "appearance": "Ulkoasu",

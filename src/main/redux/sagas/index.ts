@@ -11,7 +11,7 @@ import { keyboardActions, versionUpdateActions } from "readium-desktop/common/re
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
-import { select, call as callTyped } from "typed-redux-saga";
+import { select as selectTyped, call as callTyped  } from "typed-redux-saga/macro";
 import { RootState } from "../states";
 import { _APP_VERSION, _APP_NAME, _PACK_NAME } from "readium-desktop/preprocessor-directives";
 // import { THttpGetCallback } from "readium-desktop/common/utils/http";
@@ -19,7 +19,6 @@ import { _APP_VERSION, _APP_NAME, _PACK_NAME } from "readium-desktop/preprocesso
 import { httpGet } from "readium-desktop/main/network/http";
 import * as semver from "semver";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
-import { diMainGet } from "readium-desktop/main/di";
 import { appActions, winActions } from "../actions";
 import * as api from "./api";
 import * as appSaga from "./app";
@@ -38,6 +37,8 @@ import * as catalog from "./catalog";
 import * as annotation from "./annotation";
 
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import { getTranslator } from "readium-desktop/common/services/translator";
+
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
 const debug = debug_(filename_);
@@ -54,6 +55,8 @@ export function* rootSaga() {
 
     try {
         yield all([
+
+            // wait for the app.whenReady()
             call(appSaga.init),
             call(keyboardShortcuts.init),
         ]);
@@ -112,8 +115,31 @@ export function* rootSaga() {
     // LCP saga
     yield lcp.saga();
 
+    // Annotation saga
+    yield annotation.saga();
+
     // get/set catalog in library win
     yield catalog.saga();
+
+    // creator initialization for Win32
+    // OS.userInfo seems to works fine on windows
+    // yield spawn(function* () {
+
+    //     const creator = yield* select((_state: ICommonRootState) => _state.creator);
+    //     if (creator?.name) {
+    //         return ;
+    //     }
+
+    //     try {
+    //         const username = yield* callTyped(() => creatorInitGetUsernameFromWin32Promise());
+    //         if (username) {
+    //             debug("Creator Username in Win32 plafform, username found with powershell [", username, "]");
+    //             yield put(creatorActions.set.build(username, creator.type));
+    //         }
+    //     } catch (e) {
+    //         debug("ERROR: Creator Username in Win32 platform, cannot get the username with powershell !! :", e);
+    //     }
+    // });
 
     // rehydrate shorcuts in redux
     yield put(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll(), false));
@@ -125,14 +151,11 @@ export function* rootSaga() {
     // need to track the previous state version before update in initSuccess.build
     yield call(telemetry.collectSaveAndSend);
 
-    // export annotations
-    yield annotation.saga();
-
     // app initialized
     yield put(appActions.initSuccess.build());
 
     // wait library window fully opened before to throw events
-    yield take(winActions.library.openSucess.build);
+    yield take(winActions.library.openSucess.ID);
 
     if (!process.windowsStore && _APP_NAME === "Thorium" && _PACK_NAME === "EDRLab.ThoriumReader") {
         yield call(checkAppVersionUpdate);
@@ -148,7 +171,7 @@ function* checkAppVersionUpdate() {
     // Correct HTTP header content-type, but reliance on GitHack servers:
     // const JSON_URL = `https://raw.githack.com/edrlab/thorium-reader/${BRANCH}/latest.json`;
     try {
-        let version = IS_DEV ? yield* select((state: RootState) => state.version) : null;
+        let version = IS_DEV ? yield* selectTyped((state: RootState) => state.version) : null;
         // src/common/redux/reducers/version.ts
         // version is null (initial state) or current _APP_VERSION (package.json version)
         // telemetry.collectSaveAndSend (prev_version handling) is called before appActions.initSuccess, and finally this checkAppVersionUpdate Saga is called after appActions.initSuccess
@@ -161,7 +184,7 @@ function* checkAppVersionUpdate() {
             version = _APP_VERSION;
         }
 
-        // yield* call from "typed-redux-saga"
+        // yield* call from "typed-redux-saga/macro"
         // yield call from "redux-saga/effects"
         const json = yield* callTyped(async (url: string) => {
 
@@ -218,7 +241,7 @@ function* checkAppVersionUpdate() {
                     if (IS_DEV) {
                         yield call(async () => {
 
-                            const translate = diMainGet("translator").translate;
+                            const translate = getTranslator().translate;
                             const res = await dialog.showMessageBox(// browserWindow,
                                 {
                                 type: "question",

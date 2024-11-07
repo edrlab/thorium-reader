@@ -9,7 +9,7 @@ import { TPublication } from "readium-desktop/common/type/publication.type";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 interface IPubInfoState {
     publication?: TPublication;
@@ -20,7 +20,7 @@ interface IPubInfoStateReader extends IPubInfoState {
     pdfPlayerNumberOfPages: number | undefined; // super hacky :(
     divinaNumberOfPages: number | undefined; // super hacky :(
     divinaContinousEqualTrue: boolean;
-    readerReadingLocation: LocatorExtended;
+    readerReadingLocation: MiniLocatorExtended;
     handleLinkUrl: ((url: string) => void) | undefined;
 }
 

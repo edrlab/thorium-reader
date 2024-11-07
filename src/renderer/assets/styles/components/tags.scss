@@ -1,6 +1,6 @@
-/*
-=-=-= tags.scss
-*/
+.CSS_START_components_tags {
+  display: none;
+}
 
 .tags_wrapper {
   display: flex;
@@ -98,10 +98,6 @@
   }
 }
 
-.___DEBUG___COMPONENTS_TAGS_CSS {
-  display: none;
-}
-
 .Popover_delete_tag {
   z-index: 1000;
   border: 1px solid var(--color-blue);
@@ -196,4 +192,8 @@
       fill: var(--color-error-dark);
     }
   }
+}
+
+.CSS_END_components_tags {
+  display: none;
 }

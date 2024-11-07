@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
+
 // import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
 // import * as ForwardIcon from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
 // import * as BackIcon from "readium-desktop/renderer/assets/icons/double_arrow_left_black_24dp.svg";
@@ -16,7 +18,6 @@ import classNames from "classnames";
 import * as React from "react";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { formatTime } from "readium-desktop/common/utils/time";
-import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -25,7 +26,8 @@ import {
     TKeyboardEventOnAnchor, TMouseEventOnAnchor, TMouseEventOnSpan,
 } from "readium-desktop/typings/react";
 
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
@@ -37,7 +39,6 @@ import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-// import { I18nTyped } from "readium-desktop/common/services/translator";
 
 const isFixedLayout = (link: Link, publication: R2Publication): boolean => {
     if (link && link.Properties) {
@@ -79,11 +80,12 @@ interface IBaseProps extends TranslatorProps {
     fullscreen: boolean;
     historyCanGoBack: boolean;
     historyCanGoForward: boolean;
-    currentLocation: LocatorExtended;
+    currentLocation: MiniLocatorExtended;
     goToLocator: (locator: R2Locator, closeNavPanel?: boolean, isFromOnPopState?: boolean) => void;
     // tslint:disable-next-line: max-line-length
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor, url: string, closeNavPanel?: boolean, isFromOnPopState?: boolean) => void;
     isDivina: boolean;
+    isDivinaLocation: (data: any) => data is { pageIndex: number | undefined, nbOfPages: number | undefined, locator: R2Locator };
     divinaNumberOfPages: number;
     divinaContinousEqualTrue: boolean;
 
@@ -136,10 +138,11 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
         let spineTitle = currentLocation.locator?.title || currentLocation.locator.href;
 
-        if (isDivina) {
+        // SEE isDivinaLocation duck typing hack with totalProgression injection!!
+        if (isDivina && this.props.isDivinaLocation(currentLocation)) {
             try {
                 spineTitle = this.props.divinaContinousEqualTrue
-                    ? `${Math.floor((currentLocation.locator.locations as any).totalProgression * r2Publication.Spine.length)}`
+                    ? `${Math.floor(currentLocation.locator.locations.progression * r2Publication.Spine.length)}`
                     : `${(currentLocation.locator?.locations.position || 0) + 1}`;
             } catch (_e) {
                 // ignore
@@ -266,9 +269,10 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                         ).map((link, index) => {
 
                                             let atCurrentLocation = false;
-                                            if (isDivina) {
+                                            // SEE isDivinaLocation duck typing hack with totalProgression injection!!
+                                            if (isDivina && this.props.isDivinaLocation(currentLocation)) {
                                                 atCurrentLocation = this.props.divinaContinousEqualTrue
-                                                    ? (Math.floor((currentLocation.locator.locations as any).totalProgression * r2Publication.Spine.length)-1) === index
+                                                    ? (Math.floor(currentLocation.locator.locations.progression * r2Publication.Spine.length)-1) === index
                                                     : (currentLocation.locator?.locations.position || 0) === index; // see divinaNumberOfPages
                                             } else if (isPdf) {
                                                 // let href = link.Href;
@@ -423,10 +427,11 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         const { r2Publication, isDivina, isPdf } = this.props;
 
         // let spineTitle = currentLocation.locator?.title || currentLocation.locator.href;
-        // if (isDivina) {
+        // SEE isDivinaLocation duck typing hack with totalProgression injection!!
+        // if (isDivina && isDivinaLocation(currentLocation)) {
         //     try {
         //         spineTitle = this.props.divinaContinousEqualTrue
-        //             ? `${Math.floor((currentLocation.locator.locations as any).totalProgression * r2Publication.Spine.length)}`
+        //             ? `${Math.floor(currentLocation.locator.locations.progression * r2Publication.Spine.length)}`
         //             : `${(currentLocation.locator?.locations.position || 0) + 1}`;
         //     } catch (_e) {
         //         // ignore
@@ -451,7 +456,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
     private getTotalChapters(): number {
         const { r2Publication, isDivina, isPdf } = this.props;
 
-        const totalChapters = 
+        const totalChapters =
         isPdf ?
         (r2Publication.Metadata?.NumberOfPages ? r2Publication.Metadata.NumberOfPages : 0) :
         isDivina
@@ -578,6 +583,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         readerConfig: state.reader.config,
         r2Publication: state.reader.info.r2Publication,
+        locale: state.i18n.locale, // refresh
     };
 };
 

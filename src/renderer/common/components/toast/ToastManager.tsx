@@ -5,16 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.scss";
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
-import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.scss";
 import { v4 as uuidv4 } from "uuid";
 
-import { TranslatorProps, withTranslator } from "../hoc/translator";
 import Toast from "./Toast";
+import { TranslatorProps, withTranslator } from "../hoc/translator";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -60,7 +62,7 @@ export class ToastManager extends React.Component<IProps, IState> {
         return <div className={stylesToasts.toasts_wrapper}>
             { Object.keys(toastList).map((id: string) => {
                 const toast = toastList[id];
-                if (toast) {
+                if (toast && (!toast?.publicationIdentifier || toast.publicationIdentifier === this.props.pubId)) {
                     switch (toast.type) {
                         case ToastType.Success:
                             return <Toast
@@ -102,9 +104,11 @@ export class ToastManager extends React.Component<IProps, IState> {
     }
 }
 
-const mapStateToProps = (state: IRendererCommonRootState, _props: IBaseProps) => {
+const mapStateToProps = (state: IRendererCommonRootState & IReaderRootState, _props: IBaseProps) => {
     return {
         toast: state.toast,
+        locale: state.i18n.locale, // refresh
+        pubId: state?.reader?.info?.publicationIdentifier,
     };
 };
 

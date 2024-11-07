@@ -28,9 +28,10 @@ import { call as callTyped, select as selectTyped, put as putTyped } from "typed
 import { types } from "util";
 
 import {
-    ERROR_MESSAGE_ON_USERKEYCHECKREQUEST, streamerOpenPublicationAndReturnManifestUrl,
+    ERROR_MESSAGE_ON_USERKEYCHECKREQUEST, ERROR_MESSAGE_ENCRYPTED_NO_LICENSE, streamerOpenPublicationAndReturnManifestUrl,
 } from "./publication/openPublication";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:reader";
@@ -176,10 +177,15 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
 
     } catch (e) {
 
-        if (e.toString() !== ERROR_MESSAGE_ON_USERKEYCHECKREQUEST) {
-
-            const translator = yield* callTyped(
-                () => diMainGet("translator"));
+        const errMsg = e.toString();
+        if (errMsg === ERROR_MESSAGE_ENCRYPTED_NO_LICENSE) {
+            yield put(
+                toastActions.openRequest.build(
+                    ToastType.Error,
+                    getTranslator().translate("message.open.error", { err: getTranslator().translate("publication.encryptedNoLicense") }),
+                ),
+            );
+        } else if (errMsg !== ERROR_MESSAGE_ON_USERKEYCHECKREQUEST) {
 
             if (types.isNativeError(e)) {
                 // disable "Error: "
@@ -189,7 +195,7 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
             yield put(
                 toastActions.openRequest.build(
                     ToastType.Error,
-                    translator.translate("message.open.error", { err: e.toString() }),
+                    getTranslator().translate("message.open.error", { err: errMsg }),
                 ),
             );
         }
@@ -203,15 +209,16 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
                 state.win.registry.reader[publicationIdentifier]?.reduxState || {} as IReaderStateReader,
         );
 
-        const sessionIsEnabled = yield* selectTyped(
-            (state: RootState) => state.session.state,
-        );
-        if (!sessionIsEnabled) {
-            const reduxDefaultConfig = yield* selectTyped(
-                (state: RootState) => state.reader.defaultConfig,
-            );
-            reduxState.config = reduxDefaultConfig;
-        }
+        // session always enabled
+        // const sessionIsEnabled = yield* selectTyped(
+        //     (state: RootState) => state.session.state,
+        // );
+        // if (!sessionIsEnabled) {
+        //     const reduxDefaultConfig = yield* selectTyped(
+        //         (state: RootState) => state.reader.defaultConfig,
+        //     );
+        //     reduxState.config = reduxDefaultConfig;
+        // }
 
         const winBound = yield* callTyped(getWinBound, publicationIdentifier);
 
@@ -345,7 +352,7 @@ function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction) {
     let textToCopy = clipboardData.txt;
 
     const publicationRepository = diMainGet("publication-repository");
-    const translator = diMainGet("translator");
+    const translator = getTranslator();
     const publicationDocument = yield* callTyped(() => publicationRepository.get(
         publicationIdentifier,
     ));

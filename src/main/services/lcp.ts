@@ -17,7 +17,6 @@ import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { LcpInfo, LsdStatus } from "readium-desktop/common/models/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions/";
-import { Translator } from "readium-desktop/common/services/translator";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,
@@ -44,6 +43,7 @@ import { lcpHashesFilePath } from "../di";
 import { lcpActions } from "../redux/actions";
 import { extractCrc32OnZip } from "../tools/crc";
 import { LSDManager } from "./lsd";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // import { Server } from "@r2-streamer-js/http/server";
 
@@ -78,11 +78,13 @@ export class LcpManager {
     @inject(diSymbolTable.store)
     private readonly store!: Store<RootState>;
 
-    @inject(diSymbolTable.translator)
-    private readonly translator!: Translator;
-    
+    // @inject(diSymbolTable.translator)
+    // private readonly translator!: Translator;
+
     @inject(diSymbolTable["lsd-manager"])
     private readonly lsdManager!: LSDManager;
+
+    private translator = getTranslator();
 
     public async absorbDBToJson() {
         await this.getAllSecrets();
@@ -656,7 +658,7 @@ export class LcpManager {
                 }
                 case 1: {
                     // message = "INCORRECT PASSPHRASE: " + val;
-                    message = this.translator.translate("publication.userKeyCheckInvalid");
+                    message = this.translator.translate("publication.incorrectPassphrase");
                     break;
                 }
                 case 11: {
@@ -957,7 +959,7 @@ export class LcpManager {
             return Promise.reject("processStatusDocument NO LCP data!");
         }
 
-        
+
 
         return new Promise(async (resolve, reject) => {
             const callback = async (r2LCPStr: string | undefined) => {

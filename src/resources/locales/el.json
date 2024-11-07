@@ -6,7 +6,6 @@
     "leftSlideButton": "Μετακίνηση προς τα αριστερά",
     "mainContent": "Κυρίως περιεχόμενο",
     "rightSlideButton": "Μετακίνηση προς τα δεξιά",
-    "searchBook": "Αναζήτηση με τίτλο",
     "skipLink": "Μετάβαση στο περιεχόμενο",
     "toolbar": "Γραμμή εργαλείων"
   },
@@ -75,7 +74,9 @@
       "lastAdditions": "Πρόσφατη προσθήκη"
     },
     "export": "Αποθήκευση ως",
+    "exportAnnotation": "",
     "format": "Διαμόρφωση (format)",
+    "importAnnotation": "",
     "lang": "Γλώσσα",
     "lastRead": "Τελευταία ανάγνωση",
     "moreInfo": "Λεπτομέρειες βιβλίου",
@@ -117,12 +118,23 @@
     "released": "Δημοσιεύθηκε στις",
     "sort": "Ταξινόμηση με",
     "tag": "Ετικέτα",
-    "tagCount": "Πλήθος ετικετών",
     "tags": "Ετικέτες",
     "update": "Επεξεργασία"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Ακύρωση",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Διαγραφή καταλόγου;",
     "deletePublication": "Διαγραφή βιβλίου;",
     "import": "Επιβεβαίωση εισαγωγής:",
@@ -157,7 +169,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "Υπόδειξη: {{- hint}}",
+      "hint": "Υπόδειξη: ",
+      "open": "",
       "password": "Συνθηματική φράση (passphrase)",
       "sentence": "Xρειάζεται μια συνθηματική φράση LCP για να ανοίξει το βιβλίο: ",
       "urlHint": "Στην περίπτωση αδυναμίας ανάκτησης της συνθηματικής φράσης, εδώ διατίθεται βοήθεια",
@@ -167,6 +180,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Η λήψη του {{- title}} απέτυχε: [{{- err}}]"
     },
@@ -270,8 +291,10 @@
     "duration": {
       "title": "Διάρκεια"
     },
+    "encryptedNoLicense": "",
     "expired": "Ο δανεισμός έχει λήξει",
     "expiredLcp": "Αυτό το βιβλίο δεν μπορεί να διαβαστεί επειδή η άδεια χρήσης LCP έχει λήξει.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Τέλος",
     "lcpRightsCopy": "Αντιγραμμένοι χαρακτήρες",
     "lcpRightsPrint": "Εκτυπωμένες σελίδες",
@@ -304,12 +327,41 @@
       "Color": "Χρώμα",
       "addNote": "Σχόλιο",
       "advancedMode": "Άμεση λειτουργία (αυτόματη δημιουργία μετά την επιλογή)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Επιλογές",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Να μην εμφανίζεται",
       "highlight": "Επισήμανση",
       "noSelectionToast": "Καμία επιλογή",
       "quickAnnotations": "Γρήγορη δημιουργία (παράβλεψη επεξεργασίας)",
       "saveNote": "Αποθήκευση",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Εμφάνιση στα περιθώρια",
       "type": {
         "outline": "Περίγραμμα",
@@ -391,6 +443,7 @@
         "title": "Στήλες",
         "two": "2 στήλες"
       },
+      "customFontSelected": "",
       "customizeReader": "Προσαρμογή μορφοποίησης κειμένου",
       "disabled": "απενεργοποιημένο",
       "display": "Εμφάνιση",
@@ -422,6 +475,15 @@
           "width": "Πλάτος σελίδας"
         },
         "title": "Ρύθμιση μεγέθυνσης"
+      },
+      "preset": {
+        "apply": "",
+        "applyDetails": "",
+        "reset": "",
+        "resetDetails": "",
+        "save": "",
+        "saveDetails": "",
+        "title": ""
       },
       "preview": "Προεπισκόπηση",
       "reduceMotion": "Μείωση κίνησης",
@@ -465,7 +527,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Διαγραφή δεδομένων ελέγχου ταυτότητας"
     },
     "keyboard": {
@@ -481,10 +551,12 @@
     "language": {
       "languageChoice": "Επιλογή γλώσσας"
     },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
+    },
     "session": {
-      "no": "Ανενεργή",
-      "title": "Αποθήκευση συνεδρίας",
-      "yes": "Ενεργή"
+      "title": "Αποθήκευση συνεδρίας"
     },
     "tabs": {
       "appearance": "Εμφάνιση",

@@ -6,7 +6,6 @@
     "leftSlideButton": "Desprazar lista á esquerda",
     "mainContent": "Contido principal",
     "rightSlideButton": "Desprazar lista á dereita",
-    "searchBook": "Buscar por título",
     "skipLink": "Pasar ao contido",
     "toolbar": "Barra de ferramentas"
   },
@@ -75,7 +74,9 @@
       "lastAdditions": "Engadidos recentemente"
     },
     "export": "Exportar",
+    "exportAnnotation": "",
     "format": "Formato",
+    "importAnnotation": "",
     "lang": "Idioma",
     "lastRead": "Último Lido",
     "moreInfo": "Máis información",
@@ -117,12 +118,23 @@
     "released": "Publicado en",
     "sort": "Ordenar por",
     "tag": "Etiqueta",
-    "tagCount": "Número de etiquetas",
     "tags": "Etiquetas",
     "update": "Edita"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Cancelar",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Seguro que queres eliminar este catálogo?",
     "deletePublication": "Seguro que queres eliminar esta publicación?",
     "import": "Seguro que queres importar estes ficheiros?",
@@ -157,7 +169,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "(Pista : {{- hint}})",
+      "hint": "Pista : ",
+      "open": "",
       "password": "Contrasinal",
       "sentence": "Esta publicación require un contrasinal LCP para abrirse: ",
       "urlHint": "Esqueciches o teu contrasinal? Atopa axuda aquí",
@@ -167,6 +180,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "A descarga de {{-  title}} fallou: [{{-  err}}]"
     },
@@ -270,8 +291,10 @@
     "duration": {
       "title": "Duración"
     },
+    "encryptedNoLicense": "",
     "expired": "Préstamo expirado",
     "expiredLcp": "Este libro non se pode ler porque a licenza  LCP expirou.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Fin",
     "lcpRightsCopy": "Copia de personaxes",
     "lcpRightsPrint": "Copia de impresora",
@@ -288,12 +311,14 @@
       "title": "Progreso"
     },
     "read": "Finalizado",
+    "remainingTime": "",
     "renewButton": "Renovar",
     "returnButton": "Devolver",
     "returnedLcp": "Este libro non se pode ler porque a licenza LCP devolveuse.",
     "revokedLcp": "Este libro non se pode ler porque a licenza LCP cancelouse.",
     "seeLess": "Ver menos",
     "seeMore": "Ver máis",
+    "timeLeft": "",
     "title": "Título",
     "userKeyCheckInvalid": "Contrasinal incorrecto"
   },
@@ -302,12 +327,41 @@
       "Color": "Cor",
       "addNote": "Anotar",
       "advancedMode": "Modo instantáneo (creación automática ao seleccionar)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Opcións",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Non mostrar",
       "highlight": "Destacar",
       "noSelectionToast": "Sen selección",
       "quickAnnotations": "Creación rápida (omitir editor)",
       "saveNote": "Gardar",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Mostrar en marxes",
       "type": {
         "outline": "Describir",
@@ -389,6 +443,7 @@
         "title": "Columnas",
         "two": "2 cols."
       },
+      "customFontSelected": "",
       "customizeReader": "Personalizar o estilo do texto",
       "disabled": "desactivado",
       "display": "Visualización",
@@ -420,6 +475,15 @@
           "width": "ancho de páxina"
         },
         "title": "Zoom"
+      },
+      "preset": {
+        "apply": "",
+        "applyDetails": "",
+        "reset": "",
+        "resetDetails": "",
+        "save": "",
+        "saveDetails": "",
+        "title": ""
       },
       "preview": "Previsualizar",
       "reduceMotion": "Diminuír movemento",
@@ -463,7 +527,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Limpar datos de autenticación"
     },
     "keyboard": {
@@ -479,10 +551,12 @@
     "language": {
       "languageChoice": "Selección de idioma"
     },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
+    },
     "session": {
-      "no": "Deshabilitar",
-      "title": "Gardar sesión",
-      "yes": "Habilitar"
+      "title": "Gardar sesión"
     },
     "tabs": {
       "appearance": "Aspecto visual",

@@ -287,7 +287,7 @@ function* updateResumePosition() {
     };
 
     let prevState = yield* selectTyped((state: RootState) => state.publication.lastReadingQueue);
-    yield* debounceTyped(500, [readerActions.setReduxState.build, publicationActionsFromCommonAction.readingFinished.build], function* worker() {
+    yield* debounceTyped(500, [readerActions.setReduxState.ID, publicationActionsFromCommonAction.readingFinished.ID], function* worker() {
         const nextState = yield* selectTyped((state: RootState) => state.publication.lastReadingQueue);
 
         const prevId = prevState.map(([_,v]) => v);

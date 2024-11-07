@@ -2,11 +2,10 @@
   "accessibility": {
     "bookMenu": "Menu",
     "closeDialog": "Luk",
-    "importFile": "Importer en bog",
+    "importFile": "Importér en bog",
     "leftSlideButton": "Flyt listen til venstre",
     "mainContent": "hovedindhold",
     "rightSlideButton": "Flyt listen til højre",
-    "searchBook": "Søg efter titel",
     "skipLink": "Hop til indhold",
     "toolbar": "værktøjslinje"
   },
@@ -41,7 +40,7 @@
       }
     },
     "update": {
-      "message": "En ny version er tilgængelig, klik her for at læse mere.",
+      "message": "En ny version er tilgængelig. Klik her for at læse mere.",
       "title": "{{- appName}} programopdatering."
     },
     "window": {
@@ -52,7 +51,7 @@
     "about": {
       "title": "Om {{- appName}}"
     },
-    "addBookToLib": "Importer",
+    "addBookToLib": "Importér",
     "addTags": "Tilføj tag",
     "addTagsButton": "Tilføj",
     "allBooks": "Alle bøger",
@@ -65,7 +64,7 @@
     "delete": "Slet",
     "deleteBook": "Slet",
     "deleteTag": "Slet tag",
-    "description": "Bogbeskrivelse",
+    "description": "Beskrivelse",
     "emptyTagList": "Du har ingen taggede bøger.",
     "entry": {
       "continueReading": "Genoptag læsning",
@@ -75,23 +74,25 @@
       "lastAdditions": "Senest tilføjet"
     },
     "export": "Gem som",
+    "exportAnnotation": "Gem noter som",
     "format": "Format",
+    "importAnnotation": "Importér noter",
     "lang": "Sprog",
     "lastRead": "Senest læst",
     "moreInfo": "Bogdetaljer",
     "myBooks": "Mine bøger",
     "noPublicationHelpL1": "Træk en bog hertil",
     "noPublicationHelpL2": "eller brug \"{{- importTitle }}\" knappen ovenfor.",
-    "noPublicationHelpL3": "LCP beskyttede filer understøttes.",
-    "noPublicationHelpL4": "Understøttede udvidelser:",
+    "noPublicationHelpL3": "Understøtter LCP-beskyttede filer.",
+    "noPublicationHelpL4": "Understøttede filtyper:",
     "numberOfPages": "Antal sider",
     "opds": {
       "auth": {
-        "cancel": "Annuller",
+        "cancel": "Annullér",
         "login": "Log ind",
         "password": "Adgangskode",
-        "register": "Registrer",
-        "username": "Brugernavn / e-mail adresse"
+        "register": "Registrér",
+        "username": "Brugernavn / email-adresse"
       },
       "info": {
         "availableSince": "Siden",
@@ -115,14 +116,25 @@
     "publisher": "Udgiver",
     "readBook": "Læs bog",
     "released": "Udgivelsesdato",
-    "sort": "Sorter efter",
+    "sort": "Sortér efter",
     "tag": "Tag",
-    "tagCount": "Antal tags",
     "tags": "Tags",
     "update": "Rediger"
   },
   "dialog": {
-    "cancel": "Annuller",
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
+    "cancel": "Annullér",
+    "deleteAnnotations": "Slet noter?",
+    "deleteAnnotationsText": "Vil du slette {{- annotationListLength}} note(r)?",
     "deleteFeed": "Bekræft at du vil slette dette katalog",
     "deletePublication": "Bekræft at du vil slette bogen",
     "import": "Bekræft at du vil importere disse filer:",
@@ -142,24 +154,25 @@
     "allBooks": "Alle bøger",
     "catalogs": "Kataloger",
     "downloads": "Downloads",
-    "fitlerTagTitle": "Filtrer efter tag",
+    "fitlerTagTitle": "Filtrér efter tag",
     "gridTitle": "Gittervisning",
-    "home": "Boghylde menu",
-    "homeTitle": "hjem",
-    "importTitle": "Importer en bog",
+    "home": "Boghylde-menu",
+    "homeTitle": "Hjem",
+    "importTitle": "Importér en bog",
     "listTitle": "Listevisning",
     "myCatalogs": "Mine kataloger",
     "refreshTitle": "genindlæs",
     "searchPlaceholder": "Søg",
-    "searchTitle": "Påbegynd søgning",
+    "searchTitle": "Søg",
     "settings": "Indstillinger",
     "viewMode": "Visningstilstand"
   },
   "library": {
     "lcp": {
-      "hint": "(Hjælp til nøgleord: {{- hint}})",
+      "hint": "Hint til nøgleord: ",
+      "open": "",
       "password": "Nøgleord",
-      "sentence": "Denne bog kræver et LCP nøgleord for at åbne: ",
+      "sentence": "Denne bog kræver et LCP-nøgleord for at åbne: ",
       "urlHint": "Har du glemt dit nøgleord? Få hjælp her",
       "whatIsLcp?": "Hvad er LCP?",
       "whatIsLcpInfoDetails": "LCP står for 'Licensed Content Protection'.",
@@ -167,6 +180,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "Download af {{- title}} er stødt på en fejl: [{{- err}}]"
     },
@@ -199,11 +220,11 @@
     "lastPage": "Sidste",
     "menu": {
       "aboutBook": "Om denne bog",
-      "addExtract": "Importer uddraget",
+      "addExtract": "Importér uddraget",
       "goBuyBook": "Køb denne bog",
       "goLoanBook": "Lån denne bog",
       "goRevokeLoanBook": "Tilbagekald lån",
-      "goSubBook": "Abonner"
+      "goSubBook": "Abonnér"
     },
     "network": {
       "error": "Fejl ved hentning af feed",
@@ -226,7 +247,7 @@
   "publication": {
     "accessibility": {
       "accessModeSufficient": {
-        "textual": "TTS & skærmlæser-venlig"
+        "textual": "TTS- & skærmlæser-venlig"
       },
       "accessibilityFeature": {
         "alternativeText": "Indeholder tekst-alternativer",
@@ -259,9 +280,9 @@
       "tracks": "Spor"
     },
     "author": "Forfatter",
-    "cancelledLcp": "Denne bog kan ikke læses, da LCP licensen er blevet annulleret.",
-    "certificateRevoked": "LCP licensens certifikat er blevet annuleret.",
-    "certificateSignatureInvalid": "Ugyldig certifikat-signatur på LCP licensen.",
+    "cancelledLcp": "Denne bog kan ikke læses, da LCP-licensen er blevet annulleret.",
+    "certificateRevoked": "LCP-licensens certifikat er blevet annuleret.",
+    "certificateSignatureInvalid": "Ugyldig certifikat-signatur på LCP-licensen.",
     "cover": {
       "img": "forsidebillede"
     },
@@ -270,8 +291,10 @@
     "duration": {
       "title": "Spilletid"
     },
+    "encryptedNoLicense": "",
     "expired": "Lånet er udløbet",
-    "expiredLcp": "Denne bog kan ikke læses, da LCP licensen er udløbet.",
+    "expiredLcp": "Denne bog kan ikke læses, da LCP-licensen er udløbet.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Slut",
     "lcpRightsCopy": "Kopierede bogstaver",
     "lcpRightsPrint": "Printede sider",
@@ -290,9 +313,9 @@
     "read": "Læst færdig",
     "remainingTime": "Lån (dage tilbage)",
     "renewButton": "Forny",
-    "returnButton": "Aflever",
-    "returnedLcp": "Denne bog kan ikke åbnes, da LCP licensen er leveret tilbage.",
-    "revokedLcp": "Denne bog kan ikke åbnes, da LCP licensen er kaldt tilbage.",
+    "returnButton": "Aflevér",
+    "returnedLcp": "Denne bog kan ikke åbnes, da LCP-licensen er leveret tilbage.",
+    "revokedLcp": "Denne bog kan ikke åbnes, da LCP-licensen er kaldt tilbage.",
     "seeLess": "Se mindre",
     "seeMore": "Se mere",
     "timeLeft": "Tilbage",
@@ -304,12 +327,41 @@
       "Color": "Farve",
       "addNote": "Lav note",
       "advancedMode": "Øjeblikkelige noter (oprettes automatisk ved markering)",
-      "annotationsOptions": "Indstillinger",
+      "annotationsExport": {
+        "description": "Navngiv dette sæt af noter",
+        "title": "Titel"
+      },
+      "annotationsOptions": "Valgmuligheder",
+      "colors": {
+        "bluegreen": "Blå-grøn",
+        "cyan": "Cyan",
+        "green": "Grøn",
+        "lightblue": "Lyseblå",
+        "orange": "Orange",
+        "purple": "Lilla",
+        "red": "Rød",
+        "yellow": "Gul"
+      },
+      "filter": {
+        "all": "Alle",
+        "filterByColor": "Filtrér efter Farve",
+        "filterByCreator": "Filtrér efter Opretter",
+        "filterByDrawtype": "Filtrér efter Overstregningstype",
+        "filterByTag": "Filtrér efter tag",
+        "filterOptions": "Filtreringsvalg",
+        "none": "Ingen"
+      },
       "hide": "Skjul",
       "highlight": "Overstregning",
       "noSelectionToast": "Intet markeret",
       "quickAnnotations": "Hurtig-oprettelse (spring redigering over)",
       "saveNote": "Gem",
+      "sorting": {
+        "lastcreated": "Sidst oprettet",
+        "lastmodified": "Sidst ændret",
+        "progression": "Fremskridt",
+        "sortingOptions": "Sorteringsvalg"
+      },
       "toggleMarginMarks": "Vis noter i marginen",
       "type": {
         "outline": "Omrids",
@@ -352,12 +404,12 @@
       "title": "Oplæsning"
     },
     "navigation": {
-      "annotationTitle": "note",
+      "annotationTitle": "lav note",
       "backHomeTitle": "tilbage til boghylden",
       "bookmarkTitle": "bogmærke",
       "currentPage": "Nuværende side: {{- current}}",
       "currentPageTotal": "Nuværende side: {{- current}}/{{- total}}",
-      "detachWindowTitle": "vis bibliotek / boghylde vindue",
+      "detachWindowTitle": "vis bibliotek / boghylde-vindue",
       "fullscreenTitle": "åbn i fuldskærmstilstand",
       "goTo": "Gå til",
       "goToError": "Siden kunne ikke findes",
@@ -391,7 +443,8 @@
         "title": "Kolonner",
         "two": "2 kolonner"
       },
-      "customizeReader": "Ændre tekstformatering",
+      "customFontSelected": "",
+      "customizeReader": "Tilpas tekstformatering",
       "disabled": "slået fra",
       "display": "Visning",
       "disposition": {
@@ -423,8 +476,17 @@
         },
         "title": "Zoom"
       },
+      "preset": {
+        "apply": "Anvend mit foretrukne læsetema som nuværende læse-indstillinger",
+        "applyDetails": "",
+        "reset": "Nulstil mit foretrukne læsetema til standard indstillingerne",
+        "resetDetails": "",
+        "save": "Gem de nuværende læse-indstillinger som mit foretrukne læsetema",
+        "saveDetails": "",
+        "title": "Læsetema"
+      },
       "preview": "Forhåndsvisning",
-      "reduceMotion": "Reducer bevægelser",
+      "reduceMotion": "Reducér bevægelser",
       "scrolled": "Scrollbart",
       "spacing": "Mellemrum",
       "text": "Tekst",
@@ -448,30 +510,38 @@
       "right": "Højre"
     },
     "toc": {
-      "publicationNoToc": "denne bog har ingen indholdsfortegnelse"
+      "publicationNoToc": "Ingen indholdsfortegnelse"
     },
     "tts": {
       "activate": "Aktiver TTS",
       "default": "Stemme: standard",
-      "next": "Næste TTS segment",
+      "next": "Næste TTS",
       "pause": "Pause TTS",
       "play": "Afspil med TTS",
-      "previous": "Forrige TTS segment",
+      "previous": "Forrige TTS",
       "sentenceDetect": "Opdel TTS på sætninger",
-      "sentenceDetectDescription": "Bryg lange paragrafer op i flere sætninger.",
-      "speed": "TTS afspilningshastighed",
+      "sentenceDetectDescription": "Bryd lange afsnit op i sætninger.",
+      "speed": "TTS-afspilningshastighed",
       "stop": "Stop TTS",
-      "voice": "TTS stemme"
+      "voice": "TTS-stemme"
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "Opretter",
+      "name": "Navn",
+      "organization": "Organisation",
+      "person": "Person",
+      "type": "Type:"
+    },
     "auth": {
-      "wipeData": "Nulstil login data"
+      "title": "Administrér adgang til kataloger",
+      "wipeData": "Nulstil login-data"
     },
     "keyboard": {
-      "advancedMenu": "Menu",
-      "cancel": "Annuller",
-      "disclaimer": "Tastaturgenveje er defineret ud fra et QWERTY tastaturlayout.",
+      "advancedMenu": "Menu for avancerede tastaturgenveje",
+      "cancel": "Annullér",
+      "disclaimer": "Tastaturgenveje er defineret ud fra et QWERTY-tastaturlayout.",
       "editUserJson": "Rediger brugerfilen...",
       "keyboardShortcuts": "Tastaturgenveje",
       "loadUserJson": "Indlæs fra brugerfil",
@@ -479,22 +549,24 @@
       "save": "Gem"
     },
     "language": {
-      "languageChoice": "Valg af sprog"
+      "languageChoice": "Sprog"
+    },
+    "library": {
+      "enableAPIAPP": "Aktivér adgang til Dilicom PNB-API",
+      "title": "Tilføj en bibliotekskonto"
     },
     "session": {
-      "no": "Fra",
-      "title": "Gem session",
-      "yes": "Til"
+      "title": "Gem session"
     },
     "tabs": {
-      "appearance": "Visning",
+      "appearance": "Udseende",
       "general": "Generelt",
       "keyboardShortcuts": "Tastaturgenveje"
     },
     "theme": {
       "auto": "Automatisk",
       "dark": "Mørk",
-      "description": "Match operativsystemets farvetilstand.",
+      "description": "Tilpasser sig operativsystemets farvetilstand.",
       "light": "Lys",
       "title": "Programmets farvetema"
     }
@@ -509,8 +581,8 @@
       "annotations": "Overstreg tekst i bøger, vælg udseende og farve, tilføj personlige noter. Lav noter med 'hurtig-oprettelse' (du kan skrive tekst og ændre udseende bagefter). For endnu hurtigere noter, brug \"Øjeblikkelige noter\", der med det samme opretter noter, i det du markerer tekst.",
       "catalogs": "Lån bøger fra dit lokale bibliotek eller opdag nye bøger via OPDS feeds. Tilgå bunker af bøger fra et hav af kilder, takket være online-kataloger.",
       "home": "Thorium ser anderledes ud! Lad os se nærmere på hvad der er ændret...",
-      "readingView1": "Indstil dine læse- og lytte præferencer: Thorium tilbyder nu flere farvetemaer for både brugergrænsefladen og selve visningen af bøger. Det er nu også nemmere at opsætte 'oplæsning' af e-bøger med syntetisk tale og synkroniseret tekst og lyd.",
-      "readingView2": "Thoriums forbedrede brugergrænseflade gør det nemmere at finde bøger, udforske søgeresultater, gå til specifikke sider, vælge i indholdsfortegnelsen, oprette bogmærker, osv. takket være de nye flyvende paneler. Fuldskærms læsetilstand tilbyder fortsat en læseoplevelse fri for forstyrrelser.",
+      "readingView1": "Indstil dine læse- og lytte præferencer: Thorium tilbyder nu flere farvetemaer for både brugerfladen og selve visningen af bøger. Det er nu også nemmere at opsætte 'oplæsning' af e-bøger med syntetisk tale og synkroniseret tekst og lyd.",
+      "readingView2": "Thoriums forbedrede brugerflade gør det nemmere at finde bøger, udforske søgeresultater, gå til specifikke sider, vælge i indholdsfortegnelsen, oprette bogmærker, osv. takket være de nye flyvende paneler. Fuldskærms-læsetilstand tilbyder fortsat en læseoplevelse fri for forstyrrelser.",
       "yourBooks": "Velkommen til din nydesignede personlige boghylde! I 'gitter'-visningen kan du nemt filtrere efter tags eller finde bøger efter nøgleord. I den avancerede 'tabel'-visning, kan du vælge og sortere bøger efter specifikke forfattere, titel, dato, format osv."
     },
     "dontShow": "Vis ikke igen",

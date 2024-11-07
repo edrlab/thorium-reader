@@ -6,7 +6,6 @@
     "leftSlideButton": "將列表劃至左側",
     "mainContent": "主要內容",
     "rightSlideButton": "將列表劃至右側",
-    "searchBook": "按書名搜索",
     "skipLink": "跳轉至內容",
     "toolbar": "工具欄"
   },
@@ -75,7 +74,9 @@
       "lastAdditions": "最近添加"
     },
     "export": "匯出",
+    "exportAnnotation": "",
     "format": "格式",
+    "importAnnotation": "",
     "lang": "語言",
     "lastRead": "最後閱讀",
     "moreInfo": "更多訊息",
@@ -117,12 +118,23 @@
     "released": "出版日期",
     "sort": "排序方式",
     "tag": "標籤",
-    "tagCount": "標籤數",
     "tags": "標籤",
     "update": "編輯"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "取消",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "你真的要刪除此出版目錄嗎？",
     "deletePublication": "你真的要刪除此出版物嗎？",
     "import": "你真的要匯入這些文件嗎：",
@@ -157,7 +169,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "提示：{{- hint}}",
+      "hint": "提示：",
+      "open": "",
       "password": "密碼",
       "sentence": "打開此出版物需要 LCP 密碼：",
       "urlHint": "忘記密碼？在此取得幫助",
@@ -167,6 +180,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "下載 [{{- title}}] 失敗：[{{- err}}]"
     },
@@ -270,8 +291,10 @@
     "duration": {
       "title": "播放時長"
     },
+    "encryptedNoLicense": "",
     "expired": "出借到期",
     "expiredLcp": "此書無法閱讀，因為 LCP 授權已到期。",
+    "incorrectPassphrase": "",
     "lcpEnd": "結束",
     "lcpRightsCopy": "複製的文字",
     "lcpRightsPrint": "列印頁數",
@@ -304,12 +327,41 @@
       "Color": "顏色",
       "addNote": "註解",
       "advancedMode": "即時模式（選擇後自動建立）",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "選項",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "不顯示",
       "highlight": "重點標示",
       "noSelectionToast": "沒有選擇",
       "quickAnnotations": "快速建立（跳過編輯）",
       "saveNote": "保存",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "在頁邊距中顯示",
       "type": {
         "outline": "輪廓",
@@ -391,6 +443,7 @@
         "title": "欄",
         "two": "2欄"
       },
+      "customFontSelected": "",
       "customizeReader": "自訂文字格式",
       "disabled": "停用",
       "display": "顯示",
@@ -422,6 +475,15 @@
           "width": "頁面寬度"
         },
         "title": "放大"
+      },
+      "preset": {
+        "apply": "",
+        "applyDetails": "",
+        "reset": "",
+        "resetDetails": "",
+        "save": "",
+        "saveDetails": "",
+        "title": ""
       },
       "preview": "預覽",
       "reduceMotion": "減少動態效果",
@@ -465,7 +527,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "清除登入數據"
     },
     "keyboard": {
@@ -481,10 +551,12 @@
     "language": {
       "languageChoice": "選擇語言"
     },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
+    },
     "session": {
-      "no": "禁用",
-      "title": "保存登入狀態",
-      "yes": "啟用"
+      "title": "保存登入狀態"
     },
     "tabs": {
       "appearance": "外觀",

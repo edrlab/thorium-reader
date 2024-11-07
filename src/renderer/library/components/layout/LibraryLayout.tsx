@@ -5,15 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
+import * as stylesAllBooks from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
 import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 
 import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
-import * as stylesAllBooks from "readium-desktop/renderer/assets/styles/components/allPublicationsPage.scss";
+
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -31,7 +34,6 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/rou
 import { DisplayType, IOpdsBrowse, IRouterLocationState, routes } from "readium-desktop/renderer/library/routing";
 import { Link, matchPath } from "react-router-dom";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -225,9 +227,31 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
-                    style={{width: "20px"}}
+                    style={{ width: "20px"}}
                     state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                     className={stylesButtons.button_nav_tertiary}
+                    onClick={(e) => {
+                        if (e.altKey || e.shiftKey || e.ctrlKey) {
+                            e.preventDefault();
+                            e.currentTarget.click();
+                        }
+                    }}
+                    onKeyDown={(e) => {
+                        // if (e.code === "Space") {
+                        if (e.key === " " || e.altKey || e.ctrlKey) {
+                            e.preventDefault(); // prevent scroll
+                        }
+                    }}
+                    onKeyUp={(e) => {
+                        // Includes screen reader tests:
+                        // if (e.code === "Space") { WORKS
+                        // if (e.key === "Space") { DOES NOT WORK
+                        // if (e.key === "Enter") { WORKS
+                        if (e.key === " ") { // WORKS
+                            e.preventDefault();
+                            e.currentTarget.click();
+                        }
+                    }}
                 >
                     <SVG svg={AvatarIcon} title={__("opds.shelf")} />
                 </Link>
@@ -265,9 +289,31 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
-                    style={{width: "20px"}}
-                    state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                    style={{ width: "20px" }}
+                    state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
                     className={stylesButtons.button_nav_tertiary}
+                    onClick={(e) => {
+                        if (e.altKey || e.shiftKey || e.ctrlKey) {
+                            e.preventDefault();
+                            e.currentTarget.click();
+                        }
+                    }}
+                    onKeyDown={(e) => {
+                        // if (e.code === "Space") {
+                        if (e.key === " " || e.altKey || e.ctrlKey) {
+                            e.preventDefault(); // prevent scroll
+                        }
+                    }}
+                    onKeyUp={(e) => {
+                        // Includes screen reader tests:
+                        // if (e.code === "Space") { WORKS
+                        // if (e.key === "Space") { DOES NOT WORK
+                        // if (e.key === "Enter") { WORKS
+                        if (e.key === " ") { // WORKS
+                            e.preventDefault();
+                            e.currentTarget.click();
+                        }
+                    }}
                 >
                     <SVG svg={HomeIcon} title={__("header.homeTitle")} />
                 </Link>
@@ -302,15 +348,37 @@ class LibraryLayout extends React.Component<IProps, undefined> {
             );
 
             refreshComponet = (
-                <button className={stylesButtons.button_nav_tertiary} style={{width: "20px", height: "20px"}}>
+                <button className={stylesButtons.button_nav_tertiary} style={{ width: "20px", height: "20px" }}>
                     <Link
                         to={{
                             ...this.props.location,
                             pathname: route,
                         }}
-                        style={{height: "unset"}}
-                        state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                        style={{ height: "unset" }}
+                        state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
                         className={classNames(stylesButtons.button_refresh, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
+                        onClick={(e) => {
+                            if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                e.preventDefault();
+                                e.currentTarget.click();
+                            }
+                        }}
+                        onKeyDown={(e) => {
+                            // if (e.code === "Space") {
+                            if (e.key === " " || e.altKey || e.ctrlKey) {
+                                e.preventDefault(); // prevent scroll
+                            }
+                        }}
+                        onKeyUp={(e) => {
+                            // Includes screen reader tests:
+                            // if (e.code === "Space") { WORKS
+                            // if (e.key === "Space") { DOES NOT WORK
+                            // if (e.key === "Enter") { WORKS
+                            if (e.key === " ") { // WORKS
+                                e.preventDefault();
+                                e.currentTarget.click();
+                            }
+                        }}
                     >
                         <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
                     </Link>
@@ -323,8 +391,30 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         to={{
                             ...this.props.location,
                         }}
-                        state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
+                        state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
                         className={classNames(stylesButtons.button_refresh, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
+                        onClick={(e) => {
+                            if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                e.preventDefault();
+                                e.currentTarget.click();
+                            }
+                        }}
+                        onKeyDown={(e) => {
+                            // if (e.code === "Space") {
+                            if (e.key === " " || e.altKey || e.ctrlKey) {
+                                e.preventDefault(); // prevent scroll
+                            }
+                        }}
+                        onKeyUp={(e) => {
+                            // Includes screen reader tests:
+                            // if (e.code === "Space") { WORKS
+                            // if (e.key === "Space") { DOES NOT WORK
+                            // if (e.key === "Enter") { WORKS
+                            if (e.key === " ") { // WORKS
+                                e.preventDefault();
+                                e.currentTarget.click();
+                            }
+                        }}
                     >
                         <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
                     </Link>
@@ -342,6 +432,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     location: state.router.location,
     headerLinks: state.opds.browser.header,
     breadcrumb: state.opds.browser.breadcrumb,
+    locale: state.i18n.locale, // refresh
 });
 
 export default connect(mapStateToProps)(withTranslator(LibraryLayout));

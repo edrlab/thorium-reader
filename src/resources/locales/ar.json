@@ -6,7 +6,6 @@
     "leftSlideButton": "سحب إلى اليسار",
     "mainContent": "المحتوى الرئيسي",
     "rightSlideButton": "سحب إلى اليمين",
-    "searchBook": "بحث حسب العنوان",
     "skipLink": "تخطى الى المحتوى",
     "toolbar": "شريط الأدوات"
   },
@@ -75,7 +74,9 @@
       "lastAdditions": "المضافة مؤخراً"
     },
     "export": "حفظ بإسم",
+    "exportAnnotation": "",
     "format": "التنسيق",
+    "importAnnotation": "",
     "lang": "اللغة",
     "lastRead": "آخر منشور مقروء",
     "moreInfo": "تفاصيل المنشور",
@@ -104,6 +105,9 @@
         },
         "availableUntil": "حتى",
         "copyAvalaible": "متوفر",
+        "copyTotal": "",
+        "holdPosition": "",
+        "holdTotal": "",
         "numberOfItems": "عدد البنود",
         "priveValue": "السعر",
         "state": "الحالة"
@@ -114,12 +118,23 @@
     "released": "تم نشره بتاريخ",
     "sort": "الفرز حسب",
     "tag": "الوسم",
-    "tagCount": "عدد الوسوم",
     "tags": "الوسوم",
     "update": "تحرير"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "إلغاء الأمر",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "حذف الكتالوغ؟",
     "deletePublication": "حذف المنشور؟",
     "import": "تأكيد الاستيراد:",
@@ -154,7 +169,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "تلميح: {{- hint}}",
+      "hint": "تلميح: ",
+      "open": "",
       "password": "عبارة المرور",
       "sentence": "اكتب عبارة المرور لهذا المنشور المحمي بـ LCP:",
       "urlHint": "هل نسيت عبارة مرورك؟ الدعم متوفر:",
@@ -164,6 +180,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "فشل تنزيل [{{- title}}]: [{{- err}}]"
     },
@@ -267,10 +291,14 @@
     "duration": {
       "title": "المدة"
     },
+    "encryptedNoLicense": "",
     "expired": "انتهت مدة الاستعارة",
     "expiredLcp": "انتهت صلاحية ترخيص LCP الخاص بهذا المنشور.",
+    "incorrectPassphrase": "",
+    "lcpEnd": "",
     "lcpRightsCopy": "الأحرف المنسوخة",
     "lcpRightsPrint": "الصفحات المطبوعة",
+    "lcpStart": "",
     "licenceLCP": "الترخيص (LCP)",
     "licenseOutOfDate": "ترخيص LCP قديم.",
     "licenseSignatureDateInvalid": "تاريخ توقيع ترخيص LCP غير صالح.",
@@ -283,12 +311,14 @@
       "title": "مقدار التقدّم"
     },
     "read": "انتهى",
+    "remainingTime": "",
     "renewButton": "تجديد",
     "returnButton": "إرجاع",
     "returnedLcp": "تم إرجاع هذا المنشور المحمي بـ LCP.",
     "revokedLcp": "تم إبطال ترخيص LCP الخاص بهذا المنشور.",
     "seeLess": "رؤية مقدار أقل",
     "seeMore": "رؤية مقدار أكثر",
+    "timeLeft": "",
     "title": "العنوان",
     "userKeyCheckInvalid": "عبارة المرور غير صحيحة"
   },
@@ -297,12 +327,41 @@
       "Color": "اللون",
       "addNote": "تعليق",
       "advancedMode": "الصيغة الفورية (إنشاء تلقائي بعد الاختيار)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "خيارات",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "عدم الإظهار",
       "highlight": "تمييز",
       "noSelectionToast": "لم يتم اختيار شيء",
       "quickAnnotations": "إنشاء سريع (تخطي المحرِّر)",
       "saveNote": "حفظ",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "إظهار في الهوامش",
       "type": {
         "outline": "حدود",
@@ -384,6 +443,7 @@
         "title": "الأعمدة",
         "two": "عمودان"
       },
+      "customFontSelected": "",
       "customizeReader": "تخصيص تنسيق النص",
       "disabled": "تم تعطيله",
       "display": "العرض",
@@ -415,6 +475,15 @@
           "width": "عرض الصفحة"
         },
         "title": "تكبير/تصغير"
+      },
+      "preset": {
+        "apply": "",
+        "applyDetails": "",
+        "reset": "",
+        "resetDetails": "",
+        "save": "",
+        "saveDetails": "",
+        "title": ""
       },
       "preview": "معاينة تمهيدية",
       "reduceMotion": "تقليل الحركة",
@@ -458,7 +527,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "حذف بيانات تسجيل الدخول"
     },
     "keyboard": {
@@ -474,10 +551,12 @@
     "language": {
       "languageChoice": "اللغة"
     },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
+    },
     "session": {
-      "no": "تعطيل",
-      "title": "حفظ الجلسة",
-      "yes": "تمكين"
+      "title": "حفظ الجلسة"
     },
     "tabs": {
       "appearance": "المظهر",

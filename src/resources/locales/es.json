@@ -6,7 +6,6 @@
     "leftSlideButton": "Desplazar lista a la izquierda",
     "mainContent": "Contenido principal",
     "rightSlideButton": "Desplazar lista a la derecha",
-    "searchBook": "Buscar por título",
     "skipLink": "Pasar al contenido",
     "toolbar": "Barra de herramientas"
   },
@@ -75,7 +74,9 @@
       "lastAdditions": "Añadidos recientemente"
     },
     "export": "Exportar",
+    "exportAnnotation": "",
     "format": "Formato",
+    "importAnnotation": "",
     "lang": "Idioma",
     "lastRead": "Último leído",
     "moreInfo": "Detalles del libro",
@@ -117,12 +118,23 @@
     "released": "Publicado en",
     "sort": "Ordenar por",
     "tag": "Etiqueta",
-    "tagCount": "Número de etiquetas",
     "tags": "Etiquetas",
     "update": "Editar"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Cancelar",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "¿Seguro que quieres eliminar este catálogo?",
     "deletePublication": "¿Seguro que quieres eliminar esta publicación?",
     "import": "¿Seguro que quieres importar estos ficheros?",
@@ -157,7 +169,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "(Pista : {{- hint}})",
+      "hint": "Pista : ",
+      "open": "",
       "password": "Contraseña",
       "sentence": "Esta publicación requiere una contraseña LCP para abrirse: ",
       "urlHint": "¿Olvidaste tu contraseña? Encuentra ayuda aquí",
@@ -167,6 +180,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "La descarga de {{- title}} ha fallado: [{{- err}}]"
     },
@@ -270,8 +291,10 @@
     "duration": {
       "title": "Duración"
     },
+    "encryptedNoLicense": "",
     "expired": "Préstamo vencido",
     "expiredLcp": "Este libro no se puede leer porque la licencia LCP ha expirado.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Fin",
     "lcpRightsCopy": "Caracteres copiados",
     "lcpRightsPrint": "Páginas impresas",
@@ -304,12 +327,41 @@
       "Color": "Color",
       "addNote": "Anotar",
       "advancedMode": "Modo instantáneo (creación automática al seleccionar)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Opciones",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "No mostrar",
       "highlight": "Destacar",
       "noSelectionToast": "Sin selección",
       "quickAnnotations": "Creación rápida (omitir editor)",
       "saveNote": "Guardar",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Mostrar en márgenes",
       "type": {
         "outline": "Marco",
@@ -391,6 +443,7 @@
         "title": "Columnas",
         "two": "2 cols."
       },
+      "customFontSelected": "",
       "customizeReader": "Personalizar el estilo del texto",
       "disabled": "desactivado",
       "display": "Visualización",
@@ -422,6 +475,15 @@
           "width": "ancho de página"
         },
         "title": "Zoom"
+      },
+      "preset": {
+        "apply": "",
+        "applyDetails": "",
+        "reset": "",
+        "resetDetails": "",
+        "save": "",
+        "saveDetails": "",
+        "title": ""
       },
       "preview": "Previsualizar",
       "reduceMotion": "Disminuir movimiento",
@@ -465,7 +527,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Borrar datos de autenticación"
     },
     "keyboard": {
@@ -481,10 +551,12 @@
     "language": {
       "languageChoice": "Selección de idioma"
     },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
+    },
     "session": {
-      "no": "Deshabilitar",
-      "title": "Guardar sesión",
-      "yes": "Habilitar"
+      "title": "Guardar sesión"
     },
     "tabs": {
       "appearance": "Aspecto visual",

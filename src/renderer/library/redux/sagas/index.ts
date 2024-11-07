@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoSyncTags from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
@@ -31,11 +30,7 @@ export function* rootSaga() {
 
     yield i18n.saga();
 
-    yield all({
-        win: take(winActions.initRequest.ID),
-        i18n: take(i18nActions.setLocale.ID),
-        keyboard: take(keyboardActions.setShortcuts.ID),
-    });
+    yield take(winActions.initRequest.ID);
 
     yield put(winActions.initSuccess.build());
 

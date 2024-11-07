@@ -6,7 +6,7 @@ import { ttsVoice as r2navigatorSetTTSVoice } from "@r2-navigator-js/electron/re
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { Collection, Header as ReactAriaHeader, Section } from "react-aria-components";
 import { HoverEvent } from "@react-types/shared";
-import { filterOnLanguage, getLanguages, getVoices, groupByRegions, IVoices } from "readium-speech/build/cjs/voices";
+import { filterOnLanguage, getLanguages, getVoices, groupByRegions, IVoices } from "readium-speech";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 

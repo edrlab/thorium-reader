@@ -5,12 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { i18nActions } from "readium-desktop/common/redux/actions/";
-import { AvailableLanguages } from "readium-desktop/common/services/translator";
+import { availableLanguages } from "readium-desktop/common/services/translator";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -42,7 +43,7 @@ class LanguageSettings extends React.Component<IProps, undefined> {
                         <h2>{__("settings.language.languageChoice")}</h2>
                     </div>
                     <form>
-                        { ObjectKeys(AvailableLanguages).map((lang, i) =>
+                        { ObjectKeys(availableLanguages).map((lang, i) =>
                             <div key={i}>
                                 <input
                                     id={"radio-" + lang}
@@ -54,7 +55,7 @@ class LanguageSettings extends React.Component<IProps, undefined> {
                                 />
                                 <label htmlFor={"radio-" + lang}>
                                     { this.props.locale === lang && <SVG svg={DoneIcon} ariaHidden/>}
-                                    { AvailableLanguages[lang] }
+                                    { availableLanguages[lang] }
                                 </label>
                             </div>,
                         )}
@@ -67,13 +68,13 @@ class LanguageSettings extends React.Component<IProps, undefined> {
 
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
-        locale: state.i18n.locale,
+        locale: state.i18n.locale, // refresh
     };
 };
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        setLocale: (locale: string) => dispatch(i18nActions.setLocale.build(locale)),
+        setLocale: (locale: i18nActions.setLocale.Payload["locale"]) => dispatch(i18nActions.setLocale.build(locale)),
     };
 };
 

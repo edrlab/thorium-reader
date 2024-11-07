@@ -6,7 +6,6 @@
     "leftSlideButton": "Deslizar para a esquerda",
     "mainContent": "conteúdo principal",
     "rightSlideButton": "Deslizar para a direita",
-    "searchBook": "Busca por título",
     "skipLink": "Ir para o conteúdo",
     "toolbar": "barra de ferramentas"
   },
@@ -75,7 +74,9 @@
       "lastAdditions": "Adicionado recentemente"
     },
     "export": "Exportar",
+    "exportAnnotation": "",
     "format": "Formato",
+    "importAnnotation": "",
     "lang": "Idioma",
     "lastRead": "Última leitura",
     "moreInfo": "Detalhes da publicação",
@@ -117,12 +118,23 @@
     "released": "Publicado em",
     "sort": "Ordenar por",
     "tag": "Tag",
-    "tagCount": "Contagem de tags",
     "tags": "Tags",
     "update": "Editar"
   },
   "dialog": {
+    "annotations": {
+      "descAuthor": "",
+      "descList": "",
+      "descNewer": "",
+      "descOlder": "",
+      "descTitle": "",
+      "importAll": "",
+      "importWithoutConflict": "",
+      "title": ""
+    },
     "cancel": "Cancelar",
+    "deleteAnnotations": "",
+    "deleteAnnotationsText": "",
     "deleteFeed": "Deseja excluir este catálogo?",
     "deletePublication": "Deseja excluir esta publicação?",
     "import": "Deseja importar estes arquivos:",
@@ -157,7 +169,8 @@
   },
   "library": {
     "lcp": {
-      "hint": "(Dica : {{- hint}})",
+      "hint": "Dica : ",
+      "open": "",
       "password": "Senha",
       "sentence": "Insira a senha desta publicação protegida por LCP:",
       "urlHint": "Esqueceu sua senha? O suporte está disponível:",
@@ -167,6 +180,14 @@
     }
   },
   "message": {
+    "annotations": {
+      "alreadyImported": "",
+      "emptyFile": "",
+      "errorParsing": "",
+      "noBelongTo": "",
+      "nothing": "",
+      "success": ""
+    },
     "download": {
       "error": "O download de {{- title}} falhou: [{{- err}}]"
     },
@@ -270,8 +291,10 @@
     "duration": {
       "title": "Duração"
     },
+    "encryptedNoLicense": "",
     "expired": "Empréstimo expirado",
     "expiredLcp": "A licença LCP desta publicação expirou.",
+    "incorrectPassphrase": "",
     "lcpEnd": "Fim",
     "lcpRightsCopy": "Caracteres copiados ",
     "lcpRightsPrint": "Páginas impressas",
@@ -304,12 +327,41 @@
       "Color": "Cor",
       "addNote": "Anotar",
       "advancedMode": "Modo instantâneo (criação automática após seleção)",
+      "annotationsExport": {
+        "description": "",
+        "title": ""
+      },
       "annotationsOptions": "Opções",
+      "colors": {
+        "bluegreen": "",
+        "cyan": "",
+        "green": "",
+        "lightblue": "",
+        "orange": "",
+        "purple": "",
+        "red": "",
+        "yellow": ""
+      },
+      "filter": {
+        "all": "",
+        "filterByColor": "",
+        "filterByCreator": "",
+        "filterByDrawtype": "",
+        "filterByTag": "",
+        "filterOptions": "",
+        "none": ""
+      },
       "hide": "Não mostrar",
       "highlight": "Destaque",
       "noSelectionToast": "Nenhuma seleção",
       "quickAnnotations": "Criação rápida (pular editor)",
       "saveNote": "Salvar",
+      "sorting": {
+        "lastcreated": "",
+        "lastmodified": "",
+        "progression": "",
+        "sortingOptions": ""
+      },
       "toggleMarginMarks": "Exibir nas margens",
       "type": {
         "outline": "Contorno",
@@ -391,6 +443,7 @@
         "title": "Colunas",
         "two": "2 cols"
       },
+      "customFontSelected": "",
       "customizeReader": "Personalize a formatação do texto",
       "disabled": "desabilitado",
       "display": "Exibição",
@@ -422,6 +475,15 @@
           "width": "largura da página"
         },
         "title": "Ampliação"
+      },
+      "preset": {
+        "apply": "",
+        "applyDetails": "",
+        "reset": "",
+        "resetDetails": "",
+        "save": "",
+        "saveDetails": "",
+        "title": ""
       },
       "preview": "pré-visualização",
       "reduceMotion": "Reduzir o movimento",
@@ -465,7 +527,15 @@
     }
   },
   "settings": {
+    "annotationCreator": {
+      "creator": "",
+      "name": "",
+      "organization": "",
+      "person": "",
+      "type": ""
+    },
     "auth": {
+      "title": "",
       "wipeData": "Limpar dados de login"
     },
     "keyboard": {
@@ -481,10 +551,12 @@
     "language": {
       "languageChoice": "Idioma"
     },
+    "library": {
+      "enableAPIAPP": "",
+      "title": ""
+    },
     "session": {
-      "no": "Desabilitar",
-      "title": "Salvar sessão",
-      "yes": "Habilitar"
+      "title": "Salvar sessão"
     },
     "tabs": {
       "appearance": "Aparência",

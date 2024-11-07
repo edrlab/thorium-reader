@@ -39,6 +39,8 @@ import { getOpdsRequestCustomProtocolEventChannel, getOpdsRequestMediaCustomProt
 import { initClientSecretToken } from "./apiapp";
 import { digestAuthentication } from "readium-desktop/utils/digest";
 import isURL from "validator/lib/isURL";
+import { nanoid } from "nanoid";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:auth";
@@ -452,14 +454,51 @@ async function opdsSetAuthCredentials(
     return [, new Error("")];
 }
 
-function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
+const _implicitAuthData = { authenticationDocumentId: "", nonce: "" };
+const setAndGetImplicitNonceForImplicitAuthentication = () => (_implicitAuthData.nonce = nanoid(16), _implicitAuthData.nonce);
+const getImplicitAuthData = () => _implicitAuthData;
 
+function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
     let browserUrl: string;
     switch (auth.authenticationType) {
-
         case "http://opds-spec.org/auth/oauth/implicit": {
+            try {
+                if (!auth.links?.authenticate?.url) {
+                    debug("OPDS Authentication Document Authentication Object property `authentication.links.href` null, empty, or missing.", auth.links?.authenticate?.url ?? "undefined");
+                    browserUrl = "";
+                    break;
+                }
 
-            browserUrl = auth.links?.authenticate?.url;
+                const browserUrlParsed = new URL(auth.links?.authenticate?.url);
+
+                // Record the OPDS Authentication Document's Id for later verification
+                const implicitAuthData = getImplicitAuthData();
+                implicitAuthData.authenticationDocumentId = auth.id;
+
+                // client_id: Required.
+                // Any Authentication Provider that supports OPDS Authentication 1.0 and exposes an Authentication Flow based on OAuth
+                // must identify all OPDS clients using the client_id "http://opds-spec.org/auth/client"
+                if (!browserUrlParsed.searchParams.get("client_id")) {
+                    browserUrlParsed.searchParams.set("client_id", "http://opds-spec.org/auth/client");
+                }
+
+                // response_type: Mandatory for Implicit Flow
+                browserUrlParsed.searchParams.set("response_type", "token");
+
+                // state: Optional, but helps to prevent unsolicited flows
+                browserUrlParsed.searchParams.set("state", encodeURIComponent_RFC3986(setAndGetImplicitNonceForImplicitAuthentication()));
+
+                // redirect_uri: Optional, but good to include since it's mandatory if a client has more than one redirect URI configurated
+                // Note: Trailing slash is necessary as it is specified in the OPDS Authentication 1.0 specification
+                browserUrlParsed.searchParams.set("redirect_uri", "opds://authorize/");
+
+                browserUrl = browserUrlParsed.toString();
+
+            } catch {
+                debug("Error parsing browserUrl", auth.links?.authenticate?.url);
+                browserUrl = "";
+            }
+
             break;
         }
 
@@ -496,7 +535,6 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
         }
 
         default: {
-
             debug("authentication method not found", auth.authenticationType);
             return undefined;
         }
@@ -533,16 +571,24 @@ interface IOPDSAuthDocParsed {
 
 }
 function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPDSAuthDocParsed | undefined {
-
     if (!doc || !(doc instanceof OPDSAuthenticationDoc)) {
-
-        debug("opds authentication doc is not an instance of the model");
+        // Todo: Return typed error so user-friendly message can be displayed
+        debug("OPDS Authentication Document is not an instance of the model");
         return undefined;
     }
 
-    if (!doc.Authentication) {
+    // https://drafts.opds.io/authentication-for-opds-1.0#231-core-properties
+    if (!doc.Id || doc.Id === "") {
+        debug("OPDS Authentication Document missing required `id` property. IGNORED and bypassed to ensure legacy compatibility with misconfigured OPDS OAuth 2.0 servers");
+    }
 
-        debug("no authentication data in the opds authentication doc");
+    if (!doc.Title || doc.Title === "") {
+        debug("OPDS Authentication Document missing required `title` property. IGNORED and bypassed to ensure legacy compatibility with misconfigured OPDS OAuth 2.0 servers");
+    }
+
+    if (!doc.Authentication) {
+        // Todo: Return typed error so user-friendly message can be displayed
+        debug("OPDS Authentication Document missing required `authentication` property.");
         return undefined;
     }
 
@@ -551,7 +597,6 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
     }, filename_);
 
     if (!viewConvert) {
-
         debug("no viewConverter !!");
         return undefined;
     }
@@ -773,11 +818,50 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
 
         if (method === "GET") {
             if (host === "authorize") {
+                // OPDS Authentication Document Specification is at odds with the OAuth 2.0 Implicit Grant Flow Specification:
+                //     OPDS Auth wants the response parameters in the query component of the Redirection URI
+                //     OAuth 2.0 Implicit Grant Flow wants the response parameters in the fragment component of the Redirection URI
+                // Solution: Replace the fragment component with a query component to ensure the response parameters are parsed correctly
                 const urlSearchParam = url.replace("#", "?");
+
                 const urlObject = new URL(urlSearchParam);
                 const data: Record<string, string> = {};
                 for (const [key, value] of urlObject.searchParams) {
                     data[key] = value;
+                }
+
+                // https://openid.net/specs/openid-connect-core-1_0.html#ImplicitAuthError
+                // When using the Implicit Flow, Authorization Error Responses are made in the same manner
+                // as for the Authorization Code Flow:
+                //     When using the Authorization Code Flow, the error response parameters are added to the
+                //     query component of the Redirection URI, unless a different Response Mode was specified.
+                if (data.error) {
+                    debug("OAuth Error Response", "error:", { error: data.error, error_description: data.error_description });
+                    return undefined;
+                }
+
+                const implicitAuthData = getImplicitAuthData();
+
+                // Only validate the Id if it is present in the response
+                // This should ensure backwards compatibility with existing OPDS Authentication Providers
+                // who may be omitting it
+                if (data.id && data.id !== implicitAuthData.authenticationDocumentId) {
+                    debug("OAuth 2.0 implicit grant flow contained an id but it did not match the id in the OPDS Authentication Document", "expected:", implicitAuthData.authenticationDocumentId, "actual:", data.id);
+                    return undefined;
+                }
+                else {
+                    debug("OAuth 2.0 implicit grant flow does not contain an id, validation IGNORED and bypassed to ensure legacy compatibility with OPDS OAuth 2.0 servers");
+                }
+
+                 if (data.state !== implicitAuthData.nonce) {
+                    debug("OAuth 2.0 implicit grant flow response state parameter is not equal to the nonce sent", "expected:", implicitAuthData.nonce, "value=", data.state);
+                    debug("state nonce verification IGNORED and bypassed to ensure legacy compatibility with OPDS OAuth 2.0 servers");
+                    // TODO: improve this and enable the state verification
+
+                    // https://auth0.com/docs/secure/attack-protection/state-parameters
+                    // https://github.com/edrlab/thorium-reader/issues/2506
+                } else {
+                    debug("OAuth 2.0 implicit grant flow response parameters VERIFIED and CORRECT");
                 }
 
                 return {
@@ -809,8 +893,8 @@ const LoginIcon = `<svg width="9" height="9" viewBox="0 0 9 9" fill="currentColo
 // tslint:disable-next-line: max-line-length
 const htmlLoginTemplate = (
     urlToSubmit = "",
-    loginLabel = diMainGet("translator").translate("catalog.opds.auth.username"),
-    passLabel = diMainGet("translator").translate("catalog.opds.auth.password"),
+    loginLabel = getTranslator().translate("catalog.opds.auth.username"),
+    passLabel = getTranslator().translate("catalog.opds.auth.password"),
     title: string | undefined,
     logoUrl?: string,
     registerUrl?: string,
@@ -821,7 +905,7 @@ const htmlLoginTemplate = (
     realm?: string,
 ) => {
     if (!title) { // includes empty string
-        title = diMainGet("translator").translate("catalog.opds.auth.login");
+        title = getTranslator().translate("catalog.opds.auth.login");
     }
 
     return `
@@ -832,9 +916,9 @@ const htmlLoginTemplate = (
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-    
+
         <title>${title}</title>
-    
+
         <!-- Custom styles for this template -->
         <style>
         body {
@@ -847,8 +931,9 @@ const htmlLoginTemplate = (
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                margin: 0;
             }
-    
+
             .login {
                 display: flex;
                 align-items: center;
@@ -864,12 +949,13 @@ const htmlLoginTemplate = (
                 position: relative;
                 gap: 50px;
                 flex-wrap: wrap;
+                overflow: hidden;
     
                 @media only screen and (max-width: 1000px) {
                     flex-direction: column;
                 }
             }
-    
+
             .container {
                 display: flex;
                 flex-direction: column;
@@ -879,7 +965,7 @@ const htmlLoginTemplate = (
                 flex-wrap: wrap;
                 width: 100%;
             }
-    
+
             .presentation {
                 display: flex;
                 flex-direction: column;
@@ -887,7 +973,7 @@ const htmlLoginTemplate = (
                 justify-content: start;
                 width: 100%;
             }
-    
+
             .presentation h1 {
                 line-height: 40px;
                 font-size: 30px;
@@ -897,7 +983,7 @@ const htmlLoginTemplate = (
                 padding-right: 30px;
                 border-bottom: 1px solid #e5e5e5;
             }
-    
+
             .content_wrapper {
                 width: 100%;
                 display: flex;
@@ -916,7 +1002,7 @@ const htmlLoginTemplate = (
                 align-items: start;
                 gap: 10px;
             }
-    
+
             .logo {
                 max-height: 200px;
                 display: flex;
@@ -924,7 +1010,7 @@ const htmlLoginTemplate = (
                 align-items: center;
                 justify-content: center;
                 flex: 1;
-    
+
                 @media only screen and (max-width: 1000px) {
                     // display: none;
                     position: absolute;
@@ -939,11 +1025,11 @@ const htmlLoginTemplate = (
                     display: none;
                 }
             }
-    
+
             .login form {
                 flex: 2;
                 border-bottom: 1px solid #e5e5e5;
-                width: 100%;
+                width: fit-content;
                 align-items: end;
                 justify-content: center;
                 display: flex;
@@ -954,7 +1040,7 @@ const htmlLoginTemplate = (
                     align-items: start;
                 }
             }
-    
+
             .login p {
                 margin: 0;
                 position: relative;
@@ -967,7 +1053,7 @@ const htmlLoginTemplate = (
             }
 
             .login p:has(input[name=password]):has(+ .register_button) {
-                margin: 10px 0 0; 
+                margin: 10px 0 0;
             }
 
             .login p:has(input[name=password]) {
@@ -990,32 +1076,29 @@ const htmlLoginTemplate = (
                 top: 50%;
                 left: 20px;
             }
-    
+
             .login p:first-child {
                 margin-top: 0;
             }
-    
+
             .login input[type=text], .login input[type=password] {
                 width: 100%;
                 height: 35px;
                 border: 1px solid black;
                 border-radius: 5px;
             }
-    
+
             .login .submit {
                 text-align: right;
-                position: absolute;
+                // position: absolute;
                 bottom: 20px;
                 right: 40px;
                 display: flex;
                 align-items: center;
                 gap: 10px;
-
-                @media only screen and (max-width: 1000px) {
-                    position: unset;
-                    width: 100%;
-                    justify-content: end;
-                }
+                justify-content: end;
+                width: 100%;
+                max-width: 400px;
             }
 
             .submit_button {
@@ -1023,14 +1106,14 @@ const htmlLoginTemplate = (
                 display: flex;
                 align-items: center;
                 gap: 5px;
-                padding: 0 5px;
+                padding: 0;
             }
 
             .submit_button label {
                 position: absolute;
                 transform: translate(-50%, -50%);
                 top: 50%;
-                left: 15px;
+                left: 10px;
             }
 
             .submit_button label svg {
@@ -1039,7 +1122,7 @@ const htmlLoginTemplate = (
                 fill: white;
                 transition: 200ms linear;
             }
-    
+
             .register_button {
                 display: flex;
                 align-items: center;
@@ -1050,12 +1133,12 @@ const htmlLoginTemplate = (
                 color: #1053C8;
                 margin: 5px 5px 10px;
             }
-    
+
             .register_button svg {
                 height: 12px;
                 fill: #1053C8;
             }
-    
+
             .help_links {
                 display: flex;
                 flex-direction: column;
@@ -1064,7 +1147,7 @@ const htmlLoginTemplate = (
                 gap: 10px;
                 width: fit-content;
                 position: relative;
-    
+
                 @media only screen and (max-width: 1000px) {
                     position: absolute;
                     flex-direction: row;
@@ -1072,30 +1155,30 @@ const htmlLoginTemplate = (
                     left: 10px;
                 }
             }
-    
+
             .help_links a {
                 color: #1053C8;
             }
-            
+
             .help_links a:visited {
                 color: #1053C8;
             }
-    
+
             :-moz-placeholder {
                 color: #c9c9c9 !important;
                 font-size: 13px;
             }
-    
+
             ::-webkit-input-placeholder {
                 color: #ccc;
                 font-size: 13px;
             }
-    
+
             input {
                 font-family: 'Lucida Grande', Tahoma, Verdana, sans-serif;
                 font-size: 14px;
             }
-    
+
             input[type=text], input[type=password] {
                 margin: 5px;
                 padding: 0 10px 0 25px;
@@ -1108,13 +1191,13 @@ const htmlLoginTemplate = (
                 border-radius: 2px;
                 -moz-outline-radius: 3px;
             }
-    
+
             input[type=text]:focus, input[type=password]:focus {
                 border-color: #1053C8;
                 outline-color: #1053C8;
                 outline-offset: 0;
             }
-    
+
             input[type=submit] {
                 padding: 0 18px;
                 height: 29px;
@@ -1133,12 +1216,12 @@ const htmlLoginTemplate = (
                 gap: 5px;
                 cursor: pointer;
             }
-    
+
             input[type=submit] > svg {
                 height: 15px;
                 fill: white;
             }
-    
+
             input[type=button] {
                 padding: 0 18px;
                 height: 29px;
@@ -1154,7 +1237,7 @@ const htmlLoginTemplate = (
                 transition: 200ms;
                 cursor: pointer;
             }
-    
+
             input[type=submit]:hover {
                 background: #ECF2FD;
                 border-color: #1053C8;
@@ -1164,17 +1247,17 @@ const htmlLoginTemplate = (
             input[type=submit]:hover + label svg {
                 fill: #1053C8;
             }
-    
+
             input[type=button]:hover {
                 background: white;
             }
-    
+
             .lt-ie9 input[type=text], .lt-ie9 input[type=password] {
                 line-height: 34px;
             }
         </style>
         </head>
-    
+
         <body class="text-center">
             <div class="login">
                 <div class="container">
@@ -1182,7 +1265,7 @@ const htmlLoginTemplate = (
                         <h1>${title}</h1>
                     </div>
                     <div class="content_wrapper">
-                    ${(logoUrl || help.length > 0) ? 
+                    ${(logoUrl || help.length > 0) ?
                         `<div class="content_informations">
                             ${logoUrl ? `<img class="logo" src="${logoUrl}" alt="login logo">` : ""}
                             <div class="help_links">
@@ -1205,16 +1288,16 @@ const htmlLoginTemplate = (
                             </p>
                             ${registerUrl ? `<a href="${registerUrl}" target="_blank" class="register_button">
                                 ${AddIcon}
-                                ${diMainGet("translator").translate("catalog.opds.auth.register")}
+                                ${getTranslator().translate("catalog.opds.auth.register")}
                             </a>` : ""}
                             <p><input hidden type="text" name="nonce" value="${nonce}"></p>
                             <p><input hidden type="text" name="qop" value="${qop}"></p>
                             <p><input hidden type="text" name="algorithm" value="${algorithm}"></p>
                             <p><input hidden type="text" name="realm" value="${realm}"></p>
                             <div class="submit">
-                                <input type="button" name="cancel" value="${diMainGet("translator").translate("catalog.opds.auth.cancel")}" onClick="window.location.href='${urlToSubmit}';">
+                                <input type="button" name="cancel" value="${getTranslator().translate("catalog.opds.auth.cancel")}" onClick="window.location.href='${urlToSubmit}';">
                                 <div class="submit_button">
-                                    <input type="submit" name="commit" value="${diMainGet("translator").translate("catalog.opds.auth.login")}">
+                                    <input type="submit" name="commit" value="${getTranslator().translate("catalog.opds.auth.login")}">
                                     <label for="commit">${LoginIcon}</label>
                                 </div>
                             </div>
@@ -1223,6 +1306,6 @@ const htmlLoginTemplate = (
                 </div>
             </div>
         </body>
-    
+
     </html>`;
 };

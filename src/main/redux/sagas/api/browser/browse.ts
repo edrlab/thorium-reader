@@ -15,7 +15,8 @@ import { diMainGet } from "readium-desktop/main/di";
 import { httpGet } from "readium-desktop/main/network/http";
 import { OpdsService } from "readium-desktop/main/services/opds";
 import { ContentType, contentTypeisApiProblem, parseContentType } from "readium-desktop/utils/contentType";
-import { call, SagaGenerator } from "typed-redux-saga";
+import { SagaGenerator } from "typed-redux-saga";
+import { call as callTyped } from "typed-redux-saga/macro";
 import { authenticationRequestFromLibraryWebServiceURL, convertLoansPublicationToOpdsPublicationsRawJson, getEndpointFromAuthenticationRequest, getLoansPublicationFromLibrary } from "../../apiapp";
 
 const debug = debug_("readium-desktop:main#redux/saga/api/browser");
@@ -44,7 +45,7 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
         debug("ID_GNL=", idGln);
         debug("URL_LIB=", urlLib);
 
-        const res = yield* call(authenticationRequestFromLibraryWebServiceURL, urlLib);
+        const res = yield* callTyped(authenticationRequestFromLibraryWebServiceURL, urlLib);
 
         debug("authentication Result from dilicom :" + idGln + ":", res);
         const endpoint = getEndpointFromAuthenticationRequest(res);
@@ -59,11 +60,11 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
         const endpointURL = new URL(endpoint);
         endpointURL.host = `apiapploans.org.edrlab.thoriumreader.break.${idGln}.break.${endpointURL.host}`;
         const endpointFormated = endpointURL.toString();
-        const loansPubArray = yield* call(getLoansPublicationFromLibrary, endpointFormated);
+        const loansPubArray = yield* callTyped(getLoansPublicationFromLibrary, endpointFormated);
 
         // this does not work, because auth flow leaves blank JSX comp until refreshed with correct credentials
         // if (!loansPubArray) { // note: empty array is not falsy
-        //     const translator = diMainGet("translator");
+        //     const translator = getTranslator();
         //     return {
         //         url: "",
         //         isFailure: true,
@@ -82,7 +83,7 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
                 isFailure: false,
                 isSuccess: true,
                 data: {
-                    opds: yield* call(() => opdsService.opdsRequestTransformer({
+                    opds: yield* callTyped(() => opdsService.opdsRequestTransformer({
                         url: "",
                         responseUrl: "",
                         contentType: ContentType.Opds2,
@@ -111,7 +112,7 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
                 isFailure: false,
                 isSuccess: true,
                 data: {
-                    opds: yield* call(() => opdsService.opdsRequestTransformer({
+                    opds: yield* callTyped(() => opdsService.opdsRequestTransformer({
                         url: "",
                         responseUrl: endpointFormated, // check base url in auth
                         contentType: ContentType.Opds2Auth,
@@ -142,7 +143,7 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
 
     const url = checkUrl(urlRaw);
 
-    const result = yield* call(() => httpGet<IBrowserResultView>(
+    const result = yield* callTyped(() => httpGet<IBrowserResultView>(
         url,
         undefined,
         async (data) => {

@@ -1,7 +1,6 @@
-
-/*
-=-=-= alert.modals.scss
-*/
+.CSS_START_components_alertModals {
+  display: none;
+}
 
 .AlertDialogOverlay {
   background-color: rgb(0 0 0 / 50%);
@@ -98,4 +97,8 @@
   &:hover {
     background-color: white;
   }
+}
+
+.CSS_END_components_alertModals {
+  display: none;
 }

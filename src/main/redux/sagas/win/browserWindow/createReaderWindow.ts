@@ -98,13 +98,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
     readerUrl = readerUrl.replace(/\\/g, "/");
 
-    yield* callTyped(() => readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" }));
-
-    // TODO shouldn't the call to reader.openSucess be fenced with if (!IS_DEV) {}, just like in createlibraryWindow??
-    // (otherwise called a second time in did-finish-load event handler below)
-    yield* putTyped(winActions.reader.openSucess.build(readerWindow, registerReaderAction.payload.identifier));
-
-    if (IS_DEV) {
+    if (true) { // IS_DEV
 
         readerWindow.webContents.on("did-finish-load", () => {
             // see app.whenReady() in src/main/redux/sagas/app.ts
@@ -130,12 +124,23 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
             const store = diMainGet("store");
 
             store.dispatch(winActions.reader.openSucess.build(readerWindow, registerReaderAction.payload.identifier));
-
         });
+    }
+
+    yield* callTyped(() => readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" }));
+
+    // // TODO shouldn't the call to reader.openSucess be fenced with if (!IS_DEV) {}, just like in createlibraryWindow??
+    // // (otherwise called a second time in did-finish-load event handler below)
+    // if (!IS_DEV) {
+    //     // see 'did-finish-load' otherwise
+    //     yield* putTyped(winActions.reader.openSucess.build(readerWindow, registerReaderAction.payload.identifier));
+    // }
+
+    if (IS_DEV) {
 
         if (_VSCODE_LAUNCH !== "true" && OPEN_DEV_TOOLS) {
             setTimeout(() => {
-                if (!readerWindow.isDestroyed()) {
+                if (!readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) {
                     debug("opening dev tools (reader) ...");
                     readerWindow.webContents.openDevTools({ activate: true, mode: "detach" });
                 }

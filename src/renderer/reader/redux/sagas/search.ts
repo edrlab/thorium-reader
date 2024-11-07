@@ -90,6 +90,8 @@ function converterSearchResultToHighlightHandlerState(v: ISearchResult, color = 
             group: "search",
             color,
             selectionInfo: {
+                textFragment: undefined,
+
                 cleanBefore: v.cleanBefore,
                 cleanText: v.cleanText,
                 cleanAfter: v.cleanAfter,
@@ -245,7 +247,7 @@ function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
 
     const taskRequest = yield* forkTyped(requestPublicationData);
 
-    const taskSearch = yield* takeLatestTyped(readerLocalActionSearch.request.build,
+    const taskSearch = yield* takeLatestTyped(readerLocalActionSearch.request.ID,
         function*(action: readerLocalActionSearch.request.TAction) {
             yield join(taskRequest);
 
@@ -255,9 +257,9 @@ function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
         },
     );
 
-    const taskFound = yield* takeEveryTyped(readerLocalActionSearch.found.build, searchFound);
+    const taskFound = yield* takeEveryTyped(readerLocalActionSearch.found.ID, searchFound);
 
-    const taskFocus = yield* takeEveryTyped(readerLocalActionSearch.focus.build, searchFocus);
+    const taskFocus = yield* takeEveryTyped(readerLocalActionSearch.focus.ID, searchFocus);
 
     // wait the search cancellation
     yield take(readerLocalActionSearch.cancel.ID);

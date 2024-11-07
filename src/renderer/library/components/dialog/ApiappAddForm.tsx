@@ -5,12 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { shell } from "electron";
-import * as React from "react";
-import * as Dialog from "@radix-ui/react-dialog";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+
+import { shell } from "electron";
+import * as React from "react";
+import * as Dialog from "@radix-ui/react-dialog";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as magnifyingGlass from "readium-desktop/renderer/assets/icons/magnifying_glass.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -25,6 +26,8 @@ import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg
 import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLink-icon.svg";
 import classNames from "classnames";
 import * as LibraryIcon from "readium-desktop/renderer/assets/icons/library-icon.svg";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 
 const context = React.createContext<{
     selectSearchResult: IApiappSearchResultView;
@@ -76,10 +79,41 @@ const Item = ({v}: {v: IApiappSearchResultView}) => {
             </li>;
 };
 
+export const ApiappHowDoesItWorkInfoBox = () => {
+
+
+    const [__] = useTranslator();
+    const [infoOpen, setInfoOpen] = React.useState(false);
+
+    return (
+        <div>
+            <button className={classNames("button_catalog_infos")} onClick={(e) => { e.preventDefault(); setInfoOpen(!infoOpen); }}>
+                <SVG ariaHidden svg={InfoIcon} />
+                {__("apiapp.howItWorks")}
+                <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
+            </button>
+            {infoOpen ?
+                <div className={classNames("catalog_infos_text")}>
+                    <p>
+                        {__("apiapp.informations")}
+                    </p>
+                    <a href=""
+                        onClick={async (ev) => {
+                            ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
+                            await shell.openExternal("https://thorium.edrlab.org/docs/");
+                        }}>
+                        {__("apiapp.documentation")}
+                        <SVG ariaHidden svg={FollowLinkIcon} />
+                    </a>
+                </div>
+                : <></>}
+        </div>
+    );
+};
+
 const ApiappAddForm = () => {
     const [__] = useTranslator();
     const searchInputRef = React.useRef<HTMLInputElement>();
-    const [infoOpen, setInfoOpen] = React.useState(false);
 
     const ItemListWithStyle = () =>
     <div>
@@ -97,11 +131,6 @@ const ApiappAddForm = () => {
 
     const [resultApiAppSearchAction, apiAppSearchAction] = useApi(undefined, "apiapp/search");
     const searchResultView = resultApiAppSearchAction?.data?.result || [];
-
-    const openInfo = (e: any) => {
-        e.preventDefault();
-        setInfoOpen(!infoOpen);
-    };
 
     return (
         <div className={stylesModals.modal_dialog_body}>
@@ -145,28 +174,7 @@ const ApiappAddForm = () => {
                     </button>
                 </div>
                 <ItemListWithStyle/>
-                <div>
-                    <button className="button_catalog_infos" onClick={(e) => openInfo(e)}>
-                        <SVG ariaHidden svg={InfoIcon} />
-                        {__("apiapp.howItWorks")}
-                        <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
-                    </button>
-                    { infoOpen ?
-                    <div className="catalog_infos_text">
-                        <p>
-                        {__("apiapp.informations")}
-                        </p>
-                        <a href=""
-                            onClick={async (ev) => {
-                                ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                                await shell.openExternal("https://thorium.edrlab.org/docs/");
-                            }}>
-                        {__("apiapp.documentation")}
-                            <SVG ariaHidden svg={FollowLinkIcon} />
-                        </a>
-                    </div>
-                    : <></>}
-                </div>
+                <ApiappHowDoesItWorkInfoBox />
             </div>
     );
 };
@@ -188,9 +196,12 @@ export const ApiappAddFormDialog = () => {
     const submitButtonRef = React.useRef<HTMLButtonElement>();
     const contextValue = {selectSearchResult, setSelectSearchResult, submitAction: () => submitButtonRef.current.click()};
 
+    const enableAPIAPP = useSelector((state: ILibraryRootState) => state.settings.enableAPIAPP);
+
     return <Dialog.Root>
         <Dialog.Trigger asChild>
             <button
+                style={{ display: enableAPIAPP ? "" : "none" }}
                 className={stylesButtons.button_nav_primary}
             >
                 <SVG ariaHidden={true} svg={LibraryIcon} />
@@ -236,5 +247,3 @@ export const ApiappAddFormDialog = () => {
         </Dialog.Portal>
     </Dialog.Root>;
 };
-
-export default ApiappAddFormDialog;

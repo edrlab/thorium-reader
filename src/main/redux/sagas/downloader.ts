@@ -13,7 +13,6 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { downloadActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ok } from "readium-desktop/common/utils/assert";
 import { IHttpGetResult, THttpOptions } from "readium-desktop/common/utils/http";
-import { diMainGet } from "readium-desktop/main/di";
 import { createTempDir } from "readium-desktop/main/fs/path";
 import { httpGet } from "readium-desktop/main/network/http";
 import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
@@ -26,6 +25,7 @@ import {
 } from "typed-redux-saga/macro";
 
 import { Channel, channel, eventChannel } from "@redux-saga/core";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/downloader");
@@ -62,7 +62,7 @@ export function* downloader(linkHrefArray: IDownloaderLink[], href?: string): Sa
 
         debug(err.toString());
 
-        const translate = diMainGet("translator").translate;
+        const translate = getTranslator().translate;
 
         yield* putTyped(toastActions.openRequest.build(
             ToastType.Error,
@@ -100,7 +100,7 @@ function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?:
         callTyped(function*() {
 
             while (true) {
-                const action = yield* takeTyped(downloadActions.abort.build);
+                const action = yield* takeTyped(downloadActions.abort.build); // not .ID because we need Action return type
                 if (action.payload.id === id) {
                     debug("cancel id (", id, ") with ", downloadProcessTasks.length, "tasks");
                     yield cancel(downloadProcessTasks);

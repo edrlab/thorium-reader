@@ -1,4 +1,3 @@
-export declare const ___DEBUG___COMPONENTS_COLUMNS_CSS: string;
 export declare const card_wrapper: string;
 export declare const col: string;
 export declare const col_1: string;
@@ -15,4 +14,6 @@ export declare const col_8: string;
 export declare const col_9: string;
 export declare const col_book_img: string;
 export declare const col_filter: string;
+export declare const CSS_END_components_columns: string;
+export declare const CSS_START_components_columns: string;
 export declare const row: string;

@@ -18,7 +18,7 @@ function tagReducer_(
     switch (action.type) {
         case catalogActions.setTagView.ID:
             const {tags} = action.payload;
-            return tags; // already immutable RPC serialization
+            return tags;
 
         default:
             return state;

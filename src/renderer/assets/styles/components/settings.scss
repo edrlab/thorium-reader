@@ -1,8 +1,8 @@
-/*
-=-=-= settings.scss
-*/
+@use '../partials/mixin' as mx;
 
-@import 'src/renderer/assets/styles/partials/mixin';
+.CSS_START_components_settings {
+    display: none;
+}
 
 $settings_bg: var(--color-light-blue);
 $setting_color: var(--color-blue);
@@ -251,7 +251,7 @@ $setting_color: var(--color-blue);
     margin-top: 50px;
     margin-bottom: 5px;
 
-    @include scrollbar_styling;
+    @include mx.scrollbar_styling;
 
     .button_transparency_icon {
         position: relative;
@@ -875,4 +875,29 @@ div[data-radix-popper-content-wrapper] {
         top: 2px;
         right: 5px;
     }
+}
+
+.preset_settings_container {
+    > div {
+        button {
+            margin-bottom: 10px;
+        }
+
+        &:nth-child(-n + 2) {
+            margin-bottom: 20px;
+        }
+
+        &:last-child {
+            position: absolute;
+            bottom: 0;
+
+            @media screen and (height <= 600px) {
+                position: relative;
+            }
+        }
+    }
+}
+
+.CSS_END_components_settings {
+    display: none;
 }

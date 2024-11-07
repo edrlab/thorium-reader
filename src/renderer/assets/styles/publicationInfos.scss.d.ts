@@ -7,6 +7,8 @@ export declare const button_primary: string;
 export declare const button_secondary: string;
 export declare const button_transparency: string;
 export declare const corner: string;
+export declare const CSS_END_publicationInfos: string;
+export declare const CSS_START_publicationInfos: string;
 export declare const form_group: string;
 export declare const no_img: string;
 export declare const no_img_wrapper: string;
