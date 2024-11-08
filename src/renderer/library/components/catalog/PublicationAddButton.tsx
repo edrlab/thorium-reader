@@ -75,6 +75,7 @@ export class PublicationAddButton extends React.Component<IProps, undefined> {
             // with drag-and-drop (unlike input@type=file) the File `path` property is equal to `name`!
             // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
             const absolutePath = webUtils.getPathForFile(file);
+            // console.log("absolutePath xx: " + absolutePath);
             paths.push(absolutePath);
         }
 

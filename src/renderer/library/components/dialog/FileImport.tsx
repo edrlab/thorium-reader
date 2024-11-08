@@ -103,6 +103,7 @@ class FileImport extends React.Component<IProps, undefined> {
     private importFiles = () => {
         if (this.props.files) {
             const paths = this.props.files.map((file) => {
+                // console.log("absolutePath 5: " + file.path);
                 return file.path;
             });
             apiAction("publication/importFromFs", paths).catch((error) => {

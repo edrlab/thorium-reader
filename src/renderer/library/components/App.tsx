@@ -17,7 +17,7 @@ import classNames from "classnames";
 import { HistoryRouter } from "redux-first-history/rr6";
 import * as path from "path";
 import * as React from "react";
-import Dropzone, { DropzoneRootProps } from "react-dropzone";
+import Dropzone, { DropEvent, DropzoneRootProps } from "react-dropzone";
 import { Provider } from "react-redux";
 import { acceptedExtension, acceptedExtensionObject } from "readium-desktop/common/extension";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -51,6 +51,18 @@ export default class App extends React.Component<{}, undefined> {
         this.onDrop = this.onDrop.bind(this);
     }
 
+    getFiles = async (event: DropEvent): Promise<Array<File>> => {
+        if (!(event as React.DragEvent<HTMLElement>).dataTransfer?.files) {
+            return [];
+        }
+        const files = Array.from((event as React.DragEvent<HTMLElement>).dataTransfer.files);
+        // console.log("getFiles: " + files.length);
+        // console.log("getFile: " + files[0]);
+        // const absolutePath = webUtils.getPathForFile(files[0]);
+        // console.log("absolutePath zz: " + absolutePath);
+        return files;
+    };
+
     // Called when files are droped on the dropzone
     public onDrop(acceptedFiles: File[]) {
         const store = getStore();
@@ -63,6 +75,7 @@ export default class App extends React.Component<{}, undefined> {
                     // with drag-and-drop (unlike input@type=file) the File `path` property is equal to `name`!
                     // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
                     const absolutePath = webUtils.getPathForFile(file);
+                    // console.log("absolutePath 1: " + absolutePath);
                     return absolutePath.replace(/\\/g, "/").endsWith("/" + acceptedExtensionObject.nccHtml) || acceptedExtension(path.extname(absolutePath));
                 },
             )
@@ -71,6 +84,7 @@ export default class App extends React.Component<{}, undefined> {
                     // with drag-and-drop (unlike input@type=file) the File `path` property is equal to `name`!
                     // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
                     const absolutePath = webUtils.getPathForFile(file);
+                    // console.log("absolutePath 2: " + absolutePath);
                     return {
                         name: file.name,
                         path: absolutePath,
@@ -83,6 +97,7 @@ export default class App extends React.Component<{}, undefined> {
             // with drag-and-drop (unlike input@type=file) the File `path` property is equal to `name`!
             // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
             const absolutePath = webUtils.getPathForFile(file);
+            // console.log("absolutePath 3: " + absolutePath);
             const acceptedExtension = acceptedFiles.length === 1 ? `[${path.extname(absolutePath)}] ${acceptedExtensionArray.join(" ")}` : acceptedExtensionArray.join(" ");
             store.dispatch(toastActions.openRequest.build(ToastType.Error, getTranslator().__("dialog.importError", {
                 acceptedExtension,
@@ -92,6 +107,7 @@ export default class App extends React.Component<{}, undefined> {
 
         if (filez.length <= 5) {
             const paths = filez.map((file) => {
+                // console.log("absolutePath 4: " + file.path);
                 return file.path;
             });
             apiAction("publication/importFromFs", paths).catch((error) => {
@@ -147,6 +163,25 @@ export default class App extends React.Component<{}, undefined> {
                 el.appendChild(document.createTextNode(css));
                 document.head.appendChild(el);
             }
+
+            // const js = `console.log("DROP"); document.getElementsByTagName("body")[0].addEventListener("dragover", (event) => {
+            //     event.preventDefault();
+            //   });
+            //   document.getElementsByTagName("body")[0].addEventListener("drop", (ev) => {
+            //     ev.preventDefault();
+            //       console.log(ev.dataTransfer.files[0]);
+            //       console.log(ev.dataTransfer.files[0].name);
+            //       console.log(ev.dataTransfer.files[0].path);
+            //       console.log(require("electron").webUtils.getPathForFile(ev.dataTransfer.files[0]));
+            //   });`;
+            //   if (!document.getElementById("jsdrop")) {
+            //   const eljs = document.createElement("script");
+            //   eljs.setAttribute("id", "jsdrop");
+            //   eljs.setAttribute("type", "text/javascript");
+            //   eljs.appendChild(document.createTextNode(js));
+            //   document.body.appendChild(eljs);
+            //   }
+
         } catch (e) {
             console.error("Nunito font face error", e);
         }
@@ -156,6 +191,7 @@ export default class App extends React.Component<{}, undefined> {
                 <TranslatorContext.Provider value={getTranslator()}>
                     <HistoryRouter history={getReduxHistory()}>
                         <Dropzone
+                            getFilesFromEvent={this.getFiles}
                             onDrop={this.onDrop}
                             noClick={true}
                         >
