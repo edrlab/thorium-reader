@@ -51,7 +51,7 @@ export function* appActivate() {
 
             const libWin = yield* callTyped(() => getLibraryWindowFromDi());
 
-            if (!libWin?.isDestroyed()) {
+            if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
 
                 if (libWin.isMinimized()) {
                     libWin.restore();
@@ -65,11 +65,12 @@ export function* appActivate() {
                     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
                     const readersArray = ObjectKeys(readers);
                     const readerWin = getReaderWindowFromDi(readersArray[0]);
-
-                    if (readerWin.isMinimized()) {
-                        readerWin.restore();
+                    if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
+                        if (readerWin.isMinimized()) {
+                            readerWin.restore();
+                        }
+                        readerWin.show();
                     }
-                    readerWin.show();
                 }
 
                 return ;
@@ -189,7 +190,7 @@ function* winClose(_action: winActions.library.closed.TAction) {
 
     debug("library -> winClose");
 
-    const library = getLibraryWindowFromDi();
+    const libraryWin = getLibraryWindowFromDi();
     let sessionSaving = false; // window.close() // not saved session by default
 
     {
@@ -242,7 +243,7 @@ function* winClose(_action: winActions.library.closed.TAction) {
                             }
                             try {
                                 const readerWin = yield* callTyped(() => getReaderWindowFromDi(reader.identifier));
-
+                                if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed())
                                 if (sessionSaving) {
                                     // force quit the reader windows to keep session in next startup
                                     debug("destroy reader", index);
@@ -264,9 +265,8 @@ function* winClose(_action: winActions.library.closed.TAction) {
     }
 
     if (sessionSaving) {
-
-        // closed the library and thorium
-        library.destroy();
+        if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed())
+            libraryWin.destroy();
     } else {
 
         yield spawn(function* () {
@@ -280,7 +280,8 @@ function* winClose(_action: winActions.library.closed.TAction) {
 
             } while (readersArray.length);
 
-            library.destroy();
+            if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed())
+                libraryWin.destroy();
         });
 
     }

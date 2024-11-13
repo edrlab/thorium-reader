@@ -11,7 +11,7 @@ import { getAppActivateEventChannel } from "../redux/sagas/getEventChannel";
 export const showLibrary = () => {
 
     const library = getLibraryWindowFromDi();
-    if (library.isDestroyed()) {
+    if (!library || library.isDestroyed() || library.webContents.isDestroyed()) {
 
         const appActivateChannel = getAppActivateEventChannel();
         appActivateChannel.put(true);

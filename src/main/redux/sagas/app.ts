@@ -71,7 +71,7 @@ export function* init() {
         const browserWindows = [];
         try {
             const libraryWin = getLibraryWindowFromDi();
-            if (libraryWin) {
+            if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
                 browserWindows.push(libraryWin);
             }
         } catch (e) {
@@ -80,7 +80,11 @@ export function* init() {
         try {
             const readerWins = getAllReaderWindowFromDi();
             if (readerWins?.length) {
-                browserWindows.push(...readerWins);
+                for (const readerWin of readerWins) {
+                    if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
+                        browserWindows.push(readerWin);
+                    }
+                }
             }
         } catch (e) {
             debug("getAllReaderWindowFromDi ERROR?", e);
@@ -331,7 +335,6 @@ export function exit() {
             shouldExit = true;
 
             const libraryWin = getLibraryWindowFromDi();
-
             if (process.platform === "darwin") {
                 if (libraryWin.isDestroyed()) {
                     if (closeProcessLock.isLock) {
@@ -345,7 +348,9 @@ export function exit() {
                 }
             }
 
+            if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
             libraryWin.close();
+            }
         };
 
         yield takeSpawnEveryChannel(

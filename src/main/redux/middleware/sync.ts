@@ -114,7 +114,9 @@ export const reduxSyncMiddleware: Middleware
                 if (libId) {
                     try {
                         const libWin = getLibraryWindowFromDi();
-                        browserWin.set(libId, libWin);
+                        if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
+                            browserWin.set(libId, libWin);
+                        }
                     } catch (_err) {
                         // ignore
                         // library window may be not initialized in first
@@ -126,6 +128,7 @@ export const reduxSyncMiddleware: Middleware
                     if (readers[key]) {
                         try {
                             const readerWin = getReaderWindowFromDi(readers[key].identifier);
+                            if (!readerWin.isDestroyed() && !readerWin.webContents.isDestroyed())
                             browserWin.set(readers[key].identifier, readerWin);
                         } catch (_err) {
                             // ignore

@@ -45,7 +45,8 @@ function* readerFullscreenRequest(action: readerActions.fullScreenRequest.TActio
     if (sender.identifier && sender.type === SenderType.Renderer) {
 
         const readerWin = yield* callTyped(() => getReaderWindowFromDi(sender.identifier));
-        if (readerWin) {
+
+        if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
             readerWin.setFullScreen(action.payload.full);
         }
     }
@@ -54,7 +55,7 @@ function* readerFullscreenRequest(action: readerActions.fullScreenRequest.TActio
 function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
 
     const libWin = yield* callTyped(() => getLibraryWindowFromDi());
-    if (libWin && !libWin.isDestroyed()) {
+    if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
 
         // try-catch to do not trigger an error message when the winbound is not handle by the os
         let libBound: Electron.Rectangle;
@@ -80,8 +81,7 @@ function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
     if (readerWinId && action.sender?.type === SenderType.Renderer) {
 
         const readerWin = getReaderWindowFromDi(readerWinId);
-
-        if (readerWin) {
+        if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
 
             // this should never occur, but let's do it for certainty
             if (readerWin.isMinimized()) {
@@ -230,7 +230,10 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
         const mode = yield* selectTyped((state: RootState) => state.mode);
         if (mode === ReaderMode.Attached) {
             try {
-                getLibraryWindowFromDi().hide();
+                const libWin = getLibraryWindowFromDi();
+                if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
+                    libWin.hide();
+                }
             } catch (_err) {
                 debug("library can't be loaded from di");
             }
@@ -262,7 +265,7 @@ function* readerCLoseRequestFromIdentifier(action: readerActions.closeRequest.TA
     yield call(readerCloseRequest, action.sender.identifier);
 
     const libWin = yield* callTyped(() => getLibraryWindowFromDi());
-    if (libWin && !libWin.isDestroyed()) {
+    if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
 
         const winBound = yield* selectTyped(
             (state: RootState) => state.win.session.library.windowBound,
@@ -313,7 +316,7 @@ function* readerCloseRequest(identifier?: string) {
     }
 
     const readerWindow = getReaderWindowFromDi(identifier);
-    if (readerWindow) {
+    if (readerWindow && !readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) {
         readerWindow.close();
     }
 

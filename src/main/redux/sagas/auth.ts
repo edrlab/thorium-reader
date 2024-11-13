@@ -696,7 +696,7 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
 function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefined {
 
     const libWin = tryCatchSync(() => getLibraryWindowFromDi(), filename_);
-    if (!libWin) {
+    if (!libWin || libWin.isDestroyed() || libWin.webContents.isDestroyed()) {
         debug("no lib win !!");
         return undefined;
     }

@@ -378,7 +378,7 @@
     "css-hot-loader": "^1.4.4",
     "css-loader": "^7.1.2",
     "devtron": "^1.4.0",
-    "electron": "^33.1.0",
+    "electron": "^33.2.0",
     "electron-builder": "^25.1.8",
     "electron-devtools-installer": "^3.2.0",
     "eslint": "^8.57.1",

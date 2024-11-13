@@ -87,7 +87,7 @@ export function lockInstance() {
             // https://github.com/edrlab/thorium-reader/pull/1573#issuecomment-1003042325
             try {
                 const libraryAppWindow = getLibraryWindowFromDi();
-                if (libraryAppWindow) {
+                if (libraryAppWindow && !libraryAppWindow.isDestroyed() && !libraryAppWindow.webContents.isDestroyed()) {
                     if (libraryAppWindow.isMinimized()) {
                         libraryAppWindow.restore();
                     }

@@ -49,7 +49,8 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     const currentTimestamp = (new Date()).getTime();
 
     const win = winId ? getReaderWindowFromDi(winId) : getLibraryWindowFromDi();
-    if (!win) {
+
+    if (!win || win.isDestroyed() || win.webContents.isDestroyed()) {
         debug("ERROR!! No Browser window !!! exit");
         return ;
     }
