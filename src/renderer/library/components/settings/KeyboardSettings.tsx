@@ -183,7 +183,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                 const hit = this.state.editKeyboardShortcutId === id;
                                 const frag = <>
                                     <h3 aria-hidden className={stylesKeys.keyshortElement_title}>{id}</h3>
-                                    <div aria-hidden className={hit ? stylesKeys.keyshortElement_shortcut_container_edit : stylesKeys.keyshortElement_shortcut_container}>
+                                    <div className={hit ? stylesKeys.keyshortElement_shortcut_container_edit : stylesKeys.keyshortElement_shortcut_container}>
                                         <div className={stylesKeys.keyshortElement_shortcut}>
                                             {this.prettifyKeyboardShortcut(def)}
                                             <button
@@ -386,7 +386,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         const control = def.control ? <span>CTRL + </span> : null;
         const meta = def.meta ? <span>META + </span> : null;
         const key = <span>{def.key}</span>;
-        return <>{shift}{control}{alt}{meta}{key}</>;
+        return <span aria-hidden>{shift}{control}{alt}{meta}{key}</span>;
     }
     private stringifyKeyboardShortcut(def: TKeyboardShortcut) {
         return `${def.shift ? "SHIFT " : ""}${def.control ? "CTRL " : ""}${def.alt ? "ALT " : ""}${def.meta ? "META " : ""}${(def.shift || def.control || def.alt || def.meta) ? "+ " : ""}${def.key}`;
