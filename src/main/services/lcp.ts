@@ -166,13 +166,13 @@ export class LcpManager {
     private async injectLcplIntoZip_(epubPath: string, lcpStr: string) {
 
         const extension = path.extname(epubPath);
-        const isAudioBook = new RegExp(`\\${acceptedExtensionObject.audiobook}$`).test(extension) ||
-            new RegExp(`\\${acceptedExtensionObject.audiobookLcp}$`).test(extension) ||
-            new RegExp(`\\${acceptedExtensionObject.audiobookLcpAlt}$`).test(extension);
+        const isAudioBook = new RegExp(`\\${acceptedExtensionObject.audiobook}$`, "i").test(extension) ||
+            new RegExp(`\\${acceptedExtensionObject.audiobookLcp}$`, "i").test(extension) ||
+            new RegExp(`\\${acceptedExtensionObject.audiobookLcpAlt}$`, "i").test(extension);
 
-        const isDivina = new RegExp(`\\${acceptedExtensionObject.divina}$`).test(extension);
+        const isDivina = new RegExp(`\\${acceptedExtensionObject.divina}$`, "i").test(extension);
 
-        const isLcpPdf = new RegExp(`\\${acceptedExtensionObject.pdfLcp}$`).test(extension);
+        const isLcpPdf = new RegExp(`\\${acceptedExtensionObject.pdfLcp}$`, "i").test(extension);
 
         const epubPathTMP = epubPath + ".tmplcpl";
         await new Promise<void>((resolve, reject) => {

@@ -2863,7 +2863,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
     // extension or @type ?
     // const isDivina = isDivinaFn(state.r2Publication);
-    // const isDivina = path.extname(state?.reader?.info?.filesystemPath) === acceptedExtensionObject.divina;
+    // const isDivina = path.extname(state?.reader?.info?.filesystemPath).toLowerCase() === acceptedExtensionObject.divina;
     const isDivina = isDivinaFn(state.reader.info.r2Publication);
     const isPdf = isPdfFn(state.reader.info.r2Publication);
 

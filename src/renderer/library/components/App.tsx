@@ -76,7 +76,7 @@ export default class App extends React.Component<{}, undefined> {
                     // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
                     const absolutePath = webUtils.getPathForFile(file);
                     // console.log("absolutePath 1: " + absolutePath);
-                    return absolutePath.replace(/\\/g, "/").endsWith("/" + acceptedExtensionObject.nccHtml) || acceptedExtension(path.extname(absolutePath));
+                    return absolutePath.replace(/\\/g, "/").toLowerCase().endsWith("/" + acceptedExtensionObject.nccHtml) || acceptedExtension(path.extname(absolutePath));
                 },
             )
             .map(
