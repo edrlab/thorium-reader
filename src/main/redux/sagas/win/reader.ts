@@ -140,8 +140,9 @@ function* winClose(action: winActions.reader.closed.TAction) {
                             debug("_______3 readerWin.getBounds()", winBound);
                             normalizeRectangle(winBound);
 
-                            if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed())
+                            if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
                                 libraryWin.setBounds(winBound);
+                            }
                         } catch (e) {
                             debug("error libraryWindow.setBounds(readerWin.getBounds())", e);
                         }

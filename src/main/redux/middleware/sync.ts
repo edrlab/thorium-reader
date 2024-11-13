@@ -128,8 +128,9 @@ export const reduxSyncMiddleware: Middleware
                     if (readers[key]) {
                         try {
                             const readerWin = getReaderWindowFromDi(readers[key].identifier);
-                            if (!readerWin.isDestroyed() && !readerWin.webContents.isDestroyed())
-                            browserWin.set(readers[key].identifier, readerWin);
+                            if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
+                                browserWin.set(readers[key].identifier, readerWin);
+                            }
                         } catch (_err) {
                             // ignore
                             debug("ERROR: Can't found ther reader win from di: ", readers[key].identifier);
@@ -151,7 +152,7 @@ export const reduxSyncMiddleware: Middleware
                             const a = ActionSerializer.serialize(action as ActionWithSender);
                             // debug(a);
                             try {
-                                if (!win.isDestroyed() && !win.webContents.isDestroyed())
+                                if (!win.isDestroyed() && !win.webContents.isDestroyed()) {
                                 win.webContents.send(syncIpc.CHANNEL, {
                                     type: syncIpc.EventType.MainAction,
                                     payload: {
@@ -161,7 +162,7 @@ export const reduxSyncMiddleware: Middleware
                                         type: SenderType.Main,
                                     },
                                 } as syncIpc.EventPayload);
-
+                                }
                             } catch (error) {
                                 debug("ERROR in SYNC ACTION", error);
                             }

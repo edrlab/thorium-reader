@@ -12,7 +12,6 @@ export const showLibrary = () => {
 
     const library = getLibraryWindowFromDi();
     if (!library || library.isDestroyed() || library.webContents.isDestroyed()) {
-
         const appActivateChannel = getAppActivateEventChannel();
         appActivateChannel.put(true);
     } else {

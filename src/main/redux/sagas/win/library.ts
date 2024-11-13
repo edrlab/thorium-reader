@@ -243,7 +243,7 @@ function* winClose(_action: winActions.library.closed.TAction) {
                             }
                             try {
                                 const readerWin = yield* callTyped(() => getReaderWindowFromDi(reader.identifier));
-                                if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed())
+                                if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
                                 if (sessionSaving) {
                                     // force quit the reader windows to keep session in next startup
                                     debug("destroy reader", index);
@@ -251,6 +251,7 @@ function* winClose(_action: winActions.library.closed.TAction) {
                                 } else {
                                     debug("close reader", index);
                                     readerWin.close();
+                                }
                                 }
                             } catch (_err) {
                                 // ignore
@@ -265,8 +266,9 @@ function* winClose(_action: winActions.library.closed.TAction) {
     }
 
     if (sessionSaving) {
-        if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed())
+        if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
             libraryWin.destroy();
+        }
     } else {
 
         yield spawn(function* () {
@@ -280,8 +282,9 @@ function* winClose(_action: winActions.library.closed.TAction) {
 
             } while (readersArray.length);
 
-            if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed())
+            if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
                 libraryWin.destroy();
+            }
         });
 
     }

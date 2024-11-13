@@ -347,7 +347,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                                 const annotationToUpdateOld = annotations.find(({ uuid }) => uuid === annotationToUpdate.uuid);
                                 const a = ActionSerializer.serialize(readerActions.annotation.update.build(annotationToUpdateOld, annotationToUpdate));
                                 try {
-                                    if (!readerWin.isDestroyed() && !readerWin.webContents.isDestroyed())
+                                    if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
                                     readerWin.webContents.send(syncIpc.CHANNEL, {
                                         type: syncIpc.EventType.MainAction,
                                         payload: {
@@ -357,6 +357,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                                             type: SenderType.Main,
                                         },
                                     } as syncIpc.EventPayload);
+                                    }
 
                                 } catch (error) {
                                     debug("ERROR in SYNC ACTION", error);
@@ -367,7 +368,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                         for (const annotationParsedReadyToBeImported of annotationsParsedNoConflictArray) {
                             const a = ActionSerializer.serialize(readerActions.annotation.push.build(annotationParsedReadyToBeImported));
                             try {
-                                if (!readerWin.isDestroyed() && !readerWin.webContents.isDestroyed())
+                                if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
                                 readerWin.webContents.send(syncIpc.CHANNEL, {
                                     type: syncIpc.EventType.MainAction,
                                     payload: {
@@ -377,7 +378,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                                         type: SenderType.Main,
                                     },
                                 } as syncIpc.EventPayload);
-
+                                }
                             } catch (error) {
                                 debug("ERROR in SYNC ACTION", error);
                             }

@@ -336,7 +336,7 @@ export function exit() {
 
             const libraryWin = getLibraryWindowFromDi();
             if (process.platform === "darwin") {
-                if (libraryWin.isDestroyed()) {
+                if (libraryWin.isDestroyed() || libraryWin.webContents.isDestroyed()) {
                     if (closeProcessLock.isLock) {
                         error(filename_, new Error(
                             `closing process not completed
@@ -349,7 +349,7 @@ export function exit() {
             }
 
             if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
-            libraryWin.close();
+                libraryWin.close();
             }
         };
 
