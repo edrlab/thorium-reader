@@ -35,6 +35,7 @@ import { apiappApi } from "./redux/sagas/api";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
 import { LSDManager } from "./services/lsd";
+import { tryCatch } from "readium-desktop/utils/tryCatch";
 
 // import { streamer } from "readium-desktop/main/streamerHttp";
 // import { Server } from "@r2-streamer-js/http/server";
@@ -159,13 +160,27 @@ const closeProcessLock = (() => {
     };
 })();
 
+const createStoreProcessLock = (() => {
+    let lock = false;
+
+    return {
+        get isLock() {
+            return lock;
+        },
+        lock: () => lock = true,
+        release: () => lock = false,
+    };
+})();
+
 //
 // Depedency Injection
 //
 // Create container used for dependency injection
 const container = new Container();
 
-const createStoreFromDi = async () => {
+
+const getStorePromiseFn = async () => {
+    createStoreProcessLock.lock();
 
     debug("initStore");
     const [store, sagaMiddleware] = await initStore();
@@ -175,7 +190,28 @@ const createStoreFromDi = async () => {
     container.bind<SagaMiddleware>(diSymbolTable["saga-middleware"]).toConstantValue(sagaMiddleware);
     debug("container store and saga binded");
 
+    createStoreProcessLock.release();
     return store;
+};
+let getStorePromise: ReturnType<typeof getStorePromiseFn>;
+
+const createStoreFromDi = async () => {
+
+    const _store = await tryCatch(() => diMainGet("store"), "Store not init");
+    if (_store) {
+        return _store;
+    }
+
+    if (createStoreProcessLock.isLock) {
+
+        // return promise store
+        if (!getStorePromise) throw new Error("not reachable !!!");
+        return getStorePromise;
+    }
+
+    getStorePromise = getStorePromiseFn();
+
+    return getStorePromise;
 };
 
 // Create window registry
@@ -277,11 +313,11 @@ interface IGet {
 
 // export function to get back depedency from container
 // the type any for container.get is overloaded by IGet
-const diGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<any>(diSymbolTable[symbol]);
+const diMainGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<any>(diSymbolTable[symbol]);
 
 export {
     closeProcessLock,
-    diGet as diMainGet,
+    diMainGet,
     getLibraryWindowFromDi,
     getReaderWindowFromDi,
     saveLibraryWindowInDi,
