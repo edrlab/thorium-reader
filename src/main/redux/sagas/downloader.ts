@@ -286,8 +286,10 @@ function downloadCreateFilename(contentType: string | undefined, contentDisposit
 
     const defExt = "unknown-ext";
 
-    let filename = "file." + defExt;
+    const filename = "file." + defExt;
 
+    let contentTypeFilename = "";
+    // type href link from opds feed take precedence on http header content-type !?!
     if (type) {
         contentType = type;
     }
@@ -295,20 +297,28 @@ function downloadCreateFilename(contentType: string | undefined, contentDisposit
         const typeValues = contentType.replace(/\s/g, "").split(";");
         const [ext] = typeValues.map((v) => findExtWithMimeType(v)).filter((v) => v);
         if (ext) {
-            filename = "file." + ext;
-            return filename;
+            contentTypeFilename = "file." + ext;
         }
     }
+
+    let contentDispositionFilename = "";
     if (contentDisposition) {
         const res = /filename=(\"(.*)\"|(.*))/g.exec(contentDisposition);
         const filenameInCD = res ? res[2] || res[3] || "" : "";
         if (acceptedExtension(path.extname(filenameInCD))) {
-            filename = filenameInCD;
-            return filename;
+            contentDispositionFilename = filenameInCD;
         }
     }
 
-    return filename;
+    if (contentDispositionFilename && contentDispositionFilename &&
+        path.extname(contentDispositionFilename) === path.extname(contentTypeFilename)
+    ) {
+        debug("contentType and contentDisposition have the same extension ! Good catch !");
+    } else {
+        debug("contentType and contentDisposition does not have the same extension ! Server stream !?!");
+    }
+
+    return contentDispositionFilename || contentTypeFilename || filename;
 }
 
 interface IDownloadProgression {
