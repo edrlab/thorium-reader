@@ -36,6 +36,7 @@ import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
 import { LSDManager } from "./services/lsd";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
+import { EOL } from "os";
 
 // import { streamer } from "readium-desktop/main/streamerHttp";
 // import { Server } from "@r2-streamer-js/http/server";
@@ -191,6 +192,16 @@ const getStorePromiseFn = async () => {
     debug("container store and saga binded");
 
     createStoreProcessLock.release();
+
+    try {
+        const state = diMainGet("store").getState();
+        if (!state || typeof state !== "object") {
+            throw new Error("state not defined : " + typeof state);
+        }
+    } catch (err) {
+        const message = `REDUX STATE MANAGER CAN NOT BE INITIALIZED [${err}]${EOL}You should remove your 'AppData' folder${EOL}Thorium Exit code 1`;
+        throw new Error(message);
+    }
     return store;
 };
 let getStorePromise: ReturnType<typeof getStorePromiseFn>;
@@ -296,7 +307,7 @@ interface IGet {
     (s: "publication-repository"): PublicationRepository;
     (s: "opds-feed-repository"): OpdsFeedRepository;
     (s: "publication-view-converter"): PublicationViewConverter;
-//    (s: "locator-view-converter"): LocatorViewConverter;
+    //    (s: "locator-view-converter"): LocatorViewConverter;
     (s: "opds-feed-view-converter"): OpdsFeedViewConverter;
     (s: "publication-storage"): PublicationStorage;
     // (s: "streamer"): Server;

@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app } from "electron";
+import { app, dialog } from "electron";
 import * as path from "path";
 import { lockInstance } from "readium-desktop/main/cli/lock";
 import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
@@ -101,6 +101,7 @@ const yargsInit = () =>
 
                     await sagaMiddleware.run(needToPersistFinalState).toPromise();
                     app.exit(__returnCode);
+                    return ;
                 }
             },
         )
@@ -164,6 +165,7 @@ const yargsInit = () =>
 
                     await sagaMiddleware.run(needToPersistFinalState).toPromise();
                     app.exit(__returnCode);
+                    return ;
                 }
             },
         )
@@ -178,16 +180,6 @@ const yargsInit = () =>
             async (argv) => {
 
                 debug("CLI read", argv);
-                // let counter = 10;
-                // while (CommandLineProcessLock.isLock && counter--) {
-                //     debug("elapsed", 10 - counter, "s");
-                //     await new Promise((res) => setTimeout(() => res(undefined), 1000));
-                // }
-                // if (CommandLineProcessLock.isLock) {
-                //     process.stderr.write(argv.$0 + " is actually busy and cannot be opened. This error should not happen, something went wrong!" + EOL);
-                //     return;
-                // }
-
                 __appStarted = true;
                 await Promise.all([
                     createStoreFromDi().then((store) => store.dispatch(appActions.initRequest.build())),
@@ -214,16 +206,6 @@ const yargsInit = () =>
                     .completion()
             ,
             async (argv) => {
-
-                // let counter = 10;
-                // while (CommandLineProcessLock.isLock && counter--) {
-                //     debug("elapsed", 10 - counter, "s");
-                //     await new Promise((res) => setTimeout(() => res(undefined), 1000));
-                // }
-                // if (CommandLineProcessLock.isLock) {
-                //     process.stderr.write(argv.$0 + " is actually busy and cannot be opened. This error should not happen, something went wrong!" + EOL);
-                //     return;
-                // }
 
                 __appStarted = true;
                 await Promise.all([
@@ -266,6 +248,7 @@ const yargsInit = () =>
             if (!app.isReady()) {
                 process.stdout.write(`${msg || ""}${msg ? "" : "\n"}${err || ""}\n`);
                 app.exit(1);
+                return ;
             }
         });
 
@@ -286,7 +269,11 @@ export function commandLineMainEntry(
 
     debug("processArgv", processArgv, "arg", argFormated);
 
-    y.parse(argFormated);
+    try {
+        y.parse(argFormated);
+    } catch (e) {
+        debug("YARGS ERROR !!!!!", e);
+    }
 }
 
 // arrow function to filter declared option in yargs
@@ -294,3 +281,19 @@ const knownOption = (str: string) => [
     "--help",
     "--version",
 ].includes(str);
+
+
+// Catch all unhandled rejection promise from CLI command 
+let __exitPhase = false;
+process.on("unhandledRejection", (err) => {
+    if (__exitPhase) {
+        return ;
+    }
+    __exitPhase = true;
+    const message = `${err}`;
+    process.stderr.write(message);
+    if (__appStarted) {
+        dialog.showErrorBox("THORIUM ERROR", message);
+    }
+    app.exit(1);
+});
