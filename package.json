@@ -291,6 +291,7 @@
     "match-sorter": "^8.0.0",
     "mathjax": "^3.2.2",
     "mime-types": "^2.1.35",
+    "mupdf": "github:edrlab/mupdf.js",
     "nanoid": "^5.0.8",
     "node-fetch": "^3.3.2",
     "proxy-agent": "^6.4.0",

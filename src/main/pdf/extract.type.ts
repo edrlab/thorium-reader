@@ -7,10 +7,10 @@
 
 export interface IInfo {
     PDFFormatVersion?: string;
-    IsAcroFormPresent?: boolean;
-    IsCollectionPresent?: boolean;
-    IsLinearized?: boolean;
-    IsXFAPresent?: boolean;
+    // IsAcroFormPresent?: boolean;
+    // IsCollectionPresent?: boolean;
+    // IsLinearized?: boolean;
+    // IsXFAPresent?: boolean;
     Title?: string;
     Subject?: string;
     Keywords?: string;
