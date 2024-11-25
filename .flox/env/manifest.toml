@@ -35,6 +35,10 @@ echo "########## FLOX ACTIVATE...";
 PWD=$(pwd);
 echo "-----> PWD: ${PWD}";
 
+#_FLOX_ENV_LOG_DIR
+FLOX_ENV_DIR="${FLOX_ENV_CACHE}/.."
+echo "-----> FLOX_ENV_DIR: ${FLOX_ENV_DIR}";
+
 echo "=====> NODE VERSION: $(node --version)";
 WHICH_NODE=$(which node);
 echo ".....> NODE WHICH: ${WHICH_NODE}";
@@ -55,7 +59,7 @@ echo "-----> NPM_CONFIG_CACHE (init): ${NPM_CONFIG_CACHE}";
 #echo "${envName}";
 #export NPM_CONFIG_PREFIX="/tmp/${envName}-npm";
 
-export NPM_CONFIG_PREFIX="${PWD}/.flox/NPM_PREFIX";
+export NPM_CONFIG_PREFIX="${FLOX_ENV_DIR}/NPM_PREFIX";
 echo "-----> NPM CONFIG PREFIX: $(npm config get prefix)";
 echo "-----> NPM_CONFIG_PREFIX: ${NPM_CONFIG_PREFIX}";
 #### rm -rf "$NPM_CONFIG_PREFIX";
@@ -65,7 +69,7 @@ ls -alshF --color=auto "$NPM_CONFIG_PREFIX/bin";
 ls -alshF --color=auto "$NPM_CONFIG_PREFIX/lib";
 ls -alshF --color=auto "$NPM_CONFIG_PREFIX/lib/node_modules";
 
-export NPM_CONFIG_CACHE="${PWD}/.flox/NPM_CACHE";
+export NPM_CONFIG_CACHE="${FLOX_ENV_DIR}/NPM_CACHE";
 echo "-----> NPM CONFIG CACHE: $(npm config get cache)"
 echo "-----> NPM_CONFIG_CACHE: ${NPM_CONFIG_CACHE}";
 #### rm -rf "$NPM_CONFIG_CACHE";
