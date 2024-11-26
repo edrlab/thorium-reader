@@ -145,7 +145,7 @@ export const rootReducer = () => {
                                 type: readerLocalActionHighlights.handler.pop.ID,
                                 selector: (action) =>
                                     action.payload?.map(
-                                        (highlightBaseState) => [highlightBaseState.uuid, undefined],
+                                        (highlightBaseState) => [highlightBaseState.uuid, undefined as IHighlightHandlerState | undefined],
                                     ),
                             },
                         },
@@ -169,7 +169,7 @@ export const rootReducer = () => {
                                 type: readerLocalActionHighlights.mounter.unmount.ID,
                                 selector: (action) =>
                                     action.payload?.map(
-                                        (highlightBaseState) => [highlightBaseState.uuid, undefined],
+                                        (highlightBaseState) => [highlightBaseState.uuid, undefined as IHighlightMounterState | undefined],
                                     ),
                             },
                         },
