@@ -7,7 +7,7 @@
 
 import debounce from "debounce";
 import { ipcRenderer } from "electron";
-import { PDFDocumentProxy } from "readium-desktop/typings/pdf.js/display/api";
+import { PDFDocumentProxy } from "pdf.js/types/src/pdf";
 
 import {
     IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, IEventPayload_R2_EVENT_WEBVIEW_KEYUP,

@@ -19,6 +19,7 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { eventBus } from "./common/eventBus";
 import { IEventBusPdfPlayer } from "./common/pdfReader.type";
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 
 // bridge between webview tx-rx communication and reader.tsx
 
@@ -145,7 +146,7 @@ export function pdfMount(
     // webview.setAttribute("disablewebsecurity", "");
 
     webview.setAttribute("preload", preloadPath);
-    webview.setAttribute("src", "pdfjs://local/web/viewer.html?file=" + encodeURIComponent_RFC3986(pdfPath));
+    webview.setAttribute("src", `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0/pdfjs/web/viewer.html?file=` + encodeURIComponent_RFC3986(pdfPath));
 
     publicationViewport.append(webview);
 }

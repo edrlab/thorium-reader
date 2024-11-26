@@ -103,10 +103,7 @@ import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { translateContentFieldHelper } from "readium-desktop/common/services/translator";
 import { getStore } from "../createStore";
-
-// main process code!
-// thoriumhttps
-// import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/main/streamer/streamerNoHttp";
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 
 // TODO: key not used but translation kept for potential future use
 // discard some not used key from i18n-scan cmd
@@ -158,7 +155,7 @@ const handleLinkUrl_UpdateHistoryState = (url: string, isFromOnPopState = false)
 
         // if (/https?:\/\//.test(url_)) {
         if (!url_.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") &&
-            !url_.startsWith("thoriumhttps://")) {
+            !url_.startsWith(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
             console.log(">> HISTORY POP STATE SKIP URL (1)", url_);
             return;
         }
@@ -1755,7 +1752,7 @@ class Reader extends React.Component<IProps, IState> {
             } else if (typeof popState.state.data === "string") {
                 // if (!/https?:\/\//.test(popState.state.data)) {
                 if (popState.state.data.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") ||
-                    popState.state.data.startsWith("thoriumhttps://")) {
+                    popState.state.data.startsWith(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
                     this.handleLinkClick(undefined, popState.state.data, !isDocked, true);
                 } else {
                     console.log(">> HISTORY POP STATE SKIP URL (2)", popState.state.data);
