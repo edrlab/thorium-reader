@@ -170,7 +170,7 @@
   "library": {
     "lcp": {
       "hint": "Dica: ",
-      "open": "",
+      "open": "Abrir",
       "password": "Frase-passe",
       "sentence": "Insira a frase-passe LCP para abrir este documento: ",
       "urlHint": "Esqueceu-se da sua frase-passe? Encontre ajuda aqui:",
@@ -291,10 +291,10 @@
     "duration": {
       "title": "Duração"
     },
-    "encryptedNoLicense": "",
+    "encryptedNoLicense": "A publicação está encriptada mas não tem uma licença LCP!",
     "expired": "Empréstimo expirado",
     "expiredLcp": "A licença LCP deste documento está expirada.",
-    "incorrectPassphrase": "",
+    "incorrectPassphrase": "Nenhuma frase-passe armazenada se adequa à publicação ou a frase-passe introduzida está errada.",
     "lcpEnd": "Fim",
     "lcpRightsCopy": "Caracteres copiados",
     "lcpRightsPrint": "Páginas impressas",
@@ -443,7 +443,7 @@
         "title": "Colunas",
         "two": "2 cols."
       },
-      "customFontSelected": "",
+      "customFontSelected": "Escolheu um tipo de letra pessoal",
       "customizeReader": "Personalizar formatação do texto",
       "disabled": "desativado",
       "display": "Visualização",
