@@ -311,11 +311,11 @@ function downloadCreateFilename(contentType: string | undefined, contentDisposit
     }
 
     if (contentDispositionFilename && contentDispositionFilename &&
-        path.extname(contentDispositionFilename) === path.extname(contentTypeFilename)
+        path.extname(contentDispositionFilename).toLowerCase() === path.extname(contentTypeFilename).toLowerCase()
     ) {
-        debug("contentType and contentDisposition have the same extension ! Good catch !");
+        debug("contentType and contentDisposition have the same extension ! Good catch !", contentTypeFilename, contentDispositionFilename);
     } else {
-        debug("contentType and contentDisposition does not have the same extension ! Server stream !?!");
+        debug("contentType and contentDisposition does not have the same extension ! Server stream !?!", contentTypeFilename, contentDispositionFilename);
     }
 
     return contentDispositionFilename || contentTypeFilename || filename;
