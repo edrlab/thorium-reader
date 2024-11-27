@@ -75,7 +75,7 @@ import {
     setReadingLocationSaver, ttsClickEnable, ttsNext, ttsOverlayEnable, ttsPause,
     ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
     ttsStop, ttsVoice, highlightsClickListen,
-    // stealFocusDisable,
+    stealFocusDisable,
 } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
@@ -1574,6 +1574,13 @@ class Reader extends React.Component<IProps, IState> {
             }
             return;
         }
+
+        // lock focus outside webview for 400ms
+        if (this.props.readerConfig.readerDockingMode !== "full") {
+            stealFocusDisable(true);
+            setTimeout(() => stealFocusDisable(false), 400);
+        }
+
         this.handleMenuButtonClick(true, this.state.openedSectionMenu, true);
     };
     private onKeyboardFocusSettings = () => {
@@ -2247,8 +2254,11 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        // // Force webview to give the hand before Radix Dialog triggered
-        // stealFocusDisable(true);
+        // lock focus outside webview for 400ms
+        if (this.props.readerConfig.readerDockingMode !== "full") {
+            stealFocusDisable(true);
+            setTimeout(() => stealFocusDisable(false), 400);
+        }
 
         this.handleMenuButtonClick(true, "tab-toc");
 
@@ -2256,6 +2266,8 @@ class Reader extends React.Component<IProps, IState> {
             const anchor = document.getElementById("headingFocus");
             if (anchor) {
                 anchor.focus();
+            } else {
+                console.error("headingFocus not found !!!!!!");
             }
         }, 1);
     }

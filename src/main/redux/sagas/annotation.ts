@@ -229,7 +229,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                             docInfo: undefined, // {isFixedLayout: false, isRightToLeft: false, isVerticalWritingMode: false},  // TODO how to complete these informations
                             epubPage: page,
                             epubPageID: undefined,
-                            headings: headings.map(({ txt, level }) => ({ id: undefined, txt, level })),
+                            headings: headings.map(({ txt, level }) => ({ id: undefined as string | undefined, txt, level })),
                             secondWebViewHref: undefined,
                         },
                         comment: incommingAnnotation.body.value,
