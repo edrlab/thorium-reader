@@ -58,7 +58,7 @@ class FileImport extends React.Component<IProps, undefined> {
                             this.props.__("catalog.addBookToLib")
                         }
                     </AlertDialog.Title>
-                    <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
+                    <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription} asChild>
                         {
                             // useless ??
                             (!files || files.length === 0) ?
@@ -74,11 +74,9 @@ class FileImport extends React.Component<IProps, undefined> {
                                     // </div>
                                 ) : (
                                     // <div className={stylesAlertModals.AlertDialogContent}>
-                                    <div>
                                             <ul>
                                                 {files.map((file, i) => <li key={i}>{file.name}</li>)}
                                             </ul>
-                                    </div>
                                         // <div>
                                         // </div>
                                     // </div>

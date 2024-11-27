@@ -43,11 +43,9 @@
   margin-bottom: 20px;
   color: var(--color-primary);
   line-height: 1.5;
+  padding-left: 20px;
+  list-style-type: "- ";
 
-  ul {
-    padding-left: 20px;
-    list-style-type: "- ";
-  }
 }
 
 .AlertDialogButtonContainer {
