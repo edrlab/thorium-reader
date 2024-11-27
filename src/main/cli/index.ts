@@ -97,7 +97,7 @@ const yargsInit = () =>
                     __pendingCmd--;
                 }
 
-                if (!__appStarted && __pendingCmd === 0 && !closeProcessLock.isLock) {
+                if (!__appStarted && __pendingCmd <= 0 && !closeProcessLock.isLock) {
 
                     await sagaMiddleware.run(needToPersistFinalState).toPromise();
                     app.exit(__returnCode);
@@ -161,7 +161,7 @@ const yargsInit = () =>
                     __pendingCmd--;
                 }
 
-                if (!__appStarted && __pendingCmd === 0 && !closeProcessLock.isLock) {
+                if (!__appStarted && __pendingCmd <= 0 && !closeProcessLock.isLock) {
 
                     await sagaMiddleware.run(needToPersistFinalState).toPromise();
                     app.exit(__returnCode);
