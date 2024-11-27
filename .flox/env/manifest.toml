@@ -36,7 +36,7 @@ PWD=$(pwd);
 echo "-----> PWD: ${PWD}";
 
 #_FLOX_ENV_LOG_DIR
-FLOX_ENV_DIR="${FLOX_ENV_CACHE}/.."
+FLOX_ENV_DIR="$(dirname ${FLOX_ENV_CACHE})"
 echo "-----> FLOX_ENV_DIR: ${FLOX_ENV_DIR}";
 
 echo "=====> NODE VERSION: $(node --version)";
