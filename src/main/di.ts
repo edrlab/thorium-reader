@@ -161,17 +161,17 @@ const closeProcessLock = (() => {
     };
 })();
 
-const createStoreProcessLock = (() => {
-    let lock = false;
+// const createStoreProcessLock = (() => {
+//     let lock = false;
 
-    return {
-        get isLock() {
-            return lock;
-        },
-        lock: () => lock = true,
-        release: () => lock = false,
-    };
-})();
+//     return {
+//         get isLock() {
+//             return lock;
+//         },
+//         lock: () => lock = true,
+//         release: () => lock = false,
+//     };
+// })();
 
 //
 // Depedency Injection
@@ -181,17 +181,30 @@ const container = new Container();
 
 
 const getStorePromiseFn = async () => {
-    createStoreProcessLock.lock();
+    // createStoreProcessLock.lock();
 
     debug("initStore");
     const [store, sagaMiddleware] = await initStore();
+
+    // to test concurrent launch (one interactive app with lock, the other CLI)
+    // npm run start:dev (then close app, this is just to compile main.js)
+    // .. then launch 2 instances concurrently:
+    // npm run start:dev:main:electron -- opds Gallica "http://gallica.bnf.fr/opds" &
+    // npm run start:dev:main:electron &
+    // ...or the other way around:
+    // npm run start:dev:main:electron &
+    // npm run start:dev:main:electron -- opds Gallica "http://gallica.bnf.fr/opds" &
+    //
+    // to test long-running store initialisation:
+    // await new Promise((res) => setTimeout(() => res(undefined), 3*1000));
+
     debug("store loaded");
 
     container.bind<Store<RootState>>(diSymbolTable.store).toConstantValue(store);
     container.bind<SagaMiddleware>(diSymbolTable["saga-middleware"]).toConstantValue(sagaMiddleware);
     debug("container store and saga binded");
 
-    createStoreProcessLock.release();
+    // createStoreProcessLock.release();
 
     try {
         const state = diMainGet("store").getState();
@@ -213,14 +226,16 @@ const createStoreFromDi = async () => {
         return _store;
     }
 
-    if (createStoreProcessLock.isLock) {
+    // if (createStoreProcessLock.isLock) {
 
-        // return promise store
-        if (!getStorePromise) throw new Error("not reachable !!!");
-        return getStorePromise;
+    //     // return promise store
+    //     if (!getStorePromise) throw new Error("not reachable !!!");
+    //     return getStorePromise;
+    // }
+
+    if (!getStorePromise) {
+        getStorePromise = getStorePromiseFn();
     }
-
-    getStorePromise = getStorePromiseFn();
 
     return getStorePromise;
 };
