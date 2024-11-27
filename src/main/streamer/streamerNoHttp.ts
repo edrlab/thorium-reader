@@ -46,7 +46,7 @@ import {
 } from "./streamerCommon";
 import { OPDS_MEDIA_SCHEME } from "readium-desktop/main/redux/sagas/getEventChannel";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
-import { mimeTypes } from "readium-desktop/utils/mimeTypes";
+import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
@@ -287,11 +287,12 @@ const streamProtocolHandler = async (
             folderPath = path.join(process.cwd(), "dist", pdfjsFolder);
         }
         const pdfjsFullPathname = path.normalize(`${folderPath}/${pdfjsUrlPathname}`);
+        const fileExtension = path.extname(pdfjsFullPathname);
         debug("PDFJS full path name :", pdfjsFullPathname);
 
         const contentLength = `${fs.statSync(pdfjsFullPathname)?.size || 0}`;
         headers["Content-Length"] = contentLength;
-        const contentType = `${mimeTypes[path.extname(pdfjsFullPathname).slice(1) as keyof typeof mimeTypes] || ""}; charset=utf-8`;
+        const contentType = `${findMimeTypeWithExtension(fileExtension) || ""}; charset=utf-8`;
         headers["Content-Type"] = contentType;
         debug("PDFJS content-type:", contentType, contentLength);
         const obj = {
