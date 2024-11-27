@@ -2303,7 +2303,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
             <h3>{__("reader.marks.goTo")}</h3>
         </Tabs.Trigger>;
     const optionGoToPageItem = {
-        id: 4, value: "tab-gotopage", name: "Go To Page", disabled: false,
+        id: 4, value: "tab-gotopage", name: __("reader.marks.goTo"), disabled: false,
         svg: TargetIcon,
     };
 

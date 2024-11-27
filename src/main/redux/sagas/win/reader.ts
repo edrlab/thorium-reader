@@ -120,7 +120,7 @@ function* winClose(action: winActions.reader.closed.TAction) {
         const readersArray = ObjectValues(readers);
 
         try {
-            const libraryWindow = yield* callTyped(() => getLibraryWindowFromDi());
+            const libraryWin = yield* callTyped(() => getLibraryWindowFromDi());
 
             debug("Nb of readers:", readersArray.length);
             debug("readers: ", readersArray);
@@ -134,12 +134,15 @@ function* winClose(action: winActions.reader.closed.TAction) {
 
                 } else {
                     const readerWin = yield* callTyped(() => getReaderWindowFromDi(identifier));
-                    if (readerWin) {
+                    if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
                         try {
                             const winBound = readerWin.getBounds();
                             debug("_______3 readerWin.getBounds()", winBound);
                             normalizeRectangle(winBound);
-                            libraryWindow.setBounds(winBound);
+
+                            if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
+                                libraryWin.setBounds(winBound);
+                            }
                         } catch (e) {
                             debug("error libraryWindow.setBounds(readerWin.getBounds())", e);
                         }
@@ -147,14 +150,14 @@ function* winClose(action: winActions.reader.closed.TAction) {
                 }
             }
 
-            if (libraryWindow) {
-                if (libraryWindow.isMinimized()) {
-                    libraryWindow.restore();
-                } else if (!libraryWindow.isVisible()) {
-                    libraryWindow.close();
+            if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
+                if (libraryWin.isMinimized()) {
+                    libraryWin.restore();
+                } else if (!libraryWin.isVisible()) {
+                    libraryWin.close();
                     return;
                 }
-                libraryWindow.show(); // focuses as well
+                libraryWin.show(); // focuses as well
             }
 
         } catch (_err) {

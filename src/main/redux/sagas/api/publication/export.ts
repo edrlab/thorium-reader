@@ -13,6 +13,10 @@ import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 export function* exportPublication(publicationView: PublicationView) {
 
     const libraryAppWindow = yield* callTyped(() => getLibraryWindowFromDi());
+    if (!libraryAppWindow || libraryAppWindow.isDestroyed() || libraryAppWindow.webContents.isDestroyed()) {
+        return;
+    }
+
     const publicationStorage = diMainGet("publication-storage");
 
     const defaultFilename =  publicationStorage.getPublicationFilename(publicationView);

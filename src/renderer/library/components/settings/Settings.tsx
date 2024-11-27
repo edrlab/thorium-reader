@@ -344,7 +344,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                         </Tabs.Trigger>
                     </Tabs.List>
                     <div className={stylesSettings.settings_content} style={{marginTop: "70px"}}>
-                        <Tabs.Content value="tab1" title="General" tabIndex={-1}>
+                        <Tabs.Content value="tab1" tabIndex={-1}>
                             <TabHeader title={__("settings.tabs.general")} />
                             <div className={stylesSettings.settings_tab}>
                                 <LanguageSettings />

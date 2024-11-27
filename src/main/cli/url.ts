@@ -27,11 +27,22 @@ export const setOpenUrl = (url: string): void => {
     }
 
     // OR: if (new URL(url).protocol === "thorium:")
-    if (url.startsWith("thorium://")) {
+    else if (url.startsWith("thorium://")) {
         const openUrl = url.replace("thorium://", "http://"); // HTTP to HTTPS redirect should be handled by the server
 
         const buf = getOpenUrlWithThoriumSchemeEventChannel();
         buf.put(openUrl);
     }
 
+    // only from the CLI we accept http/https protocols 
+    else if (url.startsWith("http://") || url.startsWith("https://")) {
+        const openUrl = url;
+
+        const buf = getOpenUrlWithThoriumSchemeEventChannel();
+        buf.put(openUrl);
+    }
+
+    else {
+        process.stderr.write("Cannot open URL with this protocol");
+    }
 };

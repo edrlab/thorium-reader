@@ -230,7 +230,7 @@ const saveLibraryWindowInDi =
 const getLibraryWindowFromDi =
     () => {
         ok(libraryWin, "library window not defined");
-        return libraryWin;
+        return libraryWin; // we could filter out based on win.isDestroyed() && win.webContents.isDestroyed() but this would change the null/undefined contract of the return value in consumer code, so let's leave it for now (strictNullChecks and stricter typeof id)
     };
 
 const readerWinMap = new Map<string, BrowserWindow>();
@@ -240,7 +240,7 @@ const saveReaderWindowInDi =
     (readerWin: BrowserWindow, id: string) => (readerWinMap.set(id, readerWin), readerWin);
 
 const getReaderWindowFromDi =
-    (id: string) => readerWinMap.get(id);
+    (id: string) => readerWinMap.get(id); // we could filter out based on win.isDestroyed() && win.webContents.isDestroyed() but this would change the null/undefined contract of the return value in consumer code, so let's leave it for now (strictNullChecks and stricter typeof id)
 
 const getAllReaderWindowFromDi =
     () => {
@@ -249,7 +249,7 @@ const getAllReaderWindowFromDi =
         // return container.getAll<BrowserWindow>("WIN_REGISTRY_READER");
 
         return Array.from(readerWinMap.values()).filter((w) => {
-            return !w.isDestroyed();
+            return !w.isDestroyed() && !w.webContents.isDestroyed();
         });
     };
 

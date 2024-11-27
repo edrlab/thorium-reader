@@ -364,7 +364,7 @@ let config = Object.assign(
                 directory: __dirname,
                 publicPath: "/",
                 watch: {
-                    ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/],
+                    ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/, /\.flox/],
                 },
             },
             devMiddleware: {
@@ -413,7 +413,7 @@ if (nodeEnv !== "production") {
                 directory: __dirname,
                 publicPath: "/",
                 watch: {
-                    ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/],
+                    ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/, /\.flox/],
                 },
             },
             devMiddleware: {

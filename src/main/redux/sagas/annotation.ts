@@ -49,7 +49,8 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     const currentTimestamp = (new Date()).getTime();
 
     const win = winId ? getReaderWindowFromDi(winId) : getLibraryWindowFromDi();
-    if (!win) {
+
+    if (!win || win.isDestroyed() || win.webContents.isDestroyed()) {
         debug("ERROR!! No Browser window !!! exit");
         return ;
     }
@@ -228,7 +229,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                             docInfo: undefined, // {isFixedLayout: false, isRightToLeft: false, isVerticalWritingMode: false},  // TODO how to complete these informations
                             epubPage: page,
                             epubPageID: undefined,
-                            headings: headings.map(({ txt, level }) => ({ id: undefined, txt, level })),
+                            headings: headings.map(({ txt, level }) => ({ id: undefined as string | undefined, txt, level })),
                             secondWebViewHref: undefined,
                         },
                         comment: incommingAnnotation.body.value,
@@ -346,7 +347,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                                 const annotationToUpdateOld = annotations.find(({ uuid }) => uuid === annotationToUpdate.uuid);
                                 const a = ActionSerializer.serialize(readerActions.annotation.update.build(annotationToUpdateOld, annotationToUpdate));
                                 try {
-                                    if (!readerWin.isDestroyed() && !readerWin.webContents.isDestroyed())
+                                    if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
                                     readerWin.webContents.send(syncIpc.CHANNEL, {
                                         type: syncIpc.EventType.MainAction,
                                         payload: {
@@ -356,6 +357,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                                             type: SenderType.Main,
                                         },
                                     } as syncIpc.EventPayload);
+                                    }
 
                                 } catch (error) {
                                     debug("ERROR in SYNC ACTION", error);
@@ -366,7 +368,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                         for (const annotationParsedReadyToBeImported of annotationsParsedNoConflictArray) {
                             const a = ActionSerializer.serialize(readerActions.annotation.push.build(annotationParsedReadyToBeImported));
                             try {
-                                if (!readerWin.isDestroyed() && !readerWin.webContents.isDestroyed())
+                                if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
                                 readerWin.webContents.send(syncIpc.CHANNEL, {
                                     type: syncIpc.EventType.MainAction,
                                     payload: {
@@ -376,7 +378,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                                         type: SenderType.Main,
                                     },
                                 } as syncIpc.EventPayload);
-
+                                }
                             } catch (error) {
                                 debug("ERROR in SYNC ACTION", error);
                             }

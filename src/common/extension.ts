@@ -40,4 +40,4 @@ export const acceptedExtension = (ext: string) =>
 export const isAcceptedExtension = (key: keyof typeof acceptedExtensionObject, ext: string) =>
     (new RegExp(`${acceptedExtensionObject[key]
         ? acceptedExtensionObject[key].replace(/\./g, "\\.")
-        : acceptedExtensionObject[key]}$`)).test(ext);
+        : acceptedExtensionObject[key]}$`, "i")).test(ext);
