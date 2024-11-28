@@ -293,6 +293,7 @@
     "mime-types": "^2.1.35",
     "nanoid": "^5.0.9",
     "node-fetch": "^3.3.2",
+    "pdf.js": "github:edrlab/pdf.js#build",
     "proxy-agent": "^6.4.0",
     "r2-lcp-js": "^1.0.41",
     "r2-navigator-js": "^1.16.5",
