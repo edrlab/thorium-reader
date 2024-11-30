@@ -2671,7 +2671,16 @@ class Reader extends React.Component<IProps, IState> {
 
     private handleTTSPlay() {
         ttsClickEnable(true);
-        ttsPlay(parseFloat(this.props.ttsPlaybackRate), this.props.ttsVoice);
+        let delay = 0;
+        if (!this.props.readerConfig?.noFootnotes) {
+            delay = 100;
+            // console.log("TTS PLAY ==> NO_FOOTNOTES MUST BE TRUE (POPUP DISABLED), SWITCHING...");
+            this.props.setConfig({ noFootnotes: true });
+            // TODO: skippability should be disabled when user explicitly "requests" a skippable item, such as when clicking on a note reference hyperlink, or even on a skippable element itself(?)
+        }
+        setTimeout(() => {
+            ttsPlay(parseFloat(this.props.ttsPlaybackRate), this.props.ttsVoice);
+        }, delay);
     }
     private handleTTSPause() {
         ttsPause();
@@ -2710,7 +2719,16 @@ class Reader extends React.Component<IProps, IState> {
 
     private handleMediaOverlaysPlay() {
         mediaOverlaysClickEnable(true);
-        mediaOverlaysPlay(parseFloat(this.props.mediaOverlaysPlaybackRate));
+        let delay = 0;
+        if (!this.props.readerConfig?.noFootnotes) {
+            delay = 100;
+            // console.log("MO PLAY ==> NO_FOOTNOTES MUST BE TRUE (POPUP DISABLED), SWITCHING...");
+            this.props.setConfig({ noFootnotes: true });
+            // TODO: skippability should be disabled when user explicitly "requests" a skippable item, such as when clicking on a note reference hyperlink, or even on a skippable element itself(?)
+        }
+        setTimeout(() => {
+            mediaOverlaysPlay(parseFloat(this.props.mediaOverlaysPlaybackRate));
+        }, delay);
     }
     private handleMediaOverlaysPause() {
         mediaOverlaysPause();
