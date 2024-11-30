@@ -42,7 +42,9 @@ const i18nextInstance = i18next.createInstance();
 // https://www.i18next.com/overview/configuration-options
 i18nextInstance.init({
     // https://www.i18next.com/misc/migration-guide#v-20-x-x-to-v-21-0-0
-    compatibilityJSON: "v3",
+    // https://www.i18next.com/misc/migration-guide#v23.x.x-to-v24.0.0
+    // https://github.com/i18next/i18next-v4-format-converter
+    compatibilityJSON: "v4",
     interpolation: {
         skipOnVariables: false,
     },
