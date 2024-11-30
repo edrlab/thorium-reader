@@ -73,6 +73,11 @@ jobs:
     #- run: echo 'RELEASE_TAG=latest-${{ env.OS_NAME_ }}' | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
     #- run: echo 'RELEASE_TAG=latest-${{ env.OS_NAME_ }}' >> $GITHUB_ENV
     #- run: echo '::set-env name=RELEASE_TAG::latest-${{ env.OS_NAME_ }}'
+    - name: Harden Runner
+      uses: step-security/harden-runner@0080882f6c36860b6ba35c610c98ce87d4e2f26f # v2.10.2
+      with:
+        egress-policy: audit
+
     - run: echo 'RELEASE_TAG:' ${{ env.RELEASE_TAG }}
     - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
     - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
@@ -81,7 +86,7 @@ jobs:
       if: ${{ matrix.osarch != 'windows-intel' }}
       run: echo "${{ matrix.osarch }}" && uname -m && arch
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
     #   with:
     #     persist-credentials: false
     # - name: Git config global dump (pre)
@@ -112,7 +117,7 @@ jobs:
     - name: Git config local dump (post)
       run: 'git config --list || echo NO_GIT_GLOBAL_CONFIG || true'
       shell: bash
-    - uses: actions/setup-node@v4
+    - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
       with:
         node-version: '20'
         #check-latest: true

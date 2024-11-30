@@ -4,7 +4,7 @@
 
 # Focal Fossa
 # GLIBC 2.31
-FROM ubuntu:20.04
+FROM ubuntu:20.04@sha256:8e5c4f0285ecbb4ead070431d29b576a530d3166df73ec44affc1cd27555141b
 
 # Bionic Beaver
 # GLIBC 2.27
