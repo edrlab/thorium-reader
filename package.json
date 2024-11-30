@@ -396,6 +396,7 @@
     "markdown-loader": "^8.0.0",
     "mini-css-extract-plugin": "^2.9.2",
     "ncp": "^2.0.0",
+    "npm-scripts-lifecycle": "^1.0.0",
     "prettier": "^3.4.1",
     "react-svg-loader": "^3.0.3",
     "remote-redux-devtools": "^0.5.16",
