@@ -13,12 +13,13 @@ import { error } from "readium-desktop/main/tools/error";
 import { streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
-    streamerRemovePublications, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+    streamerRemovePublications,
 } from "readium-desktop/main/streamer/streamerNoHttp";
 import { SagaIterator } from "redux-saga";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 
 // import * as portfinder from "portfinder";
 // import { Server } from "@r2-streamer-js/http/server";

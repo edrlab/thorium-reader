@@ -17,7 +17,8 @@ import {
 } from "@r2-shared-js/init-globals";
 
 import { initSessions as initSessionsNoHTTP } from "./main/streamer/streamerNoHttp";
-import { start } from "./main/start";
+import { createStoreFromDi } from "./main/di";
+import { appActions } from "./main/redux/actions";
 
 // import { initSessions as initSessionsHTTP } from "@r2-navigator-js/electron/main/sessions";
 
@@ -76,7 +77,7 @@ initSessionsNoHTTP();
 
 if (_VSCODE_LAUNCH === "true") {
     // tslint:disable-next-line: no-floating-promises
-    start();
+    createStoreFromDi().then((store) => store.dispatch(appActions.initRequest.build()));
 } else {
     commandLineMainEntry(); // call main fct
 }

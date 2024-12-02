@@ -15,7 +15,6 @@ import { streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
     streamerAddPublications, streamerLoadOrGetCachedPublication,
-    THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "readium-desktop/main/streamer/streamerNoHttp";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put, take } from "redux-saga/effects";
@@ -25,6 +24,7 @@ import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { getTranslator } from "readium-desktop/common/services/translator";
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 

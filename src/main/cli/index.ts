@@ -6,18 +6,35 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app } from "electron";
+import { app, dialog } from "electron";
 import * as path from "path";
 import { lockInstance } from "readium-desktop/main/cli/lock";
 import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
 import yargs from "yargs";
-import { importCommand, mainCommand, opdsCommand, readCommand } from "./command";
+import { closeProcessLock } from "../di";
+import { EOL } from "os";
+import { diMainGet } from "readium-desktop/main/di";
+import { createStoreFromDi } from "../di";
+import { needToPersistFinalState } from "../redux/sagas/persist";
+import { appActions } from "../redux/actions";
+import { getOpenFileFromCliChannel, getOpenTitleFromCliChannel } from "../event";
+import { flushSession } from "../tools/flushSession";
+import { isOpenUrl, setOpenUrl } from "./url";
+import { globSync } from "glob";
+import { PublicationView } from "readium-desktop/common/views/publication";
 
 // Logger
 const debug = debug_("readium-desktop:cli:process");
 
 // single Instance Lock
 const gotTheLock = lockInstance();
+
+if (gotTheLock) {
+    debug("GOT THE LOCK ACQUIRED !!! (main process)");
+} else {
+    debug("DID NOT GOT THE LOCK !!!, so this a cli command and need to exit now");
+    app.exit(0);
+}
 // When gotTheLock is true :
 //  the app is typically launched with the GUI,
 //
@@ -27,6 +44,10 @@ const gotTheLock = lockInstance();
 //  and then exits.
 //  The second-instance event is still received, but the argv is ignored for the CLI,
 //  as it has already been executed by the "second instance" itself (see Yargs handlers).
+
+let __appStarted = false;
+let __returnCode = 0;
+let __pendingCmd = 0;
 
 // yargs configuration
 const yargsInit = () =>
@@ -47,18 +68,45 @@ const yargsInit = () =>
             ,
             async (argv) => {
 
-                // if the app is not started or it's the second instance
-                // The boolean app.isReady is true when the second-instance event handler is called
-                // (as guaranteed by the Electron API
-                // https://github.com/electron/electron/blob/master/docs/api/app.md#event-second-instance )
+                debug("CLI opds import", argv);
 
-                const appNotReady = !app.isReady();
-                const noLock = !gotTheLock;
-                if (appNotReady || noLock) await opdsCommand(argv);
+                await createStoreFromDi();
+                const sagaMiddleware = diMainGet("saga-middleware");
+                __pendingCmd++;
+
+                try {
+                    const { title, url } = argv;
+                    const hostname = (new URL(url)).hostname;
+                    if (hostname) {
+
+                        const sagaMiddleware = diMainGet("saga-middleware");
+                        const opdsApi = diMainGet("opds-api");
+
+                        const feed = await sagaMiddleware.run(opdsApi.addFeed, { title, url }).toPromise();
+                        process.stdout.write("OPDS import done : " + JSON.stringify(feed) + EOL);
+
+                    } else {
+                        process.stderr.write("OPDS URL not valid, exit with code 1" + EOL);
+                        __returnCode = 1;
+                    }
+
+                } catch (e) {
+                    debug("CLI OPDS ERROR", e);
+                    __returnCode = 1;
+                } finally {
+                    __pendingCmd--;
+                }
+
+                if (!__appStarted && __pendingCmd <= 0 && !closeProcessLock.isLock) {
+
+                    await sagaMiddleware.run(needToPersistFinalState).toPromise();
+                    app.exit(__returnCode);
+                    return ;
+                }
             },
         )
         .command("import <path>",
-            "import epub or lpcl file",
+            "import epub or lcpl file",
             (y) =>
                 y.positional("path", {
                     describe: "absolute, relative or globbing path",
@@ -70,14 +118,55 @@ const yargsInit = () =>
                     .example("import", "\"myPublication.epub\"")
             ,
             async (argv) => {
-                // if the app is not started or it's the second instance
-                // The boolean app.isReady is true when the second-instance event handler is called
-                // (as guaranteed by the Electron API
-                // https://github.com/electron/electron/blob/master/docs/api/app.md#event-second-instance
 
-                const appNotReady = !app.isReady();
-                const noLock = !gotTheLock;
-                if (appNotReady || noLock) await importCommand(argv);
+                debug("CLI import publication", argv);
+
+                await createStoreFromDi();
+                const sagaMiddleware = diMainGet("saga-middleware");
+                __pendingCmd++;
+
+                try {
+
+                    const pathArray = globSync(argv.path, {
+                        absolute: true,
+                        realpath: true,
+                    }) || [];
+                    const filePathArrayResolved = pathArray.length ? pathArray : argv.path;
+
+                    debug(pathArray, argv.path, filePathArrayResolved);
+                    debug("cliImport", filePathArrayResolved);
+
+                    // import a publication from local path
+                    const filePathArray = Array.isArray(filePathArrayResolved) ? filePathArrayResolved : [filePathArrayResolved];
+
+                    const pubApi = diMainGet("publication-api");
+                    for (const fp of filePathArray) {
+
+                        debug("cliImport filePath in filePathArray: ", fp);
+                        const pubViews = await sagaMiddleware.run(pubApi.importFromFs, fp).toPromise<PublicationView[]>();
+                        if (pubViews?.length) {
+                            process.stdout.write("import success: " + fp + EOL);
+                        } else {
+                            process.stderr.write("import failed: " + fp + EOL);
+                            __returnCode = 1;
+                        }
+                    }
+
+                    process.stdout.write("import(s) done." + EOL);
+
+                } catch (e) {
+                    debug("CLI IMPORT ERROR", e);
+                    __returnCode = 1;
+                } finally {
+                    __pendingCmd--;
+                }
+
+                if (!__appStarted && __pendingCmd <= 0 && !closeProcessLock.isLock) {
+
+                    await sagaMiddleware.run(needToPersistFinalState).toPromise();
+                    app.exit(__returnCode);
+                    return ;
+                }
             },
         )
         .command("read <title>",
@@ -89,11 +178,19 @@ const yargsInit = () =>
                 })
             ,
             async (argv) => {
-                // if it's the main instance
-                if (gotTheLock) {
-                    await readCommand(argv);
-                } else {
-                    app.exit(0);
+
+                debug("CLI read", argv);
+                __appStarted = true;
+                await Promise.all([
+                    createStoreFromDi().then((store) => store.dispatch(appActions.initRequest.build())),
+                    app.whenReady(),
+                ]);
+
+                await flushSession();
+
+                if (argv.title) {
+                    const openTitleFromCliChannel = getOpenTitleFromCliChannel();
+                    openTitleFromCliChannel.put(argv.title);
                 }
             },
         )
@@ -109,20 +206,49 @@ const yargsInit = () =>
                     .completion()
             ,
             async (argv) => {
-                // if it's the main instance
-                if (gotTheLock) {
-                    await mainCommand(argv);
-                } else {
-                    app.exit(0);
-                }
 
+                __appStarted = true;
+                await Promise.all([
+                    createStoreFromDi().then((store) => store.dispatch(appActions.initRequest.build())),
+                    app.whenReady(),
+                ]);
+
+                const { path: pathArgv } = argv;
+                const openPublicationRequestedBool = Array.isArray(pathArgv) ? pathArgv.length > 0 : !!pathArgv;
+                if (openPublicationRequestedBool) {
+
+                    // flush session because user ask to read a publication
+                    flushSession();
+
+                    // pathArgv can be an url with deepLinkInvocation in windows
+                    // https://github.com/oikonomopo/electron-deep-linking-mac-win
+                    //
+                    // handle opds:// thorium:// https:// http://
+                    // to add the feed and open it
+                    const url = pathArgv[0];
+                    if (isOpenUrl(url)) {
+                        debug("Need to import/open an URL : ", url);
+                        setOpenUrl(url);
+                        return;
+                    }
+
+                    // not an URL
+                    const openFileFromCliChannel = getOpenFileFromCliChannel();
+                    const pathArgvArray = Array.isArray(pathArgv) ? pathArgv : [pathArgv];
+                    for (const pathArgvName of pathArgvArray) {
+
+                        const pathArgvNameResolve = path.resolve(pathArgvName);
+                        openFileFromCliChannel.put(pathArgvNameResolve);
+                    }
+                }
             },
         )
         .help()
         .fail((msg, err) => {
-            if (!app.isReady() || !gotTheLock) {
+            if (!app.isReady()) {
                 process.stdout.write(`${msg || ""}${msg ? "" : "\n"}${err || ""}\n`);
                 app.exit(1);
+                return ;
             }
         });
 
@@ -143,7 +269,11 @@ export function commandLineMainEntry(
 
     debug("processArgv", processArgv, "arg", argFormated);
 
-    y.parse(argFormated);
+    try {
+        y.parse(argFormated);
+    } catch (e) {
+        debug("YARGS ERROR !!!!!", e);
+    }
 }
 
 // arrow function to filter declared option in yargs
@@ -151,3 +281,19 @@ const knownOption = (str: string) => [
     "--help",
     "--version",
 ].includes(str);
+
+
+// Catch all unhandled rejection promise from CLI command 
+let __exitPhase = false;
+process.on("unhandledRejection", (err) => {
+    if (__exitPhase) {
+        return ;
+    }
+    __exitPhase = true;
+    const message = `${err}`;
+    process.stderr.write(message);
+    if (__appStarted) {
+        dialog.showErrorBox("THORIUM ERROR", message);
+    }
+    app.exit(1);
+});
