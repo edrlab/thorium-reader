@@ -16,6 +16,7 @@ import * as debug_ from "debug";
 import * as React from "react";
 import * as Popover from "@radix-ui/react-popover";
 import * as Dialog from "@radix-ui/react-dialog";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 // import * as ReactDOM from "react-dom";
 import { ReaderMode } from "readium-desktop/common/models/reader";
@@ -1075,7 +1076,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     height: /*(isDockedMode && isOnSearch) ? "calc(100dvh - 159px)" :*/ "",
                                                     marginTop: /*(isDockedMode && !isOnSearch) ? "70px" :*/ "20px",
                                                 }}
+                                                aria-describedby={undefined}
                                             >
+                                                <VisuallyHidden.Root>
+                                                    <Dialog.Title>{__("reader.navigation.openTableOfContentsTitle")}</Dialog.Title>
+                                                </VisuallyHidden.Root>
                                                 <ReaderMenu
                                                     {...this.props.readerMenuProps}
                                                     handleLinkClick={(event, url, closeNavPanel) => {
@@ -1161,7 +1166,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 height: /*isDockedMode && isOnSearch ? "calc(100dvh - 159px)" :*/ "",
                                                 marginTop: /*isDockedMode && !isOnSearch ? "70px" :*/ "20px",
                                             }}
+                                            aria-describedby={undefined}
                                         >
+                                            <VisuallyHidden.Root>
+                                                <Dialog.Title>{__("reader.navigation.settingsTitle")}</Dialog.Title>
+                                            </VisuallyHidden.Root>
                                             {/* TODO remove readerSettingsHeaderProps */}
                                             <ReaderSettings
                                                 {...readerSettingsHeaderProps}
