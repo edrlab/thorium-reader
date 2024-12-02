@@ -42,6 +42,7 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
 
     return (<div className={stylesReader.ttsSelectVoice}>
         <ComboBox
+        style={{paddingBottom: "0"}}
             label={__("reader.tts.language")}
             defaultItems={languages}
             // defaultSelectedKey={`TTS_LANG_${selectedLanguage}`}
