@@ -1074,7 +1074,7 @@ const SaveResetApplyPreset = () => {
 
         <div className={stylesSettings.preset_settings_container}>
             <div>
-                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : ""}} onClick={() => {
+                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px"}} onClick={() => {
                     dispatch(readerActions.configSetDefault.build(readerConfig));
                 }}>
                     <SVG ariaHidden={true} svg={SaveIcon} />
@@ -1083,7 +1083,7 @@ const SaveResetApplyPreset = () => {
             </div>
 
             <div>
-                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : ""}} onClick={applyPreferredConfig}>
+                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px"}} onClick={applyPreferredConfig}>
                     <SVG ariaHidden={true} svg={DoubleCheckIcon} />
                     {__("reader.settings.preset.apply")}
                 </button>
@@ -1091,7 +1091,7 @@ const SaveResetApplyPreset = () => {
             </div>
 
             <div>
-                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : ""}} onClick={() => {
+                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px"}} onClick={() => {
                     dispatch(readerActions.configSetDefault.build(readerConfigInitialState));
                     applyPreferredConfig();
                 }}>
