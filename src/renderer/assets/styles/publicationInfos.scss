@@ -76,13 +76,16 @@
 }
 
 .publicationInfo_leftSide {
-    flex: 1;
+    // flex: 1;
     max-width: 35%;
     text-align: center;
+    width: 100%;
 
     &_coverWrapper {
         width: 100%;
-        min-height: 350px;
+        min-width: 150px;
+        min-height: 250px;
+        height: 100%;
         position: relative;
         display: flex;
         align-items: center;
@@ -90,7 +93,13 @@
         border: 1px solid var(--color-light-grey);
         border-radius: 6px;
 
+        img {
+            min-height: 250px;
+            height: 100%;
+        }
+
           .no_img_wrapper {
+            min-height: 250px;
             height: 350px;
             width: 100%;
             text-align: center;
