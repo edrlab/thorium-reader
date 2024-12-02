@@ -12,6 +12,8 @@ import { useDispatch } from "./useDispatch";
 import * as React from "react";
 import { readerLocalActionSetConfig, readerLocalActionSetTransientConfig } from "readium-desktop/renderer/reader/redux/actions";
 import debounce from "debounce";
+import { equals } from "ramda";
+import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 export const useReaderConfigAll = () => {
     const config = useSelector((state: IReaderRootState) => state.reader.config);
@@ -73,4 +75,21 @@ export const useSavePublisherReaderConfigDebounced = () => {
     // https://legacy.reactjs.org/docs/hooks-reference.html#usecallback
     const debounceCB = React.useMemo(() => debounce(cb, 400), [cb]);
     return debounceCB;
+};
+
+export const useDiffBoolBetweenReaderConfigAndDefaultConfig = () => {
+    const config = useSelector((state: IReaderRootState) => state.reader.config);
+    const defaultConfig = useSelector((state: IReaderRootState) => state.reader.defaultConfig);
+
+    const diff = React.useMemo(() => {
+
+        for (const v of ObjectKeys(config)) {
+            if (!equals(config[v], defaultConfig[v])) {
+                return true;
+            }
+        }
+        return false;
+    }, [config, defaultConfig]);
+
+    return diff;
 };
