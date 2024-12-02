@@ -1304,7 +1304,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                 <h3>{__("reader.settings.preset.title")}</h3>
                 <span className={stylesSettings.notification_preset}></span>
             </Tabs.Trigger>
-            <p style={{margin: "-5px 20px 0 60px"}}>Sauvegarder/Appliquer vos paramètres de lecture</p>
+            <p style={{margin: "-5px 20px 0 60px"}}>{__("reader.settings.preset.detail")}</p>
         </>;
     const optionPresetItem = { id: 6, value: "tab-preset", name: __("reader.settings.preset.title"), disabled: false, svg: GuearIcon };
 
