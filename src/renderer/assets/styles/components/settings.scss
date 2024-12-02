@@ -898,6 +898,31 @@ div[data-radix-popper-content-wrapper] {
     }
 }
 
+.notification_preset {
+    position: absolute;
+    top: 8px;
+    right: 20px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--color-blue);
+    animation: blink 3s ease-in-out infinite;
+
+    @keyframes blink {
+        0% {
+          opacity: 1;
+        }
+
+        50% {
+            opacity: 0.1;
+        }
+      
+        100% {
+          opacity: 1;
+        }
+      }
+}
+
 .CSS_END_components_settings {
     display: none;
 }

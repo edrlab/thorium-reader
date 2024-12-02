@@ -1297,10 +1297,15 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const optionPdfZoomItem = { id: 5, value: "tab-pdfzoom", name: __("reader.settings.pdfZoom.title"), disabled: false, svg: VolumeUpIcon };
 
     const PresetTrigger =
-        <Tabs.Trigger value="tab-preset" disabled={false} title={__("reader.settings.preset.title")} key="tab-preset" data-value="tab-preset">
-            <SVG ariaHidden svg={GuearIcon} />
-            <h3>{__("reader.settings.preset.title")}</h3>
-        </Tabs.Trigger>;
+        <>
+            <span style={{ width: "80%", height: "2px", backgroundColor: "var(--color-extralight-grey-alt)", margin: "10px auto" }}></span>
+            <Tabs.Trigger value="tab-preset" disabled={false} title={__("reader.settings.preset.title")} key="tab-preset" data-value="tab-preset" style={{position: "relative"}}>
+                <SVG ariaHidden svg={GuearIcon} />
+                <h3>{__("reader.settings.preset.title")}</h3>
+                <span className={stylesSettings.notification_preset}></span>
+            </Tabs.Trigger>
+            <p style={{margin: "-5px 20px 0 60px"}}>Sauvegarder/Appliquer vos paramètres de lecture</p>
+        </>;
     const optionPresetItem = { id: 6, value: "tab-preset", name: __("reader.settings.preset.title"), disabled: false, svg: GuearIcon };
 
     const AllowCustomContainer = () =>
