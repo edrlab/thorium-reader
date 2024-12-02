@@ -479,6 +479,7 @@
       "preset": {
         "apply": "Appliquer les paramètres de lecture préférés",
         "applyDetails": "Appliquer au livre courant les paramètres de lecture précédemment enregistrés.",
+        "detail": "Sauvegarder/Appliquer vos paramètres de lecture",
         "reset": "Réinitialiser les paramètres de lecture préférés",
         "resetDetails": "Effacer les paramètres de lecture précédemment appliqués, et revenir à la mise en forme et aux choix d'affichage par défaut",
         "save": "Enregistrer les paramètres de lecture préférés",

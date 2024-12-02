@@ -906,7 +906,8 @@ declare namespace typed_i18n {
       readonly "resetDetails": string,
       readonly "save": string,
       readonly "saveDetails": string,
-      readonly "title": string
+      readonly "title": string,
+      readonly "detail": string
     },
     readonly "preview": string,
     readonly "reduceMotion": string,
@@ -1225,7 +1226,8 @@ declare namespace typed_i18n {
     readonly "resetDetails": string,
     readonly "save": string,
     readonly "saveDetails": string,
-    readonly "title": string
+    readonly "title": string,
+    readonly "detail": string
   },
   readonly "preview": string,
   readonly "reduceMotion": string,
@@ -1315,7 +1317,8 @@ declare namespace typed_i18n {
   readonly "resetDetails": string,
   readonly "save": string,
   readonly "saveDetails": string,
-  readonly "title": string
+  readonly "title": string,
+  readonly "detail": string
 };
   (_: "reader.settings.preset.apply", __?: {}): string;
   (_: "reader.settings.preset.applyDetails", __?: {}): string;
@@ -1324,6 +1327,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.preset.save", __?: {}): string;
   (_: "reader.settings.preset.saveDetails", __?: {}): string;
   (_: "reader.settings.preset.title", __?: {}): string;
+  (_: "reader.settings.preset.detail", __?: {}): string;
   (_: "reader.settings.preview", __?: {}): string;
   (_: "reader.settings.reduceMotion", __?: {}): string;
   (_: "reader.settings.scrolled", __?: {}): string;
