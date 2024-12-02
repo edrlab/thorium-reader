@@ -1308,7 +1308,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                 {diffBetweenDefaultConfigAndConfig ? <span className={stylesSettings.notification_preset}></span> : <></>}
             </Tabs.Trigger>
             <p style={{margin: "-5px 20px 0 60px"}}>{__("reader.settings.preset.detail")}</p>
-        </>;
+        </ React.Fragment>;
     const optionPresetItem = { id: 6, value: "tab-preset", name: __("reader.settings.preset.title"), disabled: false, svg: GuearIcon };
 
     const AllowCustomContainer = () =>
