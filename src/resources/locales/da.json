@@ -479,6 +479,7 @@
       "preset": {
         "apply": "Anvend mit foretrukne læsetema som nuværende læse-indstillinger",
         "applyDetails": "",
+        "detail": "",
         "reset": "Nulstil mit foretrukne læsetema til standard indstillingerne",
         "resetDetails": "",
         "save": "Gem de nuværende læse-indstillinger som mit foretrukne læsetema",
