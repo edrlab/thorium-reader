@@ -57,9 +57,10 @@ on-activate = '''
 [[ ! -z "${FLX_VERBOSE}" ]] && echo "##################################################";
 [[ ! -z "${FLX_VERBOSE}" ]] && echo "########## FLOX ACTIVATE...";
 
-alias lss='ls -alshF --color=auto'
-#alias flx='flox activate'
-#alias flxx='FLOX_VERBOSE=1 flox activate'
+#alias lss='ls -alshF --color=auto'
+lss () {
+    command ls -alshF --color=auto "$@"
+}
 
 # PWD=$(pwd);
 # [[ ! -z "${FLX_VERBOSE}" ]] && echo "-----> PWD: ${PWD}";
