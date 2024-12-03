@@ -516,6 +516,7 @@
     "tts": {
       "activate": "Aktivera text-till-tal",
       "default": "Röst: systemstandard",
+      "language": "",
       "next": "Nästa",
       "pause": "Pausa",
       "play": "Läs upp",

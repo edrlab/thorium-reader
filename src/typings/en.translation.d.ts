@@ -902,12 +902,12 @@ declare namespace typed_i18n {
     readonly "preset": {
       readonly "apply": string,
       readonly "applyDetails": string,
+      readonly "detail": string,
       readonly "reset": string,
       readonly "resetDetails": string,
       readonly "save": string,
       readonly "saveDetails": string,
-      readonly "title": string,
-      readonly "detail": string
+      readonly "title": string
     },
     readonly "preview": string,
     readonly "reduceMotion": string,
@@ -942,7 +942,8 @@ declare namespace typed_i18n {
     readonly "sentenceDetectDescription": string,
     readonly "speed": string,
     readonly "stop": string,
-    readonly "voice": string
+    readonly "voice": string,
+    readonly "language": string
   }
 };
   (_: "reader.annotations", __?: {}): {
@@ -1222,12 +1223,12 @@ declare namespace typed_i18n {
   readonly "preset": {
     readonly "apply": string,
     readonly "applyDetails": string,
+    readonly "detail": string,
     readonly "reset": string,
     readonly "resetDetails": string,
     readonly "save": string,
     readonly "saveDetails": string,
-    readonly "title": string,
-    readonly "detail": string
+    readonly "title": string
   },
   readonly "preview": string,
   readonly "reduceMotion": string,
@@ -1313,21 +1314,21 @@ declare namespace typed_i18n {
   (_: "reader.settings.preset", __?: {}): {
   readonly "apply": string,
   readonly "applyDetails": string,
+  readonly "detail": string,
   readonly "reset": string,
   readonly "resetDetails": string,
   readonly "save": string,
   readonly "saveDetails": string,
-  readonly "title": string,
-  readonly "detail": string
+  readonly "title": string
 };
   (_: "reader.settings.preset.apply", __?: {}): string;
   (_: "reader.settings.preset.applyDetails", __?: {}): string;
+  (_: "reader.settings.preset.detail", __?: {}): string;
   (_: "reader.settings.preset.reset", __?: {}): string;
   (_: "reader.settings.preset.resetDetails", __?: {}): string;
   (_: "reader.settings.preset.save", __?: {}): string;
   (_: "reader.settings.preset.saveDetails", __?: {}): string;
   (_: "reader.settings.preset.title", __?: {}): string;
-  (_: "reader.settings.preset.detail", __?: {}): string;
   (_: "reader.settings.preview", __?: {}): string;
   (_: "reader.settings.reduceMotion", __?: {}): string;
   (_: "reader.settings.scrolled", __?: {}): string;
@@ -1382,7 +1383,8 @@ declare namespace typed_i18n {
   readonly "sentenceDetectDescription": string,
   readonly "speed": string,
   readonly "stop": string,
-  readonly "voice": string
+  readonly "voice": string,
+  readonly "language": string
 };
   (_: "reader.tts.activate", __?: {}): string;
   (_: "reader.tts.default", __?: {}): string;
@@ -1395,6 +1397,7 @@ declare namespace typed_i18n {
   (_: "reader.tts.speed", __?: {}): string;
   (_: "reader.tts.stop", __?: {}): string;
   (_: "reader.tts.voice", __?: {}): string;
+  (_: "reader.tts.language", __?: {}): string;
   (_: "settings", __?: {}): {
   readonly "annotationCreator": {
     readonly "creator": string,

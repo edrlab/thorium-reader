@@ -516,6 +516,7 @@
     "tts": {
       "activate": "Activate Text To Speech (TTS)",
       "default": "Voice: system default",
+      "language": "TTS language",
       "next": "Next TTS",
       "pause": "Pause TTS",
       "play": "Play TTS",

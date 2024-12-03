@@ -516,6 +516,7 @@
     "tts": {
       "activate": "Aktiver TTS",
       "default": "Stemme: standard",
+      "language": "",
       "next": "Næste TTS",
       "pause": "Pause TTS",
       "play": "Afspil med TTS",

@@ -516,6 +516,7 @@
     "tts": {
       "activate": "Uključi Čitanje naglas",
       "default": "Glas: zadano",
+      "language": "",
       "next": "Sljedeće Čitanje naglas",
       "pause": "Pauziraj Čitanje naglas",
       "play": "Pokreni Čitanje naglas",

@@ -516,6 +516,7 @@
     "tts": {
       "activate": "Attiva Testo a Voce",
       "default": "Voce: default di sistema",
+      "language": "",
       "next": "Prossimo Testo a Voce",
       "pause": "Metti in pausa Testo a Voce",
       "play": "Riproduci Testo a Voce",

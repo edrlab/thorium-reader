@@ -8,6 +8,7 @@
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
 import { readerConfigInitialState } from "../../states/reader";
+import { isNotNil } from "readium-desktop/utils/nil";
 
 export const ID = "READER_DEFAULT_CONFIG_SET_REQUEST";
 
@@ -18,6 +19,15 @@ export interface Payload {
 export function build(config: ReaderConfig = readerConfigInitialState):
     Action<typeof ID, Payload> {
 
+    const configCopy = {
+        ...config,
+    };
+    if (isNotNil(configCopy["ttsVoice"])) {
+        configCopy["ttsVoice"] = null;
+    }
+    if (isNotNil(configCopy["annotation_defaultColor"])) {
+        configCopy["annotation_defaultColor"] = { ...configCopy["annotation_defaultColor"] };
+    }
     return {
         type: ID,
         payload: {

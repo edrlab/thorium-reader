@@ -10,7 +10,6 @@ import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app
 import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
 // import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 
-import { HoverEvent } from "@react-types/shared";
 import classNames from "classnames";
 import * as debug_ from "debug";
 import * as React from "react";
@@ -19,7 +18,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 // import * as ReactDOM from "react-dom";
-import { ReaderMode } from "readium-desktop/common/models/reader";
+import { ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
 import * as viewMode from "readium-desktop/renderer/assets/icons/fullscreen-corners-icon.svg";
 import * as MuteIcon from "readium-desktop/renderer/assets/icons/baseline-mute-24px.svg";
@@ -73,14 +72,18 @@ import { ReaderSettings, ReadingAudio } from "./ReaderSettings";
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
-import { readerLocalActionAnnotations } from "../redux/actions";
+import { readerLocalActionAnnotations, readerLocalActionSetConfig } from "../redux/actions";
 import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { AnnotationEdit } from "./AnnotationEdit";
-import { Collection, Header as ReactAriaHeader, Section } from "react-aria-components";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
+import { VoiceSelection } from "./header/voiceSelection";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+import { filterOnLanguage, getVoices, groupByRegions, IVoices } from "readium-speech";
+import { ttsVoice as r2navigatorSetTTSVoice } from "@r2-navigator-js/electron/renderer/index";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
+
+type IVoicesWithIndex = IVoices & { id: number };
 
 // function throttle(callback: (...args: any) => void, limit: number) {
 //     let waiting = false;
@@ -159,6 +162,7 @@ interface IState {
     forceTTS: boolean;
     ttsPopoverOpen: boolean;
     tabValue: string;
+    voices: IVoicesWithIndex[];
 }
 
 export class ReaderHeader extends React.Component<IProps, IState> {
@@ -191,6 +195,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             forceTTS: false,
             ttsPopoverOpen: false,
             tabValue: this.props.ReaderSettingsProps.isDivina ? "tab-divina" : this.props.ReaderSettingsProps.isPdf ? "tab-pdfzoom" : "tab-display",
+            voices: [],
         };
 
         this.timerFXLZoomDebounce = undefined;
@@ -216,12 +221,63 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         // }, 200).bind(this);
     }
 
+    private handleTTSVoice = (voice: IVoices) => {
+        const v = voice ? {
+            default: false,
+            lang: voice.language,
+            localService: voice.offlineAvailability,
+            name: voice.name,
+            voiceURI: voice.voiceURI,
+        } : null;
+        r2navigatorSetTTSVoice(v);
+        this.props.setConfig({ ttsVoice: v });
+    };
+
     public componentDidMount() {
 
         ensureKeyboardListenerIsInstalled();
         this.registerAllKeyboardListeners();
 
         createOrGetPdfEventBus().subscribe("scale", this.setScaleMode);
+
+        getVoices().then((_voices) => {
+            if (Array.isArray(_voices)) {
+                this.setState({
+                    voices: _voices.map((v, i) => ({...v, id: i+1})),
+                });
+
+                const voicesFilteredOnLanguage = filterOnLanguage(_voices, this.props.r2Publication.Metadata?.Language || []) as IVoicesWithIndex[];
+                const voicesGroupedByRegions = groupByRegions(voicesFilteredOnLanguage, this.props.r2Publication.Metadata?.Language || [], this.props.locale) as Map<string, IVoicesWithIndex[]>;
+
+                // const firstVoice = ((Array.from(voicesGroupedByRegions)[0] || [])[1] || [])[0];
+                const firstVoiceArrayFromMap = Array.from(voicesGroupedByRegions);
+                const firstVoiceArrayFirst = firstVoiceArrayFromMap[0];
+                const firstVoiceArraySecondVoicesListItems = (firstVoiceArrayFirst || [])[1];
+                const firstVoiceFirstItemFromVoicesList = (firstVoiceArraySecondVoicesListItems || [])[0];
+                if (firstVoiceFirstItemFromVoicesList) {
+                    const firstVoice = firstVoiceFirstItemFromVoicesList;
+                    if (this.props.ttsVoice) {
+                        if (firstVoice.voiceURI && firstVoice.voiceURI === this.props.ttsVoice.voiceURI &&
+                            firstVoice.name && firstVoice.name === this.props.ttsVoice.name &&
+                            firstVoice.language && firstVoice.language === this.props.ttsVoice.lang
+                        ) {
+                            // nothing
+                        } else {
+                            if (firstVoice.language?.split("-")[0] === this.props.ttsVoice.lang?.split("-")[0]) {
+                                // nothing
+                            } else {
+                                // when language code switch, change the default ttsVoice
+                                this.handleTTSVoice(firstVoice);
+                            }
+                        }
+                    } else {
+                        // if there is no default TTSVoice, set the first voice returned par getVoices
+                        this.handleTTSVoice(firstVoice);
+                    }
+                }
+            }
+        });
+
     }
 
     public componentWillUnmount() {
@@ -356,58 +412,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             setTabValue: (value: string) => this.setState({ tabValue: value}),
         };
 
-        type VoiceWithIndex = SpeechSynthesisVoice & { id: number };
-        const voicesWithIndex = speechSynthesis.getVoices()
-        .reduce((acc, curr) => {
-            const found = acc.find((voice) => {
-                return voice.lang === curr.lang &&
-                    voice.name === curr.name &&
-                    voice.localService === curr.localService &&
-                    voice.voiceURI === curr.voiceURI
-                    // voice.default === curr.default
-                ;
-            });
-            if (!found) {
-                acc.push(curr);
-            }
-            return acc;
-        }, [] as SpeechSynthesisVoice[])
-        // WARNING: .sort() is in-place same-array mutation! (not a new array)
-        .sort((voice1, voice2) => {
-            if(voice1.lang < voice2.lang) { return -1; }
-            if(voice1.lang > voice2.lang) { return 1; }
-            // a.lang === b.lang ...
-            if(voice1.name < voice2.name) { return -1; }
-            if(voice1.name > voice2.name) { return 1; }
-            return 0;
-        }).map<VoiceWithIndex>((voice, i) => (
-            {id: i, name: voice.name, default: voice.default, lang: voice.lang, localService: voice.localService, voiceURI: voice.voiceURI}
-        ));
-        voicesWithIndex.unshift({
-            id: -1,
-            name: __("reader.tts.default"),
-            default: false,
-            lang: "",
-            localService: false,
-            voiceURI: "",
-        });
-
-        interface ILangToVoicesMap {
-            [key: string]: VoiceWithIndex[];
-        }
-        const langToVoicesMap = voicesWithIndex.reduce((acc, voice) => {
-            if (!acc[voice.lang]) {
-                acc[voice.lang] = [] as Array<VoiceWithIndex>;
-            }
-            acc[voice.lang].push(voice);
-            return acc;
-        }, {} as ILangToVoicesMap);
-
-        const voiceComboBoxDefaultItems = Object.keys(langToVoicesMap).map(lang => ({
-            lang,
-            voices: langToVoicesMap[lang], // .map<VoiceWithIndex>((voice, i) => ({ id: i, name: voice.name, default: voice.default, lang: voice.lang, localService: voice.localService, voiceURI: voice.voiceURI })),
-        }));
-
         const playbackRate = [
             { id: 0, value: 0.5, name: "0.5x" },
             { id: 1, value: 0.75, name: "0.75x" },
@@ -474,6 +478,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
           );
 
           const isAudioBook = isAudiobookFn(this.props.r2Publication);
+
+
 
         return (
             <nav
@@ -748,52 +754,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                             </ComboBox>
                                                                         </div>
                                                                         {!useMO && (
-                                                                            <div className={stylesReader.ttsSelectVoice}>
-                                                                                <ComboBox
-                                                                                    label={__("reader.tts.voice")}
-                                                                                    defaultItems={voiceComboBoxDefaultItems}
-                                                                                    defaultInputValue={
-                                                                                        this.props.ttsVoice ?
-                                                                                            this.props.ttsVoice.name : voicesWithIndex[0].name}
-                                                                                    selectedKey={
-                                                                                        this.props.ttsVoice ?
-                                                                                            `TTSID${(voicesWithIndex.find((voice) =>
-                                                                                                voice.name === this.props.ttsVoice.name
-                                                                                                && voice.lang === this.props.ttsVoice.lang
-                                                                                                && voice.voiceURI === this.props.ttsVoice.voiceURI,
-                                                                                            ) || { id: -1 }).id}` :
-                                                                                            "TTSID-1"
-                                                                                    }
-                                                                                    onSelectionChange={(key) => {
-                                                                                        if (!key) return;
-
-                                                                                        key = key.toString();
-                                                                                        const id = parseInt(key.replace("TTSID", ""), 10);
-                                                                                        const v = id === -1 ? null : (voicesWithIndex.find((voice) => voice.id === id)  || null);
-                                                                                        this.props.handleTTSVoice(v);
-                                                                                    }}
-                                                                                    style={{ paddingBottom: "0", margin: "0" }}
-                                                                                >
-                                                                                    {section => (
-                                                                                        <Section id={section.lang} key={`section-${section.lang}`}>
-                                                                                            <ReactAriaHeader style={{ paddingLeft: "5px", fontSize: "16px", color: "var(--color-blue)", borderBottom: "1px solid var(--color-light-blue)" }}>
-                                                                                                {section.lang}
-                                                                                            </ReactAriaHeader>
-                                                                                            <Collection items={section.voices} key={`collection-${section.lang}`}>
-                                                                                                {voice => <ComboBoxItem
-                                                                                                    onHoverStart={(e: HoverEvent) => {
-                                                                                                        if (!e.target.getAttribute("title")) {
-                                                                                                            e.target.setAttribute("title", voice.name);
-                                                                                                        }
-                                                                                                    }}
-                                                                                                    // aria-label={item.name}
-
-                                                                                                    id={`TTSID${voice.id}`} key={`TTSKEY${voice.id}`}>{`${voice.name}${voice.default ? " *" : ""}`}
-                                                                                                    </ComboBoxItem>}
-                                                                                            </Collection>
-                                                                                        </Section>)}
-                                                                                </ComboBox>
-                                                                            </div>
+                                                                            <VoiceSelection handleTTSVoice={this.handleTTSVoice} voices={this.state.voices}/>
                                                                         )}
                                                                     </div>
                                                                     <ReadingAudio useMO={useMO}/>
@@ -1337,6 +1298,9 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
+        setConfig: (state: Partial<ReaderConfig>) => {
+            dispatch(readerLocalActionSetConfig.build(state));
+        },
         triggerAnnotationBtn: () => {
             dispatch(readerLocalActionAnnotations.trigger.build());
         },

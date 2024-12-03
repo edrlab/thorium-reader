@@ -516,6 +516,7 @@
     "tts": {
       "activate": "Käynnistä tekstistä puheeksi",
       "default": "Ääni: järjestelmän oletus",
+      "language": "",
       "next": "Seuraava",
       "pause": "Pysäytä",
       "play": "Jatka",

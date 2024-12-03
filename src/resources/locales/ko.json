@@ -516,6 +516,7 @@
     "tts": {
       "activate": "텍스트 음성 변환 할성화",
       "default": "음성:시스템 기본값",
+      "language": "",
       "next": "다음",
       "pause": "멈춤",
       "play": "재생",

@@ -65,7 +65,10 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
             reader: {
                 ...reader?.reduxState || {},
                 // see issue https://github.com/edrlab/thorium-reader/issues/2532
-                defaultConfig: readerDefaultConfig,
+                defaultConfig: {
+                    ...readerDefaultConfig,
+                    ttsVoice: null, // disable ttsVoice global preference for readium/speech lib
+                },
                 transientConfig: {
                     font: transientConfigMerge.font,
                     fontSize: transientConfigMerge.fontSize,
