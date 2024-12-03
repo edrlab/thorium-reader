@@ -516,6 +516,7 @@
     "tts": {
       "activate": "啟動文字語音轉換",
       "default": "聲音: 系統默認",
+      "language": "",
       "next": "下一段",
       "pause": "暫停",
       "play": "播放",

@@ -516,6 +516,7 @@
     "tts": {
       "activate": "Activate Text To Speech (TTS)",
       "default": "Voice: system default",
+      "language": "TTS language",
       "next": "Next TTS",
       "pause": "Pause TTS",
       "play": "Play TTS",
@@ -524,8 +525,7 @@
       "sentenceDetectDescription": "Break long paragraphs into sentences.",
       "speed": "TTS playback rate",
       "stop": "Stop TTS",
-      "voice": "TTS voice",
-      "language": "TTS language"
+      "voice": "TTS voice"
     }
   },
   "settings": {

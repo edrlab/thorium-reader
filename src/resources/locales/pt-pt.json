@@ -516,6 +516,7 @@
     "tts": {
       "activate": "Ativar Texto para voz (TTS)",
       "default": "Voz: predefinição do sistema",
+      "language": "",
       "next": "Seguinte (Texto para voz)",
       "pause": "Pausar (Texto para voz)",
       "play": "Tocar (Texto para voz)",

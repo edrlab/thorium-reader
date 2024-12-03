@@ -516,6 +516,7 @@
     "tts": {
       "activate": "Activeer Tekst Naar Spraak",
       "default": "Stem: systeem standaard",
+      "language": "",
       "next": "Volgende Tekst Naar Spraak",
       "pause": "Pauzeer Tekst Naar Spraak",
       "play": "Speel Tekst Naar Spraak",

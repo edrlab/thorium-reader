@@ -516,6 +516,7 @@
     "tts": {
       "activate": "Activer l'audio de synthèse",
       "default": "Voix du système",
+      "language": "",
       "next": "Suivant",
       "pause": "Pause",
       "play": "Lire",
