@@ -80,7 +80,7 @@ export const WizardModal = () => {
         </Dialog.Trigger> */}
         <Dialog.Portal>
             <div className={stylesModals.modal_dialog_overlay}></div>
-            <Dialog.Content className={classNames(stylesModals.modal_dialog)}>
+            <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined}>
                 <Tabs.Root defaultValue="tab1" data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                     <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
                         <Tabs.Trigger value="tab1">
