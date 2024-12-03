@@ -718,7 +718,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     </button>
                                                 </Popover.Trigger>
                                                 <Popover.Portal>
-                                                    <Popover.Content>
+                                                    <Popover.Content style={{zIndex: 100}}>
                                                         <div className={stylesReaderHeader.Tts_popover_container}>
                                                             <div style={{paddingRight: "25px", borderRight: "1px solid var(--color-verylight-grey-alt)"}}>
                                                             <div className={stylesReader.ttsSelectRate}>
