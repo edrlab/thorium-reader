@@ -9,13 +9,14 @@
     },
     "vars": {
       "CLICOLOR": "1",
-      "FLOX_DISABLE_METRICS": "true"
+      "FLOX_DISABLE_METRICS": "true",
+      "FLX_VERBOSE": "${FLOX_VERBOSE:-}"
     },
     "hook": {
-      "on-activate": "echo \"##################################################\";\necho \"########## FLOX ACTIVATE...\";\n\nPWD=$(pwd);\necho \"-----> PWD: ${PWD}\";\n\n#_FLOX_ENV_LOG_DIR\nFLOX_ENV_DIR=\"$(dirname ${FLOX_ENV_CACHE})\"\necho \"-----> FLOX_ENV_DIR: ${FLOX_ENV_DIR}\";\n\necho \"=====> NODE VERSION: $(node --version)\";\nWHICH_NODE=$(which node);\necho \".....> NODE WHICH: ${WHICH_NODE}\";\nls -alshF --color=auto \"${WHICH_NODE}\";\n\necho \"=====> NPM VERSION (init): $(npm --version)\";\nWHICH_NPM=$(which npm);\necho \".....> NPM WHICH: ${WHICH_NPM}\";\nls -alshF --color=auto \"${WHICH_NPM}\";\n\necho \"-----> NPM CONFIG PREFIX (init): $(npm config get prefix)\";\necho \"-----> NPM_CONFIG_PREFIX (init): ${NPM_CONFIG_PREFIX}\";\n\necho \"-----> NPM CONFIG CACHE (init): $(npm config get cache)\"\necho \"-----> NPM_CONFIG_CACHE (init): ${NPM_CONFIG_CACHE}\";\n\n# envName=\"${_FLOX_ACTIVE_ENVIRONMENTS##:*}\";\n#echo \"${envName}\";\n#export NPM_CONFIG_PREFIX=\"/tmp/${envName}-npm\";\n\nexport NPM_CONFIG_PREFIX=\"${FLOX_ENV_DIR}/NPM_PREFIX\";\necho \"-----> NPM CONFIG PREFIX: $(npm config get prefix)\";\necho \"-----> NPM_CONFIG_PREFIX: ${NPM_CONFIG_PREFIX}\";\n#### rm -rf \"$NPM_CONFIG_PREFIX\";\nmkdir -p \"$NPM_CONFIG_PREFIX\";\nls -alshF --color=auto \"$NPM_CONFIG_PREFIX\";\nls -alshF --color=auto \"$NPM_CONFIG_PREFIX/bin\";\nls -alshF --color=auto \"$NPM_CONFIG_PREFIX/lib\";\nls -alshF --color=auto \"$NPM_CONFIG_PREFIX/lib/node_modules\";\n\nexport NPM_CONFIG_CACHE=\"${FLOX_ENV_DIR}/NPM_CACHE\";\necho \"-----> NPM CONFIG CACHE: $(npm config get cache)\"\necho \"-----> NPM_CONFIG_CACHE: ${NPM_CONFIG_CACHE}\";\n#### rm -rf \"$NPM_CONFIG_CACHE\";\nmkdir -p \"$NPM_CONFIG_CACHE\";\nls -alshF --color=auto \"$NPM_CONFIG_CACHE\";\n\necho \"-----> NODE_PATH (init): ${NODE_PATH}\";\nexport NODE_PATH=\"$NPM_CONFIG_PREFIX/lib/node_modules${NODE_PATH:+:$NODE_PATH}\";\necho \"-----> NODE_PATH: ${NODE_PATH}\";\n\nexport PATH=\"$NPM_CONFIG_PREFIX/bin:$PATH\";\n\nnpm install -g npm\nnpm install -g npm-check-updates\nnpm install -g @electron/asar\n"
+      "on-activate": "[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"##################################################\";\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"########## FLOX ACTIVATE...\";\n\nalias lss='ls -alshF --color=auto'\n#alias flx='flox activate'\n#alias flxx='FLOX_VERBOSE=1 flox activate'\n\n# PWD=$(pwd);\n# [[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> PWD: ${PWD}\";\n# unset PWD\n\n#FLOX_ENV_PROJECT\n#_FLOX_ENV_LOG_DIR\n#FLOX_CACHE_DIR=\"$(dirname ${FLOX_ENV_CACHE})\"\n#FLOX_CACHE_DIR=\"$(realpath ${FLOX_ENV_CACHE})\"\nFLOX_CACHE_DIR=\"${FLOX_ENV_CACHE}\"\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> FLOX_CACHE_DIR: ${FLOX_CACHE_DIR}\";\n\nif [[ ! -z \"${FLX_VERBOSE}\" ]]; then\n\necho \"=====> NODE VERSION: $(node --version)\";\nWHICH_NODE=$(which node);\necho \".....> NODE WHICH: ${WHICH_NODE}\";\nlss \"${WHICH_NODE}\";\nunset WHICH_NODE\n\necho \"=====> NPM VERSION (init): $(npm --version)\";\nWHICH_NPM=$(which npm);\necho \".....> NPM WHICH: ${WHICH_NPM}\";\nlss \"${WHICH_NPM}\";\nunset WHICH_NPM\n\necho \"-----> NPM CONFIG PREFIX (init): $(npm config get prefix)\";\necho \"-----> NPM_CONFIG_PREFIX (init): ${NPM_CONFIG_PREFIX}\";\n\necho \"-----> NPM CONFIG CACHE (init): $(npm config get cache)\"\necho \"-----> NPM_CONFIG_CACHE (init): ${NPM_CONFIG_CACHE}\";\n\nfi\n\n# envName=\"${_FLOX_ACTIVE_ENVIRONMENTS##:*}\";\n#echo \"${envName}\";\n#export NPM_CONFIG_PREFIX=\"/tmp/${envName}-npm\";\n\nexport NPM_CONFIG_PREFIX=\"${FLOX_CACHE_DIR}/NPM_PREFIX\";\n#### rm -rf \"$NPM_CONFIG_PREFIX\";\nmkdir -p \"$NPM_CONFIG_PREFIX\";\nif [[ ! -z \"${FLX_VERBOSE}\" ]]; then\necho \"-----> NPM CONFIG PREFIX: $(npm config get prefix)\";\necho \"-----> NPM_CONFIG_PREFIX: ${NPM_CONFIG_PREFIX}\";\nlss \"$NPM_CONFIG_PREFIX\";\nlss \"$NPM_CONFIG_PREFIX/bin\";\nlss \"$NPM_CONFIG_PREFIX/lib\";\nlss \"$NPM_CONFIG_PREFIX/lib/node_modules\";\nfi\n\nexport NPM_CONFIG_CACHE=\"${FLOX_CACHE_DIR}/NPM_CACHE\";\n#### rm -rf \"$NPM_CONFIG_CACHE\";\nmkdir -p \"$NPM_CONFIG_CACHE\";\nif [[ ! -z \"${FLX_VERBOSE}\" ]]; then\necho \"-----> NPM CONFIG CACHE: $(npm config get cache)\"\necho \"-----> NPM_CONFIG_CACHE: ${NPM_CONFIG_CACHE}\";\nlss \"$NPM_CONFIG_CACHE\";\nfi\n\nunset FLOX_CACHE_DIR\n\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> NODE_PATH (init): ${NODE_PATH}\";\nexport NODE_PATH=\"$NPM_CONFIG_PREFIX/lib/node_modules${NODE_PATH:+:$NODE_PATH}\";\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> NODE_PATH: ${NODE_PATH}\";\n\nexport PATH=\"$NPM_CONFIG_PREFIX/bin:$PATH\";\n\nnpm install -g npm --foreground-scripts 1>/dev/null\nnpm install -g npm-check-updates --foreground-scripts 1>/dev/null\n# npm install -g @electron/asar --foreground-scripts 1>/dev/null\n"
     },
     "profile": {
-      "common": "echo \"##################################################\";\necho \"########## FLOX PROFILE COMMON (${SHELL})...\";\n\nPWD=$(pwd);\necho \"-----> PWD: ${PWD}\";\n\necho \"=====> NODE VERSION: $(node --version)\";\nWHICH_NODE=$(which node);\necho \".....> NODE WHICH: ${WHICH_NODE}\";\nls -alshF --color=auto \"${WHICH_NODE}\";\n\necho \"=====> NPM VERSION: $(npm --version)\";\nWHICH_NPM=$(which npm);\necho \".....> NPM WHICH: ${WHICH_NPM}\";\nls -alshF --color=auto \"${WHICH_NPM}\";\n\necho \"-----> NPM CONFIG PREFIX: $(npm config get prefix)\";\necho \"-----> NPM_CONFIG_PREFIX: ${NPM_CONFIG_PREFIX}\";\n\necho \"-----> NPM CONFIG CACHE: $(npm config get cache)\"\necho \"-----> NPM_CONFIG_CACHE: ${NPM_CONFIG_CACHE}\";\n\necho \"=====> NCU VERSION: $(ncu --version)\";\nWHICH_NCU=$(which ncu);\necho \".....> NCU WHICH: ${WHICH_NCU}\";\nls -alshF --color=auto \"${WHICH_NCU}\";\n\necho \"=====> ASAR VERSION: $(asar --version)\";\nWHICH_ASAR=$(which asar);\necho \".....> ASAR WHICH: ${WHICH_ASAR}\";\nls -alshF --color=auto \"${WHICH_ASAR}\";\n\necho \"=====> GIT VERSION: $(git --version)\";\nWHICH_GIT=$(which git);\necho \".....> GIT WHICH: ${WHICH_GIT}\";\nls -alshF --color=auto \"${WHICH_GIT}\";\n\nENV=$(env);\necho \"-----> ENV: ${ENV}\";\necho \"||||||||||||||||||||||||||\";\n\necho \"-----> APPLEID: ${APPLEID}\";\necho \"-----> APPLEIDTEAM: ${APPLEIDTEAM}\";\necho \"-----> APPLEIDPASS: ${APPLEIDPASS}\";\necho \"-----> SKIP_NOTARIZE: ${SKIP_NOTARIZE}\";\necho \"-----> CSC_NAME: ${CSC_NAME}\";\n\necho \"-----> DEBUG: ${DEBUG}\";\n\necho \"-----> USER: ${USER}\";\necho \"-----> USERNAME: ${USERNAME}\";\n\necho \"-----> NODE_ENV: ${NODE_ENV}\";\n\necho \"-----> THORIUM_OPDS_CATALOGS_URL: ${THORIUM_OPDS_CATALOGS_URL}\";\necho \"-----> THORIUM_OPEN_DEVTOOLS: ${THORIUM_OPEN_DEVTOOLS}\";\necho \"-----> LCP_SKIP_LSD: ${LCP_SKIP_LSD}\";\necho \"-----> SKIP_CHECK_TYPESCRIPT: ${SKIP_CHECK_TYPESCRIPT}\";\necho \"-----> USE_LEGACY_TYPESCRIPT_LOADER: ${USE_LEGACY_TYPESCRIPT_LOADER}\";\necho \"-----> THORIUM_TELEMETRY_SECRET: ${THORIUM_TELEMETRY_SECRET}\";\necho \"-----> THORIUM_TELEMETRY_URL: ${THORIUM_TELEMETRY_URL}\";\necho \"-----> PACKAGING: ${PACKAGING}\";\necho \"-----> GITHUB_TOKEN_RELEASE_PUBLISH: ${GITHUB_TOKEN_RELEASE_PUBLISH}\";\necho \"-----> VSCODE_LAUNCH: ${VSCODE_LAUNCH}\";\necho \"-----> PORT_APP: ${PORT_APP}\";\necho \"-----> PORT_READER: ${PORT_READER}\";\necho \"-----> PORT_PDF_WEBVIEW: ${PORT_PDF_WEBVIEW}\";\n\ngit branch\ngit status\n"
+      "common": "[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"##################################################\";\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"########## FLOX PROFILE COMMON (${SHELL})...\";\n\nalias lss='ls -alshF --color=auto'\nalias flx='flox activate'\nalias flxx='FLOX_VERBOSE=1 flox activate'\n\n# PWD=$(pwd);\n# [[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> PWD: ${PWD}\";\n# unset PWD\n\nif [[ ! -z \"${FLX_VERBOSE}\" ]]; then\n\necho \"=====> NODE VERSION: $(node --version)\";\nWHICH_NODE=$(which node);\necho \".....> NODE WHICH: ${WHICH_NODE}\";\nlss \"${WHICH_NODE}\";\nunset WHICH_NODE\n\necho \"=====> NPM VERSION: $(npm --version)\";\nWHICH_NPM=$(which npm);\necho \".....> NPM WHICH: ${WHICH_NPM}\";\nlss \"${WHICH_NPM}\";\nunset WHICH_NPM\n\necho \"-----> NPM CONFIG PREFIX: $(npm config get prefix)\";\necho \"-----> NPM_CONFIG_PREFIX: ${NPM_CONFIG_PREFIX}\";\n\necho \"-----> NPM CONFIG CACHE: $(npm config get cache)\"\necho \"-----> NPM_CONFIG_CACHE: ${NPM_CONFIG_CACHE}\";\n\necho \"=====> NCU VERSION: $(ncu --version)\";\nWHICH_NCU=$(which ncu);\necho \".....> NCU WHICH: ${WHICH_NCU}\";\nlss \"${WHICH_NCU}\";\nunset WHICH_NCU\n\necho \"=====> ASAR VERSION: $(asar --version)\";\nWHICH_ASAR=$(which asar);\necho \".....> ASAR WHICH: ${WHICH_ASAR}\";\nlss \"${WHICH_ASAR}\";\nunset WHICH_ASAR\n\necho \"=====> GIT VERSION: $(git --version)\";\nWHICH_GIT=$(which git);\necho \".....> GIT WHICH: ${WHICH_GIT}\";\nlss \"${WHICH_GIT}\";\nunset WHICH_GIT\n\nENV=$(env);\necho \"-----> ENV: ${ENV}\";\necho \"||||||||||||||||||||||||||\";\n\necho \"-----> APPLEID: ${APPLEID}\";\necho \"-----> APPLEIDTEAM: ${APPLEIDTEAM}\";\necho \"-----> APPLEIDPASS: ${APPLEIDPASS}\";\necho \"-----> SKIP_NOTARIZE: ${SKIP_NOTARIZE}\";\necho \"-----> CSC_NAME: ${CSC_NAME}\";\n\necho \"-----> DEBUG: ${DEBUG}\";\n\necho \"-----> USER: ${USER}\";\necho \"-----> USERNAME: ${USERNAME}\";\n\necho \"-----> NODE_ENV: ${NODE_ENV}\";\n\necho \"-----> THORIUM_OPDS_CATALOGS_URL: ${THORIUM_OPDS_CATALOGS_URL}\";\necho \"-----> THORIUM_OPEN_DEVTOOLS: ${THORIUM_OPEN_DEVTOOLS}\";\necho \"-----> LCP_SKIP_LSD: ${LCP_SKIP_LSD}\";\necho \"-----> SKIP_CHECK_TYPESCRIPT: ${SKIP_CHECK_TYPESCRIPT}\";\necho \"-----> USE_LEGACY_TYPESCRIPT_LOADER: ${USE_LEGACY_TYPESCRIPT_LOADER}\";\necho \"-----> THORIUM_TELEMETRY_SECRET: ${THORIUM_TELEMETRY_SECRET}\";\necho \"-----> THORIUM_TELEMETRY_URL: ${THORIUM_TELEMETRY_URL}\";\necho \"-----> PACKAGING: ${PACKAGING}\";\necho \"-----> GITHUB_TOKEN_RELEASE_PUBLISH: ${GITHUB_TOKEN_RELEASE_PUBLISH}\";\necho \"-----> VSCODE_LAUNCH: ${VSCODE_LAUNCH}\";\necho \"-----> PORT_APP: ${PORT_APP}\";\necho \"-----> PORT_READER: ${PORT_READER}\";\necho \"-----> PORT_PDF_WEBVIEW: ${PORT_PDF_WEBVIEW}\";\n\ngit branch\ngit status\n\nfi\n"
     },
     "options": {
       "systems": [
@@ -38,13 +39,13 @@
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_22",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=4633a7c72337ea8fd23a4f2ba3972865e3ec685d",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=ac35b104800bff9028425fec3b6e8a41de2bbfff",
       "name": "nodejs-22.10.0",
       "pname": "nodejs_22",
-      "rev": "4633a7c72337ea8fd23a4f2ba3972865e3ec685d",
-      "rev_count": 712559,
-      "rev_date": "2024-11-25T07:53:41Z",
-      "scrape_date": "2024-11-27T03:52:37Z",
+      "rev": "ac35b104800bff9028425fec3b6e8a41de2bbfff",
+      "rev_count": 714768,
+      "rev_date": "2024-12-01T01:19:13Z",
+      "scrape_date": "2024-12-03T03:55:23Z",
       "stabilities": [
         "unstable"
       ],
@@ -68,13 +69,13 @@
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_22",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=4633a7c72337ea8fd23a4f2ba3972865e3ec685d",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=ac35b104800bff9028425fec3b6e8a41de2bbfff",
       "name": "nodejs-22.10.0",
       "pname": "nodejs_22",
-      "rev": "4633a7c72337ea8fd23a4f2ba3972865e3ec685d",
-      "rev_count": 712559,
-      "rev_date": "2024-11-25T07:53:41Z",
-      "scrape_date": "2024-11-27T03:52:37Z",
+      "rev": "ac35b104800bff9028425fec3b6e8a41de2bbfff",
+      "rev_count": 714768,
+      "rev_date": "2024-12-01T01:19:13Z",
+      "scrape_date": "2024-12-03T03:55:23Z",
       "stabilities": [
         "unstable"
       ],
@@ -98,13 +99,13 @@
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_22",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=4633a7c72337ea8fd23a4f2ba3972865e3ec685d",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=ac35b104800bff9028425fec3b6e8a41de2bbfff",
       "name": "nodejs-22.10.0",
       "pname": "nodejs_22",
-      "rev": "4633a7c72337ea8fd23a4f2ba3972865e3ec685d",
-      "rev_count": 712559,
-      "rev_date": "2024-11-25T07:53:41Z",
-      "scrape_date": "2024-11-27T03:52:37Z",
+      "rev": "ac35b104800bff9028425fec3b6e8a41de2bbfff",
+      "rev_count": 714768,
+      "rev_date": "2024-12-01T01:19:13Z",
+      "scrape_date": "2024-12-03T03:55:23Z",
       "stabilities": [
         "unstable"
       ],
@@ -128,13 +129,13 @@
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_22",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=4633a7c72337ea8fd23a4f2ba3972865e3ec685d",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=ac35b104800bff9028425fec3b6e8a41de2bbfff",
       "name": "nodejs-22.10.0",
       "pname": "nodejs_22",
-      "rev": "4633a7c72337ea8fd23a4f2ba3972865e3ec685d",
-      "rev_count": 712559,
-      "rev_date": "2024-11-25T07:53:41Z",
-      "scrape_date": "2024-11-27T03:52:37Z",
+      "rev": "ac35b104800bff9028425fec3b6e8a41de2bbfff",
+      "rev_count": 714768,
+      "rev_date": "2024-12-01T01:19:13Z",
+      "scrape_date": "2024-12-03T03:55:23Z",
       "stabilities": [
         "unstable"
       ],
