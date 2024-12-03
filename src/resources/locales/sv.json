@@ -479,6 +479,7 @@
       "preset": {
         "apply": "Tillämpa egna läsinställningar",
         "applyDetails": "Tillämpa dina sparade läsinställningar på den aktuella boken.",
+        "detail": "",
         "reset": "Återställ läsinställningar",
         "resetDetails": "Återställ dina läsinställningar till standard och tillämpa inställningarna på den aktuella boken.",
         "save": "Spara egna läsinställningar",
