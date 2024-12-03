@@ -1,4 +1,5 @@
 export declare const add_dialog: string;
+export declare const button_secondary_blue: string;
 export declare const c_dialog__box: string;
 export declare const close_button: string;
 export declare const CSS_END_components_modals: string;

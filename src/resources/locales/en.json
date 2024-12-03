@@ -479,6 +479,7 @@
       "preset": {
         "apply": "Apply the preferred reading parameters",
         "applyDetails": "Apply the preferred reading settings preset to the current book.",
+        "detail": "Save/Apply your reading presets",
         "reset": "Reset preferred reading settings",
         "resetDetails": "Reset the preferred reading parameters and apply these default paremeters to the current book.",
         "save": "Save the preferred reading parameters",
