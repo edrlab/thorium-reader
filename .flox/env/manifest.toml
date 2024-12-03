@@ -1,3 +1,4 @@
+# flox config --set-bool set_prompt false
 # ==> .zshrc
 # Warp-ify Flox subshell prompt:
 # function git_branch_name()
@@ -11,9 +12,20 @@
 #     echo '('$branch') '
 #   fi
 # }
+#
+# function flox_prompt()
+# {
+#   FLX_ENVS="${FLOX_PROMPT_ENVIRONMENTS:-}"
+#   if [[ -z "${FLX_ENVS}" ]];
+#   then
+#     :
+#   else
+#     echo 'FLX ['$FLX_ENVS'] '
+#   fi
+# }
 # setopt prompt_subst
 # autoload -U colors && colors
-# export PS1='%n@%m %{$fg[green]%}%~%{$reset_color%} %{$fg[magenta]%}$(git_branch_name)%{$reset_color%}%# '
+# export PS1='%{$fg[red]%}$(flox_prompt)%{$reset_color%}%n@%m %{$fg[green]%}%~%{$reset_color%} %{$fg[magenta]%}$(git_branch_name)%{$reset_color%}%# '
 # PROMPT="${PROMPT}"$'\n'
 # printf '\eP$f{"hook": "SourcedRcFileForWarp", "value": { "shell": "zsh" }}\x9c'
 
