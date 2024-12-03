@@ -1,5 +1,12 @@
 #!/bin/sh
 
+#$ arch ====> arm64
+#$ uname -m ====> arm64
+#$ env /usr/bin/arch -x86_64 /bin/zsh --login
+#$ arch ====> i386
+#$ uname -m ====> x86_64
+#$ flox activate (ideally after clearing .flox caches and manifest lock)
+
 if [[ $(uname -m) == 'arm64' ]]; then
 rm -f ./package.json.original
 cp ./package.json ./package.json.original
@@ -16,7 +23,13 @@ docker info
 #--build-arg BUST_CACHE=$(date +%s)
 #--build-arg BUST_CACHE=`date +%s`
 #--build-arg BUST_CACHE=1
-docker build --progress=plain --build-arg BUST_CACHE=$(date +%Y%m%d-%H%M%S) -f ./Dockerfile -t thorium-docker-image .
+
+if [[ $(uname -m) == 'arm64' ]]; then
+docker build --platform linux/arm64 --progress=plain --build-arg BUST_CACHE=$(date +%Y%m%d-%H%M%S) -f ./Dockerfile -t thorium-docker-image .
+else
+docker build --platform linux/amd64 --progress=plain --build-arg BUST_CACHE=$(date +%Y%m%d-%H%M%S) -f ./Dockerfile -t thorium-docker-image .
+fi
+
 # --platform linux/x86_64
 # --platform=linux/amd64
 
@@ -45,7 +58,13 @@ npm run clean
 # --volume list
 # --detach
 # --rm
-docker run --name thorium-docker-container thorium-docker-image
+#
+if [[ $(uname -m) == 'arm64' ]]; then
+docker run --platform linux/arm64 --name thorium-docker-container thorium-docker-image
+else
+docker run --platform linux/amd64 --name thorium-docker-container thorium-docker-image
+fi
+
 
 # read -p "WAIT FOR DONE_PRESS_ENTER_KEY_NOW ..."
 
