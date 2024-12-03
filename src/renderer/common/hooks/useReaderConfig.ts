@@ -84,6 +84,11 @@ export const useDiffBoolBetweenReaderConfigAndDefaultConfig = () => {
     const diff = React.useMemo(() => {
 
         for (const v of ObjectKeys(config)) {
+
+            if (v === "ttsVoice") {
+                // skip ttsVoice with readium/speech 
+                continue ;
+            }
             if (!equals(config[v], defaultConfig[v])) {
                 return true;
             }

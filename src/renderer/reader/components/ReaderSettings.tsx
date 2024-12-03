@@ -1051,7 +1051,8 @@ const SaveResetApplyPreset = () => {
 
     const cb = React.useCallback(() => {
 
-        setReaderConfig(readerDefaultConfig);
+        const { ttsVoice: __ttsVoice, ...readerDefaultConfigCopy} = readerDefaultConfig;
+        setReaderConfig(readerDefaultConfigCopy);
 
         if (allowCustomCheckboxChecked) {
             if (publisherConfigOverrided) {
