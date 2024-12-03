@@ -58,7 +58,7 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
             </Dialog.Trigger>
             <Dialog.Portal>
                 <div className={stylesModals.modal_dialog_overlay}></div>
-                <Dialog.Content className={stylesModals.modal_dialog}>
+                <Dialog.Content className={stylesModals.modal_dialog} aria-describedby={undefined}>
                     <div className={stylesModals.modal_dialog_header}>
                         <Dialog.Title>
                             {__("opds.updateForm.title")}
