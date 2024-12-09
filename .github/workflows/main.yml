@@ -74,52 +74,52 @@ jobs:
     - name: Windows msbuild check1
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
       shell: cmd
     - name: Windows msbuild check2
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\BuildTools"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools"
       shell: cmd
     - name: Windows msbuild check3
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\BuildTools\\VC"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\VC"
       shell: cmd
     - name: Windows msbuild check4
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\BuildTools\\VC\\Tools"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\VC\Tools"
       shell: cmd
     - name: Windows msbuild check5
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\BuildTools\\VC\\Tools\\MSVC"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\VC\Tools\MSVC"
       shell: cmd
     - name: Windows msbuild check6
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\BuildTools\\VC\\Tools\\MSVC\\15.0"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\VC\Tools\MSVC\15.0"
       shell: cmd
     - name: Windows msbuild check7
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\BuildTools\\VC\\Tools\\MSVC\\Current"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\VC\Tools\MSVC\Current"
       shell: cmd
     - name: Windows msbuild check8
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\BuildTools\\VC\\Tools\\MSVC\\15.0\\bin"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\VC\Tools\MSVC\15.0\bin"
       shell: cmd
     - name: Windows msbuild check9
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\BuildTools\\VC\\Tools\\MSVC\\15.0\\bin\\Hostx64"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\VC\Tools\MSVC\15.0\bin\Hostx64"
       shell: cmd
     - name: Windows msbuild check10
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\BuildTools\\VC\\Tools\\MSVC\\15.0\\bin\\Hostx64\\x64"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\VC\Tools\MSVC\15.0\bin\Hostx64\x64"
       shell: cmd
     - run: echo 'RELEASE_TAG:' ${{ env.RELEASE_TAG }}
     - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
@@ -209,7 +209,7 @@ jobs:
       #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'linux-arm' }}
       if: startsWith(matrix.osarch, 'linux-')
       run: >
-        (file node_modules/electron/dist/electron) && (node_modules/electron/dist/electron --no-sandbox --version) && (node_modules/electron/dist/electron --no-sandbox --abi)
+        (file node_modules/electron/dist/electron) && (node_modules/electron/dist/electron --no-sandbox --version || echo INVALID_ARCH) && (node_modules/electron/dist/electron --no-sandbox --abi || echo INVALID_ARCH)
     - name: Electron version + arch (MacOS)
       #if: ${{ matrix.osarch == 'macos-intel' || matrix.osarch == 'macos-arm' }}
       if: startsWith(matrix.osarch, 'macos-')
