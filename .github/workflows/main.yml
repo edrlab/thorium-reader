@@ -65,16 +65,12 @@ jobs:
         #     runson: ubuntu-20.04
         #     packname: linux
         #     release_tag: latest-linux-arm
-        osarch: [windows-intel, windows-arm]
+        osarch: [windows-intel]
         include:
         - osarch: windows-intel
           runson: windows-latest
           packname: win
           release_tag: latest-windows-intel
-        - osarch: windows-arm
-          runson: windows-latest
-          packname: win
-          release_tag: latest-windows-arm
     env:
       RELEASE_TAG: ${{ matrix.release_tag }}
     steps:
@@ -94,42 +90,42 @@ jobs:
     - name: Windows msbuild check3
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\15.0"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current"
       shell: cmd
     - name: Windows msbuild check4
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\15.0\Bin"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin"
       shell: cmd
     - name: Windows msbuild check5
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\Current"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7"
       shell: cmd
     - name: Windows msbuild check6
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\Current\Bin"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Bin"
       shell: cmd
     - name: Windows msbuild check7
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\VC\Tools\MSVC\Current"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC"
       shell: cmd
     - name: Windows msbuild check8
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\VC\Tools\MSVC\15.0\bin"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools"
       shell: cmd
     - name: Windows msbuild check9
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\VC\Tools\MSVC\15.0\bin\Hostx64"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"
       shell: cmd
     - name: Windows msbuild check10
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\VC\Tools\MSVC\15.0\bin\Hostx64\x64"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\15.0\bin\Hostx64\x64"
       shell: cmd
     - run: echo 'RELEASE_TAG:' ${{ env.RELEASE_TAG }}
     - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
