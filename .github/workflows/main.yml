@@ -145,13 +145,17 @@ jobs:
       #export npm_config_arch=x64 && export npm_config_cpu=x64 &&
     - name: Electron version + arch (Windows)
       if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}
-      run: (node_modules\\electron\\dist\\electron.exe --no-sandbox --version && node_modules\\electron\\dist\\electron.exe --no-sandbox --abi) || (dumpbin /headers node_modules\\electron\\dist\\electron.exe | findstr /i machine) || echo ok
+      run: >
+        (dumpbin /headers node_modules\\electron\\dist\\electron.exe | findstr /i machine) || (node_modules\\electron\\dist\\electron.exe --no-sandbox --version && node_modules\\electron\\dist\\electron.exe --no-sandbox --abi) || echo ok
+      shell: cmd
     - name: Electron version + arch (Linux)
       if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'linux-arm' }}
-      run: (node_modules/electron/dist/electron --no-sandbox --version && node_modules/electron/dist/electron --no-sandbox --abi) || (file node_modules/electron/dist/electron) || echo ok
+      run: >
+        (file node_modules/electron/dist/electron) || (node_modules/electron/dist/electron --no-sandbox --version && node_modules/electron/dist/electron --no-sandbox --abi) || echo ok
     - name: Electron version + arch (MacOS)
       if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'linux-arm' }}
-      run: (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --version && node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --abi) || (file node_modules/electron/dist/Electron.app/Contents/MacOS/Electron) || echo ok
+      run: >
+        (file node_modules/electron/dist/Electron.app/Contents/MacOS/Electron) || (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --version && node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --abi) || echo ok
     - run: npm list -g node-gyp || echo ok
     - run: npm list node-gyp || echo ok
     - name: PR action (just build)
