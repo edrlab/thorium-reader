@@ -35,36 +35,46 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        osarch: [windows-intel, windows-arm, macos-intel, macos-arm, linux-intel, linux-arm]
+        # osarch: [windows-intel, windows-arm, macos-intel, macos-arm, linux-intel, linux-arm]
+        # include:
+        #   - osarch: windows-intel
+        #     runson: windows-latest
+        #     packname: win
+        #     release_tag: latest-windows-intel
+        #   - osarch: windows-arm
+        #     runson: windows-latest
+        #     packname: win
+        #     release_tag: latest-windows-arm
+        #   # - osarch: macos-intel
+        #   #   runson: macos-13
+        #   #   packname: 'mac:skip-notarize'
+        #   #   release_tag: latest-macos-intel
+        #   - osarch: macos-intel
+        #     runson: macos-latest
+        #     packname: 'mac:skip-notarize'
+        #     release_tag: latest-macos-intel
+        #   - osarch: macos-arm
+        #     runson: macos-latest
+        #     packname: 'mac:skip-notarize'
+        #     release_tag: latest-macos-arm
+        #   - osarch: linux-intel
+        #     runson: ubuntu-20.04
+        #     packname: linux
+        #     release_tag: latest-linux-intel
+        #   - osarch: linux-arm
+        #     runson: ubuntu-20.04
+        #     packname: linux
+        #     release_tag: latest-linux-arm
+        osarch: [windows-intel, windows-arm]
         include:
-          - osarch: windows-intel
-            runson: windows-latest
-            packname: win
-            release_tag: latest-windows-intel
-          - osarch: windows-arm
-            runson: windows-latest
-            packname: win
-            release_tag: latest-windows-arm
-          # - osarch: macos-intel
-          #   runson: macos-13
-          #   packname: 'mac:skip-notarize'
-          #   release_tag: latest-macos-intel
-          - osarch: macos-intel
-            runson: macos-latest
-            packname: 'mac:skip-notarize'
-            release_tag: latest-macos-intel
-          - osarch: macos-arm
-            runson: macos-latest
-            packname: 'mac:skip-notarize'
-            release_tag: latest-macos-arm
-          - osarch: linux-intel
-            runson: ubuntu-20.04
-            packname: linux
-            release_tag: latest-linux-intel
-          - osarch: linux-arm
-            runson: ubuntu-20.04
-            packname: linux
-            release_tag: latest-linux-arm
+        - osarch: windows-intel
+          runson: windows-latest
+          packname: win
+          release_tag: latest-windows-intel
+        - osarch: windows-arm
+          runson: windows-latest
+          packname: win
+          release_tag: latest-windows-arm
     env:
       RELEASE_TAG: ${{ matrix.release_tag }}
     steps:
@@ -79,27 +89,27 @@ jobs:
     - name: Windows msbuild check2
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild"
       shell: cmd
     - name: Windows msbuild check3
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\VC"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\15.0"
       shell: cmd
     - name: Windows msbuild check4
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\VC\Tools"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\15.0\Bin"
       shell: cmd
     - name: Windows msbuild check5
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\VC\Tools\MSVC"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\Current"
       shell: cmd
     - name: Windows msbuild check6
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\VC\Tools\MSVC\15.0"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\BuildTools\Current\Bin"
       shell: cmd
     - name: Windows msbuild check7
       if: startsWith(matrix.osarch, 'windows-')
