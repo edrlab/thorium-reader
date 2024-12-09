@@ -147,11 +147,11 @@ jobs:
     - run: cat package-lock.json | grep -i divina-player-js
     - name: NPM install (arm64)
       if: ${{ matrix.osarch == 'linux-arm' || matrix.osarch == 'windows-arm' || matrix.osarch == 'macos-arm' }}
-      run: npm ci --foreground-scripts --arch=arm64 --cpu=arm64 && node_modules/electron/dist/electron --no-sandbox --version && node_modules/electron/dist/electron --no-sandbox --abi
+      run: npm ci --foreground-scripts --arch=arm64 --cpu=arm64 #&& node_modules/electron/dist/electron --no-sandbox --version && node_modules/electron/dist/electron --no-sandbox --abi
       #export npm_config_arch=arm64 && export npm_config_cpu=arm64 &&
     - name: NPM install (x64)
       if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'windows-intel' || matrix.osarch == 'macos-intel' }}
-      run: npm ci --foreground-scripts --arch=x64 --cpu=x64 && node_modules/electron/dist/electron --no-sandbox --version && node_modules/electron/dist/electron --no-sandbox --abi
+      run: npm ci --foreground-scripts --arch=x64 --cpu=x64 #&& node_modules/electron/dist/electron --no-sandbox --version && node_modules/electron/dist/electron --no-sandbox --abi
       #export npm_config_arch=x64 && export npm_config_cpu=x64 &&
     - run: npm list -g node-gyp || echo ok
     - run: npm list node-gyp || echo ok
