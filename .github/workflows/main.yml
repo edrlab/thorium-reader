@@ -38,19 +38,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # windows-arm
-        osarch: [windows-intel, macos-intel, macos-arm, linux-intel, linux-arm]
+        osarch: [windows-intel, windows-arm, macos-intel, macos-arm, linux-intel, linux-arm]
         include:
           - osarch: windows-intel
             runson: windows-latest
             packname: win
             release_tag: latest-windows-intel
-          # - osarch: windows-arm
-          #   runson: windows-latest
-          #   packname: win
-          #   release_tag: latest-windows-arm
+          - osarch: windows-arm
+            runson: windows-latest
+            packname: win
+            release_tag: latest-windows-arm
+          # - osarch: macos-intel
+          #   runson: macos-13
+          #   packname: 'mac:skip-notarize'
+          #   release_tag: latest-macos-intel
           - osarch: macos-intel
-            runson: macos-13
+            runson: macos-latest
             packname: 'mac:skip-notarize'
             release_tag: latest-macos-intel
           - osarch: macos-arm
@@ -77,9 +80,12 @@ jobs:
     - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
     - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
     - run: 'echo "GITHUB_SHA: ${{ github.sha }}"'
-    - name: Check sys arch
-      if: ${{ matrix.osarch != 'windows-intel' }}
-      run: echo "${{ matrix.osarch }}" && uname -m && arch
+    - name: Check sys arch (non Windows)
+      if: ${{ matrix.osarch != 'windows-intel' && matrix.osarch != 'windows-arm' }}
+      run: echo "${{ matrix.osarch }}" && uname -m && arch && (echo "${{ runner.arch }}" || echo ok)
+    - name: Check sys arch (Windows)
+      if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}
+      run: echo "${{ matrix.osarch }}" && (echo "${{ runner.arch }}" || echo ok)
     - name: Checkout
       uses: actions/checkout@v4
     #   with:
@@ -139,19 +145,21 @@ jobs:
     - run: npm cache clean --force
     - run: npm cache verify
     - run: cat package-lock.json | grep -i divina-player-js
-    - run: npm ci --foreground-scripts
+    - name: NPM install (arm64)
+      if: ${{ matrix.osarch == 'linux-arm' || matrix.osarch == 'windows-arm' || matrix.osarch == 'macos-arm' }}
+      run: export npm_config_arch=arm64 && export npm_config_cpu=arm64 && npm ci --foreground-scripts --arch=arm64 --cpu=arm64
+    - name: NPM install (x64)
+      if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'windows-intel' || matrix.osarch == 'macos-intel' }}
+      run: export npm_config_arch=x64 && export npm_config_cpu=x64 && npm ci --foreground-scripts --arch=x64 --cpu=x64
     - run: npm list -g node-gyp || echo ok
     - run: npm list node-gyp || echo ok
     - name: PR action (just build)
       if: ${{ github.event_name == 'pull_request' }}
       run: npm run build:prod
       # && npm run test SEE https://github.com/edrlab/thorium-reader/issues/1697
-    - name: non-PR action, Windows (build and package)
-      if: ${{ github.event_name != 'pull_request' && ( matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' ) }}
-      run: npm run package:${{ matrix.packname }}
-    - name: non-PR action, non-Windows (build and package)
-      if: ${{ github.event_name != 'pull_request' && matrix.osarch != 'windows-intel' && matrix.osarch != 'windows-arm' }}
-      run: echo "${{ matrix.osarch }}" && (if [[ ${{ matrix.osarch }} == 'macos-arm' || ${{ matrix.osarch }} == 'linux-arm' ]]; then uname -m && arch && sed 's/x64/arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json && npm run package:${{ matrix.packname }} && sed 's/arm64/x64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json; else npm run package:${{ matrix.packname }}; fi)
+    - name: non-PR action (build and package)
+      if: ${{ github.event_name != 'pull_request' }}
+      run: echo "${{ matrix.osarch }}" && (if [[ ${{ matrix.osarch }} == 'macos-arm' || ${{ matrix.osarch }} == 'linux-arm' || ${{ matrix.osarch }} == 'windows-arm' ]]; then uname -m && arch && sed 's/x64/arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json && npm run package:${{ matrix.packname }} && sed 's/arm64/x64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json; else npm run package:${{ matrix.packname }}; fi)
     #- run: ls -alsR release
     #- run: npm install @octokit/rest
     - name: GitHub Tagged Release Delete/ReCreate and Upload Build Artefacts
