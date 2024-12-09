@@ -68,13 +68,67 @@ jobs:
     env:
       RELEASE_TAG: ${{ matrix.release_tag }}
     steps:
+    - name: Microsoft Windows msbuild to PATH
+      if: startsWith(matrix.osarch, 'windows-')
+      uses: microsoft/setup-msbuild@v2
+    - name: Windows msbuild check1
+      if: startsWith(matrix.osarch, 'windows-')
+      run: >
+        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise"
+      shell: cmd
+    - name: Windows msbuild check2
+      if: startsWith(matrix.osarch, 'windows-')
+      run: >
+        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\BuildTools"
+      shell: cmd
+    - name: Windows msbuild check3
+      if: startsWith(matrix.osarch, 'windows-')
+      run: >
+        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\BuildTools\\VC"
+      shell: cmd
+    - name: Windows msbuild check4
+      if: startsWith(matrix.osarch, 'windows-')
+      run: >
+        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\BuildTools\\VC\\Tools"
+      shell: cmd
+    - name: Windows msbuild check5
+      if: startsWith(matrix.osarch, 'windows-')
+      run: >
+        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\BuildTools\\VC\\Tools\\MSVC"
+      shell: cmd
+    - name: Windows msbuild check6
+      if: startsWith(matrix.osarch, 'windows-')
+      run: >
+        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\BuildTools\\VC\\Tools\\MSVC\\15.0"
+      shell: cmd
+    - name: Windows msbuild check7
+      if: startsWith(matrix.osarch, 'windows-')
+      run: >
+        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\BuildTools\\VC\\Tools\\MSVC\\Current"
+      shell: cmd
+    - name: Windows msbuild check8
+      if: startsWith(matrix.osarch, 'windows-')
+      run: >
+        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\BuildTools\\VC\\Tools\\MSVC\\15.0\\bin"
+      shell: cmd
+    - name: Windows msbuild check9
+      if: startsWith(matrix.osarch, 'windows-')
+      run: >
+        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\BuildTools\\VC\\Tools\\MSVC\\15.0\\bin\\Hostx64"
+      shell: cmd
+    - name: Windows msbuild check10
+      if: startsWith(matrix.osarch, 'windows-')
+      run: >
+        dir "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\BuildTools\\VC\\Tools\\MSVC\\15.0\\bin\\Hostx64\\x64"
+      shell: cmd
     - run: echo 'RELEASE_TAG:' ${{ env.RELEASE_TAG }}
     - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
     - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
     - run: 'echo "GITHUB_SHA: ${{ github.sha }}"'
     - run: echo "${{ matrix.osarch }} // ${{ runner.arch }}"
     - name: System arch (non Windows)
-      if: ${{ matrix.osarch != 'windows-intel' && matrix.osarch != 'windows-arm' }}
+      #if: ${{ matrix.osarch != 'windows-intel' && matrix.osarch != 'windows-arm' }}
+      if: ${{ !startsWith(matrix.osarch, 'windows-') }}
       run: uname -m && arch
     - name: Checkout
       uses: actions/checkout@v4
@@ -145,25 +199,22 @@ jobs:
       if: endsWith(matrix.osarch, '-intel')
       run: npm ci --foreground-scripts --arch=x64 --cpu=x64
       #export npm_config_arch=x64 && export npm_config_cpu=x64 &&
-    - name: Microsoft Windows msbuild to PATH
-      if: startsWith(matrix.osarch, 'windows-')
-      uses: microsoft/setup-msbuild@v2
     - name: Electron version + arch (Windows)
       #if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        (dumpbin /headers node_modules\\electron\\dist\\electron.exe | findstr /i machine) || (node_modules\\electron\\dist\\electron.exe --no-sandbox --version && node_modules\\electron\\dist\\electron.exe --no-sandbox --abi) || echo ok
+        (dumpbin /headers node_modules\\electron\\dist\\electron.exe | findstr /i machine) && (node_modules\\electron\\dist\\electron.exe --no-sandbox --version) && (node_modules\\electron\\dist\\electron.exe --no-sandbox --abi)
       shell: cmd
     - name: Electron version + arch (Linux)
       #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'linux-arm' }}
       if: startsWith(matrix.osarch, 'linux-')
       run: >
-        (file node_modules/electron/dist/electron) || (node_modules/electron/dist/electron --no-sandbox --version && node_modules/electron/dist/electron --no-sandbox --abi) || echo ok
+        (file node_modules/electron/dist/electron) && (node_modules/electron/dist/electron --no-sandbox --version) && (node_modules/electron/dist/electron --no-sandbox --abi)
     - name: Electron version + arch (MacOS)
       #if: ${{ matrix.osarch == 'macos-intel' || matrix.osarch == 'macos-arm' }}
       if: startsWith(matrix.osarch, 'macos-')
       run: >
-        (file node_modules/electron/dist/Electron.app/Contents/MacOS/Electron) || (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --version && node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --abi) || echo ok
+        (file node_modules/electron/dist/Electron.app/Contents/MacOS/Electron) && (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --version) && (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --abi)
     - run: npm list -g node-gyp || echo ok
     - run: npm list node-gyp || echo ok
     - name: PR action (just build)
@@ -171,12 +222,14 @@ jobs:
       run: npm run build:prod
       # && npm run test SEE https://github.com/edrlab/thorium-reader/issues/1697
     - name: non-PR action (build and package) ARM
-      if: ${{ github.event_name != 'pull_request' && (matrix.osarch == 'linux-arm' || matrix.osarch == 'windows-arm' || matrix.osarch == 'macos-arm') }}
+      #if: ${{ github.event_name != 'pull_request' && (matrix.osarch == 'linux-arm' || matrix.osarch == 'windows-arm' || matrix.osarch == 'macos-arm') }}
+      if: ${{ github.event_name != 'pull_request' && endsWith(matrix.osarch, '-arm') }}
       #run: sed 's/x64/arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json && npm run package:${{ matrix.packname }} && sed 's/arm64/x64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json
       run: >
         node -e 'const path = require("path"); const fs = require("fs"); const filePath = path.join(process.cwd(), "package.json"); let fileStr = fs.readFileSync(filePath, { encoding: "utf8" }); fileStr = fileStr.replace(/x64/g, "arm64"); fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });' && npm run package:${{ matrix.packname }}
     - name: non-PR action (build and package) INTEL
-      if: ${{ github.event_name != 'pull_request' && (matrix.osarch == 'linux-intel' || matrix.osarch == 'windows-intel' || matrix.osarch == 'macos-intel') }}
+      #if: ${{ github.event_name != 'pull_request' && (matrix.osarch == 'linux-intel' || matrix.osarch == 'windows-intel' || matrix.osarch == 'macos-intel') }}
+      if: ${{ github.event_name != 'pull_request' && endsWith(matrix.osarch, '-intel') }}
       run: npm run package:${{ matrix.packname }}
     #- run: ls -alsR release
     #- run: npm install @octokit/rest
