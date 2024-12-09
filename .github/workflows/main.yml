@@ -105,7 +105,7 @@ jobs:
     - name: Windows msbuild check6
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Bin"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools"
       shell: cmd
     - name: Windows msbuild check7
       if: startsWith(matrix.osarch, 'windows-')
