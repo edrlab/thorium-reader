@@ -112,7 +112,7 @@ jobs:
     - name: Windows msbuild check7
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\bin"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\bin\amd64"
       shell: cmd
     - name: Windows msbuild check8
       if: startsWith(matrix.osarch, 'windows-')
@@ -127,12 +127,12 @@ jobs:
     - name: Windows msbuild check10
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.29.30133"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.29.30133\bin"
       shell: cmd
     - name: Windows msbuild check11
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433"
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin"
       shell: cmd
     - run: echo 'RELEASE_TAG:' ${{ env.RELEASE_TAG }}
     - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
