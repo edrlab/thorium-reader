@@ -144,7 +144,10 @@ jobs:
       run: >
         (dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\arm64")
       shell: cmd
-    - run: echo "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\Hostx64\x64" >> $env:GITHUB_PATH
+    # - run: echo "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\Hostx64\x64" >> $env:GITHUB_PATH
+    #   shell: powershell
+    - run: >
+        $VS_ROOT = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"; $VS_VERSION = (Get-ChildItem -Path $VS_ROOT | Sort-Object Name -Descending | Select-Object -First 1).Name; $VS_BIN = "$VS_ROOT\$VS_VERSION\bin\Hostx64\x64"; echo $VS_BIN >> $env:GITHUB_PATH; echo $VS_BIN
       shell: powershell
     - name: Windows ARCH 3
       if: startsWith(matrix.osarch, 'windows-')
