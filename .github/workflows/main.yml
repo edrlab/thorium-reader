@@ -142,14 +142,20 @@ jobs:
     - name: Windows ARCH 2
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        ("C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\Hostx64\x64\dumpbin.exe" /headers "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\arm64\arm64\dumpbin.exe" | findstr /i machine)
+        ("C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\Hostx64\x64\dumpbin.exe" /headers "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\arm64\x64\dumpbin.exe" | findstr /i machine)
       shell: cmd
+    - run: echo "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\Hostx64\x64" >> $env:GITHUB_PATH
+      shell: powershell
     - name: Windows ARCH 3
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        ("C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\Hostx64\x64\dumpbin.exe" /headers "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\arm64\x64\dumpbin.exe" | findstr /i machine)
+        (dumpbin /headers "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\Hostx64\x64\dumpbin.exe" | findstr /i machine)
+      shell: powershell
+    - name: Windows ARCH 4
+      if: startsWith(matrix.osarch, 'windows-')
+      run: >
+        (dumpbin /headers "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\Hostx64\x64\dumpbin.exe" | findstr /i machine)
       shell: cmd
-    - run: ls
     - run: echo 'RELEASE_TAG:' ${{ env.RELEASE_TAG }}
     - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
     - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
