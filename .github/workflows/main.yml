@@ -68,6 +68,10 @@ jobs:
     env:
       RELEASE_TAG: ${{ matrix.release_tag }}
     steps:
+    # should fail gracefully on Windows (CMD only, because PowerShell "||" fails)
+    - run: |-
+        pwdx || echo OK || true
+      shell: cmd
     - name: Microsoft Windows dumpbin to PATH
       if: startsWith(matrix.osarch, 'windows-')
       run: >
@@ -137,8 +141,6 @@ jobs:
     - run: python --version || echo ok
     - run: python3 --version || echo ok
     - run: pip --version || echo ok
-    - run: pwdx || echo OK || true # should fail gracefully on Windows (CMD ... PowerShell || fails)
-      shell: cmd
     # PYTHON 3.12 distutils deprecation remediation:
     #- run: python3 -m pip install packaging || python -m pip install packaging
     - run: python3 -m pip install setuptools || python -m pip install setuptools
