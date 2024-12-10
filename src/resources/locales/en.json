@@ -63,7 +63,7 @@
     },
     "delete": "Delete",
     "deleteBook": "Delete",
-    "deleteTag": "Delete tag",
+    "deleteTag": "Deletße tag",
     "description": "Description",
     "emptyTagList": "No tagged publications.",
     "entry": {
@@ -342,6 +342,7 @@
         "red": "Red",
         "yellow": "Yellow"
       },
+      "export": "Save notes as",
       "filter": {
         "all": "All",
         "filterByColor": "Filter by Color",

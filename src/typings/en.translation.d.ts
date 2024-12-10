@@ -798,7 +798,8 @@ declare namespace typed_i18n {
       readonly "solid": string,
       readonly "strikethrough": string,
       readonly "underline": string
-    }
+    },
+    readonly "export": string
   },
   readonly "divina": { readonly "mute": string, readonly "unmute": string },
   readonly "fxl": { readonly "fit": string },
@@ -934,6 +935,7 @@ declare namespace typed_i18n {
   readonly "tts": {
     readonly "activate": string,
     readonly "default": string,
+    readonly "language": string,
     readonly "next": string,
     readonly "pause": string,
     readonly "play": string,
@@ -942,8 +944,7 @@ declare namespace typed_i18n {
     readonly "sentenceDetectDescription": string,
     readonly "speed": string,
     readonly "stop": string,
-    readonly "voice": string,
-    readonly "language": string
+    readonly "voice": string
   }
 };
   (_: "reader.annotations", __?: {}): {
@@ -991,7 +992,8 @@ declare namespace typed_i18n {
     readonly "solid": string,
     readonly "strikethrough": string,
     readonly "underline": string
-  }
+  },
+  readonly "export": string
 };
   (_: "reader.annotations.Color", __?: {}): string;
   (_: "reader.annotations.addNote", __?: {}): string;
@@ -1060,6 +1062,7 @@ declare namespace typed_i18n {
   (_: "reader.annotations.type.solid", __?: {}): string;
   (_: "reader.annotations.type.strikethrough", __?: {}): string;
   (_: "reader.annotations.type.underline", __?: {}): string;
+  (_: "reader.annotations.export", __?: {}): string;
   (_: "reader.divina", __?: {}): { readonly "mute": string, readonly "unmute": string };
   (_: "reader.divina.mute", __?: {}): string;
   (_: "reader.divina.unmute", __?: {}): string;
@@ -1375,6 +1378,7 @@ declare namespace typed_i18n {
   (_: "reader.tts", __?: {}): {
   readonly "activate": string,
   readonly "default": string,
+  readonly "language": string,
   readonly "next": string,
   readonly "pause": string,
   readonly "play": string,
@@ -1383,11 +1387,11 @@ declare namespace typed_i18n {
   readonly "sentenceDetectDescription": string,
   readonly "speed": string,
   readonly "stop": string,
-  readonly "voice": string,
-  readonly "language": string
+  readonly "voice": string
 };
   (_: "reader.tts.activate", __?: {}): string;
   (_: "reader.tts.default", __?: {}): string;
+  (_: "reader.tts.language", __?: {}): string;
   (_: "reader.tts.next", __?: {}): string;
   (_: "reader.tts.pause", __?: {}): string;
   (_: "reader.tts.play", __?: {}): string;
@@ -1397,7 +1401,6 @@ declare namespace typed_i18n {
   (_: "reader.tts.speed", __?: {}): string;
   (_: "reader.tts.stop", __?: {}): string;
   (_: "reader.tts.voice", __?: {}): string;
-  (_: "reader.tts.language", __?: {}): string;
   (_: "settings", __?: {}): {
   readonly "annotationCreator": {
     readonly "creator": string,

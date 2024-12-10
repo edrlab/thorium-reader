@@ -342,6 +342,7 @@
         "red": "Vermelho",
         "yellow": "Amarelo"
       },
+      "export": "",
       "filter": {
         "all": "Tudo",
         "filterByColor": "Filtrar por cor",

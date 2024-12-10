@@ -342,6 +342,7 @@
         "red": "Rouge",
         "yellow": "Jaune"
       },
+      "export": "Sauvegarder sous",
       "filter": {
         "all": "Tous",
         "filterByColor": "Filtré par couleur",

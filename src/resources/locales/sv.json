@@ -342,6 +342,7 @@
         "red": "Röd",
         "yellow": "Gul"
       },
+      "export": "",
       "filter": {
         "all": "Alla",
         "filterByColor": "Filtrera efter färg",
