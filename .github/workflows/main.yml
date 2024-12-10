@@ -137,9 +137,7 @@ jobs:
     - run: python --version || echo ok
     - run: python3 --version || echo ok
     - run: pip --version || echo ok
-    - run: pwd || echo OK || true # should fail gracefully on Windows (PowerShell)
-      shell: powershell
-    - run: ls || echo OK || true # should fail gracefully on Windows (CMD)
+    - run: ls || echo OK || true # should fail gracefully on Windows (CMD ... PowerShell || fails)
       shell: cmd
     # PYTHON 3.12 distutils deprecation remediation:
     #- run: python3 -m pip install packaging || python -m pip install packaging
