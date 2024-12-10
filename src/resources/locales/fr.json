@@ -331,7 +331,7 @@
         "description": "Nommez cette liste de notes",
         "title": "Titre"
       },
-      "annotationsOptions": "Options",
+      "annotationsOptions": "Notes Options",
       "colors": {
         "bluegreen": "Bleu-Vert",
         "cyan": "Cyan",

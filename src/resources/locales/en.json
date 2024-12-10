@@ -331,7 +331,7 @@
         "description": "Name this set of annotations",
         "title": "Title"
       },
-      "annotationsOptions": "Options",
+      "annotationsOptions": "Notes Options",
       "colors": {
         "bluegreen": "Blue-green",
         "cyan": "Cyan",
