@@ -142,7 +142,7 @@ jobs:
     - name: Windows ARCH 2
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        ("C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\Hostx64\x64\dumpbin.exe" /headers "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\arm64\x64\dumpbin.exe" | findstr /i machine)
+        (dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\arm64")
       shell: cmd
     - run: echo "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\Hostx64\x64" >> $env:GITHUB_PATH
       shell: powershell
