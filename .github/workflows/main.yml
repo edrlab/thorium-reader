@@ -68,10 +68,11 @@ jobs:
     env:
       RELEASE_TAG: ${{ matrix.release_tag }}
     steps:
-    # should fail gracefully on Windows (CMD only, because PowerShell "||" fails)
+    # graceful fail?
     - run: |-
         pwdx || echo OK || true
       shell: cmd
+      continue-on-error: true
     - name: Microsoft Windows dumpbin to PATH
       if: startsWith(matrix.osarch, 'windows-')
       run: >
@@ -174,6 +175,7 @@ jobs:
       run: >
         (dumpbin /headers "node_modules\electron\dist\electron.exe" | findstr /i machine) && (node_modules\\electron\\dist\\electron.exe --no-sandbox --version || echo INVALID_ARCH || true) && (node_modules\\electron\\dist\\electron.exe --no-sandbox --abi || echo INVALID_ARCH || true)
       shell: cmd
+      continue-on-error: true
     - name: Electron version + arch (Linux)
       #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'linux-arm' }}
       if: startsWith(matrix.osarch, 'linux-')
