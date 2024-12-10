@@ -137,6 +137,10 @@ jobs:
     - run: python --version || echo ok
     - run: python3 --version || echo ok
     - run: pip --version || echo ok
+    - run: pwd || echo OK || true # should fail gracefully on Windows (PowerShell)
+      shell: powershell
+    - run: ls || echo OK || true # should fail gracefully on Windows (CMD)
+      shell: cmd
     # PYTHON 3.12 distutils deprecation remediation:
     #- run: python3 -m pip install packaging || python -m pip install packaging
     - run: python3 -m pip install setuptools || python -m pip install setuptools
@@ -168,7 +172,7 @@ jobs:
       #if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        (dumpbin /headers "node_modules\electron\dist\electron.exe" | findstr /i machine) && (node_modules\\electron\\dist\\electron.exe --no-sandbox --version || echo INVALID_ARCH) && (node_modules\\electron\\dist\\electron.exe --no-sandbox --abi || echo INVALID_ARCH)
+        (dumpbin /headers "node_modules\electron\dist\electron.exe" | findstr /i machine) && (node_modules\\electron\\dist\\electron.exe --no-sandbox --version || echo INVALID_ARCH || true) && (node_modules\\electron\\dist\\electron.exe --no-sandbox --abi || echo INVALID_ARCH || true)
       shell: cmd
     - name: Electron version + arch (Linux)
       #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'linux-arm' }}
