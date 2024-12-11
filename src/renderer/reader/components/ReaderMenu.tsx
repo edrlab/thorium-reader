@@ -848,10 +848,10 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
     // });
 
     const selectDrawtypesOptions = [
-        { name: "solid_background", svg: HighLightIcon },
-        { name: "underline", svg: UnderLineIcon },
-        { name: "strikethrough", svg: TextStrikeThroughtIcon },
-        { name: "outline", svg: TextOutlineIcon },
+        { name: "solid_background", svg: HighLightIcon, title: `${__("reader.annotations.type.solid")}` },
+        { name: "underline", svg: UnderLineIcon, title: `${__("reader.annotations.type.underline")}` },
+        { name: "strikethrough", svg: TextStrikeThroughtIcon, title: `${__("reader.annotations.type.strikethrough")}` },
+        { name: "outline", svg: TextOutlineIcon,  title: `${__("reader.annotations.type.outline")}` },
     ];
 
     const nbOfFilters = ((tagArrayFilter === "all") ?
@@ -1043,7 +1043,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                                 </div>
                                             </summary>
                                             <TagList items={selectDrawtypesOptions} className={stylesAnnotations.annotations_filter_taglist}>
-                                                {(item) => <Tag id={item.name} className={stylesAnnotations.annotations_filter_drawtype} textValue={item.name}><SVG svg={item.svg} /></Tag>}
+                                                {(item) => <Tag id={item.name} className={stylesAnnotations.annotations_filter_drawtype} textValue={item.title}><SVG svg={item.svg} /></Tag>}
                                             </TagList>
                                         </details>
                                     </TagGroup>
@@ -1158,7 +1158,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         </Popover.Portal>
                     </Popover.Root>
                     <AlertDialog.Root>
-                        <AlertDialog.Trigger className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationListFiltered.length}>
+                        <AlertDialog.Trigger className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationListFiltered.length} title={__("dialog.deleteAnnotations")}>
                             <SVG svg={TrashIcon} ariaHidden />
                         </AlertDialog.Trigger>
                         <AlertDialog.Portal>
