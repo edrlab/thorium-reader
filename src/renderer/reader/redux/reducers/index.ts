@@ -46,6 +46,7 @@ import { annotationTagsIndexReducer } from "./annotationTagsIndex";
 import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 import { importAnnotationReducer } from "readium-desktop/renderer/common/redux/reducers/importAnnotation";
 import { tagReducer } from "readium-desktop/common/redux/reducers/tag";
+import { readerLockReducer } from "./lock";
 
 export const rootReducer = () => {
 
@@ -179,6 +180,7 @@ export const rootReducer = () => {
             disableRTLFlip: readerRTLFlipReducer,
             mediaOverlay: readerMediaOverlayReducer,
             tts: readerTTSReducer,
+            lock: readerLockReducer,
         }),
         search: searchReducer,
         annotation: annotationModeEnableReducer,
