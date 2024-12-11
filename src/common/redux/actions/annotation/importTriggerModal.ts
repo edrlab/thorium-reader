@@ -6,12 +6,12 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IReadiumAnnotationModelSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { IAnnotationState } from "../../states/renderer/annotation";
 
 export const ID = "ANNOTATION_IMPORT_TRIGGER_MODAL";
 
-export interface IReadiumAnnotationModelSetView extends Partial<Pick<IReadiumAnnotationModelSet, "about" | "title" | "generated" | "generator">> {
+export interface IReadiumAnnotationModelSetView extends Partial<Pick<IReadiumAnnotationSet, "about" | "title" | "generated" | "generator">> {
 
 }
 export interface Payload extends IReadiumAnnotationModelSetView {

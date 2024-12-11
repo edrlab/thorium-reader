@@ -5,25 +5,25 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IReadiumAnnotationModel, IReadiumAnnotationModelSet } from "./annotationModel.type";
+import { IReadiumAnnotation, IReadiumAnnotationSet } from "./annotationModel.type";
 import { v4 as uuidv4 } from "uuid";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { rgbToHex } from "readium-desktop/common/rgb";
 
-export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotationState): IReadiumAnnotationModel {
+export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotationState): IReadiumAnnotation {
 
     const { uuid, color, locatorExtended: def, tags, drawType, comment, creator, created, modified } = annotation;
     const { locator, headings, epubPage, selectionInfo } = def;
     const { href, text, locations } = locator;
     const { afterRaw, beforeRaw, highlightRaw } = text || {};
-    const { rangeInfo: rangeInfoSelection } = selectionInfo || {};
-    const { progression } = locations;
+    // const { rangeInfo: rangeInfoSelection } = selectionInfo || {};
+    // const { progression } = locations;
 
-    const highlight: IReadiumAnnotationModel["body"]["highlight"] = drawType === "solid_background" ? "solid" : drawType;
+    const highlight: IReadiumAnnotation["body"]["highlight"] = drawType === "solid_background" ? "solid" : drawType;
 
-    const selector: IReadiumAnnotationModel["target"]["selector"] = [];
+    const selector: IReadiumAnnotation["target"]["selector"] = [];
 
     if (highlightRaw && afterRaw && beforeRaw) {
         selector.push({
@@ -31,36 +31,6 @@ export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotatio
             exact: highlightRaw,
             prefix: beforeRaw,
             suffix: afterRaw,
-        });
-    }
-    if (progression) {
-        selector.push({
-            type: "ProgressionSelector",
-            value: progression,
-        });
-    }
-    if (rangeInfoSelection.startContainerElementCssSelector &&
-        typeof rangeInfoSelection.startContainerChildTextNodeIndex === "number" &&
-        rangeInfoSelection.endContainerElementCssSelector &&
-        typeof rangeInfoSelection.endContainerChildTextNodeIndex === "number" &&
-        typeof rangeInfoSelection.startOffset === "number" &&
-        typeof rangeInfoSelection.endOffset === "number"
-    ) {
-        selector.push({
-            type: "DomRangeSelector",
-            startContainerElementCssSelector: rangeInfoSelection.startContainerElementCssSelector,
-            startContainerChildTextNodeIndex: rangeInfoSelection.startContainerChildTextNodeIndex,
-            startOffset: rangeInfoSelection.startOffset,
-            endContainerElementCssSelector: rangeInfoSelection.endContainerElementCssSelector,
-            endContainerChildTextNodeIndex: rangeInfoSelection.endContainerChildTextNodeIndex,
-            endOffset: rangeInfoSelection.endOffset,
-        });
-    }
-    if (rangeInfoSelection.cfi) {
-        selector.push({
-            type: "FragmentSelector",
-            conformsTo: "http://www.idpf.org/epub/linking/cfi/epub-cfi.html",
-            value: `epubcfi(${rangeInfoSelection.cfi || ""})`, // TODO not the complete cfi
         });
     }
 
@@ -92,7 +62,7 @@ export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotatio
     };
 }
 
-export function convertAnnotationListToReadiumAnnotationSet(annotationArray: IAnnotationState[], publicationView: PublicationView, label?: string): IReadiumAnnotationModelSet {
+export function convertAnnotationListToReadiumAnnotationSet(annotationArray: IAnnotationState[], publicationView: PublicationView, label?: string): IReadiumAnnotationSet {
 
     const currentDate = new Date();
     const dateString: string = currentDate.toISOString();

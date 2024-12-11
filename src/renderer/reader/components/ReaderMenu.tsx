@@ -90,7 +90,7 @@ import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/c
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { rgbToHex } from "readium-desktop/common/rgb";
-import { IReadiumAnnotationModelSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { convertAnnotationListToReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/converter";
 import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/components/ImportAnnotationsDialog";
 import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
@@ -667,7 +667,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
 const selectionIsSet = (a: Selection): a is Set<string> => typeof a === "object";
 const MAX_MATCHES_PER_PAGE = 5;
 
-const downloadAnnotationJSON = (contents: IReadiumAnnotationModelSet, filename: string) => {
+const downloadAnnotationJSON = (contents: IReadiumAnnotationSet, filename: string) => {
 
     const data = JSON.stringify(contents, null, 2);
     const blob = new Blob([data], { type: "application/rd-annotations+json" });

@@ -5,10 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IReadiumAnnotationModelSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 
-interface IReadiumAnnotationModelSetView extends Partial<Pick<IReadiumAnnotationModelSet, "about" | "title" | "generated" | "generator">> {
+interface IReadiumAnnotationModelSetView extends Partial<Pick<IReadiumAnnotationSet, "about" | "title" | "generated" | "generator">> {
 
 }
 export interface IImportAnnotationState extends IReadiumAnnotationModelSetView {

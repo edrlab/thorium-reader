@@ -18,7 +18,7 @@ import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/a
 import { hexToRgb } from "readium-desktop/common/rgb";
 import { isNil } from "readium-desktop/utils/nil";
 import { RootState } from "../states";
-import { __READIUM_ANNOTATION_AJV_ERRORS, isDomRangeSelector, isFragmentSelector, isIReadiumAnnotationModelSet, isProgressionSelector, isTextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { __READIUM_ANNOTATION_AJV_ERRORS, isDomRangeSelector, isFragmentSelector, isIReadiumAnnotationSet, isProgressionSelector, isTextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { SenderType } from "readium-desktop/common/models/sync";
@@ -82,7 +82,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         debug("filePath size=", data.length);
         debug("filePath serialized and ready to pass the type checker");
 
-        if (isIReadiumAnnotationModelSet(readiumAnnotationFormat)) {
+        if (isIReadiumAnnotationSet(readiumAnnotationFormat)) {
 
             debug("filePath pass the typeChecker (ReadiumAnnotationModelSet)");
 
