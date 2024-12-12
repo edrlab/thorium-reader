@@ -209,10 +209,18 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                             <input type="radio" id={`anno_type_${uuid}_${type}`} name="drawtype" value={type}
                                 onChange={() => setDrawType(type)}
                                 checked={drawTypeSelected === type}
-                                aria-label={`${__("reader.annotations.highlight")} ${type === "solid_background" ? __("reader.annotations.type.solid") : type === "outline" ? __("reader.annotations.type.outline") : type === "underline" ? __("reader.annotations.type.underline") : type === "strikethrough" ? __("reader.annotations.type.strikethrough") : __("reader.annotations.type.solid")}`}
+                                aria-label={`${__("reader.annotations.highlight")} ${type === "solid_background" ?
+                                    __("reader.annotations.type.solid") : type === "outline" ?
+                                        __("reader.annotations.type.outline") : type === "underline" ?
+                                            __("reader.annotations.type.underline") : type === "strikethrough" ?
+                                                __("reader.annotations.type.strikethrough") : __("reader.annotations.type.solid")}`}
                             />
                             <label htmlFor={`anno_type_${uuid}_${type}`}
-                                title={`${type === "solid_background" ? __("reader.annotations.type.solid") : type === "outline" ? __("reader.annotations.type.outline") : type === "underline" ? __("reader.annotations.type.underline") : type === "strikethrough" ? __("reader.annotations.type.strikethrough") : __("reader.annotations.type.solid")}`}
+                                title={`${type === "solid_background" ?
+                                    __("reader.annotations.type.solid") : type === "outline" ?
+                                        __("reader.annotations.type.outline") : type === "underline" ?
+                                            __("reader.annotations.type.underline") : type === "strikethrough" ?
+                                                __("reader.annotations.type.strikethrough") : __("reader.annotations.type.solid")}`}
                                 className={drawTypeSelected === type ? stylesAnnotations.drawType_active : ""}
                             ><SVG ariaHidden svg={drawIcon[i]} /></label>
                         </div>
@@ -220,7 +228,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                     )}
                 </div>
             </div>
-            <div className={stylesAnnotations.annotation_actions_container} style={{width: "95%"}}>
+            <div className={stylesAnnotations.annotation_actions_container} style={{ width: "95%" }}>
                 <h4>{__("catalog.tag")}</h4>
                 <ComboBox defaultItems={selectTagOption}
                     placeholder={__("catalog.addTags")}
