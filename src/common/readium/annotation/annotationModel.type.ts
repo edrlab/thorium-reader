@@ -415,8 +415,8 @@ export const readiumAnnotationSetSchema = {
                     "type": "number",
                 },
                 "end": {
-                    "type": "number"
-                }
+                    "type": "number",
+                },
             },
             "required": ["type", "start", "end"],
         },

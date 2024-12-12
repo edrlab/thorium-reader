@@ -15,8 +15,8 @@ import { rgbToHex } from "readium-desktop/common/rgb";
 export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotationState): IReadiumAnnotation {
 
     const { uuid, color, locatorExtended: def, tags, drawType, comment, creator, created, modified } = annotation;
-    const { locator, headings, epubPage, selectionInfo } = def;
-    const { href, text, locations } = locator;
+    const { locator, headings, epubPage/*, selectionInfo*/ } = def;
+    const { href, text/*, locations*/ } = locator;
     const { afterRaw, beforeRaw, highlightRaw } = text || {};
     // const { rangeInfo: rangeInfoSelection } = selectionInfo || {};
     // const { progression } = locations;

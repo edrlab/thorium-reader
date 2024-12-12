@@ -44,6 +44,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const config = reader?.reduxState?.config || readerConfigInitialState;
     const transientConfigMerge = {...readerConfigInitialState, ...config};
     const creator = yield* selectTyped((_state: RootState) => _state.creator);
+    const annotationImportQueue = yield* selectTyped((_state: RootState) => _state.annotationImportQueue);
 
     const publicationRepository = diMainGet("publication-repository");
     let tag: string[] = [];
@@ -90,6 +91,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
             publication: {
                 tag,
             },
+            annotationImportQueue,
         },
     } as readerIpc.EventPayload);
 }
