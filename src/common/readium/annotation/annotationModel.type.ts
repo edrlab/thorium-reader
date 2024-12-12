@@ -370,14 +370,14 @@ export const readiumAnnotationSetSchema = {
                             "items": {
                                 "oneOf": [
                                     {
-                                        "$ref": "#/definitions/ITextQuoteSelector",
+                                        "$ref": "#/definitions/Selector",
                                     },
-                                    {
-                                        "$ref": "#/definitions/ITextPositionSelector",
-                                    },
-                                    {
-                                        "$ref": "#/definitions/IFragmentSelector",
-                                    },
+                                    // {
+                                    //     "$ref": "#/definitions/ITextPositionSelector",
+                                    // },
+                                    // {
+                                    //     "$ref": "#/definitions/IFragmentSelector",
+                                    // },
                                 ],
                             },
                         },
@@ -387,54 +387,63 @@ export const readiumAnnotationSetSchema = {
             },
             "required": ["@context", "id", "created", "type", "target"],
         },
-        "ITextQuoteSelector": {
+        "Selector": {
             "type": "object",
             "properties": {
                 "type": {
-                    "const": "TextQuoteSelector",
-                },
-                "exact": {
                     "type": "string",
-                },
-                "prefix": {
-                    "type": "string",
-                },
-                "suffix": {
-                    "type": "string",
-                },
+                }
             },
-            "required": ["type", "exact", "prefix", "suffix"],
+            "required": ["type"],
         },
-        "ITextPositionSelector": {
-            "type": "object",
-            "properties": {
-                "type": {
-                    "const": "TextPositionSelector",
-                },
-                "start": {
-                    "type": "number",
-                },
-                "end": {
-                    "type": "number",
-                },
-            },
-            "required": ["type", "start", "end"],
-        },
-        "IFragmentSelector": {
-            "type": "object",
-            "properties": {
-                "type": {
-                    "const": "FragmentSelector",
-                },
-                "conformsTo": {
-                    "type": "string",
-                },
-                "value": {
-                    "type": "string",
-                },
-            },
-            "required": ["type", "conformsTo", "value"],
-        },
+        // "ITextQuoteSelector": {
+        //     "type": "object",
+        //     "properties": {
+        //         "type": {
+        //             "const": "TextQuoteSelector",
+        //         },
+        //         "exact": {
+        //             "type": "string",
+        //         },
+        //         "prefix": {
+        //             "type": "string",
+        //         },
+        //         "suffix": {
+        //             "type": "string",
+        //         },
+        //     },
+        //     "required": ["type", "exact", "prefix", "suffix"],
+        // },
+        // "ITextPositionSelector": {
+        //     "type": "object",
+        //     "properties": {
+        //         "type": {
+        //             "const": "TextPositionSelector",
+        //         },
+        //         "start": {
+        //             "type": "number",
+        //         },
+        //         "end": {
+        //             "type": "number",
+        //         },
+        //     },
+        //     "required": ["type", "start", "end"],
+        // },
+        // "IFragmentSelector": {
+        //     "type": "object",
+        //     "properties": {
+        //         "type": {
+        //             "const": "FragmentSelector",
+        //         },
+        //         "conformsTo": {
+        //             "type": "string",
+        //         },
+        //         "value": {
+        //             "type": "string",
+        //         },
+        //     },
+        //     "required": ["type", "conformsTo", "value"],
+        // },
     },
 };
 
