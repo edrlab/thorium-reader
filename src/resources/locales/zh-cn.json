@@ -34,6 +34,7 @@
             "no": "否",
             "yes": "是"
           },
+          "help": "",
           "message": "是否保存当前会话？",
           "title": "保存会话"
         }
@@ -531,12 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "清除登录数据"
     },

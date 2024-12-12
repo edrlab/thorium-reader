@@ -34,6 +34,7 @@
             "no": "いいえ",
             "yes": "はい"
           },
+          "help": "",
           "message": "セッションを保存しますか？",
           "title": "セッションを保存"
         }
@@ -531,12 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "ログインデータを消去する"
     },

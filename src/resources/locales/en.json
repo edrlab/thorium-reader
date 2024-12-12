@@ -34,6 +34,7 @@
             "no": "No",
             "yes": "Yes"
           },
+          "help": "If checked, currently opened books will automatically be opened at the next start of the application.",
           "message": "Do you want to save the session?",
           "title": "Save session"
         }
@@ -530,13 +531,15 @@
   },
   "settings": {
     "annotationCreator": {
-      "creator": "Creator",
-      "name": "Name",
+      "creator": "Creator (Optional)",
+      "help": "This will be used as the creator of the notes you may export.",
+      "name": "Username",
       "organization": "Organization",
       "person": "Person",
       "type": "Type:"
     },
     "auth": {
+      "help": "Do you want to delete your OPDS login credentials?",
       "title": "Manage access to catalogs",
       "wipeData": "Clear login data"
     },

@@ -34,6 +34,7 @@
             "no": "Ne",
             "yes": "Taip"
           },
+          "help": "",
           "message": "Ar norite išsaugoti sesiją?",
           "title": "Sesijos išsaugojimas"
         }
@@ -531,12 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Išvalyti prisijungimo duomenis"
     },

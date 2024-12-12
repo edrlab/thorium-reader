@@ -34,6 +34,7 @@
             "no": "Не",
             "yes": "Да"
           },
+          "help": "",
           "message": "Искате ли да запазите сесията ?",
           "title": "Запази сесията"
         }
@@ -531,12 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Изтриване на данните за удостоверяване"
     },

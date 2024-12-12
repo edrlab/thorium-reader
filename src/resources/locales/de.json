@@ -34,6 +34,7 @@
             "no": "Nein",
             "yes": "Ja"
           },
+          "help": "",
           "message": "Möchten Sie die Sitzung speichern?",
           "title": "Sitzung sichern"
         }
@@ -531,12 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Login-Daten löschen"
     },

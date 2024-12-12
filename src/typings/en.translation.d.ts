@@ -45,7 +45,8 @@ declare namespace typed_i18n {
       readonly "askBox": {
         readonly "button": { readonly "no": string, readonly "yes": string },
         readonly "message": string,
-        readonly "title": string
+        readonly "title": string,
+        readonly "help": string
       }
     }
   },
@@ -74,7 +75,8 @@ declare namespace typed_i18n {
     readonly "askBox": {
       readonly "button": { readonly "no": string, readonly "yes": string },
       readonly "message": string,
-      readonly "title": string
+      readonly "title": string,
+      readonly "help": string
     }
   }
 };
@@ -82,19 +84,22 @@ declare namespace typed_i18n {
   readonly "askBox": {
     readonly "button": { readonly "no": string, readonly "yes": string },
     readonly "message": string,
-    readonly "title": string
+    readonly "title": string,
+    readonly "help": string
   }
 };
   (_: "app.session.exit.askBox", __?: {}): {
   readonly "button": { readonly "no": string, readonly "yes": string },
   readonly "message": string,
-  readonly "title": string
+  readonly "title": string,
+  readonly "help": string
 };
   (_: "app.session.exit.askBox.button", __?: {}): { readonly "no": string, readonly "yes": string };
   (_: "app.session.exit.askBox.button.no", __?: {}): string;
   (_: "app.session.exit.askBox.button.yes", __?: {}): string;
   (_: "app.session.exit.askBox.message", __?: {}): string;
   (_: "app.session.exit.askBox.title", __?: {}): string;
+  (_: "app.session.exit.askBox.help", __?: {}): string;
   (_: "app.update", __?: {}): { readonly "message": string, readonly "title": string };
   (_: "app.update.message", __?: {}): string;
   (_: "app.update.title", __?: {}): string;
@@ -934,6 +939,7 @@ declare namespace typed_i18n {
   readonly "tts": {
     readonly "activate": string,
     readonly "default": string,
+    readonly "language": string,
     readonly "next": string,
     readonly "pause": string,
     readonly "play": string,
@@ -942,8 +948,7 @@ declare namespace typed_i18n {
     readonly "sentenceDetectDescription": string,
     readonly "speed": string,
     readonly "stop": string,
-    readonly "voice": string,
-    readonly "language": string
+    readonly "voice": string
   }
 };
   (_: "reader.annotations", __?: {}): {
@@ -1375,6 +1380,7 @@ declare namespace typed_i18n {
   (_: "reader.tts", __?: {}): {
   readonly "activate": string,
   readonly "default": string,
+  readonly "language": string,
   readonly "next": string,
   readonly "pause": string,
   readonly "play": string,
@@ -1383,11 +1389,11 @@ declare namespace typed_i18n {
   readonly "sentenceDetectDescription": string,
   readonly "speed": string,
   readonly "stop": string,
-  readonly "voice": string,
-  readonly "language": string
+  readonly "voice": string
 };
   (_: "reader.tts.activate", __?: {}): string;
   (_: "reader.tts.default", __?: {}): string;
+  (_: "reader.tts.language", __?: {}): string;
   (_: "reader.tts.next", __?: {}): string;
   (_: "reader.tts.pause", __?: {}): string;
   (_: "reader.tts.play", __?: {}): string;
@@ -1397,16 +1403,20 @@ declare namespace typed_i18n {
   (_: "reader.tts.speed", __?: {}): string;
   (_: "reader.tts.stop", __?: {}): string;
   (_: "reader.tts.voice", __?: {}): string;
-  (_: "reader.tts.language", __?: {}): string;
   (_: "settings", __?: {}): {
   readonly "annotationCreator": {
     readonly "creator": string,
     readonly "name": string,
     readonly "organization": string,
     readonly "person": string,
-    readonly "type": string
+    readonly "type": string,
+    readonly "help": string
   },
-  readonly "auth": { readonly "title": string, readonly "wipeData": string },
+  readonly "auth": {
+    readonly "title": string,
+    readonly "wipeData": string,
+    readonly "help": string
+  },
   readonly "keyboard": {
     readonly "advancedMenu": string,
     readonly "cancel": string,
@@ -1441,16 +1451,23 @@ declare namespace typed_i18n {
   readonly "name": string,
   readonly "organization": string,
   readonly "person": string,
-  readonly "type": string
+  readonly "type": string,
+  readonly "help": string
 };
   (_: "settings.annotationCreator.creator", __?: {}): string;
   (_: "settings.annotationCreator.name", __?: {}): string;
   (_: "settings.annotationCreator.organization", __?: {}): string;
   (_: "settings.annotationCreator.person", __?: {}): string;
   (_: "settings.annotationCreator.type", __?: {}): string;
-  (_: "settings.auth", __?: {}): { readonly "title": string, readonly "wipeData": string };
+  (_: "settings.annotationCreator.help", __?: {}): string;
+  (_: "settings.auth", __?: {}): {
+  readonly "title": string,
+  readonly "wipeData": string,
+  readonly "help": string
+};
   (_: "settings.auth.title", __?: {}): string;
   (_: "settings.auth.wipeData", __?: {}): string;
+  (_: "settings.auth.help", __?: {}): string;
   (_: "settings.keyboard", __?: {}): {
   readonly "advancedMenu": string,
   readonly "cancel": string,

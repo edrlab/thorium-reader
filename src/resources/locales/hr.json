@@ -34,6 +34,7 @@
             "no": "Ne",
             "yes": "Da"
           },
+          "help": "",
           "message": "Želite li spremiti sesiju ?",
           "title": "Spremi sesiju"
         }
@@ -531,12 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Izbriši podatke za prijavu"
     },

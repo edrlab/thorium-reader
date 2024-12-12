@@ -34,6 +34,7 @@
             "no": "Não",
             "yes": "Sim"
           },
+          "help": "",
           "message": "Você quer salvar a sessão?",
           "title": "Salvar sessão"
         }
@@ -531,12 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Limpar dados de login"
     },

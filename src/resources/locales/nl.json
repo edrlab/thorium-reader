@@ -34,6 +34,7 @@
             "no": "Nee",
             "yes": "Ja"
           },
+          "help": "",
           "message": "Wil je deze sessie bewaren?",
           "title": "Bewaar sessie"
         }
@@ -531,12 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Wis authenticatie gegevens"
     },

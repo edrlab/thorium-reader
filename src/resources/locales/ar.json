@@ -34,6 +34,7 @@
             "no": "لا",
             "yes": "نعم"
           },
+          "help": "",
           "message": "هل تريد حفظ الجلسة؟",
           "title": "حفظ الجلسة"
         }
@@ -531,12 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "حذف بيانات تسجيل الدخول"
     },

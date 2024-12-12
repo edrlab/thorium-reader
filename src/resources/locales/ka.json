@@ -34,6 +34,7 @@
             "no": "არა",
             "yes": "დიახ"
           },
+          "help": "",
           "message": "გსურს შევინახოთ სესია ?",
           "title": "სესიის შენახვა"
         }
@@ -531,12 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "აუტენტიფიკაციის მონაცემების გასუფთავება"
     },

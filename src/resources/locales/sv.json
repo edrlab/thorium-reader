@@ -34,6 +34,7 @@
             "no": "Nej",
             "yes": "Ja"
           },
+          "help": "",
           "message": "Vill du spara sessionen?",
           "title": "Spara session"
         }
@@ -531,12 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "Skapare",
+      "help": "",
       "name": "Namn",
       "organization": "Organisation",
       "person": "Person",
       "type": "Typ:"
     },
     "auth": {
+      "help": "",
       "title": "Hantera åtkomst till kataloger",
       "wipeData": "Rensa inloggningsuppgifter"
     },

@@ -34,6 +34,7 @@
             "no": "Нет",
             "yes": "Да"
           },
+          "help": "",
           "message": "Вы хотите сохранить сеанс ?",
           "title": "Сохранить сеанс"
         }
@@ -531,12 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Очистить данные для входа"
     },
