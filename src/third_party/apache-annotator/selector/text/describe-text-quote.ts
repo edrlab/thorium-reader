@@ -21,12 +21,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { TextQuoteSelector } from '../types.js';
-import type { Chunk, Chunker, ChunkRange } from './chunker.js';
-import { chunkRangeEquals } from './chunker.js';
-import { textQuoteSelectorMatcher } from './match-text-quote.js';
-import type { RelativeSeeker } from './seeker.js';
-import { TextSeeker } from './seeker.js';
+import type { TextQuoteSelector } from "../types.js";
+import type { Chunk, Chunker, ChunkRange } from "./chunker.js";
+import { chunkRangeEquals } from "./chunker.js";
+import { textQuoteSelectorMatcher } from "./match-text-quote.js";
+import type { RelativeSeeker } from "./seeker.js";
+import { TextSeeker } from "./seeker.js";
 
 /**
  * @public
@@ -103,8 +103,8 @@ export async function describeTextQuote<TChunk extends Chunk<string>>(
   const exact = seekerAtTarget.readToChunk(target.endChunk, target.endIndex);
 
   // Start with an empty prefix and suffix.
-  let prefix = '';
-  let suffix = '';
+  let prefix = "";
+  let suffix = "";
 
   // If the quote is below the given minimum length, add some prefix & suffix.
   const currentQuoteLength = () => prefix.length + exact.length + suffix.length;
@@ -157,7 +157,7 @@ export async function describeTextQuote<TChunk extends Chunk<string>>(
   // ensure it will no longer match.
   while (true) {
     const tentativeSelector: TextQuoteSelector = {
-      type: 'TextQuoteSelector',
+      type: "TextQuoteSelector",
       exact,
       prefix,
       suffix,
@@ -165,10 +165,11 @@ export async function describeTextQuote<TChunk extends Chunk<string>>(
 
     const matches = textQuoteSelectorMatcher(tentativeSelector)(scope());
     let nextMatch = await matches.next();
+    const nextMatchValue = nextMatch.value;
 
     // If this match is the intended one, no need to act.
     // XXX This test is fragile: nextMatch and target are assumed to be normalised.
-    if (!nextMatch.done && chunkRangeEquals(nextMatch.value, target)) {
+    if (!nextMatch.done && nextMatchValue && chunkRangeEquals(nextMatchValue, target)) {
       nextMatch = await matches.next();
     }
 
@@ -184,6 +185,9 @@ export async function describeTextQuote<TChunk extends Chunk<string>>(
 
     // We’ll have to add more prefix/suffix to disqualify this unintended match.
     const unintendedMatch = nextMatch.value;
+    if (!unintendedMatch) {
+      throw new Error("Unreacheable unintendedMatch equal `void` type");
+    }
 
     // Count how many characters we’d need as a prefix to disqualify this match.
     seekerAtTarget.seekToChunk(
@@ -232,7 +236,7 @@ export async function describeTextQuote<TChunk extends Chunk<string>>(
         suffix = suffix + extraSuffix;
       } else {
         throw new Error(
-          'Target cannot be disambiguated; how could that have happened‽',
+          "Target cannot be disambiguated; how could that have happened‽",
         );
       }
     } else {
@@ -248,12 +252,12 @@ function readUntilDifferent(
   seeker2: RelativeSeeker,
   reverse: boolean,
 ): string | undefined {
-  let result = '';
+  let result = "";
   while (true) {
     let nextCharacter: string;
     try {
       nextCharacter = seeker1.read(reverse ? -1 : 1);
-    } catch (err) {
+    } catch {
       return undefined; // Start/end of text reached: cannot expand result.
     }
     result = reverse ? nextCharacter + result : result + nextCharacter;
@@ -275,7 +279,7 @@ function readUntilWhitespace(
   limit = Infinity,
   reverse = false,
 ): string {
-  let result = '';
+  let result = "";
   while (result.length < limit) {
     let nextCharacter: string;
     try {

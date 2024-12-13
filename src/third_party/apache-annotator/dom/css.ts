@@ -21,10 +21,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { finder } from '@medv/finder';
-import type { CssSelector, Matcher } from '../selector/types.js';
-import { ownerDocument } from './owner-document.js';
-import { toRange } from './to-range.js';
+import { uniqueCssSelector as finder } from "@r2-navigator-js/electron/renderer/common/cssselector2-3";
+
+import type { CssSelector, Matcher } from "../selector/types.js";
+import { ownerDocument } from "./owner-document.js";
+import { toRange } from "./to-range.js";
 
 /**
  * Find the elements corresponding to the given {@link
@@ -115,9 +116,9 @@ export async function describeCss(
   element: HTMLElement,
   scope: Element = element.ownerDocument.documentElement,
 ): Promise<CssSelector> {
-  const selector = finder(element, { root: scope });
+  const selector = finder(element, element.ownerDocument, { root: scope });
   return {
-    type: 'CssSelector',
+    type: "CssSelector",
     value: selector,
   };
 }

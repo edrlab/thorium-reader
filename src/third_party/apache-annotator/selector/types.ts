@@ -50,7 +50,7 @@ export interface Selector<T = any> {
  * @public
  */
 export interface CssSelector<T = any> extends Selector<T> {
-  type: 'CssSelector';
+  type: "CssSelector";
   value: string;
 }
 
@@ -63,7 +63,7 @@ export interface CssSelector<T = any> extends Selector<T> {
  * @public
  */
 export interface TextQuoteSelector<T = any> extends Selector<T> {
-  type: 'TextQuoteSelector';
+  type: "TextQuoteSelector";
   exact: string;
   prefix?: string;
   suffix?: string;
@@ -78,7 +78,7 @@ export interface TextQuoteSelector<T = any> extends Selector<T> {
  * @public
  */
 export interface TextPositionSelector<T = any> extends Selector<T> {
-  type: 'TextPositionSelector';
+  type: "TextPositionSelector";
   start: number; // more precisely: non-negative integer
   end: number; // more precisely: non-negative integer
 }
@@ -92,7 +92,7 @@ export interface TextPositionSelector<T = any> extends Selector<T> {
  * @public
  */
 export interface RangeSelector<T = any> extends Selector<T> {
-  type: 'RangeSelector';
+  type: "RangeSelector";
   startSelector: T;
   endSelector: T;
 }

@@ -21,8 +21,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { TextQuoteSelector } from '../types.js';
-import type { Chunk, Chunker, ChunkRange } from './chunker.js';
+import type { TextQuoteSelector } from "../types.js";
+import type { Chunk, Chunker, ChunkRange } from "./chunker.js";
 
 /**
  * Find occurrences in a text matching the given {@link TextQuoteSelector}.
@@ -74,8 +74,8 @@ export function textQuoteSelectorMatcher(
     textChunks: Chunker<TChunk>,
   ) {
     const exact = selector.exact;
-    const prefix = selector.prefix || '';
-    const suffix = selector.suffix || '';
+    const prefix = selector.prefix || "";
+    const suffix = selector.suffix || "";
     const searchPattern = prefix + exact + suffix;
 
     // The code below essentially just performs string.indexOf(searchPattern),

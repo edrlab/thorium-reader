@@ -21,10 +21,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { Chunk, Chunker } from './chunker.js';
-import { chunkEquals } from './chunker.js';
+import type { Chunk, Chunker } from "./chunker.js";
+import { chunkEquals } from "./chunker.js";
 
-const E_END = 'Iterator exhausted before seek ended.';
+const E_END = "Iterator exhausted before seek ended.";
 
 /**
  * Abstraction to seek (jump) or read to a position inside a ‘file’ consisting of a
@@ -267,7 +267,7 @@ export class TextSeeker<TChunk extends Chunk<string>>
     offset = 0,
   ): string | void {
     const oldPosition = this.position;
-    let result = '';
+    let result = "";
 
     // Walk to the requested chunk.
     if (!this.chunker.precedesCurrentChunk(target)) {
@@ -327,7 +327,7 @@ export class TextSeeker<TChunk extends Chunk<string>>
     roundUp = false,
     lessIsFine = false,
   ): string | void {
-    let result = '';
+    let result = "";
 
     if (this.position <= target) {
       while (true) {

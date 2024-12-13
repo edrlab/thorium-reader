@@ -33,5 +33,5 @@ export function ownerDocument(nodeOrRange: Node | Range): Document {
 }
 
 function isRange(nodeOrRange: Node | Range): nodeOrRange is Range {
-  return 'startContainer' in nodeOrRange;
+  return "startContainer" in nodeOrRange;
 }

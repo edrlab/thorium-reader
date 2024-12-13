@@ -21,5 +21,5 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export * from './describe.js';
-export * from './match.js';
+export * from "./describe.js";
+export * from "./match.js";

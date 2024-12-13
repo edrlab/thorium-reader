@@ -21,7 +21,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ownerDocument } from './owner-document.js';
+import { ownerDocument } from "./owner-document.js";
 
 /**
  * TextRange is a Range that guarantees to always have Text nodes as its start
@@ -134,7 +134,7 @@ function snapBoundaryPointToTextNode(
     while (curNode.nextSibling === null) {
       if (curNode.parentNode === null)
         // Boundary point is at end of document
-        throw new Error('not implemented'); // TODO
+        throw new Error("not implemented"); // TODO
       curNode = curNode.parentNode;
     }
     curNode = curNode.nextSibling;
@@ -151,7 +151,7 @@ function snapBoundaryPointToTextNode(
   } else if (walker.previousNode() !== null) {
     return [walker.currentNode as Text, (walker.currentNode as Text).length];
   } else {
-    throw new Error('Document contains no text nodes.');
+    throw new Error("Document contains no text nodes.");
   }
 }
 

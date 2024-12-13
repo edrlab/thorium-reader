@@ -46,7 +46,7 @@ export async function* cartesian<T>(
     let active = iterators.length;
 
     // Track all the values of each iterator in a log.
-    const logs = iterators.map(() => []) as T[][];
+    const logs = iterators.map(() => [] as any[]) as T[][];
 
     // Track the promise of the next value of each iterator.
     const nexts = iterators.map((it) => it.next());
@@ -68,6 +68,7 @@ export async function* cartesian<T>(
       }
 
       // Append the new value to the log.
+      // @ts-expect-error
       const { value } = result.value;
       logs[index].push(value);
 

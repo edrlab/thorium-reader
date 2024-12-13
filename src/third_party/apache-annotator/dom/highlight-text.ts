@@ -21,8 +21,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ownerDocument } from './owner-document.js';
-import { toRange } from './to-range.js';
+import { ownerDocument } from "./owner-document.js";
+import { toRange } from "./to-range.js";
 
 /**
  * Wrap each text node in a given Node or Range with a `<mark>` or other
@@ -48,7 +48,7 @@ import { toRange } from './to-range.js';
  */
 export function highlightText(
   target: Node | Range,
-  tagName = 'mark',
+  tagName = "mark",
   attributes: Record<string, string> = {},
 ): () => void {
   // First put all nodes in an array (splits start and end nodes if needed)

@@ -21,7 +21,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ownerDocument } from './owner-document.js';
+import { ownerDocument } from "./owner-document.js";
 
 /**
  * Returns a range that exactly selects the contents of the given node.
@@ -44,5 +44,5 @@ export function toRange(nodeOrRange: Node | Range): Range {
 }
 
 function isRange(nodeOrRange: Node | Range): nodeOrRange is Range {
-  return 'startContainer' in nodeOrRange;
+  return "startContainer" in nodeOrRange;
 }

@@ -21,8 +21,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { Chunk } from './chunker.js';
-import type { Seeker } from './seeker.js';
+import type { Chunk } from "./chunker.js";
+import type { Seeker } from "./seeker.js";
 
 /**
  * Seeks through text counting Unicode *code points* instead of *code units*.
@@ -118,6 +118,7 @@ export class CodePointSeeker<TChunk extends Chunk<string>>
       : this.position - result.length;
 
     if (read) return result;
+    return undefined;
   }
 
   private _readOrSeekTo(
@@ -134,7 +135,7 @@ export class CodePointSeeker<TChunk extends Chunk<string>>
     let result: string[] = [];
 
     if (this.position < target) {
-      let unpairedSurrogate = '';
+      let unpairedSurrogate = "";
       let characters: string[] = [];
       while (this.position < target) {
         let s = unpairedSurrogate + this.raw.read(1, true);
@@ -142,7 +143,7 @@ export class CodePointSeeker<TChunk extends Chunk<string>>
           unpairedSurrogate = s.slice(-1); // consider this half-character part of the next string.
           s = s.slice(0, -1);
         } else {
-          unpairedSurrogate = '';
+          unpairedSurrogate = "";
         }
         characters = [...s];
         this.position += characters.length;
@@ -153,13 +154,13 @@ export class CodePointSeeker<TChunk extends Chunk<string>>
         const overshootInCodePoints = this.position - target;
         const overshootInCodeUnits = characters
           .slice(-overshootInCodePoints)
-          .join('').length;
+          .join("").length;
         this.position -= overshootInCodePoints;
         this.raw.seekBy(-overshootInCodeUnits);
       }
     } else {
       // Nearly equal to the if-block, but moving backward in the text.
-      let unpairedSurrogate = '';
+      let unpairedSurrogate = "";
       let characters: string[] = [];
       while (this.position > target) {
         let s = this.raw.read(-1, true) + unpairedSurrogate;
@@ -167,7 +168,7 @@ export class CodePointSeeker<TChunk extends Chunk<string>>
           unpairedSurrogate = s[0];
           s = s.slice(1);
         } else {
-          unpairedSurrogate = '';
+          unpairedSurrogate = "";
         }
         characters = [...s];
         this.position -= characters.length;
@@ -178,7 +179,7 @@ export class CodePointSeeker<TChunk extends Chunk<string>>
         const overshootInCodePoints = target - this.position;
         const overshootInCodeUnits = characters
           .slice(0, overshootInCodePoints)
-          .join('').length;
+          .join("").length;
         this.position += overshootInCodePoints;
         this.raw.seekBy(overshootInCodeUnits);
       }

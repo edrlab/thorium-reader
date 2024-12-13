@@ -22,10 +22,10 @@
  */
 
 import type { TextPositionSelector } from "../../selector/types.js";
-import { describeTextPosition as abstractDescribeTextPosition } from '../../selector/text/describe-text-position.js';
-import { ownerDocument } from '../owner-document.js';
-import { TextNodeChunker } from '../text-node-chunker.js';
-import { toRange } from '../to-range.js';
+import { describeTextPosition as abstractDescribeTextPosition } from "../../selector/text/describe-text-position.js";
+import { ownerDocument } from "../owner-document.js";
+import { TextNodeChunker } from "../text-node-chunker.js";
+import { toRange } from "../to-range.js";
 
 /**
  * Returns a {@link TextPositionSelector} that points at the target text within
@@ -66,7 +66,7 @@ export async function describeTextPosition(
 
   const textChunks = new TextNodeChunker(scope);
   if (textChunks.currentChunk === null)
-    throw new RangeError('Scope does not contain any Text nodes.');
+    throw new RangeError("Scope does not contain any Text nodes.");
 
   return await abstractDescribeTextPosition(
     textChunks.rangeToChunkRange(range),

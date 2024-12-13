@@ -47,6 +47,7 @@ export class OutOfScopeError extends TypeError {
   }
 }
 
+//@ts-expect-error
 export class TextNodeChunker implements Chunker<PartialTextNode> {
   private scope: Range;
   private iter: NodeIterator;
@@ -83,6 +84,7 @@ export class TextNodeChunker implements Chunker<PartialTextNode> {
     };
   }
 
+//@ts-expect-error
   rangeToChunkRange(range: Range): ChunkRange<PartialTextNode> {
     range = range.cloneRange();
 
@@ -103,6 +105,7 @@ export class TextNodeChunker implements Chunker<PartialTextNode> {
     return { startChunk, startIndex, endChunk, endIndex };
   }
 
+//@ts-expect-error
   chunkRangeToRange(chunkRange: ChunkRange<PartialTextNode>): Range {
     const range = ownerDocument(this.scope).createRange();
     // The `+…startOffset` parts are only relevant for the first chunk, as it

@@ -28,6 +28,6 @@ export type {
   RangeSelector,
   TextPositionSelector,
   TextQuoteSelector,
-} from './types.js';
-export * from './text/index.js';
-export * from './refinable.js';
+} from "./types.js";
+export * from "./text/index.js";
+export * from "./refinable.js";

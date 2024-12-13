@@ -39,7 +39,7 @@ export interface Chunk<TData> {
    * The piece of text this chunk represents.
    */
   readonly data: TData;
-  equals?(otherChunk: this): boolean;
+  equals?: (otherChunk: this) => boolean;
 }
 
 /**

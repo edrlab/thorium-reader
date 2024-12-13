@@ -21,9 +21,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { Matcher, TextPositionSelector } from '../../selector/types.js';
-import { textPositionSelectorMatcher as abstractTextPositionSelectorMatcher } from '../../selector/text/match-text-position.js';
-import { TextNodeChunker } from '../text-node-chunker.js';
+import type { Matcher, TextPositionSelector } from "../../selector/types.js";
+import { textPositionSelectorMatcher as abstractTextPositionSelectorMatcher } from "../../selector/text/match-text-position.js";
+import { TextNodeChunker } from "../text-node-chunker.js";
 
 /**
  * Find the range of text corresponding to the given {@link

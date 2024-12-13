@@ -21,10 +21,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { TextPositionSelector } from '../types.js';
-import type { Chunk, Chunker, ChunkRange } from './chunker.js';
-import { CodePointSeeker } from './code-point-seeker.js';
-import { TextSeeker } from './seeker.js';
+import type { TextPositionSelector } from "../types.js";
+import type { Chunk, Chunker, ChunkRange } from "./chunker.js";
+import { CodePointSeeker } from "./code-point-seeker.js";
+import { TextSeeker } from "./seeker.js";
 
 /**
  * Returns a {@link TextPositionSelector} that points at the target text within
@@ -57,7 +57,7 @@ export async function describeTextPosition<TChunk extends Chunk<string>>(
   codePointSeeker.seekToChunk(target.endChunk, target.endIndex);
   const end = codePointSeeker.position;
   return {
-    type: 'TextPositionSelector',
+    type: "TextPositionSelector",
     start,
     end,
   };
