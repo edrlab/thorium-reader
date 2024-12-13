@@ -6,7 +6,7 @@ const importedNpmPackages = new Set();
 const ignoreds = [/^@r2-.+-js\//, /^test\//, /^readium-desktop\//, /^fs/, /^url/, /^path/, /^util/, /^os/, /^https?/, /^assert/, /^crypto/, /^node:/];
 
 const regExp_fileExt = /\.tsx?$/i;
-const regExp_imports = /\s+(from|require)\s+["']([^\.][^"']+)["']/g;
+const regExp_imports = /((\s+from\s+)|(require\s*\(\s*))["']([^\.][^"']+)["']/g;
 
 async function processDir(folderPath) {
     const fileNames = await fs.promises.readdir(folderPath);
@@ -17,12 +17,12 @@ async function processDir(folderPath) {
             const src = await fs.promises.readFile(filePath, { encoding: "utf8" });
             const matches = src.matchAll(regExp_imports);
             for (const match of matches) {
-                let captured = match[2];
+                // console.log("--> ", JSON.stringify(match, null, 4));
+                let captured = match[4];
                 if (captured.startsWith("@lunr-languages")) {
                     captured = captured.substring(1);
                 }
                 if (!ignoreds.find((ignored) => ignored.test(captured))) {
-                    // console.log("--> ", JSON.stringify(match, null, 4));
                     const slashIndex = captured.indexOf("/");
                     if (slashIndex > 0) {
                         if (!captured.startsWith("@")) {
@@ -34,7 +34,11 @@ async function processDir(folderPath) {
                             }
                         }
                     }
-                    // console.log("============> ", captured);
+                    // if (!importedNpmPackages.has(captured)) {
+                    //     const isRequire = !!match[3];
+                    //         // const isImport = !!match[2];
+                    //     console.log("============> ", isRequire ? "REQUIRE" : "IMPORT", captured);
+                    // }
                     importedNpmPackages.add(captured);
                 }
             }
@@ -46,7 +50,7 @@ async function processDir(folderPath) {
 let errored = false;
 try {
     await processDir(path.join(process.cwd(), "src"));
-    // importedNpmPackages.forEach((imported) => console.log(imported));
+    Array.from(importedNpmPackages).sort().forEach((imported) => console.log(imported));
     const jsonStr = await fs.promises.readFile(path.join(process.cwd(), "package.json"), { encoding: "utf8" });
     const json = JSON.parse(jsonStr);
     // console.log(JSON.stringify(json.dependencies, null, 4));
@@ -55,7 +59,7 @@ try {
     const deps = Object.keys(json.dependencies).concat(Object.keys(json.devDependencies).concat(Object.keys(json.peerDependencies || {})));
     for (const importedNpmPackage of importedNpmPackages) {
         if (!deps.find((dep) => dep === importedNpmPackage)) {
-            console.error("Package imported but not in package.json dependencies!", importedNpmPackage);
+            console.error("!!!!!!!!! Package import'ed/require'd but not in package.json dependencies:", importedNpmPackage);
             errored = true;
         }
     }
@@ -65,8 +69,9 @@ try {
     errored = true;
 }
 if (errored) {
+    console.error(">>>>>>>>>>>>>> NOK :(");
     process.exit(1);
 } else {
-    console.log("OK :)");
+    console.log(">>>>>>>>>>>>>> OK :)");
     process.exit(0);
 }
