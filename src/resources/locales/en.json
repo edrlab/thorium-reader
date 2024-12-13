@@ -247,13 +247,13 @@
   "publication": {
     "accessibility": {
       "accessModeSufficient": {
-        "textual": "TTS & Screen reader friendly"
+        "textual": "All content can be read as read aloud speech or dynamic braille"
       },
       "accessibilityFeature": {
-        "alternativeText": "Contains alternative text",
-        "displayTransformability": "Adaptable text and layout",
+        "alternativeText": "Has alt text on images",
+        "displayTransformability": "Appearance of the text and page layout can be modified",
         "longDescription": "Fully described graphical resources",
-        "printPageNumbers": "Printed book pagination reference",
+        "printPageNumbers": "Contains a page list to go to pages from the print source version",
         "readingOrder": "Contains a reading order",
         "synchronizedAudioText": "Text & audio synchronised",
         "tableOfContents": "Contains a Table Of Contents"
