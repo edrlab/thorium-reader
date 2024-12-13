@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as setCache from "./cache";
 import * as cancel from "./cancel";
 import * as enable from "./enable";
 import * as focus from "./focus";
@@ -15,7 +14,6 @@ import * as previous from "./previous";
 import * as request from "./request";
 
 export {
-    setCache,
     request,
     cancel,
     next,

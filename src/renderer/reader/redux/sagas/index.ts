@@ -78,6 +78,20 @@ export function* rootSaga() {
 
     yield call(winInit.render);
 
+
+
+    // if annotationImportQueue not empty then
+    // start the import process
+
+    // when push action dispatched start the import process
+    // with cache push action trigger the import process but not in // in sequence
+    // new annotations in queue => 
+        // shift it => 
+            // process it =>
+                // wait 100ms => 
+                    // look if new data in the queue => 
+                        // if no new note available, wait new push action
+
     yield all([
         i18n.saga(),
         ipc.saga(),

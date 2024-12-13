@@ -22,11 +22,11 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { ISearchResult } from "readium-desktop/utils/search/search.interface";
 
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import { readerLocalActionSearch } from "../redux/actions";
+import { ISearchResult } from "readium-desktop/utils/search/search";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {

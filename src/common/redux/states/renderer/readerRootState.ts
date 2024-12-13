@@ -23,11 +23,13 @@ import { IAnnotationModeState, TAnnotationState, TAnnotationTagsIndex } from "./
 import { ITTSState } from "readium-desktop/renderer/reader/redux/state/tts";
 import { IMediaOverlayState } from "readium-desktop/renderer/reader/redux/state/mediaOverlay";
 import { IAllowCustomConfigState } from "readium-desktop/renderer/reader/redux/state/allowCustom";
+import { ICacheDocument } from "./resourceCache";
 
 export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
     picker: IPickerState;
     search: ISearchState;
+    resourceCache: ICacheDocument[];
     mode: ReaderMode;
     annotation: IAnnotationModeState;
     annotationTagsIndex: TAnnotationTagsIndex;

@@ -11,10 +11,27 @@
 import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
 
 import { ContentType } from "../contentType";
-import { ISearchDocument, ISearchResult } from "./search.interface";
 import { searchDocDomSeek } from "./searchWithDomSeek";
 
-export async function search(searchInput: string, data: ISearchDocument): Promise<ISearchResult[]> {
+import { IRangeInfo } from "@r2-navigator-js/electron/common/selection";
+import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
+
+export interface ISearchResult {
+    rangeInfo: IRangeInfo;
+
+    cleanBefore: string;
+    cleanText: string;
+    cleanAfter: string;
+
+    // rawBefore: string;
+    // rawText: string;
+    // rawAfter: string;
+
+    href: string;
+    uuid: string;
+}
+
+export async function search(searchInput: string, data: ICacheDocument): Promise<ISearchResult[]> {
 
     if (!data.xml) {
         return [];

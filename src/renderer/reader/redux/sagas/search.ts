@@ -11,8 +11,7 @@ import { clone, flatten } from "ramda";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { ContentType } from "readium-desktop/utils/contentType";
-import { search } from "readium-desktop/utils/search/search";
-import { ISearchDocument, ISearchResult } from "readium-desktop/utils/search/search.interface";
+import { ISearchResult, search } from "readium-desktop/utils/search/search";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, cancel, join, put, take } from "redux-saga/effects";
 import {
@@ -26,10 +25,11 @@ import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 
-import { readerLocalActionHighlights, readerLocalActionSearch } from "../actions";
+import { readerLocalActionHighlights, readerLocalActionSearch, readerLocalActionSetResourceToCache } from "../actions";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 
 import debounce from "debounce";
+import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
 
 const handleLinkLocatorDebounced = debounce(handleLinkLocator, 200);
 
@@ -68,7 +68,7 @@ function* searchRequest(action: readerLocalActionSearch.request.TAction) {
     yield call(clearSearch);
 
     const text = action.payload.textSearch;
-    const cacheFromState = yield* selectTyped((state: IReaderRootState) => state.search.cacheArray);
+    const cacheFromState = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
 
     const searchMap = cacheFromState.map(
         (v) =>
@@ -208,7 +208,7 @@ function* requestPublicationData() {
         (state: IReaderRootState) => state.reader.info.manifestUrlR2Protocol,
     );
     const request = r2Manifest.Spine.map((ln) => call(async () => {
-        const ret: ISearchDocument = {
+        const ret: ICacheDocument = {
             xml: "", // initialized in code below
             href: ln.Href,
             contentType: ln.TypeLink ? ln.TypeLink : ContentType.Xhtml,
@@ -240,7 +240,7 @@ function* requestPublicationData() {
     }));
 
     const result = yield* allTyped(request);
-    yield put(readerLocalActionSearch.setCache.build(...result));
+    yield put(readerLocalActionSetResourceToCache.build(result));
 }
 
 function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {

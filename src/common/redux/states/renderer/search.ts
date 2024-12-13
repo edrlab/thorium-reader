@@ -5,8 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ISearchDocument, ISearchResult } from "readium-desktop/utils/search/search.interface";
-
+import { ISearchResult } from "readium-desktop/utils/search/search";
 import { IHighlightBaseState } from "./highlight";
 
 export interface ISearchState {
@@ -16,7 +15,6 @@ export interface ISearchState {
     newFocusUUId: IHighlightBaseState["uuid"];
     oldFocusUUId: IHighlightBaseState["uuid"];
     foundArray: ISearchResult[];
-    cacheArray: ISearchDocument[];
 }
 
 export const searchDefaultState = (): ISearchState =>
@@ -27,5 +25,4 @@ export const searchDefaultState = (): ISearchState =>
         newFocusUUId: "",
         oldFocusUUId: "",
         foundArray: [],
-        cacheArray: [],
     });

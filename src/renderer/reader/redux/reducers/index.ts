@@ -47,6 +47,7 @@ import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 import { importAnnotationReducer } from "readium-desktop/renderer/common/redux/reducers/importAnnotation";
 import { tagReducer } from "readium-desktop/common/redux/reducers/tag";
 import { fifoReducer } from "readium-desktop/utils/redux-reducers/fifo.reducer";
+import { readerResourceCacheReducer } from "./resourceCache";
 
 export const rootReducer = () => {
 
@@ -182,6 +183,7 @@ export const rootReducer = () => {
             tts: readerTTSReducer,
         }),
         search: searchReducer,
+        resourceCache: readerResourceCacheReducer,
         annotation: annotationModeEnableReducer,
         annotationTagsIndex: annotationTagsIndexReducer,
         picker: pickerReducer,
