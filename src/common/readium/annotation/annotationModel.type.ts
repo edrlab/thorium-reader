@@ -392,7 +392,7 @@ export const readiumAnnotationSetSchema = {
             "properties": {
                 "type": {
                     "type": "string",
-                }
+                },
             },
             "required": ["type"],
         },

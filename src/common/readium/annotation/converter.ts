@@ -12,12 +12,14 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { rgbToHex } from "readium-desktop/common/rgb";
 
+// import { describeTextPosition } from "readium-desktop/third_party/apache-annotator/dom/text-position";
+
 export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotationState): IReadiumAnnotation {
 
     const { uuid, color, locatorExtended: def, tags, drawType, comment, creator, created, modified } = annotation;
     const { locator, headings, epubPage/*, selectionInfo*/ } = def;
-    const { href, text/*, locations*/ } = locator;
-    const { afterRaw, beforeRaw, highlightRaw } = text || {};
+    const { href /*text, locations*/ } = locator;
+    // const { afterRaw, beforeRaw, highlightRaw } = text || {};
     // const { rangeInfo: rangeInfoSelection } = selectionInfo || {};
     // const { progression } = locations;
 
@@ -25,14 +27,17 @@ export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotatio
 
     const selector: IReadiumAnnotation["target"]["selector"] = [];
 
-    if (highlightRaw && afterRaw && beforeRaw) {
-        selector.push({
-            type: "TextQuoteSelector",
-            exact: highlightRaw,
-            prefix: beforeRaw,
-            suffix: afterRaw,
-        });
-    }
+    // if (highlightRaw && afterRaw && beforeRaw) {
+    //     selector.push({
+    //         type: "TextQuoteSelector",
+    //         exact: highlightRaw,
+    //         prefix: beforeRaw,
+    //         suffix: afterRaw,
+    //     });
+    // }
+
+
+    // need to convert locator to Range and convert it with apache annotator to TextQuote and TextPosition, and in a second time : CssSelectorWithTextPositionSelector !
 
     return {
         "@context": "http://www.w3.org/ns/anno.jsonld",
