@@ -68,9 +68,6 @@
     "emptyTagList": "No tagged publications.",
     "entry": {
       "continueReading": "Resume reading",
-      "continueReadingAudioBooks": "Resume listening",
-      "continueReadingDivina": "Resume divina",
-      "continueReadingPdf": "Resume PDF",
       "lastAdditions": "Recently added"
     },
     "export": "Save as",

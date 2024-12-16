@@ -68,9 +68,6 @@
     "emptyTagList": "Non tes libros etiquetaxes.",
     "entry": {
       "continueReading": "Reiniciar lectura",
-      "continueReadingAudioBooks": "Reiniciar reproducción",
-      "continueReadingDivina": "Reiniciar divina",
-      "continueReadingPdf": "Reiniciar PDF",
       "lastAdditions": "Engadidos recentemente"
     },
     "export": "Exportar",

@@ -68,9 +68,6 @@
     "emptyTagList": "Les livres ne contiennent pas de mots-clefs.",
     "entry": {
       "continueReading": "Reprendre la lecture",
-      "continueReadingAudioBooks": "Reprendre l'écoute",
-      "continueReadingDivina": "Reprendre la lecture de narration visuelle",
-      "continueReadingPdf": "Reprendre la lecture du document PDF",
       "lastAdditions": "Récemment ajouté"
     },
     "export": "Sauvegarder sous",

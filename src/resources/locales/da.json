@@ -68,9 +68,6 @@
     "emptyTagList": "Du har ingen taggede bøger.",
     "entry": {
       "continueReading": "Genoptag læsning",
-      "continueReadingAudioBooks": "Genoptag lydbog",
-      "continueReadingDivina": "Genoptag divina",
-      "continueReadingPdf": "Genoptag PDF",
       "lastAdditions": "Senest tilføjet"
     },
     "export": "Gem som",

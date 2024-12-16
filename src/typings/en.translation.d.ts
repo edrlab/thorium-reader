@@ -119,9 +119,6 @@ declare namespace typed_i18n {
   readonly "emptyTagList": string,
   readonly "entry": {
     readonly "continueReading": string,
-    readonly "continueReadingAudioBooks": string,
-    readonly "continueReadingDivina": string,
-    readonly "continueReadingPdf": string,
     readonly "lastAdditions": string
   },
   readonly "export": string,
@@ -192,17 +189,8 @@ declare namespace typed_i18n {
   (_: "catalog.deleteTag", __?: {}): string;
   (_: "catalog.description", __?: {}): string;
   (_: "catalog.emptyTagList", __?: {}): string;
-  (_: "catalog.entry", __?: {}): {
-  readonly "continueReading": string,
-  readonly "continueReadingAudioBooks": string,
-  readonly "continueReadingDivina": string,
-  readonly "continueReadingPdf": string,
-  readonly "lastAdditions": string
-};
+  (_: "catalog.entry", __?: {}): { readonly "continueReading": string, readonly "lastAdditions": string };
   (_: "catalog.entry.continueReading", __?: {}): string;
-  (_: "catalog.entry.continueReadingAudioBooks", __?: {}): string;
-  (_: "catalog.entry.continueReadingDivina", __?: {}): string;
-  (_: "catalog.entry.continueReadingPdf", __?: {}): string;
   (_: "catalog.entry.lastAdditions", __?: {}): string;
   (_: "catalog.export", __?: {}): string;
   (_: "catalog.exportAnnotation", __?: {}): string;
@@ -772,6 +760,7 @@ declare namespace typed_i18n {
       readonly "red": string,
       readonly "yellow": string
     },
+    readonly "export": string,
     readonly "filter": {
       readonly "all": string,
       readonly "filterByColor": string,
@@ -798,8 +787,7 @@ declare namespace typed_i18n {
       readonly "solid": string,
       readonly "strikethrough": string,
       readonly "underline": string
-    },
-    readonly "export": string
+    }
   },
   readonly "divina": { readonly "mute": string, readonly "unmute": string },
   readonly "fxl": { readonly "fit": string },
@@ -966,6 +954,7 @@ declare namespace typed_i18n {
     readonly "red": string,
     readonly "yellow": string
   },
+  readonly "export": string,
   readonly "filter": {
     readonly "all": string,
     readonly "filterByColor": string,
@@ -992,8 +981,7 @@ declare namespace typed_i18n {
     readonly "solid": string,
     readonly "strikethrough": string,
     readonly "underline": string
-  },
-  readonly "export": string
+  }
 };
   (_: "reader.annotations.Color", __?: {}): string;
   (_: "reader.annotations.addNote", __?: {}): string;
@@ -1020,6 +1008,7 @@ declare namespace typed_i18n {
   (_: "reader.annotations.colors.purple", __?: {}): string;
   (_: "reader.annotations.colors.red", __?: {}): string;
   (_: "reader.annotations.colors.yellow", __?: {}): string;
+  (_: "reader.annotations.export", __?: {}): string;
   (_: "reader.annotations.filter", __?: {}): {
   readonly "all": string,
   readonly "filterByColor": string,
@@ -1062,7 +1051,6 @@ declare namespace typed_i18n {
   (_: "reader.annotations.type.solid", __?: {}): string;
   (_: "reader.annotations.type.strikethrough", __?: {}): string;
   (_: "reader.annotations.type.underline", __?: {}): string;
-  (_: "reader.annotations.export", __?: {}): string;
   (_: "reader.divina", __?: {}): { readonly "mute": string, readonly "unmute": string };
   (_: "reader.divina.mute", __?: {}): string;
   (_: "reader.divina.unmute", __?: {}): string;

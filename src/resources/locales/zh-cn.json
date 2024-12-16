@@ -68,9 +68,6 @@
     "emptyTagList": "尚无带标签电子书",
     "entry": {
       "continueReading": "继续阅读",
-      "continueReadingAudioBooks": "继续听读",
-      "continueReadingDivina": "继续阅读 divina",
-      "continueReadingPdf": "继续阅读 PDF",
       "lastAdditions": "最近添加"
     },
     "export": "导出",
