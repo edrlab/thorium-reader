@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 
-import { IReadiumAnnotation, IReadiumAnnotationSet, ISelector } from "./annotationModel.type";
+import { IReadiumAnnotation, IReadiumAnnotationSet, ISelector, isTextPositionSelector } from "./annotationModel.type";
 import { v4 as uuidv4 } from "uuid";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -15,12 +15,85 @@ import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/a
 import { rgbToHex } from "readium-desktop/common/rgb";
 import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
 import { getDocumentFromICacheDocument } from "readium-desktop/utils/xmlDom";
-import { describeTextPosition, describeTextQuote } from "readium-desktop/third_party/apache-annotator/dom";
-import { convertRangeInfo } from "r2-navigator-js/dist/es8-es2017/src/electron/renderer/webview/selection";
+import { createTextPositionSelectorMatcher, describeTextPosition, describeTextQuote } from "readium-desktop/third_party/apache-annotator/dom";
+import { convertRange, convertRangeInfo } from "r2-navigator-js/dist/es8-es2017/src/electron/renderer/webview/selection";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { uniqueCssSelector as finder } from "@r2-navigator-js/electron/renderer/common/cssselector2-3";
+import { ISelectionInfo } from "r2-navigator-js/dist/es8-es2017/src/electron/common/selection";
 
 
 // Logger
 const debug = debug_("readium-desktop:common:readium:annotation:converter");
+
+
+export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnnotation["target"], cacheDoc: ICacheDocument): Promise<MiniLocatorExtended | undefined> {
+   
+   const xmlDom = getDocumentFromICacheDocument(cacheDoc);
+    if (!xmlDom) {
+        return undefined;
+    }
+
+    // const textQuoteSelector = target.selector.find(isTextQuoteSelector);
+    const textPositionSelector = target.selector.find(isTextPositionSelector);
+    // const fragmentSelectorArray = target.selector.filter(isFragmentSelector);
+    // const cfiFragmentSelector = fragmentSelectorArray.find(isCFIFragmentSelector);
+
+    const root = xmlDom.body.ownerDocument.documentElement;
+
+    if (textPositionSelector) {
+
+        debug("TextPositionSelector found !!", JSON.stringify(textPositionSelector));
+        const textPositionMatches = createTextPositionSelectorMatcher(textPositionSelector)(root);
+        // const textPositionMatches = textPositionSelectorMatcher(textPositionSelector)(xmlDom.body);
+        const matchRange = (await textPositionMatches.next()).value;
+        if (matchRange) {
+
+            const tuple = convertRange(matchRange, (element) => finder(element, xmlDom, {root}), () => "", () => "");
+            const rangeInfo = tuple[0];
+            const textInfo = tuple[1];
+
+
+            const selectionInfo: ISelectionInfo = {
+                textFragment: undefined,
+
+                rangeInfo,
+
+                cleanBefore: textInfo.cleanBefore,
+                cleanText: textInfo.cleanText,
+                cleanAfter: textInfo.cleanAfter,
+
+                rawBefore: textInfo.rawBefore,
+                rawText: textInfo.rawText,
+                rawAfter: textInfo.rawAfter,
+            };
+            debug("SelectionInfo generated:", JSON.stringify(selectionInfo, null, 4));
+
+            const locatorExtended: MiniLocatorExtended = {
+                locator: {
+                    href: cacheDoc.href,
+                    locations: {},
+                },
+                selectionInfo,
+
+                audioPlaybackInfo: undefined,
+                paginationInfo: undefined,
+                selectionIsNew: undefined,
+                docInfo: undefined,
+                epubPage: undefined,
+                epubPageID: undefined,
+                headings: undefined,
+                secondWebViewHref: undefined,
+            };
+
+            return locatorExtended;
+        }
+    } else {
+
+        debug("No selector found !!", JSON.stringify(target.selector, null, 4));
+    }
+
+    return undefined; 
+}
 
 export type IAnnotationStateWithICacheDocument = IAnnotationState & { __cacheDocument?: ICacheDocument | undefined }; 
 
@@ -45,22 +118,14 @@ export async function convertAnnotationStateToSelector(annotationWithCacheDoc: I
     debug(range);
 
     // describeTextPosition()
-    const selectorTextPosition = await describeTextPosition(range);
+    const selectorTextPosition = await describeTextPosition(range, xmlDom.body);
     debug("TextPositionSelector : ", selectorTextPosition);
     selector.push(selectorTextPosition);
 
     // describeTextQuote()
-    const selectorTextQuote = await describeTextQuote(range);
+    const selectorTextQuote = await describeTextQuote(range, xmlDom.body);
     debug("TextQuoteSelector : ", selectorTextQuote);
     selector.push(selectorTextQuote);
-
-
-
-    // convert IRangeInfo serializer to DomRnage memory
-    // https://github.com/readium/r2-navigator-js/blob/a08126622ac87e04200a178cc438fd7e1b256c52/src/electron/renderer/webview/selection.ts#L600C17-L600C33
-
-    // convert domRange memory to serialization
-    // https://github.com/readium/r2-navigator-js/blob/a08126622ac87e04200a178cc438fd7e1b256c52/src/electron/renderer/webview/selection.ts#L342
 
     // Next TODO: CFI !?! 
 

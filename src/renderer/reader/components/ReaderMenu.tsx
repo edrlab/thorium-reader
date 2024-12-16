@@ -85,13 +85,11 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "@r2-shared-js/models/locator";
 import { IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
+import { readerLocalActionExportAnnotationSet, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { rgbToHex } from "readium-desktop/common/rgb";
-import { IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
-import { convertAnnotationListToReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/converter";
 import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/components/ImportAnnotationsDialog";
 import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -667,18 +665,6 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
 const selectionIsSet = (a: Selection): a is Set<string> => typeof a === "object";
 const MAX_MATCHES_PER_PAGE = 5;
 
-const downloadAnnotationJSON = (contents: IReadiumAnnotationSet, filename: string) => {
-
-    const data = JSON.stringify(contents, null, 2);
-    const blob = new Blob([data], { type: "application/rd-annotations+json" });
-    const jsonObjectUrl = URL.createObjectURL(blob);
-    const anchorEl = document.createElement("a");
-    anchorEl.href = jsonObjectUrl;
-    anchorEl.download = `${filename}.annotation`;
-    anchorEl.click();
-    URL.revokeObjectURL(jsonObjectUrl);
-};
-
 const userNumber: Record<string, number> = {};
 
 const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number, popoverBoundary: HTMLDivElement, advancedAnnotationsOnChange: () => void, quickAnnotationsOnChange: () => void, marginAnnotationsOnChange: () => void, hideAnnotationOnChange: () => void, serialAnnotator: boolean } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
@@ -1114,6 +1100,18 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         <Popover.Portal>
                             <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2), padding: "15px 0" }}>
                                 <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                                {/* !!!! */}
+                                {/* !!!! */}
+                                {/* !!!! */}
+                                {/* !!!! */}
+                                {/* !!!! */}
+                                {/* !!!! */}
+                                {/* TODO: Form submission not connected !?! , is it useful to have form element here !?!  */}
+                                {/* !!!! */}
+                                {/* !!!! */}
+                                {/* !!!! */}
+                                {/* !!!! */}
+                                {/* !!!! */}
                                 <form
                                     className={stylesAnnotations.annotationsTitle_form_container}
                                     onSubmit={(e) => {

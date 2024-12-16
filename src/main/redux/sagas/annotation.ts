@@ -165,6 +165,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 debug(`for ${uuid} a CFI selector is available (${JSON.stringify(cfiFragmentSelector, null, 4)})`);
             }
 
+            // check if thorium selector available
             if (!(textQuoteSelector || textPositionSelector)) {
                 debug(`for ${uuid} no selector available (TextQuote/TextPosition)`);
                 continue;
