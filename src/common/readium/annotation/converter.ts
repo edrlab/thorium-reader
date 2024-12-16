@@ -5,16 +5,69 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IReadiumAnnotation, IReadiumAnnotationSet } from "./annotationModel.type";
+import * as debug_ from "debug";
+
+import { IReadiumAnnotation, IReadiumAnnotationSet, ISelector } from "./annotationModel.type";
 import { v4 as uuidv4 } from "uuid";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { rgbToHex } from "readium-desktop/common/rgb";
+import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
+import { getDocumentFromICacheDocument } from "readium-desktop/utils/xmlDom";
+import { describeTextPosition, describeTextQuote } from "readium-desktop/third_party/apache-annotator/dom";
+import { convertRangeInfo } from "r2-navigator-js/dist/es8-es2017/src/electron/renderer/webview/selection";
 
-// import { describeTextPosition } from "readium-desktop/third_party/apache-annotator/dom/text-position";
 
-export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotationState): IReadiumAnnotation {
+// Logger
+const debug = debug_("readium-desktop:common:readium:annotation:converter");
+
+export type IAnnotationStateWithICacheDocument = IAnnotationState & { __cacheDocument?: ICacheDocument | undefined }; 
+
+export async function convertAnnotationStateToSelector(annotationWithCacheDoc: IAnnotationStateWithICacheDocument): Promise<ISelector[]> {
+
+    const selector: ISelector[] = [];
+
+    const {__cacheDocument, ...annotation} = annotationWithCacheDoc;
+
+    const xmlDom = getDocumentFromICacheDocument(__cacheDocument);
+    if (!xmlDom) {
+        return [];
+    }
+
+
+    const { locatorExtended } = annotation;
+    const { selectionInfo } = locatorExtended;
+    const { rangeInfo } = selectionInfo;
+
+
+    const range = convertRangeInfo(xmlDom, rangeInfo);
+    debug(range);
+
+    // describeTextPosition()
+    const selectorTextPosition = await describeTextPosition(range);
+    debug("TextPositionSelector : ", selectorTextPosition);
+    selector.push(selectorTextPosition);
+
+    // describeTextQuote()
+    const selectorTextQuote = await describeTextQuote(range);
+    debug("TextQuoteSelector : ", selectorTextQuote);
+    selector.push(selectorTextQuote);
+
+
+
+    // convert IRangeInfo serializer to DomRnage memory
+    // https://github.com/readium/r2-navigator-js/blob/a08126622ac87e04200a178cc438fd7e1b256c52/src/electron/renderer/webview/selection.ts#L600C17-L600C33
+
+    // convert domRange memory to serialization
+    // https://github.com/readium/r2-navigator-js/blob/a08126622ac87e04200a178cc438fd7e1b256c52/src/electron/renderer/webview/selection.ts#L342
+
+    // Next TODO: CFI !?! 
+
+    return selector;
+}
+
+export async function convertAnnotationStateToReadiumAnnotation(annotation: IAnnotationStateWithICacheDocument): Promise<IReadiumAnnotation> {
 
     const { uuid, color, locatorExtended: def, tags, drawType, comment, creator, created, modified } = annotation;
     const { locator, headings, epubPage/*, selectionInfo*/ } = def;
@@ -25,19 +78,7 @@ export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotatio
 
     const highlight: IReadiumAnnotation["body"]["highlight"] = drawType === "solid_background" ? "solid" : drawType;
 
-    const selector: IReadiumAnnotation["target"]["selector"] = [];
-
-    // if (highlightRaw && afterRaw && beforeRaw) {
-    //     selector.push({
-    //         type: "TextQuoteSelector",
-    //         exact: highlightRaw,
-    //         prefix: beforeRaw,
-    //         suffix: afterRaw,
-    //     });
-    // }
-
-
-    // need to convert locator to Range and convert it with apache annotator to TextQuote and TextPosition, and in a second time : CssSelectorWithTextPositionSelector !
+    const selector = await convertAnnotationStateToSelector(annotation);
 
     return {
         "@context": "http://www.w3.org/ns/anno.jsonld",
@@ -67,7 +108,7 @@ export function convertAnnotationToReadiumAnnotationModel(annotation: IAnnotatio
     };
 }
 
-export function convertAnnotationListToReadiumAnnotationSet(annotationArray: IAnnotationState[], publicationView: PublicationView, label?: string): IReadiumAnnotationSet {
+export async function convertAnnotationStateArrayToReadiumAnnotationSet(annotationArray: IAnnotationStateWithICacheDocument[], publicationView: PublicationView, label?: string): Promise<IReadiumAnnotationSet> {
 
     const currentDate = new Date();
     const dateString: string = currentDate.toISOString();
@@ -92,6 +133,6 @@ export function convertAnnotationListToReadiumAnnotationSet(annotationArray: IAn
             "dc:creator": publicationView.authors || [],
             "dc:date": publicationView.publishedAt || "",
         },
-        items: (annotationArray || []).map((v) => convertAnnotationToReadiumAnnotationModel(v)),
+        items: await Promise.all((annotationArray || []).map(async (v) => await convertAnnotationStateToReadiumAnnotation(v))),
     };
 }

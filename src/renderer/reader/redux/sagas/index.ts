@@ -19,6 +19,7 @@ import * as ipc from "./ipc";
 import * as search from "./search";
 import * as winInit from "./win";
 import * as annotation from "./annotation";
+import * as shareAnnotationSet from "./shareAnnotationSet";
 import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { setTheme } from "readium-desktop/common/redux/actions/theme";
 import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } from "@r2-navigator-js/electron/renderer";
@@ -106,6 +107,8 @@ export function* rootSaga() {
         search.saga(),
 
         annotation.saga(),
+        
+        shareAnnotationSet.saga(),
 
         takeSpawnEvery(
             setTheme.ID,

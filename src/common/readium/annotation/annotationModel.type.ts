@@ -8,6 +8,17 @@
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 
+export interface IReadiumAnnotationSet {
+    "@context": "http://www.w3.org/ns/anno.jsonld";
+    id: string;
+    type: "AnnotationSet";
+    generator?: Generator;
+    generated?: string;
+    title?: string;
+    about: About;
+    items: IReadiumAnnotation[];
+}
+
 export interface IReadiumAnnotation {
     "@context": "http://www.w3.org/ns/anno.jsonld";
     id: string;
@@ -39,11 +50,16 @@ export interface IReadiumAnnotation {
             page?: string;
         };
         selector: Array<(
-            ITextQuoteSelector
-            | ITextPositionSelector
-            | IFragmentSelector
+            ISelector
+            // ITextQuoteSelector
+            // | ITextPositionSelector
+            // | IFragmentSelector
         )>;
     };
+}
+
+export interface ISelector {
+    type: string;
 }
 
 /**
@@ -53,7 +69,7 @@ export interface IReadiumAnnotation {
     "end": 55
 } 
 */
-export interface ITextPositionSelector {
+export interface ITextPositionSelector extends ISelector {
     type: "TextPositionSelector",
     start: number,
     end: number,
@@ -64,7 +80,7 @@ export function isTextPositionSelector(a: any): a is ITextPositionSelector {
     && typeof a.end === "number";
 }
 
-export interface ITextQuoteSelector {
+export interface ITextQuoteSelector extends ISelector {
     type: "TextQuoteSelector";
     exact: string;
     prefix: string;
@@ -111,7 +127,7 @@ export function isTextQuoteSelector(a: any): a is ITextQuoteSelector {
 //         && typeof a.endOffset === "number";
 // }
 
-export interface IFragmentSelector {
+export interface IFragmentSelector extends ISelector {
     type: "FragmentSelector";
     conformsTo: string;
     value: string;
@@ -145,17 +161,6 @@ interface About {
     "dc:publisher"?: string[];
     "dc:creator"?: string[];
     "dc:date"?: string;
-}
-
-export interface IReadiumAnnotationSet {
-    "@context": "http://www.w3.org/ns/anno.jsonld";
-    id: string;
-    type: "AnnotationSet";
-    generator?: Generator;
-    generated?: string;
-    title?: string;
-    about: About;
-    items: IReadiumAnnotation[];
 }
 
 export const readiumAnnotationSetSchema = {

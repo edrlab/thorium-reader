@@ -1146,8 +1146,12 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                             label = label.replace(/^_+|_+$/g, ""); // leading and trailing underscore
                                             label = label.replace(/^\./, ""); // remove dot start
                                             label = label.toLowerCase();
-                                            const contents = convertAnnotationListToReadiumAnnotationSet(annotations, publicationView, title);
-                                            downloadAnnotationJSON(contents, label);
+
+                                            // TODO: dispatch an action to launch export saga routine: init/get resource, iterator on each annotations => w3cAnnotations, return IReadiumAnnotationSet 
+                                            // const contents = convertAnnotationListToReadiumAnnotationSet(annotations, publicationView, title);
+                                            // downloadAnnotationJSON(contents, label);
+
+                                            dispatch(readerLocalActionExportAnnotationSet.build(annotations, publicationView, label));
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />
                                             {__("catalog.export")}

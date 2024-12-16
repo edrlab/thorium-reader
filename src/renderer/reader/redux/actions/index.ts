@@ -16,8 +16,10 @@ import * as readerLocalActionSetTransientConfig from "./setTransientConfig";
 import * as readerLocalActionSetLocator from "./setLocator";
 import * as readerLocalActionReader from "./reader";
 import * as readerLocalActionSetResourceToCache from "./resourceCache";
+import * as readerLocalActionExportAnnotationSet from "./exportAnnotationSet";
 
 export {
+    readerLocalActionExportAnnotationSet,
     readerLocalActionSetResourceToCache,
     readerLocalActionAnnotations,
     readerLocalActionSetConfig,
