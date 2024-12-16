@@ -21,8 +21,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export * from "./describe-text-quote.js";
-export * from "./match-text-quote.js";
-export * from "./describe-text-position.js";
-export * from "./match-text-position.js";
-export * from "./chunker.js";
+export * from "./describe-text-quote";
+export * from "./match-text-quote";
+export * from "./describe-text-position";
+export * from "./match-text-position";
+export * from "./chunker";

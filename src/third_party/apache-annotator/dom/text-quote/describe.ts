@@ -23,11 +23,11 @@
 
 import type {
   TextQuoteSelector,
-} from "../../selector/types.js";
-import { describeTextQuote as abstractDescribeTextQuote, type DescribeTextQuoteOptions } from "../../selector/text/describe-text-quote.js";
-import { ownerDocument } from "../owner-document.js";
-import { TextNodeChunker } from "../text-node-chunker.js";
-import { toRange } from "../to-range.js";
+} from "../../selector/types";
+import { describeTextQuote as abstractDescribeTextQuote, type DescribeTextQuoteOptions } from "../../selector/text/describe-text-quote";
+import { ownerDocument } from "../owner-document";
+import { TextNodeChunker } from "../text-node-chunker";
+import { toRange } from "../to-range";
 
 /**
  * Returns a {@link TextQuoteSelector} that unambiguously describes the given

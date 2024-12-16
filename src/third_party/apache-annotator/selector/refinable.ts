@@ -21,7 +21,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { Matcher, Selector } from "./types.js";
+import type { Matcher, Selector } from "./types";
 
 /**
  * A Refinable selector can have the `refinedBy` attribute, whose value must be

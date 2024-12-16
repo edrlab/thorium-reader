@@ -21,7 +21,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ownerDocument } from "./owner-document.js";
+import { ownerDocument } from "./owner-document";
 
 /**
  * Returns a range that exactly selects the contents of the given node.

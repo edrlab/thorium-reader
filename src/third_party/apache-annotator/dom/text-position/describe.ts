@@ -21,11 +21,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { TextPositionSelector } from "../../selector/types.js";
-import { describeTextPosition as abstractDescribeTextPosition } from "../../selector/text/describe-text-position.js";
-import { ownerDocument } from "../owner-document.js";
-import { TextNodeChunker } from "../text-node-chunker.js";
-import { toRange } from "../to-range.js";
+import type { TextPositionSelector } from "../../selector/types";
+import { describeTextPosition as abstractDescribeTextPosition } from "../../selector/text/describe-text-position";
+import { ownerDocument } from "../owner-document";
+import { TextNodeChunker } from "../text-node-chunker";
+import { toRange } from "../to-range";
 
 /**
  * Returns a {@link TextPositionSelector} that points at the target text within

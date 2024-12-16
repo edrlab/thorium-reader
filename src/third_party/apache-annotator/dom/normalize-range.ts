@@ -21,7 +21,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ownerDocument } from "./owner-document.js";
+import { ownerDocument } from "./owner-document";
 
 /**
  * TextRange is a Range that guarantees to always have Text nodes as its start

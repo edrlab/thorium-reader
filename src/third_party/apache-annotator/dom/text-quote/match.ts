@@ -21,9 +21,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { Matcher, TextQuoteSelector } from "../../selector/types.js";
-import { textQuoteSelectorMatcher as abstractTextQuoteSelectorMatcher } from "../../selector/text/match-text-quote.js";
-import { TextNodeChunker, EmptyScopeError } from "../text-node-chunker.js";
+import type { Matcher, TextQuoteSelector } from "../../selector/types";
+import { textQuoteSelectorMatcher as abstractTextQuoteSelectorMatcher } from "../../selector/text/match-text-quote";
+import { TextNodeChunker, EmptyScopeError } from "../text-node-chunker";
 
 /**
  * Find occurrences in a text matching the given {@link

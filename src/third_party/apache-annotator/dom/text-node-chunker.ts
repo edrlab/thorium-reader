@@ -21,10 +21,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { Chunk, Chunker, ChunkRange } from '../selector/text/chunker.js';
-import { normalizeRange } from './normalize-range.js';
-import { ownerDocument } from './owner-document.js';
-import { toRange } from './to-range.js';
+import type { Chunk, Chunker, ChunkRange } from "../selector/text/chunker";
+import { normalizeRange } from "./normalize-range";
+import { ownerDocument } from "./owner-document";
+import { toRange } from "./to-range";
 
 export interface PartialTextNode extends Chunk<string> {
   readonly node: Text;
@@ -34,7 +34,7 @@ export interface PartialTextNode extends Chunk<string> {
 
 export class EmptyScopeError extends TypeError {
   constructor(message?: string) {
-    super(message || 'Scope contains no text nodes.');
+    super(message || "Scope contains no text nodes.");
   }
 }
 
@@ -42,12 +42,12 @@ export class OutOfScopeError extends TypeError {
   constructor(message?: string) {
     super(
       message ||
-        'Cannot convert node to chunk, as it falls outside of chunker’s scope.',
+        "Cannot convert node to chunk, as it falls outside of chunker’s scope.",
     );
   }
 }
 
-//@ts-expect-error
+//@ts-expect-error thorium quick hack typing 
 export class TextNodeChunker implements Chunker<PartialTextNode> {
   private scope: Range;
   private iter: NodeIterator;
@@ -84,7 +84,7 @@ export class TextNodeChunker implements Chunker<PartialTextNode> {
     };
   }
 
-//@ts-expect-error
+//@ts-expect-error thorium quick hack typing 
   rangeToChunkRange(range: Range): ChunkRange<PartialTextNode> {
     range = range.cloneRange();
 
@@ -105,7 +105,7 @@ export class TextNodeChunker implements Chunker<PartialTextNode> {
     return { startChunk, startIndex, endChunk, endIndex };
   }
 
-//@ts-expect-error
+//@ts-expect-error thorium quick hack typing
   chunkRangeToRange(chunkRange: ChunkRange<PartialTextNode>): Range {
     const range = ownerDocument(this.scope).createRange();
     // The `+…startOffset` parts are only relevant for the first chunk, as it

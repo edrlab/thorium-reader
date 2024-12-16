@@ -21,8 +21,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export * from "./css.js";
-export * from "./range/index.js";
-export * from "./text-quote/index.js";
-export * from "./text-position/index.js";
-export * from "./highlight-text.js";
+export * from "./css";
+export * from "./range/index";
+export * from "./text-quote/index";
+export * from "./text-position/index";
+export * from "./highlight-text";

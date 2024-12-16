@@ -23,9 +23,9 @@
 
 import { uniqueCssSelector as finder } from "@r2-navigator-js/electron/renderer/common/cssselector2-3";
 
-import type { CssSelector, Matcher } from "../selector/types.js";
-import { ownerDocument } from "./owner-document.js";
-import { toRange } from "./to-range.js";
+import type { CssSelector, Matcher } from "../selector/types";
+import { ownerDocument } from "./owner-document";
+import { toRange } from "./to-range";
 
 /**
  * Find the elements corresponding to the given {@link

@@ -21,8 +21,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ownerDocument } from "./owner-document.js";
-import { toRange } from "./to-range.js";
+import { ownerDocument } from "./owner-document";
+import { toRange } from "./to-range";
 
 /**
  * Wrap each text node in a given Node or Range with a `<mark>` or other

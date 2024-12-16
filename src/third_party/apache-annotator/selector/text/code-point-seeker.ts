@@ -21,8 +21,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { Chunk } from "./chunker.js";
-import type { Seeker } from "./seeker.js";
+import type { Chunk } from "./chunker";
+import type { Seeker } from "./seeker";
 
 /**
  * Seeks through text counting Unicode *code points* instead of *code units*.

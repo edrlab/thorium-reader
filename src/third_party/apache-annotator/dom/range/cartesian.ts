@@ -68,7 +68,7 @@ export async function* cartesian<T>(
       }
 
       // Append the new value to the log.
-      // @ts-expect-error
+      // @ts-expect-error thorium quick hack-typing
       const { value } = result.value;
       logs[index].push(value);
 

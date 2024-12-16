@@ -21,8 +21,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { Chunk, Chunker } from "./chunker.js";
-import { chunkEquals } from "./chunker.js";
+import type { Chunk, Chunker } from "./chunker";
+import { chunkEquals } from "./chunker";
 
 const E_END = "Iterator exhausted before seek ended.";
 

@@ -21,10 +21,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { TextPositionSelector } from "../types.js";
-import type { Chunk, ChunkRange, Chunker } from "./chunker.js";
-import { CodePointSeeker } from "./code-point-seeker.js";
-import { TextSeeker } from "./seeker.js";
+import type { TextPositionSelector } from "../types";
+import type { Chunk, ChunkRange, Chunker } from "./chunker";
+import { CodePointSeeker } from "./code-point-seeker";
+import { TextSeeker } from "./seeker";
 
 /**
  * Find the range of text corresponding to the given {@link TextPositionSelector}.

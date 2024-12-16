@@ -25,11 +25,11 @@ import type {
   Matcher,
   RangeSelector,
   Selector,
-} from "../../selector/types.js";
+} from "../../selector/types";
 
-import { ownerDocument } from "../owner-document.js";
-import { toRange } from "../to-range.js";
-import { cartesian } from "./cartesian.js";
+import { ownerDocument } from "../owner-document";
+import { toRange } from "../to-range";
+import { cartesian } from "./cartesian";
 
 /**
  * Find the range(s) corresponding to the given {@link RangeSelector}.

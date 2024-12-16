@@ -21,12 +21,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { TextQuoteSelector } from "../types.js";
-import type { Chunk, Chunker, ChunkRange } from "./chunker.js";
-import { chunkRangeEquals } from "./chunker.js";
-import { textQuoteSelectorMatcher } from "./match-text-quote.js";
-import type { RelativeSeeker } from "./seeker.js";
-import { TextSeeker } from "./seeker.js";
+import type { TextQuoteSelector } from "../types";
+import type { Chunk, Chunker, ChunkRange } from "./chunker";
+import { chunkRangeEquals } from "./chunker";
+import { textQuoteSelectorMatcher } from "./match-text-quote";
+import type { RelativeSeeker } from "./seeker";
+import { TextSeeker } from "./seeker";
 
 /**
  * @public

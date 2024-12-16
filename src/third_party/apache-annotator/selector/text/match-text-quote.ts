@@ -21,8 +21,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { TextQuoteSelector } from "../types.js";
-import type { Chunk, Chunker, ChunkRange } from "./chunker.js";
+import type { TextQuoteSelector } from "../types";
+import type { Chunk, Chunker, ChunkRange } from "./chunker";
 
 /**
  * Find occurrences in a text matching the given {@link TextQuoteSelector}.
