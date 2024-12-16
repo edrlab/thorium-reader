@@ -37,15 +37,15 @@ interface IState {
 }
 
 class Slider extends React.Component<IProps, IState> {
-    private contentRef: React.RefObject<HTMLDivElement>;
-    private contentElRefs: HTMLDivElement[] = [];
+    private contentRef: React.RefObject<HTMLUListElement>;
+    private contentElRefs: HTMLLIElement[] = [];
     private wrapperRef: React.RefObject<HTMLDivElement>;
     // private contentElVisible: boolean[] = [];
 
     constructor(props: IProps) {
         super(props);
 
-        this.contentRef = React.createRef<HTMLDivElement>();
+        this.contentRef = React.createRef<HTMLUListElement>();
         this.wrapperRef = React.createRef<HTMLDivElement>();
 
         this.state = {
@@ -118,9 +118,9 @@ class Slider extends React.Component<IProps, IState> {
                 </button>
                 <div ref={this.wrapperRef} className={stylesSlider.slider_wrapper}
                     /* onScroll={(e) => {this.handleScroll(e)}} */>
-                    <div ref={this.contentRef} className={stylesSlider.slider_items} style={varStyle}>
+                    <ul ref={this.contentRef} className={stylesSlider.slider_items} style={varStyle}>
                         {list}
-                    </div>
+                    </ul>
                 </div>
                     <button
                         onClick={this.handleMove.bind(this, true)}
@@ -202,14 +202,14 @@ class Slider extends React.Component<IProps, IState> {
             //     props.tabIndex = -1;
             // }
             return (
-                <div
+                <li
                     ref={(ref) => this.contentElRefs[index] = ref}
                     key={index}
                     onFocus={() => this.moveInView(index)}
                     {...props}
                 >
                     {element}
-                </div>
+                </li>
             );
         });
     }
