@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 
-import { IReadiumAnnotation, IReadiumAnnotationSet, ISelector, isTextPositionSelector } from "./annotationModel.type";
+import { IReadiumAnnotation, IReadiumAnnotationSet, ISelector, isTextPositionSelector, isTextQuoteSelector } from "./annotationModel.type";
 import { v4 as uuidv4 } from "uuid";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -15,12 +15,12 @@ import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/a
 import { rgbToHex } from "readium-desktop/common/rgb";
 import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
 import { getDocumentFromICacheDocument } from "readium-desktop/utils/xmlDom";
-import { createTextPositionSelectorMatcher, describeTextPosition, describeTextQuote } from "readium-desktop/third_party/apache-annotator/dom";
-import { convertRange, convertRangeInfo } from "r2-navigator-js/dist/es8-es2017/src/electron/renderer/webview/selection";
+import { createTextPositionSelectorMatcher, createTextQuoteSelectorMatcher, describeTextPosition, describeTextQuote } from "readium-desktop/third_party/apache-annotator/dom";
+import { convertRange, convertRangeInfo } from "@r2-navigator-js/electron/renderer/webview/selection";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { uniqueCssSelector as finder } from "@r2-navigator-js/electron/renderer/common/cssselector2-3";
-import { ISelectionInfo } from "r2-navigator-js/dist/es8-es2017/src/electron/common/selection";
-
+import { ISelectionInfo } from "@r2-navigator-js/electron/common/selection";
+import * as ramda from "ramda";
 
 // Logger
 const debug = debug_("readium-desktop:common:readium:annotation:converter");
@@ -33,18 +33,20 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
         return undefined;
     }
 
-    // const textQuoteSelector = target.selector.find(isTextQuoteSelector);
+    const textQuoteSelector = target.selector.find(isTextQuoteSelector);
     const textPositionSelector = target.selector.find(isTextPositionSelector);
     // const fragmentSelectorArray = target.selector.filter(isFragmentSelector);
     // const cfiFragmentSelector = fragmentSelectorArray.find(isCFIFragmentSelector);
 
     const root = xmlDom.body.ownerDocument.documentElement;
 
+    const selectionInfoFound: ISelectionInfo[] = [];
+
+    let selectorFound = false;
     if (textPositionSelector) {
 
         debug("TextPositionSelector found !!", JSON.stringify(textPositionSelector));
         const textPositionMatches = createTextPositionSelectorMatcher(textPositionSelector)(root);
-        // const textPositionMatches = textPositionSelectorMatcher(textPositionSelector)(xmlDom.body);
         const matchRange = (await textPositionMatches.next()).value;
         if (matchRange) {
 
@@ -67,32 +69,78 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
                 rawAfter: textInfo.rawAfter,
             };
             debug("SelectionInfo generated:", JSON.stringify(selectionInfo, null, 4));
-
-            const locatorExtended: MiniLocatorExtended = {
-                locator: {
-                    href: cacheDoc.href,
-                    locations: {},
-                },
-                selectionInfo,
-
-                audioPlaybackInfo: undefined,
-                paginationInfo: undefined,
-                selectionIsNew: undefined,
-                docInfo: undefined,
-                epubPage: undefined,
-                epubPageID: undefined,
-                headings: undefined,
-                secondWebViewHref: undefined,
-            };
-
-            return locatorExtended;
+            selectorFound = true;
+            selectionInfoFound.push(selectionInfo);
         }
-    } else {
-
-        debug("No selector found !!", JSON.stringify(target.selector, null, 4));
     }
 
-    return undefined; 
+    if (textQuoteSelector) {
+        debug("TextQuoteSelector found !!", JSON.stringify(textQuoteSelector));
+
+        const textQuoteMatches = createTextQuoteSelectorMatcher(textQuoteSelector)(root);
+        const matchRange = (await textQuoteMatches.next()).value;
+        if (matchRange) {
+
+            const tuple = convertRange(matchRange, (element) => finder(element, xmlDom, {root}), () => "", () => "");
+            const rangeInfo = tuple[0];
+            const textInfo = tuple[1];
+
+
+            const selectionInfo: ISelectionInfo = {
+                textFragment: undefined,
+
+                rangeInfo,
+
+                cleanBefore: textInfo.cleanBefore,
+                cleanText: textInfo.cleanText,
+                cleanAfter: textInfo.cleanAfter,
+
+                rawBefore: textInfo.rawBefore,
+                rawText: textInfo.rawText,
+                rawAfter: textInfo.rawAfter,
+            };
+            debug("SelectionInfo generated:", JSON.stringify(selectionInfo, null, 4));
+            selectorFound = true;
+            selectionInfoFound.push(selectionInfo);
+        }
+
+    }
+    
+    if (!selectorFound) {
+        debug("No selector found !!", JSON.stringify(target.selector, null, 4));
+        return undefined;
+    }
+
+    let selectionInfoReduce = selectionInfoFound.reduce((pv, cv) => ramda.equals(pv, cv) ? cv : undefined, selectionInfoFound[0]);
+    if (selectionInfoReduce) {
+        debug("selectionInfo Found and equal to each selectors");
+    } else {
+        debug("selection Info not equal to each selector !!!");
+        selectionInfoReduce = selectionInfoFound[0]; // we assume the first is good;
+    }
+
+    if (!selectionInfoReduce) {
+        return undefined;
+    }
+
+    const locatorExtended: MiniLocatorExtended = {
+        locator: {
+            href: cacheDoc.href,
+            locations: {},
+        },
+        selectionInfo: selectionInfoReduce,
+
+        audioPlaybackInfo: undefined,
+        paginationInfo: undefined,
+        selectionIsNew: undefined,
+        docInfo: undefined,
+        epubPage: undefined,
+        epubPageID: undefined,
+        headings: undefined,
+        secondWebViewHref: undefined,
+    };
+
+    return locatorExtended;
 }
 
 export type IAnnotationStateWithICacheDocument = IAnnotationState & { __cacheDocument?: ICacheDocument | undefined }; 
