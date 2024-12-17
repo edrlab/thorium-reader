@@ -51,7 +51,6 @@ export function* importAnnotationSet(): SagaGenerator<void> {
         debug("annotationState:", JSON.stringify(annotationState, null, 4));
         debug("SelectorTarget from AnnotationState", JSON.stringify(target, null, 4));
 
-        yield* putTyped(annotationActions.shiftFromAnnotationImportQueue.build());
 
         const { source } = target;
         const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
@@ -66,9 +65,17 @@ export function* importAnnotationSet(): SagaGenerator<void> {
             continue;
         }
 
+        // push new annotation to reader and then synced with main db process
         yield* putTyped(readerActions.annotation.push.build(annotationStateFormated));
+
+        // wait to push new annotation before shift it from annotation queue
+        // not atomic : if the reader is closing during this import process it can forget data
+        yield* putTyped(annotationActions.shiftFromAnnotationImportQueue.build());
+
+        // wait 100ms to not overload event-loop
         yield* delayTyped(100);
 
+        // reload import queue for the next shift phase
         importQueue = yield* selectTyped((state: IReaderRootState) => state.annotationImportQueue);
     }
 
@@ -127,7 +134,23 @@ export const saga = () =>
             (e) => console.error("exportAnnotationSet", e),
         ),
         spawnLeading(
-            importAnnotationSet,
+            function* () {
+
+                let gotTheLock = yield* selectTyped((state: IReaderRootState) => state.reader.lock);
+                if (!gotTheLock) {
+                    yield* takeTyped(readerActions.setTheLock.build);
+                }
+
+                gotTheLock = yield* selectTyped((state: IReaderRootState) => state.reader.lock);
+                if (!gotTheLock) {
+                    throw new Error("unreachable!!!");
+                }
+
+                while (true) {
+                    yield* callTyped(importAnnotationSet);
+                }
+
+            },
             (e) => console.error("importAnnotationSet", e),
         ),
     ]);
