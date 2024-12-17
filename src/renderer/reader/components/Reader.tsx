@@ -744,6 +744,9 @@ class Reader extends React.Component<IProps, IState> {
                 this.props.readerConfig.theme === "paper" ? stylesReader.paperMode :
                 "",
             )}>
+                {/* Reader Lock DEMO !!! */}
+                {/* <h1 style={{zIndex: 999999, backgroundColor: "red", position: "absolute"}}>{this.props.lock ? "lock" : "no-lock"}</h1> */}
+                {/* Reader Lock DEMO !!! */}
                 <a
                     role="heading"
                     className={stylesReader.anchor_link}
@@ -2920,6 +2923,10 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         ttsVoice: state.reader.config.ttsVoice,
         mediaOverlaysPlaybackRate: state.reader.config.mediaOverlaysPlaybackRate,
         ttsPlaybackRate: state.reader.config.ttsPlaybackRate,
+
+        // Reader Lock Demo
+        // lock: state.reader.lock,
+        // Reader Lock Demo
     };
 };
 
