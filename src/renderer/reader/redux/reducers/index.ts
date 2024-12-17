@@ -48,6 +48,7 @@ import { importAnnotationReducer } from "readium-desktop/renderer/common/redux/r
 import { tagReducer } from "readium-desktop/common/redux/reducers/tag";
 import { fifoReducer } from "readium-desktop/utils/redux-reducers/fifo.reducer";
 import { readerResourceCacheReducer } from "./resourceCache";
+import { readerLockReducer } from "./lock";
 
 export const rootReducer = () => {
 
@@ -181,6 +182,7 @@ export const rootReducer = () => {
             disableRTLFlip: readerRTLFlipReducer,
             mediaOverlay: readerMediaOverlayReducer,
             tts: readerTTSReducer,
+            lock: readerLockReducer,
         }),
         search: searchReducer,
         resourceCache: readerResourceCacheReducer,

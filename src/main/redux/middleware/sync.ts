@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import { syncIpc } from "readium-desktop/common/ipc";
-import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
+import { ActionWithDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import {
     apiActions, authActions, catalogActions, dialogActions, downloadActions, historyActions, i18nActions, keyboardActions, lcpActions,
     publicationActions, themeActions,
@@ -93,6 +93,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     // TODO: shift dispatch from one reader do not dispatch it to other reader !?! need to check this issue before merge request
     annotationActions.shiftFromAnnotationImportQueue.ID,
 
+    readerActions.setTheLock.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware
@@ -153,6 +154,11 @@ export const reduxSyncMiddleware: Middleware
                                 && (action as ActionWithSender).sender?.identifier === id
                             )
                         ) {
+
+                            if ((action as ActionWithDestination)?.destination?.identifier && (action as ActionWithDestination)?.destination?.identifier !== id) {
+                                // if the action has a reader destination, do not send to other browserWin Instance
+                                return  ;
+                            }
 
                             debug("send to", id);
                             const a = ActionSerializer.serialize(action as ActionWithSender);
