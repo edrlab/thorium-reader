@@ -152,7 +152,7 @@ export function saga() {
                     if (!u) continue;
 
                     debug("CATALOGS URL CHANNEL ", catalogsUrl);
-                    debug("start to import each feed from 'catalogs' key");
+                    debug("start to import each feed from the 'catalogs' key");
 
                     // call api opds/browse in saga
 
