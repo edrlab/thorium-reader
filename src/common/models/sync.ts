@@ -21,6 +21,16 @@ export interface WithSender {
     sender: WindowSender;
 }
 
+export interface WindowReaderDestination {
+    identifier: string;
+}
+export interface WithDestination {
+    destination: WindowReaderDestination;
+}
+
 // tslint:disable-next-line: max-line-length
 export interface ActionWithSender<Type extends string = string, Payload = undefined, Meta = undefined> extends Action<Type, Payload, Meta>, WithSender {
+}
+
+export interface ActionWithDestination<Type extends string = string, Payload = undefined, Meta = undefined> extends Action<Type, Payload, Meta>, WithDestination {
 }
