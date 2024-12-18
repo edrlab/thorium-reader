@@ -127,7 +127,10 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     const locatorExtended: MiniLocatorExtended = {
         locator: {
             href: cacheDoc.href,
-            locations: {},
+            locations: {
+                cssSelector: selectionInfoReduce.rangeInfo.startContainerElementCssSelector,
+                rangeInfo: selectionInfoReduce.rangeInfo,
+            },
         },
         selectionInfo: selectionInfoReduce,
 
