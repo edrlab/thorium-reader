@@ -17,7 +17,6 @@ function winRegistryReaderReducer_(
     state: IDictWinRegistryReaderState = initialState,
     action: winActions.registry.registerReaderPublication.TAction
     | winActions.registry.unregisterReaderPublication.TAction,
-    // | winActions.registry.addAnnotationToReaderPublication.TAction,
 ): IDictWinRegistryReaderState {
     switch (action.type) {
 
@@ -49,39 +48,6 @@ function winRegistryReaderReducer_(
             }
             return state;
         }
-
-        // case winActions.registry.addAnnotationToReaderPublication.ID: {
-
-        //     const { publicationIdentifier: id, annotations } = action.payload;
-
-        //     if (annotations.length && Array.isArray(state[id]?.reduxState?.annotation)) {
-
-        //         const oldAnno = state[id].reduxState.annotation;
-        //         const oldAnnoUniq = oldAnno.filter(([, {uuid}]) => !annotations.find(({uuid: uuid2}) => uuid2 === uuid));
-        //         const newAnno = annotations.map<IQueueAnnotationState>((anno) => [anno.created || (new Date()).getTime(), anno]);
-        //         return {
-        //             ...state,
-        //             ...{
-        //                 [id]: {
-        //                     ...state[id],
-        //                     ...{
-        //                         reduxState: {
-        //                             ...state[id].reduxState,
-        //                             ...{
-        //                                 annotation: [
-        //                                     ...oldAnnoUniq,
-        //                                     ...newAnno,
-        //                                 ],
-        //                             },
-        //                         },
-        //                     },
-        //                 },
-        //             },
-        //         };
-
-        //     }
-        //     return state;
-        // }
 
         default:
             return state;
