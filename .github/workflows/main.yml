@@ -31,9 +31,6 @@ jobs:
   build:
 #    if: "!contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
     if: "github.event_name == 'pull_request' || !contains(github.event.head_commit.message, 'skip ci')"
-    # runs-on: ubuntu-latest # / ubuntu-18.04 ... or ubuntu-16.04, ubuntu-20.04
-    # runs-on: macos-latest # / macos-10.15
-    # runs-on: windows-2016 # not window-latest / windows-2019, see https://github.com/edrlab/thorium-reader/issues/1591
     runs-on: ${{ matrix.runson }}
     strategy:
       fail-fast: false
@@ -69,23 +66,40 @@ jobs:
             packname: linux
             release_tag: latest-linux-arm
     env:
-#      OS_NAME_: ${{ matrix.osarch }}
       RELEASE_TAG: ${{ matrix.release_tag }}
     steps:
-#    - run: echo 'OS_NAME_:' ${{ env.OS_NAME_ }}
-    #- run: echo 'RELEASE_TAG=latest-${{ env.OS_NAME_ }}' | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-    #- run: echo 'RELEASE_TAG=latest-${{ env.OS_NAME_ }}' >> $GITHUB_ENV
-    #- run: echo '::set-env name=RELEASE_TAG::latest-${{ env.OS_NAME_ }}'
+    # graceful fail?
+    - run: |-
+        pwdx || echo OK || true
+      shell: cmd
+      continue-on-error: true
+    - name: Microsoft Windows dumpbin to PATH
+      if: startsWith(matrix.osarch, 'windows-')
+      run: >
+        $VS_ROOT = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"; $VS_VERSION = (Get-ChildItem -Path $VS_ROOT | Sort-Object Name -Descending | Select-Object -First 1).Name; $VS_BIN = "$VS_ROOT\$VS_VERSION\bin\Hostx64\x64"; echo $VS_BIN >> $env:GITHUB_PATH; echo $VS_BIN
+      shell: powershell
+    - name: Microsoft Windows dumpbin check
+      if: startsWith(matrix.osarch, 'windows-')
+      run: >
+        dumpbin /headers "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\Hostx64\x64\dumpbin.exe" | findstr /i machine
+      shell: cmd
+# - name: Microsoft Windows msbuild to PATH
+#   if: startsWith(matrix.osarch, 'windows-')
+#   uses: microsoft/setup-msbuild@v2
+# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin"
+# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools"
+# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\bin\amd64"
+# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64"
+# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\Hostx64\x64"
     - run: echo 'RELEASE_TAG:' ${{ env.RELEASE_TAG }}
     - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
     - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
     - run: 'echo "GITHUB_SHA: ${{ github.sha }}"'
-    - name: Check sys arch (non Windows)
-      if: ${{ matrix.osarch != 'windows-intel' && matrix.osarch != 'windows-arm' }}
-      run: echo "${{ matrix.osarch }}" && uname -m && arch && echo "${{ runner.arch }}"
-    - name: Check sys arch (Windows)
-      if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}
-      run: echo "${{ matrix.osarch }}" && echo "${{ runner.arch }}"
+    - run: echo "${{ matrix.osarch }} // ${{ runner.arch }}"
+    - name: System arch (non Windows)
+      #if: ${{ matrix.osarch != 'windows-intel' && matrix.osarch != 'windows-arm' }}
+      if: ${{ !startsWith(matrix.osarch, 'windows-') }}
+      run: uname -m && arch
     - name: Checkout
       uses: actions/checkout@v4
     #   with:
@@ -146,24 +160,48 @@ jobs:
     - run: npm cache verify
     - run: cat package-lock.json | grep -i divina-player-js
     - name: NPM install (arm64)
-      if: ${{ matrix.osarch == 'linux-arm' || matrix.osarch == 'windows-arm' || matrix.osarch == 'macos-arm' }}
+      #if: ${{ matrix.osarch == 'linux-arm' || matrix.osarch == 'windows-arm' || matrix.osarch == 'macos-arm' }}
+      if: endsWith(matrix.osarch, '-arm')
       run: npm ci --foreground-scripts --arch=arm64 --cpu=arm64
       #export npm_config_arch=arm64 && export npm_config_cpu=arm64 &&
     - name: NPM install (x64)
-      if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'windows-intel' || matrix.osarch == 'macos-intel' }}
+      #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'windows-intel' || matrix.osarch == 'macos-intel' }}
+      if: endsWith(matrix.osarch, '-intel')
       run: npm ci --foreground-scripts --arch=x64 --cpu=x64
       #export npm_config_arch=x64 && export npm_config_cpu=x64 &&
-    - name: Electron arch checks
-      run: (node_modules/electron/dist/electron --no-sandbox --version && node_modules/electron/dist/electron --no-sandbox --abi) || (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --version && node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --abi) || (file node_modules/electron/dist/Electron.app/Contents/MacOS/Electron) || (file node_modules/electron/dist/electron) || (file node_modules/electron/dist/electron.exe) || echo ok
+    - name: Electron version + arch (Windows)
+      #if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}
+      if: startsWith(matrix.osarch, 'windows-')
+      run: >
+        (dumpbin /headers "node_modules\electron\dist\electron.exe" | findstr /i machine) && (node_modules\\electron\\dist\\electron.exe --no-sandbox --version || echo INVALID_ARCH || true) && (node_modules\\electron\\dist\\electron.exe --no-sandbox --abi || echo INVALID_ARCH || true)
+      shell: cmd
+      continue-on-error: true
+    - name: Electron version + arch (Linux)
+      #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'linux-arm' }}
+      if: startsWith(matrix.osarch, 'linux-')
+      run: >
+        (file node_modules/electron/dist/electron) && (node_modules/electron/dist/electron --no-sandbox --version || echo INVALID_ARCH) && (node_modules/electron/dist/electron --no-sandbox --abi || echo INVALID_ARCH)
+    - name: Electron version + arch (MacOS)
+      #if: ${{ matrix.osarch == 'macos-intel' || matrix.osarch == 'macos-arm' }}
+      if: startsWith(matrix.osarch, 'macos-')
+      run: >
+        (file node_modules/electron/dist/Electron.app/Contents/MacOS/Electron) && (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --version || echo INVALID_ARCH) && (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --abi || echo INVALID_ARCH)
     - run: npm list -g node-gyp || echo ok
     - run: npm list node-gyp || echo ok
     - name: PR action (just build)
       if: ${{ github.event_name == 'pull_request' }}
       run: npm run build:prod
       # && npm run test SEE https://github.com/edrlab/thorium-reader/issues/1697
-    - name: non-PR action (build and package)
-      if: ${{ github.event_name != 'pull_request' }}
-      run: echo "${{ matrix.osarch }}" && (if [[ ${{ matrix.osarch }} == 'macos-arm' || ${{ matrix.osarch }} == 'linux-arm' || ${{ matrix.osarch }} == 'windows-arm' ]]; then uname -m && arch && sed 's/x64/arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json && npm run package:${{ matrix.packname }} && sed 's/arm64/x64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json; else npm run package:${{ matrix.packname }}; fi)
+    - name: non-PR action (build and package) ARM
+      #if: ${{ github.event_name != 'pull_request' && (matrix.osarch == 'linux-arm' || matrix.osarch == 'windows-arm' || matrix.osarch == 'macos-arm') }}
+      if: ${{ github.event_name != 'pull_request' && endsWith(matrix.osarch, '-arm') }}
+      #run: sed 's/x64/arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json && npm run package:${{ matrix.packname }} && sed 's/arm64/x64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json
+      run: >
+        node -e 'const path = require("path"); const fs = require("fs"); const filePath = path.join(process.cwd(), "package.json"); let fileStr = fs.readFileSync(filePath, { encoding: "utf8" }); fileStr = fileStr.replace(/x64/g, "arm64"); fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });' && npm run package:${{ matrix.packname }}
+    - name: non-PR action (build and package) INTEL
+      #if: ${{ github.event_name != 'pull_request' && (matrix.osarch == 'linux-intel' || matrix.osarch == 'windows-intel' || matrix.osarch == 'macos-intel') }}
+      if: ${{ github.event_name != 'pull_request' && endsWith(matrix.osarch, '-intel') }}
+      run: npm run package:${{ matrix.packname }}
     #- run: ls -alsR release
     #- run: npm install @octokit/rest
     - name: GitHub Tagged Release Delete/ReCreate and Upload Build Artefacts
