@@ -104,7 +104,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                     <p>{`v${_APP_VERSION}`}</p>
                     <a href="" onClick={async (ev) => {
                                 ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                                await shell.openExternal("https://thorium.edrlab.org/"); // TODO: not link to the english thorium hyperlink
+                                await shell.openExternal(`https://thorium.edrlab.org/?lang=${this.props.locale}&v=${_APP_VERSION}`);
                             }}
                         tabIndex={0}>{__("catalog.about.title", { appName: capitalizedAppName })}</a>
                     </div>
