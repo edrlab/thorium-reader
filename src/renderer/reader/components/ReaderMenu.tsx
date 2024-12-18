@@ -563,9 +563,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                     <>
                         <HardWrapComment comment={comment} />
                         {tagName ? <div className={stylesTags.tags_wrapper}>
-                            <div className={classNames(
-                                stylesTags.tag, stylesTags.no_hover,
-                            )}>
+                            <div className={stylesTags.tag}>
                                 <a onClick={() => setTagFilter(tagName)}
                                     onKeyUp={(e) => {
                                         if (e.key === "Enter" || e.key === "Space") {
