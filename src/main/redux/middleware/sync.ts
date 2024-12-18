@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import { syncIpc } from "readium-desktop/common/ipc";
-import { ActionWithDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
+import { ActionAcrossRenderer, ActionWithDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import {
     apiActions, authActions, catalogActions, dialogActions, downloadActions, historyActions, i18nActions, keyboardActions, lcpActions,
     publicationActions, themeActions,
@@ -152,6 +152,9 @@ export const reduxSyncMiddleware: Middleware
                             !(
                                 (action as ActionWithSender).sender?.type === SenderType.Renderer
                                 && (action as ActionWithSender).sender?.identifier === id
+                            ) || (
+                                (action as ActionAcrossRenderer)?.sendActionAcrossRenderer
+                                && (action as ActionWithSender)?.sender?.identifier !== id
                             )
                         ) {
 

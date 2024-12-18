@@ -5,17 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
+import { ActionAcrossRenderer } from "readium-desktop/common/models/sync";
 
 export const ID = "ANNOTATION_SHIFT_FROM_ANNOTATION_IMPORT_QUEUE";
 
 export interface Payload {
 }
-export function build(): Action<typeof ID, Payload> {
+export function build(): ActionAcrossRenderer<typeof ID, Payload> {
     return {
         type: ID,
         payload: {
         },
+        sendActionAcrossRenderer: true,
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
