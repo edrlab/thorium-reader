@@ -46,7 +46,10 @@ export function* importAnnotationSet(): SagaGenerator<void> {
     while (importQueue.length) {
 
         // start import routine
-        const { target, ...annotationState } = importQueue.shift();
+        const { target, ...annotationState } = importQueue[0];
+
+        // not atomic : if the reader is closing during this import process it can forget data
+        yield* putTyped(annotationActions.shiftFromAnnotationImportQueue.build());
 
         debug("annotationState:", JSON.stringify(annotationState, null, 4));
         debug("SelectorTarget from AnnotationState", JSON.stringify(target, null, 4));
@@ -67,10 +70,6 @@ export function* importAnnotationSet(): SagaGenerator<void> {
 
         // push new annotation to reader and then synced with main db process
         yield* putTyped(readerActions.annotation.push.build(annotationStateFormated));
-
-        // wait to push new annotation before shift it from annotation queue
-        // not atomic : if the reader is closing during this import process it can forget data
-        yield* putTyped(annotationActions.shiftFromAnnotationImportQueue.build());
 
         // wait 100ms to not overload event-loop
         yield* delayTyped(100);
