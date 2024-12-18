@@ -49,7 +49,7 @@
   },
   "catalog": {
     "about": {
-      "title": "About {{- appName}}"
+      "title": "About {{- appName}} (online)"
     },
     "addBookToLib": "Import",
     "addTags": "Add tag",
