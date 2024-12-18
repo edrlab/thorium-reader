@@ -89,8 +89,6 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     annotationActions.pushToAnnotationImportQueue.ID,
 
-
-    // TODO: shift dispatch from one reader do not dispatch it to other reader !?! need to check this issue before merge request
     annotationActions.shiftFromAnnotationImportQueue.ID,
 
     readerActions.setTheLock.ID,

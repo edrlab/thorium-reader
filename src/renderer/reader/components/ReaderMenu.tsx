@@ -1100,23 +1100,8 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         <Popover.Portal>
                             <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2), padding: "15px 0" }}>
                                 <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
-                                {/* !!!! */}
-                                {/* !!!! */}
-                                {/* !!!! */}
-                                {/* !!!! */}
-                                {/* !!!! */}
-                                {/* !!!! */}
-                                {/* TODO: Form submission not connected !?! , is it useful to have form element here !?!  */}
-                                {/* !!!! */}
-                                {/* !!!! */}
-                                {/* !!!! */}
-                                {/* !!!! */}
-                                {/* !!!! */}
-                                <form
+                                <div
                                     className={stylesAnnotations.annotationsTitle_form_container}
-                                    onSubmit={(e) => {
-                                        e.preventDefault();
-                                    }}
                                 >
                                     <p>{__("reader.annotations.annotationsExport.description")}</p>
                                     <div className={stylesInputs.form_group}>
@@ -1129,7 +1114,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                             className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" />
                                     </div>
                                     <Popover.Close aria-label={__("catalog.export")} asChild>
-                                        <button type="submit" onClick={() => {
+                                        <button onClick={() => {
                                             const annotations = annotationListFiltered.map(([, anno]) => {
                                                 const { creator } = anno;
                                                 if (creator?.id === creatorMyself.id) {
@@ -1145,17 +1130,13 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                             label = label.replace(/^\./, ""); // remove dot start
                                             label = label.toLowerCase();
 
-                                            // TODO: dispatch an action to launch export saga routine: init/get resource, iterator on each annotations => w3cAnnotations, return IReadiumAnnotationSet 
-                                            // const contents = convertAnnotationListToReadiumAnnotationSet(annotations, publicationView, title);
-                                            // downloadAnnotationJSON(contents, label);
-
                                             dispatch(readerLocalActionExportAnnotationSet.build(annotations, publicationView, label));
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />
                                             {__("catalog.export")}
                                         </button>
                                     </Popover.Close>
-                                </form>
+                                </div>
                             </Popover.Content>
                         </Popover.Portal>
                     </Popover.Root>

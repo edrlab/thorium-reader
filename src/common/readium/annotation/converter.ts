@@ -38,7 +38,8 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     // const fragmentSelectorArray = target.selector.filter(isFragmentSelector);
     // const cfiFragmentSelector = fragmentSelectorArray.find(isCFIFragmentSelector);
 
-    const root = xmlDom.body.ownerDocument.documentElement;
+    // TODO: @danielweck is it ok ? 
+    const root = xmlDom.body;
 
     const selectionInfoFound: ISelectionInfo[] = [];
 
@@ -156,6 +157,8 @@ export async function convertAnnotationStateToSelector(annotationWithCacheDoc: I
         return [];
     }
 
+    // TODO: @danielweck is it ok ? 
+    const root = xmlDom.body;
 
     const { locatorExtended } = annotation;
     const { selectionInfo } = locatorExtended;
@@ -166,12 +169,12 @@ export async function convertAnnotationStateToSelector(annotationWithCacheDoc: I
     debug(range);
 
     // describeTextPosition()
-    const selectorTextPosition = await describeTextPosition(range, xmlDom.body);
+    const selectorTextPosition = await describeTextPosition(range, root);
     debug("TextPositionSelector : ", selectorTextPosition);
     selector.push(selectorTextPosition);
 
     // describeTextQuote()
-    const selectorTextQuote = await describeTextQuote(range, xmlDom.body);
+    const selectorTextQuote = await describeTextQuote(range, root);
     debug("TextQuoteSelector : ", selectorTextQuote);
     selector.push(selectorTextQuote);
 
