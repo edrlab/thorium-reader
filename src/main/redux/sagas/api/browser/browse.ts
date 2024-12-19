@@ -182,6 +182,8 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
             }
 
             // parse OPDS and return
+            // how to deal with the dowload of the publication ? 
+            // no opds data will be returned
             const dataFromOpdsParser = await opdsService.opdsRequestTransformer(data as IHttpGetResult<IOpdsResultView>);
             if (dataFromOpdsParser) {
                 data.data = {

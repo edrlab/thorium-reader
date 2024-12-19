@@ -18,7 +18,7 @@ import * as i18n from "./i18n";
 import * as lcp from "./lcp";
 import * as load from "./load";
 import * as opds from "./opds";
-import * as sameFileImport from "./sameFileImport";
+// import * as sameFileImport from "./sameFileImport";
 import * as winInit from "./win";
 
 // Logger
@@ -45,7 +45,7 @@ export function* rootSaga() {
 
         publicationInfoReaderAndLib.saga(),
 
-        sameFileImport.saga(),
+        // sameFileImport.saga(),
         history.saga(),
         publicationInfoSyncTags.saga(),
 

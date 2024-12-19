@@ -11,7 +11,7 @@ import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { decodeB64 } from "readium-desktop/renderer/common/logics/base64";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
+import { parseContentType } from "readium-desktop/utils/contentType";
 
 import { Location } from "history";
 
@@ -29,12 +29,10 @@ export const dispatchOpdsLink =
             dispatch(dialogActions.closeRequest.build());
 
             const contentType = parseContentType(ln.type);
-            if (contentType === ContentType.Opds2 ||
-                contentType === ContentType.Opds2Auth ||
-                contentType === ContentType.Opds2Pub ||
-                contentType === ContentType.AtomXml ||
+            if (
+                contentType ||
                 REL_NAVIGATION_TYPES.includes(ln.rel)
-                ) {
+            ) {
 
                 const param = extractParamFromOpdsRoutePathname(location.pathname);
 

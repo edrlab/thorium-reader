@@ -11,7 +11,7 @@ import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scs
 import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
-import { dialogActions, importActions } from "readium-desktop/common/redux/actions/";
+// import { dialogActions, importActions } from "readium-desktop/common/redux/actions/";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import * as CartFillIcon from "readium-desktop/renderer/assets/icons/cart-icon.svg";
 import * as BorrowIcon from "readium-desktop/renderer/assets/icons/borrow-icon.svg";
@@ -54,7 +54,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
 
         const {
             opdsPublicationView,
-            verifyImport,
+            // verifyImport,
             openAccessButtonIsDisabled,
             sampleButtonIsDisabled,
             __,
@@ -103,9 +103,15 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                         );
                                     } else {
 
-                                        verifyImport(
+                                        // verifyImport(
+                                        //     ln,
+                                        //     opdsPublicationView,
+                                        // );
+
+                                        this.props.link(
                                             ln,
-                                            opdsPublicationView,
+                                            this.props.location,
+                                            `${"open access book"} (${opdsPublicationView.documentTitle}))`,
                                         );
                                     }
                                 }}
@@ -137,9 +143,15 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                         );
                                     } else {
 
-                                        verifyImport(
+                                        // verifyImport(
+                                        //     ln,
+                                        //     opdsPublicationView,
+                                        // );
+
+                                        this.props.link(
                                             ln,
-                                            opdsPublicationView,
+                                            this.props.location,
+                                            `${"sample book"} (${opdsPublicationView.documentTitle}))`,
                                         );
                                     }
                                 }}
@@ -295,10 +307,10 @@ export class OpdsControls extends React.Component<IProps, undefined> {
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        verifyImport: (...data: Parameters<typeof importActions.verify.build>) => {
-            dispatch(dialogActions.closeRequest.build());
-            dispatch(importActions.verify.build(...data));
-        },
+        // verifyImport: (...data: Parameters<typeof importActions.verify.build>) => {
+        //     dispatch(dialogActions.closeRequest.build());
+        //     dispatch(importActions.verify.build(...data));
+        // },
         link: (...data: Parameters<ReturnType<typeof dispatchOpdsLink>>) =>
             dispatchOpdsLink(dispatch)(...data),
     };

@@ -36,6 +36,8 @@ import { diSymbolTable } from "../diSymbolTable";
 import { getOpdsAuthenticationChannel } from "../event";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { IDigestDataParsed, parseDigestString } from "readium-desktop/utils/digest";
+import { diMainGet } from "../di";
+import { importFromLinkService } from "../redux/sagas/api/publication/import/importFromLink";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/opds");
@@ -84,12 +86,11 @@ export class OpdsService {
             contentType: _contentType,
         } = httpGetData;
         const baseUrl = `${_baseUrl}`;
-        const contentType = parseContentType(_contentType);
+        const contentType = parseContentType(_contentType); 
 
-        if (contentTypeisXml(contentType)) {
+       if (contentTypeisXml(contentType)) {
 
-
-            // TODO response.buffer deprecated by node-fetch
+            // TODO: response.buffer deprecated by node-fetch
             const buffer = await httpGetData.response.buffer();
             const result = await this.opdsRequestXmlTransformer(buffer, baseUrl);
 
@@ -129,6 +130,33 @@ export class OpdsService {
             }
         }
 
+        // TODO:
+        // now sample and open access pub acquisition will be handled like an opds feed
+        // with a download fallback if it is not parsable to an opds format
+        // What it means that a misconfigured or rotten opds feed can download anything to the user disk
+        // I suggest a user confirmation dialog modal to accept the download of the target link if legit
+
+        // To implement this need to switch to redux saga to ask and wait response in saga mode
+
+        // For the moment let's user download without confirmation
+
+        const downloadLink: IOpdsLinkView = {
+            url: _baseUrl.toString(),
+            type: contentType,
+        };
+
+        const sagaMiddleware = diMainGet("saga-middleware");
+        sagaMiddleware.run(importFromLinkService, downloadLink);
+
+        // https://github.com/edrlab/thorium-reader/issues/1261
+        // publication in OPDS2 feed might be an OPDSPublication or an R2Publication
+        // now downloaded and packaged in importFromLinkService saga function !
+
+
+        // TODO: what return when the publication is not an opds feed, we have to close the current publication info and reload the previous history odps link !?!
+
+
+        // TODO: What return here, when we have to reload the history previous link instead !?!
         return undefined;
     }
 
@@ -239,14 +267,6 @@ export class OpdsService {
                 !jsonObj.groups &&
                 !jsonObj.catalogs);
 
-        const isR2Pub = contentType === ContentType.webpub ||
-            jsonObj.metadata &&
-            jsonObj["@context"] === "https://readium.org/webpub-manifest/context.jsonld" &&
-            !!(!jsonObj.publications &&
-                !jsonObj.navigation &&
-                !jsonObj.groups &&
-                !jsonObj.catalogs);
-
         const isAuth = contentTypeisOpdsAuth(contentType) ||
             typeof jsonObj.authentication !== "undefined";
 
@@ -256,7 +276,7 @@ export class OpdsService {
                 jsonObj.groups ||
                 jsonObj.catalogs);
 
-        debug("isAuth, isOpdsPub, isR2Pub, isFeed", isAuth, isOpdsPub, isR2Pub, isFeed);
+        debug("isAuth, isOpdsPub, isR2Pub, isFeed", isAuth, isOpdsPub, isFeed);
         // debug(jsonObj);
         // console.log(JSON.stringify(jsonObj, null, 4));
         if (isAuth) {
@@ -283,47 +303,7 @@ export class OpdsService {
                 publications: [pubView],
             };
 
-        } else if (isR2Pub) {
-
-            // TODO : https://github.com/edrlab/thorium-reader/issues/1261
-            // publication in OPDS2 feed might be an OPDSPublication or an R2Publication
-
-            debug("R2Publication in OPDS not supported");
-
-            // const r2Publication = TaJsonDeserialize(
-            //     jsonObj,
-            //     R2Publication,
-            // );
-
-            // const pub = new OPDSPublication();
-
-            // if (typeof r2Publication.Metadata === "object") {
-            //     pub.Metadata = r2Publication.Metadata;
-            // }
-
-            // const coverLink = r2Publication.searchLinkByRel("cover");
-            // if (coverLink) {
-            //     pub.AddImage(
-            //         coverLink.Href,
-            //         coverLink.TypeLink,
-            //         coverLink.Height, coverLink.Width);
-            // }
-
-            // pub.AddLink_(, "application/webpub+json", "http://opds-spec.org/acquisition/open-access", "");
-
-            // const pubView = this.opdsFeedViewConverter.convertOpdsPublicationToView(r2Publication, baseUrl);
-
-            // return {
-            //     title: pubView.documentTitle,
-            //     publications: [pubView],
-            // } as IOpdsResultView;
-
-            return {
-                title: "",
-                publications: [],
-            };
-
-        } else if (isFeed) {
+        }  else if (isFeed) {
             const r2OpdsFeed = TaJsonDeserialize(
                 jsonObj,
                 OPDSFeed,
@@ -332,7 +312,6 @@ export class OpdsService {
         }
 
         return undefined;
-
     }
 
     private async opdsRequestXmlTransformer(buffer: Buffer, baseUrl: string) {

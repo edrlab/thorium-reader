@@ -11,7 +11,7 @@ import * as dialogActions from "./dialog/";
 import * as downloadActions from "./download/";
 import * as historyActions from "./history";
 import * as i18nActions from "./i18n/";
-import * as importActions from "./import/";
+// import * as importActions from "./import/";
 import * as keyboardActions from "./keyboard/";
 import * as lcpActions from "./lcp/";
 import * as loadActions from "./load";
@@ -37,7 +37,7 @@ export {
     netActions,
     readerActions,
     lcpActions,
-    importActions,
+    // importActions,
     toastActions,
     downloadActions,
     keyboardActions,
