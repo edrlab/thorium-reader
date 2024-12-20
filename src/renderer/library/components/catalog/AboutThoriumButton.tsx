@@ -104,7 +104,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                 }
                 <div className={stylesFooter.footer_about}>
                     <div>
-                    <p>{`v${app_version}`}</p>
+                    <p>{`v${_APP_VERSION}`}</p>
                     <a href="" onClick={async (ev) => {
                                 ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                 await shell.openExternal(`https://thorium.edrlab.org/?lang=${locale}&v=${app_version}`);
