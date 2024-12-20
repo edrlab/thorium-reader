@@ -479,6 +479,7 @@
       "preset": {
         "apply": "",
         "applyDetails": "",
+        "detail": "",
         "reset": "",
         "resetDetails": "",
         "save": "",
@@ -515,6 +516,7 @@
     "tts": {
       "activate": "音声読み上げ機能（TTS）を起動",
       "default": "音声: システム標準",
+      "language": "",
       "next": "次に進む（TTS）",
       "pause": "一時停止（TTS）",
       "play": "再生（TTS）",

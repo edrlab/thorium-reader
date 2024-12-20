@@ -100,7 +100,7 @@ export const ApiappHowDoesItWorkInfoBox = () => {
                     <a href=""
                         onClick={async (ev) => {
                             ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                            await shell.openExternal("https://thorium.edrlab.org/docs/");
+                            await shell.openExternal("https://thorium.edrlab.org/");
                         }}>
                         {__("apiapp.documentation")}
                         <SVG ariaHidden svg={FollowLinkIcon} />
@@ -210,7 +210,7 @@ export const ApiappAddFormDialog = () => {
         </Dialog.Trigger>
         <Dialog.Portal>
             <div className={stylesModals.modal_dialog_overlay}></div>
-            <Dialog.Content className={stylesModals.modal_dialog}>
+            <Dialog.Content className={stylesModals.modal_dialog} aria-describedby={undefined}>
                 <div className={stylesModals.modal_dialog_header}>
                     <Dialog.Title>
                         {__("opds.addFormApiapp.title")}

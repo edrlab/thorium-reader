@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
-import { PDFDocumentProxy } from "readium-desktop/typings/pdf.js/display/api";
+import { PDFDocumentProxy } from "pdf.js";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 
 import { ILink, TToc } from "../common/pdfReader.type";

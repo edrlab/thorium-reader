@@ -42,7 +42,7 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 
-
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 
 export interface IProps {
@@ -411,7 +411,10 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                             </Dialog.Trigger>
                             <Dialog.Portal>
                                 {/* <div className={stylesModals.modal_dialog_overlay}></div> */}
-                                <Dialog.Content className={stylesModals.modal_dialog}>
+                                <Dialog.Content className={stylesModals.modal_dialog} aria-describedby={undefined}>
+                                    <VisuallyHidden.Root>
+                                        <Dialog.Title>{__("catalog.bookInfo")}</Dialog.Title>
+                                    </VisuallyHidden.Root>
                                     <div className={stylesModals.modal_dialog_body_cover}>
                                         <Cover
                                             publicationViewMaybeOpds={props.publicationViewMaybeOpds}

@@ -479,6 +479,7 @@
       "preset": {
         "apply": "",
         "applyDetails": "",
+        "detail": "",
         "reset": "",
         "resetDetails": "",
         "save": "",
@@ -515,6 +516,7 @@
     "tts": {
       "activate": "Aktibatu testua ahotsarekin",
       "default": "Ahotsa: sisteman lehenetsia",
+      "language": "",
       "next": "Hurrengoa (testua ahotsez)",
       "pause": "Ahotsezko testua eten",
       "play": "Erreproduzitu (testua ahotsez)",

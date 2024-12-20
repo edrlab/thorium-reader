@@ -479,6 +479,7 @@
       "preset": {
         "apply": "",
         "applyDetails": "",
+        "detail": "",
         "reset": "",
         "resetDetails": "",
         "save": "",
@@ -515,6 +516,7 @@
     "tts": {
       "activate": "Ενεργοποίηση λειτουργίας μετατροπής κειμένου σε ομιλία (TTS)",
       "default": "Φωνή: προεπιλογή συστήματος",
+      "language": "",
       "next": "Επόμενο TTS",
       "pause": "Παύση TTS",
       "play": "Λειτουργία TTS",

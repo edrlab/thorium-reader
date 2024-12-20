@@ -405,7 +405,7 @@
     },
     "navigation": {
       "annotationTitle": "annotation",
-      "backHomeTitle": "back to bookshelf",
+      "backHomeTitle": "Close this reading window (back to bookshelf)",
       "bookmarkTitle": "bookmark",
       "currentPage": "Current page: {{- current}}",
       "currentPageTotal": "Current page: {{- current}}/{{- total}}",
@@ -477,13 +477,14 @@
         "title": "Zoom"
       },
       "preset": {
-        "apply": "Apply the preferred reading parameters",
-        "applyDetails": "Apply the preferred reading settings preset to the current book.",
-        "reset": "Reset preferred reading settings",
-        "resetDetails": "Reset the preferred reading parameters and apply these default paremeters to the current book.",
-        "save": "Save the preferred reading parameters",
-        "saveDetails": "Save the customized text parameters, so that they might be applied to other books, once open, by clicking on the button below.",
-        "title": "Preset"
+        "apply": "Apply your preferred reading parameters",
+        "applyDetails": "Apply your preferred reading parameters to the current book.",
+        "detail": "Save/Apply your preferred reading parameters.",
+        "reset": "Reset your preferred reading parameters.",
+        "resetDetails": "Reset your preferred reading parameters to their default values.",
+        "save": "Save your preferred reading parameters.",
+        "saveDetails": "ave the changes made to the current book's formatting and display choices. These settings can be applied to other books, once opened, by clicking on the button below.",
+        "title": "Preferences"
       },
       "preview": "Preview",
       "reduceMotion": "Reduce motion",
@@ -515,6 +516,7 @@
     "tts": {
       "activate": "Activate Text To Speech (TTS)",
       "default": "Voice: system default",
+      "language": "TTS language",
       "next": "Next TTS",
       "pause": "Pause TTS",
       "play": "Play TTS",

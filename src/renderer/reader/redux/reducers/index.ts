@@ -46,6 +46,7 @@ import { annotationTagsIndexReducer } from "./annotationTagsIndex";
 import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 import { importAnnotationReducer } from "readium-desktop/renderer/common/redux/reducers/importAnnotation";
 import { tagReducer } from "readium-desktop/common/redux/reducers/tag";
+import { readerLockReducer } from "./lock";
 
 export const rootReducer = () => {
 
@@ -145,7 +146,7 @@ export const rootReducer = () => {
                                 type: readerLocalActionHighlights.handler.pop.ID,
                                 selector: (action) =>
                                     action.payload?.map(
-                                        (highlightBaseState) => [highlightBaseState.uuid, undefined],
+                                        (highlightBaseState) => [highlightBaseState.uuid, undefined as IHighlightHandlerState | undefined],
                                     ),
                             },
                         },
@@ -169,7 +170,7 @@ export const rootReducer = () => {
                                 type: readerLocalActionHighlights.mounter.unmount.ID,
                                 selector: (action) =>
                                     action.payload?.map(
-                                        (highlightBaseState) => [highlightBaseState.uuid, undefined],
+                                        (highlightBaseState) => [highlightBaseState.uuid, undefined as IHighlightMounterState | undefined],
                                     ),
                             },
                         },
@@ -179,6 +180,7 @@ export const rootReducer = () => {
             disableRTLFlip: readerRTLFlipReducer,
             mediaOverlay: readerMediaOverlayReducer,
             tts: readerTTSReducer,
+            lock: readerLockReducer,
         }),
         search: searchReducer,
         annotation: annotationModeEnableReducer,

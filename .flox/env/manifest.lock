@@ -1,0 +1,156 @@
+{
+  "lockfile-version": 1,
+  "manifest": {
+    "version": 1,
+    "install": {
+      "nodejs_22": {
+        "pkg-path": "nodejs_22"
+      }
+    },
+    "vars": {
+      "CLICOLOR": "1",
+      "FLOX_DISABLE_METRICS": "true",
+      "FLX_VERBOSE": "${FLOX_VERBOSE:-}"
+    },
+    "hook": {
+      "on-activate": "[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"##################################################\";\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"########## FLOX ACTIVATE...\";\n\n#alias lss='ls -alshF --color=auto'\nlss () {\n    command ls -alshF --color=auto \"$@\"\n}\n\n# PWD=$(pwd);\n# [[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> PWD: ${PWD}\";\n# unset PWD\n\n#FLOX_ENV_PROJECT\n#_FLOX_ENV_LOG_DIR\n#FLOX_CACHE_DIR=\"$(dirname ${FLOX_ENV_CACHE})\"\n#FLOX_CACHE_DIR=\"$(realpath ${FLOX_ENV_CACHE})\"\nFLOX_CACHE_DIR=\"${FLOX_ENV_CACHE}\"\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> FLOX_CACHE_DIR: ${FLOX_CACHE_DIR}\";\n\nif [[ ! -z \"${FLX_VERBOSE}\" ]]; then\n\necho \"=====> NODE VERSION: $(node --version)\";\nWHICH_NODE=$(which node);\necho \".....> NODE WHICH: ${WHICH_NODE}\";\nlss \"${WHICH_NODE}\";\nunset WHICH_NODE\n\necho \"=====> NPM VERSION (init): $(npm --version)\";\nWHICH_NPM=$(which npm);\necho \".....> NPM WHICH: ${WHICH_NPM}\";\nlss \"${WHICH_NPM}\";\nunset WHICH_NPM\n\necho \"-----> NPM CONFIG PREFIX (init): $(npm config get prefix)\";\necho \"-----> NPM_CONFIG_PREFIX (init): ${NPM_CONFIG_PREFIX}\";\n\necho \"-----> NPM CONFIG CACHE (init): $(npm config get cache)\"\necho \"-----> NPM_CONFIG_CACHE (init): ${NPM_CONFIG_CACHE}\";\n\nfi\n\n# envName=\"${_FLOX_ACTIVE_ENVIRONMENTS##:*}\";\n#echo \"${envName}\";\n#export NPM_CONFIG_PREFIX=\"/tmp/${envName}-npm\";\n\nexport NPM_CONFIG_PREFIX=\"${FLOX_CACHE_DIR}/NPM_PREFIX\";\n#### rm -rf \"$NPM_CONFIG_PREFIX\";\nmkdir -p \"$NPM_CONFIG_PREFIX\";\nif [[ ! -z \"${FLX_VERBOSE}\" ]]; then\necho \"-----> NPM CONFIG PREFIX: $(npm config get prefix)\";\necho \"-----> NPM_CONFIG_PREFIX: ${NPM_CONFIG_PREFIX}\";\nlss \"$NPM_CONFIG_PREFIX\";\nlss \"$NPM_CONFIG_PREFIX/bin\";\nlss \"$NPM_CONFIG_PREFIX/lib\";\nlss \"$NPM_CONFIG_PREFIX/lib/node_modules\";\nfi\n\nexport NPM_CONFIG_CACHE=\"${FLOX_CACHE_DIR}/NPM_CACHE\";\n#### rm -rf \"$NPM_CONFIG_CACHE\";\nmkdir -p \"$NPM_CONFIG_CACHE\";\nif [[ ! -z \"${FLX_VERBOSE}\" ]]; then\necho \"-----> NPM CONFIG CACHE: $(npm config get cache)\"\necho \"-----> NPM_CONFIG_CACHE: ${NPM_CONFIG_CACHE}\";\nlss \"$NPM_CONFIG_CACHE\";\nfi\n\nunset FLOX_CACHE_DIR\n\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> NODE_PATH (init): ${NODE_PATH}\";\nexport NODE_PATH=\"$NPM_CONFIG_PREFIX/lib/node_modules${NODE_PATH:+:$NODE_PATH}\";\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> NODE_PATH: ${NODE_PATH}\";\n\nexport PATH=\"$NPM_CONFIG_PREFIX/bin:$PATH\";\n\nnpm install -g npm --foreground-scripts 1>/dev/null\nnpm install -g npm-check-updates --foreground-scripts 1>/dev/null\n# npm install -g @electron/asar --foreground-scripts 1>/dev/null\n"
+    },
+    "profile": {
+      "common": "[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"##################################################\";\n[[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"########## FLOX PROFILE COMMON (${SHELL})...\";\n\nalias lss='ls -alshF --color=auto'\nalias flx='flox activate'\nalias flxx='FLOX_VERBOSE=1 flox activate'\n\n# PWD=$(pwd);\n# [[ ! -z \"${FLX_VERBOSE}\" ]] && echo \"-----> PWD: ${PWD}\";\n# unset PWD\n\nif [[ ! -z \"${FLX_VERBOSE}\" ]]; then\n\necho \"=====> NODE VERSION: $(node --version)\";\nWHICH_NODE=$(which node);\necho \".....> NODE WHICH: ${WHICH_NODE}\";\nlss \"${WHICH_NODE}\";\nunset WHICH_NODE\n\necho \"=====> NPM VERSION: $(npm --version)\";\nWHICH_NPM=$(which npm);\necho \".....> NPM WHICH: ${WHICH_NPM}\";\nlss \"${WHICH_NPM}\";\nunset WHICH_NPM\n\necho \"-----> NPM CONFIG PREFIX: $(npm config get prefix)\";\necho \"-----> NPM_CONFIG_PREFIX: ${NPM_CONFIG_PREFIX}\";\n\necho \"-----> NPM CONFIG CACHE: $(npm config get cache)\"\necho \"-----> NPM_CONFIG_CACHE: ${NPM_CONFIG_CACHE}\";\n\necho \"=====> NCU VERSION: $(ncu --version)\";\nWHICH_NCU=$(which ncu);\necho \".....> NCU WHICH: ${WHICH_NCU}\";\nlss \"${WHICH_NCU}\";\nunset WHICH_NCU\n\necho \"=====> ASAR VERSION: $(asar --version)\";\nWHICH_ASAR=$(which asar);\necho \".....> ASAR WHICH: ${WHICH_ASAR}\";\nlss \"${WHICH_ASAR}\";\nunset WHICH_ASAR\n\necho \"=====> GIT VERSION: $(git --version)\";\nWHICH_GIT=$(which git);\necho \".....> GIT WHICH: ${WHICH_GIT}\";\nlss \"${WHICH_GIT}\";\nunset WHICH_GIT\n\nENV=$(env);\necho \"-----> ENV: ${ENV}\";\necho \"||||||||||||||||||||||||||\";\n\necho \"-----> APPLEID: ${APPLEID}\";\necho \"-----> APPLEIDTEAM: ${APPLEIDTEAM}\";\necho \"-----> APPLEIDPASS: ${APPLEIDPASS}\";\necho \"-----> SKIP_NOTARIZE: ${SKIP_NOTARIZE}\";\necho \"-----> CSC_NAME: ${CSC_NAME}\";\n\necho \"-----> DEBUG: ${DEBUG}\";\n\necho \"-----> USER: ${USER}\";\necho \"-----> USERNAME: ${USERNAME}\";\n\necho \"-----> NODE_ENV: ${NODE_ENV}\";\n\necho \"-----> THORIUM_OPDS_CATALOGS_URL: ${THORIUM_OPDS_CATALOGS_URL}\";\necho \"-----> THORIUM_OPEN_DEVTOOLS: ${THORIUM_OPEN_DEVTOOLS}\";\necho \"-----> LCP_SKIP_LSD: ${LCP_SKIP_LSD}\";\necho \"-----> SKIP_CHECK_TYPESCRIPT: ${SKIP_CHECK_TYPESCRIPT}\";\necho \"-----> USE_LEGACY_TYPESCRIPT_LOADER: ${USE_LEGACY_TYPESCRIPT_LOADER}\";\necho \"-----> THORIUM_TELEMETRY_SECRET: ${THORIUM_TELEMETRY_SECRET}\";\necho \"-----> THORIUM_TELEMETRY_URL: ${THORIUM_TELEMETRY_URL}\";\necho \"-----> PACKAGING: ${PACKAGING}\";\necho \"-----> GITHUB_TOKEN_RELEASE_PUBLISH: ${GITHUB_TOKEN_RELEASE_PUBLISH}\";\necho \"-----> VSCODE_LAUNCH: ${VSCODE_LAUNCH}\";\necho \"-----> PORT_APP: ${PORT_APP}\";\necho \"-----> PORT_READER: ${PORT_READER}\";\necho \"-----> PORT_PDF_WEBVIEW: ${PORT_PDF_WEBVIEW}\";\n\ngit branch\ngit status\n\nfi\n"
+    },
+    "options": {
+      "systems": [
+        "aarch64-darwin",
+        "aarch64-linux",
+        "x86_64-darwin",
+        "x86_64-linux"
+      ],
+      "allow": {
+        "licenses": []
+      },
+      "semver": {}
+    }
+  },
+  "packages": [
+    {
+      "attr_path": "nodejs_22",
+      "broken": false,
+      "derivation": "/nix/store/l7xqarxr78661qxnkwjdkv3dw10habfq-nodejs-22.10.0.drv",
+      "description": "Event-driven I/O framework for the V8 JavaScript engine",
+      "install_id": "nodejs_22",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=3566ab7246670a43abd2ffa913cc62dad9cdf7d5",
+      "name": "nodejs-22.10.0",
+      "pname": "nodejs_22",
+      "rev": "3566ab7246670a43abd2ffa913cc62dad9cdf7d5",
+      "rev_count": 721821,
+      "rev_date": "2024-12-13T19:53:07Z",
+      "scrape_date": "2024-12-16T03:51:20Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "nodejs-22.10.0",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "libv8": "/nix/store/2qwjlhfyn2k3dixjgqxnwhsxxyn46rxl-nodejs-22.10.0-libv8",
+        "out": "/nix/store/y6piwcsias394n5kflisg8jhll9czk2x-nodejs-22.10.0"
+      },
+      "system": "aarch64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "nodejs_22",
+      "broken": false,
+      "derivation": "/nix/store/wjn7vj94fnjd4h7ai3rsgfvkmjxkv57g-nodejs-22.10.0.drv",
+      "description": "Event-driven I/O framework for the V8 JavaScript engine",
+      "install_id": "nodejs_22",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=3566ab7246670a43abd2ffa913cc62dad9cdf7d5",
+      "name": "nodejs-22.10.0",
+      "pname": "nodejs_22",
+      "rev": "3566ab7246670a43abd2ffa913cc62dad9cdf7d5",
+      "rev_count": 721821,
+      "rev_date": "2024-12-13T19:53:07Z",
+      "scrape_date": "2024-12-16T03:51:20Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "nodejs-22.10.0",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "libv8": "/nix/store/649q0xdwl617h2s8j50f7880df60w37a-nodejs-22.10.0-libv8",
+        "out": "/nix/store/ayfg2m6gwh5047hapf316jrilxd8kk4k-nodejs-22.10.0"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "nodejs_22",
+      "broken": false,
+      "derivation": "/nix/store/5njd1g0p4v3fk0d3q9hymgpc8xr5dn2z-nodejs-22.10.0.drv",
+      "description": "Event-driven I/O framework for the V8 JavaScript engine",
+      "install_id": "nodejs_22",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=3566ab7246670a43abd2ffa913cc62dad9cdf7d5",
+      "name": "nodejs-22.10.0",
+      "pname": "nodejs_22",
+      "rev": "3566ab7246670a43abd2ffa913cc62dad9cdf7d5",
+      "rev_count": 721821,
+      "rev_date": "2024-12-13T19:53:07Z",
+      "scrape_date": "2024-12-16T03:51:20Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "nodejs-22.10.0",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "libv8": "/nix/store/g1bmrm6lq74zdid30q8hh3102qxpk7p7-nodejs-22.10.0-libv8",
+        "out": "/nix/store/4rmbk8pg2lvv22aqjk8b539pfspsm98m-nodejs-22.10.0"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "nodejs_22",
+      "broken": false,
+      "derivation": "/nix/store/p33fbd36lz7nh44dzshl29w276q25h2y-nodejs-22.10.0.drv",
+      "description": "Event-driven I/O framework for the V8 JavaScript engine",
+      "install_id": "nodejs_22",
+      "license": "MIT",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=3566ab7246670a43abd2ffa913cc62dad9cdf7d5",
+      "name": "nodejs-22.10.0",
+      "pname": "nodejs_22",
+      "rev": "3566ab7246670a43abd2ffa913cc62dad9cdf7d5",
+      "rev_count": 721821,
+      "rev_date": "2024-12-13T19:53:07Z",
+      "scrape_date": "2024-12-16T03:51:20Z",
+      "stabilities": [
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "nodejs-22.10.0",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "libv8": "/nix/store/j9kj5x00fh8sac4mfb6dxmfg1dk5af90-nodejs-22.10.0-libv8",
+        "out": "/nix/store/hnkyz55vndmvwhg6nzpliv86gh6sxg7h-nodejs-22.10.0"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    }
+  ]
+}

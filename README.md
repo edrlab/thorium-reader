@@ -58,7 +58,7 @@ See: https://github.com/edrlab/thorium-reader/wiki/Localization-(l10n)-language-
 
 ### Install dependencies
 
-* `npm install` (or `npm ci`): initialize local `node_modules` packages from dependencies declared in `package.json` (this will also automatically call a long-running compilation stage in `npm run postinstall`)
+* `npm install --foreground-scripts` (or `npm ci --foreground-scripts`): initialize local `node_modules` packages from dependencies declared in `package.json` (this will also automatically call a long-running compilation stage in `npm run postinstall`)
 * in case of failure to NPM "install" because of "Divina player" SHA integrity mismatch, please try running the following command in your shell: `node scripts/package-lock-patch.js && cat package-lock.json | grep -i divina-player-js`
 
 ### Start application in development environment

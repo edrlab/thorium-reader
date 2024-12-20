@@ -134,7 +134,7 @@ export function* init() {
 
         [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
             installExtension(extension /*, { loadExtensionOptions: { allowFileAccess: true } } */)
-            .then((name: string) => debug("electron-devtools-installer OK (app init): ", name))
+            .then((ext: {name: string}) => debug("electron-devtools-installer OK (app init): ", ext.name))
             .catch((err: Error) => debug("electron-devtools-installer ERROR (app init): ", err));
         });
     }
@@ -158,22 +158,6 @@ export function* init() {
         debug("#####");
     });
 
-    // const sessionPDFWebview = session.fromPartition("persist:pdfjsreader");
-    // const protocolFromPDFWebview = sessionPDFWebview.protocol;
-    protocol.registerFileProtocol("pdfjs", async (request, callback) => {
-
-        const url = (new URL(request.url)).pathname;
-        debug("PDFJS request this file:", url);
-
-        const pdfjsFolder = "assets/lib/pdfjs";
-        let folderPath: string = path.join(__dirname, pdfjsFolder);
-        if (_PACKAGING === "0") {
-            folderPath = path.join(process.cwd(), "dist", pdfjsFolder);
-        }
-        const pathname = path.normalize(`${folderPath}/${url}`);
-
-        callback(pathname);
-    });
 
     protocol.registerFileProtocol("pdfjs-extract", async (request, callback) => {
 

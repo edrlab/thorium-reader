@@ -10,6 +10,7 @@ import * as stylesModals from "readium-desktop/renderer/assets/styles/components
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 import * as Dialog from "@radix-ui/react-dialog";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import * as React from "react";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
@@ -89,7 +90,10 @@ export const PublicationInfoLibWithRadixContent = React.forwardRef<HTMLDivElemen
             <Dialog.Portal>
                 {/* <Dialog.Overlay className="DialogOverlay" /> */}
                 <div className={stylesModals.modal_dialog_overlay}></div>
-                <Dialog.Content className={stylesModals.modal_dialog} {...props} ref={forwardRef}>
+                <Dialog.Content className={stylesModals.modal_dialog} {...props} ref={forwardRef} aria-describedby={undefined}>
+                    <VisuallyHidden.Root>
+                        <Dialog.Title>{__("catalog.bookInfo")}</Dialog.Title>
+                    </VisuallyHidden.Root>
                     <div className={stylesModals.modal_dialog_header}>
                         {/* <Dialog.Title className="DialogTitle">{__("catalog.bookInfo")}</Dialog.Title> */}
                         <h1>{__("catalog.bookInfo")}</h1>
@@ -160,7 +164,10 @@ export const PublicationInfoOpdsWithRadixContent = React.forwardRef<HTMLDivEleme
             <Dialog.Portal>
                 {/* <Dialog.Overlay className="DialogOverlay" /> */}
                 <div className={stylesModals.modal_dialog_overlay}></div>
-                <Dialog.Content className={stylesModals.modal_dialog} {...props} ref={forwardRef}>
+                <Dialog.Content className={stylesModals.modal_dialog} {...props} ref={forwardRef} aria-describedby={undefined}>
+                    <VisuallyHidden.Root>
+                        <Dialog.Title>{__("catalog.bookInfo")}</Dialog.Title>
+                    </VisuallyHidden.Root>
                     <div className={stylesModals.modal_dialog_header}>
                         {/* <Dialog.Title className="DialogTitle">{__("catalog.bookInfo")}</Dialog.Title> */}
                         <h2>{__("catalog.bookInfo")}</h2>

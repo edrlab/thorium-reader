@@ -74,9 +74,9 @@
       "lastAdditions": "Nyligen tillagt"
     },
     "export": "Spara som",
-    "exportAnnotation": "",
+    "exportAnnotation": "Spara anteckningar som",
     "format": "Format",
-    "importAnnotation": "",
+    "importAnnotation": "Importera anteckningar",
     "lang": "Språk",
     "lastRead": "Senast läst",
     "moreInfo": "Information om publikationen",
@@ -123,18 +123,18 @@
   },
   "dialog": {
     "annotations": {
-      "descAuthor": "",
-      "descList": "",
-      "descNewer": "",
-      "descOlder": "",
-      "descTitle": "",
-      "importAll": "",
-      "importWithoutConflict": "",
-      "title": ""
+      "descAuthor": "av {{- author}}",
+      "descList": "{{- nb}} anteckning(ar) av {{- creator}} kommer att kopplas till {{- title}} {{- author}}",
+      "descNewer": "{{- nb}} nyare versioner av de här anteckningarna är redan kopplade till publikationen.",
+      "descOlder": "{{- nb}} äldre versioner av de här anteckningarna är redan kopplade till publikationen.",
+      "descTitle": "Anteckningarnas titel: ",
+      "importAll": "Importera alla anteckningar",
+      "importWithoutConflict": "Importera anteckningar utan konflikter",
+      "title": "Vill du importera de här anteckningarna?"
     },
     "cancel": "Avbryt",
-    "deleteAnnotations": "",
-    "deleteAnnotationsText": "",
+    "deleteAnnotations": "Radera anteckningar?",
+    "deleteAnnotationsText": "Vill du radera {{- annotationListLength}} anteckning(ar)?",
     "deleteFeed": "Vill du ta bort den här katalogen?",
     "deletePublication": "Vill du ta bort den här publikationen?",
     "import": "Vill du importera följande filer:",
@@ -170,7 +170,7 @@
   "library": {
     "lcp": {
       "hint": "Tips: ",
-      "open": "",
+      "open": "Öppna",
       "password": "Lösenord",
       "sentence": "Den här publikationer behöver ett LCP-lösenord för att kunna öppnas: ",
       "urlHint": "Har du glömt ditt lösenord? Här kan du få hjälp:",
@@ -181,12 +181,12 @@
   },
   "message": {
     "annotations": {
-      "alreadyImported": "",
-      "emptyFile": "",
-      "errorParsing": "",
-      "noBelongTo": "",
-      "nothing": "",
-      "success": ""
+      "alreadyImported": "Alla anteckningar har redan importerats, avbryter importen",
+      "emptyFile": "Inga anteckningar tillgängliga i filen",
+      "errorParsing": "Fel vid inläsning av filformat: ",
+      "noBelongTo": "Det går inte att importera anteckningarna, minst en anteckning tillhör inte publikationen",
+      "nothing": "Det finns inga anteckningar tillgängliga för import, avbryter importen",
+      "success": "Klart!"
     },
     "download": {
       "error": "Nedladdningen av {{- title}} misslyckades: [{{- err}}]"
@@ -291,10 +291,10 @@
     "duration": {
       "title": "Längd"
     },
-    "encryptedNoLicense": "",
+    "encryptedNoLicense": "Publikationen är krypterad men saknar LCP-licens!",
     "expired": "Lånet har gått ut.",
     "expiredLcp": "Den här boken går inte att läsa eftersom LCP-licensen har löpt ut.",
-    "incorrectPassphrase": "",
+    "incorrectPassphrase": "Inget sparat lösenord passar för publikationen, eller det angivna lösenordet är fel.",
     "lcpEnd": "Slut",
     "lcpRightsCopy": "Kopiera tecken",
     "lcpRightsPrint": "Kopiera utskrift",
@@ -328,28 +328,28 @@
       "addNote": "Anteckna",
       "advancedMode": "Omedelbart-läge (skapa automatiskt efter markering)",
       "annotationsExport": {
-        "description": "",
-        "title": ""
+        "description": "Namnge anteckningarna",
+        "title": "Titel"
       },
       "annotationsOptions": "Alternativ",
       "colors": {
-        "bluegreen": "",
-        "cyan": "",
-        "green": "",
-        "lightblue": "",
-        "orange": "",
-        "purple": "",
-        "red": "",
-        "yellow": ""
+        "bluegreen": "Blågrön",
+        "cyan": "Cyan",
+        "green": "Grön",
+        "lightblue": "Ljusblå",
+        "orange": "Orange",
+        "purple": "Lila",
+        "red": "Röd",
+        "yellow": "Gul"
       },
       "filter": {
-        "all": "",
-        "filterByColor": "",
-        "filterByCreator": "",
-        "filterByDrawtype": "",
-        "filterByTag": "",
-        "filterOptions": "",
-        "none": ""
+        "all": "Alla",
+        "filterByColor": "Filtrera efter färg",
+        "filterByCreator": "Filtrera efter skapare",
+        "filterByDrawtype": "Filtrera efter markeringstyp",
+        "filterByTag": "Filtrera efter tagg",
+        "filterOptions": "Filteralternativ",
+        "none": "Ingen"
       },
       "hide": "Visa inte",
       "highlight": "Markera",
@@ -357,10 +357,10 @@
       "quickAnnotations": "Snabbskapa (hoppa över redigeraren)",
       "saveNote": "Spara",
       "sorting": {
-        "lastcreated": "",
-        "lastmodified": "",
-        "progression": "",
-        "sortingOptions": ""
+        "lastcreated": "Senast skapad",
+        "lastmodified": "Senast ändrad",
+        "progression": "Ordning i boken",
+        "sortingOptions": "Sorteringsalternativ"
       },
       "toggleMarginMarks": "Visa i marginalen",
       "type": {
@@ -443,7 +443,7 @@
         "title": "Kolumner",
         "two": "2 kolumner"
       },
-      "customFontSelected": "",
+      "customFontSelected": "Du har valt ett eget typsnitt",
       "customizeReader": "Anpassa textformatering",
       "disabled": "inaktiverad",
       "display": "Visning",
@@ -477,13 +477,14 @@
         "title": "Zooma"
       },
       "preset": {
-        "apply": "",
-        "applyDetails": "",
-        "reset": "",
-        "resetDetails": "",
-        "save": "",
-        "saveDetails": "",
-        "title": ""
+        "apply": "Tillämpa egna läsinställningar",
+        "applyDetails": "Tillämpa dina sparade läsinställningar på den aktuella boken.",
+        "detail": "",
+        "reset": "Återställ läsinställningar",
+        "resetDetails": "Återställ dina läsinställningar till standard och tillämpa inställningarna på den aktuella boken.",
+        "save": "Spara egna läsinställningar",
+        "saveDetails": "Spara de anpassade inställningarna för visning och textformatering. Du kan tillämpa dem på andra böcker genom att klicka på knappen nedan.",
+        "title": "Förinställning"
       },
       "preview": "Förhandsvisning",
       "reduceMotion": "Minska rörelser",
@@ -515,6 +516,7 @@
     "tts": {
       "activate": "Aktivera text-till-tal",
       "default": "Röst: systemstandard",
+      "language": "",
       "next": "Nästa",
       "pause": "Pausa",
       "play": "Läs upp",
@@ -528,14 +530,14 @@
   },
   "settings": {
     "annotationCreator": {
-      "creator": "",
-      "name": "",
-      "organization": "",
-      "person": "",
-      "type": ""
+      "creator": "Skapare",
+      "name": "Namn",
+      "organization": "Organisation",
+      "person": "Person",
+      "type": "Typ:"
     },
     "auth": {
-      "title": "",
+      "title": "Hantera åtkomst till kataloger",
       "wipeData": "Rensa inloggningsuppgifter"
     },
     "keyboard": {
@@ -552,8 +554,8 @@
       "languageChoice": "Språk"
     },
     "library": {
-      "enableAPIAPP": "",
-      "title": ""
+      "enableAPIAPP": "Aktivera åtkomst till Dilicom PNB API",
+      "title": "Lägg till ett bibliotekskonto"
     },
     "session": {
       "title": "Spara session"

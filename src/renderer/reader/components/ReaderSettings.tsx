@@ -54,7 +54,7 @@ import { readerLocalActionReader } from "../redux/actions";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
-import { usePublisherReaderConfig, useReaderConfig, useReaderConfigAll, useSavePublisherReaderConfig, useSavePublisherReaderConfigDebounced, useSaveReaderConfig, useSaveReaderConfigDebounced } from "readium-desktop/renderer/common/hooks/useReaderConfig";
+import { useDiffBoolBetweenReaderConfigAndDefaultConfig, usePublisherReaderConfig, useReaderConfig, useReaderConfigAll, useSavePublisherReaderConfig, useSavePublisherReaderConfigDebounced, useSaveReaderConfig, useSaveReaderConfigDebounced } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { comparePublisherReaderConfig } from "../../../common/publisherConfig";
 import debounce from "debounce";
@@ -1044,23 +1044,25 @@ const SaveResetApplyPreset = () => {
     const readerDefaultConfig = useSelector((state: IReaderRootState) => state.reader.defaultConfig);
     const allowCustomCheckboxChecked = useSelector((state: IReaderRootState) => state.reader.allowCustomConfig.state);
     const publisherConfigOverrided = !comparePublisherReaderConfig(readerDefaultConfig, readerConfigInitialState);
+    const diffBetweenDefaultConfigAndConfig = useDiffBoolBetweenReaderConfigAndDefaultConfig();
 
     const dockingMode = useReaderConfig("readerDockingMode");
     const dockedMode = dockingMode !== "full";
 
     const cb = React.useCallback(() => {
 
-        setReaderConfig(readerDefaultConfig);
+        const { ttsVoice: __ttsVoiceUNUSED, ...readerDefaultConfigCopyWithoutTTSVoice} = readerDefaultConfig;
+        setReaderConfig(readerDefaultConfigCopyWithoutTTSVoice);
 
         if (allowCustomCheckboxChecked) {
             if (publisherConfigOverrided) {
-                setPublisherConfig(readerDefaultConfig);
+                setPublisherConfig(readerDefaultConfigCopyWithoutTTSVoice);
             } else {
                 dispatch(readerLocalActionReader.allowCustom.build(false));
             }
         } else {
             if (publisherConfigOverrided) {
-                setPublisherConfig(readerDefaultConfig);
+                setPublisherConfig(readerDefaultConfigCopyWithoutTTSVoice);
                 dispatch(readerLocalActionReader.allowCustom.build(true));
             } else {
                 // nothing to do
@@ -1074,16 +1076,16 @@ const SaveResetApplyPreset = () => {
 
         <div className={stylesSettings.preset_settings_container}>
             <div>
-                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : ""}} onClick={() => {
+                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px"}} onClick={() => {
                     dispatch(readerActions.configSetDefault.build(readerConfig));
-                }}>
+                }} disabled={!diffBetweenDefaultConfigAndConfig}>
                     <SVG ariaHidden={true} svg={SaveIcon} />
                     {__("reader.settings.preset.save")}</button>
                 <p>{__("reader.settings.preset.saveDetails")}</p>
             </div>
 
             <div>
-                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : ""}} onClick={applyPreferredConfig}>
+                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px"}} onClick={applyPreferredConfig}>
                     <SVG ariaHidden={true} svg={DoubleCheckIcon} />
                     {__("reader.settings.preset.apply")}
                 </button>
@@ -1091,7 +1093,7 @@ const SaveResetApplyPreset = () => {
             </div>
 
             <div>
-                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : ""}} onClick={() => {
+                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px"}} onClick={() => {
                     dispatch(readerActions.configSetDefault.build(readerConfigInitialState));
                     applyPreferredConfig();
                 }}>
@@ -1119,6 +1121,8 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const setDockingMode = React.useCallback((value: ReaderConfig["readerDockingMode"]) => {
         setReaderConfig({ readerDockingMode: value });
     }, [setReaderConfig]);
+
+    const diffBetweenDefaultConfigAndConfig = useDiffBoolBetweenReaderConfigAndDefaultConfig();
 
     const [__] = useTranslator();
 
@@ -1297,10 +1301,15 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const optionPdfZoomItem = { id: 5, value: "tab-pdfzoom", name: __("reader.settings.pdfZoom.title"), disabled: false, svg: VolumeUpIcon };
 
     const PresetTrigger =
-        <Tabs.Trigger value="tab-preset" disabled={false} title={__("reader.settings.preset.title")} key="tab-preset" data-value="tab-preset">
-            <SVG ariaHidden svg={GuearIcon} />
-            <h3>{__("reader.settings.preset.title")}</h3>
-        </Tabs.Trigger>;
+        <React.Fragment key="tab-preset">
+            <span style={{ width: "80%", height: "2px", backgroundColor: "var(--color-extralight-grey-alt)", margin: "10px auto" }}></span>
+            <Tabs.Trigger value="tab-preset" disabled={false} title={__("reader.settings.preset.title")} data-value="tab-preset" style={{position: "relative"}}>
+                <SVG ariaHidden svg={GuearIcon} />
+                <h3>{__("reader.settings.preset.title")}</h3>
+                {diffBetweenDefaultConfigAndConfig ? <span className={stylesSettings.notification_preset}></span> : <></>}
+            </Tabs.Trigger>
+            <p style={{margin: "-5px 20px 0 60px"}}>{__("reader.settings.preset.detail")}</p>
+        </ React.Fragment>;
     const optionPresetItem = { id: 6, value: "tab-preset", name: __("reader.settings.preset.title"), disabled: false, svg: GuearIcon };
 
     const AllowCustomContainer = () =>

@@ -479,6 +479,7 @@
       "preset": {
         "apply": "",
         "applyDetails": "",
+        "detail": "",
         "reset": "",
         "resetDetails": "",
         "save": "",
@@ -515,6 +516,7 @@
     "tts": {
       "activate": "Vklopi sintetizator govora",
       "default": "Glas: privzeta nastavitev sistema",
+      "language": "",
       "next": "Naslednji",
       "pause": "Premor",
       "play": "Predvajaj",

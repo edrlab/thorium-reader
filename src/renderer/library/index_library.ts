@@ -30,8 +30,8 @@ if (IS_DEV) {
 }
 
 // TO TEST ESM (not COMMONJS):
-// // import * as normalizeUrl from "normalize-url";
-// import normalizeUrl from "normalize-url";
+// // import * as normalizeUrl from_"normalize-url";
+// import normalizeUrl from_"normalize-url";
 // console.log(normalizeUrl("//www.sindresorhus.com:80/../baz?b=bar&a=foo"), "#".repeat(200));
 // // import("normalize-url").then(({default: normalizeUrl}) => {
 // //     //=> 'http://sindresorhus.com/baz?a=foo&b=bar'

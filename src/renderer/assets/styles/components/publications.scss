@@ -115,6 +115,7 @@
         word-break: break-all;
         display: -webkit-inline-box;
         -webkit-line-clamp: 3;
+        line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-align: center;
@@ -532,6 +533,7 @@
     word-break: break-all;
     display: -webkit-inline-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
 
     /* autoprefixer: ignore next */
     -webkit-box-orient: vertical;

@@ -51,4 +51,11 @@ export interface IReaderStateReader {
     mediaOverlay: IMediaOverlayState;
     allowCustomConfig: IAllowCustomConfigState;
     transientConfig: ReaderConfigPublisher;
+
+
+    // got the lock
+    // acquired on first reader opened with the same publication UUID instance
+    // allow to do computation for the publication on one reader and not across reader
+    // it is a kind of Mutex in multi-threading concept
+    lock: boolean;
 }

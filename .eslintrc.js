@@ -14,7 +14,9 @@ module.exports = {
         "src/typings/*",
         "src/resources/*",
         "src/renderer/assets/*",
-        "src/renderer/reader/pdf/*"
+        "src/renderer/reader/pdf/*",
+        ".zed/*",
+        ".flox/*"
     ],
     // ignorePatterns: [ "*.*" ],
     parser: "@typescript-eslint/parser",

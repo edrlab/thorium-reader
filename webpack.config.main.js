@@ -190,8 +190,16 @@ let config = Object.assign(
             new CopyWebpackPlugin({
                 patterns: [
                     {
-                        from: path.join(__dirname, "src", "resources", "lib", "pdfjs"),
-                        to: "assets/lib/pdfjs",
+                        from: path.join(__dirname, "node_modules", "pdf.js", "build", "gh-pages", "web"),
+                        to: "assets/lib/pdfjs/web",
+                    },
+                ],
+            }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.join(__dirname, "node_modules", "pdf.js", "build", "gh-pages", "build"),
+                        to: "assets/lib/pdfjs/build",
                     },
                 ],
             }),

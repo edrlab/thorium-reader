@@ -1,0 +1,227 @@
+# flox config --set-bool set_prompt false
+# ==> .zshrc
+# Warp-ify Flox subshell prompt:
+# function git_branch_name()
+# {
+#   branch=$({ git symbolic-ref -q HEAD || git name-rev --name-only --no-undefined --always HEAD; } 2>/dev/null | sed 's/refs\/heads\///')
+#   if [[ $branch == "" ]];
+#   then
+#     :
+#   else
+#     #echo "[$branch]"
+#     echo '('$branch') '
+#   fi
+# }
+#
+# function flox_prompt()
+# {
+#   FLX_ENVS="${FLOX_PROMPT_ENVIRONMENTS:-}"
+#   if [[ -z "${FLX_ENVS}" ]];
+#   then
+#     :
+#   else
+#     echo 'FLX ['$FLX_ENVS'] '
+#   fi
+# }
+# setopt prompt_subst
+# autoload -U colors && colors
+# export PS1='%{$fg[red]%}$(flox_prompt)%{$reset_color%}%n@%m %{$fg[green]%}%~%{$reset_color%} %{$fg[magenta]%}$(git_branch_name)%{$reset_color%}%# '
+# PROMPT="${PROMPT}"$'\n'
+# printf '\eP$f{"hook": "SourcedRcFileForWarp", "value": { "shell": "zsh" }}\x9c'
+
+version = 1
+
+[install]
+nodejs_22.pkg-path = "nodejs_22"
+
+[vars]
+FLOX_DISABLE_METRICS="true"
+CLICOLOR="1"
+
+#set -euo pipefail (set -u in particular ==> undefined vars early exit)
+# FLX_VERBOSE becomes fallback when FLOX_VERBOSE is empty or unset
+FLX_VERBOSE="${FLOX_VERBOSE:-}"
+# FLX_VERBOSE becomes fallback only when FLOX_VERBOSE is unset, not empty
+# FLX_VERBOSE="${FLOX_VERBOSE-}"
+
+# if [[ ! -v FLX_VERBOSE ]]; then
+# # unset
+# elif [[ -z "${FLX_VERBOSE}" ]]; then
+# # empty
+# else
+# neither unset nor empty
+# fi
+
+[hook]
+on-activate = '''
+[[ ! -z "${FLX_VERBOSE}" ]] && echo "##################################################";
+[[ ! -z "${FLX_VERBOSE}" ]] && echo "########## FLOX ACTIVATE...";
+
+#alias lss='ls -alshF --color=auto'
+lss () {
+    command ls -alshF --color=auto "$@"
+}
+
+# PWD=$(pwd);
+# [[ ! -z "${FLX_VERBOSE}" ]] && echo "-----> PWD: ${PWD}";
+# unset PWD
+
+#FLOX_ENV_PROJECT
+#_FLOX_ENV_LOG_DIR
+#FLOX_CACHE_DIR="$(dirname ${FLOX_ENV_CACHE})"
+#FLOX_CACHE_DIR="$(realpath ${FLOX_ENV_CACHE})"
+FLOX_CACHE_DIR="${FLOX_ENV_CACHE}"
+[[ ! -z "${FLX_VERBOSE}" ]] && echo "-----> FLOX_CACHE_DIR: ${FLOX_CACHE_DIR}";
+
+if [[ ! -z "${FLX_VERBOSE}" ]]; then
+
+echo "=====> NODE VERSION: $(node --version)";
+WHICH_NODE=$(which node);
+echo ".....> NODE WHICH: ${WHICH_NODE}";
+lss "${WHICH_NODE}";
+unset WHICH_NODE
+
+echo "=====> NPM VERSION (init): $(npm --version)";
+WHICH_NPM=$(which npm);
+echo ".....> NPM WHICH: ${WHICH_NPM}";
+lss "${WHICH_NPM}";
+unset WHICH_NPM
+
+echo "-----> NPM CONFIG PREFIX (init): $(npm config get prefix)";
+echo "-----> NPM_CONFIG_PREFIX (init): ${NPM_CONFIG_PREFIX}";
+
+echo "-----> NPM CONFIG CACHE (init): $(npm config get cache)"
+echo "-----> NPM_CONFIG_CACHE (init): ${NPM_CONFIG_CACHE}";
+
+fi
+
+# envName="${_FLOX_ACTIVE_ENVIRONMENTS##:*}";
+#echo "${envName}";
+#export NPM_CONFIG_PREFIX="/tmp/${envName}-npm";
+
+export NPM_CONFIG_PREFIX="${FLOX_CACHE_DIR}/NPM_PREFIX";
+#### rm -rf "$NPM_CONFIG_PREFIX";
+mkdir -p "$NPM_CONFIG_PREFIX";
+if [[ ! -z "${FLX_VERBOSE}" ]]; then
+echo "-----> NPM CONFIG PREFIX: $(npm config get prefix)";
+echo "-----> NPM_CONFIG_PREFIX: ${NPM_CONFIG_PREFIX}";
+lss "$NPM_CONFIG_PREFIX";
+lss "$NPM_CONFIG_PREFIX/bin";
+lss "$NPM_CONFIG_PREFIX/lib";
+lss "$NPM_CONFIG_PREFIX/lib/node_modules";
+fi
+
+export NPM_CONFIG_CACHE="${FLOX_CACHE_DIR}/NPM_CACHE";
+#### rm -rf "$NPM_CONFIG_CACHE";
+mkdir -p "$NPM_CONFIG_CACHE";
+if [[ ! -z "${FLX_VERBOSE}" ]]; then
+echo "-----> NPM CONFIG CACHE: $(npm config get cache)"
+echo "-----> NPM_CONFIG_CACHE: ${NPM_CONFIG_CACHE}";
+lss "$NPM_CONFIG_CACHE";
+fi
+
+unset FLOX_CACHE_DIR
+
+[[ ! -z "${FLX_VERBOSE}" ]] && echo "-----> NODE_PATH (init): ${NODE_PATH}";
+export NODE_PATH="$NPM_CONFIG_PREFIX/lib/node_modules${NODE_PATH:+:$NODE_PATH}";
+[[ ! -z "${FLX_VERBOSE}" ]] && echo "-----> NODE_PATH: ${NODE_PATH}";
+
+export PATH="$NPM_CONFIG_PREFIX/bin:$PATH";
+
+npm install -g npm --foreground-scripts 1>/dev/null
+npm install -g npm-check-updates --foreground-scripts 1>/dev/null
+# npm install -g @electron/asar --foreground-scripts 1>/dev/null
+'''
+
+[profile]
+common = '''
+[[ ! -z "${FLX_VERBOSE}" ]] && echo "##################################################";
+[[ ! -z "${FLX_VERBOSE}" ]] && echo "########## FLOX PROFILE COMMON (${SHELL})...";
+
+alias lss='ls -alshF --color=auto'
+alias flx='flox activate'
+alias flxx='FLOX_VERBOSE=1 flox activate'
+
+# PWD=$(pwd);
+# [[ ! -z "${FLX_VERBOSE}" ]] && echo "-----> PWD: ${PWD}";
+# unset PWD
+
+if [[ ! -z "${FLX_VERBOSE}" ]]; then
+
+echo "=====> NODE VERSION: $(node --version)";
+WHICH_NODE=$(which node);
+echo ".....> NODE WHICH: ${WHICH_NODE}";
+lss "${WHICH_NODE}";
+unset WHICH_NODE
+
+echo "=====> NPM VERSION: $(npm --version)";
+WHICH_NPM=$(which npm);
+echo ".....> NPM WHICH: ${WHICH_NPM}";
+lss "${WHICH_NPM}";
+unset WHICH_NPM
+
+echo "-----> NPM CONFIG PREFIX: $(npm config get prefix)";
+echo "-----> NPM_CONFIG_PREFIX: ${NPM_CONFIG_PREFIX}";
+
+echo "-----> NPM CONFIG CACHE: $(npm config get cache)"
+echo "-----> NPM_CONFIG_CACHE: ${NPM_CONFIG_CACHE}";
+
+echo "=====> NCU VERSION: $(ncu --version)";
+WHICH_NCU=$(which ncu);
+echo ".....> NCU WHICH: ${WHICH_NCU}";
+lss "${WHICH_NCU}";
+unset WHICH_NCU
+
+echo "=====> ASAR VERSION: $(asar --version)";
+WHICH_ASAR=$(which asar);
+echo ".....> ASAR WHICH: ${WHICH_ASAR}";
+lss "${WHICH_ASAR}";
+unset WHICH_ASAR
+
+echo "=====> GIT VERSION: $(git --version)";
+WHICH_GIT=$(which git);
+echo ".....> GIT WHICH: ${WHICH_GIT}";
+lss "${WHICH_GIT}";
+unset WHICH_GIT
+
+ENV=$(env);
+echo "-----> ENV: ${ENV}";
+echo "||||||||||||||||||||||||||";
+
+echo "-----> APPLEID: ${APPLEID}";
+echo "-----> APPLEIDTEAM: ${APPLEIDTEAM}";
+echo "-----> APPLEIDPASS: ${APPLEIDPASS}";
+echo "-----> SKIP_NOTARIZE: ${SKIP_NOTARIZE}";
+echo "-----> CSC_NAME: ${CSC_NAME}";
+
+echo "-----> DEBUG: ${DEBUG}";
+
+echo "-----> USER: ${USER}";
+echo "-----> USERNAME: ${USERNAME}";
+
+echo "-----> NODE_ENV: ${NODE_ENV}";
+
+echo "-----> THORIUM_OPDS_CATALOGS_URL: ${THORIUM_OPDS_CATALOGS_URL}";
+echo "-----> THORIUM_OPEN_DEVTOOLS: ${THORIUM_OPEN_DEVTOOLS}";
+echo "-----> LCP_SKIP_LSD: ${LCP_SKIP_LSD}";
+echo "-----> SKIP_CHECK_TYPESCRIPT: ${SKIP_CHECK_TYPESCRIPT}";
+echo "-----> USE_LEGACY_TYPESCRIPT_LOADER: ${USE_LEGACY_TYPESCRIPT_LOADER}";
+echo "-----> THORIUM_TELEMETRY_SECRET: ${THORIUM_TELEMETRY_SECRET}";
+echo "-----> THORIUM_TELEMETRY_URL: ${THORIUM_TELEMETRY_URL}";
+echo "-----> PACKAGING: ${PACKAGING}";
+echo "-----> GITHUB_TOKEN_RELEASE_PUBLISH: ${GITHUB_TOKEN_RELEASE_PUBLISH}";
+echo "-----> VSCODE_LAUNCH: ${VSCODE_LAUNCH}";
+echo "-----> PORT_APP: ${PORT_APP}";
+echo "-----> PORT_READER: ${PORT_READER}";
+echo "-----> PORT_PDF_WEBVIEW: ${PORT_PDF_WEBVIEW}";
+
+git branch
+git status
+
+fi
+'''
+
+[services]
+
+[options]
+systems = ["aarch64-darwin", "aarch64-linux", "x86_64-darwin", "x86_64-linux"]

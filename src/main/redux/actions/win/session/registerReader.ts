@@ -67,6 +67,7 @@ export function build(
                 publicationView,
                 navigator: undefined,
             },
+            lock: false,
         },
     };
 

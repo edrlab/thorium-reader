@@ -479,6 +479,7 @@
       "preset": {
         "apply": "",
         "applyDetails": "",
+        "detail": "",
         "reset": "",
         "resetDetails": "",
         "save": "",
@@ -515,6 +516,7 @@
     "tts": {
       "activate": "激活文本语音转换",
       "default": "声音: 系统默认",
+      "language": "",
       "next": "下一段",
       "pause": "暂停",
       "play": "播放",

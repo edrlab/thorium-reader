@@ -111,7 +111,7 @@
     }
 
     .button_primary_blue:hover {
-      color: var(--color-secondary);
+      // color: var(--color-secondary);
       background-color: var(--color-blue);
     }
 
@@ -201,7 +201,7 @@
     background-color: var(--color-light-blue);
     color: var(--color-blue);
 
-    &[data-selected], &:has(input:checked) {
+    &[data-selected], &:has(input:checked), &[data-state="checked"] {
       color: var(--color-secondary);
       background-color: var(--color-blue);
     }

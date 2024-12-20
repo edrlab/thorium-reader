@@ -479,6 +479,7 @@
       "preset": {
         "apply": "",
         "applyDetails": "",
+        "detail": "",
         "reset": "",
         "resetDetails": "",
         "save": "",
@@ -515,6 +516,7 @@
     "tts": {
       "activate": "Activar text a veu",
       "default": "Veu: predeterminada en el sistema",
+      "language": "",
       "next": "Següent (Text a veu)",
       "pause": "Pausar text a veu",
       "play": "Reproduir (Text a veu)",

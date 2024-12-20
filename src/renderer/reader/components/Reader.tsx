@@ -75,7 +75,7 @@ import {
     setReadingLocationSaver, ttsClickEnable, ttsNext, ttsOverlayEnable, ttsPause,
     ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
     ttsStop, ttsVoice, highlightsClickListen,
-    // stealFocusDisable,
+    stealFocusDisable,
 } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
@@ -103,10 +103,7 @@ import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { translateContentFieldHelper } from "readium-desktop/common/services/translator";
 import { getStore } from "../createStore";
-
-// main process code!
-// thoriumhttps
-// import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/main/streamer/streamerNoHttp";
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 
 // TODO: key not used but translation kept for potential future use
 // discard some not used key from i18n-scan cmd
@@ -158,7 +155,7 @@ const handleLinkUrl_UpdateHistoryState = (url: string, isFromOnPopState = false)
 
         // if (/https?:\/\//.test(url_)) {
         if (!url_.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") &&
-            !url_.startsWith("thoriumhttps://")) {
+            !url_.startsWith(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
             console.log(">> HISTORY POP STATE SKIP URL (1)", url_);
             return;
         }
@@ -747,6 +744,9 @@ class Reader extends React.Component<IProps, IState> {
                 this.props.readerConfig.theme === "paper" ? stylesReader.paperMode :
                 "",
             )}>
+                {/* Reader Lock DEMO !!! */}
+                {/* <h1 style={{zIndex: 999999, backgroundColor: "red", position: "absolute"}}>{this.props.lock ? "lock" : "no-lock"}</h1> */}
+                {/* Reader Lock DEMO !!! */}
                 <a
                     role="heading"
                     className={stylesReader.anchor_link}
@@ -850,8 +850,9 @@ class Reader extends React.Component<IProps, IState> {
                                             : this.props.readerConfig.readerDockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right_pdf
                                             : ""
                                         ) : undefined,
-                                        (this.props.searchEnable && !this.props.isPdf) ? stylesReader.isOnSearch
-                                        : (this.props.searchEnable && this.props.isPdf) ? stylesReader.isOnSearchPdf
+                                        (this.props.searchEnable && !this.props.isPdf && this.props.readerConfig.paged) ? stylesReader.isOnSearch
+                                        : (this.props.searchEnable && this.props.isPdf) ? stylesReader.isOnSearchPdf :
+                                        (this.props.searchEnable && !this.props.readerConfig.paged) ? stylesReader.isOnSearchScroll
                                         : "")}
                                     ref={this.mainElRef}
                                     style={{ inset: isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : "75px 50px" }}>
@@ -1574,6 +1575,13 @@ class Reader extends React.Component<IProps, IState> {
             }
             return;
         }
+
+        // lock focus outside webview for 400ms
+        if (this.props.readerConfig.readerDockingMode !== "full") {
+            stealFocusDisable(true);
+            setTimeout(() => stealFocusDisable(false), 400);
+        }
+
         this.handleMenuButtonClick(true, this.state.openedSectionMenu, true);
     };
     private onKeyboardFocusSettings = () => {
@@ -1755,7 +1763,7 @@ class Reader extends React.Component<IProps, IState> {
             } else if (typeof popState.state.data === "string") {
                 // if (!/https?:\/\//.test(popState.state.data)) {
                 if (popState.state.data.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") ||
-                    popState.state.data.startsWith("thoriumhttps://")) {
+                    popState.state.data.startsWith(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
                     this.handleLinkClick(undefined, popState.state.data, !isDocked, true);
                 } else {
                     console.log(">> HISTORY POP STATE SKIP URL (2)", popState.state.data);
@@ -2247,8 +2255,11 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        // // Force webview to give the hand before Radix Dialog triggered
-        // stealFocusDisable(true);
+        // lock focus outside webview for 400ms
+        if (this.props.readerConfig.readerDockingMode !== "full") {
+            stealFocusDisable(true);
+            setTimeout(() => stealFocusDisable(false), 400);
+        }
 
         this.handleMenuButtonClick(true, "tab-toc");
 
@@ -2256,6 +2267,8 @@ class Reader extends React.Component<IProps, IState> {
             const anchor = document.getElementById("headingFocus");
             if (anchor) {
                 anchor.focus();
+            } else {
+                console.error("headingFocus not found !!!!!!");
             }
         }, 1);
     }
@@ -2662,7 +2675,16 @@ class Reader extends React.Component<IProps, IState> {
 
     private handleTTSPlay() {
         ttsClickEnable(true);
-        ttsPlay(parseFloat(this.props.ttsPlaybackRate), this.props.ttsVoice);
+        let delay = 0;
+        if (!this.props.readerConfig?.noFootnotes) {
+            delay = 100;
+            // console.log("TTS PLAY ==> NO_FOOTNOTES MUST BE TRUE (POPUP DISABLED), SWITCHING...");
+            this.props.setConfig({ noFootnotes: true });
+            // TODO: skippability should be disabled when user explicitly "requests" a skippable item, such as when clicking on a note reference hyperlink, or even on a skippable element itself(?)
+        }
+        setTimeout(() => {
+            ttsPlay(parseFloat(this.props.ttsPlaybackRate), this.props.ttsVoice);
+        }, delay);
     }
     private handleTTSPause() {
         ttsPause();
@@ -2701,7 +2723,16 @@ class Reader extends React.Component<IProps, IState> {
 
     private handleMediaOverlaysPlay() {
         mediaOverlaysClickEnable(true);
-        mediaOverlaysPlay(parseFloat(this.props.mediaOverlaysPlaybackRate));
+        let delay = 0;
+        if (!this.props.readerConfig?.noFootnotes) {
+            delay = 100;
+            // console.log("MO PLAY ==> NO_FOOTNOTES MUST BE TRUE (POPUP DISABLED), SWITCHING...");
+            this.props.setConfig({ noFootnotes: true });
+            // TODO: skippability should be disabled when user explicitly "requests" a skippable item, such as when clicking on a note reference hyperlink, or even on a skippable element itself(?)
+        }
+        setTimeout(() => {
+            mediaOverlaysPlay(parseFloat(this.props.mediaOverlaysPlaybackRate));
+        }, delay);
     }
     private handleMediaOverlaysPause() {
         mediaOverlaysPause();
@@ -2893,6 +2924,10 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         ttsVoice: state.reader.config.ttsVoice,
         mediaOverlaysPlaybackRate: state.reader.config.mediaOverlaysPlaybackRate,
         ttsPlaybackRate: state.reader.config.ttsPlaybackRate,
+
+        // Reader Lock Demo
+        // lock: state.reader.lock,
+        // Reader Lock Demo
     };
 };
 

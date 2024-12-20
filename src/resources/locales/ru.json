@@ -479,6 +479,7 @@
       "preset": {
         "apply": "",
         "applyDetails": "",
+        "detail": "",
         "reset": "",
         "resetDetails": "",
         "save": "",
@@ -515,6 +516,7 @@
     "tts": {
       "activate": "Активировать преобразование текста в речь",
       "default": "Голос: системный по умолчанию",
+      "language": "",
       "next": "Следующий TTS",
       "pause": "Приостановить TTS",
       "play": "Воспроизвести TTS",

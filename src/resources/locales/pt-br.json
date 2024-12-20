@@ -479,6 +479,7 @@
       "preset": {
         "apply": "",
         "applyDetails": "",
+        "detail": "",
         "reset": "",
         "resetDetails": "",
         "save": "",
@@ -515,6 +516,7 @@
     "tts": {
       "activate": "Ativar Texto para fala",
       "default": "Voz: padrão do sistema",
+      "language": "",
       "next": "Próximo Texto para fala",
       "pause": "Pausar Texto para fala",
       "play": "Tocar Texto para fala",

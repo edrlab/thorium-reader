@@ -479,6 +479,7 @@
       "preset": {
         "apply": "",
         "applyDetails": "",
+        "detail": "",
         "reset": "",
         "resetDetails": "",
         "save": "",
@@ -515,6 +516,7 @@
     "tts": {
       "activate": "Активирай четене на глас",
       "default": "Глас: системен по подразбиране",
+      "language": "",
       "next": "Следващ",
       "pause": "Пауза",
       "play": "Стартирай",

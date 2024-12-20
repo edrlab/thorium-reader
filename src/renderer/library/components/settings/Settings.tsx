@@ -19,7 +19,7 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg"
 import * as CogIcon from "readium-desktop/renderer/assets/icons/cog-icon.svg";
 import * as PaletteIcon from "readium-desktop/renderer/assets/icons/palette-icon.svg";
 import * as KeyReturnIcon from "readium-desktop/renderer/assets/icons/keyreturn-icon.svg";
-import SVG from "readium-desktop/renderer/common/components/SVG";
+import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
@@ -42,6 +42,7 @@ import debounce from "debounce";
 import { IAnnotationCreator } from "readium-desktop/common/redux/states/creator";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { ApiappHowDoesItWorkInfoBox } from "../dialog/ApiappAddForm";
+import * as RadioGroup from "@radix-ui/react-radio-group";
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 
 interface ISettingsProps {};
@@ -154,6 +155,24 @@ const SaveSessionSettings: React.FC<{}> = () => {
     );
 };
 
+interface IRadioGroupItemProps {
+    value: string;
+    svg?: ISVGProps;
+    description: string;
+    disabled?: boolean;
+    className?: string;
+    style?: any;
+};
+
+const RadioGroupItem = (props: IRadioGroupItemProps) => {
+    return (
+        <RadioGroup.Item
+            data-input-type="radio"
+            value={props.value} id={props.value} className={props.className} disabled={props.disabled} style={props.style}>
+            {props.description}
+        </RadioGroup.Item>
+    );
+};
 
 
 const SaveCreatorSettings: React.FC<{}> = () => {
@@ -185,27 +204,14 @@ const SaveCreatorSettings: React.FC<{}> = () => {
                 }} />
                 <label htmlFor="creator-name">{__("settings.annotationCreator.name")}</label>
             </div>
-            <div className={stylesAnnotations.annotations_filter_taglist} style={{ margin: "10px" }}>
-                    <p>{__("settings.annotationCreator.type")}</p>
-                    <div className={stylesAnnotations.annotations_filter_tag}>
-                        <input type="radio" id="creator-organizationType" style={{display: "none"}} name="creator-type" value="Organization" checked={type === "Organization"} onChange={(e) => {
-                            const t = e.target.value;
-                            if (t === "Organization") {
-                                setType(t);
-                            }
-                        }}/>
-                            <label htmlFor="creator-organizationType">{__("settings.annotationCreator.organization")}</label>
-                    </div>
-                    <div className={stylesAnnotations.annotations_filter_tag}>
-                        <input type="radio" id="creator-personType" style={{display: "none"}} name="creator-type" value="Person" checked={type === "Person"} onChange={(e) => {
-                            const t = e.target.value;
-                            if (t === "Person") {
-                                setType(t);
-                            }
-                        }}/>
-                            <label htmlFor="creator-personType">{__("settings.annotationCreator.person")}</label>
-                    </div>
-            </div>
+            <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px", marginTop: "20px", flexWrap: "wrap" }}
+                value={type}
+                onValueChange={(option: "Organization" | "Person") => setType(option)}
+            >
+                 <p>{__("settings.annotationCreator.type")}</p>
+                <RadioGroupItem value="Organization" description={`${__("settings.annotationCreator.organization")}`} className={stylesAnnotations.annotations_filter_tag} />
+                <RadioGroupItem value="Person" description={`${__("settings.annotationCreator.person")}`} className={stylesAnnotations.annotations_filter_tag} />
+            </RadioGroup.Root>
         </section>
     );
 };
@@ -327,7 +333,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
         </Dialog.Trigger>
         <Dialog.Portal>
             <div className={stylesModals.modal_dialog_overlay}></div>
-            <Dialog.Content className={classNames(stylesModals.modal_dialog)}>
+            <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined}>
                 <Tabs.Root defaultValue="tab1" data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                     <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
                         <Tabs.Trigger value="tab1">
