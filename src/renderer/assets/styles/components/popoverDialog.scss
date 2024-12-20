@@ -698,7 +698,21 @@
   outline-offset: -2px;
 }
 
-.delete_item {
+.delete_item_edition {
+  color: var(--color-blue);
+  margin-left: 5px;
+
+  &:hover {
+    background-color: var(--color-secondary);
+  }
+
+  svg {
+    color: var(--color-blue)!important;
+  }
+}
+
+
+.delete_item, .delete_item_edition {
   z-index: 1000;
   border: 1px solid var(--color-blue);
   background-color: var(--color-light-blue);

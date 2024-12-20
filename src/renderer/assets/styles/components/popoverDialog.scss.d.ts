@@ -15,6 +15,7 @@ export declare const CSS_END_components_popoverDialog: string;
 export declare const CSS_START_components_popoverDialog: string;
 export declare const currentPage: string;
 export declare const delete_item: string;
+export declare const delete_item_edition: string;
 export declare const display_options_item: string;
 export declare const docked_header: string;
 export declare const docked_header_controls: string;
