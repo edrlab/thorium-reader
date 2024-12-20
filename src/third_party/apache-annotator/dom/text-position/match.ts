@@ -21,9 +21,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { Matcher, TextPositionSelector } from "../../selector/types";
+import type { Matcher } from "../../selector/types";
 import { textPositionSelectorMatcher as abstractTextPositionSelectorMatcher } from "../../selector/text/match-text-position";
 import { TextNodeChunker } from "../text-node-chunker";
+import { ITextPositionSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 
 /**
  * Find the range of text corresponding to the given {@link
@@ -55,7 +56,7 @@ import { TextNodeChunker } from "../text-node-chunker";
  * @public
  */
 export function createTextPositionSelectorMatcher(
-  selector: TextPositionSelector,
+  selector: ITextPositionSelector,
 ): Matcher<Node | Range, Range> {
   const abstractMatcher = abstractTextPositionSelectorMatcher(selector);
 

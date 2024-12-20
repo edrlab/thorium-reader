@@ -26,6 +26,7 @@ import { uniqueCssSelector as finder } from "@r2-navigator-js/electron/renderer/
 import type { CssSelector, Matcher } from "../selector/types";
 import { ownerDocument } from "./owner-document";
 import { toRange } from "./to-range";
+import { ICssSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 
 /**
  * Find the elements corresponding to the given {@link
@@ -73,7 +74,7 @@ import { toRange } from "./to-range";
  * @public
  */
 export function createCssSelectorMatcher(
-  selector: CssSelector,
+  selector: ICssSelector,
 ): Matcher<Node | Range, Element> {
   return async function* matchAll(scope) {
     scope = toRange(scope);

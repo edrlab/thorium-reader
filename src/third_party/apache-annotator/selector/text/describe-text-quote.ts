@@ -21,7 +21,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { TextQuoteSelector } from "../types";
+import { ITextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import type { Chunk, Chunker, ChunkRange } from "./chunker";
 import { chunkRangeEquals } from "./chunker";
 import { textQuoteSelectorMatcher } from "./match-text-quote";
@@ -81,7 +81,7 @@ export async function describeTextQuote<TChunk extends Chunk<string>>(
   target: ChunkRange<TChunk>,
   scope: () => Chunker<TChunk>,
   options: DescribeTextQuoteOptions = {},
-): Promise<TextQuoteSelector> {
+): Promise<ITextQuoteSelector> {
   const {
     minimalContext = false,
     minimumQuoteLength = 0,
@@ -156,7 +156,7 @@ export async function describeTextQuote<TChunk extends Chunk<string>>(
   // each unintended match we encounter, we extend the prefix or suffix to
   // ensure it will no longer match.
   while (true) {
-    const tentativeSelector: TextQuoteSelector = {
+    const tentativeSelector: ITextQuoteSelector = {
       type: "TextQuoteSelector",
       exact,
       prefix,

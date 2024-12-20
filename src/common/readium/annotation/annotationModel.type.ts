@@ -58,8 +58,9 @@ export interface IReadiumAnnotation {
     };
 }
 
-export interface ISelector {
+export interface ISelector<T extends ISelector = undefined> {
     type: string;
+    refinedBy?: T;
 }
 
 /**
@@ -93,16 +94,23 @@ export function isTextQuoteSelector(a: any): a is ITextQuoteSelector {
     && typeof a.suffix === "string";
 }
 
-// not used anymore
-// not an official w3c annotation selector
-// export interface IProgressionSelector {
-//     type: "ProgressionSelector";
-//     value: number;
-// }
-// export function isProgressionSelector(a: any): a is IProgressionSelector {
-//     return typeof a === "object" && a.type === "ProgressionSelector"
-//     && typeof a.value === "number";
-// }
+export interface IProgressionSelector extends ISelector {
+    type: "ProgressionSelector";
+    value: number;
+}
+export function isProgressionSelector(a: any): a is IProgressionSelector {
+    return typeof a === "object" && a.type === "ProgressionSelector"
+    && typeof a.value === "number";
+}
+
+export interface ICssSelector<T extends ISelector = any> extends ISelector<T> {
+    type: "CssSelector";
+    value: string;
+}
+export function isCssSelector(a: any): a is ICssSelector<undefined> {
+    return typeof a === "object" && a.type === "CssSelector"
+    && typeof a.value === "string";
+}
 
 // not used anymore
 // internal DOMRange selector not shared across annotation selector

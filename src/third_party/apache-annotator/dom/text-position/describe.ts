@@ -21,11 +21,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { TextPositionSelector } from "../../selector/types";
 import { describeTextPosition as abstractDescribeTextPosition } from "../../selector/text/describe-text-position";
 import { ownerDocument } from "../owner-document";
 import { TextNodeChunker } from "../text-node-chunker";
 import { toRange } from "../to-range";
+import { ITextPositionSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 
 /**
  * Returns a {@link TextPositionSelector} that points at the target text within
@@ -61,7 +61,7 @@ import { toRange } from "../to-range";
 export async function describeTextPosition(
   range: Range,
   scope?: Node | Range,
-): Promise<TextPositionSelector> {
+): Promise<ITextPositionSelector> {
   scope = toRange(scope ?? ownerDocument(range));
 
   const textChunks = new TextNodeChunker(scope);

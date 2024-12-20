@@ -21,6 +21,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { ISelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import type { Matcher, Selector } from "./types";
 
 /**
@@ -58,16 +59,16 @@ export type Refinable<T extends Selector> = T & { refinedBy?: Refinable<T> };
  * @public
  */
 export function makeRefinable<
-  TSelector extends Selector,
+  TSelector extends ISelector,
   TScope,
   // To enable refinement, the implementation’s Match object must be usable as a
   // Scope object itself.
   TMatch extends TScope
 >(
-  matcherCreator: (selector: Refinable<TSelector>) => Matcher<TScope, TMatch>,
-): (selector: Refinable<TSelector>) => Matcher<TScope, TMatch> {
+  matcherCreator: (selector: TSelector) => Matcher<TScope, TMatch>,
+): (selector: TSelector) => Matcher<TScope, TMatch> {
   return function createMatcherWithRefinement(
-    sourceSelector: Refinable<TSelector>,
+    sourceSelector: TSelector,
   ): Matcher<TScope, TMatch> {
     const matcher = matcherCreator(sourceSelector);
 

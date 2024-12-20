@@ -21,7 +21,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { TextQuoteSelector } from "../types";
+import { ITextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import type { Chunk, Chunker, ChunkRange } from "./chunker";
 
 /**
@@ -66,7 +66,7 @@ import type { Chunk, Chunker, ChunkRange } from "./chunker";
  * @public
  */
 export function textQuoteSelectorMatcher(
-  selector: TextQuoteSelector,
+  selector: ITextQuoteSelector,
 ): <TChunk extends Chunk<any>>(
   scope: Chunker<TChunk>,
 ) => AsyncGenerator<ChunkRange<TChunk>, void, void> {

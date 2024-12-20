@@ -21,7 +21,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { TextPositionSelector } from "../types";
+import { ITextPositionSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import type { Chunk, Chunker, ChunkRange } from "./chunker";
 import { CodePointSeeker } from "./code-point-seeker";
 import { TextSeeker } from "./seeker";
@@ -48,7 +48,7 @@ import { TextSeeker } from "./seeker";
 export async function describeTextPosition<TChunk extends Chunk<string>>(
   target: ChunkRange<TChunk>,
   scope: Chunker<TChunk>,
-): Promise<TextPositionSelector> {
+): Promise<ITextPositionSelector> {
   const codeUnitSeeker = new TextSeeker(scope);
   const codePointSeeker = new CodePointSeeker(codeUnitSeeker);
 

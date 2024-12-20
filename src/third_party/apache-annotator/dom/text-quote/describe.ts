@@ -21,13 +21,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type {
-  TextQuoteSelector,
-} from "../../selector/types";
 import { describeTextQuote as abstractDescribeTextQuote, type DescribeTextQuoteOptions } from "../../selector/text/describe-text-quote";
 import { ownerDocument } from "../owner-document";
 import { TextNodeChunker } from "../text-node-chunker";
 import { toRange } from "../to-range";
+import { ITextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 
 /**
  * Returns a {@link TextQuoteSelector} that unambiguously describes the given
@@ -67,7 +65,7 @@ export async function describeTextQuote(
   range: Range,
   scope?: Node | Range,
   options: DescribeTextQuoteOptions = {},
-): Promise<TextQuoteSelector> {
+): Promise<ITextQuoteSelector> {
   const scopeAsRange = toRange(scope ?? ownerDocument(range));
 
   const chunker = new TextNodeChunker(scopeAsRange);
