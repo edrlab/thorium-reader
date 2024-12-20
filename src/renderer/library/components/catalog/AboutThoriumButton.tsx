@@ -33,6 +33,7 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import * as EdrlabLogo from "readium-desktop/renderer/assets/icons/logo_edrlab.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -67,6 +68,8 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
     public render() {
         const { __ } = this.props;
         const displayVersionToast = !!(this.state.versionInfo && this.props.newVersionURL && this.props.newVersion);
+        const locale = encodeURIComponent_RFC3986(this.props.locale);
+        const app_version = encodeURIComponent_RFC3986(_APP_VERSION);
 
         return (
             <section className={stylesFooter.footer_wrapper} style={{justifyContent: displayVersionToast ? "space-between" : "end"}}>
@@ -104,7 +107,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                     <p>{`v${_APP_VERSION}`}</p>
                     <a href="" onClick={async (ev) => {
                                 ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                                await shell.openExternal("https://thorium.edrlab.org/"); // TODO: not link to the english thorium hyperlink
+                                await shell.openExternal(`https://thorium.edrlab.org/?lang=${locale}&v=${app_version}`);
                             }}
                         tabIndex={0}>{__("catalog.about.title", { appName: capitalizedAppName })}</a>
                     </div>
