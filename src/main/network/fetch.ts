@@ -11,12 +11,12 @@ import nodeFetch from "node-fetch";
 import { ok } from "readium-desktop/common/utils/assert";
 import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
-import * as tough from "tough-cookie";
+import { CookieJar } from "tough-cookie";
 
 import { cookiejarFilePath } from "../di";
 
 let fetchLocal: typeof nodeFetch;
-let cookieJar: tough.CookieJar;
+let cookieJar: CookieJar;
 
 const CONFIGREPOSITORY_COOKIEJAR = "CONFIGREPOSITORY_COOKIEJAR";
 
@@ -50,13 +50,13 @@ const fetchFactory = async () => {
             data = decryptPersist(data, CONFIGREPOSITORY_COOKIEJAR, cookiejarFilePath);
         }
         ok(data, "NO COOKIE JAR FOUND ON FS");
-        cookieJar = tough.CookieJar.deserializeSync(data as string);
+        cookieJar = CookieJar.deserializeSync(data as string);
 
     }, "src/main/network/fetch");
 
     // lazy global var init
     if (!cookieJar) {
-        cookieJar = new tough.CookieJar();
+        cookieJar = new CookieJar();
     }
 
     // ignoreError===true because https://github.com/edrlab/thorium-reader/issues/1424

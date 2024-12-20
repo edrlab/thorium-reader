@@ -73,7 +73,6 @@ RUN rm -rf /THORIUM/* &&\
 
 COPY ./typings* /THORIUM/
 COPY ./tsconfig* /THORIUM/
-COPY ./postcss* /THORIUM/
 COPY ./package* /THORIUM/
 COPY ./pat* /THORIUM/
 COPY ./jest* /THORIUM/
