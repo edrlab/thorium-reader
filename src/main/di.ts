@@ -297,9 +297,12 @@ const getLibraryWindowFromDi =
 
 const readerWinMap = new Map<string, BrowserWindow>();
 
-// todo: infinite growing cache! must implement opposite function to saveReaderWindowInDi()
+
 const saveReaderWindowInDi =
     (readerWin: BrowserWindow, id: string) => (readerWinMap.set(id, readerWin), readerWin);
+
+const deleteReaderWindowInDi =
+    (id: string) => readerWinMap.delete(id);
 
 const getReaderWindowFromDi =
     (id: string) => readerWinMap.get(id); // we could filter out based on win.isDestroyed() && win.webContents.isDestroyed() but this would change the null/undefined contract of the return value in consumer code, so let's leave it for now (strictNullChecks and stricter typeof id)
@@ -346,6 +349,7 @@ export {
     diMainGet,
     getLibraryWindowFromDi,
     getReaderWindowFromDi,
+    deleteReaderWindowInDi,
     saveLibraryWindowInDi,
     saveReaderWindowInDi,
     getAllReaderWindowFromDi,
