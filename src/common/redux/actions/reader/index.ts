@@ -21,6 +21,7 @@ import * as setReduxState from "./setReduxState";
 import * as disableRTLFlip from "./rtlFlip";
 import * as bookmark from "./bookmarks";
 import * as annotation from "./annotations";
+import * as setTheLock from "./setTheLock";
 
 export {
     openRequest,
@@ -39,4 +40,5 @@ export {
     disableRTLFlip,
     bookmark,
     annotation,
+    setTheLock,
 };
