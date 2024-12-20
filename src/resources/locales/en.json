@@ -405,7 +405,7 @@
     },
     "navigation": {
       "annotationTitle": "annotation",
-      "backHomeTitle": "back to bookshelf",
+      "backHomeTitle": "Close this reading window (back to bookshelf)",
       "bookmarkTitle": "bookmark",
       "currentPage": "Current page: {{- current}}",
       "currentPageTotal": "Current page: {{- current}}/{{- total}}",
