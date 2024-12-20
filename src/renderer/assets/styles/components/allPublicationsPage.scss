@@ -30,13 +30,15 @@
 
             &_inputs {
                 display: flex;
-                align-items: center; 
+                align-items: end; 
                 gap: 10px;
+                height: 56px;
 
                 @media screen and (width <= 1072px) {
                     gap: 30px;
                     flex-direction: column;
                     align-items: start;
+                    height: unset;
                 }
             }
 

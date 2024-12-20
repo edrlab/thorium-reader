@@ -744,6 +744,9 @@ class Reader extends React.Component<IProps, IState> {
                 this.props.readerConfig.theme === "paper" ? stylesReader.paperMode :
                 "",
             )}>
+                {/* Reader Lock DEMO !!! */}
+                {/* <h1 style={{zIndex: 999999, backgroundColor: "red", position: "absolute"}}>{this.props.lock ? "lock" : "no-lock"}</h1> */}
+                {/* Reader Lock DEMO !!! */}
                 <a
                     role="heading"
                     className={stylesReader.anchor_link}
@@ -847,8 +850,9 @@ class Reader extends React.Component<IProps, IState> {
                                             : this.props.readerConfig.readerDockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right_pdf
                                             : ""
                                         ) : undefined,
-                                        (this.props.searchEnable && !this.props.isPdf) ? stylesReader.isOnSearch
-                                        : (this.props.searchEnable && this.props.isPdf) ? stylesReader.isOnSearchPdf
+                                        (this.props.searchEnable && !this.props.isPdf && this.props.readerConfig.paged) ? stylesReader.isOnSearch
+                                        : (this.props.searchEnable && this.props.isPdf) ? stylesReader.isOnSearchPdf :
+                                        (this.props.searchEnable && !this.props.readerConfig.paged) ? stylesReader.isOnSearchScroll
                                         : "")}
                                     ref={this.mainElRef}
                                     style={{ inset: isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : "75px 50px" }}>
@@ -2920,6 +2924,10 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         ttsVoice: state.reader.config.ttsVoice,
         mediaOverlaysPlaybackRate: state.reader.config.mediaOverlaysPlaybackRate,
         ttsPlaybackRate: state.reader.config.ttsPlaybackRate,
+
+        // Reader Lock Demo
+        // lock: state.reader.lock,
+        // Reader Lock Demo
     };
 };
 
