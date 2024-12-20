@@ -1,6 +1,5 @@
 // const path = require('path');
 
-const { getOptions } = require("loader-utils");
 const { validate } = require("schema-utils");
 
 const schema = {
@@ -13,7 +12,7 @@ const schema = {
 };
 
 function handler(source) {
-    const options = getOptions(this);
+    const options = this.getOptions();
 
     if (this.resourcePath.indexOf("node_modules") < 0) {
         // console.log("webpack-loader-scope-checker: ", this.resourcePath);

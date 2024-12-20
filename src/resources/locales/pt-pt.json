@@ -3,9 +3,9 @@
     "bookMenu": "Menu",
     "closeDialog": "Fechar",
     "importFile": "Importar documento",
-    "leftSlideButton": "Deslizar lista para a esquerda",
+    "leftSlideButton": "Deslizar para a esquerda",
     "mainContent": "Conteúdo principal",
-    "rightSlideButton": "Deslizar lista para a direita",
+    "rightSlideButton": "Deslizar para a direita",
     "skipLink": "Ir para o conteúdo",
     "toolbar": "Barra de ferramentas"
   },
@@ -81,7 +81,7 @@
     "lastRead": "Última leitura",
     "moreInfo": "Mais informações",
     "myBooks": "Meus documentos",
-    "noPublicationHelpL1": "Solte aqui um ficheiro",
+    "noPublicationHelpL1": "Soltar ficheiros aqui",
     "noPublicationHelpL2": "ou use o botão \"{{- importTitle }}\".",
     "noPublicationHelpL3": "Ficheiros protegidos por LCP são suportados.",
     "noPublicationHelpL4": "Extensões suportadas:",
@@ -126,7 +126,7 @@
       "descAuthor": "de {{- author}}",
       "descList": "{{- nb}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
       "descNewer": "{{- nb}} versões mais recentes destas anotações já estão associadas à publicação.",
-      "descOlder": "{{- nb}} versões mais antigas destas anotações já estão associadas à publicação..",
+      "descOlder": "{{- nb}} versões mais antigas destas anotações já estão associadas à publicação.",
       "descTitle": "Título do conjunto de anotações:",
       "importAll": "Importar todas as anotações",
       "importWithoutConflict": "Importar anotações sem conflitos",
@@ -247,7 +247,7 @@
   "publication": {
     "accessibility": {
       "accessModeSufficient": {
-        "textual": "Amigável para TTS e leitores de ecrã"
+        "textual": "Amigável para TPV e leitores de ecrã"
       },
       "accessibilityFeature": {
         "alternativeText": "Contém texto alternativo",
@@ -405,7 +405,7 @@
     },
     "navigation": {
       "annotationTitle": "Anotação",
-      "backHomeTitle": "Voltar à estante",
+      "backHomeTitle": "Fechar janela de leitura (voltar à estante)",
       "bookmarkTitle": "Marcador",
       "currentPage": "Página atual: {{- current}}",
       "currentPageTotal": "Página atual: {{- current}}/{{- total}}",
@@ -477,14 +477,14 @@
         "title": "Zoom"
       },
       "preset": {
-        "apply": "Aplicar a predefinição preferida de configurações de leitura às configurações de leitura atuais",
-        "applyDetails": "Aplicar as predefinições favoritas de definições de leitura ao livro atual.",
-        "detail": "",
-        "reset": "Redefinir a predefinição das configurações preferidas de leitura para o estado inicial",
-        "resetDetails": "Repor os parâmetros preferenciais de leitura e aplicar os parâmetros padrão ao livro atual.",
-        "save": "Guardar as configurações de leitura atuais na predefinição preferida de configurações de leitura",
-        "saveDetails": "Guardar os parâmetros personalizados de texto para que possam ser aplicados a outros livros, uma vez abertos, clicando no botão abaixo.",
-        "title": "Predefinição"
+        "apply": "Aplicar os seus parâmetros de leitura preferidos",
+        "applyDetails": "Aplicar os seus parâmetros de leitura preferidos ao livro atual.",
+        "detail": "Guardar/Aplicar os seus parâmetros de leitura preferidos.",
+        "reset": "Repor os seus parâmetros de leitura preferidos.",
+        "resetDetails": "Repor os seus parâmetros de leitura preferidos para os valores predefinidos.",
+        "save": "Guardar os seus parâmetros de leitura preferidos.",
+        "saveDetails": "Guarde as alterações efetuadas nas opções de visualização e formatação do livro atual. Estas definições podem ser aplicadas a outros livros, uma vez abertos, clicando no botão abaixo.",
+        "title": "Preferências"
       },
       "preview": "Pré-visualização",
       "reduceMotion": "Reduzir movimento",
@@ -514,17 +514,17 @@
       "publicationNoToc": "Documento sem índice"
     },
     "tts": {
-      "activate": "Ativar Texto para voz (TTS)",
+      "activate": "Ativar Texto para voz (TPV)",
       "default": "Voz: predefinição do sistema",
-      "language": "",
-      "next": "Seguinte (Texto para voz)",
-      "pause": "Pausar (Texto para voz)",
-      "play": "Tocar (Texto para voz)",
-      "previous": "Anterior (Texto para voz)",
+      "language": "Idioma TPV",
+      "next": "Seguinte (TPV)",
+      "pause": "Pausar (TPV)",
+      "play": "Tocar (TPV)",
+      "previous": "Anterior (TPV)",
       "sentenceDetect": "Dividir texto de Texto para voz",
       "sentenceDetectDescription": "Dividir parágrafos longos em frases.",
       "speed": "Velocidade de narração",
-      "stop": "Parar (Texto para voz)",
+      "stop": "Parar (TPV)",
       "voice": "Voz de narração"
     }
   },
@@ -584,7 +584,7 @@
       "catalogs": "Faça um empréstimo de documentos da sua biblioteca local ou descubra documentos por meio de sinais OPDS. Aceda a uma variedade de documentos, a partir de diversas fontes, graças aos catálogos em linha.",
       "home": "O Thorium está diferente! Venha descobrir o que há de novo...",
       "readingView1": "Personalize as suas preferências de leitura e audição: Thorium agora oferece vários temas de cores para a interface do utilizador e dos documentos. Agora também é mais fácil configurar ebooks 'narrados' com voz sintética e narração sincronizada de texto/áudio.",
-      "readingView2": "A melhorada interface de utilizador do Thorium torna mais fácil encontrar texto em documentos, explorar resultados de pesquisa, ir para páginas específicas, navegar no índice, criar marcadores, etc., graças aos novos painéis 'encaixados'. O modo de leitura em ecrã completo continua a oferecer um ambiente livre de distrações.",
+      "readingView2": "A interface de utilizador do Thorium foi melhorada e torna mais fácil encontrar texto em documentos, explorar resultados de pesquisa, ir para páginas específicas, navegar no índice, criar marcadores, etc., tudo graças aos novos painéis 'encaixados'. O modo de leitura em ecrã completo continua a oferecer um ambiente livre de distrações.",
       "yourBooks": "Bem-vindo à sua redesenhada estante pessoal! Na vista em ‘grelha’, filtre facilmente por etiquetas ou encontre documentos por palavras-chave. Na vista avançada de 'tabela', selecione e ordene os documentos por autores, título, data, formato, etc."
     },
     "dontShow": "Não voltar a exibir",

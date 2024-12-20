@@ -47,7 +47,7 @@ function* keyboardReload(action: keyboardActions.reloadShortcuts.TAction) {
     debug(`Keyboard shortcuts reload JSON (defaults: ${/*action.payload.defaults*/""}) => ${okay}`);
 
     // if (DEBUG_KEYBOARD) {
-    //     const jsonDiff = require("json-diff");
+    //     const jsonDiff = require_("json-diff");
 
     //     const defaultKeyboardShortcuts = keyboardShortcuts.getAllDefaults();
     //     const json1 = sortObject(JSON.parse(JSON.stringify(defaultKeyboardShortcuts)));

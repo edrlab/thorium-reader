@@ -83,6 +83,7 @@ class AddTag extends React.Component<IProps, IState> {
                         inputValue={this.state.tagName}
                         defaultInputValue={this.state.tagName}
                         aria-labe={__("catalog.addTags")}
+                        customWidth={250}
                     >
                         {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                     </ComboBox>
