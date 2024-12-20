@@ -3,14 +3,14 @@
 // https://github.com/jsx-eslint/eslint-plugin-react/issues/3699#issuecomment-2040983205
 // https://github.com/prettier/eslint-plugin-prettier/blob/v5.1.3/package.json#L53
 
-// import tsParser from "@typescript-eslint/parser";
-// import globals from "globals";
+// import tsParser fro_m "@typescript-eslint/parser";
+// import globals fro_m "globals";
 
-// import eslintJs from "@eslint/js";
-// import eslintTs from "@typescript-eslint/eslint-plugin";
-// import eslintPrettier from "eslint-plugin-prettier";
-// import eslintReact from "eslint-plugin-react";
-// import eslintLocalRules from "eslint-plugin-local-rules";
+// import eslintJs fro_m "@eslint/js";
+// import eslintTs fro_m "@typescript-eslint/eslint-plugin";
+// import eslintPrettier fro_m "eslint-plugin-prettier";
+// import eslintReact fro_m "eslint-plugin-react";
+// import eslintLocalRules fro_m "eslint-plugin-local-rules";
 
 // export default [
 //     eslintJs.configs.recommended,

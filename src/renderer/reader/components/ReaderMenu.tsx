@@ -561,9 +561,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                     <>
                         <HardWrapComment comment={comment} />
                         {tagName ? <div className={stylesTags.tags_wrapper}>
-                            <div className={classNames(
-                                stylesTags.tag, stylesTags.no_hover,
-                            )}>
+                            <div className={stylesTags.tag}>
                                 <a onClick={() => setTagFilter(tagName)}
                                     onKeyUp={(e) => {
                                         if (e.key === "Enter" || e.key === "Space") {
@@ -630,9 +628,22 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                         </DialogReactAria>
                     </PopoverReactAria>
                 </DialogTriggerReactAria> */}
+                {isEdited ?
+                <button title={__("reader.marks.delete")}
+                className={stylesPopoverDialog.delete_item_edition}
+                onClick={() => {
+                    triggerEdition(false);
+                    dispatch(readerActions.annotation.pop.build(annotation));
+                    // alert("deleted");
+                }}
+                >
+                    <SVG ariaHidden={true} svg={DeleteIcon} />
+                    {__("reader.marks.delete")}
+                </button> :
                 <Popover.Root>
                     <Popover.Trigger asChild>
-                        <button title={__("reader.marks.delete")}
+                        <button 
+                        title={__("reader.marks.delete")}
                         >
                             <SVG ariaHidden={true} svg={DeleteIcon} />
                         </button>
@@ -654,6 +665,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                     </Popover.Portal>
 
                 </Popover.Root>
+                }
             </div>
         </div>
         <div className={stylesPopoverDialog.gauge}>

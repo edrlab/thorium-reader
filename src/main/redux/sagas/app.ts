@@ -134,7 +134,7 @@ export function* init() {
 
         [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
             installExtension(extension /*, { loadExtensionOptions: { allowFileAccess: true } } */)
-            .then((name: string) => debug("electron-devtools-installer OK (app init): ", name))
+            .then((ext: {name: string}) => debug("electron-devtools-installer OK (app init): ", ext.name))
             .catch((err: Error) => debug("electron-devtools-installer ERROR (app init): ", err));
         });
     }

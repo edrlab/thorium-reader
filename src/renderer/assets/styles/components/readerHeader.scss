@@ -48,6 +48,11 @@
         .tts_toolbar {
             justify-content: center;
             position: relative;
+
+            @media screen and (width <= 850px) {
+                margin-right: 10px;
+            }
+
         }
 
         .menu_option {
