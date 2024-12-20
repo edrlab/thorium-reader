@@ -10,7 +10,7 @@ import { createWriteStream, promises as fsp, WriteStream } from "fs";
 import * as path from "path";
 import { acceptedExtension } from "readium-desktop/common/extension";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { downloadActions, toastActions } from "readium-desktop/common/redux/actions";
+import { authActions, downloadActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ok } from "readium-desktop/common/utils/assert";
 import { IHttpGetResult, THttpOptions } from "readium-desktop/common/utils/http";
 import { createTempDir } from "readium-desktop/main/fs/path";
@@ -26,6 +26,10 @@ import {
 
 import { Channel, channel, eventChannel } from "@redux-saga/core";
 import { getTranslator } from "readium-desktop/common/services/translator";
+import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
+import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/downloader");
@@ -248,6 +252,38 @@ function* downloadLinkRequest(linkHref: string, controller: AbortController): Sa
     options.signal = controller.signal;
 
     const data = yield* callTyped(() => httpGet(linkHref, options));
+
+    const type = data.contentType;
+    const contentType = parseContentType(type);
+
+    const isAuth = contentTypeisOpdsAuth(contentType);
+    if (isAuth) {
+
+        const jsonObj = yield* callTyped(() => data.response.json());
+
+        const r2OpdsAuth = TaJsonDeserialize(
+            jsonObj,
+            OPDSAuthenticationDoc,
+        );
+
+        const opdsAuthChannel = getOpdsAuthenticationChannel();
+    
+        debug("put the authentication model in the saga authChannel", JSON.stringify(r2OpdsAuth, null, 4));
+        opdsAuthChannel.put([r2OpdsAuth, linkHref]);
+
+        const {cancel} = yield* raceTyped({
+            cancel: takeTyped(authActions.cancel.build),
+            done: takeTyped(authActions.done.build),
+        });
+        debug("authentication modal closed");
+
+        if (cancel) {
+            controller.abort();
+            return data;
+        }
+        debug("relaunch the download of the publication");
+        return yield* callTyped(downloadLinkRequest, linkHref, controller);
+    }
 
     return data;
 }
