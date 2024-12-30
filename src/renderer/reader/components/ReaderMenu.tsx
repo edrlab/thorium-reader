@@ -2454,6 +2454,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                     console.error("Combobox No value !!!");
                                 }
                             }}
+                            disabledKeys={options.filter(option => option.disabled === true).map(option => option.id)}
                             style={{ margin: "0", padding: "0", flexDirection: "row" }}
                             // onInputChange={(v) => {
                             //     console.log("inputchange: ", v);
