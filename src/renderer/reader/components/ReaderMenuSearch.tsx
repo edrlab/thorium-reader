@@ -30,7 +30,7 @@ import { readerLocalActionSearch } from "../redux/actions";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
-    focusMainAreaLandmarkAndCloseMenu: () => void;
+    focusMainAreaLandmarkAndCloseMenu: (deep: boolean) => void;
     dockedMode: boolean;
 }
 // IProps may typically extend:
@@ -442,7 +442,7 @@ const handleSearchClickFunc = (
     e.preventDefault();
 
     if (closeNavPanel) {
-        thiz.props.focusMainAreaLandmarkAndCloseMenu();
+        thiz.props.focusMainAreaLandmarkAndCloseMenu(true);
     }
 
     thiz.props.searchFocusCurrent(href); // search uuid
