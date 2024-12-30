@@ -216,29 +216,6 @@ const SaveCreatorSettings: React.FC<{}> = () => {
                 }} />
                 <label htmlFor="creator-name">{__("settings.annotationCreator.name")}</label>
             </div>
-<<<<<<< HEAD
-            <div className={stylesAnnotations.annotations_filter_taglist} style={{ margin: "10px", display: "none" }}>
-                <p>{__("settings.annotationCreator.type")}</p>
-                <div className={stylesAnnotations.annotations_filter_tag}>
-                    <input type="radio" id="creator-organizationType" style={{ display: "none" }} name="creator-type" value="Organization" checked={type === "Organization"} onChange={(e) => {
-                        const t = e.target.value;
-                        if (t === "Organization") {
-                            setType(t);
-                        }
-                    }} />
-                    <label htmlFor="creator-organizationType">{__("settings.annotationCreator.organization")}</label>
-                </div>
-                <div className={stylesAnnotations.annotations_filter_tag}>
-                    <input type="radio" id="creator-personType" style={{ display: "none" }} name="creator-type" value="Person" checked={type === "Person"} onChange={(e) => {
-                        const t = e.target.value;
-                        if (t === "Person") {
-                            setType(t);
-                        }
-                    }} />
-                    <label htmlFor="creator-personType">{__("settings.annotationCreator.person")}</label>
-                </div>
-            </div>
-=======
             <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px", marginTop: "20px", flexWrap: "wrap" }}
                 value={type}
                 onValueChange={(option: "Organization" | "Person") => setType(option)}
@@ -247,7 +224,6 @@ const SaveCreatorSettings: React.FC<{}> = () => {
                 <RadioGroupItem value="Organization" description={`${__("settings.annotationCreator.organization")}`} className={stylesAnnotations.annotations_filter_tag} />
                 <RadioGroupItem value="Person" description={`${__("settings.annotationCreator.person")}`} className={stylesAnnotations.annotations_filter_tag} />
             </RadioGroup.Root>
->>>>>>> develop
         </section>
     );
 };
