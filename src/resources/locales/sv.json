@@ -342,6 +342,7 @@
         "red": "Röd",
         "yellow": "Gul"
       },
+      "date": "",
       "filter": {
         "all": "Alla",
         "filterByColor": "Filtrera efter färg",
@@ -354,6 +355,7 @@
       "hide": "Visa inte",
       "highlight": "Markera",
       "noSelectionToast": "Ingen markering",
+      "note": "",
       "quickAnnotations": "Snabbskapa (hoppa över redigeraren)",
       "saveNote": "Spara",
       "sorting": {
@@ -377,6 +379,7 @@
     "fxl": {
       "fit": "Anpassa"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Anteckningar",
       "bookmarks": "Bokmärken",
@@ -384,6 +387,7 @@
       "edit": "Redigera",
       "goTo": "Gå till sida",
       "landmarks": "Landmärken",
+      "progression": "",
       "saveMark": "Spara bokmärke",
       "search": "Sök",
       "searchResult": "Sök [{{- searchText}}]",
@@ -404,6 +408,8 @@
       "title": "Uppläsning"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "Anteckning",
       "backHomeTitle": "Tillbaka till bokhyllan",
       "bookmarkTitle": "Bokmärke",

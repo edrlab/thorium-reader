@@ -342,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +355,7 @@
       "hide": "No ho mostris",
       "highlight": "Ressaltat",
       "noSelectionToast": "Sense selecció",
+      "note": "",
       "quickAnnotations": "Creació ràpida (omet l'editor)",
       "saveNote": "Desa",
       "sorting": {
@@ -377,6 +379,7 @@
     "fxl": {
       "fit": "Ajusta"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Anotacions",
       "bookmarks": "Marcadors",
@@ -384,6 +387,7 @@
       "edit": "Editar",
       "goTo": "Anar a la pàgina",
       "landmarks": "Punts de referència",
+      "progression": "",
       "saveMark": "Desa el marcador",
       "search": "Cercar",
       "searchResult": "Cercar [{{- searchText}}]",
@@ -404,6 +408,8 @@
       "title": "Lectura en veu alta"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "anotació",
       "backHomeTitle": "Tornar a la biblioteca",
       "bookmarkTitle": "Marcador",

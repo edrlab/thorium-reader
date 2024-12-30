@@ -324,9 +324,6 @@
   },
   "reader": {
     "annotations": {
-      "note": "Note {{- color}}",
-      "date": "Date de modification",
-      "goToContent": "Aller au contenu",
       "Color": "Couleur",
       "addNote": "Annoter",
       "advancedMode": "Mode instantané (création automatique après sélection)",
@@ -345,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "date": "Date de modification",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -357,6 +355,7 @@
       "hide": "Ne pas afficher",
       "highlight": "Surligner",
       "noSelectionToast": "Aucun texte sélectionné",
+      "note": "Note {{- color}}",
       "quickAnnotations": "Annotation rapide (sans édition)",
       "saveNote": "Sauvegarder",
       "sorting": {
@@ -380,6 +379,7 @@
     "fxl": {
       "fit": "Remplir"
     },
+    "goToContent": "Aller au contenu",
     "marks": {
       "annotations": "Annotations",
       "bookmarks": "Marque-pages",
@@ -387,6 +387,7 @@
       "edit": "Éditer",
       "goTo": "Aller à la page",
       "landmarks": "Repères",
+      "progression": "",
       "saveMark": "Sauvegarder le marque-page",
       "search": "Rechercher",
       "searchResult": "Recherche - « {{- searchText}} »",
@@ -407,6 +408,8 @@
       "title": "Lire à haute voix"
     },
     "navigation": {
+      "ZenModeExit": "Sortir du mode Zen",
+      "ZenModeTitle": "Mode Zen",
       "annotationTitle": "annotation",
       "backHomeTitle": "retour à la bibliothèque",
       "bookmarkTitle": "marque-page",
@@ -414,8 +417,6 @@
       "currentPageTotal": "Page courante: {{- current}}/{{- total}}",
       "detachWindowTitle": "afficher la bibliothèque",
       "fullscreenTitle": "mode plein écran",
-      "ZenModeTitle": "Mode Zen",
-      "ZenModeExit": "Sortir du mode Zen",
       "goTo": "Aller à",
       "goToError": "Cette page n'existe pas",
       "goToPlaceHolder": "Entrer un numéro de page",

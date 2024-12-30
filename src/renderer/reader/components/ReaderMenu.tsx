@@ -519,7 +519,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 <></>
                 : <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
                     // title={bname}
-                    aria-label={__("reader.annotations.goToContent")}
+                    aria-label={__("reader.goToContent")}
                     style={{ borderLeft: dockedEditAnnotation && "2px solid var(--color-blue)" }}
                     onClick={(e) => {
                         e.preventDefault();
@@ -1498,7 +1498,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number }> = (props) 
     }, [isEdited]);
 
     return (
-        <div
+        <li
             className={stylesPopoverDialog.bookmarks_line}
             key={i}
             onKeyDown={isEdited ? (e) => {
@@ -1513,6 +1513,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number }> = (props) 
                     }, 100);
                 }
             } : undefined}
+            aria-label={__("reader.navigation.bookmarkTitle")}
         >
             <div
                 className={stylesPopoverDialog.bookmark_infos}
@@ -1550,6 +1551,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number }> = (props) 
                                 const closeNavBookmark = !dockedMode && !(e.shiftKey && e.altKey);
                                 goToLocator(bookmark.locator, closeNavBookmark);
                             }}
+                            aria-label={__("reader.goToContent")}
 
                         // does not work on button (works on 'a' link)
                         // onDoubleClick={(_e) => goToLocator(bookmark.locator, false)}
@@ -1573,7 +1575,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number }> = (props) 
                         </button>
                     }
                     <div className={stylesPopoverDialog.bookmark_actions}>
-                        <div>
+                        <div aria-label={__("reader.marks.progression")}>
                             <SVG ariaHidden svg={BookOpenIcon} />
                             <p>{bprogression}</p>
                         </div>
@@ -1614,7 +1616,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number }> = (props) 
                     </div>
                 </div>
             </div>
-        </div>
+        </li>
     );
 };
 
@@ -1697,7 +1699,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                 itemEdited,
                 setItemToEdit,
             }}>
-
+                <ul style={{listStyleType: "none", padding: "0"}}>
                 {
                     bookmarksPagedArray.map((bookmark, i) =>
                         <BookmarkItem
@@ -1707,6 +1709,7 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                         />,
                     )
                 }
+                </ul>
             </bookmarkCardContext.Provider>
             {
                 isPaginated ? <>

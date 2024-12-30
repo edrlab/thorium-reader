@@ -342,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +355,7 @@
       "hide": "Ez erakutsi",
       "highlight": "Nabarmendu",
       "noSelectionToast": "Ez dago aukeraketarik",
+      "note": "",
       "quickAnnotations": "Sortu azkarra (saltatu editorea)",
       "saveNote": "Gorde",
       "sorting": {
@@ -377,6 +379,7 @@
     "fxl": {
       "fit": "Egokitu"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Oharrak",
       "bookmarks": "Markatzaileak",
@@ -384,6 +387,7 @@
       "edit": "Editatu",
       "goTo": "Joan orrialdera",
       "landmarks": "Erreferentzia-puntuak",
+      "progression": "",
       "saveMark": "Gorde laster-marka",
       "search": "Bilatu",
       "searchResult": "Bilatu [{{- searchText}}]",
@@ -404,6 +408,8 @@
       "title": "Ozenki irakurtzea"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "oharpena",
       "backHomeTitle": "Itzuli liburutegira",
       "bookmarkTitle": "Markatzailea",

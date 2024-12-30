@@ -754,9 +754,6 @@ declare namespace typed_i18n {
   (_: "publication.userKeyCheckInvalid", __?: {}): string;
   (_: "reader", __?: {}): {
   readonly "annotations": {
-    readonly "note": string,
-    readonly "date": string,
-    readonly "goToContent": string,
     readonly "Color": string,
     readonly "addNote": string,
     readonly "advancedMode": string,
@@ -775,6 +772,7 @@ declare namespace typed_i18n {
       readonly "red": string,
       readonly "yellow": string
     },
+    readonly "date": string,
     readonly "filter": {
       readonly "all": string,
       readonly "filterByColor": string,
@@ -787,6 +785,7 @@ declare namespace typed_i18n {
     readonly "hide": string,
     readonly "highlight": string,
     readonly "noSelectionToast": string,
+    readonly "note": string,
     readonly "quickAnnotations": string,
     readonly "saveNote": string,
     readonly "sorting": {
@@ -805,6 +804,7 @@ declare namespace typed_i18n {
   },
   readonly "divina": { readonly "mute": string, readonly "unmute": string },
   readonly "fxl": { readonly "fit": string },
+  readonly "goToContent": string,
   readonly "marks": {
     readonly "annotations": string,
     readonly "bookmarks": string,
@@ -814,6 +814,7 @@ declare namespace typed_i18n {
     readonly "landmarks": string,
     readonly "saveMark": string,
     readonly "search": string,
+    readonly "progression": string,
     readonly "searchResult": string,
     readonly "toc": string
   },
@@ -832,6 +833,8 @@ declare namespace typed_i18n {
     readonly "title": string
   },
   readonly "navigation": {
+    readonly "ZenModeExit": string,
+    readonly "ZenModeTitle": string,
     readonly "annotationTitle": string,
     readonly "backHomeTitle": string,
     readonly "bookmarkTitle": string,
@@ -839,8 +842,6 @@ declare namespace typed_i18n {
     readonly "currentPageTotal": string,
     readonly "detachWindowTitle": string,
     readonly "fullscreenTitle": string,
-    readonly "ZenModeTitle": string,
-    readonly "ZenModeExit": string,
     readonly "goTo": string,
     readonly "goToError": string,
     readonly "goToPlaceHolder": string,
@@ -952,9 +953,6 @@ declare namespace typed_i18n {
   }
 };
   (_: "reader.annotations", __?: {}): {
-  readonly "note": string,
-  readonly "date": string,
-  readonly "goToContent": string,
   readonly "Color": string,
   readonly "addNote": string,
   readonly "advancedMode": string,
@@ -973,6 +971,7 @@ declare namespace typed_i18n {
     readonly "red": string,
     readonly "yellow": string
   },
+  readonly "date": string,
   readonly "filter": {
     readonly "all": string,
     readonly "filterByColor": string,
@@ -985,6 +984,7 @@ declare namespace typed_i18n {
   readonly "hide": string,
   readonly "highlight": string,
   readonly "noSelectionToast": string,
+  readonly "note": string,
   readonly "quickAnnotations": string,
   readonly "saveNote": string,
   readonly "sorting": {
@@ -1001,9 +1001,6 @@ declare namespace typed_i18n {
     readonly "underline": string
   }
 };
-  (_: "reader.annotations.note", __?: {}): string;
-  (_: "reader.annotations.date", __?: {}): string;
-  (_: "reader.annotations.goToContent", __?: {}): string;
   (_: "reader.annotations.Color", __?: {}): string;
   (_: "reader.annotations.addNote", __?: {}): string;
   (_: "reader.annotations.advancedMode", __?: {}): string;
@@ -1029,6 +1026,7 @@ declare namespace typed_i18n {
   (_: "reader.annotations.colors.purple", __?: {}): string;
   (_: "reader.annotations.colors.red", __?: {}): string;
   (_: "reader.annotations.colors.yellow", __?: {}): string;
+  (_: "reader.annotations.date", __?: {}): string;
   (_: "reader.annotations.filter", __?: {}): {
   readonly "all": string,
   readonly "filterByColor": string,
@@ -1048,6 +1046,7 @@ declare namespace typed_i18n {
   (_: "reader.annotations.hide", __?: {}): string;
   (_: "reader.annotations.highlight", __?: {}): string;
   (_: "reader.annotations.noSelectionToast", __?: {}): string;
+  (_: "reader.annotations.note", __?: {}): string;
   (_: "reader.annotations.quickAnnotations", __?: {}): string;
   (_: "reader.annotations.saveNote", __?: {}): string;
   (_: "reader.annotations.sorting", __?: {}): {
@@ -1076,6 +1075,7 @@ declare namespace typed_i18n {
   (_: "reader.divina.unmute", __?: {}): string;
   (_: "reader.fxl", __?: {}): { readonly "fit": string };
   (_: "reader.fxl.fit", __?: {}): string;
+  (_: "reader.goToContent", __?: {}): string;
   (_: "reader.marks", __?: {}): {
   readonly "annotations": string,
   readonly "bookmarks": string,
@@ -1085,6 +1085,7 @@ declare namespace typed_i18n {
   readonly "landmarks": string,
   readonly "saveMark": string,
   readonly "search": string,
+  readonly "progression": string,
   readonly "searchResult": string,
   readonly "toc": string
 };
@@ -1096,6 +1097,7 @@ declare namespace typed_i18n {
   (_: "reader.marks.landmarks", __?: {}): string;
   (_: "reader.marks.saveMark", __?: {}): string;
   (_: "reader.marks.search", __?: {}): string;
+  (_: "reader.marks.progression", __?: {}): string;
   (_: "reader.marks.searchResult", __?: {}): string;
   (_: "reader.marks.toc", __?: {}): string;
   (_: "reader.media-overlays", __?: {}): {
@@ -1125,6 +1127,8 @@ declare namespace typed_i18n {
   (_: "reader.media-overlays.stop", __?: {}): string;
   (_: "reader.media-overlays.title", __?: {}): string;
   (_: "reader.navigation", __?: {}): {
+  readonly "ZenModeExit": string,
+  readonly "ZenModeTitle": string,
   readonly "annotationTitle": string,
   readonly "backHomeTitle": string,
   readonly "bookmarkTitle": string,
@@ -1132,8 +1136,6 @@ declare namespace typed_i18n {
   readonly "currentPageTotal": string,
   readonly "detachWindowTitle": string,
   readonly "fullscreenTitle": string,
-  readonly "ZenModeTitle": string,
-  readonly "ZenModeExit": string,
   readonly "goTo": string,
   readonly "goToError": string,
   readonly "goToPlaceHolder": string,
@@ -1147,6 +1149,8 @@ declare namespace typed_i18n {
   readonly "pdfscalemode": string,
   readonly "settingsTitle": string
 };
+  (_: "reader.navigation.ZenModeExit", __?: {}): string;
+  (_: "reader.navigation.ZenModeTitle", __?: {}): string;
   (_: "reader.navigation.annotationTitle", __?: {}): string;
   (_: "reader.navigation.backHomeTitle", __?: {}): string;
   (_: "reader.navigation.bookmarkTitle", __?: {}): string;
@@ -1154,8 +1158,6 @@ declare namespace typed_i18n {
   (_: "reader.navigation.currentPageTotal", __?: {}): string;
   (_: "reader.navigation.detachWindowTitle", __?: {}): string;
   (_: "reader.navigation.fullscreenTitle", __?: {}): string;
-  (_: "reader.navigation.ZenModeTitle", __?: {}): string;
-  (_: "reader.navigation.ZenModeExit", __?: {}): string;
   (_: "reader.navigation.goTo", __?: {}): string;
   (_: "reader.navigation.goToError", __?: {}): string;
   (_: "reader.navigation.goToPlaceHolder", __?: {}): string;

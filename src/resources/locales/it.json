@@ -342,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +355,7 @@
       "hide": "Non mostrare",
       "highlight": "Evidenziare",
       "noSelectionToast": "Nessuna selezione",
+      "note": "",
       "quickAnnotations": "Creazione rapida (salta editor)",
       "saveNote": "Salva",
       "sorting": {
@@ -377,6 +379,7 @@
     "fxl": {
       "fit": "Adattare"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Annotazioni",
       "bookmarks": "Segnalibri",
@@ -384,6 +387,7 @@
       "edit": "Modifica",
       "goTo": "Vai alla pagina",
       "landmarks": "Punti di riferimento",
+      "progression": "",
       "saveMark": "Salva segnalibro",
       "search": "Ricerca",
       "searchResult": "Cerca [{{- searchText}}]",
@@ -404,6 +408,8 @@
       "title": "lettura ad alta voce"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "annotazione",
       "backHomeTitle": "ritorna alla libreria",
       "bookmarkTitle": "segnalibro",

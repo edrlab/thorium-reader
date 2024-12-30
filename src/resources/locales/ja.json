@@ -342,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +355,7 @@
       "hide": "注釈を表示しない",
       "highlight": "ハイライト",
       "noSelectionToast": "選択されていません",
+      "note": "",
       "quickAnnotations": "クイック作成（注釈編集画面をスキップ）",
       "saveNote": "保存",
       "sorting": {
@@ -377,6 +379,7 @@
     "fxl": {
       "fit": "合わせる"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "注釈",
       "bookmarks": "しおり",
@@ -384,6 +387,7 @@
       "edit": "編集",
       "goTo": "ページ移動",
       "landmarks": "構成",
+      "progression": "",
       "saveMark": "しおりを挟む",
       "search": "検索",
       "searchResult": "検索 [{{- searchText}}]",
@@ -404,6 +408,8 @@
       "title": "朗読"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "注釈",
       "backHomeTitle": "本棚にもどる",
       "bookmarkTitle": "しおりを挟む",

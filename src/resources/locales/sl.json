@@ -342,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +355,7 @@
       "hide": "Ne prikaži",
       "highlight": "Poudari",
       "noSelectionToast": "Brez izbire",
+      "note": "",
       "quickAnnotations": "Hitro ustvarjanje (preskoči urejevalnik)",
       "saveNote": "Shrani",
       "sorting": {
@@ -377,6 +379,7 @@
     "fxl": {
       "fit": "Prilagajanje zaslonu"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Opombe",
       "bookmarks": "Zaznamki",
@@ -384,6 +387,7 @@
       "edit": "Uredi",
       "goTo": "Pojdi na stran",
       "landmarks": "Mejniki",
+      "progression": "",
       "saveMark": "Shrani zaznamek",
       "search": "Iskanje",
       "searchResult": "Iskanje [{{- searchText}}]",
@@ -404,6 +408,8 @@
       "title": "Glasovno branje"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "opomba",
       "backHomeTitle": "nazaj na knjižno polico",
       "bookmarkTitle": "zaznamek",

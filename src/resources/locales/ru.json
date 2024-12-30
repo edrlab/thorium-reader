@@ -342,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +355,7 @@
       "hide": "",
       "highlight": "Выделить",
       "noSelectionToast": "Нет выбора",
+      "note": "",
       "quickAnnotations": "Быстрое создание (пропуск редактора)",
       "saveNote": "Сохранить",
       "sorting": {
@@ -377,6 +379,7 @@
     "fxl": {
       "fit": "Размер"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Аннотации",
       "bookmarks": "Закладки",
@@ -384,6 +387,7 @@
       "edit": "Редактировать",
       "goTo": "Перейти на страницу",
       "landmarks": "Ориентиры",
+      "progression": "",
       "saveMark": "Сохранить закладку",
       "search": "Поиск",
       "searchResult": "Найдено [{{- searchText}}]",
@@ -404,6 +408,8 @@
       "title": "Чтение вслух"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "аннотация",
       "backHomeTitle": "назад к книжной полке",
       "bookmarkTitle": "закладка",

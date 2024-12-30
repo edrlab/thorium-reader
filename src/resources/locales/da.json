@@ -342,6 +342,7 @@
         "red": "Rød",
         "yellow": "Gul"
       },
+      "date": "",
       "filter": {
         "all": "Alle",
         "filterByColor": "Filtrér efter Farve",
@@ -354,6 +355,7 @@
       "hide": "Skjul",
       "highlight": "Overstregning",
       "noSelectionToast": "Intet markeret",
+      "note": "",
       "quickAnnotations": "Hurtig-oprettelse (spring redigering over)",
       "saveNote": "Gem",
       "sorting": {
@@ -377,6 +379,7 @@
     "fxl": {
       "fit": "Tilpas"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Noter",
       "bookmarks": "Bogmærker",
@@ -384,6 +387,7 @@
       "edit": "Rediger",
       "goTo": "Gå til side",
       "landmarks": "Regioner",
+      "progression": "",
       "saveMark": "Gem bogmærke",
       "search": "Søg",
       "searchResult": "Søgning [{{- searchText}}]",
@@ -404,6 +408,8 @@
       "title": "Oplæsning"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "lav note",
       "backHomeTitle": "tilbage til boghylden",
       "bookmarkTitle": "bogmærke",

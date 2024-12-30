@@ -324,9 +324,6 @@
   },
   "reader": {
     "annotations": {
-      "note": "{{- color}} Note",
-      "date": "Modification date",
-      "goToContent": "Go to the content",
       "Color": "Color",
       "addNote": "Annotate",
       "advancedMode": "Instant mode (auto create after select)",
@@ -345,6 +342,7 @@
         "red": "Red",
         "yellow": "Yellow"
       },
+      "date": "Modification date",
       "filter": {
         "all": "All",
         "filterByColor": "Filter by Color",
@@ -357,6 +355,7 @@
       "hide": "Do not display",
       "highlight": "Highlight",
       "noSelectionToast": "No selection",
+      "note": "{{- color}} Note",
       "quickAnnotations": "Quick create (skip editor)",
       "saveNote": "Save",
       "sorting": {
@@ -380,6 +379,7 @@
     "fxl": {
       "fit": "Fit"
     },
+    "goToContent": "Go to the content",
     "marks": {
       "annotations": "Annotations",
       "bookmarks": "Bookmarks",
@@ -387,6 +387,7 @@
       "edit": "Edit",
       "goTo": "Go to page",
       "landmarks": "Landmarks",
+      "progression": "Progression",
       "saveMark": "Save bookmark",
       "search": "Search",
       "searchResult": "Search [{{- searchText}}]",
@@ -407,6 +408,8 @@
       "title": "Readaloud"
     },
     "navigation": {
+      "ZenModeExit": "Exit Zen mode",
+      "ZenModeTitle": "Zen mode",
       "annotationTitle": "annotation",
       "backHomeTitle": "Close this reading window (back to bookshelf)",
       "bookmarkTitle": "bookmark",
@@ -414,8 +417,6 @@
       "currentPageTotal": "Current page: {{- current}}/{{- total}}",
       "detachWindowTitle": "show library / bookshelf window",
       "fullscreenTitle": "go fullscreen",
-      "ZenModeTitle": "Zen mode",
-      "ZenModeExit": "Exit Zen mode",
       "goTo": "Go to",
       "goToError": "Page break does not exist",
       "goToPlaceHolder": "Enter page number",

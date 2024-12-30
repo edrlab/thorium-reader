@@ -342,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +355,7 @@
       "hide": "Να μην εμφανίζεται",
       "highlight": "Επισήμανση",
       "noSelectionToast": "Καμία επιλογή",
+      "note": "",
       "quickAnnotations": "Γρήγορη δημιουργία (παράβλεψη επεξεργασίας)",
       "saveNote": "Αποθήκευση",
       "sorting": {
@@ -377,6 +379,7 @@
     "fxl": {
       "fit": "Προσαρμογή"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Σχόλια",
       "bookmarks": "Σελιδοδείκτες",
@@ -384,6 +387,7 @@
       "edit": "Επεξεργασία",
       "goTo": "Μετάβαση σε σελίδα",
       "landmarks": "Ορόσημα",
+      "progression": "",
       "saveMark": "Αποθήκευση σελιδοδείκτη",
       "search": "Αναζήτηση",
       "searchResult": "Αναζήτηση [{{- searchText}}]",
@@ -404,6 +408,8 @@
       "title": "Λειτουργία προφορικού αναγνώστη / Readaloud"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "σχόλιο",
       "backHomeTitle": "Πίσω στη βιβλιοθήκη",
       "bookmarkTitle": "Σελιδοδείκτης",

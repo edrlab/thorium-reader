@@ -342,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +355,7 @@
       "hide": "不显示",
       "highlight": "高亮",
       "noSelectionToast": "未选择",
+      "note": "",
       "quickAnnotations": "快速创建（跳过编辑器）",
       "saveNote": "保存",
       "sorting": {
@@ -377,6 +379,7 @@
     "fxl": {
       "fit": ""
     },
+    "goToContent": "",
     "marks": {
       "annotations": "注解",
       "bookmarks": "书签",
@@ -384,6 +387,7 @@
       "edit": "编辑",
       "goTo": "转到页码",
       "landmarks": "结构",
+      "progression": "",
       "saveMark": "保存书签",
       "search": "检索",
       "searchResult": "检索 [{{- searchText}}]",
@@ -404,6 +408,8 @@
       "title": "语音朗读"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "注解",
       "backHomeTitle": "返回书架",
       "bookmarkTitle": "书签",

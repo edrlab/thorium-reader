@@ -342,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +355,7 @@
       "hide": "",
       "highlight": "",
       "noSelectionToast": "",
+      "note": "",
       "quickAnnotations": "",
       "saveNote": "",
       "sorting": {
@@ -377,6 +379,7 @@
     "fxl": {
       "fit": ""
     },
+    "goToContent": "",
     "marks": {
       "annotations": "ანოტაციები",
       "bookmarks": "სანიშნეები",
@@ -384,6 +387,7 @@
       "edit": "გადაკეთება",
       "goTo": "",
       "landmarks": "ორიენტირები",
+      "progression": "",
       "saveMark": "",
       "search": "ძიება",
       "searchResult": "",
@@ -404,6 +408,8 @@
       "title": "ტექსტის მეტყველება"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "",
       "backHomeTitle": "წიგნების თაროში დაბრუნება",
       "bookmarkTitle": "სანიშნე",
