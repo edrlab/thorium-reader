@@ -14,6 +14,8 @@ import { ContentType } from "../contentType";
 import { ISearchDocument, ISearchResult } from "./search.interface";
 import { searchDocDomSeek } from "./searchWithDomSeek";
 
+import { ENABLE_SKIP_LINK } from "@r2-navigator-js/electron/common/styles";
+
 export async function search(searchInput: string, data: ISearchDocument): Promise<ISearchResult[]> {
 
     if (!data.xml) {
@@ -27,10 +29,13 @@ export async function search(searchInput: string, data: ISearchDocument): Promis
     // TODO: this is a hack...
     // but rendered reflowable documents have a top-level invisible accessible link injected by the navigator
     // so we need it here to compute CSS Selectors
-    let toParse = data.isFixedLayout ? data.xml : data.xml.replace(
+    // SKIP_LINK_ID === "r2-skip-link"
+    let toParse = (!ENABLE_SKIP_LINK || data.isFixedLayout) ?
+        data.xml :
+        data.xml.replace(
         /<body([\s\S]*?)>/gm,
         "<body$1><a id=\"r2-skip-link\" href=\"javascript:;\" title=\"__\" aria-label=\"__\" tabindex=\"0\"> </a>",
-    );
+        );
     // console.log(`===data.isFixedLayout ${data.isFixedLayout}`, data.xml);
 
     const contentType = data.contentType ? (data.contentType as DOMParserSupportedType) : ContentType.Xhtml;

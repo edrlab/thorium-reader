@@ -75,7 +75,8 @@ import {
     setReadingLocationSaver, ttsClickEnable, ttsNext, ttsOverlayEnable, ttsPause,
     ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
     ttsStop, ttsVoice, highlightsClickListen,
-    stealFocusDisable,
+    // stealFocusDisable,
+    keyboardFocusRequest,
 } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
@@ -269,6 +270,7 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardSpineNavigationPrevious = this.onKeyboardSpineNavigationPrevious.bind(this);
         this.onKeyboardSpineNavigationNext = this.onKeyboardSpineNavigationNext.bind(this);
         this.onKeyboardFocusMain = this.onKeyboardFocusMain.bind(this);
+        this.onKeyboardFocusMainDeep = this.onKeyboardFocusMainDeep.bind(this);
         this.onKeyboardFocusToolbar = this.onKeyboardFocusToolbar.bind(this);
         this.onKeyboardFullScreen = this.onKeyboardFullScreen.bind(this);
         this.onKeyboardBookmark = this.onKeyboardBookmark.bind(this);
@@ -1047,6 +1049,10 @@ class Reader extends React.Component<IProps, IState> {
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.FocusMain,
             this.onKeyboardFocusMain);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusMainDeep,
+            this.onKeyboardFocusMainDeep);
 
         registerKeyboardListener(
             true, // listen for key up (not key down)
@@ -1150,6 +1156,7 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardSpineNavigationPrevious);
         unregisterKeyboardListener(this.onKeyboardSpineNavigationNext);
         unregisterKeyboardListener(this.onKeyboardFocusMain);
+        unregisterKeyboardListener(this.onKeyboardFocusMainDeep);
         unregisterKeyboardListener(this.onKeyboardFocusToolbar);
         unregisterKeyboardListener(this.onKeyboardFullScreen);
         unregisterKeyboardListener(this.onKeyboardBookmark);
@@ -1582,10 +1589,10 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         // lock focus outside webview for 400ms
-        if (this.props.readerConfig.readerDockingMode !== "full") {
-            stealFocusDisable(true);
-            setTimeout(() => stealFocusDisable(false), 400);
-        }
+        // if (this.props.readerConfig.readerDockingMode !== "full") {
+        //     stealFocusDisable(true);
+        //     setTimeout(() => stealFocusDisable(false), 400);
+        // }
 
         this.handleMenuButtonClick(true, this.state.openedSectionMenu, true);
     };
@@ -1617,7 +1624,21 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        this.focusMainArea();
+        this.focusMainArea(false, true);
+        // if (this.fastLinkRef?.current) {
+        //     console.log("€€€€€ FOCUS READER MAIN");
+        //     this.fastLinkRef.current.focus();
+        // }
+    };
+    private onKeyboardFocusMainDeep = () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardFocusMainDeep)");
+            }
+            return;
+        }
+
+        this.focusMainArea(true, true);
         // if (this.fastLinkRef?.current) {
         //     console.log("€€€€€ FOCUS READER MAIN");
         //     this.fastLinkRef.current.focus();
@@ -2233,6 +2254,7 @@ class Reader extends React.Component<IProps, IState> {
                 this.props.winId,
                 computeReadiumCssJsonMessage(this.props.readerConfig),
             );
+            // stealFocusDisable(true);
 
             windowHistory._length = 1;
             // console.log("#+$%".repeat(5)  + " installNavigatorDOM => window history replaceState() ...", JSON.stringify(locator), JSON.stringify(window.history.state), window.history.length, windowHistory._length, JSON.stringify(document.location), JSON.stringify(window.location));
@@ -2261,10 +2283,10 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         // lock focus outside webview for 400ms
-        if (this.props.readerConfig.readerDockingMode !== "full") {
-            stealFocusDisable(true);
-            setTimeout(() => stealFocusDisable(false), 400);
-        }
+        // if (this.props.readerConfig.readerDockingMode !== "full") {
+        //     stealFocusDisable(true);
+        //     setTimeout(() => stealFocusDisable(false), 400);
+        // }
 
         this.handleMenuButtonClick(true, "tab-toc");
 
@@ -2371,11 +2393,15 @@ class Reader extends React.Component<IProps, IState> {
         return visibleBookmarkList;
     }
 
-    private focusMainArea() {
+    private focusMainArea(deep: boolean, immediate: boolean) {
         if (this.fastLinkRef?.current) {
             console.log("€€€€€ FOCUS READER MAIN");
             this.fastLinkRef.current.focus();
         }
+
+        setTimeout(() => {
+            keyboardFocusRequest(deep);
+        }, immediate ? 0 : 800); // time for document load + render/paginate + reading location setter
     }
 
     private closeMenu() {
@@ -2385,7 +2411,7 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private focusMainAreaLandmarkAndCloseMenu() {
+    private focusMainAreaLandmarkAndCloseMenu(deep: boolean) {
 
         // if (this.state.menuOpen) {
         //     this.handleMenuButtonClick(false);
@@ -2397,7 +2423,7 @@ class Reader extends React.Component<IProps, IState> {
         // }
 
         this.closeMenu();
-        this.focusMainArea();
+        this.focusMainArea(deep, false);
         // if (this.fastLinkRef?.current) {
         //     // shortcutEnable must be true (see handleMenuButtonClick() above, and this.state.menuOpen))
         //     console.log("@@@@@@@@@@@@@@@");
@@ -2450,9 +2476,9 @@ class Reader extends React.Component<IProps, IState> {
 
     private goToLocator(locator: R2Locator, closeNavPanel = true, isFromOnPopState = false) {
 
-        if (closeNavPanel) {
+        if (closeNavPanel && !isFromOnPopState) {
             // this.closeMenu();
-            this.focusMainAreaLandmarkAndCloseMenu();
+            this.focusMainAreaLandmarkAndCloseMenu(true);
         }
 
         if (this.props.isPdf) {
@@ -2493,8 +2519,8 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        if (closeNavPanel) {
-            this.focusMainAreaLandmarkAndCloseMenu();
+        if (closeNavPanel && !isFromOnPopState) {
+            this.focusMainAreaLandmarkAndCloseMenu(true);
         }
 
         if (this.props.isPdf) {
