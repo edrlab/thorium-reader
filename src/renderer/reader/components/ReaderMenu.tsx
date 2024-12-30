@@ -880,7 +880,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                 <div style={{ display: "flex", gap: "10px" }}>
                     <Popover.Root>
                         <Popover.Trigger asChild>
-                            <button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button}
+                            <button aria-label={__("reader.annotations.sorting.sortingOptions")} className={stylesAnnotations.annotations_filter_trigger_button}
                                 title={__("reader.annotations.sorting.sortingOptions")}>
                                 <SVG svg={SortIcon} />
                             </button>
@@ -918,7 +918,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                     </Popover.Root>
                     <Popover.Root>
                         <Popover.Trigger asChild>
-                            <button aria-label="Menu" className={stylesAnnotations.annotations_filter_trigger_button}
+                            <button aria-label={__("reader.annotations.filter.filterOptions")} className={stylesAnnotations.annotations_filter_trigger_button}
                                 title={__("reader.annotations.filter.filterOptions")}>
                                 <SVG svg={MenuIcon} />
                                 {nbOfFilters > 0 ?
@@ -1111,7 +1111,8 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                 <div style={{ display: "flex", gap: "10px" }}>
                     <ImportAnnotationsDialog winId={winId} publicationView={publicationView}>
                         <button className={stylesAnnotations.annotations_filter_trigger_button}
-                            title={__("catalog.importAnnotation")}>
+                            title={__("catalog.importAnnotation")}
+                            aria-label={__("catalog.importAnnotation")}>
                             <SVG svg={ImportIcon} />
                         </button>
                     </ImportAnnotationsDialog>
@@ -1119,7 +1120,8 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                     <Popover.Root>
                         <Popover.Trigger asChild>
                             <button className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationListFiltered.length}
-                                title={__("catalog.exportAnnotation")}>
+                                title={__("catalog.exportAnnotation")}
+                                aria-label={__("catalog.exportAnnotation")}>
                                 <SVG svg={SaveIcon} />
                             </button>
                         </Popover.Trigger>
@@ -1170,7 +1172,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         </Popover.Portal>
                     </Popover.Root>
                     <AlertDialog.Root>
-                        <AlertDialog.Trigger className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationListFiltered.length} title={__("dialog.deleteAnnotations")}>
+                        <AlertDialog.Trigger className={stylesAnnotations.annotations_filter_trigger_button} disabled={!annotationListFiltered.length} title={__("dialog.deleteAnnotations")} aria-label={__("dialog.deleteAnnotations")}>
                             <SVG svg={TrashIcon} ariaHidden />
                         </AlertDialog.Trigger>
                         <AlertDialog.Portal>
@@ -1207,8 +1209,8 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                     </AlertDialog.Root>
                     <span style={{height: "30px", width: "2px", borderRight: "2px solid var(--color-extralight-grey)"}}></span>
                     <Popover.Root>
-                        <Popover.Trigger className={stylesAnnotations.annotations_filter_trigger_button}>
-                            <SVG ariaHidden svg={OptionsIcon} title={__("reader.annotations.annotationsOptions")} />
+                        <Popover.Trigger className={stylesAnnotations.annotations_filter_trigger_button} title={__("reader.annotations.annotationsOptions")} aria-label={__("reader.annotations.annotationsOptions")}>
+                            <SVG ariaHidden svg={OptionsIcon} />
                         </Popover.Trigger>
                         <Popover.Portal>
                             <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesAnnotations.annotations_filter_container} hideWhenDetached>
