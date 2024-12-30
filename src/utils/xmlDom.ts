@@ -8,6 +8,7 @@
 import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
 import { ContentType } from "./contentType";
 import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
+import { ENABLE_SKIP_LINK } from "@r2-navigator-js/electron/common/styles";
 
 export function getDocumentFromICacheDocument(data: ICacheDocument): Document {
 
@@ -22,7 +23,7 @@ export function getDocumentFromICacheDocument(data: ICacheDocument): Document {
     // TODO: this is a hack...
     // but rendered reflowable documents have a top-level invisible accessible link injected by the navigator
     // so we need it here to compute CSS Selectors
-    let toParse = data.isFixedLayout ? data.xml : data.xml.replace(
+    let toParse = (!ENABLE_SKIP_LINK || data.isFixedLayout) ? data.xml : data.xml.replace(
         /<body([\s\S]*?)>/gm,
         "<body$1><a id=\"r2-skip-link\" href=\"javascript:;\" title=\"__\" aria-label=\"__\" tabindex=\"0\"> </a>",
     );
@@ -41,7 +42,6 @@ export function getDocumentFromICacheDocument(data: ICacheDocument): Document {
     } catch {
         // nothing
     }
-    
+
     return undefined;
 }
-
