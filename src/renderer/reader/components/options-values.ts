@@ -114,7 +114,7 @@ export interface IReaderMenuProps {
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeNavPanel?: boolean) => void;
     goToLocator: (locator: R2Locator, closeNavPanel?: boolean) => void;
     toggleMenu: () => void;
-    focusMainAreaLandmarkAndCloseMenu: () => void;
+    focusMainAreaLandmarkAndCloseMenu: (deep: boolean) => void;
     pdfToc: TToc;
     isPdf: boolean;
     pdfNumberOfPages: number;

@@ -35,28 +35,28 @@
     {
       "attr_path": "nodejs_22",
       "broken": false,
-      "derivation": "/nix/store/l7xqarxr78661qxnkwjdkv3dw10habfq-nodejs-22.10.0.drv",
+      "derivation": "/nix/store/zh4vzz8z4g7k2p0iqpi8dfz6kgpxkgb1-nodejs-22.11.0.drv",
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_22",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3566ab7246670a43abd2ffa913cc62dad9cdf7d5",
-      "name": "nodejs-22.10.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=634fd46801442d760e09493a794c4f15db2d0cbb",
+      "name": "nodejs-22.11.0",
       "pname": "nodejs_22",
-      "rev": "3566ab7246670a43abd2ffa913cc62dad9cdf7d5",
-      "rev_count": 721821,
-      "rev_date": "2024-12-13T19:53:07Z",
-      "scrape_date": "2024-12-16T03:51:20Z",
+      "rev": "634fd46801442d760e09493a794c4f15db2d0cbb",
+      "rev_count": 729082,
+      "rev_date": "2024-12-27T09:21:16Z",
+      "scrape_date": "2024-12-28T03:56:01Z",
       "stabilities": [
         "unstable"
       ],
       "unfree": false,
-      "version": "nodejs-22.10.0",
+      "version": "nodejs-22.11.0",
       "outputs_to_install": [
         "out"
       ],
       "outputs": {
-        "libv8": "/nix/store/2qwjlhfyn2k3dixjgqxnwhsxxyn46rxl-nodejs-22.10.0-libv8",
-        "out": "/nix/store/y6piwcsias394n5kflisg8jhll9czk2x-nodejs-22.10.0"
+        "libv8": "/nix/store/m3rxxwm6jp95kjmh4rklqn0d76biz6wm-nodejs-22.11.0-libv8",
+        "out": "/nix/store/9vkabbbbyfn8hv5l1r8fm59d27imq460-nodejs-22.11.0"
       },
       "system": "aarch64-darwin",
       "group": "toplevel",
@@ -65,28 +65,28 @@
     {
       "attr_path": "nodejs_22",
       "broken": false,
-      "derivation": "/nix/store/wjn7vj94fnjd4h7ai3rsgfvkmjxkv57g-nodejs-22.10.0.drv",
+      "derivation": "/nix/store/q23y2j34i9ydidrllrm4gj857hqhvda1-nodejs-22.11.0.drv",
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_22",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3566ab7246670a43abd2ffa913cc62dad9cdf7d5",
-      "name": "nodejs-22.10.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=634fd46801442d760e09493a794c4f15db2d0cbb",
+      "name": "nodejs-22.11.0",
       "pname": "nodejs_22",
-      "rev": "3566ab7246670a43abd2ffa913cc62dad9cdf7d5",
-      "rev_count": 721821,
-      "rev_date": "2024-12-13T19:53:07Z",
-      "scrape_date": "2024-12-16T03:51:20Z",
+      "rev": "634fd46801442d760e09493a794c4f15db2d0cbb",
+      "rev_count": 729082,
+      "rev_date": "2024-12-27T09:21:16Z",
+      "scrape_date": "2024-12-28T03:56:01Z",
       "stabilities": [
         "unstable"
       ],
       "unfree": false,
-      "version": "nodejs-22.10.0",
+      "version": "nodejs-22.11.0",
       "outputs_to_install": [
         "out"
       ],
       "outputs": {
-        "libv8": "/nix/store/649q0xdwl617h2s8j50f7880df60w37a-nodejs-22.10.0-libv8",
-        "out": "/nix/store/ayfg2m6gwh5047hapf316jrilxd8kk4k-nodejs-22.10.0"
+        "libv8": "/nix/store/0xiwppqyszilzy9cg71c26fxg5qcxh89-nodejs-22.11.0-libv8",
+        "out": "/nix/store/z2lznj5fq0wagkhj7nkgmb5yr4gyv0ws-nodejs-22.11.0"
       },
       "system": "aarch64-linux",
       "group": "toplevel",
@@ -95,28 +95,28 @@
     {
       "attr_path": "nodejs_22",
       "broken": false,
-      "derivation": "/nix/store/5njd1g0p4v3fk0d3q9hymgpc8xr5dn2z-nodejs-22.10.0.drv",
+      "derivation": "/nix/store/vzxxfv1f1i83bnjib0q144v5gndhci33-nodejs-22.11.0.drv",
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_22",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3566ab7246670a43abd2ffa913cc62dad9cdf7d5",
-      "name": "nodejs-22.10.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=634fd46801442d760e09493a794c4f15db2d0cbb",
+      "name": "nodejs-22.11.0",
       "pname": "nodejs_22",
-      "rev": "3566ab7246670a43abd2ffa913cc62dad9cdf7d5",
-      "rev_count": 721821,
-      "rev_date": "2024-12-13T19:53:07Z",
-      "scrape_date": "2024-12-16T03:51:20Z",
+      "rev": "634fd46801442d760e09493a794c4f15db2d0cbb",
+      "rev_count": 729082,
+      "rev_date": "2024-12-27T09:21:16Z",
+      "scrape_date": "2024-12-28T03:56:01Z",
       "stabilities": [
         "unstable"
       ],
       "unfree": false,
-      "version": "nodejs-22.10.0",
+      "version": "nodejs-22.11.0",
       "outputs_to_install": [
         "out"
       ],
       "outputs": {
-        "libv8": "/nix/store/g1bmrm6lq74zdid30q8hh3102qxpk7p7-nodejs-22.10.0-libv8",
-        "out": "/nix/store/4rmbk8pg2lvv22aqjk8b539pfspsm98m-nodejs-22.10.0"
+        "libv8": "/nix/store/mm87n14lp5akdjlfwh1yg4l93zm8gv9h-nodejs-22.11.0-libv8",
+        "out": "/nix/store/s81s2z275wnjazk4ij3zvn6kslfa5ipf-nodejs-22.11.0"
       },
       "system": "x86_64-darwin",
       "group": "toplevel",
@@ -125,28 +125,28 @@
     {
       "attr_path": "nodejs_22",
       "broken": false,
-      "derivation": "/nix/store/p33fbd36lz7nh44dzshl29w276q25h2y-nodejs-22.10.0.drv",
+      "derivation": "/nix/store/542jkp10xz0nd5657bqksqwhhvjcmi9n-nodejs-22.11.0.drv",
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_22",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=3566ab7246670a43abd2ffa913cc62dad9cdf7d5",
-      "name": "nodejs-22.10.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=634fd46801442d760e09493a794c4f15db2d0cbb",
+      "name": "nodejs-22.11.0",
       "pname": "nodejs_22",
-      "rev": "3566ab7246670a43abd2ffa913cc62dad9cdf7d5",
-      "rev_count": 721821,
-      "rev_date": "2024-12-13T19:53:07Z",
-      "scrape_date": "2024-12-16T03:51:20Z",
+      "rev": "634fd46801442d760e09493a794c4f15db2d0cbb",
+      "rev_count": 729082,
+      "rev_date": "2024-12-27T09:21:16Z",
+      "scrape_date": "2024-12-28T03:56:01Z",
       "stabilities": [
         "unstable"
       ],
       "unfree": false,
-      "version": "nodejs-22.10.0",
+      "version": "nodejs-22.11.0",
       "outputs_to_install": [
         "out"
       ],
       "outputs": {
-        "libv8": "/nix/store/j9kj5x00fh8sac4mfb6dxmfg1dk5af90-nodejs-22.10.0-libv8",
-        "out": "/nix/store/hnkyz55vndmvwhg6nzpliv86gh6sxg7h-nodejs-22.10.0"
+        "libv8": "/nix/store/fyaac3q8qn3zfxy72airfabm3dakmgf5-nodejs-22.11.0-libv8",
+        "out": "/nix/store/fkyp1bm5gll9adnfcj92snyym524mdrj-nodejs-22.11.0"
       },
       "system": "x86_64-linux",
       "group": "toplevel",
