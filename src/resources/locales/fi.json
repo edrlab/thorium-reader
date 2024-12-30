@@ -124,12 +124,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Peru",
