@@ -74,9 +74,9 @@
       "lastAdditions": "Paskiausiai pridėti"
     },
     "export": "Eksportuoti",
-    "exportAnnotation": "",
+    "exportAnnotation": "Išsaugoti pastabas kaip...",
     "format": "Formatas",
-    "importAnnotation": "",
+    "importAnnotation": "Importuoti pastabas",
     "lang": "Kalba",
     "lastRead": "Pask. kartą skaityta",
     "moreInfo": "Daugiau informacijos",
@@ -123,18 +123,18 @@
   },
   "dialog": {
     "annotations": {
-      "descAuthor": "",
-      "descList": "",
-      "descNewer": "",
-      "descOlder": "",
-      "descTitle": "",
-      "importAll": "",
-      "importWithoutConflict": "",
-      "title": ""
+      "descAuthor": "{{- author}}",
+      "descList": "{{- nb}} pastaba(-os, -ų), kurias sukūrė {{- creator}}, bus susietos su {{- author}} leidiniu {{- title}}",
+      "descNewer": "{{- nb}} naujesnė(-s, -ių) šių pastabų versija(-os, -ų) jau susieta(-os) su leidiniu.",
+      "descOlder": "{{- nb}} senesnė(-s, -ių) šių pastabų versija(-os, -ų) jau susieta(-os) su leidiniu.",
+      "descTitle": "Pastabų rinkinio pavadinimas:",
+      "importAll": "Importuoti visas pastabas",
+      "importWithoutConflict": "Importuoti pastabas, neturinčias konfliktų",
+      "title": "Ar norite importuoti šias pastabas?"
     },
     "cancel": "Nutraukti",
-    "deleteAnnotations": "",
-    "deleteAnnotationsText": "",
+    "deleteAnnotations": "Šalinti pastabas?",
+    "deleteAnnotationsText": "Ar norite pašalinti {{- annotationListLength}} pastabą(-as, -ų)?",
     "deleteFeed": "Ar tikrai norite pašalinti šį katalogą?",
     "deletePublication": "Ar tikrai norite pašalinti šį leidinį?",
     "import": "Ar tikrai norite importuoti šiuos failus:",
@@ -170,10 +170,10 @@
   "library": {
     "lcp": {
       "hint": "Užuomina : ",
-      "open": "",
-      "password": "Slaptažodis",
-      "sentence": "Šiam leidiniui atverti reikalingas LCP slaptažodis: ",
-      "urlHint": "Pamiršote slaptažodį? Pagalbos ieškokite čia",
+      "open": "Atverti",
+      "password": "Slaptafrazė",
+      "sentence": "Šiam leidiniui atverti reikalinga LCP slaptafrazė: ",
+      "urlHint": "Pamiršote slaptafrazę? Pagalbos ieškokite čia",
       "whatIsLcp?": "LCP - kas tai?",
       "whatIsLcpInfoDetails": "LCP yra termino „Licensed Content Protection“ (licencijuoto turinio apsauga) santrumpa.",
       "whatIsLcpInfoDetailsLink": "Jei norite sužinoti daugiau, paspauskite ant šios nuorodos į EDRLab svetainę."
@@ -181,12 +181,12 @@
   },
   "message": {
     "annotations": {
-      "alreadyImported": "",
-      "emptyFile": "",
-      "errorParsing": "",
-      "noBelongTo": "",
-      "nothing": "",
-      "success": ""
+      "alreadyImported": "Visos pastabos jau importuotos, importas nutraukiamas",
+      "emptyFile": "Faile nėra jokių pastabų",
+      "errorParsing": "Klaida analizuojant failą: ",
+      "noBelongTo": "Nepavyko importuoti pastabų rinkinio, nes bent viena iš pastabų nepriklauso leidiniui",
+      "nothing": "Nėra importui paruoštų pastabų, importas nutraukiamas",
+      "success": "Pavyko!"
     },
     "download": {
       "error": "{{- title}} atsiuntimas nepavyko: [{{- err}}]"
@@ -247,7 +247,7 @@
   "publication": {
     "accessibility": {
       "accessModeSufficient": {
-        "textual": "Tinka įgarsinimui ir ekrano skaitytuvėms"
+        "textual": "Tinka balso sintezei ir ekrano skaitytuvėms"
       },
       "accessibilityFeature": {
         "alternativeText": "Yra alternatyvusis tekstas",
@@ -291,10 +291,10 @@
     "duration": {
       "title": "Trukmė"
     },
-    "encryptedNoLicense": "",
+    "encryptedNoLicense": "Leidinys yra užšifruotas, tačiau stokoja LCP licencijos!",
     "expired": "Skolinimo terminas baigėsi",
     "expiredLcp": "Šio leidinio negalima skaityti, nes baigėsi LCP licencijos galiojimo laikas.",
-    "incorrectPassphrase": "",
+    "incorrectPassphrase": "Jokia išsaugota slaptafrazė neatitinka leidinio arba įvesta neteisinga slaptafrazė.",
     "lcpEnd": "Pabaiga",
     "lcpRightsCopy": "Ženklų kopijos",
     "lcpRightsPrint": "Spausdintos kopijos",
@@ -320,7 +320,7 @@
     "seeMore": "Rodyti daugiau",
     "timeLeft": "Liko",
     "title": "Pavadinimas",
-    "userKeyCheckInvalid": "Neteisingas slaptažodis"
+    "userKeyCheckInvalid": "Neteisinga slaptafrazė."
   },
   "reader": {
     "annotations": {
@@ -328,28 +328,28 @@
       "addNote": "Pridėti pastabą",
       "advancedMode": "Momentinis režimas (pažymėjus sukurti automatiškai)",
       "annotationsExport": {
-        "description": "",
-        "title": ""
+        "description": "Pavadinkite šį pastabų rinkinį",
+        "title": "Pavadinimas"
       },
       "annotationsOptions": "Parinktys",
       "colors": {
-        "bluegreen": "",
-        "cyan": "",
-        "green": "",
-        "lightblue": "",
-        "orange": "",
-        "purple": "",
-        "red": "",
-        "yellow": ""
+        "bluegreen": "Mėlynai žalia",
+        "cyan": "Žydra",
+        "green": "Žalia",
+        "lightblue": "Šviesiai mėlyna",
+        "orange": "Oranžinė",
+        "purple": "Purpurinė",
+        "red": "Raudona",
+        "yellow": "Geltona"
       },
       "filter": {
-        "all": "",
-        "filterByColor": "",
-        "filterByCreator": "",
-        "filterByDrawtype": "",
-        "filterByTag": "",
-        "filterOptions": "",
-        "none": ""
+        "all": "Visos",
+        "filterByColor": "Filtruoti pagal spalvą",
+        "filterByCreator": "Filtruoti pagal kūrėją",
+        "filterByDrawtype": "Filtruoti pagal paryškinimo tipą",
+        "filterByTag": "Filtruoti pagal žymę",
+        "filterOptions": "Filtravimo parinktys",
+        "none": "Jokios"
       },
       "hide": "Neatvaizduoti",
       "highlight": "Paryškinimas",
@@ -357,10 +357,10 @@
       "quickAnnotations": "Greitasis kūrimas (praleidžiant rengyklę)",
       "saveNote": "Išsaugoti",
       "sorting": {
-        "lastcreated": "",
-        "lastmodified": "",
-        "progression": "",
-        "sortingOptions": ""
+        "lastcreated": "Sukūrimo data",
+        "lastmodified": "Keitimo data",
+        "progression": "Eiga",
+        "sortingOptions": "Rikiavimo parinktys"
       },
       "toggleMarginMarks": "Atvaizduoti paraštėse",
       "type": {
@@ -405,7 +405,7 @@
     },
     "navigation": {
       "annotationTitle": "pastaba",
-      "backHomeTitle": "grįžti į lentyną",
+      "backHomeTitle": "Užverti šį skaitymo langą (grįžti į knygų lentyną)",
       "bookmarkTitle": "sukurti žymę",
       "currentPage": "Dabartinis puslapis: {{- current}}",
       "currentPageTotal": "Dabartinis puslapis: {{- current}}/{{- total}}",
@@ -443,7 +443,7 @@
         "title": "Stulpeliai",
         "two": "2 stulpeliai"
       },
-      "customFontSelected": "",
+      "customFontSelected": "Pasirinkote asmeninį šriftą",
       "customizeReader": "Tinkinti teksto formatavimą",
       "disabled": "išjungta",
       "display": "Atvaizdavimas",
@@ -477,14 +477,14 @@
         "title": "Mastelis"
       },
       "preset": {
-        "apply": "",
-        "applyDetails": "",
-        "detail": "",
-        "reset": "",
-        "resetDetails": "",
-        "save": "",
-        "saveDetails": "",
-        "title": ""
+        "apply": "Taikyti pageidautinus skaitymo parametrus",
+        "applyDetails": "Taikyti pageidautinus skaitymo parametrus dabartiniam leidiniui.",
+        "detail": "Išsaugoti/taikyti pageidautinus skaitymo parametrus.",
+        "reset": "Nustatyti pageidautinus skaitymo parametrus iš naujo.",
+        "resetDetails": "Nustatyti pageidautinus skaitymo parametrus į jų numatytąsias reikšmes.",
+        "save": "Išsaugoti pageidautinus skaitymo parametrus.",
+        "saveDetails": "Išsaugoti dabartinio leidinio teksto formatavimo bei atvaizdavimo pakeitimus. Šias nuostatas galėsite taikyti kitiems leidiniams, juos atvėrę ir paspaudę žemiau esantį mygtuką.",
+        "title": "Nuostatos"
       },
       "preview": "Peržiūrėti",
       "reduceMotion": "Mažinti judesių kiekį",
@@ -514,30 +514,30 @@
       "publicationNoToc": "Šis leidinys nepateikia turinio"
     },
     "tts": {
-      "activate": "Aktyvuoti teksto įgarsinimą",
+      "activate": "Aktyvuoti balso sintezę",
       "default": "Balsas: sistemos numatytasis",
-      "language": "",
-      "next": "Tolesnis teksto įgarsinimas",
-      "pause": "Pristabdyti teksto įgarsinimą",
-      "play": "Atkurti teksto įgarsinimą",
-      "previous": "Ankstesnis teksto įgarsinimas",
-      "sentenceDetect": "Skaidyti įgarsinamą tekstą",
+      "language": "Balso sintezės kalba",
+      "next": "Sintezuoti kitą frazę",
+      "pause": "Pristabdyti balso sintezę",
+      "play": "Paleisti balso sintezę",
+      "previous": "Sintezuoti ankstesnę frazę",
+      "sentenceDetect": "Skaidyti sintezuojamą tekstą",
       "sentenceDetectDescription": "Išskaidyti ilgas pastraipas į sakinius.",
-      "speed": "Teksto įgarsinimo atkūrimo sparta",
-      "stop": "Sustabdyti teksto įgarsinimą",
-      "voice": "Įgarsinimo balsas"
+      "speed": "Balso sintezės atkūrimo sparta",
+      "stop": "Sustabdyti balso sintezę",
+      "voice": "Sintezės balsas"
     }
   },
   "settings": {
     "annotationCreator": {
-      "creator": "",
-      "name": "",
-      "organization": "",
-      "person": "",
-      "type": ""
+      "creator": "Kūrėjas",
+      "name": "Pavadinimas",
+      "organization": "Organizacija",
+      "person": "Asmuo",
+      "type": "Tipas:"
     },
     "auth": {
-      "title": "",
+      "title": "Valdyti katalogų prieigą",
       "wipeData": "Išvalyti prisijungimo duomenis"
     },
     "keyboard": {
@@ -547,15 +547,15 @@
       "editUserJson": "Keisti naudotojo failą...",
       "keyboardShortcuts": "Spartieji klavišai",
       "loadUserJson": "Įkelti iš naudotojo failo",
-      "resetDefaults": "Atkurti numatytąsias reikšmes",
+      "resetDefaults": "Atkurti numatytuosius",
       "save": "Įrašyti"
     },
     "language": {
       "languageChoice": "Kalba"
     },
     "library": {
-      "enableAPIAPP": "",
-      "title": ""
+      "enableAPIAPP": "Įgalinti prieigą prie Dilicom PNB API",
+      "title": "Pridėti bibliotekos paskyrą"
     },
     "session": {
       "title": "Sesijos išsaugojimas"
