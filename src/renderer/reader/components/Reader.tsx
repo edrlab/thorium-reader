@@ -811,9 +811,14 @@ class Reader extends React.Component<IProps, IState> {
                     />
                     :
                     <div className={stylesReader.exitZen_container}>
-                    <button onClick={() => this.setState({ zenMode : false})} className={stylesReader.button_exitZen} style={{ opacity: isPaginated ? "1" : "0"}}>
-                        <SVG ariaHidden svg={exitZenModeIcon} />
-                    </button>
+                        <button onClick={() => this.setState({ zenMode: false })}
+                            className={stylesReader.button_exitZen}
+                            style={{ opacity: isPaginated ? "1" : "0" }}
+                            aria-label={this.props.__("reader.navigation.ZenModeExit")}
+                            title={this.props.__("reader.navigation.ZenModeExit")}
+                        >
+                            <SVG ariaHidden svg={exitZenModeIcon} />
+                        </button>
                     </div>
                     }
 

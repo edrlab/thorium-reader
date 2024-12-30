@@ -411,6 +411,8 @@
       "currentPageTotal": "Current page: {{- current}}/{{- total}}",
       "detachWindowTitle": "show library / bookshelf window",
       "fullscreenTitle": "go fullscreen",
+      "ZenModeTitle": "Zen mode",
+      "ZenModeExit": "Exit Zen mode",
       "goTo": "Go to",
       "goToError": "Page break does not exist",
       "goToPlaceHolder": "Enter page number",

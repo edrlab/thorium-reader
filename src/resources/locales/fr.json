@@ -411,6 +411,8 @@
       "currentPageTotal": "Page courante: {{- current}}/{{- total}}",
       "detachWindowTitle": "afficher la bibliothèque",
       "fullscreenTitle": "mode plein écran",
+      "ZenModeTitle": "Mode Zen",
+      "ZenModeExit": "Sortir du mode Zen",
       "goTo": "Aller à",
       "goToError": "Cette page n'existe pas",
       "goToPlaceHolder": "Entrer un numéro de page",

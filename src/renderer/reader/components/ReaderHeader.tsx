@@ -1255,8 +1255,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 onClick={() => this.props.ReaderSettingsProps.setZenMode(!this.props.ReaderSettingsProps.zenMode)}
                                 ref={this.enableFullscreenRef}
                                 aria-pressed={this.props.fullscreen}
-                                aria-label={__("reader.navigation.fullscreenTitle")}
-                                title={__("reader.navigation.fullscreenTitle")}
+                                aria-label={__("reader.navigation.ZenModeTitle")}
+                                title={__("reader.navigation.ZenModeTitle")}
                             >
                                 <SVG ariaHidden={true} svg={viewMode} />
                             </button>

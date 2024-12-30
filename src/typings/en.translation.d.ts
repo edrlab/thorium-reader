@@ -836,6 +836,8 @@ declare namespace typed_i18n {
     readonly "currentPageTotal": string,
     readonly "detachWindowTitle": string,
     readonly "fullscreenTitle": string,
+    readonly "ZenModeTitle": string,
+    readonly "ZenModeExit": string,
     readonly "goTo": string,
     readonly "goToError": string,
     readonly "goToPlaceHolder": string,
@@ -934,6 +936,7 @@ declare namespace typed_i18n {
   readonly "tts": {
     readonly "activate": string,
     readonly "default": string,
+    readonly "language": string,
     readonly "next": string,
     readonly "pause": string,
     readonly "play": string,
@@ -942,8 +945,7 @@ declare namespace typed_i18n {
     readonly "sentenceDetectDescription": string,
     readonly "speed": string,
     readonly "stop": string,
-    readonly "voice": string,
-    readonly "language": string
+    readonly "voice": string
   }
 };
   (_: "reader.annotations", __?: {}): {
@@ -1121,6 +1123,8 @@ declare namespace typed_i18n {
   readonly "currentPageTotal": string,
   readonly "detachWindowTitle": string,
   readonly "fullscreenTitle": string,
+  readonly "ZenModeTitle": string,
+  readonly "ZenModeExit": string,
   readonly "goTo": string,
   readonly "goToError": string,
   readonly "goToPlaceHolder": string,
@@ -1141,6 +1145,8 @@ declare namespace typed_i18n {
   (_: "reader.navigation.currentPageTotal", __?: {}): string;
   (_: "reader.navigation.detachWindowTitle", __?: {}): string;
   (_: "reader.navigation.fullscreenTitle", __?: {}): string;
+  (_: "reader.navigation.ZenModeTitle", __?: {}): string;
+  (_: "reader.navigation.ZenModeExit", __?: {}): string;
   (_: "reader.navigation.goTo", __?: {}): string;
   (_: "reader.navigation.goToError", __?: {}): string;
   (_: "reader.navigation.goToPlaceHolder", __?: {}): string;
@@ -1375,6 +1381,7 @@ declare namespace typed_i18n {
   (_: "reader.tts", __?: {}): {
   readonly "activate": string,
   readonly "default": string,
+  readonly "language": string,
   readonly "next": string,
   readonly "pause": string,
   readonly "play": string,
@@ -1383,11 +1390,11 @@ declare namespace typed_i18n {
   readonly "sentenceDetectDescription": string,
   readonly "speed": string,
   readonly "stop": string,
-  readonly "voice": string,
-  readonly "language": string
+  readonly "voice": string
 };
   (_: "reader.tts.activate", __?: {}): string;
   (_: "reader.tts.default", __?: {}): string;
+  (_: "reader.tts.language", __?: {}): string;
   (_: "reader.tts.next", __?: {}): string;
   (_: "reader.tts.pause", __?: {}): string;
   (_: "reader.tts.play", __?: {}): string;
@@ -1397,7 +1404,6 @@ declare namespace typed_i18n {
   (_: "reader.tts.speed", __?: {}): string;
   (_: "reader.tts.stop", __?: {}): string;
   (_: "reader.tts.voice", __?: {}): string;
-  (_: "reader.tts.language", __?: {}): string;
   (_: "settings", __?: {}): {
   readonly "annotationCreator": {
     readonly "creator": string,
