@@ -68,8 +68,16 @@ export function* importAnnotationSet(): SagaGenerator<void> {
             continue;
         }
 
-        // push new annotation to reader and then synced with main db process
-        yield* putTyped(readerActions.annotation.push.build(annotationStateFormated));
+        const annotationsList = yield* selectTyped((state: IReaderRootState) => state.reader.annotation);
+
+        const found = annotationsList.find(([, {uuid}]) => annotationStateFormated.uuid === uuid);
+        if (found) {
+            const foundAnno = found[1];
+            yield* putTyped(readerActions.annotation.update.build(foundAnno, annotationStateFormated));
+        } else {
+            // push new annotation to reader and then sync it with main db process
+            yield* putTyped(readerActions.annotation.push.build(annotationStateFormated));
+        }
 
         // wait 100ms to not overload event-loop
         yield* delayTyped(100);
