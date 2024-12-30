@@ -21,7 +21,7 @@ import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-bold.svg";
 export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{ winId: string | undefined, publicationView: PublicationView }>> = (props) => {
 
     const importAnnotationState = useSelector((state: IRendererCommonRootState) => state.importAnnotations);
-    const { open, title, annotationsList, annotationsConflictListOlder, annotationsConflictListNewer, winId } = importAnnotationState;
+    const { open, title, annotationsList, annotationsConflictListOlder, annotationsConflictListNewer, winId, about } = importAnnotationState;
     const { publicationView } = props;
     const { publicationTitle, authors, identifier } = publicationView;
     const dispatch = useDispatch();
@@ -44,6 +44,9 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{ winId: 
         return acc;
     }, []);
 
+    const originTitle = about?.["dc:title"] || "";
+    const originCreator = (Array.isArray(about?.["dc:creator"]) ? about["dc:creator"] : []).join(", ") || "";
+
     return (
         <AlertDialog.Root open={props.winId === winId && open} onOpenChange={(requestOpen) => {
             if (requestOpen) {
@@ -65,6 +68,7 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{ winId: 
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.annotations.title")}</AlertDialog.Title>
                     <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription} style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+                        <span>{originTitle ? __("dialog.annotations.origin", { title: originTitle, author: originCreator ? __("dialog.annotations.descAuthor", { author: originCreator }) : "" }) : ""}</span>
                         <span>{title ? `${__("dialog.annotations.descTitle")}${title}` : ""}</span>
                         <span>{annotationsList.length ? __("dialog.annotations.descList", {
                             nb: annotationsList.length,

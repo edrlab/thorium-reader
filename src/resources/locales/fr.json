@@ -128,10 +128,10 @@
       "descList": "{{- nb}} note(s) {{- creator}} seront importées vers {{- title}} {{- author}}",
       "descNewer": "{{- nb}} conflits: certaines notes associées à la publication sont plus récentes",
       "descOlder": "{{- nb}} conflits: certaines notes associées à la publication sont plus anciennes",
-      "descTitle": "Titre de la liste de notes :",
+      "descTitle": "Titre de la liste de notes : ",
       "importAll": "Importer toutes les notes",
       "importWithoutConflict": "Importer les notes sans conflits",
-      "origin": "Source: {{- title}}{{- author}}",
+      "origin": "Source : {{- title}} {{- author}}",
       "title": "Voulez-vous importer toutes ces notes ?"
     },
     "cancel": "Annuler",
