@@ -476,7 +476,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     const date = new Date(timestamp);
     const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;
 
-    const { style, percentRounded } = React.useMemo(() => {
+    const { percentRounded } = React.useMemo(() => {
         if (r2Publication.Spine && annotation.locatorExtended.locator) {
             const percent = computeProgression(r2Publication.Spine || [], annotation.locatorExtended.locator);
             const percentRounded = Math.round(percent);
@@ -496,7 +496,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
 
     const creatorName = (annotation.creator?.id !== creatorMyself.id ? annotation.creator?.name : creatorMyself.name) || "";
 
-    return (<div
+    return (<li
         className={stylesAnnotations.annotations_line}
         style={{ backgroundColor: dockedEditAnnotation ? "var(--color-extralight-grey)" : "", borderLeft: dockedEditAnnotation ? "none" : `4px solid ${annotationColor}` }}
         onKeyDown={isEdited ? (e) => {
@@ -511,6 +511,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 }, 100);
             }
         } : undefined}
+        aria-label={__("reader.annotations.note", {color: __(Object.entries(annotationsColorsLight).find(([colorHex]) => colorHex === annotationColor)?.[1])})}
     >
         {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
         <div className={stylesAnnotations.annnotation_container}>
@@ -518,7 +519,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 <></>
                 : <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
                     // title={bname}
-                    aria-label={`${__("reader.navigation.goTo")} ... "${btext}"`}
+                    aria-label={__("reader.annotations.goToContent")}
                     style={{ borderLeft: dockedEditAnnotation && "2px solid var(--color-blue)" }}
                     onClick={(e) => {
                         e.preventDefault();
@@ -562,7 +563,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                     :
                     <>
                         <HardWrapComment comment={comment} />
-                        {tagName ? <div className={stylesTags.tags_wrapper}>
+                        {tagName ? <div className={stylesTags.tags_wrapper} aria-label={__("catalog.tags")}>
                             <div className={stylesTags.tag}>
                                 <a onClick={() => setTagFilter(tagName)}
                                     onKeyUp={(e) => {
@@ -581,11 +582,11 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
         </div>
         <div className={stylesAnnotations.annotation_edit}>
             <div>
-                <div>
+                <div aria-label={__("reader.annotations.date")}>
                     <SVG ariaHidden svg={CalendarIcon} />
                     <p>{dateStr}</p>
                 </div>
-                <div>
+                <div aria-label={__("publication.progression.title")}>
                     <SVG ariaHidden svg={BookOpenIcon} />
                     <p>{bprogression}</p>
                 </div>
@@ -670,10 +671,10 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 }
             </div>
         </div>
-        <div className={stylesPopoverDialog.gauge}>
+        {/* <div className={stylesPopoverDialog.gauge}>
             <div className={stylesPopoverDialog.fill} style={style}></div>
-        </div>
-    </div>);
+        </div> */}
+    </li>);
 };
 
 const selectionIsSet = (a: Selection): a is Set<string> => typeof a === "object";
@@ -1350,17 +1351,19 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                 </div>
             </div>
             <div className={stylesAnnotations.separator} />
-            {annotationsPagedArray.map(([timestamp, annotationItem], _i) =>
-                <AnnotationCard
-                    key={`annotation-card_${annotationItem.uuid}`}
-                    timestamp={timestamp}
-                    annotation={annotationItem}
-                    goToLocator={goToLocator}
-                    isEdited={annotationItem.uuid === annotationItemEditedUUID}
-                    triggerEdition={triggerEdition(annotationItem)}
-                    setTagFilter={(v) => setTagArrayFilter(new Set([v]))}
-                />,
-            )}
+            <ol>
+                {annotationsPagedArray.map(([timestamp, annotationItem], _i) =>
+                    <AnnotationCard
+                        key={`annotation-card_${annotationItem.uuid}`}
+                        timestamp={timestamp}
+                        annotation={annotationItem}
+                        goToLocator={goToLocator}
+                        isEdited={annotationItem.uuid === annotationItemEditedUUID}
+                        triggerEdition={triggerEdition(annotationItem)}
+                        setTagFilter={(v) => setTagArrayFilter(new Set([v]))}
+                    />,
+                )}
+            </ol>
             {
                 isPaginated ? <>
                     <div className={stylesPopoverDialog.navigation_container}>

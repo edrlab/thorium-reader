@@ -754,6 +754,9 @@ declare namespace typed_i18n {
   (_: "publication.userKeyCheckInvalid", __?: {}): string;
   (_: "reader", __?: {}): {
   readonly "annotations": {
+    readonly "note": string,
+    readonly "date": string,
+    readonly "goToContent": string,
     readonly "Color": string,
     readonly "addNote": string,
     readonly "advancedMode": string,
@@ -949,6 +952,9 @@ declare namespace typed_i18n {
   }
 };
   (_: "reader.annotations", __?: {}): {
+  readonly "note": string,
+  readonly "date": string,
+  readonly "goToContent": string,
   readonly "Color": string,
   readonly "addNote": string,
   readonly "advancedMode": string,
@@ -995,6 +1001,9 @@ declare namespace typed_i18n {
     readonly "underline": string
   }
 };
+  (_: "reader.annotations.note", __?: {}): string;
+  (_: "reader.annotations.date", __?: {}): string;
+  (_: "reader.annotations.goToContent", __?: {}): string;
   (_: "reader.annotations.Color", __?: {}): string;
   (_: "reader.annotations.addNote", __?: {}): string;
   (_: "reader.annotations.advancedMode", __?: {}): string;
