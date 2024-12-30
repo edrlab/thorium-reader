@@ -123,14 +123,16 @@
   },
   "dialog": {
     "annotations": {
-      "descAuthor": "of {{- author}}",
-      "descList": "{{- nb}} note(s) from {{- creator}} will be associated with {{- title}} {{- author}}",
-      "descNewer": "{{- nb}} newer versions of these notes are already associated with the publication.",
-      "descOlder": "{{- nb}} older versions of these notes are already associated with the publication.",
-      "descTitle": "Annotation Set Title: ",
+      "descAuthor": "by {{- author}}",
+      "descCreator": "written by",
+      "origin": "Origin: {{- title}}{{- author}}",
+      "descList": "{{- nb}} note(s) {{- creator}} will be imported to {{- title}} {{- author}}",
+      "descNewer": "{{- nb}} conflict(s): some notes associated with the publication are newer.",
+      "descOlder": "{{- nb}} conflict(s): some notes associated with the publication are older.",
+      "descTitle": "Annotation Set: ",
       "importAll": "Import all notes",
-      "importWithoutConflict": "Import notes without conflict",
-      "title": "Do you want to import these notes ?"
+      "importWithoutConflict": "Import conflict-free notes only",
+      "title": "Do you want to import these notes?"
     },
     "cancel": "Cancel",
     "deleteAnnotations": "Delete annotations?",

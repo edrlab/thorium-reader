@@ -68,7 +68,7 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{ winId: 
                         <span>{title ? `${__("dialog.annotations.descTitle")}${title}` : ""}</span>
                         <span>{annotationsList.length ? __("dialog.annotations.descList", {
                             nb: annotationsList.length,
-                            creator: creatorNameList.length ? creatorNameList.join(", ") : "\"\"",
+                            creator: creatorNameList.length ? `${__("dialog.annotations.descCreator")} ${creatorNameList.join(", ")}` : "", // TODO i18n
                             title: publicationTitle,
                             author: authors[0] ? __("dialog.annotations.descAuthor", { author: authors[0] }) : "",
                         }) : <></>}</span>
