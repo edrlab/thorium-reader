@@ -8,6 +8,7 @@
 import * as debug_ from "debug";
 import { app, protocol, ipcMain } from "electron";
 import * as path from "path";
+import * as fs from "fs";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import { closeProcessLock, diMainGet, getLibraryWindowFromDi, getAllReaderWindowFromDi } from "readium-desktop/main/di";
@@ -139,17 +140,25 @@ export function* init() {
         });
     }
 
-    // register file protocol to link locale file to renderer
-    protocol.registerFileProtocol("store",
-        (request, callback) => {
-
-            // Extract publication item relative url
-            const relativeUrl = request.url.substr(6);
-            const pubStorage = diMainGet("publication-storage");
-            const filePath: string = path.join(pubStorage.getRootPath(), relativeUrl);
-            callback(filePath);
-        },
-    );
+    const streamProtocolHandler_Store = (
+        request: Electron.ProtocolRequest,
+        callback: (response: (NodeJS.ReadableStream) | (Electron.ProtocolResponse)) => void,
+    ) => {
+        debug("---streamProtocolHandler_Store");
+        debug(request);
+        const urlPath = request.url.substring("store://".length);
+        debug(urlPath);
+        // const urlPathDecoded = tryDecodeURIComponent(urlPath);
+        // debug(urlPathDecoded);
+        const pubStorage = diMainGet("publication-storage");
+        const rootPath = pubStorage.getRootPath();
+        debug(rootPath);
+        const filePath = path.join(rootPath, urlPath);
+        debug(filePath);
+        callback(fs.createReadStream(filePath));
+    };
+    protocol.registerStreamProtocol("store", streamProtocolHandler_Store);
+    // protocol.unregisterProtocol("store");
 
     app.on("will-quit", () => {
 
@@ -158,18 +167,21 @@ export function* init() {
         debug("#####");
     });
 
+    const streamProtocolHandler_PDF = (
+        request: Electron.ProtocolRequest,
+        callback: (response: (NodeJS.ReadableStream) | (Electron.ProtocolResponse)) => void,
+    ) => {
+        debug("---streamProtocolHandler_PDF");
+        debug(request);
+        const urlPath = request.url.substring("pdfjs-extract://host/".length);
+        debug(urlPath);
+        const urlPathDecoded = tryDecodeURIComponent(urlPath);
+        debug(urlPathDecoded);
+        callback(fs.createReadStream(urlPathDecoded));
+    };
+    protocol.registerStreamProtocol("pdfjs-extract", streamProtocolHandler_PDF);
+    // protocol.unregisterProtocol("pdfjs-extract");
 
-    protocol.registerFileProtocol("pdfjs-extract", async (request, callback) => {
-
-        debug("register file protocol pdfjs-extract");
-        debug("request", request);
-        const arg = request.url.split("pdfjs-extract://host/")[1];
-        debug(arg);
-        const p = tryDecodeURIComponent(arg);
-        debug(p);
-
-        callback(p);
-    });
 
     yield call(() => {
         const deviceIdManager = diMainGet("device-id-manager");

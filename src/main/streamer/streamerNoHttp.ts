@@ -1142,12 +1142,39 @@ export function initSessions() {
     {
         privileges: {
             allowServiceWorkers: false, // Default false
+            bypassCSP: false, // Default false
+            corsEnabled: false, // Default false
+            secure: true, // Default false
+            stream: true, // Default false
+            supportFetchAPI: false, // Default false
+            standard: false, // Default false
+            codeCache: false, // Default false (only works with standard=true)
+        },
+        scheme: "store",
+    },
+    {
+        privileges: {
+            allowServiceWorkers: false, // Default false
+            bypassCSP: false, // Default false
+            corsEnabled: false, // Default false
+            secure: true, // Default false
+            stream: true, // Default false
+            supportFetchAPI: false, // Default false
+            standard: false, // Default false
+            codeCache: false, // Default false (only works with standard=true)
+        },
+        scheme: "pdfjs-extract",
+    },
+    {
+        privileges: {
+            allowServiceWorkers: false, // Default false
             bypassCSP: true, // Default false
             corsEnabled: false, // Default false
             secure: true, // Default false
-            standard: false, // Default false
             stream: true, // Default false
             supportFetchAPI: false, // Default false
+            standard: false, // Default false
+            codeCache: false, // Default false (only works with standard=true)
         },
         scheme: OPDS_MEDIA_SCHEME,
     },
@@ -1157,9 +1184,10 @@ export function initSessions() {
             bypassCSP: false,
             corsEnabled: true,
             secure: true,
-            standard: true,
             stream: true,
             supportFetchAPI: true,
+            standard: true, // Default false
+            codeCache: false, // Default false (only works with standard=true)
         },
         scheme: THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
     }, {
@@ -1168,9 +1196,10 @@ export function initSessions() {
             bypassCSP: false,
             corsEnabled: true,
             secure: true,
-            standard: true,
             stream: true,
             supportFetchAPI: true,
+            standard: true, // Default false
+            codeCache: false, // Default false (only works with standard=true)
         },
         scheme: READIUM2_ELECTRON_HTTP_PROTOCOL,
     }]);
