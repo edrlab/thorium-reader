@@ -80,7 +80,7 @@ module.exports = async function afterPack(context) {
         [FuseV1Options.LoadBrowserProcessSpecificV8Snapshot]: false,
 
         // GrantFileProtocolExtraPrivileges = 7,
-        [FuseV1Options.GrantFileProtocolExtraPrivileges]: false,
+        [FuseV1Options.GrantFileProtocolExtraPrivileges]: true,
     });
 
     // if (context.electronPlatformName === 'linux') {
