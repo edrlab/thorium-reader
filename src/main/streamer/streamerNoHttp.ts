@@ -1155,6 +1155,19 @@ export function initSessions() {
     {
         privileges: {
             allowServiceWorkers: false, // Default false
+            bypassCSP: true, // Default false
+            corsEnabled: false, // Default false
+            secure: true, // Default false
+            stream: true, // Default false
+            supportFetchAPI: true, // Default false
+            standard: true, // Default false
+            codeCache: false, // Default false (only works with standard=true)
+        },
+        scheme: "filex",
+    },
+    {
+        privileges: {
+            allowServiceWorkers: false, // Default false
             bypassCSP: false, // Default false
             corsEnabled: false, // Default false
             secure: true, // Default false

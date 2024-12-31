@@ -114,6 +114,23 @@ export function* init() {
 
     debug("Main app ready");
 
+    const streamProtocolHandler_FILEX = (
+        request: Electron.ProtocolRequest,
+        callback: (response: (NodeJS.ReadableStream) | (Electron.ProtocolResponse)) => void,
+    ) => {
+        debug("---streamProtocolHandler_FILEX");
+        debug(request);
+        const urlPath = request.url.substring("filex://host/".length);
+        debug(urlPath);
+        const urlPathDecoded = urlPath.split("/").map((segment) => {
+            return segment?.length ? tryDecodeURIComponent(segment) : "";
+        }).join("/");
+        debug(urlPathDecoded);
+        callback(fs.createReadStream(urlPathDecoded));
+    };
+    protocol.registerStreamProtocol("filex", streamProtocolHandler_FILEX);
+    // protocol.unregisterProtocol("filex");
+
     if (IS_DEV) {
         // https://github.com/MarshallOfSound/electron-devtools-installer
         // https://github.com/facebook/react/issues/25843
