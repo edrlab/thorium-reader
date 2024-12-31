@@ -6,9 +6,9 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app, protocol, ipcMain } from "electron";
+import { app, protocol, ipcMain, net } from "electron";
 import * as path from "path";
-import * as fs from "fs";
+import { pathToFileURL } from "url";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import { closeProcessLock, diMainGet, getLibraryWindowFromDi, getAllReaderWindowFromDi } from "readium-desktop/main/di";
@@ -114,11 +114,10 @@ export function* init() {
 
     debug("Main app ready");
 
-    const streamProtocolHandler_FILEX = (
-        request: Electron.ProtocolRequest,
-        callback: (response: (NodeJS.ReadableStream) | (Electron.ProtocolResponse)) => void,
-    ) => {
-        debug("---streamProtocolHandler_FILEX");
+    const protocolHandler_FILEX = (
+        request: Request,
+    ): Response | Promise<Response> => {
+        debug("---protocolHandler_FILEX");
         debug(request);
         const urlPath = request.url.substring("filex://host/".length);
         debug(urlPath);
@@ -126,10 +125,12 @@ export function* init() {
             return segment?.length ? tryDecodeURIComponent(segment) : "";
         }).join("/");
         debug(urlPathDecoded);
-        callback(fs.createReadStream(urlPathDecoded));
+        const filePathUrl = pathToFileURL(urlPathDecoded).toString();
+        debug(filePathUrl);
+        return net.fetch(filePathUrl);
     };
-    protocol.registerStreamProtocol("filex", streamProtocolHandler_FILEX);
-    // protocol.unregisterProtocol("filex");
+    protocol.handle("filex", protocolHandler_FILEX);
+    // protocol.unhandle("filex");
 
     if (IS_DEV) {
         // https://github.com/MarshallOfSound/electron-devtools-installer
@@ -157,11 +158,10 @@ export function* init() {
         });
     }
 
-    const streamProtocolHandler_Store = (
-        request: Electron.ProtocolRequest,
-        callback: (response: (NodeJS.ReadableStream) | (Electron.ProtocolResponse)) => void,
-    ) => {
-        debug("---streamProtocolHandler_Store");
+    const protocolHandler_Store = (
+        request: Request,
+    ): Response | Promise<Response> => {
+        debug("---protocolHandler_Store");
         debug(request);
         const urlPath = request.url.substring("store://".length);
         debug(urlPath);
@@ -172,10 +172,12 @@ export function* init() {
         debug(rootPath);
         const filePath = path.join(rootPath, urlPath);
         debug(filePath);
-        callback(fs.createReadStream(filePath));
+        const filePathUrl = pathToFileURL(filePath).toString();
+        debug(filePathUrl);
+        return net.fetch(filePathUrl);
     };
-    protocol.registerStreamProtocol("store", streamProtocolHandler_Store);
-    // protocol.unregisterProtocol("store");
+    protocol.handle("store", protocolHandler_Store);
+    // protocol.unhandle("store");
 
     app.on("will-quit", () => {
 
@@ -184,20 +186,21 @@ export function* init() {
         debug("#####");
     });
 
-    const streamProtocolHandler_PDF = (
-        request: Electron.ProtocolRequest,
-        callback: (response: (NodeJS.ReadableStream) | (Electron.ProtocolResponse)) => void,
-    ) => {
-        debug("---streamProtocolHandler_PDF");
+    const protocolHandler_PDF = (
+        request: Request,
+    ): Response | Promise<Response> => {
+        debug("---protocolHandler_PDF");
         debug(request);
         const urlPath = request.url.substring("pdfjs-extract://host/".length);
         debug(urlPath);
         const urlPathDecoded = tryDecodeURIComponent(urlPath);
         debug(urlPathDecoded);
-        callback(fs.createReadStream(urlPathDecoded));
+        const filePathUrl = pathToFileURL(urlPathDecoded).toString();
+        debug(filePathUrl);
+        return net.fetch(filePathUrl);
     };
-    protocol.registerStreamProtocol("pdfjs-extract", streamProtocolHandler_PDF);
-    // protocol.unregisterProtocol("pdfjs-extract");
+    protocol.handle("pdfjs-extract", protocolHandler_PDF);
+    // protocol.unhandle("pdfjs-extract");
 
 
     yield call(() => {
