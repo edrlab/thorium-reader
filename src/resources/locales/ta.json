@@ -124,9 +124,9 @@
         "annotations": {
             "descAuthor": "வழங்கியவர் '{{- author}}'",
             "descCreator": "உருவாக்கியது",
-            "descList": "{{- nb}} குறிப்பு(கள்) {{- creator}} இல் இறக்குமதி செய்யப்படும் '{{- title}}' {{- author}}",
-            "descNewer": "மோதல்(கள்): {{- nb}} புதிய குறிப்புகள்",
-            "descOlder": "மோதல்(கள்): {{- nb}} பழைய குறிப்புகளில்",
+            "descList": "{{- count}} குறிப்பு(கள்) {{- creator}} இல் இறக்குமதி செய்யப்படும் '{{- title}}' {{- author}}",
+            "descNewer": "மோதல்(கள்): {{- count}} புதிய குறிப்புகள்",
+            "descOlder": "மோதல்(கள்): {{- count}} பழைய குறிப்புகளில்",
             "descTitle": "சிறுகுறிப்பு தலைப்பு: ",
             "importAll": "எல்லா குறிப்புகளையும் இறக்குமதி செய்யுங்கள்",
             "importWithoutConflict": "மோதல் இல்லாத குறிப்புகளை மட்டுமே இறக்குமதி செய்க",
@@ -135,9 +135,9 @@
         },
         "cancel": "ரத்துசெய்",
         "deleteAnnotations": "சிறுகுறிப்புகளை நீக்கவா?",
-        "deleteAnnotationsText": "நீங்கள் நிச்சயமாக {{- annotationListLength}} குறிப்புகளை நீக்க விரும்புகிறீர்களா?",
+        "deleteAnnotationsText": "நீங்கள் நிச்சயமாக {{- count}} குறிப்புகளை நீக்க விரும்புகிறீர்களா?",
         "deleteBookmarks": "புக்மார்க்குகளை நீக்கவா?",
-        "deleteBookmarksText": "{{- bookmarkListLength}} புக்மார்க்குகளை நீக்க விரும்புகிறீர்களா?",
+        "deleteBookmarksText": "{{- count}} புக்மார்க்குகளை நீக்க விரும்புகிறீர்களா?",
         "deleteFeed": "பட்டியலை நீக்கவா?",
         "deletePublication": "வெளியீட்டை நீக்கவா?",
         "deletePublicationWithNotes": "",
@@ -741,7 +741,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} பொருந்துகிறது",
+                "founds": "{{- count}} பொருந்துகிறது",
                 "input": "பொருத்த உரை",
                 "next": "அடுத்தது",
                 "notFound": "போட்டிகள் இல்லை",

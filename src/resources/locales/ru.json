@@ -741,7 +741,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} найдено",
+                "founds": "{{- count}} найдено",
                 "input": "подходящий текст",
                 "next": "Далее",
                 "notFound": "нет совпадений",
