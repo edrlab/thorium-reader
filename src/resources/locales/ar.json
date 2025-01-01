@@ -124,9 +124,9 @@
         "annotations": {
             "descAuthor": "تأليف '{{- author}}'",
             "descCreator": "أنشأه",
-            "descList": "سيتم استيراد {{- nb}} ملاحظات لـ {{- creator}} إلى '{{- title}}' {{- author}}",
-            "descNewer": "تعارض: {{- nb}} ملاحظات أجدد",
-            "descOlder": "تعارض: {{- nb}} ملاحظات أقدم",
+            "descList": "سيتم استيراد {{- count}} ملاحظات لـ {{- creator}} إلى '{{- title}}' {{- author}}",
+            "descNewer": "تعارض: {{- count}} ملاحظات أجدد",
+            "descOlder": "تعارض: {{- count}} ملاحظات أقدم",
             "descTitle": "عنوان التعليقات التوضيحية: ",
             "importAll": "استيراد كل الملاحظات",
             "importWithoutConflict": "استيراد فقط الملاحظات الخالية من التعارض",
@@ -135,9 +135,9 @@
         },
         "cancel": "إلغاء الأمر",
         "deleteAnnotations": "حذف التعليقات التوضيحية؟",
-        "deleteAnnotationsText": "هل تريد بالتأكيد حذف {{- annotationListLength}} ملاحظات؟",
+        "deleteAnnotationsText": "هل تريد بالتأكيد حذف {{- count}} ملاحظات؟",
         "deleteBookmarks": "حذف الإشارات المرجعية؟",
-        "deleteBookmarksText": "هل تريد بالتأكيد حذف {{- bookmarkListLength}} إشارات مرجعية؟",
+        "deleteBookmarksText": "هل تريد بالتأكيد حذف {{- count}} إشارات مرجعية؟",
         "deleteFeed": "حذف الكتالوغ؟",
         "deletePublication": "حذف المنشور؟",
         "deletePublicationWithNotes": "تحذير:  يحتوي هذا المنشور على تعليقات توضيحية و/أو إشارات مرجعية، وسيتم حذفها أيضًا! (إذا كنت ترغب في الاحتفاظ بها، تأكد من تصدير الملاحظات قبل إزالة المنشور)",
@@ -744,7 +744,7 @@
         },
         "picker": {
             "search": {
-                "founds": "تم العثور على {{- nResults}} تطابقات",
+                "founds": "تم العثور على {{- count}} تطابقات",
                 "input": "النص المطلوب مطابقته",
                 "next": "التالي",
                 "notFound": "لم يتم العثور على تطابقات",
