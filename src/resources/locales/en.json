@@ -123,9 +123,9 @@
         "annotations": {
             "descAuthor": "by '{{- author}}'",
             "descCreator": "created by",
-            "descList": "{{- nb}} note(s) {{- creator}} will be imported into '{{- title}}' {{- author}}",
-            "descNewer": "Conflict(s): {{- nb}} newer note(s)",
-            "descOlder": "Conflict(s): {{- nb}} older note(s)",
+            "descList": "{{- count}} note(s) {{- creator}} will be imported into '{{- title}}' {{- author}}",
+            "descNewer": "Conflict(s): {{- count}} newer note(s)",
+            "descOlder": "Conflict(s): {{- count}} older note(s)",
             "descTitle": "Annotations title: ",
             "importAll": "Import all notes",
             "importWithoutConflict": "Import only conflict-free notes",
@@ -134,9 +134,9 @@
         },
         "cancel": "Cancel",
         "deleteAnnotations": "Delete annotations?",
-        "deleteAnnotationsText": "Are you sure you want to delete {{- annotationListLength}} note(s)?",
+        "deleteAnnotationsText": "Are you sure you want to delete {{- count}} note(s)?",
         "deleteBookmarks": "Delete bookmarks?",
-        "deleteBookmarksText": "Are you sure you want to delete {{- bookmarkListLength}} bookmark(s)?",
+        "deleteBookmarksText": "Are you sure you want to delete {{- count}} bookmark(s)?",
         "deleteFeed": "Delete catalog?",
         "deletePublication": "Delete publication?",
         "import": "Confirm import:",
@@ -440,7 +440,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} match(es)",
+                "founds": "{{- count}} match(es)",
                 "input": "text to match",
                 "next": "Next",
                 "notFound": "no matches",

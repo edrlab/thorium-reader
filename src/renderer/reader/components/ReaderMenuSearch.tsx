@@ -218,7 +218,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
         const { __ } = this.props;
 
         const label = this.props.foundArray?.length ?
-            __("reader.picker.search.founds", {nResults: this.props.foundArray.length}) :
+            __("reader.picker.search.founds", {count: this.props.foundArray.length}) :
             __("reader.picker.search.notFound");
 
         const memoJsx = renderSearchLinks(label, this.props.foundArray, this.state.nMatchPage, this.props.readingOrder, this.props.toc, this.props.dockedMode, this);
@@ -300,7 +300,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
                     margin: 0,
                     marginTop: "-16px",
                     marginBottom: "20px",
-            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${__("reader.picker.search.founds", {nResults: this.props.foundArray.length})}`}</p>
+            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${__("reader.picker.search.founds", {count: this.props.foundArray.length})}`}</p>
             : <></>
         }
         </>);
