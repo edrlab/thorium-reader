@@ -123,9 +123,9 @@
         "annotations": {
             "descAuthor": "'{{- author}}'",
             "descCreator": ", kurią(-ias) sukūrė",
-            "descList": "{{- nb}} pastaba(-os, -ų){{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
-            "descNewer": "Konfliktas(-ai): {{- nb}} naujesnė(-s, -ių) pastaba(-os, -ų)",
-            "descOlder": "Konfliktas(-ai): {{- nb}} senesnė(-s, -ių) pastaba(-os, -ų)",
+            "descList": "{{- count}} pastaba(-os, -ų){{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
+            "descNewer": "Konfliktas(-ai): {{- count}} naujesnė(-s, -ių) pastaba(-os, -ų)",
+            "descOlder": "Konfliktas(-ai): {{- count}} senesnė(-s, -ių) pastaba(-os, -ų)",
             "descTitle": "Pastabų pavadinimas: ",
             "importAll": "Importuoti visas pastabas",
             "importWithoutConflict": "Importuoti pastabas, neturinčias konfliktų",
@@ -134,7 +134,7 @@
         },
         "cancel": "Nutraukti",
         "deleteAnnotations": "Šalinti pastabas?",
-        "deleteAnnotationsText": "Ar norite pašalinti {{- annotationListLength}} pastabą(-as, -ų)?",
+        "deleteAnnotationsText": "Ar norite pašalinti {{- count}} pastabą(-as, -ų)?",
         "deleteBookmarks": "",
         "deleteBookmarksText": "",
         "deleteFeed": "Pašalinti katalogą?",
@@ -438,7 +438,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} atitikmuo(-ys, -ų)",
+                "founds": "{{- count}} atitikmuo(-ys, -ų)",
                 "input": "ieškomas tekstas",
                 "next": "Kitas",
                 "notFound": "atitikmenų nėra",
