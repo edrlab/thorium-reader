@@ -133,9 +133,9 @@
         "annotations": {
             "descAuthor": "por {{- author}}",
             "descCreator": "criado por",
-            "descList": "{{- nb}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
-            "descNewer": "Conflitos: {{- nb}} anotações mais recentes",
-            "descOlder": "Conflitos: {{- nb}} anotações mais antigas",
+            "descList": "{{- count}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
+            "descNewer": "Conflitos: {{- count}} anotações mais recentes",
+            "descOlder": "Conflitos: {{- count}} anotações mais antigas",
             "descTitle": "Título das anotações: ",
             "importAll": "Importar todas as anotações",
             "importWithoutConflict": "Importar apenas anotações sem conflitos",
@@ -151,9 +151,9 @@
             }
         },
         "deleteAnnotations": "Eliminar anotações?",
-        "deleteAnnotationsText": "Quer mesmo eliminar {{- annotationListLength}} anotações?",
+        "deleteAnnotationsText": "Quer mesmo eliminar {{- count}} anotações?",
         "deleteBookmarks": "Eliminar marcadores?",
-        "deleteBookmarksText": "Tem a certeza que quer eliminar {{- bookmarkListLength}} marcadores?",
+        "deleteBookmarksText": "Tem a certeza que quer eliminar {{- count}} marcadores?",
         "deleteFeed": "Eliminar catálogo?",
         "deletePublication": "Eliminar documento?",
         "deletePublicationWithNotes": "",
@@ -761,7 +761,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} correspondência(s)",
+                "founds": "{{- count}} correspondência(s)",
                 "input": "texto a encontrar",
                 "next": "Seguinte",
                 "notFound": "sem correspondências",

@@ -133,9 +133,9 @@
         "annotations": {
             "descAuthor": "nach '{{- author}}'",
             "descCreator": "Erstellt von",
-            "descList": "{{- nb}} Notiz(en) {{- creator}} werden nach '{{- title}}' {{- author}} importiert",
-            "descNewer": "Konflikt: {{- nb}} neuere Notiz(en)",
-            "descOlder": "Konflikt: {{- nb}} ältere Notiz(en)",
+            "descList": "{{- count}} Notiz(en) {{- creator}} werden nach '{{- title}}' {{- author}} importiert",
+            "descNewer": "Konflikt: {{- count}} neuere Notiz(en)",
+            "descOlder": "Konflikt: {{- count}} ältere Notiz(en)",
             "descTitle": "Titel der Notiz: ",
             "importAll": "Importiere alle Notizen",
             "importWithoutConflict": "Importiere nur konfliktfreie Notizen",
@@ -151,7 +151,7 @@
             }
         },
         "deleteAnnotations": "Anmerkungen löschen?",
-        "deleteAnnotationsText": "Sind Sie sicher, dass Sie {{- annotationListLength}} Notiz(en) löschen wollen?",
+        "deleteAnnotationsText": "Sind Sie sicher, dass Sie {{- count}} Notiz(en) löschen wollen?",
         "deleteBookmarks": "",
         "deleteBookmarksText": "",
         "deleteFeed": "Willst du diesen Katalog wirklich löschen?",
@@ -761,7 +761,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} Fundstelle(n)",
+                "founds": "{{- count}} Fundstelle(n)",
                 "input": "Text suchen",
                 "next": "Nächste",
                 "notFound": "keine Treffer",

@@ -133,9 +133,9 @@
         "annotations": {
             "descAuthor": "تأليف '{{- author}}'",
             "descCreator": "أنشأه",
-            "descList": "سيتم استيراد {{- nb}} ملاحظة (ملاحظات) من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
-            "descNewer": "تعارض: {{- nb}} ملاحظة (ملاحظات) أحدث",
-            "descOlder": "تعارض: {{- nb}} ملاحظة (ملاحظات) أقدم",
+            "descList": "سيتم استيراد {{- count}} ملاحظة (ملاحظات) من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
+            "descNewer": "تعارض: {{- count}} ملاحظة (ملاحظات) أحدث",
+            "descOlder": "تعارض: {{- count}} ملاحظة (ملاحظات) أقدم",
             "descTitle": "عنوان التعليقات: ",
             "importAll": "استيراد كل الملاحظات",
             "importWithoutConflict": "استيراد الملاحظات غير المتعارضة فقط",
@@ -151,9 +151,9 @@
             }
         },
         "deleteAnnotations": "حذف التعليقات؟",
-        "deleteAnnotationsText": "هل أنت متأكد من حذف {{- annotationListLength}} ملاحظة (ملاحظات)؟",
+        "deleteAnnotationsText": "هل أنت متأكد من حذف {{- count}} ملاحظة (ملاحظات)؟",
         "deleteBookmarks": "حذف الإشارات المرجعية؟",
-        "deleteBookmarksText": "هل أنت متأكد من حذف {{- bookmarkListLength}} إشارة (إشارات) مرجعية؟",
+        "deleteBookmarksText": "هل أنت متأكد من حذف {{- count}} إشارة (إشارات) مرجعية؟",
         "deleteFeed": "حذف الفهرس؟",
         "deletePublication": "حذف المنشور؟",
         "deletePublicationWithNotes": "تحذير: يحتوي هذا المنشور على تعليقات و/أو إشارات مرجعية، سيتم حذفها أيضًا! (إذا كنت ترغب في الاحتفاظ بها، تأكد من تصدير الملاحظات قبل إزالة المنشور)",
@@ -761,7 +761,7 @@
         },
         "picker": {
             "search": {
-                "founds": "تم العثور على {{- nResults}} تطابقات",
+                "founds": "تم العثور على {{- count}} تطابقات",
                 "input": "النص المطلوب مطابقته",
                 "next": "التالي",
                 "notFound": "لم يتم العثور على تطابقات",

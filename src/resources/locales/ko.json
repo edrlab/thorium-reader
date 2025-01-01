@@ -761,7 +761,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} 일치",
+                "founds": "{{- count}} 일치",
                 "input": "텍스트 입력",
                 "next": "다음",
                 "notFound": "일치하는 내용이 없습니다.",

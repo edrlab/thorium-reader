@@ -133,9 +133,9 @@
         "annotations": {
             "descAuthor": "作者 “{{- author}}”",
             "descCreator": "创建者",
-            "descList": "{{- nb}} 条笔记（由 {{- creator}} 创建）将被导入到“{{- title}}”（{{- author}} 著）中",
-            "descNewer": "冲突：{{- nb}} 条较新的笔记",
-            "descOlder": "冲突：{{- nb}} 条较旧的笔记",
+            "descList": "{{- count}} 条笔记（由 {{- creator}} 创建）将被导入到“{{- title}}”（{{- author}} 著）中",
+            "descNewer": "冲突：{{- count}} 条较新的笔记",
+            "descOlder": "冲突：{{- count}} 条较旧的笔记",
             "descTitle": "注释标题： ",
             "importAll": "导入所有笔记",
             "importWithoutConflict": "仅导入无冲突的笔记",
@@ -151,9 +151,9 @@
             }
         },
         "deleteAnnotations": "您要删除笔记吗？",
-        "deleteAnnotationsText": "您确定要删除 {{- annotationListLength}} 条笔记吗？",
+        "deleteAnnotationsText": "您确定要删除 {{- count}} 条笔记吗？",
         "deleteBookmarks": "删除书签？",
-        "deleteBookmarksText": "确认删除{{- bookmarkListLength}}个书签？",
+        "deleteBookmarksText": "确认删除{{- count}}个书签？",
         "deleteFeed": "您真的要删除此出版目录吗？",
         "deletePublication": "您真的要删除此出版物吗?",
         "deletePublicationWithNotes": "警告：此出版物包含注释和/或书签，这些也将被删除！（如果您想保留它们，请在移除该出版物前确保已导出笔记）",
@@ -761,7 +761,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}}个匹配",
+                "founds": "{{- count}}个匹配",
                 "input": "输入搜索文本",
                 "next": "后一个",
                 "notFound": "无匹配",

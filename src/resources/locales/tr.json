@@ -133,9 +133,9 @@
         "annotations": {
             "descAuthor": "'{{- author}}'a göre",
             "descCreator": "oluşturana göre",
-            "descList": "{{- nb}} not(ları) {{- creator}}, '{{- title}}' {{- author}} içerisine aktarılacak",
-            "descNewer": "Çakışma(lar): {{- nb}} not(ları) daha yeni",
-            "descOlder": "Çakışma(lar): {{- nb}} not(ları) daha eski",
+            "descList": "{{- count}} not(ları) {{- creator}}, '{{- title}}' {{- author}} içerisine aktarılacak",
+            "descNewer": "Çakışma(lar): {{- count}} not(ları) daha yeni",
+            "descOlder": "Çakışma(lar): {{- count}} not(ları) daha eski",
             "descTitle": "Açıklayıcı notların başlığı: ",
             "importAll": "Tüm notları içe aktar",
             "importWithoutConflict": "Sadece çakışma olmayan notları içe aktar",
@@ -151,9 +151,9 @@
             }
         },
         "deleteAnnotations": "Açıklayıcı notları silmek istiyor musunuz?",
-        "deleteAnnotationsText": "{{- annotationListLength}} Not(lar)ını silmek istediğinize emin misiniz?",
+        "deleteAnnotationsText": "{{- count}} Not(lar)ını silmek istediğinize emin misiniz?",
         "deleteBookmarks": "Yer imlerini silmek istiyor musunuz?",
-        "deleteBookmarksText": "{{- bookmarkListLength}} yer im(ler)ini silmek istediğinize emin misiniz?",
+        "deleteBookmarksText": "{{- count}} yer im(ler)ini silmek istediğinize emin misiniz?",
         "deleteFeed": "Katalogu silmek istiyor musunuz?",
         "deletePublication": "Eseri silmek istiyor musunuz?",
         "deletePublicationWithNotes": "Uyarı: Bu eserde açıklayıcı notlar ve/veya yer imleri bulunuyor, bunlar da silinecek! (Eğer bunları saklamak istiyorsanız, eseri kaldırmadan önce notları dışa aktardığınızdan emin olun)",
@@ -761,7 +761,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} eşleşme(ler)",
+                "founds": "{{- count}} eşleşme(ler)",
                 "input": "eşleşecek metin",
                 "next": "Sonraki",
                 "notFound": "eşleşme yok",

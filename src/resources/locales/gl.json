@@ -761,7 +761,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} atopado/s",
+                "founds": "{{- count}} atopado/s",
                 "input": "texto de procura",
                 "next": "Seguinte",
                 "notFound": "non hai coincidencias",

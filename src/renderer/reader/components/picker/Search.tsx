@@ -100,7 +100,7 @@ class SearchPicker extends React.Component<IProps, IState> {
 
         const found = foundNumber === 0 ?
             __("reader.picker.search.notFound") :
-            __("reader.picker.search.founds", {nResults: foundNumber});
+            __("reader.picker.search.founds", {count: foundNumber});
 
         this.loadSeq = this.props.isPdf ? 999 : (this.loadSeq || 0) + 1;
 

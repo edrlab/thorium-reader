@@ -761,7 +761,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} aurkitutako",
+                "founds": "{{- count}} aurkitutako",
                 "input": "bilaketa-testua",
                 "next": "Hurrengoa",
                 "notFound": "ez dago bat etortzerik",

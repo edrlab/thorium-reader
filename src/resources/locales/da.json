@@ -133,9 +133,9 @@
         "annotations": {
             "descAuthor": "af {{- author}}",
             "descCreator": "lavet af",
-            "descList": "{{- nb}} note(r) fra {{- creator}} vil blive associeret med {{- title}} {{- author}}",
-            "descNewer": "{{- nb}} nyere version af disse noter er allerede associeret med denne bog",
-            "descOlder": "{{- nb}} ældre version af disse noter er allerede associeret med denne bog",
+            "descList": "{{- count}} note(r) fra {{- creator}} vil blive associeret med {{- title}} {{- author}}",
+            "descNewer": "{{- count}} nyere version af disse noter er allerede associeret med denne bog",
+            "descOlder": "{{- count}} ældre version af disse noter er allerede associeret med denne bog",
             "descTitle": "Navn på notesamling: ",
             "importAll": "Importér alle noter",
             "importWithoutConflict": "Importér noter uden sammenfald",
@@ -151,9 +151,9 @@
             }
         },
         "deleteAnnotations": "Slet alle noter?",
-        "deleteAnnotationsText": "Vil du slette {{- annotationListLength}} note(r)?",
+        "deleteAnnotationsText": "Vil du slette {{- count}} note(r)?",
         "deleteBookmarks": "Slet bogmærker?",
-        "deleteBookmarksText": "Er du sikker på at du vil slette {{- bookmarkListLength}} bogmærke(r)?",
+        "deleteBookmarksText": "Er du sikker på at du vil slette {{- count}} bogmærke(r)?",
         "deleteFeed": "Er du sikker på at du vil slette dette katalog?",
         "deletePublication": "Er du sikker på at du vil fjerne bogen?",
         "deletePublicationWithNotes": "Advarsel: denne bog har noter og/eller bogmærker, som også vil blive slettet! (hvis du vil beholde dem, så eksporter dem venligst inden du sletter bogen)",
@@ -761,7 +761,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} resultat(er)",
+                "founds": "{{- count}} resultat(er)",
                 "input": "søgetekst",
                 "next": "Næste",
                 "notFound": "ingen resultater",

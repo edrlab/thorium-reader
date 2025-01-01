@@ -761,7 +761,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} podudaranje(a)",
+                "founds": "{{- count}} podudaranje(a)",
                 "input": "tekst za pretragu",
                 "next": "Sljedeće",
                 "notFound": "bez podudaranja",

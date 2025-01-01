@@ -133,9 +133,9 @@
         "annotations": {
             "descAuthor": "經由 '{{- author}}'",
             "descCreator": "創建者",
-            "descList": "{{- nb}} 註解 {{- creator}} 將會被匯入到 '{{- title}}' {{- author}}",
-            "descNewer": "衝突：{{- nb}} 個較新的註解",
-            "descOlder": "衝突：{{- nb}} 個舊註解",
+            "descList": "{{- count}} 註解 {{- creator}} 將會被匯入到 '{{- title}}' {{- author}}",
+            "descNewer": "衝突：{{- count}} 個較新的註解",
+            "descOlder": "衝突：{{- count}} 個舊註解",
             "descTitle": "註解標題： ",
             "importAll": "匯入所有註解",
             "importWithoutConflict": "僅匯入無衝突的註解",
@@ -151,9 +151,9 @@
             }
         },
         "deleteAnnotations": "刪除註解？",
-        "deleteAnnotationsText": "您確定要刪除 {{- annotationListLength}} 條註解嗎？",
+        "deleteAnnotationsText": "您確定要刪除 {{- count}} 條註解嗎？",
         "deleteBookmarks": "刪除書籤？",
-        "deleteBookmarksText": "您確定要刪除 {{- bookmarkListLength}} 個書籤嗎？",
+        "deleteBookmarksText": "您確定要刪除 {{- count}} 個書籤嗎？",
         "deleteFeed": "你真的要刪除此出版目錄嗎？",
         "deletePublication": "你真的要刪除此出版物嗎？",
         "deletePublicationWithNotes": "警告：此出版物包含註釋和/或書籤，它們也將被刪除！ （如果您想保留它們，請確保在刪除出版物之前匯出註釋）",
@@ -761,7 +761,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} 個匹配",
+                "founds": "{{- count}} 個匹配",
                 "input": "輸入搜索文字",
                 "next": "後一個",
                 "notFound": "無匹配",

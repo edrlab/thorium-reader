@@ -133,9 +133,9 @@
         "annotations": {
             "descAuthor": "par {{- author}}",
             "descCreator": "créées par",
-            "descList": "{{- nb}} note(s) {{- creator}} seront importées vers {{- title}} {{- author}}",
-            "descNewer": "{{- nb}} conflits: certaines notes associées à la publication sont plus récentes",
-            "descOlder": "{{- nb}} conflits: certaines notes associées à la publication sont plus anciennes",
+            "descList": "{{- count}} note(s) {{- creator}} seront importées vers {{- title}} {{- author}}",
+            "descNewer": "{{- count}} conflits: certaines notes associées à la publication sont plus récentes",
+            "descOlder": "{{- count}} conflits: certaines notes associées à la publication sont plus anciennes",
             "descTitle": "Titre de la liste de notes : ",
             "importAll": "Importer toutes les notes",
             "importWithoutConflict": "Importer les notes sans conflits",
@@ -151,9 +151,9 @@
             }
         },
         "deleteAnnotations": "Supprimer la note",
-        "deleteAnnotationsText": "Voulez-vous supprimer {{- annotationListLength}} note(s) ?",
+        "deleteAnnotationsText": "Voulez-vous supprimer {{- count}} note(s) ?",
         "deleteBookmarks": "Supprimer les marque-pages ?",
-        "deleteBookmarksText": "Êtes-vous certain de vouloir supprimer {{- bookmarkListLength}} marque-page(s) ?",
+        "deleteBookmarksText": "Êtes-vous certain de vouloir supprimer {{- count}} marque-page(s) ?",
         "deleteFeed": "Supprimer ce catalogue ?",
         "deletePublication": "Supprimer ce livre ?",
         "deletePublicationWithNotes": "Attention: cette publication contient des annotations et/ou des marque-pages, ils seront eux aussi supprimés ! (si vous voulez les conserver, assurez-vous d'avoir sauvegardé les notes avant de supprimer la publication)",
@@ -761,7 +761,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} correspondance(s)",
+                "founds": "{{- count}} correspondance(s)",
                 "input": "Texte à trouver",
                 "next": "Suivant",
                 "notFound": "Auncune correspondance",

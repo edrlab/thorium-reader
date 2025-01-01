@@ -133,9 +133,9 @@
         "annotations": {
             "descAuthor": "avtor '{{- avtor}}'",
             "descCreator": "ustvaril",
-            "descList": "{{- nb}} opombe {{- creator}} bodo uvožene v '{{- title}}' {{- avtor}}",
-            "descNewer": "Konflikti: {{- nb}} novejši zapiski",
-            "descOlder": "Konflikti: {{- nb}} starejši zapiski",
+            "descList": "{{- count}} opombe {{- creator}} bodo uvožene v '{{- title}}' {{- avtor}}",
+            "descNewer": "Konflikti: {{- count}} novejši zapiski",
+            "descOlder": "Konflikti: {{- count}} starejši zapiski",
             "descTitle": "Naslov opomb: ",
             "importAll": "Uvozi vse zapiske",
             "importWithoutConflict": "Uvozi zapiske brez sporov",
@@ -151,7 +151,7 @@
             }
         },
         "deleteAnnotations": "Želiš izbrisati opombe?",
-        "deleteAnnotationsText": "Ali si prepričan, da želiš izbrisati {{- annotationListLength}} opombe?",
+        "deleteAnnotationsText": "Ali si prepričan, da želiš izbrisati {{- count}} opombe?",
         "deleteBookmarks": "",
         "deleteBookmarksText": "",
         "deleteFeed": "Ali res želiš izbrisati katalog?",
@@ -761,7 +761,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} zadetek(kov)",
+                "founds": "{{- count}} zadetek(kov)",
                 "input": "besedilo, ki se ujema z",
                 "next": "Naslednje",
                 "notFound": "ni zadetkov",

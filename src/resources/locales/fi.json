@@ -133,9 +133,9 @@
         "annotations": {
             "descAuthor": "{{- author}}",
             "descCreator": "tekijältä",
-            "descList": "Tuodaan {{- nb}} muistiinpano(a) {{- creator}} julkaisuun {{- author}}: {{- title}}",
-            "descNewer": "Ristiriita: {{- nb}} uudempaa muistiinpanoa",
-            "descOlder": "Ristiriita: {{- nb}} vanhempaa muistiinpanoa",
+            "descList": "Tuodaan {{- count}} muistiinpano(a) {{- creator}} julkaisuun {{- author}}: {{- title}}",
+            "descNewer": "Ristiriita: {{- count}} uudempaa muistiinpanoa",
+            "descOlder": "Ristiriita: {{- count}} vanhempaa muistiinpanoa",
             "descTitle": "Muistiinpanojen otsikko: ",
             "importAll": "Tuo kaikki muistiinpanot",
             "importWithoutConflict": "Tuo muistiinpanot, joissa ei ole ristiriitoja",
@@ -151,9 +151,9 @@
             }
         },
         "deleteAnnotations": "Poistetaanko muistiinpanot?",
-        "deleteAnnotationsText": "Haluatko varmasti poistaa {{- annotationListLength}} muistiinpanoa?",
+        "deleteAnnotationsText": "Haluatko varmasti poistaa {{- count}} muistiinpanoa?",
         "deleteBookmarks": "Poistetaanko kirjanmerkit?",
-        "deleteBookmarksText": "Haluatko varmasti poistaa {{- bookmarkListLength}} kirjanmerkkiä?",
+        "deleteBookmarksText": "Haluatko varmasti poistaa {{- count}} kirjanmerkkiä?",
         "deleteFeed": "Haluatko poistaa tämän luettelon?",
         "deletePublication": "Haluatko poistaa tämän julkaisun?",
         "deletePublicationWithNotes": "Varoitus: tämä julkaisu sisältää muistiinpanoja ja/tai kirjanmerkkejä, myös ne poistetaan! (Jos haluat säilyttää ne, muista viedä muistiinpanot talteen ennen kuin poistat julkaisun)",
@@ -761,7 +761,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} osuma(a)",
+                "founds": "{{- count}} osuma(a)",
                 "input": "etsittävä teksti",
                 "next": "Seuraava",
                 "notFound": "ei osumia",

@@ -133,9 +133,9 @@
         "annotations": {
             "descAuthor": "por '{{- author}} '",
             "descCreator": "criado por",
-            "descList": "{{- nb}} A(s) nota(s) de {{- creator}} será(ão) importada(s) em '{{- title}}' {{- author}}",
-            "descNewer": "Conflito(s): {{- nb}} nota(s) mais recente(s)",
-            "descOlder": "Conflito(s): {{- nb}} nota)(s) mais antiga(s)",
+            "descList": "{{- count}} A(s) nota(s) de {{- creator}} será(ão) importada(s) em '{{- title}}' {{- author}}",
+            "descNewer": "Conflito(s): {{- count}} nota(s) mais recente(s)",
+            "descOlder": "Conflito(s): {{- count}} nota)(s) mais antiga(s)",
             "descTitle": "Título de anotações: ",
             "importAll": "Importar todas as notas",
             "importWithoutConflict": "Importar apenas notas sem conflito",
@@ -151,7 +151,7 @@
             }
         },
         "deleteAnnotations": "Excluir anotações?",
-        "deleteAnnotationsText": "Tem certeza de que deseja excluir {{- annotationListLength}} notas(s)?",
+        "deleteAnnotationsText": "Tem certeza de que deseja excluir {{- count}} notas(s)?",
         "deleteBookmarks": "",
         "deleteBookmarksText": "",
         "deleteFeed": "Deseja excluir este catálogo?",
@@ -761,7 +761,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} correspondência(s)",
+                "founds": "{{- count}} correspondência(s)",
                 "input": "texto para correspondência",
                 "next": "Próximo",
                 "notFound": "sem correspondências",

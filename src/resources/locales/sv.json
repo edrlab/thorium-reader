@@ -133,9 +133,9 @@
         "annotations": {
             "descAuthor": "av {{- author}}",
             "descCreator": "skapad(e) av",
-            "descList": "{{- nb}} anteckning(ar) {{- creator}} kommer att importeras till {{- title}} {{- author}}",
-            "descNewer": "Konflikter: {{- nb}} nyare anteckning(ar)",
-            "descOlder": "Konflikter: {{- nb}} äldre anteckning(ar)",
+            "descList": "{{- count}} anteckning(ar) {{- creator}} kommer att importeras till {{- title}} {{- author}}",
+            "descNewer": "Konflikter: {{- count}} nyare anteckning(ar)",
+            "descOlder": "Konflikter: {{- count}} äldre anteckning(ar)",
             "descTitle": "Anteckningarnas titel: ",
             "importAll": "Importera alla anteckningar",
             "importWithoutConflict": "Importera anteckningar utan konflikter",
@@ -151,9 +151,9 @@
             }
         },
         "deleteAnnotations": "Radera anteckningar?",
-        "deleteAnnotationsText": "Vill du radera {{- annotationListLength}} anteckning(ar)?",
+        "deleteAnnotationsText": "Vill du radera {{- count}} anteckning(ar)?",
         "deleteBookmarks": "Radera bokmärken?",
-        "deleteBookmarksText": "Vill du radera {{- bookmarkListLength}} bokmärke(n)?",
+        "deleteBookmarksText": "Vill du radera {{- count}} bokmärke(n)?",
         "deleteFeed": "Vill du ta bort den här katalogen?",
         "deletePublication": "Vill du ta bort den här publikationen?",
         "deletePublicationWithNotes": "Varning: Det finns anteckningar och/eller bokmärken som också kommer att raderas! (Om du vill behålla dem så måste du exportera anteckningar och bokmärken innan du tar bort boken)",
@@ -761,7 +761,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} träff(ar)",
+                "founds": "{{- count}} träff(ar)",
                 "input": "text att söka på",
                 "next": "Nästa",
                 "notFound": "inga träffar",

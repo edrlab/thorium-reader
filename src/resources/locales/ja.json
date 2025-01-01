@@ -133,9 +133,9 @@
         "annotations": {
             "descAuthor": "{{- author}}によるもの",
             "descCreator": "作成：",
-            "descList": "{{- nb}} 件のメモ（{{- creator}}）が次の書籍に取り込まれます： 『{{- title}}』（{{- author}}）",
-            "descNewer": "競合：{{- nb}} 件のより新しいメモ",
-            "descOlder": "競合：{{- nb}} 件のより古いメモ",
+            "descList": "{{- count}} 件のメモ（{{- creator}}）が次の書籍に取り込まれます： 『{{- title}}』（{{- author}}）",
+            "descNewer": "競合：{{- count}} 件のより新しいメモ",
+            "descOlder": "競合：{{- count}} 件のより古いメモ",
             "descTitle": "メモのタイトル ",
             "importAll": "すべてのメモを取りこむ",
             "importWithoutConflict": "競合していないメモのみを取りこむ",
@@ -151,9 +151,9 @@
             }
         },
         "deleteAnnotations": "メモを削除しますか？",
-        "deleteAnnotationsText": "{{-annotationListLength}} 件のメモを削除しますか？",
+        "deleteAnnotationsText": "{{-count}} 件のメモを削除しますか？",
         "deleteBookmarks": "しおりを削除しますか？",
-        "deleteBookmarksText": "しおり、 {{- bookmarkListLength}} つを削除しますか？",
+        "deleteBookmarksText": "しおり、 {{- count}} つを削除しますか？",
         "deleteFeed": "この図書目録を削除しますか？",
         "deletePublication": "この本を削除しますか？",
         "deletePublicationWithNotes": "",
@@ -761,7 +761,7 @@
         },
         "picker": {
             "search": {
-                "founds": "（一致した数：{{- nResults}}）",
+                "founds": "（一致した数：{{- count}}）",
                 "input": "検索したい語句",
                 "next": "次へ",
                 "notFound": "一致しませんでした",

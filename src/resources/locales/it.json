@@ -133,9 +133,9 @@
         "annotations": {
             "descAuthor": "di {{- author}}",
             "descCreator": "creata da",
-            "descList": "{{- nb}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
-            "descNewer": "{{- nb}} nuove versioni di queste note sono già associate alla pubblicazione.",
-            "descOlder": "{{- nb}} versioni precedenti di queste note sono già associate alla pubblicazione.",
+            "descList": "{{- count}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
+            "descNewer": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione.",
+            "descOlder": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione.",
             "descTitle": "Titolo del set:",
             "importAll": "Importa tutte le note",
             "importWithoutConflict": "Importa le note senza conflitti",
@@ -151,9 +151,9 @@
             }
         },
         "deleteAnnotations": "Eliminare la nota?",
-        "deleteAnnotationsText": "Si desidera eliminare {{- annotationListLength}} note?",
+        "deleteAnnotationsText": "Si desidera eliminare {{- count}} note?",
         "deleteBookmarks": "Cancellare i segnalibri?",
-        "deleteBookmarksText": "Sei sicuro di voler eliminare {{- bookmarkListLength}} segnalibri?",
+        "deleteBookmarksText": "Sei sicuro di voler eliminare {{- count}} segnalibri?",
         "deleteFeed": "Vuoi davvero eliminare questo catalogo ?",
         "deletePublication": "Vuoi davvero eliminare questa pubblicazione ?",
         "deletePublicationWithNotes": "Attenzione: questa pubblicazione contiene annotazioni e/o segnalibri, che verranno eliminati anch'essi! (se desideri conservarli, assicurati di esportare le note prima di rimuovere la pubblicazione)",
@@ -761,7 +761,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} risultato/i",
+                "founds": "{{- count}} risultato/i",
                 "input": "testo ta cercare",
                 "next": "Prossimo",
                 "notFound": "Nessun risultato",
