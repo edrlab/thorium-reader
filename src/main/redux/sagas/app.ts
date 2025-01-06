@@ -6,8 +6,9 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app, protocol, ipcMain } from "electron";
+import { app, protocol, ipcMain, net } from "electron";
 import * as path from "path";
+import { pathToFileURL } from "url";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import { closeProcessLock, diMainGet, getLibraryWindowFromDi, getAllReaderWindowFromDi } from "readium-desktop/main/di";
@@ -113,6 +114,24 @@ export function* init() {
 
     debug("Main app ready");
 
+    const protocolHandler_FILEX = (
+        request: Request,
+    ): Response | Promise<Response> => {
+        debug("---protocolHandler_FILEX");
+        debug(request);
+        const urlPath = request.url.substring("filex://host/".length);
+        debug(urlPath);
+        const urlPathDecoded = urlPath.split("/").map((segment) => {
+            return segment?.length ? tryDecodeURIComponent(segment) : "";
+        }).join("/");
+        debug(urlPathDecoded);
+        const filePathUrl = pathToFileURL(urlPathDecoded).toString();
+        debug(filePathUrl);
+        return net.fetch(filePathUrl);
+    };
+    protocol.handle("filex", protocolHandler_FILEX);
+    // protocol.unhandle("filex");
+
     if (IS_DEV) {
         // https://github.com/MarshallOfSound/electron-devtools-installer
         // https://github.com/facebook/react/issues/25843
@@ -139,17 +158,26 @@ export function* init() {
         });
     }
 
-    // register file protocol to link locale file to renderer
-    protocol.registerFileProtocol("store",
-        (request, callback) => {
-
-            // Extract publication item relative url
-            const relativeUrl = request.url.substr(6);
-            const pubStorage = diMainGet("publication-storage");
-            const filePath: string = path.join(pubStorage.getRootPath(), relativeUrl);
-            callback(filePath);
-        },
-    );
+    const protocolHandler_Store = (
+        request: Request,
+    ): Response | Promise<Response> => {
+        debug("---protocolHandler_Store");
+        debug(request);
+        const urlPath = request.url.substring("store://".length);
+        debug(urlPath);
+        // const urlPathDecoded = tryDecodeURIComponent(urlPath);
+        // debug(urlPathDecoded);
+        const pubStorage = diMainGet("publication-storage");
+        const rootPath = pubStorage.getRootPath();
+        debug(rootPath);
+        const filePath = path.join(rootPath, urlPath);
+        debug(filePath);
+        const filePathUrl = pathToFileURL(filePath).toString();
+        debug(filePathUrl);
+        return net.fetch(filePathUrl);
+    };
+    protocol.handle("store", protocolHandler_Store);
+    // protocol.unhandle("store");
 
     app.on("will-quit", () => {
 
@@ -158,18 +186,22 @@ export function* init() {
         debug("#####");
     });
 
+    const protocolHandler_PDF = (
+        request: Request,
+    ): Response | Promise<Response> => {
+        debug("---protocolHandler_PDF");
+        debug(request);
+        const urlPath = request.url.substring("pdfjs-extract://host/".length);
+        debug(urlPath);
+        const urlPathDecoded = tryDecodeURIComponent(urlPath);
+        debug(urlPathDecoded);
+        const filePathUrl = pathToFileURL(urlPathDecoded).toString();
+        debug(filePathUrl);
+        return net.fetch(filePathUrl);
+    };
+    protocol.handle("pdfjs-extract", protocolHandler_PDF);
+    // protocol.unhandle("pdfjs-extract");
 
-    protocol.registerFileProtocol("pdfjs-extract", async (request, callback) => {
-
-        debug("register file protocol pdfjs-extract");
-        debug("request", request);
-        const arg = request.url.split("pdfjs-extract://host/")[1];
-        debug(arg);
-        const p = tryDecodeURIComponent(arg);
-        debug(p);
-
-        callback(p);
-    });
 
     yield call(() => {
         const deviceIdManager = diMainGet("device-id-manager");
