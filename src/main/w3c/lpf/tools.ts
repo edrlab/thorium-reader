@@ -13,7 +13,8 @@ import * as path from "path";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 
-import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
+// import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
+import { injectBufferInZip } from "../../tools/zipInjector";
 
 // Logger
 const debug = debug_("readium-desktop:main#w3c/lpf/tools");
