@@ -123,12 +123,12 @@ function injectObjectInZip(
 
             resolve();
         });
-        outputZipWriteStream.on("error", (err) => {
+        outputZipWriteStream.on("error", (outputZipWriteStreamError) => {
             debug("outputZipWriteStream ERROR");
 
             if (!rejected) {
                 rejected = true;
-                reject(err);
+                reject(outputZipWriteStreamError);
             }
         });
 
@@ -140,12 +140,12 @@ function injectObjectInZip(
         inputZip.on("finish", () => {
             debug("inputZip FINISH");
         });
-        inputZip.on("error", (erro) => {
+        inputZip.on("error", (inputZipError) => {
             debug("inputZip ERROR");
 
             if (!rejected) {
                 rejected = true;
-                reject(erro);
+                reject(inputZipError);
             }
         });
 
@@ -177,7 +177,7 @@ function injectObjectInZip(
         });
 
         const pendingOutputZipEntries = new Set<string>();
-        inputZip.on("entry", (inputZipEntry) => {
+        inputZip.on("entry", (inputZipEntry: yauzl.Entry) => {
             if (DEBUG_VERBOSE) debug("inputZip ENTRY", inputZipEntry.fileName);
 
             // if (/\/$/.test(entry.fileName)) {
@@ -200,22 +200,22 @@ function injectObjectInZip(
                 (outputZip as any).addReadStreamLazy(inputZipEntry.fileName, { compress: doCompress }, (streamCallback: any) => {
                     if (DEBUG_VERBOSE) debug("outputZip addReadStreamLazy", inputZipEntry.fileName, doCompress, pendingOutputZipEntries.size, JSON.stringify(Array.from(pendingOutputZipEntries)));
 
-                    inputZip.openReadStream(inputZipEntry, (inputZipReadStreamError, inputZipReadStream) => {
-                        if (inputZipReadStreamError || !inputZipReadStream) {
-                            debug("inputZip openReadStream ERROR", inputZipEntry.fileName, inputZipReadStreamError);
+                    inputZip.openReadStream(inputZipEntry, (inputZipReadStreamOpenError, inputZipReadStream) => {
+                        if (inputZipReadStreamOpenError || !inputZipReadStream) {
+                            debug("inputZip openReadStream ERROR", inputZipEntry.fileName, inputZipReadStreamOpenError);
+
+                            pendingOutputZipEntries.delete(inputZipEntry.fileName);
+
+                            streamCallback(inputZipReadStreamOpenError); // forward to outputZip.onError()
+                            return;
+                        }
+
+                        inputZipReadStream.on("error", function(inputZipReadStreamError) {
+                            debug("inputZipReadStream ERROR", inputZipEntry.fileName, inputZipReadStreamError);
 
                             pendingOutputZipEntries.delete(inputZipEntry.fileName);
 
                             streamCallback(inputZipReadStreamError); // forward to outputZip.onError()
-                            return;
-                        }
-
-                        inputZipReadStream.on("error", function(serr) {
-                            debug("inputZipReadStream ERROR", inputZipEntry.fileName, serr);
-
-                            pendingOutputZipEntries.delete(inputZipEntry.fileName);
-
-                            streamCallback(serr); // forward to outputZip.onError()
                         });
 
                         inputZipReadStream.on("finish", function() {
@@ -243,15 +243,15 @@ function injectObjectInZip(
                 });
             }
 
-            process.nextTick(() => {
-                if (DEBUG_VERBOSE) debug("inputZip readEntry() NEXT ...");
-                inputZip.readEntry();
-            });
+            // process.nextTick(() => {
+            if (DEBUG_VERBOSE) debug("inputZip readEntry() NEXT ...");
+            inputZip.readEntry();
+            // });
         });
 
-        process.nextTick(() => {
-            if (DEBUG_VERBOSE) debug("inputZip readEntry() FIRST ...");
-            inputZip.readEntry();
-        });
+        // process.nextTick(() => {
+        if (DEBUG_VERBOSE) debug("inputZip readEntry() FIRST ...");
+        inputZip.readEntry();
+        // });
     });
 }
