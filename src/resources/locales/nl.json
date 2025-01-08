@@ -68,9 +68,6 @@
     "emptyTagList": "Je hebt geen boeken met een label",
     "entry": {
       "continueReading": "Ga verder met lezen",
-      "continueReadingAudioBooks": "Ga verder met luisteren",
-      "continueReadingDivina": "Ga verder met divina",
-      "continueReadingPdf": "Ga verder met PDF",
       "lastAdditions": "Recent toegevoegd"
     },
     "export": "Exporteer",
@@ -342,6 +339,7 @@
         "red": "",
         "yellow": ""
       },
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",

@@ -68,9 +68,6 @@
     "emptyTagList": "태그를 지정한 전자책이 없습니다.",
     "entry": {
       "continueReading": "이어서 읽기",
-      "continueReadingAudioBooks": "오디오북 이어 듣기",
-      "continueReadingDivina": "Divina 이어 보기",
-      "continueReadingPdf": "PDF 이어 보기",
       "lastAdditions": "최근에 추가한 도서"
     },
     "export": "내보내기",
@@ -342,6 +339,7 @@
         "red": "",
         "yellow": ""
       },
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",

@@ -59,15 +59,6 @@ const EntrySection = ({entry, entryIndex}: {entry: CatalogEntryView, entryIndex:
         case "continueReading":
             title = __("catalog.entry.continueReading");
             break;
-        case "continueReadingAudioBooks":
-            title = __("catalog.entry.continueReadingAudioBooks");
-            break;
-        case "continueReadingDivina":
-            title = __("catalog.entry.continueReadingDivina");
-            break;
-        case "continueReadingPdf":
-            title = __("catalog.entry.continueReadingPdf");
-            break;
     }
 
     return (

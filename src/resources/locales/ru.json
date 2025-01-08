@@ -68,9 +68,6 @@
     "emptyTagList": "У вас нет электронной книги с тегами.",
     "entry": {
       "continueReading": "Продолжить чтение",
-      "continueReadingAudioBooks": "Возобновить прослушивание",
-      "continueReadingDivina": "Продолжить divina",
-      "continueReadingPdf": "Продолжить PDF",
       "lastAdditions": "Недавно добавленные"
     },
     "export": "Экспорт",
@@ -342,6 +339,7 @@
         "red": "",
         "yellow": ""
       },
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",

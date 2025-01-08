@@ -68,9 +68,6 @@
     "emptyTagList": "Você não tem livro marcado.",
     "entry": {
       "continueReading": "Retomar a leitura",
-      "continueReadingAudioBooks": "Retomar a escuta",
-      "continueReadingDivina": "Retomar divina",
-      "continueReadingPdf": "Retomar PDF",
       "lastAdditions": "Adicionado recentemente"
     },
     "export": "Exportar",
@@ -342,6 +339,7 @@
         "red": "",
         "yellow": ""
       },
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",

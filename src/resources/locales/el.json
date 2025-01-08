@@ -68,9 +68,6 @@
     "emptyTagList": "Κανένα βιβλίο με ετικέτα.",
     "entry": {
       "continueReading": "Συνέχιση ανάγνωσης",
-      "continueReadingAudioBooks": "Συνέχιση ακρόασης",
-      "continueReadingDivina": "Συνέχιση divina",
-      "continueReadingPdf": "Συνέχιση PDF",
       "lastAdditions": "Πρόσφατη προσθήκη"
     },
     "export": "Αποθήκευση ως",
@@ -342,6 +339,7 @@
         "red": "",
         "yellow": ""
       },
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",

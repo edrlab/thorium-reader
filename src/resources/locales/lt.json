@@ -68,9 +68,6 @@
     "emptyTagList": "Nėra leidinių, turinčių žymių",
     "entry": {
       "continueReading": "Skaityti toliau",
-      "continueReadingAudioBooks": "Klausyti toliau",
-      "continueReadingDivina": "Skaityti divina toliau",
-      "continueReadingPdf": "Skaityti PDF toliau",
       "lastAdditions": "Paskiausiai pridėti"
     },
     "export": "Eksportuoti",
@@ -342,6 +339,7 @@
         "red": "Raudona",
         "yellow": "Geltona"
       },
+      "export": "",
       "filter": {
         "all": "Visos",
         "filterByColor": "Filtruoti pagal spalvą",
