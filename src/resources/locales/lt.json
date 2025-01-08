@@ -339,11 +339,8 @@
         "red": "Raudona",
         "yellow": "Geltona"
       },
-<<<<<<< HEAD
       "date": "",
-=======
       "export": "",
->>>>>>> develop
       "filter": {
         "all": "Visos",
         "filterByColor": "Filtruoti pagal spalvą",

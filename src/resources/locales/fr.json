@@ -339,11 +339,8 @@
         "red": "Rouge",
         "yellow": "Jaune"
       },
-<<<<<<< HEAD
       "date": "Date de modification",
-=======
       "export": "Sauvegarder sous",
->>>>>>> develop
       "filter": {
         "all": "Tous",
         "filterByColor": "Filtré par couleur",

@@ -339,11 +339,8 @@
         "red": "Rød",
         "yellow": "Gul"
       },
-<<<<<<< HEAD
       "date": "",
-=======
       "export": "",
->>>>>>> develop
       "filter": {
         "all": "Alle",
         "filterByColor": "Filtrér efter Farve",

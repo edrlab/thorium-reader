@@ -339,11 +339,8 @@
         "red": "Red",
         "yellow": "Yellow"
       },
-<<<<<<< HEAD
       "date": "Modification date",
-=======
       "export": "Save notes as",
->>>>>>> develop
       "filter": {
         "all": "All",
         "filterByColor": "Filter by Color",

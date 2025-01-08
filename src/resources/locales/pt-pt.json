@@ -339,11 +339,8 @@
         "red": "Vermelho",
         "yellow": "Amarelo"
       },
-<<<<<<< HEAD
       "date": "",
-=======
       "export": "",
->>>>>>> develop
       "filter": {
         "all": "Tudo",
         "filterByColor": "Filtrar por cor",

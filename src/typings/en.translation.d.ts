@@ -760,11 +760,8 @@ declare namespace typed_i18n {
       readonly "red": string,
       readonly "yellow": string
     },
-<<<<<<< HEAD
     readonly "date": string,
-=======
     readonly "export": string,
->>>>>>> develop
     readonly "filter": {
       readonly "all": string,
       readonly "filterByColor": string,
@@ -804,9 +801,9 @@ declare namespace typed_i18n {
     readonly "edit": string,
     readonly "goTo": string,
     readonly "landmarks": string,
+    readonly "progression": string,
     readonly "saveMark": string,
     readonly "search": string,
-    readonly "progression": string,
     readonly "searchResult": string,
     readonly "toc": string
   },
@@ -963,11 +960,8 @@ declare namespace typed_i18n {
     readonly "red": string,
     readonly "yellow": string
   },
-<<<<<<< HEAD
   readonly "date": string,
-=======
   readonly "export": string,
->>>>>>> develop
   readonly "filter": {
     readonly "all": string,
     readonly "filterByColor": string,
@@ -1022,11 +1016,8 @@ declare namespace typed_i18n {
   (_: "reader.annotations.colors.purple", __?: {}): string;
   (_: "reader.annotations.colors.red", __?: {}): string;
   (_: "reader.annotations.colors.yellow", __?: {}): string;
-<<<<<<< HEAD
   (_: "reader.annotations.date", __?: {}): string;
-=======
   (_: "reader.annotations.export", __?: {}): string;
->>>>>>> develop
   (_: "reader.annotations.filter", __?: {}): {
   readonly "all": string,
   readonly "filterByColor": string,
@@ -1083,9 +1074,9 @@ declare namespace typed_i18n {
   readonly "edit": string,
   readonly "goTo": string,
   readonly "landmarks": string,
+  readonly "progression": string,
   readonly "saveMark": string,
   readonly "search": string,
-  readonly "progression": string,
   readonly "searchResult": string,
   readonly "toc": string
 };
@@ -1095,9 +1086,9 @@ declare namespace typed_i18n {
   (_: "reader.marks.edit", __?: {}): string;
   (_: "reader.marks.goTo", __?: {}): string;
   (_: "reader.marks.landmarks", __?: {}): string;
+  (_: "reader.marks.progression", __?: {}): string;
   (_: "reader.marks.saveMark", __?: {}): string;
   (_: "reader.marks.search", __?: {}): string;
-  (_: "reader.marks.progression", __?: {}): string;
   (_: "reader.marks.searchResult", __?: {}): string;
   (_: "reader.marks.toc", __?: {}): string;
   (_: "reader.media-overlays", __?: {}): {
