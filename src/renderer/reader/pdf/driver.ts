@@ -109,34 +109,32 @@ export function pdfMount(
         createOrGetPdfEventBus().dispatch("start", pdfPath);
     });
 
-    let preloadPath = "index_pdf.js";
+    // (global as any).__dirname
+    // BROKEN when index_reader.js is not served via file://
+    // ... so instead window.location.href provides dist/index_reader.html which is co-located:
+    // path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..")) etc.
+
+    const PDFPATH = "index_pdf.js";
+    let preloadPath = PDFPATH;
     if (_PACKAGING === "1") {
-        preloadPath = "file://" + path.normalize(path.join((global as any).__dirname, preloadPath));
+        preloadPath = "file://" + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", PDFPATH)).replace(/\\/g, "/");
     } else {
-        if (_RENDERER_PDF_WEBVIEW_BASE_URL === "file://") {
+        if (_RENDERER_PDF_WEBVIEW_BASE_URL === "filex://host/") {
             // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-            preloadPath = "file://" +
-                path.normalize(path.join((global as any).__dirname, _DIST_RELATIVE_URL, preloadPath));
+            preloadPath = "file://" + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", PDFPATH)).replace(/\\/g, "/");
+
+            // const debugStr = `[[PDF DRIVER ${preloadPath} >>> ${window.location.href} *** ${window.location.pathname} === ${process.cwd()} ^^^ ${(global as any).__dirname} --- ${_DIST_RELATIVE_URL} @@@ ${preloadPath}]]`;
+            // if (document.body.firstElementChild) {
+            //     document.body.innerText = debugStr;
+            // } else {
+            //     document.body.innerText += debugStr;
+            // }
         } else {
             // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
-            preloadPath = "file://" + path.normalize(path.join(process.cwd(), "dist", preloadPath));
+            preloadPath = "file://" + path.normalize(path.join(process.cwd(), "dist", PDFPATH));
+            preloadPath = preloadPath.replace(/\\/g, "/");
         }
     }
-    preloadPath = preloadPath.replace(/\\/g, "/");
-    // let htmlPath = "index_pdf.html";
-    // if (_PACKAGING === "1") {
-    //     htmlPath = "file://" + path.normalize(path.join((global as any).__dirname, htmlPath));
-    // } else {
-    //     if (_RENDERER_PDF_WEBVIEW_BASE_URL === "file://") {
-    //         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-    //         htmlPath = "file://" +
-    //             path.normalize(path.join((global as any).__dirname, _DIST_RELATIVE_URL, htmlPath));
-    //     } else {
-    //         // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
-    //         htmlPath = "file://" + path.normalize(path.join(process.cwd(), "dist", htmlPath));
-    //     }
-    // }
-    // htmlPath = htmlPath.replace(/\\/g, "/");
 
     webview.setAttribute("style",
         "display: flex; margin: 0; padding: 0; box-sizing: border-box; position: absolute; left: 0; right: 0; bottom: 0; top: 0;");

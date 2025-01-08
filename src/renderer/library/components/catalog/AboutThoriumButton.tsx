@@ -140,6 +140,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
     //         }
     //         console.log("pubView not found, need to generate a new one: ", title);
 
+    //         let folderPath = path.join(window.location.pathname.replace(/^\/\//, "/"), "..", infoFolderRelativePath);
     //         let folderPath = path.join((global as any).__dirname, infoFolderRelativePath);
     //         if (_PACKAGING === "0") {
     //             folderPath = path.join(process.cwd(), "dist", infoFolderRelativePath);

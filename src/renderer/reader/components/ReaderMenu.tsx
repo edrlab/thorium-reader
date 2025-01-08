@@ -642,7 +642,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 </button> :
                 <Popover.Root>
                     <Popover.Trigger asChild>
-                        <button 
+                        <button
                         title={__("reader.marks.delete")}
                         >
                             <SVG ariaHidden={true} svg={DeleteIcon} />
@@ -1125,7 +1125,8 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                             ref={annotationTitleRef}
                                             className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" />
                                     </div>
-                                    <Popover.Close aria-label={__("catalog.export")} asChild>
+
+                                    <Popover.Close aria-label={__("reader.annotations.export")} asChild>
                                         <button onClick={() => {
                                             const annotations = annotationListFiltered.map(([, anno]) => {
                                                 const { creator } = anno;
@@ -1145,7 +1146,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                             dispatch(readerLocalActionExportAnnotationSet.build(annotations, publicationView, label));
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />
-                                            {__("catalog.export")}
+                                            {__("reader.annotations.export")}
                                         </button>
                                     </Popover.Close>
                                 </div>
@@ -2497,11 +2498,11 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     <Tabs.Content value="tab-annotation" tabIndex={-1} id={"readerMenu_tabs-tab-annotation"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
                         <div className={classNames(stylesSettings.settings_tab, stylesAnnotations.annotations_tab)}>
-                            <AnnotationList 
-                            goToLocator={goToLocator} 
-                            annotationUUIDFocused={annotationUUID} 
-                            resetAnnotationUUID={resetAnnotationUUID} 
-                            doFocus={doFocus} 
+                            <AnnotationList
+                            goToLocator={goToLocator}
+                            annotationUUIDFocused={annotationUUID}
+                            resetAnnotationUUID={resetAnnotationUUID}
+                            doFocus={doFocus}
                             popoverBoundary={popoverBoundary.current}
                             advancedAnnotationsOnChange={advancedAnnotationsOnChange}
                             quickAnnotationsOnChange={quickAnnotationsOnChange}

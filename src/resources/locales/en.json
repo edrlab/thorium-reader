@@ -68,15 +68,12 @@
     "emptyTagList": "No tagged publications.",
     "entry": {
       "continueReading": "Resume reading",
-      "continueReadingAudioBooks": "Resume listening",
-      "continueReadingDivina": "Resume divina",
-      "continueReadingPdf": "Resume PDF",
       "lastAdditions": "Recently added"
     },
     "export": "Save as",
-    "exportAnnotation": "Save annotation as",
+    "exportAnnotation": "Save notes as",
     "format": "Format",
-    "importAnnotation": "Import annotation",
+    "importAnnotation": "Import notes",
     "lang": "Language",
     "lastRead": "Last Read",
     "moreInfo": "Publication Details",
@@ -135,8 +132,8 @@
       "title": "Do you want to import all of these notes?"
     },
     "cancel": "Cancel",
-    "deleteAnnotations": "Delete annotations?",
-    "deleteAnnotationsText": "Do you want to delete {{- annotationListLength}} annotation(s)?",
+    "deleteAnnotations": "Delete note?",
+    "deleteAnnotationsText": "Do you want to delete {{- annotationListLength}} note(s)?",
     "deleteFeed": "Delete catalog?",
     "deletePublication": "Delete publication?",
     "import": "Confirm import:",
@@ -183,12 +180,12 @@
   },
   "message": {
     "annotations": {
-      "alreadyImported": "All annotations already imported, aborting the importation",
-      "emptyFile": "No annotations available in the file",
-      "errorParsing": "Error file format parsing: ",
-      "noBelongTo": "Unable to import annotations set, at least one annotation does not belong to the publication",
-      "nothing": "There are no annotations ready to be imported, aborting the importation",
-      "success": "Success !"
+      "alreadyImported": "All notes already imported, aborting the import",
+      "emptyFile": "No note available in the file",
+      "errorParsing": "Error during file parsing: ",
+      "noBelongTo": "Unable to import notes, at least one note does not belong to the publication",
+      "nothing": "There is no note ready to be imported, aborting the import",
+      "success": "Import done"
     },
     "download": {
       "error": "Downloading [{{- title}}] failed: [{{- err}}]"
@@ -333,7 +330,7 @@
         "description": "Name this set of annotations",
         "title": "Title"
       },
-      "annotationsOptions": "Options",
+      "annotationsOptions": "Notes Options",
       "colors": {
         "bluegreen": "Blue-green",
         "cyan": "Cyan",
@@ -344,6 +341,7 @@
         "red": "Red",
         "yellow": "Yellow"
       },
+      "export": "Save notes as",
       "filter": {
         "all": "All",
         "filterByColor": "Filter by Color",
@@ -485,7 +483,7 @@
         "reset": "Reset your preferred reading parameters.",
         "resetDetails": "Reset your preferred reading parameters to their default values.",
         "save": "Save your preferred reading parameters.",
-        "saveDetails": "ave the changes made to the current book's formatting and display choices. These settings can be applied to other books, once opened, by clicking on the button below.",
+        "saveDetails": "Save the changes made to the current book's formatting and display choices. These settings can be applied to other books, once opened, by clicking on the button below.",
         "title": "Preferences"
       },
       "preview": "Preview",
@@ -556,8 +554,8 @@
       "languageChoice": "Language"
     },
     "library": {
-      "enableAPIAPP": "Activate access to Dilicom PNB API",
-      "title": "Add a library account"
+      "enableAPIAPP": "Activate access to the French library system (PNB)",
+      "title": "Add a French library account"
     },
     "session": {
       "title": "Save session"

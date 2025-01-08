@@ -119,9 +119,6 @@ declare namespace typed_i18n {
   readonly "emptyTagList": string,
   readonly "entry": {
     readonly "continueReading": string,
-    readonly "continueReadingAudioBooks": string,
-    readonly "continueReadingDivina": string,
-    readonly "continueReadingPdf": string,
     readonly "lastAdditions": string
   },
   readonly "export": string,
@@ -192,17 +189,8 @@ declare namespace typed_i18n {
   (_: "catalog.deleteTag", __?: {}): string;
   (_: "catalog.description", __?: {}): string;
   (_: "catalog.emptyTagList", __?: {}): string;
-  (_: "catalog.entry", __?: {}): {
-  readonly "continueReading": string,
-  readonly "continueReadingAudioBooks": string,
-  readonly "continueReadingDivina": string,
-  readonly "continueReadingPdf": string,
-  readonly "lastAdditions": string
-};
+  (_: "catalog.entry", __?: {}): { readonly "continueReading": string, readonly "lastAdditions": string };
   (_: "catalog.entry.continueReading", __?: {}): string;
-  (_: "catalog.entry.continueReadingAudioBooks", __?: {}): string;
-  (_: "catalog.entry.continueReadingDivina", __?: {}): string;
-  (_: "catalog.entry.continueReadingPdf", __?: {}): string;
   (_: "catalog.entry.lastAdditions", __?: {}): string;
   (_: "catalog.export", __?: {}): string;
   (_: "catalog.exportAnnotation", __?: {}): string;
@@ -305,13 +293,13 @@ declare namespace typed_i18n {
   readonly "annotations": {
     readonly "descAuthor": string,
     readonly "descCreator": string,
-    readonly "origin": string,
     readonly "descList": string,
     readonly "descNewer": string,
     readonly "descOlder": string,
     readonly "descTitle": string,
     readonly "importAll": string,
     readonly "importWithoutConflict": string,
+    readonly "origin": string,
     readonly "title": string
   },
   readonly "cancel": string,
@@ -328,24 +316,24 @@ declare namespace typed_i18n {
   (_: "dialog.annotations", __?: {}): {
   readonly "descAuthor": string,
   readonly "descCreator": string,
-  readonly "origin": string,
   readonly "descList": string,
   readonly "descNewer": string,
   readonly "descOlder": string,
   readonly "descTitle": string,
   readonly "importAll": string,
   readonly "importWithoutConflict": string,
+  readonly "origin": string,
   readonly "title": string
 };
   (_: "dialog.annotations.descAuthor", __?: {}): string;
   (_: "dialog.annotations.descCreator", __?: {}): string;
-  (_: "dialog.annotations.origin", __?: {}): string;
   (_: "dialog.annotations.descList", __?: {}): string;
   (_: "dialog.annotations.descNewer", __?: {}): string;
   (_: "dialog.annotations.descOlder", __?: {}): string;
   (_: "dialog.annotations.descTitle", __?: {}): string;
   (_: "dialog.annotations.importAll", __?: {}): string;
   (_: "dialog.annotations.importWithoutConflict", __?: {}): string;
+  (_: "dialog.annotations.origin", __?: {}): string;
   (_: "dialog.annotations.title", __?: {}): string;
   (_: "dialog.cancel", __?: {}): string;
   (_: "dialog.deleteAnnotations", __?: {}): string;
@@ -778,6 +766,7 @@ declare namespace typed_i18n {
       readonly "red": string,
       readonly "yellow": string
     },
+    readonly "export": string,
     readonly "filter": {
       readonly "all": string,
       readonly "filterByColor": string,
@@ -971,6 +960,7 @@ declare namespace typed_i18n {
     readonly "red": string,
     readonly "yellow": string
   },
+  readonly "export": string,
   readonly "filter": {
     readonly "all": string,
     readonly "filterByColor": string,
@@ -1024,6 +1014,7 @@ declare namespace typed_i18n {
   (_: "reader.annotations.colors.purple", __?: {}): string;
   (_: "reader.annotations.colors.red", __?: {}): string;
   (_: "reader.annotations.colors.yellow", __?: {}): string;
+  (_: "reader.annotations.export", __?: {}): string;
   (_: "reader.annotations.filter", __?: {}): {
   readonly "all": string,
   readonly "filterByColor": string,

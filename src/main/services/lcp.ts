@@ -37,7 +37,9 @@ import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { LSD } from "@r2-lcp-js/parser/epub/lsd";
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
+
+// import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
+import { injectBufferInZip } from "../tools/zipInjector";
 
 import { lcpHashesFilePath } from "../di";
 import { lcpActions } from "../redux/actions";
