@@ -25,7 +25,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.detachModeRequest.ID,
     readerActions.setReduxState.ID,
     // readerActions.saveBookmarkRequest.ID,
-    readerActions.fullScreenRequest.ID,
+    // readerActions.fullScreenRequest.ID,
 
     i18nActions.setLocale.ID,
 
@@ -50,9 +50,9 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     publicationActions.readingFinished.ID,
     themeActions.setTheme.ID,
 
-    readerActions.bookmark.pop.ID,
-    readerActions.bookmark.push.ID,
-    readerActions.bookmark.update.ID,
+    // readerActions.bookmark.pop.ID,
+    // readerActions.bookmark.push.ID,
+    // readerActions.bookmark.update.ID,
 
     wizardActions.setWizard.ID,
 

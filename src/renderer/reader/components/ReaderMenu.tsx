@@ -1145,7 +1145,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                             ref={annotationTitleRef}
                                             className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" />
                                     </div>
-                                    <Popover.Close aria-label={__("catalog.export")} asChild>
+                                    <Popover.Close aria-label={__("reader.annotations.export")} asChild>
                                         <button type="submit" onClick={() => {
                                             const annotations = annotationListFiltered.map(([, anno]) => {
                                                 const { creator } = anno;
@@ -1165,7 +1165,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                             downloadAnnotationJSON(contents, label);
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />
-                                            {__("catalog.export")}
+                                            {__("reader.annotations.export")}
                                         </button>
                                     </Popover.Close>
                                 </form>

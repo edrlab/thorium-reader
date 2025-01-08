@@ -68,9 +68,6 @@
     "emptyTagList": "No tens llibres etiquetats.",
     "entry": {
       "continueReading": "Reprendre lectura",
-      "continueReadingAudioBooks": "Reprendre reproducción",
-      "continueReadingDivina": "Reprendre divina",
-      "continueReadingPdf": "Rependre PDF",
       "lastAdditions": "Afegits recentment"
     },
     "export": "Exportar",
@@ -342,7 +339,11 @@
         "red": "",
         "yellow": ""
       },
+<<<<<<< HEAD
       "date": "",
+=======
+      "export": "",
+>>>>>>> develop
       "filter": {
         "all": "",
         "filterByColor": "",

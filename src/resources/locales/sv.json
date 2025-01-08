@@ -68,9 +68,6 @@
     "emptyTagList": "Du har inga böcker med taggar.",
     "entry": {
       "continueReading": "Fortsätt läsa",
-      "continueReadingAudioBooks": "Fortsätt lyssna",
-      "continueReadingDivina": "Fortsätt läsa divina",
-      "continueReadingPdf": "Fortsätt läsa pdf",
       "lastAdditions": "Nyligen tillagt"
     },
     "export": "Spara som",
@@ -342,7 +339,11 @@
         "red": "Röd",
         "yellow": "Gul"
       },
+<<<<<<< HEAD
       "date": "",
+=======
+      "export": "",
+>>>>>>> develop
       "filter": {
         "all": "Alla",
         "filterByColor": "Filtrera efter färg",

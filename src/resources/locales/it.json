@@ -68,9 +68,6 @@
     "emptyTagList": "Non hai nessuna pubblicazione taggata.",
     "entry": {
       "continueReading": "Continua a leggere",
-      "continueReadingAudioBooks": "Continua ad ascoltare",
-      "continueReadingDivina": "Continua a leggere divina",
-      "continueReadingPdf": "Continua a leggere Pdf",
       "lastAdditions": "Aggiunti di recente"
     },
     "export": "Esporta",
@@ -342,7 +339,11 @@
         "red": "",
         "yellow": ""
       },
+<<<<<<< HEAD
       "date": "",
+=======
+      "export": "",
+>>>>>>> develop
       "filter": {
         "all": "",
         "filterByColor": "",

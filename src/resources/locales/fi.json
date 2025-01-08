@@ -68,9 +68,6 @@
     "emptyTagList": "Tunnisteita ei ole käytössä.",
     "entry": {
       "continueReading": "Jatka lukemista",
-      "continueReadingAudioBooks": "Jatka kuuntelua",
-      "continueReadingDivina": "Jatka divinan lukemista",
-      "continueReadingPdf": "Jatka pdf:n lukemista",
       "lastAdditions": "Viimeksi lisätty"
     },
     "export": "Tallenna nimellä",
@@ -342,7 +339,11 @@
         "red": "",
         "yellow": ""
       },
+<<<<<<< HEAD
       "date": "",
+=======
+      "export": "",
+>>>>>>> develop
       "filter": {
         "all": "",
         "filterByColor": "",

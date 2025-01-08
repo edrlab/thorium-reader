@@ -68,9 +68,6 @@
     "emptyTagList": "タグがついた本はありません",
     "entry": {
       "continueReading": "読書にもどる",
-      "continueReadingAudioBooks": "再生を続ける",
-      "continueReadingDivina": "DiViNaを再開する",
-      "continueReadingPdf": "PDFを開きなおす",
       "lastAdditions": "最近追加したもの"
     },
     "export": "別の場所に保存",
@@ -342,7 +339,11 @@
         "red": "",
         "yellow": ""
       },
+<<<<<<< HEAD
       "date": "",
+=======
+      "export": "",
+>>>>>>> develop
       "filter": {
         "all": "",
         "filterByColor": "",

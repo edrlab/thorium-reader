@@ -68,9 +68,6 @@
     "emptyTagList": "Não tem documentos etiquetados.",
     "entry": {
       "continueReading": "Retomar leitura",
-      "continueReadingAudioBooks": "Retomar audição",
-      "continueReadingDivina": "Retomar Divina",
-      "continueReadingPdf": "Retomar PDF",
       "lastAdditions": "Adicionados recentemente"
     },
     "export": "Guardar como",
@@ -342,7 +339,11 @@
         "red": "Vermelho",
         "yellow": "Amarelo"
       },
+<<<<<<< HEAD
       "date": "",
+=======
+      "export": "",
+>>>>>>> develop
       "filter": {
         "all": "Tudo",
         "filterByColor": "Filtrar por cor",

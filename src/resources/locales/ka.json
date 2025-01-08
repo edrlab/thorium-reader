@@ -68,9 +68,6 @@
     "emptyTagList": "არ გაქვს არცერთი იარლიყიანი ელ-წიგნი.",
     "entry": {
       "continueReading": "კითხვის გაგრძელება",
-      "continueReadingAudioBooks": "მოსმენის გაგრძელება",
-      "continueReadingDivina": "დივინას გაგრძელება",
-      "continueReadingPdf": "კითხვის გაგრძელება",
       "lastAdditions": "ახლახანს დამატებული"
     },
     "export": "გატანა",
@@ -342,7 +339,11 @@
         "red": "",
         "yellow": ""
       },
+<<<<<<< HEAD
       "date": "",
+=======
+      "export": "",
+>>>>>>> develop
       "filter": {
         "all": "",
         "filterByColor": "",

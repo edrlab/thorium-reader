@@ -68,9 +68,6 @@
     "emptyTagList": "尚無帶標籤電子書",
     "entry": {
       "continueReading": "繼續閱讀",
-      "continueReadingAudioBooks": "繼續聽讀",
-      "continueReadingDivina": "繼續閱讀 divina",
-      "continueReadingPdf": "繼續閱讀 PDF",
       "lastAdditions": "最近添加"
     },
     "export": "匯出",
@@ -342,7 +339,11 @@
         "red": "",
         "yellow": ""
       },
+<<<<<<< HEAD
       "date": "",
+=======
+      "export": "",
+>>>>>>> develop
       "filter": {
         "all": "",
         "filterByColor": "",

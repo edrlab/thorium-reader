@@ -68,9 +68,6 @@
     "emptyTagList": "Ni označenih knjig.",
     "entry": {
       "continueReading": "Nadaljuj z branjem",
-      "continueReadingAudioBooks": "Nadaljuj s poslušanjem",
-      "continueReadingDivina": "Nadaljuj z divino",
-      "continueReadingPdf": "Nadaljuj s PDF-jem",
       "lastAdditions": "Nedavno dodano"
     },
     "export": "Shrani kot",
@@ -342,7 +339,11 @@
         "red": "",
         "yellow": ""
       },
+<<<<<<< HEAD
       "date": "",
+=======
+      "export": "",
+>>>>>>> develop
       "filter": {
         "all": "",
         "filterByColor": "",
