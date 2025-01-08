@@ -531,27 +531,16 @@
   },
   "settings": {
     "annotationCreator": {
-<<<<<<< HEAD
-      "creator": "",
-      "help": "",
-      "name": "",
-      "organization": "",
-      "person": "",
-      "type": ""
-    },
-    "auth": {
-      "help": "",
-      "title": "",
-=======
       "creator": "Kūrėjas",
+      "help": "",
       "name": "Pavadinimas",
       "organization": "Organizacija",
       "person": "Asmuo",
       "type": "Tipas:"
     },
     "auth": {
+      "help": "",
       "title": "Valdyti katalogų prieigą",
->>>>>>> develop
       "wipeData": "Išvalyti prisijungimo duomenis"
     },
     "keyboard": {
