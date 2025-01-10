@@ -298,7 +298,7 @@
     "lcpStart": "시작",
     "licenceLCP": "",
     "licenseOutOfDate": "라이선스가 만료되었습니다",
-    "licenseSignatureDateInvalid": "라이선스 서명날짜가 유효하지 않습니다",
+    "licenseCertificateDateInvalid": "라이선스 서명날짜가 유효하지 않습니다",
     "licenseSignatureInvalid": "라이선스 서명이 유효하지 않습니다",
     "licensed": "",
     "markAsRead": "",

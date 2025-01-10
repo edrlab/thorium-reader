@@ -298,7 +298,7 @@
     "lcpStart": "開始",
     "licenceLCP": "授權（LCP）",
     "licenseOutOfDate": "授權過期",
-    "licenseSignatureDateInvalid": "授權簽名日期無效",
+    "licenseCertificateDateInvalid": "授權簽名日期無效",
     "licenseSignatureInvalid": "授權簽名無效",
     "licensed": "已授權",
     "markAsRead": "標記為已讀",

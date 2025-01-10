@@ -298,7 +298,7 @@
     "lcpStart": "Начало",
     "licenceLCP": "",
     "licenseOutOfDate": "Изтекъл срок на лиценза",
-    "licenseSignatureDateInvalid": "Датата на ключа за лиценза е невалидна",
+    "licenseCertificateDateInvalid": "Датата на ключа за лиценза е невалидна",
     "licenseSignatureInvalid": "Ключа за лиценза е невалиден",
     "licensed": "",
     "markAsRead": "",

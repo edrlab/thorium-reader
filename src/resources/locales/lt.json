@@ -298,7 +298,7 @@
     "lcpStart": "Pradžia",
     "licenceLCP": "Licencija (LCP)",
     "licenseOutOfDate": "Licencijos galiojimas pasibaigęs",
-    "licenseSignatureDateInvalid": "Negaliojanti licencijos parašo data",
+    "licenseCertificateDateInvalid": "Negaliojanti licencijos parašo data",
     "licenseSignatureInvalid": "Negaliojantis licencijos parašas",
     "licensed": "Licencijuotas",
     "markAsRead": "Žymėti kaip perskaitytą",

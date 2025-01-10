@@ -51,7 +51,7 @@ export function* importLcplFromFS(
     // LCP license checks to avoid unnecessary download:
     // CERTIFICATE_SIGNATURE_INVALID = 102
     // CERTIFICATE_REVOKED = 101
-    // LICENSE_SIGNATURE_DATE_INVALID = 111
+    // LICENSE_CERTIFICATE_DATE_INVALID (was LICENSE_SIGNATURE_DATE_INVALID) = 111
     // LICENSE_SIGNATURE_INVALID = 112
     // (USER_KEY_CHECK_INVALID = 141) is guaranteed because of dummy passphrase
     // (LICENSE_OUT_OF_DATE = 11) occurs afterwards, so will only be checked after passphrase try
@@ -91,7 +91,7 @@ export function* importLcplFromFS(
             if (err !== 141) { // USER_KEY_CHECK_INVALID
                 // CERTIFICATE_SIGNATURE_INVALID = 102
                 // CERTIFICATE_REVOKED = 101
-                // LICENSE_SIGNATURE_DATE_INVALID = 111
+                // LICENSE_CERTIFICATE_DATE_INVALID (was LICENSE_SIGNATURE_DATE_INVALID) = 111
                 // LICENSE_SIGNATURE_INVALID = 112
                 const msg = lcpManager.convertUnlockPublicationResultToString(err);
                 yield put(

@@ -298,7 +298,7 @@
     "lcpStart": "Start",
     "licenceLCP": "Licens (LCP)",
     "licenseOutOfDate": "Licensen er udløbet",
-    "licenseSignatureDateInvalid": "Licensens signatur-dato er ugyldig",
+    "licenseCertificateDateInvalid": "Licensens signatur-dato er ugyldig",
     "licenseSignatureInvalid": "Licensens signatur er ugyldig",
     "licensed": "Licenseret",
     "markAsRead": "Markér som læst",

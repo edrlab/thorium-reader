@@ -298,7 +298,7 @@
     "lcpStart": "Start",
     "licenceLCP": "Lizenz (LCP)",
     "licenseOutOfDate": "Veraltete LCP-Lizenz.",
-    "licenseSignatureDateInvalid": "Ungültiges Signaturdatum der LCP-Lizenz.",
+    "licenseCertificateDateInvalid": "Ungültiges Signaturdatum der LCP-Lizenz.",
     "licenseSignatureInvalid": "Invalid LCP license signature.",
     "licensed": "Lizenziert",
     "markAsRead": "Als gelesen markieren",

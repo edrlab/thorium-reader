@@ -298,7 +298,7 @@
     "lcpStart": "Hasiera",
     "licenceLCP": "Lizentzia (LCP)",
     "licenseOutOfDate": "Lizentzia ez dago eguneratuta",
-    "licenseSignatureDateInvalid": "Lizentzia-sinaduraren data ez da baliozkoa",
+    "licenseCertificateDateInvalid": "Lizentzia-sinaduraren data ez da baliozkoa",
     "licenseSignatureInvalid": "Lizentziaren sinadura ez da baliozkoa",
     "licensed": "Lizentziarekin",
     "markAsRead": "Markatu irakurritako gisa",

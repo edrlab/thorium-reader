@@ -298,7 +298,7 @@
     "lcpStart": "Début",
     "licenceLCP": "Licence (LCP)",
     "licenseOutOfDate": "License LCP inutilisable à cette date.",
-    "licenseSignatureDateInvalid": "Date de signature de license LCP invalide",
+    "licenseCertificateDateInvalid": "Certificat de provider LCP expiré.",
     "licenseSignatureInvalid": "Signature de license LCP invalide",
     "licensed": "Accès protégé",
     "markAsRead": "Marquer comme lu",
