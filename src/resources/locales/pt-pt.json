@@ -339,7 +339,7 @@
         "red": "Vermelho",
         "yellow": "Amarelo"
       },
-      "export": "",
+      "export": "Guardar notas como",
       "filter": {
         "all": "Tudo",
         "filterByColor": "Filtrar por cor",
