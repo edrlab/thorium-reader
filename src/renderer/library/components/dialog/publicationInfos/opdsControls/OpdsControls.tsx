@@ -304,7 +304,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-const mapStateToProps = (state: ILibraryRootState, props: IBaseProps) => {
+const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
         breadcrumb: state.opds.browser.breadcrumb,
         location: state.router.location,
