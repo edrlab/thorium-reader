@@ -196,7 +196,7 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
                 // example:
                 // 'Bearer error="insufficient_access", error_description="The user represented by the token is not allowed to perform the requested action.", error_uri="https://documentation.openiddict.com/errors/ID2095"'
                 data.response?.headers.forEach((value, key) => {
-                    console.log(`HTTP RESPONSE HEADER '${key}' ==> '${value}'`);
+                    debug(`HTTP RESPONSE HEADER '${key}' ==> '${value}'`);
                 });
                 const wwwAuthenticate = data.response?.headers.get("WWW-Authenticate");
                 if (wwwAuthenticate) {

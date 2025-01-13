@@ -77,13 +77,6 @@ export class OpdsService {
     }
 
     public async opdsRequestTransformer(httpGetData: IHttpGetResult<IOpdsResultView>): Promise<IOpdsResultView | undefined> {
-        // httpGetData.response?.headers.forEach((value, key) => {
-        //     console.log(`HTTP RESPONSE HEADER '${key}' ==> '${value}'`);
-        // });
-        // console.log("www-authenticate:", httpGetData.response?.headers.get("WWW-Authenticate")); // case-insensitve (actual "www-authenticate")
-        // example:
-        // 'Bearer error="insufficient_access", error_description="The user represented by the token is not allowed to perform the requested action.", error_uri="https://documentation.openiddict.com/errors/ID2095"'
-
         const {
             url: _baseUrl,
             responseUrl,
