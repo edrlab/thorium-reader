@@ -267,7 +267,7 @@ function* downloadLinkRequest(linkHref: string, controller: AbortController): Sa
         );
 
         const opdsAuthChannel = getOpdsAuthenticationChannel();
-    
+
         debug("put the authentication model in the saga authChannel", JSON.stringify(r2OpdsAuth, null, 4));
         opdsAuthChannel.put([r2OpdsAuth, linkHref]);
 
@@ -337,16 +337,27 @@ function downloadCreateFilename(contentType: string | undefined, contentDisposit
         }
     }
 
+    // example
+    // "attachment; filename=xxx.epub; filename*=UTF-8''xxx.epub"
     let contentDispositionFilename = "";
     if (contentDisposition) {
-        const res = /filename=(\"(.*)\"|(.*))/g.exec(contentDisposition);
+        const res = /filename=(\"([^;]+)\"|([^;]+))/.exec(contentDisposition);
         const filenameInCD = res ? res[2] || res[3] || "" : "";
         if (acceptedExtension(path.extname(filenameInCD))) {
             contentDispositionFilename = filenameInCD;
+            debug(`contentDispositionFilename: ${contentDispositionFilename}`);
+        }
+    }
+    if (contentDisposition && !contentDispositionFilename) {
+        const res = /filename\*=UTF-8''(\"([^;]+)\"|([^;]+))/.exec(contentDisposition);
+        const filenameInCD = decodeURIComponent(res ? res[2] || res[3] || "" : "");
+        if (acceptedExtension(path.extname(filenameInCD))) {
+            contentDispositionFilename = filenameInCD;
+            debug(`contentDispositionFilename UTF8: ${contentDispositionFilename}`);
         }
     }
 
-    if (contentDispositionFilename && contentDispositionFilename &&
+    if (contentDispositionFilename &&
         path.extname(contentDispositionFilename).toLowerCase() === path.extname(contentTypeFilename).toLowerCase()
     ) {
         debug("contentType and contentDisposition have the same extension ! Good catch !", contentTypeFilename, contentDispositionFilename);
@@ -387,6 +398,8 @@ function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, conten
             const iv = setInterval(() => {
 
                 speed = downloadedSpeed / 1024;
+                // contentLength can be zero (unfortunately), pct is Infinity :(
+                // debug("downloadedLength: ", downloadedLength, "contentLength: ", contentLength);
                 pct = Math.ceil(downloadedLength / contentLength * 100);
                 debug("speed: ", speed, "kb/s", "pct: ", pct, "%");
 
