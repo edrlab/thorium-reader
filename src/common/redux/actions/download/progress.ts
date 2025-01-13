@@ -10,7 +10,8 @@ import { Action } from "readium-desktop/common/models/redux";
 export const ID = "DOWNLOAD_PROGRESS";
 
 export interface Payload {
-    downloadUrl: string;
+    downloadLabel: string;
+    downloadUrls: string[];
     progress: number; // integer [0, 100]
     id: number; // unix timestamp
     speed: number; // 44.3 Kb/s

@@ -67,7 +67,7 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
                                 <progress max="100" value={progress}>{progress}</progress>
                             </>)
                         }
-                        <span className={stylesApp.title}>{dl.downloadUrl}</span>
+                        <span className={stylesApp.title}>{dl.downloadLabel}</span>
                         <span className={stylesApp.title}>{dl.contentLengthHumanReadable}</span>
                         <span className={stylesApp.title}>{Math.trunc(dl.speed || 0) + " Kb/s"}</span>
 

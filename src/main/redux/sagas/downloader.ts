@@ -41,7 +41,7 @@ export type IDownloaderLink = string | {
     type: string,
 };
 
-export function* downloader(linkHrefArray: IDownloaderLink[], href?: string): SagaGenerator<string[]> {
+export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: string): SagaGenerator<string[]> {
 
     const id = Number(new Date());
 
@@ -49,7 +49,8 @@ export function* downloader(linkHrefArray: IDownloaderLink[], href?: string): Sa
 
     try {
         yield* putTyped(downloadActions.progress.build({
-            downloadUrl: href || "",
+            downloadLabel: downloadLabel || "",
+            downloadUrls: linkHrefArray.map((item) => typeof item === "string" ? item : item.href),
             progress: 0,
             id,
             speed: 0,
@@ -57,7 +58,7 @@ export function* downloader(linkHrefArray: IDownloaderLink[], href?: string): Sa
         }));
 
         // redux-saga : use call to execute sagaGenerator tasked (forked)
-        const pathArray = yield* callTyped(downloaderService, linkHrefArray, id, href);
+        const pathArray = yield* callTyped(downloaderService, linkHrefArray, id);
         debug("filePath Array to return from downloader", pathArray);
 
         return pathArray;
@@ -70,7 +71,7 @@ export function* downloader(linkHrefArray: IDownloaderLink[], href?: string): Sa
 
         yield* putTyped(toastActions.openRequest.build(
             ToastType.Error,
-            translate("message.download.error", { title: path.basename(href), err: `[${err}]` }),
+            translate("message.download.error", { title: downloadLabel, err: `[${err}]` }),
         ));
 
         return [];
@@ -85,12 +86,12 @@ export function* downloader(linkHrefArray: IDownloaderLink[], href?: string): Sa
             ));
         }
 
-        debug("download service closed for", id, href);
+        debug("download service closed for", id, downloadLabel);
         yield* putTyped(downloadActions.done.build(id));
     }
 }
 
-function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?: string): SagaGenerator<Array<string | undefined>> {
+function* downloaderService(linkHrefArray: IDownloaderLink[], id: number): SagaGenerator<Array<string | undefined>> {
 
     const statusTaskChannel = (yield* callTyped(channel)) as Channel<TDownloaderChannel>;
 
@@ -113,7 +114,7 @@ function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?:
                 }
             }
         }),
-        callTyped(downloaderServiceProcessStatusProgressLoop, statusTaskChannel, id, href),
+        callTyped(downloaderServiceProcessStatusProgressLoop, statusTaskChannel, id),
         joinTyped(downloadProcessTasks),
     ]);
 
@@ -196,7 +197,6 @@ function* downloaderServiceProcessTaskStreamPipeline(readStream: NodeJS.ReadStre
 function* downloaderServiceProcessStatusProgressLoop(
     statusTasksChannel: Channel<TDownloaderChannel>,
     id: number,
-    href?: string,
 ) {
 
     let previousProgress = 0;
@@ -235,8 +235,13 @@ function* downloaderServiceProcessStatusProgressLoop(
             previousProgress = progress;
             previousDownloadedLength = downloadedLength;
 
+            const downloadLabel = statusList.filter((i) => !!i).reduce((prev, cur) => {
+                return `${prev ? `${prev} ` : ""}[${cur.filename}]`;
+            }, "");
+            const MAX_STR = 50;
             yield* putTyped(downloadActions.progress.build({
-                downloadUrl: href || "",
+                downloadLabel: downloadLabel.length > MAX_STR ? (downloadLabel.substring(0, MAX_STR) + "...") : downloadLabel,
+                downloadUrls: statusList.filter((i) => !!i).map((item) => item.url),
                 progress,
                 id,
                 speed,
@@ -377,8 +382,10 @@ interface IDownloadProgression {
     progression: number;
     downloadedLength: number;
     contentLength: number;
+    filename: string;
+    url: string,
 }
-function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, contentLength: number) {
+function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, contentLength: number, filename: string, url: string) {
 
     let downloadedLength = 0;
     let downloadedSpeed = 0;
@@ -413,6 +420,8 @@ function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, conten
                     progression: pct,
                     downloadedLength,
                     contentLength,
+                    filename,
+                    url,
                 });
 
                 downloadedSpeed = 0;
@@ -432,6 +441,8 @@ function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, conten
                     progression: pct,
                     downloadedLength,
                     contentLength,
+                    filename,
+                    url,
                 });
             });
 
@@ -494,7 +505,7 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, type?:
 
     ok(readStream, "readStream not defined");
 
-    const channel = downloadReadStreamProgression(readStream, contentLength);
+    const channel = downloadReadStreamProgression(readStream, contentLength, filename, typeof data.url === "string" ? data.url : data.url.toString());
 
     return [
         pathFile,
