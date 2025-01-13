@@ -200,11 +200,13 @@ function* downloaderServiceProcessStatusProgressLoop(
 ) {
 
     let previousProgress = 0;
+    let previousDownloadedLength = 0;
     let contentLengthTotal = 0;
     const channelList: TDownloaderChannel[] = [];
     while (1) {
 
         let contentLengthProgress = 0;
+        let downloadedLength = 0;
         let progress = 0;
         let speed = 0;
 
@@ -220,6 +222,7 @@ function* downloaderServiceProcessStatusProgressLoop(
                 progress += status.contentLength / status.progression;
                 speed += (status.speed || 0);
                 contentLengthProgress += status.contentLength;
+                downloadedLength += status.downloadedLength;
             }
         }
 
@@ -228,15 +231,16 @@ function* downloaderServiceProcessStatusProgressLoop(
         }
         progress = Math.ceil(contentLengthTotal / progress) || 0;
 
-        if (previousProgress !== progress) {
+        if (previousProgress !== progress || previousDownloadedLength !== downloadedLength) {
             previousProgress = progress;
+            previousDownloadedLength = downloadedLength;
 
             yield* putTyped(downloadActions.progress.build({
                 downloadUrl: href || "",
                 progress,
                 id,
                 speed,
-                contentLengthHumanReadable: humanFileSize(contentLengthTotal),
+                contentLengthHumanReadable: humanFileSize(!contentLengthTotal ? downloadedLength : contentLengthTotal),
             }));
 
         }
@@ -371,6 +375,7 @@ function downloadCreateFilename(contentType: string | undefined, contentDisposit
 interface IDownloadProgression {
     speed: number;
     progression: number;
+    downloadedLength: number;
     contentLength: number;
 }
 function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, contentLength: number) {
@@ -406,6 +411,7 @@ function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, conten
                 emit({
                     speed,
                     progression: pct,
+                    downloadedLength,
                     contentLength,
                 });
 
@@ -424,6 +430,7 @@ function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, conten
                 emit({
                     speed,
                     progression: pct,
+                    downloadedLength,
                     contentLength,
                 });
             });
