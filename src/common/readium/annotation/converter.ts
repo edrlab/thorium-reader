@@ -105,7 +105,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
             continue;
         }
 
-        // the range start/end is guaranteed in document order due to the text matchers above (forward tree walk)
+        // the range start/end is guaranteed in document order due to the text matchers above (forward tree walk) ... but DOM Ranges are always ordered anyway (only the user / document selection object can be reversed)
         const tuple = convertRange(range, (element) => finder(element, xmlDom, {root}), () => "", () => "");
         if (tuple && tuple.length === 2) {
             convertedRangeArray.push(tuple);
@@ -207,7 +207,7 @@ export async function convertAnnotationStateToSelector(annotationWithCacheDoc: I
     const { progression } = locations;
     const { rangeInfo } = selectionInfo;
 
-    // the range start/end is guaranteed in document order (internally used in navigator whenever deserialising DOM Ranges from JSON expression)
+    // the range start/end is guaranteed in document order (internally used in navigator whenever deserialising DOM Ranges from JSON expression) ... but DOM Ranges are always ordered anyway (only the user / document selection object can be reversed)
     const range = convertRangeInfo(xmlDom, rangeInfo);
     debug("Dump range memory found:", range);
 

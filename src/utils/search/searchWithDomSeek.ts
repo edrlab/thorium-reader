@@ -248,7 +248,7 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
             console.log("SEARCH RANGE COLLAPSED, skipping...");
             continue;
         }
-        // the range start/end is guaranteed in document order due to the search algo above (forward tree walk)
+        // the range start/end is guaranteed in document order due to the search algo above (forward tree walk) ... but DOM Ranges are always ordered anyway (only the user / document selection object can be reversed)
         const tuple = convertRange(
             range,
             (doc as any).getCssSelector,
