@@ -26,7 +26,7 @@ import { ISelectionInfo } from "@r2-navigator-js/electron/common/selection";
 const debug = debug_("readium-desktop:common:readium:annotation:converter");
 
 export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnnotation["target"], cacheDoc: ICacheDocument): Promise<MiniLocatorExtended | undefined> {
-   
+
    const xmlDom = getDocumentFromICacheDocument(cacheDoc);
     if (!xmlDom) {
         return undefined;
@@ -50,7 +50,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
         }[selector.type];
 
         if (!innerCreateMatcher) {
-            
+
             // no matcher for this selector
             debug("no matcher for this selector:", selector.type);
             return undefined;
@@ -72,19 +72,19 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
 
         ranges.push(range);
     };
-    {
+    if (textQuoteSelector) {
         const matchAll = createMatcher(textQuoteSelector);
         for await (const rangeOrElement of matchAll(root)) {
             pushToRangeArray(rangeOrElement);
-        }   
+        }
     }
-    {
+    if (textPositionSelector) {
         const matchAll = createMatcher(textPositionSelector);
         for await (const rangeOrElement of matchAll(root)) {
             pushToRangeArray(rangeOrElement);
         }
     }
-    {
+    if (cssSelector) {
         const matchAll = createMatcher(cssSelector);
         for await (const rangeOrElement of matchAll(root)) {
             pushToRangeArray(rangeOrElement);
@@ -98,7 +98,11 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
 
     const convertedRangeArray: ReturnType<typeof convertRange>[] = [];
 
-    for (const range of ranges) {
+    for (const r of ranges) {
+        const range = normalizeRange(r);
+        if (range.collapsed) {
+            debug("RANGE COLLAPSED AFTER NORMALISE, skipping...");
+        }
         const tuple = convertRange(range, (element) => finder(element, xmlDom, {root}), () => "", () => "");
         if (tuple && tuple.length === 2) {
             convertedRangeArray.push(tuple);
@@ -230,7 +234,7 @@ export async function convertAnnotationStateToSelector(annotationWithCacheDoc: I
     debug("ProgressionSelector : ", progressionSelector);
     selector.push(progressionSelector);
 
-    // Next TODO: CFI !?! 
+    // Next TODO: CFI !?!
 
     return selector;
 }
