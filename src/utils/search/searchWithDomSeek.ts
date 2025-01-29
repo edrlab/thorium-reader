@@ -243,6 +243,11 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
         if (!(doc as any).getCssSelector) {
             (doc as any).getCssSelector = getCssSelector_(doc);
         }
+
+        if (range.collapsed) {
+            console.log("SEARCH RANGE COLLAPSED, skipping...");
+            continue;
+        }
         const tuple = convertRange(
             range,
             (doc as any).getCssSelector,

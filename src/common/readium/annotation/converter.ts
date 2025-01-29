@@ -17,7 +17,7 @@ import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/res
 import { getDocumentFromICacheDocument } from "readium-desktop/utils/xmlDom";
 import { createCssSelectorMatcher, createTextPositionSelectorMatcher, createTextQuoteSelectorMatcher, describeTextPosition, describeTextQuote } from "readium-desktop/third_party/apache-annotator/dom";
 import { makeRefinable } from "readium-desktop/third_party/apache-annotator/selector";
-import { convertRange, convertRangeInfo, normalizeRange } from "@r2-navigator-js/electron/renderer/webview/selection";
+import { convertRange, convertRangeInfo } from "@r2-navigator-js/electron/renderer/webview/selection";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { uniqueCssSelector as finder } from "@r2-navigator-js/electron/renderer/common/cssselector2-3";
 import { ISelectionInfo } from "@r2-navigator-js/electron/common/selection";
@@ -98,10 +98,11 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
 
     const convertedRangeArray: ReturnType<typeof convertRange>[] = [];
 
-    for (const r of ranges) {
-        const range = normalizeRange(r);
+    for (const range of ranges) {
+        // const range = normalizeRange(r);
         if (range.collapsed) {
-            debug("RANGE COLLAPSED AFTER NORMALISE, skipping...");
+            debug("RANGE COLLAPSED :( skipping...");
+            continue;
         }
         const tuple = convertRange(range, (element) => finder(element, xmlDom, {root}), () => "", () => "");
         if (tuple && tuple.length === 2) {
@@ -161,11 +162,12 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
 export type IAnnotationStateWithICacheDocument = IAnnotationState & { __cacheDocument?: ICacheDocument | undefined };
 
 const describeCssSelectorWithTextPosition = async (range: Range, document: Document, root: HTMLElement): Promise<ICssSelector<ITextPositionSelector> | undefined> => {
-    const rangeNormalize = normalizeRange(range); // from r2-nav and not from third-party/apache-annotator
+    // normalizeRange can fundamentally alter the DOM Range by repositioning / snapping to Text boundaries, this is an internal implementation detail inside navigator when CREATING ranges from user document selections.
+    // const rangeNormalize = normalizeRange(range); // from r2-nav and not from third-party/apache-annotator
 
     const commonAncestorHTMLElement =
-        (rangeNormalize.commonAncestorContainer && rangeNormalize.commonAncestorContainer.nodeType === Node.ELEMENT_NODE)
-            ? rangeNormalize.commonAncestorContainer as Element
+        (range.commonAncestorContainer && range.commonAncestorContainer.nodeType === Node.ELEMENT_NODE)
+            ? range.commonAncestorContainer as Element
             : (range.startContainer.parentNode && range.startContainer.parentNode.nodeType === Node.ELEMENT_NODE)
                 ? range.startContainer.parentNode as Element
                 : undefined;
@@ -177,7 +179,7 @@ const describeCssSelectorWithTextPosition = async (range: Range, document: Docum
         type: "CssSelector",
         value: finder(commonAncestorHTMLElement, document, { root }),
         refinedBy: await describeTextPosition(
-            rangeNormalize,
+            range,
             commonAncestorHTMLElement,
         ),
     };
@@ -205,6 +207,11 @@ export async function convertAnnotationStateToSelector(annotationWithCacheDoc: I
 
     const range = convertRangeInfo(xmlDom, rangeInfo);
     debug("Dump range memory found:", range);
+
+    if (range.collapsed) {
+        debug("RANGE COLLAPSED??! skipping...");
+        return selector;
+    }
 
     // createTextPositionSelectorMatcher()
     const selectorCssSelectorWithTextPosition = await describeCssSelectorWithTextPosition(range, document, root);
