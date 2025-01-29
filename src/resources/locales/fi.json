@@ -300,7 +300,7 @@
     "lcpStart": "Aloita",
     "licenceLCP": "Käyttöoikeus (LCP)",
     "licenseOutOfDate": "LCP-käyttöoikeus on vanhentunut.",
-    "licenseSignatureDateInvalid": "LCP-käyttöoikeuden allekirjoituksen päiväys ei kelpaa",
+    "licenseCertificateDateInvalid": "LCP-käyttöoikeuden allekirjoituksen päiväys ei kelpaa",
     "licenseSignatureInvalid": "LCP-käyttöoikeuden allekirjoitus ei kelpaa",
     "licensed": "Lisensoitu",
     "markAsRead": "Merkitse luetuksi",

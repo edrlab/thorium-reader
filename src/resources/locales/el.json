@@ -300,7 +300,7 @@
     "lcpStart": "Αρχή",
     "licenceLCP": "Άδεια χρήσης (LCP)",
     "licenseOutOfDate": "Η άδεια έχει λήξει",
-    "licenseSignatureDateInvalid": "Η ημερομηνία υπογραφής της άδειας είναι άκυρη",
+    "licenseCertificateDateInvalid": "Η ημερομηνία υπογραφής της άδειας είναι άκυρη",
     "licenseSignatureInvalid": "Η υπογραφή της άδειας είναι άκυρη",
     "licensed": "Με άδεια χρήσης",
     "markAsRead": "Σημείωση ως διαβασμένο",

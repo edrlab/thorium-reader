@@ -300,7 +300,7 @@
     "lcpStart": "Začetek",
     "licenceLCP": "Licenca (LCP)",
     "licenseOutOfDate": "Licenca ni več veljavna",
-    "licenseSignatureDateInvalid": "Datum podpisa licence ni veljaven",
+    "licenseCertificateDateInvalid": "Datum podpisa licence ni veljaven",
     "licenseSignatureInvalid": "Podpis licence ni veljaven",
     "licensed": "Licencirano",
     "markAsRead": "Označi kot prebrano",

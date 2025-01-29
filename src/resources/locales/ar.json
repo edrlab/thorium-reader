@@ -300,7 +300,7 @@
     "lcpStart": "",
     "licenceLCP": "الترخيص (LCP)",
     "licenseOutOfDate": "ترخيص LCP قديم.",
-    "licenseSignatureDateInvalid": "تاريخ توقيع ترخيص LCP غير صالح.",
+    "licenseCertificateDateInvalid": "تاريخ توقيع ترخيص LCP غير صالح.",
     "licenseSignatureInvalid": "توقيع ترخيص LCP غير صالح.",
     "licensed": "مرخَّص",
     "markAsRead": "وضع علامة كمقروء",

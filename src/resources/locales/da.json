@@ -120,19 +120,17 @@
   },
   "dialog": {
     "annotations": {
-      "descAuthor": "",
-      "descCreator": "",
-      "descList": "",
-      "descNewer": "",
-      "descOlder": "",
-      "descTitle": "",
-      "importAll": "",
-      "importWithoutConflict": "",
-      "origin": "",
-      "title": ""
+      "descAuthor": "af {{- author}}",
+      "descList": "{{- nb}} note(r) fra {{- creator}} vil blive associeret med {{- title}} {{- author}}",
+      "descNewer": "{{- nb}} nyere version af disse noter er allerede associeret med denne bog.",
+      "descOlder": "{{- nb}} ældre version af disse noter er allerede associeret med denne bog.",
+      "descTitle": "Navn på notesamling:",
+      "importAll": "Importér alle noter",
+      "importWithoutConflict": "Importér noter uden sammenfald",
+      "title": "Ønsker du at importere disse noter?"
     },
     "cancel": "Annullér",
-    "deleteAnnotations": "Slet noter?",
+    "deleteAnnotations": "Slet alle noter?",
     "deleteAnnotationsText": "Vil du slette {{- annotationListLength}} note(r)?",
     "deleteFeed": "Bekræft at du vil slette dette katalog",
     "deletePublication": "Bekræft at du vil slette bogen",
@@ -169,7 +167,7 @@
   "library": {
     "lcp": {
       "hint": "Hint til nøgleord: ",
-      "open": "",
+      "open": "Åben",
       "password": "Nøgleord",
       "sentence": "Denne bog kræver et LCP-nøgleord for at åbne: ",
       "urlHint": "Har du glemt dit nøgleord? Få hjælp her",
@@ -180,12 +178,12 @@
   },
   "message": {
     "annotations": {
-      "alreadyImported": "",
-      "emptyFile": "",
-      "errorParsing": "",
-      "noBelongTo": "",
-      "nothing": "",
-      "success": ""
+      "alreadyImported": "Alle noter eksisterer i forvejen, afslutter import.",
+      "emptyFile": "Ingen noter blev fundet i filen",
+      "errorParsing": "Fejl under læsning af filen: ",
+      "noBelongTo": "Fejl ved import af noter, mindst en af noterne hører ikke til denne bog",
+      "nothing": "Ingen noter kunne importeres, afslutter import",
+      "success": "Import færdig"
     },
     "download": {
       "error": "Download af {{- title}} er stødt på en fejl: [{{- err}}]"
@@ -246,7 +244,7 @@
   "publication": {
     "accessibility": {
       "accessModeSufficient": {
-        "textual": "TTS- & skærmlæser-venlig"
+        "textual": "Syntetisk tale & skærmlæser-venlig"
       },
       "accessibilityFeature": {
         "alternativeText": "Indeholder tekst-alternativer",
@@ -290,17 +288,17 @@
     "duration": {
       "title": "Spilletid"
     },
-    "encryptedNoLicense": "",
+    "encryptedNoLicense": "Bogen er krypteret, men mangler en LCP licens!",
     "expired": "Lånet er udløbet",
     "expiredLcp": "Denne bog kan ikke læses, da LCP-licensen er udløbet.",
-    "incorrectPassphrase": "",
+    "incorrectPassphrase": "Intet gemt nøgleord passer til bogen, eller det indtastede nøgleord er forkert.",
     "lcpEnd": "Slut",
     "lcpRightsCopy": "Kopierede bogstaver",
     "lcpRightsPrint": "Printede sider",
     "lcpStart": "Start",
     "licenceLCP": "Licens (LCP)",
     "licenseOutOfDate": "Licensen er udløbet",
-    "licenseSignatureDateInvalid": "Licensens signatur-dato er ugyldig",
+    "licenseCertificateDateInvalid": "Licensens signatur-dato er ugyldig",
     "licenseSignatureInvalid": "Licensens signatur er ugyldig",
     "licensed": "Licenseret",
     "markAsRead": "Markér som læst",
@@ -327,8 +325,8 @@
       "addNote": "Lav note",
       "advancedMode": "Øjeblikkelige noter (oprettes automatisk ved markering)",
       "annotationsExport": {
-        "description": "Navngiv dette sæt af noter",
-        "title": "Titel"
+        "description": "Navngiv denne samling af noter",
+        "title": "Navn"
       },
       "annotationsOptions": "Valgmuligheder",
       "colors": {
@@ -341,7 +339,7 @@
         "red": "Rød",
         "yellow": "Gul"
       },
-      "export": "",
+      "export": "Gem noter som",
       "filter": {
         "all": "Alle",
         "filterByColor": "Filtrér efter Farve",
@@ -443,7 +441,7 @@
         "title": "Kolonner",
         "two": "2 kolonner"
       },
-      "customFontSelected": "",
+      "customFontSelected": "Du har valgt en personlig skrifttype",
       "customizeReader": "Tilpas tekstformatering",
       "disabled": "slået fra",
       "display": "Visning",
@@ -478,12 +476,12 @@
       },
       "preset": {
         "apply": "Anvend mit foretrukne læsetema som nuværende læse-indstillinger",
-        "applyDetails": "",
-        "detail": "",
+        "applyDetails": "Anvend dine foretrukne læseindstillinger med den nuværende bog.",
+        "detail": "Gem/Anvend dine foretrukne læseindstillinger.",
         "reset": "Nulstil mit foretrukne læsetema til standard indstillingerne",
-        "resetDetails": "",
+        "resetDetails": "Nulstil din foretrukne læseindstillinger til standard-indstillingerne.",
         "save": "Gem de nuværende læse-indstillinger som mit foretrukne læsetema",
-        "saveDetails": "",
+        "saveDetails": "Gem dine ændringer til den nuværende bogs formatering og visningsindstillinger. Disse indstillinger kan anvendes med andre bøger, når de er åbnet, ved at klikke på knappen nedenfor.",
         "title": "Læsetema"
       },
       "preview": "Forhåndsvisning",
@@ -514,18 +512,18 @@
       "publicationNoToc": "Ingen indholdsfortegnelse"
     },
     "tts": {
-      "activate": "Aktiver TTS",
+      "activate": "Aktiver syntetisk tale",
       "default": "Stemme: standard",
-      "language": "",
-      "next": "Næste TTS",
-      "pause": "Pause TTS",
-      "play": "Afspil med TTS",
-      "previous": "Forrige TTS",
-      "sentenceDetect": "Opdel TTS på sætninger",
+      "language": "Sprog",
+      "next": "Næste",
+      "pause": "Pause",
+      "play": "Afspil med syntetisk tale",
+      "previous": "Forrige",
+      "sentenceDetect": "Opdel oplæsning i sætninger",
       "sentenceDetectDescription": "Bryd lange afsnit op i sætninger.",
-      "speed": "TTS-afspilningshastighed",
-      "stop": "Stop TTS",
-      "voice": "TTS-stemme"
+      "speed": "Afspilningshastighed",
+      "stop": "Stop syntetisk tale",
+      "voice": "Syntetisk stemme"
     }
   },
   "settings": {

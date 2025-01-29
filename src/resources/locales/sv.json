@@ -300,7 +300,7 @@
     "lcpStart": "Start",
     "licenceLCP": "Licens (LCP)",
     "licenseOutOfDate": "Licensen har löpt ut.",
-    "licenseSignatureDateInvalid": "Licensens signeringsdatum är ogiltigt.",
+    "licenseCertificateDateInvalid": "Licensens signeringsdatum är ogiltigt.",
     "licenseSignatureInvalid": "Licensens signatur är ogiltig.",
     "licensed": "Licensierad",
     "markAsRead": "Markera som läst",

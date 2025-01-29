@@ -614,7 +614,7 @@ declare namespace typed_i18n {
   readonly "lcpStart": string,
   readonly "licenceLCP": string,
   readonly "licenseOutOfDate": string,
-  readonly "licenseSignatureDateInvalid": string,
+  readonly "licenseCertificateDateInvalid": string,
   readonly "licenseSignatureInvalid": string,
   readonly "licensed": string,
   readonly "markAsRead": string,
@@ -727,7 +727,7 @@ declare namespace typed_i18n {
   (_: "publication.lcpStart", __?: {}): string;
   (_: "publication.licenceLCP", __?: {}): string;
   (_: "publication.licenseOutOfDate", __?: {}): string;
-  (_: "publication.licenseSignatureDateInvalid", __?: {}): string;
+  (_: "publication.licenseCertificateDateInvalid", __?: {}): string;
   (_: "publication.licenseSignatureInvalid", __?: {}): string;
   (_: "publication.licensed", __?: {}): string;
   (_: "publication.markAsRead", __?: {}): string;

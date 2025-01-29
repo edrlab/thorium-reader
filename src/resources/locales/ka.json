@@ -300,7 +300,7 @@
     "lcpStart": "დაწყება",
     "licenceLCP": "",
     "licenseOutOfDate": "ლიცენზია მოძველდა",
-    "licenseSignatureDateInvalid": "ლიცენზიის ხელმოწერის თარიღი არასწორია",
+    "licenseCertificateDateInvalid": "ლიცენზიის ხელმოწერის თარიღი არასწორია",
     "licenseSignatureInvalid": "ლიცენზიის ხელმოწერა არასწორია",
     "licensed": "",
     "markAsRead": "",

@@ -77,7 +77,6 @@ export class OpdsService {
     }
 
     public async opdsRequestTransformer(httpGetData: IHttpGetResult<IOpdsResultView>): Promise<IOpdsResultView | undefined> {
-
         const {
             url: _baseUrl,
             responseUrl,

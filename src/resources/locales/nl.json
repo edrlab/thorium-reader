@@ -300,7 +300,7 @@
     "lcpStart": "Start",
     "licenceLCP": "Licentie (LCP)",
     "licenseOutOfDate": "Licentie is verlopen",
-    "licenseSignatureDateInvalid": "Datum in de Licentie handtekening is iongeldig",
+    "licenseCertificateDateInvalid": "Datum in de Licentie handtekening is iongeldig",
     "licenseSignatureInvalid": "Licentie handtekening is ongeldig",
     "licensed": "Gelicentieerd",
     "markAsRead": "Markeer als gelezen",

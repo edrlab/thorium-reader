@@ -300,7 +300,7 @@
     "lcpStart": "Početak",
     "licenceLCP": "",
     "licenseOutOfDate": "Licenca je istekla",
-    "licenseSignatureDateInvalid": "Datum potpisa licence je netočan",
+    "licenseCertificateDateInvalid": "Datum potpisa licence je netočan",
     "licenseSignatureInvalid": "Potpis licence je netočan",
     "licensed": "",
     "markAsRead": "",

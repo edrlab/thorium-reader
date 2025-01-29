@@ -300,7 +300,7 @@
     "lcpStart": "Начать",
     "licenceLCP": "Лицензия (LCP)",
     "licenseOutOfDate": "Лицензия LCP устарела",
-    "licenseSignatureDateInvalid": "Дата подписания лицензии недействительна",
+    "licenseCertificateDateInvalid": "Дата подписания лицензии недействительна",
     "licenseSignatureInvalid": "Лицензионная подпись недействительна",
     "licensed": "Лицензированная",
     "markAsRead": "Отметить как прочитанное",

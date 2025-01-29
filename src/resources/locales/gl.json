@@ -300,7 +300,7 @@
     "lcpStart": "Inicio",
     "licenceLCP": "Licenza (LCP)",
     "licenseOutOfDate": "A licenza está  desactualizada.",
-    "licenseSignatureDateInvalid": "A data da firma da licenza non é válida",
+    "licenseCertificateDateInvalid": "A data da firma da licenza non é válida",
     "licenseSignatureInvalid": "A firma da licenza non é válida",
     "licensed": "Con licenza",
     "markAsRead": "Marcar como lido",
