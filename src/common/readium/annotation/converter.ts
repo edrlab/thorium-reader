@@ -104,6 +104,8 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
             debug("RANGE COLLAPSED :( skipping...");
             continue;
         }
+
+        // the range start/end is guaranteed in document order due to the text matchers above (forward tree walk)
         const tuple = convertRange(range, (element) => finder(element, xmlDom, {root}), () => "", () => "");
         if (tuple && tuple.length === 2) {
             convertedRangeArray.push(tuple);
@@ -205,6 +207,7 @@ export async function convertAnnotationStateToSelector(annotationWithCacheDoc: I
     const { progression } = locations;
     const { rangeInfo } = selectionInfo;
 
+    // the range start/end is guaranteed in document order (internally used in navigator whenever deserialising DOM Ranges from JSON expression)
     const range = convertRangeInfo(xmlDom, rangeInfo);
     debug("Dump range memory found:", range);
 
