@@ -3,9 +3,9 @@
     "bookMenu": "Meniu",
     "closeDialog": "Užverti",
     "importFile": "Importuoti leidinį",
-    "leftSlideButton": "Paslinkti sąrašą į kairę",
+    "leftSlideButton": "Paslinkti į kairę",
     "mainContent": "pagrindinis turinys",
-    "rightSlideButton": "Paslinkti sąrašą į dešinę",
+    "rightSlideButton": "Paslinkti į dešinę",
     "skipLink": "Peršokti į turinį",
     "toolbar": "įrankių juosta"
   },
@@ -13,7 +13,7 @@
     "documentation": "Thorium dokumentacija",
     "howItWorks": "Kaip tai veikia?",
     "informations": "Prancūzijoje daugelis viešųjų bibliotekų pateikia kompiuteriams skirtą katalogą (panašų į OPDS, tačiau ne identišką), leidžiantį skaitytojams atsisiųsti skaitmeninius leidinius iš savo asmeninės knygų lentynos. Integravus šią technologiją į Thorium Reader, galite atsisiųsti el. knygą arba garsinę knygą tiesiai į Thorium Reader, kad galėtumėte greitai skaityti. Kaip susieti savo Prancūzijos viešosios bibliotekos paskyrą su Thorium Reader? Tai paprasta. Į paieškos laukelį įveskite Prancūzijos miestą (pvz. „Paryžius“) arba bibliotekos pavadinimo dalį ir paspauskite mygtuką „Ieškoti“. Bus atvaizduotas jūsų paiešką atitinkančių viešųjų bibliotekų sąrašas. Pasirinkite biblioteką ir paspauskite mygtuką „Pridėti“. Pasirinkite šią biblioteką atnaujintame katalogų sąraše: bus atvaizduojamas tapatybės nustatymo dialogo langas. Įveskite savo naudotojo vardą / el. pašto adresą ir slaptažodį ir spustelėkite „Prisijungti“. Dabar galite matyti savo asmeninės knygų lentynos turinį, iš kurios galite atsisiųsti ir skaityti anksčiau pasiskolintas el. ir garsines knygas.",
-    "noLibraryFound": "Biblioteka „({{- name}})“ nerasta"
+    "noLibraryFound": "Biblioteka „{{- name}}“ nerasta"
   },
   "app": {
     "edit": {
@@ -34,9 +34,9 @@
             "no": "Ne",
             "yes": "Taip"
           },
-          "help": "",
-          "message": "Ar norite išsaugoti sesiją?",
-          "title": "Sesijos išsaugojimas"
+          "help": "Aktyvuokite, jei norite, kad programos uždarymo metu atverti langai automatiškai atsivertų kito paleidimo metu.",
+          "message": "Skaitymo sesijos išsaugojimas ir atkūrimas",
+          "title": "Išsaugoti sesiją?"
         }
       }
     },
@@ -50,7 +50,7 @@
   },
   "catalog": {
     "about": {
-      "title": "Apie {{- appName}}"
+      "title": "Apie {{- appName}} (internete)"
     },
     "addBookToLib": "Importuoti",
     "addTags": "Pridėti žymę",
@@ -66,7 +66,7 @@
     "deleteBook": "Šalinti",
     "deleteTag": "Šalinti žymę",
     "description": "Aprašymas",
-    "emptyTagList": "Nėra leidinių, turinčių žymių",
+    "emptyTagList": "Nėra leidinių, turinčių žymių.",
     "entry": {
       "continueReading": "Skaityti toliau",
       "lastAdditions": "Paskiausiai pridėti"
@@ -122,25 +122,25 @@
   "dialog": {
     "annotations": {
       "descAuthor": "{{- author}}",
-      "descCreator": "",
+      "descCreator": ", kurią(-ias) sukūrė ",
       "descList": "{{- nb}} pastaba(-os, -ų), kurias sukūrė {{- creator}}, bus susietos su {{- author}} leidiniu {{- title}}",
       "descNewer": "{{- nb}} naujesnė(-s, -ių) šių pastabų versija(-os, -ų) jau susieta(-os) su leidiniu.",
       "descOlder": "{{- nb}} senesnė(-s, -ių) šių pastabų versija(-os, -ų) jau susieta(-os) su leidiniu.",
       "descTitle": "Pastabų rinkinio pavadinimas:",
       "importAll": "Importuoti visas pastabas",
       "importWithoutConflict": "Importuoti pastabas, neturinčias konfliktų",
-      "origin": "",
-      "title": "Ar norite importuoti šias pastabas?"
+      "origin": "Kilmės leidinys: '{{- title}}' {{- author}}",
+      "title": "Importuoti pastabas?"
     },
     "cancel": "Nutraukti",
     "deleteAnnotations": "Šalinti pastabas?",
     "deleteAnnotationsText": "Ar norite pašalinti {{- annotationListLength}} pastabą(-as, -ų)?",
-    "deleteFeed": "Ar tikrai norite pašalinti šį katalogą?",
-    "deletePublication": "Ar tikrai norite pašalinti šį leidinį?",
-    "import": "Ar tikrai norite importuoti šiuos failus:",
+    "deleteFeed": "Pašalinti katalogą?",
+    "deletePublication": "Pašalinti leidinį?",
+    "import": "Patvirtinkite importą:",
     "importError": "Įvyko klaida, patikrinkite failo plėtinį ({{acceptedExtension}})",
-    "renew": "Ar tikrai norite atnaujinti šio leidinio licenciją?",
-    "return": "Ar tikrai norite grąžinti šį leidinį?",
+    "renew": "Atnaujinti/pratęsti skolinimo terminą?",
+    "return": "Grąžinti leidinį?",
     "yes": "Taip"
   },
   "error": {
@@ -169,10 +169,10 @@
   },
   "library": {
     "lcp": {
-      "hint": "Užuomina : ",
+      "hint": "Užuomina:",
       "open": "Atverti",
       "password": "Slaptafrazė",
-      "sentence": "Šiam leidiniui atverti reikalinga LCP slaptafrazė: ",
+      "sentence": "Šiam leidiniui atverti reikalinga LCP slaptafrazė",
       "urlHint": "Pamiršote slaptafrazę? Pagalbos ieškokite čia",
       "whatIsLcp?": "LCP - kas tai?",
       "whatIsLcpInfoDetails": "LCP yra termino „Licensed Content Protection“ (licencijuoto turinio apsauga) santrumpa.",
@@ -181,23 +181,23 @@
   },
   "message": {
     "annotations": {
-      "alreadyImported": "Visos pastabos jau importuotos, importas nutraukiamas",
-      "emptyFile": "Faile nėra jokių pastabų",
+      "alreadyImported": "Visos pastabos jau importuotos.",
+      "emptyFile": "Faile nėra jokių pastabų.",
       "errorParsing": "Klaida analizuojant failą: ",
-      "noBelongTo": "Nepavyko importuoti pastabų rinkinio, nes bent viena iš pastabų nepriklauso leidiniui",
+      "noBelongTo": "Nepavyko importuoti pastabų rinkinio, nes bent viena iš pastabų nepriklauso leidiniui.",
       "nothing": "Nėra importui paruoštų pastabų, importas nutraukiamas",
-      "success": "Pavyko!"
+      "success": "Importavimas sėkmingai užbaigtas."
     },
     "download": {
-      "error": "{{- title}} atsiuntimas nepavyko: [{{- err}}]"
+      "error": "[{{- title}}] atsiuntimas nepavyko: [{{- err}}]"
     },
     "import": {
-      "alreadyImport": "{{- title}} jau importuotas",
-      "fail": "{{- path}} importas nepavyko. Įsitikinkite, jog failas taisyklingas",
-      "success": "{{- title}} importas baigtas."
+      "alreadyImport": "[{{- title}}] jau importuotas",
+      "fail": "[{{- path}}] importas nepavyko: [{{- err}}]",
+      "success": "[{{- title}}] importas baigtas."
     },
     "open": {
-      "error": "Nepavyko atverti leidinio : {{- err}}"
+      "error": "Nepavyko atverti leidinio : [{{- err}}]"
     }
   },
   "opds": {
@@ -227,10 +227,10 @@
       "goSubBook": "Prenumeruoti"
     },
     "network": {
-      "error": "Nepavyko pasiekti OPDS sklaidos kanalo",
+      "error": "Nepavyko pasiekti sklaidos kanalo",
       "noInternet": "Nėra interneto",
       "noInternetMessage": "Patikrinkite tinklo kabelį, modemą, maršrutizatorių ar belaidį tinklą",
-      "reject": "Atsiprašome, apdorojant OPDS sklaidos kanalą įvyko nenumatyta klaida",
+      "reject": "Atsiprašome, įvyko nenumatyta klaida!",
       "timeout": "Baigėsi tinklo laukimo laikas, prašome pabandyti vėliau"
     },
     "next": "Tolesnis",
@@ -247,11 +247,11 @@
   "publication": {
     "accessibility": {
       "accessModeSufficient": {
-        "textual": "Tinka balso sintezei ir ekrano skaitytuvėms"
+        "textual": "Visas turinys gali būti perskaitytas balso sinteze ar Brailio eilute"
       },
       "accessibilityFeature": {
-        "alternativeText": "Yra alternatyvusis tekstas",
-        "displayTransformability": "Galima keisti teksto dydį ir išdėstymą",
+        "alternativeText": "Paveikslėliai turi alternatyvųjį tekstą",
+        "displayTransformability": "Galima keisti teksto išvaizdą ir puslapio išdėstymą",
         "longDescription": "Pilnai aprašyti grafikos ištekliai",
         "printPageNumbers": "Spausdintinės knygos puslapių nuorodos",
         "readingOrder": "Yra sudaryta skaitymo tvarka",
@@ -269,7 +269,7 @@
         "sound": "Garsas",
         "unknown": "Nežinoma"
       },
-      "certifierReport": "Patikrinimo ataskaita",
+      "certifierReport": "Sertifikavimo ataskaita:",
       "conformsTo": "Atitinka:",
       "moreInformation": "Daugiau informacijos",
       "name": "Prieinamumas",
@@ -281,8 +281,8 @@
     },
     "author": "Autorius",
     "cancelledLcp": "Šio leidinio negalima skaityti, nes LCP licencija buvo nutraukta.",
-    "certificateRevoked": "Sertifikato galiojimas sustabdytas",
-    "certificateSignatureInvalid": "Negaliojantis sertifikato parašas",
+    "certificateRevoked": "LCP licencijos sertifikato galiojimas sustabdytas.",
+    "certificateSignatureInvalid": "Negaliojantis LCP licencijos sertifikato parašas.",
     "cover": {
       "img": "viršelio paveikslas"
     },
@@ -293,16 +293,16 @@
     },
     "encryptedNoLicense": "Leidinys yra užšifruotas, tačiau stokoja LCP licencijos!",
     "expired": "Skolinimo terminas baigėsi",
-    "expiredLcp": "Šio leidinio negalima skaityti, nes baigėsi LCP licencijos galiojimo laikas.",
+    "expiredLcp": "Šio leidinio LCP licencijos galiojimo laikas baigėsi.",
     "incorrectPassphrase": "Jokia išsaugota slaptafrazė neatitinka leidinio arba įvesta neteisinga slaptafrazė.",
     "lcpEnd": "Pabaiga",
     "lcpRightsCopy": "Ženklų kopijos",
     "lcpRightsPrint": "Spausdintos kopijos",
     "lcpStart": "Pradžia",
     "licenceLCP": "Licencija (LCP)",
-    "licenseCertificateDateInvalid": "Negaliojanti licencijos parašo data",
-    "licenseOutOfDate": "Licencijos galiojimas pasibaigęs",
-    "licenseSignatureInvalid": "Negaliojantis licencijos parašas",
+    "licenseCertificateDateInvalid": "Baigėsi LCP teikėjo sertifikato galiojimo laikas.",
+    "licenseOutOfDate": "LCP licencijos galiojimas pasibaigęs.",
+    "licenseSignatureInvalid": "Negaliojantis LCP licencijos parašas.",
     "licensed": "Licencijuotas",
     "markAsRead": "Žymėti kaip perskaitytą",
     "notStarted": "Nepradėtas",
@@ -314,8 +314,8 @@
     "remainingTime": "Paskolinta (liko dienų)",
     "renewButton": "Atnaujinti",
     "returnButton": "Grąžinti",
-    "returnedLcp": "Šio leidinio negalima skaityti, nes LCP licencija buvo grąžinta.",
-    "revokedLcp": "Šio leidinio negalima skaityti, nes LCP licencijos galiojimas buvo sustabdytas.",
+    "returnedLcp": "Šis LCP apsaugotas leidinys yra grąžintas.",
+    "revokedLcp": "Šio leidinio LCP licencijos galiojimas buvo sustabdytas.",
     "seeLess": "Rodyti mažiau",
     "seeMore": "Rodyti daugiau",
     "timeLeft": "Liko",
@@ -331,7 +331,7 @@
         "description": "Pavadinkite šį pastabų rinkinį",
         "title": "Pavadinimas"
       },
-      "annotationsOptions": "Parinktys",
+      "annotationsOptions": "Pastabų parinktys",
       "colors": {
         "bluegreen": "Mėlynai žalia",
         "cyan": "Žydra",
@@ -342,8 +342,8 @@
         "red": "Raudona",
         "yellow": "Geltona"
       },
-      "date": "",
-      "export": "",
+      "date": "Keitimo data",
+      "export": "Išsaugoti pastabas kaip...",
       "filter": {
         "all": "Visos",
         "filterByColor": "Filtruoti pagal spalvą",
@@ -356,7 +356,7 @@
       "hide": "Neatvaizduoti",
       "highlight": "Paryškinimas",
       "noSelectionToast": "Niekas nepasirinkta",
-      "note": "",
+      "note": "{{- color}} Pastaba",
       "quickAnnotations": "Greitasis kūrimas (praleidžiant rengyklę)",
       "saveNote": "Išsaugoti",
       "sorting": {
@@ -380,7 +380,7 @@
     "fxl": {
       "fit": "Talpinti"
     },
-    "goToContent": "",
+    "goToContent": "Eiti į turinį",
     "marks": {
       "annotations": "Pastabos",
       "bookmarks": "Žymės",
@@ -388,7 +388,7 @@
       "edit": "Keisti",
       "goTo": "Eiti į puslapį",
       "landmarks": "Gairės",
-      "progression": "",
+      "progression": "Eiga",
       "saveMark": "Išsaugoti žymę",
       "search": "Paieška",
       "searchResult": "Ieškoti [{{- searchText}}]",
@@ -409,8 +409,8 @@
       "title": "Readaloud"
     },
     "navigation": {
-      "ZenModeExit": "",
-      "ZenModeTitle": "",
+      "ZenModeExit": "Išeiti iš Zen režimo",
+      "ZenModeTitle": "Zen režimas",
       "annotationTitle": "pastaba",
       "backHomeTitle": "Užverti šį skaitymo langą (grįžti į knygų lentyną)",
       "bookmarkTitle": "sukurti žymę",
@@ -536,14 +536,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "Kūrėjas",
-      "help": "",
+      "help": "Nurodytas pavadinimas bus įtrauktas į eksportuojamų pastabų metaduomenis.",
       "name": "Pavadinimas",
       "organization": "Organizacija",
       "person": "Asmuo",
       "type": "Tipas:"
     },
     "auth": {
-      "help": "",
+      "help": "Šis veiksmas pašalina visus OPDS prisijungimo duomenis.",
       "title": "Valdyti katalogų prieigą",
       "wipeData": "Išvalyti prisijungimo duomenis"
     },
@@ -562,10 +562,10 @@
     },
     "library": {
       "enableAPIAPP": "Įgalinti prieigą prie Dilicom PNB API",
-      "title": "Pridėti bibliotekos paskyrą"
+      "title": "Prieiga prie Prancūzijos bibliotekų paskyrų"
     },
     "session": {
-      "title": "Sesijos išsaugojimas"
+      "title": "Įgalinti sesijos išsaugojimą"
     },
     "tabs": {
       "appearance": "Išvaizda",
