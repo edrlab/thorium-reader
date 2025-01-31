@@ -34,9 +34,9 @@
             "no": "No",
             "yes": "Yes"
           },
-          "help": "If checked, currently opened books will automatically be opened at the next start of the application.",
-          "message": "Do you want to save the session?",
-          "title": "Save session"
+          "help": "Activate this if you want reader windows that are open when you close the application to automatically re-open at next launch.",
+          "message": "Saving and restoring the reading session",
+          "title": "Save session?"
         }
       }
     },
@@ -531,16 +531,16 @@
   },
   "settings": {
     "annotationCreator": {
-      "creator": "Creator (Optional)",
-      "help": "This will be used as the creator of the notes you may export.",
-      "name": "Username",
+      "creator": "Annotations creator (optional)",
+      "help": "If specified, this name will be included in the metadata of exported notes.",
+      "name": "Name",
       "organization": "Organization",
       "person": "Person",
       "type": "Type:"
     },
     "auth": {
-      "help": "Do you want to delete your OPDS login credentials?",
-      "title": "Manage access to catalogs",
+      "help": "This action deletes all OPDS login credentials.",
+      "title": "Access to publication catalogs",
       "wipeData": "Clear login data"
     },
     "keyboard": {
@@ -557,11 +557,11 @@
       "languageChoice": "Language"
     },
     "library": {
-      "enableAPIAPP": "Activate access to the French library system (PNB)",
-      "title": "Add a French library account"
+      "enableAPIAPP": "Activate the 'PNB' library system",
+      "title": "Access to French library accounts"
     },
     "session": {
-      "title": "Save session"
+      "title": "Enable session saving"
     },
     "tabs": {
       "appearance": "Appearance",

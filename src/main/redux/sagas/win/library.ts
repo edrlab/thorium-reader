@@ -224,7 +224,7 @@ function* winClose(_action: winActions.library.closed.TAction) {
                 //                 ],
                 //                 defaultId: 1,
                 //                 title: translator.translate("app.session.exit.askBox.title"),
-                //                 message: translator.translate("app.session.exit.askBox.message"),
+                //                 message: translator.translate("app.session.exit.askBox.help"),
                 //             },
                 //         );
                 //     },
