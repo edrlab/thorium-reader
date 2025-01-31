@@ -22,6 +22,6 @@ const files = glob.globSync("src/resources/locales/*.json");
         fileJson = jsonUtils.sortObject(fileJson);
         console.log(util.inspect(fileJson, { colors: true, depth: null, compact: false }));
         console.log("#######################");
-        const jsonStr = JSON.stringify(fileJson, null, "    ") + "\n";
+        const jsonStr = JSON.stringify(fileJson, null, "  ") + "\n";
         fs.writeFileSync(p, jsonStr, { encoding: "utf8" });
     }

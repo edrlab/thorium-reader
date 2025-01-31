@@ -8,5 +8,5 @@ const jsonDstPath = args[1];
 const jsonSrcTxt = fs.readFileSync(path.join(process.cwd(), jsonSrcPath), { encoding: "utf8" });
 const jsonDstObj = { "en": { "translation": JSON.parse(jsonSrcTxt) } };
 console.log(util.inspect(jsonDstObj, { colors: true, depth: null, compact: false }));
-const jsonDstTxt = JSON.stringify(jsonDstObj, null, "    ") + "\n";
+const jsonDstTxt = JSON.stringify(jsonDstObj, null, "  ") + "\n";
 fs.writeFileSync(path.join(process.cwd(), jsonDstPath), jsonDstTxt, { encoding: "utf8" });

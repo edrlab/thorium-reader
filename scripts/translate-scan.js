@@ -88,5 +88,5 @@ const files = glob.globSync("src/**/*{.ts,.tsx}");
 
     console.log(util.inspect(jsonObj, { colors: true, depth: null, compact: false }));
 
-    const jsonStr = JSON.stringify(jsonObj, null, "    ") + "\n";
+    const jsonStr = JSON.stringify(jsonObj, null, "  ") + "\n";
     fs.writeFileSync(path.join(process.cwd(), jsonFilePath), jsonStr, { encoding: "utf8" });
