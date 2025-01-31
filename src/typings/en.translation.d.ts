@@ -292,12 +292,14 @@ declare namespace typed_i18n {
   (_: "dialog", __?: {}): {
   readonly "annotations": {
     readonly "descAuthor": string,
+    readonly "descCreator": string,
     readonly "descList": string,
     readonly "descNewer": string,
     readonly "descOlder": string,
     readonly "descTitle": string,
     readonly "importAll": string,
     readonly "importWithoutConflict": string,
+    readonly "origin": string,
     readonly "title": string
   },
   readonly "cancel": string,
@@ -313,21 +315,25 @@ declare namespace typed_i18n {
 };
   (_: "dialog.annotations", __?: {}): {
   readonly "descAuthor": string,
+  readonly "descCreator": string,
   readonly "descList": string,
   readonly "descNewer": string,
   readonly "descOlder": string,
   readonly "descTitle": string,
   readonly "importAll": string,
   readonly "importWithoutConflict": string,
+  readonly "origin": string,
   readonly "title": string
 };
   (_: "dialog.annotations.descAuthor", __?: {}): string;
+  (_: "dialog.annotations.descCreator", __?: {}): string;
   (_: "dialog.annotations.descList", __?: {}): string;
   (_: "dialog.annotations.descNewer", __?: {}): string;
   (_: "dialog.annotations.descOlder", __?: {}): string;
   (_: "dialog.annotations.descTitle", __?: {}): string;
   (_: "dialog.annotations.importAll", __?: {}): string;
   (_: "dialog.annotations.importWithoutConflict", __?: {}): string;
+  (_: "dialog.annotations.origin", __?: {}): string;
   (_: "dialog.annotations.title", __?: {}): string;
   (_: "dialog.cancel", __?: {}): string;
   (_: "dialog.deleteAnnotations", __?: {}): string;

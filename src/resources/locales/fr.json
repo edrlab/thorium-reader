@@ -120,14 +120,16 @@
   },
   "dialog": {
     "annotations": {
-      "descAuthor": "de {{- author}}",
-      "descList": "{{- nb}} note(s) de {{- creator}} sera associé avec {{- title}} {{- author}}",
-      "descNewer": "{{- nb}} nouvelle version(s) de ces notes sont déjà associées à cette publication.",
-      "descOlder": "{{- nb}} ancienne version(s) de ces notes sont déjà associées à cette publication.",
-      "descTitle": "Titre de la liste : ",
-      "importAll": "Importer toute les notes",
-      "importWithoutConflict": "Importer les notes sans conflit",
-      "title": "Voulez-vous importer ces notes ?"
+      "descAuthor": "par {{- author}}",
+      "descCreator": "créées par",
+      "descList": "{{- nb}} note(s) {{- creator}} seront importées vers {{- title}} {{- author}}",
+      "descNewer": "{{- nb}} conflits: certaines notes associées à la publication sont plus récentes",
+      "descOlder": "{{- nb}} conflits: certaines notes associées à la publication sont plus anciennes",
+      "descTitle": "Titre de la liste de notes : ",
+      "importAll": "Importer toutes les notes",
+      "importWithoutConflict": "Importer les notes sans conflits",
+      "origin": "Source : {{- title}} {{- author}}",
+      "title": "Voulez-vous importer toutes ces notes ?"
     },
     "cancel": "Annuler",
     "deleteAnnotations": "Supprimer la note",

@@ -53,6 +53,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     annotationActions.importConfirmOrAbort.ID,
 
     creatorActions.set.ID,
+
+    annotationActions.shiftFromAnnotationImportQueue.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

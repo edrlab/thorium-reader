@@ -71,7 +71,7 @@
       "lastAdditions": "Recently added"
     },
     "export": "Save as",
-    "exportAnnotation": "Save notes as",
+    "exportAnnotation": "Export notes...",
     "format": "Format",
     "importAnnotation": "Import notes",
     "lang": "Language",
@@ -120,18 +120,20 @@
   },
   "dialog": {
     "annotations": {
-      "descAuthor": "of {{- author}}",
-      "descList": "{{- nb}} note(s) from {{- creator}} will be associated with {{- title}} {{- author}}",
-      "descNewer": "{{- nb}} newer version(s) of these notes are already associated with the publication.",
-      "descOlder": "{{- nb}} older version(s) of these notes are already associated with the publication.",
-      "descTitle": "Title of the set: ",
+      "descAuthor": "by '{{- author}}'",
+      "descCreator": "created by",
+      "descList": "{{- nb}} note(s) {{- creator}} will be imported into '{{- title}}' {{- author}}",
+      "descNewer": "Conflict(s): {{- nb}} newer note(s)",
+      "descOlder": "Conflict(s): {{- nb}} older notes(s)",
+      "descTitle": "Annotations title: ",
       "importAll": "Import all notes",
-      "importWithoutConflict": "Import notes without conflict",
-      "title": "Do you want to import these notes?"
+      "importWithoutConflict": "Import only conflict-free notes",
+      "origin": "Origin publication: '{{- title}}' {{- author}}",
+      "title": "Import notes?"
     },
     "cancel": "Cancel",
-    "deleteAnnotations": "Delete note?",
-    "deleteAnnotationsText": "Do you want to delete {{- annotationListLength}} note(s)?",
+    "deleteAnnotations": "Delete annotations?",
+    "deleteAnnotationsText": "Are you sure you want to delete {{- annotationListLength}} note(s)?",
     "deleteFeed": "Delete catalog?",
     "deletePublication": "Delete publication?",
     "import": "Confirm import:",
@@ -178,12 +180,12 @@
   },
   "message": {
     "annotations": {
-      "alreadyImported": "All notes already imported, aborting the import",
-      "emptyFile": "No note available in the file",
+      "alreadyImported": "All notes are already imported.",
+      "emptyFile": "No notes available in the file.",
       "errorParsing": "Error during file parsing: ",
-      "noBelongTo": "Unable to import notes, at least one note does not belong to the publication",
+      "noBelongTo": "Unable to import notes, at least one note does not belong to the publication.",
       "nothing": "There is no note ready to be imported, aborting the import",
-      "success": "Import done"
+      "success": "Import completed successfully."
     },
     "download": {
       "error": "Downloading [{{- title}}] failed: [{{- err}}]"
@@ -325,10 +327,10 @@
       "addNote": "Annotate",
       "advancedMode": "Instant mode (auto create after select)",
       "annotationsExport": {
-        "description": "Name this set of annotations",
+        "description": "Name the exported notes:",
         "title": "Title"
       },
-      "annotationsOptions": "Notes Options",
+      "annotationsOptions": "Annotation Options",
       "colors": {
         "bluegreen": "Blue-green",
         "cyan": "Cyan",
@@ -339,12 +341,12 @@
         "red": "Red",
         "yellow": "Yellow"
       },
-      "export": "Save notes as",
+      "export": "Save notes as...",
       "filter": {
         "all": "All",
         "filterByColor": "Filter by Color",
         "filterByCreator": "Filter by Creator",
-        "filterByDrawtype": "Filter by Drawtype",
+        "filterByDrawtype": "Filter by Type",
         "filterByTag": "Filter by Tag",
         "filterOptions": "Filter Options",
         "none": "None"
@@ -578,7 +580,7 @@
       "next": "Next"
     },
     "description": {
-      "annotations": "Highlight document text, choose style and color, attach personal notes. Create annotations in 'quick' mode to bypass the editor (you can enter text and customize styles later). For extra speed, use the 'instant' mode which creates annotations immediately after highlighting document text!",
+      "annotations": "Highlight document text, choose style and color, attach personal notes. Create annotations in 'quick' mode to bypass the editor (you can enter text and customize styles later). For extra speed, use the 'instant' mode which creates notes immediately after highlighting document text!",
       "catalogs": "Borrow publications from your local library or discover publications via OPDS feeds. Access a variety of publications from multiple sources thanks to online catalogs.",
       "home": "Thorium looks different! Let's discover what's new...",
       "readingView1": "Customize your reading and listening preferences: Thorium now offers multiple color themes for both the user interface and publication documents. It is now also easier to configure 'readaloud' ebooks with synthetic speech and synchronized text/audio narration.",

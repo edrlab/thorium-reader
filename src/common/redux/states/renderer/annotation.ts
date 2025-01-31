@@ -9,6 +9,7 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 
 import { IPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { IAnnotationCreator } from "../creator";
+import { IReadiumAnnotation } from "readium-desktop/common/readium/annotation/annotationModel.type";
 
 export interface IColor {
     red: number;
@@ -17,6 +18,8 @@ export interface IColor {
 }
 
 export type TDrawType = "solid_background" | "underline" | "strikethrough" | "outline";
+
+export type IAnnotationPreParsingState = Pick<IAnnotationState, "uuid" | "comment" | "color" | "drawType" | "tags" | "modified" | "created" | "creator"> & { target: IReadiumAnnotation["target"] };
 
 export interface IAnnotationState {
     uuid: string;

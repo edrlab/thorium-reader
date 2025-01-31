@@ -121,12 +121,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "di {{- author}}",
+      "descCreator": "",
       "descList": "{{- nb}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
       "descNewer": "{{- nb}} nuove versioni di queste note sono già associate alla pubblicazione.",
       "descOlder": "{{- nb}} versioni precedenti di queste note sono già associate alla pubblicazione.",
       "descTitle": "Titolo del set:",
       "importAll": "Importa tutte le note",
       "importWithoutConflict": "Importa le note senza conflitti",
+      "origin": "",
       "title": "Vuoi importare queste note?"
     },
     "cancel": "Annulla",

@@ -137,10 +137,11 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
 
         const AccessibilityFeatureIsprintPageNumber = (() => {
 
-            const isPrintPageNumbers = findStrInArray(a11y_accessibilityFeature, "printPageNumbers");
+            const isPrintPageNumbers = findStrInArray(a11y_accessibilityFeature, "printPageNumbers") || findStrInArray(a11y_accessibilityFeature, "pageBreakMarkers") || findStrInArray(a11y_accessibilityFeature, "pageNavigation"); // TODO separate printPageNumbers/pageBreakMarkers from pageNavigation (updated a11y metadata presentation guidelines?)
             return isPrintPageNumbers ? <li>{__("publication.accessibility.accessibilityFeature.printPageNumbers")}</li> : undefined;
-
         })();
+
+        // TODO
         const AccessibilityFeatureIsDisplayTransformability = (() => {
 
             const isDisplayTransformability = findStrInArray(a11y_accessibilityFeature, "displayTransformability");
