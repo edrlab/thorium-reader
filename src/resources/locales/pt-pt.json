@@ -300,8 +300,8 @@
     "lcpRightsPrint": "Páginas impressas",
     "lcpStart": "Início",
     "licenceLCP": "Licença (LCP)",
-    "licenseOutOfDate": "Licença LCP caducada.",
     "licenseCertificateDateInvalid": "A data de assinatura da licença LCP é inválida.",
+    "licenseOutOfDate": "Licença LCP caducada.",
     "licenseSignatureInvalid": "A assinatura da licença LCP é inválida.",
     "licensed": "Licenciado",
     "markAsRead": "Marcar como Lido",
@@ -342,6 +342,7 @@
         "red": "Vermelho",
         "yellow": "Amarelo"
       },
+      "date": "",
       "export": "Guardar notas como",
       "filter": {
         "all": "Tudo",
@@ -416,7 +417,6 @@
       "currentPage": "Página atual: {{- current}}",
       "currentPageTotal": "Página atual: {{- current}}/{{- total}}",
       "detachWindowTitle": "Mostrar biblioteca / janela da estante",
-      "fullscreenTitle": "Abrir em ecrã completo",
       "goTo": "Ir para",
       "goToError": "Esta quebra de página não existe",
       "goToPlaceHolder": "Digitar n.º de página",
@@ -521,7 +521,6 @@
     },
     "tts": {
       "activate": "Ativar Texto para voz (TPV)",
-      "default": "Voz: predefinição do sistema",
       "language": "Idioma TPV",
       "next": "Seguinte (TPV)",
       "pause": "Pausar (TPV)",

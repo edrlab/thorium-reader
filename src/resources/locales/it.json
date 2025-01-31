@@ -300,8 +300,8 @@
     "lcpRightsPrint": "Pagine stampate",
     "lcpStart": "Inizio",
     "licenceLCP": "Licenza (LCP)",
-    "licenseOutOfDate": "La licenza è scaduta",
     "licenseCertificateDateInvalid": "La data della firma della licenza non è valida",
+    "licenseOutOfDate": "La licenza è scaduta",
     "licenseSignatureInvalid": "La firma della licenza non è valida",
     "licensed": "Concesso in licenza",
     "markAsRead": "Segna come letto",
@@ -342,6 +342,7 @@
         "red": "Rosso",
         "yellow": "Giallo"
       },
+      "date": "",
       "export": "Salva le note come",
       "filter": {
         "all": "Tutte",
@@ -416,7 +417,6 @@
       "currentPage": "Pagina attuale: {{- current}}",
       "currentPageTotal": "Pagina attuale: {{- current}}/{{- total}}",
       "detachWindowTitle": "Separa la finestra",
-      "fullscreenTitle": "attiva modalità schermo intero",
       "goTo": "Vai a",
       "goToError": "Questa interruzione di pagina non esiste",
       "goToPlaceHolder": "Inserisci il numero della pagina",
@@ -521,7 +521,6 @@
     },
     "tts": {
       "activate": "Attiva Testo a Voce",
-      "default": "Voce: default di sistema",
       "language": "Lingua sintesi vocale",
       "next": "Prossimo Testo a Voce",
       "pause": "Metti in pausa Testo a Voce",

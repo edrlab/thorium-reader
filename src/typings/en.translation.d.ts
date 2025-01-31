@@ -618,8 +618,8 @@ declare namespace typed_i18n {
   readonly "lcpRightsPrint": string,
   readonly "lcpStart": string,
   readonly "licenceLCP": string,
-  readonly "licenseOutOfDate": string,
   readonly "licenseCertificateDateInvalid": string,
+  readonly "licenseOutOfDate": string,
   readonly "licenseSignatureInvalid": string,
   readonly "licensed": string,
   readonly "markAsRead": string,
@@ -731,8 +731,8 @@ declare namespace typed_i18n {
   (_: "publication.lcpRightsPrint", __?: {}): string;
   (_: "publication.lcpStart", __?: {}): string;
   (_: "publication.licenceLCP", __?: {}): string;
-  (_: "publication.licenseOutOfDate", __?: {}): string;
   (_: "publication.licenseCertificateDateInvalid", __?: {}): string;
+  (_: "publication.licenseOutOfDate", __?: {}): string;
   (_: "publication.licenseSignatureInvalid", __?: {}): string;
   (_: "publication.licensed", __?: {}): string;
   (_: "publication.markAsRead", __?: {}): string;
@@ -841,7 +841,6 @@ declare namespace typed_i18n {
     readonly "currentPage": string,
     readonly "currentPageTotal": string,
     readonly "detachWindowTitle": string,
-    readonly "fullscreenTitle": string,
     readonly "goTo": string,
     readonly "goToError": string,
     readonly "goToPlaceHolder": string,
@@ -939,7 +938,6 @@ declare namespace typed_i18n {
   readonly "toc": { readonly "publicationNoToc": string },
   readonly "tts": {
     readonly "activate": string,
-    readonly "default": string,
     readonly "language": string,
     readonly "next": string,
     readonly "pause": string,
@@ -1137,7 +1135,6 @@ declare namespace typed_i18n {
   readonly "currentPage": string,
   readonly "currentPageTotal": string,
   readonly "detachWindowTitle": string,
-  readonly "fullscreenTitle": string,
   readonly "goTo": string,
   readonly "goToError": string,
   readonly "goToPlaceHolder": string,
@@ -1159,7 +1156,6 @@ declare namespace typed_i18n {
   (_: "reader.navigation.currentPage", __?: {}): string;
   (_: "reader.navigation.currentPageTotal", __?: {}): string;
   (_: "reader.navigation.detachWindowTitle", __?: {}): string;
-  (_: "reader.navigation.fullscreenTitle", __?: {}): string;
   (_: "reader.navigation.goTo", __?: {}): string;
   (_: "reader.navigation.goToError", __?: {}): string;
   (_: "reader.navigation.goToPlaceHolder", __?: {}): string;
@@ -1393,7 +1389,6 @@ declare namespace typed_i18n {
   (_: "reader.toc.publicationNoToc", __?: {}): string;
   (_: "reader.tts", __?: {}): {
   readonly "activate": string,
-  readonly "default": string,
   readonly "language": string,
   readonly "next": string,
   readonly "pause": string,
@@ -1406,7 +1401,6 @@ declare namespace typed_i18n {
   readonly "voice": string
 };
   (_: "reader.tts.activate", __?: {}): string;
-  (_: "reader.tts.default", __?: {}): string;
   (_: "reader.tts.language", __?: {}): string;
   (_: "reader.tts.next", __?: {}): string;
   (_: "reader.tts.pause", __?: {}): string;

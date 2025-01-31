@@ -122,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "af {{- author}}",
+      "descCreator": "",
       "descList": "{{- nb}} note(r) fra {{- creator}} vil blive associeret med {{- title}} {{- author}}",
       "descNewer": "{{- nb}} nyere version af disse noter er allerede associeret med denne bog.",
       "descOlder": "{{- nb}} ældre version af disse noter er allerede associeret med denne bog.",
       "descTitle": "Navn på notesamling:",
       "importAll": "Importér alle noter",
       "importWithoutConflict": "Importér noter uden sammenfald",
+      "origin": "",
       "title": "Ønsker du at importere disse noter?"
     },
     "cancel": "Annullér",
@@ -298,8 +300,8 @@
     "lcpRightsPrint": "Printede sider",
     "lcpStart": "Start",
     "licenceLCP": "Licens (LCP)",
-    "licenseOutOfDate": "Licensen er udløbet",
     "licenseCertificateDateInvalid": "Licensens signatur-dato er ugyldig",
+    "licenseOutOfDate": "Licensen er udløbet",
     "licenseSignatureInvalid": "Licensens signatur er ugyldig",
     "licensed": "Licenseret",
     "markAsRead": "Markér som læst",
@@ -340,6 +342,7 @@
         "red": "Rød",
         "yellow": "Gul"
       },
+      "date": "",
       "export": "Gem noter som",
       "filter": {
         "all": "Alle",
@@ -414,7 +417,6 @@
       "currentPage": "Nuværende side: {{- current}}",
       "currentPageTotal": "Nuværende side: {{- current}}/{{- total}}",
       "detachWindowTitle": "vis bibliotek / boghylde-vindue",
-      "fullscreenTitle": "åbn i fuldskærmstilstand",
       "goTo": "Gå til",
       "goToError": "Siden kunne ikke findes",
       "goToPlaceHolder": "Indtast et sidetal",
@@ -519,7 +521,6 @@
     },
     "tts": {
       "activate": "Aktiver syntetisk tale",
-      "default": "Stemme: standard",
       "language": "Sprog",
       "next": "Næste",
       "pause": "Pause",
