@@ -34,6 +34,7 @@
             "no": "Όχι",
             "yes": "Ναι"
           },
+          "help": "",
           "message": "Θέλεις να αποθηκεύσεις τη συνεδρία;",
           "title": "Αποθήκευση συνεδρίας"
         }
@@ -121,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Ακύρωση",
@@ -298,7 +301,7 @@
     "lcpStart": "Αρχή",
     "licenceLCP": "Άδεια χρήσης (LCP)",
     "licenseOutOfDate": "Η άδεια έχει λήξει",
-    "licenseSignatureDateInvalid": "Η ημερομηνία υπογραφής της άδειας είναι άκυρη",
+    "licenseCertificateDateInvalid": "Η ημερομηνία υπογραφής της άδειας είναι άκυρη",
     "licenseSignatureInvalid": "Η υπογραφή της άδειας είναι άκυρη",
     "licensed": "Με άδεια χρήσης",
     "markAsRead": "Σημείωση ως διαβασμένο",
@@ -535,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Διαγραφή δεδομένων ελέγχου ταυτότητας"
     },

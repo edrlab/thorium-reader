@@ -34,6 +34,7 @@
             "no": "Nee",
             "yes": "Ja"
           },
+          "help": "",
           "message": "Wil je deze sessie bewaren?",
           "title": "Bewaar sessie"
         }
@@ -121,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Annuleer",
@@ -298,7 +301,7 @@
     "lcpStart": "Start",
     "licenceLCP": "Licentie (LCP)",
     "licenseOutOfDate": "Licentie is verlopen",
-    "licenseSignatureDateInvalid": "Datum in de Licentie handtekening is iongeldig",
+    "licenseCertificateDateInvalid": "Datum in de Licentie handtekening is iongeldig",
     "licenseSignatureInvalid": "Licentie handtekening is ongeldig",
     "licensed": "Gelicentieerd",
     "markAsRead": "Markeer als gelezen",
@@ -535,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Wis authenticatie gegevens"
     },

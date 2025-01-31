@@ -34,6 +34,7 @@
             "no": "Nej",
             "yes": "Ja"
           },
+          "help": "",
           "message": "Vill du spara sessionen?",
           "title": "Spara session"
         }
@@ -121,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "av {{- author}}",
+      "descCreator": "",
       "descList": "{{- nb}} anteckning(ar) av {{- creator}} kommer att kopplas till {{- title}} {{- author}}",
       "descNewer": "{{- nb}} nyare versioner av de här anteckningarna är redan kopplade till publikationen.",
       "descOlder": "{{- nb}} äldre versioner av de här anteckningarna är redan kopplade till publikationen.",
       "descTitle": "Anteckningarnas titel: ",
       "importAll": "Importera alla anteckningar",
       "importWithoutConflict": "Importera anteckningar utan konflikter",
+      "origin": "",
       "title": "Vill du importera de här anteckningarna?"
     },
     "cancel": "Avbryt",
@@ -298,7 +301,7 @@
     "lcpStart": "Start",
     "licenceLCP": "Licens (LCP)",
     "licenseOutOfDate": "Licensen har löpt ut.",
-    "licenseSignatureDateInvalid": "Licensens signeringsdatum är ogiltigt.",
+    "licenseCertificateDateInvalid": "Licensens signeringsdatum är ogiltigt.",
     "licenseSignatureInvalid": "Licensens signatur är ogiltig.",
     "licensed": "Licensierad",
     "markAsRead": "Markera som läst",
@@ -535,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "Skapare",
+      "help": "",
       "name": "Namn",
       "organization": "Organisation",
       "person": "Person",
       "type": "Typ:"
     },
     "auth": {
+      "help": "",
       "title": "Hantera åtkomst till kataloger",
       "wipeData": "Rensa inloggningsuppgifter"
     },

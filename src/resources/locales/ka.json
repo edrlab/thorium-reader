@@ -34,6 +34,7 @@
             "no": "არა",
             "yes": "დიახ"
           },
+          "help": "",
           "message": "გსურს შევინახოთ სესია ?",
           "title": "სესიის შენახვა"
         }
@@ -121,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "გადაფიქრება",
@@ -298,7 +301,7 @@
     "lcpStart": "დაწყება",
     "licenceLCP": "",
     "licenseOutOfDate": "ლიცენზია მოძველდა",
-    "licenseSignatureDateInvalid": "ლიცენზიის ხელმოწერის თარიღი არასწორია",
+    "licenseCertificateDateInvalid": "ლიცენზიის ხელმოწერის თარიღი არასწორია",
     "licenseSignatureInvalid": "ლიცენზიის ხელმოწერა არასწორია",
     "licensed": "",
     "markAsRead": "",
@@ -535,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "აუტენტიფიკაციის მონაცემების გასუფთავება"
     },

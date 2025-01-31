@@ -34,6 +34,7 @@
             "no": "No",
             "yes": "Sí"
           },
+          "help": "",
           "message": "Vols guardar la sessió?",
           "title": "Guardar sessió"
         }
@@ -121,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Cancel·lar",
@@ -298,7 +301,7 @@
     "lcpStart": "Inici",
     "licenceLCP": "Llicència (LCP)",
     "licenseOutOfDate": "La llicència està desactualitzada",
-    "licenseSignatureDateInvalid": "La data de la firma de la llicència no és vàlida",
+    "licenseCertificateDateInvalid": "La data de la firma de la llicència no és vàlida",
     "licenseSignatureInvalid": "La firma de la llicència no és vàlida",
     "licensed": "Llicenciat",
     "markAsRead": "Marca com a llegit",
@@ -535,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Netejar dades d'autenticació"
     },

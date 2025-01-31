@@ -7,22 +7,26 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { PublicationView } from "readium-desktop/common/views/publication";
 
-export const ID = "WIN_REGISTRY_REGISTER_ADD_ANNOTATION";
+export const ID = "READER_EXPORT_ANNOTATION_SET";
 
-export interface Payload {
-    publicationIdentifier: string;
-    annotations: IAnnotationState[];
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Payload   {
+    annotationArray: IAnnotationState[];
+    publicationView: PublicationView;
+    label?: string;
 }
 
-export function build(publicationIdentifier: string, annotations: IAnnotationState[]):
+export function build(annotationArray: IAnnotationState[], publicationView: PublicationView, label?: string):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            publicationIdentifier,
-            annotations,
+            annotationArray,
+            publicationView,
+            label,
         },
     };
 }

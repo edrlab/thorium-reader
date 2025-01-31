@@ -44,6 +44,7 @@ declare namespace typed_i18n {
     readonly "exit": {
       readonly "askBox": {
         readonly "button": { readonly "no": string, readonly "yes": string },
+        readonly "help": string,
         readonly "message": string,
         readonly "title": string
       }
@@ -73,6 +74,7 @@ declare namespace typed_i18n {
   readonly "exit": {
     readonly "askBox": {
       readonly "button": { readonly "no": string, readonly "yes": string },
+      readonly "help": string,
       readonly "message": string,
       readonly "title": string
     }
@@ -81,18 +83,21 @@ declare namespace typed_i18n {
   (_: "app.session.exit", __?: {}): {
   readonly "askBox": {
     readonly "button": { readonly "no": string, readonly "yes": string },
+    readonly "help": string,
     readonly "message": string,
     readonly "title": string
   }
 };
   (_: "app.session.exit.askBox", __?: {}): {
   readonly "button": { readonly "no": string, readonly "yes": string },
+  readonly "help": string,
   readonly "message": string,
   readonly "title": string
 };
   (_: "app.session.exit.askBox.button", __?: {}): { readonly "no": string, readonly "yes": string };
   (_: "app.session.exit.askBox.button.no", __?: {}): string;
   (_: "app.session.exit.askBox.button.yes", __?: {}): string;
+  (_: "app.session.exit.askBox.help", __?: {}): string;
   (_: "app.session.exit.askBox.message", __?: {}): string;
   (_: "app.session.exit.askBox.title", __?: {}): string;
   (_: "app.update", __?: {}): { readonly "message": string, readonly "title": string };
@@ -292,12 +297,14 @@ declare namespace typed_i18n {
   (_: "dialog", __?: {}): {
   readonly "annotations": {
     readonly "descAuthor": string,
+    readonly "descCreator": string,
     readonly "descList": string,
     readonly "descNewer": string,
     readonly "descOlder": string,
     readonly "descTitle": string,
     readonly "importAll": string,
     readonly "importWithoutConflict": string,
+    readonly "origin": string,
     readonly "title": string
   },
   readonly "cancel": string,
@@ -313,21 +320,25 @@ declare namespace typed_i18n {
 };
   (_: "dialog.annotations", __?: {}): {
   readonly "descAuthor": string,
+  readonly "descCreator": string,
   readonly "descList": string,
   readonly "descNewer": string,
   readonly "descOlder": string,
   readonly "descTitle": string,
   readonly "importAll": string,
   readonly "importWithoutConflict": string,
+  readonly "origin": string,
   readonly "title": string
 };
   (_: "dialog.annotations.descAuthor", __?: {}): string;
+  (_: "dialog.annotations.descCreator", __?: {}): string;
   (_: "dialog.annotations.descList", __?: {}): string;
   (_: "dialog.annotations.descNewer", __?: {}): string;
   (_: "dialog.annotations.descOlder", __?: {}): string;
   (_: "dialog.annotations.descTitle", __?: {}): string;
   (_: "dialog.annotations.importAll", __?: {}): string;
   (_: "dialog.annotations.importWithoutConflict", __?: {}): string;
+  (_: "dialog.annotations.origin", __?: {}): string;
   (_: "dialog.annotations.title", __?: {}): string;
   (_: "dialog.cancel", __?: {}): string;
   (_: "dialog.deleteAnnotations", __?: {}): string;
@@ -608,7 +619,7 @@ declare namespace typed_i18n {
   readonly "lcpStart": string,
   readonly "licenceLCP": string,
   readonly "licenseOutOfDate": string,
-  readonly "licenseSignatureDateInvalid": string,
+  readonly "licenseCertificateDateInvalid": string,
   readonly "licenseSignatureInvalid": string,
   readonly "licensed": string,
   readonly "markAsRead": string,
@@ -721,7 +732,7 @@ declare namespace typed_i18n {
   (_: "publication.lcpStart", __?: {}): string;
   (_: "publication.licenceLCP", __?: {}): string;
   (_: "publication.licenseOutOfDate", __?: {}): string;
-  (_: "publication.licenseSignatureDateInvalid", __?: {}): string;
+  (_: "publication.licenseCertificateDateInvalid", __?: {}): string;
   (_: "publication.licenseSignatureInvalid", __?: {}): string;
   (_: "publication.licensed", __?: {}): string;
   (_: "publication.markAsRead", __?: {}): string;
@@ -760,7 +771,6 @@ declare namespace typed_i18n {
       readonly "red": string,
       readonly "yellow": string
     },
-    readonly "date": string,
     readonly "export": string,
     readonly "filter": {
       readonly "all": string,
@@ -960,7 +970,6 @@ declare namespace typed_i18n {
     readonly "red": string,
     readonly "yellow": string
   },
-  readonly "date": string,
   readonly "export": string,
   readonly "filter": {
     readonly "all": string,
@@ -1016,7 +1025,6 @@ declare namespace typed_i18n {
   (_: "reader.annotations.colors.purple", __?: {}): string;
   (_: "reader.annotations.colors.red", __?: {}): string;
   (_: "reader.annotations.colors.yellow", __?: {}): string;
-  (_: "reader.annotations.date", __?: {}): string;
   (_: "reader.annotations.export", __?: {}): string;
   (_: "reader.annotations.filter", __?: {}): {
   readonly "all": string,
@@ -1409,12 +1417,17 @@ declare namespace typed_i18n {
   (_: "settings", __?: {}): {
   readonly "annotationCreator": {
     readonly "creator": string,
+    readonly "help": string,
     readonly "name": string,
     readonly "organization": string,
     readonly "person": string,
     readonly "type": string
   },
-  readonly "auth": { readonly "title": string, readonly "wipeData": string },
+  readonly "auth": {
+    readonly "help": string,
+    readonly "title": string,
+    readonly "wipeData": string
+  },
   readonly "keyboard": {
     readonly "advancedMenu": string,
     readonly "cancel": string,
@@ -1446,17 +1459,24 @@ declare namespace typed_i18n {
 };
   (_: "settings.annotationCreator", __?: {}): {
   readonly "creator": string,
+  readonly "help": string,
   readonly "name": string,
   readonly "organization": string,
   readonly "person": string,
   readonly "type": string
 };
   (_: "settings.annotationCreator.creator", __?: {}): string;
+  (_: "settings.annotationCreator.help", __?: {}): string;
   (_: "settings.annotationCreator.name", __?: {}): string;
   (_: "settings.annotationCreator.organization", __?: {}): string;
   (_: "settings.annotationCreator.person", __?: {}): string;
   (_: "settings.annotationCreator.type", __?: {}): string;
-  (_: "settings.auth", __?: {}): { readonly "title": string, readonly "wipeData": string };
+  (_: "settings.auth", __?: {}): {
+  readonly "help": string,
+  readonly "title": string,
+  readonly "wipeData": string
+};
+  (_: "settings.auth.help", __?: {}): string;
   (_: "settings.auth.title", __?: {}): string;
   (_: "settings.auth.wipeData", __?: {}): string;
   (_: "settings.keyboard", __?: {}): {

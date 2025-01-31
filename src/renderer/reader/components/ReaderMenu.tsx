@@ -85,13 +85,11 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "@r2-shared-js/models/locator";
 import { IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
+import { readerLocalActionExportAnnotationSet, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { rgbToHex } from "readium-desktop/common/rgb";
-import { IReadiumAnnotationModelSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
-import { convertAnnotationListToReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/converter";
 import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/components/ImportAnnotationsDialog";
 import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -645,7 +643,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 </button> :
                 <Popover.Root>
                     <Popover.Trigger asChild>
-                        <button 
+                        <button
                         title={__("reader.marks.delete")}
                         >
                             <SVG ariaHidden={true} svg={DeleteIcon} />
@@ -679,18 +677,6 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
 
 const selectionIsSet = (a: Selection): a is Set<string> => typeof a === "object";
 const MAX_MATCHES_PER_PAGE = 5;
-
-const downloadAnnotationJSON = (contents: IReadiumAnnotationModelSet, filename: string) => {
-
-    const data = JSON.stringify(contents, null, 2);
-    const blob = new Blob([data], { type: "application/rd-annotations+json" });
-    const jsonObjectUrl = URL.createObjectURL(blob);
-    const anchorEl = document.createElement("a");
-    anchorEl.href = jsonObjectUrl;
-    anchorEl.download = `${filename}.annotation`;
-    anchorEl.click();
-    URL.revokeObjectURL(jsonObjectUrl);
-};
 
 const userNumber: Record<string, number> = {};
 
@@ -1129,11 +1115,8 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         <Popover.Portal>
                             <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2), padding: "15px 0" }}>
                                 <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
-                                <form
+                                <div
                                     className={stylesAnnotations.annotationsTitle_form_container}
-                                    onSubmit={(e) => {
-                                        e.preventDefault();
-                                    }}
                                 >
                                     <p>{__("reader.annotations.annotationsExport.description")}</p>
                                     <div className={stylesInputs.form_group}>
@@ -1145,8 +1128,9 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                             ref={annotationTitleRef}
                                             className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" />
                                     </div>
+
                                     <Popover.Close aria-label={__("reader.annotations.export")} asChild>
-                                        <button type="submit" onClick={() => {
+                                        <button onClick={() => {
                                             const annotations = annotationListFiltered.map(([, anno]) => {
                                                 const { creator } = anno;
                                                 if (creator?.id === creatorMyself.id) {
@@ -1154,21 +1138,21 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                                 }
                                                 return anno;
                                             });
-                                            const title = annotationTitleRef?.current.value || "myAnnotationsSet";
+                                            const title = annotationTitleRef?.current.value || "thorium-reader";
                                             let label = title;
                                             label = label.trim();
                                             label = label.replace(/[^a-z0-9_-]/gi, "_");
                                             label = label.replace(/^_+|_+$/g, ""); // leading and trailing underscore
                                             label = label.replace(/^\./, ""); // remove dot start
                                             label = label.toLowerCase();
-                                            const contents = convertAnnotationListToReadiumAnnotationSet(annotations, publicationView, title);
-                                            downloadAnnotationJSON(contents, label);
+
+                                            dispatch(readerLocalActionExportAnnotationSet.build(annotations, publicationView, label));
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />
                                             {__("reader.annotations.export")}
                                         </button>
                                     </Popover.Close>
-                                </form>
+                                </div>
                             </Popover.Content>
                         </Popover.Portal>
                     </Popover.Root>
@@ -2523,11 +2507,11 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     <Tabs.Content value="tab-annotation" tabIndex={-1} id={"readerMenu_tabs-tab-annotation"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
                         <div className={classNames(stylesSettings.settings_tab, stylesAnnotations.annotations_tab)}>
-                            <AnnotationList 
-                            goToLocator={goToLocator} 
-                            annotationUUIDFocused={annotationUUID} 
-                            resetAnnotationUUID={resetAnnotationUUID} 
-                            doFocus={doFocus} 
+                            <AnnotationList
+                            goToLocator={goToLocator}
+                            annotationUUIDFocused={annotationUUID}
+                            resetAnnotationUUID={resetAnnotationUUID}
+                            doFocus={doFocus}
                             popoverBoundary={popoverBoundary.current}
                             advancedAnnotationsOnChange={advancedAnnotationsOnChange}
                             quickAnnotationsOnChange={quickAnnotationsOnChange}

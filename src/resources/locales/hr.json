@@ -34,6 +34,7 @@
             "no": "Ne",
             "yes": "Da"
           },
+          "help": "",
           "message": "Želite li spremiti sesiju ?",
           "title": "Spremi sesiju"
         }
@@ -121,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Poništi",
@@ -298,7 +301,7 @@
     "lcpStart": "Početak",
     "licenceLCP": "",
     "licenseOutOfDate": "Licenca je istekla",
-    "licenseSignatureDateInvalid": "Datum potpisa licence je netočan",
+    "licenseCertificateDateInvalid": "Datum potpisa licence je netočan",
     "licenseSignatureInvalid": "Potpis licence je netočan",
     "licensed": "",
     "markAsRead": "",
@@ -535,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Izbriši podatke za prijavu"
     },

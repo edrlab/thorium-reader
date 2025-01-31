@@ -30,8 +30,12 @@ function* sameFileImport(action: importActions.verify.TAction) {
         (state: ILibraryRootState) => state.download);
 
     if (Array.isArray(downloads)
-        && downloads.map(([{ downloadUrl }]) => downloadUrl).find((ln) => ln === link.url)) {
-
+        && downloads.map((tuple) => {
+            // tuple[0] ==== Payload
+            // tuple[1] ==== number
+            return tuple[0].downloadUrls;
+        }).find((urls) => urls.find((u) => u === link.url))
+    ) {
         yield put(
             toastActions.openRequest.build(
                 ToastType.Success,

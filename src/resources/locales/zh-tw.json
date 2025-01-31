@@ -34,6 +34,7 @@
             "no": "否",
             "yes": "是"
           },
+          "help": "",
           "message": "是否保存當前連線？",
           "title": "保存連線"
         }
@@ -121,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "取消",
@@ -298,7 +301,7 @@
     "lcpStart": "開始",
     "licenceLCP": "授權（LCP）",
     "licenseOutOfDate": "授權過期",
-    "licenseSignatureDateInvalid": "授權簽名日期無效",
+    "licenseCertificateDateInvalid": "授權簽名日期無效",
     "licenseSignatureInvalid": "授權簽名無效",
     "licensed": "已授權",
     "markAsRead": "標記為已讀",
@@ -535,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "清除登入數據"
     },

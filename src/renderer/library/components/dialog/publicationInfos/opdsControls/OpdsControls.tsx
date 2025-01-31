@@ -110,7 +110,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                     }
                                 }}
                                 className={feedLinksList.length > 0 ? stylesButtons.button_secondary : stylesButtons.button_primary}
-                                disabled={openAccessButtonIsDisabled()}
+                                disabled={openAccessButtonIsDisabled(ln.url)}
                                 title={ln.title || __("catalog.addBookToLib")}
                             >
                                 {`${__("catalog.addBookToLib")}${typeStr(ln)}`}
@@ -144,7 +144,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                     }
                                 }}
                                 className={stylesButtons.button_secondary}
-                                disabled={sampleButtonIsDisabled()}
+                                disabled={sampleButtonIsDisabled(ln.url)}
                                 title={ln.title || __("opds.menu.addExtract")}
                             >
                                 <SVG ariaHidden={true} svg={ImportIcon} />
@@ -304,22 +304,32 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-const mapStateToProps = (state: ILibraryRootState, props: IBaseProps) => {
+const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
         breadcrumb: state.opds.browser.breadcrumb,
         location: state.router.location,
-        openAccessButtonIsDisabled: () => {
+        openAccessButtonIsDisabled: (url: string) => {
             return !!state.download.find(
-                ([{ downloadUrl }]) => props.opdsPublicationView.openAccessLinks.find(
-                    (ln) => ln.url === downloadUrl,
-                ),
+                (tuple) => {
+                    // tuple[0] ==== Payload
+                    // tuple[1] ==== number
+                    return tuple[0].downloadUrls.find((u) => u === url);
+                    // return props.opdsPublicationView.openAccessLinks.find(
+                    //     (ln) => tuple[0].downloadUrls.find((u) => u === ln.url),
+                    // );
+                },
             );
         },
-        sampleButtonIsDisabled: () => {
+        sampleButtonIsDisabled: (url: string) => {
             return !!state.download.find(
-                ([{ downloadUrl }]) => props.opdsPublicationView.sampleOrPreviewLinks.find(
-                    (ln) => ln.url === downloadUrl,
-                ),
+                (tuple) => {
+                    // tuple[0] ==== Payload
+                    // tuple[1] ==== number
+                    return tuple[0].downloadUrls.find((u) => u === url);
+                    // return props.opdsPublicationView.sampleOrPreviewLinks.find(
+                    //     (ln) => tuple[0].downloadUrls.find((u) => u === ln.url),
+                    // );
+                },
             );
         },
         locale: state.i18n.locale, // refresh

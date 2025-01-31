@@ -40,7 +40,7 @@
       padding: 3px;
     }
 
-    progress {
+    progress:not(:indeterminate) {
       background-color: green;
       border-radius: 0;
       height: 20px;
@@ -52,14 +52,26 @@
       padding: 0;
     }
 
-    progress::-webkit-progress-bar {
+    progress:not(:indeterminate)::-webkit-progress-bar {
       background-color: silver;
       border-radius: 0;
     }
 
-    progress::-webkit-progress-value {
+    progress:not(:indeterminate)::-webkit-progress-value {
       background-color: var(--color-blue);
       border-radius: 0;
+    }
+
+    progress:indeterminate {
+      /* background-color: red; */
+      /* border-radius: 0; */
+      height: 20px;
+      display: inline-block;
+      /* border: 0; */
+      width: 120px;
+      margin: 0;
+      margin-right: 7px;
+      padding: 0;
     }
 
     span.title {

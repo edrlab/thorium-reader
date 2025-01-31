@@ -34,6 +34,7 @@
             "no": "Non",
             "yes": "Oui"
           },
+          "help": "Si cette case est cochée, les livres actuellement ouverts seront automatiquement ouverts au prochain démarrage de l'application.",
           "message": "Voulez-vous sauvegarder la session ?",
           "title": "Sauvegarder la session"
         }
@@ -120,14 +121,16 @@
   },
   "dialog": {
     "annotations": {
-      "descAuthor": "de {{- author}}",
-      "descList": "{{- nb}} note(s) de {{- creator}} sera associé avec {{- title}} {{- author}}",
-      "descNewer": "{{- nb}} nouvelle version(s) de ces notes sont déjà associées à cette publication.",
-      "descOlder": "{{- nb}} ancienne version(s) de ces notes sont déjà associées à cette publication.",
-      "descTitle": "Titre de la liste : ",
-      "importAll": "Importer toute les notes",
-      "importWithoutConflict": "Importer les notes sans conflit",
-      "title": "Voulez-vous importer ces notes ?"
+      "descAuthor": "par {{- author}}",
+      "descCreator": "créées par",
+      "descList": "{{- nb}} note(s) {{- creator}} seront importées vers {{- title}} {{- author}}",
+      "descNewer": "{{- nb}} conflits: certaines notes associées à la publication sont plus récentes",
+      "descOlder": "{{- nb}} conflits: certaines notes associées à la publication sont plus anciennes",
+      "descTitle": "Titre de la liste de notes : ",
+      "importAll": "Importer toutes les notes",
+      "importWithoutConflict": "Importer les notes sans conflits",
+      "origin": "Source : {{- title}} {{- author}}",
+      "title": "Voulez-vous importer toutes ces notes ?"
     },
     "cancel": "Annuler",
     "deleteAnnotations": "Supprimer la note",
@@ -298,7 +301,7 @@
     "lcpStart": "Début",
     "licenceLCP": "Licence (LCP)",
     "licenseOutOfDate": "License LCP inutilisable à cette date.",
-    "licenseSignatureDateInvalid": "Date de signature de license LCP invalide",
+    "licenseCertificateDateInvalid": "Certificat de provider LCP expiré.",
     "licenseSignatureInvalid": "Signature de license LCP invalide",
     "licensed": "Accès protégé",
     "markAsRead": "Marquer comme lu",
@@ -535,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "Créateur",
+      "help": "Il sera utilisé comme créateur des notes que vous pouvez exporter.",
       "name": "Nom",
       "organization": "Organisation",
       "person": "Personne",
       "type": "Type"
     },
     "auth": {
+      "help": "Souhaitez-vous supprimer vos identifiants de connexion à l'OPDS ?",
       "title": "Gérer l'accès aux catalogues",
       "wipeData": "Effacer les données d'authentification"
     },

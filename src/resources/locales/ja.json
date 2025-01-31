@@ -34,6 +34,7 @@
             "no": "いいえ",
             "yes": "はい"
           },
+          "help": "",
           "message": "セッションを保存しますか？",
           "title": "セッションを保存"
         }
@@ -121,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "キャンセル",
@@ -298,7 +301,7 @@
     "lcpStart": "開始",
     "licenceLCP": "ライセンス（LCP）",
     "licenseOutOfDate": "LCPライセンスの期限切れです",
-    "licenseSignatureDateInvalid": "LCPライセンスの署名の日付が無効です",
+    "licenseCertificateDateInvalid": "LCPライセンスの署名の日付が無効です",
     "licenseSignatureInvalid": "LCPライセンスの署名が無効です",
     "licensed": "ライセンスが付与されています",
     "markAsRead": "既読にする",
@@ -535,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "ログインデータを消去する"
     },

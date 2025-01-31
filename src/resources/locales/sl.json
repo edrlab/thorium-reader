@@ -34,6 +34,7 @@
             "no": "Ne",
             "yes": "Da"
           },
+          "help": "",
           "message": "Ali želiš shraniti sejo?",
           "title": "Shrani sejo"
         }
@@ -121,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Prekliči",
@@ -298,7 +301,7 @@
     "lcpStart": "Začetek",
     "licenceLCP": "Licenca (LCP)",
     "licenseOutOfDate": "Licenca ni več veljavna",
-    "licenseSignatureDateInvalid": "Datum podpisa licence ni veljaven",
+    "licenseCertificateDateInvalid": "Datum podpisa licence ni veljaven",
     "licenseSignatureInvalid": "Podpis licence ni veljaven",
     "licensed": "Licencirano",
     "markAsRead": "Označi kot prebrano",
@@ -535,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Izbriši avtentikacijske podatke"
     },

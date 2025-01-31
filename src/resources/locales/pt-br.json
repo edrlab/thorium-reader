@@ -34,6 +34,7 @@
             "no": "Não",
             "yes": "Sim"
           },
+          "help": "",
           "message": "Você quer salvar a sessão?",
           "title": "Salvar sessão"
         }
@@ -121,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Cancelar",
@@ -298,7 +301,7 @@
     "lcpStart": "Iniciar",
     "licenceLCP": "Licença (LCP)",
     "licenseOutOfDate": "Licença vencida",
-    "licenseSignatureDateInvalid": "A data da assinatura da licença é inválida",
+    "licenseCertificateDateInvalid": "A data da assinatura da licença é inválida",
     "licenseSignatureInvalid": "A assinatura da licença é inválida",
     "licensed": "Licenciado",
     "markAsRead": "Marcar como lido",
@@ -535,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Limpar dados de login"
     },

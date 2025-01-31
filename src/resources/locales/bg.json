@@ -34,6 +34,7 @@
             "no": "Не",
             "yes": "Да"
           },
+          "help": "",
           "message": "Искате ли да запазите сесията ?",
           "title": "Запази сесията"
         }
@@ -121,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Отказ",
@@ -298,7 +301,7 @@
     "lcpStart": "Начало",
     "licenceLCP": "",
     "licenseOutOfDate": "Изтекъл срок на лиценза",
-    "licenseSignatureDateInvalid": "Датата на ключа за лиценза е невалидна",
+    "licenseCertificateDateInvalid": "Датата на ключа за лиценза е невалидна",
     "licenseSignatureInvalid": "Ключа за лиценза е невалиден",
     "licensed": "",
     "markAsRead": "",
@@ -535,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Изтриване на данните за удостоверяване"
     },

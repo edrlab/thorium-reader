@@ -127,7 +127,7 @@ export function* init() {
         debug(urlPathDecoded);
         const filePathUrl = pathToFileURL(urlPathDecoded).toString();
         debug(filePathUrl);
-        return net.fetch(filePathUrl);
+        return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() on r2-navigator-js.getWebViewSession().protocol or Electron.session.defaultSession.protocol)
     };
     protocol.handle("filex", protocolHandler_FILEX);
     // protocol.unhandle("filex");
@@ -174,7 +174,7 @@ export function* init() {
         debug(filePath);
         const filePathUrl = pathToFileURL(filePath).toString();
         debug(filePathUrl);
-        return net.fetch(filePathUrl);
+        return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() on r2-navigator-js.getWebViewSession().protocol or Electron.session.defaultSession.protocol)
     };
     protocol.handle("store", protocolHandler_Store);
     // protocol.unhandle("store");
@@ -197,7 +197,7 @@ export function* init() {
         debug(urlPathDecoded);
         const filePathUrl = pathToFileURL(urlPathDecoded).toString();
         debug(filePathUrl);
-        return net.fetch(filePathUrl);
+        return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() on r2-navigator-js.getWebViewSession().protocol or Electron.session.defaultSession.protocol)
     };
     protocol.handle("pdfjs-extract", protocolHandler_PDF);
     // protocol.unhandle("pdfjs-extract");

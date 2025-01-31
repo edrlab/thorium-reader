@@ -34,6 +34,7 @@
             "no": "Ez",
             "yes": "Bai"
           },
+          "help": "",
           "message": "Saioa gorde nahi duzu?",
           "title": "Gorde saioa"
         }
@@ -121,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Ezeztatu",
@@ -298,7 +301,7 @@
     "lcpStart": "Hasiera",
     "licenceLCP": "Lizentzia (LCP)",
     "licenseOutOfDate": "Lizentzia ez dago eguneratuta",
-    "licenseSignatureDateInvalid": "Lizentzia-sinaduraren data ez da baliozkoa",
+    "licenseCertificateDateInvalid": "Lizentzia-sinaduraren data ez da baliozkoa",
     "licenseSignatureInvalid": "Lizentziaren sinadura ez da baliozkoa",
     "licensed": "Lizentziarekin",
     "markAsRead": "Markatu irakurritako gisa",
@@ -535,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Autentifikazio-datuak garbitzea"
     },

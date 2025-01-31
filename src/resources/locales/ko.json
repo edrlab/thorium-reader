@@ -34,6 +34,7 @@
             "no": "취소",
             "yes": "확인"
           },
+          "help": "",
           "message": "세션을 저장하시겠습니까?",
           "title": "세션 저장"
         }
@@ -121,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "취소",
@@ -298,7 +301,7 @@
     "lcpStart": "시작",
     "licenceLCP": "",
     "licenseOutOfDate": "라이선스가 만료되었습니다",
-    "licenseSignatureDateInvalid": "라이선스 서명날짜가 유효하지 않습니다",
+    "licenseCertificateDateInvalid": "라이선스 서명날짜가 유효하지 않습니다",
     "licenseSignatureInvalid": "라이선스 서명이 유효하지 않습니다",
     "licensed": "",
     "markAsRead": "",
@@ -535,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "인증 데이터 삭제"
     },

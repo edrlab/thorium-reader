@@ -34,6 +34,7 @@
             "no": "Нет",
             "yes": "Да"
           },
+          "help": "",
           "message": "Вы хотите сохранить сеанс ?",
           "title": "Сохранить сеанс"
         }
@@ -121,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Отменить",
@@ -298,7 +301,7 @@
     "lcpStart": "Начать",
     "licenceLCP": "Лицензия (LCP)",
     "licenseOutOfDate": "Лицензия LCP устарела",
-    "licenseSignatureDateInvalid": "Дата подписания лицензии недействительна",
+    "licenseCertificateDateInvalid": "Дата подписания лицензии недействительна",
     "licenseSignatureInvalid": "Лицензионная подпись недействительна",
     "licensed": "Лицензированная",
     "markAsRead": "Отметить как прочитанное",
@@ -535,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Очистить данные для входа"
     },

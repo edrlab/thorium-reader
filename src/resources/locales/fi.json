@@ -34,6 +34,7 @@
             "no": "Ei",
             "yes": "Kyllä"
           },
+          "help": "",
           "message": "Haluatko tallentaa istunnon?",
           "title": "Tallenna istunto"
         }
@@ -121,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Peru",
@@ -298,7 +301,7 @@
     "lcpStart": "Aloita",
     "licenceLCP": "Käyttöoikeus (LCP)",
     "licenseOutOfDate": "LCP-käyttöoikeus on vanhentunut.",
-    "licenseSignatureDateInvalid": "LCP-käyttöoikeuden allekirjoituksen päiväys ei kelpaa",
+    "licenseCertificateDateInvalid": "LCP-käyttöoikeuden allekirjoituksen päiväys ei kelpaa",
     "licenseSignatureInvalid": "LCP-käyttöoikeuden allekirjoitus ei kelpaa",
     "licensed": "Lisensoitu",
     "markAsRead": "Merkitse luetuksi",
@@ -535,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Poista kirjautumistiedot"
     },

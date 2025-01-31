@@ -34,6 +34,7 @@
             "no": "لا",
             "yes": "نعم"
           },
+          "help": "",
           "message": "هل تريد حفظ الجلسة؟",
           "title": "حفظ الجلسة"
         }
@@ -121,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "إلغاء الأمر",
@@ -298,7 +301,7 @@
     "lcpStart": "",
     "licenceLCP": "الترخيص (LCP)",
     "licenseOutOfDate": "ترخيص LCP قديم.",
-    "licenseSignatureDateInvalid": "تاريخ توقيع ترخيص LCP غير صالح.",
+    "licenseCertificateDateInvalid": "تاريخ توقيع ترخيص LCP غير صالح.",
     "licenseSignatureInvalid": "توقيع ترخيص LCP غير صالح.",
     "licensed": "مرخَّص",
     "markAsRead": "وضع علامة كمقروء",
@@ -535,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "حذف بيانات تسجيل الدخول"
     },
