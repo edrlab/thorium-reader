@@ -2291,6 +2291,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     style={{ visibility: "hidden" }}>{" "}</span>
                 <table {...tableInstance.getTableProps()}
                     className={stylesPublication.allBook_table}
+                    role= {displayType === DisplayType.Grid ? "presentation" : "table"}
                     style={{
                         display: "table",
                     }}>
@@ -2481,6 +2482,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     <tbody {...tableInstance.getTableBodyProps()}
                         className={stylesPublication.allBook_table_body}
                         id="publicationsTableBody"
+                        role= {displayType === DisplayType.Grid ? "presentation" : "rowgroup"}
                         style={{
                             display: displayType === DisplayType.Grid ? "grid" : "",
                         }}

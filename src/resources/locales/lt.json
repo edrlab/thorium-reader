@@ -342,6 +342,7 @@
         "red": "Raudona",
         "yellow": "Geltona"
       },
+      "date": "",
       "export": "",
       "filter": {
         "all": "Visos",
@@ -355,6 +356,7 @@
       "hide": "Neatvaizduoti",
       "highlight": "Paryškinimas",
       "noSelectionToast": "Niekas nepasirinkta",
+      "note": "",
       "quickAnnotations": "Greitasis kūrimas (praleidžiant rengyklę)",
       "saveNote": "Išsaugoti",
       "sorting": {
@@ -378,6 +380,7 @@
     "fxl": {
       "fit": "Talpinti"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Pastabos",
       "bookmarks": "Žymės",
@@ -385,6 +388,7 @@
       "edit": "Keisti",
       "goTo": "Eiti į puslapį",
       "landmarks": "Gairės",
+      "progression": "",
       "saveMark": "Išsaugoti žymę",
       "search": "Paieška",
       "searchResult": "Ieškoti [{{- searchText}}]",
@@ -405,6 +409,8 @@
       "title": "Readaloud"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "pastaba",
       "backHomeTitle": "Užverti šį skaitymo langą (grįžti į knygų lentyną)",
       "bookmarkTitle": "sukurti žymę",

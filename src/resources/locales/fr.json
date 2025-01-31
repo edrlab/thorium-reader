@@ -342,6 +342,7 @@
         "red": "Rouge",
         "yellow": "Jaune"
       },
+      "date": "Date de modification",
       "export": "Sauvegarder sous",
       "filter": {
         "all": "Tous",
@@ -355,6 +356,7 @@
       "hide": "Ne pas afficher",
       "highlight": "Surligner",
       "noSelectionToast": "Aucun texte sélectionné",
+      "note": "Note {{- color}}",
       "quickAnnotations": "Annotation rapide (sans édition)",
       "saveNote": "Sauvegarder",
       "sorting": {
@@ -378,6 +380,7 @@
     "fxl": {
       "fit": "Remplir"
     },
+    "goToContent": "Aller au contenu",
     "marks": {
       "annotations": "Annotations",
       "bookmarks": "Marque-pages",
@@ -385,6 +388,7 @@
       "edit": "Éditer",
       "goTo": "Aller à la page",
       "landmarks": "Repères",
+      "progression": "",
       "saveMark": "Sauvegarder le marque-page",
       "search": "Rechercher",
       "searchResult": "Recherche - « {{- searchText}} »",
@@ -405,6 +409,8 @@
       "title": "Lire à haute voix"
     },
     "navigation": {
+      "ZenModeExit": "Sortir du mode Zen",
+      "ZenModeTitle": "Mode Zen",
       "annotationTitle": "annotation",
       "backHomeTitle": "retour à la bibliothèque",
       "bookmarkTitle": "marque-page",

@@ -342,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
       "export": "",
       "filter": {
         "all": "",
@@ -355,6 +356,7 @@
       "hide": "不顯示",
       "highlight": "重點標示",
       "noSelectionToast": "沒有選擇",
+      "note": "",
       "quickAnnotations": "快速建立（跳過編輯）",
       "saveNote": "保存",
       "sorting": {
@@ -378,6 +380,7 @@
     "fxl": {
       "fit": "Fit"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "註解",
       "bookmarks": "書籤",
@@ -385,6 +388,7 @@
       "edit": "編輯",
       "goTo": "前往到頁面",
       "landmarks": "地標",
+      "progression": "",
       "saveMark": "儲存書籤",
       "search": "搜尋",
       "searchResult": "搜尋 [{{- searchText}}]",
@@ -405,6 +409,8 @@
       "title": "語音朗讀"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "註解",
       "backHomeTitle": "返回書架",
       "bookmarkTitle": "書籤",

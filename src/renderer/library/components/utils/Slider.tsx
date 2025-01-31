@@ -37,15 +37,15 @@ interface IState {
 }
 
 class Slider extends React.Component<IProps, IState> {
-    private contentRef: React.RefObject<HTMLDivElement>;
-    private contentElRefs: HTMLDivElement[] = [];
+    private contentRef: React.RefObject<HTMLUListElement>;
+    private contentElRefs: HTMLLIElement[] = [];
     private wrapperRef: React.RefObject<HTMLDivElement>;
     // private contentElVisible: boolean[] = [];
 
     constructor(props: IProps) {
         super(props);
 
-        this.contentRef = React.createRef<HTMLDivElement>();
+        this.contentRef = React.createRef<HTMLUListElement>();
         this.wrapperRef = React.createRef<HTMLDivElement>();
 
         this.state = {
@@ -112,20 +112,22 @@ class Slider extends React.Component<IProps, IState> {
                         className={classNames(stylesSlider.slider_button_prev, stylesButtons.button_transparency_icon)}
                         onClick={this.handleMove.bind(this, false)}
                         disabled={this.state.position < 0 ? false : true}
+                        aria-hidden
                     >
                     <SVG ariaHidden={true} svg={ArrowRightIcon} />
                 </button>
                 <div ref={this.wrapperRef} className={stylesSlider.slider_wrapper}
                     /* onScroll={(e) => {this.handleScroll(e)}} */>
-                    <div ref={this.contentRef} className={stylesSlider.slider_items} style={varStyle}>
+                    <ul ref={this.contentRef} className={stylesSlider.slider_items} style={varStyle}>
                         {list}
-                    </div>
+                    </ul>
                 </div>
                     <button
                         onClick={this.handleMove.bind(this, true)}
                         aria-label={__("accessibility.rightSlideButton")}
                         className={classNames(stylesSlider.slider_button_next, stylesButtons.button_transparency_icon)}
                         disabled={this.state.position > max ? false : true}
+                        aria-hidden
                     >
                         <SVG ariaHidden={true} svg={ArrowRightIcon}/>
                     </button>
@@ -200,14 +202,14 @@ class Slider extends React.Component<IProps, IState> {
             //     props.tabIndex = -1;
             // }
             return (
-                <div
+                <li
                     ref={(ref) => this.contentElRefs[index] = ref}
                     key={index}
                     onFocus={() => this.moveInView(index)}
                     {...props}
                 >
                     {element}
-                </div>
+                </li>
             );
         });
     }

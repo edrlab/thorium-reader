@@ -342,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
       "export": "",
       "filter": {
         "all": "",
@@ -355,6 +356,7 @@
       "hide": "Geef niet weer",
       "highlight": "Markeer",
       "noSelectionToast": "Geen selectie",
+      "note": "",
       "quickAnnotations": "Maak snel (editor overslaan)",
       "saveNote": "Bewaar",
       "sorting": {
@@ -378,6 +380,7 @@
     "fxl": {
       "fit": "Pas"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Annotaties",
       "bookmarks": "Bladwijzers",
@@ -385,6 +388,7 @@
       "edit": "Wijzig",
       "goTo": "Ga naar pagina",
       "landmarks": "structuur elementen",
+      "progression": "",
       "saveMark": "Bladwijzer opslaan",
       "search": "Zoek",
       "searchResult": "Zoek [{{- searchText}}]",
@@ -405,6 +409,8 @@
       "title": "Voorlezen"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "annotatie",
       "backHomeTitle": "terug naar de boekenplank",
       "bookmarkTitle": "bladwijzer",

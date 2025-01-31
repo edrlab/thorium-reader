@@ -342,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
       "export": "",
       "filter": {
         "all": "",
@@ -355,6 +356,7 @@
       "hide": "Älä näytä",
       "highlight": "Korosta",
       "noSelectionToast": "Ei valintaa",
+      "note": "",
       "quickAnnotations": "Pikatila (ohita muokkausikkuna)",
       "saveNote": "Tallenna",
       "sorting": {
@@ -378,6 +380,7 @@
     "fxl": {
       "fit": "Sovita"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Muistiinpanot",
       "bookmarks": "Kirjanmerkit",
@@ -385,6 +388,7 @@
       "edit": "Muokkaa",
       "goTo": "Siirry sivulle",
       "landmarks": "Kiintopisteet",
+      "progression": "",
       "saveMark": "Tallenna kirjanmerkki",
       "search": "Hae",
       "searchResult": "Hae [{{- searchText}}]",
@@ -405,6 +409,8 @@
       "title": "Luenta"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "muistiinpano",
       "backHomeTitle": "Takaisin kirjahyllyyn",
       "bookmarkTitle": "Kirjanmerkki",

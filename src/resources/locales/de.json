@@ -342,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
       "export": "",
       "filter": {
         "all": "",
@@ -355,6 +356,7 @@
       "hide": "Ausblenden",
       "highlight": "Markieren",
       "noSelectionToast": "Keine Auswahl",
+      "note": "",
       "quickAnnotations": "Schnell erstellen (Editor überspringen)",
       "saveNote": "Speichern",
       "sorting": {
@@ -378,6 +380,7 @@
     "fxl": {
       "fit": "Einpassen"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Meine Anmerkungen",
       "bookmarks": "Meine Lesezeichen",
@@ -385,6 +388,7 @@
       "edit": "Bearbeiten",
       "goTo": "Gehe zu Seite",
       "landmarks": "Navigationspunkte",
+      "progression": "",
       "saveMark": "Lesezeichen speichern",
       "search": "Suche",
       "searchResult": "Suche [{{- searchText}}]",
@@ -405,6 +409,8 @@
       "title": "Vorlesen"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "Notizen",
       "backHomeTitle": "Zurück zum Bücherregal",
       "bookmarkTitle": "Lesezeichen setzen",

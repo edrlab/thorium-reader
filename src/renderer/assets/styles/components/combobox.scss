@@ -122,6 +122,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 14px;
+
+    &[data-disabled] {
+      color: var(--color-light-grey);
+    }
   
     &.selected {
       font-weight: 600;

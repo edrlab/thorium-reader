@@ -342,6 +342,7 @@
         "red": "Red",
         "yellow": "Yellow"
       },
+      "date": "Modification date",
       "export": "Save notes as...",
       "filter": {
         "all": "All",
@@ -355,6 +356,7 @@
       "hide": "Do not display",
       "highlight": "Highlight",
       "noSelectionToast": "No selection",
+      "note": "{{- color}} Note",
       "quickAnnotations": "Quick create (skip editor)",
       "saveNote": "Save",
       "sorting": {
@@ -378,6 +380,7 @@
     "fxl": {
       "fit": "Fit"
     },
+    "goToContent": "Go to the content",
     "marks": {
       "annotations": "Annotations",
       "bookmarks": "Bookmarks",
@@ -385,6 +388,7 @@
       "edit": "Edit",
       "goTo": "Go to page",
       "landmarks": "Landmarks",
+      "progression": "Progression",
       "saveMark": "Save bookmark",
       "search": "Search",
       "searchResult": "Search [{{- searchText}}]",
@@ -405,6 +409,8 @@
       "title": "Readaloud"
     },
     "navigation": {
+      "ZenModeExit": "Exit Zen mode",
+      "ZenModeTitle": "Zen mode",
       "annotationTitle": "annotation",
       "backHomeTitle": "Close this reading window (back to bookshelf)",
       "bookmarkTitle": "bookmark",

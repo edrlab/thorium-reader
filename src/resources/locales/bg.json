@@ -342,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
       "export": "",
       "filter": {
         "all": "",
@@ -355,6 +356,7 @@
       "hide": "",
       "highlight": "",
       "noSelectionToast": "",
+      "note": "",
       "quickAnnotations": "",
       "saveNote": "",
       "sorting": {
@@ -378,6 +380,7 @@
     "fxl": {
       "fit": ""
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Анотации",
       "bookmarks": "Отметки",
@@ -385,6 +388,7 @@
       "edit": "Edit",
       "goTo": "",
       "landmarks": "Landmarks",
+      "progression": "",
       "saveMark": "",
       "search": "Търси",
       "searchResult": "",
@@ -405,6 +409,8 @@
       "title": "Четене на глас"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "",
       "backHomeTitle": "обратно към лавицата с книги",
       "bookmarkTitle": "отметка",

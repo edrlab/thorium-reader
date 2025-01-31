@@ -342,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
       "export": "",
       "filter": {
         "all": "",
@@ -355,6 +356,7 @@
       "hide": "عدم الإظهار",
       "highlight": "تمييز",
       "noSelectionToast": "لم يتم اختيار شيء",
+      "note": "",
       "quickAnnotations": "إنشاء سريع (تخطي المحرِّر)",
       "saveNote": "حفظ",
       "sorting": {
@@ -378,6 +380,7 @@
     "fxl": {
       "fit": "ملاءمة"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "التعليقات",
       "bookmarks": "الإشارات المرجعية",
@@ -385,6 +388,7 @@
       "edit": "تحرير",
       "goTo": "الانتقال إلى صفحة",
       "landmarks": "المَعالم",
+      "progression": "",
       "saveMark": "حفظ الإشارة المرجعية",
       "search": "بحث",
       "searchResult": "بحث عن [{{- searchText}}]",
@@ -405,6 +409,8 @@
       "title": "القراءة بصوت عالٍ"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "التعليق",
       "backHomeTitle": "عودة إلى رف الكتب",
       "bookmarkTitle": "الإشارة المرجعية",
