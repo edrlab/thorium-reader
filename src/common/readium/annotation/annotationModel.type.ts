@@ -8,7 +8,18 @@
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 
-export interface IReadiumAnnotationModel {
+export interface IReadiumAnnotationSet {
+    "@context": "http://www.w3.org/ns/anno.jsonld";
+    id: string;
+    type: "AnnotationSet";
+    generator?: Generator;
+    generated?: string;
+    title?: string;
+    about: About;
+    items: IReadiumAnnotation[];
+}
+
+export interface IReadiumAnnotation {
     "@context": "http://www.w3.org/ns/anno.jsonld";
     id: string;
     created: string;
@@ -39,15 +50,38 @@ export interface IReadiumAnnotationModel {
             page?: string;
         };
         selector: Array<(
-            ITextQuoteSelector
-            | IProgressionSelector
-            | IDomRangeSelector
-            | IFragmentSelector
+            ISelector
+            // ITextQuoteSelector
+            // | ITextPositionSelector
+            // | IFragmentSelector
         )>;
     };
 }
 
-export interface ITextQuoteSelector {
+export interface ISelector<T extends ISelector = undefined> {
+    type: string;
+    refinedBy?: T;
+}
+
+/**
+{
+    "type": "TextPositionSelector",
+    "start": 50,
+    "end": 55
+} 
+*/
+export interface ITextPositionSelector extends ISelector {
+    type: "TextPositionSelector",
+    start: number,
+    end: number,
+}
+export function isTextPositionSelector(a: any): a is ITextPositionSelector {
+    return typeof a === "object" && a.type === "TextPositionSelector"
+    && typeof a.start === "number"
+    && typeof a.end === "number";
+}
+
+export interface ITextQuoteSelector extends ISelector {
     type: "TextQuoteSelector";
     exact: string;
     prefix: string;
@@ -60,7 +94,7 @@ export function isTextQuoteSelector(a: any): a is ITextQuoteSelector {
     && typeof a.suffix === "string";
 }
 
-export interface IProgressionSelector {
+export interface IProgressionSelector extends ISelector {
     type: "ProgressionSelector";
     value: number;
 }
@@ -69,27 +103,39 @@ export function isProgressionSelector(a: any): a is IProgressionSelector {
     && typeof a.value === "number";
 }
 
-export interface IDomRangeSelector {
-    type: "DomRangeSelector";
-    startContainerElementCssSelector: string;
-    startContainerChildTextNodeIndex: number;
-    startOffset: number;
-    endContainerElementCssSelector: string;
-    endContainerChildTextNodeIndex: number;
-    endOffset: number;
+export interface ICssSelector<T extends ISelector = any> extends ISelector<T> {
+    type: "CssSelector";
+    value: string;
 }
-export function isDomRangeSelector(a: any): a is IDomRangeSelector {
-    return typeof a === "object"
-        && a.type === "DomRangeSelector"
-        && typeof a.startContainerElementCssSelector === "string"
-        && typeof a.startContainerChildTextNodeIndex === "number"
-        && typeof a.startOffset === "number"
-        && typeof a.endContainerElementCssSelector === "string"
-        && typeof a.endContainerChildTextNodeIndex === "number"
-        && typeof a.endOffset === "number";
+export function isCssSelector(a: any): a is ICssSelector<undefined> {
+    return typeof a === "object" && a.type === "CssSelector"
+    && typeof a.value === "string";
 }
 
-export interface IFragmentSelector {
+// not used anymore
+// internal DOMRange selector not shared across annotation selector
+// We prefer EPUB-CFI nowadays when official library will be choosen
+// export interface IDomRangeSelector {
+//     type: "DomRangeSelector";
+//     startContainerElementCssSelector: string;
+//     startContainerChildTextNodeIndex: number;
+//     startOffset: number;
+//     endContainerElementCssSelector: string;
+//     endContainerChildTextNodeIndex: number;
+//     endOffset: number;
+// }
+// export function isDomRangeSelector(a: any): a is IDomRangeSelector {
+//     return typeof a === "object"
+//         && a.type === "DomRangeSelector"
+//         && typeof a.startContainerElementCssSelector === "string"
+//         && typeof a.startContainerChildTextNodeIndex === "number"
+//         && typeof a.startOffset === "number"
+//         && typeof a.endContainerElementCssSelector === "string"
+//         && typeof a.endContainerChildTextNodeIndex === "number"
+//         && typeof a.endOffset === "number";
+// }
+
+export interface IFragmentSelector extends ISelector {
     type: "FragmentSelector";
     conformsTo: string;
     value: string;
@@ -99,6 +145,14 @@ export function isFragmentSelector(a: any): a is IFragmentSelector {
         && a.type === "FragmentSelector"
         && typeof a.conformsTo === "string"
         && typeof a.value === "string";
+}
+
+export interface ICFIFragmentSelector extends IFragmentSelector {
+    conformsTo: "http://www.idpf.org/epub/linking/cfi/epub-cfi.html",
+}
+export function isCFIFragmentSelector(a: any): a is ICFIFragmentSelector {
+    return isFragmentSelector(a)
+        && a.conformsTo === "http://www.idpf.org/epub/linking/cfi/epub-cfi.html";
 }
 
 interface Generator {
@@ -117,20 +171,9 @@ interface About {
     "dc:date"?: string;
 }
 
-export interface IReadiumAnnotationModelSet {
-    "@context": "http://www.w3.org/ns/anno.jsonld";
-    id: string;
-    type: "AnnotationSet";
-    generator?: Generator;
-    generated?: string;
-    title?: string;
-    about: About;
-    items: IReadiumAnnotationModel[];
-}
-
-export const readiumAnnotationModelSetJSONSchema3 = {
+export const readiumAnnotationSetSchema = {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "IReadiumAnnotationModelSet",
+    "title": "IReadiumAnnotationSet",
     "type": "object",
     "properties": {
         "@context": {
@@ -214,15 +257,15 @@ export const readiumAnnotationModelSetJSONSchema3 = {
         "items": {
             "type": "array",
             "items": {
-                "$ref": "#/definitions/IReadiumAnnotationModel",
+                "$ref": "#/definitions/IReadiumAnnotation",
             },
         },
     },
     "required": ["@context", "id", "type", "about", "items"],
     "definitions": {
-        "IReadiumAnnotationModel": {
+        "IReadiumAnnotation": {
             "$schema": "http://json-schema.org/draft-07/schema#",
-            "title": "IReadiumAnnotationModelSet",
+            "title": "IReadiumAnnotationSet",
             "type": "object",
             "properties": {
                 "@context": {
@@ -340,17 +383,14 @@ export const readiumAnnotationModelSetJSONSchema3 = {
                             "items": {
                                 "oneOf": [
                                     {
-                                        "$ref": "#/definitions/ITextQuoteSelector",
+                                        "$ref": "#/definitions/Selector",
                                     },
-                                    {
-                                        "$ref": "#/definitions/IProgressionSelector",
-                                    },
-                                    {
-                                        "$ref": "#/definitions/IDomRangeSelector",
-                                    },
-                                    {
-                                        "$ref": "#/definitions/IFragmentSelector",
-                                    },
+                                    // {
+                                    //     "$ref": "#/definitions/ITextPositionSelector",
+                                    // },
+                                    // {
+                                    //     "$ref": "#/definitions/IFragmentSelector",
+                                    // },
                                 ],
                             },
                         },
@@ -360,97 +400,74 @@ export const readiumAnnotationModelSetJSONSchema3 = {
             },
             "required": ["@context", "id", "created", "type", "target"],
         },
-        "ITextQuoteSelector": {
+        "Selector": {
             "type": "object",
             "properties": {
                 "type": {
-                    "const": "TextQuoteSelector",
-                },
-                "exact": {
-                    "type": "string",
-                },
-                "prefix": {
-                    "type": "string",
-                },
-                "suffix": {
                     "type": "string",
                 },
             },
-            "required": ["type", "exact", "prefix", "suffix"],
+            "required": ["type"],
         },
-        "IProgressionSelector": {
-            "type": "object",
-            "properties": {
-                "type": {
-                    "const": "ProgressionSelector",
-                },
-                "value": {
-                    "type": "number",
-                },
-            },
-            "required": ["type", "value"],
-        },
-        "IDomRangeSelector": {
-            "type": "object",
-            "properties": {
-                "type": {
-                    "const": "DomRangeSelector",
-                },
-                "startContainerElementCssSelector": {
-                    "type": "string",
-                },
-                "startContainerChildTextNodeIndex": {
-                    "type": "number",
-                },
-                "startOffset": {
-                    "type": "number",
-                },
-                "endContainerElementCssSelector": {
-                    "type": "string",
-                },
-                "endContainerChildTextNodeIndex": {
-                    "type": "number",
-                },
-                "endOffset": {
-                    "type": "number",
-                },
-            },
-            "required": [
-                "type",
-                "startContainerElementCssSelector",
-                "startContainerChildTextNodeIndex",
-                "startOffset",
-                "endContainerElementCssSelector",
-                "endContainerChildTextNodeIndex",
-                "endOffset",
-            ],
-        },
-        "IFragmentSelector": {
-            "type": "object",
-            "properties": {
-                "type": {
-                    "const": "FragmentSelector",
-                },
-                "conformsTo": {
-                    "type": "string",
-                },
-                "value": {
-                    "type": "string",
-                },
-            },
-            "required": ["type", "conformsTo", "value"],
-        },
+        // "ITextQuoteSelector": {
+        //     "type": "object",
+        //     "properties": {
+        //         "type": {
+        //             "const": "TextQuoteSelector",
+        //         },
+        //         "exact": {
+        //             "type": "string",
+        //         },
+        //         "prefix": {
+        //             "type": "string",
+        //         },
+        //         "suffix": {
+        //             "type": "string",
+        //         },
+        //     },
+        //     "required": ["type", "exact", "prefix", "suffix"],
+        // },
+        // "ITextPositionSelector": {
+        //     "type": "object",
+        //     "properties": {
+        //         "type": {
+        //             "const": "TextPositionSelector",
+        //         },
+        //         "start": {
+        //             "type": "number",
+        //         },
+        //         "end": {
+        //             "type": "number",
+        //         },
+        //     },
+        //     "required": ["type", "start", "end"],
+        // },
+        // "IFragmentSelector": {
+        //     "type": "object",
+        //     "properties": {
+        //         "type": {
+        //             "const": "FragmentSelector",
+        //         },
+        //         "conformsTo": {
+        //             "type": "string",
+        //         },
+        //         "value": {
+        //             "type": "string",
+        //         },
+        //     },
+        //     "required": ["type", "conformsTo", "value"],
+        // },
     },
 };
 
 
 export let __READIUM_ANNOTATION_AJV_ERRORS = "";
-export function isIReadiumAnnotationModelSet(data: any): data is IReadiumAnnotationModelSet {
+export function isIReadiumAnnotationSet(data: any): data is IReadiumAnnotationSet {
 
     const ajv = new Ajv();
     addFormats(ajv);
 
-    const valid = ajv.validate(readiumAnnotationModelSetJSONSchema3, data);
+    const valid = ajv.validate(readiumAnnotationSetSchema, data);
 
     __READIUM_ANNOTATION_AJV_ERRORS = ajv.errors?.length ? JSON.stringify(ajv.errors, null, 2) : "";
 

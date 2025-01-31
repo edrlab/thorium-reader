@@ -35,9 +35,9 @@ import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/version-update";
-import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { IAnnotationPreParsingState, IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { annotationModeEnableReducer } from "./annotationModeEnable";
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { annotationActions, readerActions } from "readium-desktop/common/redux/actions";
 import { readerMediaOverlayReducer } from "./mediaOverlay";
 import { readerTTSReducer } from "./tts";
 import { readerTransientConfigReducer } from "./readerTransientConfig";
@@ -46,6 +46,8 @@ import { annotationTagsIndexReducer } from "./annotationTagsIndex";
 import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 import { importAnnotationReducer } from "readium-desktop/renderer/common/redux/reducers/importAnnotation";
 import { tagReducer } from "readium-desktop/common/redux/reducers/tag";
+import { fifoReducer } from "readium-desktop/utils/redux-reducers/fifo.reducer";
+import { readerResourceCacheReducer } from "./resourceCache";
 import { readerLockReducer } from "./lock";
 
 export const rootReducer = () => {
@@ -183,6 +185,7 @@ export const rootReducer = () => {
             lock: readerLockReducer,
         }),
         search: searchReducer,
+        resourceCache: readerResourceCacheReducer,
         annotation: annotationModeEnableReducer,
         annotationTagsIndex: annotationTagsIndexReducer,
         picker: pickerReducer,
@@ -196,5 +199,20 @@ export const rootReducer = () => {
         publication: combineReducers({
             tag: tagReducer,
         }),
+        annotationImportQueue: fifoReducer
+        <
+            annotationActions.pushToAnnotationImportQueue.TAction,
+            IAnnotationPreParsingState
+        >(
+            {
+                push: {
+                    type: annotationActions.pushToAnnotationImportQueue.ID,
+                    selector: (action) => action.payload.annotations,
+                },
+                shift: {
+                    type: annotationActions.shiftFromAnnotationImportQueue.ID,
+                },
+            },
+        ),
     });
 };
