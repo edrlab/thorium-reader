@@ -16,11 +16,11 @@ const isVisualStudioCodeLaunch = process.env.VSCODE_LAUNCH || "false";
 
 const isContinuousIntegrationDeploy = process.env.GITHUB_TOKEN_RELEASE_PUBLISH ? true : false;
 
-const rendererLibraryBaseUrl = isDev ? "http://localhost:" + portApp + "/" : "file://";
+const rendererLibraryBaseUrl = isDev ? "http://localhost:" + portApp + "/" : "filex://host/";
 
-const rendererReaderBaseUrl = isDev ? "http://localhost:" + portReader + "/" : "file://";
+const rendererReaderBaseUrl = isDev ? "http://localhost:" + portReader + "/" : "filex://host/";
 
-const rendererPdfWebviewBaseUrl = isDev ? "http://localhost:" + portPdfWebview + "/" : "file://";
+const rendererPdfWebviewBaseUrl = isDev ? "http://localhost:" + portPdfWebview + "/" : "filex://host/";
 
 const isPackaging = process.env.PACKAGING || "0";
 

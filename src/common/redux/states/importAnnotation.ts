@@ -5,16 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IReadiumAnnotationModelSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
-import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { IAnnotationPreParsingState } from "readium-desktop/common/redux/states/renderer/annotation";
 
-interface IReadiumAnnotationModelSetView extends Partial<Pick<IReadiumAnnotationModelSet, "about" | "title" | "generated" | "generator">> {
+interface IReadiumAnnotationModelSetView extends Partial<Pick<IReadiumAnnotationSet, "about" | "title" | "generated" | "generator">> {
 
 }
 export interface IImportAnnotationState extends IReadiumAnnotationModelSetView {
     open: boolean;
-    annotationsConflictListOlder: IAnnotationState[]
-    annotationsConflictListNewer: IAnnotationState[]
-    annotationsList: IAnnotationState[]
+    annotationsConflictListOlder: IAnnotationPreParsingState[]
+    annotationsConflictListNewer: IAnnotationPreParsingState[]
+    annotationsList: IAnnotationPreParsingState[]
     winId?: string | undefined;
 }

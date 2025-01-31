@@ -69,9 +69,6 @@
     "emptyTagList": "Tunnisteita ei ole käytössä.",
     "entry": {
       "continueReading": "Jatka lukemista",
-      "continueReadingAudioBooks": "Jatka kuuntelua",
-      "continueReadingDivina": "Jatka divinan lukemista",
-      "continueReadingPdf": "Jatka pdf:n lukemista",
       "lastAdditions": "Viimeksi lisätty"
     },
     "export": "Tallenna nimellä",
@@ -125,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Peru",
@@ -302,7 +301,7 @@
     "lcpStart": "Aloita",
     "licenceLCP": "Käyttöoikeus (LCP)",
     "licenseOutOfDate": "LCP-käyttöoikeus on vanhentunut.",
-    "licenseSignatureDateInvalid": "LCP-käyttöoikeuden allekirjoituksen päiväys ei kelpaa",
+    "licenseCertificateDateInvalid": "LCP-käyttöoikeuden allekirjoituksen päiväys ei kelpaa",
     "licenseSignatureInvalid": "LCP-käyttöoikeuden allekirjoitus ei kelpaa",
     "licensed": "Lisensoitu",
     "markAsRead": "Merkitse luetuksi",
@@ -343,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",

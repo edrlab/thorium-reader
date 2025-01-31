@@ -69,9 +69,6 @@
     "emptyTagList": "No tienes libros etiquetados.",
     "entry": {
       "continueReading": "Reanudar lectura",
-      "continueReadingAudioBooks": "Reanudar reproducción",
-      "continueReadingDivina": "Reanudar divina",
-      "continueReadingPdf": "Reanudar PDF",
       "lastAdditions": "Añadidos recientemente"
     },
     "export": "Exportar",
@@ -125,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Cancelar",
@@ -302,7 +301,7 @@
     "lcpStart": "Inicio",
     "licenceLCP": "Licencia (LCP)",
     "licenseOutOfDate": "La licencia está desactualizada.",
-    "licenseSignatureDateInvalid": "La fecha de la firma de la licencia LCP no es válida",
+    "licenseCertificateDateInvalid": "La fecha de la firma de la licencia LCP no es válida",
     "licenseSignatureInvalid": "La firma de la licencia LCP no es válida",
     "licensed": "Con licencia",
     "markAsRead": "Marcar como leído",
@@ -343,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",

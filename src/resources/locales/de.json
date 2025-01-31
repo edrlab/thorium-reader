@@ -69,9 +69,6 @@
     "emptyTagList": "Keine Bücher wurden mit Tags versehen.",
     "entry": {
       "continueReading": "Lesen Sie weiter",
-      "continueReadingAudioBooks": "Weiter zuhören",
-      "continueReadingDivina": "Divina fortsetzen",
-      "continueReadingPdf": "PDF weiterlesen",
       "lastAdditions": "Kürzlich hinzugefügt"
     },
     "export": "Export",
@@ -125,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Abbrechen",
@@ -302,7 +301,7 @@
     "lcpStart": "Start",
     "licenceLCP": "Lizenz (LCP)",
     "licenseOutOfDate": "Veraltete LCP-Lizenz.",
-    "licenseSignatureDateInvalid": "Ungültiges Signaturdatum der LCP-Lizenz.",
+    "licenseCertificateDateInvalid": "Ungültiges Signaturdatum der LCP-Lizenz.",
     "licenseSignatureInvalid": "Invalid LCP license signature.",
     "licensed": "Lizenziert",
     "markAsRead": "Als gelesen markieren",
@@ -343,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",

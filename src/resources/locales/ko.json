@@ -69,9 +69,6 @@
     "emptyTagList": "태그를 지정한 전자책이 없습니다.",
     "entry": {
       "continueReading": "이어서 읽기",
-      "continueReadingAudioBooks": "오디오북 이어 듣기",
-      "continueReadingDivina": "Divina 이어 보기",
-      "continueReadingPdf": "PDF 이어 보기",
       "lastAdditions": "최근에 추가한 도서"
     },
     "export": "내보내기",
@@ -125,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "취소",
@@ -302,7 +301,7 @@
     "lcpStart": "시작",
     "licenceLCP": "",
     "licenseOutOfDate": "라이선스가 만료되었습니다",
-    "licenseSignatureDateInvalid": "라이선스 서명날짜가 유효하지 않습니다",
+    "licenseCertificateDateInvalid": "라이선스 서명날짜가 유효하지 않습니다",
     "licenseSignatureInvalid": "라이선스 서명이 유효하지 않습니다",
     "licensed": "",
     "markAsRead": "",
@@ -343,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",

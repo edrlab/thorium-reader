@@ -10,11 +10,23 @@ import { createWriteStream } from "fs";
 import { nanoid } from "nanoid";
 import * as path from "path";
 import { ZipFile } from "yazl";
+import { EventEmitter } from "events";
 
 import { createTempDir } from "../fs/path";
 
 // Logger
 const debug = debug_("readium-desktop:main#utils/zip/create");
+
+// strictly not necessary here,
+// but see LCP no-compression-before-encryption for "codec" media resources
+// which are then STORE'd in the ZIP
+// (=> no unnecessary / costly DEFLATE in the ZIP directory, net benefit when "streaming" with HTTP byte-ranges):
+// https://github.com/readium/readium-lcp-server/blob/e2c484f571a8013faf13a335c007890150751d79/pack/pack.go#L158-L170
+// https://github.com/readium/readium-lcp-server/blob/e2c484f571a8013faf13a335c007890150751d79/pack/pack.go#L130-L132
+// https://github.com/readium/readium-lcp-server/blob/e2c484f571a8013faf13a335c007890150751d79/pack/pack.go#L236-L239
+// https://github.com/readium/readium-lcp-server/blob/e2c484f571a8013faf13a335c007890150751d79/pack/pack.go#L265-L267
+// const doDeflate = (zipPath: string) => !/\.(PDF|PNG|JPE?G|MPE?G|HEIC|WEBP|MP3|MP4|WAV|OGG|AVI)$/i.test(zipPath);
+const doDeflate = (_zipPath: string) => true;
 
 export type TResourcesFSCreateZip = Array<[fsPath: string, zipPath: string]>;
 export type TResourcesBUFFERCreateZip = Array<[chuncks: Buffer, zipPath: string]>;
@@ -24,36 +36,72 @@ export async function createWebpubZip(
     resourcesMapBuffer?: TResourcesBUFFERCreateZip,
     name = "misc",
 ) {
-
-    debug("creation of the zip package .webpub");
     const pathFile = await createTempDir(nanoid(8), name);
     const packagePath = path.resolve(pathFile, "package.webpub");
 
+    debug("createWebpubZip", packagePath);
+
     await new Promise<void>((resolve, reject) => {
-
-        debug("package path", pathFile);
-
         const zipfile = new ZipFile();
 
+        // https://unpkg.com/browse/@types/yazl@2.4.5/index.d.ts
+        // https://github.com/thejoshwolfe/yazl/blob/20584c378c654fc5b5ad141697ec539d7cb27c9e/index.js#L13
+        if ((zipfile as unknown as EventEmitter).on)
+        (zipfile as unknown as EventEmitter).on("error", (err) => {
+            debug("createWebpubZip zipfile ERROR", packagePath, err);
+
+            // reject(err);
+        });
+
         const writeStream = createWriteStream(packagePath);
-        zipfile.outputStream.pipe(writeStream)
-            .on("close", () => {
+        writeStream.on("end", () => {
+            debug("createWebpubZip writeStream END", packagePath);
+        });
+        writeStream.on("finish", () => {
+            debug("createWebpubZip writeStream FINISH", packagePath);
+        });
+        writeStream.on("close", () => {
+            debug("createWebpubZip writeStream CLOSE", packagePath);
 
-                debug("package done");
-                resolve();
-            })
-            .on("error", (e: any) => reject(e));
+            resolve();
+        });
+        writeStream.on("error", (err) => {
+            debug("createWebpubZip writeStream ERROR", packagePath, err);
 
-        zipfile.addBuffer(manifestBuffer, "manifest.json");
+            reject(err);
+        });
+
+        zipfile.outputStream.on("end", () => {
+            debug("createWebpubZip zipfile.outputStream END", packagePath);
+        });
+        zipfile.outputStream.on("finish", () => {
+            debug("createWebpubZip zipfile.outputStream FINISH", packagePath);
+        });
+        zipfile.outputStream.on("close", () => {
+            debug("createWebpubZip zipfile.outputStream CLOSE", packagePath);
+        });
+        zipfile.outputStream.on("error", (err) => {
+            debug("createWebpubZip zipfile.outputStream ERROR", packagePath, err);
+        });
+
+        zipfile.outputStream.pipe(writeStream);
+
+        debug("createWebpubZip addBuffer", "manifest.json");
+        zipfile.addBuffer(manifestBuffer, "manifest.json", { compress: true });
 
         resourcesMapFs.forEach(([fsPath, zipPath]) => {
-            zipfile.addFile(fsPath, zipPath);
+            const compress = doDeflate(zipPath);
+            debug("createWebpubZip addFile", zipPath, compress);
+            zipfile.addFile(fsPath, zipPath, { compress });
         });
 
         resourcesMapBuffer?.forEach(([buffer, zipPath]) => {
-            zipfile.addBuffer(buffer, zipPath);
+            const compress = doDeflate(zipPath);
+            debug("createWebpubZip addBuffer", zipPath, compress);
+            zipfile.addBuffer(buffer, zipPath, { compress });
         });
 
+        debug("createWebpubZip ENDING ...", packagePath);
         zipfile.end();
     });
 

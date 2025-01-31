@@ -33,7 +33,7 @@ export const extractPDFData =
         // => unicode chars remain escaped!
         // So these must be decodeURIComponent() for filesystem API calls,
         // ...but the lonely non-encoded percent char triggers a crash if not handled correctly!
-        // We double-encode the path in order to work around the registerFileProtocol() decoding behaviour:
+        // (really, the double-encoding is for "viewer.html?file=" in loadURL() below!)
 
         pdfPath = "pdfjs-extract://host/" + encodeURIComponent_RFC3986(encodeURIComponent_RFC3986(pdfPath));
         debug("extractPDFData", pdfPath);

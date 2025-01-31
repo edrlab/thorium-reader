@@ -69,9 +69,6 @@
     "emptyTagList": "Nemate označenu e-knjigu.",
     "entry": {
       "continueReading": "Nastavi čitati",
-      "continueReadingAudioBooks": "Nastavi slušati",
-      "continueReadingDivina": "Nastavi s divina formatom",
-      "continueReadingPdf": "Nastavi čitati PDF",
       "lastAdditions": "Nedavno dodano"
     },
     "export": "Izvezi",
@@ -125,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Poništi",
@@ -302,7 +301,7 @@
     "lcpStart": "Početak",
     "licenceLCP": "",
     "licenseOutOfDate": "Licenca je istekla",
-    "licenseSignatureDateInvalid": "Datum potpisa licence je netočan",
+    "licenseCertificateDateInvalid": "Datum potpisa licence je netočan",
     "licenseSignatureInvalid": "Potpis licence je netočan",
     "licensed": "",
     "markAsRead": "",
@@ -343,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",

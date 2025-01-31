@@ -69,9 +69,6 @@
     "emptyTagList": "لا توجد منشورات موسومة.",
     "entry": {
       "continueReading": "استئناف القراءة",
-      "continueReadingAudioBooks": "استئناف الاستماع",
-      "continueReadingDivina": "استئناف ديفينا",
-      "continueReadingPdf": "استئناف PDF",
       "lastAdditions": "المضافة مؤخراً"
     },
     "export": "حفظ بإسم",
@@ -125,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "إلغاء الأمر",
@@ -302,7 +301,7 @@
     "lcpStart": "",
     "licenceLCP": "الترخيص (LCP)",
     "licenseOutOfDate": "ترخيص LCP قديم.",
-    "licenseSignatureDateInvalid": "تاريخ توقيع ترخيص LCP غير صالح.",
+    "licenseCertificateDateInvalid": "تاريخ توقيع ترخيص LCP غير صالح.",
     "licenseSignatureInvalid": "توقيع ترخيص LCP غير صالح.",
     "licensed": "مرخَّص",
     "markAsRead": "وضع علامة كمقروء",
@@ -343,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",

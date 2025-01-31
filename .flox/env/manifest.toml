@@ -126,7 +126,7 @@ unset FLOX_CACHE_DIR
 export NODE_PATH="$NPM_CONFIG_PREFIX/lib/node_modules${NODE_PATH:+:$NODE_PATH}";
 [[ ! -z "${FLX_VERBOSE}" ]] && echo "-----> NODE_PATH: ${NODE_PATH}";
 
-export PATH="$NPM_CONFIG_PREFIX/bin:$PATH";
+# export PATH="$NPM_CONFIG_PREFIX/bin:$PATH";
 
 npm install -g npm --foreground-scripts 1>/dev/null
 npm install -g npm-check-updates --foreground-scripts 1>/dev/null
@@ -137,6 +137,8 @@ npm install -g npm-check-updates --foreground-scripts 1>/dev/null
 common = '''
 [[ ! -z "${FLX_VERBOSE}" ]] && echo "##################################################";
 [[ ! -z "${FLX_VERBOSE}" ]] && echo "########## FLOX PROFILE COMMON (${SHELL})...";
+
+export PATH="$NPM_CONFIG_PREFIX/bin:$PATH";
 
 alias lss='ls -alshF --color=auto'
 alias flx='flox activate'

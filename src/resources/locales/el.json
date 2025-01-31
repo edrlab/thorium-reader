@@ -69,9 +69,6 @@
     "emptyTagList": "Κανένα βιβλίο με ετικέτα.",
     "entry": {
       "continueReading": "Συνέχιση ανάγνωσης",
-      "continueReadingAudioBooks": "Συνέχιση ακρόασης",
-      "continueReadingDivina": "Συνέχιση divina",
-      "continueReadingPdf": "Συνέχιση PDF",
       "lastAdditions": "Πρόσφατη προσθήκη"
     },
     "export": "Αποθήκευση ως",
@@ -125,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Ακύρωση",
@@ -302,7 +301,7 @@
     "lcpStart": "Αρχή",
     "licenceLCP": "Άδεια χρήσης (LCP)",
     "licenseOutOfDate": "Η άδεια έχει λήξει",
-    "licenseSignatureDateInvalid": "Η ημερομηνία υπογραφής της άδειας είναι άκυρη",
+    "licenseCertificateDateInvalid": "Η ημερομηνία υπογραφής της άδειας είναι άκυρη",
     "licenseSignatureInvalid": "Η υπογραφή της άδειας είναι άκυρη",
     "licensed": "Με άδεια χρήσης",
     "markAsRead": "Σημείωση ως διαβασμένο",
@@ -343,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",

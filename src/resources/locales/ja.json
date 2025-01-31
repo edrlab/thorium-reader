@@ -69,9 +69,6 @@
     "emptyTagList": "タグがついた本はありません",
     "entry": {
       "continueReading": "読書にもどる",
-      "continueReadingAudioBooks": "再生を続ける",
-      "continueReadingDivina": "DiViNaを再開する",
-      "continueReadingPdf": "PDFを開きなおす",
       "lastAdditions": "最近追加したもの"
     },
     "export": "別の場所に保存",
@@ -125,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "キャンセル",
@@ -302,7 +301,7 @@
     "lcpStart": "開始",
     "licenceLCP": "ライセンス（LCP）",
     "licenseOutOfDate": "LCPライセンスの期限切れです",
-    "licenseSignatureDateInvalid": "LCPライセンスの署名の日付が無効です",
+    "licenseCertificateDateInvalid": "LCPライセンスの署名の日付が無効です",
     "licenseSignatureInvalid": "LCPライセンスの署名が無効です",
     "licensed": "ライセンスが付与されています",
     "markAsRead": "既読にする",
@@ -343,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",

@@ -69,9 +69,6 @@
     "emptyTagList": "No tens llibres etiquetats.",
     "entry": {
       "continueReading": "Reprendre lectura",
-      "continueReadingAudioBooks": "Reprendre reproducción",
-      "continueReadingDivina": "Reprendre divina",
-      "continueReadingPdf": "Rependre PDF",
       "lastAdditions": "Afegits recentment"
     },
     "export": "Exportar",
@@ -125,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Cancel·lar",
@@ -302,7 +301,7 @@
     "lcpStart": "Inici",
     "licenceLCP": "Llicència (LCP)",
     "licenseOutOfDate": "La llicència està desactualitzada",
-    "licenseSignatureDateInvalid": "La data de la firma de la llicència no és vàlida",
+    "licenseCertificateDateInvalid": "La data de la firma de la llicència no és vàlida",
     "licenseSignatureInvalid": "La firma de la llicència no és vàlida",
     "licensed": "Llicenciat",
     "markAsRead": "Marca com a llegit",
@@ -343,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",

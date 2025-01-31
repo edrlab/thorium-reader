@@ -69,9 +69,6 @@
     "emptyTagList": "არ გაქვს არცერთი იარლიყიანი ელ-წიგნი.",
     "entry": {
       "continueReading": "კითხვის გაგრძელება",
-      "continueReadingAudioBooks": "მოსმენის გაგრძელება",
-      "continueReadingDivina": "დივინას გაგრძელება",
-      "continueReadingPdf": "კითხვის გაგრძელება",
       "lastAdditions": "ახლახანს დამატებული"
     },
     "export": "გატანა",
@@ -125,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "გადაფიქრება",
@@ -302,7 +301,7 @@
     "lcpStart": "დაწყება",
     "licenceLCP": "",
     "licenseOutOfDate": "ლიცენზია მოძველდა",
-    "licenseSignatureDateInvalid": "ლიცენზიის ხელმოწერის თარიღი არასწორია",
+    "licenseCertificateDateInvalid": "ლიცენზიის ხელმოწერის თარიღი არასწორია",
     "licenseSignatureInvalid": "ლიცენზიის ხელმოწერა არასწორია",
     "licensed": "",
     "markAsRead": "",
@@ -343,6 +342,7 @@
         "red": "",
         "yellow": ""
       },
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",

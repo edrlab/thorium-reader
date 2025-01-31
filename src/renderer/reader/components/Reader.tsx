@@ -31,7 +31,7 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 import { ok } from "readium-desktop/common/utils/assert";
 import { formatTime } from "readium-desktop/common/utils/time";
 import {
-    _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
+    _APP_NAME, _APP_VERSION, _DIST_RELATIVE_URL, _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 import * as DoubleArrowDownIcon from "readium-desktop/renderer/assets/icons/double_arrow_down_black_24dp.svg";
 import * as DoubleArrowLeftIcon from "readium-desktop/renderer/assets/icons/double_arrow_left_black_24dp.svg";
@@ -2218,25 +2218,39 @@ class Reader extends React.Component<IProps, IState> {
             });
 
         } else {
-            let preloadPath = "preload.js";
+
+            // (global as any).__dirname
+            // BROKEN when index_reader.js is not served via file://
+            // ... so instead window.location.href provides dist/index_reader.html which is co-located:
+            // path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..")) etc.
+
+            const PREPATH = "preload.js";
+            let preloadPath = PREPATH;
             if (_PACKAGING === "1") {
-                preloadPath = "file://" + path.normalize(path.join((global as any).__dirname, preloadPath));
+                preloadPath = "file://" + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", PREPATH)).replace(/\\/g, "/");
             } else {
                 preloadPath = "r2-navigator-js/dist/" +
                     "es8-es2017" +
                     "/src/electron/renderer/webview/preload.js";
 
-                if (_RENDERER_READER_BASE_URL === "file://") {
+                if (_RENDERER_READER_BASE_URL === "filex://host/") {
                     // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-                    preloadPath = "file://" +
-                        path.normalize(path.join((global as any).__dirname, _NODE_MODULE_RELATIVE_URL, preloadPath));
+                    preloadPath = "file://" + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", PREPATH)).replace(/\\/g, "/");
+
+                    // preloadPath = "file://" + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", _NODE_MODULE_RELATIVE_URL, preloadPath)).replace(/\\/g, "/");
+
+                    // const debugStr = `[[READER.TSX ${preloadPath} >>> ${window.location.href} *** ${window.location.pathname} === ${process.cwd()} ^^^ ${(global as any).__dirname} --- ${_NODE_MODULE_RELATIVE_URL} @@@ ${preloadPath}]]`;
+                    // if (document.body.firstElementChild) {
+                    //     document.body.innerText = debugStr;
+                    // } else {
+                    //     document.body.innerText += debugStr;
+                    // }
                 } else {
                     // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
-                    preloadPath = "file://" + path.normalize(path.join(process.cwd(), "node_modules", preloadPath));
+                    preloadPath = "file://" + path.normalize(path.join(process.cwd(), "node_modules", preloadPath)).replace(/\\/g, "/");
                 }
             }
 
-            preloadPath = preloadPath.replace(/\\/g, "/");
             const locator = this.props.locator?.locator?.href ? this.props.locator.locator : undefined;
             installNavigatorDOM(
                 this.props.r2Publication,
