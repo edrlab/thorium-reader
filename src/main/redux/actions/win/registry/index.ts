@@ -7,10 +7,8 @@
 
 import * as registerReaderPublication from "./registerReaderPublication";
 import * as unregisterReaderPublication from "./unregisterReaderPublication";
-import * as addAnnotationToReaderPublication from "./addAnnotationToReaderPublication";
 
 export {
     registerReaderPublication,
     unregisterReaderPublication,
-    addAnnotationToReaderPublication,
 };

@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import * as debug_ from "debug";
 import { BrowserWindow, Event, HandlerDetails, shell } from "electron";
 import * as path from "path";
@@ -78,15 +79,20 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         libWindow.hide();
     }
 
+    // const baseURLForDataURL: string | undefined = undefined;
+    // let httpReferrer: string | undefined;
     let rendererBaseUrl = _RENDERER_LIBRARY_BASE_URL;
-    if (rendererBaseUrl === "file://") {
+    const htmlPath = "index_library.html";
+    if (rendererBaseUrl === "filex://host/") {
         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-        rendererBaseUrl += path.normalize(path.join(__dirname, "index_library.html"));
+        rendererBaseUrl += path.normalize(path.join(__dirname, htmlPath)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
+        // baseURLForDataURL = rendererBaseUrl; // + "/../";
+        // httpReferrer = rendererBaseUrl; // + "/../";
     } else {
         // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
-        rendererBaseUrl += "index_library.html";
+        rendererBaseUrl += htmlPath;
+        rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
     }
-    rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
 
     if (true) { // IS_DEV
 
@@ -128,7 +134,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         }
     }
 
-    yield* callTyped(() => libWindow.loadURL(rendererBaseUrl));
+    yield* callTyped(() => libWindow.loadURL(rendererBaseUrl /*, {baseURLForDataURL, httpReferrer} */));
     // the promise will resolve when the page has finished loading (see did-finish-load)
     // and rejects if the page fails to load (see did-fail-load).
 

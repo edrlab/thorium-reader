@@ -192,7 +192,22 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
 
             // Failed :
 
-            ok(data.isSuccess, `message: ${statusMessage} | url: ${baseUrl} | type: ${_contentType} | code: ${+isFailure}${+isNetworkError}${+isAbort}${+isTimeout}`);
+            if (!data.isSuccess) {
+                // example:
+                // 'Bearer error="insufficient_access", error_description="The user represented by the token is not allowed to perform the requested action.", error_uri="https://documentation.openiddict.com/errors/ID2095"'
+                data.response?.headers.forEach((value, key) => {
+                    debug(`HTTP RESPONSE HEADER '${key}' ==> '${value}'`);
+                });
+                const wwwAuthenticate = data.response?.headers.get("WWW-Authenticate");
+                if (wwwAuthenticate) {
+                    console.log("www-authenticate:", data.response?.headers.get("WWW-Authenticate")); // case-insensitve (actual "www-authenticate")
+                    if (wwwAuthenticate.startsWith("Bearer") && wwwAuthenticate.includes("error=")) {
+                        throw new Error(`www-authenticate ERROR: ${data.statusCode}/${statusMessage} -- ${wwwAuthenticate} (${baseUrl})`);
+                    }
+                }
+            }
+
+            ok(data.isSuccess, `message: ${data.statusCode}/${statusMessage} | url: ${baseUrl} | type: ${_contentType} | code: ${+isFailure}${+isNetworkError}${+isAbort}${+isTimeout}`);
 
             debug(`unknown url content-type : ${baseUrl} - ${contentType}`);
             throw new Error(

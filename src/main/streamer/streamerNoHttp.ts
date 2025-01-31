@@ -44,7 +44,7 @@ import {
     computeReadiumCssJsonMessageInStreamer, MATHJAX_FILE_PATH, MATHJAX_URL_PATH,
     READIUMCSS_FILE_PATH, setupMathJaxTransformer,
 } from "./streamerCommon";
-import { OPDS_MEDIA_SCHEME } from "readium-desktop/main/redux/sagas/getEventChannel";
+// import { OPDS_MEDIA_SCHEME } from "readium-desktop/main/redux/sagas/getEventChannel";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 
@@ -1139,27 +1139,68 @@ export function initSessions() {
     protocol.registerSchemesAsPrivileged([
         // HACK!! TODO: FIXME (Electron lifecycle requires this before app.ready, and called only once!)
         // see src/main/redux/sagas/getEventChannel.ts
-    {
-        privileges: {
-            allowServiceWorkers: false, // Default false
-            bypassCSP: true, // Default false
-            corsEnabled: false, // Default false
-            secure: true, // Default false
-            standard: false, // Default false
-            stream: true, // Default false
-            supportFetchAPI: false, // Default false
-        },
-        scheme: OPDS_MEDIA_SCHEME,
-    },
+    // {
+    //     privileges: {
+    //         allowServiceWorkers: false, // Default false
+    //         bypassCSP: false, // Default false
+    //         corsEnabled: false, // Default false
+    //         secure: false, // Default false
+    //         stream: false, // Default false
+    //         supportFetchAPI: false, // Default false
+    //         standard: false, // Default false
+    //         codeCache: false, // Default false (only works with standard=true)
+    //     },
+    //     scheme: "store",
+    // },
+    // {
+    //     privileges: {
+    //         allowServiceWorkers: false, // Default false
+    //         bypassCSP: false, // Default false
+    //         corsEnabled: false, // Default false
+    //         secure: false, // Default false
+    //         stream: false, // Default false
+    //         supportFetchAPI: false, // Default false
+    //         standard: false, // Default false
+    //         codeCache: false, // Default false (only works with standard=true)
+    //     },
+    //     scheme: "filex",
+    // },
+    // {
+    //     privileges: {
+    //         allowServiceWorkers: false, // Default false
+    //         bypassCSP: false, // Default false
+    //         corsEnabled: false, // Default false
+    //         secure: false, // Default false
+    //         stream: false, // Default false
+    //         supportFetchAPI: false, // Default false
+    //         standard: false, // Default false
+    //         codeCache: false, // Default false (only works with standard=true)
+    //     },
+    //     scheme: "pdfjs-extract",
+    // },
+    // {
+    //     privileges: {
+    //         allowServiceWorkers: false, // Default false
+    //         bypassCSP: false, // Default false
+    //         corsEnabled: false, // Default false
+    //         secure: false, // Default false
+    //         stream: false, // Default false
+    //         supportFetchAPI: false, // Default false
+    //         standard: false, // Default false
+    //         codeCache: false, // Default false (only works with standard=true)
+    //     },
+    //     scheme: OPDS_MEDIA_SCHEME, // TODO: what about OPDS_AUTH_SCHEME?
+    // },
     {
         privileges: {
             allowServiceWorkers: false,
             bypassCSP: false,
             corsEnabled: true,
             secure: true,
-            standard: true,
             stream: true,
             supportFetchAPI: true,
+            standard: true, // Default false
+            codeCache: false, // Default false (only works with standard=true)
         },
         scheme: THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
     }, {
@@ -1168,9 +1209,10 @@ export function initSessions() {
             bypassCSP: false,
             corsEnabled: true,
             secure: true,
-            standard: true,
             stream: true,
             supportFetchAPI: true,
+            standard: true, // Default false
+            codeCache: false, // Default false (only works with standard=true)
         },
         scheme: READIUM2_ELECTRON_HTTP_PROTOCOL,
     }]);

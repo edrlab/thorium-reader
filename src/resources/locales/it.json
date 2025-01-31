@@ -68,9 +68,6 @@
     "emptyTagList": "Non hai nessuna pubblicazione taggata.",
     "entry": {
       "continueReading": "Continua a leggere",
-      "continueReadingAudioBooks": "Continua ad ascoltare",
-      "continueReadingDivina": "Continua a leggere divina",
-      "continueReadingPdf": "Continua a leggere Pdf",
       "lastAdditions": "Aggiunti di recente"
     },
     "export": "Esporta",
@@ -124,12 +121,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Annulla",
@@ -301,7 +300,7 @@
     "lcpStart": "Inizio",
     "licenceLCP": "Licenza (LCP)",
     "licenseOutOfDate": "La licenza è scaduta",
-    "licenseSignatureDateInvalid": "La data della firma della licenza non è valida",
+    "licenseCertificateDateInvalid": "La data della firma della licenza non è valida",
     "licenseSignatureInvalid": "La firma della licenza non è valida",
     "licensed": "Concesso in licenza",
     "markAsRead": "Segna come letto",
@@ -342,6 +341,7 @@
         "red": "",
         "yellow": ""
       },
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",

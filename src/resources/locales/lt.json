@@ -68,9 +68,6 @@
     "emptyTagList": "Nėra leidinių, turinčių žymių",
     "entry": {
       "continueReading": "Skaityti toliau",
-      "continueReadingAudioBooks": "Klausyti toliau",
-      "continueReadingDivina": "Skaityti divina toliau",
-      "continueReadingPdf": "Skaityti PDF toliau",
       "lastAdditions": "Paskiausiai pridėti"
     },
     "export": "Eksportuoti",
@@ -124,12 +121,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "{{- author}}",
+      "descCreator": "",
       "descList": "{{- nb}} pastaba(-os, -ų), kurias sukūrė {{- creator}}, bus susietos su {{- author}} leidiniu {{- title}}",
       "descNewer": "{{- nb}} naujesnė(-s, -ių) šių pastabų versija(-os, -ų) jau susieta(-os) su leidiniu.",
       "descOlder": "{{- nb}} senesnė(-s, -ių) šių pastabų versija(-os, -ų) jau susieta(-os) su leidiniu.",
       "descTitle": "Pastabų rinkinio pavadinimas:",
       "importAll": "Importuoti visas pastabas",
       "importWithoutConflict": "Importuoti pastabas, neturinčias konfliktų",
+      "origin": "",
       "title": "Ar norite importuoti šias pastabas?"
     },
     "cancel": "Nutraukti",
@@ -301,7 +300,7 @@
     "lcpStart": "Pradžia",
     "licenceLCP": "Licencija (LCP)",
     "licenseOutOfDate": "Licencijos galiojimas pasibaigęs",
-    "licenseSignatureDateInvalid": "Negaliojanti licencijos parašo data",
+    "licenseCertificateDateInvalid": "Negaliojanti licencijos parašo data",
     "licenseSignatureInvalid": "Negaliojantis licencijos parašas",
     "licensed": "Licencijuotas",
     "markAsRead": "Žymėti kaip perskaitytą",
@@ -342,6 +341,7 @@
         "red": "Raudona",
         "yellow": "Geltona"
       },
+      "export": "",
       "filter": {
         "all": "Visos",
         "filterByColor": "Filtruoti pagal spalvą",

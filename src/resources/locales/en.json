@@ -68,15 +68,12 @@
     "emptyTagList": "No tagged publications.",
     "entry": {
       "continueReading": "Resume reading",
-      "continueReadingAudioBooks": "Resume listening",
-      "continueReadingDivina": "Resume divina",
-      "continueReadingPdf": "Resume PDF",
       "lastAdditions": "Recently added"
     },
     "export": "Save as",
-    "exportAnnotation": "Save annotation as",
+    "exportAnnotation": "Export notes...",
     "format": "Format",
-    "importAnnotation": "Import annotation",
+    "importAnnotation": "Import notes",
     "lang": "Language",
     "lastRead": "Last Read",
     "moreInfo": "Publication Details",
@@ -123,18 +120,20 @@
   },
   "dialog": {
     "annotations": {
-      "descAuthor": "of {{- author}}",
-      "descList": "{{- nb}} note(s) from {{- creator}} will be associated with {{- title}} {{- author}}",
-      "descNewer": "{{- nb}} newer versions of these notes are already associated with the publication.",
-      "descOlder": "{{- nb}} older versions of these notes are already associated with the publication.",
-      "descTitle": "Annotation Set Title: ",
+      "descAuthor": "by '{{- author}}'",
+      "descCreator": "created by",
+      "descList": "{{- nb}} note(s) {{- creator}} will be imported into '{{- title}}' {{- author}}",
+      "descNewer": "Conflict(s): {{- nb}} newer note(s)",
+      "descOlder": "Conflict(s): {{- nb}} older notes(s)",
+      "descTitle": "Annotations title: ",
       "importAll": "Import all notes",
-      "importWithoutConflict": "Import notes without conflict",
-      "title": "Do you want to import these notes ?"
+      "importWithoutConflict": "Import only conflict-free notes",
+      "origin": "Origin publication: '{{- title}}' {{- author}}",
+      "title": "Import notes?"
     },
     "cancel": "Cancel",
     "deleteAnnotations": "Delete annotations?",
-    "deleteAnnotationsText": "Do you want to delete {{- annotationListLength}} annotation(s)?",
+    "deleteAnnotationsText": "Are you sure you want to delete {{- annotationListLength}} note(s)?",
     "deleteFeed": "Delete catalog?",
     "deletePublication": "Delete publication?",
     "import": "Confirm import:",
@@ -181,12 +180,12 @@
   },
   "message": {
     "annotations": {
-      "alreadyImported": "All annotations already imported, aborting the importation",
-      "emptyFile": "No annotations available in the file",
-      "errorParsing": "Error file format parsing: ",
-      "noBelongTo": "Unable to import annotations set, at least one annotation does not belong to the publication",
-      "nothing": "There are no annotations ready to be imported, aborting the importation",
-      "success": "Success !"
+      "alreadyImported": "All notes are already imported.",
+      "emptyFile": "No notes available in the file.",
+      "errorParsing": "Error during file parsing: ",
+      "noBelongTo": "Unable to import notes, at least one note does not belong to the publication.",
+      "nothing": "There is no note ready to be imported, aborting the import",
+      "success": "Import completed successfully."
     },
     "download": {
       "error": "Downloading [{{- title}}] failed: [{{- err}}]"
@@ -301,7 +300,7 @@
     "lcpStart": "Start",
     "licenceLCP": "License (LCP)",
     "licenseOutOfDate": "Out of date LCP License.",
-    "licenseSignatureDateInvalid": "Invalid LCP license signature date.",
+    "licenseCertificateDateInvalid": "Expired LCP provider certificate.",
     "licenseSignatureInvalid": "Invalid LCP license signature.",
     "licensed": "Licensed",
     "markAsRead": "Mark as read",
@@ -328,10 +327,10 @@
       "addNote": "Annotate",
       "advancedMode": "Instant mode (auto create after select)",
       "annotationsExport": {
-        "description": "Name this set of annotations",
+        "description": "Name the exported notes:",
         "title": "Title"
       },
-      "annotationsOptions": "Options",
+      "annotationsOptions": "Annotation Options",
       "colors": {
         "bluegreen": "Blue-green",
         "cyan": "Cyan",
@@ -342,11 +341,12 @@
         "red": "Red",
         "yellow": "Yellow"
       },
+      "export": "Save notes as...",
       "filter": {
         "all": "All",
         "filterByColor": "Filter by Color",
         "filterByCreator": "Filter by Creator",
-        "filterByDrawtype": "Filter by Drawtype",
+        "filterByDrawtype": "Filter by Type",
         "filterByTag": "Filter by Tag",
         "filterOptions": "Filter Options",
         "none": "None"
@@ -483,7 +483,7 @@
         "reset": "Reset your preferred reading parameters.",
         "resetDetails": "Reset your preferred reading parameters to their default values.",
         "save": "Save your preferred reading parameters.",
-        "saveDetails": "ave the changes made to the current book's formatting and display choices. These settings can be applied to other books, once opened, by clicking on the button below.",
+        "saveDetails": "Save the changes made to the current book's formatting and display choices. These settings can be applied to other books, once opened, by clicking on the button below.",
         "title": "Preferences"
       },
       "preview": "Preview",
@@ -554,8 +554,8 @@
       "languageChoice": "Language"
     },
     "library": {
-      "enableAPIAPP": "Activate access to Dilicom PNB API",
-      "title": "Add a library account"
+      "enableAPIAPP": "Activate access to the French library system (PNB)",
+      "title": "Add a French library account"
     },
     "session": {
       "title": "Save session"
@@ -580,7 +580,7 @@
       "next": "Next"
     },
     "description": {
-      "annotations": "Highlight document text, choose style and color, attach personal notes. Create annotations in 'quick' mode to bypass the editor (you can enter text and customize styles later). For extra speed, use the 'instant' mode which creates annotations immediately after highlighting document text!",
+      "annotations": "Highlight document text, choose style and color, attach personal notes. Create annotations in 'quick' mode to bypass the editor (you can enter text and customize styles later). For extra speed, use the 'instant' mode which creates notes immediately after highlighting document text!",
       "catalogs": "Borrow publications from your local library or discover publications via OPDS feeds. Access a variety of publications from multiple sources thanks to online catalogs.",
       "home": "Thorium looks different! Let's discover what's new...",
       "readingView1": "Customize your reading and listening preferences: Thorium now offers multiple color themes for both the user interface and publication documents. It is now also easier to configure 'readaloud' ebooks with synthetic speech and synchronized text/audio narration.",

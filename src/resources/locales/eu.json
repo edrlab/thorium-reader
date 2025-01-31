@@ -68,9 +68,6 @@
     "emptyTagList": "Ez duzu libururik etiketatuta.",
     "entry": {
       "continueReading": "Berrabiarazi irakurketa",
-      "continueReadingAudioBooks": "Berrabiarazi erreprodukzioa",
-      "continueReadingDivina": "Berriabiazi Divina",
-      "continueReadingPdf": "PDF berrabiarazi",
       "lastAdditions": "Berriki gehitutakoak"
     },
     "export": "Esportatu",
@@ -124,12 +121,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Ezeztatu",
@@ -301,7 +300,7 @@
     "lcpStart": "Hasiera",
     "licenceLCP": "Lizentzia (LCP)",
     "licenseOutOfDate": "Lizentzia ez dago eguneratuta",
-    "licenseSignatureDateInvalid": "Lizentzia-sinaduraren data ez da baliozkoa",
+    "licenseCertificateDateInvalid": "Lizentzia-sinaduraren data ez da baliozkoa",
     "licenseSignatureInvalid": "Lizentziaren sinadura ez da baliozkoa",
     "licensed": "Lizentziarekin",
     "markAsRead": "Markatu irakurritako gisa",
@@ -342,6 +341,7 @@
         "red": "",
         "yellow": ""
       },
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",

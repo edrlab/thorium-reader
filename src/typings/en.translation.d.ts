@@ -119,9 +119,6 @@ declare namespace typed_i18n {
   readonly "emptyTagList": string,
   readonly "entry": {
     readonly "continueReading": string,
-    readonly "continueReadingAudioBooks": string,
-    readonly "continueReadingDivina": string,
-    readonly "continueReadingPdf": string,
     readonly "lastAdditions": string
   },
   readonly "export": string,
@@ -192,17 +189,8 @@ declare namespace typed_i18n {
   (_: "catalog.deleteTag", __?: {}): string;
   (_: "catalog.description", __?: {}): string;
   (_: "catalog.emptyTagList", __?: {}): string;
-  (_: "catalog.entry", __?: {}): {
-  readonly "continueReading": string,
-  readonly "continueReadingAudioBooks": string,
-  readonly "continueReadingDivina": string,
-  readonly "continueReadingPdf": string,
-  readonly "lastAdditions": string
-};
+  (_: "catalog.entry", __?: {}): { readonly "continueReading": string, readonly "lastAdditions": string };
   (_: "catalog.entry.continueReading", __?: {}): string;
-  (_: "catalog.entry.continueReadingAudioBooks", __?: {}): string;
-  (_: "catalog.entry.continueReadingDivina", __?: {}): string;
-  (_: "catalog.entry.continueReadingPdf", __?: {}): string;
   (_: "catalog.entry.lastAdditions", __?: {}): string;
   (_: "catalog.export", __?: {}): string;
   (_: "catalog.exportAnnotation", __?: {}): string;
@@ -304,12 +292,14 @@ declare namespace typed_i18n {
   (_: "dialog", __?: {}): {
   readonly "annotations": {
     readonly "descAuthor": string,
+    readonly "descCreator": string,
     readonly "descList": string,
     readonly "descNewer": string,
     readonly "descOlder": string,
     readonly "descTitle": string,
     readonly "importAll": string,
     readonly "importWithoutConflict": string,
+    readonly "origin": string,
     readonly "title": string
   },
   readonly "cancel": string,
@@ -325,21 +315,25 @@ declare namespace typed_i18n {
 };
   (_: "dialog.annotations", __?: {}): {
   readonly "descAuthor": string,
+  readonly "descCreator": string,
   readonly "descList": string,
   readonly "descNewer": string,
   readonly "descOlder": string,
   readonly "descTitle": string,
   readonly "importAll": string,
   readonly "importWithoutConflict": string,
+  readonly "origin": string,
   readonly "title": string
 };
   (_: "dialog.annotations.descAuthor", __?: {}): string;
+  (_: "dialog.annotations.descCreator", __?: {}): string;
   (_: "dialog.annotations.descList", __?: {}): string;
   (_: "dialog.annotations.descNewer", __?: {}): string;
   (_: "dialog.annotations.descOlder", __?: {}): string;
   (_: "dialog.annotations.descTitle", __?: {}): string;
   (_: "dialog.annotations.importAll", __?: {}): string;
   (_: "dialog.annotations.importWithoutConflict", __?: {}): string;
+  (_: "dialog.annotations.origin", __?: {}): string;
   (_: "dialog.annotations.title", __?: {}): string;
   (_: "dialog.cancel", __?: {}): string;
   (_: "dialog.deleteAnnotations", __?: {}): string;
@@ -620,7 +614,7 @@ declare namespace typed_i18n {
   readonly "lcpStart": string,
   readonly "licenceLCP": string,
   readonly "licenseOutOfDate": string,
-  readonly "licenseSignatureDateInvalid": string,
+  readonly "licenseCertificateDateInvalid": string,
   readonly "licenseSignatureInvalid": string,
   readonly "licensed": string,
   readonly "markAsRead": string,
@@ -733,7 +727,7 @@ declare namespace typed_i18n {
   (_: "publication.lcpStart", __?: {}): string;
   (_: "publication.licenceLCP", __?: {}): string;
   (_: "publication.licenseOutOfDate", __?: {}): string;
-  (_: "publication.licenseSignatureDateInvalid", __?: {}): string;
+  (_: "publication.licenseCertificateDateInvalid", __?: {}): string;
   (_: "publication.licenseSignatureInvalid", __?: {}): string;
   (_: "publication.licensed", __?: {}): string;
   (_: "publication.markAsRead", __?: {}): string;
@@ -772,6 +766,7 @@ declare namespace typed_i18n {
       readonly "red": string,
       readonly "yellow": string
     },
+    readonly "export": string,
     readonly "filter": {
       readonly "all": string,
       readonly "filterByColor": string,
@@ -934,6 +929,7 @@ declare namespace typed_i18n {
   readonly "tts": {
     readonly "activate": string,
     readonly "default": string,
+    readonly "language": string,
     readonly "next": string,
     readonly "pause": string,
     readonly "play": string,
@@ -942,8 +938,7 @@ declare namespace typed_i18n {
     readonly "sentenceDetectDescription": string,
     readonly "speed": string,
     readonly "stop": string,
-    readonly "voice": string,
-    readonly "language": string
+    readonly "voice": string
   }
 };
   (_: "reader.annotations", __?: {}): {
@@ -965,6 +960,7 @@ declare namespace typed_i18n {
     readonly "red": string,
     readonly "yellow": string
   },
+  readonly "export": string,
   readonly "filter": {
     readonly "all": string,
     readonly "filterByColor": string,
@@ -1018,6 +1014,7 @@ declare namespace typed_i18n {
   (_: "reader.annotations.colors.purple", __?: {}): string;
   (_: "reader.annotations.colors.red", __?: {}): string;
   (_: "reader.annotations.colors.yellow", __?: {}): string;
+  (_: "reader.annotations.export", __?: {}): string;
   (_: "reader.annotations.filter", __?: {}): {
   readonly "all": string,
   readonly "filterByColor": string,
@@ -1375,6 +1372,7 @@ declare namespace typed_i18n {
   (_: "reader.tts", __?: {}): {
   readonly "activate": string,
   readonly "default": string,
+  readonly "language": string,
   readonly "next": string,
   readonly "pause": string,
   readonly "play": string,
@@ -1383,11 +1381,11 @@ declare namespace typed_i18n {
   readonly "sentenceDetectDescription": string,
   readonly "speed": string,
   readonly "stop": string,
-  readonly "voice": string,
-  readonly "language": string
+  readonly "voice": string
 };
   (_: "reader.tts.activate", __?: {}): string;
   (_: "reader.tts.default", __?: {}): string;
+  (_: "reader.tts.language", __?: {}): string;
   (_: "reader.tts.next", __?: {}): string;
   (_: "reader.tts.pause", __?: {}): string;
   (_: "reader.tts.play", __?: {}): string;
@@ -1397,7 +1395,6 @@ declare namespace typed_i18n {
   (_: "reader.tts.speed", __?: {}): string;
   (_: "reader.tts.stop", __?: {}): string;
   (_: "reader.tts.voice", __?: {}): string;
-  (_: "reader.tts.language", __?: {}): string;
   (_: "settings", __?: {}): {
   readonly "annotationCreator": {
     readonly "creator": string,

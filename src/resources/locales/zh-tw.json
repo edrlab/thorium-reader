@@ -68,9 +68,6 @@
     "emptyTagList": "尚無帶標籤電子書",
     "entry": {
       "continueReading": "繼續閱讀",
-      "continueReadingAudioBooks": "繼續聽讀",
-      "continueReadingDivina": "繼續閱讀 divina",
-      "continueReadingPdf": "繼續閱讀 PDF",
       "lastAdditions": "最近添加"
     },
     "export": "匯出",
@@ -124,12 +121,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "取消",
@@ -301,7 +300,7 @@
     "lcpStart": "開始",
     "licenceLCP": "授權（LCP）",
     "licenseOutOfDate": "授權過期",
-    "licenseSignatureDateInvalid": "授權簽名日期無效",
+    "licenseCertificateDateInvalid": "授權簽名日期無效",
     "licenseSignatureInvalid": "授權簽名無效",
     "licensed": "已授權",
     "markAsRead": "標記為已讀",
@@ -342,6 +341,7 @@
         "red": "",
         "yellow": ""
       },
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",
