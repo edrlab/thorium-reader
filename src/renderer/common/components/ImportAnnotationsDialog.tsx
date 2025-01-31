@@ -69,10 +69,10 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{ winId: 
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.annotations.title")}</AlertDialog.Title>
                     <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription} style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
                         <span>{originTitle ? __("dialog.annotations.origin", { title: originTitle, author: originCreator ? __("dialog.annotations.descAuthor", { author: originCreator }) : "" }) : ""}</span>
-                        <span>{title ? `${__("dialog.annotations.descTitle")}${title}` : ""}</span>
+                        <span>{title ? `${__("dialog.annotations.descTitle")}'${title}'` : ""}</span>
                         <span>{annotationsList.length ? __("dialog.annotations.descList", {
                             nb: annotationsList.length,
-                            creator: creatorNameList.length ? `${__("dialog.annotations.descCreator")} ${creatorNameList.join(", ")}` : "", // TODO i18n
+                            creator: creatorNameList.length ? `${__("dialog.annotations.descCreator")} '${creatorNameList.join(", ")}'` : "", // TODO i18n
                             title: publicationTitle,
                             author: authors[0] ? __("dialog.annotations.descAuthor", { author: authors[0] }) : "",
                         }) : <></>}</span>

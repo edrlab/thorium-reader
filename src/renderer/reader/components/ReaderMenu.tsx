@@ -1135,7 +1135,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                                 }
                                                 return anno;
                                             });
-                                            const title = annotationTitleRef?.current.value || "myAnnotationsSet";
+                                            const title = annotationTitleRef?.current.value || "thorium-reader";
                                             let label = title;
                                             label = label.trim();
                                             label = label.replace(/[^a-z0-9_-]/gi, "_");
