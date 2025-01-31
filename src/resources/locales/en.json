@@ -342,6 +342,7 @@
         "red": "Red",
         "yellow": "Yellow"
       },
+      "date": "Modification date",
       "export": "Save notes as...",
       "filter": {
         "all": "All",

@@ -771,6 +771,7 @@ declare namespace typed_i18n {
       readonly "red": string,
       readonly "yellow": string
     },
+    readonly "date": string,
     readonly "export": string,
     readonly "filter": {
       readonly "all": string,
@@ -970,6 +971,7 @@ declare namespace typed_i18n {
     readonly "red": string,
     readonly "yellow": string
   },
+  readonly "date": string,
   readonly "export": string,
   readonly "filter": {
     readonly "all": string,
@@ -1025,6 +1027,7 @@ declare namespace typed_i18n {
   (_: "reader.annotations.colors.purple", __?: {}): string;
   (_: "reader.annotations.colors.red", __?: {}): string;
   (_: "reader.annotations.colors.yellow", __?: {}): string;
+  (_: "reader.annotations.date", __?: {}): string;
   (_: "reader.annotations.export", __?: {}): string;
   (_: "reader.annotations.filter", __?: {}): {
   readonly "all": string,
