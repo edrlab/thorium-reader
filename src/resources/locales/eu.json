@@ -34,6 +34,7 @@
             "no": "Ez",
             "yes": "Bai"
           },
+          "help": "",
           "message": "Saioa gorde nahi duzu?",
           "title": "Gorde saioa"
         }
@@ -531,12 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Autentifikazio-datuak garbitzea"
     },

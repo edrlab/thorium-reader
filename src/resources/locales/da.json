@@ -34,6 +34,7 @@
             "no": "Nej",
             "yes": "Ja"
           },
+          "help": "",
           "message": "Ønsker du at gemme denne session?",
           "title": "Gem session"
         }
@@ -529,12 +530,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "Opretter",
+      "help": "",
       "name": "Navn",
       "organization": "Organisation",
       "person": "Person",
       "type": "Type:"
     },
     "auth": {
+      "help": "",
       "title": "Administrér adgang til kataloger",
       "wipeData": "Nulstil login-data"
     },

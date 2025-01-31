@@ -34,6 +34,7 @@
             "no": "Ei",
             "yes": "Kyllä"
           },
+          "help": "",
           "message": "Haluatko tallentaa istunnon?",
           "title": "Tallenna istunto"
         }
@@ -531,12 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Poista kirjautumistiedot"
     },

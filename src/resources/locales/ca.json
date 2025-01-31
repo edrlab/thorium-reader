@@ -34,6 +34,7 @@
             "no": "No",
             "yes": "Sí"
           },
+          "help": "",
           "message": "Vols guardar la sessió?",
           "title": "Guardar sessió"
         }
@@ -531,12 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Netejar dades d'autenticació"
     },

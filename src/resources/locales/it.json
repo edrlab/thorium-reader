@@ -34,6 +34,7 @@
             "no": "No",
             "yes": "Sì"
           },
+          "help": "",
           "message": "Vuoi salvare la sessione ?",
           "title": "Salva la sessione"
         }
@@ -531,12 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "Creatore",
+      "help": "",
       "name": "Nome",
       "organization": "Organizzazione",
       "person": "Persona",
       "type": "Tipo:"
     },
     "auth": {
+      "help": "",
       "title": "Gestire l'accesso ai cataloghi",
       "wipeData": "Elimina dati di autenticazione"
     },

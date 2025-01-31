@@ -44,6 +44,7 @@ declare namespace typed_i18n {
     readonly "exit": {
       readonly "askBox": {
         readonly "button": { readonly "no": string, readonly "yes": string },
+        readonly "help": string,
         readonly "message": string,
         readonly "title": string
       }
@@ -73,6 +74,7 @@ declare namespace typed_i18n {
   readonly "exit": {
     readonly "askBox": {
       readonly "button": { readonly "no": string, readonly "yes": string },
+      readonly "help": string,
       readonly "message": string,
       readonly "title": string
     }
@@ -81,18 +83,21 @@ declare namespace typed_i18n {
   (_: "app.session.exit", __?: {}): {
   readonly "askBox": {
     readonly "button": { readonly "no": string, readonly "yes": string },
+    readonly "help": string,
     readonly "message": string,
     readonly "title": string
   }
 };
   (_: "app.session.exit.askBox", __?: {}): {
   readonly "button": { readonly "no": string, readonly "yes": string },
+  readonly "help": string,
   readonly "message": string,
   readonly "title": string
 };
   (_: "app.session.exit.askBox.button", __?: {}): { readonly "no": string, readonly "yes": string };
   (_: "app.session.exit.askBox.button.no", __?: {}): string;
   (_: "app.session.exit.askBox.button.yes", __?: {}): string;
+  (_: "app.session.exit.askBox.help", __?: {}): string;
   (_: "app.session.exit.askBox.message", __?: {}): string;
   (_: "app.session.exit.askBox.title", __?: {}): string;
   (_: "app.update", __?: {}): { readonly "message": string, readonly "title": string };
@@ -1398,12 +1403,17 @@ declare namespace typed_i18n {
   (_: "settings", __?: {}): {
   readonly "annotationCreator": {
     readonly "creator": string,
+    readonly "help": string,
     readonly "name": string,
     readonly "organization": string,
     readonly "person": string,
     readonly "type": string
   },
-  readonly "auth": { readonly "title": string, readonly "wipeData": string },
+  readonly "auth": {
+    readonly "help": string,
+    readonly "title": string,
+    readonly "wipeData": string
+  },
   readonly "keyboard": {
     readonly "advancedMenu": string,
     readonly "cancel": string,
@@ -1435,17 +1445,24 @@ declare namespace typed_i18n {
 };
   (_: "settings.annotationCreator", __?: {}): {
   readonly "creator": string,
+  readonly "help": string,
   readonly "name": string,
   readonly "organization": string,
   readonly "person": string,
   readonly "type": string
 };
   (_: "settings.annotationCreator.creator", __?: {}): string;
+  (_: "settings.annotationCreator.help", __?: {}): string;
   (_: "settings.annotationCreator.name", __?: {}): string;
   (_: "settings.annotationCreator.organization", __?: {}): string;
   (_: "settings.annotationCreator.person", __?: {}): string;
   (_: "settings.annotationCreator.type", __?: {}): string;
-  (_: "settings.auth", __?: {}): { readonly "title": string, readonly "wipeData": string };
+  (_: "settings.auth", __?: {}): {
+  readonly "help": string,
+  readonly "title": string,
+  readonly "wipeData": string
+};
+  (_: "settings.auth.help", __?: {}): string;
   (_: "settings.auth.title", __?: {}): string;
   (_: "settings.auth.wipeData", __?: {}): string;
   (_: "settings.keyboard", __?: {}): {

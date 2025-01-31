@@ -34,6 +34,7 @@
             "no": "Non",
             "yes": "Oui"
           },
+          "help": "Si cette case est cochée, les livres actuellement ouverts seront automatiquement ouverts au prochain démarrage de l'application.",
           "message": "Voulez-vous sauvegarder la session ?",
           "title": "Sauvegarder la session"
         }
@@ -531,12 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "Créateur",
+      "help": "Il sera utilisé comme créateur des notes que vous pouvez exporter.",
       "name": "Nom",
       "organization": "Organisation",
       "person": "Personne",
       "type": "Type"
     },
     "auth": {
+      "help": "Souhaitez-vous supprimer vos identifiants de connexion à l'OPDS ?",
       "title": "Gérer l'accès aux catalogues",
       "wipeData": "Effacer les données d'authentification"
     },

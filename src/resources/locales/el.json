@@ -34,6 +34,7 @@
             "no": "Όχι",
             "yes": "Ναι"
           },
+          "help": "",
           "message": "Θέλεις να αποθηκεύσεις τη συνεδρία;",
           "title": "Αποθήκευση συνεδρίας"
         }
@@ -531,12 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Διαγραφή δεδομένων ελέγχου ταυτότητας"
     },

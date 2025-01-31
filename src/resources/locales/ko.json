@@ -34,6 +34,7 @@
             "no": "취소",
             "yes": "확인"
           },
+          "help": "",
           "message": "세션을 저장하시겠습니까?",
           "title": "세션 저장"
         }
@@ -531,12 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "인증 데이터 삭제"
     },
