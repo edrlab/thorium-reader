@@ -34,7 +34,7 @@
             "no": "Não",
             "yes": "Sim"
           },
-          "help": "",
+          "help": "Ativar se pretender que as janelas do leitor que estejam abertas quando fecha a aplicação sejam reabertas automaticamente no próximo arranque.",
           "message": "Quer guardar a sessão?",
           "title": "Guardar sessão"
         }
@@ -122,14 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "de {{- author}}",
-      "descCreator": "",
+      "descCreator": "criado por",
       "descList": "{{- nb}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
       "descNewer": "{{- nb}} versões mais recentes destas anotações já estão associadas à publicação.",
       "descOlder": "{{- nb}} versões mais antigas destas anotações já estão associadas à publicação.",
       "descTitle": "Título do conjunto de anotações:",
       "importAll": "Importar todas as anotações",
       "importWithoutConflict": "Importar anotações sem conflitos",
-      "origin": "",
+      "origin": "Publicação de origem: '{{- title}}' {{- author}}",
       "title": "Quer importar estas anotações?"
     },
     "cancel": "Cancelar",
@@ -532,14 +532,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "Criador",
-      "help": "",
+      "help": "Se especificado, este nome será incluído nos metadados das notas exportadas.",
       "name": "Nome",
       "organization": "Organização",
       "person": "Pessoa",
       "type": "Tipo:"
     },
     "auth": {
-      "help": "",
+      "help": "Esta ação elimina todas as credenciais de autenticação do OPDS.",
       "title": "Gerir acesso aos catálogos",
       "wipeData": "Limpar dados de autenticação"
     },
