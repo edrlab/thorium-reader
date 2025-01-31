@@ -34,6 +34,7 @@
             "no": "Нет",
             "yes": "Да"
           },
+          "help": "",
           "message": "Вы хотите сохранить сеанс ?",
           "title": "Сохранить сеанс"
         }
@@ -68,9 +69,6 @@
     "emptyTagList": "У вас нет электронной книги с тегами.",
     "entry": {
       "continueReading": "Продолжить чтение",
-      "continueReadingAudioBooks": "Возобновить прослушивание",
-      "continueReadingDivina": "Продолжить divina",
-      "continueReadingPdf": "Продолжить PDF",
       "lastAdditions": "Недавно добавленные"
     },
     "export": "Экспорт",
@@ -124,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Отменить",
@@ -301,7 +301,7 @@
     "lcpStart": "Начать",
     "licenceLCP": "Лицензия (LCP)",
     "licenseOutOfDate": "Лицензия LCP устарела",
-    "licenseSignatureDateInvalid": "Дата подписания лицензии недействительна",
+    "licenseCertificateDateInvalid": "Дата подписания лицензии недействительна",
     "licenseSignatureInvalid": "Лицензионная подпись недействительна",
     "licensed": "Лицензированная",
     "markAsRead": "Отметить как прочитанное",
@@ -342,6 +342,8 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +356,7 @@
       "hide": "",
       "highlight": "Выделить",
       "noSelectionToast": "Нет выбора",
+      "note": "",
       "quickAnnotations": "Быстрое создание (пропуск редактора)",
       "saveNote": "Сохранить",
       "sorting": {
@@ -377,6 +380,7 @@
     "fxl": {
       "fit": "Размер"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Аннотации",
       "bookmarks": "Закладки",
@@ -384,6 +388,7 @@
       "edit": "Редактировать",
       "goTo": "Перейти на страницу",
       "landmarks": "Ориентиры",
+      "progression": "",
       "saveMark": "Сохранить закладку",
       "search": "Поиск",
       "searchResult": "Найдено [{{- searchText}}]",
@@ -404,6 +409,8 @@
       "title": "Чтение вслух"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "аннотация",
       "backHomeTitle": "назад к книжной полке",
       "bookmarkTitle": "закладка",
@@ -531,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Очистить данные для входа"
     },

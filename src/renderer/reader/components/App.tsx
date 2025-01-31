@@ -7,6 +7,8 @@
 
 import "reflect-metadata";
 
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+
 // import "readium-desktop/renderer/assets/styles/partials/variables.scss";
 // import * as globalScssStyle from "readium-desktop/renderer/assets/styles/global.scss";
 import "readium-desktop/renderer/assets/styles/global.scss";
@@ -43,17 +45,29 @@ export default class App extends React.Component<{}, undefined> {
             let el = document.getElementById(readiumCssFontFaceStyleID);
             if (!el) {
 
-                let rcssPath = "ReadiumCSS";
+                // (global as any).__dirname
+                // BROKEN when index_reader.js is not served via file://
+                // ... so instead window.location.href provides dist/index_reader.html which is co-located:
+                // path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..")) etc.
+
+                const RCSSP = "ReadiumCSS";
+                let rcssPath = RCSSP;
                 if (_PACKAGING === "1") {
-                    rcssPath = "file://" + path.normalize(path.join((global as any).__dirname, rcssPath));
+                    rcssPath = "filex://host/" + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", RCSSP)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
                 } else {
                     rcssPath = "r2-navigator-js/dist/ReadiumCSS";
 
-                    if (_RENDERER_READER_BASE_URL === "file://") {
+                    if (_RENDERER_READER_BASE_URL === "filex://host/") {
 
                         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-                        rcssPath = "file://" +
-                            path.normalize(path.join((global as any).__dirname, _NODE_MODULE_RELATIVE_URL, rcssPath));
+                        rcssPath = "filex://host/" + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", _NODE_MODULE_RELATIVE_URL, rcssPath)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
+
+                        // const debugStr = `[[APP.TSX ${rcssPath} >>> ${window.location.href} *** ${window.location.pathname} === ${process.cwd()} ^^^ ${(global as any).__dirname} --- ${_NODE_MODULE_RELATIVE_URL} @@@ ${rcssPath}]]`;
+                        // if (document.body.firstElementChild) {
+                        //     document.body.innerText = debugStr;
+                        // } else {
+                        //     document.body.innerText += debugStr;
+                        // }
                     } else {
                         // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
 
@@ -66,9 +80,10 @@ export default class App extends React.Component<{}, undefined> {
                         // static server (WebPack publicPath)
                         // rcssPath = "/dist/ReadiumCSS";
                         rcssPath = "/node_modules/" + rcssPath;
+                        rcssPath = rcssPath.replace(/\\/g, "/");
                     }
                 }
-                rcssPath = rcssPath.replace(/\\/g, "/");
+
                 console.log("readium css path:",
                     rcssPath, _PACKAGING, _NODE_MODULE_RELATIVE_URL, _RENDERER_READER_BASE_URL);
 
@@ -153,6 +168,9 @@ url("${rcssPath}/fonts/iAWriterDuospace-Regular.ttf") format("truetype");
         } catch (e) {
             console.log("PROBLEM LOADING READER FONT FACE? ", e);
         }
+
+        console.log(Nunito);
+        console.log(NunitoBold);
 
         // FIXME: try a better way to import Nunito in CSS font face instead of in React render function.
         // One possibility is to add css font in ejs html template file from webpack

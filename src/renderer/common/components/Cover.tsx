@@ -121,7 +121,7 @@ class Cover extends React.Component<IProps, IState> {
                     onKeyUp={this.props.onKeyUp}
                     role="presentation"
                     alt={(this.props.imgRadixProp || this.props.onKeyUp) ? this.props.__("publication.cover.img") : ""}
-                    aria-hidden={(this.props.imgRadixProp || this.props.onKeyUp) ? undefined : true}
+                    // aria-hidden={(this.props.imgRadixProp || this.props.onKeyUp) ? undefined : true}
                     ref={this.props.forwardedRef}
                     src={this.state.imgUrl}
                     onError={this.imageOnError}

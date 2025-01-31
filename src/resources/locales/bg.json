@@ -34,6 +34,7 @@
             "no": "Не",
             "yes": "Да"
           },
+          "help": "",
           "message": "Искате ли да запазите сесията ?",
           "title": "Запази сесията"
         }
@@ -68,9 +69,6 @@
     "emptyTagList": "Нямате маркирана електронна книга.",
     "entry": {
       "continueReading": "Възобнови четенето",
-      "continueReadingAudioBooks": "Възобнови слушането",
-      "continueReadingDivina": "Възобнови divina",
-      "continueReadingPdf": "Възобнови PDF",
       "lastAdditions": "Наскоро добавени"
     },
     "export": "Експортиране",
@@ -124,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Отказ",
@@ -301,7 +301,7 @@
     "lcpStart": "Начало",
     "licenceLCP": "",
     "licenseOutOfDate": "Изтекъл срок на лиценза",
-    "licenseSignatureDateInvalid": "Датата на ключа за лиценза е невалидна",
+    "licenseCertificateDateInvalid": "Датата на ключа за лиценза е невалидна",
     "licenseSignatureInvalid": "Ключа за лиценза е невалиден",
     "licensed": "",
     "markAsRead": "",
@@ -342,6 +342,8 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +356,7 @@
       "hide": "",
       "highlight": "",
       "noSelectionToast": "",
+      "note": "",
       "quickAnnotations": "",
       "saveNote": "",
       "sorting": {
@@ -377,6 +380,7 @@
     "fxl": {
       "fit": ""
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Анотации",
       "bookmarks": "Отметки",
@@ -384,6 +388,7 @@
       "edit": "Edit",
       "goTo": "",
       "landmarks": "Landmarks",
+      "progression": "",
       "saveMark": "",
       "search": "Търси",
       "searchResult": "",
@@ -404,6 +409,8 @@
       "title": "Четене на глас"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "",
       "backHomeTitle": "обратно към лавицата с книги",
       "bookmarkTitle": "отметка",
@@ -531,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Изтриване на данните за удостоверяване"
     },

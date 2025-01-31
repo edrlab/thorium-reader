@@ -77,7 +77,7 @@ const LanguageSettings: React.FC<{}> = () => {
     };
     const selectedKey = options.find(({name}) => name === currentLanguageString);
     return (
-        <ComboBox label={__("settings.language.languageChoice")} defaultItems={options} defaultSelectedKey={selectedKey?.id} onSelectionChange={setLang} svg={LanguageIcon}>
+        <ComboBox label={__("settings.language.languageChoice")} defaultItems={options} defaultSelectedKey={selectedKey?.id} onSelectionChange={setLang} svg={LanguageIcon} style={{borderBottom: "2px solid var(--color-extralight-grey)"}}>
             {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
         </ComboBox>
     );
@@ -102,6 +102,10 @@ const ConnectionSettings: React.FC<{}> = () => {
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
             <h4>{__("settings.auth.title")}</h4>
+            <div className={stylesSettings.session_text}>
+                <SVG ariaHidden svg={InfoIcon} />
+                <p>{__("settings.auth.help")}</p>
+            </div>
             <Auth />
         </section>
     );
@@ -117,6 +121,10 @@ const SaveSessionSettings: React.FC<{}> = () => {
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
             <h4>{__("app.session.exit.askBox.message")}</h4>
+            <div className={stylesSettings.session_text} style={{ margin: "0" }}>
+                <SVG ariaHidden svg={InfoIcon} />
+                <p>{__("app.session.exit.askBox.help")}</p>
+            </div>
             <div className={stylesAnnotations.annotations_checkbox}>
                 <input type="checkbox" id="saveSessionSettings" className={stylesGlobal.checkbox_custom_input} name="saveSessionSettings" checked={sessionSaveState} onChange={onChange} />
                 <label htmlFor="saveSessionSettings" className={stylesGlobal.checkbox_custom_label}>
@@ -197,8 +205,12 @@ const SaveCreatorSettings: React.FC<{}> = () => {
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
             <h4>{__("settings.annotationCreator.creator")}</h4>
-            <div className={stylesInput.form_group} style={{marginTop: "20px", width: "360px"}}>
-                <input type="text" name="creator-name" style={{width: "100%", marginLeft: "10px"}} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={name} value={name} onChange={(e) => {
+            <div className={stylesSettings.session_text} style={{ margin: "0" }}>
+                <SVG ariaHidden svg={InfoIcon} />
+                <p>{__("settings.annotationCreator.help")}</p>
+            </div>
+            <div className={stylesInput.form_group} style={{ marginTop: "20px", width: "360px"}}>
+                <input type="text" name="creator-name" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={name} value={name} onChange={(e) => {
                     const v = e.target.value;
                     setName(v);
                 }} />

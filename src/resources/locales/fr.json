@@ -34,6 +34,7 @@
             "no": "Non",
             "yes": "Oui"
           },
+          "help": "Si cette case est cochée, les livres actuellement ouverts seront automatiquement ouverts au prochain démarrage de l'application.",
           "message": "Voulez-vous sauvegarder la session ?",
           "title": "Sauvegarder la session"
         }
@@ -68,15 +69,12 @@
     "emptyTagList": "Les livres ne contiennent pas de mots-clefs.",
     "entry": {
       "continueReading": "Reprendre la lecture",
-      "continueReadingAudioBooks": "Reprendre l'écoute",
-      "continueReadingDivina": "Reprendre la lecture de narration visuelle",
-      "continueReadingPdf": "Reprendre la lecture du document PDF",
       "lastAdditions": "Récemment ajouté"
     },
     "export": "Sauvegarder sous",
-    "exportAnnotation": "",
+    "exportAnnotation": "Sauvegarder les notes sous",
     "format": "Format",
-    "importAnnotation": "",
+    "importAnnotation": "Importer les notes",
     "lang": "Langue",
     "lastRead": "Dernière lecture",
     "moreInfo": "Plus d'informations",
@@ -123,18 +121,20 @@
   },
   "dialog": {
     "annotations": {
-      "descAuthor": "",
-      "descList": "",
-      "descNewer": "",
-      "descOlder": "",
-      "descTitle": "",
-      "importAll": "",
-      "importWithoutConflict": "",
-      "title": ""
+      "descAuthor": "par {{- author}}",
+      "descCreator": "créées par",
+      "descList": "{{- nb}} note(s) {{- creator}} seront importées vers {{- title}} {{- author}}",
+      "descNewer": "{{- nb}} conflits: certaines notes associées à la publication sont plus récentes",
+      "descOlder": "{{- nb}} conflits: certaines notes associées à la publication sont plus anciennes",
+      "descTitle": "Titre de la liste de notes : ",
+      "importAll": "Importer toutes les notes",
+      "importWithoutConflict": "Importer les notes sans conflits",
+      "origin": "Source : {{- title}} {{- author}}",
+      "title": "Voulez-vous importer toutes ces notes ?"
     },
     "cancel": "Annuler",
-    "deleteAnnotations": "",
-    "deleteAnnotationsText": "",
+    "deleteAnnotations": "Supprimer la note",
+    "deleteAnnotationsText": "Voulez-vous supprimer {{- annotationListLength}} note(s) ?",
     "deleteFeed": "Supprimer ce catalogue ?",
     "deletePublication": "Supprimer ce livre ?",
     "import": "Confirmer l'ajout :",
@@ -181,12 +181,12 @@
   },
   "message": {
     "annotations": {
-      "alreadyImported": "",
-      "emptyFile": "",
-      "errorParsing": "",
-      "noBelongTo": "",
-      "nothing": "",
-      "success": ""
+      "alreadyImported": "Toute les notes sont déjà importées, importation annulée",
+      "emptyFile": "Aucune note n'est disponible dans ce fichier",
+      "errorParsing": "Erreur lors de la lecture du fichier : ",
+      "noBelongTo": "Impossible d'importer les notes, au moins une note n'appartient pas à la publication finale",
+      "nothing": "Aucune note disponible, importation annulée",
+      "success": "Importation réussie"
     },
     "download": {
       "error": "Le téléchargement de {{- title}} a échoué: [{{- err}}]"
@@ -291,7 +291,7 @@
     "duration": {
       "title": "Durée"
     },
-    "encryptedNoLicense": "",
+    "encryptedNoLicense": "La publication est encryptée mais aucune licence LCP trouvée !",
     "expired": "Prêt expiré",
     "expiredLcp": "Ce livre ne peut être lu car la licence LCP a expiré.",
     "incorrectPassphrase": "Aucune clé LCP enregistrée ne correspond à la publication ou la clé saisie est incorrecte.",
@@ -301,7 +301,7 @@
     "lcpStart": "Début",
     "licenceLCP": "Licence (LCP)",
     "licenseOutOfDate": "License LCP inutilisable à cette date.",
-    "licenseSignatureDateInvalid": "Date de signature de license LCP invalide",
+    "licenseCertificateDateInvalid": "Certificat de provider LCP expiré.",
     "licenseSignatureInvalid": "Signature de license LCP invalide",
     "licensed": "Accès protégé",
     "markAsRead": "Marquer comme lu",
@@ -328,39 +328,42 @@
       "addNote": "Annoter",
       "advancedMode": "Mode instantané (création automatique après sélection)",
       "annotationsExport": {
-        "description": "Nommez cette liste d'annotations",
+        "description": "Nommez cette liste de notes",
         "title": "Titre"
       },
-      "annotationsOptions": "Options",
+      "annotationsOptions": "Notes Options",
       "colors": {
-        "bluegreen": "",
-        "cyan": "",
-        "green": "",
-        "lightblue": "",
-        "orange": "",
-        "purple": "",
-        "red": "",
-        "yellow": ""
+        "bluegreen": "Bleu-Vert",
+        "cyan": "Cyan",
+        "green": "Vert",
+        "lightblue": "Bleu clair",
+        "orange": "Orange",
+        "purple": "Violet",
+        "red": "Rouge",
+        "yellow": "Jaune"
       },
+      "date": "Date de modification",
+      "export": "Sauvegarder sous",
       "filter": {
-        "all": "",
-        "filterByColor": "",
-        "filterByCreator": "",
-        "filterByDrawtype": "",
-        "filterByTag": "",
-        "filterOptions": "",
-        "none": ""
+        "all": "Tous",
+        "filterByColor": "Filtré par couleur",
+        "filterByCreator": "Filtré par créateur",
+        "filterByDrawtype": "Filtré par Surlignage",
+        "filterByTag": "Filtré par tag",
+        "filterOptions": "Filtre options",
+        "none": "Aucun"
       },
       "hide": "Ne pas afficher",
       "highlight": "Surligner",
       "noSelectionToast": "Aucun texte sélectionné",
+      "note": "Note {{- color}}",
       "quickAnnotations": "Annotation rapide (sans édition)",
       "saveNote": "Sauvegarder",
       "sorting": {
-        "lastcreated": "",
-        "lastmodified": "",
-        "progression": "",
-        "sortingOptions": ""
+        "lastcreated": "Dernier créé",
+        "lastmodified": "Dernier modifié",
+        "progression": "Progression",
+        "sortingOptions": "Trie options"
       },
       "toggleMarginMarks": "Afficher dans la marge",
       "type": {
@@ -377,6 +380,7 @@
     "fxl": {
       "fit": "Remplir"
     },
+    "goToContent": "Aller au contenu",
     "marks": {
       "annotations": "Annotations",
       "bookmarks": "Marque-pages",
@@ -384,6 +388,7 @@
       "edit": "Éditer",
       "goTo": "Aller à la page",
       "landmarks": "Repères",
+      "progression": "",
       "saveMark": "Sauvegarder le marque-page",
       "search": "Rechercher",
       "searchResult": "Recherche - « {{- searchText}} »",
@@ -404,6 +409,8 @@
       "title": "Lire à haute voix"
     },
     "navigation": {
+      "ZenModeExit": "Sortir du mode Zen",
+      "ZenModeTitle": "Mode Zen",
       "annotationTitle": "annotation",
       "backHomeTitle": "retour à la bibliothèque",
       "bookmarkTitle": "marque-page",
@@ -516,7 +523,7 @@
     "tts": {
       "activate": "Activer l'audio de synthèse",
       "default": "Voix du système",
-      "language": "",
+      "language": "Langue",
       "next": "Suivant",
       "pause": "Pause",
       "play": "Lire",
@@ -530,14 +537,16 @@
   },
   "settings": {
     "annotationCreator": {
-      "creator": "",
-      "name": "",
-      "organization": "",
-      "person": "",
-      "type": ""
+      "creator": "Créateur",
+      "help": "Il sera utilisé comme créateur des notes que vous pouvez exporter.",
+      "name": "Nom",
+      "organization": "Organisation",
+      "person": "Personne",
+      "type": "Type"
     },
     "auth": {
-      "title": "",
+      "help": "Souhaitez-vous supprimer vos identifiants de connexion à l'OPDS ?",
+      "title": "Gérer l'accès aux catalogues",
       "wipeData": "Effacer les données d'authentification"
     },
     "keyboard": {
@@ -554,8 +563,8 @@
       "languageChoice": "Choix de la langue"
     },
     "library": {
-      "enableAPIAPP": "",
-      "title": ""
+      "enableAPIAPP": "Activer l'accès à l'API Dilicom PNB (Prêt Numérique en Bibliothèque)",
+      "title": "Ajouter un compte bibliothèque"
     },
     "session": {
       "title": "Sauvegarder la session"

@@ -34,6 +34,7 @@
             "no": "否",
             "yes": "是"
           },
+          "help": "",
           "message": "是否保存當前連線？",
           "title": "保存連線"
         }
@@ -68,9 +69,6 @@
     "emptyTagList": "尚無帶標籤電子書",
     "entry": {
       "continueReading": "繼續閱讀",
-      "continueReadingAudioBooks": "繼續聽讀",
-      "continueReadingDivina": "繼續閱讀 divina",
-      "continueReadingPdf": "繼續閱讀 PDF",
       "lastAdditions": "最近添加"
     },
     "export": "匯出",
@@ -124,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "取消",
@@ -301,7 +301,7 @@
     "lcpStart": "開始",
     "licenceLCP": "授權（LCP）",
     "licenseOutOfDate": "授權過期",
-    "licenseSignatureDateInvalid": "授權簽名日期無效",
+    "licenseCertificateDateInvalid": "授權簽名日期無效",
     "licenseSignatureInvalid": "授權簽名無效",
     "licensed": "已授權",
     "markAsRead": "標記為已讀",
@@ -342,6 +342,8 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +356,7 @@
       "hide": "不顯示",
       "highlight": "重點標示",
       "noSelectionToast": "沒有選擇",
+      "note": "",
       "quickAnnotations": "快速建立（跳過編輯）",
       "saveNote": "保存",
       "sorting": {
@@ -377,6 +380,7 @@
     "fxl": {
       "fit": "Fit"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "註解",
       "bookmarks": "書籤",
@@ -384,6 +388,7 @@
       "edit": "編輯",
       "goTo": "前往到頁面",
       "landmarks": "地標",
+      "progression": "",
       "saveMark": "儲存書籤",
       "search": "搜尋",
       "searchResult": "搜尋 [{{- searchText}}]",
@@ -404,6 +409,8 @@
       "title": "語音朗讀"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "註解",
       "backHomeTitle": "返回書架",
       "bookmarkTitle": "書籤",
@@ -531,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "清除登入數據"
     },

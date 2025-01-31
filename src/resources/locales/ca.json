@@ -34,6 +34,7 @@
             "no": "No",
             "yes": "Sí"
           },
+          "help": "",
           "message": "Vols guardar la sessió?",
           "title": "Guardar sessió"
         }
@@ -68,9 +69,6 @@
     "emptyTagList": "No tens llibres etiquetats.",
     "entry": {
       "continueReading": "Reprendre lectura",
-      "continueReadingAudioBooks": "Reprendre reproducción",
-      "continueReadingDivina": "Reprendre divina",
-      "continueReadingPdf": "Rependre PDF",
       "lastAdditions": "Afegits recentment"
     },
     "export": "Exportar",
@@ -124,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Cancel·lar",
@@ -301,7 +301,7 @@
     "lcpStart": "Inici",
     "licenceLCP": "Llicència (LCP)",
     "licenseOutOfDate": "La llicència està desactualitzada",
-    "licenseSignatureDateInvalid": "La data de la firma de la llicència no és vàlida",
+    "licenseCertificateDateInvalid": "La data de la firma de la llicència no és vàlida",
     "licenseSignatureInvalid": "La firma de la llicència no és vàlida",
     "licensed": "Llicenciat",
     "markAsRead": "Marca com a llegit",
@@ -342,6 +342,8 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +356,7 @@
       "hide": "No ho mostris",
       "highlight": "Ressaltat",
       "noSelectionToast": "Sense selecció",
+      "note": "",
       "quickAnnotations": "Creació ràpida (omet l'editor)",
       "saveNote": "Desa",
       "sorting": {
@@ -377,6 +380,7 @@
     "fxl": {
       "fit": "Ajusta"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Anotacions",
       "bookmarks": "Marcadors",
@@ -384,6 +388,7 @@
       "edit": "Editar",
       "goTo": "Anar a la pàgina",
       "landmarks": "Punts de referència",
+      "progression": "",
       "saveMark": "Desa el marcador",
       "search": "Cercar",
       "searchResult": "Cercar [{{- searchText}}]",
@@ -404,6 +409,8 @@
       "title": "Lectura en veu alta"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "anotació",
       "backHomeTitle": "Tornar a la biblioteca",
       "bookmarkTitle": "Marcador",
@@ -531,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Netejar dades d'autenticació"
     },

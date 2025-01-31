@@ -34,6 +34,7 @@
             "no": "Nein",
             "yes": "Ja"
           },
+          "help": "",
           "message": "Möchten Sie die Sitzung speichern?",
           "title": "Sitzung sichern"
         }
@@ -68,9 +69,6 @@
     "emptyTagList": "Keine Bücher wurden mit Tags versehen.",
     "entry": {
       "continueReading": "Lesen Sie weiter",
-      "continueReadingAudioBooks": "Weiter zuhören",
-      "continueReadingDivina": "Divina fortsetzen",
-      "continueReadingPdf": "PDF weiterlesen",
       "lastAdditions": "Kürzlich hinzugefügt"
     },
     "export": "Export",
@@ -124,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Abbrechen",
@@ -301,7 +301,7 @@
     "lcpStart": "Start",
     "licenceLCP": "Lizenz (LCP)",
     "licenseOutOfDate": "Veraltete LCP-Lizenz.",
-    "licenseSignatureDateInvalid": "Ungültiges Signaturdatum der LCP-Lizenz.",
+    "licenseCertificateDateInvalid": "Ungültiges Signaturdatum der LCP-Lizenz.",
     "licenseSignatureInvalid": "Invalid LCP license signature.",
     "licensed": "Lizenziert",
     "markAsRead": "Als gelesen markieren",
@@ -342,6 +342,8 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +356,7 @@
       "hide": "Ausblenden",
       "highlight": "Markieren",
       "noSelectionToast": "Keine Auswahl",
+      "note": "",
       "quickAnnotations": "Schnell erstellen (Editor überspringen)",
       "saveNote": "Speichern",
       "sorting": {
@@ -377,6 +380,7 @@
     "fxl": {
       "fit": "Einpassen"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Meine Anmerkungen",
       "bookmarks": "Meine Lesezeichen",
@@ -384,6 +388,7 @@
       "edit": "Bearbeiten",
       "goTo": "Gehe zu Seite",
       "landmarks": "Navigationspunkte",
+      "progression": "",
       "saveMark": "Lesezeichen speichern",
       "search": "Suche",
       "searchResult": "Suche [{{- searchText}}]",
@@ -404,6 +409,8 @@
       "title": "Vorlesen"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "Notizen",
       "backHomeTitle": "Zurück zum Bücherregal",
       "bookmarkTitle": "Lesezeichen setzen",
@@ -531,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Login-Daten löschen"
     },

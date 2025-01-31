@@ -34,6 +34,7 @@
             "no": "Não",
             "yes": "Sim"
           },
+          "help": "",
           "message": "Quer guardar a sessão?",
           "title": "Guardar sessão"
         }
@@ -68,9 +69,6 @@
     "emptyTagList": "Não tem documentos etiquetados.",
     "entry": {
       "continueReading": "Retomar leitura",
-      "continueReadingAudioBooks": "Retomar audição",
-      "continueReadingDivina": "Retomar Divina",
-      "continueReadingPdf": "Retomar PDF",
       "lastAdditions": "Adicionados recentemente"
     },
     "export": "Guardar como",
@@ -124,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "de {{- author}}",
+      "descCreator": "",
       "descList": "{{- nb}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
       "descNewer": "{{- nb}} versões mais recentes destas anotações já estão associadas à publicação.",
       "descOlder": "{{- nb}} versões mais antigas destas anotações já estão associadas à publicação.",
       "descTitle": "Título do conjunto de anotações:",
       "importAll": "Importar todas as anotações",
       "importWithoutConflict": "Importar anotações sem conflitos",
+      "origin": "",
       "title": "Quer importar estas anotações?"
     },
     "cancel": "Cancelar",
@@ -301,7 +301,7 @@
     "lcpStart": "Início",
     "licenceLCP": "Licença (LCP)",
     "licenseOutOfDate": "Licença LCP caducada.",
-    "licenseSignatureDateInvalid": "A data de assinatura da licença LCP é inválida.",
+    "licenseCertificateDateInvalid": "A data de assinatura da licença LCP é inválida.",
     "licenseSignatureInvalid": "A assinatura da licença LCP é inválida.",
     "licensed": "Licenciado",
     "markAsRead": "Marcar como Lido",
@@ -342,6 +342,7 @@
         "red": "Vermelho",
         "yellow": "Amarelo"
       },
+      "export": "Guardar notas como",
       "filter": {
         "all": "Tudo",
         "filterByColor": "Filtrar por cor",
@@ -354,6 +355,7 @@
       "hide": "Não exibir",
       "highlight": "Realçar",
       "noSelectionToast": "Nenhuma seleção",
+      "note": "",
       "quickAnnotations": "Criação rápida (saltar editor)",
       "saveNote": "Guardar",
       "sorting": {
@@ -377,6 +379,7 @@
     "fxl": {
       "fit": "Ajustar"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Anotações",
       "bookmarks": "Marcadores",
@@ -384,6 +387,7 @@
       "edit": "Editar",
       "goTo": "Ir para página",
       "landmarks": "Pontos de referência",
+      "progression": "",
       "saveMark": "Guardar favorito",
       "search": "Pesquisar",
       "searchResult": "Pesquisar [{{- searchText}}]",
@@ -404,6 +408,8 @@
       "title": "Narração"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "Anotação",
       "backHomeTitle": "Fechar janela de leitura (voltar à estante)",
       "bookmarkTitle": "Marcador",
@@ -531,12 +537,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "Criador",
+      "help": "",
       "name": "Nome",
       "organization": "Organização",
       "person": "Pessoa",
       "type": "Tipo:"
     },
     "auth": {
+      "help": "",
       "title": "Gerir acesso aos catálogos",
       "wipeData": "Limpar dados de autenticação"
     },

@@ -44,6 +44,7 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
         <ComboBox
         style={{paddingBottom: "0"}}
             label={__("reader.tts.language")}
+            aria-label={__("reader.tts.language")}
             defaultItems={languages}
             // defaultSelectedKey={`TTS_LANG_${selectedLanguage}`}
             selectedKey={`TTS_LANG_${selectedLanguage}`}
@@ -56,6 +57,7 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
         </ComboBox>
         <ComboBox
             label={__("reader.tts.voice")}
+            aria-label={__("reader.tts.voice")}
             defaultItems={voicesGroupedByRegions}
             selectedKey={
                 ttsVoice ?

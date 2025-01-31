@@ -34,6 +34,7 @@
             "no": "Ne",
             "yes": "Da"
           },
+          "help": "",
           "message": "Ali želiš shraniti sejo?",
           "title": "Shrani sejo"
         }
@@ -68,9 +69,6 @@
     "emptyTagList": "Ni označenih knjig.",
     "entry": {
       "continueReading": "Nadaljuj z branjem",
-      "continueReadingAudioBooks": "Nadaljuj s poslušanjem",
-      "continueReadingDivina": "Nadaljuj z divino",
-      "continueReadingPdf": "Nadaljuj s PDF-jem",
       "lastAdditions": "Nedavno dodano"
     },
     "export": "Shrani kot",
@@ -124,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Prekliči",
@@ -301,7 +301,7 @@
     "lcpStart": "Začetek",
     "licenceLCP": "Licenca (LCP)",
     "licenseOutOfDate": "Licenca ni več veljavna",
-    "licenseSignatureDateInvalid": "Datum podpisa licence ni veljaven",
+    "licenseCertificateDateInvalid": "Datum podpisa licence ni veljaven",
     "licenseSignatureInvalid": "Podpis licence ni veljaven",
     "licensed": "Licencirano",
     "markAsRead": "Označi kot prebrano",
@@ -342,6 +342,8 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +356,7 @@
       "hide": "Ne prikaži",
       "highlight": "Poudari",
       "noSelectionToast": "Brez izbire",
+      "note": "",
       "quickAnnotations": "Hitro ustvarjanje (preskoči urejevalnik)",
       "saveNote": "Shrani",
       "sorting": {
@@ -377,6 +380,7 @@
     "fxl": {
       "fit": "Prilagajanje zaslonu"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Opombe",
       "bookmarks": "Zaznamki",
@@ -384,6 +388,7 @@
       "edit": "Uredi",
       "goTo": "Pojdi na stran",
       "landmarks": "Mejniki",
+      "progression": "",
       "saveMark": "Shrani zaznamek",
       "search": "Iskanje",
       "searchResult": "Iskanje [{{- searchText}}]",
@@ -404,6 +409,8 @@
       "title": "Glasovno branje"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "opomba",
       "backHomeTitle": "nazaj na knjižno polico",
       "bookmarkTitle": "zaznamek",
@@ -531,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Izbriši avtentikacijske podatke"
     },

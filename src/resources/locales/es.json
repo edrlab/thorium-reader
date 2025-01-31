@@ -34,6 +34,7 @@
             "no": "No",
             "yes": "Sí"
           },
+          "help": "",
           "message": "¿Quieres guardar la sesión?",
           "title": "Guardar sesión"
         }
@@ -68,9 +69,6 @@
     "emptyTagList": "No tienes libros etiquetados.",
     "entry": {
       "continueReading": "Reanudar lectura",
-      "continueReadingAudioBooks": "Reanudar reproducción",
-      "continueReadingDivina": "Reanudar divina",
-      "continueReadingPdf": "Reanudar PDF",
       "lastAdditions": "Añadidos recientemente"
     },
     "export": "Exportar",
@@ -124,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Cancelar",
@@ -301,7 +301,7 @@
     "lcpStart": "Inicio",
     "licenceLCP": "Licencia (LCP)",
     "licenseOutOfDate": "La licencia está desactualizada.",
-    "licenseSignatureDateInvalid": "La fecha de la firma de la licencia LCP no es válida",
+    "licenseCertificateDateInvalid": "La fecha de la firma de la licencia LCP no es válida",
     "licenseSignatureInvalid": "La firma de la licencia LCP no es válida",
     "licensed": "Con licencia",
     "markAsRead": "Marcar como leído",
@@ -342,6 +342,8 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +356,7 @@
       "hide": "No mostrar",
       "highlight": "Destacar",
       "noSelectionToast": "Sin selección",
+      "note": "",
       "quickAnnotations": "Creación rápida (omitir editor)",
       "saveNote": "Guardar",
       "sorting": {
@@ -377,6 +380,7 @@
     "fxl": {
       "fit": "Ajustar"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Anotaciones",
       "bookmarks": "Marcadores",
@@ -384,6 +388,7 @@
       "edit": "Editar",
       "goTo": "ir a página",
       "landmarks": "Puntos de referencia",
+      "progression": "",
       "saveMark": "Guardar marcador",
       "search": "Buscar",
       "searchResult": "Buscar [{{- searchText}}]",
@@ -404,6 +409,8 @@
       "title": "Lectura en voz alta"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "anotación",
       "backHomeTitle": "Volver a la biblioteca",
       "bookmarkTitle": "Marcador",
@@ -531,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Borrar datos de autenticación"
     },

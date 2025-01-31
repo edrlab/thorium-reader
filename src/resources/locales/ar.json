@@ -34,6 +34,7 @@
             "no": "لا",
             "yes": "نعم"
           },
+          "help": "",
           "message": "هل تريد حفظ الجلسة؟",
           "title": "حفظ الجلسة"
         }
@@ -68,9 +69,6 @@
     "emptyTagList": "لا توجد منشورات موسومة.",
     "entry": {
       "continueReading": "استئناف القراءة",
-      "continueReadingAudioBooks": "استئناف الاستماع",
-      "continueReadingDivina": "استئناف ديفينا",
-      "continueReadingPdf": "استئناف PDF",
       "lastAdditions": "المضافة مؤخراً"
     },
     "export": "حفظ بإسم",
@@ -124,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "إلغاء الأمر",
@@ -301,7 +301,7 @@
     "lcpStart": "",
     "licenceLCP": "الترخيص (LCP)",
     "licenseOutOfDate": "ترخيص LCP قديم.",
-    "licenseSignatureDateInvalid": "تاريخ توقيع ترخيص LCP غير صالح.",
+    "licenseCertificateDateInvalid": "تاريخ توقيع ترخيص LCP غير صالح.",
     "licenseSignatureInvalid": "توقيع ترخيص LCP غير صالح.",
     "licensed": "مرخَّص",
     "markAsRead": "وضع علامة كمقروء",
@@ -342,6 +342,8 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +356,7 @@
       "hide": "عدم الإظهار",
       "highlight": "تمييز",
       "noSelectionToast": "لم يتم اختيار شيء",
+      "note": "",
       "quickAnnotations": "إنشاء سريع (تخطي المحرِّر)",
       "saveNote": "حفظ",
       "sorting": {
@@ -377,6 +380,7 @@
     "fxl": {
       "fit": "ملاءمة"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "التعليقات",
       "bookmarks": "الإشارات المرجعية",
@@ -384,6 +388,7 @@
       "edit": "تحرير",
       "goTo": "الانتقال إلى صفحة",
       "landmarks": "المَعالم",
+      "progression": "",
       "saveMark": "حفظ الإشارة المرجعية",
       "search": "بحث",
       "searchResult": "بحث عن [{{- searchText}}]",
@@ -404,6 +409,8 @@
       "title": "القراءة بصوت عالٍ"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "التعليق",
       "backHomeTitle": "عودة إلى رف الكتب",
       "bookmarkTitle": "الإشارة المرجعية",
@@ -531,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "حذف بيانات تسجيل الدخول"
     },

@@ -34,6 +34,7 @@
             "no": "否",
             "yes": "是"
           },
+          "help": "",
           "message": "是否保存当前会话？",
           "title": "保存会话"
         }
@@ -68,9 +69,6 @@
     "emptyTagList": "尚无带标签电子书",
     "entry": {
       "continueReading": "继续阅读",
-      "continueReadingAudioBooks": "继续听读",
-      "continueReadingDivina": "继续阅读 divina",
-      "continueReadingPdf": "继续阅读 PDF",
       "lastAdditions": "最近添加"
     },
     "export": "导出",
@@ -124,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "取消",
@@ -301,7 +301,7 @@
     "lcpStart": "开始",
     "licenceLCP": "许可证（LCP）",
     "licenseOutOfDate": "许可证过期",
-    "licenseSignatureDateInvalid": "许可证签名日期无效",
+    "licenseCertificateDateInvalid": "许可证签名日期无效",
     "licenseSignatureInvalid": "许可证签名无效",
     "licensed": "已授权",
     "markAsRead": "标记为已读",
@@ -342,6 +342,8 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +356,7 @@
       "hide": "不显示",
       "highlight": "高亮",
       "noSelectionToast": "未选择",
+      "note": "",
       "quickAnnotations": "快速创建（跳过编辑器）",
       "saveNote": "保存",
       "sorting": {
@@ -377,6 +380,7 @@
     "fxl": {
       "fit": ""
     },
+    "goToContent": "",
     "marks": {
       "annotations": "注解",
       "bookmarks": "书签",
@@ -384,6 +388,7 @@
       "edit": "编辑",
       "goTo": "转到页码",
       "landmarks": "结构",
+      "progression": "",
       "saveMark": "保存书签",
       "search": "检索",
       "searchResult": "检索 [{{- searchText}}]",
@@ -404,6 +409,8 @@
       "title": "语音朗读"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "注解",
       "backHomeTitle": "返回书架",
       "bookmarkTitle": "书签",
@@ -531,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "清除登录数据"
     },

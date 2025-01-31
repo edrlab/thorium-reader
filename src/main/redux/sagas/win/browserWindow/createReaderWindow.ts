@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import * as debug_ from "debug";
 import { BrowserWindow } from "electron";
 import * as path from "path";
@@ -85,18 +86,15 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
     trackBrowserWindow(readerWindow);
 
     let readerUrl = _RENDERER_READER_BASE_URL;
-
     const htmlPath = "index_reader.html";
-
-    if (readerUrl === "file://") {
+    if (readerUrl === "filex://host/") {
         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-        readerUrl += path.normalize(path.join(__dirname, htmlPath));
+        readerUrl += path.normalize(path.join(__dirname, htmlPath)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
     } else {
         // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
         readerUrl += htmlPath;
+        readerUrl = readerUrl.replace(/\\/g, "/");
     }
-
-    readerUrl = readerUrl.replace(/\\/g, "/");
 
     if (true) { // IS_DEV
 

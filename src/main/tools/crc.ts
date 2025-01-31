@@ -10,8 +10,6 @@ import * as debug_ from "debug";
 import * as fs from "fs";
 import * as yauzl from "yauzl";
 
-type TCrcFile = [string, number];
-
 const debug = debug_("readium-desktop:main/crc");
 
 export async function computeFileHash(filePath: string) {
@@ -39,36 +37,67 @@ export async function computeFileHash(filePath: string) {
     });
 }
 
-export async function extractCrc32OnZip(filePath: string) {
-    const fileArray: TCrcFile[] = [];
+const DEBUG_VERBOSE = false;
+
+// type TCrcFile = [string, number];
+
+export async function extractCrc32OnZip(inputZipFilePath: string) {
+    // const zipEntryFileNameCrcArray: TCrcFile[] = [];
+    const cryptoHash = crypto.createHash("sha1").update("|");
+
     return new Promise<string>((resolve, reject) => {
 
-        yauzl.open(filePath, { lazyEntries: true }, (err, data) => {
-            if (err) {
-                reject(err);
+        yauzl.open(inputZipFilePath, { lazyEntries: true, autoClose: false }, (inputZipOpenError, inputZip) => {
+            if (inputZipOpenError || !inputZip) {
+                debug("yauzl.open ERROR", inputZipOpenError);
+
+                reject(inputZipOpenError);
                 return;
             }
-            // throw entry event
-            data.readEntry();
 
-            data.on("error", (e) => reject(e));
-            data.on("entry", (entry: yauzl.Entry) => {
+            inputZip.on("error", (inputZipError) => {
+                debug("inputZip ERROR", inputZipError);
+
+                reject(inputZipError);
+            });
+
+            inputZip.on("close", () => {
+                if (DEBUG_VERBOSE) debug("inputZip CLOSE");
+            });
+            inputZip.on("finish", () => {
+                if (DEBUG_VERBOSE) debug("inputZip FINISH");
+            });
+            inputZip.on("end", () => {
+                if (DEBUG_VERBOSE) debug("inputZip END");
+
+                // const checksum = zipEntryFileNameCrcArray.reduce((prev, curr) => prev + curr[1].toString(16) + "|", "|");
+                // const hash = crypto.createHash("sha1").update(checksum).digest("hex");
+
+                const hash = cryptoHash.digest("hex");
+
+                debug(inputZipFilePath, hash);
+
+                process.nextTick(() => inputZip.close());
+
+                resolve(hash);
+            });
+
+            inputZip.on("entry", (inputZipEntry: yauzl.Entry) => {
+                if (DEBUG_VERBOSE) debug("inputZip END", inputZipEntry.fileName);
+
                 // extractCrc32OnZip() is still called with LCP publications
                 // (see "redoHash" or more generally "__LCP_LSD_UPDATE_COUNT")
                 // which is okay because legacy / pubs imported before this change
                 // benefit from the removal of "META-INF/license.lcpl" from the calculation.
-                if (entry.fileName !== "META-INF/license.lcpl") {
-                    fileArray.push([entry.fileName, entry.crc32 || 0]);
+                if (inputZipEntry.fileName !== "META-INF/license.lcpl") {
+                    // zipEntryFileNameCrcArray.push([inputZipEntry.fileName, inputZipEntry.crc32 || 0]);
+                    cryptoHash.update((inputZipEntry.crc32 || 0).toString(16) + "|");
                 }
-                data.readEntry();
+
+                // process.nextTick(() => inputZip.readEntry());
+                inputZip.readEntry();
             });
-            data.on("end", () => {
-                const checksum = fileArray.reduce((prev, curr) => prev + curr[1].toString(16) + "|", "|");
-                const hash = crypto.createHash("sha1").update(checksum).digest("hex");
-                debug(filePath, hash);
-                process.nextTick(() => data.close());
-                resolve(hash);
-            });
+            inputZip.readEntry();
         });
     });
 }

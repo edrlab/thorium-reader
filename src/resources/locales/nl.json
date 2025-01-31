@@ -34,6 +34,7 @@
             "no": "Nee",
             "yes": "Ja"
           },
+          "help": "",
           "message": "Wil je deze sessie bewaren?",
           "title": "Bewaar sessie"
         }
@@ -68,9 +69,6 @@
     "emptyTagList": "Je hebt geen boeken met een label",
     "entry": {
       "continueReading": "Ga verder met lezen",
-      "continueReadingAudioBooks": "Ga verder met luisteren",
-      "continueReadingDivina": "Ga verder met divina",
-      "continueReadingPdf": "Ga verder met PDF",
       "lastAdditions": "Recent toegevoegd"
     },
     "export": "Exporteer",
@@ -124,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Annuleer",
@@ -301,7 +301,7 @@
     "lcpStart": "Start",
     "licenceLCP": "Licentie (LCP)",
     "licenseOutOfDate": "Licentie is verlopen",
-    "licenseSignatureDateInvalid": "Datum in de Licentie handtekening is iongeldig",
+    "licenseCertificateDateInvalid": "Datum in de Licentie handtekening is iongeldig",
     "licenseSignatureInvalid": "Licentie handtekening is ongeldig",
     "licensed": "Gelicentieerd",
     "markAsRead": "Markeer als gelezen",
@@ -342,6 +342,8 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +356,7 @@
       "hide": "Geef niet weer",
       "highlight": "Markeer",
       "noSelectionToast": "Geen selectie",
+      "note": "",
       "quickAnnotations": "Maak snel (editor overslaan)",
       "saveNote": "Bewaar",
       "sorting": {
@@ -377,6 +380,7 @@
     "fxl": {
       "fit": "Pas"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Annotaties",
       "bookmarks": "Bladwijzers",
@@ -384,6 +388,7 @@
       "edit": "Wijzig",
       "goTo": "Ga naar pagina",
       "landmarks": "structuur elementen",
+      "progression": "",
       "saveMark": "Bladwijzer opslaan",
       "search": "Zoek",
       "searchResult": "Zoek [{{- searchText}}]",
@@ -404,6 +409,8 @@
       "title": "Voorlezen"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "annotatie",
       "backHomeTitle": "terug naar de boekenplank",
       "bookmarkTitle": "bladwijzer",
@@ -531,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Wis authenticatie gegevens"
     },

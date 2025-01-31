@@ -34,6 +34,7 @@
             "no": "Όχι",
             "yes": "Ναι"
           },
+          "help": "",
           "message": "Θέλεις να αποθηκεύσεις τη συνεδρία;",
           "title": "Αποθήκευση συνεδρίας"
         }
@@ -68,9 +69,6 @@
     "emptyTagList": "Κανένα βιβλίο με ετικέτα.",
     "entry": {
       "continueReading": "Συνέχιση ανάγνωσης",
-      "continueReadingAudioBooks": "Συνέχιση ακρόασης",
-      "continueReadingDivina": "Συνέχιση divina",
-      "continueReadingPdf": "Συνέχιση PDF",
       "lastAdditions": "Πρόσφατη προσθήκη"
     },
     "export": "Αποθήκευση ως",
@@ -124,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Ακύρωση",
@@ -301,7 +301,7 @@
     "lcpStart": "Αρχή",
     "licenceLCP": "Άδεια χρήσης (LCP)",
     "licenseOutOfDate": "Η άδεια έχει λήξει",
-    "licenseSignatureDateInvalid": "Η ημερομηνία υπογραφής της άδειας είναι άκυρη",
+    "licenseCertificateDateInvalid": "Η ημερομηνία υπογραφής της άδειας είναι άκυρη",
     "licenseSignatureInvalid": "Η υπογραφή της άδειας είναι άκυρη",
     "licensed": "Με άδεια χρήσης",
     "markAsRead": "Σημείωση ως διαβασμένο",
@@ -342,6 +342,8 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +356,7 @@
       "hide": "Να μην εμφανίζεται",
       "highlight": "Επισήμανση",
       "noSelectionToast": "Καμία επιλογή",
+      "note": "",
       "quickAnnotations": "Γρήγορη δημιουργία (παράβλεψη επεξεργασίας)",
       "saveNote": "Αποθήκευση",
       "sorting": {
@@ -377,6 +380,7 @@
     "fxl": {
       "fit": "Προσαρμογή"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Σχόλια",
       "bookmarks": "Σελιδοδείκτες",
@@ -384,6 +388,7 @@
       "edit": "Επεξεργασία",
       "goTo": "Μετάβαση σε σελίδα",
       "landmarks": "Ορόσημα",
+      "progression": "",
       "saveMark": "Αποθήκευση σελιδοδείκτη",
       "search": "Αναζήτηση",
       "searchResult": "Αναζήτηση [{{- searchText}}]",
@@ -404,6 +409,8 @@
       "title": "Λειτουργία προφορικού αναγνώστη / Readaloud"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "σχόλιο",
       "backHomeTitle": "Πίσω στη βιβλιοθήκη",
       "bookmarkTitle": "Σελιδοδείκτης",
@@ -531,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Διαγραφή δεδομένων ελέγχου ταυτότητας"
     },

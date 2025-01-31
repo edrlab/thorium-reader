@@ -34,6 +34,7 @@
             "no": "취소",
             "yes": "확인"
           },
+          "help": "",
           "message": "세션을 저장하시겠습니까?",
           "title": "세션 저장"
         }
@@ -68,9 +69,6 @@
     "emptyTagList": "태그를 지정한 전자책이 없습니다.",
     "entry": {
       "continueReading": "이어서 읽기",
-      "continueReadingAudioBooks": "오디오북 이어 듣기",
-      "continueReadingDivina": "Divina 이어 보기",
-      "continueReadingPdf": "PDF 이어 보기",
       "lastAdditions": "최근에 추가한 도서"
     },
     "export": "내보내기",
@@ -124,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "취소",
@@ -301,7 +301,7 @@
     "lcpStart": "시작",
     "licenceLCP": "",
     "licenseOutOfDate": "라이선스가 만료되었습니다",
-    "licenseSignatureDateInvalid": "라이선스 서명날짜가 유효하지 않습니다",
+    "licenseCertificateDateInvalid": "라이선스 서명날짜가 유효하지 않습니다",
     "licenseSignatureInvalid": "라이선스 서명이 유효하지 않습니다",
     "licensed": "",
     "markAsRead": "",
@@ -342,6 +342,8 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +356,7 @@
       "hide": "",
       "highlight": "",
       "noSelectionToast": "",
+      "note": "",
       "quickAnnotations": "",
       "saveNote": "",
       "sorting": {
@@ -377,6 +380,7 @@
     "fxl": {
       "fit": ""
     },
+    "goToContent": "",
     "marks": {
       "annotations": "주석",
       "bookmarks": "북마크",
@@ -384,6 +388,7 @@
       "edit": "수정",
       "goTo": "",
       "landmarks": "랜드마크",
+      "progression": "",
       "saveMark": "",
       "search": "검색",
       "searchResult": "",
@@ -404,6 +409,8 @@
       "title": "소리내어 읽기"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "",
       "backHomeTitle": "내서재로 돌아가기",
       "bookmarkTitle": "북마크",
@@ -531,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "인증 데이터 삭제"
     },

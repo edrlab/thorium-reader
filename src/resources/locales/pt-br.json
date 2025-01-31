@@ -34,6 +34,7 @@
             "no": "Não",
             "yes": "Sim"
           },
+          "help": "",
           "message": "Você quer salvar a sessão?",
           "title": "Salvar sessão"
         }
@@ -68,9 +69,6 @@
     "emptyTagList": "Você não tem livro marcado.",
     "entry": {
       "continueReading": "Retomar a leitura",
-      "continueReadingAudioBooks": "Retomar a escuta",
-      "continueReadingDivina": "Retomar divina",
-      "continueReadingPdf": "Retomar PDF",
       "lastAdditions": "Adicionado recentemente"
     },
     "export": "Exportar",
@@ -124,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Cancelar",
@@ -301,7 +301,7 @@
     "lcpStart": "Iniciar",
     "licenceLCP": "Licença (LCP)",
     "licenseOutOfDate": "Licença vencida",
-    "licenseSignatureDateInvalid": "A data da assinatura da licença é inválida",
+    "licenseCertificateDateInvalid": "A data da assinatura da licença é inválida",
     "licenseSignatureInvalid": "A assinatura da licença é inválida",
     "licensed": "Licenciado",
     "markAsRead": "Marcar como lido",
@@ -342,6 +342,8 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +356,7 @@
       "hide": "Não mostrar",
       "highlight": "Destaque",
       "noSelectionToast": "Nenhuma seleção",
+      "note": "",
       "quickAnnotations": "Criação rápida (pular editor)",
       "saveNote": "Salvar",
       "sorting": {
@@ -377,6 +380,7 @@
     "fxl": {
       "fit": "Ajustar"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Anotações",
       "bookmarks": "Marcadores",
@@ -384,6 +388,7 @@
       "edit": "Editar",
       "goTo": "Ir para página",
       "landmarks": "Pontos de referência",
+      "progression": "",
       "saveMark": "Salvar marcador",
       "search": "Buscas",
       "searchResult": "Busca [{{- searchText}}]",
@@ -404,6 +409,8 @@
       "title": "Narração"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "anotação",
       "backHomeTitle": "voltar à estante",
       "bookmarkTitle": "marcador",
@@ -531,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Limpar dados de login"
     },

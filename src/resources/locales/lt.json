@@ -34,6 +34,7 @@
             "no": "Ne",
             "yes": "Taip"
           },
+          "help": "",
           "message": "Ar norite išsaugoti sesiją?",
           "title": "Sesijos išsaugojimas"
         }
@@ -68,9 +69,6 @@
     "emptyTagList": "Nėra leidinių, turinčių žymių",
     "entry": {
       "continueReading": "Skaityti toliau",
-      "continueReadingAudioBooks": "Klausyti toliau",
-      "continueReadingDivina": "Skaityti divina toliau",
-      "continueReadingPdf": "Skaityti PDF toliau",
       "lastAdditions": "Paskiausiai pridėti"
     },
     "export": "Eksportuoti",
@@ -124,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "{{- author}}",
+      "descCreator": "",
       "descList": "{{- nb}} pastaba(-os, -ų), kurias sukūrė {{- creator}}, bus susietos su {{- author}} leidiniu {{- title}}",
       "descNewer": "{{- nb}} naujesnė(-s, -ių) šių pastabų versija(-os, -ų) jau susieta(-os) su leidiniu.",
       "descOlder": "{{- nb}} senesnė(-s, -ių) šių pastabų versija(-os, -ų) jau susieta(-os) su leidiniu.",
       "descTitle": "Pastabų rinkinio pavadinimas:",
       "importAll": "Importuoti visas pastabas",
       "importWithoutConflict": "Importuoti pastabas, neturinčias konfliktų",
+      "origin": "",
       "title": "Ar norite importuoti šias pastabas?"
     },
     "cancel": "Nutraukti",
@@ -301,7 +301,7 @@
     "lcpStart": "Pradžia",
     "licenceLCP": "Licencija (LCP)",
     "licenseOutOfDate": "Licencijos galiojimas pasibaigęs",
-    "licenseSignatureDateInvalid": "Negaliojanti licencijos parašo data",
+    "licenseCertificateDateInvalid": "Negaliojanti licencijos parašo data",
     "licenseSignatureInvalid": "Negaliojantis licencijos parašas",
     "licensed": "Licencijuotas",
     "markAsRead": "Žymėti kaip perskaitytą",
@@ -342,6 +342,8 @@
         "red": "Raudona",
         "yellow": "Geltona"
       },
+      "date": "",
+      "export": "",
       "filter": {
         "all": "Visos",
         "filterByColor": "Filtruoti pagal spalvą",
@@ -354,6 +356,7 @@
       "hide": "Neatvaizduoti",
       "highlight": "Paryškinimas",
       "noSelectionToast": "Niekas nepasirinkta",
+      "note": "",
       "quickAnnotations": "Greitasis kūrimas (praleidžiant rengyklę)",
       "saveNote": "Išsaugoti",
       "sorting": {
@@ -377,6 +380,7 @@
     "fxl": {
       "fit": "Talpinti"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Pastabos",
       "bookmarks": "Žymės",
@@ -384,6 +388,7 @@
       "edit": "Keisti",
       "goTo": "Eiti į puslapį",
       "landmarks": "Gairės",
+      "progression": "",
       "saveMark": "Išsaugoti žymę",
       "search": "Paieška",
       "searchResult": "Ieškoti [{{- searchText}}]",
@@ -404,6 +409,8 @@
       "title": "Readaloud"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "pastaba",
       "backHomeTitle": "Užverti šį skaitymo langą (grįžti į knygų lentyną)",
       "bookmarkTitle": "sukurti žymę",
@@ -531,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "Kūrėjas",
+      "help": "",
       "name": "Pavadinimas",
       "organization": "Organizacija",
       "person": "Asmuo",
       "type": "Tipas:"
     },
     "auth": {
+      "help": "",
       "title": "Valdyti katalogų prieigą",
       "wipeData": "Išvalyti prisijungimo duomenis"
     },

@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import { syncIpc } from "readium-desktop/common/ipc";
-import { ActionWithDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
+import { ActionAcrossRenderer, ActionWithDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import {
     apiActions, authActions, catalogActions, dialogActions, downloadActions, historyActions, i18nActions, keyboardActions, lcpActions,
     publicationActions, themeActions,
@@ -72,9 +72,9 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     themeActions.setTheme.ID,
     versionUpdateActions.notify.ID,
 
-    readerActions.bookmark.pop.ID,
-    readerActions.bookmark.push.ID,
-    readerActions.bookmark.update.ID,
+    // readerActions.bookmark.pop.ID,
+    // readerActions.bookmark.push.ID,
+    // readerActions.bookmark.update.ID,
 
     readerActions.annotation.pop.ID,
     readerActions.annotation.push.ID,
@@ -86,6 +86,10 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     annotationActions.importTriggerModal.ID,
     // annotationActions.importConfirmOrAbort.ID,
+
+    annotationActions.pushToAnnotationImportQueue.ID,
+
+    annotationActions.shiftFromAnnotationImportQueue.ID,
 
     readerActions.setTheLock.ID,
 ];
@@ -146,6 +150,9 @@ export const reduxSyncMiddleware: Middleware
                             !(
                                 (action as ActionWithSender).sender?.type === SenderType.Renderer
                                 && (action as ActionWithSender).sender?.identifier === id
+                            ) || (
+                                (action as ActionAcrossRenderer)?.sendActionAcrossRenderer
+                                && (action as ActionWithSender)?.sender?.identifier !== id
                             )
                         ) {
 

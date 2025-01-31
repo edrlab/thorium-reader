@@ -9,6 +9,10 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
+
+  ol {
+    padding: 0;
+  }
 }
 
 .popover_dialog_reader .settings_tab.annotations_tab {
@@ -518,6 +522,7 @@
 
   .settings_tab .annotations_line {
     width: 100%;
+    list-style-type: none;
   }
 
   .annotations_line {

@@ -237,26 +237,6 @@ export function* getCatalog(): SagaGenerator<ILibraryRootState["publication"]> {
             totalCount: allAdded_.length,
             publicationViews: allAdded_,
         },
-        // {
-        //     id: "continueReading",
-        //     totalCount: epubReaded_.length,
-        //     publicationViews: epubReaded_,
-        // },
-        // {
-        //     id: "continueReadingAudioBooks",
-        //     totalCount: audiobookReaded_.length,
-        //     publicationViews: audiobookReaded_,
-        // },
-        // {
-        //     id: "continueReadingDivina",
-        //     totalCount: divinaReaded_.length,
-        //     publicationViews: divinaReaded_,
-        // },
-        // {
-        //     id: "continueReadingPdf",
-        //     totalCount: pdfReaded_.length,
-        //     publicationViews: pdfReaded_,
-        // },
     ];
     const publicationRepository = diMainGet("publication-repository");
     const allTags = yield* callTyped(() => publicationRepository.getAllTags());

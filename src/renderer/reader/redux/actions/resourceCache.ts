@@ -6,23 +6,22 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { ISearchDocument } from "readium-desktop/utils/search/search.interface";
+import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
 
-import { ISearchState } from "readium-desktop/common/redux/states/renderer/search";
-
-export const ID = "READER_SEARCH_SET_CACHE";
+export const ID = "READER_RESOURCE_SET_CACHE";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface Payload extends Partial<ISearchState> {
+export interface Payload {
+    searchDocument: ICacheDocument[];
 }
 
-export function build(...data: ISearchDocument[]):
+export function build(data: ICacheDocument[]):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            cacheArray: data,
+            searchDocument: data,
         },
     };
 }

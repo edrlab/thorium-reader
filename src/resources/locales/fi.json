@@ -34,6 +34,7 @@
             "no": "Ei",
             "yes": "Kyllä"
           },
+          "help": "",
           "message": "Haluatko tallentaa istunnon?",
           "title": "Tallenna istunto"
         }
@@ -68,9 +69,6 @@
     "emptyTagList": "Tunnisteita ei ole käytössä.",
     "entry": {
       "continueReading": "Jatka lukemista",
-      "continueReadingAudioBooks": "Jatka kuuntelua",
-      "continueReadingDivina": "Jatka divinan lukemista",
-      "continueReadingPdf": "Jatka pdf:n lukemista",
       "lastAdditions": "Viimeksi lisätty"
     },
     "export": "Tallenna nimellä",
@@ -124,12 +122,14 @@
   "dialog": {
     "annotations": {
       "descAuthor": "",
+      "descCreator": "",
       "descList": "",
       "descNewer": "",
       "descOlder": "",
       "descTitle": "",
       "importAll": "",
       "importWithoutConflict": "",
+      "origin": "",
       "title": ""
     },
     "cancel": "Peru",
@@ -301,7 +301,7 @@
     "lcpStart": "Aloita",
     "licenceLCP": "Käyttöoikeus (LCP)",
     "licenseOutOfDate": "LCP-käyttöoikeus on vanhentunut.",
-    "licenseSignatureDateInvalid": "LCP-käyttöoikeuden allekirjoituksen päiväys ei kelpaa",
+    "licenseCertificateDateInvalid": "LCP-käyttöoikeuden allekirjoituksen päiväys ei kelpaa",
     "licenseSignatureInvalid": "LCP-käyttöoikeuden allekirjoitus ei kelpaa",
     "licensed": "Lisensoitu",
     "markAsRead": "Merkitse luetuksi",
@@ -342,6 +342,8 @@
         "red": "",
         "yellow": ""
       },
+      "date": "",
+      "export": "",
       "filter": {
         "all": "",
         "filterByColor": "",
@@ -354,6 +356,7 @@
       "hide": "Älä näytä",
       "highlight": "Korosta",
       "noSelectionToast": "Ei valintaa",
+      "note": "",
       "quickAnnotations": "Pikatila (ohita muokkausikkuna)",
       "saveNote": "Tallenna",
       "sorting": {
@@ -377,6 +380,7 @@
     "fxl": {
       "fit": "Sovita"
     },
+    "goToContent": "",
     "marks": {
       "annotations": "Muistiinpanot",
       "bookmarks": "Kirjanmerkit",
@@ -384,6 +388,7 @@
       "edit": "Muokkaa",
       "goTo": "Siirry sivulle",
       "landmarks": "Kiintopisteet",
+      "progression": "",
       "saveMark": "Tallenna kirjanmerkki",
       "search": "Hae",
       "searchResult": "Hae [{{- searchText}}]",
@@ -404,6 +409,8 @@
       "title": "Luenta"
     },
     "navigation": {
+      "ZenModeExit": "",
+      "ZenModeTitle": "",
       "annotationTitle": "muistiinpano",
       "backHomeTitle": "Takaisin kirjahyllyyn",
       "bookmarkTitle": "Kirjanmerkki",
@@ -531,12 +538,14 @@
   "settings": {
     "annotationCreator": {
       "creator": "",
+      "help": "",
       "name": "",
       "organization": "",
       "person": "",
       "type": ""
     },
     "auth": {
+      "help": "",
       "title": "",
       "wipeData": "Poista kirjautumistiedot"
     },

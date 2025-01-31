@@ -56,6 +56,7 @@ initGlobalConverters_GENERIC();
 
 // console.log(__dirname);
 // console.log((global as any).__dirname);
+// const lcpNativePluginPath = path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", "external-assets", "lcp.node"));
 // const lcpNativePluginPath = path.normalize(path.join((global as any).__dirname, "external-assets", "lcp.node"));
 // setLcpNativePluginPath(lcpNativePluginPath);
 
