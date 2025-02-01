@@ -61,7 +61,7 @@ export function* importAnnotationSet(): SagaGenerator<void> {
 
         const annotationStateFormated: IAnnotationState = {
             ...annotationState,
-            locatorExtended: yield* callTyped(() => convertSelectorTargetToLocatorExtended(target, cacheDoc)),
+            locatorExtended: yield* callTyped(() => convertSelectorTargetToLocatorExtended(target, cacheDoc, undefined)),
         };
         if (!annotationStateFormated.locatorExtended) {
             debug("ERROR: no locator found !! for annotationState, doesn't import this note");
@@ -161,4 +161,3 @@ export const saga = () =>
             (e) => console.error("importAnnotationSet", e),
         ),
     ]);
-

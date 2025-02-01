@@ -19,13 +19,15 @@ import { createCssSelectorMatcher, createTextPositionSelectorMatcher, createText
 import { makeRefinable } from "readium-desktop/third_party/apache-annotator/selector";
 import { convertRange, convertRangeInfo, normalizeRange } from "@r2-navigator-js/electron/renderer/webview/selection";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
-import { uniqueCssSelector as finder } from "@r2-navigator-js/electron/renderer/common/cssselector2-3";
-import { ISelectionInfo } from "@r2-navigator-js/electron/common/selection";
+import { uniqueCssSelector } from "@r2-navigator-js/electron/renderer/common/cssselector3";
+import { IRangeInfo, ISelectionInfo } from "@r2-navigator-js/electron/common/selection";
+
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
 
 // Logger
 const debug = debug_("readium-desktop:common:readium:annotation:converter");
 
-export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnnotation["target"], cacheDoc: ICacheDocument): Promise<MiniLocatorExtended | undefined> {
+export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnnotation["target"], cacheDoc: ICacheDocument, debugRangeInfo: IRangeInfo | undefined): Promise<MiniLocatorExtended | undefined> {
 
    const xmlDom = getDocumentFromICacheDocument(cacheDoc);
     if (!xmlDom) {
@@ -106,7 +108,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
         }
 
         // the range start/end is guaranteed in document order due to the text matchers above (forward tree walk) ... but DOM Ranges are always ordered anyway (only the user / document selection object can be reversed)
-        const tuple = convertRange(range, (element) => finder(element, xmlDom, {root}), () => "", () => "");
+        const tuple = convertRange(range, (element) => uniqueCssSelector(element, xmlDom, {root}), () => "", () => "");
         if (tuple && tuple.length === 2) {
             convertedRangeArray.push(tuple);
         }
@@ -118,8 +120,40 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     debug(`${convertedRangeArray.length} range(s) converted found !!!`);
     debug("dump convertedRange : ", JSON.stringify(convertedRangeArray, null, 4));
 
+    if (IS_DEV) {
+        debug("#".repeat(80));
+        let ok = true;
+        let prevRangeInfo = debugRangeInfo;
+        for (const tuple of convertedRangeArray) {
+            const rangeInfo = tuple[0];
+            if (!prevRangeInfo) {
+                prevRangeInfo = rangeInfo;
+                debug("----IRangeInfo DIFF ok (first)----");
+                continue;
+            }
+            if (prevRangeInfo.startOffset !== rangeInfo.startOffset ||
+                prevRangeInfo.startContainerElementCssSelector !== rangeInfo.startContainerElementCssSelector ||
+                prevRangeInfo.startContainerChildTextNodeIndex !== rangeInfo.startContainerChildTextNodeIndex ||
+                prevRangeInfo.endOffset !== rangeInfo.endOffset ||
+                prevRangeInfo.endContainerElementCssSelector !== rangeInfo.endContainerElementCssSelector ||
+                prevRangeInfo.endContainerChildTextNodeIndex !== rangeInfo.endContainerChildTextNodeIndex
+            ) {
+                debug("!!!!IRangeInfo DIFF!!!!");
+                debug(JSON.stringify(convertedRangeArray.map((tuple) => tuple[0]), null, 4));
+                ok = false;
+                break;
+            } else {
+                debug("----IRangeInfo DIFF ok----");
+            }
+        }
+        if (ok) {
+            debug("____IRangeInfo DIFF OKAY____");
+        }
+        debug("#".repeat(80));
+    }
 
     // TODO: need an Heuristic to choose the range from the array, maybe check if all ranges are equal and add a priority in function of the selector
+    // see above IS_DEV ... maybe pick the most "correct" DOM Range? (most generated, to eliminate odd ones?)
     const [rangeInfo, textInfo] = convertedRangeArray[0];
 
     const selectionInfo: ISelectionInfo = {
@@ -179,7 +213,7 @@ const describeCssSelectorWithTextPosition = async (range: Range, document: Docum
 
     return {
         type: "CssSelector",
-        value: finder(commonAncestorHTMLElement, document, { root }),
+        value: uniqueCssSelector(commonAncestorHTMLElement, document, { root }),
         refinedBy: await describeTextPosition(
             range,
             commonAncestorHTMLElement,
@@ -245,6 +279,12 @@ export async function convertAnnotationStateToSelector(annotationWithCacheDoc: I
     selector.push(progressionSelector);
 
     // Next TODO: CFI !?!
+
+    // this normally occurs at import time, but let's save debugging effort by checking immediately when exporting...
+    // errors are non-fatal, just hunt for the "IRangeInfo DIFF" console logs
+    if (IS_DEV) {
+        await convertSelectorTargetToLocatorExtended({ source: "", selector }, __cacheDocument, rangeInfo);
+    }
 
     return selector;
 }
