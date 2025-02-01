@@ -72,9 +72,9 @@
       "lastAdditions": "Añadidos recientemente"
     },
     "export": "Exportar",
-    "exportAnnotation": "",
+    "exportAnnotation": "Exportar anotación",
     "format": "Formato",
-    "importAnnotation": "",
+    "importAnnotation": "Importar anotación",
     "lang": "Idioma",
     "lastRead": "Último leído",
     "moreInfo": "Detalles del libro",
@@ -121,20 +121,20 @@
   },
   "dialog": {
     "annotations": {
-      "descAuthor": "",
+      "descAuthor": "de {{- author}}",
       "descCreator": "",
-      "descList": "",
-      "descNewer": "",
-      "descOlder": "",
-      "descTitle": "",
-      "importAll": "",
-      "importWithoutConflict": "",
+      "descList": "{{- nb}} la nota o notas de {{- creator}} se asociarán a {{- title}} {{- author}}",
+      "descNewer": "{{- nb}} las versiones más recientes de estas notas ya están asociadas a la publicación.",
+      "descOlder": "{{- nb}} las versiones más antiguas de estas notas ya están asociadas a la publicación.",
+      "descTitle": "Establecer título de anotación",
+      "importAll": "Importar todas las notas",
+      "importWithoutConflict": "Importar notas sin conflictos",
       "origin": "",
-      "title": ""
+      "title": "¿Quieres importar estas notas?"
     },
     "cancel": "Cancelar",
-    "deleteAnnotations": "",
-    "deleteAnnotationsText": "",
+    "deleteAnnotations": "¿Eliminar anotaciones?",
+    "deleteAnnotationsText": "¿Quieres eliminar {{- annotationListLength}} anotación/es?",
     "deleteFeed": "¿Seguro que quieres eliminar este catálogo?",
     "deletePublication": "¿Seguro que quieres eliminar esta publicación?",
     "import": "¿Seguro que quieres importar estos ficheros?",
@@ -169,7 +169,7 @@
   },
   "library": {
     "lcp": {
-      "hint": "Pista : ",
+      "hint": "Pista: ",
       "open": "",
       "password": "Contraseña",
       "sentence": "Esta publicación requiere una contraseña LCP para abrirse: ",
@@ -181,12 +181,12 @@
   },
   "message": {
     "annotations": {
-      "alreadyImported": "",
-      "emptyFile": "",
-      "errorParsing": "",
-      "noBelongTo": "",
-      "nothing": "",
-      "success": ""
+      "alreadyImported": "Ya están importadas todas las anotaciones, cancelando la importación",
+      "emptyFile": "El fichero no tiene anotaciones disponibles",
+      "errorParsing": "Error al validar el formato del fichero:",
+      "noBelongTo": "No es posible importar las anotaciones establecidas, al menos una anotación no pertenece a la publicación",
+      "nothing": "No hay anotaciones listas para importar, cancelando la importación",
+      "success": "¡Correcto!"
     },
     "download": {
       "error": "La descarga de {{- title}} ha fallado: [{{- err}}]"
@@ -291,10 +291,10 @@
     "duration": {
       "title": "Duración"
     },
-    "encryptedNoLicense": "",
+    "encryptedNoLicense": "¡La publicación está encriptada pero sin licencia LCP!",
     "expired": "Préstamo vencido",
     "expiredLcp": "Este libro no se puede leer porque la licencia LCP ha expirado.",
-    "incorrectPassphrase": "",
+    "incorrectPassphrase": "No hay contraseñas almacenadas para esta publicación o la contraseña es incorrecta",
     "lcpEnd": "Fin",
     "lcpRightsCopy": "Caracteres copiados",
     "lcpRightsPrint": "Páginas impresas",
@@ -328,30 +328,30 @@
       "addNote": "Anotar",
       "advancedMode": "Modo instantáneo (creación automática al seleccionar)",
       "annotationsExport": {
-        "description": "",
-        "title": ""
+        "description": "Indicar un nombre para este conjunto de anotaciones",
+        "title": "Título"
       },
       "annotationsOptions": "Opciones",
       "colors": {
-        "bluegreen": "",
-        "cyan": "",
-        "green": "",
-        "lightblue": "",
-        "orange": "",
-        "purple": "",
-        "red": "",
-        "yellow": ""
+        "bluegreen": "Verde azulado",
+        "cyan": "Cian",
+        "green": "Verde",
+        "lightblue": "Azul claro",
+        "orange": "Naranja",
+        "purple": "Púrpura",
+        "red": "Rojo",
+        "yellow": "Amarillo"
       },
       "date": "",
-      "export": "",
+      "export": "Exportar notas",
       "filter": {
-        "all": "",
-        "filterByColor": "",
-        "filterByCreator": "",
-        "filterByDrawtype": "",
-        "filterByTag": "",
-        "filterOptions": "",
-        "none": ""
+        "all": "Todas",
+        "filterByColor": "Filtrar por color",
+        "filterByCreator": "Filtrar por creador",
+        "filterByDrawtype": "Filtrar por tipo de dibujo",
+        "filterByTag": "Filtrar por etiqueta",
+        "filterOptions": "Opciones de filtrado",
+        "none": "Ninguna"
       },
       "hide": "No mostrar",
       "highlight": "Destacar",
@@ -360,10 +360,10 @@
       "quickAnnotations": "Creación rápida (omitir editor)",
       "saveNote": "Guardar",
       "sorting": {
-        "lastcreated": "",
-        "lastmodified": "",
-        "progression": "",
-        "sortingOptions": ""
+        "lastcreated": "Creadas más recientemente",
+        "lastmodified": "Modificadas más recientemente",
+        "progression": "Progreso",
+        "sortingOptions": "Opciones de ordenación"
       },
       "toggleMarginMarks": "Mostrar en márgenes",
       "type": {
@@ -409,7 +409,7 @@
       "title": "Lectura en voz alta"
     },
     "navigation": {
-      "ZenModeExit": "",
+      "ZenModeExit": "Salir de modo Zen",
       "ZenModeTitle": "",
       "annotationTitle": "anotación",
       "backHomeTitle": "Volver a la biblioteca",
@@ -449,7 +449,7 @@
         "title": "Columnas",
         "two": "2 cols."
       },
-      "customFontSelected": "",
+      "customFontSelected": "Has elegido una fuente personalizada",
       "customizeReader": "Personalizar el estilo del texto",
       "disabled": "desactivado",
       "display": "Visualización",
@@ -483,14 +483,14 @@
         "title": "Zoom"
       },
       "preset": {
-        "apply": "",
-        "applyDetails": "",
+        "apply": "Aplicar los parámetros de lectura preferidos",
+        "applyDetails": "Aplicar las opciones preferidas de lectura predeterminadas al libro actual",
         "detail": "",
-        "reset": "",
-        "resetDetails": "",
-        "save": "",
-        "saveDetails": "",
-        "title": ""
+        "reset": "Restablecer opciones preferidas de lectura",
+        "resetDetails": "Restablecer los parámetros de lectura preferidos y aplicarlos al libro actual",
+        "save": "Guardar los parámetros de lectura preferidos",
+        "saveDetails": "Guardar los parámetros personalizados para el texto, de modo que puedan aplicarse a otros libros, una vez abiertos, pulsando el siguiente botón",
+        "title": "Establecer opciones predeterminadas"
       },
       "preview": "Previsualizar",
       "reduceMotion": "Disminuir movimiento",
@@ -521,7 +521,7 @@
     },
     "tts": {
       "activate": "Activar texto a voz (TTS)",
-      "language": "",
+      "language": "Idioma",
       "next": "Siguiente (Texto a voz)",
       "pause": "Pausar texto a voz",
       "play": "Reproducir (Texto a voz)",
