@@ -80,6 +80,7 @@ export interface ReaderConfigBooleans {
     enableMathJax: boolean;
     reduceMotion: boolean;
     noFootnotes: boolean;
+    noTemporaryNavTargetOutline: boolean;
     noRuby: boolean;
     darken: boolean;
     mediaOverlaysEnableSkippability: boolean;

@@ -51,6 +51,7 @@ export const readerConfigInitialState: ReaderConfig = {
     enableMathJax: false,
     reduceMotion: false,
     noFootnotes: false,
+    noTemporaryNavTargetOutline: false,
     noRuby: false,
     darken: undefined,
     mediaOverlaysEnableSkippability: true,

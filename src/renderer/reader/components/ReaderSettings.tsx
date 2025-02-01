@@ -371,7 +371,7 @@ export const FontFamily = () => {
             <div className={stylesSettings.session_text} style={{ marginTop: "0", marginRight: "20px" }}>
                 <SVG ariaHidden svg={InfoIcon} />
                 {
-                    options.find((v) => v.name === inputval) ? 
+                    options.find((v) => v.name === inputval) ?
                     <p>{__("reader.settings.infoCustomFont")}</p>
                     :
                     <p>{__("reader.settings.customFontSelected")}</p>
@@ -750,7 +750,7 @@ const ReadingDisplayCheckboxSettings = ({
     const [__] = useTranslator();
 
     const set = useSaveReaderConfigDebounced();
-    const { enableMathJax, reduceMotion, noFootnotes, noRuby } = useReaderConfigAll();
+    const { enableMathJax, reduceMotion, noFootnotes, noTemporaryNavTargetOutline, noRuby } = useReaderConfigAll();
 
     const options = [
         {
@@ -783,6 +783,15 @@ const ReadingDisplayCheckboxSettings = ({
             checked: noFootnotes,
             onChange: () => {
                 set({ noFootnotes: !noFootnotes });
+            },
+        },
+        {
+            id: "noTemporaryNavTargetOutlineCheckBox",
+            name: "noTemporaryNavTargetOutlineCheckBox",
+            label: __("reader.settings.noTemporaryNavTargetOutline"),
+            checked: noTemporaryNavTargetOutline,
+            onChange: () => {
+                set({ noTemporaryNavTargetOutline: !noTemporaryNavTargetOutline });
             },
         },
         {

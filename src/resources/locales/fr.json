@@ -467,6 +467,7 @@
       "noFootnotes": "Désactiver les notes de base de page.",
       "noRTLFlip": "Désactiver l'interface droite-à-gauche",
       "noRuby": "Cacher les caractères Ruby Japonais",
+      "noTemporaryNavTargetOutline": "Désactiver les indications visuelles de navigation",
       "paginated": "Paginé",
       "paraSpacing": "Espacement des paragraphes",
       "pdfZoom": {

@@ -467,6 +467,7 @@
       "noFootnotes": "Disable footnotes",
       "noRTLFlip": "Disable Right-To-Left UI",
       "noRuby": "Hide Japanese Ruby",
+      "noTemporaryNavTargetOutline": "Disable visual navigation indicators",
       "paginated": "Paginated",
       "paraSpacing": "Paragraph spacing",
       "pdfZoom": {
@@ -483,13 +484,13 @@
         "title": "Zoom"
       },
       "preset": {
-        "apply": "Apply your preferred reading parameters",
-        "applyDetails": "Apply your preferred reading parameters to the current book.",
-        "detail": "Save/Apply your preferred reading parameters.",
-        "reset": "Reset your preferred reading parameters.",
-        "resetDetails": "Reset your preferred reading parameters to their default values.",
-        "save": "Save your preferred reading parameters.",
-        "saveDetails": "Save the changes made to the current book's formatting and display choices. These settings can be applied to other books, once opened, by clicking on the button below.",
+        "apply": "Apply",
+        "applyDetails": "Apply your preferred configuration to the current publication.",
+        "detail": "Save / Apply / Reset your preferred configuration.",
+        "reset": "Reset",
+        "resetDetails": "Reset your preferred configuration (default settings).",
+        "save": "Save",
+        "saveDetails": "This action saves the current configuration, i.e. your preferred display and text formatting options. The settings can then be applied to other publications by clicking the 'apply' button in other reader windows.",
         "title": "Preferences"
       },
       "preview": "Preview",

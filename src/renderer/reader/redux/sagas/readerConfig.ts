@@ -117,6 +117,7 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
         isNotNil(payload.enableMathJax)     ||
         isNotNil(payload.reduceMotion)      ||
         isNotNil(payload.noFootnotes)       ||
+        isNotNil(payload.noTemporaryNavTargetOutline) ||
         isNotNil(payload.noRuby)            ||
         isNotNil(payload.darken)
     ) {
