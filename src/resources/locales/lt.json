@@ -121,12 +121,12 @@
   },
   "dialog": {
     "annotations": {
-      "descAuthor": "{{- author}}",
+      "descAuthor": "'{{- author}}'",
       "descCreator": ", kurią(-ias) sukūrė ",
-      "descList": "{{- nb}} pastaba(-os, -ų), kurias sukūrė {{- creator}}, bus susietos su {{- author}} leidiniu {{- title}}",
-      "descNewer": "{{- nb}} naujesnė(-s, -ių) šių pastabų versija(-os, -ų) jau susieta(-os) su leidiniu.",
-      "descOlder": "{{- nb}} senesnė(-s, -ių) šių pastabų versija(-os, -ų) jau susieta(-os) su leidiniu.",
-      "descTitle": "Pastabų rinkinio pavadinimas:",
+      "descList": "{{- nb}} pastaba(-os, -ų){{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
+      "descNewer": "Konfliktas(-ai): {{- nb}} naujesnė(-s, -ių) pastaba(-os, -ų)",
+      "descOlder": "Konfliktas(-ai): {{- nb}} senesnė(-s, -ių) pastaba(-os, -ų)",
+      "descTitle": "Pastabų pavadinimas: ",
       "importAll": "Importuoti visas pastabas",
       "importWithoutConflict": "Importuoti pastabas, neturinčias konfliktų",
       "origin": "Kilmės leidinys: '{{- title}}' {{- author}}",
