@@ -344,7 +344,6 @@
     "@react-types/shared": "^3.27.0",
     "@redux-devtools/extension": "^3.3.0",
     "@rollup/plugin-terser": "^0.4.4",
-    "@types/classnames": "^2.3.4",
     "@types/glob": "^8.1.0",
     "@types/jest": "^29.5.14",
     "@types/jsdom": "^21.1.7",
