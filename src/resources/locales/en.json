@@ -125,7 +125,7 @@
       "descCreator": "created by",
       "descList": "{{- nb}} note(s) {{- creator}} will be imported into '{{- title}}' {{- author}}",
       "descNewer": "Conflict(s): {{- nb}} newer note(s)",
-      "descOlder": "Conflict(s): {{- nb}} older notes(s)",
+      "descOlder": "Conflict(s): {{- nb}} older note(s)",
       "descTitle": "Annotations title: ",
       "importAll": "Import all notes",
       "importWithoutConflict": "Import only conflict-free notes",
