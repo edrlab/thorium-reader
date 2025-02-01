@@ -17,7 +17,7 @@ import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/res
 import { getDocumentFromICacheDocument } from "readium-desktop/utils/xmlDom";
 import { createCssSelectorMatcher, createTextPositionSelectorMatcher, createTextQuoteSelectorMatcher, describeTextPosition, describeTextQuote } from "readium-desktop/third_party/apache-annotator/dom";
 import { makeRefinable } from "readium-desktop/third_party/apache-annotator/selector";
-import { convertRange, convertRangeInfo } from "@r2-navigator-js/electron/renderer/webview/selection";
+import { convertRange, convertRangeInfo, normalizeRange } from "@r2-navigator-js/electron/renderer/webview/selection";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { uniqueCssSelector as finder } from "@r2-navigator-js/electron/renderer/common/cssselector2-3";
 import { ISelectionInfo } from "@r2-navigator-js/electron/common/selection";
@@ -98,8 +98,8 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
 
     const convertedRangeArray: ReturnType<typeof convertRange>[] = [];
 
-    for (const range of ranges) {
-        // const range = normalizeRange(r);
+    for (const r of ranges) {
+        const range = normalizeRange(r);
         if (range.collapsed) {
             debug("RANGE COLLAPSED :( skipping...");
             continue;
