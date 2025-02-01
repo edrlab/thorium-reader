@@ -1,3 +1,4 @@
+import { expect, test } from "@jest/globals";
 import {
     Iw3cPublicationManifest, w3cPublicationManifestToReadiumPublicationManifest,
 } from "readium-desktop/main/w3c/audiobooks/converter";
