@@ -467,6 +467,7 @@
       "noFootnotes": "Išjungti išnašas",
       "noRTLFlip": "Išjungti iš-dešinės-į-kairę naudotojo sąsają",
       "noRuby": "Slėpti japonų kalbos Ruby simbolius",
+      "noTemporaryNavTargetOutline": "Išjungti vaizdinius naršymo indikatorius",
       "paginated": "Skaidyti į puslapius",
       "paraSpacing": "Tarpas tarp pastraipų",
       "pdfZoom": {
@@ -483,13 +484,13 @@
         "title": "Mastelis"
       },
       "preset": {
-        "apply": "Taikyti pageidautinus skaitymo parametrus",
-        "applyDetails": "Taikyti pageidautinus skaitymo parametrus dabartiniam leidiniui.",
-        "detail": "Išsaugoti/taikyti pageidautinus skaitymo parametrus.",
-        "reset": "Nustatyti pageidautinus skaitymo parametrus iš naujo.",
-        "resetDetails": "Nustatyti pageidautinus skaitymo parametrus į jų numatytąsias reikšmes.",
-        "save": "Išsaugoti pageidautinus skaitymo parametrus.",
-        "saveDetails": "Išsaugoti dabartinio leidinio teksto formatavimo bei atvaizdavimo pakeitimus. Šias nuostatas galėsite taikyti kitiems leidiniams, juos atvėrę ir paspaudę žemiau esantį mygtuką.",
+        "apply": "Taikyti",
+        "applyDetails": "Taikyti pageidautiną konfigūraciją dabartiniam leidiniui.",
+        "detail": "Išsaugoti / taikyti / nustatyti pageidautiną konfigūraciją iš naujo.",
+        "reset": "Nustatyti iš naujo",
+        "resetDetails": "Nustatyti pageidautiną konfigūraciją į numatytąsias reikšmes.",
+        "save": "Išsaugoti",
+        "saveDetails": "Šis veiksmas išsaugo dabartinę konfigūraciją, t. y. Jūsų pageidautinus išvaizdos ir teksto formatavimo parametrus. Šias nuostatas galėsite taikyti kitiems leidiniams jų skaitymo lange paspaudę mygtuką „Taikyti“.",
         "title": "Nuostatos"
       },
       "preview": "Peržiūrėti",
