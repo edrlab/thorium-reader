@@ -432,7 +432,7 @@ export const computeProgression = (spineItemLinks: Link[], locator: Locator) => 
     return percent;
 };
 
-const getUuidFromUrn = (v: string) => `${v.startsWith("urn:uuid:") ? v.split("urn:uuid:")[1] : v}`;
+const getUuidFromUrn = (v: string | undefined) => `${v?.startsWith("urn:uuid:") ? v.split("urn:uuid:")[1] : v}`;
 
 const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
