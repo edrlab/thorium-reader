@@ -346,10 +346,10 @@
       "export": "Sauvegarder sous",
       "filter": {
         "all": "Tous",
-        "filterByColor": "Filtré par couleur",
-        "filterByCreator": "Filtré par créateur",
-        "filterByDrawtype": "Filtré par Surlignage",
-        "filterByTag": "Filtré par tag",
+        "filterByColor": "Filtrer par couleur",
+        "filterByCreator": "Filtrer par créateur",
+        "filterByDrawtype": "Filtrer par Surlignage",
+        "filterByTag": "Filtrer par tag",
         "filterOptions": "Filtre options",
         "none": "Aucun"
       },

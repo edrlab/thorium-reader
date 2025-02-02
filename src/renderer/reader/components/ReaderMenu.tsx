@@ -432,9 +432,11 @@ export const computeProgression = (spineItemLinks: Link[], locator: Locator) => 
     return percent;
 };
 
-const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const getUuidFromUrn = (v: string) => `${v.startsWith("urn:uuid:") ? v.split("urn:uuid:")[1] : v}`;
 
-    const { goToLocator, setTagFilter } = props;
+const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+
+    const { goToLocator, setTagFilter, setCreatorFilter } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
     // const setReaderConfig = useSaveReaderConfig();
@@ -492,7 +494,8 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
         return <></>;
     }
 
-    const creatorName = (annotation.creator?.id !== creatorMyself.id ? annotation.creator?.name : creatorMyself.name) || "";
+    const creatorName = (getUuidFromUrn(annotation.creator?.id) !== getUuidFromUrn(creatorMyself.id) ? (annotation.creator?.name || getUuidFromUrn(annotation.creator?.id)) : creatorMyself.name) || "";
+    const creatorId = (getUuidFromUrn(annotation.creator?.id) !== getUuidFromUrn(creatorMyself.id) ? getUuidFromUrn(annotation.creator?.id) : getUuidFromUrn(creatorMyself.id)) || "";
 
     return (<li
         className={stylesAnnotations.annotations_line}
@@ -592,7 +595,15 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                     ?
                     <div>
                         <SVG ariaHidden svg={AvatarIcon} />
-                        <p style={{overflow: "hidden", textOverflow: "ellipsis", padding: "0"}} title={creatorName}>{creatorName}</p>
+                        <a onClick={() => setCreatorFilter(creatorId)}
+                            onKeyUp={(e) => {
+                                if (e.key === "Enter" || e.key === "Space") {
+                                    e.preventDefault();
+                                    setCreatorFilter(creatorId);
+                                }
+                            }}>
+                            <p style={{ overflow: "hidden", textOverflow: "ellipsis", padding: "0" }} title={creatorName}>{creatorName}</p>
+                        </a>
                     </div>
                     : <></>
                 }
@@ -678,7 +689,6 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
 const selectionIsSet = (a: Selection): a is Set<string> => typeof a === "object";
 const MAX_MATCHES_PER_PAGE = 5;
 
-const userNumber: Record<string, number> = {};
 
 const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number, popoverBoundary: HTMLDivElement, advancedAnnotationsOnChange: () => void, quickAnnotationsOnChange: () => void, marginAnnotationsOnChange: () => void, hideAnnotationOnChange: () => void, serialAnnotator: boolean } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
@@ -712,7 +722,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
             return (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags.some((tagsValueName) => tagArrayFilter.has(tagsValueName))) &&
                 (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
                 (!selectionIsSet(drawTypeArrayFilter) || !drawTypeArrayFilter.size || drawTypeArrayFilter.has(drawType)) &&
-                (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(creator?.id));
+                (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(getUuidFromUrn(creator?.id)));
 
         })
         : annotationsListAll;
@@ -747,7 +757,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                 if (drawTypeArrayFilter !== "all" && !drawTypeArrayFilter.has(annotationFound.drawType) && drawTypeArrayFilter.size !== 0) {
                     setDrawTypeArrayFilter(new Set([]));
                 }
-                if (creatorArrayFilter !== "all" && !creatorArrayFilter.has(annotationFound.creator?.id) && creatorArrayFilter.size !== 0) {
+                if (creatorArrayFilter !== "all" && !creatorArrayFilter.has(getUuidFromUrn(annotationFound.creator?.id)) && creatorArrayFilter.size !== 0) {
                     setCreatorArrayFilter(new Set([]));
                 }
             }
@@ -827,8 +837,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
     const creatorList = annotationsListAll.map(([, { creator }]) => creator).filter(v => v);
     const creatorSet = creatorList.reduce<Record<string, string>>((acc, { id, name }) => {
         if (!acc[id]) {
-            if (!userNumber[id]) userNumber[id] = ObjectKeys(userNumber).length + 1;
-            return { ...acc, [id]: (id !== creatorMyself.id ? name : creatorMyself.name) || `unknown${userNumber[id]}` };
+            return { ...acc, [getUuidFromUrn(id)]: (getUuidFromUrn(id) !== getUuidFromUrn(creatorMyself.id) ? name : creatorMyself.name) || getUuidFromUrn(id) };
         }
         return acc;
     }, {});
@@ -1054,13 +1063,13 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                         style={{ marginBottom: "20px" }}
                                     >
                                         <details id="annotationListCreator">
-                                            <summary className={stylesAnnotations.annotations_filter_tagGroup} style={{ pointerEvents: selectCreatorOptions.length < 2 ? "none" : "auto", opacity: selectCreatorOptions.length < 2 ? "0.5" : "1" }}
-                                                tabIndex={selectCreatorOptions.length < 2 ? -1 : 0}
+                                            <summary className={stylesAnnotations.annotations_filter_tagGroup} style={{ pointerEvents: !selectCreatorOptions.length ? "none" : "auto", opacity: !selectCreatorOptions.length ? "0.5" : "1" }}
+                                                tabIndex={!selectCreatorOptions.length ? -1 : 0}
                                             >
                                                 <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByCreator")}</Label>
                                                 <div style={{ display: "flex", gap: "10px" }}>
                                                     <button
-                                                        tabIndex={selectCreatorOptions.length < 2 ? -1 : 0}
+                                                        tabIndex={!selectCreatorOptions.length ? -1 : 0}
                                                         style={{ width: "fit-content", minWidth: "unset" }}
                                                         className={creatorArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
                                                         onClick={() => {
@@ -1074,7 +1083,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                                         {__("reader.annotations.filter.all")}
                                                     </button>
                                                     <button
-                                                        tabIndex={selectCreatorOptions.length < 2 ? -1 : 0}
+                                                        tabIndex={!selectCreatorOptions.length ? -1 : 0}
                                                         style={{ width: "fit-content", minWidth: "unset" }}
                                                         className={stylesButtons.button_secondary_blue}
                                                         onClick={() => {
@@ -1085,7 +1094,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                                     </button>
                                                 </div>
                                             </summary>
-                                            <TagList items={selectCreatorOptions} className={stylesAnnotations.annotations_filter_taglist} style={{ margin: selectCreatorOptions.length < 2 ? "0" : "20px 0" }}>
+                                            <TagList items={selectCreatorOptions} className={stylesAnnotations.annotations_filter_taglist} style={{ margin: !selectCreatorOptions.length ? "0" : "20px 0" }}>
                                                 {(item) => <Tag className={stylesAnnotations.annotations_filter_tag} id={item.id} textValue={item.name}>{item.name}</Tag>}
                                             </TagList>
                                         </details>
@@ -1133,7 +1142,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                         <button onClick={() => {
                                             const annotations = annotationListFiltered.map(([, anno]) => {
                                                 const { creator } = anno;
-                                                if (creator?.id === creatorMyself.id) {
+                                                if (getUuidFromUrn(creator?.id) === getUuidFromUrn(creatorMyself.id)) {
                                                     return { ...anno, creator: { ...creatorMyself, id: "urn:uuid:" + creatorMyself.id } };
                                                 }
                                                 return anno;
@@ -1345,6 +1354,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                         isEdited={annotationItem.uuid === annotationItemEditedUUID}
                         triggerEdition={triggerEdition(annotationItem)}
                         setTagFilter={(v) => setTagArrayFilter(new Set([v]))}
+                        setCreatorFilter={(v) => setCreatorArrayFilter(new Set([v]))}
                     />,
                 )}
             </ol>
