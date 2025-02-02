@@ -601,7 +601,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                                     e.preventDefault();
                                     setCreatorFilter(creatorId);
                                 }
-                            }}>
+                            }} tabIndex={0}>
                             <p style={{ overflow: "hidden", textOverflow: "ellipsis", padding: "0" }} title={creatorName}>{creatorName}</p>
                         </a>
                     </div>
