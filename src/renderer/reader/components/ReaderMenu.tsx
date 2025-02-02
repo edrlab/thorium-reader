@@ -567,12 +567,24 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                         {tagName ? <div className={stylesTags.tags_wrapper} aria-label={__("catalog.tags")}>
                             <div className={stylesTags.tag}>
                                 <a onClick={() => setTagFilter(tagName)}
-                                    onKeyUp={(e) => {
-                                        if (e.key === "Enter" || e.key === "Space") {
-                                            e.preventDefault();
-                                            setTagFilter(tagName);
+
+                                    onKeyDown={(e) => {
+                                        // if (e.code === "Space") {
+                                        if (e.key === " " || e.altKey || e.ctrlKey) {
+                                            e.preventDefault(); // prevent scroll
                                         }
-                                    }}>
+                                    }}
+                                    onKeyUp={(e) => {
+                                        // Includes screen reader tests:
+                                        // if (e.code === "Space") { WORKS
+                                        // if (e.key === "Space") { DOES NOT WORK
+                                        // if (e.key === "Enter") { WORKS
+                                        if (e.key === " " || e.key === "Enter") { // WORKS
+                                            e.preventDefault();
+                                            e.currentTarget.click();
+                                        }
+                                    }}
+                                    tabIndex={0}>
                                     {tagName}
                                 </a>
                             </div>
@@ -596,12 +608,24 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                     <div>
                         <SVG ariaHidden svg={AvatarIcon} />
                         <a onClick={() => setCreatorFilter(creatorId)}
-                            onKeyUp={(e) => {
-                                if (e.key === "Enter" || e.key === "Space") {
-                                    e.preventDefault();
-                                    setCreatorFilter(creatorId);
+
+                            onKeyDown={(e) => {
+                                // if (e.code === "Space") {
+                                if (e.key === " " || e.altKey || e.ctrlKey) {
+                                    e.preventDefault(); // prevent scroll
                                 }
-                            }} tabIndex={0}>
+                            }}
+                            onKeyUp={(e) => {
+                                // Includes screen reader tests:
+                                // if (e.code === "Space") { WORKS
+                                // if (e.key === "Space") { DOES NOT WORK
+                                // if (e.key === "Enter") { WORKS
+                                if (e.key === " " || e.key === "Enter") { // WORKS
+                                    e.preventDefault();
+                                    e.currentTarget.click();
+                                }
+                            }}
+                            tabIndex={0}>
                             <p style={{ overflow: "hidden", textOverflow: "ellipsis", padding: "0" }} title={creatorName}>{creatorName}</p>
                         </a>
                     </div>
