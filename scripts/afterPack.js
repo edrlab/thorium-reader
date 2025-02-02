@@ -36,21 +36,15 @@ module.exports = async function afterPack(context) {
     console.log("context.packager.appInfo.productFilename: " + context.packager.appInfo.productFilename);
     console.log("context.appOutDir: " + context.appOutDir);
 
-    const ext = {
-        darwin: ".app",
-        win32: ".exe",
-        linux: [""],
-    }[context.electronPlatformName];
+    console.log("context.packager instanceof builder.LinuxPackager: " + (context.packager instanceof builder.LinuxPackager));
+    console.log("context.packager.executableName: " + context.packager.executableName);
 
-    const executableName =
-        context.electronPlatformName === "linux"
-            ? context.packager.appInfo.productFilename.toLowerCase() // context.packager.executableName
-            : context.packager.appInfo.productFilename;
+    console.log("context.packager.addElectronFuses(): " + !!context.packager.addElectronFuses);
 
-    const electronBinaryPath = path.join(context.appOutDir, `${executableName}${ext}`);
-
-    await flipFuses(electronBinaryPath, {
+    /* @type require("@electron/fuses").FuseConfig */
+    const fuseConfig = {
         version: FuseVersion.V1,
+        strictlyRequireAllFuses: true,
 
         // https://github.com/electron/fuses?tab=readme-ov-file#apple-silicon
         resetAdHocDarwinSignature: context.electronPlatformName === "darwin" && context.arch === builder.Arch.arm64,
@@ -81,7 +75,30 @@ module.exports = async function afterPack(context) {
 
         // GrantFileProtocolExtraPrivileges = 7,
         [FuseV1Options.GrantFileProtocolExtraPrivileges]: false,
-    });
+    };
+
+    // Electron Builder v26
+    // https://github.com/electron-userland/electron-builder/pull/8588
+    if (context.packager.addElectronFuses) {
+        await context.packager.addElectronFuses(context, fuseConfig);
+    } else {
+
+        const ext = {
+            darwin: ".app",
+            win32: ".exe",
+            linux: [""],
+        }[context.electronPlatformName];
+
+        const executableName = (context.packager instanceof builder.LinuxPackager) ? context.packager.executableName : context.packager.appInfo.productFilename;
+        // const executableName =
+        //     context.electronPlatformName === "linux"
+        //         ? context.packager.appInfo.productFilename.toLowerCase() // context.packager.executableName
+        //         : context.packager.appInfo.productFilename;
+
+        const electronBinaryPath = path.join(context.appOutDir, `${executableName}${ext}`);
+
+        await flipFuses(electronBinaryPath, fuseConfig);
+    }
 
     // if (context.electronPlatformName === 'linux') {
     //     context.targets.forEach(fixSetuid(context));
