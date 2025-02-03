@@ -35,8 +35,8 @@
                         "yes": "Oui"
                     },
                     "help": "Si cette case est cochée, les livres actuellement ouverts seront automatiquement ouverts au prochain démarrage de l'application.",
-                    "message": "Voulez-vous sauvegarder la session ?",
-                    "title": "Sauvegarder la session"
+                    "message": "Sauvegarde et restauration de session",
+                    "title": "Sauvegarder la session ?"
                 }
             }
         },
