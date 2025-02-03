@@ -35,8 +35,8 @@
             "yes": "Sim"
           },
           "help": "Ativar se pretender que as janelas do leitor que estejam abertas quando fecha a aplicação sejam reabertas automaticamente no próximo arranque.",
-          "message": "Quer guardar a sessão?",
-          "title": "Guardar sessão"
+          "message": "Guardar e restaurar a sessão de leitura",
+          "title": "Guardar sessão?"
         }
       }
     },
@@ -72,7 +72,7 @@
       "lastAdditions": "Adicionados recentemente"
     },
     "export": "Guardar como",
-    "exportAnnotation": "Guardar anotação como",
+    "exportAnnotation": "Exportar anotações...",
     "format": "Formato",
     "importAnnotation": "Importar anotação",
     "lang": "Idioma",
@@ -124,11 +124,11 @@
       "descAuthor": "de {{- author}}",
       "descCreator": "criado por",
       "descList": "{{- nb}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
-      "descNewer": "{{- nb}} versões mais recentes destas anotações já estão associadas à publicação.",
-      "descOlder": "{{- nb}} versões mais antigas destas anotações já estão associadas à publicação.",
-      "descTitle": "Título do conjunto de anotações:",
+      "descNewer": "Conflitos: {{- nb}} anotações mais recentes",
+      "descOlder": "Conflitos: {{- nb}} anotações mais antigas",
+      "descTitle": "Título das anotações:",
       "importAll": "Importar todas as anotações",
-      "importWithoutConflict": "Importar anotações sem conflitos",
+      "importWithoutConflict": "Importar apenas anotações sem conflitos",
       "origin": "Publicação de origem: '{{- title}}' {{- author}}",
       "title": "Quer importar estas anotações?"
     },
@@ -169,11 +169,11 @@
   },
   "library": {
     "lcp": {
-      "hint": "Dica: ",
+      "hint": "Dica:",
       "open": "Abrir",
       "password": "Frase-passe",
-      "sentence": "Insira a frase-passe LCP para abrir este documento: ",
-      "urlHint": "Esqueceu-se da sua frase-passe? Encontre ajuda aqui:",
+      "sentence": "Este documento necesita de uma frase-passe LCP para ser aberto ",
+      "urlHint": "Esqueceu-se da sua frase-passe? Clique aqui para ajuda.",
       "whatIsLcp?": "O que é LCP?",
       "whatIsLcpInfoDetails": "LCP significa 'Proteção de Conteúdo Licenciado'.",
       "whatIsLcpInfoDetailsLink": "Para saber mais, visite esta página do sítio EDRLab."
@@ -186,7 +186,7 @@
       "errorParsing": "Erro ao analisar o formato do ficheiro:",
       "noBelongTo": "Não foi possível importar o conjunto de anotações. Pelo menos uma anotação não pertence à publicação",
       "nothing": "Não existem anotações prontas para serem importadas. A abortar a importação",
-      "success": "Sucesso!"
+      "success": "Importação concluída com sucesso."
     },
     "download": {
       "error": "Falha ao descarregar {{- title}}: [{{- err}}]"
@@ -269,7 +269,7 @@
         "sound": "Som",
         "unknown": "Desconhecido"
       },
-      "certifierReport": "Relatório do certificador",
+      "certifierReport": "Relatório do certificador:",
       "conformsTo": "Em conformidade com:",
       "moreInformation": "Mais informações",
       "name": "Acessibilidade",
@@ -308,7 +308,7 @@
     "notStarted": "Não iniciado",
     "onGoing": "Iniciado",
     "progression": {
-      "title": "Progressão"
+      "title": "Progresso"
     },
     "read": "Finalizado",
     "remainingTime": "Empréstimo (restante)",
@@ -328,7 +328,7 @@
       "addNote": "Anotar",
       "advancedMode": "Modo instantâneo (criação automática após seleção)",
       "annotationsExport": {
-        "description": "Dar um nome a este conjunto de anotações",
+        "description": "Dar um nome às anotações exportadas:",
         "title": "Título"
       },
       "annotationsOptions": "Opções",
@@ -342,8 +342,8 @@
         "red": "Vermelho",
         "yellow": "Amarelo"
       },
-      "date": "",
-      "export": "Guardar notas como",
+      "date": "Data de alteração",
+      "export": "Guardar anotações como...",
       "filter": {
         "all": "Tudo",
         "filterByColor": "Filtrar por cor",
@@ -356,7 +356,7 @@
       "hide": "Não exibir",
       "highlight": "Realçar",
       "noSelectionToast": "Nenhuma seleção",
-      "note": "",
+      "note": "Anotação {{- color}}",
       "quickAnnotations": "Criação rápida (saltar editor)",
       "saveNote": "Guardar",
       "sorting": {
@@ -380,7 +380,7 @@
     "fxl": {
       "fit": "Ajustar"
     },
-    "goToContent": "",
+    "goToContent": "Ir para o conteúdo",
     "marks": {
       "annotations": "Anotações",
       "bookmarks": "Marcadores",
@@ -388,7 +388,7 @@
       "edit": "Editar",
       "goTo": "Ir para página",
       "landmarks": "Pontos de referência",
-      "progression": "",
+      "progression": "Progresso",
       "saveMark": "Guardar favorito",
       "search": "Pesquisar",
       "searchResult": "Pesquisar [{{- searchText}}]",
@@ -409,8 +409,8 @@
       "title": "Narração"
     },
     "navigation": {
-      "ZenModeExit": "",
-      "ZenModeTitle": "",
+      "ZenModeExit": "Sair do modo Zen",
+      "ZenModeTitle": "Modo Zen",
       "annotationTitle": "Anotação",
       "backHomeTitle": "Fechar janela de leitura (voltar à estante)",
       "bookmarkTitle": "Marcador",
@@ -467,6 +467,7 @@
       "noFootnotes": "Desativar notas de rodapé",
       "noRTLFlip": "Desativar interface Direita-para-esquerda",
       "noRuby": "Ocultar Ruby Japonês",
+      "noTemporaryNavTargetOutline": "Desativar indicadores visuais de navegação",
       "paginated": "Paginado",
       "paraSpacing": "Espaçamento de parágrafos",
       "pdfZoom": {
@@ -483,13 +484,13 @@
         "title": "Zoom"
       },
       "preset": {
-        "apply": "Aplicar os seus parâmetros de leitura preferidos",
+        "apply": "Apply",
         "applyDetails": "Aplicar os seus parâmetros de leitura preferidos ao livro atual.",
         "detail": "Guardar/Aplicar os seus parâmetros de leitura preferidos.",
-        "reset": "Repor os seus parâmetros de leitura preferidos.",
-        "resetDetails": "Repor os seus parâmetros de leitura preferidos para os valores predefinidos.",
-        "save": "Guardar os seus parâmetros de leitura preferidos.",
-        "saveDetails": "Guarde as alterações efetuadas nas opções de visualização e formatação do livro atual. Estas definições podem ser aplicadas a outros livros, uma vez abertos, clicando no botão abaixo.",
+        "reset": "Repor",
+        "resetDetails": "Repor os seus parâmetros de leitura preferidos (valores predefinidos).",
+        "save": "Guardar",
+        "saveDetails": "Esta ação guarda a configuração atual, ou seja, as suas opções preferidas de visualização e formatação de texto. As definições podem ser aplicadas a outras publicações clicando no botão \"Aplicar\" noutras janelas do leitor.",
         "title": "Preferências"
       },
       "preview": "Pré-visualização",
@@ -536,7 +537,7 @@
   "settings": {
     "annotationCreator": {
       "creator": "Criador",
-      "help": "Se especificado, este nome será incluído nos metadados das notas exportadas.",
+      "help": "Se especificado, este nome será incluído nos metadados das anotações exportadas.",
       "name": "Nome",
       "organization": "Organização",
       "person": "Pessoa",
