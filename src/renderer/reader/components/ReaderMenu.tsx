@@ -584,6 +584,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                                             e.currentTarget.click();
                                         }
                                     }}
+                                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                                     tabIndex={0}>
                                     {tagName}
                                 </a>
