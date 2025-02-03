@@ -50,7 +50,7 @@
     },
     "catalog": {
         "about": {
-            "title": "À propos de {{appName}}"
+            "title": "À propos de {{- appName}} (en ligne)"
         },
         "addBookToLib": "Ajouter",
         "addTags": "Ajouter un mot-clef",
@@ -72,7 +72,7 @@
             "lastAdditions": "Récemment ajouté"
         },
         "export": "Sauvegarder sous",
-        "exportAnnotation": "Sauvegarder les notes sous",
+        "exportAnnotation": "Sauvegarder les notes ...",
         "format": "Format",
         "importAnnotation": "Importer les notes",
         "lang": "Langue",
