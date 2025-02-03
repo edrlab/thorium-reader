@@ -72,7 +72,7 @@
             "lastAdditions": "Adicionados recentemente"
         },
         "export": "Guardar como",
-        "exportAnnotation": "Exportar notas...",
+        "exportAnnotation": "Exportar anotações...",
         "format": "Formato",
         "importAnnotation": "Importar anotação",
         "lang": "Idioma",
@@ -124,8 +124,8 @@
             "descAuthor": "de {{- author}}",
             "descCreator": "criado por",
             "descList": "{{- nb}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
-            "descNewer": "Conflito(s): {{- nb}} nota(s) mais recente(s)",
-            "descOlder": "Conflito(s): {{- nb}} nota(s) mais recente(s)",
+            "descNewer": "Conflitos: {{- nb}} anotações mais recentes",
+            "descOlder": "Conflitos: {{- nb}} anotações mais antigas",
             "descTitle": "Título das anotações: ",
             "importAll": "Importar todas as anotações",
             "importWithoutConflict": "Importar apenas anotações sem conflitos",
@@ -181,10 +181,10 @@
     },
     "message": {
         "annotations": {
-            "alreadyImported": "Todas as anotações já foram importadas. A abortar a importação",
-            "emptyFile": "Nenhuma anotação disponível no ficheiro",
-            "errorParsing": "Erro ao analisar o formato do ficheiro:",
-            "noBelongTo": "Não foi possível importar o conjunto de anotações. Pelo menos uma anotação não pertence à publicação",
+            "alreadyImported": "Todas as anotações já foram importadas. A abortar a importação.",
+            "emptyFile": "Nenhuma anotação disponível no ficheiro.",
+            "errorParsing": "Erro ao analisar o formato do ficheiro: ",
+            "noBelongTo": "Não foi possível importar o conjunto de anotações. Pelo menos uma anotação não pertence à publicação.",
             "nothing": "Não existem anotações prontas para serem importadas. A abortar a importação",
             "success": "Importação concluída com sucesso."
         },
@@ -192,8 +192,8 @@
             "error": "Falha ao descarregar {{- title}}: [{{- err}}]"
         },
         "import": {
-            "alreadyImport": "Já tinha sido importado: {{- title}}",
-            "fail": "Falha ao importar {{- path}}. Erro: {{- err}}.",
+            "alreadyImport": "Já tinha sido importado: {{- title}}.",
+            "fail": "Falha ao importar {{- path}}. Erro: {{- err}}",
             "success": "Foi concluída a importação de {{- title}}."
         },
         "open": {
@@ -281,8 +281,8 @@
         },
         "author": "Autor",
         "cancelledLcp": "A licença LCP foi cancelada.",
-        "certificateRevoked": "O certificado LCP foi revogado",
-        "certificateSignatureInvalid": "A assinatura do certificado da licença LCP é inválida",
+        "certificateRevoked": "O certificado LCP foi revogado.",
+        "certificateSignatureInvalid": "A assinatura do certificado da licença LCP é inválida.",
         "cover": {
             "img": "Imagem de capa"
         },
@@ -320,7 +320,7 @@
         "seeMore": "Ver mais",
         "timeLeft": "Tempo restante",
         "title": "Título",
-        "userKeyCheckInvalid": "A frase-passe está incorreta"
+        "userKeyCheckInvalid": "A frase-passe está incorreta."
     },
     "reader": {
         "annotations": {
@@ -342,8 +342,8 @@
                 "red": "Vermelho",
                 "yellow": "Amarelo"
             },
-            "date": "",
-            "export": "Guardar notas como",
+            "date": "Data de alteração",
+            "export": "Guardar anotações como...",
             "filter": {
                 "all": "Tudo",
                 "filterByColor": "Filtrar por cor",
@@ -356,7 +356,7 @@
             "hide": "Não exibir",
             "highlight": "Realçar",
             "noSelectionToast": "Nenhuma seleção",
-            "note": "",
+            "note": "Anotação {{- color}}",
             "quickAnnotations": "Criação rápida (saltar editor)",
             "saveNote": "Guardar",
             "sorting": {
@@ -380,7 +380,7 @@
         "fxl": {
             "fit": "Ajustar"
         },
-        "goToContent": "",
+        "goToContent": "Ir para o conteúdo",
         "marks": {
             "annotations": "Anotações",
             "bookmarks": "Marcadores",
@@ -388,7 +388,7 @@
             "edit": "Editar",
             "goTo": "Ir para página",
             "landmarks": "Pontos de referência",
-            "progression": "",
+            "progression": "Progresso",
             "saveMark": "Guardar favorito",
             "search": "Pesquisar",
             "searchResult": "Pesquisar [{{- searchText}}]",
@@ -409,8 +409,8 @@
             "title": "Narração"
         },
         "navigation": {
-            "ZenModeExit": "",
-            "ZenModeTitle": "",
+            "ZenModeExit": "Sair do modo Zen",
+            "ZenModeTitle": "Modo Zen",
             "annotationTitle": "Anotação",
             "backHomeTitle": "Fechar janela de leitura (voltar à estante)",
             "bookmarkTitle": "Marcador",
@@ -486,10 +486,10 @@
                 "apply": "Aplicar os seus parâmetros de leitura preferidos",
                 "applyDetails": "Aplicar os seus parâmetros de leitura preferidos ao livro atual.",
                 "detail": "Guardar/Aplicar os seus parâmetros de leitura preferidos.",
-                "reset": "Repor os seus parâmetros de leitura preferidos.",
-                "resetDetails": "Repor os seus parâmetros de leitura preferidos para os valores predefinidos.",
+                "reset": "Repor",
+                "resetDetails": "Repor os seus parâmetros de leitura preferidos (valores predefinidos).",
                 "save": "Guardar os seus parâmetros de leitura preferidos.",
-                "saveDetails": "Guarde as alterações efetuadas nas opções de visualização e formatação do livro atual. Estas definições podem ser aplicadas a outros livros, uma vez abertos, clicando no botão abaixo.",
+                "saveDetails": "Esta ação guarda a configuração atual, ou seja, as suas opções preferidas de visualização e formatação de texto. As definições podem ser aplicadas a outras publicações clicando no botão \"Aplicar\" noutras janelas do leitor.",
                 "title": "Preferências"
             },
             "preview": "Pré-visualização",
@@ -510,7 +510,8 @@
                 },
                 "title": "Tema"
             },
-            "wordSpacing": "Espaçamento de palavras"
+            "wordSpacing": "Espaçamento de palavras",
+            "noTemporaryNavTargetOutline": "Desativar indicadores visuais de navegação"
         },
         "svg": {
             "left": "Esquerda",
@@ -536,7 +537,7 @@
     "settings": {
         "annotationCreator": {
             "creator": "Criador",
-            "help": "Se especificado, este nome será incluído nos metadados das notas exportadas.",
+            "help": "Se especificado, este nome será incluído nos metadados das anotações exportadas.",
             "name": "Nome",
             "organization": "Organização",
             "person": "Pessoa",
