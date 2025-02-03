@@ -388,7 +388,7 @@
       "edit": "Éditer",
       "goTo": "Aller à la page",
       "landmarks": "Repères",
-      "progression": "",
+      "progression": "Progression",
       "saveMark": "Sauvegarder le marque-page",
       "search": "Rechercher",
       "searchResult": "Recherche - « {{- searchText}} »",
