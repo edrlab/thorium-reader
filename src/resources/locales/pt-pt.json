@@ -128,7 +128,7 @@
             "descOlder": "Conflito(s): {{- nb}} nota(s) mais recente(s)",
             "descTitle": "Título das anotações: ",
             "importAll": "Importar todas as anotações",
-            "importWithoutConflict": "Importar anotações sem conflitos",
+            "importWithoutConflict": "Importar apenas anotações sem conflitos",
             "origin": "Publicação de origem: '{{- title}}' {{- author}}",
             "title": "Quer importar estas anotações?"
         },
