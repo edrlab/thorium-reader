@@ -667,6 +667,13 @@
           display: flex;
           gap: 5px;
           align-items: center;
+
+          a {
+            &:hover {
+              cursor: pointer;
+              text-decoration: underline;
+            }
+          }
         }
 
         svg {

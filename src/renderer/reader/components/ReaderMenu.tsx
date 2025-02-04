@@ -1087,7 +1087,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                         aria-label={__("reader.annotations.filter.filterByCreator")}
                                         style={{ marginBottom: "20px" }}
                                     >
-                                        <details id="annotationListCreator">
+                                        <details id="annotationListCreator" open={!!selectCreatorOptions.length}>
                                             <summary className={stylesAnnotations.annotations_filter_tagGroup} style={{ pointerEvents: !selectCreatorOptions.length ? "none" : "auto", opacity: !selectCreatorOptions.length ? "0.5" : "1" }}
                                                 tabIndex={!selectCreatorOptions.length ? -1 : 0}
                                             >
