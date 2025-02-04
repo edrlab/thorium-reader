@@ -1,611 +1,612 @@
 {
-  "accessibility": {
-    "bookMenu": "菜單",
-    "closeDialog": "關閉",
-    "importFile": "匯入出版物",
-    "leftSlideButton": "將列表劃至左側",
-    "mainContent": "主要內容",
-    "rightSlideButton": "將列表劃至右側",
-    "skipLink": "跳轉至內容",
-    "toolbar": "工具欄"
-  },
-  "apiapp": {
-    "documentation": "Thorium 文件",
-    "howItWorks": "它是如何運作的？",
-    "informations": "在法國，許多公共圖書館提供程式可讀的目錄（類似於 OPDS，但不相同），讓顧客從個人書架下載數位出版物。將此技術整合到 Thorium Reader 中，您可以將電子書或有聲書直接下載到 Thorium Reader 中進行即時閱讀。\n如何將您的法國公共圖書館帳戶連接到 Thorium Reader？這很簡單。在搜尋欄位中輸入法國城市（「巴黎」）或圖書館名稱的一部分，然後按一下搜尋按鈕。將出現與您的搜尋相對應的公共圖書館清單。選擇一個庫並點擊\"新增\"。在更新的目錄清單中，選擇該圖書館：將顯示身份驗證表單。輸入您的使用者名稱/電子郵件地址和密碼，然後點擊「登入」。現在您可以看到您的個人書架的內容，您可以從中下載和閱讀之前借閱的電子書和有聲書。",
-    "noLibraryFound": "未找到套件庫 ({{- name}})"
-  },
-  "app": {
-    "edit": {
-      "copy": "複製",
-      "cut": "剪下",
-      "paste": "貼上",
-      "redo": "重做",
-      "selectAll": "全選",
-      "title": "編輯",
-      "undo": "復原"
-    },
-    "hide": "隱藏 {{- appName}}",
-    "quit": "退出 {{- appName}}",
-    "session": {
-      "exit": {
-        "askBox": {
-          "button": {
-            "no": "否",
-            "yes": "是"
-          },
-          "help": "",
-          "message": "是否保存當前連線？",
-          "title": "保存連線"
-        }
-      }
-    },
-    "update": {
-      "message": "有新版本，點選了解更多。",
-      "title": "{{- appName}} 軟體已更新。"
-    },
-    "window": {
-      "showLibrary": "顯示 書庫/書架"
-    }
-  },
-  "catalog": {
-    "about": {
-      "title": "關於 {{appName}}"
-    },
-    "addBookToLib": "匯入",
-    "addTags": "添加標籤",
-    "addTagsButton": "添加",
-    "allBooks": "全部書籍",
-    "bookInfo": "關於此書",
-    "column": {
-      "ascending": "升冪",
-      "descending": "降冪",
-      "unsorted": "亂序"
-    },
-    "delete": "刪除",
-    "deleteBook": "刪除書籍",
-    "deleteTag": "刪除標籤",
-    "description": "概要",
-    "emptyTagList": "尚無帶標籤電子書",
-    "entry": {
-      "continueReading": "繼續閱讀",
-      "lastAdditions": "最近添加"
-    },
-    "export": "匯出",
-    "exportAnnotation": "",
-    "format": "格式",
-    "importAnnotation": "",
-    "lang": "語言",
-    "lastRead": "最後閱讀",
-    "moreInfo": "更多訊息",
-    "myBooks": "我的書籍",
-    "noPublicationHelpL1": "拖放 EPUB 至此處。",
-    "noPublicationHelpL2": "或者使用上面的\"{{- importTitle }}\"按鈕。",
-    "noPublicationHelpL3": "支援受 LCP 保護的書籍。",
-    "noPublicationHelpL4": "支援的副檔名：",
-    "numberOfPages": "頁碼",
-    "opds": {
-      "auth": {
-        "cancel": "取消",
-        "login": "登入",
-        "password": "密碼",
-        "register": "註冊",
-        "username": "使用者名稱/電子郵件地址"
-      },
-      "info": {
-        "availableSince": "開始時間",
-        "availableState": {
-          "available": "在售",
-          "ready": "準備中",
-          "reserved": "已預訂",
-          "unavailable": "售空",
-          "unknown": "不明"
-        },
-        "availableUntil": "結束時間",
-        "copyAvalaible": "在售數",
-        "copyTotal": "拷貝數",
-        "holdPosition": "你的持倉位置",
-        "holdTotal": "已持有",
-        "numberOfItems": "項目數",
-        "priveValue": "價格",
-        "state": "狀態"
-      }
-    },
-    "publisher": "出版社",
-    "readBook": "閱讀",
-    "released": "出版日期",
-    "sort": "排序方式",
-    "tag": "標籤",
-    "tags": "標籤",
-    "update": "編輯"
-  },
-  "dialog": {
-    "annotations": {
-      "descAuthor": "",
-      "descCreator": "",
-      "descList": "",
-      "descNewer": "",
-      "descOlder": "",
-      "descTitle": "",
-      "importAll": "",
-      "importWithoutConflict": "",
-      "origin": "",
-      "title": ""
-    },
-    "cancel": "取消",
-    "deleteAnnotations": "",
-    "deleteAnnotationsText": "",
-    "deleteFeed": "你真的要刪除此出版目錄嗎？",
-    "deletePublication": "你真的要刪除此出版物嗎？",
-    "import": "你真的要匯入這些文件嗎：",
-    "importError": "出現錯誤，請確認文件的副檔名（{{acceptedExtension}}）",
-    "renew": "你真的要更新此出版物的許可證嗎？",
-    "return": "你真的要歸還此出版物的許可證嗎？",
-    "yes": "是"
-  },
-  "error": {
-    "errorBox": {
-      "error": "錯誤訊息：",
-      "message": "{{- filename}} 出現錯誤",
-      "title": "內部 {{- appName}} 錯誤"
-    }
-  },
-  "header": {
-    "allBooks": "全部書籍",
-    "catalogs": "出版目錄",
-    "downloads": "下載",
-    "fitlerTagTitle": "按標籤過濾",
-    "gridTitle": "網格視圖",
-    "home": "書架菜單",
-    "homeTitle": "主頁",
-    "importTitle": "匯入出版物",
-    "listTitle": "列表視圖",
-    "myCatalogs": "我的目錄",
-    "refreshTitle": "重新載入",
-    "searchPlaceholder": "搜索",
-    "searchTitle": "開始搜索",
-    "settings": "設置",
-    "viewMode": "檢視模式"
-  },
-  "library": {
-    "lcp": {
-      "hint": "提示：",
-      "open": "",
-      "password": "密碼",
-      "sentence": "打開此出版物需要 LCP 密碼：",
-      "urlHint": "忘記密碼？在此取得幫助",
-      "whatIsLcp?": "什麼是 LCP？",
-      "whatIsLcpInfoDetails": "LCP 代表「許可內容保護」。",
-      "whatIsLcpInfoDetailsLink": "要了解更多訊息，請點擊連結前往 EDRLab。"
-    }
-  },
-  "message": {
-    "annotations": {
-      "alreadyImported": "",
-      "emptyFile": "",
-      "errorParsing": "",
-      "noBelongTo": "",
-      "nothing": "",
-      "success": ""
-    },
-    "download": {
-      "error": "下載 [{{- title}}] 失敗：[{{- err}}]"
-    },
-    "import": {
-      "alreadyImport": "{{- title}} 已被匯入",
-      "fail": "匯入 [{{- path}}] 失敗：[{{- err}}]",
-      "success": "匯入 [{{- title}}] 完成。"
-    },
-    "open": {
-      "error": "無法打開出版物：[{{- err}}]"
-    }
-  },
-  "opds": {
-    "addForm": {
-      "addButton": "添加",
-      "name": "名稱：",
-      "namePlaceholder": "名稱",
-      "url": "連結：",
-      "urlPlaceholder": "連結"
-    },
-    "addFormApiapp": {
-      "title": "新增圖書館帳號"
-    },
-    "addMenu": "添加 OPDS 訂閱來源",
-    "breadcrumbRoot": "出版目錄",
-    "documentation": "OPDS 官方網站",
-    "empty": "未找到出版物",
-    "firstPage": "首頁",
-    "informations": "想像一個世界，您只需點擊幾下就可以從公共圖書館和數位書商那裡探索和下載數位出版物。這正是開放出版品分發系統（OPDS）目錄格式所提供的功能。透過 OPDS，您可以瀏覽各個電子書提供者的目錄、註冊、借閱、購買出版物或存取您的個人書架。您甚至可以將電子書或有聲書直接下載到 Thorium Reader 中進行即時閱讀。\n那麼，要如何找到 OPDS 目錄呢？這很簡單。尋找指向該目錄的超連結 (URL)。將此 URL 複製到上面的連結欄位中。請記住，沒有一站式商店可提供所有有效的 OPDS 目錄。您需要聯絡您首選的圖書館或書商並詢問他們的 OPDS 目錄 URL。如果您不確定從哪裡開始，維基百科有一些不同語言的 OPDS 目錄註冊表可能會有所幫助。\n名稱欄位它提供了一種識別 Thorium Reader 中的 feed 的簡單方法。",
-    "lastPage": "尾頁",
-    "menu": {
-      "aboutBook": "關於此書",
-      "addExtract": "匯入摘錄",
-      "goBuyBook": "購買此書",
-      "goLoanBook": "借閱此書",
-      "goRevokeLoanBook": "歸還此書",
-      "goSubBook": "訂閱"
-    },
-    "network": {
-      "error": "無法訪問 OPDS 訂閱來源",
-      "noInternet": "未連線至網際網路",
-      "noInternetMessage": "請重新嘗試：檢查網路連線",
-      "reject": "抱歉，處理 OPDS 訂閱來源時出現意外錯誤",
-      "timeout": "網路連線超時，請稍後重試"
-    },
-    "next": "下一個",
-    "previous": "上一個",
-    "shelf": "書架",
-    "updateForm": {
-      "name": "名稱：",
-      "title": "編輯 OPDS 的 feed",
-      "updateButton": "編輯",
-      "url": "連結："
-    },
-    "whatIsOpds": "什麼是 OPDS？"
-  },
-  "publication": {
     "accessibility": {
-      "accessModeSufficient": {
-        "textual": "TTS 和閱讀器友好"
-      },
-      "accessibilityFeature": {
-        "alternativeText": "包含替代文字",
-        "displayTransformability": "可調整的文字和布局",
-        "longDescription": "完整描述的圖片資源",
-        "printPageNumbers": "印刷書籍分頁參考",
-        "readingOrder": "包含閱讀順序",
-        "synchronizedAudioText": "文字和聲音同步",
-        "tableOfContents": "包含目錄"
-      },
-      "accessibilityHazard": {
-        "flashing": "閃爍",
-        "motionSimulation": "動作模擬",
-        "name": "危險：",
-        "noFlashing": "不閃爍",
-        "noMotionSimulation": "沒有動作模擬",
-        "noSound": "沒有聲音",
-        "none": "無",
-        "sound": "聲音",
-        "unknown": "未知"
-      },
-      "certifierReport": "證明者報告",
-      "conformsTo": "符合：",
-      "moreInformation": "更多資訊",
-      "name": "無障礙",
-      "noA11y": "沒有可用的無障礙資訊"
+        "bookMenu": "菜單",
+        "closeDialog": "關閉",
+        "importFile": "匯入出版物",
+        "leftSlideButton": "將列表劃至左側",
+        "mainContent": "主要內容",
+        "rightSlideButton": "將列表劃至右側",
+        "skipLink": "跳轉至內容",
+        "toolbar": "工具欄"
     },
-    "actions": "行動",
-    "audio": {
-      "tracks": "音軌"
+    "apiapp": {
+        "documentation": "Thorium 文件",
+        "howItWorks": "它是如何運作的？",
+        "informations": "在法國，許多公共圖書館提供程式可讀的目錄（類似於 OPDS，但不相同），讓顧客從個人書架下載數位出版物。將此技術整合到 Thorium Reader 中，您可以將電子書或有聲書直接下載到 Thorium Reader 中進行即時閱讀。\n如何將您的法國公共圖書館帳戶連接到 Thorium Reader？這很簡單。在搜尋欄位中輸入法國城市（「巴黎」）或圖書館名稱的一部分，然後按一下搜尋按鈕。將出現與您的搜尋相對應的公共圖書館清單。選擇一個庫並點擊\"新增\"。在更新的目錄清單中，選擇該圖書館：將顯示身份驗證表單。輸入您的使用者名稱/電子郵件地址和密碼，然後點擊「登入」。現在您可以看到您的個人書架的內容，您可以從中下載和閱讀之前借閱的電子書和有聲書。",
+        "noLibraryFound": "未找到套件庫 ({{- name}})"
     },
-    "author": "作者",
-    "cancelledLcp": "此書無法閱讀，因為 LCP 授權已被取消。",
-    "certificateRevoked": "LCP 授權已被撤銷。",
-    "certificateSignatureInvalid": "LCP 授權憑證簽章無效。",
-    "cover": {
-      "img": "封面圖像"
-    },
-    "day": "天",
-    "days": "天",
-    "duration": {
-      "title": "播放時長"
-    },
-    "encryptedNoLicense": "",
-    "expired": "出借到期",
-    "expiredLcp": "此書無法閱讀，因為 LCP 授權已到期。",
-    "incorrectPassphrase": "",
-    "lcpEnd": "結束",
-    "lcpRightsCopy": "複製的文字",
-    "lcpRightsPrint": "列印頁數",
-    "lcpStart": "開始",
-    "licenceLCP": "授權（LCP）",
-    "licenseCertificateDateInvalid": "授權簽名日期無效",
-    "licenseOutOfDate": "授權過期",
-    "licenseSignatureInvalid": "授權簽名無效",
-    "licensed": "已授權",
-    "markAsRead": "標記為已讀",
-    "notStarted": "未讀",
-    "onGoing": "正在閱讀",
-    "progression": {
-      "title": "進度"
-    },
-    "read": "已讀",
-    "remainingTime": "借出（剩餘天數）",
-    "renewButton": "更新",
-    "returnButton": "歸還",
-    "returnedLcp": "該受 LCP 保護的書籍已被歸還。",
-    "revokedLcp": "該出版物的 LCP 授權已被撤銷。",
-    "seeLess": "查看更少",
-    "seeMore": "查看更多",
-    "timeLeft": "左邊",
-    "title": "標題",
-    "userKeyCheckInvalid": "密碼不正確"
-  },
-  "reader": {
-    "annotations": {
-      "Color": "顏色",
-      "addNote": "註解",
-      "advancedMode": "即時模式（選擇後自動建立）",
-      "annotationsExport": {
-        "description": "",
-        "title": ""
-      },
-      "annotationsOptions": "選項",
-      "colors": {
-        "bluegreen": "",
-        "cyan": "",
-        "green": "",
-        "lightblue": "",
-        "orange": "",
-        "purple": "",
-        "red": "",
-        "yellow": ""
-      },
-      "date": "",
-      "export": "",
-      "filter": {
-        "all": "",
-        "filterByColor": "",
-        "filterByCreator": "",
-        "filterByDrawtype": "",
-        "filterByTag": "",
-        "filterOptions": "",
-        "none": ""
-      },
-      "hide": "不顯示",
-      "highlight": "重點標示",
-      "noSelectionToast": "沒有選擇",
-      "note": "",
-      "quickAnnotations": "快速建立（跳過編輯）",
-      "saveNote": "保存",
-      "sorting": {
-        "lastcreated": "",
-        "lastmodified": "",
-        "progression": "",
-        "sortingOptions": ""
-      },
-      "toggleMarginMarks": "在頁邊距中顯示",
-      "type": {
-        "outline": "輪廓",
-        "solid": "純色背景",
-        "strikethrough": "刪除線",
-        "underline": "下底線"
-      }
-    },
-    "divina": {
-      "mute": "靜音",
-      "unmute": "取消靜音"
-    },
-    "fxl": {
-      "fit": "Fit"
-    },
-    "goToContent": "",
-    "marks": {
-      "annotations": "註解",
-      "bookmarks": "書籤",
-      "delete": "刪除",
-      "edit": "編輯",
-      "goTo": "前往到頁面",
-      "landmarks": "地標",
-      "progression": "",
-      "saveMark": "儲存書籤",
-      "search": "搜尋",
-      "searchResult": "搜尋 [{{- searchText}}]",
-      "toc": "目錄"
-    },
-    "media-overlays": {
-      "activate": "啟動語音朗讀",
-      "captions": "字幕 / 簡明視圖",
-      "captionsDescription": "簡化的文字視圖，具有最小的標題樣式。",
-      "next": "朗讀下一段",
-      "pause": "暫停朗讀",
-      "play": "開始朗讀",
-      "previous": "朗讀上一段",
-      "skip": "自動跳過功能",
-      "skipDescription": "跳過／忽略輔助內容，例如分頁符號、註腳／尾註等。",
-      "speed": "語音朗讀速度",
-      "stop": "停止朗讀",
-      "title": "語音朗讀"
-    },
-    "navigation": {
-      "ZenModeExit": "",
-      "ZenModeTitle": "",
-      "annotationTitle": "註解",
-      "backHomeTitle": "返回書架",
-      "bookmarkTitle": "書籤",
-      "currentPage": "當前頁面：{{- current}}",
-      "currentPageTotal": "當前頁面：{{- current}}/{{- total}}",
-      "detachWindowTitle": "顯示 書庫/書架 視窗",
-      "goTo": "轉到",
-      "goToError": "此頁不存在",
-      "goToPlaceHolder": "輸入頁碼",
-      "goToTitle": "轉到頁",
-      "historyNext": "向前跳",
-      "historyPrevious": "跳回來",
-      "infoTitle": "訊息",
-      "magnifyingGlassButton": "在出版物中搜索",
-      "openTableOfContentsTitle": "導航",
-      "page": "頁",
-      "pdfscalemode": "適合頁面寬度",
-      "settingsTitle": "設定"
-    },
-    "picker": {
-      "search": {
-        "founds": "{{- nResults}} 個匹配",
-        "input": "輸入搜索文字",
-        "next": "後一個",
-        "notFound": "無匹配",
-        "previous": "前一個",
-        "results": "結果",
-        "submit": "尋找"
-      },
-      "searchTitle": "搜索："
-    },
-    "settings": {
-      "column": {
-        "auto": "自動",
-        "one": "1欄",
-        "title": "欄",
-        "two": "2欄"
-      },
-      "customFontSelected": "",
-      "customizeReader": "自訂文字格式",
-      "disabled": "停用",
-      "display": "顯示",
-      "disposition": {
-        "title": "布局"
-      },
-      "font": "字體",
-      "fontSize": "字體大小",
-      "infoCustomFont": "透過輸入字體名稱從作業系統中選擇自訂字體",
-      "justification": "排版",
-      "justify": "左右對齊",
-      "letterSpacing": "字符間距",
-      "lineSpacing": "行間距",
-      "margin": "頁邊距",
-      "noFootnotes": "沒有附註",
-      "noRTLFlip": "禁用從右到左的 UI",
-      "noRuby": "隱藏日文漢字注音",
-      "paginated": "分頁",
-      "paraSpacing": "段落間距",
-      "pdfZoom": {
-        "name": {
-          "100pct": "100 %",
-          "150pct": "150 %",
-          "200pct": "200 %",
-          "300pct": "300 %",
-          "500pct": "500 %",
-          "50pct": "50 %",
-          "fit": "適合頁面",
-          "width": "頁面寬度"
+    "app": {
+        "edit": {
+            "copy": "複製",
+            "cut": "剪下",
+            "paste": "貼上",
+            "redo": "重做",
+            "selectAll": "全選",
+            "title": "編輯",
+            "undo": "復原"
         },
-        "title": "放大"
-      },
-      "preset": {
-        "apply": "",
-        "applyDetails": "",
-        "detail": "",
-        "reset": "",
-        "resetDetails": "",
-        "save": "",
-        "saveDetails": "",
-        "title": ""
-      },
-      "preview": "預覽",
-      "reduceMotion": "減少動態效果",
-      "scrolled": "捲動",
-      "spacing": "間距",
-      "text": "文字",
-      "theme": {
-        "name": {
-          "Contrast1": "對比 1",
-          "Contrast2": "對比 2",
-          "Contrast3": "對比 3",
-          "Contrast4": "對比 4",
-          "Neutral": "無色",
-          "Night": "夜間",
-          "Paper": "紙",
-          "Sepia": "茶色"
+        "hide": "隱藏 {{- appName}}",
+        "quit": "退出 {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "否",
+                        "yes": "是"
+                    },
+                    "help": "如果您希望在關閉應用程式時打開的閱讀器視窗在下次啟動時自動重新打開，請啟動此功能。",
+                    "message": "保存和恢復閱讀紀錄",
+                    "title": "保存連線？"
+                }
+            }
         },
-        "title": "主題"
-      },
-      "wordSpacing": "文字間距"
+        "update": {
+            "message": "有新版本，點選了解更多。",
+            "title": "{{- appName}} 軟體已更新。"
+        },
+        "window": {
+            "showLibrary": "顯示 書庫/書架"
+        }
     },
-    "svg": {
-      "left": "左",
-      "right": "右"
+    "catalog": {
+        "about": {
+            "title": "關於 {{- appName}} (線上)"
+        },
+        "addBookToLib": "匯入",
+        "addTags": "添加標籤",
+        "addTagsButton": "添加",
+        "allBooks": "全部書籍",
+        "bookInfo": "關於此書",
+        "column": {
+            "ascending": "升冪",
+            "descending": "降冪",
+            "unsorted": "亂序"
+        },
+        "delete": "刪除",
+        "deleteBook": "刪除書籍",
+        "deleteTag": "刪除標籤",
+        "description": "概要",
+        "emptyTagList": "沒有標記的出版物。",
+        "entry": {
+            "continueReading": "繼續閱讀",
+            "lastAdditions": "最近添加"
+        },
+        "export": "匯出",
+        "exportAnnotation": "匯出註解...",
+        "format": "格式",
+        "importAnnotation": "匯入註解",
+        "lang": "語言",
+        "lastRead": "最後閱讀",
+        "moreInfo": "更多訊息",
+        "myBooks": "我的書籍",
+        "noPublicationHelpL1": "將文件拖放到此處",
+        "noPublicationHelpL2": "或者使用上面的\"{{- importTitle }}\"按鈕。",
+        "noPublicationHelpL3": "支援受 LCP 保護的書籍。",
+        "noPublicationHelpL4": "支援的副檔名：",
+        "numberOfPages": "頁碼",
+        "opds": {
+            "auth": {
+                "cancel": "取消",
+                "login": "登入",
+                "password": "密碼",
+                "register": "註冊",
+                "username": "使用者名稱/電子郵件地址"
+            },
+            "info": {
+                "availableSince": "開始時間",
+                "availableState": {
+                    "available": "在售",
+                    "ready": "準備中",
+                    "reserved": "已預訂",
+                    "unavailable": "售空",
+                    "unknown": "不明"
+                },
+                "availableUntil": "結束時間",
+                "copyAvalaible": "在售數",
+                "copyTotal": "拷貝數",
+                "holdPosition": "你的持倉位置",
+                "holdTotal": "已持有",
+                "numberOfItems": "項目數",
+                "priveValue": "價格",
+                "state": "狀態"
+            }
+        },
+        "publisher": "出版社",
+        "readBook": "閱讀",
+        "released": "出版日期",
+        "sort": "排序方式",
+        "tag": "標籤",
+        "tags": "標籤",
+        "update": "編輯"
     },
-    "toc": {
-      "publicationNoToc": "此出版物沒有目錄"
+    "dialog": {
+        "annotations": {
+            "descAuthor": "經由 '{{- author}}'",
+            "descCreator": "創建者",
+            "descList": "{{- nb}} 註解 {{- creator}} 將會被匯入到 '{{- title}}' {{- author}}",
+            "descNewer": "衝突：{{- nb}} 個較新的註解",
+            "descOlder": "衝突：{{- nb}} 個舊註解",
+            "descTitle": "註解標題： ",
+            "importAll": "匯入所有註解",
+            "importWithoutConflict": "僅匯入無衝突的註解",
+            "origin": "原出版品：'{{- title}}' {{- author}}",
+            "title": "導入註解？"
+        },
+        "cancel": "取消",
+        "deleteAnnotations": "刪除註解？",
+        "deleteAnnotationsText": "您確定要刪除 {{-annotationListLength}} 條註解嗎？",
+        "deleteFeed": "你真的要刪除此出版目錄嗎？",
+        "deletePublication": "你真的要刪除此出版物嗎？",
+        "import": "你真的要匯入這些文件嗎：",
+        "importError": "出現錯誤，請確認文件的副檔名（{{acceptedExtension}}）",
+        "renew": "你真的要更新此出版物的許可證嗎？",
+        "return": "你真的要歸還此出版物的許可證嗎？",
+        "yes": "是"
     },
-    "tts": {
-      "activate": "啟動文字語音轉換",
-      "language": "",
-      "next": "下一段",
-      "pause": "暫停",
-      "play": "播放",
-      "previous": "上一段",
-      "sentenceDetect": "句子檢測",
-      "sentenceDetectDescription": "將長段落分成句子。",
-      "speed": "語速",
-      "stop": "停止",
-      "voice": "聲音"
-    }
-  },
-  "settings": {
-    "annotationCreator": {
-      "creator": "",
-      "help": "",
-      "name": "",
-      "organization": "",
-      "person": "",
-      "type": ""
+    "error": {
+        "errorBox": {
+            "error": "錯誤訊息：",
+            "message": "{{- filename}} 出現錯誤",
+            "title": "內部 {{- appName}} 錯誤"
+        }
     },
-    "auth": {
-      "help": "",
-      "title": "",
-      "wipeData": "清除登入數據"
-    },
-    "keyboard": {
-      "advancedMenu": "菜單",
-      "cancel": "取消",
-      "disclaimer": "快捷鍵是根據 QWERTY 鍵盤佈局定義的。",
-      "editUserJson": "編輯使用者文件...",
-      "keyboardShortcuts": "鍵盤快捷鍵",
-      "loadUserJson": "從使用者檔案載入",
-      "resetDefaults": "重置 (載入初始設定)",
-      "save": "保存"
-    },
-    "language": {
-      "languageChoice": "選擇語言"
+    "header": {
+        "allBooks": "全部書籍",
+        "catalogs": "出版目錄",
+        "downloads": "下載",
+        "fitlerTagTitle": "按標籤過濾",
+        "gridTitle": "網格視圖",
+        "home": "書架菜單",
+        "homeTitle": "主頁",
+        "importTitle": "匯入出版物",
+        "listTitle": "列表視圖",
+        "myCatalogs": "我的目錄",
+        "refreshTitle": "重新載入",
+        "searchPlaceholder": "搜索",
+        "searchTitle": "開始搜索",
+        "settings": "設置",
+        "viewMode": "檢視模式"
     },
     "library": {
-      "enableAPIAPP": "",
-      "title": ""
+        "lcp": {
+            "hint": "提示：",
+            "open": "開啟",
+            "password": "密碼",
+            "sentence": "此出版物需要 LCP 密碼才能打開",
+            "urlHint": "忘記密碼？按此處取得幫助",
+            "whatIsLcp?": "什麼是 LCP？",
+            "whatIsLcpInfoDetails": "LCP 代表「許可內容保護」。",
+            "whatIsLcpInfoDetailsLink": "要了解更多訊息，請點擊連結前往 EDRLab。"
+        }
     },
-    "session": {
-      "title": "保存登入狀態"
+    "message": {
+        "annotations": {
+            "alreadyImported": "所有註解均已匯入。",
+            "emptyFile": "文件中沒有可用的註解。",
+            "errorParsing": "文件解析時發生錯誤： ",
+            "noBelongTo": "無法匯入註解，至少有一條註解不屬於該出版品。",
+            "nothing": "沒有可供匯入的註解，正在中止匯入",
+            "success": "匯入已成功完成。"
+        },
+        "download": {
+            "error": "下載 [{{- title}}] 失敗：[{{- err}}]"
+        },
+        "import": {
+            "alreadyImport": "{{- title}} 已被匯入",
+            "fail": "匯入 [{{- path}}] 失敗：[{{- err}}]",
+            "success": "匯入 [{{- title}}] 完成。"
+        },
+        "open": {
+            "error": "無法打開出版物：[{{- err}}]"
+        }
     },
-    "tabs": {
-      "appearance": "外觀",
-      "general": "一般",
-      "keyboardShortcuts": "鍵盤快捷鍵"
+    "opds": {
+        "addForm": {
+            "addButton": "添加",
+            "name": "名稱：",
+            "namePlaceholder": "名稱",
+            "url": "連結：",
+            "urlPlaceholder": "連結"
+        },
+        "addFormApiapp": {
+            "title": "新增圖書館帳號"
+        },
+        "addMenu": "添加 OPDS 訂閱來源",
+        "breadcrumbRoot": "出版目錄",
+        "documentation": "OPDS 官方網站",
+        "empty": "未找到出版物",
+        "firstPage": "首頁",
+        "informations": "想像一個世界，您只需點擊幾下就可以從公共圖書館和數位書商那裡探索和下載數位出版物。這正是開放出版品分發系統（OPDS）目錄格式所提供的功能。透過 OPDS，您可以瀏覽各個電子書提供者的目錄、註冊、借閱、購買出版物或存取您的個人書架。您甚至可以將電子書或有聲書直接下載到 Thorium Reader 中進行即時閱讀。\n那麼，要如何找到 OPDS 目錄呢？這很簡單。尋找指向該目錄的超連結 (URL)。將此 URL 複製到上面的連結欄位中。請記住，沒有一站式商店可提供所有有效的 OPDS 目錄。您需要聯絡您首選的圖書館或書商並詢問他們的 OPDS 目錄 URL。如果您不確定從哪裡開始，維基百科有一些不同語言的 OPDS 目錄註冊表可能會有所幫助。\n名稱欄位它提供了一種識別 Thorium Reader 中的 feed 的簡單方法。",
+        "lastPage": "尾頁",
+        "menu": {
+            "aboutBook": "關於此書",
+            "addExtract": "匯入摘錄",
+            "goBuyBook": "購買此書",
+            "goLoanBook": "借閱此書",
+            "goRevokeLoanBook": "歸還此書",
+            "goSubBook": "訂閱"
+        },
+        "network": {
+            "error": "無法訪問 OPDS 訂閱來源",
+            "noInternet": "未連線至網際網路",
+            "noInternetMessage": "請重新嘗試：檢查網路連線",
+            "reject": "抱歉，意外錯誤！",
+            "timeout": "網路連線超時，請稍後重試"
+        },
+        "next": "下一個",
+        "previous": "上一個",
+        "shelf": "書架",
+        "updateForm": {
+            "name": "名稱：",
+            "title": "編輯 OPDS 的 feed",
+            "updateButton": "編輯",
+            "url": "連結："
+        },
+        "whatIsOpds": "什麼是 OPDS？"
     },
-    "theme": {
-      "auto": "自動的",
-      "dark": "黑暗的",
-      "description": "應用程式主題與作業系統相符。",
-      "light": "光亮的",
-      "title": "應用程式主題"
+    "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": "TTS 和閱讀器友好"
+            },
+            "accessibilityFeature": {
+                "alternativeText": "包含替代文字",
+                "displayTransformability": "可調整的文字和布局",
+                "longDescription": "完整描述的圖片資源",
+                "printPageNumbers": "印刷書籍分頁參考",
+                "readingOrder": "包含閱讀順序",
+                "synchronizedAudioText": "文字和聲音同步",
+                "tableOfContents": "包含目錄"
+            },
+            "accessibilityHazard": {
+                "flashing": "閃爍",
+                "motionSimulation": "動作模擬",
+                "name": "危險：",
+                "noFlashing": "不閃爍",
+                "noMotionSimulation": "沒有動作模擬",
+                "noSound": "沒有聲音",
+                "none": "無",
+                "sound": "聲音",
+                "unknown": "未知"
+            },
+            "certifierReport": "認證報告：",
+            "conformsTo": "符合：",
+            "moreInformation": "更多資訊",
+            "name": "無障礙",
+            "noA11y": "沒有可用的無障礙資訊"
+        },
+        "actions": "行動",
+        "audio": {
+            "tracks": "音軌"
+        },
+        "author": "作者",
+        "cancelledLcp": "此書無法閱讀，因為 LCP 授權已被取消。",
+        "certificateRevoked": "LCP 授權已被撤銷。",
+        "certificateSignatureInvalid": "LCP 授權憑證簽章無效。",
+        "cover": {
+            "img": "封面圖像"
+        },
+        "day": "天",
+        "days": "天",
+        "duration": {
+            "title": "播放時長"
+        },
+        "encryptedNoLicense": "出版物已加密，但缺少 LCP 許可證！",
+        "expired": "出借到期",
+        "expiredLcp": "此書無法閱讀，因為 LCP 授權已到期。",
+        "incorrectPassphrase": "沒有已儲存的密碼適合出版物，或輸入的密碼錯誤。",
+        "lcpEnd": "結束",
+        "lcpRightsCopy": "複製的文字",
+        "lcpRightsPrint": "列印頁數",
+        "lcpStart": "開始",
+        "licenceLCP": "授權（LCP）",
+        "licenseCertificateDateInvalid": "LCP 提供者憑證已過期。",
+        "licenseOutOfDate": "LCP 許可證已過期。",
+        "licenseSignatureInvalid": "LCP 許可證簽章無效。",
+        "licensed": "已授權",
+        "markAsRead": "標記為已讀",
+        "notStarted": "未讀",
+        "onGoing": "正在閱讀",
+        "progression": {
+            "title": "進度"
+        },
+        "read": "已讀",
+        "remainingTime": "借出（剩餘天數）",
+        "renewButton": "更新",
+        "returnButton": "歸還",
+        "returnedLcp": "該受 LCP 保護的書籍已被歸還。",
+        "revokedLcp": "該出版物的 LCP 授權已被撤銷。",
+        "seeLess": "查看更少",
+        "seeMore": "查看更多",
+        "timeLeft": "左邊",
+        "title": "標題",
+        "userKeyCheckInvalid": "密碼不正確"
+    },
+    "reader": {
+        "annotations": {
+            "Color": "顏色",
+            "addNote": "註解",
+            "advancedMode": "即時模式（選擇後自動建立）",
+            "annotationsExport": {
+                "description": "命名匯出的註解：",
+                "title": "標題"
+            },
+            "annotationsOptions": "選項",
+            "colors": {
+                "bluegreen": "藍綠色",
+                "cyan": "青色",
+                "green": "綠色",
+                "lightblue": "淺藍色",
+                "orange": "橘色",
+                "purple": "紫色",
+                "red": "紅色",
+                "yellow": "黃色"
+            },
+            "date": "修改日期",
+            "export": "將註解另存為...",
+            "filter": {
+                "all": "全部",
+                "filterByColor": "按顏色過濾",
+                "filterByCreator": "按創作者過濾",
+                "filterByDrawtype": "按類型過濾",
+                "filterByTag": "按標籤過濾",
+                "filterOptions": "過濾選項",
+                "none": "無"
+            },
+            "hide": "不顯示",
+            "highlight": "重點標示",
+            "noSelectionToast": "沒有選擇",
+            "note": "{{- color}} 註解",
+            "quickAnnotations": "快速建立（跳過編輯）",
+            "saveNote": "保存",
+            "sorting": {
+                "lastcreated": "最後建立",
+                "lastmodified": "上次修改時間",
+                "progression": "進展",
+                "sortingOptions": "排序選項"
+            },
+            "toggleMarginMarks": "在頁邊距中顯示",
+            "type": {
+                "outline": "輪廓",
+                "solid": "純色背景",
+                "strikethrough": "刪除線",
+                "underline": "下底線"
+            }
+        },
+        "divina": {
+            "mute": "靜音",
+            "unmute": "取消靜音"
+        },
+        "fxl": {
+            "fit": "Fit"
+        },
+        "goToContent": "轉至內容",
+        "marks": {
+            "annotations": "註解",
+            "bookmarks": "書籤",
+            "delete": "刪除",
+            "edit": "編輯",
+            "goTo": "前往到頁面",
+            "landmarks": "地標",
+            "progression": "進展",
+            "saveMark": "儲存書籤",
+            "search": "搜尋",
+            "searchResult": "搜尋 [{{- searchText}}]",
+            "toc": "目錄"
+        },
+        "media-overlays": {
+            "activate": "啟動語音朗讀",
+            "captions": "字幕 / 簡明視圖",
+            "captionsDescription": "簡化的文字視圖，具有最小的標題樣式。",
+            "next": "朗讀下一段",
+            "pause": "暫停朗讀",
+            "play": "開始朗讀",
+            "previous": "朗讀上一段",
+            "skip": "自動跳過功能",
+            "skipDescription": "跳過／忽略輔助內容，例如分頁符號、註腳／尾註等。",
+            "speed": "語音朗讀速度",
+            "stop": "停止朗讀",
+            "title": "語音朗讀"
+        },
+        "navigation": {
+            "ZenModeExit": "退出 Zen 模式",
+            "ZenModeTitle": "Zen 模式",
+            "annotationTitle": "註解",
+            "backHomeTitle": "返回書架",
+            "bookmarkTitle": "書籤",
+            "currentPage": "當前頁面：{{- current}}",
+            "currentPageTotal": "當前頁面：{{- current}}/{{- total}}",
+            "detachWindowTitle": "顯示 書庫/書架 視窗",
+            "goTo": "轉到",
+            "goToError": "此頁不存在",
+            "goToPlaceHolder": "輸入頁碼",
+            "goToTitle": "轉到頁",
+            "historyNext": "向前跳",
+            "historyPrevious": "跳回來",
+            "infoTitle": "訊息",
+            "magnifyingGlassButton": "在出版物中搜索",
+            "openTableOfContentsTitle": "導航",
+            "page": "頁",
+            "pdfscalemode": "適合頁面寬度",
+            "settingsTitle": "設定"
+        },
+        "picker": {
+            "search": {
+                "founds": "{{- nResults}} 個匹配",
+                "input": "輸入搜索文字",
+                "next": "後一個",
+                "notFound": "無匹配",
+                "previous": "前一個",
+                "results": "結果",
+                "submit": "尋找"
+            },
+            "searchTitle": "搜索："
+        },
+        "settings": {
+            "column": {
+                "auto": "自動",
+                "one": "1欄",
+                "title": "欄",
+                "two": "2欄"
+            },
+            "customFontSelected": "您已選擇個人字體",
+            "customizeReader": "自訂文字格式",
+            "disabled": "停用",
+            "display": "顯示",
+            "disposition": {
+                "title": "布局"
+            },
+            "font": "字體",
+            "fontSize": "字體大小",
+            "infoCustomFont": "透過輸入字體名稱從作業系統中選擇自訂字體",
+            "justification": "排版",
+            "justify": "左右對齊",
+            "letterSpacing": "字符間距",
+            "lineSpacing": "行間距",
+            "margin": "頁邊距",
+            "noFootnotes": "沒有附註",
+            "noRTLFlip": "禁用從右到左的 UI",
+            "noRuby": "隱藏日文漢字注音",
+            "paginated": "分頁",
+            "paraSpacing": "段落間距",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "100 %",
+                    "150pct": "150 %",
+                    "200pct": "200 %",
+                    "300pct": "300 %",
+                    "500pct": "500 %",
+                    "50pct": "50 %",
+                    "fit": "適合頁面",
+                    "width": "頁面寬度"
+                },
+                "title": "放大"
+            },
+            "preset": {
+                "apply": "套用",
+                "applyDetails": "將您喜歡的設定套用到目前出版品。",
+                "detail": "儲存/套用/重設您的首選配置。",
+                "reset": "重置",
+                "resetDetails": "重設您的首選配置（預設）。",
+                "save": "保存",
+                "saveDetails": "此操作會儲存目前配置，即您首選的顯示和文字格式選項。然後可以透過點擊其他閱讀器視窗中的「應用」按鈕將這些設定應用於其他出版品。",
+                "title": "偏好設定"
+            },
+            "preview": "預覽",
+            "reduceMotion": "減少動態效果",
+            "scrolled": "捲動",
+            "spacing": "間距",
+            "text": "文字",
+            "theme": {
+                "name": {
+                    "Contrast1": "對比 1",
+                    "Contrast2": "對比 2",
+                    "Contrast3": "對比 3",
+                    "Contrast4": "對比 4",
+                    "Neutral": "無色",
+                    "Night": "夜間",
+                    "Paper": "紙",
+                    "Sepia": "茶色"
+                },
+                "title": "主題"
+            },
+            "wordSpacing": "文字間距",
+            "noTemporaryNavTargetOutline": "禁用視覺導航指示器"
+        },
+        "svg": {
+            "left": "左",
+            "right": "右"
+        },
+        "toc": {
+            "publicationNoToc": "此出版物沒有目錄"
+        },
+        "tts": {
+            "activate": "啟動文字語音轉換",
+            "language": "TTS 語言",
+            "next": "下一段",
+            "pause": "暫停",
+            "play": "播放",
+            "previous": "上一段",
+            "sentenceDetect": "句子檢測",
+            "sentenceDetectDescription": "將長段落分成句子。",
+            "speed": "語速",
+            "stop": "停止",
+            "voice": "聲音"
+        }
+    },
+    "settings": {
+        "annotationCreator": {
+            "creator": "註解建立器（可選）",
+            "help": "如果指定，該名稱將包含在匯出的註解的元資料中。",
+            "name": "名字",
+            "organization": "組織",
+            "person": "個人",
+            "type": "類型："
+        },
+        "auth": {
+            "help": "此操作將刪除所有 OPDS 登入憑證。",
+            "title": "訪問出版物目錄",
+            "wipeData": "清除登入數據"
+        },
+        "keyboard": {
+            "advancedMenu": "菜單",
+            "cancel": "取消",
+            "disclaimer": "快捷鍵是根據 QWERTY 鍵盤佈局定義的。",
+            "editUserJson": "編輯使用者文件...",
+            "keyboardShortcuts": "鍵盤快捷鍵",
+            "loadUserJson": "從使用者檔案載入",
+            "resetDefaults": "重置 (載入初始設定)",
+            "save": "保存"
+        },
+        "language": {
+            "languageChoice": "選擇語言"
+        },
+        "library": {
+            "enableAPIAPP": "啟動 \"PNB\" 圖書館系統",
+            "title": "訪問法國圖書館帳號"
+        },
+        "session": {
+            "title": "保存登入狀態"
+        },
+        "tabs": {
+            "appearance": "外觀",
+            "general": "一般",
+            "keyboardShortcuts": "鍵盤快捷鍵"
+        },
+        "theme": {
+            "auto": "自動的",
+            "dark": "黑暗的",
+            "description": "應用程式主題與作業系統相符。",
+            "light": "光亮的",
+            "title": "應用程式主題"
+        }
+    },
+    "wizard": {
+        "buttons": {
+            "discover": "查看新動態",
+            "goToBooks": "前往我的出版物",
+            "next": "下一個"
+        },
+        "description": {
+            "annotations": "重點標示文件文字，選擇樣式和顏色，附加個人註釋。在\"快速\"模式下建立註解以繞過編輯器（您可以稍後輸入文字並自訂樣式）。為了提高速度，請使用\"即時\"模式，該模式在重點標示文件文字後立即建立註解！",
+            "catalogs": "從當地圖書館借閱出版品或透過 OPDS 來源發現出版品。借助線上目錄，可以從多個來源存取各種出版物。",
+            "home": "Thorium 看起來不一樣！讓我們來發現什麼新鮮事...",
+            "readingView1": "自訂您的閱讀和聲音偏好：Thorium 現在為使用者介面和出版文件提供多種顏色主題。現在還可以更輕鬆地配置具有合成語音和同步文字/音訊旁白的「大聲朗讀」電子書。",
+            "readingView2": "Thorium 改進的使用者介面可讓您更輕鬆地在出版物中尋找文字、探索搜尋結果、前往特定頁面、瀏覽目錄、建立書籤等，這要歸功於新的「停靠」面板。全螢幕閱讀模式繼續提供無干擾的環境。",
+            "yourBooks": "歡迎來到您重新設計的個人書架！在「網格」檢視中，可以輕鬆地按標籤篩選或按關鍵字尋找出版品。在進階「表格」檢視中，按特定作者、標題、日期、格式等選擇出版物並對其進行排序。"
+        },
+        "dontShow": "不再顯示",
+        "tab": {
+            "annotations": "註解",
+            "catalogs": "目錄",
+            "home": "首頁",
+            "readingView": "閱讀視圖",
+            "yourBooks": "您的出版品"
+        },
+        "title": {
+            "allBooks": "我所有的出版物",
+            "newFeature": "新功能：註解",
+            "welcome": "歡迎來到 Thorium 3.0"
+        }
     }
-  },
-  "wizard": {
-    "buttons": {
-      "discover": "查看新動態",
-      "goToBooks": "前往我的出版物",
-      "next": "下一個"
-    },
-    "description": {
-      "annotations": "重點標示文件文字，選擇樣式和顏色，附加個人註釋。在\"快速\"模式下建立註解以繞過編輯器（您可以稍後輸入文字並自訂樣式）。為了提高速度，請使用\"即時\"模式，該模式在重點標示文件文字後立即建立註解！",
-      "catalogs": "從當地圖書館借閱出版品或透過 OPDS 來源發現出版品。借助線上目錄，可以從多個來源存取各種出版物。",
-      "home": "Thorium 看起來不一樣！讓我們來發現什麼新鮮事...",
-      "readingView1": "自訂您的閱讀和聲音偏好：Thorium 現在為使用者介面和出版文件提供多種顏色主題。現在還可以更輕鬆地配置具有合成語音和同步文字/音訊旁白的「大聲朗讀」電子書。",
-      "readingView2": "Thorium 改進的使用者介面可讓您更輕鬆地在出版物中尋找文字、探索搜尋結果、前往特定頁面、瀏覽目錄、建立書籤等，這要歸功於新的「停靠」面板。全螢幕閱讀模式繼續提供無干擾的環境。",
-      "yourBooks": "歡迎來到您重新設計的個人書架！在「網格」檢視中，可以輕鬆地按標籤篩選或按關鍵字尋找出版品。在進階「表格」檢視中，按特定作者、標題、日期、格式等選擇出版物並對其進行排序。"
-    },
-    "dontShow": "不再顯示",
-    "tab": {
-      "annotations": "註解",
-      "catalogs": "目錄",
-      "home": "首頁",
-      "readingView": "閱讀視圖",
-      "yourBooks": "您的出版品"
-    },
-    "title": {
-      "allBooks": "我所有的出版物",
-      "newFeature": "新功能：註解",
-      "welcome": "歡迎來到 Thorium 3.0"
-    }
-  }
 }
