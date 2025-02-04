@@ -34,7 +34,7 @@
                         "no": "Não",
                         "yes": "Sim"
                     },
-                    "help": "Ativar se pretender que as janelas do leitor que estejam abertas quando fecha a aplicação sejam reabertas automaticamente no próximo arranque.",
+                    "help": "Ativar se pretender que as janelas do leitor, que estejam abertas quando a aplicação é fechada, sejam reabertas automaticamente no próximo arranque.",
                     "message": "Guardar e restaurar a sessão de leitura",
                     "title": "Guardar sessão?"
                 }
@@ -50,7 +50,7 @@
     },
     "catalog": {
         "about": {
-            "title": "Sobre {{- appName}}"
+            "title": "Sobre {{- appName}} (em linha)"
         },
         "addBookToLib": "Importar",
         "addTags": "Adicionar etiqueta",
@@ -58,8 +58,8 @@
         "allBooks": "Documentos",
         "bookInfo": "Sobre o documento",
         "column": {
-            "ascending": "crescente",
-            "descending": "decrescente",
+            "ascending": "ascendente",
+            "descending": "descendente",
             "unsorted": "não ordenado"
         },
         "delete": "Apagar",
@@ -74,10 +74,10 @@
         "export": "Guardar como",
         "exportAnnotation": "Exportar anotações...",
         "format": "Formato",
-        "importAnnotation": "Importar anotação",
+        "importAnnotation": "Importar anotações",
         "lang": "Idioma",
         "lastRead": "Última leitura",
-        "moreInfo": "Mais informações",
+        "moreInfo": "Detalhes do documento",
         "myBooks": "Meus documentos",
         "noPublicationHelpL1": "Soltar ficheiros aqui",
         "noPublicationHelpL2": "ou use o botão \"{{- importTitle }}\".",
@@ -117,11 +117,11 @@
         "sort": "Ordenar por",
         "tag": "Etiqueta",
         "tags": "Etiquetas",
-        "update": "Atualizar"
+        "update": "Editar"
     },
     "dialog": {
         "annotations": {
-            "descAuthor": "de {{- author}}",
+            "descAuthor": "por {{- author}}",
             "descCreator": "criado por",
             "descList": "{{- nb}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
             "descNewer": "Conflitos: {{- nb}} anotações mais recentes",
@@ -130,7 +130,7 @@
             "importAll": "Importar todas as anotações",
             "importWithoutConflict": "Importar apenas anotações sem conflitos",
             "origin": "Publicação de origem: '{{- title}}' {{- author}}",
-            "title": "Quer importar estas anotações?"
+            "title": "Importar anotações?"
         },
         "cancel": "Cancelar",
         "deleteAnnotations": "Eliminar anotações?",
@@ -139,7 +139,7 @@
         "deletePublication": "Eliminar documento?",
         "import": "Confirmar importação:",
         "importError": "Ocorreu um erro, verifique a extensão do ficheiro ({{acceptedExtension}})",
-        "renew": "Renovar/estender empréstimo?",
+        "renew": "Renovar empréstimo?",
         "return": "Devolver documento?",
         "yes": "Sim"
     },
@@ -172,7 +172,7 @@
             "hint": "Dica:",
             "open": "Abrir",
             "password": "Frase-passe",
-            "sentence": "Este documento necesita de uma frase-passe LCP para ser aberto",
+            "sentence": "Este documento necessita de uma frase-passe LCP para ser aberto",
             "urlHint": "Esqueceu-se da sua frase-passe? Clique aqui para ajuda.",
             "whatIsLcp?": "O que é LCP?",
             "whatIsLcpInfoDetails": "LCP significa 'Proteção de Conteúdo Licenciado'.",
@@ -181,7 +181,7 @@
     },
     "message": {
         "annotations": {
-            "alreadyImported": "Todas as anotações já foram importadas. A abortar a importação.",
+            "alreadyImported": "Todas as anotações já foram importadas.",
             "emptyFile": "Nenhuma anotação disponível no ficheiro.",
             "errorParsing": "Erro ao analisar o formato do ficheiro: ",
             "noBelongTo": "Não foi possível importar o conjunto de anotações. Pelo menos uma anotação não pertence à publicação.",
@@ -242,18 +242,18 @@
             "updateButton": "Editar",
             "url": "Endereço:"
         },
-        "whatIsOpds": "O que é OPDS?"
+        "whatIsOpds": "O que é o OPDS?"
     },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "Amigável para TPV e leitores de ecrã"
+                "textual": "Todo o conteúdo pode ser lido em voz alta ou em braille dinâmico"
             },
             "accessibilityFeature": {
-                "alternativeText": "Contém texto alternativo",
-                "displayTransformability": "Texto e visual adaptável",
+                "alternativeText": "Contém texto alternativo nas imagens",
+                "displayTransformability": "A aparência do texto e o visual da página podem ser modificados",
                 "longDescription": "Recursos gráficos totalmente descritos",
-                "printPageNumbers": "Referência de paginação de livro impresso",
+                "printPageNumbers": "Contém uma lista de páginas para onde ir, com referência à versão impressa",
                 "readingOrder": "Contém ordenação de leitura",
                 "synchronizedAudioText": "Texto e áudio sincronizados",
                 "tableOfContents": "Contém índice"
@@ -280,7 +280,7 @@
             "tracks": "Faixas"
         },
         "author": "Autor",
-        "cancelledLcp": "A licença LCP foi cancelada.",
+        "cancelledLcp": "A licença LCP deste documento foi cancelada.",
         "certificateRevoked": "O certificado LCP foi revogado.",
         "certificateSignatureInvalid": "A assinatura do certificado da licença LCP é inválida.",
         "cover": {
@@ -294,27 +294,27 @@
         "encryptedNoLicense": "A publicação está encriptada mas não tem uma licença LCP!",
         "expired": "Empréstimo expirado",
         "expiredLcp": "A licença LCP deste documento está expirada.",
-        "incorrectPassphrase": "Nenhuma frase-passe armazenada se adequa à publicação ou a frase-passe introduzida está errada.",
+        "incorrectPassphrase": "Nenhuma frase-passe armazenada corresponde à publicação ou a frase-passe introduzida está errada.",
         "lcpEnd": "Fim",
         "lcpRightsCopy": "Caracteres copiados",
         "lcpRightsPrint": "Páginas impressas",
         "lcpStart": "Início",
         "licenceLCP": "Licença (LCP)",
-        "licenseCertificateDateInvalid": "A data de assinatura da licença LCP é inválida.",
+        "licenseCertificateDateInvalid": "Certificado do fornecedor da licença LCP expirado.",
         "licenseOutOfDate": "Licença LCP caducada.",
         "licenseSignatureInvalid": "A assinatura da licença LCP é inválida.",
         "licensed": "Licenciado",
-        "markAsRead": "Marcar como Lido",
+        "markAsRead": "Marcar como lido",
         "notStarted": "Não iniciado",
         "onGoing": "Iniciado",
         "progression": {
             "title": "Progressão"
         },
-        "read": "Finalizado",
+        "read": "Concluído",
         "remainingTime": "Empréstimo (restante)",
         "renewButton": "Renovar",
         "returnButton": "Devolver",
-        "returnedLcp": "A licença deste documento protegido por LCP foi devolvida.",
+        "returnedLcp": "Este documento protegido por LCP foi devolvido.",
         "revokedLcp": "A licença deste documento protegido por LCP foi revogada.",
         "seeLess": "Ver menos",
         "seeMore": "Ver mais",
@@ -348,7 +348,7 @@
                 "all": "Tudo",
                 "filterByColor": "Filtrar por cor",
                 "filterByCreator": "Filtrar por criador",
-                "filterByDrawtype": "Filtrar por tipo de desenho",
+                "filterByDrawtype": "Filtrar por tipo",
                 "filterByTag": "Filtrar por etiqueta",
                 "filterOptions": "Opções de filtro",
                 "none": "Nenhum"
@@ -485,7 +485,7 @@
             "preset": {
                 "apply": "Aplicar os seus parâmetros de leitura preferidos",
                 "applyDetails": "Aplicar os seus parâmetros de leitura preferidos ao livro atual.",
-                "detail": "Guardar/Aplicar os seus parâmetros de leitura preferidos.",
+                "detail": "Guardar/Aplicar/Repor os seus parâmetros de leitura preferidos.",
                 "reset": "Repor",
                 "resetDetails": "Repor os seus parâmetros de leitura preferidos (valores predefinidos).",
                 "save": "Guardar os seus parâmetros de leitura preferidos.",
@@ -536,7 +536,7 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "Criador",
+            "creator": "Criador das anotações (opcional)",
             "help": "Se especificado, este nome será incluído nos metadados das anotações exportadas.",
             "name": "Nome",
             "organization": "Organização",
@@ -545,11 +545,11 @@
         },
         "auth": {
             "help": "Esta ação elimina todas as credenciais de autenticação do OPDS.",
-            "title": "Gerir acesso aos catálogos",
+            "title": "Acesso aos catálogos de publicações",
             "wipeData": "Limpar dados de autenticação"
         },
         "keyboard": {
-            "advancedMenu": "Menu",
+            "advancedMenu": "Atalhos de teclado - menu avançado",
             "cancel": "Cancelar",
             "disclaimer": "Os atalhos foram definidos a partir da disposição do teclado QWERTY.",
             "editUserJson": "Editar ficheiro de utilizador...",
@@ -562,11 +562,11 @@
             "languageChoice": "Idioma"
         },
         "library": {
-            "enableAPIAPP": "Ativar acesso à API Dilicom PNB",
-            "title": "Adicionar conta de biblioteca"
+            "enableAPIAPP": "Ativar API do sistema de bibliotecas PNB",
+            "title": "Acesso a contas de bibliotecas francesas"
         },
         "session": {
-            "title": "Guardar sessão"
+            "title": "Ativar guardar sessão"
         },
         "tabs": {
             "appearance": "Aparência",
