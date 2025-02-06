@@ -1,611 +1,611 @@
 {
-  "accessibility": {
-    "bookMenu": "قائمة",
-    "closeDialog": "إغلاق",
-    "importFile": "استيراد منشور",
-    "leftSlideButton": "سحب إلى اليسار",
-    "mainContent": "المحتوى الرئيسي",
-    "rightSlideButton": "سحب إلى اليمين",
-    "skipLink": "تخطى الى المحتوى",
-    "toolbar": "شريط الأدوات"
-  },
-  "apiapp": {
-    "documentation": "وثائق ثوريوم",
-    "howItWorks": "كيف يعمل؟",
-    "informations": "توفّر العديد من المكتبات العامة في فرنسا كتالوغاً يمكن قراءته آلياً (مشابه لنظام توزيع المنشورات المفتوح OPDS لكن ليس مطابقاً له)، مما يتيح للمستخدمين تنزيل منشورات رقمية من رفوف كتبهم الشخصية. يتيح لك دمج هذه التكنولوجيا في ثوريوم ريدر تنزيل كتاب إلكتروني أو كتاب صوتي مباشرة إلى ثوريوم ريدر لقراءته فوراً. كيف تربط حسابك في المكتبة العامة الفرنسية بثوريوم ريدر؟ الأمر بسيط. اكتب إسم مدينة فرنسية ('باريس') أو جزءاً من إسم المكتبة في حقل البحث واضغط زر البحث، فتظهر لائحة بالمكتبات العامة المطابقة لبحثك. اختر مكتبةً، واضغط \"إضافة\"، ثم اختر هذه المكتبة في اللائحة المحدَّثة للكتالوغات، فيظهر نموذج مصادقة. اكتب إسم المستخدم/عنوان البريد الإلكتروني وكلمة المرور الخاصين بك، واضغط \"تسجيل الدخول\". يمكنك الآن رؤية محتوى رف كتبك الشخصية، حيث يمكنك تنزيل وقراءة الكتب الإلكترونية والكتب الصوتية التي استعرتها سابقاً.",
-    "noLibraryFound": "لم يتم العثور على مكتبة ({{- name}})"
-  },
-  "app": {
-    "edit": {
-      "copy": "نسخ",
-      "cut": "قص",
-      "paste": "لصق",
-      "redo": "إعادة",
-      "selectAll": "اختيار الكل",
-      "title": "تحرير",
-      "undo": "تراجع"
-    },
-    "hide": "إخفاء {{- appName}}",
-    "quit": "إنهاء {{- appName}}",
-    "session": {
-      "exit": {
-        "askBox": {
-          "button": {
-            "no": "لا",
-            "yes": "نعم"
-          },
-          "help": "",
-          "message": "هل تريد حفظ الجلسة؟",
-          "title": "حفظ الجلسة"
-        }
-      }
-    },
-    "update": {
-      "message": "يتوفر إصدار جديد، اضغط لمعرفة المزيد.",
-      "title": "تحديث برنامج {{- appName}}."
-    },
-    "window": {
-      "showLibrary": "إظهار المكتبة / رف الكتب"
-    }
-  },
-  "catalog": {
-    "about": {
-      "title": "حول {{- appName}}"
-    },
-    "addBookToLib": "استيراد",
-    "addTags": "إضافة وسم",
-    "addTagsButton": "إضافة",
-    "allBooks": "كل المنشورات",
-    "bookInfo": "حول المنشور",
-    "column": {
-      "ascending": "تصاعدي",
-      "descending": "تنازلي",
-      "unsorted": "غير مفروز"
-    },
-    "delete": "حذف",
-    "deleteBook": "حذف",
-    "deleteTag": "حذف الوسم",
-    "description": "الوصف",
-    "emptyTagList": "لا توجد منشورات موسومة.",
-    "entry": {
-      "continueReading": "استئناف القراءة",
-      "lastAdditions": "المضافة مؤخراً"
-    },
-    "export": "حفظ بإسم",
-    "exportAnnotation": "",
-    "format": "التنسيق",
-    "importAnnotation": "",
-    "lang": "اللغة",
-    "lastRead": "آخر منشور مقروء",
-    "moreInfo": "تفاصيل المنشور",
-    "myBooks": "منشوراتي",
-    "noPublicationHelpL1": "أفلت الملفات هنا",
-    "noPublicationHelpL2": "أو استخدم زر \"{{- importTitle }}\" أعلاه.",
-    "noPublicationHelpL3": "المنشورات المحمية بـ LCP مدعومة.",
-    "noPublicationHelpL4": "الملاحق المدعومة:",
-    "numberOfPages": "عدد الصفحات",
-    "opds": {
-      "auth": {
-        "cancel": "إلغاء الأمر",
-        "login": "تسجيل الدخول",
-        "password": "كلمة المرور",
-        "register": "تسجيل",
-        "username": "إسم المستخدم / عنوان البريد الإلكتروني"
-      },
-      "info": {
-        "availableSince": "منذ",
-        "availableState": {
-          "available": "متوفر",
-          "ready": "جاهز",
-          "reserved": "محجوز",
-          "unavailable": "غير متوفر",
-          "unknown": "مجهول"
-        },
-        "availableUntil": "حتى",
-        "copyAvalaible": "متوفر",
-        "copyTotal": "",
-        "holdPosition": "",
-        "holdTotal": "",
-        "numberOfItems": "عدد البنود",
-        "priveValue": "السعر",
-        "state": "الحالة"
-      }
-    },
-    "publisher": "الناشر",
-    "readBook": "اقرأ",
-    "released": "تم نشره بتاريخ",
-    "sort": "الفرز حسب",
-    "tag": "الوسم",
-    "tags": "الوسوم",
-    "update": "تحرير"
-  },
-  "dialog": {
-    "annotations": {
-      "descAuthor": "",
-      "descCreator": "",
-      "descList": "",
-      "descNewer": "",
-      "descOlder": "",
-      "descTitle": "",
-      "importAll": "",
-      "importWithoutConflict": "",
-      "origin": "",
-      "title": ""
-    },
-    "cancel": "إلغاء الأمر",
-    "deleteAnnotations": "",
-    "deleteAnnotationsText": "",
-    "deleteFeed": "حذف الكتالوغ؟",
-    "deletePublication": "حذف المنشور؟",
-    "import": "تأكيد الاستيراد:",
-    "importError": "حدث خطأ، تحقَّق من ملحق الملف ({{acceptedExtension}})",
-    "renew": "تجديد/تمديد الاستعارة؟",
-    "return": "إرجاع المنشور؟",
-    "yes": "نعم"
-  },
-  "error": {
-    "errorBox": {
-      "error": "رسالة الخطأ:",
-      "message": "خطأ في {{- filename}}",
-      "title": "خطأ داخلي في {{- appName}}"
-    }
-  },
-  "header": {
-    "allBooks": "كل المنشورات",
-    "catalogs": "الكتالوغات",
-    "downloads": "التنزيلات",
-    "fitlerTagTitle": "تصفية حسب الوسم",
-    "gridTitle": "شبكة",
-    "home": "قائمة رف الكتب",
-    "homeTitle": "البداية",
-    "importTitle": "استيراد منشور",
-    "listTitle": "جدول",
-    "myCatalogs": "كتالوغاتي",
-    "refreshTitle": "إعادة تحميل",
-    "searchPlaceholder": "بحث",
-    "searchTitle": "بحث",
-    "settings": "إعدادات",
-    "viewMode": "طريقة العرض"
-  },
-  "library": {
-    "lcp": {
-      "hint": "تلميح: ",
-      "open": "",
-      "password": "عبارة المرور",
-      "sentence": "اكتب عبارة المرور لهذا المنشور المحمي بـ LCP:",
-      "urlHint": "هل نسيت عبارة مرورك؟ الدعم متوفر:",
-      "whatIsLcp?": "ما هي LCP؟",
-      "whatIsLcpInfoDetails": "ترمز LCP إلى 'حماية المحتوى المرخَّص'.",
-      "whatIsLcpInfoDetailsLink": "لمعرفة المزيد، اضغط هذا الرابط إلى موقع EDRLab على الويب."
-    }
-  },
-  "message": {
-    "annotations": {
-      "alreadyImported": "",
-      "emptyFile": "",
-      "errorParsing": "",
-      "noBelongTo": "",
-      "nothing": "",
-      "success": ""
-    },
-    "download": {
-      "error": "فشل تنزيل [{{- title}}]: [{{- err}}]"
-    },
-    "import": {
-      "alreadyImport": "تم استيراد [{{- title}}] من قبل.",
-      "fail": "فشل استيراد [{{- path}}]: [{{- err}}]",
-      "success": "اكتمل استيراد [{{- title}}]."
-    },
-    "open": {
-      "error": "فشل تحميل المنشور: [{{- err}}]"
-    }
-  },
-  "opds": {
-    "addForm": {
-      "addButton": "إضافة",
-      "name": "الإسم:",
-      "namePlaceholder": "الإسم",
-      "url": "الرابط:",
-      "urlPlaceholder": "الرابط"
-    },
-    "addFormApiapp": {
-      "title": "إضافة حساب المكتبة"
-    },
-    "addMenu": "إضافة موجز نظام توزيع المنشورات المفتوح",
-    "breadcrumbRoot": "الكتالوغات",
-    "documentation": "موقع الويب الرسمي لنظام توزيع المنشورات المفتوح",
-    "empty": "لم يتم العثور على أي منشور",
-    "firstPage": "الأولى",
-    "informations": "تخيَّل عالماً يمكنك فيه استكشاف وتنزيل منشورات رقمية من المكتبات العامة وباعة الكتب الرقمية ببضع ضغطات فقط. هذا بالضبط ما يقدِّمه تنسيق كتالوغ نظام توزيع المنشور المفتوح (OPDS). يتيح لك OPDS التنقّل بين الكتالوغات من مزوِّدي كتب إلكترونية مختلفين، أو الاشتراك بمنشور أو استعارته أو شرائه، أو زيارة رف كتبك الشخصية. حتى أنه يمكنك تنزيل كتاب إلكتروني أو كتاب صوتي إلى ثوريوم ريدر مباشرة لقراءته فوراً.\nإذاً كيف تجد أحد كتالوغات OPDS؟ الأمر بسيط. ابحث عن رابط تشعبي (عنوان) يقود إلى الكتالوغ، وانسخه إلى حقل \"الرابط\" أعلاه. تذكَّر أنه لا يوجد متجر شامل لكل كتالوغات OPDS النشطة، لذا عليك الاتصال بمكتبتك أو بائع الكتب المفضَّل لديك وتطلب رابط كتالوغ OPDS الخاص بها/به. إذا لم تكن متأكداً من أين تبدأ، فإن ويكيبيديا تحتوي على بعض سجلات كتالوغات OPDS بلغات مختلفة قد تكون مفيدة.\nيمكنك أن تكتب أي شيء في حقل الإسم يكون مفيداً لك، فغايته هي أن يوفّر لك طريقة سهلة لتتعرّف على الموجز في ثوريوم ريدر.",
-    "lastPage": "الأخيرة",
-    "menu": {
-      "aboutBook": "حول المنشور",
-      "addExtract": "استيراد مقتطف",
-      "goBuyBook": "شراء المنشور",
-      "goLoanBook": "استعارة المنشور",
-      "goRevokeLoanBook": "إلغاء الاستعارة",
-      "goSubBook": "اشتراك"
-    },
-    "network": {
-      "error": "حدث خطأ أثناء الوصول إلى الموجز",
-      "noInternet": "لا يوجد اتصال بالانترنت",
-      "noInternetMessage": "حاول فحص كبل الشبكة، أو المودم، أو الموجِّه، أو الاتصال اللاسلكي",
-      "reject": "عذراً، حدث خطأ غير متوقَّع!",
-      "timeout": "انتهت مهلة الشبكة، يرجى إعادة المحاولة لاحقاً"
-    },
-    "next": "التالي",
-    "previous": "السابق",
-    "shelf": "الرف",
-    "updateForm": {
-      "name": "الإسم:",
-      "title": "تحرير موجز نظام توزيع المنشورات المفتوح",
-      "updateButton": "تحرير",
-      "url": "الرابط:"
-    },
-    "whatIsOpds": "ما هو نظام توزيع المنشورات المفتوح؟"
-  },
-  "publication": {
     "accessibility": {
-      "accessModeSufficient": {
-        "textual": "يدعم تحويل النص إلى كلام وقارئ الشاشة"
-      },
-      "accessibilityFeature": {
-        "alternativeText": "يحتوي على نص بديل",
-        "displayTransformability": "نص وتخطيط قابلان للتكيّف",
-        "longDescription": "الموارد الرسومية مشروحة بالكامل",
-        "printPageNumbers": "مرجع ترقيم صفحات الكتاب المطبوع",
-        "readingOrder": "يحتوي على ترتيب قراءة",
-        "synchronizedAudioText": "مزامنة النص والصوت",
-        "tableOfContents": "يحتوي على جدول محتويات"
-      },
-      "accessibilityHazard": {
-        "flashing": "الوميض",
-        "motionSimulation": "محاكاة الحركة",
-        "name": "الخطر:",
-        "noFlashing": "لا وميض",
-        "noMotionSimulation": "لا محاكاة للحركة",
-        "noSound": "لا صوت",
-        "none": "بلا",
-        "sound": "الصوت",
-        "unknown": "مجهول"
-      },
-      "certifierReport": "تقرير جهة التصديق",
-      "conformsTo": "يتوافق مع:",
-      "moreInformation": "مزيد من المعلومات",
-      "name": "إمكانية الوصول",
-      "noA11y": "لا تتوفر معلومات إمكانية الوصول"
+        "bookMenu": "قائمة",
+        "closeDialog": "إغلاق",
+        "importFile": "استيراد منشور",
+        "leftSlideButton": "سحب إلى اليسار",
+        "mainContent": "المحتوى الرئيسي",
+        "rightSlideButton": "سحب إلى اليمين",
+        "skipLink": "تخطى الى المحتوى",
+        "toolbar": "شريط الأدوات"
     },
-    "actions": "الإجراءات",
-    "audio": {
-      "tracks": "المسارات"
+    "apiapp": {
+        "documentation": "وثائق ثوريوم",
+        "howItWorks": "كيف يعمل؟",
+        "informations": "توفّر العديد من المكتبات العامة في فرنسا كتالوغاً يمكن قراءته آلياً (مشابه لنظام توزيع المنشورات المفتوح OPDS لكن ليس مطابقاً له)، مما يتيح للمستخدمين تنزيل منشورات رقمية من رفوف كتبهم الشخصية. يتيح لك دمج هذه التكنولوجيا في ثوريوم ريدر تنزيل كتاب إلكتروني أو كتاب صوتي مباشرة إلى ثوريوم ريدر لقراءته فوراً. كيف تربط حسابك في المكتبة العامة الفرنسية بثوريوم ريدر؟ الأمر بسيط. اكتب إسم مدينة فرنسية ('باريس') أو جزءاً من إسم المكتبة في حقل البحث واضغط زر البحث، فتظهر لائحة بالمكتبات العامة المطابقة لبحثك. اختر مكتبةً، واضغط \"إضافة\"، ثم اختر هذه المكتبة في اللائحة المحدَّثة للكتالوغات، فيظهر نموذج مصادقة. اكتب إسم المستخدم/عنوان البريد الإلكتروني وكلمة المرور الخاصين بك، واضغط \"تسجيل الدخول\". يمكنك الآن رؤية محتوى رف كتبك الشخصية، حيث يمكنك تنزيل وقراءة الكتب الإلكترونية والكتب الصوتية التي استعرتها سابقاً.",
+        "noLibraryFound": "لم يتم العثور على مكتبة ({{- name}})"
     },
-    "author": "المؤلف",
-    "cancelledLcp": "تم إلغاء ترخيص LCP الخاص بهذا المنشور.",
-    "certificateRevoked": "تم إبطال شهادة ترخيص LCP.",
-    "certificateSignatureInvalid": "توقيع شهادة ترخيص LCP غير صالح.",
-    "cover": {
-      "img": "صورة الغلاف"
-    },
-    "day": "يوم",
-    "days": "أيام",
-    "duration": {
-      "title": "المدة"
-    },
-    "encryptedNoLicense": "",
-    "expired": "انتهت مدة الاستعارة",
-    "expiredLcp": "انتهت صلاحية ترخيص LCP الخاص بهذا المنشور.",
-    "incorrectPassphrase": "",
-    "lcpEnd": "",
-    "lcpRightsCopy": "الأحرف المنسوخة",
-    "lcpRightsPrint": "الصفحات المطبوعة",
-    "lcpStart": "",
-    "licenceLCP": "الترخيص (LCP)",
-    "licenseCertificateDateInvalid": "تاريخ توقيع ترخيص LCP غير صالح.",
-    "licenseOutOfDate": "ترخيص LCP قديم.",
-    "licenseSignatureInvalid": "توقيع ترخيص LCP غير صالح.",
-    "licensed": "مرخَّص",
-    "markAsRead": "وضع علامة كمقروء",
-    "notStarted": "لم يبدأ",
-    "onGoing": "قيد التقدّم",
-    "progression": {
-      "title": "مقدار التقدّم"
-    },
-    "read": "انتهى",
-    "remainingTime": "",
-    "renewButton": "تجديد",
-    "returnButton": "إرجاع",
-    "returnedLcp": "تم إرجاع هذا المنشور المحمي بـ LCP.",
-    "revokedLcp": "تم إبطال ترخيص LCP الخاص بهذا المنشور.",
-    "seeLess": "رؤية مقدار أقل",
-    "seeMore": "رؤية مقدار أكثر",
-    "timeLeft": "",
-    "title": "العنوان",
-    "userKeyCheckInvalid": "عبارة المرور غير صحيحة"
-  },
-  "reader": {
-    "annotations": {
-      "Color": "اللون",
-      "addNote": "تعليق",
-      "advancedMode": "الصيغة الفورية (إنشاء تلقائي بعد الاختيار)",
-      "annotationsExport": {
-        "description": "",
-        "title": ""
-      },
-      "annotationsOptions": "خيارات",
-      "colors": {
-        "bluegreen": "",
-        "cyan": "",
-        "green": "",
-        "lightblue": "",
-        "orange": "",
-        "purple": "",
-        "red": "",
-        "yellow": ""
-      },
-      "date": "",
-      "export": "",
-      "filter": {
-        "all": "",
-        "filterByColor": "",
-        "filterByCreator": "",
-        "filterByDrawtype": "",
-        "filterByTag": "",
-        "filterOptions": "",
-        "none": ""
-      },
-      "hide": "عدم الإظهار",
-      "highlight": "تمييز",
-      "noSelectionToast": "لم يتم اختيار شيء",
-      "note": "",
-      "quickAnnotations": "إنشاء سريع (تخطي المحرِّر)",
-      "saveNote": "حفظ",
-      "sorting": {
-        "lastcreated": "",
-        "lastmodified": "",
-        "progression": "",
-        "sortingOptions": ""
-      },
-      "toggleMarginMarks": "إظهار في الهوامش",
-      "type": {
-        "outline": "حدود",
-        "solid": "خلفية صلبة",
-        "strikethrough": "يتوسطه خط",
-        "underline": "تسطير"
-      }
-    },
-    "divina": {
-      "mute": "كتم الصوت",
-      "unmute": "إلغاء كتم الصوت"
-    },
-    "fxl": {
-      "fit": "ملاءمة"
-    },
-    "goToContent": "",
-    "marks": {
-      "annotations": "التعليقات",
-      "bookmarks": "الإشارات المرجعية",
-      "delete": "حذف",
-      "edit": "تحرير",
-      "goTo": "الانتقال إلى صفحة",
-      "landmarks": "المَعالم",
-      "progression": "",
-      "saveMark": "حفظ الإشارة المرجعية",
-      "search": "بحث",
-      "searchResult": "بحث عن [{{- searchText}}]",
-      "toc": "جدول المحتويات"
-    },
-    "media-overlays": {
-      "activate": "تنشيط القراءة بصوت عالٍ",
-      "captions": "التسميات التوضيحية / عرض نظيف",
-      "captionsDescription": "عرض مبسَّط للنص مع الحد الأدنى لتصميم التسميات التوضيحية.",
-      "next": "القراءة التالية بصوت عالٍ",
-      "pause": "إيقاف القراءة بصوت عالٍ مؤقتاً",
-      "play": "تشغيل القراءة بصوت عالٍ",
-      "previous": "القراءة السابقة بصوت عالٍ",
-      "skip": "قابلية التخطي",
-      "skipDescription": "تخطي / تجاهل المحتوى الإضافي مثل فواصل الصفحات، الحواشي السفلية/التعليقات الختامية، الخ",
-      "speed": "سرعة القراءة بصوت عالٍ",
-      "stop": "إيقاف القراءة بصوت عالٍ",
-      "title": "القراءة بصوت عالٍ"
-    },
-    "navigation": {
-      "ZenModeExit": "",
-      "ZenModeTitle": "",
-      "annotationTitle": "التعليق",
-      "backHomeTitle": "عودة إلى رف الكتب",
-      "bookmarkTitle": "الإشارة المرجعية",
-      "currentPage": "الصفحة الحالية: {{- current}}",
-      "currentPageTotal": "الصفحة الحالية: {{- current}}/{{- total}}",
-      "detachWindowTitle": "إظهار نافذة المكتبة / رف الكتب",
-      "goTo": "الانتقال إلى",
-      "goToError": "لا يوجد فاصل صفحات",
-      "goToPlaceHolder": "اكتب رقم الصفحة",
-      "goToTitle": "الانتقال إلى صفحة",
-      "historyNext": "القفز إلى الأمام",
-      "historyPrevious": "القفز إلى الخلف",
-      "infoTitle": "معلومات",
-      "magnifyingGlassButton": "بحث في المنشور",
-      "openTableOfContentsTitle": "التنقّل",
-      "page": "الصفحة",
-      "pdfscalemode": "ملاءمة أو عرض الصفحة",
-      "settingsTitle": "إعدادات"
-    },
-    "picker": {
-      "search": {
-        "founds": "تم العثور على {{- nResults}} تطابقات",
-        "input": "النص المطلوب مطابقته",
-        "next": "التالي",
-        "notFound": "لم يتم العثور على تطابقات",
-        "previous": "السابق",
-        "results": "النتائج",
-        "submit": "بحث"
-      },
-      "searchTitle": "البحث عن:"
-    },
-    "settings": {
-      "column": {
-        "auto": "افتراضي",
-        "one": "عمود واحد",
-        "title": "الأعمدة",
-        "two": "عمودان"
-      },
-      "customFontSelected": "",
-      "customizeReader": "تخصيص تنسيق النص",
-      "disabled": "تم تعطيله",
-      "display": "العرض",
-      "disposition": {
-        "title": "التخطيط"
-      },
-      "font": "الخط",
-      "fontSize": "حجم الخط",
-      "infoCustomFont": "اختر خطاً مخصصاً من نظام التشغيل بكتابة إسمه",
-      "justification": "المحاذاة",
-      "justify": "ضبط",
-      "letterSpacing": "تباعد الأحرف",
-      "lineSpacing": "تباعد الأسطر",
-      "margin": "الهامش",
-      "noFootnotes": "تعطيل الحواشي السفلية",
-      "noRTLFlip": "تعطيل واجهة اليمين إلى اليسار",
-      "noRuby": "إخفاء علامات روبي اليابانية",
-      "paginated": "مقسَّم إلى صفحات",
-      "paraSpacing": "تباعد الفقرات",
-      "pdfZoom": {
-        "name": {
-          "100pct": "100%",
-          "150pct": "150%",
-          "200pct": "200%",
-          "300pct": "300%",
-          "500pct": "500%",
-          "50pct": "50%",
-          "fit": "ملاءمة الصفحة",
-          "width": "عرض الصفحة"
+    "app": {
+        "edit": {
+            "copy": "نسخ",
+            "cut": "قص",
+            "paste": "لصق",
+            "redo": "إعادة",
+            "selectAll": "اختيار الكل",
+            "title": "تحرير",
+            "undo": "تراجع"
         },
-        "title": "تكبير/تصغير"
-      },
-      "preset": {
-        "apply": "",
-        "applyDetails": "",
-        "detail": "",
-        "reset": "",
-        "resetDetails": "",
-        "save": "",
-        "saveDetails": "",
-        "title": ""
-      },
-      "preview": "معاينة تمهيدية",
-      "reduceMotion": "تقليل الحركة",
-      "scrolled": "قابل للتمرير",
-      "spacing": "التباعد",
-      "text": "النص",
-      "theme": {
-        "name": {
-          "Contrast1": "تباين 1",
-          "Contrast2": "تباين 2",
-          "Contrast3": "تباين 3",
-          "Contrast4": "تباين 4",
-          "Neutral": "محايد",
-          "Night": "ليل",
-          "Paper": "ورق",
-          "Sepia": "سيبيا"
+        "hide": "إخفاء {{- appName}}",
+        "quit": "إنهاء {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "لا",
+                        "yes": "نعم"
+                    },
+                    "help": "",
+                    "message": "هل تريد حفظ الجلسة؟",
+                    "title": "حفظ الجلسة"
+                }
+            }
         },
-        "title": "النسق"
-      },
-      "wordSpacing": "تباعد الكلمات"
+        "update": {
+            "message": "يتوفر إصدار جديد، اضغط لمعرفة المزيد.",
+            "title": "تحديث برنامج {{- appName}}."
+        },
+        "window": {
+            "showLibrary": "إظهار المكتبة / رف الكتب"
+        }
     },
-    "svg": {
-      "left": "يسار",
-      "right": "يمين"
+    "catalog": {
+        "about": {
+            "title": "حول {{- appName}}"
+        },
+        "addBookToLib": "استيراد",
+        "addTags": "إضافة وسم",
+        "addTagsButton": "إضافة",
+        "allBooks": "كل المنشورات",
+        "bookInfo": "حول المنشور",
+        "column": {
+            "ascending": "تصاعدي",
+            "descending": "تنازلي",
+            "unsorted": "غير مفروز"
+        },
+        "delete": "حذف",
+        "deleteBook": "حذف",
+        "deleteTag": "حذف الوسم",
+        "description": "الوصف",
+        "emptyTagList": "لا توجد منشورات موسومة.",
+        "entry": {
+            "continueReading": "استئناف القراءة",
+            "lastAdditions": "المضافة مؤخراً"
+        },
+        "export": "حفظ بإسم",
+        "exportAnnotation": "",
+        "format": "التنسيق",
+        "importAnnotation": "",
+        "lang": "اللغة",
+        "lastRead": "آخر منشور مقروء",
+        "moreInfo": "تفاصيل المنشور",
+        "myBooks": "منشوراتي",
+        "noPublicationHelpL1": "أفلت الملفات هنا",
+        "noPublicationHelpL2": "أو استخدم زر \"{{- importTitle }}\" أعلاه.",
+        "noPublicationHelpL3": "المنشورات المحمية بـ LCP مدعومة.",
+        "noPublicationHelpL4": "الملاحق المدعومة:",
+        "numberOfPages": "عدد الصفحات",
+        "opds": {
+            "auth": {
+                "cancel": "إلغاء الأمر",
+                "login": "تسجيل الدخول",
+                "password": "كلمة المرور",
+                "register": "تسجيل",
+                "username": "إسم المستخدم / عنوان البريد الإلكتروني"
+            },
+            "info": {
+                "availableSince": "منذ",
+                "availableState": {
+                    "available": "متوفر",
+                    "ready": "جاهز",
+                    "reserved": "محجوز",
+                    "unavailable": "غير متوفر",
+                    "unknown": "مجهول"
+                },
+                "availableUntil": "حتى",
+                "copyAvalaible": "متوفر",
+                "copyTotal": "",
+                "holdPosition": "",
+                "holdTotal": "",
+                "numberOfItems": "عدد البنود",
+                "priveValue": "السعر",
+                "state": "الحالة"
+            }
+        },
+        "publisher": "الناشر",
+        "readBook": "اقرأ",
+        "released": "تم نشره بتاريخ",
+        "sort": "الفرز حسب",
+        "tag": "الوسم",
+        "tags": "الوسوم",
+        "update": "تحرير"
     },
-    "toc": {
-      "publicationNoToc": "لا يوجد جدول محتويات"
+    "dialog": {
+        "annotations": {
+            "descAuthor": "",
+            "descCreator": "",
+            "descList": "",
+            "descNewer": "",
+            "descOlder": "",
+            "descTitle": "",
+            "importAll": "",
+            "importWithoutConflict": "",
+            "origin": "",
+            "title": ""
+        },
+        "cancel": "إلغاء الأمر",
+        "deleteAnnotations": "",
+        "deleteAnnotationsText": "",
+        "deleteFeed": "حذف الكتالوغ؟",
+        "deletePublication": "حذف المنشور؟",
+        "import": "تأكيد الاستيراد:",
+        "importError": "حدث خطأ، تحقَّق من ملحق الملف ({{acceptedExtension}})",
+        "renew": "تجديد/تمديد الاستعارة؟",
+        "return": "إرجاع المنشور؟",
+        "yes": "نعم"
     },
-    "tts": {
-      "activate": "تنشيط ميزة تحويل النص إلى كلام",
-      "language": "",
-      "next": "النص التالي المحوَّل إلى كلام",
-      "pause": "إيقاف ميزة تحويل النص إلى كلام مؤقتاً",
-      "play": "تشغيل ميزة تحويل النص إلى كلام",
-      "previous": "النص السابق المحوَّل إلى كلام",
-      "sentenceDetect": "تقسيم النص المحوَّل إلى كلام",
-      "sentenceDetectDescription": "تقسيم الفقرات الطويلة إلى جمل.",
-      "speed": "سرعة تحويل النص إلى كلام",
-      "stop": "إيقاف ميزة تحويل النص إلى كلام",
-      "voice": "الصوت المستخدم لتحويل النص إلى كلام"
-    }
-  },
-  "settings": {
-    "annotationCreator": {
-      "creator": "",
-      "help": "",
-      "name": "",
-      "organization": "",
-      "person": "",
-      "type": ""
+    "error": {
+        "errorBox": {
+            "error": "رسالة الخطأ:",
+            "message": "خطأ في {{- filename}}",
+            "title": "خطأ داخلي في {{- appName}}"
+        }
     },
-    "auth": {
-      "help": "",
-      "title": "",
-      "wipeData": "حذف بيانات تسجيل الدخول"
-    },
-    "keyboard": {
-      "advancedMenu": "قائمة",
-      "cancel": "إلغاء الأمر",
-      "disclaimer": "تم تعريف الاختصارات من تخطيط لوحة مفاتيح كويرتي.",
-      "editUserJson": "تحرير ملف المستخدم...",
-      "keyboardShortcuts": "اختصارات لوحة المفاتيح",
-      "loadUserJson": "تحميل من ملف المستخدم",
-      "resetDefaults": "إعادة ضبط (تحميل الافتراضيات)",
-      "save": "حفظ"
-    },
-    "language": {
-      "languageChoice": "اللغة"
+    "header": {
+        "allBooks": "كل المنشورات",
+        "catalogs": "الكتالوغات",
+        "downloads": "التنزيلات",
+        "fitlerTagTitle": "تصفية حسب الوسم",
+        "gridTitle": "شبكة",
+        "home": "قائمة رف الكتب",
+        "homeTitle": "البداية",
+        "importTitle": "استيراد منشور",
+        "listTitle": "جدول",
+        "myCatalogs": "كتالوغاتي",
+        "refreshTitle": "إعادة تحميل",
+        "searchPlaceholder": "بحث",
+        "searchTitle": "بحث",
+        "settings": "إعدادات",
+        "viewMode": "طريقة العرض"
     },
     "library": {
-      "enableAPIAPP": "",
-      "title": ""
+        "lcp": {
+            "hint": "تلميح: ",
+            "open": "",
+            "password": "عبارة المرور",
+            "sentence": "اكتب عبارة المرور لهذا المنشور المحمي بـ LCP:",
+            "urlHint": "هل نسيت عبارة مرورك؟ الدعم متوفر:",
+            "whatIsLcp?": "ما هي LCP؟",
+            "whatIsLcpInfoDetails": "ترمز LCP إلى 'حماية المحتوى المرخَّص'.",
+            "whatIsLcpInfoDetailsLink": "لمعرفة المزيد، اضغط هذا الرابط إلى موقع EDRLab على الويب."
+        }
     },
-    "session": {
-      "title": "حفظ الجلسة"
+    "message": {
+        "annotations": {
+            "alreadyImported": "",
+            "emptyFile": "",
+            "errorParsing": "",
+            "noBelongTo": "",
+            "nothing": "",
+            "success": ""
+        },
+        "download": {
+            "error": "فشل تنزيل [{{- title}}]: [{{- err}}]"
+        },
+        "import": {
+            "alreadyImport": "تم استيراد [{{- title}}] من قبل.",
+            "fail": "فشل استيراد [{{- path}}]: [{{- err}}]",
+            "success": "اكتمل استيراد [{{- title}}]."
+        },
+        "open": {
+            "error": "فشل تحميل المنشور: [{{- err}}]"
+        }
     },
-    "tabs": {
-      "appearance": "المظهر",
-      "general": "عام",
-      "keyboardShortcuts": "اختصارات لوحة المفاتيح"
+    "opds": {
+        "addForm": {
+            "addButton": "إضافة",
+            "name": "الإسم:",
+            "namePlaceholder": "الإسم",
+            "url": "الرابط:",
+            "urlPlaceholder": "الرابط"
+        },
+        "addFormApiapp": {
+            "title": "إضافة حساب المكتبة"
+        },
+        "addMenu": "إضافة موجز نظام توزيع المنشورات المفتوح",
+        "breadcrumbRoot": "الكتالوغات",
+        "documentation": "موقع الويب الرسمي لنظام توزيع المنشورات المفتوح",
+        "empty": "لم يتم العثور على أي منشور",
+        "firstPage": "الأولى",
+        "informations": "تخيَّل عالماً يمكنك فيه استكشاف وتنزيل منشورات رقمية من المكتبات العامة وباعة الكتب الرقمية ببضع ضغطات فقط. هذا بالضبط ما يقدِّمه تنسيق كتالوغ نظام توزيع المنشور المفتوح (OPDS). يتيح لك OPDS التنقّل بين الكتالوغات من مزوِّدي كتب إلكترونية مختلفين، أو الاشتراك بمنشور أو استعارته أو شرائه، أو زيارة رف كتبك الشخصية. حتى أنه يمكنك تنزيل كتاب إلكتروني أو كتاب صوتي إلى ثوريوم ريدر مباشرة لقراءته فوراً.\nإذاً كيف تجد أحد كتالوغات OPDS؟ الأمر بسيط. ابحث عن رابط تشعبي (عنوان) يقود إلى الكتالوغ، وانسخه إلى حقل \"الرابط\" أعلاه. تذكَّر أنه لا يوجد متجر شامل لكل كتالوغات OPDS النشطة، لذا عليك الاتصال بمكتبتك أو بائع الكتب المفضَّل لديك وتطلب رابط كتالوغ OPDS الخاص بها/به. إذا لم تكن متأكداً من أين تبدأ، فإن ويكيبيديا تحتوي على بعض سجلات كتالوغات OPDS بلغات مختلفة قد تكون مفيدة.\nيمكنك أن تكتب أي شيء في حقل الإسم يكون مفيداً لك، فغايته هي أن يوفّر لك طريقة سهلة لتتعرّف على الموجز في ثوريوم ريدر.",
+        "lastPage": "الأخيرة",
+        "menu": {
+            "aboutBook": "حول المنشور",
+            "addExtract": "استيراد مقتطف",
+            "goBuyBook": "شراء المنشور",
+            "goLoanBook": "استعارة المنشور",
+            "goRevokeLoanBook": "إلغاء الاستعارة",
+            "goSubBook": "اشتراك"
+        },
+        "network": {
+            "error": "حدث خطأ أثناء الوصول إلى الموجز",
+            "noInternet": "لا يوجد اتصال بالانترنت",
+            "noInternetMessage": "حاول فحص كبل الشبكة، أو المودم، أو الموجِّه، أو الاتصال اللاسلكي",
+            "reject": "عذراً، حدث خطأ غير متوقَّع!",
+            "timeout": "انتهت مهلة الشبكة، يرجى إعادة المحاولة لاحقاً"
+        },
+        "next": "التالي",
+        "previous": "السابق",
+        "shelf": "الرف",
+        "updateForm": {
+            "name": "الإسم:",
+            "title": "تحرير موجز نظام توزيع المنشورات المفتوح",
+            "updateButton": "تحرير",
+            "url": "الرابط:"
+        },
+        "whatIsOpds": "ما هو نظام توزيع المنشورات المفتوح؟"
     },
-    "theme": {
-      "auto": "تلقائي",
-      "dark": "داكن",
-      "description": "نسق البرنامج يطابق نظام التشغيل.",
-      "light": "فاتح",
-      "title": "نسق البرنامج"
+    "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": "يدعم تحويل النص إلى كلام وقارئ الشاشة"
+            },
+            "accessibilityFeature": {
+                "alternativeText": "يحتوي على نص بديل",
+                "displayTransformability": "نص وتخطيط قابلان للتكيّف",
+                "longDescription": "الموارد الرسومية مشروحة بالكامل",
+                "printPageNumbers": "مرجع ترقيم صفحات الكتاب المطبوع",
+                "readingOrder": "يحتوي على ترتيب قراءة",
+                "synchronizedAudioText": "مزامنة النص والصوت",
+                "tableOfContents": "يحتوي على جدول محتويات"
+            },
+            "accessibilityHazard": {
+                "flashing": "الوميض",
+                "motionSimulation": "محاكاة الحركة",
+                "name": "الخطر:",
+                "noFlashing": "لا وميض",
+                "noMotionSimulation": "لا محاكاة للحركة",
+                "noSound": "لا صوت",
+                "none": "بلا",
+                "sound": "الصوت",
+                "unknown": "مجهول"
+            },
+            "certifierReport": "تقرير جهة التصديق",
+            "conformsTo": "يتوافق مع:",
+            "moreInformation": "مزيد من المعلومات",
+            "name": "إمكانية الوصول",
+            "noA11y": "لا تتوفر معلومات إمكانية الوصول"
+        },
+        "actions": "الإجراءات",
+        "audio": {
+            "tracks": "المسارات"
+        },
+        "author": "المؤلف",
+        "cancelledLcp": "تم إلغاء ترخيص LCP الخاص بهذا المنشور.",
+        "certificateRevoked": "تم إبطال شهادة ترخيص LCP.",
+        "certificateSignatureInvalid": "توقيع شهادة ترخيص LCP غير صالح.",
+        "cover": {
+            "img": "صورة الغلاف"
+        },
+        "day": "يوم",
+        "days": "أيام",
+        "duration": {
+            "title": "المدة"
+        },
+        "encryptedNoLicense": "",
+        "expired": "انتهت مدة الاستعارة",
+        "expiredLcp": "انتهت صلاحية ترخيص LCP الخاص بهذا المنشور.",
+        "incorrectPassphrase": "",
+        "lcpEnd": "",
+        "lcpRightsCopy": "الأحرف المنسوخة",
+        "lcpRightsPrint": "الصفحات المطبوعة",
+        "lcpStart": "",
+        "licenceLCP": "الترخيص (LCP)",
+        "licenseCertificateDateInvalid": "تاريخ توقيع ترخيص LCP غير صالح.",
+        "licenseOutOfDate": "ترخيص LCP قديم.",
+        "licenseSignatureInvalid": "توقيع ترخيص LCP غير صالح.",
+        "licensed": "مرخَّص",
+        "markAsRead": "وضع علامة كمقروء",
+        "notStarted": "لم يبدأ",
+        "onGoing": "قيد التقدّم",
+        "progression": {
+            "title": "مقدار التقدّم"
+        },
+        "read": "انتهى",
+        "remainingTime": "",
+        "renewButton": "تجديد",
+        "returnButton": "إرجاع",
+        "returnedLcp": "تم إرجاع هذا المنشور المحمي بـ LCP.",
+        "revokedLcp": "تم إبطال ترخيص LCP الخاص بهذا المنشور.",
+        "seeLess": "رؤية مقدار أقل",
+        "seeMore": "رؤية مقدار أكثر",
+        "timeLeft": "",
+        "title": "العنوان",
+        "userKeyCheckInvalid": "عبارة المرور غير صحيحة"
+    },
+    "reader": {
+        "annotations": {
+            "Color": "اللون",
+            "addNote": "تعليق",
+            "advancedMode": "الصيغة الفورية (إنشاء تلقائي بعد الاختيار)",
+            "annotationsExport": {
+                "description": "",
+                "title": ""
+            },
+            "annotationsOptions": "خيارات",
+            "colors": {
+                "bluegreen": "",
+                "cyan": "",
+                "green": "",
+                "lightblue": "",
+                "orange": "",
+                "purple": "",
+                "red": "",
+                "yellow": ""
+            },
+            "date": "",
+            "export": "",
+            "filter": {
+                "all": "",
+                "filterByColor": "",
+                "filterByCreator": "",
+                "filterByDrawtype": "",
+                "filterByTag": "",
+                "filterOptions": "",
+                "none": ""
+            },
+            "hide": "عدم الإظهار",
+            "highlight": "تمييز",
+            "noSelectionToast": "لم يتم اختيار شيء",
+            "note": "",
+            "quickAnnotations": "إنشاء سريع (تخطي المحرِّر)",
+            "saveNote": "حفظ",
+            "sorting": {
+                "lastcreated": "",
+                "lastmodified": "",
+                "progression": "",
+                "sortingOptions": ""
+            },
+            "toggleMarginMarks": "إظهار في الهوامش",
+            "type": {
+                "outline": "حدود",
+                "solid": "خلفية صلبة",
+                "strikethrough": "يتوسطه خط",
+                "underline": "تسطير"
+            }
+        },
+        "divina": {
+            "mute": "كتم الصوت",
+            "unmute": "إلغاء كتم الصوت"
+        },
+        "fxl": {
+            "fit": "ملاءمة"
+        },
+        "goToContent": "",
+        "marks": {
+            "annotations": "التعليقات",
+            "bookmarks": "الإشارات المرجعية",
+            "delete": "حذف",
+            "edit": "تحرير",
+            "goTo": "الانتقال إلى صفحة",
+            "landmarks": "المَعالم",
+            "progression": "",
+            "saveMark": "حفظ الإشارة المرجعية",
+            "search": "بحث",
+            "searchResult": "بحث عن [{{- searchText}}]",
+            "toc": "جدول المحتويات"
+        },
+        "media-overlays": {
+            "activate": "تنشيط القراءة بصوت عالٍ",
+            "captions": "التسميات التوضيحية / عرض نظيف",
+            "captionsDescription": "عرض مبسَّط للنص مع الحد الأدنى لتصميم التسميات التوضيحية.",
+            "next": "القراءة التالية بصوت عالٍ",
+            "pause": "إيقاف القراءة بصوت عالٍ مؤقتاً",
+            "play": "تشغيل القراءة بصوت عالٍ",
+            "previous": "القراءة السابقة بصوت عالٍ",
+            "skip": "قابلية التخطي",
+            "skipDescription": "تخطي / تجاهل المحتوى الإضافي مثل فواصل الصفحات، الحواشي السفلية/التعليقات الختامية، الخ",
+            "speed": "سرعة القراءة بصوت عالٍ",
+            "stop": "إيقاف القراءة بصوت عالٍ",
+            "title": "القراءة بصوت عالٍ"
+        },
+        "navigation": {
+            "ZenModeExit": "",
+            "ZenModeTitle": "",
+            "annotationTitle": "التعليق",
+            "backHomeTitle": "عودة إلى رف الكتب",
+            "bookmarkTitle": "الإشارة المرجعية",
+            "currentPage": "الصفحة الحالية: {{- current}}",
+            "currentPageTotal": "الصفحة الحالية: {{- current}}/{{- total}}",
+            "detachWindowTitle": "إظهار نافذة المكتبة / رف الكتب",
+            "goTo": "الانتقال إلى",
+            "goToError": "لا يوجد فاصل صفحات",
+            "goToPlaceHolder": "اكتب رقم الصفحة",
+            "goToTitle": "الانتقال إلى صفحة",
+            "historyNext": "القفز إلى الأمام",
+            "historyPrevious": "القفز إلى الخلف",
+            "infoTitle": "معلومات",
+            "magnifyingGlassButton": "بحث في المنشور",
+            "openTableOfContentsTitle": "التنقّل",
+            "page": "الصفحة",
+            "pdfscalemode": "ملاءمة أو عرض الصفحة",
+            "settingsTitle": "إعدادات"
+        },
+        "picker": {
+            "search": {
+                "founds": "تم العثور على {{- nResults}} تطابقات",
+                "input": "النص المطلوب مطابقته",
+                "next": "التالي",
+                "notFound": "لم يتم العثور على تطابقات",
+                "previous": "السابق",
+                "results": "النتائج",
+                "submit": "بحث"
+            },
+            "searchTitle": "البحث عن:"
+        },
+        "settings": {
+            "column": {
+                "auto": "افتراضي",
+                "one": "عمود واحد",
+                "title": "الأعمدة",
+                "two": "عمودان"
+            },
+            "customFontSelected": "",
+            "customizeReader": "تخصيص تنسيق النص",
+            "disabled": "تم تعطيله",
+            "display": "العرض",
+            "disposition": {
+                "title": "التخطيط"
+            },
+            "font": "الخط",
+            "fontSize": "حجم الخط",
+            "infoCustomFont": "اختر خطاً مخصصاً من نظام التشغيل بكتابة إسمه",
+            "justification": "المحاذاة",
+            "justify": "ضبط",
+            "letterSpacing": "تباعد الأحرف",
+            "lineSpacing": "تباعد الأسطر",
+            "margin": "الهامش",
+            "noFootnotes": "تعطيل الحواشي السفلية",
+            "noRTLFlip": "تعطيل واجهة اليمين إلى اليسار",
+            "noRuby": "إخفاء علامات روبي اليابانية",
+            "paginated": "مقسَّم إلى صفحات",
+            "paraSpacing": "تباعد الفقرات",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "100%",
+                    "150pct": "150%",
+                    "200pct": "200%",
+                    "300pct": "300%",
+                    "500pct": "500%",
+                    "50pct": "50%",
+                    "fit": "ملاءمة الصفحة",
+                    "width": "عرض الصفحة"
+                },
+                "title": "تكبير/تصغير"
+            },
+            "preset": {
+                "apply": "",
+                "applyDetails": "",
+                "detail": "",
+                "reset": "",
+                "resetDetails": "",
+                "save": "",
+                "saveDetails": "",
+                "title": ""
+            },
+            "preview": "معاينة تمهيدية",
+            "reduceMotion": "تقليل الحركة",
+            "scrolled": "قابل للتمرير",
+            "spacing": "التباعد",
+            "text": "النص",
+            "theme": {
+                "name": {
+                    "Contrast1": "تباين 1",
+                    "Contrast2": "تباين 2",
+                    "Contrast3": "تباين 3",
+                    "Contrast4": "تباين 4",
+                    "Neutral": "محايد",
+                    "Night": "ليل",
+                    "Paper": "ورق",
+                    "Sepia": "سيبيا"
+                },
+                "title": "النسق"
+            },
+            "wordSpacing": "تباعد الكلمات"
+        },
+        "svg": {
+            "left": "يسار",
+            "right": "يمين"
+        },
+        "toc": {
+            "publicationNoToc": "لا يوجد جدول محتويات"
+        },
+        "tts": {
+            "activate": "تنشيط ميزة تحويل النص إلى كلام",
+            "language": "",
+            "next": "النص التالي المحوَّل إلى كلام",
+            "pause": "إيقاف ميزة تحويل النص إلى كلام مؤقتاً",
+            "play": "تشغيل ميزة تحويل النص إلى كلام",
+            "previous": "النص السابق المحوَّل إلى كلام",
+            "sentenceDetect": "تقسيم النص المحوَّل إلى كلام",
+            "sentenceDetectDescription": "تقسيم الفقرات الطويلة إلى جمل.",
+            "speed": "سرعة تحويل النص إلى كلام",
+            "stop": "إيقاف ميزة تحويل النص إلى كلام",
+            "voice": "الصوت المستخدم لتحويل النص إلى كلام"
+        }
+    },
+    "settings": {
+        "annotationCreator": {
+            "creator": "",
+            "help": "",
+            "name": "",
+            "organization": "",
+            "person": "",
+            "type": ""
+        },
+        "auth": {
+            "help": "",
+            "title": "",
+            "wipeData": "حذف بيانات تسجيل الدخول"
+        },
+        "keyboard": {
+            "advancedMenu": "قائمة",
+            "cancel": "إلغاء الأمر",
+            "disclaimer": "تم تعريف الاختصارات من تخطيط لوحة مفاتيح كويرتي.",
+            "editUserJson": "تحرير ملف المستخدم...",
+            "keyboardShortcuts": "اختصارات لوحة المفاتيح",
+            "loadUserJson": "تحميل من ملف المستخدم",
+            "resetDefaults": "إعادة ضبط (تحميل الافتراضيات)",
+            "save": "حفظ"
+        },
+        "language": {
+            "languageChoice": "اللغة"
+        },
+        "library": {
+            "enableAPIAPP": "",
+            "title": ""
+        },
+        "session": {
+            "title": "حفظ الجلسة"
+        },
+        "tabs": {
+            "appearance": "المظهر",
+            "general": "عام",
+            "keyboardShortcuts": "اختصارات لوحة المفاتيح"
+        },
+        "theme": {
+            "auto": "تلقائي",
+            "dark": "داكن",
+            "description": "نسق البرنامج يطابق نظام التشغيل.",
+            "light": "فاتح",
+            "title": "نسق البرنامج"
+        }
+    },
+    "wizard": {
+        "buttons": {
+            "discover": "اكتشف ما الجديد",
+            "goToBooks": "الانتقال إلى منشوراتي",
+            "next": "التالي"
+        },
+        "description": {
+            "annotations": "تمييز نص المستند، واختيار النمط واللون، وإرفاق ملاحظات شخصية. أنشئ التعليقات في الصيغة 'السريعة' لكي تتخطى المحرِّر (يمكنك كتابة النص وتخصيص الأنماط لاحقاً). ولتحقيق سرعة إضافية، استخدم الصيغة 'الفورية' التي تنشئ التعليقات فوراً بعد تمييز نص المستند!",
+            "catalogs": "استعِر منشورات من مكتبتك المحلية، أو اكتشف المنشورات من خلال مواجز نظام توزيع المنشورات المفتوح. احصل على تشكيلة متنوعة من المنشورات من مصادر متعددة بفضل الكتالوغات المتوفرة على الانترنت.",
+            "home": "يبدو ثوريوم مختلفاً! دعنا نكتشف ما الجديد فيه...",
+            "readingView1": "خصِّص تفضيلات القراءة والاستماع لديك: يقدِّم ثوريوم الآن العديد من النُسُق اللونية لواجهته والمنشورات على حد سواء. كما أنه أصبح من الأسهل الآن تعديل إعدادات عملية 'القراءة بصوت عالٍ' للكتب الإلكترونية باستخدام الكلام الاصطناعي ومزامنة السرد النصي/الصوتي.",
+            "readingView2": "تسهّل واجهة ثوريوم المحسَّنة العثور على النصوص في المنشورات، واستكشاف نتائج عمليات البحث، والانتقال إلى صفحات محدَّدة، واستعراض جدول المحتويات، وإنشاء إشارات مرجعية، وما إلى ذلك بفضل الألواح 'الراسية' الجديدة. كما تستمر صيغة القراءة على ملء الشاشة بتوفير بيئة خالية من الإلهاءات.",
+            "yourBooks": "مرحباً بك في رف كتبك الشخصية المُعاد تصميمه! في طريقة العرض 'شبكة'، يمكنك بسهولة التصفية حسب الوسوم، أو العثور على المنشورات باستخدام كلمات أساسية. وفي طريقة العرض المتقدمة 'جدول'، يمكنك اختيار المنشورات وفرزها حسب مؤلفين محدَّدين، أو العنوان، أو التاريخ، أو التنسيق، الخ."
+        },
+        "dontShow": "عدم الإظهار مرة أخرى",
+        "tab": {
+            "annotations": "التعليقات",
+            "catalogs": "الكتالوغات",
+            "home": "البداية",
+            "readingView": "طريقة عرض القراءة",
+            "yourBooks": "منشوراتك"
+        },
+        "title": {
+            "allBooks": "كل منشوراتي",
+            "newFeature": "ميزة جديدة: التعليقات",
+            "welcome": "مرحباً بك في ثوريوم 3.0"
+        }
     }
-  },
-  "wizard": {
-    "buttons": {
-      "discover": "اكتشف ما الجديد",
-      "goToBooks": "الانتقال إلى منشوراتي",
-      "next": "التالي"
-    },
-    "description": {
-      "annotations": "تمييز نص المستند، واختيار النمط واللون، وإرفاق ملاحظات شخصية. أنشئ التعليقات في الصيغة 'السريعة' لكي تتخطى المحرِّر (يمكنك كتابة النص وتخصيص الأنماط لاحقاً). ولتحقيق سرعة إضافية، استخدم الصيغة 'الفورية' التي تنشئ التعليقات فوراً بعد تمييز نص المستند!",
-      "catalogs": "استعِر منشورات من مكتبتك المحلية، أو اكتشف المنشورات من خلال مواجز نظام توزيع المنشورات المفتوح. احصل على تشكيلة متنوعة من المنشورات من مصادر متعددة بفضل الكتالوغات المتوفرة على الانترنت.",
-      "home": "يبدو ثوريوم مختلفاً! دعنا نكتشف ما الجديد فيه...",
-      "readingView1": "خصِّص تفضيلات القراءة والاستماع لديك: يقدِّم ثوريوم الآن العديد من النُسُق اللونية لواجهته والمنشورات على حد سواء. كما أنه أصبح من الأسهل الآن تعديل إعدادات عملية 'القراءة بصوت عالٍ' للكتب الإلكترونية باستخدام الكلام الاصطناعي ومزامنة السرد النصي/الصوتي.",
-      "readingView2": "تسهّل واجهة ثوريوم المحسَّنة العثور على النصوص في المنشورات، واستكشاف نتائج عمليات البحث، والانتقال إلى صفحات محدَّدة، واستعراض جدول المحتويات، وإنشاء إشارات مرجعية، وما إلى ذلك بفضل الألواح 'الراسية' الجديدة. كما تستمر صيغة القراءة على ملء الشاشة بتوفير بيئة خالية من الإلهاءات.",
-      "yourBooks": "مرحباً بك في رف كتبك الشخصية المُعاد تصميمه! في طريقة العرض 'شبكة'، يمكنك بسهولة التصفية حسب الوسوم، أو العثور على المنشورات باستخدام كلمات أساسية. وفي طريقة العرض المتقدمة 'جدول'، يمكنك اختيار المنشورات وفرزها حسب مؤلفين محدَّدين، أو العنوان، أو التاريخ، أو التنسيق، الخ."
-    },
-    "dontShow": "عدم الإظهار مرة أخرى",
-    "tab": {
-      "annotations": "التعليقات",
-      "catalogs": "الكتالوغات",
-      "home": "البداية",
-      "readingView": "طريقة عرض القراءة",
-      "yourBooks": "منشوراتك"
-    },
-    "title": {
-      "allBooks": "كل منشوراتي",
-      "newFeature": "ميزة جديدة: التعليقات",
-      "welcome": "مرحباً بك في ثوريوم 3.0"
-    }
-  }
 }
