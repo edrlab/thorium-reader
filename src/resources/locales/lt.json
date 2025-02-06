@@ -12,7 +12,7 @@
   "apiapp": {
     "documentation": "Thorium dokumentacija",
     "howItWorks": "Kaip tai veikia?",
-    "informations": "Prancūzijoje daugelis viešųjų bibliotekų pateikia kompiuteriams skirtą katalogą (panašų į OPDS, tačiau ne identišką), leidžiantį skaitytojams atsisiųsti skaitmeninius leidinius iš savo asmeninės knygų lentynos. Integravus šią technologiją į Thorium Reader, galite atsisiųsti el. knygą arba garsinę knygą tiesiai į Thorium Reader, kad galėtumėte greitai skaityti. Kaip susieti savo Prancūzijos viešosios bibliotekos paskyrą su Thorium Reader? Tai paprasta. Į paieškos laukelį įveskite Prancūzijos miestą (pvz. „Paryžius“) arba bibliotekos pavadinimo dalį ir paspauskite mygtuką „Ieškoti“. Bus atvaizduotas jūsų paiešką atitinkančių viešųjų bibliotekų sąrašas. Pasirinkite biblioteką ir paspauskite mygtuką „Pridėti“. Pasirinkite šią biblioteką atnaujintame katalogų sąraše: bus atvaizduojamas tapatybės nustatymo dialogo langas. Įveskite savo naudotojo vardą / el. pašto adresą ir slaptažodį ir spustelėkite „Prisijungti“. Dabar galite matyti savo asmeninės knygų lentynos turinį, iš kurios galite atsisiųsti ir skaityti anksčiau pasiskolintas el. ir garsines knygas.",
+    "informations": "Prancūzijoje daugelis viešųjų bibliotekų pateikia kompiuteriams skirtą katalogą (panašų į OPDS, tačiau ne identišką), leidžiantį skaitytojams atsisiųsti skaitmeninius leidinius iš savo asmeninės knygų lentynos. Integravus šią technologiją į Thorium Reader, galite atsisiųsti el. knygą arba garsinę knygą tiesiai į Thorium Reader, kad galėtumėte greitai skaityti.\nKaip susieti savo Prancūzijos viešosios bibliotekos paskyrą su Thorium Reader? Tai paprasta. Į paieškos laukelį įveskite Prancūzijos miestą (pvz. „Paryžius“) arba bibliotekos pavadinimo dalį ir paspauskite mygtuką „Ieškoti“. Bus atvaizduotas jūsų paiešką atitinkančių viešųjų bibliotekų sąrašas. Pasirinkite biblioteką ir paspauskite mygtuką „Pridėti“. Pasirinkite šią biblioteką atnaujintame katalogų sąraše: bus atvaizduojamas tapatybės nustatymo dialogo langas. Įveskite savo naudotojo vardą / el. pašto adresą ir slaptažodį ir spustelėkite „Prisijungti“. Dabar galite matyti savo asmeninės knygų lentynos turinį, iš kurios galite atsisiųsti ir skaityti anksčiau pasiskolintas el. ir garsines knygas.",
     "noLibraryFound": "Biblioteka „{{- name}}“ nerasta"
   },
   "app": {
@@ -122,7 +122,7 @@
   "dialog": {
     "annotations": {
       "descAuthor": "'{{- author}}'",
-      "descCreator": ", kurią(-ias) sukūrė ",
+      "descCreator": ", kurią(-ias) sukūrė",
       "descList": "{{- nb}} pastaba(-os, -ų){{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
       "descNewer": "Konfliktas(-ai): {{- nb}} naujesnė(-s, -ių) pastaba(-os, -ų)",
       "descOlder": "Konfliktas(-ai): {{- nb}} senesnė(-s, -ių) pastaba(-os, -ų)",
@@ -173,7 +173,7 @@
       "open": "Atverti",
       "password": "Slaptafrazė",
       "sentence": "Šiam leidiniui atverti reikalinga LCP slaptafrazė",
-      "urlHint": "Pamiršote slaptafrazę? Pagalbos ieškokite čia",
+      "urlHint": "Pamiršote slaptafrazę? Pagalbos ieškokite čia.",
       "whatIsLcp?": "LCP - kas tai?",
       "whatIsLcpInfoDetails": "LCP yra termino „Licensed Content Protection“ (licencijuoto turinio apsauga) santrumpa.",
       "whatIsLcpInfoDetailsLink": "Jei norite sužinoti daugiau, paspauskite ant šios nuorodos į EDRLab svetainę."
@@ -192,7 +192,7 @@
       "error": "[{{- title}}] atsiuntimas nepavyko: [{{- err}}]"
     },
     "import": {
-      "alreadyImport": "[{{- title}}] jau importuotas",
+      "alreadyImport": "[{{- title}}] jau importuotas.",
       "fail": "[{{- path}}] importas nepavyko: [{{- err}}]",
       "success": "[{{- title}}] importas baigtas."
     },
@@ -216,7 +216,7 @@
     "documentation": "Oficiali OPDS svetainė",
     "empty": "Leidinių nerasta",
     "firstPage": "Pirmas",
-    "informations": "Įsivaizduokite pasaulį, kuriame vos keliais paspaudimais galite naršyti ir atsisiųsti skaitmeninius leidinius iš viešųjų bibliotekų ir skaitmeninių knygų pardavėjų. Atvirų leidinių platinimo sistemos (Open Publication Distribution System, OPDS) katalogo formatas siūlo būtent tai. Naudodami OPDS galite naršyti po įvairių el. knygų tiekėjų katalogus, užsiregistruoti, pasiskolinti, nusipirkti leidinį arba apsilankyti savo asmeninėje knygų lentynoje. Jūs netgi galite atsisiųsti el. ar garsinę knygą tiesiai į Thorium Reader, kad galėtumėte skaityti iškart. Taigi, kaip rasti OPDS katalogą? Tai paprasta. Ieškokite saito (URL), vedančio į katalogą. Nukopijuokite šį URL į aukščiau esantį „Nuorodos“ laukelį. Atminkite, kad nėra vieno bendro visų aktyvių OPDS katalogų sąrašo. Turėsite susisiekti su pageidaujama biblioteka ar knygų pardavėju ir paprašyti jų OPDS katalogo adreso. Jei nežinote, nuo ko pradėti, Vikipedijoje yra keli OPDS katalogų registrai įvairiomis kalbomis, kurie gali praversti. Laukas „Pavadinimas“ paliekamas jūsų patogumui; jis leidžia lengviau identifikuoti sklaidos kanalus Thorium Reader skaitytuvėje.",
+    "informations": "Įsivaizduokite pasaulį, kuriame vos keliais paspaudimais galite naršyti ir atsisiųsti skaitmeninius leidinius iš viešųjų bibliotekų ir skaitmeninių knygų pardavėjų. Atvirų leidinių platinimo sistemos (Open Publication Distribution System, OPDS) katalogo formatas siūlo būtent tai. Naudodami OPDS galite naršyti po įvairių el. knygų tiekėjų katalogus, užsiregistruoti, pasiskolinti, nusipirkti leidinį arba apsilankyti savo asmeninėje knygų lentynoje. Jūs netgi galite atsisiųsti el. ar garsinę knygą tiesiai į Thorium Reader, kad galėtumėte skaityti iškart.\nTaigi, kaip rasti OPDS katalogą? Tai paprasta. Ieškokite saito (URL), vedančio į katalogą. Nukopijuokite šį URL į aukščiau esantį „Nuorodos“ laukelį. Atminkite, kad nėra vieno bendro visų aktyvių OPDS katalogų sąrašo. Turėsite susisiekti su pageidaujama biblioteka ar knygų pardavėju ir paprašyti jų OPDS katalogo adreso. Jei nežinote, nuo ko pradėti, Vikipedijoje yra keli OPDS katalogų registrai įvairiomis kalbomis, kurie gali praversti.\nLaukas „Pavadinimas“ paliekamas jūsų patogumui; jis leidžia lengviau identifikuoti sklaidos kanalus Thorium Reader skaitytuvėje.",
     "lastPage": "Paskutinis",
     "menu": {
       "aboutBook": "Apie leidinį",
@@ -328,7 +328,7 @@
       "addNote": "Pridėti pastabą",
       "advancedMode": "Momentinis režimas (pažymėjus sukurti automatiškai)",
       "annotationsExport": {
-        "description": "Pavadinkite šį pastabų rinkinį",
+        "description": "Pavadinkite eksportuojamas pastabas:",
         "title": "Pavadinimas"
       },
       "annotationsOptions": "Pastabų parinktys",
@@ -406,7 +406,7 @@
       "skipDescription": "Peršokti / ignoruoti pagalbinį turinį, pvz. puslapio skirtukus, išnašas/galines išnašas ir t.t.",
       "speed": "„Readaloud“ atkūrimo sparta",
       "stop": "Sustabdyti „Readaloud“",
-      "title": "Readaloud"
+      "title": "„Readaloud“"
     },
     "navigation": {
       "ZenModeExit": "Išeiti iš Zen režimo",

@@ -34,9 +34,9 @@
             "no": "否",
             "yes": "是"
           },
-          "help": "",
-          "message": "是否保存當前連線？",
-          "title": "保存連線"
+          "help": "如果您希望在關閉應用程式時打開的閱讀器視窗在下次啟動時自動重新打開，請啟動此功能。",
+          "message": "保存和恢復閱讀紀錄",
+          "title": "保存連線？"
         }
       }
     },
@@ -50,7 +50,7 @@
   },
   "catalog": {
     "about": {
-      "title": "關於 {{appName}}"
+      "title": "關於 {{- appName}} (線上)"
     },
     "addBookToLib": "匯入",
     "addTags": "添加標籤",
@@ -66,20 +66,20 @@
     "deleteBook": "刪除書籍",
     "deleteTag": "刪除標籤",
     "description": "概要",
-    "emptyTagList": "尚無帶標籤電子書",
+    "emptyTagList": "沒有標記的出版物。",
     "entry": {
       "continueReading": "繼續閱讀",
       "lastAdditions": "最近添加"
     },
     "export": "匯出",
-    "exportAnnotation": "",
+    "exportAnnotation": "匯出註解...",
     "format": "格式",
-    "importAnnotation": "",
+    "importAnnotation": "匯入註解",
     "lang": "語言",
     "lastRead": "最後閱讀",
     "moreInfo": "更多訊息",
     "myBooks": "我的書籍",
-    "noPublicationHelpL1": "拖放 EPUB 至此處。",
+    "noPublicationHelpL1": "將文件拖放到此處",
     "noPublicationHelpL2": "或者使用上面的\"{{- importTitle }}\"按鈕。",
     "noPublicationHelpL3": "支援受 LCP 保護的書籍。",
     "noPublicationHelpL4": "支援的副檔名：",
@@ -121,20 +121,20 @@
   },
   "dialog": {
     "annotations": {
-      "descAuthor": "",
-      "descCreator": "",
-      "descList": "",
-      "descNewer": "",
-      "descOlder": "",
-      "descTitle": "",
-      "importAll": "",
-      "importWithoutConflict": "",
-      "origin": "",
-      "title": ""
+      "descAuthor": "經由 '{{- author}}'",
+      "descCreator": "創建者",
+      "descList": "{{- nb}} 註解 {{- creator}} 將會被匯入到 '{{- title}}' {{- author}}",
+      "descNewer": "衝突：{{- nb}} 個較新的註解",
+      "descOlder": "衝突：{{- nb}} 個舊註解",
+      "descTitle": "註解標題： ",
+      "importAll": "匯入所有註解",
+      "importWithoutConflict": "僅匯入無衝突的註解",
+      "origin": "原出版品：'{{- title}}' {{- author}}",
+      "title": "導入註解？"
     },
     "cancel": "取消",
-    "deleteAnnotations": "",
-    "deleteAnnotationsText": "",
+    "deleteAnnotations": "刪除註解？",
+    "deleteAnnotationsText": "您確定要刪除 {{-annotationListLength}} 條註解嗎？",
     "deleteFeed": "你真的要刪除此出版目錄嗎？",
     "deletePublication": "你真的要刪除此出版物嗎？",
     "import": "你真的要匯入這些文件嗎：",
@@ -170,10 +170,10 @@
   "library": {
     "lcp": {
       "hint": "提示：",
-      "open": "",
+      "open": "開啟",
       "password": "密碼",
-      "sentence": "打開此出版物需要 LCP 密碼：",
-      "urlHint": "忘記密碼？在此取得幫助",
+      "sentence": "此出版物需要 LCP 密碼才能打開",
+      "urlHint": "忘記密碼？按此處取得幫助",
       "whatIsLcp?": "什麼是 LCP？",
       "whatIsLcpInfoDetails": "LCP 代表「許可內容保護」。",
       "whatIsLcpInfoDetailsLink": "要了解更多訊息，請點擊連結前往 EDRLab。"
@@ -181,12 +181,12 @@
   },
   "message": {
     "annotations": {
-      "alreadyImported": "",
-      "emptyFile": "",
-      "errorParsing": "",
-      "noBelongTo": "",
-      "nothing": "",
-      "success": ""
+      "alreadyImported": "所有註解均已匯入。",
+      "emptyFile": "文件中沒有可用的註解。",
+      "errorParsing": "文件解析時發生錯誤： ",
+      "noBelongTo": "無法匯入註解，至少有一條註解不屬於該出版品。",
+      "nothing": "沒有可供匯入的註解，正在中止匯入",
+      "success": "匯入已成功完成。"
     },
     "download": {
       "error": "下載 [{{- title}}] 失敗：[{{- err}}]"
@@ -230,7 +230,7 @@
       "error": "無法訪問 OPDS 訂閱來源",
       "noInternet": "未連線至網際網路",
       "noInternetMessage": "請重新嘗試：檢查網路連線",
-      "reject": "抱歉，處理 OPDS 訂閱來源時出現意外錯誤",
+      "reject": "抱歉，意外錯誤！",
       "timeout": "網路連線超時，請稍後重試"
     },
     "next": "下一個",
@@ -269,7 +269,7 @@
         "sound": "聲音",
         "unknown": "未知"
       },
-      "certifierReport": "證明者報告",
+      "certifierReport": "認證報告：",
       "conformsTo": "符合：",
       "moreInformation": "更多資訊",
       "name": "無障礙",
@@ -291,18 +291,18 @@
     "duration": {
       "title": "播放時長"
     },
-    "encryptedNoLicense": "",
+    "encryptedNoLicense": "出版物已加密，但缺少 LCP 許可證！",
     "expired": "出借到期",
     "expiredLcp": "此書無法閱讀，因為 LCP 授權已到期。",
-    "incorrectPassphrase": "",
+    "incorrectPassphrase": "沒有已儲存的密碼適合出版物，或輸入的密碼錯誤。",
     "lcpEnd": "結束",
     "lcpRightsCopy": "複製的文字",
     "lcpRightsPrint": "列印頁數",
     "lcpStart": "開始",
     "licenceLCP": "授權（LCP）",
-    "licenseCertificateDateInvalid": "授權簽名日期無效",
-    "licenseOutOfDate": "授權過期",
-    "licenseSignatureInvalid": "授權簽名無效",
+    "licenseCertificateDateInvalid": "LCP 提供者憑證已過期。",
+    "licenseOutOfDate": "LCP 許可證已過期。",
+    "licenseSignatureInvalid": "LCP 許可證簽章無效。",
     "licensed": "已授權",
     "markAsRead": "標記為已讀",
     "notStarted": "未讀",
@@ -328,42 +328,42 @@
       "addNote": "註解",
       "advancedMode": "即時模式（選擇後自動建立）",
       "annotationsExport": {
-        "description": "",
-        "title": ""
+        "description": "命名匯出的註解：",
+        "title": "標題"
       },
       "annotationsOptions": "選項",
       "colors": {
-        "bluegreen": "",
-        "cyan": "",
-        "green": "",
-        "lightblue": "",
-        "orange": "",
-        "purple": "",
-        "red": "",
-        "yellow": ""
+        "bluegreen": "藍綠色",
+        "cyan": "青色",
+        "green": "綠色",
+        "lightblue": "淺藍色",
+        "orange": "橘色",
+        "purple": "紫色",
+        "red": "紅色",
+        "yellow": "黃色"
       },
-      "date": "",
-      "export": "",
+      "date": "修改日期",
+      "export": "將註解另存為...",
       "filter": {
-        "all": "",
-        "filterByColor": "",
-        "filterByCreator": "",
-        "filterByDrawtype": "",
-        "filterByTag": "",
-        "filterOptions": "",
-        "none": ""
+        "all": "全部",
+        "filterByColor": "按顏色過濾",
+        "filterByCreator": "按創作者過濾",
+        "filterByDrawtype": "按類型過濾",
+        "filterByTag": "按標籤過濾",
+        "filterOptions": "過濾選項",
+        "none": "無"
       },
       "hide": "不顯示",
       "highlight": "重點標示",
       "noSelectionToast": "沒有選擇",
-      "note": "",
+      "note": "{{- color}} 註解",
       "quickAnnotations": "快速建立（跳過編輯）",
       "saveNote": "保存",
       "sorting": {
-        "lastcreated": "",
-        "lastmodified": "",
-        "progression": "",
-        "sortingOptions": ""
+        "lastcreated": "最後建立",
+        "lastmodified": "上次修改時間",
+        "progression": "進展",
+        "sortingOptions": "排序選項"
       },
       "toggleMarginMarks": "在頁邊距中顯示",
       "type": {
@@ -380,7 +380,7 @@
     "fxl": {
       "fit": "Fit"
     },
-    "goToContent": "",
+    "goToContent": "轉至內容",
     "marks": {
       "annotations": "註解",
       "bookmarks": "書籤",
@@ -388,7 +388,7 @@
       "edit": "編輯",
       "goTo": "前往到頁面",
       "landmarks": "地標",
-      "progression": "",
+      "progression": "進展",
       "saveMark": "儲存書籤",
       "search": "搜尋",
       "searchResult": "搜尋 [{{- searchText}}]",
@@ -409,8 +409,8 @@
       "title": "語音朗讀"
     },
     "navigation": {
-      "ZenModeExit": "",
-      "ZenModeTitle": "",
+      "ZenModeExit": "退出 Zen 模式",
+      "ZenModeTitle": "Zen 模式",
       "annotationTitle": "註解",
       "backHomeTitle": "返回書架",
       "bookmarkTitle": "書籤",
@@ -449,7 +449,7 @@
         "title": "欄",
         "two": "2欄"
       },
-      "customFontSelected": "",
+      "customFontSelected": "您已選擇個人字體",
       "customizeReader": "自訂文字格式",
       "disabled": "停用",
       "display": "顯示",
@@ -483,14 +483,14 @@
         "title": "放大"
       },
       "preset": {
-        "apply": "",
-        "applyDetails": "",
-        "detail": "",
-        "reset": "",
-        "resetDetails": "",
-        "save": "",
-        "saveDetails": "",
-        "title": ""
+        "apply": "套用",
+        "applyDetails": "將您喜歡的設定套用到目前出版品。",
+        "detail": "儲存/套用/重設您的首選配置。",
+        "reset": "重置",
+        "resetDetails": "重設您的首選配置（預設）。",
+        "save": "保存",
+        "saveDetails": "此操作會儲存目前配置，即您首選的顯示和文字格式選項。然後可以透過點擊其他閱讀器視窗中的「應用」按鈕將這些設定應用於其他出版品。",
+        "title": "偏好設定"
       },
       "preview": "預覽",
       "reduceMotion": "減少動態效果",
@@ -510,7 +510,8 @@
         },
         "title": "主題"
       },
-      "wordSpacing": "文字間距"
+      "wordSpacing": "文字間距",
+      "noTemporaryNavTargetOutline": "禁用視覺導航指示器"
     },
     "svg": {
       "left": "左",
@@ -521,7 +522,7 @@
     },
     "tts": {
       "activate": "啟動文字語音轉換",
-      "language": "",
+      "language": "TTS 語言",
       "next": "下一段",
       "pause": "暫停",
       "play": "播放",
@@ -535,16 +536,16 @@
   },
   "settings": {
     "annotationCreator": {
-      "creator": "",
-      "help": "",
-      "name": "",
-      "organization": "",
-      "person": "",
-      "type": ""
+      "creator": "註解建立器（可選）",
+      "help": "如果指定，該名稱將包含在匯出的註解的元資料中。",
+      "name": "名字",
+      "organization": "組織",
+      "person": "個人",
+      "type": "類型："
     },
     "auth": {
-      "help": "",
-      "title": "",
+      "help": "此操作將刪除所有 OPDS 登入憑證。",
+      "title": "訪問出版物目錄",
       "wipeData": "清除登入數據"
     },
     "keyboard": {
@@ -561,8 +562,8 @@
       "languageChoice": "選擇語言"
     },
     "library": {
-      "enableAPIAPP": "",
-      "title": ""
+      "enableAPIAPP": "啟動 \"PNB\" 圖書館系統",
+      "title": "訪問法國圖書館帳號"
     },
     "session": {
       "title": "保存登入狀態"
