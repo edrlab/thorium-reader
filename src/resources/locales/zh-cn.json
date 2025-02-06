@@ -467,6 +467,7 @@
             "noFootnotes": "禁用脚注",
             "noRTLFlip": "禁用从右到左的 UI",
             "noRuby": "隐藏日文Ruby标注",
+            "noTemporaryNavTargetOutline": "",
             "paginated": "已分页",
             "paraSpacing": "段落间距",
             "pdfZoom": {

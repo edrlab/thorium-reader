@@ -467,6 +467,7 @@
             "noFootnotes": "脚注を表示しない",
             "noRTLFlip": "右から左へ進むUIを無効にする",
             "noRuby": "ルビを表示しない",
+            "noTemporaryNavTargetOutline": "",
             "paginated": "ページ型",
             "paraSpacing": "段落の間隔",
             "pdfZoom": {
