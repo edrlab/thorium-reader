@@ -432,7 +432,7 @@ export const computeProgression = (spineItemLinks: Link[], locator: Locator) => 
     return percent;
 };
 
-const getUuidFromUrn = (v: string | undefined) => `${v?.startsWith("urn:uuid:") ? v.split("urn:uuid:")[1] : v}`;
+const getUuidFromUrn = (v: string | undefined): string => v?.startsWith("urn:uuid:") ? v.split("urn:uuid:")[1] : v || "";
 
 const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
@@ -1168,7 +1168,11 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                             const annotations = annotationListFiltered.map(([, anno]) => {
                                                 const { creator } = anno;
                                                 if (getUuidFromUrn(creator?.id) === getUuidFromUrn(creatorMyself.id)) {
-                                                    return { ...anno, creator: { ...creatorMyself, id: "urn:uuid:" + creatorMyself.id } };
+                                                    if (!creatorMyself.name) {
+                                                        return { ...anno, creator: undefined };
+                                                    } else {
+                                                        return { ...anno, creator: { ...creatorMyself, id: "urn:uuid:" + creatorMyself.id } };
+                                                    }
                                                 }
                                                 return anno;
                                             });
