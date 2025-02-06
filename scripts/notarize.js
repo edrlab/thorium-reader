@@ -1,3 +1,5 @@
+// xcrun notarytool history --apple-id=$APPLEID --team-id=$APPLEIDTEAM --password=$APPLEIDPASS
+
 require('dotenv').config();
 const { notarize } = require('@electron/notarize');
 
