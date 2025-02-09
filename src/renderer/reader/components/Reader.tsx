@@ -32,7 +32,6 @@ import { ok } from "readium-desktop/common/utils/assert";
 import { formatTime } from "readium-desktop/common/utils/time";
 import {
     _APP_NAME, _APP_VERSION, _DIST_RELATIVE_URL, _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
-    IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 import * as DoubleArrowDownIcon from "readium-desktop/renderer/assets/icons/double_arrow_down_black_24dp.svg";
 import * as DoubleArrowLeftIcon from "readium-desktop/renderer/assets/icons/double_arrow_left_black_24dp.svg";
@@ -78,7 +77,6 @@ import {
     ttsStop, ttsVoice, highlightsClickListen,
     // stealFocusDisable,
     keyboardFocusRequest,
-    setImageClickHandler,
 } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
@@ -211,8 +209,6 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 }
 
 interface IState {
-    publicationImageURL: string | undefined;
-
     contentTableOpen: boolean;
     settingsOpen: boolean;
     shortcutEnable: boolean;
@@ -296,8 +292,6 @@ class Reader extends React.Component<IProps, IState> {
         this.mainElRef = React.createRef<HTMLDivElement>();
 
         this.state = {
-            publicationImageURL: undefined,
-
             // bookmarkMessage: undefined,
 
             contentTableOpen: false,
@@ -535,13 +529,6 @@ class Reader extends React.Component<IProps, IState> {
         } else {
             setKeyDownEventHandler(keyDownEventHandler);
             setKeyUpEventHandler(keyUpEventHandler);
-            if (IS_DEV && process.env.THORIUM_IMAGE_CLICK)
-            setImageClickHandler((href: string) => {
-                console.log("R2_EVENT_IMAGE_CLICK (Thorium) href: " + href);
-                this.setState({
-                    publicationImageURL: href,
-                });
-            });
             setReadingLocationSaver(this.handleReadingLocationChange);
             setEpubReadingSystemInfo({ name: _APP_NAME, version: _APP_VERSION });
             this.loadPublicationIntoViewport();
@@ -990,37 +977,10 @@ class Reader extends React.Component<IProps, IState> {
                     isRTLFlip={this.isRTLFlip}
                     publicationView={this.props.publicationView}
 
-                />
-                : <></>
-    }
-            </div>
-            {
-            this.state.publicationImageURL ?
-            <div style={{ boxSizing: "border-box", margin: 0, padding:0, top: 0, left: 0, bottom: 0, right: 0, display: "block", position: "absolute", border: "red solid 2px", backgroundColor: "silver", zIndex: 999999999}}>
-                <img style={{ cursor: "pointer", boxSizing: "border-box", margin: 0, padding: 0, width: "100%", height: "100%", display: "block", position: "relative", border: "magenta solid 2px", backgroundColor: "silver", objectFit: "contain" }}
-                    src={`${this.state.publicationImageURL}`}
-                    alt="image"
-                    tabIndex={0}
-                    ref={(el) => {
-                        if (el) setTimeout(() => { el.focus(); }, 100);
-                    }}
-                    onKeyUp={(e) => {
-                        if (e.key === "Escape") {
-                            this.setState({
-                                publicationImageURL: undefined,
-                            });
-                        }
-                    }}
-                    onClick={() => {
-                        this.setState({
-                            publicationImageURL: undefined,
-                        });
-                    }}
-                />
-            </div>
-            :
-            <></>
-            }
+                        />
+                        : <></>
+                    }
+                </div>
             </>
         );
     }
