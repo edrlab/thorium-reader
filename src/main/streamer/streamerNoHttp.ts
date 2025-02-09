@@ -1229,6 +1229,7 @@ export function initSessions() {
                 return tmpDir;
             } catch (err) {
                 console.log("R2_EVENT_IMAGE_CLICK tmpDir!!");
+                console.log(err);
                 return "";
             }
         });
