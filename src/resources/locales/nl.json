@@ -34,7 +34,7 @@
                         "no": "Nee",
                         "yes": "Ja"
                     },
-                    "help": "",
+                    "help": "Activeer dit als je wilt dat leesvensters die open zijn wanneer je de applicatie sluit, automatisch opnieuw worden geopend bij de volgende start.",
                     "message": "Wil je deze sessie bewaren?",
                     "title": "Bewaar sessie"
                 }
@@ -71,10 +71,10 @@
             "continueReading": "Ga verder met lezen",
             "lastAdditions": "Recent toegevoegd"
         },
-        "export": "Exporteer",
-        "exportAnnotation": "",
+        "export": "Bewaar als",
+        "exportAnnotation": "Exporteer aantekeningen",
         "format": "Formaat",
-        "importAnnotation": "",
+        "importAnnotation": "Importeer aantekeningen",
         "lang": "Taal",
         "lastRead": "Laatst gelezen",
         "moreInfo": "Meer Informatie",
@@ -121,20 +121,20 @@
     },
     "dialog": {
         "annotations": {
-            "descAuthor": "",
-            "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
-            "descTitle": "",
-            "importAll": "",
-            "importWithoutConflict": "",
-            "origin": "",
-            "title": ""
+            "descAuthor": "door '{{- author}}'",
+            "descCreator": "gemaakt door",
+            "descList": "{{- nb}} aantekening(en) {{- creator}} worden geïmporteerd naar '{{- title}}' {{- author}}",
+            "descNewer": "Conflict(en): {{- nb}} nieuwere aantekening(en)",
+            "descOlder": "Conflict(en): {{- nb}} oudere aantekening(en)",
+            "descTitle": "Aantekeningen titel: ",
+            "importAll": "Importeer alle aantekeningen",
+            "importWithoutConflict": "Importeer alleen aantekeningen zonder conflicten",
+            "origin": "Oorsprong publicatie: '{{- title}}' {{- author}}",
+            "title": "Importeer aantekeningen?"
         },
         "cancel": "Annuleer",
-        "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
+        "deleteAnnotations": "Verwijder aantekeningen?",
+        "deleteAnnotationsText": "Weet je zeker dat je {{- annotationListLength}} aantekening(en) wil verwijderen?",
         "deleteFeed": "Wil je deze catalogus echt verwijderen ?",
         "deletePublication": "Wil je deze publicatie echt verwijderen ?",
         "import": "Wil je deze bestanden echt importeren :",
@@ -170,7 +170,7 @@
     "library": {
         "lcp": {
             "hint": "Hint : ",
-            "open": "",
+            "open": "Open",
             "password": "Wachtwoordzin",
             "sentence": "Deze publicatie vereist een LCP wachtwoordzin om te openen: ",
             "urlHint": "Wachtwoordzin vergeten? Vind hulp hier",
@@ -181,12 +181,12 @@
     },
     "message": {
         "annotations": {
-            "alreadyImported": "",
-            "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
-            "nothing": "",
-            "success": ""
+            "alreadyImported": "Alle aantekeningen zijn reeds geïmporteerd.",
+            "emptyFile": "Geen aantekeningen beschikbaar in het bestand.",
+            "errorParsing": "Fout tijdens het parsen van het bestand: ",
+            "noBelongTo": "Kan aantekeningen niet importeren, ten minste één aantekening behoort niet bij de publicatie.",
+            "nothing": "Er is geen aantekening om geïmporteerd te worden, de import wordt afgebroken",
+            "success": "Import succesvol voltooid."
         },
         "download": {
             "error": "Het downloaden van{{- title}} is mislukt: [{{- err}}]"
@@ -291,10 +291,10 @@
         "duration": {
             "title": "Duur"
         },
-        "encryptedNoLicense": "",
+        "encryptedNoLicense": "Publicatie is versleuteld maar heeft geen LCP-licentie!",
         "expired": "Lening verlopen",
         "expiredLcp": "Dit boek kan niet gelezen worden omdat de LCP licentie verlopen is.",
-        "incorrectPassphrase": "",
+        "incorrectPassphrase": "Geen opgeslagen wachtwoordzin past bij de publicatie of de ingevoerde wachtwoordzin is verkeerd.",
         "lcpEnd": "Einde",
         "lcpRightsCopy": "Toegestaan aantal te kopiëren karakters",
         "lcpRightsPrint": "Toegestaan aantal af te drukken pagina's",
@@ -328,42 +328,42 @@
             "addNote": "Annoteren",
             "advancedMode": "Instantmodus (automatisch maken na selectie)",
             "annotationsExport": {
-                "description": "",
-                "title": ""
+                "description": "Geef de geëxporteerde aantekeningen een naam:",
+                "title": "Titel"
             },
             "annotationsOptions": "Opties",
             "colors": {
-                "bluegreen": "",
-                "cyan": "",
-                "green": "",
-                "lightblue": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
+                "bluegreen": "Blauw-groen",
+                "cyan": "Cyaan",
+                "green": "Groen",
+                "lightblue": "Licht Blauw",
+                "orange": "Oranje",
+                "purple": "Paars",
+                "red": "Rood",
+                "yellow": "Geel"
             },
-            "date": "",
-            "export": "",
+            "date": "Wijzigingsdatum",
+            "export": "Bewaar aantekeningen als...",
             "filter": {
-                "all": "",
-                "filterByColor": "",
-                "filterByCreator": "",
-                "filterByDrawtype": "",
-                "filterByTag": "",
-                "filterOptions": "",
-                "none": ""
+                "all": "Alle",
+                "filterByColor": "Filter op Kleur",
+                "filterByCreator": "Filter op Maker",
+                "filterByDrawtype": "Filter op Type",
+                "filterByTag": "Filter op Label",
+                "filterOptions": "Filter Opties",
+                "none": "Geen"
             },
             "hide": "Geef niet weer",
             "highlight": "Markeer",
             "noSelectionToast": "Geen selectie",
-            "note": "",
+            "note": "{{- color}} Aantekening",
             "quickAnnotations": "Maak snel (editor overslaan)",
             "saveNote": "Bewaar",
             "sorting": {
-                "lastcreated": "",
-                "lastmodified": "",
-                "progression": "",
-                "sortingOptions": ""
+                "lastcreated": "Laatst aangemaakt",
+                "lastmodified": "Laatst aangepast",
+                "progression": "Oplopend",
+                "sortingOptions": "Sorteer Opties"
             },
             "toggleMarginMarks": "Weergave in marges",
             "type": {
@@ -380,7 +380,7 @@
         "fxl": {
             "fit": "Pas"
         },
-        "goToContent": "",
+        "goToContent": "Ga naar de Inhoud",
         "marks": {
             "annotations": "Annotaties",
             "bookmarks": "Bladwijzers",
@@ -388,7 +388,7 @@
             "edit": "Wijzig",
             "goTo": "Ga naar pagina",
             "landmarks": "structuur elementen",
-            "progression": "",
+            "progression": "Oplopend",
             "saveMark": "Bladwijzer opslaan",
             "search": "Zoek",
             "searchResult": "Zoek [{{- searchText}}]",
@@ -409,8 +409,8 @@
             "title": "Voorlezen"
         },
         "navigation": {
-            "ZenModeExit": "",
-            "ZenModeTitle": "",
+            "ZenModeExit": "Verlaat Zen modus",
+            "ZenModeTitle": "Zen modus",
             "annotationTitle": "annotatie",
             "backHomeTitle": "terug naar de boekenplank",
             "bookmarkTitle": "bladwijzer",
@@ -449,7 +449,7 @@
                 "title": "Kolommen",
                 "two": "2 kol"
             },
-            "customFontSelected": "",
+            "customFontSelected": "Je hebt een eigen lettertype gekozen",
             "customizeReader": "Pas de tekstopmaak aan",
             "disabled": "uitgeschakeld",
             "display": "Weergave",
@@ -467,7 +467,7 @@
             "noFootnotes": "Verberg voetnoten",
             "noRTLFlip": "Schakel de rechts-naar-links-UI uit",
             "noRuby": "Verberg Japanse Ruby",
-            "noTemporaryNavTargetOutline": "",
+            "noTemporaryNavTargetOutline": "Schakel visuele navigatie-indicatoren uit",
             "paginated": "Als pagina's",
             "paraSpacing": "Paragraaf afstand",
             "pdfZoom": {
@@ -484,14 +484,14 @@
                 "title": "Uitvergroting"
             },
             "preset": {
-                "apply": "",
-                "applyDetails": "",
-                "detail": "",
-                "reset": "",
-                "resetDetails": "",
-                "save": "",
-                "saveDetails": "",
-                "title": ""
+                "apply": "Pas toe",
+                "applyDetails": "Pas uw voorkeursconfiguratie toe op de huidige publicatie.",
+                "detail": "Bewaar / Pas toe / Reset uw voorkeursconfiguratie.",
+                "reset": "Stel opnieuw in",
+                "resetDetails": "Reset uw voorkeursconfiguratie (standaardinstellingen).",
+                "save": "Bewaar",
+                "saveDetails": "Deze actie slaat de huidige configuratie op, d.w.z. je voorkeursopties voor weergave en tekst-opmaak. De instellingen kunnen vervolgens op andere publicaties worden toegepast door in andere leesvensters op de knop 'Toepassen' te klikken.",
+                "title": "Voorkeuren"
             },
             "preview": "Voorbeeld",
             "reduceMotion": "Beperk beweging",
@@ -522,7 +522,7 @@
         },
         "tts": {
             "activate": "Activeer Tekst Naar Spraak",
-            "language": "",
+            "language": "Tekst Naar Spraak taal",
             "next": "Volgende Tekst Naar Spraak",
             "pause": "Pauzeer Tekst Naar Spraak",
             "play": "Speel Tekst Naar Spraak",
@@ -536,16 +536,16 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "",
-            "help": "",
-            "name": "",
-            "organization": "",
-            "person": "",
-            "type": ""
+            "creator": "Maker aantekeningen (optioneel)",
+            "help": "Indien gespecificeerd, wordt deze naam opgenomen in de metadata van geëxporteerde notities.",
+            "name": "Naam",
+            "organization": "Organisatie",
+            "person": "Persoon",
+            "type": "Type:"
         },
         "auth": {
-            "help": "",
-            "title": "",
+            "help": "Deze actie verwijdert alle OPDS aanmeldingsgegevens.",
+            "title": "Toegang tot publicatiecatalogi",
             "wipeData": "Wis authenticatie gegevens"
         },
         "keyboard": {
@@ -562,8 +562,8 @@
             "languageChoice": "Taal keuze"
         },
         "library": {
-            "enableAPIAPP": "",
-            "title": ""
+            "enableAPIAPP": "Het 'PNB'-bibliotheeksysteem activeren",
+            "title": "Toegang tot Franse bibliotheek accounts"
         },
         "session": {
             "title": "Bewaar sessie"
