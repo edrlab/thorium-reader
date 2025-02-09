@@ -8,6 +8,7 @@
   ],
   "main": "./main.js",
   "scripts": {
+    "postinstall": "node -e 'const path = require(\"path\"); const fs = require(\"fs\"); const filePath = path.join(process.cwd(), \"node_modules/@huggingface/transformers/dist/transformers.cjs\"); let fileStr = fs.readFileSync(filePath, { encoding: \"utf8\" }); fileStr = fileStr.replace(/const IS_NODE_ENV = /g, \"const IS_NODE_ENV = false && \"); fs.writeFileSync(filePath, fileStr, { encoding: \"utf8\" });'",
     "_NOT_NEEDED_postinstall": "npm run pinCompromisedColorPackage",
     "_NOT_NEEDED_pinCompromisedColorPackage": "(npm ls colors || echo \"NPM LS?\") && rimraf node_modules/electron-rebuild/node_modules/colors && rimraf node_modules/dir-compare/node_modules/colors",
     "_NOT_NEEDED_pinCompromisedColorPackage_": "find node_modules -maxdepth 100 -type d -name \"colors\" && npm ls colors",

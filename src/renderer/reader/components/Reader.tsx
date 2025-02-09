@@ -8,6 +8,7 @@
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
 
+// import { contextBridge } from "electron";
 import { ipcRenderer } from "electron";
 import classNames from "classnames";
 import divinaPlayer from "divina-player-js";
@@ -107,6 +108,46 @@ import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/co
 import { translateContentFieldHelper } from "readium-desktop/common/services/translator";
 import { getStore } from "../createStore";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
+
+// process.release.name = null;
+// const {
+//   AutoProcessor,
+//   AutoModelForVision2Seq,
+// } = require("@huggingface/transformers");
+// let aiProcessor: any | undefined;
+// let aiModel: any | undefined;
+
+// node_modules/@huggingface/transformers/dist/transformers.cjs
+// const IS_NODE_ENV = IS_PROCESS_AVAILABLE && process?.release?.name === 'node';
+import {
+  AutoProcessor,
+  AutoModelForVision2Seq,
+  // TextStreamer,
+  // InterruptableStoppingCriteria,
+  // load_image,
+  Processor,
+  PreTrainedModel,
+} from "@huggingface/transformers";
+let aiProcessor: Processor | undefined;
+let aiModel: PreTrainedModel | undefined;
+
+function throttle(callback: (...args: any) => void, limit: number) {
+    let waiting = false;
+    return function(this: any) {
+        if (!waiting) {
+            // eslint-disable-next-line prefer-rest-params
+            callback.apply(this, arguments);
+            waiting = true;
+            setTimeout(() => {
+                waiting = false;
+            }, limit);
+        }
+    };
+}
+
+// contextBridge.exposeInMainWorld("electronContextBridgeAPI", {
+//     demoAI: (href: string) => ipcRenderer.invoke("R2_EVENT_IMAGE_CLICK", href),
+// });
 
 // TODO: key not used but translation kept for potential future use
 // discard some not used key from i18n-scan cmd
@@ -212,6 +253,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 
 interface IState {
     publicationImageURL: string | undefined;
+    publicationImageDESCRIPTION: string | undefined;
 
     contentTableOpen: boolean;
     settingsOpen: boolean;
@@ -261,8 +303,14 @@ class Reader extends React.Component<IProps, IState> {
 
     private ttsOverlayEnableNeedsSync: boolean;
 
+    private setStateThrottled(state: Pick<IState, "publicationImageDESCRIPTION">) {
+        this.setState(state);
+    }
+
     constructor(props: IProps) {
         super(props);
+
+        this.setStateThrottled = throttle(this.setStateThrottled, 1000).bind(this);
 
         this.ttsOverlayEnableNeedsSync = true;
 
@@ -297,6 +345,7 @@ class Reader extends React.Component<IProps, IState> {
 
         this.state = {
             publicationImageURL: undefined,
+            publicationImageDESCRIPTION: undefined,
 
             // bookmarkMessage: undefined,
 
@@ -540,7 +589,128 @@ class Reader extends React.Component<IProps, IState> {
                 console.log("R2_EVENT_IMAGE_CLICK (Thorium) href: " + href);
                 this.setState({
                     publicationImageURL: href,
+                    publicationImageDESCRIPTION: undefined,
                 });
+                setTimeout(async () => {
+                    try {
+                        const IS_WEBGPU_AVAILABLE = typeof navigator !== 'undefined' && 'gpu' in navigator;
+                        console.log("IS_WEBGPU_AVAILABLE: " + IS_WEBGPU_AVAILABLE);
+
+                        // @ts-expect-error navigator WebGPU
+                        const adapter = await navigator.gpu?.requestAdapter();
+                        if (adapter) {
+                            const fp16 = adapter.features.has("shader-f16");
+
+                            console.log("R2_EVENT_IMAGE_CLICK WebGPU ADAPTER FP16: " + fp16);
+
+                            // await window.electronContextBridgeAPI.demoAI(href);
+                            const tmpDir = await ipcRenderer.invoke("R2_EVENT_IMAGE_CLICK", href, fp16);
+                            console.log("R2_EVENT_IMAGE_CLICK tmpDir: " + tmpDir);
+
+                            // const MAX_NEW_TOKENS = 1024;
+
+                            const MODEL_ID = "HuggingFaceTB/SmolVLM-256M-Instruct";
+
+                            aiProcessor = aiProcessor || await AutoProcessor.from_pretrained(MODEL_ID, {
+                                cache_dir: tmpDir,
+                                progress_callback: (payload: any) => {
+                                    console.log("R2_EVENT_IMAGE_CLICK WebGPU AutoProcessor.from_pretrained", JSON.stringify(payload, null, 4));
+                                    // [2] AutoProcessor.from_pretrained {
+                                    // [2]     "status": "initiate",
+                                    // [2]     "name": "HuggingFaceTB/SmolVLM-256M-Instruct",
+                                    // [2]     "file": "preprocessor_config.json"
+                                    // [2] }
+                                    // [2] AutoProcessor.from_pretrained {
+                                    // [2]     "status": "download",
+                                    // [2]     "name": "HuggingFaceTB/SmolVLM-256M-Instruct",
+                                    // [2]     "file": "preprocessor_config.json"
+                                    // [2] }
+                                    // [2] AutoProcessor.from_pretrained {
+                                    // [2]     "status": "progress",
+                                    // [2]     "name": "HuggingFaceTB/SmolVLM-256M-Instruct",
+                                    // [2]     "file": "preprocessor_config.json",
+                                    // [2]     "progress": 100,
+                                    // [2]     "loaded": 486,
+                                    // [2]     "total": 486
+                                    // [2] }
+                                    // [2] AutoProcessor.from_pretrained {
+                                    // [2]     "status": "done",
+                                    // [2]     "name": "HuggingFaceTB/SmolVLM-256M-Instruct",
+                                    // [2]     "file": "preprocessor_config.json"
+                                    // [2] }
+
+                                    if (payload.status === "initiate" || payload.status === "download" || payload.status === "progress" || payload.status === "done") {
+                                        this.setState({
+                                            publicationImageDESCRIPTION: `${payload.name} [${payload.file}] (${payload.status}) ${payload.progress ? ` ... ${payload.progress}%` : ""}`,
+                                        });
+                                    }
+                                },
+                            });
+                            console.log("R2_EVENT_IMAGE_CLICK WebGPU AutoProcessor.from_pretrained DONE");
+                            this.setState({
+                                publicationImageDESCRIPTION: "AutoProcessor.from_pretrained DONE",
+                            });
+
+                            aiModel = aiModel || await AutoModelForVision2Seq.from_pretrained(MODEL_ID, {
+                                cache_dir: tmpDir,
+                                dtype: "fp32",
+                                device: "webgpu", // Error: Unsupported device: "webgpu". Should be one of: "cpu".
+                                progress_callback: (payload: any) => {
+                                    console.log("R2_EVENT_IMAGE_CLICK WebGPU AutoModelForVision2Seq.from_pretrained", JSON.stringify(payload, null, 4));
+                                    // [2] AutoModelForVision2Seq.from_pretrained {
+                                    // [2]     "status": "initiate",
+                                    // [2]     "name": "HuggingFaceTB/SmolVLM-256M-Instruct",
+                                    // [2]     "file": "generation_config.json"
+                                    // [2] }
+                                    // [2] AutoModelForVision2Seq.from_pretrained {
+                                    // [2]     "status": "download",
+                                    // [2]     "name": "HuggingFaceTB/SmolVLM-256M-Instruct",
+                                    // [2]     "file": "generation_config.json"
+                                    // [2] }
+                                    // [2] AutoModelForVision2Seq.from_pretrained {
+                                    // [2]     "status": "progress",
+                                    // [2]     "name": "HuggingFaceTB/SmolVLM-256M-Instruct",
+                                    // [2]     "file": "generation_config.json",
+                                    // [2]     "progress": 100,
+                                    // [2]     "loaded": 136,
+                                    // [2]     "total": 136
+                                    // [2] }
+                                    // [2] AutoModelForVision2Seq.from_pretrained {
+                                    // [2]     "status": "done",
+                                    // [2]     "name": "HuggingFaceTB/SmolVLM-256M-Instruct",
+                                    // [2]     "file": "generation_config.json"
+                                    // [2] }
+
+                                    if (payload.status === "initiate" || payload.status === "download" || payload.status === "progress" || payload.status === "done") {
+                                        this.setState({
+                                            publicationImageDESCRIPTION: `${payload.name} [${payload.file}] (${payload.status}) ${payload.progress ? ` ... ${Math.round(payload.progress*100)/100}%` : ""}`,
+                                        });
+                                    }
+                                },
+                            });
+                            console.log("R2_EVENT_IMAGE_CLICK WebGPU AutoModelForVision2Seq.from_pretrained DONE");
+                            this.setState({
+                                publicationImageDESCRIPTION: "AutoModelForVision2Seq.from_pretrained DONE",
+                            });
+
+                            const imageDescription = this.state.publicationImageDESCRIPTION;
+                            if (imageDescription) {
+                                this.setState({
+                                    publicationImageDESCRIPTION: imageDescription,
+                                });
+                            } else {
+                                this.setState({
+                                    publicationImageDESCRIPTION: undefined,
+                                });
+                            }
+                        } else {
+                            console.log("R2_EVENT_IMAGE_CLICK no WebGPU ADAPTER?!");
+                        }
+                      } catch (e) {
+                          console.log("########################## R2_EVENT_IMAGE_CLICK WebGPU?!");
+                          console.log(e);
+                      }
+                }, 500);
             });
             setReadingLocationSaver(this.handleReadingLocationChange);
             setEpubReadingSystemInfo({ name: _APP_NAME, version: _APP_VERSION });
@@ -996,28 +1166,59 @@ class Reader extends React.Component<IProps, IState> {
             </div>
             {
             this.state.publicationImageURL ?
-            <div style={{ boxSizing: "border-box", margin: 0, padding:0, top: 0, left: 0, bottom: 0, right: 0, display: "block", position: "absolute", border: "red solid 2px", backgroundColor: "silver", zIndex: 999999999}}>
-                <img style={{ cursor: "pointer", boxSizing: "border-box", margin: 0, padding: 0, width: "100%", height: "100%", display: "block", position: "relative", border: "magenta solid 2px", backgroundColor: "silver", objectFit: "contain" }}
-                    src={`${this.state.publicationImageURL}`}
-                    alt="image"
-                    tabIndex={0}
-                    ref={(el) => {
-                        if (el) setTimeout(() => { el.focus(); }, 100);
-                    }}
-                    onKeyUp={(e) => {
-                        if (e.key === "Escape") {
-                            this.setState({
-                                publicationImageURL: undefined,
-                            });
-                        }
-                    }}
-                    onClick={() => {
+            <>
+            <div
+                style={{ border: "red solid 2px", backgroundColor: "silver", zIndex: 999999991, boxSizing: "border-box", margin: 0, padding:0, top: 0, left: 0, bottom: 0, right: 0, display: "block", position: "absolute"}}>
+            <img
+                style={{ border: "magenta solid 2px", backgroundColor: "white", cursor: "pointer", objectFit: "contain", boxSizing: "border-box", margin: 0, padding:0, width: "100%", height: "100%", display: "block", position: "relative"}}
+                src={`${this.state.publicationImageURL}`}
+                alt="image"
+                tabIndex={0}
+                ref={(el) => {
+                    if (el) setTimeout(() => { el.focus(); }, 100);
+                }}
+                onKeyUp={(e) => {
+                    if (e.key === "Escape") {
                         this.setState({
                             publicationImageURL: undefined,
+                            publicationImageDESCRIPTION: undefined,
                         });
-                    }}
-                />
+                    }
+                }}
+                onClick={() => {
+                    this.setState({
+                        publicationImageURL: undefined,
+                        publicationImageDESCRIPTION: undefined,
+                    });
+                }}
+            />
             </div>
+            {
+            this.state.publicationImageDESCRIPTION ?
+            <div
+                style={{ fontSize: "1.5em", fontWeight: "bold", overflowY: "auto", border: "green solid 2px", backgroundColor: "rgba(0, 0, 0, 0.8)", color: "white", zIndex: 999999993, boxSizing: "border-box", margin: 0, padding: "1em", top: 0, left: 0, bottom: 0, right: 0, display: "block", position: "absolute"}}
+                tabIndex={0}
+                ref={(el) => {
+                    if (el) setTimeout(() => { el.focus(); }, 200);
+                }}
+                onKeyUp={(e) => {
+                    if (e.key === "Escape") {
+                        this.setState({
+                            publicationImageURL: undefined,
+                            publicationImageDESCRIPTION: undefined,
+                        });
+                    }
+                }}
+                onClick={() => {
+                    this.setState({
+                        publicationImageURL: undefined,
+                        publicationImageDESCRIPTION: undefined,
+                    });
+                }}
+            >{this.state.publicationImageDESCRIPTION}</div> :
+            undefined
+            }
+            </>
             :
             <></>
             }

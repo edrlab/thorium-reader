@@ -7,7 +7,7 @@
 
 import * as crypto from "crypto";
 import * as debug_ from "debug";
-import { app, protocol, ProtocolRequest, ProtocolResponse, session } from "electron";
+import { ipcMain, app, protocol, ProtocolRequest, ProtocolResponse, session } from "electron";
 import * as fs from "fs";
 import * as mime from "mime-types";
 import * as path from "path";
@@ -47,6 +47,7 @@ import {
 // import { OPDS_MEDIA_SCHEME } from "readium-desktop/main/redux/sagas/getEventChannel";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
+import { createTempDir } from "../fs/path";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
@@ -1219,6 +1220,18 @@ export function initSessions() {
 
     app.on("ready", async () => {
         debug("app ready");
+
+        ipcMain.handle("R2_EVENT_IMAGE_CLICK", async (_event, publicationImageURL: string, fp16: boolean) => {
+            console.log("R2_EVENT_IMAGE_CLICK ... " + publicationImageURL + " ___ " + fp16);
+            try {
+                const tmpDir = await createTempDir("ai", "R2_EVENT_IMAGE_CLICK");
+                console.log("R2_EVENT_IMAGE_CLICK tmpDir: " + tmpDir);
+                return tmpDir;
+            } catch (err) {
+                console.log("R2_EVENT_IMAGE_CLICK tmpDir!!");
+                return "";
+            }
+        });
 
         try {
             await clearSessions();
