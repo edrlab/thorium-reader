@@ -524,6 +524,7 @@
             "activate": "音声読み上げ機能（TTS）を起動",
             "language": "TTS言語",
             "next": "次に進む（TTS）",
+            "options": "",
             "pause": "一時停止（TTS）",
             "play": "再生（TTS）",
             "previous": "前にもどる（TTS）",

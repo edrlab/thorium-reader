@@ -524,6 +524,7 @@
             "activate": "Attiva Testo a Voce",
             "language": "Lingua sintesi vocale",
             "next": "Prossimo Testo a Voce",
+            "options": "",
             "pause": "Metti in pausa Testo a Voce",
             "play": "Riproduci Testo a Voce",
             "previous": "Precedente Testo a Voce",

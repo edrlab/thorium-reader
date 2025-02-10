@@ -524,6 +524,7 @@
             "activate": "Ativar Texto para voz (TPV)",
             "language": "Idioma TPV",
             "next": "Seguinte (TPV)",
+            "options": "",
             "pause": "Pausar (TPV)",
             "play": "Tocar (TPV)",
             "previous": "Anterior (TPV)",

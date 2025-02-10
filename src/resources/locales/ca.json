@@ -524,6 +524,7 @@
             "activate": "Activar text a veu",
             "language": "",
             "next": "Següent (Text a veu)",
+            "options": "",
             "pause": "Pausar text a veu",
             "play": "Reproduir (Text a veu)",
             "previous": "Anterior (Text a veu)",
