@@ -524,6 +524,7 @@
             "activate": "Aktibatu testua ahotsarekin",
             "language": "",
             "next": "Hurrengoa (testua ahotsez)",
+            "options": "",
             "pause": "Ahotsezko testua eten",
             "play": "Erreproduzitu (testua ahotsez)",
             "previous": "Aurrekoa (testua ahotsez)",
