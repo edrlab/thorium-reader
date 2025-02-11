@@ -7,7 +7,7 @@
 
 import * as crypto from "crypto";
 import * as debug_ from "debug";
-import { ipcMain, app, protocol, ProtocolRequest, ProtocolResponse, session } from "electron";
+import { net, ipcMain, app, protocol, ProtocolRequest, ProtocolResponse, session } from "electron";
 import * as fs from "fs";
 import * as mime from "mime-types";
 import * as path from "path";
@@ -47,9 +47,23 @@ import {
 // import { OPDS_MEDIA_SCHEME } from "readium-desktop/main/redux/sagas/getEventChannel";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
-import { createTempDir } from "../fs/path";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
+
+// import { createTempDir } from "../fs/path";
+// import nodeFetch from "node-fetch";
+import {
+  AutoProcessor,
+  AutoModelForVision2Seq,
+  TextStreamer,
+  InterruptableStoppingCriteria,
+  // load_image,
+  RawImage,
+  Processor,
+  PreTrainedModel,
+} from "@huggingface/transformers";
+let aiProcessor: Processor | undefined;
+let aiModel: PreTrainedModel | undefined;
 
 const debug = debug_("readium-desktop:main#streamerNoHttp");
 debug("_");
@@ -1221,17 +1235,220 @@ export function initSessions() {
     app.on("ready", async () => {
         debug("app ready");
 
-        ipcMain.handle("R2_EVENT_IMAGE_CLICK", async (_event, publicationImageURL: string, fp16: boolean) => {
-            console.log("R2_EVENT_IMAGE_CLICK ... " + publicationImageURL + " ___ " + fp16);
+        ipcMain.handle("R2_EVENT_IMAGE_CLICK", async (event, imageURL:string) => { // , width: number, height: number, imageDataURL: string
+            console.log("R2_EVENT_IMAGE_CLICK ... " + imageURL);
+
+            const tmpDir = path.join(app.getPath("userData"), "ai_llm_models");
+            // let tmpDir = "";
+            // try {
+            //     tmpDir = await createTempDir("ai", "R2_EVENT_IMAGE_CLICK");
+            //     console.log("R2_EVENT_IMAGE_CLICK tmpDir: " + tmpDir);
+            // } catch (err) {
+            //     console.log("R2_EVENT_IMAGE_CLICK tmpDir!!");
+            //     console.log(err);
+            // }
+
+            const MAX_NEW_TOKENS = 1024;
+            const MODEL_ID = "HuggingFaceTB/SmolVLM-256M-Instruct";
+
             try {
-                const tmpDir = await createTempDir("ai", "R2_EVENT_IMAGE_CLICK");
-                console.log("R2_EVENT_IMAGE_CLICK tmpDir: " + tmpDir);
-                return tmpDir;
-            } catch (err) {
-                console.log("R2_EVENT_IMAGE_CLICK tmpDir!!");
-                console.log(err);
-                return "";
+                aiProcessor = aiProcessor || await AutoProcessor.from_pretrained(MODEL_ID, {
+                    cache_dir: tmpDir || undefined,
+                    progress_callback: (payload: any) => {
+                        // console.log("R2_EVENT_IMAGE_CLICK WebGPU AutoProcessor.from_pretrained", JSON.stringify(payload, null, 4));
+                        // [2] AutoProcessor.from_pretrained {
+                        // [2]     "status": "initiate",
+                        // [2]     "name": "HuggingFaceTB/SmolVLM-256M-Instruct",
+                        // [2]     "file": "preprocessor_config.json"
+                        // [2] }
+                        // [2] AutoProcessor.from_pretrained {
+                        // [2]     "status": "download",
+                        // [2]     "name": "HuggingFaceTB/SmolVLM-256M-Instruct",
+                        // [2]     "file": "preprocessor_config.json"
+                        // [2] }
+                        // [2] AutoProcessor.from_pretrained {
+                        // [2]     "status": "progress",
+                        // [2]     "name": "HuggingFaceTB/SmolVLM-256M-Instruct",
+                        // [2]     "file": "preprocessor_config.json",
+                        // [2]     "progress": 100,
+                        // [2]     "loaded": 486,
+                        // [2]     "total": 486
+                        // [2] }
+                        // [2] AutoProcessor.from_pretrained {
+                        // [2]     "status": "done",
+                        // [2]     "name": "HuggingFaceTB/SmolVLM-256M-Instruct",
+                        // [2]     "file": "preprocessor_config.json"
+                        // [2] }
+
+                        if (payload.status === "initiate" || payload.status === "download" || payload.status === "done") { // || payload.status === "progress"
+                            console.log(`${payload.name} [${payload.file}] (${payload.status}) ${payload.progress ? ` ... ${payload.progress}%` : ""}`);
+                        }
+                    },
+                });
+            } catch (e) {
+                console.log("########################## AutoProcessor.from_pretrained WebGPU?!");
+                console.log(e);
             }
+            console.log("R2_EVENT_IMAGE_CLICK WebGPU AutoProcessor.from_pretrained DONE");
+
+            try {
+                aiModel = aiModel || await AutoModelForVision2Seq.from_pretrained(MODEL_ID, {
+                    cache_dir: tmpDir || undefined,
+
+                    dtype: "fp32",
+                    // dtype: "fp16",
+                    // dtype: {
+                    //     embed_tokens: "fp16", // "fp32", "fp16", "q8"
+                    //     vision_encoder: "q4", // "fp32", "fp16", "q8", "q4", "q4f16"
+                    //     decoder_model_merged: "q4", // "q8", "q4", "q4f16"
+                    //   },
+
+                    // auto: 'auto', // Auto-detect based on environment
+                    // fp32: 'fp32',
+                    // fp16: 'fp16',
+                    // q8: 'q8',
+                    // int8: 'int8',
+                    // uint8: 'uint8',
+                    // q4: 'q4',
+                    // bnb4: 'bnb4',
+                    // q4f16: 'q4f16', // fp16 model with int4 block weight quantization
+
+                    // device: "webgpu", // Error: Unsupported device: "webgpu". Should be one of: "cpu" ===> need to force NodeJS non-detection and load to Worker Thread...
+                    device: "cpu",
+                    progress_callback: (payload: any) => {
+                        // console.log("R2_EVENT_IMAGE_CLICK WebGPU AutoModelForVision2Seq.from_pretrained", JSON.stringify(payload, null, 4));
+                        // [2] AutoModelForVision2Seq.from_pretrained {
+                        // [2]     "status": "initiate",
+                        // [2]     "name": "HuggingFaceTB/SmolVLM-256M-Instruct",
+                        // [2]     "file": "generation_config.json"
+                        // [2] }
+                        // [2] AutoModelForVision2Seq.from_pretrained {
+                        // [2]     "status": "download",
+                        // [2]     "name": "HuggingFaceTB/SmolVLM-256M-Instruct",
+                        // [2]     "file": "generation_config.json"
+                        // [2] }
+                        // [2] AutoModelForVision2Seq.from_pretrained {
+                        // [2]     "status": "progress",
+                        // [2]     "name": "HuggingFaceTB/SmolVLM-256M-Instruct",
+                        // [2]     "file": "generation_config.json",
+                        // [2]     "progress": 100,
+                        // [2]     "loaded": 136,
+                        // [2]     "total": 136
+                        // [2] }
+                        // [2] AutoModelForVision2Seq.from_pretrained {
+                        // [2]     "status": "done",
+                        // [2]     "name": "HuggingFaceTB/SmolVLM-256M-Instruct",
+                        // [2]     "file": "generation_config.json"
+                        // [2] }
+
+                        if (payload.status === "initiate" || payload.status === "download" || payload.status === "done") { // || payload.status === "progress"
+                            console.log(`${payload.name} [${payload.file}] (${payload.status}) ${payload.progress ? ` ... ${Math.round(payload.progress*100)/100}%` : ""}`);
+                        }
+                    },
+                });
+            } catch (e) {
+                console.log("########################## AutoModelForVision2Seq.from_pretrained WebGPU?!");
+                console.log(e);
+            }
+            console.log("R2_EVENT_IMAGE_CLICK WebGPU AutoModelForVision2Seq.from_pretrained DONE");
+
+            const text = aiProcessor.apply_chat_template([{
+                role: "user", // "user" | "assistant" | "system"
+                // @ts-expect-error types
+                content: [
+                    { type: "image" }, // , image: imageURL
+                    { type: "text", text: "Can you describe this image?" },
+                ],
+            }], {
+                add_generation_prompt: true,
+                tokenize: false, // default
+            });
+
+            console.log("R2_EVENT_IMAGE_CLICK  apply_chat_template() OK: " + `${imageURL}`);
+
+            // const imageURL_ = convertCustomSchemeToHttpUrl(imageURL);
+            // const rawImage = await load_image(imageURL_);
+            // const response = await nodeFetch(imageURL);
+            const response = await net.fetch(imageURL);
+            // const response = await fetch(imageURL);
+            console.log("R2_EVENT_IMAGE_CLICK  nodeFetch() OK: " + `${response.status} ${response.statusText}`);
+
+            const rawImage = await RawImage. fromBlob(await response.blob());
+            // console.log("R2_EVENT_IMAGE_CLICK  RawImage() OK: " + `${imageURL} ... ${width}/${rawImage.width} + ${height}/${rawImage.height}`);
+            console.log("R2_EVENT_IMAGE_CLICK  RawImage() OK: " + `${imageURL} ... ${rawImage.width} + ${rawImage.height}`);
+            // ACCESSIBLE EPUB3 ------- EPUB/images/spi_global_ad.png ... 792/645 + 564/818
+
+            // const buffer = Buffer.from(imageDataURL.split(",")[1], 'base64');
+            // const rawImage2 = await RawImage. fromBlob(new Blob([buffer]));
+            // console.log("R2_EVENT_IMAGE_CLICK  RawImage2() OK: " + `${imageURL} ... ${width}/${rawImage2.width} + ${height}/${rawImage2.height}`);
+
+            const images = [rawImage];
+            // const images: RawImage[] = [];
+
+            const inputs = await aiProcessor(text, images, {do_image_splitting: false}); // true CRASH
+
+            console.log("R2_EVENT_IMAGE_CLICK  aiProcessor() OK: " + `${imageURL}`);
+            // console.log(JSON.stringify(inputs, null, 4));
+
+            const streamer = new TextStreamer(aiProcessor.tokenizer, {
+                skip_prompt: true,
+                skip_special_tokens: true,
+                callback_function: (output) => {
+                    // console.log("STREAMER callback_function:");
+                    // console.log(JSON.stringify(output, null, 4));
+                    // console.log(output);
+                    event.sender.send("R2_EVENT_IMAGE_CLICK", output);
+                },
+                token_callback_function: (_tokens) => {
+                    // console.log("STREAMER token_callback_function:");
+                    // console.log(tokens.length);
+                    // console.log(JSON.stringify(tokens, null, 4)); // BigInt error
+                },
+            });
+
+            const stopping_criteria = new InterruptableStoppingCriteria();
+            // // stopping_criteria.reset(); // interrupt()
+
+            // console.log("R2_EVENT_IMAGE_CLICK  TextStreamer() OK: " + `${imageURL}`);
+
+            // :(
+            // node_modules/electron/dist/Electron.app/Contents/MacOS/Electron exited with signal SIGTRAP
+
+            // @--ts-expect-error
+            const generated_ids = await aiModel
+                .generate({
+                    ...inputs,
+                    // do_sample: false,
+                    // repetition_penalty: 1.1,
+                    // top_k: 3,
+                    // temperature: 0.2,
+                    max_new_tokens: MAX_NEW_TOKENS,
+                    streamer,
+                    stopping_criteria,
+                    // return_dict_in_generate: true,
+                })
+                .catch((e) => {
+                    console.log("R2_EVENT_IMAGE_CLICK  generate() ERROR: ");
+                    console.log(e);
+                    console.log(JSON.stringify(e, null, 4));
+                });
+
+            console.log("R2_EVENT_IMAGE_CLICK  generate() OK: " + `${imageURL}`);
+            // console.log(JSON.stringify(generated_ids, null, 4));
+
+            const decoded = aiProcessor.batch_decode(
+                // @ts-expect-error types
+                generated_ids,
+                // generated_ids.slice(null, [inputs.input_ids.dims.at(-1), null]),
+                {
+                skip_special_tokens: true,
+            });
+
+            console.log("R2_EVENT_IMAGE_CLICK  batch_decode() OK: " + `${imageURL}`);
+            console.log(decoded.length);
+            console.log(JSON.stringify(decoded, null, 4));
+
+            return decoded[0];
         });
 
         try {

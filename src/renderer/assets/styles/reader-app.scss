@@ -21,6 +21,10 @@
   cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="), none !important;
 }
 
+.imgDescOverlay * {
+  all: revert;
+}
+
 .anchor_link {
   position: absolute;
   display: block;
@@ -173,7 +177,7 @@ button {
       height: 2px;
       background: #c0c0c0;
     }
-    
+
     &::-webkit-slider-thumb {
       height: 15px;
       width: 15px;
@@ -247,7 +251,7 @@ button {
 
   &_right {
     right: 400px!important;
-    
+
     &_pdf {
       right: 350px!important;
     }
@@ -363,14 +367,14 @@ button {
     list-style-type: none;
     padding: 1rem;
     margin: 0;
-  
+
     & li {
       padding-top: 0.5rem;
-  
+
       & a {
         text-decoration: none;
         color: var(--reader-fontColor);
-  
+
         &:hover {
           text-decoration: underline;
         }
@@ -390,7 +394,7 @@ button {
     background-color: transparent;
     color: white;
     cursor: pointer;
-  
+
     &:hover {
       color: var(--reader-fontColor);
       background-color: rgb(255 255 255 / 60%);
@@ -1116,11 +1120,11 @@ input[type="radio"] + label {
       margin-left: 0!important;
       background: none!important;
     }
-  
+
     .my_combobox_container {
       padding-right: 0;
     }
-  
+
     &:hover, &:focus {
       border: 1px solid var(--color-blue);
       background-color: var(--color-light-blue);
