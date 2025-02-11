@@ -34,7 +34,7 @@
                         "no": "Nej",
                         "yes": "Ja"
                     },
-                    "help": "",
+                    "help": "Aktivera detta om du vill att fönster som är öppna när du stänger programmet ska öppnas automatiskt vid nästa start.",
                     "message": "Vill du spara sessionen?",
                     "title": "Spara session"
                 }
@@ -122,14 +122,14 @@
     "dialog": {
         "annotations": {
             "descAuthor": "av {{- author}}",
-            "descCreator": "",
+            "descCreator": "skapad av",
             "descList": "{{- nb}} anteckning(ar) av {{- creator}} kommer att kopplas till {{- title}} {{- author}}",
             "descNewer": "{{- nb}} nyare versioner av de här anteckningarna är redan kopplade till publikationen.",
             "descOlder": "{{- nb}} äldre versioner av de här anteckningarna är redan kopplade till publikationen.",
             "descTitle": "Anteckningarnas titel: ",
             "importAll": "Importera alla anteckningar",
             "importWithoutConflict": "Importera anteckningar utan konflikter",
-            "origin": "",
+            "origin": "Källa: '{{- title}}' {{- author}}",
             "title": "Vill du importera de här anteckningarna?"
         },
         "cancel": "Avbryt",
