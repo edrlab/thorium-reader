@@ -380,7 +380,7 @@
         "fxl": {
             "fit": "Anpassa"
         },
-        "goToContent": "",
+        "goToContent": "Gå till innehållet",
         "marks": {
             "annotations": "Anteckningar",
             "bookmarks": "Bokmärken",
@@ -388,7 +388,7 @@
             "edit": "Redigera",
             "goTo": "Gå till sida",
             "landmarks": "Landmärken",
-            "progression": "",
+            "progression": "Läsförlopp",
             "saveMark": "Spara bokmärke",
             "search": "Sök",
             "searchResult": "Sök [{{- searchText}}]",
