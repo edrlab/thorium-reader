@@ -467,7 +467,7 @@
             "noFootnotes": "Inaktivera fotnoter",
             "noRTLFlip": "Inaktivera vänster-till-höger-gränssnitt",
             "noRuby": "Dölj japanska ruby-tecken",
-            "noTemporaryNavTargetOutline": "",
+            "noTemporaryNavTargetOutline": "Inaktivera visuella hjälpmedel för navigering",
             "paginated": "Sidindelad",
             "paraSpacing": "Styckesavstånd",
             "pdfZoom": {
