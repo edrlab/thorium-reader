@@ -34,7 +34,7 @@
                         "no": "Nej",
                         "yes": "Ja"
                     },
-                    "help": "Aktivera detta om du vill att fönster som är öppna när du stänger programmet ska öppnas automatiskt vid nästa start.",
+                    "help": "Aktivera detta om du vill att läsfönster som är öppna när du stänger programmet ska öppnas automatiskt vid nästa start.",
                     "message": "Vill du spara sessionen?",
                     "title": "Spara session"
                 }
