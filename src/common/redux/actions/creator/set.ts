@@ -7,10 +7,11 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 import { IAnnotationCreator } from "../../states/creator";
+import { v4 as uuidv4 } from "uuid";
 
 export const ID = "CREATOR_SET";
 
-export interface Payload extends Pick<IAnnotationCreator, "name" | "type"> {
+export interface Payload extends IAnnotationCreator {
 }
 
 export function build(name: string, type: IAnnotationCreator["type"]): Action<typeof ID, Payload> {
@@ -18,6 +19,7 @@ export function build(name: string, type: IAnnotationCreator["type"]): Action<ty
     return {
         type: ID,
         payload: {
+            id: uuidv4(),
             name,
             type,
         },
