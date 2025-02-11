@@ -11,7 +11,7 @@
     },
     "apiapp": {
         "documentation": "Thoriumの説明書",
-        "howItWorks": "どのように機能しますか？",
+        "howItWorks": "どのように動作しますか？",
         "informations": "フランスでは、多くの公共図書館がデジタル図書目録を提供していて（OPDSに似ていますが異なります）、利用者はそこにある自身の本棚から電子出版物をダウンロードできます。このテクノロジーをThorium Readerに統合することで、電子書籍またはオーディオブックをThorium Readerに直接ダウンロードして、すぐに読めるようになります。\nフランスの公共図書館のアカウントをThorium Readerに接続するにはどうすればよいですか？ それは簡単です。検索フィールドにフランスの都市（「Paris」）または図書館の名前の一部を入力し、検索ボタンを押してください。検索結果に公共図書館の一覧が表示されますので、該当する図書館を選択して「追加」をクリックします。デジタル図書目録の更新一覧において、その図書館を選択してください。その際、認証フォームが表示されますので、ユーザー名/メールアドレスとパスワードを入力し、「ログイン」をクリックしてください。あなたの本棚の内容が表示され、そこから借りた電子書籍やオーディオブックをダウンロードして読むことができます。\n",
         "noLibraryFound": "蔵書は見つかりませんでした（{{- name}}）"
     },
@@ -34,9 +34,9 @@
                         "no": "いいえ",
                         "yes": "はい"
                     },
-                    "help": "",
-                    "message": "セッションを保存しますか？",
-                    "title": "セッションを保存"
+                    "help": "アプリケーションを閉じて次回起動するとき、現在表示している読書画面を自動的に開きたい場合は、これを有効にしてください。",
+                    "message": "読書セッションの保存と復元",
+                    "title": "セッションを保存しますか？"
                 }
             }
         },
@@ -72,12 +72,12 @@
             "lastAdditions": "最近追加したもの"
         },
         "export": "別の場所に保存",
-        "exportAnnotation": "",
+        "exportAnnotation": "注釈を出力",
         "format": "形式",
-        "importAnnotation": "",
+        "importAnnotation": "注釈を取りこむ",
         "lang": "言語",
         "lastRead": "最終閲覧",
-        "moreInfo": "本の詳細",
+        "moreInfo": "詳細情報",
         "myBooks": "わたしの本",
         "noPublicationHelpL1": "ファイルをここにおいてください",
         "noPublicationHelpL2": "または、画面上部にある［{{- importTitle }}］ボタンを押してください。",
@@ -90,7 +90,7 @@
                 "login": "ログイン",
                 "password": "パスワード",
                 "register": "登録",
-                "username": "ユーザーネーム / メールアドレス"
+                "username": "ユーザー名 / メールアドレス"
             },
             "info": {
                 "availableSince": "いつから",
@@ -121,20 +121,20 @@
     },
     "dialog": {
         "annotations": {
-            "descAuthor": "",
-            "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
-            "descTitle": "",
-            "importAll": "",
-            "importWithoutConflict": "",
-            "origin": "",
-            "title": ""
+            "descAuthor": "{{- author}}によるもの",
+            "descCreator": "作成：",
+            "descList": "{{- nb}} 件の注釈（{{- creator}}）が次の書籍に取り込まれます： 『{{- title}}』（{{- author}}）",
+            "descNewer": "競合：{{- nb}} 件のより新しい注釈",
+            "descOlder": "競合：{{- nb}} 件のより古い注釈",
+            "descTitle": "注釈タイトル",
+            "importAll": "注釈すべてを取りこむ",
+            "importWithoutConflict": "競合していない注釈のみを取りこむ",
+            "origin": "もともとの本：'{{- title}}' {{- author}}",
+            "title": "注釈を取りこみますか？"
         },
         "cancel": "キャンセル",
-        "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
+        "deleteAnnotations": "注釈を削除しますか？",
+        "deleteAnnotationsText": "{{-annotationListLength}} 件の注釈を削除しますか？",
         "deleteFeed": "この図書目録を削除しますか？",
         "deletePublication": "この本を削除しますか？",
         "import": "追加します：",
@@ -170,7 +170,7 @@
     "library": {
         "lcp": {
             "hint": "ヒント：",
-            "open": "",
+            "open": "開く",
             "password": "パスワード",
             "sentence": "この本はLCPで保護されています。パスワードを入力してください： ",
             "urlHint": "パスワードを忘れましたか？ サポート窓口で確認してください：",
@@ -181,12 +181,12 @@
     },
     "message": {
         "annotations": {
-            "alreadyImported": "",
-            "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
-            "nothing": "",
-            "success": ""
+            "alreadyImported": "すべての注釈はすでに取り込まれています。\n",
+            "emptyFile": "ファイル内に注釈はありません。",
+            "errorParsing": "ファイル解析中にエラーが発生しました：",
+            "noBelongTo": "注釈を取りこめません。少なくとも1つの注釈がこの本に関するものではありません。",
+            "nothing": "取りこめる状態の注釈がないため、取りこみを中止します",
+            "success": "取り込みが正常に完了しました。"
         },
         "download": {
             "error": "『{{- title}}』のダウンロードに失敗しました：{{- err}}"
@@ -220,7 +220,7 @@
         "lastPage": "最後",
         "menu": {
             "aboutBook": "本の情報",
-            "addExtract": "本の抜粋を追加する",
+            "addExtract": "抜粋して取りこむ",
             "goBuyBook": "本を購入する",
             "goLoanBook": "本を借りる",
             "goRevokeLoanBook": "返却する",
@@ -291,10 +291,10 @@
         "duration": {
             "title": "期間"
         },
-        "encryptedNoLicense": "",
+        "encryptedNoLicense": "本は暗号化されていますが、LCPライセンスではありません！",
         "expired": "貸出の期限切れ",
         "expiredLcp": "この本のLCPライセンスの有効期限が切れました。",
-        "incorrectPassphrase": "",
+        "incorrectPassphrase": "保存しているパスフレーズが本に適合しないか、入力したパスフレーズが間違っています。",
         "lcpEnd": "終了",
         "lcpRightsCopy": "文字列のコピー",
         "lcpRightsPrint": "ページを印刷",
@@ -328,42 +328,42 @@
             "addNote": "注釈をつける",
             "advancedMode": "インスタントモード（本文を選択するだけで自動作成）",
             "annotationsExport": {
-                "description": "",
-                "title": ""
+                "description": "出力する注釈の名前を指定：",
+                "title": "名前"
             },
-            "annotationsOptions": "オプション",
+            "annotationsOptions": "注釈オプション",
             "colors": {
-                "bluegreen": "",
-                "cyan": "",
-                "green": "",
-                "lightblue": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
+                "bluegreen": "青緑",
+                "cyan": "青",
+                "green": "緑",
+                "lightblue": "水色",
+                "orange": "橙",
+                "purple": "紫",
+                "red": "赤",
+                "yellow": "黄"
             },
-            "date": "",
-            "export": "",
+            "date": "変更日",
+            "export": "注釈を保存する",
             "filter": {
-                "all": "",
-                "filterByColor": "",
-                "filterByCreator": "",
-                "filterByDrawtype": "",
-                "filterByTag": "",
-                "filterOptions": "",
-                "none": ""
+                "all": "すべて",
+                "filterByColor": "色で絞りこむ",
+                "filterByCreator": "作成者で絞りこむ",
+                "filterByDrawtype": "タイプで絞りこむ",
+                "filterByTag": "タグで絞りこむ",
+                "filterOptions": "オプションで絞りこむ\n",
+                "none": "なし"
             },
             "hide": "注釈を表示しない",
             "highlight": "ハイライト",
             "noSelectionToast": "選択されていません",
-            "note": "",
+            "note": "{{- color}}の注釈",
             "quickAnnotations": "クイック作成（注釈編集画面をスキップ）",
             "saveNote": "保存",
             "sorting": {
-                "lastcreated": "",
-                "lastmodified": "",
-                "progression": "",
-                "sortingOptions": ""
+                "lastcreated": "最終作成日",
+                "lastmodified": "最終更新日",
+                "progression": "進行度",
+                "sortingOptions": "並べ替えオプション"
             },
             "toggleMarginMarks": "ページ余白に注釈マークを表示",
             "type": {
@@ -380,7 +380,7 @@
         "fxl": {
             "fit": "合わせる"
         },
-        "goToContent": "",
+        "goToContent": "コンテンツへ移動",
         "marks": {
             "annotations": "注釈",
             "bookmarks": "しおり",
@@ -388,7 +388,7 @@
             "edit": "編集",
             "goTo": "ページ移動",
             "landmarks": "構成",
-            "progression": "",
+            "progression": "進行度",
             "saveMark": "しおりを挟む",
             "search": "検索",
             "searchResult": "検索 [{{- searchText}}]",
@@ -409,8 +409,8 @@
             "title": "朗読"
         },
         "navigation": {
-            "ZenModeExit": "",
-            "ZenModeTitle": "",
+            "ZenModeExit": "Zenモードを終了",
+            "ZenModeTitle": "Zenモード",
             "annotationTitle": "注釈",
             "backHomeTitle": "本棚にもどる",
             "bookmarkTitle": "しおりを挟む",
@@ -424,7 +424,7 @@
             "historyNext": "先に飛ぶ",
             "historyPrevious": "前にもどる",
             "infoTitle": "本の情報",
-            "magnifyingGlassButton": "この本を検索",
+            "magnifyingGlassButton": "本を検索",
             "openTableOfContentsTitle": "ナビゲーション",
             "page": "ページ",
             "pdfscalemode": "画面にページを収める / 画面横幅にページを合わせる",
@@ -449,7 +449,7 @@
                 "title": "縦列",
                 "two": "2列"
             },
-            "customFontSelected": "",
+            "customFontSelected": "利用するフォントを選択しました",
             "customizeReader": "本文のスタイル",
             "disabled": "無効",
             "display": "画面表示",
@@ -467,7 +467,7 @@
             "noFootnotes": "脚注を表示しない",
             "noRTLFlip": "右から左へ進むUIを無効にする",
             "noRuby": "ルビを表示しない",
-            "noTemporaryNavTargetOutline": "",
+            "noTemporaryNavTargetOutline": "視覚ナビゲーションインジケーターを無効にする",
             "paginated": "ページ型",
             "paraSpacing": "段落の間隔",
             "pdfZoom": {
@@ -484,14 +484,14 @@
                 "title": "拡大"
             },
             "preset": {
-                "apply": "",
-                "applyDetails": "",
-                "detail": "",
-                "reset": "",
-                "resetDetails": "",
-                "save": "",
-                "saveDetails": "",
-                "title": ""
+                "apply": "適用",
+                "applyDetails": "現在の本に、あなたの優先設定を適用します。",
+                "detail": "あなたの優先設定を保存／適用／リセットします。",
+                "reset": "リセット",
+                "resetDetails": "あなたの優先設定（標準設定）をリセットします。",
+                "save": "保存",
+                "saveDetails": "この操作により、現在の設定構成（優先させたい表示およびテキスト書式オプション）が保存されます。その後、他の読書画面で「適用」ボタンをクリックすることで、その設定（優先設定）を他の本にも適用できます。",
+                "title": "カスタマイズ"
             },
             "preview": "プレビュー",
             "reduceMotion": "視差効果を減らす",
@@ -522,8 +522,9 @@
         },
         "tts": {
             "activate": "音声読み上げ機能（TTS）を起動",
-            "language": "",
+            "language": "TTS言語",
             "next": "次に進む（TTS）",
+            "options": "",
             "pause": "一時停止（TTS）",
             "play": "再生（TTS）",
             "previous": "前にもどる（TTS）",
@@ -536,16 +537,16 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "",
-            "help": "",
-            "name": "",
-            "organization": "",
-            "person": "",
-            "type": ""
+            "creator": "注釈の作成者［任意設定］",
+            "help": "指定すると、出力した注釈のメタデータにこの名前が含まれます。",
+            "name": "名前",
+            "organization": "組織",
+            "person": "個人",
+            "type": "タイプ："
         },
         "auth": {
-            "help": "",
-            "title": "",
+            "help": "この操作により、すべてのOPDSログイン情報が削除されます。",
+            "title": "本の図書目録への接続",
             "wipeData": "ログインデータを消去する"
         },
         "keyboard": {
@@ -562,8 +563,8 @@
             "languageChoice": "言語の選択"
         },
         "library": {
-            "enableAPIAPP": "",
-            "title": ""
+            "enableAPIAPP": "「PNB」蔵書システムを有効にする",
+            "title": "フランスの図書館アカウントへの接続"
         },
         "session": {
             "title": "セッションを保存"

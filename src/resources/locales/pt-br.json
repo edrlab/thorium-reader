@@ -524,6 +524,7 @@
             "activate": "Ativar Texto para fala",
             "language": "",
             "next": "Próximo Texto para fala",
+            "options": "",
             "pause": "Pausar Texto para fala",
             "play": "Tocar Texto para fala",
             "previous": "Texto para fala anterior",
