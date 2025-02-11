@@ -356,7 +356,7 @@
             "hide": "Visa inte",
             "highlight": "Markera",
             "noSelectionToast": "Ingen markering",
-            "note": "",
+            "note": "{{- color}} anteckning",
             "quickAnnotations": "Snabbskapa (hoppa över redigeraren)",
             "saveNote": "Spara",
             "sorting": {
