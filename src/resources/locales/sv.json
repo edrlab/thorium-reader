@@ -409,8 +409,8 @@
             "title": "Uppläsning"
         },
         "navigation": {
-            "ZenModeExit": "",
-            "ZenModeTitle": "",
+            "ZenModeExit": "Lämna zenläge",
+            "ZenModeTitle": "Zenläge",
             "annotationTitle": "Anteckning",
             "backHomeTitle": "Tillbaka till bokhyllan",
             "bookmarkTitle": "Bokmärke",
