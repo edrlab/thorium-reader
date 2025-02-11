@@ -342,8 +342,8 @@
                 "red": "Röd",
                 "yellow": "Gul"
             },
-            "date": "",
-            "export": "",
+            "date": "Redigeringsdatum",
+            "export": "Spara anteckningar som",
             "filter": {
                 "all": "Alla",
                 "filterByColor": "Filtrera efter färg",
