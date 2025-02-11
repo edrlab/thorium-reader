@@ -494,8 +494,8 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
         return <></>;
     }
 
-    const creatorName = (getUuidFromUrn(annotation.creator?.id) !== getUuidFromUrn(creatorMyself.id) ? (annotation.creator?.name || getUuidFromUrn(annotation.creator?.id)) : creatorMyself.name) || "";
-    const creatorId = (getUuidFromUrn(annotation.creator?.id) !== getUuidFromUrn(creatorMyself.id) ? getUuidFromUrn(annotation.creator?.id) : getUuidFromUrn(creatorMyself.id)) || "";
+    const creatorName = (getUuidFromUrn(annotation.creator?.id) !== getUuidFromUrn(creatorMyself.id) ? (annotation.creator?.name) : creatorMyself.name) || "";
+    // const creatorId = (getUuidFromUrn(annotation.creator?.id) !== getUuidFromUrn(creatorMyself.id) ? getUuidFromUrn(annotation.creator?.id) : getUuidFromUrn(creatorMyself.id)) || "";
 
     return (<li
         className={stylesAnnotations.annotations_line}
@@ -608,7 +608,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                     ?
                     <div>
                         <SVG ariaHidden svg={AvatarIcon} />
-                        <a onClick={() => setCreatorFilter(creatorId)}
+                        <a onClick={() => setCreatorFilter(creatorName)}
 
                             onKeyDown={(e) => {
                                 // if (e.code === "Space") {
@@ -726,6 +726,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
     const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
     const winId = useSelector((state: IReaderRootState) => state.win.identifier);
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
+    const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
 
     const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
     const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
@@ -747,7 +748,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
             return (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags.some((tagsValueName) => tagArrayFilter.has(tagsValueName))) &&
                 (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
                 (!selectionIsSet(drawTypeArrayFilter) || !drawTypeArrayFilter.size || drawTypeArrayFilter.has(drawType)) &&
-                (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(getUuidFromUrn(creator?.id)));
+                (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(getUuidFromUrn(creator.id) !== getUuidFromUrn(creatorMyself.id) ? creator.name : creatorMyself.name));
 
         })
         : annotationsListAll;
@@ -782,7 +783,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                 if (drawTypeArrayFilter !== "all" && !drawTypeArrayFilter.has(annotationFound.drawType) && drawTypeArrayFilter.size !== 0) {
                     setDrawTypeArrayFilter(new Set([]));
                 }
-                if (creatorArrayFilter !== "all" && !creatorArrayFilter.has(getUuidFromUrn(annotationFound.creator?.id)) && creatorArrayFilter.size !== 0) {
+                if (creatorArrayFilter !== "all" && !creatorArrayFilter.has(annotationFound.creator?.name) && creatorArrayFilter.size !== 0) {
                     setCreatorArrayFilter(new Set([]));
                 }
             }
@@ -858,11 +859,23 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
         setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
     }
 
-    const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
     const creatorList = annotationsListAll.map(([, { creator }]) => creator).filter(v => v);
+    // const creatorSet = creatorList.reduce<Record<string, string>>((acc, { id, name }) => {
+    //     if (!acc[id]) {
+    //         return { ...acc, [getUuidFromUrn(id)]: (getUuidFromUrn(id) !== getUuidFromUrn(creatorMyself.id) ? name : creatorMyself.name) || getUuidFromUrn(id) };
+    //     }
+    //     return acc;
+    // }, {});
+
+    // const selectCreatorOptions = Object.entries(creatorSet).map(([k, v]) => ({ id: k, name: v }));
     const creatorSet = creatorList.reduce<Record<string, string>>((acc, { id, name }) => {
         if (!acc[id]) {
-            return { ...acc, [getUuidFromUrn(id)]: (getUuidFromUrn(id) !== getUuidFromUrn(creatorMyself.id) ? name : creatorMyself.name) || getUuidFromUrn(id) };
+            const _name = (getUuidFromUrn(id) !== getUuidFromUrn(creatorMyself.id) ? name : creatorMyself.name);
+            if (_name) {
+                return { ...acc, [_name]: _name };
+            } else {
+                return acc;
+            }
         }
         return acc;
     }, {});
@@ -1120,7 +1133,7 @@ const AnnotationList: React.FC<{ annotationUUIDFocused: string, resetAnnotationU
                                                 </div>
                                             </summary>
                                             <TagList items={selectCreatorOptions} className={stylesAnnotations.annotations_filter_taglist} style={{ margin: !selectCreatorOptions.length ? "0" : "20px 0" }}>
-                                                {(item) => <Tag className={stylesAnnotations.annotations_filter_tag} id={item.id} textValue={item.name}>{item.name}</Tag>}
+                                                {(item) => <Tag className={stylesAnnotations.annotations_filter_tag} id={item.name} textValue={item.name}>{item.name}</Tag>}
                                             </TagList>
                                         </details>
                                     </TagGroup>
