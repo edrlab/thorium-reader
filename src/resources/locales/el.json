@@ -304,7 +304,7 @@
         "licenseOutOfDate": "Η άδεια LCP έχει λήξει.",
         "licenseSignatureInvalid": "Η υπογραφή της άδειαςLCP είναι άκυρη.",
         "licensed": "Με άδεια χρήσης",
-        "markAsRead": "Σημείωση ως διαβασμένο",
+        "markAsRead": "Επισήμανση ως διαβασμένο",
         "notStarted": "Δεν έχει αρχίσει",
         "onGoing": "Σε εξέλιξη",
         "progression": {
@@ -325,7 +325,7 @@
     "reader": {
         "annotations": {
             "Color": "Χρώμα",
-            "addNote": "Σχόλιο",
+            "addNote": "Σημείωση",
             "advancedMode": "Άμεση λειτουργία (αυτόματη δημιουργία μετά την επιλογή)",
             "annotationsExport": {
                 "description": "Δώσε τίτλο στις εξαγώμενες σημειώσεις:",
@@ -351,7 +351,7 @@
                 "filterByDrawtype": "Φιλτράρισμα με βάση τον Τύπο",
                 "filterByTag": "Φιλτράρισμα με βάση την Ετικέτα",
                 "filterOptions": "Επιλογές φιλτραρίσματος",
-                "none": "Σημείωση"
+                "none": "Κανένα"
             },
             "hide": "Να μην εμφανίζεται",
             "highlight": "Επισήμανση",
@@ -382,7 +382,7 @@
         },
         "goToContent": "Μετάβαση στο περιεχόμενο",
         "marks": {
-            "annotations": "Σχόλια",
+            "annotations": "Σημειώσεις",
             "bookmarks": "Σελιδοδείκτες",
             "delete": "Διαγραφή",
             "edit": "Επεξεργασία",
@@ -411,7 +411,7 @@
         "navigation": {
             "ZenModeExit": "Έξοδο από τη λειτουργία Zen",
             "ZenModeTitle": "Λειτουργία Zen",
-            "annotationTitle": "σχόλιο",
+            "annotationTitle": "σημείωση",
             "backHomeTitle": "Πίσω στη βιβλιοθήκη",
             "bookmarkTitle": "Σελιδοδείκτης",
             "currentPage": "Τρέχουσα σελίδα: {{- current}}",
@@ -606,7 +606,7 @@
         },
         "title": {
             "allBooks": "Όλα μου τα βιβλία",
-            "newFeature": "Νέα δυνατότητα: Σχολιασμοί",
+            "newFeature": "Νέα δυνατότητα: Σημειώσης",
             "welcome": "Καλώς ήρθατε στο Thorium 3.0"
         }
     }
