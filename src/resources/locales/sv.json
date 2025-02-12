@@ -486,7 +486,7 @@
             "preset": {
                 "apply": "Tillämpa egna läsinställningar",
                 "applyDetails": "Tillämpa dina sparade läsinställningar på den aktuella boken.",
-                "detail": "",
+                "detail": "Spara/tillämpa/återställ dina läsinställningar.",
                 "reset": "Återställ läsinställningar",
                 "resetDetails": "Återställ dina läsinställningar till standard och tillämpa inställningarna på den aktuella boken.",
                 "save": "Spara egna läsinställningar",
@@ -522,9 +522,9 @@
         },
         "tts": {
             "activate": "Aktivera text-till-tal",
-            "language": "",
+            "language": "Språk för text-till-tal",
             "next": "Nästa",
-            "options": "",
+            "options": "Alternativ för text-till-tal",
             "pause": "Pausa",
             "play": "Läs upp",
             "previous": "Föregående",
@@ -538,14 +538,14 @@
     "settings": {
         "annotationCreator": {
             "creator": "Skapare",
-            "help": "",
+            "help": "Namnet du anger här kommer att inkluderas i metadata för exporterade anteckningar.",
             "name": "Namn",
             "organization": "Organisation",
             "person": "Person",
             "type": "Typ:"
         },
         "auth": {
-            "help": "",
+            "help": "Denna åtgärd raderar alla OPDS-inloggningsuppgifter.",
             "title": "Hantera åtkomst till kataloger",
             "wipeData": "Rensa inloggningsuppgifter"
         },
