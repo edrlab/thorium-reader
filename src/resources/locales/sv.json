@@ -122,7 +122,7 @@
     "dialog": {
         "annotations": {
             "descAuthor": "av {{- author}}",
-            "descCreator": "skapad av",
+            "descCreator": "skapad(e) av",
             "descList": "{{- nb}} anteckning(ar) av {{- creator}} kommer att kopplas till {{- title}} {{- author}}",
             "descNewer": "{{- nb}} nyare versioner av de här anteckningarna är redan kopplade till publikationen.",
             "descOlder": "{{- nb}} äldre versioner av de här anteckningarna är redan kopplade till publikationen.",
