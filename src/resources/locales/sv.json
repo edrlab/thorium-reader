@@ -34,7 +34,7 @@
                         "no": "Nej",
                         "yes": "Ja"
                     },
-                    "help": "Aktivera detta om du vill att läsfönster som är öppna när du stänger programmet ska öppnas automatiskt vid nästa start.",
+                    "help": "Välj detta om du vill att läsfönster som är öppna när du stänger programmet ska öppnas automatiskt vid nästa start.",
                     "message": "Sparar och återställer sessionen",
                     "title": "Spara session?"
                 }
@@ -186,7 +186,7 @@
             "errorParsing": "Fel vid inläsning av filformat: ",
             "noBelongTo": "Det går inte att importera anteckningarna, minst en anteckning tillhör inte publikationen.",
             "nothing": "Det finns inga anteckningar tillgängliga för import, avbryter importen.",
-            "success": "Klart!"
+            "success": "Importen slutförd."
         },
         "download": {
             "error": "Nedladdningen av {{- title}} misslyckades: [{{- err}}]"
