@@ -524,6 +524,7 @@
             "activate": "텍스트 음성 변환 할성화",
             "language": "",
             "next": "다음",
+            "options": "",
             "pause": "멈춤",
             "play": "재생",
             "previous": "이전",

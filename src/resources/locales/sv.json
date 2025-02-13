@@ -34,7 +34,7 @@
                         "no": "Nej",
                         "yes": "Ja"
                     },
-                    "help": "",
+                    "help": "Aktivera detta om du vill att läsfönster som är öppna när du stänger programmet ska öppnas automatiskt vid nästa start.",
                     "message": "Vill du spara sessionen?",
                     "title": "Spara session"
                 }
@@ -122,14 +122,14 @@
     "dialog": {
         "annotations": {
             "descAuthor": "av {{- author}}",
-            "descCreator": "",
+            "descCreator": "skapad av",
             "descList": "{{- nb}} anteckning(ar) av {{- creator}} kommer att kopplas till {{- title}} {{- author}}",
             "descNewer": "{{- nb}} nyare versioner av de här anteckningarna är redan kopplade till publikationen.",
             "descOlder": "{{- nb}} äldre versioner av de här anteckningarna är redan kopplade till publikationen.",
             "descTitle": "Anteckningarnas titel: ",
             "importAll": "Importera alla anteckningar",
             "importWithoutConflict": "Importera anteckningar utan konflikter",
-            "origin": "",
+            "origin": "Källa: '{{- title}}' {{- author}}",
             "title": "Vill du importera de här anteckningarna?"
         },
         "cancel": "Avbryt",
@@ -342,8 +342,8 @@
                 "red": "Röd",
                 "yellow": "Gul"
             },
-            "date": "",
-            "export": "",
+            "date": "Redigeringsdatum",
+            "export": "Spara anteckningar som",
             "filter": {
                 "all": "Alla",
                 "filterByColor": "Filtrera efter färg",
@@ -356,7 +356,7 @@
             "hide": "Visa inte",
             "highlight": "Markera",
             "noSelectionToast": "Ingen markering",
-            "note": "",
+            "note": "{{- color}} anteckning",
             "quickAnnotations": "Snabbskapa (hoppa över redigeraren)",
             "saveNote": "Spara",
             "sorting": {
@@ -380,7 +380,7 @@
         "fxl": {
             "fit": "Anpassa"
         },
-        "goToContent": "",
+        "goToContent": "Gå till innehållet",
         "marks": {
             "annotations": "Anteckningar",
             "bookmarks": "Bokmärken",
@@ -388,7 +388,7 @@
             "edit": "Redigera",
             "goTo": "Gå till sida",
             "landmarks": "Landmärken",
-            "progression": "",
+            "progression": "Läsförlopp",
             "saveMark": "Spara bokmärke",
             "search": "Sök",
             "searchResult": "Sök [{{- searchText}}]",
@@ -409,8 +409,8 @@
             "title": "Uppläsning"
         },
         "navigation": {
-            "ZenModeExit": "",
-            "ZenModeTitle": "",
+            "ZenModeExit": "Lämna zenläge",
+            "ZenModeTitle": "Zenläge",
             "annotationTitle": "Anteckning",
             "backHomeTitle": "Tillbaka till bokhyllan",
             "bookmarkTitle": "Bokmärke",
@@ -467,7 +467,7 @@
             "noFootnotes": "Inaktivera fotnoter",
             "noRTLFlip": "Inaktivera vänster-till-höger-gränssnitt",
             "noRuby": "Dölj japanska ruby-tecken",
-            "noTemporaryNavTargetOutline": "",
+            "noTemporaryNavTargetOutline": "Inaktivera visuella hjälpmedel för navigering",
             "paginated": "Sidindelad",
             "paraSpacing": "Styckesavstånd",
             "pdfZoom": {
@@ -486,7 +486,7 @@
             "preset": {
                 "apply": "Tillämpa egna läsinställningar",
                 "applyDetails": "Tillämpa dina sparade läsinställningar på den aktuella boken.",
-                "detail": "",
+                "detail": "Spara/tillämpa/återställ dina läsinställningar.",
                 "reset": "Återställ läsinställningar",
                 "resetDetails": "Återställ dina läsinställningar till standard och tillämpa inställningarna på den aktuella boken.",
                 "save": "Spara egna läsinställningar",
@@ -522,8 +522,9 @@
         },
         "tts": {
             "activate": "Aktivera text-till-tal",
-            "language": "",
+            "language": "Språk för text-till-tal",
             "next": "Nästa",
+            "options": "Alternativ för text-till-tal",
             "pause": "Pausa",
             "play": "Läs upp",
             "previous": "Föregående",
@@ -537,14 +538,14 @@
     "settings": {
         "annotationCreator": {
             "creator": "Skapare",
-            "help": "",
+            "help": "Namnet du anger här kommer att inkluderas i metadata för exporterade anteckningar.",
             "name": "Namn",
             "organization": "Organisation",
             "person": "Person",
             "type": "Typ:"
         },
         "auth": {
-            "help": "",
+            "help": "Denna åtgärd raderar alla OPDS-inloggningsuppgifter.",
             "title": "Hantera åtkomst till kataloger",
             "wipeData": "Rensa inloggningsuppgifter"
         },

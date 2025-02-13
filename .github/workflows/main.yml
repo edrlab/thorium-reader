@@ -58,7 +58,7 @@ jobs:
 #       https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md
 # ubuntu-latest is ubuntu-24.04
 #       https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md
-# ubuntu-20.04 is the oldest available (used here)
+# ubuntu-20.04 is the oldest available (good for glibc compat) ... but GitHub says "The Ubuntu 20.04 runner image will be fully unsupported by April 1, 2025"
 #       https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2004-Readme.md
         include:
           - osarch: windows-intel
@@ -78,11 +78,11 @@ jobs:
             packname: 'mac:skip-notarize'
             release_tag: latest-macos-arm
           - osarch: linux-intel
-            runson: ubuntu-20.04 #ubuntu-latest is ubuntu-24.04
+            runson: ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
             packname: linux
             release_tag: latest-linux-intel
           - osarch: linux-arm
-            runson: ubuntu-20.04 #ubuntu-latest is ubuntu-24.04
+            runson: ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
             packname: linux
             release_tag: latest-linux-arm
     env:

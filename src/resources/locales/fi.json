@@ -524,6 +524,7 @@
             "activate": "Käynnistä tekstistä puheeksi",
             "language": "",
             "next": "Seuraava",
+            "options": "",
             "pause": "Pysäytä",
             "play": "Jatka",
             "previous": "Edellinen",
