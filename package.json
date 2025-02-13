@@ -263,6 +263,7 @@
     }
   },
   "dependencies": {
+    "@ai-sdk/mistral": "^1.1.10",
     "@ai-sdk/openai": "^1.1.10",
     "@radix-ui/react-alert-dialog": "^1.1.6",
     "@radix-ui/react-dialog": "^1.1.6",

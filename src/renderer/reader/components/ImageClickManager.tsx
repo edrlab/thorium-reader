@@ -31,6 +31,8 @@ import Loader from "readium-desktop/renderer/common/components/Loader";
 
 import { marked } from "marked";
 import DOMPurify from "dompurify";
+import { Select, SelectItem } from "readium-desktop/renderer/common/components/Select";
+import { aiSDKModelOptions } from "readium-desktop/common/aisdkModelOptions";
 
 // https://github.com/huggingface/transformers.js-examples/blob/5b6e0c18677e3e22ef42779a766f48e2ed0a4b18/smolvlm-webgpu/src/components/Chat.jsx#L10
 function render(text: string) {
@@ -71,7 +73,16 @@ const Controls = () => {
     );
 };
 
+// const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
+// SelectRef.displayName = "ComboBox";
+
+const options = aiSDKModelOptions;
+
 const Chat = ({ imageHref, /*imageHrefDataUrl,*/ showImage }: { imageHref: string, /*imageHrefDataUrl: string,*/ showImage: () => void }) => {
+
+
+    const [optionSelected, setOption] = React.useState(options[0]);
+    const [systemPrompt, setSystemPromp] = React.useState("Your goal is to describe the image, you should not answer on a topic other than this image");
 
     // const image: Attachment = { url: imageHrefDataUrl, contentType: "image/jpeg" };
     const { messages, input, handleInputChange, handleSubmit, error, reload, isLoading, stop } = useChat({
@@ -84,17 +95,70 @@ const Chat = ({ imageHref, /*imageHrefDataUrl,*/ showImage }: { imageHref: strin
         headers: {
             Authorization: "your_token",
         },
-        
+
         // TODO : pass model identification from frontend
         body: {
             imageHref,
+            modelId: optionSelected.id,
+            systemPrompt,
         },
         credentials: "same-origin",
     });
 
     return (
         <div style={{ display: "flex", flexDirection: "column", height: "80vh" }}>
-            <div id="scroller" style={{ flex: 1, overflow: "auto", display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <div id="aichat-scroller" style={{ flex: 1, overflow: "auto", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <style>
+                    {`
+                        .react_aria_ComboBox .my_combobox_container {
+                            width: 100%
+                        }
+
+                        .react_aria_ComboBox .my_combobox_container button {
+                            width: 100%
+                        }
+
+                        .react_aria_ComboBox .my_combobox_container span {
+                            margin-left: 10px
+                        }
+
+                        `}
+                </style>
+                <Select
+                    items={options}
+                    selectedKey={optionSelected.id}
+                    onSelectionChange={(key) => {
+                        // console.log("selectionchange: ", key);
+                        const found = options.find(({ id: _id }) => _id === key);
+                        if (found) {
+                            setOption(found);
+                        }
+                    }}
+                    // disabledKeys={options.filter(option => option.disabled === true).map(option => option.id)}
+                    style={{ padding: "0", width: "80%", height: "30px", maxHeight: "30px", margin: "10px" }}
+                >
+                    {item => <SelectItem>{item.name}</SelectItem>}
+                </Select>
+
+                <div style={{ width: "80%", maxWidth: "600px", margin: "10px 0" }}>
+                    <details>
+                        <summary>System Prompt Editor</summary>
+                        <textarea
+                            style={{
+                                width: "100%",
+                                minHeight: "100px",
+                                padding: "10px",
+                                borderRadius: "8px",
+                                border: "1px solid #ccc",
+                                resize: "vertical",
+                            }}
+                            value={systemPrompt}
+                            onChange={(e) => setSystemPromp(e.target.value)}
+                            // placeholder="Enter your text here..."
+                        ></textarea>
+                    </details>
+                </div>
+
                 <div>
                     <img
                         style={{
@@ -150,7 +214,7 @@ const Chat = ({ imageHref, /*imageHrefDataUrl,*/ showImage }: { imageHref: strin
                         </div> */}
                     </div>
                 ))}
-                <div id="anchor"></div>
+                <div id="aichat-anchor"></div>
             </div>
 
 
@@ -224,11 +288,11 @@ export const ImageClickManager: React.FC = () => {
                 <div className={stylesModals.modal_dialog_overlay}></div>
                 <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined}>
             <style>{`
-                #scroller * {
+                #aichat-scroller * {
                     overflow-anchor: none;
                 }
 
-                #anchor {
+                #aichat-anchor {
                     overflow-anchor: auto;
                     height: 1px;
                 }

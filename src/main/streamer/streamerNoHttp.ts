@@ -49,9 +49,11 @@ import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 
 import { openai } from "@ai-sdk/openai";
-import { CoreUserMessage, streamText } from "ai";
+import { mistral } from "@ai-sdk/mistral";
+import { CoreUserMessage, LanguageModelV1, streamText } from "ai";
 import { Readable } from "stream";
 import { ReadableStream as WebReadableStream } from "node:stream/web";
+// import { aiSDKModelOptions } from "readium-desktop/common/aisdkModelOptions";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
@@ -297,7 +299,7 @@ const streamProtocolHandler = async (
         const body = JSON.parse(req.uploadData[0].bytes.toString());
         debugAiSdk("AISDK JSON BODY", JSON.stringify(body, null, 4));
 
-        const { messages, imageHref } = body;
+        const { messages, imageHref, modelId, systemPrompt } = body;
 
         let mimeType: string | undefined;
         try {
@@ -321,10 +323,18 @@ const streamProtocolHandler = async (
         }
 
         let readStream: NodeJS.ReadableStream | string = "";
+
+        let model: LanguageModelV1 | undefined;
+        if (modelId.startsWith("openai")) {
+            model = openai(modelId.split("openai-")[1]);
+        } else if (modelId.startsWith("mistralai")) {
+            model = mistral(modelId.split("mistralai-")[1]);
+        }
+
         try {
             const result = streamText({
-                model: openai("gpt-4o-mini"),
-                system: "You're goal is to describe the image, you must not reply on any topic other than this image",
+                model,
+                system: systemPrompt || "Your goal is to describe the image, you should not answer on a topic other than this image",
                 messages: [
                     {
                         role: "user",
@@ -333,7 +343,7 @@ const streamProtocolHandler = async (
                     } as CoreUserMessage,
                     ...messages,
                 ],
-                onError: ({error}) => {
+                onError: ({ error }) => {
                     debugAiSdk("AISDK streamText ERROR", error);
                 },
                 onFinish: ({ text, finishReason, usage, response }) => {
@@ -346,7 +356,7 @@ const streamProtocolHandler = async (
             });
 
             const { warnings, usage, sources, finishReason, providerMetadata, text, reasoning, toolCalls, toolResults, steps, request, response } = result;
-            const promises = [ warnings, usage, sources, finishReason, providerMetadata, text, reasoning, toolCalls, toolResults, steps, request, response];
+            const promises = [warnings, usage, sources, finishReason, providerMetadata, text, reasoning, toolCalls, toolResults, steps, request, response];
 
             promises.map((p, i) => {
                 p.then((v) => debugAiSdk("AISDK PROMISES SUCESS", JSON.stringify(v, null, 4), "INDEX", i));
@@ -358,6 +368,7 @@ const streamProtocolHandler = async (
         } catch (e) {
             debugAiSdk("ERROR: OPENAI stream text", e);
         }
+
 
         const obj: { data: NodeJS.ReadableStream | string, headers: Record<string, string | string[]>, statusCode: number } = {
             // NodeJS.ReadableStream
