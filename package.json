@@ -414,7 +414,6 @@
     "ts-prune": "^0.10.3",
     "ts-unused-exports": "^11.0.1",
     "tsconfig-paths": "^4.2.0",
-    "typed-css-modules": "^0.9.1",
     "typed-scss-modules": "^8.1.1",
     "typescript": "^5.7.3",
     "webpack": "^5.97.1",
