@@ -7,7 +7,7 @@
 
 import * as crypto from "crypto";
 import * as debug_ from "debug";
-import { app, protocol, ProtocolRequest, ProtocolResponse, session } from "electron";
+import { app, net, protocol, ProtocolRequest, ProtocolResponse, session } from "electron";
 import * as fs from "fs";
 import * as mime from "mime-types";
 import * as path from "path";
@@ -49,7 +49,7 @@ import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 
 import { openai } from "@ai-sdk/openai";
-import { streamText } from "ai";
+import { CoreUserMessage, streamText } from "ai";
 import { Readable } from "stream";
 import { ReadableStream as WebReadableStream } from "node:stream/web";
 
@@ -297,14 +297,42 @@ const streamProtocolHandler = async (
         const body = JSON.parse(req.uploadData[0].bytes.toString());
         debugAiSdk("AISDK JSON BODY", JSON.stringify(body, null, 4));
 
-        const { messages } = body;
+        const { messages, imageHref } = body;
+
+        let mimeType: string | undefined;
+        try {
+            const hrefToURL = new URL(imageHref);
+            const ext = path.extname(hrefToURL.pathname);
+            mimeType = findMimeTypeWithExtension(ext);
+        } catch {
+            // ignore
+        }
+
+        // TODO: resize img if over 1024x1024 ratio preserved
+        let imageBuffer: Uint8Array | undefined;
+        try {
+
+            const result = await net.fetch(imageHref);
+            if (!result.ok) throw new Error("NotOK!!");
+            imageBuffer = await result.bytes();
+
+        } catch (e) {
+            debugAiSdk("cannot fetch the img", e);
+        }
 
         let readStream: NodeJS.ReadableStream | string = "";
         try {
             const result = streamText({
                 model: openai("gpt-4o-mini"),
                 system: "You're goal is to describe the image, you must not reply on any topic other than this image",
-                messages,
+                messages: [
+                    {
+                        role: "user",
+                        content: [{ type: "image", image: imageBuffer, mimeType }],
+
+                    } as CoreUserMessage,
+                    ...messages,
+                ],
                 onError: ({error}) => {
                     debugAiSdk("AISDK streamText ERROR", error);
                 },

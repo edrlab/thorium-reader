@@ -25,8 +25,8 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 
 import { useChat } from "@ai-sdk/react";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
-import { nanoid } from "nanoid";
-import { Attachment } from "ai";
+// import { nanoid } from "nanoid";
+// import { Attachment } from "ai";
 import Loader from "readium-desktop/renderer/common/components/Loader";
 
 import { marked } from "marked";
@@ -47,17 +47,17 @@ function render(text: string) {
     return result;
   }
 
-async function getBase64ImageFromUrl(imageUrl: string): Promise<string> {
-    const response = await fetch(imageUrl);
-    const type = response.headers.get("content-type");
-    const bytes = await response.bytes();
+// async function getBase64ImageFromUrl(imageUrl: string): Promise<string> {
+//     const response = await fetch(imageUrl);
+//     const type = response.headers.get("content-type");
+//     const bytes = await response.bytes();
 
-    const binaryString = bytes.reduce((data, byte) => data + String.fromCharCode(byte), "");
-    const base64String = btoa(binaryString);
-    const dataUrl = `data:${type};base64,${base64String}`;
+//     const binaryString = bytes.reduce((data, byte) => data + String.fromCharCode(byte), "");
+//     const base64String = btoa(binaryString);
+//     const dataUrl = `data:${type};base64,${base64String}`;
 
-    return dataUrl;
-}
+//     return dataUrl;
+// }
 
 const Controls = () => {
     const { zoomIn, zoomOut, resetTransform } = useControls();
@@ -71,12 +71,12 @@ const Controls = () => {
     );
 };
 
-const Chat = ({ imageHrefDataUrl, showImage }: { imageHrefDataUrl: string, showImage: () => void }) => {
+const Chat = ({ imageHref, /*imageHrefDataUrl,*/ showImage }: { imageHref: string, /*imageHrefDataUrl: string,*/ showImage: () => void }) => {
 
-    const image: Attachment = { url: imageHrefDataUrl, contentType: "image/jpeg" };
+    // const image: Attachment = { url: imageHrefDataUrl, contentType: "image/jpeg" };
     const { messages, input, handleInputChange, handleSubmit, error, reload, isLoading, stop } = useChat({
         initialMessages: [
-            { id: nanoid(), role: "user", content: "", experimental_attachments: [image] },
+            // { id: nanoid(), role: "user", content: "", experimental_attachments: [image] },
         ],
         api: `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0/aisdk/chat`,
 
@@ -87,14 +87,29 @@ const Chat = ({ imageHrefDataUrl, showImage }: { imageHrefDataUrl: string, showI
         
         // TODO : pass model identification from frontend
         body: {
-            user_id: "123",
+            imageHref,
         },
         credentials: "same-origin",
     });
 
     return (
         <div style={{ display: "flex", flexDirection: "column", height: "80vh" }}>
-            <div style={{ flex: 1, overflow: "auto", display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <div id="scroller" style={{ flex: 1, overflow: "auto", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <div>
+                    <img
+                        style={{
+                            maxWidth: "100px",
+                            maxHeight: "100px",
+                            width: "auto",
+                            height: "auto",
+                            objectFit: "contain",
+                            flex: 1,
+                        }}
+                        src={imageHref}
+                        // alt={attachment.name}
+                        onClick={showImage}
+                    />
+                </div>
                 {messages.map(message => (
                     <div style={{
                         display: "flex",
@@ -111,7 +126,7 @@ const Chat = ({ imageHrefDataUrl, showImage }: { imageHrefDataUrl: string, showI
                         <div style={{ flex: 1, overflow: "visible", overflowY: "hidden" }} dangerouslySetInnerHTML={{ __html: render(message.content) }}>
                             {/* {message.content} */}
                         </div>
-                        <div>
+                        {/* <div>
                             {message.experimental_attachments
                                 ?.filter(attachment =>
                                     attachment.contentType?.startsWith("image/"),
@@ -132,9 +147,10 @@ const Chat = ({ imageHrefDataUrl, showImage }: { imageHrefDataUrl: string, showI
                                         onClick={showImage}
                                     />
                                 ))}
-                        </div>
+                        </div> */}
                     </div>
                 ))}
+                <div id="anchor"></div>
             </div>
 
 
@@ -167,6 +183,7 @@ const Chat = ({ imageHrefDataUrl, showImage }: { imageHrefDataUrl: string, showI
                     value={input}
                     onChange={handleInputChange}
                     style={{ width: "60%", maxWidth: "400px", marginRight: "10px", padding: "5px" }}
+                    placeholder="Type something"
                 />
                 <button className={stylesButtons.button_nav_primary} type="submit">Submit</button>
             </form>
@@ -174,17 +191,17 @@ const Chat = ({ imageHrefDataUrl, showImage }: { imageHrefDataUrl: string, showI
     );
 };
 
-function useGetDataUrl(href: string): string | undefined {
-    const [state, setState] = React.useState<string>();
+// function useGetDataUrl(href: string): string | undefined {
+//     const [state, setState] = React.useState<string>();
 
-    React.useEffect(() => {
-        getBase64ImageFromUrl(href).then(result => {
-            setState(result);
-        });
-    }, [href]);
+//     React.useEffect(() => {
+//         getBase64ImageFromUrl(href).then(result => {
+//             setState(result);
+//         });
+//     }, [href]);
 
-    return state;
-}
+//     return state;
+// }
 
 export const ImageClickManager: React.FC = () => {
 
@@ -192,7 +209,7 @@ export const ImageClickManager: React.FC = () => {
     const dispatch = useDispatch();
     const [__] = useTranslator();
     const [chatEnabled, enableChat] = React.useState(false);
-    const imageHrefDataUrl = useGetDataUrl(href);
+    // const imageHrefDataUrl = useGetDataUrl(href);
 
     return (<>
 
@@ -206,6 +223,16 @@ export const ImageClickManager: React.FC = () => {
             <Dialog.Portal>
                 <div className={stylesModals.modal_dialog_overlay}></div>
                 <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined}>
+            <style>{`
+                #scroller * {
+                    overflow-anchor: none;
+                }
+
+                #anchor {
+                    overflow-anchor: auto;
+                    height: 1px;
+                }
+           `}</style>
                     <Dialog.Close asChild>
                         <button style={{ position: "absolute", top: "10px", right: "10px", zIndex: 105 }} data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
                             <SVG ariaHidden={true} svg={QuitIcon} />
@@ -214,7 +241,8 @@ export const ImageClickManager: React.FC = () => {
                     {
                         chatEnabled ?
 
-                            <Chat showImage={() => enableChat((enabled) => !enabled)} imageHrefDataUrl={imageHrefDataUrl}/>
+
+                            <Chat showImage={() => enableChat((enabled) => !enabled)} /*imageHrefDataUrl={imageHrefDataUrl}*/ imageHref={href}/>
                             :
                             <TransformWrapper>
                                 <Controls />
