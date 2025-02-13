@@ -33,7 +33,7 @@ function creatorReducer_(
         case creatorActions.set.ID:
             return {
                 // state: state.state,
-                id: state.id,
+                id: action.payload.id,
                 type: action.payload.type,
                 name: action.payload.name,
             };

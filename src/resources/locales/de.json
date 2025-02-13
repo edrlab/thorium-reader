@@ -524,6 +524,7 @@
             "activate": "Text-to-Speech (TTS) aktivieren",
             "language": "",
             "next": "Nächstes TTS",
+            "options": "",
             "pause": "TTS pausieren",
             "play": "TTS abspielen",
             "previous": "Vorheriges TTS",

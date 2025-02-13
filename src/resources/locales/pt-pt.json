@@ -524,6 +524,7 @@
             "activate": "Ativar Texto para voz (TPV)",
             "language": "Idioma TPV",
             "next": "Seguinte (TPV)",
+            "options": "Opções TPV",
             "pause": "Pausar (TPV)",
             "play": "Tocar (TPV)",
             "previous": "Anterior (TPV)",
@@ -589,7 +590,7 @@
         },
         "description": {
             "annotations": "Realce o texto do documento, escolha o estilo e a cor, anexe notas pessoais. Crie anotações no modo 'rápido' para ignorar o editor (pode inserir texto e personalizar estilos posteriormente). Para maior rapidez use o modo 'instantâneo' para criar anotações imediatamente após realçar o texto do documento!",
-            "catalogs": "Faça um empréstimo de documentos da sua biblioteca local ou descubra documentos por meio de sinais OPDS. Aceda a uma variedade de documentos, a partir de diversas fontes, graças aos catálogos em linha.",
+            "catalogs": "Obtenha documentos emprestados da sua biblioteca local ou descubra documentos por meio de sinais OPDS. Aceda a uma variedade de documentos, a partir de diversas fontes, graças aos catálogos em linha.",
             "home": "O Thorium está diferente! Venha descobrir o que há de novo...",
             "readingView1": "Personalize as suas preferências de leitura e audição: Thorium agora oferece vários temas de cores para a interface do utilizador e dos documentos. Agora também é mais fácil configurar ebooks 'narrados' com voz sintética e narração sincronizada de texto/áudio.",
             "readingView2": "A interface de utilizador do Thorium foi melhorada e torna mais fácil encontrar texto em documentos, explorar resultados de pesquisa, ir para páginas específicas, navegar no índice, criar marcadores, etc., tudo graças aos novos painéis 'encaixados'. O modo de leitura em ecrã completo continua a oferecer um ambiente livre de distrações.",

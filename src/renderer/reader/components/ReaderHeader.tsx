@@ -719,7 +719,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         <li>
                                             <Popover.Root open={this.state.ttsPopoverOpen} onOpenChange={() => this.setState({ ttsPopoverOpen : !this.state.ttsPopoverOpen})}>
                                                 <Popover.Trigger asChild>
-                                                    <button className={stylesReader.menu_button} style={{backgroundColor: this.state.ttsPopoverOpen ? "var(--color-blue)" : ""}}>
+                                                    <button className={stylesReader.menu_button} style={{backgroundColor: this.state.ttsPopoverOpen ? "var(--color-blue)" : ""}} aria-label={__("reader.tts.options")} title={__("reader.tts.options")}>
                                                         <SVG ariaHidden svg={HeadphoneIcon} className={this.state.ttsPopoverOpen ? stylesReaderHeader.active_svg : ""} />
                                                     </button>
                                                 </Popover.Trigger>

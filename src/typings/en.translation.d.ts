@@ -941,6 +941,7 @@ declare namespace typed_i18n {
     readonly "activate": string,
     readonly "language": string,
     readonly "next": string,
+    readonly "options": string,
     readonly "pause": string,
     readonly "play": string,
     readonly "previous": string,
@@ -1394,6 +1395,7 @@ declare namespace typed_i18n {
   readonly "activate": string,
   readonly "language": string,
   readonly "next": string,
+  readonly "options": string,
   readonly "pause": string,
   readonly "play": string,
   readonly "previous": string,
@@ -1406,6 +1408,7 @@ declare namespace typed_i18n {
   (_: "reader.tts.activate", __?: {}): string;
   (_: "reader.tts.language", __?: {}): string;
   (_: "reader.tts.next", __?: {}): string;
+  (_: "reader.tts.options", __?: {}): string;
   (_: "reader.tts.pause", __?: {}): string;
   (_: "reader.tts.play", __?: {}): string;
   (_: "reader.tts.previous", __?: {}): string;

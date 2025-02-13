@@ -34,7 +34,7 @@
                         "no": "Nej",
                         "yes": "Ja"
                     },
-                    "help": "",
+                    "help": "Aktivér denne, hvis du ønsker at dine åbne bog-vinduer åbnes igen, når programmet lukkes og startes op igen.",
                     "message": "Ønsker du at gemme denne session?",
                     "title": "Gem session"
                 }
@@ -122,7 +122,7 @@
     "dialog": {
         "annotations": {
             "descAuthor": "af {{- author}}",
-            "descCreator": "",
+            "descCreator": "lavet af",
             "descList": "{{- nb}} note(r) fra {{- creator}} vil blive associeret med {{- title}} {{- author}}",
             "descNewer": "{{- nb}} nyere version af disse noter er allerede associeret med denne bog.",
             "descOlder": "{{- nb}} ældre version af disse noter er allerede associeret med denne bog.",
@@ -524,6 +524,7 @@
             "activate": "Aktiver syntetisk tale",
             "language": "Sprog",
             "next": "Næste",
+            "options": "",
             "pause": "Pause",
             "play": "Afspil med syntetisk tale",
             "previous": "Forrige",

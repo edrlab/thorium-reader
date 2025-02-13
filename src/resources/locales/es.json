@@ -34,7 +34,7 @@
                         "no": "No",
                         "yes": "Sí"
                     },
-                    "help": "",
+                    "help": "Actívela si desea que las ventanas de lectura abiertas al cerrar la aplicación se vuelvan a abrir automáticamente en el siguiente inicio.",
                     "message": "¿Quieres guardar la sesión?",
                     "title": "Guardar sesión"
                 }
@@ -122,14 +122,14 @@
     "dialog": {
         "annotations": {
             "descAuthor": "de {{- author}}",
-            "descCreator": "",
+            "descCreator": "creado por",
             "descList": "{{- nb}} la nota o notas de {{- creator}} se asociarán a {{- title}} {{- author}}",
             "descNewer": "{{- nb}} las versiones más recientes de estas notas ya están asociadas a la publicación.",
             "descOlder": "{{- nb}} las versiones más antiguas de estas notas ya están asociadas a la publicación.",
             "descTitle": "Establecer título de anotación",
             "importAll": "Importar todas las notas",
             "importWithoutConflict": "Importar notas sin conflictos",
-            "origin": "",
+            "origin": "Publicación de origen: '{{- title}}' {{- author}}",
             "title": "¿Quieres importar estas notas?"
         },
         "cancel": "Cancelar",
@@ -170,7 +170,7 @@
     "library": {
         "lcp": {
             "hint": "Pista: ",
-            "open": "",
+            "open": "Abrir",
             "password": "Contraseña",
             "sentence": "Esta publicación requiere una contraseña LCP para abrirse: ",
             "urlHint": "¿Olvidaste tu contraseña? Encuentra ayuda aquí",
@@ -342,7 +342,7 @@
                 "red": "Rojo",
                 "yellow": "Amarillo"
             },
-            "date": "",
+            "date": "Fecha de modificación",
             "export": "Exportar notas",
             "filter": {
                 "all": "Todas",
@@ -356,7 +356,7 @@
             "hide": "No mostrar",
             "highlight": "Destacar",
             "noSelectionToast": "Sin selección",
-            "note": "",
+            "note": "Nota {{- color}}",
             "quickAnnotations": "Creación rápida (omitir editor)",
             "saveNote": "Guardar",
             "sorting": {
@@ -380,7 +380,7 @@
         "fxl": {
             "fit": "Ajustar"
         },
-        "goToContent": "",
+        "goToContent": "Ir al contenido",
         "marks": {
             "annotations": "Anotaciones",
             "bookmarks": "Marcadores",
@@ -388,7 +388,7 @@
             "edit": "Editar",
             "goTo": "ir a página",
             "landmarks": "Puntos de referencia",
-            "progression": "",
+            "progression": "Progresión",
             "saveMark": "Guardar marcador",
             "search": "Buscar",
             "searchResult": "Buscar [{{- searchText}}]",
@@ -410,7 +410,7 @@
         },
         "navigation": {
             "ZenModeExit": "Salir de modo Zen",
-            "ZenModeTitle": "",
+            "ZenModeTitle": "Modo Zen",
             "annotationTitle": "anotación",
             "backHomeTitle": "Volver a la biblioteca",
             "bookmarkTitle": "Marcador",
@@ -467,7 +467,7 @@
             "noFootnotes": "Desactivar notas al pie",
             "noRTLFlip": "Deshabilitar la interfaz de usuario de derecha a izquierda",
             "noRuby": "Ocultar Ruby japonés",
-            "noTemporaryNavTargetOutline": "",
+            "noTemporaryNavTargetOutline": "Desactivar los indicadores visuales de navegación",
             "paginated": "Paginado",
             "paraSpacing": "Espaciado de párrafos",
             "pdfZoom": {
@@ -486,7 +486,7 @@
             "preset": {
                 "apply": "Aplicar los parámetros de lectura preferidos",
                 "applyDetails": "Aplicar las opciones preferidas de lectura predeterminadas al libro actual",
-                "detail": "",
+                "detail": "Guardar / Aplicar / Restablecer la configuración preferida.",
                 "reset": "Restablecer opciones preferidas de lectura",
                 "resetDetails": "Restablecer los parámetros de lectura preferidos y aplicarlos al libro actual",
                 "save": "Guardar los parámetros de lectura preferidos",
@@ -524,6 +524,7 @@
             "activate": "Activar texto a voz (TTS)",
             "language": "Idioma",
             "next": "Siguiente (Texto a voz)",
+            "options": "Opciones de texto a voz (TTS)",
             "pause": "Pausar texto a voz",
             "play": "Reproducir (Texto a voz)",
             "previous": "Anterior (Texto a voz)",
@@ -536,16 +537,16 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "",
-            "help": "",
-            "name": "",
-            "organization": "",
-            "person": "",
-            "type": ""
+            "creator": "Autor de las anotaciones (opcional)",
+            "help": "Si se especifica, este nombre se incluirá en los metadatos de las notas exportadas.",
+            "name": "nombre",
+            "organization": "Organización",
+            "person": "Persona",
+            "type": "Tipo:"
         },
         "auth": {
-            "help": "",
-            "title": "",
+            "help": "Esta acción elimina todas las credenciales de inicio de sesión de OPDS.",
+            "title": "Acceso a los catálogos de publicaciones",
             "wipeData": "Borrar datos de autenticación"
         },
         "keyboard": {
@@ -562,8 +563,8 @@
             "languageChoice": "Selección de idioma"
         },
         "library": {
-            "enableAPIAPP": "",
-            "title": ""
+            "enableAPIAPP": "Activar el sistema de bibliotecas francesas \"PNB\"",
+            "title": "Acceso a las cuentas de la biblioteca francesa"
         },
         "session": {
             "title": "Guardar sesión"
