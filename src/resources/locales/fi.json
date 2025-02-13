@@ -34,7 +34,7 @@
                         "no": "Ei",
                         "yes": "Kyllä"
                     },
-                    "help": "",
+                    "help": "Valitse tämä, jos haluat, että suljettaessa auki olevat ikkunat avautuvat, kun käynnistät ohjelman seuraavan kerran.",
                     "message": "Haluatko tallentaa istunnon?",
                     "title": "Tallenna istunto"
                 }
@@ -55,8 +55,8 @@
         "addBookToLib": "Tuo",
         "addTags": "Lisää tunniste",
         "addTagsButton": "Lisää",
-        "allBooks": "Kaikki kirjat",
-        "bookInfo": "Tietoja tästä kirjasta",
+        "allBooks": "Kaikki julkaisut",
+        "bookInfo": "Tietoja tästä julkaisusta",
         "column": {
             "ascending": "nouseva",
             "descending": "laskeva",
@@ -121,20 +121,20 @@
     },
     "dialog": {
         "annotations": {
-            "descAuthor": "",
-            "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
-            "descTitle": "",
-            "importAll": "",
-            "importWithoutConflict": "",
-            "origin": "Alkuperäinen julkaisu: {{- title}}, {{- author}}",
-            "title": ""
+            "descAuthor": "{{- author}}",
+            "descCreator": "tekijältä",
+            "descList": "Tuodaan {{- nb}} muistiinpano(a) {{- creator}} julkaisuun {{- author}}: {{- title}}",
+            "descNewer": "Ristiriita: {{- nb}} uudempaa muistiinpanoa",
+            "descOlder": "Ristiriita: {{- nb}} vanhempaa muistiinpanoa",
+            "descTitle": "Muistiinpanojen otsikko: ",
+            "importAll": "Tuo kaikki muistiinpanot",
+            "importWithoutConflict": "Tuo muistiinpanot, joissa ei ole ristiriitoja",
+            "origin": "Alkuperäinen julkaisu: {{- author}}, {{- title}}",
+            "title": "Tuodaanko muistiinpanot?"
         },
         "cancel": "Peru",
-        "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
+        "deleteAnnotations": "Poistetaanko muistiinpanot?",
+        "deleteAnnotationsText": "Haluatko varmasti poistaa {{- annotationListLength}} muistiinpanoa?",
         "deleteFeed": "Haluatko poistaa tämän luettelon?",
         "deletePublication": "Haluatko poistaa tämän julkaisun?",
         "import": "Haluatko tuoda nämä tiedostot:",
@@ -169,10 +169,10 @@
     },
     "library": {
         "lcp": {
-            "hint": "Vihje: ",
-            "open": "",
+            "hint": "Vihje:",
+            "open": "Avaa",
             "password": "Salasana",
-            "sentence": "Julkaisun avaamiseen tarvitaan LCP-salasana: ",
+            "sentence": "Julkaisun avaamiseen tarvitaan LCP-salasana",
             "urlHint": "Unohtuiko salasana? Lisätietoja:",
             "whatIsLcp?": "Mikä on LCP?",
             "whatIsLcpInfoDetails": "LCP (Licensed Content Protection) on sisällön suojaustapa.",
@@ -181,12 +181,12 @@
     },
     "message": {
         "annotations": {
-            "alreadyImported": "",
-            "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
-            "nothing": "",
-            "success": ""
+            "alreadyImported": "Kaikki muistiinpanot on jo tuotu.",
+            "emptyFile": "Tiedostossa ei ole muistiinpanoja.",
+            "errorParsing": "Virhe tiedoston jäsentämisessä: ",
+            "noBelongTo": "Muistiinpanoja ei voida tuoda, ainakaan yksi muistiinpano ei kuulu julkaisuun.",
+            "nothing": "Yhtään muistiinpanoa ei ole valmiina tuontiin, tuonti keskeytetty.",
+            "success": "Tuonti onnistui."
         },
         "download": {
             "error": "Julkaisun {{- title}} lataus epäonnistui: [{{- err}}]"
@@ -269,7 +269,7 @@
                 "sound": "Ääni",
                 "unknown": "Tuntematon"
             },
-            "certifierReport": "Arviointiraportti",
+            "certifierReport": "Arviointiraportti:",
             "conformsTo": "Noudattaa:",
             "moreInformation": "Lisätietoja",
             "name": "Saavutettavuus",
@@ -291,10 +291,10 @@
         "duration": {
             "title": "Kesto"
         },
-        "encryptedNoLicense": "",
+        "encryptedNoLicense": "Julkaisu on suojattu, mutta siitä puuttuu LCP-lisenssi.",
         "expired": "Laina-aika on päättynyt",
         "expiredLcp": "LCP-käyttöoikeus on päättynyt.",
-        "incorrectPassphrase": "",
+        "incorrectPassphrase": "Yksinään tallennettu salasana ei käy julkaisuun tai annettu salasana on väärä.",
         "lcpEnd": "Loppu",
         "lcpRightsCopy": "Kopioidut merkit",
         "lcpRightsPrint": "Tulostetut sivut",
@@ -328,13 +328,13 @@
             "addNote": "Lisää muistiinpano",
             "advancedMode": "Välitön tila (luo suoraan valinnasta)",
             "annotationsExport": {
-                "description": "",
-                "title": ""
+                "description": "Nimeä muistiinpanot:",
+                "title": "Otsikko"
             },
             "annotationsOptions": "Asetukset",
             "colors": {
                 "bluegreen": "Sinivihreä",
-                "cyan": "",
+                "cyan": "Turkoosi",
                 "green": "Vihreä",
                 "lightblue": "Vaaleansininen",
                 "orange": "Oranssi",
@@ -342,28 +342,28 @@
                 "red": "Punainen",
                 "yellow": "Keltainen"
             },
-            "date": "",
-            "export": "",
+            "date": "Muokkauspäivä",
+            "export": "Tallenna nimellä...",
             "filter": {
-                "all": "",
-                "filterByColor": "",
-                "filterByCreator": "",
-                "filterByDrawtype": "",
-                "filterByTag": "",
-                "filterOptions": "",
-                "none": ""
+                "all": "Kaikki",
+                "filterByColor": "Suodata värin perusteella",
+                "filterByCreator": "Suodata tekijän perusteella",
+                "filterByDrawtype": "Suodata tyypin perusteella",
+                "filterByTag": "Suodata tunnisteen perusteella",
+                "filterOptions": "Suodatuksen asetukset",
+                "none": "Ei mitään"
             },
             "hide": "Älä näytä",
             "highlight": "Korosta",
             "noSelectionToast": "Ei valintaa",
-            "note": "",
+            "note": "{{- color}} Muistiinpano",
             "quickAnnotations": "Pikatila (ohita muokkausikkuna)",
             "saveNote": "Tallenna",
             "sorting": {
-                "lastcreated": "",
-                "lastmodified": "",
-                "progression": "",
-                "sortingOptions": ""
+                "lastcreated": "Luotu viimeksi",
+                "lastmodified": "Muokattu viimeksi",
+                "progression": "Eteneminen",
+                "sortingOptions": "Järjestämisasetukset"
             },
             "toggleMarginMarks": "Näytä marginaalissa",
             "type": {
@@ -380,7 +380,7 @@
         "fxl": {
             "fit": "Sovita"
         },
-        "goToContent": "",
+        "goToContent": "Siirry sisältöön",
         "marks": {
             "annotations": "Muistiinpanot",
             "bookmarks": "Kirjanmerkit",
@@ -388,7 +388,7 @@
             "edit": "Muokkaa",
             "goTo": "Siirry sivulle",
             "landmarks": "Kiintopisteet",
-            "progression": "",
+            "progression": "Eteneminen",
             "saveMark": "Tallenna kirjanmerkki",
             "search": "Hae",
             "searchResult": "Hae [{{- searchText}}]",
@@ -409,8 +409,8 @@
             "title": "Luenta"
         },
         "navigation": {
-            "ZenModeExit": "",
-            "ZenModeTitle": "",
+            "ZenModeExit": "Poistu kokoruudun tilasta",
+            "ZenModeTitle": "Kokoruudun tila",
             "annotationTitle": "muistiinpano",
             "backHomeTitle": "Takaisin kirjahyllyyn",
             "bookmarkTitle": "Kirjanmerkki",
@@ -449,7 +449,7 @@
                 "title": "Palstat",
                 "two": "2 palstaa"
             },
-            "customFontSelected": "",
+            "customFontSelected": "Olet valinnut oman fontin",
             "customizeReader": "Mukauta tekstin ulkoasua",
             "disabled": "ei käytössä",
             "display": "Näyttöasetukset",
@@ -458,7 +458,7 @@
             },
             "font": "Fontti",
             "fontSize": "Fonttikoko",
-            "infoCustomFont": "Valitse fontti käyttöjärjestelmästä kirjoittamalla sen nimi. ",
+            "infoCustomFont": "Valitse fontti käyttöjärjestelmästä kirjoittamalla sen nimi.",
             "justification": "Tasaus",
             "justify": "Tasareunainen",
             "letterSpacing": "Kirjainvälistys",
@@ -467,7 +467,7 @@
             "noFootnotes": "Alaviitteet pois käytöstä",
             "noRTLFlip": "Estä oikealta vasemmalle -käyttöliittymä",
             "noRuby": "Piilota japanin rubi-merkit",
-            "noTemporaryNavTargetOutline": "",
+            "noTemporaryNavTargetOutline": "Älä käytä visuaalista navigointijanaa",
             "paginated": "Sivuiksi jaettu",
             "paraSpacing": "Kappaleväli",
             "pdfZoom": {
@@ -484,14 +484,14 @@
                 "title": "Zoomaus"
             },
             "preset": {
-                "apply": "",
-                "applyDetails": "",
-                "detail": "",
-                "reset": "",
-                "resetDetails": "",
-                "save": "",
-                "saveDetails": "",
-                "title": ""
+                "apply": "Käytä",
+                "applyDetails": "Käytä ulkoasun valintojasi nykyiseen julkaisuun.",
+                "detail": "Tallenna / Käytä / Nollaa näyttöasetuksesi.",
+                "reset": "Nollaa",
+                "resetDetails": "Palauta oletusasetukset.",
+                "save": "Tallenna",
+                "saveDetails": "Tämä toiminto tallentaa nykyisen ulkoasun eli tekstin ja näytön asetukset, jotka olet valinnut. Ulkoasua voi käyttää muissakin julkaisuissa painamalla Käytä-painiketta.",
+                "title": "Omat asetukset"
             },
             "preview": "Esikatselu",
             "reduceMotion": "Vähennä liikettä",
@@ -522,13 +522,13 @@
         },
         "tts": {
             "activate": "Käynnistä tekstistä puheeksi",
-            "language": "",
+            "language": "TTS-kieli",
             "next": "Seuraava",
-            "options": "",
+            "options": "TTS-valinnat",
             "pause": "Pysäytä",
             "play": "Jatka",
             "previous": "Edellinen",
-            "sentenceDetect": "Korosta tekstistä puheeksi virketasolla.",
+            "sentenceDetect": "Korosta tekstistä puheeksi virketasolla",
             "sentenceDetectDescription": "Pilko pitkät kappaleet virkkeiksi.",
             "speed": "Tekstistä puheeksi -nopeus",
             "stop": "Lopeta tekstistä puheeksi",
@@ -537,16 +537,16 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "",
-            "help": "",
-            "name": "",
-            "organization": "",
-            "person": "",
-            "type": ""
+            "creator": "Muistiinpanojen tekijä (valinnainen)",
+            "help": "Jos nimi on annettu, se sisällytetään vietyjen muistiinpanojen metatietoihin.",
+            "name": "Nimi",
+            "organization": "Organisaatio",
+            "person": "Henkilö",
+            "type": "Tyyppi:"
         },
         "auth": {
-            "help": "",
-            "title": "",
+            "help": "Tämä toiminto poistaa kaikki OPDS-kirjautumistiedot.",
+            "title": "Pääsy julkaisuluetteloihin",
             "wipeData": "Poista kirjautumistiedot"
         },
         "keyboard": {
@@ -563,8 +563,8 @@
             "languageChoice": "Kieli"
         },
         "library": {
-            "enableAPIAPP": "",
-            "title": ""
+            "enableAPIAPP": "Ota käyttöön PNB-kirjastojärjestelmä",
+            "title": "Pääsy ranskalaisiin kirjastotileihin"
         },
         "session": {
             "title": "Tallenna istunto"
