@@ -34,9 +34,9 @@
                         "no": "Nej",
                         "yes": "Ja"
                     },
-                    "help": "Aktivera detta om du vill att läsfönster som är öppna när du stänger programmet ska öppnas automatiskt vid nästa start.",
-                    "message": "Vill du spara sessionen?",
-                    "title": "Spara session"
+                    "help": "Välj detta om du vill att läsfönster som är öppna när du stänger programmet ska öppnas automatiskt vid nästa start.",
+                    "message": "Sparar och återställer sessionen",
+                    "title": "Spara session?"
                 }
             }
         },
@@ -122,10 +122,10 @@
     "dialog": {
         "annotations": {
             "descAuthor": "av {{- author}}",
-            "descCreator": "skapad av",
-            "descList": "{{- nb}} anteckning(ar) av {{- creator}} kommer att kopplas till {{- title}} {{- author}}",
-            "descNewer": "{{- nb}} nyare versioner av de här anteckningarna är redan kopplade till publikationen.",
-            "descOlder": "{{- nb}} äldre versioner av de här anteckningarna är redan kopplade till publikationen.",
+            "descCreator": "skapad(e) av",
+            "descList": "{{- nb}} anteckning(ar) {{- creator}} kommer att importeras till {{- title}} {{- author}}",
+            "descNewer": "Konflikter: {{- nb}} nyare anteckning(ar)",
+            "descOlder": "Konflikter: {{- nb}} äldre anteckning(ar)",
             "descTitle": "Anteckningarnas titel: ",
             "importAll": "Importera alla anteckningar",
             "importWithoutConflict": "Importera anteckningar utan konflikter",
@@ -169,11 +169,11 @@
     },
     "library": {
         "lcp": {
-            "hint": "Tips: ",
+            "hint": "Tips:",
             "open": "Öppna",
             "password": "Lösenord",
-            "sentence": "Den här publikationer behöver ett LCP-lösenord för att kunna öppnas: ",
-            "urlHint": "Har du glömt ditt lösenord? Här kan du få hjälp:",
+            "sentence": "Den här publikationer behöver ett LCP-lösenord för att kunna öppnas:",
+            "urlHint": "Har du glömt ditt lösenord? Här kan du få hjälp.",
             "whatIsLcp?": "Vad är LCP?",
             "whatIsLcpInfoDetails": "LCP står för \"Licensed Content Protection\".",
             "whatIsLcpInfoDetailsLink": "För mer information, klicka på denna länk till EDRLabs webbplats."
@@ -181,18 +181,18 @@
     },
     "message": {
         "annotations": {
-            "alreadyImported": "Alla anteckningar har redan importerats, avbryter importen",
-            "emptyFile": "Inga anteckningar tillgängliga i filen",
+            "alreadyImported": "Alla anteckningar har redan importerats.",
+            "emptyFile": "Inga anteckningar tillgängliga i filen.",
             "errorParsing": "Fel vid inläsning av filformat: ",
-            "noBelongTo": "Det går inte att importera anteckningarna, minst en anteckning tillhör inte publikationen",
-            "nothing": "Det finns inga anteckningar tillgängliga för import, avbryter importen",
-            "success": "Klart!"
+            "noBelongTo": "Det går inte att importera anteckningarna, minst en anteckning tillhör inte publikationen.",
+            "nothing": "Det finns inga anteckningar tillgängliga för import, avbryter importen.",
+            "success": "Importen slutförd."
         },
         "download": {
             "error": "Nedladdningen av {{- title}} misslyckades: [{{- err}}]"
         },
         "import": {
-            "alreadyImport": "{{- title}} var redan importerad",
+            "alreadyImport": "{{- title}} var redan importerad.",
             "fail": "Importen av {{- path}} misslyckades. {{- err}}",
             "success": "Importen av {{- title}} är slutförd."
         },
@@ -273,7 +273,7 @@
             "conformsTo": "Följer:",
             "moreInformation": "Mer information",
             "name": "Tillgänglighet",
-            "noA11y": "Det finns ingen uppgift om tillgänglighet."
+            "noA11y": "Det finns ingen information om tillgänglighet."
         },
         "actions": "Åtgärder",
         "audio": {
@@ -292,7 +292,7 @@
             "title": "Längd"
         },
         "encryptedNoLicense": "Publikationen är krypterad men saknar LCP-licens!",
-        "expired": "Lånet har gått ut.",
+        "expired": "Lånet har gått ut",
         "expiredLcp": "Den här boken går inte att läsa eftersom LCP-licensen har löpt ut.",
         "incorrectPassphrase": "Inget sparat lösenord passar för publikationen, eller det angivna lösenordet är fel.",
         "lcpEnd": "Slut",
@@ -320,7 +320,7 @@
         "seeMore": "Visa mer",
         "timeLeft": "Tid kvar",
         "title": "Titel",
-        "userKeyCheckInvalid": "Lösenordet är felaktigt"
+        "userKeyCheckInvalid": "Lösenordet är felaktigt."
     },
     "reader": {
         "annotations": {
@@ -530,9 +530,9 @@
             "previous": "Föregående",
             "sentenceDetect": "Markera text-till-tal på meningsnivå",
             "sentenceDetectDescription": "Dela upp långa stycken i meningar.",
-            "speed": "Spelhastighet text-till-tal",
+            "speed": "Spelhastighet för text-till-tal",
             "stop": "Stoppa text-till-tal",
-            "voice": "Text-till-tal-röst"
+            "voice": "Röst för text-till-tal"
         }
     },
     "settings": {
@@ -579,7 +579,7 @@
             "dark": "Mörkt",
             "description": "Applikationens tema matchar operativsystemet.",
             "light": "Ljust",
-            "title": "Applikationens tema\n"
+            "title": "Applikationens tema"
         }
     },
     "wizard": {

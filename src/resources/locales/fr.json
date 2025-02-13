@@ -11,8 +11,8 @@
     },
     "apiapp": {
         "documentation": "Documentation Thorium",
-        "howItWorks": "Comment ça marche ?",
-        "informations": "En France, de nombreuses bibliothèques publiques proposent un catalogue lisible par machine (similaire à l'OPDS mais pas identique), permettant aux usagers de télécharger des publications numériques à partir de leur bibliothèque personnelle. L'intégration de cette technologie dans Thorium Reader vous permet de télécharger un livre électronique ou un livre audio directement dans Thorium Reader pour une lecture instantanée.\nComment connecter votre compte de bibliothèque publique française à Thorium Reader ? C'est très simple. Entrez une ville française (\"Paris\") ou une partie du nom de la bibliothèque dans le champ de recherche et cliquez sur le bouton Rechercher. Une liste de bibliothèques publiques correspondant à votre recherche apparaîtra. Sélectionnez une bibliothèque et cliquez sur Ajouter. Dans la liste actualisée des catalogues, sélectionnez cette bibliothèque : un formulaire d'authentification s'affiche. Saisissez votre nom d'utilisateur/adresse électronique et votre mot de passe, puis cliquez sur Connexion. Vous pouvez maintenant voir le contenu de votre bibliothèque personnelle, à partir de laquelle vous pouvez télécharger et lire les livres électroniques et les livres audio que vous avez précédemment empruntés.",
+        "howItWorks": "Comment ça marche ?",
+        "informations": "En France, de nombreuses bibliothèques publiques proposent un catalogue lisible par machine (similaire à l'OPDS mais pas identique), permettant aux usagers de télécharger des publications numériques à partir de leur bibliothèque personnelle. L'intégration de cette technologie dans Thorium Reader vous permet de télécharger un livre électronique ou un livre audio directement dans Thorium Reader pour une lecture instantanée.\nComment connecter votre compte de bibliothèque publique française à Thorium Reader ? C'est très simple. Entrez une ville française (\"Paris\") ou une partie du nom de la bibliothèque dans le champ de recherche et cliquez sur le bouton Rechercher. Une liste de bibliothèques publiques correspondant à votre recherche apparaîtra. Sélectionnez une bibliothèque et cliquez sur Ajouter. Dans la liste actualisée des catalogues, sélectionnez cette bibliothèque : un formulaire d'authentification s'affiche. Saisissez votre nom d'utilisateur/adresse électronique et votre mot de passe, puis cliquez sur Connexion. Vous pouvez maintenant voir le contenu de votre bibliothèque personnelle, à partir de laquelle vous pouvez télécharger et lire les livres électroniques et les livres audio que vous avez précédemment empruntés.",
         "noLibraryFound": "Aucune bibliothèque trouvée ({{- name}})"
     },
     "app": {
@@ -606,7 +606,7 @@
         },
         "title": {
             "allBooks": "Mes livres",
-            "newFeature": "Nouveauté : Les annotations",
+            "newFeature": "Nouveauté : les annotations",
             "welcome": "Bienvenue dans Thorium 3.0"
         }
     }

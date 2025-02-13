@@ -36,7 +36,7 @@
                     },
                     "help": "Aktivér denne, hvis du ønsker at dine åbne bog-vinduer åbnes igen, når programmet lukkes og startes op igen.",
                     "message": "Ønsker du at gemme denne session?",
-                    "title": "Gem session"
+                    "title": "Gem session?"
                 }
             }
         },
@@ -72,7 +72,7 @@
             "lastAdditions": "Senest tilføjet"
         },
         "export": "Gem som",
-        "exportAnnotation": "Gem noter som",
+        "exportAnnotation": "Gem noter som...",
         "format": "Format",
         "importAnnotation": "Importér noter",
         "lang": "Sprog",
@@ -124,23 +124,23 @@
             "descAuthor": "af {{- author}}",
             "descCreator": "lavet af",
             "descList": "{{- nb}} note(r) fra {{- creator}} vil blive associeret med {{- title}} {{- author}}",
-            "descNewer": "{{- nb}} nyere version af disse noter er allerede associeret med denne bog.",
-            "descOlder": "{{- nb}} ældre version af disse noter er allerede associeret med denne bog.",
-            "descTitle": "Navn på notesamling:",
+            "descNewer": "{{- nb}} nyere version af disse noter er allerede associeret med denne bog",
+            "descOlder": "{{- nb}} ældre version af disse noter er allerede associeret med denne bog",
+            "descTitle": "Navn på notesamling: ",
             "importAll": "Importér alle noter",
             "importWithoutConflict": "Importér noter uden sammenfald",
-            "origin": "",
+            "origin": "Kilde: '{{- title}}' {{- author}}",
             "title": "Ønsker du at importere disse noter?"
         },
         "cancel": "Annullér",
         "deleteAnnotations": "Slet alle noter?",
         "deleteAnnotationsText": "Vil du slette {{- annotationListLength}} note(r)?",
-        "deleteFeed": "Bekræft at du vil slette dette katalog",
-        "deletePublication": "Bekræft at du vil slette bogen",
+        "deleteFeed": "Er du sikker på at du vil slette dette katalog?",
+        "deletePublication": "Er du sikker på at du vil fjerne bogen?",
         "import": "Bekræft at du vil importere disse filer:",
         "importError": "Der skete en fejl, tjek at filernes type er en af ({{acceptedExtension}})",
-        "renew": "Bekræft at du ønsker at forlænge licensen til bogen",
-        "return": "Bekræft at du ønsker at aflevere bogen",
+        "renew": "Vil du forlænge licensen til bogen?",
+        "return": "Ønsker du at aflevere bogen?",
         "yes": "Bekræft"
     },
     "error": {
@@ -154,7 +154,7 @@
         "allBooks": "Alle bøger",
         "catalogs": "Kataloger",
         "downloads": "Downloads",
-        "fitlerTagTitle": "Filtrér efter tag",
+        "fitlerTagTitle": "Filtrer efter tag",
         "gridTitle": "Gittervisning",
         "home": "Boghylde-menu",
         "homeTitle": "Hjem",
@@ -169,11 +169,11 @@
     },
     "library": {
         "lcp": {
-            "hint": "Hint til nøgleord: ",
+            "hint": "Hint til nøgleord:",
             "open": "Åben",
             "password": "Nøgleord",
-            "sentence": "Denne bog kræver et LCP-nøgleord for at åbne: ",
-            "urlHint": "Har du glemt dit nøgleord? Få hjælp her",
+            "sentence": "Denne bog kræver et LCP-nøgleord for at åbnes",
+            "urlHint": "Har du glemt dit nøgleord? Få hjælp her.",
             "whatIsLcp?": "Hvad er LCP?",
             "whatIsLcpInfoDetails": "LCP står for 'Licensed Content Protection'.",
             "whatIsLcpInfoDetailsLink": "For at læse mere, følg dette link til EDRLab websitet."
@@ -182,17 +182,17 @@
     "message": {
         "annotations": {
             "alreadyImported": "Alle noter eksisterer i forvejen, afslutter import.",
-            "emptyFile": "Ingen noter blev fundet i filen",
+            "emptyFile": "Ingen noter blev fundet i filen.",
             "errorParsing": "Fejl under læsning af filen: ",
-            "noBelongTo": "Fejl ved import af noter, mindst en af noterne hører ikke til denne bog",
+            "noBelongTo": "Fejl ved import af noter, mindst en af noterne hører ikke til denne bog.",
             "nothing": "Ingen noter kunne importeres, afslutter import",
-            "success": "Import færdig"
+            "success": "Import færdig."
         },
         "download": {
             "error": "Download af {{- title}} er stødt på en fejl: [{{- err}}]"
         },
         "import": {
-            "alreadyImport": "{{- title}} er allerede importeret",
+            "alreadyImport": "{{- title}} er allerede importeret.",
             "fail": "Import af {{- path}} fejlede. {{- err}}",
             "success": "{{- title}} er nu importeret."
         },
@@ -269,7 +269,7 @@
                 "sound": "Lyd",
                 "unknown": "Ukendt"
             },
-            "certifierReport": "Godkendelsesrapport",
+            "certifierReport": "Godkendelsesrapport:",
             "conformsTo": "Overholder:",
             "moreInformation": "Mere information",
             "name": "Tilgængelighed",
@@ -300,9 +300,9 @@
         "lcpRightsPrint": "Printede sider",
         "lcpStart": "Start",
         "licenceLCP": "Licens (LCP)",
-        "licenseCertificateDateInvalid": "Licensens signatur-dato er ugyldig",
-        "licenseOutOfDate": "Licensen er udløbet",
-        "licenseSignatureInvalid": "Licensens signatur er ugyldig",
+        "licenseCertificateDateInvalid": "Licensens signatur-dato er ugyldig.",
+        "licenseOutOfDate": "Licensen er udløbet.",
+        "licenseSignatureInvalid": "Licensens signatur er ugyldig.",
         "licensed": "Licenseret",
         "markAsRead": "Markér som læst",
         "notStarted": "Ikke læst",
@@ -320,7 +320,7 @@
         "seeMore": "Se mere",
         "timeLeft": "Tilbage",
         "title": "Titel",
-        "userKeyCheckInvalid": "Forkert nøgleord"
+        "userKeyCheckInvalid": "Forkert nøgleord."
     },
     "reader": {
         "annotations": {
@@ -328,7 +328,7 @@
             "addNote": "Lav note",
             "advancedMode": "Øjeblikkelige noter (oprettes automatisk ved markering)",
             "annotationsExport": {
-                "description": "Navngiv denne samling af noter",
+                "description": "Navngiv denne samling af noter:",
                 "title": "Navn"
             },
             "annotationsOptions": "Valgmuligheder",
@@ -342,21 +342,21 @@
                 "red": "Rød",
                 "yellow": "Gul"
             },
-            "date": "",
-            "export": "Gem noter som",
+            "date": "Redigeringsdato",
+            "export": "Gem noter som...",
             "filter": {
                 "all": "Alle",
                 "filterByColor": "Filtrér efter Farve",
                 "filterByCreator": "Filtrér efter Opretter",
                 "filterByDrawtype": "Filtrér efter Overstregningstype",
-                "filterByTag": "Filtrér efter tag",
+                "filterByTag": "Filtrer efter tag",
                 "filterOptions": "Filtreringsvalg",
                 "none": "Ingen"
             },
             "hide": "Skjul",
             "highlight": "Overstregning",
             "noSelectionToast": "Intet markeret",
-            "note": "",
+            "note": "{{- color}} Note",
             "quickAnnotations": "Hurtig-oprettelse (spring redigering over)",
             "saveNote": "Gem",
             "sorting": {
@@ -380,7 +380,7 @@
         "fxl": {
             "fit": "Tilpas"
         },
-        "goToContent": "",
+        "goToContent": "Gå til indhold",
         "marks": {
             "annotations": "Noter",
             "bookmarks": "Bogmærker",
@@ -388,7 +388,7 @@
             "edit": "Rediger",
             "goTo": "Gå til side",
             "landmarks": "Regioner",
-            "progression": "",
+            "progression": "Fremskridt",
             "saveMark": "Gem bogmærke",
             "search": "Søg",
             "searchResult": "Søgning [{{- searchText}}]",
@@ -409,8 +409,8 @@
             "title": "Oplæsning"
         },
         "navigation": {
-            "ZenModeExit": "",
-            "ZenModeTitle": "",
+            "ZenModeExit": "Forlad fokuseret læsetilstand",
+            "ZenModeTitle": "Fokuseret læsetilstand",
             "annotationTitle": "lav note",
             "backHomeTitle": "tilbage til boghylden",
             "bookmarkTitle": "bogmærke",
@@ -467,7 +467,7 @@
             "noFootnotes": "Slå fodnoter fra",
             "noRTLFlip": "Slå højre-til-venstre UI fra",
             "noRuby": "Skjul japansk læsehjælp (Ruby)",
-            "noTemporaryNavTargetOutline": "",
+            "noTemporaryNavTargetOutline": "Slå visuelle navigations-markører fra",
             "paginated": "Sideinddelt",
             "paraSpacing": "Paragraf-mellemrum",
             "pdfZoom": {
@@ -524,7 +524,7 @@
             "activate": "Aktiver syntetisk tale",
             "language": "Sprog",
             "next": "Næste",
-            "options": "",
+            "options": "Indstillinger for syntetisk tale",
             "pause": "Pause",
             "play": "Afspil med syntetisk tale",
             "previous": "Forrige",
@@ -538,14 +538,14 @@
     "settings": {
         "annotationCreator": {
             "creator": "Opretter",
-            "help": "",
+            "help": "Hvis angivet, vil dette navn være at finde i metadata for de eksporterede noter.",
             "name": "Navn",
             "organization": "Organisation",
             "person": "Person",
             "type": "Type:"
         },
         "auth": {
-            "help": "",
+            "help": "Denne handling sletter alle OPDS loginoplysninger.",
             "title": "Administrér adgang til kataloger",
             "wipeData": "Nulstil login-data"
         },
@@ -589,7 +589,7 @@
             "next": "Næste"
         },
         "description": {
-            "annotations": "Overstreg tekst i bøger, vælg udseende og farve, tilføj personlige noter. Lav noter med 'hurtig-oprettelse' (du kan skrive tekst og ændre udseende bagefter). For endnu hurtigere noter, brug \"Øjeblikkelige noter\", der med det samme opretter noter, i det du markerer tekst.",
+            "annotations": "Overstreg tekst i bøger, vælg udseende og farve, tilføj personlige noter. Lav noter med 'hurtig-oprettelse' (du kan skrive tekst og ændre udseende bagefter). For endnu hurtigere noter, brug \"Øjeblikkelige noter\", der med det samme opretter noter, i det du markerer tekst!",
             "catalogs": "Lån bøger fra dit lokale bibliotek eller opdag nye bøger via OPDS feeds. Tilgå bunker af bøger fra et hav af kilder, takket være online-kataloger.",
             "home": "Thorium ser anderledes ud! Lad os se nærmere på hvad der er ændret...",
             "readingView1": "Indstil dine læse- og lytte præferencer: Thorium tilbyder nu flere farvetemaer for både brugerfladen og selve visningen af bøger. Det er nu også nemmere at opsætte 'oplæsning' af e-bøger med syntetisk tale og synkroniseret tekst og lyd.",
