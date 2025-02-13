@@ -72,9 +72,9 @@
             "lastAdditions": "Viimeksi lisätty"
         },
         "export": "Tallenna nimellä",
-        "exportAnnotation": "",
+        "exportAnnotation": "Vie muistiinpanot...",
         "format": "Formaatti",
-        "importAnnotation": "",
+        "importAnnotation": "Tuo muistiinpanot",
         "lang": "Kieli",
         "lastRead": "Luettu viimeksi",
         "moreInfo": "Tietoa julkaisusta",
@@ -129,7 +129,7 @@
             "descTitle": "",
             "importAll": "",
             "importWithoutConflict": "",
-            "origin": "",
+            "origin": "Alkuperäinen julkaisu: {{- title}}, {{- author}}",
             "title": ""
         },
         "cancel": "Peru",
@@ -281,8 +281,8 @@
         },
         "author": "Tekijä",
         "cancelledLcp": "Tämän julkaisun LCP-käyttöoikeus on peruttu.",
-        "certificateRevoked": "Varmenne on kumottu",
-        "certificateSignatureInvalid": "Varmenteen allekirjoitus ei kelpaa",
+        "certificateRevoked": "Varmenne on kumottu.",
+        "certificateSignatureInvalid": "Varmenteen allekirjoitus ei kelpaa.",
         "cover": {
             "img": "kansikuva"
         },
@@ -300,9 +300,9 @@
         "lcpRightsPrint": "Tulostetut sivut",
         "lcpStart": "Aloita",
         "licenceLCP": "Käyttöoikeus (LCP)",
-        "licenseCertificateDateInvalid": "LCP-käyttöoikeuden allekirjoituksen päiväys ei kelpaa",
+        "licenseCertificateDateInvalid": "LCP-käyttöoikeuden allekirjoituksen päiväys ei kelpaa.",
         "licenseOutOfDate": "LCP-käyttöoikeus on vanhentunut.",
-        "licenseSignatureInvalid": "LCP-käyttöoikeuden allekirjoitus ei kelpaa",
+        "licenseSignatureInvalid": "LCP-käyttöoikeuden allekirjoitus ei kelpaa.",
         "licensed": "Lisensoitu",
         "markAsRead": "Merkitse luetuksi",
         "notStarted": "Ei ole aloitettu",
@@ -315,12 +315,12 @@
         "renewButton": "Uudista",
         "returnButton": "Palauta",
         "returnedLcp": "Tämä LCP-suojattu julkaisu on palautettu.",
-        "revokedLcp": "LCP-käyttöoikeus on kumottu",
+        "revokedLcp": "LCP-käyttöoikeus on kumottu.",
         "seeLess": "Näytä vähemmän",
         "seeMore": "Näytä enemmän",
         "timeLeft": "Aikaa jäljellä",
         "title": "Nimike",
-        "userKeyCheckInvalid": "Salasana on väärä"
+        "userKeyCheckInvalid": "Salasana on väärä."
     },
     "reader": {
         "annotations": {
@@ -333,14 +333,14 @@
             },
             "annotationsOptions": "Asetukset",
             "colors": {
-                "bluegreen": "",
+                "bluegreen": "Sinivihreä",
                 "cyan": "",
-                "green": "",
-                "lightblue": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
+                "green": "Vihreä",
+                "lightblue": "Vaaleansininen",
+                "orange": "Oranssi",
+                "purple": "Violetti",
+                "red": "Punainen",
+                "yellow": "Keltainen"
             },
             "date": "",
             "export": "",
@@ -403,7 +403,7 @@
             "play": "Jatka",
             "previous": "Edellinen",
             "skip": "Ohita toissijainen sisältö",
-            "skipDescription": "Ohita toissijainen sisältö kuten sivunvaihdot tai ala- ja loppuviitteet.\n",
+            "skipDescription": "Ohita toissijainen sisältö kuten sivunvaihdot tai ala- ja loppuviitteet.",
             "speed": "Luennan nopeus",
             "stop": "Lopeta luenta",
             "title": "Luenta"
