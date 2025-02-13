@@ -48,10 +48,19 @@ import {
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 
+import { openai } from "@ai-sdk/openai";
+import { streamText } from "ai";
+import { Readable } from "stream";
+import { ReadableStream as WebReadableStream } from "node:stream/web";
+
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
 const debug = debug_("readium-desktop:main#streamerNoHttp");
 debug("_");
+
+const debugAiSdk = debug_("readium-desktop:main#AISDK");
+debug("_");
+
 
 // !!!!!!
 /// BE CAREFUL DEBUG HAS BEED DISABLED IN package.json
@@ -215,6 +224,9 @@ const streamProtocolHandler = async (
         }
     }
 
+    const aiSdkPrefix = "/aisdk/";
+    const isAiSdk = uPathname.startsWith(aiSdkPrefix);
+
     const pdfjsAssetsPrefix = "/pdfjs/";
     const isPdfjsAssets = uPathname.startsWith(pdfjsAssetsPrefix);
 
@@ -231,6 +243,7 @@ const streamProtocolHandler = async (
     const isMediaOverlays = uPathname.endsWith(mediaOverlaysPrefix);
 
     debug("streamProtocolHandler uPathname", uPathname);
+    debug("streamProtocolHandler isAiSdk", isAiSdk);
     debug("streamProtocolHandler isPdfjsAssets", isPdfjsAssets);
     debug("streamProtocolHandler isPublicationAssets", isPublicationAssets);
     debug("streamProtocolHandler isMathJax", isMathJax);
@@ -275,6 +288,60 @@ const streamProtocolHandler = async (
     headers["Access-Control-Allow-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
     // tslint:disable-next-line:max-line-length
     headers["Access-Control-Expose-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
+
+    if (isAiSdk) {
+
+        // use specific debug instance
+        debugAiSdk("AISDK request !!!");
+
+        const body = JSON.parse(req.uploadData[0].bytes.toString());
+        debugAiSdk("AISDK JSON BODY", JSON.stringify(body, null, 4));
+
+        const { messages } = body;
+
+        let readStream: NodeJS.ReadableStream | string = "";
+        try {
+            const result = streamText({
+                model: openai("gpt-4o-mini"),
+                system: "You're goal is to describe the image, you must not reply on any topic other than this image",
+                messages,
+                onError: ({error}) => {
+                    debugAiSdk("AISDK streamText ERROR", error);
+                },
+                onFinish: ({ text, finishReason, usage, response }) => {
+                    debugAiSdk("AISDK streamText FINISH");
+                    debugAiSdk("AISDK text", text);
+                    debugAiSdk("AISDK finishReason", finishReason);
+                    debugAiSdk("AISDK usage", usage);
+                    debugAiSdk("AISDK response", response);
+                },
+            });
+
+            const { warnings, usage, sources, finishReason, providerMetadata, text, reasoning, toolCalls, toolResults, steps, request, response } = result;
+            const promises = [ warnings, usage, sources, finishReason, providerMetadata, text, reasoning, toolCalls, toolResults, steps, request, response];
+
+            promises.map((p, i) => {
+                p.then((v) => debugAiSdk("AISDK PROMISES SUCESS", JSON.stringify(v, null, 4), "INDEX", i));
+                p.catch((e) => debugAiSdk("AISDK PROMISES ERROR", e, "INDEX", i));
+            });
+
+            const dataStream = result.toDataStream();
+            readStream = Readable.fromWeb(dataStream as unknown as WebReadableStream);
+        } catch (e) {
+            debugAiSdk("ERROR: OPENAI stream text", e);
+        }
+
+        const obj: { data: NodeJS.ReadableStream | string, headers: Record<string, string | string[]>, statusCode: number } = {
+            // NodeJS.ReadableStream
+            data: readStream || "",
+            headers,
+            statusCode: 200,
+        };
+
+        callback(obj);
+        return ;
+
+    }
 
     if (isPdfjsAssets) {
 
