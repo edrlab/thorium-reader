@@ -24,6 +24,7 @@ import { TransformWrapper, TransformComponent, useControls } from "react-zoom-pa
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 
 import { useChat } from "@ai-sdk/react";
+import { type UIMessage } from "@ai-sdk/ui-utils";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 // import { nanoid } from "nanoid";
 // import { Attachment } from "ai";
@@ -32,7 +33,7 @@ import Loader from "readium-desktop/renderer/common/components/Loader";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import { Select, SelectItem } from "readium-desktop/renderer/common/components/Select";
-import { aiSDKModelOptions } from "readium-desktop/common/aisdkModelOptions";
+import { aiSDKModelIDEnumType, aiSDKModelOptions } from "readium-desktop/common/aisdkModelOptions";
 
 // https://github.com/huggingface/transformers.js-examples/blob/5b6e0c18677e3e22ef42779a766f48e2ed0a4b18/smolvlm-webgpu/src/components/Chat.jsx#L10
 function render(text: string) {
@@ -78,16 +79,35 @@ const Controls = () => {
 
 const options = aiSDKModelOptions;
 
-const Chat = ({ imageHref, /*imageHrefDataUrl,*/ showImage }: { imageHref: string, /*imageHrefDataUrl: string,*/ showImage: () => void }) => {
+interface IChatContext {
+    modelSelected: {
+        id: aiSDKModelIDEnumType;
+        name: string;
+    }
+    setModel: React.Dispatch<React.SetStateAction<{
+        id: aiSDKModelIDEnumType;
+        name: string;
+    }>>,
+    systemPrompt: string,
+    setSystemPrompt: React.Dispatch<React.SetStateAction<string>>
+    showImage: () => void;
+}
+
+const ChatContext = React.createContext<IChatContext>(undefined);
 
 
-    const [optionSelected, setOption] = React.useState(options[0]);
-    const [systemPrompt, setSystemPromp] = React.useState("Your goal is to describe the image, you should not answer on a topic other than this image");
+let __messages: UIMessage[] = [];
+
+const Chat = ({ imageHref }: { imageHref: string }) => {
+
+
+    const { modelSelected, setModel, systemPrompt, setSystemPrompt, showImage } = React.useContext(ChatContext);
 
     // const image: Attachment = { url: imageHrefDataUrl, contentType: "image/jpeg" };
-    const { messages, input, handleInputChange, handleSubmit, error, reload, isLoading, stop } = useChat({
+    const { messages, input, handleInputChange, handleSubmit, error, reload, isLoading, stop, setMessages } = useChat({
         initialMessages: [
             // { id: nanoid(), role: "user", content: "", experimental_attachments: [image] },
+            ...__messages,
         ],
         api: `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0/aisdk/chat`,
 
@@ -99,11 +119,15 @@ const Chat = ({ imageHref, /*imageHrefDataUrl,*/ showImage }: { imageHref: strin
         // TODO : pass model identification from frontend
         body: {
             imageHref,
-            modelId: optionSelected.id,
+            modelId: modelSelected.id,
             systemPrompt,
         },
         credentials: "same-origin",
     });
+
+    React.useEffect(() => {
+        __messages = [...messages];
+    }, [messages]);
 
     return (
         <div style={{ display: "flex", flexDirection: "column", height: "80vh" }}>
@@ -126,12 +150,12 @@ const Chat = ({ imageHref, /*imageHrefDataUrl,*/ showImage }: { imageHref: strin
                 </style>
                 <Select
                     items={options}
-                    selectedKey={optionSelected.id}
+                    selectedKey={modelSelected.id}
                     onSelectionChange={(key) => {
                         // console.log("selectionchange: ", key);
                         const found = options.find(({ id: _id }) => _id === key);
                         if (found) {
-                            setOption(found);
+                            setModel(found);
                         }
                     }}
                     // disabledKeys={options.filter(option => option.disabled === true).map(option => option.id)}
@@ -153,26 +177,36 @@ const Chat = ({ imageHref, /*imageHrefDataUrl,*/ showImage }: { imageHref: strin
                                 resize: "vertical",
                             }}
                             value={systemPrompt}
-                            onChange={(e) => setSystemPromp(e.target.value)}
-                            // placeholder="Enter your text here..."
+                            onChange={(e) => setSystemPrompt(e.target.value)}
                         ></textarea>
                     </details>
                 </div>
 
                 <div>
-                    <img
-                        style={{
-                            maxWidth: "100px",
-                            maxHeight: "100px",
-                            width: "auto",
-                            height: "auto",
-                            objectFit: "contain",
-                            flex: 1,
-                        }}
-                        src={imageHref}
-                        // alt={attachment.name}
+                    <a
+                        tabIndex={0}
                         onClick={showImage}
-                    />
+                        onKeyUp={(e) => {
+                            if (e.key === "Enter") {
+                                // e.preventDefault();
+                                // e.stopPropagation();
+                                e.currentTarget.click();
+                            }
+                        }}
+                    >
+                        <img
+                            style={{
+                                maxWidth: "100px",
+                                maxHeight: "100px",
+                                width: "auto",
+                                height: "auto",
+                                objectFit: "contain",
+                                flex: 1,
+                            }}
+                            src={imageHref}
+                        // alt={attachment.name}
+                        />
+                    </a>
                 </div>
                 {messages.map(message => (
                     <div style={{
@@ -188,53 +222,44 @@ const Chat = ({ imageHref, /*imageHrefDataUrl,*/ showImage }: { imageHref: strin
                             {message.role === "user" ? "User:" : "AI:"}
                         </div>
                         <div style={{ flex: 1, overflow: "visible", overflowY: "hidden" }} dangerouslySetInnerHTML={{ __html: render(message.content) }}>
-                            {/* {message.content} */}
                         </div>
-                        {/* <div>
-                            {message.experimental_attachments
-                                ?.filter(attachment =>
-                                    attachment.contentType?.startsWith("image/"),
-                                )
-                                .map((attachment, index) => (
-                                    <img
-                                        style={{
-                                            maxWidth: "100px",
-                                            maxHeight: "100px",
-                                            width: "auto",
-                                            height: "auto",
-                                            objectFit: "contain",
-                                            flex: 1,
-                                        }}
-                                        key={`${message.id}-${index}`}
-                                        src={attachment.url}
-                                        alt={attachment.name}
-                                        onClick={showImage}
-                                    />
-                                ))}
-                        </div> */}
                     </div>
                 ))}
+                <div style={{ width: "100%", display: "flex", alignItems: "center", flexDirection: "row" }}>
+                    {messages.length ?
+                        <button style={{ width: "40px", height: "10px", margin: "10px" }} className={stylesButtons.button_nav_primary} onClick={() => {
+                            __messages = [];
+                            setMessages([]);
+                        }}>
+                            <span>RESET</span>
+                        </button>
+                        : <></>
+                    }
+                    {isLoading && (
+                        <>
+                            <Loader svgStyle={{ width: "20px", height: "20px", margin: "10px" }} />
+                            <button style={{ width: "40px", height: "10px", margin: "10px" }} className={stylesButtons.button_nav_primary} type="button" onClick={() => stop()}>
+                                Stop
+                            </button>
+                        </>
+                    )}
+                    {error && (
+                        <>
+                            <button style={{ width: "40px", height: "10px", margin: "10px" }} className={stylesButtons.button_nav_primary} type="button" onClick={() => reload()}>
+                                Retry
+                            </button>
+                            <span>An error occurred.</span>
+                        </>
+                    )}
+                </div>
                 <div id="aichat-anchor"></div>
             </div>
 
 
-            {isLoading && (
-                <div style={{ position: "absolute", bottom: "10px", left: "10px", display: "flex", flexDirection: "row", alignItems: "center" }}>
-                    <button style={{ marginRight: "10px" }} className={stylesButtons.button_nav_primary} type="button" onClick={() => stop()}>
-                        Stop
-                    </button>
-                    <Loader svgStyle={{ width: "20px", height: "20px" }} />
-                </div>
-            )}
 
-            {error && (
-                <>
-                    <button style={{marginRight: "10px"}} className={stylesButtons.button_nav_primary} type="button" onClick={() => reload()}>
-                        Retry
-                    </button>
-                    <div>An error occurred.</div>
-                </>
-            )}
+ 
+
+
 
             <form onSubmit={(event) => handleSubmit(event, {})} style={{
                 display: "flex",
@@ -275,6 +300,18 @@ export const ImageClickManager: React.FC = () => {
     const [chatEnabled, enableChat] = React.useState(false);
     // const imageHrefDataUrl = useGetDataUrl(href);
 
+    const [modelSelected, setModel] = React.useState(options[0]);
+    const [systemPrompt, setSystemPrompt] = React.useState("Your goal is to describe the image, you should not answer on a topic other than this image");
+    const previousHref = React.useRef(href);
+
+
+    React.useEffect(() => {
+        if (href && previousHref.current !== href) {
+            __messages = [];
+            previousHref.current = href;
+        }
+    }, [href]);
+
     return (<>
 
         <Dialog.Root open={open} onOpenChange={(openState: boolean) => {
@@ -306,20 +343,33 @@ export const ImageClickManager: React.FC = () => {
                         chatEnabled ?
 
 
-                            <Chat showImage={() => enableChat((enabled) => !enabled)} /*imageHrefDataUrl={imageHrefDataUrl}*/ imageHref={href}/>
+                            <ChatContext.Provider value={{
+                                modelSelected,
+                                setModel,
+                                systemPrompt,
+                                setSystemPrompt,
+                                showImage: () => enableChat((enabled) => !enabled),
+                            }}>
+
+                                <Chat imageHref={href} />
+                            </ChatContext.Provider>
                             :
-                            <TransformWrapper>
-                                <Controls />
-                                <TransformComponent wrapperStyle={{ display: "flex", width: "100%", height: "100%", minHeight: "inherit" }} >
-                                    <img
-                                        src={href}
-                                        alt="image"
-                                        tabIndex={0}
-                                    />
-                                </TransformComponent>
-                            </TransformWrapper>
+                            <>
+                                <TransformWrapper>
+                                    <Controls />
+                                    <TransformComponent wrapperStyle={{ display: "flex", width: "100%", height: "100%", minHeight: "inherit" }} >
+                                        <img
+                                            src={href}
+                                            alt="image"
+                                            tabIndex={0}
+                                        />
+                                    </TransformComponent>
+                                </TransformWrapper>
+                                <button style={{ position: "absolute", bottom: "10px", right: "10px" }} className={stylesButtons.button_nav_primary} onClick={() => enableChat((enabled) => !enabled)}>
+                                    <span>AI</span>
+                                </button>
+                            </>
                     }
-                    <button style={{position: "absolute", bottom: "10px", right: "10px"}}className={stylesButtons.button_nav_primary} onClick={() => enableChat((enabled) => !enabled)}>AI</button>
                 </Dialog.Content>
             </Dialog.Portal>
         </Dialog.Root>

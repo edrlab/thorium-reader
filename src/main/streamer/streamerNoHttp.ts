@@ -64,7 +64,7 @@ const debugAiSdk = debug_("readium-desktop:main#AISDK");
 debug("_");
 
 // TODO: DEBUG ONLY AISDK
-import 'dotenv/config'
+import "dotenv/config";
 
 // !!!!!!
 /// BE CAREFUL DEBUG HAS BEED DISABLED IN package.json
