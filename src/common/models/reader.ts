@@ -83,6 +83,7 @@ export interface ReaderConfigBooleans {
     noTemporaryNavTargetOutline: boolean;
     noRuby: boolean;
     darken: boolean;
+    ttsAndMediaOverlaysDisableContinuousPlay: boolean;
     mediaOverlaysEnableSkippability: boolean;
     ttsEnableSentenceDetection: boolean;
     mediaOverlaysEnableCaptionsMode: boolean;

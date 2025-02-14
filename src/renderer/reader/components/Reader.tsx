@@ -74,7 +74,7 @@ import {
     MediaOverlaysStateEnum, mediaOverlaysStop, navLeftOrRight,
     setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
     setReadingLocationSaver, ttsClickEnable, ttsNext, ttsOverlayEnable, ttsPause,
-    ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
+    ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsAndMediaOverlaysManualPlayNext, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
     ttsStop, ttsVoice, highlightsClickListen,
     // stealFocusDisable,
     keyboardFocusRequest,
@@ -664,6 +664,7 @@ class Reader extends React.Component<IProps, IState> {
         }
         return isFixedLayout;
     }
+
     private isRTL(isFixedLayout: boolean): boolean {
         const isRTL_PackageMeta = this.props.r2Publication?.Metadata?.Direction === "rtl" || this.props.r2Publication?.Metadata?.Direction === "ttb";
         return isFixedLayout ? isRTL_PackageMeta : (isRTL_PackageMeta || this.state.currentLocation?.docInfo?.isRightToLeft);
@@ -874,7 +875,7 @@ class Reader extends React.Component<IProps, IState> {
                                         (this.props.searchEnable && !this.props.readerConfig.paged) ? stylesReader.isOnSearchScroll
                                         : "")}
                                     ref={this.mainElRef}
-                                    style={{ inset: isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : "75px 50px" }}>
+                                    style={{ inset: this.state.currentLocation?.docInfo?.isVerticalWritingMode || isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : "75px 50px" }}>
                                 </div>
 
                                 {arrowEnabled && !this.state.zenMode ?
@@ -2388,6 +2389,7 @@ class Reader extends React.Component<IProps, IState> {
         if (!this.props.isDivina && !this.props.isPdf && this.ttsOverlayEnableNeedsSync) {
             ttsOverlayEnable(this.props.readerConfig.ttsEnableOverlayMode);
             ttsSentenceDetectionEnable(this.props.readerConfig.ttsEnableSentenceDetection);
+            ttsAndMediaOverlaysManualPlayNext(this.props.readerConfig.ttsAndMediaOverlaysDisableContinuousPlay);
             ttsSkippabilityEnable(this.props.readerConfig.mediaOverlaysEnableSkippability);
         }
         this.ttsOverlayEnableNeedsSync = false;
@@ -2849,6 +2851,7 @@ class Reader extends React.Component<IProps, IState> {
 
     //     mediaOverlaysEnableSkippability(readerConfig.mediaOverlaysEnableSkippability);
     //     ttsSentenceDetectionEnable(readerConfig.ttsEnableSentenceDetection);
+    //     ttsAndMediaOverlaysManualPlayNext(readerConfig.ttsAndMediaOverlaysDisableContinuousPlay);
     //     ttsSkippabilityEnable(readerConfig.mediaOverlaysEnableSkippability);
     //     mediaOverlaysEnableCaptionsMode(readerConfig.mediaOverlaysEnableCaptionsMode);
     //     ttsOverlayEnable(readerConfig.ttsEnableOverlayMode);
@@ -2975,6 +2978,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     // see this.ttsOverlayEnableNeedsSync
     // ttsOverlayEnable(state.reader.config.ttsEnableOverlayMode);
     // ttsSentenceDetectionEnable(state.reader.config.ttsEnableSentenceDetection);
+    // ttsAndMediaOverlaysManualPlayNext(state.reader.config.ttsAndMediaOverlaysDisableContinuousPlay);
     // ttsSkippabilityEnable(state.reader.config.mediaOverlaysEnableSkippability);
 
     // extension or @type ?

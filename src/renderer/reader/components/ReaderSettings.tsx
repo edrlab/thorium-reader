@@ -641,9 +641,9 @@ const ReadingDisplayAlign = () => {
 export const ReadingAudio = ({ useMO }: { useMO: boolean }) => {
     const [__] = useTranslator();
 
-    // : Pick<ReaderConfig, "ttsEnableOverlayMode" | "mediaOverlaysEnableCaptionsMode" | "mediaOverlaysEnableSkippability" | "ttsEnableSentenceDetection">
+    // : Pick<ReaderConfig, "ttsEnableOverlayMode" | "mediaOverlaysEnableCaptionsMode" | "ttsAndMediaOverlaysDisableContinuousPlay" | "mediaOverlaysEnableSkippability" | "ttsEnableSentenceDetection">
     const config = useReaderConfigAll();
-    const { mediaOverlaysEnableCaptionsMode: moCaptions, ttsEnableOverlayMode: ttsCaptions, mediaOverlaysEnableSkippability: skippability, ttsEnableSentenceDetection: splitTTStext } = config;
+    const { mediaOverlaysEnableCaptionsMode: moCaptions, ttsEnableOverlayMode: ttsCaptions, ttsAndMediaOverlaysDisableContinuousPlay: disableContinuousPlay, mediaOverlaysEnableSkippability: skippability, ttsEnableSentenceDetection: splitTTStext } = config;
     const set = useSaveReaderConfigDebounced();
 
     const options = [
@@ -670,6 +670,16 @@ export const ReadingAudio = ({ useMO }: { useMO: boolean }) => {
             onChange: () => {
                 // This is shared with TTS
                 set({ mediaOverlaysEnableSkippability: !skippability });
+            },
+        },
+        {
+            id: "disableContinuousPlay",
+            name: "DisableContinuousPlay",
+            label: `${__("reader.media-overlays.disableContinuousPlay")}`,
+            description: `${__("reader.media-overlays.disableContinuousPlayDescription")}`,
+            checked: disableContinuousPlay,
+            onChange: () => {
+                set({ ttsAndMediaOverlaysDisableContinuousPlay: !disableContinuousPlay });
             },
         },
     ];
@@ -705,6 +715,7 @@ export const ReadingAudio = ({ useMO }: { useMO: boolean }) => {
                             role="checkbox"
                             aria-checked={option.checked}
                             aria-label={option.label}
+                            title={option.description}
                             onKeyDown={(e) => {
                                 // if (e.code === "Space") {
                                 if (e.key === " ") {

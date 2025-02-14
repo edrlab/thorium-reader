@@ -54,6 +54,7 @@ export const readerConfigInitialState: ReaderConfig = {
     noTemporaryNavTargetOutline: false,
     noRuby: false,
     darken: undefined,
+    ttsAndMediaOverlaysDisableContinuousPlay: false,
     mediaOverlaysEnableSkippability: true,
     ttsEnableSentenceDetection: true,
     mediaOverlaysEnableCaptionsMode: false,
