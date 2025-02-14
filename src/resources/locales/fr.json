@@ -406,7 +406,9 @@
             "skipDescription": "Omettre les sauts de pages, notes de de bas de page etc.",
             "speed": "Vitesse de lecture",
             "stop": "Arrêt",
-            "title": "Lire à haute voix"
+            "title": "Lire à haute voix",
+            "disableContinuousPlay": "Désactiver la progression automatique",
+            "disableContinuousPlayDescription": "Ne pas jouer automatiquement l'élément audio suivant, faire une pause immediatement après la fin de l'audio en cours."
         },
         "navigation": {
             "ZenModeExit": "Sortir du mode Zen",
