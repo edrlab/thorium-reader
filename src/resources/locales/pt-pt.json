@@ -66,7 +66,7 @@
         "deleteBook": "Remover",
         "deleteTag": "Apagar etiqueta",
         "description": "Descrição",
-        "emptyTagList": "Não tem documentos etiquetados.",
+        "emptyTagList": "Sem documentos etiquetados.",
         "entry": {
             "continueReading": "Retomar leitura",
             "lastAdditions": "Adicionados recentemente"
@@ -80,7 +80,7 @@
         "moreInfo": "Detalhes do documento",
         "myBooks": "Meus documentos",
         "noPublicationHelpL1": "Soltar ficheiros aqui",
-        "noPublicationHelpL2": "ou use o botão \"{{- importTitle }}\".",
+        "noPublicationHelpL2": "ou usar o botão \"{{- importTitle }}\".",
         "noPublicationHelpL3": "Ficheiros protegidos por PCL são suportados.",
         "noPublicationHelpL4": "Extensões suportadas:",
         "numberOfPages": "Número de páginas",

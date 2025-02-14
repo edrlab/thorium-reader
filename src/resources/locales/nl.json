@@ -12,7 +12,7 @@
     "apiapp": {
         "documentation": "Thorium-documentatie",
         "howItWorks": "Hoe werkt het?",
-        "informations": "In Frankrijk bieden veel openbare bibliotheken een machinaal leesbare catalogus aan (vergelijkbaar met OPDS maar niet identiek), waardoor klanten digitale publicaties van hun persoonlijke boekenplank kunnen downloaden. Door deze technologie in Thorium Reader te integreren, kan je een e-boek of audioboek rechtstreeks naar Thorium Reader downloaden, zodat je het direct kunt lezen.\nHoe koppel je je Franse openbare bibliotheekaccount aan Thorium Reader? Dat is makkelijk. Voer een Franse stad ('Parijs') of een deel van de bibliotheeknaam in het zoekveld in en klik op de knop Zoeken. Er verschijnt een lijst met openbare bibliotheken die overeenkomen met je zoekopdracht. Selecteer een bibliotheek en klik op Toevoegen. Selecteer deze bibliotheek in de bijgewerkte lijst met catalogi: er wordt een authenticatieformulier weergegeven. Voer je gebruikersnaam/e-mailadres en wachtwoord in en klik op Inloggen. Je kunt nu de inhoud van je persoonlijke boekenplank zien, van waaruit je de e-books en luisterboeken die je eerder hebt geleend, kunt downloaden en lezen.",
+        "informations": "In Frankrijk bieden veel openbare bibliotheken een machinaal leesbare catalogus aan (vergelijkbaar met OPDS maar niet identiek), waardoor klanten digitale publicaties van hun persoonlijke boekenplank kunnen downloaden. Door deze technologie in Thorium Reader te integreren, kan je een e-boek of audioboek rechtstreeks naar Thorium Reader downloaden, zodat je het direct kunt lezen.\nHoe koppel je jouw Franse openbare bibliotheekaccount aan Thorium Reader? Dat is makkelijk. Voer een Franse stad ('Parijs') of een deel van de bibliotheeknaam in het zoekveld in en klik op de knop Zoeken. Er verschijnt een lijst met openbare bibliotheken die overeenkomen met je zoekopdracht. Selecteer een bibliotheek en klik op Toevoegen. Selecteer deze bibliotheek in de bijgewerkte lijst met catalogi: er wordt een authenticatieformulier weergegeven. Voer je gebruikersnaam/e-mailadres en wachtwoord in en klik op Inloggen. Je kunt nu de inhoud van je persoonlijke boekenplank zien, van waaruit je de e-books en luisterboeken die je eerder hebt geleend, kunt downloaden en lezen.",
         "noLibraryFound": "Geen bibliotheek gevonden ({{- name}})"
     },
     "app": {
@@ -35,8 +35,8 @@
                         "yes": "Ja"
                     },
                     "help": "Activeer dit als je wilt dat leesvensters die open zijn wanneer je de applicatie sluit, automatisch opnieuw worden geopend bij de volgende start.",
-                    "message": "Wil je deze sessie bewaren?",
-                    "title": "Bewaar sessie"
+                    "message": "De leessessie opslaan en herstellen",
+                    "title": "Bewaar sessie?"
                 }
             }
         },
@@ -66,13 +66,13 @@
         "deleteBook": "Verwijder",
         "deleteTag": "Verwijder label",
         "description": "Beschrijving",
-        "emptyTagList": "Je hebt geen boeken met een label",
+        "emptyTagList": "Je hebt geen boeken met een label.",
         "entry": {
             "continueReading": "Ga verder met lezen",
             "lastAdditions": "Recent toegevoegd"
         },
         "export": "Bewaar als",
-        "exportAnnotation": "Exporteer aantekeningen",
+        "exportAnnotation": "Exporteer aantekeningen...",
         "format": "Formaat",
         "importAnnotation": "Importeer aantekeningen",
         "lang": "Taal",
@@ -145,7 +145,7 @@
     },
     "error": {
         "errorBox": {
-            "error": "Foutmelding",
+            "error": "Foutmelding:",
             "message": "Een fout is opgetreden in {{- filename}}",
             "title": "Interne {{- appName}} fout"
         }
@@ -169,11 +169,11 @@
     },
     "library": {
         "lcp": {
-            "hint": "Hint : ",
+            "hint": "Hint:",
             "open": "Open",
             "password": "Wachtwoordzin",
-            "sentence": "Deze publicatie vereist een LCP wachtwoordzin om te openen: ",
-            "urlHint": "Wachtwoordzin vergeten? Vind hulp hier",
+            "sentence": "Deze publicatie vereist een LCP wachtwoordzin om te openen",
+            "urlHint": "Wachtwoordzin vergeten? Vind hulp hier.",
             "whatIsLcp?": "Wat is LCP?",
             "whatIsLcpInfoDetails": "LCP staat voor 'Licensed Content Protection'.",
             "whatIsLcpInfoDetailsLink": "Klik voor meer informatie op deze link naar de EDRLab-website."
@@ -192,7 +192,7 @@
             "error": "Het downloaden van{{- title}} is mislukt: [{{- err}}]"
         },
         "import": {
-            "alreadyImport": "{{- title}} is al toegevoegd",
+            "alreadyImport": "{{- title}} is al toegevoegd.",
             "fail": "Het toevoegen van {{- path}} is mislukt. {{- err}}",
             "success": "Het toevoegen van {{- title}} is gelukt."
         },
@@ -230,7 +230,7 @@
             "error": "Het is niet mogelijk om toegang te krijgen tot de OPDS feed",
             "noInternet": "Geen Internet",
             "noInternetMessage": "Probeer : controleer de netwerkkabel, modem, router or wifi",
-            "reject": "Sorry, er is een onverwachte fout opgetreden bij het verwerken van de OPDS feed",
+            "reject": "Sorry, er is een onverwachte fout opgetreden!",
             "timeout": "Er was een network timeout, probeer het later nog eens"
         },
         "next": "Volgende",
@@ -269,7 +269,7 @@
                 "sound": "Geluid",
                 "unknown": "Onbekend"
             },
-            "certifierReport": "Certificeringsrapport",
+            "certifierReport": "Certificeringsrapport:",
             "conformsTo": "Voldoet aan:",
             "moreInformation": "Meer informatie",
             "name": "Toegankelijkheid",
@@ -281,8 +281,8 @@
         },
         "author": "Auteur",
         "cancelledLcp": "Dit boek kan niet worden gelezen omdat de LCP licentie is geannuleerd.",
-        "certificateRevoked": "Certificaat is ingetrokken",
-        "certificateSignatureInvalid": "Certificaat handtekening is ongeldig",
+        "certificateRevoked": "LCP licentie certificaat is ingetrokken.",
+        "certificateSignatureInvalid": "LCP licentie certificaat handtekening is ongeldig.",
         "cover": {
             "img": "cover afbeelding"
         },
@@ -300,9 +300,9 @@
         "lcpRightsPrint": "Toegestaan aantal af te drukken pagina's",
         "lcpStart": "Start",
         "licenceLCP": "Licentie (LCP)",
-        "licenseCertificateDateInvalid": "Datum in de Licentie handtekening is iongeldig",
-        "licenseOutOfDate": "Licentie is verlopen",
-        "licenseSignatureInvalid": "Licentie handtekening is ongeldig",
+        "licenseCertificateDateInvalid": "Certificaat LCP aanbieder verlopen.",
+        "licenseOutOfDate": "LCP Licentie is verlopen.",
+        "licenseSignatureInvalid": "Ongeldige LCP Licentie handtekening.",
         "licensed": "Gelicentieerd",
         "markAsRead": "Markeer als gelezen",
         "notStarted": "Niet gestart",
@@ -320,7 +320,7 @@
         "seeMore": "Toon meer",
         "timeLeft": "Resterende tijd",
         "title": "Titel",
-        "userKeyCheckInvalid": "Wachtwoordzin is niet correct"
+        "userKeyCheckInvalid": "Wachtwoordzin is niet correct."
     },
     "reader": {
         "annotations": {
@@ -388,7 +388,7 @@
             "edit": "Wijzig",
             "goTo": "Ga naar pagina",
             "landmarks": "structuur elementen",
-            "progression": "Oplopend",
+            "progression": "Voortgang",
             "saveMark": "Bladwijzer opslaan",
             "search": "Zoek",
             "searchResult": "Zoek [{{- searchText}}]",
@@ -415,7 +415,7 @@
             "backHomeTitle": "terug naar de boekenplank",
             "bookmarkTitle": "bladwijzer",
             "currentPage": "Huidige pagina: {{- current}}",
-            "currentPageTotal": "Huidige pagina: {{- current}}/{{- total}",
+            "currentPageTotal": "Huidige pagina: {{- current}}/{{- total}}",
             "detachWindowTitle": "maak het venster los",
             "goTo": "Ga naar",
             "goToError": "Deze paginaovergang bestaat niet",
@@ -524,7 +524,7 @@
             "activate": "Activeer Tekst Naar Spraak",
             "language": "Tekst Naar Spraak taal",
             "next": "Volgende Tekst Naar Spraak",
-            "options": "",
+            "options": "Tekst Naar Spraak opties",
             "pause": "Pauzeer Tekst Naar Spraak",
             "play": "Speel Tekst Naar Spraak",
             "previous": "Vorige Tekst Naar Spraak",
