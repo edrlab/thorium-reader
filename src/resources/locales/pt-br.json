@@ -34,8 +34,8 @@
                         "no": "Não",
                         "yes": "Sim"
                     },
-                    "help": "",
-                    "message": "Você quer salvar a sessão?",
+                    "help": "Ative isso se quiser que as janelas do leitor estejam abertas quando fechar o aplicativo para reabrir automaticamente no próximo lançamento.",
+                    "message": "Salvar e restaurar a sessão de leitura",
                     "title": "Salvar sessão"
                 }
             }
@@ -72,9 +72,9 @@
             "lastAdditions": "Adicionado recentemente"
         },
         "export": "Exportar",
-        "exportAnnotation": "",
+        "exportAnnotation": "Exportar notas...",
         "format": "Formato",
-        "importAnnotation": "",
+        "importAnnotation": "Importar notas",
         "lang": "Idioma",
         "lastRead": "Última leitura",
         "moreInfo": "Detalhes da publicação",
@@ -121,20 +121,20 @@
     },
     "dialog": {
         "annotations": {
-            "descAuthor": "",
-            "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
-            "descTitle": "",
-            "importAll": "",
-            "importWithoutConflict": "",
-            "origin": "",
-            "title": ""
+            "descAuthor": "por '{{- author}} '",
+            "descCreator": "criado por",
+            "descList": "{{- nb}} A(s) nota(s) de {{- creator}} será(ão) importada(s) em '{{- title}}' {{- author}}",
+            "descNewer": "Conflito(s): {{- nb}} nota(s) mais recente(s)",
+            "descOlder": "Conflito(s): {{- nb}} nota)(s) mais antiga(s)",
+            "descTitle": "Título de anotações: ",
+            "importAll": "Importar todas as notas",
+            "importWithoutConflict": "Importar apenas notas sem conflito",
+            "origin": "Publicação de origem: '{{- title}}' {{- author}}",
+            "title": "Importar notas?"
         },
         "cancel": "Cancelar",
-        "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
+        "deleteAnnotations": "Excluir anotações?",
+        "deleteAnnotationsText": "Tem certeza de que deseja excluir {{- annotationListLength}} notas(s)?",
         "deleteFeed": "Deseja excluir este catálogo?",
         "deletePublication": "Deseja excluir esta publicação?",
         "import": "Deseja importar estes arquivos:",
@@ -170,7 +170,7 @@
     "library": {
         "lcp": {
             "hint": "Dica : ",
-            "open": "",
+            "open": "Abrir",
             "password": "Senha",
             "sentence": "Insira a senha desta publicação protegida por LCP:",
             "urlHint": "Esqueceu sua senha? O suporte está disponível:",
@@ -181,12 +181,12 @@
     },
     "message": {
         "annotations": {
-            "alreadyImported": "",
-            "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
-            "nothing": "",
-            "success": ""
+            "alreadyImported": "Todas as notas já estão importadas.",
+            "emptyFile": "Não há notas disponíveis no arquivo.",
+            "errorParsing": "Erro durante a análise do arquivo: ",
+            "noBelongTo": "Incapaz de importar notas, pelo menos uma nota não pertence à publicação.",
+            "nothing": "Não há nota pronta para ser importada, abortando a importação",
+            "success": "Importação concluída com sucesso."
         },
         "download": {
             "error": "O download de {{- title}} falhou: [{{- err}}]"
@@ -291,10 +291,10 @@
         "duration": {
             "title": "Duração"
         },
-        "encryptedNoLicense": "",
+        "encryptedNoLicense": "A publicação está criptografada, mas não tem licença LCP!",
         "expired": "Empréstimo expirado",
         "expiredLcp": "A licença LCP desta publicação expirou.",
-        "incorrectPassphrase": "",
+        "incorrectPassphrase": "Nenhuma senha armazenada funciona na publicação, ou a senha inserida é errada.",
         "lcpEnd": "Fim",
         "lcpRightsCopy": "Caracteres copiados ",
         "lcpRightsPrint": "Páginas impressas",
@@ -328,42 +328,42 @@
             "addNote": "Anotar",
             "advancedMode": "Modo instantâneo (criação automática após seleção)",
             "annotationsExport": {
-                "description": "",
-                "title": ""
+                "description": "Nomeie as notas exportadas:",
+                "title": "Título"
             },
             "annotationsOptions": "Opções",
             "colors": {
-                "bluegreen": "",
-                "cyan": "",
-                "green": "",
-                "lightblue": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
+                "bluegreen": "Azul-verde",
+                "cyan": "Azul-ciano",
+                "green": "Verde",
+                "lightblue": "Azul suave",
+                "orange": "Laranja",
+                "purple": "Roxo",
+                "red": "Vermelho",
+                "yellow": "Amarelo"
             },
-            "date": "",
-            "export": "",
+            "date": "Data de modificação",
+            "export": "Salvar notas como...",
             "filter": {
-                "all": "",
-                "filterByColor": "",
-                "filterByCreator": "",
-                "filterByDrawtype": "",
-                "filterByTag": "",
-                "filterOptions": "",
-                "none": ""
+                "all": "Todos",
+                "filterByColor": "Filtrar por Cor",
+                "filterByCreator": "Filtro por Criador",
+                "filterByDrawtype": "Filtrar por Tipo",
+                "filterByTag": "Filtrar por Tag",
+                "filterOptions": "Opções de filtro",
+                "none": "Nenhum"
             },
             "hide": "Não mostrar",
             "highlight": "Destaque",
             "noSelectionToast": "Nenhuma seleção",
-            "note": "",
+            "note": "Nota {{- color}}",
             "quickAnnotations": "Criação rápida (pular editor)",
             "saveNote": "Salvar",
             "sorting": {
-                "lastcreated": "",
-                "lastmodified": "",
-                "progression": "",
-                "sortingOptions": ""
+                "lastcreated": "Última criação",
+                "lastmodified": "Última modificação",
+                "progression": "Andamento",
+                "sortingOptions": "Opções de classificação"
             },
             "toggleMarginMarks": "Exibir nas margens",
             "type": {
@@ -380,7 +380,7 @@
         "fxl": {
             "fit": "Ajustar"
         },
-        "goToContent": "",
+        "goToContent": "Ir para o conteúdo",
         "marks": {
             "annotations": "Anotações",
             "bookmarks": "Marcadores",
@@ -388,7 +388,7 @@
             "edit": "Editar",
             "goTo": "Ir para página",
             "landmarks": "Pontos de referência",
-            "progression": "",
+            "progression": "Andamento",
             "saveMark": "Salvar marcador",
             "search": "Buscas",
             "searchResult": "Busca [{{- searchText}}]",
@@ -406,11 +406,13 @@
             "skipDescription": "Saltar/ignorar conteúdo auxiliar, como quebras de página, notas de rodapé/notas finais, etc.",
             "speed": "Velocidade de reprodução da narração",
             "stop": "Parar narração",
-            "title": "Narração"
+            "title": "Narração",
+            "disableContinuousPlay": "Desativar a reprodução contínua",
+            "disableContinuousPlayDescription": "Não reproduza automaticamente o próximo item, pare imediatamente após o item atual terminado a reprodução."
         },
         "navigation": {
-            "ZenModeExit": "",
-            "ZenModeTitle": "",
+            "ZenModeExit": "Sair do modo Zen",
+            "ZenModeTitle": "Modo Zen",
             "annotationTitle": "anotação",
             "backHomeTitle": "voltar à estante",
             "bookmarkTitle": "marcador",
@@ -449,7 +451,7 @@
                 "title": "Colunas",
                 "two": "2 cols"
             },
-            "customFontSelected": "",
+            "customFontSelected": "Você escolheu uma fonte personalizada",
             "customizeReader": "Personalize a formatação do texto",
             "disabled": "desabilitado",
             "display": "Exibição",
@@ -467,7 +469,7 @@
             "noFootnotes": "Desativar notas de rodapé",
             "noRTLFlip": "Desativar UI da direita para a esquerda",
             "noRuby": "Ocultar Ruby Japonês",
-            "noTemporaryNavTargetOutline": "",
+            "noTemporaryNavTargetOutline": "Desativar indicadores de navegação visual",
             "paginated": "Paginado",
             "paraSpacing": "Espaçamento entre parágrafos",
             "pdfZoom": {
@@ -484,14 +486,14 @@
                 "title": "Ampliação"
             },
             "preset": {
-                "apply": "",
-                "applyDetails": "",
-                "detail": "",
-                "reset": "",
-                "resetDetails": "",
-                "save": "",
-                "saveDetails": "",
-                "title": ""
+                "apply": "Aplicar",
+                "applyDetails": "Aplicar sua configuração preferida à publicação atual.",
+                "detail": "Salvar / Aplicar / Redefinir sua configuração preferida.",
+                "reset": "Redefinir",
+                "resetDetails": "Redefinir a configuração preferida (configurações padrão).",
+                "save": "Salvar",
+                "saveDetails": "Esta ação salva a configuração atual, ou seja, suas opções de exibição e formatação de texto preferidas. As configurações podem então ser aplicadas a outras publicações clicando no botão \"aplicar\" em outras janelas do leitor.",
+                "title": "Referências"
             },
             "preview": "pré-visualização",
             "reduceMotion": "Reduzir o movimento",
@@ -522,9 +524,9 @@
         },
         "tts": {
             "activate": "Ativar Texto para fala",
-            "language": "",
+            "language": "Idioma do TTS",
             "next": "Próximo Texto para fala",
-            "options": "",
+            "options": "Opções de TTS",
             "pause": "Pausar Texto para fala",
             "play": "Tocar Texto para fala",
             "previous": "Texto para fala anterior",
@@ -537,16 +539,16 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "",
-            "help": "",
-            "name": "",
-            "organization": "",
-            "person": "",
-            "type": ""
+            "creator": "Criador de notas (opcional)",
+            "help": "Se especificado, este nome será incluído nos metadados das notas exportadas.",
+            "name": "Nome",
+            "organization": "Organização",
+            "person": "Pessoa",
+            "type": "Tipo:"
         },
         "auth": {
-            "help": "",
-            "title": "",
+            "help": "Esta ação exclui todas as credenciais de login OPDS.",
+            "title": "Acesso a catálogos de publicação",
             "wipeData": "Limpar dados de login"
         },
         "keyboard": {
@@ -563,8 +565,8 @@
             "languageChoice": "Idioma"
         },
         "library": {
-            "enableAPIAPP": "",
-            "title": ""
+            "enableAPIAPP": "Activar o sistema de bibliotecas 'PNB'",
+            "title": "Acesso às contas da biblioteca francesa"
         },
         "session": {
             "title": "Salvar sessão"
