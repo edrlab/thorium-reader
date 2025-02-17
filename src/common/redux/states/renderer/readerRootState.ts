@@ -14,27 +14,31 @@ import { ISearchState } from "./search";
 import { TMapState } from "readium-desktop/utils/redux-reducers/map.reducer";
 
 // import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 import { TBookmarkState } from "../bookmark";
 import { IRTLFlipState } from "./rtlFlip";
-import { IAnnotationModeState, TAnnotationState } from "./annotation";
+import { IAnnotationModeState, TAnnotationState, TAnnotationTagsIndex } from "./annotation";
 import { ITTSState } from "readium-desktop/renderer/reader/redux/state/tts";
 import { IMediaOverlayState } from "readium-desktop/renderer/reader/redux/state/mediaOverlay";
 import { IAllowCustomConfigState } from "readium-desktop/renderer/reader/redux/state/allowCustom";
+import { ICacheDocument } from "./resourceCache";
 
 export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
     picker: IPickerState;
     search: ISearchState;
+    resourceCache: ICacheDocument[];
     mode: ReaderMode;
     annotation: IAnnotationModeState;
+    annotationTagsIndex: TAnnotationTagsIndex;
 }
 
 export interface IReaderStateReader {
     config: ReaderConfig;
     info: ReaderInfo;
-    locator: LocatorExtended;
+    locator: MiniLocatorExtended;
     bookmark: TBookmarkState;
     annotation: TAnnotationState;
     highlight: {
@@ -49,4 +53,11 @@ export interface IReaderStateReader {
     mediaOverlay: IMediaOverlayState;
     allowCustomConfig: IAllowCustomConfigState;
     transientConfig: ReaderConfigPublisher;
+
+
+    // got the lock
+    // acquired on first reader opened with the same publication UUID instance
+    // allow to do computation for the publication on one reader and not across reader
+    // it is a kind of Mutex in multi-threading concept
+    lock: boolean;
 }

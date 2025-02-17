@@ -7,8 +7,8 @@
 
 import * as debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { all, call, put, take} from "typed-redux-saga/macro";
-import { select as selectTyped, take as takeTyped, race as raceTyped, SagaGenerator, call as callTyped} from "typed-redux-saga";
+import { SagaGenerator } from "typed-redux-saga";
+import { select as selectTyped, take as takeTyped, race as raceTyped, put as putTyped, all as allTyped, call as callTyped } from "typed-redux-saga/macro";
 import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionSetConfig, readerLocalActionSetLocator } from "../actions";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -16,10 +16,13 @@ import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
-import { LocatorExtended, highlightsDrawMargin } from "@r2-navigator-js/electron/renderer";
-import { HighlightDrawTypeBackground, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline } from "r2-navigator-js/dist/es8-es2017/src/electron/common/highlight";
+
+import { highlightsDrawMargin } from "@r2-navigator-js/electron/renderer";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+
+import { HighlightDrawTypeBackground, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
-import { diReaderGet } from "../../di";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
@@ -38,7 +41,7 @@ const convertDrawTypeToNumber = (drawType: TDrawType) => {
 //         // const { payload: { uuid } } = action;
 
 //         // const { currentFocusUuid } = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.focus);
-//         // yield* put(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: true}));
+//         // yield* putTyped(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: true}));
 //     }
 // }
 
@@ -49,12 +52,14 @@ const convertDrawTypeToNumber = (drawType: TDrawType) => {
 //     // const { payload: { uuid } } = action;
 
 //     // const { currentFocusUuid } = yield* selectTyped((store: IReaderRootState) => store.annotationControlMode.focus);
-//     // yield* put(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: false}));
+//     // yield* putTyped(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: false}));
 // }
 
 function* annotationUpdate(action: readerActions.annotation.update.TAction) {
     debug(`annotationUpdate-- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
-    const {payload: {uuid, locatorExtended: {locator: {href}, selectionInfo}, color: newColor, drawType}} = action;
+
+    const [_, newAnnot] = action.payload;
+    const {uuid, locatorExtended: {locator: {href}, selectionInfo}, color: newColor, drawType, tags: _tags} = newAnnot;
 
     const item = yield* selectTyped((store: IReaderRootState) => store.reader.highlight.handler.find(([_, highlightState]) => highlightState.uuid === uuid));
 
@@ -62,12 +67,12 @@ function* annotationUpdate(action: readerActions.annotation.update.TAction) {
         const { def: { color: previousColor, drawType: previousDrawType } } = item[1];
 
         if (previousColor.blue !== newColor.blue || previousColor.green !== newColor.green || previousColor.red !== newColor.red || convertDrawTypeToNumber(drawType) !== previousDrawType) {
-            yield* put(readerLocalActionHighlights.handler.pop.build([{ uuid }]));
-            yield* put(readerLocalActionHighlights.handler.push.build([{ uuid, href, def: { selectionInfo, color: newColor, group: "annotation", drawType: convertDrawTypeToNumber(drawType) } }]));
+            yield* putTyped(readerLocalActionHighlights.handler.pop.build([{ uuid }]));
+            yield* putTyped(readerLocalActionHighlights.handler.push.build([{ uuid, href, def: { selectionInfo, color: newColor, group: "annotation", drawType: convertDrawTypeToNumber(drawType) } }]));
         }
     } else {
         // error sync between hightlight data array and annotation array
-        yield* put(readerLocalActionHighlights.handler.pop.build([{ uuid }]));
+        yield* putTyped(readerLocalActionHighlights.handler.pop.build([{ uuid }]));
     }
 }
 
@@ -76,7 +81,7 @@ function* annotationPush(action: readerActions.annotation.push.TAction) {
     debug(`annotationPush : [${JSON.stringify(action.payload, null, 4)}]`);
     const {payload: {uuid, locatorExtended: {locator: {href}, selectionInfo}, color, drawType}} = action;
 
-    yield* put(readerLocalActionHighlights.handler.push.build([{ uuid, href, def: { selectionInfo, color, group: "annotation", drawType: convertDrawTypeToNumber(drawType) } }]));
+    yield* putTyped(readerLocalActionHighlights.handler.push.build([{ uuid, href, def: { selectionInfo, color, group: "annotation", drawType: convertDrawTypeToNumber(drawType) } }]));
 }
 
 function* annotationPop(action: readerActions.annotation.pop.TAction) {
@@ -86,45 +91,53 @@ function* annotationPop(action: readerActions.annotation.pop.TAction) {
         uuid,
     } = action.payload;
 
-    yield* put(readerLocalActionHighlights.handler.pop.build([{uuid}]));
+    yield* putTyped(readerLocalActionHighlights.handler.pop.build([{uuid}]));
 }
 
-function* createAnnotation(locatorExtended: LocatorExtended, color: IColor, comment: string, drawType: TDrawType) {
+function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, comment: string, drawType: TDrawType, tags: string[]) {
 
     // clean __selection global variable state
     __selectionInfoGlobal.locatorExtended = undefined;
 
+    const creator = yield* selectTyped((state: IReaderRootState) => state.creator);
+
     debug(`Create an annotation for, [${locatorExtended.selectionInfo.cleanText.slice(0, 10)}]`);
-    yield* put(readerActions.annotation.push.build({
+    yield* putTyped(readerActions.annotation.push.build({
         color,
         comment,
         locatorExtended,
         drawType,
+        tags,
+        creator: {
+            id: creator.id,
+            type: creator.type, // not used, only the id is used to target the self creator ,, but required in models : https://github.com/readium/annotations/?tab=readme-ov-file#11-creator
+        },
+        created: (new Date()).getTime(),
     }));
 
     // sure! close the popover
-    yield* put(readerLocalActionAnnotations.enableMode.build(false, undefined));
+    yield* putTyped(readerLocalActionAnnotations.enableMode.build(false, undefined));
 }
 
-function* newLocatorEditAndSaveTheNote(locatorExtended: LocatorExtended): SagaGenerator<void> {
+function* newLocatorEditAndSaveTheNote(locatorExtended: MiniLocatorExtended): SagaGenerator<void> {
     const defaultColor = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_defaultColor);
     const defaultDrawType = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_defaultDrawType);
 
     // check the boolean value of annotation_popoverNotOpenOnNoteTaking
     const annotation_popoverNotOpenOnNoteTaking = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_popoverNotOpenOnNoteTaking);
     if (annotation_popoverNotOpenOnNoteTaking) {
-        yield* call(createAnnotation, locatorExtended, {...defaultColor}, "", defaultDrawType);
+        yield* callTyped(createAnnotation, locatorExtended, {...defaultColor}, "", defaultDrawType, []);
         return;
     }
 
     // open popover to edit and save the note
-    yield* put(readerLocalActionAnnotations.enableMode.build(true, locatorExtended));
+    yield* putTyped(readerLocalActionAnnotations.enableMode.build(true, locatorExtended));
 
     // wait the action of the annotation popover, the user select the text, click on "take the note" button and then edit his note with the popover.
     // 2 choices: cancel (annotationModeEnabled = false) or takeNote with color and comment
     const { cancelAction, noteTakenAction } = yield* raceTyped({
-        cancelAction: takeTyped(readerLocalActionAnnotations.enableMode.build),
-        noteTakenAction: takeTyped(readerLocalActionAnnotations.createNote.build),
+        cancelAction: takeTyped(readerLocalActionAnnotations.enableMode.ID),
+        noteTakenAction: takeTyped(readerLocalActionAnnotations.createNote.build), // not .ID because we need Action return type
     });
 
     if (cancelAction) {
@@ -134,11 +147,12 @@ function* newLocatorEditAndSaveTheNote(locatorExtended: LocatorExtended): SagaGe
         return;
     } else if (noteTakenAction) {
 
-        const { color, comment, drawType } = noteTakenAction.payload;
-        debug(`annotation save the note with the color: ${color} and comment: ${comment.slice(0, 20)}`);
+        const { color, comment, drawType, tags } = noteTakenAction.payload;
+        debug(`annotation save the note with the color: ${color} , comment: ${comment.slice(0, 20)} , drawType: ${drawType} , tags: ${tags}`);
+
 
         // get color and comment and save the note
-        yield* call(createAnnotation, locatorExtended, color, comment, drawType);
+        yield* callTyped(createAnnotation, locatorExtended, color, comment, drawType, tags);
 
     } else {
         debug("ERROR: second yield RACE not worked !!?!!");
@@ -149,26 +163,23 @@ function* annotationButtonTrigger(_action: readerLocalActionAnnotations.trigger.
 
     const { locatorExtended } = __selectionInfoGlobal;
     if (!locatorExtended) {
-        const translator = yield* callTyped(
-            () => diReaderGet("translator"));
-    
         debug("annotationBtnTriggerRequestedAction received");
         // trigger a Toast notification to user
-        yield* put(
+        yield* putTyped(
             toastActions.openRequest.build(
                 ToastType.Error,
-                translator.translate("reader.annotations.noSelectionToast"),
+                getTranslator().__("reader.annotations.noSelectionToast"),
             ),
         );
         return ;
     }
 
     debug("annotation trigger btn requested, create annotation");
-    yield* call(newLocatorEditAndSaveTheNote, locatorExtended);
+    yield* callTyped(newLocatorEditAndSaveTheNote, locatorExtended);
 
 }
 
-const __selectionInfoGlobal: {locatorExtended: LocatorExtended | undefined} = {locatorExtended: undefined};
+const __selectionInfoGlobal: {locatorExtended: MiniLocatorExtended | undefined} = {locatorExtended: undefined};
 function* setLocator(action: readerLocalActionSetLocator.TAction) {
 
     const locatorExtended = action.payload;
@@ -186,7 +197,7 @@ function* setLocator(action: readerLocalActionSetLocator.TAction) {
     const annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator = (window as any).__annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator || false;
 
     if (annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator) {
-        yield* call(newLocatorEditAndSaveTheNote, locatorExtended);
+        yield* callTyped(newLocatorEditAndSaveTheNote, locatorExtended);
         return ;
     }
 }
@@ -195,9 +206,9 @@ function* readerStart() {
 
     debug("iframe reader viewport waiting to start...");
 
-    yield* all([
-        take(readerLocalActionSetLocator.build),
-        take(winActions.initSuccess.build),
+    yield* allTyped([
+        takeTyped(readerLocalActionSetLocator.ID),
+        takeTyped(winActions.initSuccess.ID),
     ]);
 
     // divina,
@@ -223,18 +234,21 @@ function* readerStart() {
 
     const annotations = yield* selectTyped((store: IReaderRootState) => store.reader.annotation);
     const annotationsUuids = annotations.map(([_, annotationState]) => ({ uuid: annotationState.uuid }));
-    yield* put(readerLocalActionHighlights.handler.pop.build(annotationsUuids));
+    yield* putTyped(readerLocalActionHighlights.handler.pop.build(annotationsUuids));
 
     const annotationsHighlighted: IHighlightHandlerState[] = annotations.map(
         ([_, { uuid, locatorExtended: { locator: { href }, selectionInfo }, color, drawType}]) =>
             ({ uuid, href, def: { selectionInfo, color, group: "annotation", drawType: convertDrawTypeToNumber(drawType) }}));
 
-    yield* put(readerLocalActionHighlights.handler.push.build(annotationsHighlighted));
+    yield* putTyped(readerLocalActionHighlights.handler.push.build(annotationsHighlighted));
 
     debug(`${annotationsHighlighted.length} annotation(s) drawn`);
 }
 
 function* captureHightlightDrawMargin(action: readerLocalActionSetConfig.TAction) {
+
+    const { annotation_defaultDrawView } = action.payload;
+    if (!annotation_defaultDrawView) return ;
 
     // divina,
     const { info, locator } = yield* selectTyped((state: IReaderRootState) => state.reader);
@@ -248,8 +262,6 @@ function* captureHightlightDrawMargin(action: readerLocalActionSetConfig.TAction
         return;
     }
 
-    const { annotation_defaultDrawView } = action.payload;
-
     debug(`captureHightlightDrawMargin : readerLocalActionSetConfig CHANGED apply=${annotation_defaultDrawView}`);
     if (annotation_defaultDrawView === "margin") {
         highlightsDrawMargin(["annotation"]);
@@ -259,7 +271,7 @@ function* captureHightlightDrawMargin(action: readerLocalActionSetConfig.TAction
 }
 
 export const saga = () =>
-    all([
+    allTyped([
         takeSpawnEvery(
             readerLocalActionSetConfig.ID,
             captureHightlightDrawMargin,

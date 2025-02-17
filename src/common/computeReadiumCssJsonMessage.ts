@@ -112,6 +112,8 @@ export const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayl
 
         noFootnotes: settings.noFootnotes,
 
+        noTemporaryNavTargetOutline: settings.noTemporaryNavTargetOutline,
+
         noRuby: settings.noRuby,
     };
 

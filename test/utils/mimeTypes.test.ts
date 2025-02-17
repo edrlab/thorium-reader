@@ -1,3 +1,5 @@
+import { expect, test } from "@jest/globals";
+
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 
 test("html mimeTypes", () => {

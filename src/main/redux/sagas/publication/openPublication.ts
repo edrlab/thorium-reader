@@ -15,7 +15,6 @@ import { streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
     streamerAddPublications, streamerLoadOrGetCachedPublication,
-    THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "readium-desktop/main/streamer/streamerNoHttp";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put, take } from "redux-saga/effects";
@@ -24,6 +23,8 @@ import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
+import { getTranslator } from "readium-desktop/common/services/translator";
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
@@ -32,6 +33,33 @@ const filename_ = "readium-desktop:main:redux:sagas:publication:open";
 const debug = debug_(filename_);
 
 export const ERROR_MESSAGE_ON_USERKEYCHECKREQUEST = "ERROR_MESSAGE_ON_USERKEYCHECKREQUEST";
+export const ERROR_MESSAGE_ENCRYPTED_NO_LICENSE = "ERROR_MESSAGE_ENCRYPTED_NO_LICENSE";
+
+export const r2PublicationIsEncryptedAndHasNoLicense = (pub: R2Publication) => {
+    if (pub.LCP) {
+        return false;
+    }
+    let atLeastOneResourceIsEncrypted = false;
+    if (pub.Spine) {
+        for (const link of pub.Spine) {
+            // link.Properties?.Encrypted?.Scheme === "http://readium.org/2014/01/lcp"
+            if (link.Properties?.Encrypted?.Algorithm && link.Properties.Encrypted.Algorithm !== "http://www.idpf.org/2008/embedding" && link.Properties.Encrypted.Algorithm !== "http://ns.adobe.com/pdf/enc#RC") {
+                atLeastOneResourceIsEncrypted = true;
+                break;
+            }
+        }
+    }
+    if (!atLeastOneResourceIsEncrypted && pub.Resources) {
+        for (const link of pub.Resources) {
+            // link.Properties?.Encrypted?.Scheme === "http://readium.org/2014/01/lcp"
+            if (link.Properties?.Encrypted?.Algorithm && link.Properties.Encrypted.Algorithm !== "http://www.idpf.org/2008/embedding" && link.Properties.Encrypted.Algorithm !== "http://ns.adobe.com/pdf/enc#RC") {
+                atLeastOneResourceIsEncrypted = true;
+                break;
+            }
+        }
+    }
+    return atLeastOneResourceIsEncrypted;
+};
 
 const convertDoc = async (doc: PublicationDocument, publicationViewConverter: PublicationViewConverter) => {
     return await publicationViewConverter.convertDocumentToView(doc);
@@ -41,8 +69,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
 
     const publicationRepository = yield* callTyped(
         () => diMainGet("publication-repository"));
-    const translator = yield* callTyped(
-        () => diMainGet("translator"));
+    const translator = getTranslator();
 
     // Get publication
     let publicationDocument: PublicationDocument = null;
@@ -224,6 +251,11 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
         } catch (error) {
 
             throw error;
+        }
+    } else {
+        const isEncrypted = r2PublicationIsEncryptedAndHasNoLicense(r2Publication);
+        if (isEncrypted) {
+            throw ERROR_MESSAGE_ENCRYPTED_NO_LICENSE;
         }
     }
 

@@ -6,8 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { syncIpc, winIpc } from "readium-desktop/common/ipc";
-import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions";
+import { winIpc } from "readium-desktop/common/ipc";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import {
@@ -52,7 +51,7 @@ export function* appActivate() {
 
             const libWin = yield* callTyped(() => getLibraryWindowFromDi());
 
-            if (!libWin?.isDestroyed()) {
+            if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
 
                 if (libWin.isMinimized()) {
                     libWin.restore();
@@ -66,11 +65,12 @@ export function* appActivate() {
                     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
                     const readersArray = ObjectKeys(readers);
                     const readerWin = getReaderWindowFromDi(readersArray[0]);
-
-                    if (readerWin.isMinimized()) {
-                        readerWin.restore();
+                    if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
+                        if (readerWin.isMinimized()) {
+                            readerWin.restore();
+                        }
+                        readerWin.show();
                     }
-                    readerWin.show();
                 }
 
                 return ;
@@ -80,7 +80,7 @@ export function* appActivate() {
         yield put(winActions.library.openRequest.build());
 
         // wait
-        yield take(winActions.library.openSucess.build);
+        yield take(winActions.library.openSucess.ID);
     }
 
 }
@@ -95,6 +95,8 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
     const state = yield* selectTyped((_state: RootState) => _state);
 
     const payload: Partial<ILibraryRootState> = {
+        i18n: state.i18n,
+        keyboard: state.keyboard,
         theme: state.theme,
         wizard: state.wizard,
         win: {
@@ -107,9 +109,11 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
             tag: [],
         },
         session: {
-            state: state.session.state,
+            // state: state.session.state,
             save: state.session.save,
         },
+        creator: state.creator,
+        settings: state.settings,
     };
     try {
         const publication = yield* callTyped(getCatalog);
@@ -127,21 +131,23 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
     // TODO
     // will be replaced with preloaded state injection in Redux createStore.
 
-    // Send locale
-    webContents.send(syncIpc.CHANNEL, {
-        type: syncIpc.EventType.MainAction,
-        payload: {
-            action: i18nActions.setLocale.build(state.i18n.locale),
-        },
-    } as syncIpc.EventPayload);
+    // // Send locale
+    // webContents.send(syncIpc.CHANNEL, {
+    //     type: syncIpc.EventType.MainAction,
+    //     payload: {
+    //         action: i18nActions.setLocale.build(state.i18n.locale),
+    //         // useful ?
+    //         // need ot at least pass it in payload instead
+    //     },
+    // } as syncIpc.EventPayload);
 
-    // Send keyboard shortcuts
-    webContents.send(syncIpc.CHANNEL, {
-        type: syncIpc.EventType.MainAction,
-        payload: {
-            action: keyboardActions.setShortcuts.build(state.keyboard.shortcuts, false),
-        },
-    } as syncIpc.EventPayload);
+    // // Send keyboard shortcuts
+    // webContents.send(syncIpc.CHANNEL, {
+    //     type: syncIpc.EventType.MainAction,
+    //     payload: {
+    //         action: keyboardActions.setShortcuts.build(state.keyboard.shortcuts, false),
+    //     },
+    // } as syncIpc.EventPayload);
 
     // // Init network on window
     // let actionNet = null;
@@ -184,7 +190,7 @@ function* winClose(_action: winActions.library.closed.TAction) {
 
     debug("library -> winClose");
 
-    const library = getLibraryWindowFromDi();
+    const libraryWin = getLibraryWindowFromDi();
     let sessionSaving = false; // window.close() // not saved session by default
 
     {
@@ -195,9 +201,10 @@ function* winClose(_action: winActions.library.closed.TAction) {
 
         if (readersArray.length) {
 
-            const sessionIsEnabled = yield* selectTyped((state: RootState) => state.session.state);
-            debug(sessionIsEnabled ? "session enabled destroy reader" : "session not enabled close reader");
-            if (sessionIsEnabled) {
+            // session always enabled by default
+            // const sessionIsEnabled = yield* selectTyped((state: RootState) => state.session.state);
+            // debug(sessionIsEnabled ? "session enabled destroy reader" : "session not enabled close reader");
+            // if (sessionIsEnabled) {
 
 
                 delay(100);
@@ -205,7 +212,7 @@ function* winClose(_action: winActions.library.closed.TAction) {
                 // const messageValue = yield* callTyped(
                 //     async () => {
 
-                //         const translator = diMainGet("translator");
+                //         const translator = getTranslator();
 
                 //         return dialog.showMessageBox(
                 //             library,
@@ -217,14 +224,14 @@ function* winClose(_action: winActions.library.closed.TAction) {
                 //                 ],
                 //                 defaultId: 1,
                 //                 title: translator.translate("app.session.exit.askBox.title"),
-                //                 message: translator.translate("app.session.exit.askBox.message"),
+                //                 message: translator.translate("app.session.exit.askBox.help"),
                 //             },
                 //         );
                 //     },
                 // );
                 // debug("result:", messageValue.response);
                 // value = messageValue.response;
-            }
+            // }
 
             yield all(
                 readersArray.map(
@@ -236,7 +243,7 @@ function* winClose(_action: winActions.library.closed.TAction) {
                             }
                             try {
                                 const readerWin = yield* callTyped(() => getReaderWindowFromDi(reader.identifier));
-
+                                if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
                                 if (sessionSaving) {
                                     // force quit the reader windows to keep session in next startup
                                     debug("destroy reader", index);
@@ -244,6 +251,7 @@ function* winClose(_action: winActions.library.closed.TAction) {
                                 } else {
                                     debug("close reader", index);
                                     readerWin.close();
+                                }
                                 }
                             } catch (_err) {
                                 // ignore
@@ -258,9 +266,9 @@ function* winClose(_action: winActions.library.closed.TAction) {
     }
 
     if (sessionSaving) {
-
-        // closed the library and thorium
-        library.destroy();
+        if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
+            libraryWin.destroy();
+        }
     } else {
 
         yield spawn(function* () {
@@ -274,7 +282,9 @@ function* winClose(_action: winActions.library.closed.TAction) {
 
             } while (readersArray.length);
 
-            library.destroy();
+            if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
+                libraryWin.destroy();
+            }
         });
 
     }

@@ -10,11 +10,11 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { importActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
-import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put } from "redux-saga/effects";
 import { select as selectTyped } from "typed-redux-saga/macro";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 const REQUEST_ID = "SAME_FILE_IMPORT_REQUEST";
 
@@ -30,14 +30,16 @@ function* sameFileImport(action: importActions.verify.TAction) {
         (state: ILibraryRootState) => state.download);
 
     if (Array.isArray(downloads)
-        && downloads.map(([{ downloadUrl }]) => downloadUrl).find((ln) => ln === link.url)) {
-
-        const translator = diLibraryGet("translator");
-
+        && downloads.map((tuple) => {
+            // tuple[0] ==== Payload
+            // tuple[1] ==== number
+            return tuple[0].downloadUrls;
+        }).find((urls) => urls.find((u) => u === link.url))
+    ) {
         yield put(
             toastActions.openRequest.build(
                 ToastType.Success,
-                translator.translate("message.import.alreadyImport",
+                getTranslator().__("message.import.alreadyImport",
                     {
                         title: pub.documentTitle || "",
                     },

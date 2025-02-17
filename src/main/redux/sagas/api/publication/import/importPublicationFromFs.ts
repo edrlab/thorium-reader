@@ -28,6 +28,7 @@ import { DaisyParsePromise } from "@r2-shared-js/parser/daisy";
 import { convertDaisyToReadiumWebPub } from "@r2-shared-js/parser/daisy-convert-to-epub";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/import/publicationFromFs");
@@ -44,7 +45,8 @@ export async function importPublicationFromFS(
     let r2Publication: R2Publication;
 
     let { ext } = path.parse(filePath);
-    if (filePath.replace(/\\/g, "/").endsWith("/" + acceptedExtensionObject.nccHtml)) {
+    ext = ext.toLowerCase();
+    if (filePath.replace(/\\/g, "/").toLowerCase().endsWith("/" + acceptedExtensionObject.nccHtml)) {
         ext = acceptedExtensionObject.nccHtml;
     }
     switch (ext) {
@@ -167,7 +169,7 @@ export async function importPublicationFromFS(
 
         default:
             debug("extension not recognized", ext);
-            throw new Error(diMainGet("translator").translate("dialog.importError", {
+            throw new Error(getTranslator().translate("dialog.importError", {
                 acceptedExtension: `[${ext}] ${acceptedExtensionArray.join(" ")}`,
             }));
     }
@@ -185,6 +187,8 @@ export async function importPublicationFromFS(
     const publicationRepository = diMainGet("publication-repository");
     const publicationStorage = diMainGet("publication-storage");
     const publicationViewConverter = diMainGet("publication-view-converter");
+    const store = diMainGet("store");
+    const locale = store.getState().i18n.locale;
 
     const pubDocument: PublicationDocumentWithoutTimestampable = {
         identifier: uuidv4(),
@@ -205,7 +209,7 @@ export async function importPublicationFromFS(
 
         // see documentTitle vs. publicationTitle (and publicationSubTitle) in PublicationView
         // (and IOpdsPublicationView too, due to polymorphic NormalOrOpdsPublicationView / publicationViewMaybeOpds)
-        title: convertMultiLangStringToString(r2Publication.Metadata.Title) || "-", // some publications do not have a title :( ... we patch here, but in previous versions of Thorium this was not done so we must still check for possible empty title edge-cases in previously-created database entries (we do not change the DB on load+save, we just normalise erroneous values at consumption time)
+        title: convertMultiLangStringToString(r2Publication.Metadata.Title, locale) || "-", // some publications do not have a title :( ... we patch here, but in previous versions of Thorium this was not done so we must still check for possible empty title edge-cases in previously-created database entries (we do not change the DB on load+save, we just normalise erroneous values at consumption time)
 
         tags: [],
         files: [],

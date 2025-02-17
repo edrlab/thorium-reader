@@ -6,7 +6,6 @@
         "leftSlideButton": "목록 왼쪽으로 밀기 ",
         "mainContent": "메인 콘텐츠",
         "rightSlideButton": "목록 오른쪽으로 밀기",
-        "searchBook": "제목으로 검색",
         "skipLink": "콘텐츠로 건너뛰기",
         "toolbar": "툴바"
     },
@@ -35,6 +34,7 @@
                         "no": "취소",
                         "yes": "확인"
                     },
+                    "help": "",
                     "message": "세션을 저장하시겠습니까?",
                     "title": "세션 저장"
                 }
@@ -69,13 +69,12 @@
         "emptyTagList": "태그를 지정한 전자책이 없습니다.",
         "entry": {
             "continueReading": "이어서 읽기",
-            "continueReadingAudioBooks": "오디오북 이어 듣기",
-            "continueReadingDivina": "Divina 이어 보기",
-            "continueReadingPdf": "PDF 이어 보기",
             "lastAdditions": "최근에 추가한 도서"
         },
         "export": "내보내기",
+        "exportAnnotation": "",
         "format": "포맷",
+        "importAnnotation": "",
         "lang": "언어선택",
         "lastRead": "최근 읽은 자료",
         "moreInfo": "상세정보",
@@ -117,12 +116,25 @@
         "released": "발행일",
         "sort": "정렬 기준",
         "tag": "",
-        "tagCount": "태그 개수",
         "tags": "태그",
         "update": "편집"
     },
     "dialog": {
+        "annotations": {
+            "descAuthor": "",
+            "descCreator": "",
+            "descList": "",
+            "descNewer": "",
+            "descOlder": "",
+            "descTitle": "",
+            "importAll": "",
+            "importWithoutConflict": "",
+            "origin": "",
+            "title": ""
+        },
         "cancel": "취소",
+        "deleteAnnotations": "",
+        "deleteAnnotationsText": "",
         "deleteFeed": "카탈로그를 제거하겠습니까?",
         "deletePublication": "출판물을 제거하겠습니까?",
         "import": "파일들을 열겠습니까:",
@@ -157,7 +169,8 @@
     },
     "library": {
         "lcp": {
-            "hint": "(힌트: {{- hint}})",
+            "hint": "힌트: ",
+            "open": "",
             "password": "암호",
             "sentence": "이 출판물을 열기 위해서는 LCP 암호가 필요합니다: ",
             "urlHint": "암호를 잊으셨습니까? 여기서 도움말을 확인하십시오",
@@ -167,6 +180,14 @@
         }
     },
     "message": {
+        "annotations": {
+            "alreadyImported": "",
+            "emptyFile": "",
+            "errorParsing": "",
+            "noBelongTo": "",
+            "nothing": "",
+            "success": ""
+        },
         "download": {
             "error": "{{- title}} 다운로드 실패하였습니다: [{{- err}}]"
         },
@@ -270,15 +291,17 @@
         "duration": {
             "title": "트랙 시간"
         },
+        "encryptedNoLicense": "",
         "expired": "",
         "expiredLcp": "이 책은 LCP 라이선스가 만료되어서 읽을 수 없습니다",
+        "incorrectPassphrase": "",
         "lcpEnd": "종료",
         "lcpRightsCopy": "복사된 문자",
         "lcpRightsPrint": "인쇄된 페이지",
         "lcpStart": "시작",
         "licenceLCP": "",
+        "licenseCertificateDateInvalid": "라이선스 서명날짜가 유효하지 않습니다",
         "licenseOutOfDate": "라이선스가 만료되었습니다",
-        "licenseSignatureDateInvalid": "라이선스 서명날짜가 유효하지 않습니다",
         "licenseSignatureInvalid": "라이선스 서명이 유효하지 않습니다",
         "licensed": "",
         "markAsRead": "",
@@ -304,12 +327,51 @@
             "Color": "",
             "addNote": "",
             "advancedMode": "",
+            "annotationsExport": {
+                "description": "",
+                "title": ""
+            },
             "annotationsOptions": "",
+            "colors": {
+                "bluegreen": "",
+                "cyan": "",
+                "green": "",
+                "lightblue": "",
+                "orange": "",
+                "purple": "",
+                "red": "",
+                "yellow": ""
+            },
+            "date": "",
+            "export": "",
+            "filter": {
+                "all": "",
+                "filterByColor": "",
+                "filterByCreator": "",
+                "filterByDrawtype": "",
+                "filterByTag": "",
+                "filterOptions": "",
+                "none": ""
+            },
+            "hide": "",
             "highlight": "",
             "noSelectionToast": "",
+            "note": "",
             "quickAnnotations": "",
             "saveNote": "",
-            "toggleMarginMarks": ""
+            "sorting": {
+                "lastcreated": "",
+                "lastmodified": "",
+                "progression": "",
+                "sortingOptions": ""
+            },
+            "toggleMarginMarks": "",
+            "type": {
+                "outline": "",
+                "solid": "",
+                "strikethrough": "",
+                "underline": ""
+            }
         },
         "divina": {
             "mute": "오디오 음소거",
@@ -318,6 +380,7 @@
         "fxl": {
             "fit": ""
         },
+        "goToContent": "",
         "marks": {
             "annotations": "주석",
             "bookmarks": "북마크",
@@ -325,6 +388,7 @@
             "edit": "수정",
             "goTo": "",
             "landmarks": "랜드마크",
+            "progression": "",
             "saveMark": "",
             "search": "검색",
             "searchResult": "",
@@ -345,13 +409,14 @@
             "title": "소리내어 읽기"
         },
         "navigation": {
+            "ZenModeExit": "",
+            "ZenModeTitle": "",
             "annotationTitle": "",
             "backHomeTitle": "내서재로 돌아가기",
             "bookmarkTitle": "북마크",
             "currentPage": "현재 페이지: {{- current}}",
             "currentPageTotal": "현재 페이지: {{- current}}/{{- total}}",
             "detachWindowTitle": "라이브러리 / 내서재 창 보기",
-            "fullscreenTitle": "전체 화면모드 열기",
             "goTo": "이동",
             "goToError": "페이지 구분이 존재하지 않습니다.",
             "goToPlaceHolder": "페이지 번호를 입력하세요.",
@@ -384,6 +449,7 @@
                 "title": "단",
                 "two": "2단"
             },
+            "customFontSelected": "",
             "customizeReader": "",
             "disabled": "",
             "display": "디스플레이",
@@ -401,6 +467,7 @@
             "noFootnotes": "각주 비활성화",
             "noRTLFlip": "",
             "noRuby": "",
+            "noTemporaryNavTargetOutline": "",
             "paginated": "페이지 매김",
             "paraSpacing": "단락 간격",
             "pdfZoom": {
@@ -415,6 +482,16 @@
                     "width": "너비 맞춤"
                 },
                 "title": "확대/축소"
+            },
+            "preset": {
+                "apply": "",
+                "applyDetails": "",
+                "detail": "",
+                "reset": "",
+                "resetDetails": "",
+                "save": "",
+                "saveDetails": "",
+                "title": ""
             },
             "preview": "",
             "reduceMotion": "모션 줄이기",
@@ -445,8 +522,9 @@
         },
         "tts": {
             "activate": "텍스트 음성 변환 할성화",
-            "default": "음성:시스템 기본값",
+            "language": "",
             "next": "다음",
+            "options": "",
             "pause": "멈춤",
             "play": "재생",
             "previous": "이전",
@@ -458,7 +536,17 @@
         }
     },
     "settings": {
+        "annotationCreator": {
+            "creator": "",
+            "help": "",
+            "name": "",
+            "organization": "",
+            "person": "",
+            "type": ""
+        },
         "auth": {
+            "help": "",
+            "title": "",
             "wipeData": "인증 데이터 삭제"
         },
         "keyboard": {
@@ -474,10 +562,12 @@
         "language": {
             "languageChoice": "언어 선택"
         },
+        "library": {
+            "enableAPIAPP": "",
+            "title": ""
+        },
         "session": {
-            "no": "비활성화",
-            "title": "세션 저장",
-            "yes": "활성화"
+            "title": "세션 저장"
         },
         "tabs": {
             "appearance": "",

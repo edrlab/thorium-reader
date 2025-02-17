@@ -1,6 +1,7 @@
-export declare const ___DEBUG___COMPONENTS_SLIDER_CSS: string;
 export declare const continue_reading: string;
 export declare const cover_img: string;
+export declare const CSS_END_components_slider: string;
+export declare const CSS_START_components_slider: string;
 export declare const home_section: string;
 export declare const no_img_wrapper: string;
 export declare const publication_wrapper: string;

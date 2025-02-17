@@ -1182,7 +1182,7 @@ export const findMimeTypeWithExtension = (ext: string): string | undefined => {
         ext = ext.slice(1);
     }
 
-    return (mimeTypes as any)[ext] ?? undefined;
+    return (mimeTypes as any)[ext.toLowerCase()] ?? undefined;
 };
 
 export const findExtWithMimeType = (type: string): string | undefined => {

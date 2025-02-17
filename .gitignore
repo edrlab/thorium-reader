@@ -3,4 +3,12 @@ dist
 release
 node_modules
 .DS_Store
+lcp.node
 external-assets/*
+.zed
+.flox/cache
+.flox/log
+.flox/run
+.flox/lib
+.flox/NPM_PREFIX
+.flox/NPM_CACHE

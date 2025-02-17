@@ -1,1 +1,2 @@
-export declare const ___DEBUG___PARTIALS_VARIABLES_CSS: string;
+export declare const CSS_END_partials_variables: string;
+export declare const CSS_START_partials_variables: string;

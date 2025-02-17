@@ -5,17 +5,20 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+
+import { webUtils } from "electron";
 import * as React from "react";
 import { connect } from "react-redux";
 import { acceptedExtensionArray, acceptedExtensionObject } from "readium-desktop/common/extension";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { TChangeEventOnInput } from "readium-desktop/typings/react";
 import { Dispatch } from "redux";
 
-import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/common/components/hoc/translator";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
@@ -68,8 +71,12 @@ export class PublicationAddButton extends React.Component<IProps, undefined> {
         const files = event.target.files;
         const paths: string[] = [];
 
-        for (const f of files) {
-            paths.push(f.path);
+        for (const file of files) {
+            // with drag-and-drop (unlike input@type=file) the File `path` property is equal to `name`!
+            // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
+            const absolutePath = webUtils.getPathForFile(file);
+            // console.log("absolutePath xx: " + absolutePath);
+            paths.push(absolutePath);
         }
 
         event.target.value = "";
@@ -79,8 +86,12 @@ export class PublicationAddButton extends React.Component<IProps, undefined> {
     }
 }
 
+const mapStateToProps = (state: IRendererCommonRootState) => ({
+    locale: state.i18n.locale, // refresh
+});
+
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     import: apiDispatch(dispatch)()("publication/importFromFs"),
 });
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(PublicationAddButton));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationAddButton));

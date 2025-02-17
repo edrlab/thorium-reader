@@ -237,26 +237,6 @@ export function* getCatalog(): SagaGenerator<ILibraryRootState["publication"]> {
             totalCount: allAdded_.length,
             publicationViews: allAdded_,
         },
-        // {
-        //     id: "continueReading",
-        //     totalCount: epubReaded_.length,
-        //     publicationViews: epubReaded_,
-        // },
-        // {
-        //     id: "continueReadingAudioBooks",
-        //     totalCount: audiobookReaded_.length,
-        //     publicationViews: audiobookReaded_,
-        // },
-        // {
-        //     id: "continueReadingDivina",
-        //     totalCount: divinaReaded_.length,
-        //     publicationViews: divinaReaded_,
-        // },
-        // {
-        //     id: "continueReadingPdf",
-        //     totalCount: pdfReaded_.length,
-        //     publicationViews: pdfReaded_,
-        // },
     ];
     const publicationRepository = diMainGet("publication-repository");
     const allTags = yield* callTyped(() => publicationRepository.getAllTags());
@@ -287,7 +267,7 @@ function* updateResumePosition() {
     };
 
     let prevState = yield* selectTyped((state: RootState) => state.publication.lastReadingQueue);
-    yield* debounceTyped(500, [readerActions.setReduxState.build, publicationActionsFromCommonAction.readingFinished.build], function* worker() {
+    yield* debounceTyped(500, [readerActions.setReduxState.ID, publicationActionsFromCommonAction.readingFinished.ID], function* worker() {
         const nextState = yield* selectTyped((state: RootState) => state.publication.lastReadingQueue);
 
         const prevId = prevState.map(([_,v]) => v);

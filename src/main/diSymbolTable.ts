@@ -4,7 +4,6 @@ export const diSymbolTable = {
     "saga-middleware": Symbol("saga-middlewaire"),
     "store": Symbol("store"),
     // "win-registry": Symbol("win-registry"),
-    "translator": Symbol("translator"),
     "downloader": Symbol("downloader"),
     "publication-repository": Symbol("publication-repository"),
     "opds-feed-repository": Symbol("opds-feed-repository"),

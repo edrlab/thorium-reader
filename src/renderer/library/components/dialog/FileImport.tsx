@@ -5,11 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
-import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -48,7 +49,7 @@ class FileImport extends React.Component<IProps, undefined> {
 
         return <AlertDialog.Root defaultOpen={true} onOpenChange={(b) => !b ? this.props.closeDialog() : undefined}>
             <AlertDialog.Portal>
-                <div className={stylesAlertModals.AlertDialogOverlay}></div>
+                <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay}/>
                 <AlertDialog.Content className={stylesAlertModals.AlertDialogContent} style={{overflowY: "scroll"}}>
                     <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>
                         {(files?.length > 0) ?
@@ -57,7 +58,7 @@ class FileImport extends React.Component<IProps, undefined> {
                             this.props.__("catalog.addBookToLib")
                         }
                     </AlertDialog.Title>
-                    <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
+                    <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription} asChild>
                         {
                             // useless ??
                             (!files || files.length === 0) ?
@@ -73,11 +74,9 @@ class FileImport extends React.Component<IProps, undefined> {
                                     // </div>
                                 ) : (
                                     // <div className={stylesAlertModals.AlertDialogContent}>
-                                    <div>
                                             <ul>
                                                 {files.map((file, i) => <li key={i}>{file.name}</li>)}
                                             </ul>
-                                    </div>
                                         // <div>
                                         // </div>
                                     // </div>
@@ -102,6 +101,7 @@ class FileImport extends React.Component<IProps, undefined> {
     private importFiles = () => {
         if (this.props.files) {
             const paths = this.props.files.map((file) => {
+                // console.log("absolutePath 5: " + file.path);
                 return file.path;
             });
             apiAction("publication/importFromFs", paths).catch((error) => {
@@ -114,6 +114,7 @@ class FileImport extends React.Component<IProps, undefined> {
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     open: state.dialog.type === DialogTypeName.FileImport,
     files: (state.dialog.data as DialogType[DialogTypeName.FileImport]).files,
+    locale: state.i18n.locale, // refresh
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {

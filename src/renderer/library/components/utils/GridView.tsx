@@ -5,10 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesPublicationView from "readium-desktop/renderer/assets/styles/publicationView.scss";
+
 import * as React from "react";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import * as stylesPublicationView from "readium-desktop/renderer/assets/styles/publicationView.scss";
 import PublicationCard from "readium-desktop/renderer/library/components/publication/PublicationCard";
 
 type NormalOrOpdsPublicationView = PublicationView | IOpdsPublicationView;

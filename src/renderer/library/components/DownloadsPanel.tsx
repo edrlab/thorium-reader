@@ -5,10 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesApp from "readium-desktop/renderer/assets/styles/app.scss";
+
 import * as React from "react";
 import { connect } from "react-redux";
 import { downloadActions } from "readium-desktop/common/redux/actions";
-import * as stylesApp from "readium-desktop/renderer/assets/styles/app.scss";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -47,17 +48,28 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
             <ul>
                 {
                 downloadState.map(([dl, id]) => {
+                    // console.log(JSON.stringify(dl, null, 4));
                     let progress = dl.progress;
                     if (isNaN(progress)) {
                         progress = 0;
                     }
                     return <li key={id}>
                         <span className={stylesApp.title}><a onClick={() => abortDownload(id)}><SVG ariaHidden svg={CloseIcon} /></a></span>
-                        <span className={stylesApp.percent}>{progress}%</span>
-                        <progress max="100" value={progress}>{progress}</progress>
-                        <span className={stylesApp.title}>{dl.downloadUrl}</span>
+                        {
+                            progress === 0 ? // indeterminate
+                            (<>
+                                <span className={stylesApp.percent}>? %</span>
+                                <progress value={undefined}>{"..."}</progress>
+                            </>)
+                            :
+                            (<>
+                                <span className={stylesApp.percent}>{progress}%</span>
+                                <progress max="100" value={progress}>{progress}</progress>
+                            </>)
+                        }
+                        <span className={stylesApp.title}>{dl.downloadLabel}</span>
                         <span className={stylesApp.title}>{dl.contentLengthHumanReadable}</span>
-                        <span className={stylesApp.title}>{dl.speed + " Kb/s"}</span>
+                        <span className={stylesApp.title}>{Math.trunc(dl.speed || 0) + " Kb/s"}</span>
 
                     </li>;
                 })
@@ -70,6 +82,7 @@ class DownloadsPanel extends React.Component<IProps, undefined> {
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
         downloadState: state.download,
+        locale: state.i18n.locale, // refresh
     };
 };
 

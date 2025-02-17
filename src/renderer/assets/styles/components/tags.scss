@@ -1,6 +1,6 @@
-/*
-=-=-= tags.scss
-*/
+.CSS_START_components_tags {
+  display: none;
+}
 
 .tags_wrapper {
   display: flex;
@@ -22,6 +22,12 @@
   transition: all 0.2s;
   margin-right: 10px;
   margin-bottom: 5px;
+
+
+  &:has(a:focus) {
+    outline: var(--color-blue) solid 2px !important;
+    outline-offset: -2px;
+  }
 
 
   a {
@@ -96,10 +102,6 @@
       color: #c1c1c1;
     }
   }
-}
-
-.___DEBUG___COMPONENTS_TAGS_CSS {
-  display: none;
 }
 
 .Popover_delete_tag {
@@ -196,4 +198,8 @@
       fill: var(--color-error-dark);
     }
   }
+}
+
+.CSS_END_components_tags {
+  display: none;
 }

@@ -56,6 +56,13 @@ const _defaults_ = Object.freeze({
         shift: false,
         key: "F10",
     }),
+    FocusMainDeep: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "F10",
+    }),
+
     FocusToolbar: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,
@@ -159,6 +166,32 @@ const _defaults_ = Object.freeze({
         key: "Comma",
     }),
     NavigateNextOPDSPageAlt: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "Period",
+    }),
+
+    NavigatePreviousLibraryPage: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "ArrowLeft",
+    }),
+    NavigateNextLibraryPage: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "ArrowRight",
+    }),
+
+    NavigatePreviousLibraryPageAlt: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "Comma",
+    }),
+    NavigateNextLibraryPageAlt: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,
         shift: true,

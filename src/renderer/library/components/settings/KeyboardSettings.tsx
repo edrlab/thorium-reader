@@ -5,6 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
+import * as stylesKeys from "readium-desktop/renderer/assets/styles/components/keyboardsShortcuts.scss";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+
 import classNames from "classnames";
 import * as React from "react";
 import * as Popover from "@radix-ui/react-popover";
@@ -18,13 +26,6 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { keyboardActions, toastActions } from "readium-desktop/common/redux/actions/";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
-import * as stylesBlocks from "readium-desktop/renderer/assets/styles/components/blocks.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
-import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
-import * as stylesKeys from "readium-desktop/renderer/assets/styles/components/keyboardsShortcuts.scss";
-import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 
 import {
     TranslatorProps, withTranslator,
@@ -182,7 +183,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                 const hit = this.state.editKeyboardShortcutId === id;
                                 const frag = <>
                                     <h3 aria-hidden className={stylesKeys.keyshortElement_title}>{id}</h3>
-                                    <div aria-hidden className={hit ? stylesKeys.keyshortElement_shortcut_container_edit : stylesKeys.keyshortElement_shortcut_container}>
+                                    <div className={hit ? stylesKeys.keyshortElement_shortcut_container_edit : stylesKeys.keyshortElement_shortcut_container}>
                                         <div className={stylesKeys.keyshortElement_shortcut}>
                                             {this.prettifyKeyboardShortcut(def)}
                                             <button
@@ -385,7 +386,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         const control = def.control ? <span>CTRL + </span> : null;
         const meta = def.meta ? <span>META + </span> : null;
         const key = <span>{def.key}</span>;
-        return <>{shift}{control}{alt}{meta}{key}</>;
+        return <span aria-hidden>{shift}{control}{alt}{meta}{key}</span>;
     }
     private stringifyKeyboardShortcut(def: TKeyboardShortcut) {
         return `${def.shift ? "SHIFT " : ""}${def.control ? "CTRL " : ""}${def.alt ? "ALT " : ""}${def.meta ? "META " : ""}${(def.shift || def.control || def.alt || def.meta) ? "+ " : ""}${def.key}`;
@@ -569,7 +570,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
         keyboardShortcuts: state.keyboard.shortcuts,
-        locale: state.i18n.locale,
+        locale: state.i18n.locale, // refresh
     };
 };
 

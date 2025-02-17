@@ -16,6 +16,7 @@ import { v4 as uuidv4 } from "uuid";
 import {
     convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
+import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 
 export const ID = "WIN_SESSION_REGISTER_READER";
 
@@ -42,7 +43,7 @@ export function build(
 
     // we lose purity !!
     const store = diMainGet("store");
-    const readerConfigDefault = store.getState().reader.defaultConfig;
+
     const disableRTLFlip = store.getState().reader.disableRTLFlip;
 
     const manifestUrlR2Protocol = manifestUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
@@ -50,7 +51,8 @@ export function build(
 
     reduxStateReader = {
         ...{
-            config: readerConfigDefault,
+            // see issue https://github.com/edrlab/thorium-reader/issues/2532
+            config: readerConfigInitialState,
             disableRTLFlip,
             locator: locatorInitialState,
         },
@@ -65,6 +67,7 @@ export function build(
                 publicationView,
                 navigator: undefined,
             },
+            lock: false,
         },
     };
 

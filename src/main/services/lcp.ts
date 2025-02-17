@@ -17,7 +17,6 @@ import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { LcpInfo, LsdStatus } from "readium-desktop/common/models/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions/";
-import { Translator } from "readium-desktop/common/services/translator";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,
@@ -38,12 +37,15 @@ import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { LSD } from "@r2-lcp-js/parser/epub/lsd";
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
+
+// import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
+import { injectBufferInZip } from "../tools/zipInjector";
 
 import { lcpHashesFilePath } from "../di";
 import { lcpActions } from "../redux/actions";
 import { extractCrc32OnZip } from "../tools/crc";
 import { LSDManager } from "./lsd";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // import { Server } from "@r2-streamer-js/http/server";
 
@@ -78,11 +80,13 @@ export class LcpManager {
     @inject(diSymbolTable.store)
     private readonly store!: Store<RootState>;
 
-    @inject(diSymbolTable.translator)
-    private readonly translator!: Translator;
-    
+    // @inject(diSymbolTable.translator)
+    // private readonly translator!: Translator;
+
     @inject(diSymbolTable["lsd-manager"])
     private readonly lsdManager!: LSDManager;
+
+    private translator = getTranslator();
 
     public async absorbDBToJson() {
         await this.getAllSecrets();
@@ -164,13 +168,13 @@ export class LcpManager {
     private async injectLcplIntoZip_(epubPath: string, lcpStr: string) {
 
         const extension = path.extname(epubPath);
-        const isAudioBook = new RegExp(`\\${acceptedExtensionObject.audiobook}$`).test(extension) ||
-            new RegExp(`\\${acceptedExtensionObject.audiobookLcp}$`).test(extension) ||
-            new RegExp(`\\${acceptedExtensionObject.audiobookLcpAlt}$`).test(extension);
+        const isAudioBook = new RegExp(`\\${acceptedExtensionObject.audiobook}$`, "i").test(extension) ||
+            new RegExp(`\\${acceptedExtensionObject.audiobookLcp}$`, "i").test(extension) ||
+            new RegExp(`\\${acceptedExtensionObject.audiobookLcpAlt}$`, "i").test(extension);
 
-        const isDivina = new RegExp(`\\${acceptedExtensionObject.divina}$`).test(extension);
+        const isDivina = new RegExp(`\\${acceptedExtensionObject.divina}$`, "i").test(extension);
 
-        const isLcpPdf = new RegExp(`\\${acceptedExtensionObject.pdfLcp}$`).test(extension);
+        const isLcpPdf = new RegExp(`\\${acceptedExtensionObject.pdfLcp}$`, "i").test(extension);
 
         const epubPathTMP = epubPath + ".tmplcpl";
         await new Promise<void>((resolve, reject) => {
@@ -656,7 +660,7 @@ export class LcpManager {
                 }
                 case 1: {
                     // message = "INCORRECT PASSPHRASE: " + val;
-                    message = this.translator.translate("publication.userKeyCheckInvalid");
+                    message = this.translator.translate("publication.incorrectPassphrase");
                     break;
                 }
                 case 11: {
@@ -675,8 +679,8 @@ export class LcpManager {
                     break;
                 }
                 case 111: {
-                    // message = "LICENSE_SIGNATURE_DATE_INVALID: " + val;
-                    message = this.translator.translate("publication.licenseSignatureDateInvalid");
+                    // message = "LICENSE_CERTIFICATE_DATE_INVALID (was LICENSE_SIGNATURE_DATE_INVALID): " + val;
+                    message = this.translator.translate("publication.licenseCertificateDateInvalid");
                     break;
                 }
                 case 112: {
@@ -790,7 +794,7 @@ export class LcpManager {
             //     // Certificate has not been signed by CA
             //     CERTIFICATE_SIGNATURE_INVALID = 102,
             //     // License has been issued by an expired certificate
-            //     LICENSE_SIGNATURE_DATE_INVALID = 111,
+            //     LICENSE_CERTIFICATE_DATE_INVALID (was LICENSE_SIGNATURE_DATE_INVALID) = 111,
             //     // License signature does not match
             //     LICENSE_SIGNATURE_INVALID = 112,
             //     // The drm context is invalid
@@ -957,7 +961,7 @@ export class LcpManager {
             return Promise.reject("processStatusDocument NO LCP data!");
         }
 
-        
+
 
         return new Promise(async (resolve, reject) => {
             const callback = async (r2LCPStr: string | undefined) => {

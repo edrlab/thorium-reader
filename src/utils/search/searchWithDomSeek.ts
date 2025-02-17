@@ -10,8 +10,8 @@ import { convertRange } from "@r2-navigator-js/electron/renderer/webview/selecti
 import { getCount } from "../counter";
 import { getCssSelector_ } from "./cssSelector";
 import { escapeRegExp } from "./regexp";
-import { ISearchResult } from "./search.interface";
 import { cleanupStr, collapseWhitespaces, equivalents } from "./transliteration";
+import { ISearchResult } from "./search";
 
 export async function searchDocDomSeek(searchInput: string, doc: Document, href: string): Promise<ISearchResult[]> {
     // https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent
@@ -243,10 +243,18 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
         if (!(doc as any).getCssSelector) {
             (doc as any).getCssSelector = getCssSelector_(doc);
         }
+
+        if (range.collapsed) {
+            console.log("SEARCH RANGE COLLAPSED, skipping...");
+            continue;
+        }
+        // the range start/end is guaranteed in document order due to the search algo above (forward tree walk) ... but DOM Ranges are always ordered anyway (only the user / document selection object can be reversed)
         const tuple = convertRange(
             range,
             (doc as any).getCssSelector,
-            (_node: Node) => ""); // computeElementCFI
+            (_node: Node) => "", // computeElementCFI
+            (_node: Node) => "", // computeElementXPath
+        );
 
         if (tuple) {
             const rangeInfo = tuple[0];

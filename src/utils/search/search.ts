@@ -8,32 +8,29 @@
 // import { JSDOM } from "jsdom";
 // import * as xmldom from "@xmldom/xmldom";
 
-import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
-
-import { ContentType } from "../contentType";
-import { ISearchDocument, ISearchResult } from "./search.interface";
 import { searchDocDomSeek } from "./searchWithDomSeek";
 
-export async function search(searchInput: string, data: ISearchDocument): Promise<ISearchResult[]> {
+import { IRangeInfo } from "@r2-navigator-js/electron/common/selection";
+import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
+import { getDocumentFromICacheDocument } from "../xmlDom";
 
-    if (!data.xml) {
-        return [];
-    }
-    if (!window.DOMParser) {
-        console.log("NOT RENDERER PROCESS???! (DOMParser for search)");
-        return [];
-    }
+export interface ISearchResult {
+    rangeInfo: IRangeInfo;
 
-    // TODO: this is a hack...
-    // but rendered reflowable documents have a top-level invisible accessible link injected by the navigator
-    // so we need it here to compute CSS Selectors
-    let toParse = data.isFixedLayout ? data.xml : data.xml.replace(
-        /<body([\s\S]*?)>/gm,
-        "<body$1><a id=\"r2-skip-link\" href=\"javascript:;\" title=\"__\" aria-label=\"__\" tabindex=\"0\"> </a>",
-    );
-    // console.log(`===data.isFixedLayout ${data.isFixedLayout}`, data.xml);
+    cleanBefore: string;
+    cleanText: string;
+    cleanAfter: string;
 
-    const contentType = data.contentType ? (data.contentType as DOMParserSupportedType) : ContentType.Xhtml;
+    // rawBefore: string;
+    // rawText: string;
+    // rawAfter: string;
+
+    href: string;
+    uuid: string;
+}
+
+export async function search(searchInput: string, data: ICacheDocument): Promise<ISearchResult[]> {
+
     try {
         // const isRenderer = typeof window !== undefined; // && typeof process === undefined;
         // const xmlDom = isRenderer ? (new DOMParser()).parseFromString(
@@ -44,11 +41,11 @@ export async function search(searchInput: string, data: ISearchDocument): Promis
         //     contentType,
         // ) : new JSDOM(toParse, { contentType: contentType }).window.document);
 
-        toParse = removeUTF8BOM(toParse);
-        const xmlDom = (new window.DOMParser()).parseFromString(
-            toParse,
-            contentType,
-        );
+        const xmlDom = getDocumentFromICacheDocument(data);
+        if (!xmlDom) {
+            return [];
+            // throw new Error("xmlDom not defined !?!");
+        }
 
         const iter = xmlDom.createNodeIterator(
             xmlDom.body,

@@ -1,3 +1,4 @@
+import { expect, test } from "@jest/globals";
 import {
     Iw3cPublicationManifest, w3cPublicationManifestToReadiumPublicationManifest,
 } from "readium-desktop/main/w3c/audiobooks/converter";
@@ -8,6 +9,10 @@ import { initGlobalConverters_GENERIC } from "@r2-shared-js/init-globals";
 const manifest = {
     "@context": "https://readium.org/webpub-manifest/context.jsonld",
     "metadata": {
+        "accessibility": {
+            "accessMode": "auditory",
+            "accessModeSufficient": [["auditory"], ["test", "no trailing comma"]]
+        },
         "accessMode": "auditory",
         "accessModeSufficient": [["auditory"], ["test", "no trailing comma"]],
         "@type": "https://schema.org/Audiobook",

@@ -6,7 +6,6 @@
         "leftSlideButton": "Slide to the left",
         "mainContent": "main content",
         "rightSlideButton": "Slide to the right",
-        "searchBook": "Search by title",
         "skipLink": "Skip to content",
         "toolbar": "toolbar"
     },
@@ -35,8 +34,9 @@
                         "no": "No",
                         "yes": "Yes"
                     },
-                    "message": "Do you want to save the session?",
-                    "title": "Save session"
+                    "help": "Activate this if you want reader windows that are open when you close the application to automatically re-open at next launch.",
+                    "message": "Saving and restoring the reading session",
+                    "title": "Save session?"
                 }
             }
         },
@@ -50,7 +50,7 @@
     },
     "catalog": {
         "about": {
-            "title": "About {{- appName}}"
+            "title": "About {{- appName}} (online)"
         },
         "addBookToLib": "Import",
         "addTags": "Add tag",
@@ -69,13 +69,12 @@
         "emptyTagList": "No tagged publications.",
         "entry": {
             "continueReading": "Resume reading",
-            "continueReadingAudioBooks": "Resume listening",
-            "continueReadingDivina": "Resume divina",
-            "continueReadingPdf": "Resume PDF",
             "lastAdditions": "Recently added"
         },
         "export": "Save as",
+        "exportAnnotation": "Export notes...",
         "format": "Format",
+        "importAnnotation": "Import notes",
         "lang": "Language",
         "lastRead": "Last Read",
         "moreInfo": "Publication Details",
@@ -117,12 +116,25 @@
         "released": "Published on",
         "sort": "Sort by",
         "tag": "Tag",
-        "tagCount": "Tag count",
         "tags": "Tags",
         "update": "Edit"
     },
     "dialog": {
+        "annotations": {
+            "descAuthor": "by '{{- author}}'",
+            "descCreator": "created by",
+            "descList": "{{- nb}} note(s) {{- creator}} will be imported into '{{- title}}' {{- author}}",
+            "descNewer": "Conflict(s): {{- nb}} newer note(s)",
+            "descOlder": "Conflict(s): {{- nb}} older note(s)",
+            "descTitle": "Annotations title: ",
+            "importAll": "Import all notes",
+            "importWithoutConflict": "Import only conflict-free notes",
+            "origin": "Origin publication: '{{- title}}' {{- author}}",
+            "title": "Import notes?"
+        },
         "cancel": "Cancel",
+        "deleteAnnotations": "Delete annotations?",
+        "deleteAnnotationsText": "Are you sure you want to delete {{- annotationListLength}} note(s)?",
         "deleteFeed": "Delete catalog?",
         "deletePublication": "Delete publication?",
         "import": "Confirm import:",
@@ -157,16 +169,25 @@
     },
     "library": {
         "lcp": {
-            "hint": "Hint: {{- hint}}",
+            "hint": "Hint:",
+            "open": "Open",
             "password": "Passphrase",
-            "sentence": "Enter the passphrase for this LCP-protected publication:",
-            "urlHint": "Forgot your passphrase? Support is available:",
+            "sentence": "This publication needs an LCP passphrase to be opened",
+            "urlHint": "Forgot your passphrase? Click here to get support.",
             "whatIsLcp?": "What is LCP?",
             "whatIsLcpInfoDetails": "LCP stands for 'Licensed Content Protection'.",
             "whatIsLcpInfoDetailsLink": "To learn more, click this link to the EDRLab website."
         }
     },
     "message": {
+        "annotations": {
+            "alreadyImported": "All notes are already imported.",
+            "emptyFile": "No notes available in the file.",
+            "errorParsing": "Error during file parsing: ",
+            "noBelongTo": "Unable to import notes, at least one note does not belong to the publication.",
+            "nothing": "There is no note ready to be imported, aborting the import",
+            "success": "Import completed successfully."
+        },
         "download": {
             "error": "Downloading [{{- title}}] failed: [{{- err}}]"
         },
@@ -226,13 +247,13 @@
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "TTS & Screen reader friendly"
+                "textual": "All content can be read as read aloud speech or dynamic braille"
             },
             "accessibilityFeature": {
-                "alternativeText": "Contains alternative text",
-                "displayTransformability": "Adaptable text and layout",
+                "alternativeText": "Has alt text on images",
+                "displayTransformability": "Appearance of the text and page layout can be modified",
                 "longDescription": "Fully described graphical resources",
-                "printPageNumbers": "Printed book pagination reference",
+                "printPageNumbers": "Contains a page list to go to pages from the print source version",
                 "readingOrder": "Contains a reading order",
                 "synchronizedAudioText": "Text & audio synchronised",
                 "tableOfContents": "Contains a Table Of Contents"
@@ -248,7 +269,7 @@
                 "sound": "Sound",
                 "unknown": "Unknown"
             },
-            "certifierReport": "Certifier report",
+            "certifierReport": "Certifier report:",
             "conformsTo": "Conforms to:",
             "moreInformation": "More information",
             "name": "Accessibility",
@@ -270,15 +291,17 @@
         "duration": {
             "title": "Duration"
         },
+        "encryptedNoLicense": "Publication is encrypted but lacks an LCP license!",
         "expired": "Loan expired",
         "expiredLcp": "This publication's LCP license is expired.",
+        "incorrectPassphrase": "No stored passphrase fits the publication, or the entered passphrase is wrong.",
         "lcpEnd": "End",
         "lcpRightsCopy": "Copied characters",
         "lcpRightsPrint": "Printed pages",
         "lcpStart": "Start",
         "licenceLCP": "License (LCP)",
+        "licenseCertificateDateInvalid": "Expired LCP provider certificate.",
         "licenseOutOfDate": "Out of date LCP License.",
-        "licenseSignatureDateInvalid": "Invalid LCP license signature date.",
         "licenseSignatureInvalid": "Invalid LCP license signature.",
         "licensed": "Licensed",
         "markAsRead": "Mark as read",
@@ -297,19 +320,51 @@
         "seeMore": "See more",
         "timeLeft": "Remaining time",
         "title": "Title",
-        "userKeyCheckInvalid": "Incorrect passphrase"
+        "userKeyCheckInvalid": "Incorrect passphrase."
     },
     "reader": {
         "annotations": {
             "Color": "Color",
             "addNote": "Annotate",
             "advancedMode": "Instant mode (auto create after select)",
-            "annotationsOptions": "Options",
+            "annotationsExport": {
+                "description": "Name the exported notes:",
+                "title": "Title"
+            },
+            "annotationsOptions": "Annotation Options",
+            "colors": {
+                "bluegreen": "Blue-green",
+                "cyan": "Cyan",
+                "green": "Green",
+                "lightblue": "Light Blue",
+                "orange": "Orange",
+                "purple": "Purple",
+                "red": "Red",
+                "yellow": "Yellow"
+            },
+            "date": "Modification date",
+            "export": "Save notes as...",
+            "filter": {
+                "all": "All",
+                "filterByColor": "Filter by Color",
+                "filterByCreator": "Filter by Creator",
+                "filterByDrawtype": "Filter by Type",
+                "filterByTag": "Filter by Tag",
+                "filterOptions": "Filter Options",
+                "none": "None"
+            },
             "hide": "Do not display",
             "highlight": "Highlight",
             "noSelectionToast": "No selection",
+            "note": "{{- color}} Note",
             "quickAnnotations": "Quick create (skip editor)",
             "saveNote": "Save",
+            "sorting": {
+                "lastcreated": "Last created",
+                "lastmodified": "Last modified",
+                "progression": "Progression",
+                "sortingOptions": "Sorting Options"
+            },
             "toggleMarginMarks": "Display in margins",
             "type": {
                 "outline": "Outline",
@@ -325,6 +380,7 @@
         "fxl": {
             "fit": "Fit"
         },
+        "goToContent": "Go to the content",
         "marks": {
             "annotations": "Annotations",
             "bookmarks": "Bookmarks",
@@ -332,6 +388,7 @@
             "edit": "Edit",
             "goTo": "Go to page",
             "landmarks": "Landmarks",
+            "progression": "Progression",
             "saveMark": "Save bookmark",
             "search": "Search",
             "searchResult": "Search [{{- searchText}}]",
@@ -341,6 +398,8 @@
             "activate": "Activate Readaloud",
             "captions": "Captions / clean view",
             "captionsDescription": "Simplified text view with minimal captions styling.",
+            "disableContinuousPlay": "Disable continuous play",
+            "disableContinuousPlayDescription": "Do not automatically play the next item, pause immediately after the current item has finished playing.",
             "next": "Next Readaloud",
             "pause": "Pause Readaloud",
             "play": "Play Readaloud",
@@ -352,13 +411,14 @@
             "title": "Readaloud"
         },
         "navigation": {
+            "ZenModeExit": "Exit Zen mode",
+            "ZenModeTitle": "Zen mode",
             "annotationTitle": "annotation",
-            "backHomeTitle": "back to bookshelf",
+            "backHomeTitle": "Close this reading window (back to bookshelf)",
             "bookmarkTitle": "bookmark",
             "currentPage": "Current page: {{- current}}",
             "currentPageTotal": "Current page: {{- current}}/{{- total}}",
             "detachWindowTitle": "show library / bookshelf window",
-            "fullscreenTitle": "go fullscreen",
             "goTo": "Go to",
             "goToError": "Page break does not exist",
             "goToPlaceHolder": "Enter page number",
@@ -391,6 +451,7 @@
                 "title": "Columns",
                 "two": "2 cols"
             },
+            "customFontSelected": "You have chosen a personal font",
             "customizeReader": "Customize text formatting",
             "disabled": "disabled",
             "display": "Display",
@@ -408,6 +469,7 @@
             "noFootnotes": "Disable footnotes",
             "noRTLFlip": "Disable Right-To-Left UI",
             "noRuby": "Hide Japanese Ruby",
+            "noTemporaryNavTargetOutline": "Disable visual navigation indicators",
             "paginated": "Paginated",
             "paraSpacing": "Paragraph spacing",
             "pdfZoom": {
@@ -422,6 +484,16 @@
                     "width": "page width"
                 },
                 "title": "Zoom"
+            },
+            "preset": {
+                "apply": "Apply",
+                "applyDetails": "Apply your preferred configuration to the current publication.",
+                "detail": "Save / Apply / Reset your preferred configuration.",
+                "reset": "Reset",
+                "resetDetails": "Reset your preferred configuration (default settings).",
+                "save": "Save",
+                "saveDetails": "This action saves the current configuration, i.e. your preferred display and text formatting options. The settings can then be applied to other publications by clicking the 'apply' button in other reader windows.",
+                "title": "Preferences"
             },
             "preview": "Preview",
             "reduceMotion": "Reduce motion",
@@ -452,8 +524,9 @@
         },
         "tts": {
             "activate": "Activate Text To Speech (TTS)",
-            "default": "Voice: system default",
+            "language": "TTS language",
             "next": "Next TTS",
+            "options": "TTS options",
             "pause": "Pause TTS",
             "play": "Play TTS",
             "previous": "Previous TTS",
@@ -465,11 +538,21 @@
         }
     },
     "settings": {
+        "annotationCreator": {
+            "creator": "Annotations creator (optional)",
+            "help": "If specified, this name will be included in the metadata of exported notes.",
+            "name": "Name",
+            "organization": "Organization",
+            "person": "Person",
+            "type": "Type:"
+        },
         "auth": {
+            "help": "This action deletes all OPDS login credentials.",
+            "title": "Access to publication catalogs",
             "wipeData": "Clear login data"
         },
         "keyboard": {
-            "advancedMenu": "Menu",
+            "advancedMenu": "Keyboard shortcuts advanced menu",
             "cancel": "Cancel",
             "disclaimer": "Shortcuts were defined from QWERTY keyboard layout.",
             "editUserJson": "Edit user file...",
@@ -481,10 +564,12 @@
         "language": {
             "languageChoice": "Language"
         },
+        "library": {
+            "enableAPIAPP": "Activate the 'PNB' library system",
+            "title": "Access to French library accounts"
+        },
         "session": {
-            "no": "Disable",
-            "title": "Save session",
-            "yes": "Enable"
+            "title": "Enable session saving"
         },
         "tabs": {
             "appearance": "Appearance",
@@ -506,7 +591,7 @@
             "next": "Next"
         },
         "description": {
-            "annotations": "Highlight document text, choose style and color, attach personal notes. Create annotations in 'quick' mode to bypass the editor (you can enter text and customize styles later). For extra speed, use the 'instant' mode which creates annotations immediately after highlighting document text!",
+            "annotations": "Highlight document text, choose style and color, attach personal notes. Create annotations in 'quick' mode to bypass the editor (you can enter text and customize styles later). For extra speed, use the 'instant' mode which creates notes immediately after highlighting document text!",
             "catalogs": "Borrow publications from your local library or discover publications via OPDS feeds. Access a variety of publications from multiple sources thanks to online catalogs.",
             "home": "Thorium looks different! Let's discover what's new...",
             "readingView1": "Customize your reading and listening preferences: Thorium now offers multiple color themes for both the user interface and publication documents. It is now also easier to configure 'readaloud' ebooks with synthetic speech and synchronized text/audio narration.",

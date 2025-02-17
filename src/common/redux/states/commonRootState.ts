@@ -11,8 +11,13 @@ import { IRTLFlipState } from "readium-desktop/common/redux/states/renderer/rtlF
 import { IKeyboardState } from "readium-desktop/common/redux/states/keyboard";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { ITheme } from "./theme";
+import { IAnnotationCreator } from "./creator";
+import { I18NState } from "readium-desktop/common/redux/states/i18n";
+import { TFIFOState } from "readium-desktop/utils/redux-reducers/fifo.reducer";
+import { IAnnotationPreParsingState } from "./renderer/annotation";
 
 export interface ICommonRootState {
+    i18n: I18NState;
     session: ISessionState;
     versionUpdate: IVersionUpdateState;
     keyboard: IKeyboardState;
@@ -21,4 +26,6 @@ export interface ICommonRootState {
         disableRTLFlip: IRTLFlipState,
     };
     theme: ITheme;
+    creator: IAnnotationCreator;
+    annotationImportQueue: TFIFOState<IAnnotationPreParsingState>;
 }

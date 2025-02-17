@@ -11,7 +11,7 @@ import { app, protocol, ProtocolRequest, ProtocolResponse, session } from "elect
 import * as fs from "fs";
 import * as mime from "mime-types";
 import * as path from "path";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import { _PACKAGING, IS_DEV } from "readium-desktop/preprocessor-directives";
 
 import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { parseDOM, serializeDOM } from "@r2-navigator-js/electron/common/dom";
@@ -44,11 +44,18 @@ import {
     computeReadiumCssJsonMessageInStreamer, MATHJAX_FILE_PATH, MATHJAX_URL_PATH,
     READIUMCSS_FILE_PATH, setupMathJaxTransformer,
 } from "./streamerCommon";
-import { OPDS_MEDIA_SCHEME } from "readium-desktop/main/redux/sagas/getEventChannel";
+// import { OPDS_MEDIA_SCHEME } from "readium-desktop/main/redux/sagas/getEventChannel";
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
+import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
 const debug = debug_("readium-desktop:main#streamerNoHttp");
+debug("_");
+
+// !!!!!!
+/// BE CAREFUL DEBUG HAS BEED DISABLED IN package.json
+// !!!!!!
 
 const URL_PARAM_SESSION_INFO = "r2_SESSION_INFO";
 
@@ -56,7 +63,6 @@ const URL_PARAM_SESSION_INFO = "r2_SESSION_INFO";
 // ... based on what metric, any particular HTTP server or client implementation?
 export const MAX_PREFETCH_LINKS = 10;
 
-export const THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL = "thoriumhttps";
 
 const READIUM_CSS_URL_PATH = "readium-css";
 
@@ -209,6 +215,9 @@ const streamProtocolHandler = async (
         }
     }
 
+    const pdfjsAssetsPrefix = "/pdfjs/";
+    const isPdfjsAssets = uPathname.startsWith(pdfjsAssetsPrefix);
+
     const publicationAssetsPrefix = "/pub/";
     const isPublicationAssets = uPathname.startsWith(publicationAssetsPrefix);
 
@@ -222,6 +231,7 @@ const streamProtocolHandler = async (
     const isMediaOverlays = uPathname.endsWith(mediaOverlaysPrefix);
 
     debug("streamProtocolHandler uPathname", uPathname);
+    debug("streamProtocolHandler isPdfjsAssets", isPdfjsAssets);
     debug("streamProtocolHandler isPublicationAssets", isPublicationAssets);
     debug("streamProtocolHandler isMathJax", isMathJax);
     debug("streamProtocolHandler isReadiumCSS", isReadiumCSS);
@@ -266,7 +276,34 @@ const streamProtocolHandler = async (
     // tslint:disable-next-line:max-line-length
     headers["Access-Control-Expose-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
 
-    if (isPublicationAssets || isMediaOverlays) {
+    if (isPdfjsAssets) {
+
+        const pdfjsUrlPathname = uPathname.substr(pdfjsAssetsPrefix.length);
+        debug("PDFJS request this file:", pdfjsUrlPathname);
+
+        const pdfjsFolder = "assets/lib/pdfjs";
+        let folderPath: string = path.join(__dirname, pdfjsFolder);
+        if (_PACKAGING === "0") {
+            folderPath = path.join(process.cwd(), "dist", pdfjsFolder);
+        }
+        const pdfjsFullPathname = path.normalize(`${folderPath}/${pdfjsUrlPathname}`);
+        const fileExtension = path.extname(pdfjsFullPathname);
+        debug("PDFJS full path name :", pdfjsFullPathname);
+
+        const contentLength = `${fs.statSync(pdfjsFullPathname)?.size || 0}`;
+        headers["Content-Length"] = contentLength;
+        const contentType = `${findMimeTypeWithExtension(fileExtension) || ""}; charset=utf-8`;
+        headers["Content-Type"] = contentType;
+        debug("PDFJS content-type:", contentType, contentLength);
+        const obj = {
+            // NodeJS.ReadableStream
+            data: fs.createReadStream(pdfjsFullPathname),
+            headers,
+            statusCode: 200,
+        };
+        callback(obj);
+        return;
+    } else if (isPublicationAssets || isMediaOverlays) {
         let b64Path = uPathname.substr(publicationAssetsPrefix.length);
         const i = b64Path.indexOf("/");
         let pathInZip = "";
@@ -1102,27 +1139,68 @@ export function initSessions() {
     protocol.registerSchemesAsPrivileged([
         // HACK!! TODO: FIXME (Electron lifecycle requires this before app.ready, and called only once!)
         // see src/main/redux/sagas/getEventChannel.ts
-    {
-        privileges: {
-            allowServiceWorkers: false, // Default false
-            bypassCSP: true, // Default false
-            corsEnabled: false, // Default false
-            secure: true, // Default false
-            standard: false, // Default false
-            stream: true, // Default false
-            supportFetchAPI: false, // Default false
-        },
-        scheme: OPDS_MEDIA_SCHEME,
-    },
+    // {
+    //     privileges: {
+    //         allowServiceWorkers: false, // Default false
+    //         bypassCSP: false, // Default false
+    //         corsEnabled: false, // Default false
+    //         secure: false, // Default false
+    //         stream: false, // Default false
+    //         supportFetchAPI: false, // Default false
+    //         standard: false, // Default false
+    //         codeCache: false, // Default false (only works with standard=true)
+    //     },
+    //     scheme: "store",
+    // },
+    // {
+    //     privileges: {
+    //         allowServiceWorkers: false, // Default false
+    //         bypassCSP: false, // Default false
+    //         corsEnabled: false, // Default false
+    //         secure: false, // Default false
+    //         stream: false, // Default false
+    //         supportFetchAPI: false, // Default false
+    //         standard: false, // Default false
+    //         codeCache: false, // Default false (only works with standard=true)
+    //     },
+    //     scheme: "filex",
+    // },
+    // {
+    //     privileges: {
+    //         allowServiceWorkers: false, // Default false
+    //         bypassCSP: false, // Default false
+    //         corsEnabled: false, // Default false
+    //         secure: false, // Default false
+    //         stream: false, // Default false
+    //         supportFetchAPI: false, // Default false
+    //         standard: false, // Default false
+    //         codeCache: false, // Default false (only works with standard=true)
+    //     },
+    //     scheme: "pdfjs-extract",
+    // },
+    // {
+    //     privileges: {
+    //         allowServiceWorkers: false, // Default false
+    //         bypassCSP: false, // Default false
+    //         corsEnabled: false, // Default false
+    //         secure: false, // Default false
+    //         stream: false, // Default false
+    //         supportFetchAPI: false, // Default false
+    //         standard: false, // Default false
+    //         codeCache: false, // Default false (only works with standard=true)
+    //     },
+    //     scheme: OPDS_MEDIA_SCHEME, // TODO: what about OPDS_AUTH_SCHEME?
+    // },
     {
         privileges: {
             allowServiceWorkers: false,
             bypassCSP: false,
             corsEnabled: true,
             secure: true,
-            standard: true,
             stream: true,
             supportFetchAPI: true,
+            standard: true, // Default false
+            codeCache: false, // Default false (only works with standard=true)
         },
         scheme: THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
     }, {
@@ -1131,9 +1209,10 @@ export function initSessions() {
             bypassCSP: false,
             corsEnabled: true,
             secure: true,
-            standard: true,
             stream: true,
             supportFetchAPI: true,
+            standard: true, // Default false
+            codeCache: false, // Default false (only works with standard=true)
         },
         scheme: READIUM2_ELECTRON_HTTP_PROTOCOL,
     }]);

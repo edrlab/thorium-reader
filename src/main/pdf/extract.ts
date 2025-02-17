@@ -12,6 +12,7 @@ import { BrowserWindow } from "electron";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { IInfo } from "./extract.type";
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 
 const debug = debug_("readium-desktop:main/pdf/extract/index.ts");
 debug("_");
@@ -32,7 +33,7 @@ export const extractPDFData =
         // => unicode chars remain escaped!
         // So these must be decodeURIComponent() for filesystem API calls,
         // ...but the lonely non-encoded percent char triggers a crash if not handled correctly!
-        // We double-encode the path in order to work around the registerFileProtocol() decoding behaviour:
+        // (really, the double-encoding is for "viewer.html?file=" in loadURL() below!)
 
         pdfPath = "pdfjs-extract://host/" + encodeURIComponent_RFC3986(encodeURIComponent_RFC3986(pdfPath));
         debug("extractPDFData", pdfPath);
@@ -60,7 +61,7 @@ export const extractPDFData =
             });
 
             // win.hide(); // doesn't works on linux
-            await win.loadURL(`pdfjs://local/web/viewer.html?file=${pdfPath}`);
+            await win.loadURL(`${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0/pdfjs/web/viewer.html?file=${pdfPath}`);
 
             const content = win.webContents;
 

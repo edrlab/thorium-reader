@@ -1,6 +1,6 @@
-/*
-=-=-= popoverDialog.scss
-*/
+.CSS_START_components_popoverDialog {
+  display: none;
+}
 
 .modal_dialog_reader {
   transform: translate(-50%, -50%);
@@ -661,6 +661,10 @@
   padding-right: 0 !important;
   background-color: inherit;
   color: var(--color-primary);
+
+  option {
+    background-color: var(--color-secondary);
+  }
 }
 
 .modal_dialog_reader, .popover_dialog_reader {
@@ -694,7 +698,21 @@
   outline-offset: -2px;
 }
 
-.delete_item {
+.delete_item_edition {
+  color: var(--color-blue);
+  margin-left: 5px;
+
+  &:hover {
+    background-color: var(--color-secondary);
+  }
+
+  svg {
+    color: var(--color-blue)!important;
+  }
+}
+
+
+.delete_item, .delete_item_edition {
   z-index: 1000;
   border: 1px solid var(--color-blue);
   background-color: var(--color-light-blue);
@@ -722,4 +740,8 @@
       width: 10px;
     }
   }
+}
+
+.CSS_END_components_popoverDialog {
+  display: none;
 }

@@ -7,11 +7,13 @@
 
 import * as debug_ from "debug";
 import { syncIpc } from "readium-desktop/common/ipc";
-import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
+import { ActionAcrossRenderer, ActionWithDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import {
     apiActions, authActions, catalogActions, dialogActions, downloadActions, historyActions, i18nActions, keyboardActions, lcpActions,
     publicationActions, themeActions,
     readerActions, sessionActions, toastActions, versionUpdateActions,
+    creatorActions,
+    annotationActions,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
@@ -55,7 +57,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     // authActions.done.ID, // not used
     authActions.cancel.ID,
 
-    sessionActions.enable.ID,
+    // sessionActions.enable.ID,
 
     lcpActions.unlockPublicationWithPassphrase.ID,
 
@@ -70,15 +72,26 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     themeActions.setTheme.ID,
     versionUpdateActions.notify.ID,
 
-    readerActions.bookmark.pop.ID,
-    readerActions.bookmark.push.ID,
-    readerActions.bookmark.update.ID,
+    // readerActions.bookmark.pop.ID,
+    // readerActions.bookmark.push.ID,
+    // readerActions.bookmark.update.ID,
 
     readerActions.annotation.pop.ID,
     readerActions.annotation.push.ID,
     readerActions.annotation.update.ID,
 
     sessionActions.save.ID,
+
+    creatorActions.set.ID,
+
+    annotationActions.importTriggerModal.ID,
+    // annotationActions.importConfirmOrAbort.ID,
+
+    annotationActions.pushToAnnotationImportQueue.ID,
+
+    annotationActions.shiftFromAnnotationImportQueue.ID,
+
+    readerActions.setTheLock.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware
@@ -106,7 +119,9 @@ export const reduxSyncMiddleware: Middleware
                 if (libId) {
                     try {
                         const libWin = getLibraryWindowFromDi();
-                        browserWin.set(libId, libWin);
+                        if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
+                            browserWin.set(libId, libWin);
+                        }
                     } catch (_err) {
                         // ignore
                         // library window may be not initialized in first
@@ -118,7 +133,9 @@ export const reduxSyncMiddleware: Middleware
                     if (readers[key]) {
                         try {
                             const readerWin = getReaderWindowFromDi(readers[key].identifier);
-                            browserWin.set(readers[key].identifier, readerWin);
+                            if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
+                                browserWin.set(readers[key].identifier, readerWin);
+                            }
                         } catch (_err) {
                             // ignore
                             debug("ERROR: Can't found ther reader win from di: ", readers[key].identifier);
@@ -133,13 +150,22 @@ export const reduxSyncMiddleware: Middleware
                             !(
                                 (action as ActionWithSender).sender?.type === SenderType.Renderer
                                 && (action as ActionWithSender).sender?.identifier === id
+                            ) || (
+                                (action as ActionAcrossRenderer)?.sendActionAcrossRenderer
+                                && (action as ActionWithSender)?.sender?.identifier !== id
                             )
                         ) {
+
+                            if ((action as ActionWithDestination)?.destination?.identifier && (action as ActionWithDestination)?.destination?.identifier !== id) {
+                                // if the action has a reader destination, do not send to other browserWin Instance
+                                return  ;
+                            }
 
                             debug("send to", id);
                             const a = ActionSerializer.serialize(action as ActionWithSender);
                             // debug(a);
                             try {
+                                if (!win.isDestroyed() && !win.webContents.isDestroyed()) {
                                 win.webContents.send(syncIpc.CHANNEL, {
                                     type: syncIpc.EventType.MainAction,
                                     payload: {
@@ -149,7 +175,7 @@ export const reduxSyncMiddleware: Middleware
                                         type: SenderType.Main,
                                     },
                                 } as syncIpc.EventPayload);
-
+                                }
                             } catch (error) {
                                 debug("ERROR in SYNC ACTION", error);
                             }
@@ -169,7 +195,7 @@ export const reduxSyncMiddleware: Middleware
                 //     }
 
                 //     try {
-                //         appWindow.browserWindow.webContents.send(syncIpc.CHANNEL, {
+                //         !appWindow.isDestroyed() && !appWindow.webContents.isDestroyed() && appWindow.browserWindow.webContents.send(syncIpc.CHANNEL, {
                 //             type: syncIpc.EventType.MainAction,
                 //             payload: {
                 //                 action: actionSerializer.serialize(action),

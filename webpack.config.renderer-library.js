@@ -3,14 +3,15 @@
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const TerserPlugin = require("terser-webpack-plugin");
 
-// var fs = require("fs");
+const fs = require("fs");
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { VanillaExtractPlugin } = require("@vanilla-extract/webpack-plugin");
 
 const preprocessorDirectives = require("./webpack.config-preprocessor-directives");
+
+let __WEBPACK_SASS_LOADER_FIRST_LIBRARY = false;
 
 const aliases = {
     "readium-desktop": path.resolve(__dirname, "src"),
@@ -215,9 +216,36 @@ const scssLoaderConfig = [
     {
         loader: "sass-loader",
         options: {
+            // api: "legacy",
             // Prefer `dart-sass`
             implementation: require("sass"),
-            additionalData: `@import "./src/renderer/assets/styles/partials/variables.scss";`,
+            additionalData: (content, loaderContext) => {
+                console.log("SASS LOADER (LIBRARY): " + loaderContext.resourcePath);
+                if (!__WEBPACK_SASS_LOADER_FIRST_LIBRARY) {
+                    __WEBPACK_SASS_LOADER_FIRST_LIBRARY = true;
+                    console.log("[first] SASS LOADER (LIBRARY)");
+
+                    // -----
+                    // WORKS, but not tested in Windows (different root path syntax for import?)
+                    // const { rootContext } = loaderContext; // resourcePath
+                    // const importPath = path.join(rootContext, "src/renderer/assets/styles/partials/variables.scss");
+                    // // const relativePath = path.relative(rootContext, resourcePath);
+                    // // console.log("CSSSASS", rootContext, resourcePath, relativePath, importPath);
+                    // return `@import "${importPath}"`;
+                    // -----
+                    // WORKS
+                    // const prefix = fs.readFileSync(path.join(process.cwd(), "src/renderer/assets/styles/partials/variables.scss"), { encoding: "utf8" });
+                    // return `\n/* src/renderer/assets/styles/partials/variables.scss */\n\n${prefix}\n${content}`;
+                    // -----
+                    // DOES NOT WORK
+                    // return `@import "src/renderer/assets/styles/partials/variables"`;
+                    // -----
+                    // DOES NOT WORK
+                    // return `@import "src/renderer/assets/styles/partials/variables.scss"`;
+                    // -----
+                }
+                return content;
+            },
             warnRuleAsWarning: true,
         },
     },
@@ -349,7 +377,7 @@ let config = Object.assign(
                 directory: __dirname,
                 publicPath: "/",
                 watch: {
-                    ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/],
+                    ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/, /\.flox/],
                 },
             },
             devMiddleware: {
@@ -399,7 +427,7 @@ if (nodeEnv !== "production") {
                 directory: __dirname,
                 publicPath: "/",
                 watch: {
-                    ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/],
+                    ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/, /\.flox/],
                 },
             },
             devMiddleware: {
@@ -418,13 +446,6 @@ if (nodeEnv !== "production") {
     // same as devServer.devMiddleware.publicPath
     // preprocessorDirectives.rendererLibraryBaseUrl (full HTTP locahost + port)
     config.output.publicPath = "/";
-
-    config.plugins.push(
-        new VanillaExtractPlugin({
-            identifiers: "debug",
-        }),
-    );
-    // config.plugins.push("@vanilla-extract/babel-plugin");
 
     // if (_enableHot) {
     //     config.plugins.push(new webpack.HotModuleReplacementPlugin());
@@ -461,13 +482,6 @@ if (nodeEnv !== "production") {
     // {
     //     minimize: false,
     // };
-
-    config.plugins.push(
-        new VanillaExtractPlugin({
-            identifiers: "debug", // "short"
-        }),
-    );
-    // config.plugins.push("@vanilla-extract/babel-plugin");
 
     config.plugins.push(
         new MiniCssExtractPlugin({

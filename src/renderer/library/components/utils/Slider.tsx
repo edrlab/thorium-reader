@@ -5,14 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesSlider from "readium-desktop/renderer/assets/styles/components/slider.scss";
+
 import classNames from "classnames";
 import * as React from "react";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-import * as stylesSlider from "readium-desktop/renderer/assets/styles/components/slider.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { connect } from "react-redux";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -34,15 +37,15 @@ interface IState {
 }
 
 class Slider extends React.Component<IProps, IState> {
-    private contentRef: React.RefObject<HTMLDivElement>;
-    private contentElRefs: HTMLDivElement[] = [];
+    private contentRef: React.RefObject<HTMLUListElement>;
+    private contentElRefs: HTMLLIElement[] = [];
     private wrapperRef: React.RefObject<HTMLDivElement>;
     // private contentElVisible: boolean[] = [];
 
     constructor(props: IProps) {
         super(props);
 
-        this.contentRef = React.createRef<HTMLDivElement>();
+        this.contentRef = React.createRef<HTMLUListElement>();
         this.wrapperRef = React.createRef<HTMLDivElement>();
 
         this.state = {
@@ -109,20 +112,22 @@ class Slider extends React.Component<IProps, IState> {
                         className={classNames(stylesSlider.slider_button_prev, stylesButtons.button_transparency_icon)}
                         onClick={this.handleMove.bind(this, false)}
                         disabled={this.state.position < 0 ? false : true}
+                        aria-hidden
                     >
                     <SVG ariaHidden={true} svg={ArrowRightIcon} />
                 </button>
                 <div ref={this.wrapperRef} className={stylesSlider.slider_wrapper}
                     /* onScroll={(e) => {this.handleScroll(e)}} */>
-                    <div ref={this.contentRef} className={stylesSlider.slider_items} style={varStyle}>
+                    <ul ref={this.contentRef} className={stylesSlider.slider_items} style={varStyle}>
                         {list}
-                    </div>
+                    </ul>
                 </div>
                     <button
                         onClick={this.handleMove.bind(this, true)}
                         aria-label={__("accessibility.rightSlideButton")}
                         className={classNames(stylesSlider.slider_button_next, stylesButtons.button_transparency_icon)}
                         disabled={this.state.position > max ? false : true}
+                        aria-hidden
                     >
                         <SVG ariaHidden={true} svg={ArrowRightIcon}/>
                     </button>
@@ -136,19 +141,19 @@ class Slider extends React.Component<IProps, IState> {
     //     }
     //     const max = - this.wrapperRef.current.scrollWidth + this.wrapperRef.current.offsetWidth;
     //     let step = - e.currentTarget.scrollLeft;
-    
+
     //     if (this.state.position === max) {
     //         step = - step;
     //     }
-    
+
     //     let position =  Math.round((this.state.position + step) / 10) * 10;
-    
+
     //     if (position > 0) {
     //         position = 0;
     //     } else if (position < max) {
     //         position = max;
     //     }
-    
+
     //     this.setState({ position, refreshVisible: true });
     //     console.log(position, step);
     // }
@@ -197,14 +202,14 @@ class Slider extends React.Component<IProps, IState> {
             //     props.tabIndex = -1;
             // }
             return (
-                <div
+                <li
                     ref={(ref) => this.contentElRefs[index] = ref}
                     key={index}
                     onFocus={() => this.moveInView(index)}
                     {...props}
                 >
                     {element}
-                </div>
+                </li>
             );
         });
     }
@@ -228,4 +233,8 @@ class Slider extends React.Component<IProps, IState> {
     }
 }
 
-export default withTranslator(Slider);
+const mapStateToProps = (state: IRendererCommonRootState) => ({
+    locale: state.i18n.locale, // refresh
+});
+
+export default connect(mapStateToProps)(withTranslator(Slider));

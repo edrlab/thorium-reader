@@ -6,8 +6,9 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app, protocol, ipcMain } from "electron";
+import { app, protocol, ipcMain, net } from "electron";
 import * as path from "path";
+import { pathToFileURL } from "url";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import { closeProcessLock, diMainGet, getLibraryWindowFromDi, getAllReaderWindowFromDi } from "readium-desktop/main/di";
@@ -30,6 +31,8 @@ import {
     getBeforeQuitEventChannel, getQuitEventChannel, getShutdownEventChannel,
     getWindowAllClosedEventChannel,
 } from "./getEventChannel";
+import { availableLanguages } from "readium-desktop/common/services/translator";
+import { i18nActions } from "readium-desktop/common/redux/actions";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -69,7 +72,7 @@ export function* init() {
         const browserWindows = [];
         try {
             const libraryWin = getLibraryWindowFromDi();
-            if (libraryWin) {
+            if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
                 browserWindows.push(libraryWin);
             }
         } catch (e) {
@@ -78,13 +81,17 @@ export function* init() {
         try {
             const readerWins = getAllReaderWindowFromDi();
             if (readerWins?.length) {
-                browserWindows.push(...readerWins);
+                for (const readerWin of readerWins) {
+                    if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
+                        browserWindows.push(readerWin);
+                    }
+                }
             }
         } catch (e) {
             debug("getAllReaderWindowFromDi ERROR?", e);
         }
         browserWindows.forEach((win) => {
-            if (win.webContents) {
+            if (!win.isDestroyed() && !win.webContents.isDestroyed()) {
                 console.log("webContents.send - accessibility-support-changed: ", accessibilitySupportEnabled, win.id);
                 try {
                     win.webContents.send("accessibility-support-changed", accessibilitySupportEnabled);
@@ -107,6 +114,24 @@ export function* init() {
 
     debug("Main app ready");
 
+    const protocolHandler_FILEX = (
+        request: Request,
+    ): Response | Promise<Response> => {
+        debug("---protocolHandler_FILEX");
+        debug(request);
+        const urlPath = request.url.substring("filex://host/".length);
+        debug(urlPath);
+        const urlPathDecoded = urlPath.split("/").map((segment) => {
+            return segment?.length ? tryDecodeURIComponent(segment) : "";
+        }).join("/");
+        debug(urlPathDecoded);
+        const filePathUrl = pathToFileURL(urlPathDecoded).toString();
+        debug(filePathUrl);
+        return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() on r2-navigator-js.getWebViewSession().protocol or Electron.session.defaultSession.protocol)
+    };
+    protocol.handle("filex", protocolHandler_FILEX);
+    // protocol.unhandle("filex");
+
     if (IS_DEV) {
         // https://github.com/MarshallOfSound/electron-devtools-installer
         // https://github.com/facebook/react/issues/25843
@@ -123,27 +148,36 @@ export function* init() {
             default: installExtension,
             REACT_DEVELOPER_TOOLS,
             REDUX_DEVTOOLS,
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
         } = require("electron-devtools-installer");
 
         [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
             installExtension(extension /*, { loadExtensionOptions: { allowFileAccess: true } } */)
-            .then((name: string) => debug("electron-devtools-installer OK (app init): ", name))
+            .then((ext: {name: string}) => debug("electron-devtools-installer OK (app init): ", ext.name))
             .catch((err: Error) => debug("electron-devtools-installer ERROR (app init): ", err));
         });
     }
 
-    // register file protocol to link locale file to renderer
-    protocol.registerFileProtocol("store",
-        (request, callback) => {
-
-            // Extract publication item relative url
-            const relativeUrl = request.url.substr(6);
-            const pubStorage = diMainGet("publication-storage");
-            const filePath: string = path.join(pubStorage.getRootPath(), relativeUrl);
-            callback(filePath);
-        },
-    );
+    const protocolHandler_Store = (
+        request: Request,
+    ): Response | Promise<Response> => {
+        debug("---protocolHandler_Store");
+        debug(request);
+        const urlPath = request.url.substring("store://".length);
+        debug(urlPath);
+        // const urlPathDecoded = tryDecodeURIComponent(urlPath);
+        // debug(urlPathDecoded);
+        const pubStorage = diMainGet("publication-storage");
+        const rootPath = pubStorage.getRootPath();
+        debug(rootPath);
+        const filePath = path.join(rootPath, urlPath);
+        debug(filePath);
+        const filePathUrl = pathToFileURL(filePath).toString();
+        debug(filePathUrl);
+        return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() on r2-navigator-js.getWebViewSession().protocol or Electron.session.defaultSession.protocol)
+    };
+    protocol.handle("store", protocolHandler_Store);
+    // protocol.unhandle("store");
 
     app.on("will-quit", () => {
 
@@ -152,34 +186,22 @@ export function* init() {
         debug("#####");
     });
 
-    // const sessionPDFWebview = session.fromPartition("persist:pdfjsreader");
-    // const protocolFromPDFWebview = sessionPDFWebview.protocol;
-    protocol.registerFileProtocol("pdfjs", async (request, callback) => {
+    const protocolHandler_PDF = (
+        request: Request,
+    ): Response | Promise<Response> => {
+        debug("---protocolHandler_PDF");
+        debug(request);
+        const urlPath = request.url.substring("pdfjs-extract://host/".length);
+        debug(urlPath);
+        const urlPathDecoded = tryDecodeURIComponent(urlPath);
+        debug(urlPathDecoded);
+        const filePathUrl = pathToFileURL(urlPathDecoded).toString();
+        debug(filePathUrl);
+        return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() on r2-navigator-js.getWebViewSession().protocol or Electron.session.defaultSession.protocol)
+    };
+    protocol.handle("pdfjs-extract", protocolHandler_PDF);
+    // protocol.unhandle("pdfjs-extract");
 
-        const url = (new URL(request.url)).pathname;
-        debug("PDFJS request this file:", url);
-
-        const pdfjsFolder = "assets/lib/pdfjs";
-        let folderPath: string = path.join(__dirname, pdfjsFolder);
-        if (_PACKAGING === "0") {
-            folderPath = path.join(process.cwd(), "dist", pdfjsFolder);
-        }
-        const pathname = path.normalize(`${folderPath}/${url}`);
-
-        callback(pathname);
-    });
-
-    protocol.registerFileProtocol("pdfjs-extract", async (request, callback) => {
-
-        debug("register file protocol pdfjs-extract");
-        debug("request", request);
-        const arg = request.url.split("pdfjs-extract://host/")[1];
-        debug(arg);
-        const p = tryDecodeURIComponent(arg);
-        debug(p);
-
-        callback(p);
-    });
 
     yield call(() => {
         const deviceIdManager = diMainGet("device-id-manager");
@@ -218,6 +240,28 @@ export function* init() {
         debug("CATALOGS URL FROM ENV NOT FOUND", e);
     }
 
+    // i18n setLocale first initialization
+    yield call(() => {
+        const store = diMainGet("store");
+        const locale = store.getState().i18n.locale as keyof typeof availableLanguages | "";
+        if (locale === "") {
+
+            const isAnAvailableLanguage = (a: string): a is keyof typeof availableLanguages => a in availableLanguages;
+            for (const bcp47 of app.getPreferredSystemLanguages()) {
+                if (isAnAvailableLanguage(bcp47)) {
+                    store.dispatch(i18nActions.setLocale.build(bcp47));
+                    return;
+                }
+                const lang = bcp47.split("-")[0];
+                if (isAnAvailableLanguage(lang)) {
+                    store.dispatch(i18nActions.setLocale.build(lang));
+                    return;
+                }
+            }
+
+            store.dispatch(i18nActions.setLocale.build("en")); // default language
+        }
+    });
 }
 
 function* closeProcess() {
@@ -307,9 +351,8 @@ export function exit() {
             shouldExit = true;
 
             const libraryWin = getLibraryWindowFromDi();
-
             if (process.platform === "darwin") {
-                if (libraryWin.isDestroyed()) {
+                if (libraryWin.isDestroyed() || libraryWin.webContents.isDestroyed()) {
                     if (closeProcessLock.isLock) {
                         error(filename_, new Error(
                             `closing process not completed
@@ -321,7 +364,9 @@ export function exit() {
                 }
             }
 
-            libraryWin.close();
+            if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
+                libraryWin.close();
+            }
         };
 
         yield takeSpawnEveryChannel(

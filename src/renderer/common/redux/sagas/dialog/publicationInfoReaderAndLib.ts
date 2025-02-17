@@ -16,7 +16,7 @@ import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 import { all, call, delay, put, take } from "redux-saga/effects";
 import { race as raceTyped } from "typed-redux-saga/macro";
 
-import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 import { apiSaga } from "../api";
 
@@ -69,7 +69,7 @@ function* getApi(id: string) {
     while (true) {
         const action:
             apiActions.result.TAction<TReturnPromiseOrGeneratorType<TApiMethod["publication/get"]>>
-            = yield take(apiActions.result.build);
+            = yield take(apiActions.result.ID);
 
         const { requestId } = action.meta.api;
         if (requestId === REQUEST_ID) {
@@ -79,7 +79,7 @@ function* getApi(id: string) {
 }
 
 // Triggered when the publication data are available from the API
-function* updateReaderAndLibPublication(action: apiActions.result.TAction<PublicationView>, focusWhereAmI: boolean, pdfPlayerNumberOfPages: number | undefined, divinaNumberOfPages: number | undefined, divinaContinousEqualTrue: boolean, readerReadingLocation: LocatorExtended | undefined, handleLinkUrl: ((url: string) => void) | undefined) {
+function* updateReaderAndLibPublication(action: apiActions.result.TAction<PublicationView>, focusWhereAmI: boolean, pdfPlayerNumberOfPages: number | undefined, divinaNumberOfPages: number | undefined, divinaContinousEqualTrue: boolean, readerReadingLocation: MiniLocatorExtended | undefined, handleLinkUrl: ((url: string) => void) | undefined) {
     debug("reader publication from publicationInfo received");
 
     const publicationView = action.payload;

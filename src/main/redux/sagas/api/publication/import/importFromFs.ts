@@ -22,6 +22,7 @@ import { importLcplFromFS } from "./importLcplFromFs";
 import { importPublicationFromFS } from "./importPublicationFromFs";
 
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/importFromFSService");
@@ -38,20 +39,20 @@ export function* importFromFsService(
     const isLPF = isAcceptedExtension("w3cAudiobook", ext);
     const isPDF = isAcceptedExtension("pdf", ext);
     const isOPF = isAcceptedExtension("opf", ext);
-    const isNccHTML = filePath.replace(/\\/g, "/").endsWith("/" + acceptedExtensionObject.nccHtml);
+    const isNccHTML = filePath.replace(/\\/g, "/").toLowerCase().endsWith("/" + acceptedExtensionObject.nccHtml);
 
     debug("extension", ext);
     debug("lcp/lpf/pdf/isOPF/isNccHTML", isLCPLicense, isLPF, isPDF, isOPF, isNccHTML);
     // debug(typeof ReadableStream === "undefined" || typeof Promise.allSettled === "undefined");
 
-    if (!acceptedExtensionArray.includes(ext) && !isNccHTML) {
+    if (!acceptedExtensionArray.includes(ext.toLowerCase()) && !isNccHTML) {
         // const store = diMainGet("store");
-        // store.dispatch(toastActions.openRequest.build(ToastType.Error, diMainGet("translator").translate("dialog.importError", {
+        // store.dispatch(toastActions.openRequest.build(ToastType.Error, getTranslator().translate("dialog.importError", {
         //     acceptedExtension: `[${ext}] ${acceptedExtensionArray.join(" ")}`,
         // })));
         // return [undefined, false];
 
-        throw new Error(diMainGet("translator").translate("dialog.importError", {
+        throw new Error(getTranslator().translate("dialog.importError", {
             acceptedExtension: `[${ext}] ${acceptedExtensionArray.join(" ")}`,
         }));
     }

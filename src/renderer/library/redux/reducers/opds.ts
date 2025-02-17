@@ -8,7 +8,6 @@
 import { type Reducer } from "redux";
 
 import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
-import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions } from "readium-desktop/renderer/library/redux/actions";
 import {
@@ -18,6 +17,7 @@ import {
     IOpdsHeaderState, IOpdsSearchState,
 } from "readium-desktop/common/redux/states/renderer/opds";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // import * as debug_ from "debug";
 // Logger
@@ -32,9 +32,8 @@ function opdsBreadcrumbReducer_(
             const { level, title, url, rootFeedIdentifier } = action.payload;
             const stateNew = state.slice(0, level - 1);
             if (stateNew.length === 0) {
-                const translator = diLibraryGet("translator");
                 stateNew.push({
-                    name: translator.translate("opds.breadcrumbRoot"),
+                    name: getTranslator().__("opds.breadcrumbRoot"),
                     path: "/opds",
                 });
             }

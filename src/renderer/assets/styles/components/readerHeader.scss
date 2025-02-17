@@ -1,6 +1,6 @@
-/*
-=-=-= readerHeader.scss
-*/
+.CSS_START_components_readerHeader {
+    display: none;
+}
 
 [data-theme="dark"] {
     .toolbar_navigation, .picker_container {
@@ -48,6 +48,11 @@
         .tts_toolbar {
             justify-content: center;
             position: relative;
+
+            @media screen and (width <= 850px) {
+                margin-right: 10px;
+            }
+
         }
 
         .menu_option {
@@ -165,7 +170,7 @@
     width: 100vw;
     height: 48px;
     background-color: var(--color-extralight-grey);
-    z-index: 200;
+    z-index: 100;
     top: 70px;
     right: 0;
     left: unset;
@@ -345,4 +350,8 @@
         width: 100%;
         border-bottom: 2px solid var(--color-blue);
     }
+}
+
+.CSS_END_components_readerHeader {
+    display: none;
 }

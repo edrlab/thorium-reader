@@ -6,7 +6,6 @@
         "leftSlideButton": "Плъзни списъка наляво",
         "mainContent": "главно съдържание",
         "rightSlideButton": "Плъзни списъка надясно",
-        "searchBook": "Търси по заглавие",
         "skipLink": "Преминете към съдържанието",
         "toolbar": "лента с инструменти"
     },
@@ -35,6 +34,7 @@
                         "no": "Не",
                         "yes": "Да"
                     },
+                    "help": "",
                     "message": "Искате ли да запазите сесията ?",
                     "title": "Запази сесията"
                 }
@@ -69,13 +69,12 @@
         "emptyTagList": "Нямате маркирана електронна книга.",
         "entry": {
             "continueReading": "Възобнови четенето",
-            "continueReadingAudioBooks": "Възобнови слушането",
-            "continueReadingDivina": "Възобнови divina",
-            "continueReadingPdf": "Възобнови PDF",
             "lastAdditions": "Наскоро добавени"
         },
         "export": "Експортиране",
+        "exportAnnotation": "",
         "format": "Форматиране",
+        "importAnnotation": "",
         "lang": "Език",
         "lastRead": "Последно четено",
         "moreInfo": "Подробности за книгата",
@@ -117,12 +116,25 @@
         "released": "Публикувано на",
         "sort": "Сортирай по",
         "tag": "",
-        "tagCount": "Брой маркери",
         "tags": "Маркери",
         "update": "Редактирай"
     },
     "dialog": {
+        "annotations": {
+            "descAuthor": "",
+            "descCreator": "",
+            "descList": "",
+            "descNewer": "",
+            "descOlder": "",
+            "descTitle": "",
+            "importAll": "",
+            "importWithoutConflict": "",
+            "origin": "",
+            "title": ""
+        },
         "cancel": "Отказ",
+        "deleteAnnotations": "",
+        "deleteAnnotationsText": "",
         "deleteFeed": "Наистина ли искате да изтриете този каталог?",
         "deletePublication": "Наистина ли искате да изтриете тази книга?",
         "import": "Наистина ли искате да добавите тези файлове:",
@@ -157,7 +169,8 @@
     },
     "library": {
         "lcp": {
-            "hint": "(Подсказка: {{- hint}})",
+            "hint": "Подсказка: ",
+            "open": "",
             "password": "Парола",
             "sentence": "Тази публикация се нуждае от LCP парола, за да бъде отворена: ",
             "urlHint": "Забравили сте паролата си? Намерете помощ тук",
@@ -167,6 +180,14 @@
         }
     },
     "message": {
+        "annotations": {
+            "alreadyImported": "",
+            "emptyFile": "",
+            "errorParsing": "",
+            "noBelongTo": "",
+            "nothing": "",
+            "success": ""
+        },
         "download": {
             "error": "Изтеглянето на {{- title}} е неуспешно: [{{- err}}]"
         },
@@ -270,15 +291,17 @@
         "duration": {
             "title": "Продължителност"
         },
+        "encryptedNoLicense": "",
         "expired": "",
         "expiredLcp": "Тази книга не може да бъде прочетена, защото лицензът за LCP е изтекъл.",
+        "incorrectPassphrase": "",
         "lcpEnd": "Край",
         "lcpRightsCopy": "Копиране на символи",
         "lcpRightsPrint": "Печат на страници",
         "lcpStart": "Начало",
         "licenceLCP": "",
+        "licenseCertificateDateInvalid": "Датата на ключа за лиценза е невалидна",
         "licenseOutOfDate": "Изтекъл срок на лиценза",
-        "licenseSignatureDateInvalid": "Датата на ключа за лиценза е невалидна",
         "licenseSignatureInvalid": "Ключа за лиценза е невалиден",
         "licensed": "",
         "markAsRead": "",
@@ -304,12 +327,51 @@
             "Color": "",
             "addNote": "",
             "advancedMode": "",
+            "annotationsExport": {
+                "description": "",
+                "title": ""
+            },
             "annotationsOptions": "",
+            "colors": {
+                "bluegreen": "",
+                "cyan": "",
+                "green": "",
+                "lightblue": "",
+                "orange": "",
+                "purple": "",
+                "red": "",
+                "yellow": ""
+            },
+            "date": "",
+            "export": "",
+            "filter": {
+                "all": "",
+                "filterByColor": "",
+                "filterByCreator": "",
+                "filterByDrawtype": "",
+                "filterByTag": "",
+                "filterOptions": "",
+                "none": ""
+            },
+            "hide": "",
             "highlight": "",
             "noSelectionToast": "",
+            "note": "",
             "quickAnnotations": "",
             "saveNote": "",
-            "toggleMarginMarks": ""
+            "sorting": {
+                "lastcreated": "",
+                "lastmodified": "",
+                "progression": "",
+                "sortingOptions": ""
+            },
+            "toggleMarginMarks": "",
+            "type": {
+                "outline": "",
+                "solid": "",
+                "strikethrough": "",
+                "underline": ""
+            }
         },
         "divina": {
             "mute": "заглуши звука",
@@ -318,6 +380,7 @@
         "fxl": {
             "fit": ""
         },
+        "goToContent": "",
         "marks": {
             "annotations": "Анотации",
             "bookmarks": "Отметки",
@@ -325,6 +388,7 @@
             "edit": "Edit",
             "goTo": "",
             "landmarks": "Landmarks",
+            "progression": "",
             "saveMark": "",
             "search": "Търси",
             "searchResult": "",
@@ -345,13 +409,14 @@
             "title": "Четене на глас"
         },
         "navigation": {
+            "ZenModeExit": "",
+            "ZenModeTitle": "",
             "annotationTitle": "",
             "backHomeTitle": "обратно към лавицата с книги",
             "bookmarkTitle": "отметка",
             "currentPage": "Текуща страница: {{- current}}",
             "currentPageTotal": "Текуща страница: {{- current}}/{{- total}}",
             "detachWindowTitle": "показване на прозореца на библиотеката/лавицата с книги",
-            "fullscreenTitle": "отвори на цял екран",
             "goTo": "Иди на",
             "goToError": "Това местоположение не съществува",
             "goToPlaceHolder": "Въведи номер на страница",
@@ -384,6 +449,7 @@
                 "title": "Колони",
                 "two": "2 кол."
             },
+            "customFontSelected": "",
             "customizeReader": "",
             "disabled": "",
             "display": "Екран",
@@ -401,6 +467,7 @@
             "noFootnotes": "Деактивирайте бележките под линия",
             "noRTLFlip": "",
             "noRuby": "",
+            "noTemporaryNavTargetOutline": "",
             "paginated": "Страниран",
             "paraSpacing": "Разстояние между параграфите",
             "pdfZoom": {
@@ -415,6 +482,16 @@
                     "width": "в ширината на страницата"
                 },
                 "title": "Мащабиране"
+            },
+            "preset": {
+                "apply": "",
+                "applyDetails": "",
+                "detail": "",
+                "reset": "",
+                "resetDetails": "",
+                "save": "",
+                "saveDetails": "",
+                "title": ""
             },
             "preview": "",
             "reduceMotion": "Намали движението",
@@ -445,8 +522,9 @@
         },
         "tts": {
             "activate": "Активирай четене на глас",
-            "default": "Глас: системен по подразбиране",
+            "language": "",
             "next": "Следващ",
+            "options": "",
             "pause": "Пауза",
             "play": "Стартирай",
             "previous": "Предишен",
@@ -458,7 +536,17 @@
         }
     },
     "settings": {
+        "annotationCreator": {
+            "creator": "",
+            "help": "",
+            "name": "",
+            "organization": "",
+            "person": "",
+            "type": ""
+        },
         "auth": {
+            "help": "",
+            "title": "",
             "wipeData": "Изтриване на данните за удостоверяване"
         },
         "keyboard": {
@@ -474,10 +562,12 @@
         "language": {
             "languageChoice": "Избор на език"
         },
+        "library": {
+            "enableAPIAPP": "",
+            "title": ""
+        },
         "session": {
-            "no": "Деактивирай",
-            "title": "Запиши сесията",
-            "yes": "Активирай"
+            "title": "Запиши сесията"
         },
         "tabs": {
             "appearance": "",

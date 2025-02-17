@@ -28,9 +28,10 @@ import { call as callTyped, select as selectTyped, put as putTyped } from "typed
 import { types } from "util";
 
 import {
-    ERROR_MESSAGE_ON_USERKEYCHECKREQUEST, streamerOpenPublicationAndReturnManifestUrl,
+    ERROR_MESSAGE_ON_USERKEYCHECKREQUEST, ERROR_MESSAGE_ENCRYPTED_NO_LICENSE, streamerOpenPublicationAndReturnManifestUrl,
 } from "./publication/openPublication";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:reader";
@@ -44,7 +45,8 @@ function* readerFullscreenRequest(action: readerActions.fullScreenRequest.TActio
     if (sender.identifier && sender.type === SenderType.Renderer) {
 
         const readerWin = yield* callTyped(() => getReaderWindowFromDi(sender.identifier));
-        if (readerWin) {
+
+        if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
             readerWin.setFullScreen(action.payload.full);
         }
     }
@@ -53,7 +55,7 @@ function* readerFullscreenRequest(action: readerActions.fullScreenRequest.TActio
 function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
 
     const libWin = yield* callTyped(() => getLibraryWindowFromDi());
-    if (libWin && !libWin.isDestroyed()) {
+    if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
 
         // try-catch to do not trigger an error message when the winbound is not handle by the os
         let libBound: Electron.Rectangle;
@@ -79,8 +81,7 @@ function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
     if (readerWinId && action.sender?.type === SenderType.Renderer) {
 
         const readerWin = getReaderWindowFromDi(readerWinId);
-
-        if (readerWin) {
+        if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
 
             // this should never occur, but let's do it for certainty
             if (readerWin.isMinimized()) {
@@ -176,10 +177,15 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
 
     } catch (e) {
 
-        if (e.toString() !== ERROR_MESSAGE_ON_USERKEYCHECKREQUEST) {
-
-            const translator = yield* callTyped(
-                () => diMainGet("translator"));
+        const errMsg = e.toString();
+        if (errMsg === ERROR_MESSAGE_ENCRYPTED_NO_LICENSE) {
+            yield put(
+                toastActions.openRequest.build(
+                    ToastType.Error,
+                    getTranslator().translate("message.open.error", { err: getTranslator().translate("publication.encryptedNoLicense") }),
+                ),
+            );
+        } else if (errMsg !== ERROR_MESSAGE_ON_USERKEYCHECKREQUEST) {
 
             if (types.isNativeError(e)) {
                 // disable "Error: "
@@ -189,7 +195,7 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
             yield put(
                 toastActions.openRequest.build(
                     ToastType.Error,
-                    translator.translate("message.open.error", { err: e.toString() }),
+                    getTranslator().translate("message.open.error", { err: errMsg }),
                 ),
             );
         }
@@ -203,15 +209,16 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
                 state.win.registry.reader[publicationIdentifier]?.reduxState || {} as IReaderStateReader,
         );
 
-        const sessionIsEnabled = yield* selectTyped(
-            (state: RootState) => state.session.state,
-        );
-        if (!sessionIsEnabled) {
-            const reduxDefaultConfig = yield* selectTyped(
-                (state: RootState) => state.reader.defaultConfig,
-            );
-            reduxState.config = reduxDefaultConfig;
-        }
+        // session always enabled
+        // const sessionIsEnabled = yield* selectTyped(
+        //     (state: RootState) => state.session.state,
+        // );
+        // if (!sessionIsEnabled) {
+        //     const reduxDefaultConfig = yield* selectTyped(
+        //         (state: RootState) => state.reader.defaultConfig,
+        //     );
+        //     reduxState.config = reduxDefaultConfig;
+        // }
 
         const winBound = yield* callTyped(getWinBound, publicationIdentifier);
 
@@ -223,7 +230,10 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
         const mode = yield* selectTyped((state: RootState) => state.mode);
         if (mode === ReaderMode.Attached) {
             try {
-                getLibraryWindowFromDi().hide();
+                const libWin = getLibraryWindowFromDi();
+                if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
+                    libWin.hide();
+                }
             } catch (_err) {
                 debug("library can't be loaded from di");
             }
@@ -255,7 +265,7 @@ function* readerCLoseRequestFromIdentifier(action: readerActions.closeRequest.TA
     yield call(readerCloseRequest, action.sender.identifier);
 
     const libWin = yield* callTyped(() => getLibraryWindowFromDi());
-    if (libWin && !libWin.isDestroyed()) {
+    if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
 
         const winBound = yield* selectTyped(
             (state: RootState) => state.win.session.library.windowBound,
@@ -306,7 +316,7 @@ function* readerCloseRequest(identifier?: string) {
     }
 
     const readerWindow = getReaderWindowFromDi(identifier);
-    if (readerWindow) {
+    if (readerWindow && !readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) {
         readerWindow.close();
     }
 
@@ -345,7 +355,7 @@ function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction) {
     let textToCopy = clipboardData.txt;
 
     const publicationRepository = diMainGet("publication-repository");
-    const translator = diMainGet("translator");
+    const translator = getTranslator();
     const publicationDocument = yield* callTyped(() => publicationRepository.get(
         publicationIdentifier,
     ));

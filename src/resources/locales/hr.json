@@ -6,7 +6,6 @@
         "leftSlideButton": "Povuci popis ulijevo",
         "mainContent": "glavni sadržaj",
         "rightSlideButton": "Povuci popis udesno",
-        "searchBook": "Pretraži po naslovu",
         "skipLink": "Preskoči do sadržaja",
         "toolbar": "alatna traka"
     },
@@ -35,6 +34,7 @@
                         "no": "Ne",
                         "yes": "Da"
                     },
+                    "help": "",
                     "message": "Želite li spremiti sesiju ?",
                     "title": "Spremi sesiju"
                 }
@@ -69,13 +69,12 @@
         "emptyTagList": "Nemate označenu e-knjigu.",
         "entry": {
             "continueReading": "Nastavi čitati",
-            "continueReadingAudioBooks": "Nastavi slušati",
-            "continueReadingDivina": "Nastavi s divina formatom",
-            "continueReadingPdf": "Nastavi čitati PDF",
             "lastAdditions": "Nedavno dodano"
         },
         "export": "Izvezi",
+        "exportAnnotation": "",
         "format": "Formatiraj",
+        "importAnnotation": "",
         "lang": "Jezik",
         "lastRead": "Zadnje čitano",
         "moreInfo": "Detalji građe",
@@ -117,12 +116,25 @@
         "released": "Datum izdavanja",
         "sort": "Sortiraj po",
         "tag": "",
-        "tagCount": "Broj oznaka",
         "tags": "Oznake",
         "update": "Uredi"
     },
     "dialog": {
+        "annotations": {
+            "descAuthor": "",
+            "descCreator": "",
+            "descList": "",
+            "descNewer": "",
+            "descOlder": "",
+            "descTitle": "",
+            "importAll": "",
+            "importWithoutConflict": "",
+            "origin": "",
+            "title": ""
+        },
         "cancel": "Poništi",
+        "deleteAnnotations": "",
+        "deleteAnnotationsText": "",
         "deleteFeed": "Želiš li stvarno izbrisati ovaj katalog ?",
         "deletePublication": "Želiš li stvarno izbrisati ovu građu ?",
         "import": "Želiš li stvarno uvesti ove dokumente:",
@@ -157,7 +169,8 @@
     },
     "library": {
         "lcp": {
-            "hint": "(Podsjetnik: {{- hint}})",
+            "hint": "Podsjetnik: ",
+            "open": "",
             "password": "Lozinka",
             "sentence": "Ova građa treba LCP lozinku za otvaranje: ",
             "urlHint": "Zaboravljena lozinka? Pomoć",
@@ -167,6 +180,14 @@
         }
     },
     "message": {
+        "annotations": {
+            "alreadyImported": "",
+            "emptyFile": "",
+            "errorParsing": "",
+            "noBelongTo": "",
+            "nothing": "",
+            "success": ""
+        },
         "download": {
             "error": "Preuzimanje {{- title}} nije uspjelo: [{{- err}}]"
         },
@@ -270,15 +291,17 @@
         "duration": {
             "title": "Trajanje"
         },
+        "encryptedNoLicense": "",
         "expired": "",
         "expiredLcp": "Ova knjiga se ne može čitati jer je LCP licenca istekla.",
+        "incorrectPassphrase": "",
         "lcpEnd": "Kraj",
         "lcpRightsCopy": "Kopirano znakova",
         "lcpRightsPrint": "Ispisano stranica",
         "lcpStart": "Početak",
         "licenceLCP": "",
+        "licenseCertificateDateInvalid": "Datum potpisa licence je netočan",
         "licenseOutOfDate": "Licenca je istekla",
-        "licenseSignatureDateInvalid": "Datum potpisa licence je netočan",
         "licenseSignatureInvalid": "Potpis licence je netočan",
         "licensed": "",
         "markAsRead": "",
@@ -304,12 +327,51 @@
             "Color": "",
             "addNote": "",
             "advancedMode": "",
+            "annotationsExport": {
+                "description": "",
+                "title": ""
+            },
             "annotationsOptions": "",
+            "colors": {
+                "bluegreen": "",
+                "cyan": "",
+                "green": "",
+                "lightblue": "",
+                "orange": "",
+                "purple": "",
+                "red": "",
+                "yellow": ""
+            },
+            "date": "",
+            "export": "",
+            "filter": {
+                "all": "",
+                "filterByColor": "",
+                "filterByCreator": "",
+                "filterByDrawtype": "",
+                "filterByTag": "",
+                "filterOptions": "",
+                "none": ""
+            },
+            "hide": "",
             "highlight": "",
             "noSelectionToast": "",
+            "note": "",
             "quickAnnotations": "",
             "saveNote": "",
-            "toggleMarginMarks": ""
+            "sorting": {
+                "lastcreated": "",
+                "lastmodified": "",
+                "progression": "",
+                "sortingOptions": ""
+            },
+            "toggleMarginMarks": "",
+            "type": {
+                "outline": "",
+                "solid": "",
+                "strikethrough": "",
+                "underline": ""
+            }
         },
         "divina": {
             "mute": "isključi zvuk",
@@ -318,6 +380,7 @@
         "fxl": {
             "fit": ""
         },
+        "goToContent": "",
         "marks": {
             "annotations": "Anotacije",
             "bookmarks": "Knjižne oznake",
@@ -325,6 +388,7 @@
             "edit": "Uredi",
             "goTo": "",
             "landmarks": "Smjerokaz",
+            "progression": "",
             "saveMark": "",
             "search": "Pretraži",
             "searchResult": "",
@@ -345,13 +409,14 @@
             "title": "Čitanje naglas"
         },
         "navigation": {
+            "ZenModeExit": "",
+            "ZenModeTitle": "",
             "annotationTitle": "",
             "backHomeTitle": "natrag na policu s knjigama",
             "bookmarkTitle": "knjižna oznaka",
             "currentPage": "Trenutna stranica: {{- current}}",
             "currentPageTotal": "Trenutna stranica: {{- current}}/{{- total}}",
             "detachWindowTitle": "prikaži knjižnicu / policu knjiga",
-            "fullscreenTitle": "uključi prikaz preko cijelog zaslona",
             "goTo": "Idi",
             "goToError": "Ovaj prijelom stranice ne postoji",
             "goToPlaceHolder": "Unesi broj stranice",
@@ -384,6 +449,7 @@
                 "title": "Stupci",
                 "two": "2 stupca"
             },
+            "customFontSelected": "",
             "customizeReader": "",
             "disabled": "",
             "display": "Prikaz",
@@ -401,6 +467,7 @@
             "noFootnotes": "Isključi fusnote",
             "noRTLFlip": "",
             "noRuby": "",
+            "noTemporaryNavTargetOutline": "",
             "paginated": "Paginirano",
             "paraSpacing": "Razmak između paragrafa",
             "pdfZoom": {
@@ -415,6 +482,16 @@
                     "width": "širina stranice"
                 },
                 "title": "Uvećanje"
+            },
+            "preset": {
+                "apply": "",
+                "applyDetails": "",
+                "detail": "",
+                "reset": "",
+                "resetDetails": "",
+                "save": "",
+                "saveDetails": "",
+                "title": ""
             },
             "preview": "",
             "reduceMotion": "Smanji kretanje",
@@ -445,8 +522,9 @@
         },
         "tts": {
             "activate": "Uključi Čitanje naglas",
-            "default": "Glas: zadano",
+            "language": "",
             "next": "Sljedeće Čitanje naglas",
+            "options": "",
             "pause": "Pauziraj Čitanje naglas",
             "play": "Pokreni Čitanje naglas",
             "previous": "Prethodno Čitanje naglas",
@@ -458,7 +536,17 @@
         }
     },
     "settings": {
+        "annotationCreator": {
+            "creator": "",
+            "help": "",
+            "name": "",
+            "organization": "",
+            "person": "",
+            "type": ""
+        },
         "auth": {
+            "help": "",
+            "title": "",
             "wipeData": "Izbriši podatke za prijavu"
         },
         "keyboard": {
@@ -474,10 +562,12 @@
         "language": {
             "languageChoice": "Izbor jezika"
         },
+        "library": {
+            "enableAPIAPP": "",
+            "title": ""
+        },
         "session": {
-            "no": "Onemogući",
-            "title": "Spremi sesiju",
-            "yes": "Omogući"
+            "title": "Spremi sesiju"
         },
         "tabs": {
             "appearance": "",

@@ -10,60 +10,123 @@ import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEver
 
 import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysEnableCaptionsMode, mediaOverlaysEnableSkippability,
     mediaOverlaysPause, mediaOverlaysResume, readiumCssUpdate, reloadContent, ttsOverlayEnable, ttsPlay,
-    ttsSentenceDetectionEnable, ttsSkippabilityEnable, ttsStop,
+    ttsSentenceDetectionEnable, ttsAndMediaOverlaysManualPlayNext, ttsSkippabilityEnable, ttsStop,
 } from "@r2-navigator-js/electron/renderer";
 
 import { readerLocalActionReader, readerLocalActionSetConfig } from "../actions";
-import { SagaGenerator, all, put, select, spawn, take } from "typed-redux-saga";
+import { SagaGenerator } from "typed-redux-saga";
+import { all as allTyped, put as putTyped, select as selectTyped, spawn as spawnTyped, take as takeTyped } from "typed-redux-saga/macro";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
+import { isNotNil } from "readium-desktop/utils/nil";
+
 
 function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaGenerator<void> {
 
-    if (!action.payload) {
+    const { payload } = action;
+    // payload must contain readerConfig keys that need to be updated
+
+    // fine-graining the parsing of readerConfig to avoid too many rendering of the webview
+    // and then reconciliate readerConfig to save it as default global config (configSetDefault)
+
+
+    if (!payload) {
         throw new Error("NO READER CONFIG RECEIVED !!!");
     }
 
-    const readerConfigFromReduxState = yield* select((state: IReaderRootState) => state.reader.config);
+
+    const readerConfigFromReduxState = yield* selectTyped((state: IReaderRootState) => state.reader.config);
     const readerConfig = {
         ...readerConfigFromReduxState,
-        ...action.payload,
+        ...payload,
     };
 
-    const r2PublicationHasMediaOverlays = yield* select((state: IReaderRootState) => state.reader.info.navigator.r2PublicationHasMediaOverlays);
-    const mediaOverlaysState = yield* select((state: IReaderRootState) => state.reader.mediaOverlay.state);
-    const ttsState = yield* select((state: IReaderRootState) => state.reader.tts.state);
-    const moWasPlaying = r2PublicationHasMediaOverlays && mediaOverlaysState === MediaOverlaysStateEnum.PLAYING;
-    const ttsWasPlaying = ttsState !== TTSStateEnum.STOPPED;
 
-    mediaOverlaysEnableSkippability(readerConfig.mediaOverlaysEnableSkippability);
-    ttsSentenceDetectionEnable(readerConfig.ttsEnableSentenceDetection);
-    ttsSkippabilityEnable(readerConfig.mediaOverlaysEnableSkippability);
-    mediaOverlaysEnableCaptionsMode(readerConfig.mediaOverlaysEnableCaptionsMode);
-    ttsOverlayEnable(readerConfig.ttsEnableOverlayMode);
-
-
-    if (moWasPlaying) {
-        mediaOverlaysPause();
-        setTimeout(() => {
-            mediaOverlaysResume();
-        }, 300);
+    if (isNotNil(payload.mediaOverlaysEnableSkippability)) {
+        mediaOverlaysEnableSkippability(readerConfig.mediaOverlaysEnableSkippability);
     }
-    if (ttsWasPlaying) {
-        ttsStop();
-        setTimeout(() => {
-            ttsPlay(parseFloat(readerConfig.ttsPlaybackRate), readerConfig.ttsVoice);
-        }, 300);
+
+    if (isNotNil(payload.ttsEnableSentenceDetection)) {
+        ttsSentenceDetectionEnable(readerConfig.ttsEnableSentenceDetection);
     }
+
+    if (isNotNil(payload.ttsAndMediaOverlaysDisableContinuousPlay)) {
+        ttsAndMediaOverlaysManualPlayNext(readerConfig.ttsAndMediaOverlaysDisableContinuousPlay);
+    }
+
+    if (isNotNil(payload.mediaOverlaysEnableSkippability)) {
+        ttsSkippabilityEnable(readerConfig.mediaOverlaysEnableSkippability);
+    }
+
+    if (isNotNil(payload.mediaOverlaysEnableCaptionsMode)) {
+        mediaOverlaysEnableCaptionsMode(readerConfig.mediaOverlaysEnableCaptionsMode);
+    }
+
+    if (isNotNil(payload.ttsEnableOverlayMode)) {
+        ttsOverlayEnable(readerConfig.ttsEnableOverlayMode);
+    }
+
+
+    if (isNotNil(payload.mediaOverlaysEnableCaptionsMode) || isNotNil(payload.mediaOverlaysEnableSkippability) || isNotNil(payload.mediaOverlaysPlaybackRate)) {
+
+        const r2PublicationHasMediaOverlays = yield* selectTyped((state: IReaderRootState) => state.reader.info.navigator.r2PublicationHasMediaOverlays);
+        const mediaOverlaysState = yield* selectTyped((state: IReaderRootState) => state.reader.mediaOverlay.state);
+        const moWasPlaying = r2PublicationHasMediaOverlays && mediaOverlaysState === MediaOverlaysStateEnum.PLAYING;
+        if (moWasPlaying) {
+            mediaOverlaysPause();
+            setTimeout(() => {
+                mediaOverlaysResume();
+            }, 300);
+        }
+    }
+
+    if (isNotNil(payload.ttsVoice) || isNotNil(payload.ttsPlaybackRate) || isNotNil(payload.ttsEnableOverlayMode) || isNotNil(payload.ttsEnableSentenceDetection)) {
+
+        const ttsState = yield* selectTyped((state: IReaderRootState) => state.reader.tts.state);
+        const ttsWasPlaying = ttsState !== TTSStateEnum.STOPPED;
+        if (ttsWasPlaying) {
+            ttsStop();
+            setTimeout(() => {
+                ttsPlay(parseFloat(readerConfig.ttsPlaybackRate), readerConfig.ttsVoice);
+            }, 300);
+        }
+    }
+
 
     // this.props.setConfig(readerConfig, this.props.session);
-    const sessionEnabled = yield* select((state: IReaderRootState) => state.session.state);
-    if (!sessionEnabled) {
-        yield* put(readerActions.configSetDefault.build(readerConfig));
-    }
+    // const sessionEnabled = yield* select((state: IReaderRootState) => state.session.state);
 
-    readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
+    // session never enabled in reader but always in main/lib
+    // if (!sessionEnabled) {
+        // see issue https://github.com/edrlab/thorium-reader/issues/2532
+        // yield* put(readerActions.configSetDefault.build(readerConfig));
+    // }
+
+    if (
+        isNotNil(payload.fontSize)          ||
+        isNotNil(payload.pageMargins)       ||
+        isNotNil(payload.wordSpacing)       ||
+        isNotNil(payload.letterSpacing)     ||
+        isNotNil(payload.paraSpacing)       ||
+        isNotNil(payload.lineHeight)        ||
+        isNotNil(payload.align)             ||
+        isNotNil(payload.theme)             ||
+        isNotNil(payload.colCount)          ||
+        isNotNil(payload.font)              ||
+        isNotNil(payload.sepia)             ||
+        isNotNil(payload.night)             ||
+        isNotNil(payload.invert)            ||
+        isNotNil(payload.paged)             ||
+        // isNotNil(payload.readiumcss)     ||
+        isNotNil(payload.enableMathJax)     ||
+        isNotNil(payload.reduceMotion)      ||
+        isNotNil(payload.noFootnotes)       ||
+        isNotNil(payload.noTemporaryNavTargetOutline) ||
+        isNotNil(payload.noRuby)            ||
+        isNotNil(payload.darken)
+    ) {
+        readiumCssUpdate(computeReadiumCssJsonMessage(readerConfig));
+    }
 }
 
 function* alowCustomTriggered(action: readerLocalActionReader.allowCustom.TAction): SagaGenerator<void> {
@@ -72,33 +135,16 @@ function* alowCustomTriggered(action: readerLocalActionReader.allowCustom.TActio
 
     if (checked) {
 
-        const {
-            font,
-            fontSize,
-            pageMargins,
-            wordSpacing,
-            letterSpacing,
-            paraSpacing,
-            lineHeight,
-        } = yield* select((state: IReaderRootState) => state.reader.transientConfig);
-
-        yield* put(readerLocalActionSetConfig.build({
-                            font,
-                            fontSize,
-                            pageMargins,
-                            wordSpacing,
-                            letterSpacing,
-                            paraSpacing,
-                            lineHeight,
-        }));
+        const transientConfig = yield* selectTyped((state: IReaderRootState) => state.reader.transientConfig);
+        yield* putTyped(readerLocalActionSetConfig.build(transientConfig));
 
     } else {
-        yield* put(readerLocalActionSetConfig.build(readerConfigInitialStateDefaultPublisher));
+        yield* putTyped(readerLocalActionSetConfig.build(readerConfigInitialStateDefaultPublisher));
     }
 }
 
 export function saga() {
-    return all([
+    return allTyped([
         takeSpawnEvery(
             readerLocalActionSetConfig.ID,
             readerConfigChanged,
@@ -107,11 +153,11 @@ export function saga() {
             readerLocalActionReader.allowCustom.ID,
             alowCustomTriggered,
         ),
-        spawn(function* () {
+        spawnTyped(function* () {
             while (true) {
-                const oldEnableMathJax = yield select((state: IReaderRootState) => state.reader.config.enableMathJax);
-                yield take(readerLocalActionSetConfig.ID);
-                const newEnableMathJax = yield select((state: IReaderRootState) => state.reader.config.enableMathJax);
+                const oldEnableMathJax = yield* selectTyped((state: IReaderRootState) => state.reader.config.enableMathJax);
+                yield* takeTyped(readerLocalActionSetConfig.ID);
+                const newEnableMathJax = yield* selectTyped((state: IReaderRootState) => state.reader.config.enableMathJax);
                 const shouldReload = oldEnableMathJax !== newEnableMathJax;
                 if (shouldReload) {
                     setTimeout(() => {

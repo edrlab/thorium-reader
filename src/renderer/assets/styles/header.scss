@@ -1,6 +1,6 @@
-/*
-=-=-= header.scss
-*/
+.CSS_START_header {
+  display: none;
+}
 
 .main_navigation_library {
   top: 0;
@@ -55,7 +55,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 30px 20px;
+    padding: 30px 20px 0;
     height: calc(100% - 100px);
 
     & button {
@@ -221,8 +221,8 @@
 .nav_secondary svg {
   display: inline-block;
   position: relative;
-  width: 35px;
-  height: 35px;
+  // width: 35px;
+  // height: 35px;
 }
 
 .nav_secondary svg:nth-child(2) {
@@ -248,6 +248,6 @@
   }
 }
 
-.___DEBUG___HEADER_CSS {
+.CSS_END_header {
   display: none;
 }

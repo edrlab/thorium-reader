@@ -1,3 +1,4 @@
+import { expect, test } from "@jest/globals";
 import { iso8601DurationsToSeconds } from "../../src/utils/iso8601";
 
 test("invalid string must return -1", () => {

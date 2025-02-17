@@ -38,6 +38,6 @@ export const isPdfFn = (publication: R2Publication) =>
         // &&
         publication?.Spine
         &&
-        (publication?.Spine[0]?.Href && path.extname(publication.Spine[0].Href) === ".pdf") ||
+        (publication?.Spine[0]?.Href && path.extname(publication.Spine[0].Href).toLowerCase() === ".pdf") ||
         (publication?.Spine[0]?.TypeLink && publication.Spine[0].TypeLink === "application/pdf")
     );

@@ -10,10 +10,9 @@ import { createWriteStream, promises as fsp, WriteStream } from "fs";
 import * as path from "path";
 import { acceptedExtension } from "readium-desktop/common/extension";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { downloadActions, toastActions } from "readium-desktop/common/redux/actions";
+import { authActions, downloadActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ok } from "readium-desktop/common/utils/assert";
 import { IHttpGetResult, THttpOptions } from "readium-desktop/common/utils/http";
-import { diMainGet } from "readium-desktop/main/di";
 import { createTempDir } from "readium-desktop/main/fs/path";
 import { httpGet } from "readium-desktop/main/network/http";
 import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
@@ -26,6 +25,11 @@ import {
 } from "typed-redux-saga/macro";
 
 import { Channel, channel, eventChannel } from "@redux-saga/core";
+import { getTranslator } from "readium-desktop/common/services/translator";
+import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
+import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/downloader");
@@ -37,7 +41,7 @@ export type IDownloaderLink = string | {
     type: string,
 };
 
-export function* downloader(linkHrefArray: IDownloaderLink[], href?: string): SagaGenerator<string[]> {
+export function* downloader(linkHrefArray: IDownloaderLink[], downloadLabel?: string): SagaGenerator<string[]> {
 
     const id = Number(new Date());
 
@@ -45,7 +49,8 @@ export function* downloader(linkHrefArray: IDownloaderLink[], href?: string): Sa
 
     try {
         yield* putTyped(downloadActions.progress.build({
-            downloadUrl: href || "",
+            downloadLabel: downloadLabel || "",
+            downloadUrls: linkHrefArray.map((item) => typeof item === "string" ? item : item.href),
             progress: 0,
             id,
             speed: 0,
@@ -53,7 +58,7 @@ export function* downloader(linkHrefArray: IDownloaderLink[], href?: string): Sa
         }));
 
         // redux-saga : use call to execute sagaGenerator tasked (forked)
-        const pathArray = yield* callTyped(downloaderService, linkHrefArray, id, href);
+        const pathArray = yield* callTyped(downloaderService, linkHrefArray, id);
         debug("filePath Array to return from downloader", pathArray);
 
         return pathArray;
@@ -62,11 +67,11 @@ export function* downloader(linkHrefArray: IDownloaderLink[], href?: string): Sa
 
         debug(err.toString());
 
-        const translate = diMainGet("translator").translate;
+        const translate = getTranslator().translate;
 
         yield* putTyped(toastActions.openRequest.build(
             ToastType.Error,
-            translate("message.download.error", { title: path.basename(href), err: `[${err}]` }),
+            translate("message.download.error", { title: downloadLabel, err: `[${err}]` }),
         ));
 
         return [];
@@ -81,12 +86,12 @@ export function* downloader(linkHrefArray: IDownloaderLink[], href?: string): Sa
             ));
         }
 
-        debug("download service closed for", id, href);
+        debug("download service closed for", id, downloadLabel);
         yield* putTyped(downloadActions.done.build(id));
     }
 }
 
-function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?: string): SagaGenerator<Array<string | undefined>> {
+function* downloaderService(linkHrefArray: IDownloaderLink[], id: number): SagaGenerator<Array<string | undefined>> {
 
     const statusTaskChannel = (yield* callTyped(channel)) as Channel<TDownloaderChannel>;
 
@@ -100,7 +105,7 @@ function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?:
         callTyped(function*() {
 
             while (true) {
-                const action = yield* takeTyped(downloadActions.abort.build);
+                const action = yield* takeTyped(downloadActions.abort.build); // not .ID because we need Action return type
                 if (action.payload.id === id) {
                     debug("cancel id (", id, ") with ", downloadProcessTasks.length, "tasks");
                     yield cancel(downloadProcessTasks);
@@ -109,7 +114,7 @@ function* downloaderService(linkHrefArray: IDownloaderLink[], id: number, href?:
                 }
             }
         }),
-        callTyped(downloaderServiceProcessStatusProgressLoop, statusTaskChannel, id, href),
+        callTyped(downloaderServiceProcessStatusProgressLoop, statusTaskChannel, id),
         joinTyped(downloadProcessTasks),
     ]);
 
@@ -192,15 +197,16 @@ function* downloaderServiceProcessTaskStreamPipeline(readStream: NodeJS.ReadStre
 function* downloaderServiceProcessStatusProgressLoop(
     statusTasksChannel: Channel<TDownloaderChannel>,
     id: number,
-    href?: string,
 ) {
 
     let previousProgress = 0;
+    let previousDownloadedLength = 0;
     let contentLengthTotal = 0;
     const channelList: TDownloaderChannel[] = [];
     while (1) {
 
         let contentLengthProgress = 0;
+        let downloadedLength = 0;
         let progress = 0;
         let speed = 0;
 
@@ -216,6 +222,7 @@ function* downloaderServiceProcessStatusProgressLoop(
                 progress += status.contentLength / status.progression;
                 speed += (status.speed || 0);
                 contentLengthProgress += status.contentLength;
+                downloadedLength += status.downloadedLength;
             }
         }
 
@@ -224,15 +231,21 @@ function* downloaderServiceProcessStatusProgressLoop(
         }
         progress = Math.ceil(contentLengthTotal / progress) || 0;
 
-        if (previousProgress !== progress) {
+        if (previousProgress !== progress || previousDownloadedLength !== downloadedLength) {
             previousProgress = progress;
+            previousDownloadedLength = downloadedLength;
 
+            const downloadLabel = statusList.filter((i) => !!i).reduce((prev, cur) => {
+                return `${prev ? `${prev} ` : ""}[${cur.filename}]`;
+            }, "");
+            const MAX_STR = 50;
             yield* putTyped(downloadActions.progress.build({
-                downloadUrl: href || "",
+                downloadLabel: downloadLabel.length > MAX_STR ? (downloadLabel.substring(0, MAX_STR) + "...") : downloadLabel,
+                downloadUrls: statusList.filter((i) => !!i).map((item) => item.url),
                 progress,
                 id,
                 speed,
-                contentLengthHumanReadable: humanFileSize(contentLengthTotal),
+                contentLengthHumanReadable: humanFileSize(!contentLengthTotal ? downloadedLength : contentLengthTotal),
             }));
 
         }
@@ -248,6 +261,38 @@ function* downloadLinkRequest(linkHref: string, controller: AbortController): Sa
     options.signal = controller.signal;
 
     const data = yield* callTyped(() => httpGet(linkHref, options));
+
+    const type = data.contentType;
+    const contentType = parseContentType(type);
+
+    const isAuth = contentTypeisOpdsAuth(contentType);
+    if (isAuth) {
+
+        const jsonObj = yield* callTyped(() => data.response.json());
+
+        const r2OpdsAuth = TaJsonDeserialize(
+            jsonObj,
+            OPDSAuthenticationDoc,
+        );
+
+        const opdsAuthChannel = getOpdsAuthenticationChannel();
+
+        debug("put the authentication model in the saga authChannel", JSON.stringify(r2OpdsAuth, null, 4));
+        opdsAuthChannel.put([r2OpdsAuth, linkHref]);
+
+        const {cancel} = yield* raceTyped({
+            cancel: takeTyped(authActions.cancel.build),
+            done: takeTyped(authActions.done.build),
+        });
+        debug("authentication modal closed");
+
+        if (cancel) {
+            controller.abort();
+            return data;
+        }
+        debug("relaunch the download of the publication");
+        return yield* callTyped(downloadLinkRequest, linkHref, controller);
+    }
 
     return data;
 }
@@ -286,8 +331,10 @@ function downloadCreateFilename(contentType: string | undefined, contentDisposit
 
     const defExt = "unknown-ext";
 
-    let filename = "file." + defExt;
+    const filename = "file." + defExt;
 
+    let contentTypeFilename = "";
+    // type href link from opds feed take precedence on http header content-type !?!
     if (type) {
         contentType = type;
     }
@@ -295,28 +342,50 @@ function downloadCreateFilename(contentType: string | undefined, contentDisposit
         const typeValues = contentType.replace(/\s/g, "").split(";");
         const [ext] = typeValues.map((v) => findExtWithMimeType(v)).filter((v) => v);
         if (ext) {
-            filename = "file." + ext;
-            return filename;
-        }
-    }
-    if (contentDisposition) {
-        const res = /filename=(\"(.*)\"|(.*))/g.exec(contentDisposition);
-        const filenameInCD = res ? res[2] || res[3] || "" : "";
-        if (acceptedExtension(path.extname(filenameInCD))) {
-            filename = filenameInCD;
-            return filename;
+            contentTypeFilename = "file." + ext;
         }
     }
 
-    return filename;
+    // example
+    // "attachment; filename=xxx.epub; filename*=UTF-8''xxx.epub"
+    let contentDispositionFilename = "";
+    if (contentDisposition) {
+        const res = /filename=(\"([^;]+)\"|([^;]+))/.exec(contentDisposition);
+        const filenameInCD = res ? res[2] || res[3] || "" : "";
+        if (acceptedExtension(path.extname(filenameInCD))) {
+            contentDispositionFilename = filenameInCD;
+            debug(`contentDispositionFilename: ${contentDispositionFilename}`);
+        }
+    }
+    if (contentDisposition && !contentDispositionFilename) {
+        const res = /filename\*=UTF-8''(\"([^;]+)\"|([^;]+))/.exec(contentDisposition);
+        const filenameInCD = decodeURIComponent(res ? res[2] || res[3] || "" : "");
+        if (acceptedExtension(path.extname(filenameInCD))) {
+            contentDispositionFilename = filenameInCD;
+            debug(`contentDispositionFilename UTF8: ${contentDispositionFilename}`);
+        }
+    }
+
+    if (contentDispositionFilename &&
+        path.extname(contentDispositionFilename).toLowerCase() === path.extname(contentTypeFilename).toLowerCase()
+    ) {
+        debug("contentType and contentDisposition have the same extension ! Good catch !", contentTypeFilename, contentDispositionFilename);
+    } else {
+        debug("contentType and contentDisposition does not have the same extension ! Server stream !?!", contentTypeFilename, contentDispositionFilename);
+    }
+
+    return contentDispositionFilename || contentTypeFilename || filename;
 }
 
 interface IDownloadProgression {
     speed: number;
     progression: number;
+    downloadedLength: number;
     contentLength: number;
+    filename: string;
+    url: string,
 }
-function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, contentLength: number) {
+function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, contentLength: number, filename: string, url: string) {
 
     let downloadedLength = 0;
     let downloadedSpeed = 0;
@@ -341,13 +410,18 @@ function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, conten
             const iv = setInterval(() => {
 
                 speed = downloadedSpeed / 1024;
+                // contentLength can be zero (unfortunately), pct is Infinity :(
+                // debug("downloadedLength: ", downloadedLength, "contentLength: ", contentLength);
                 pct = Math.ceil(downloadedLength / contentLength * 100);
                 debug("speed: ", speed, "kb/s", "pct: ", pct, "%");
 
                 emit({
                     speed,
                     progression: pct,
+                    downloadedLength,
                     contentLength,
+                    filename,
+                    url,
                 });
 
                 downloadedSpeed = 0;
@@ -365,7 +439,10 @@ function downloadReadStreamProgression(readStream: NodeJS.ReadableStream, conten
                 emit({
                     speed,
                     progression: pct,
+                    downloadedLength,
                     contentLength,
+                    filename,
+                    url,
                 });
             });
 
@@ -428,7 +505,7 @@ function* downloadLinkStream(data: IHttpGetResult<undefined>, id: number, type?:
 
     ok(readStream, "readStream not defined");
 
-    const channel = downloadReadStreamProgression(readStream, contentLength);
+    const channel = downloadReadStreamProgression(readStream, contentLength, filename, typeof data.url === "string" ? data.url : data.url.toString());
 
     return [
         pathFile,

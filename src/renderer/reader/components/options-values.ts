@@ -88,14 +88,14 @@ export const lineHeight: string[] = [
     "2",
 ];
 
-const optionsValues = {
+const optionsValues: AdjustableSettingsStrings = {
     fontSize,
     pageMargins,
     wordSpacing,
     letterSpacing,
     paraSpacing,
     lineHeight,
-} as AdjustableSettingsStrings;
+};
 
 export type AdjustableSettingsStrings = {
     [key in keyof ReaderConfigStringsAdjustables]: string[];
@@ -114,7 +114,7 @@ export interface IReaderMenuProps {
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeNavPanel?: boolean) => void;
     goToLocator: (locator: R2Locator, closeNavPanel?: boolean) => void;
     toggleMenu: () => void;
-    focusMainAreaLandmarkAndCloseMenu: () => void;
+    focusMainAreaLandmarkAndCloseMenu: (deep: boolean) => void;
     pdfToc: TToc;
     isPdf: boolean;
     pdfNumberOfPages: number;

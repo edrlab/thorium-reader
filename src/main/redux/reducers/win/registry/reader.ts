@@ -9,6 +9,7 @@ import { type Reducer } from "redux";
 
 import { winActions } from "readium-desktop/main/redux/actions";
 import { IDictWinRegistryReaderState } from "readium-desktop/main/redux/states/win/registry/reader";
+// import { IQueueAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 
 const initialState: IDictWinRegistryReaderState = {};
 
@@ -19,7 +20,7 @@ function winRegistryReaderReducer_(
 ): IDictWinRegistryReaderState {
     switch (action.type) {
 
-        case winActions.registry.registerReaderPublication.ID:
+        case winActions.registry.registerReaderPublication.ID: {
             return {
                 ...state,
                 ...{
@@ -32,8 +33,9 @@ function winRegistryReaderReducer_(
                     },
                 },
             };
+        }
 
-        case winActions.registry.unregisterReaderPublication.ID:
+        case winActions.registry.unregisterReaderPublication.ID: {
 
             const id = action.payload.publicationIdentifier;
 
@@ -45,6 +47,7 @@ function winRegistryReaderReducer_(
                 return ret;
             }
             return state;
+        }
 
         default:
             return state;

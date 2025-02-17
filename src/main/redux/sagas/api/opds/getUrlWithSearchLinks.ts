@@ -8,12 +8,13 @@
 import { TOpdsLinkSearch } from "readium-desktop/common/api/interface/opdsApi.interface";
 import { diMainGet } from "readium-desktop/main/di";
 import { OpdsService } from "readium-desktop/main/services/opds";
-import { call, SagaGenerator } from "typed-redux-saga";
+import { SagaGenerator } from "typed-redux-saga";
+import { call as callTyped } from "typed-redux-saga/macro";
 
 export function* getUrlWithSearchLinks(searchLink: TOpdsLinkSearch[] | TOpdsLinkSearch): SagaGenerator<string | undefined> {
 
     const opdsService: OpdsService = diMainGet("opds-service");
 
     const link = Array.isArray(searchLink) ? searchLink : [searchLink];
-    return yield* call(() => opdsService.parseOpdsSearchUrl(link));
+    return yield* callTyped(() => opdsService.parseOpdsSearchUrl(link));
 }
