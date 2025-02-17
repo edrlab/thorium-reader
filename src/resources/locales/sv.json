@@ -83,7 +83,7 @@
         "noPublicationHelpL2": "eller använd \"{{- importTitle }}\"-knappen ovanför.",
         "noPublicationHelpL3": "LCP-skyddade filer stöds.",
         "noPublicationHelpL4": "Filtyper som stöds:",
-        "numberOfPages": "Antal sidor",
+        "numberOfPages": "Sida",
         "opds": {
             "auth": {
                 "cancel": "Avbryt",
@@ -129,7 +129,7 @@
             "descTitle": "Anteckningarnas titel: ",
             "importAll": "Importera alla anteckningar",
             "importWithoutConflict": "Importera anteckningar utan konflikter",
-            "origin": "Källa: '{{- title}}' {{- author}}",
+            "origin": "Källa: {{- title}} {{- author}}",
             "title": "Vill du importera de här anteckningarna?"
         },
         "cancel": "Avbryt",
@@ -404,9 +404,11 @@
             "previous": "Föregående",
             "skip": "Överhoppning",
             "skipDescription": "Hoppa över sekundärt innehåll såsom sidbrytningar, fotnoter och slutnoter.",
-            "speed": "Spelhastighet uppläsning",
+            "speed": "Uppläsningshastighet",
             "stop": "Stoppa uppläsning",
-            "title": "Uppläsning"
+            "title": "Uppläsning",
+            "disableContinuousPlay": "Inaktivera kontinuerlig uppläsning",
+            "disableContinuousPlayDescription": "Läs inte automatiskt upp nästa objekt. Pausa efter att det aktuella objektet har lästs upp."
         },
         "navigation": {
             "ZenModeExit": "Lämna zenläge",
@@ -530,7 +532,7 @@
             "previous": "Föregående",
             "sentenceDetect": "Markera text-till-tal på meningsnivå",
             "sentenceDetectDescription": "Dela upp långa stycken i meningar.",
-            "speed": "Spelhastighet för text-till-tal",
+            "speed": "Uppläsningshastighet",
             "stop": "Stoppa text-till-tal",
             "voice": "Röst för text-till-tal"
         }

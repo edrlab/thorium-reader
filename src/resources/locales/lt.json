@@ -406,7 +406,9 @@
             "skipDescription": "Peršokti / ignoruoti pagalbinį turinį, pvz. puslapio skirtukus, išnašas/galines išnašas ir t.t.",
             "speed": "„Readaloud“ atkūrimo sparta",
             "stop": "Sustabdyti „Readaloud“",
-            "title": "„Readaloud“"
+            "title": "„Readaloud“",
+            "disableContinuousPlay": "Išjungti nepertraukiamą atkūrimą",
+            "disableContinuousPlayDescription": "Automatiškai neatkurti kito segmento, pristabdyti atkūrimą iškart pasibaigus dabartiniam segmentui."
         },
         "navigation": {
             "ZenModeExit": "Išeiti iš Zen režimo",
