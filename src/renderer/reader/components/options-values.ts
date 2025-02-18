@@ -154,7 +154,8 @@ export interface IReaderSettingsProps {
     // openedSection: number | undefined;
     disableRTLFlip: boolean;
     setDisableRTLFlip: (disabled: boolean) => void;
+    fxlZoomPercent: number;
     zenMode: boolean;
-    setZenMode: (value : boolean) => void;
+    setZenModeAndFXLZoom: (zen : boolean, fxlZoom: number) => void;
     searchEnable: boolean;
 }

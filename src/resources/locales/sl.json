@@ -6,7 +6,7 @@
         "leftSlideButton": "Premakni seznam v levo",
         "mainContent": "glavna vsebina",
         "rightSlideButton": "Premakni seznam v desno",
-        "skipLink": "Preskoči na vsebino",
+        "skipLink": "Skoči na vsebino",
         "toolbar": "orodna vrstica"
     },
     "apiapp": {
@@ -34,7 +34,7 @@
                         "no": "Ne",
                         "yes": "Da"
                     },
-                    "help": "",
+                    "help": "Aktiviraj, če želiš, da se okna bralnika, ki so odprta, ko zapreš aplikacijo, samodejno znova odprejo ob naslednjem zagonu.",
                     "message": "Ali želiš shraniti sejo?",
                     "title": "Shrani sejo"
                 }
@@ -72,14 +72,14 @@
             "lastAdditions": "Nedavno dodano"
         },
         "export": "Shrani kot",
-        "exportAnnotation": "",
+        "exportAnnotation": "Izvoz opomb ...",
         "format": "Format",
-        "importAnnotation": "",
+        "importAnnotation": "Uvoz opomb",
         "lang": "Jezik",
         "lastRead": "Nazadnje brano",
         "moreInfo": "Osnovni podatki",
         "myBooks": "Moje knjige",
-        "noPublicationHelpL1": "Drop a publication here",
+        "noPublicationHelpL1": "Tukaj spusti datoteke",
         "noPublicationHelpL2": "ali uporabi \"{{- importTitle }}\" zgornji gumb.",
         "noPublicationHelpL3": "LCP zaščitene datoteke so podprte.",
         "noPublicationHelpL4": "Podprte razširitve:",
@@ -121,20 +121,20 @@
     },
     "dialog": {
         "annotations": {
-            "descAuthor": "",
-            "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
-            "descTitle": "",
-            "importAll": "",
-            "importWithoutConflict": "",
-            "origin": "",
-            "title": ""
+            "descAuthor": "avtor '{{- avtor}}'",
+            "descCreator": "ustvaril",
+            "descList": "{{- nb}} opombe {{- creator}} bodo uvožene v '{{- title}}' {{- avtor}}",
+            "descNewer": "Konflikti: {{- nb}} novejši zapiski",
+            "descOlder": "Konflikti: {{- nb}} starejši zapiski",
+            "descTitle": "Naslov opomb: ",
+            "importAll": "Uvozi vse zapiske",
+            "importWithoutConflict": "Uvozi zapiske brez sporov",
+            "origin": "Izvorna objava: '{{- title}}' {{- avtor}}",
+            "title": "Uvozim opombe?"
         },
         "cancel": "Prekliči",
-        "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
+        "deleteAnnotations": "Želiš izbrisati opombe?",
+        "deleteAnnotationsText": "Ali si prepričan, da želiš izbrisati {{- annotationListLength}} opombe?",
         "deleteFeed": "Ali res želiš izbrisati katalog?",
         "deletePublication": "Ali res želiš izbrisati publikacijo?",
         "import": "Ali res želiš uvoziti te datoteke:",
@@ -157,7 +157,7 @@
         "fitlerTagTitle": "Filtriraj po oznaki",
         "gridTitle": "Mrežni pogled",
         "home": "Knjižna polica",
-        "homeTitle": "domov",
+        "homeTitle": "Domov",
         "importTitle": "Uvozi publikacijo",
         "listTitle": "Prikaz seznama",
         "myCatalogs": "Moji katalogi",
@@ -170,7 +170,7 @@
     "library": {
         "lcp": {
             "hint": "Namig: ",
-            "open": "",
+            "open": "Odpri",
             "password": "Geslo",
             "sentence": "Za odprtje publikacije vnesi LCP geslo: ",
             "urlHint": "Pozabljeno geslo? Tu lahko poiščeš pomoč",
@@ -181,12 +181,12 @@
     },
     "message": {
         "annotations": {
-            "alreadyImported": "",
-            "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
-            "nothing": "",
-            "success": ""
+            "alreadyImported": "Vse opombe so že uvožene.",
+            "emptyFile": "V datoteki ni nobenih opomb.",
+            "errorParsing": "Napaka med razčlenjevanjem datoteke: ",
+            "noBelongTo": "Opomb ni mogoče uvoziti, vsaj ena opomba ne pripada publikaciji.",
+            "nothing": "Noben zapisek ni pripravljen za uvoz, kar prekine uvoz",
+            "success": "Uvoz uspešno zaključen."
         },
         "download": {
             "error": "Prenos {{- title}} ni uspel: [{{- err}}]"
@@ -291,10 +291,10 @@
         "duration": {
             "title": "Trajanje"
         },
-        "encryptedNoLicense": "",
+        "encryptedNoLicense": "Publikacija je šifrirana, vendar nima licence LCP!",
         "expired": "Rok izposoje je potekel",
         "expiredLcp": "Knjige ni mogoče prebrati, ker je licenca LCP potekla.",
-        "incorrectPassphrase": "",
+        "incorrectPassphrase": "Nobeno shranjeno geslo ne ustreza publikaciji ali pa je vneseno geslo napačno.",
         "lcpEnd": "Konec",
         "lcpRightsCopy": "Kopirani znaki",
         "lcpRightsPrint": "Tiskane strani",
@@ -328,42 +328,42 @@
             "addNote": "Dodaj opombo",
             "advancedMode": "Takojšnji način (samodejno ustvarjanje po izbiri)",
             "annotationsExport": {
-                "description": "",
-                "title": ""
+                "description": "Poimenuj izvožene zapiske:",
+                "title": "Naslov"
             },
             "annotationsOptions": "Možnosti",
             "colors": {
-                "bluegreen": "",
-                "cyan": "",
-                "green": "",
-                "lightblue": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
+                "bluegreen": "Modro-zelena",
+                "cyan": "Cyan",
+                "green": "Zelena",
+                "lightblue": "Svetlo modra",
+                "orange": "Oranžna",
+                "purple": "Vijolična",
+                "red": "Rdeča",
+                "yellow": "Rumena"
             },
-            "date": "",
-            "export": "",
+            "date": "Datum spremembe",
+            "export": "Shrani zapiske kot ...",
             "filter": {
-                "all": "",
-                "filterByColor": "",
-                "filterByCreator": "",
-                "filterByDrawtype": "",
-                "filterByTag": "",
-                "filterOptions": "",
-                "none": ""
+                "all": "Vse",
+                "filterByColor": "Filtriraj po barvi",
+                "filterByCreator": "Filtriraj po ustvarjalcu",
+                "filterByDrawtype": "Filtriraj po vrsti",
+                "filterByTag": "Filtriraj po oznaki",
+                "filterOptions": "Možnosti filtra",
+                "none": "Noben"
             },
             "hide": "Ne prikaži",
             "highlight": "Poudari",
             "noSelectionToast": "Brez izbire",
-            "note": "",
+            "note": "{{- barva}} Opomba",
             "quickAnnotations": "Hitro ustvarjanje (preskoči urejevalnik)",
             "saveNote": "Shrani",
             "sorting": {
-                "lastcreated": "",
-                "lastmodified": "",
-                "progression": "",
-                "sortingOptions": ""
+                "lastcreated": "Nazadnje ustvarjeno",
+                "lastmodified": "Nazadnje spremenjeno",
+                "progression": "Napredek\n",
+                "sortingOptions": "Možnosti razvrščanja"
             },
             "toggleMarginMarks": "Prikaži v robovih",
             "type": {
@@ -380,7 +380,7 @@
         "fxl": {
             "fit": "Prilagajanje zaslonu"
         },
-        "goToContent": "",
+        "goToContent": "Pojdi na vsebino",
         "marks": {
             "annotations": "Opombe",
             "bookmarks": "Zaznamki",
@@ -388,7 +388,7 @@
             "edit": "Uredi",
             "goTo": "Pojdi na stran",
             "landmarks": "Mejniki",
-            "progression": "",
+            "progression": "Napredek",
             "saveMark": "Shrani zaznamek",
             "search": "Iskanje",
             "searchResult": "Iskanje [{{- searchText}}]",
@@ -398,6 +398,8 @@
             "activate": "Vključi glasovno branje",
             "captions": "Podnapisi / čisti prikaz",
             "captionsDescription": "Poenostavljen prikaz besedila z minimalnim oblikovanjem napisov.",
+            "disableContinuousPlay": "Onemogoči neprekinjeno predvajanje",
+            "disableContinuousPlayDescription": "Ne predvajaj samodejno naslednjega predmeta, začasno ustavi predvajanje trenutnega elementa.",
             "next": "Naslednje glasovno branje",
             "pause": "Premor glasovnega branja",
             "play": "Predvajaj glasovno branje",
@@ -409,8 +411,8 @@
             "title": "Glasovno branje"
         },
         "navigation": {
-            "ZenModeExit": "",
-            "ZenModeTitle": "",
+            "ZenModeExit": "Izhod iz Zen načina",
+            "ZenModeTitle": "Zen način",
             "annotationTitle": "opomba",
             "backHomeTitle": "nazaj na knjižno polico",
             "bookmarkTitle": "zaznamek",
@@ -449,7 +451,7 @@
                 "title": "Stolpci",
                 "two": "2 cols"
             },
-            "customFontSelected": "",
+            "customFontSelected": "Izbrana je pisava po meri",
             "customizeReader": "Prilagodi oblikovanje besedila",
             "disabled": "onemogočeno",
             "display": "Zaslon",
@@ -465,9 +467,9 @@
             "lineSpacing": "Razmik med vrsticami",
             "margin": "Obroba",
             "noFootnotes": "Onemogoči opombe",
-            "noRTLFlip": "Onemogočite uporabniški vmesnik od desne proti levi",
+            "noRTLFlip": "Onemogoči uporabniški vmesnik od desne proti levi",
             "noRuby": "Skrij japonski Ruby",
-            "noTemporaryNavTargetOutline": "",
+            "noTemporaryNavTargetOutline": "Onemogoči vizualne navigacijske indikatorje",
             "paginated": "Paginirano",
             "paraSpacing": "Razmik med odstavki",
             "pdfZoom": {
@@ -484,14 +486,14 @@
                 "title": "Povečava"
             },
             "preset": {
-                "apply": "",
-                "applyDetails": "",
-                "detail": "",
-                "reset": "",
-                "resetDetails": "",
-                "save": "",
-                "saveDetails": "",
-                "title": ""
+                "apply": "Uporabi",
+                "applyDetails": "Uporabi želeno konfiguracijo za trenutno publikacijo.",
+                "detail": "Shrani / Uporabi / Ponastavi želeno konfiguracijo.",
+                "reset": "Ponastavi",
+                "resetDetails": "Ponastavi želeno konfiguracijo (privzete nastavitve).",
+                "save": "Shrani\n",
+                "saveDetails": "To dejanje shrani trenutno konfiguracijo, tj. želene možnosti prikaza in oblikovanja besedila. Nastavitve lahko nato uporabiš za druge publikacije s klikom na gumb »uporabi« v drugih oknih bralnika.",
+                "title": "Nastavitve"
             },
             "preview": "Predogled",
             "reduceMotion": "Zmanjšaj gibanje",
@@ -522,9 +524,9 @@
         },
         "tts": {
             "activate": "Vklopi sintetizator govora",
-            "language": "",
+            "language": "TTS jezik",
             "next": "Naslednji",
-            "options": "",
+            "options": "TTS možnosti",
             "pause": "Premor",
             "play": "Predvajaj",
             "previous": "Prejšnji",
@@ -537,16 +539,16 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "",
-            "help": "",
-            "name": "",
-            "organization": "",
-            "person": "",
-            "type": ""
+            "creator": "Ustvarjalec opomb (neobvezno)",
+            "help": "Če je navedeno, bo to ime vključeno v metapodatke izvoženih zapiskov.",
+            "name": "Ime",
+            "organization": "Organizacija",
+            "person": "Oseba",
+            "type": "Tip:"
         },
         "auth": {
-            "help": "",
-            "title": "",
+            "help": "To dejanje izbriše vse poverilnice za prijavo v OPDS.",
+            "title": "Dostop do katalogov publikacij",
             "wipeData": "Izbriši avtentikacijske podatke"
         },
         "keyboard": {
@@ -563,8 +565,8 @@
             "languageChoice": "Izbira jezika"
         },
         "library": {
-            "enableAPIAPP": "",
-            "title": ""
+            "enableAPIAPP": "Aktivirajte knjižnični sistem 'PNB'",
+            "title": "Dostop do računov francoske knjižnice"
         },
         "session": {
             "title": "Shrani sejo"
@@ -594,7 +596,7 @@
             "home": "Thorium izgleda drugače! Poglejmo kaj je novega...",
             "readingView1": "Prilagodi svoje nastavitve branja in poslušanja: Thorium sedaj ponuja več barvnih tem za uporabniško aplikacijo in dokumente za objavo. Zdaj je lažje konfigurirati tudi e-knjige za glasno branje s sintetičnim govorom in sinhronizirano besedilno/zvočno pripovedjo.",
             "readingView2": "Izboljšani uporabniški vmesnik programa Thorium omogoča lažje iskanje besedila v publikacijah, raziskovanje rezultatov iskanja, prehod na določene strani, brskanje po kazalu vsebine, ustvarjanje zaznamkov itd., saj so na voljo nove „priklopljene“ plošče. Celozaslonski način branja še naprej zagotavlja okolje brez motenj.",
-            "yourBooks": "Dobrodošli v svoji prenovljeni osebni knjižni polici! V mrežnem pogledu  preprosto filtriraj po oznakah ali poišči publikacije po ključnih besedah. V naprednem pogledu „tabele“ izberi in razvrsti publikacije po določenih avtorjih, naslovu, datumu, formatu itd."
+            "yourBooks": "Dobrodošli v svoji prenovljeni osebni knjižni polici! V mrežnem pogledu    preprosto filtriraj po oznakah ali poišči publikacije po ključnih besedah. V naprednem pogledu „tabele“ izberi in razvrsti publikacije po določenih avtorjih, naslovu, datumu, formatu itd."
         },
         "dontShow": "Ne prikaži več",
         "tab": {

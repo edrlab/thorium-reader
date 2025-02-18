@@ -406,7 +406,9 @@
             "skipDescription": "跳過／忽略輔助內容，例如分頁符號、註腳／尾註等。",
             "speed": "語音朗讀速度",
             "stop": "停止朗讀",
-            "title": "語音朗讀"
+            "title": "語音朗讀",
+            "disableContinuousPlay": "停用連續播放",
+            "disableContinuousPlayDescription": "不自動播放下一個項目，目前項目播放完畢後立即暫停。"
         },
         "navigation": {
             "ZenModeExit": "退出 Zen 模式",
@@ -524,7 +526,7 @@
             "activate": "啟動文字語音轉換",
             "language": "TTS 語言",
             "next": "下一段",
-            "options": "",
+            "options": "TTS 選項",
             "pause": "暫停",
             "play": "播放",
             "previous": "上一段",

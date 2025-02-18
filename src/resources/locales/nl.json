@@ -406,7 +406,9 @@
             "skipDescription": "Spring over/negeer aanvullende inhoud zoals pagina-einden, voetnoten/eindnoten, enz.",
             "speed": "Voorlezen snelheid",
             "stop": "Stop Voorlezen",
-            "title": "Voorlezen"
+            "title": "Voorlezen",
+            "disableContinuousPlay": "Schakel doorlopend afspelen uit",
+            "disableContinuousPlayDescription": "Speel niet automatisch het volgende item af, pauzeer onmiddellijk nadat het huidige item is afgespeeld."
         },
         "navigation": {
             "ZenModeExit": "Verlaat Zen modus",

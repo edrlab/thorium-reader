@@ -134,7 +134,7 @@
         },
         "cancel": "Cancelar",
         "deleteAnnotations": "Eliminar anotações?",
-        "deleteAnnotationsText": "Quer eliminar {{- annotationListLength}} anotações?",
+        "deleteAnnotationsText": "Quer mesmo eliminar {{- annotationListLength}} anotações?",
         "deleteFeed": "Eliminar catálogo?",
         "deletePublication": "Eliminar documento?",
         "import": "Confirmar importação:",
@@ -146,7 +146,7 @@
     "error": {
         "errorBox": {
             "error": "Mensagem de erro:",
-            "message": "Ocorreu um erro em {{- filename}}",
+            "message": "Erro em {{- filename}}",
             "title": "Erro interno {{- appName}}"
         }
     },
@@ -406,7 +406,9 @@
             "skipDescription": "Saltar/ignorar conteúdo auxiliar, como quebras de página, notas de rodapé/notas finais, etc.",
             "speed": "Velocidade de reprodução da narração",
             "stop": "Parar narração",
-            "title": "Narração"
+            "title": "Narração",
+            "disableContinuousPlay": "Desativar a reprodução contínua",
+            "disableContinuousPlayDescription": "Não reproduzir automaticamente o próximo item, pausar imediatamente após terminar a reprodução do item atual."
         },
         "navigation": {
             "ZenModeExit": "Sair do modo Zen",

@@ -406,7 +406,9 @@
             "skipDescription": "Ohita toissijainen sisältö kuten sivunvaihdot tai ala- ja loppuviitteet.",
             "speed": "Luennan nopeus",
             "stop": "Lopeta luenta",
-            "title": "Luenta"
+            "title": "Luenta",
+            "disableContinuousPlayDescription": "Älä jatka luentaa automaattisesti seuraavaan kohteeseen vaan keskeytä luenta, kun nykyinen kohde on luettu.",
+            "disableContinuousPlay": "Älä käytä jatkuvaa luentaa"
         },
         "navigation": {
             "ZenModeExit": "Poistu kokoruudun tilasta",

@@ -398,6 +398,8 @@
             "activate": "Activate Readaloud",
             "captions": "Captions / clean view",
             "captionsDescription": "Simplified text view with minimal captions styling.",
+            "disableContinuousPlay": "Disable continuous play",
+            "disableContinuousPlayDescription": "Do not automatically play the next item, pause immediately after the current item has finished playing.",
             "next": "Next Readaloud",
             "pause": "Pause Readaloud",
             "play": "Play Readaloud",

@@ -10,7 +10,7 @@ import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEver
 
 import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysEnableCaptionsMode, mediaOverlaysEnableSkippability,
     mediaOverlaysPause, mediaOverlaysResume, readiumCssUpdate, reloadContent, ttsOverlayEnable, ttsPlay,
-    ttsSentenceDetectionEnable, ttsSkippabilityEnable, ttsStop,
+    ttsSentenceDetectionEnable, ttsAndMediaOverlaysManualPlayNext, ttsSkippabilityEnable, ttsStop,
 } from "@r2-navigator-js/electron/renderer";
 
 import { readerLocalActionReader, readerLocalActionSetConfig } from "../actions";
@@ -48,6 +48,10 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
 
     if (isNotNil(payload.ttsEnableSentenceDetection)) {
         ttsSentenceDetectionEnable(readerConfig.ttsEnableSentenceDetection);
+    }
+
+    if (isNotNil(payload.ttsAndMediaOverlaysDisableContinuousPlay)) {
+        ttsAndMediaOverlaysManualPlayNext(readerConfig.ttsAndMediaOverlaysDisableContinuousPlay);
     }
 
     if (isNotNil(payload.mediaOverlaysEnableSkippability)) {
