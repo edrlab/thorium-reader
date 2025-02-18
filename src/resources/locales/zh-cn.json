@@ -12,7 +12,7 @@
     "apiapp": {
         "documentation": "Thorium 文档",
         "howItWorks": "如何工作的？",
-        "informations": "",
+        "informations": "在法国，许多公共图书馆提供机器可读目录（类似于 OPDS 但不完全相同），允许读者从他们的个人书架下载数字出版物。将这项技术集成到 Thorium 阅读器中，您可以将电子书或有声读物直接下载到 Thorium 阅读器中，以便即时阅读。\n如何将您的法国公共图书馆帐户连接到 Thorium 阅读器？很简单。在搜索字段中输入法国城市（“巴黎”）或图书馆名称的一部分，然后点击搜索按钮。将显示与您的搜索相对应的公共图书馆列表。选择一个图书馆，然后点击添加。在更新的目录列表中，选择此图书馆：将显示一个身份验证表单。输入您的用户名/电子邮件地址和密码，然后点击登录。您现在可以查看您个人书架的内容，从中下载和阅读您之前借阅的电子书和有声读物。",
         "noLibraryFound": "未发现图书馆 ({{- name}})"
     },
     "app": {
@@ -34,7 +34,7 @@
                         "no": "否",
                         "yes": "是"
                     },
-                    "help": "",
+                    "help": "如果您希望在关闭应用程序时，已打开的阅读器窗口在下次启动时自动重新打开，请激活此选项。",
                     "message": "是否保存当前会话？",
                     "title": "保存会话"
                 }
@@ -72,9 +72,9 @@
             "lastAdditions": "最近添加"
         },
         "export": "导出",
-        "exportAnnotation": "",
+        "exportAnnotation": "导出笔记...",
         "format": "格式",
-        "importAnnotation": "",
+        "importAnnotation": "导入笔记...",
         "lang": "语言",
         "lastRead": "上次阅读",
         "moreInfo": "更多信息",
@@ -121,26 +121,26 @@
     },
     "dialog": {
         "annotations": {
-            "descAuthor": "",
-            "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
-            "descTitle": "",
-            "importAll": "",
-            "importWithoutConflict": "",
-            "origin": "",
-            "title": ""
+            "descAuthor": "作者 “{{- author}}”",
+            "descCreator": "创建者",
+            "descList": "{{- nb}} 条笔记（{{- creator}}）将被导入到《{{- title}}》（{{- author}}）中。",
+            "descNewer": "冲突：{{- nb}} 条较新的笔记",
+            "descOlder": "冲突：{{- nb}} 条较旧的笔记",
+            "descTitle": "笔记标题：",
+            "importAll": "导入所有笔记",
+            "importWithoutConflict": "仅导入无冲突的笔记",
+            "origin": "原始出版物：《{{- title}}》（{{- author}}）\n",
+            "title": "您要导入笔记吗？"
         },
         "cancel": "取消",
-        "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
-        "deleteFeed": "你真的要删除此出版目录吗？",
-        "deletePublication": "你真的要删除此出版物吗?",
-        "import": "你真的要导入这些文件吗:",
+        "deleteAnnotations": "您要删除笔记吗？",
+        "deleteAnnotationsText": "您确定要删除 {{- annotationListLength}} 条笔记吗？",
+        "deleteFeed": "您真的要删除此出版目录吗？",
+        "deletePublication": "您真的要删除此出版物吗?",
+        "import": "您真的要导入这些文件吗:",
         "importError": "出现错误, 请确认文件的扩展名({{acceptedExtension}})",
-        "renew": "你真的要更新此出版物的许可证吗?",
-        "return": "你真的要归还此出版物的许可证吗?",
+        "renew": "您真的要更新此出版物的许可证吗?",
+        "return": "您真的要归还此出版物的许可证吗?",
         "yes": "是"
     },
     "error": {
@@ -154,7 +154,7 @@
         "allBooks": "全部图书",
         "catalogs": "出版目录",
         "downloads": "下载",
-        "fitlerTagTitle": "按标签过滤",
+        "fitlerTagTitle": "按标签筛选",
         "gridTitle": "网格视图",
         "home": "书架菜单",
         "homeTitle": "主页",
@@ -170,7 +170,7 @@
     "library": {
         "lcp": {
             "hint": "提示: ",
-            "open": "",
+            "open": "打开",
             "password": "密码",
             "sentence": "打开此出版物需要 LCP 密码: ",
             "urlHint": "忘记密码？在此获取帮助",
@@ -181,12 +181,12 @@
     },
     "message": {
         "annotations": {
-            "alreadyImported": "",
-            "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
-            "nothing": "",
-            "success": ""
+            "alreadyImported": "所有笔记已经导入。",
+            "emptyFile": "文件中没有可用的笔记。",
+            "errorParsing": "文件解析错误：",
+            "noBelongTo": "无法导入笔记，至少有一条笔记不属于此出版物。",
+            "nothing": "没有可导入的笔记，导入终止。",
+            "success": "导入成功完成"
         },
         "download": {
             "error": "下载{{- title}}失败: [{{- err}}]"
@@ -216,7 +216,7 @@
         "documentation": "OPDS 官方网站",
         "empty": "未找到出版物",
         "firstPage": "首页",
-        "informations": "",
+        "informations": "想象一个世界，您只需点击几下鼠标，就可以浏览和下载来自公共图书馆和数字书店的数字出版物。这正是开放出版物分发系统 (OPDS) 目录格式所提供的便利。借助 OPDS，您可以浏览来自各种电子书提供商的目录、注册、借阅、购买出版物，或访问您的个人书架。您甚至可以将电子书或有声读物直接下载到 Thorium 阅读器中进行即时阅读。\n那么，如何找到 OPDS 目录呢？很简单。查找指向目录的超链接 (URL)。将此 URL 复制到上方的“链接”字段中。请注意，没有一站式商店可以获取所有活动的 OPDS 目录。您需要联系您的首选图书馆或书店，并索取他们的 OPDS 目录 URL。如果您不确定从哪里开始，维基百科上提供了几个不同语言的 OPDS 目录可能会有所帮助。\n“名称”字段可由您自行决定；它提供了一种在 Thorium 阅读器中轻松识别源的简便方法。",
         "lastPage": "尾页",
         "menu": {
             "aboutBook": "关于此书",
@@ -291,10 +291,10 @@
         "duration": {
             "title": "播放时长"
         },
-        "encryptedNoLicense": "",
+        "encryptedNoLicense": "出版物已加密，但缺少 LCP 许可证！",
         "expired": "借阅已到期",
         "expiredLcp": "此书无法阅读，因为LCP许可证已到期。",
-        "incorrectPassphrase": "",
+        "incorrectPassphrase": "未找到匹配的密码，或输入的密码有误。\n",
         "lcpEnd": "结束",
         "lcpRightsCopy": "许可证拷贝",
         "lcpRightsPrint": "许可证打印",
@@ -328,42 +328,42 @@
             "addNote": "注解",
             "advancedMode": "即时模式（选择后自动创建）",
             "annotationsExport": {
-                "description": "",
-                "title": ""
+                "description": "请为导出的笔记命名：",
+                "title": "标题"
             },
             "annotationsOptions": "选项",
             "colors": {
-                "bluegreen": "",
-                "cyan": "",
-                "green": "",
-                "lightblue": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
+                "bluegreen": "蓝绿色",
+                "cyan": "青色",
+                "green": "绿色",
+                "lightblue": "浅蓝色",
+                "orange": "橙色",
+                "purple": "紫色",
+                "red": "红色",
+                "yellow": "黄色"
             },
-            "date": "",
-            "export": "",
+            "date": "修改日期",
+            "export": "将笔记另存为...",
             "filter": {
-                "all": "",
-                "filterByColor": "",
-                "filterByCreator": "",
-                "filterByDrawtype": "",
-                "filterByTag": "",
-                "filterOptions": "",
-                "none": ""
+                "all": "全部",
+                "filterByColor": "按颜色筛选\n",
+                "filterByCreator": "按创建者筛选",
+                "filterByDrawtype": "按类型筛选",
+                "filterByTag": "按标签筛选",
+                "filterOptions": "筛选选项",
+                "none": "无"
             },
             "hide": "不显示",
             "highlight": "高亮",
             "noSelectionToast": "未选择",
-            "note": "",
+            "note": "{{- color}} 笔记",
             "quickAnnotations": "快速创建（跳过编辑器）",
             "saveNote": "保存",
             "sorting": {
-                "lastcreated": "",
-                "lastmodified": "",
-                "progression": "",
-                "sortingOptions": ""
+                "lastcreated": "最近创建",
+                "lastmodified": "最近修改",
+                "progression": "进度",
+                "sortingOptions": "排序选项"
             },
             "toggleMarginMarks": "在页边距中显示",
             "type": {
@@ -378,9 +378,9 @@
             "unmute": "取消静音"
         },
         "fxl": {
-            "fit": ""
+            "fit": "自适应"
         },
-        "goToContent": "",
+        "goToContent": "跳转到正文",
         "marks": {
             "annotations": "注解",
             "bookmarks": "书签",
@@ -388,7 +388,7 @@
             "edit": "编辑",
             "goTo": "转到页码",
             "landmarks": "结构",
-            "progression": "",
+            "progression": "进度",
             "saveMark": "保存书签",
             "search": "检索",
             "searchResult": "检索 [{{- searchText}}]",
@@ -398,6 +398,8 @@
             "activate": "激活语音朗读",
             "captions": "字幕 / 简明视图",
             "captionsDescription": "具有最少字幕样式的简化文本视图。",
+            "disableContinuousPlay": "禁用连续播放",
+            "disableContinuousPlayDescription": "当前项播放结束后立即暂停，不自动播放下一项内容。",
             "next": "朗读下一段",
             "pause": "暂停朗读",
             "play": "开始朗读",
@@ -409,8 +411,8 @@
             "title": "语音朗读"
         },
         "navigation": {
-            "ZenModeExit": "",
-            "ZenModeTitle": "",
+            "ZenModeExit": "退出禅模式",
+            "ZenModeTitle": "禅模式",
             "annotationTitle": "注解",
             "backHomeTitle": "返回书架",
             "bookmarkTitle": "书签",
@@ -418,7 +420,7 @@
             "currentPageTotal": "当前页面: {{- current}}/{{- total}}",
             "detachWindowTitle": "显示 书库/书架 窗口",
             "goTo": "转到",
-            "goToError": "此页不存在",
+            "goToError": "页码不存在",
             "goToPlaceHolder": "输入页码",
             "goToTitle": "转到页",
             "historyNext": "前进",
@@ -449,7 +451,7 @@
                 "title": "栏",
                 "two": "2栏"
             },
-            "customFontSelected": "",
+            "customFontSelected": "您已选择自定义字体",
             "customizeReader": "自定义文本格式",
             "disabled": "已禁用",
             "display": "显示",
@@ -465,9 +467,9 @@
             "lineSpacing": "行间距",
             "margin": "页边距",
             "noFootnotes": "禁用脚注",
-            "noRTLFlip": "禁用从右到左的 UI",
-            "noRuby": "隐藏日文Ruby标注",
-            "noTemporaryNavTargetOutline": "",
+            "noRTLFlip": "禁用从右到左的界面布局",
+            "noRuby": "隐藏日文振假名",
+            "noTemporaryNavTargetOutline": "禁用视觉导航指示",
             "paginated": "已分页",
             "paraSpacing": "段落间距",
             "pdfZoom": {
@@ -484,14 +486,14 @@
                 "title": "放大"
             },
             "preset": {
-                "apply": "",
-                "applyDetails": "",
-                "detail": "",
-                "reset": "",
-                "resetDetails": "",
-                "save": "",
-                "saveDetails": "",
-                "title": ""
+                "apply": "应用",
+                "applyDetails": "将您的偏好设置应用到当前出版物。",
+                "detail": "保存 /应用 /重置您的偏好设置。",
+                "reset": "重置",
+                "resetDetails": "重置您的偏好设置（默认设置）。",
+                "save": "保存",
+                "saveDetails": "此操作将保存当前配置(您的显示和文本格式偏好设置)。之后，您可以在其它阅读窗口中点击“应用”按钮来将这些设置应用到其它出版物。",
+                "title": "偏好设置"
             },
             "preview": "预览",
             "reduceMotion": "减少动态效果",
@@ -522,9 +524,9 @@
         },
         "tts": {
             "activate": "激活文本语音转换",
-            "language": "",
+            "language": "TTS 语言",
             "next": "下一段",
-            "options": "",
+            "options": "TTS 选项",
             "pause": "暂停",
             "play": "播放",
             "previous": "上一段",
@@ -537,16 +539,16 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "",
-            "help": "",
-            "name": "",
-            "organization": "",
-            "person": "",
-            "type": ""
+            "creator": "笔记创建者（可选）",
+            "help": "如果指定，此名称将包含在导出的笔记元数据中。",
+            "name": "名称",
+            "organization": "组织",
+            "person": "个人",
+            "type": "类型"
         },
         "auth": {
-            "help": "",
-            "title": "",
+            "help": "此操作将删除所有 OPDS 登录凭据。",
+            "title": "访问出版物目录",
             "wipeData": "清除登录数据"
         },
         "keyboard": {
@@ -563,8 +565,8 @@
             "languageChoice": "选择语言"
         },
         "library": {
-            "enableAPIAPP": "",
-            "title": ""
+            "enableAPIAPP": "激活“PNB”图书馆系统",
+            "title": "访问法国图书馆帐户"
         },
         "session": {
             "title": "保存登录状态"
@@ -592,7 +594,7 @@
             "annotations": "突出显示文档中的文本，选择样式和颜色，并添加个人注释。在‘快速’模式下创建注解，无需经过编辑器（您可以稍后输入文本并自定义样式）。为了提高速度，您还可以使用‘即时’模式，该模式允许您在高亮文本后立即生成注解！",
             "catalogs": "从您的当地图书馆借阅出版物或通过 OPDS 源添加出版物。得益于在线目录，您可以从多个来源访问各种出版物。",
             "home": "Thorium 看起来不同了！让我们探索一下有什么新变化。",
-            "readingView1": "",
+            "readingView1": "自定义您的阅读和收听偏好：Thorium 现在为用户界面和出版物文档提供了多种颜色主题。现在，配置带有合成语音和同步文本/音频旁白的“朗读”电子书也更加容易。",
             "readingView2": "Thorium 改进的用户界面使得在出版物中查找文本、探索搜索结果、跳转到特定页面、浏览目录、创建书签等流程变得更加容易，这得益于新的‘固定’面板。在全屏阅读模式下继续提供无干扰的阅读体验。",
             "yourBooks": "欢迎来到重新设计的个人书架！在'网格'视图中，您可以轻松地通过标签筛选或通过关键词找到出版物。在高级的'表格'视图中，可以按特定作者、标题、日期、格式等选择并排序出版物。"
         },

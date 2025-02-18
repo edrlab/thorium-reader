@@ -7,7 +7,8 @@
 
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
-
+import debounce from "debounce";
+import { fixedLayoutZoomPercent } from "@r2-navigator-js/electron/renderer/dom";
 import { ipcRenderer } from "electron";
 import classNames from "classnames";
 import divinaPlayer from "divina-player-js";
@@ -73,7 +74,7 @@ import {
     MediaOverlaysStateEnum, mediaOverlaysStop, navLeftOrRight,
     setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
     setReadingLocationSaver, ttsClickEnable, ttsNext, ttsOverlayEnable, ttsPause,
-    ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
+    ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsAndMediaOverlaysManualPlayNext, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
     ttsStop, ttsVoice, highlightsClickListen,
     // stealFocusDisable,
     keyboardFocusRequest,
@@ -209,6 +210,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 }
 
 interface IState {
+    fxlZoomPercent: number;
     contentTableOpen: boolean;
     settingsOpen: boolean;
     shortcutEnable: boolean;
@@ -218,6 +220,7 @@ interface IState {
     doFocus: number;
     fullscreen: boolean;
     zenMode: boolean;
+    blackoutMask: boolean;
 
     visibleBookmarkList: IBookmarkState[];
     currentLocation: MiniLocatorExtended;
@@ -257,6 +260,10 @@ class Reader extends React.Component<IProps, IState> {
 
     private ttsOverlayEnableNeedsSync: boolean;
 
+    private resizeObserver: ResizeObserver;
+
+    private blackoutDebounced: () => void;
+
     constructor(props: IProps) {
         super(props);
 
@@ -292,6 +299,8 @@ class Reader extends React.Component<IProps, IState> {
         this.mainElRef = React.createRef<HTMLDivElement>();
 
         this.state = {
+            fxlZoomPercent: 0,
+
             // bookmarkMessage: undefined,
 
             contentTableOpen: false,
@@ -303,6 +312,7 @@ class Reader extends React.Component<IProps, IState> {
             menuOpen: false,
             fullscreen: false,
             zenMode: false,
+            blackoutMask: false,
 
             visibleBookmarkList: [],
             currentLocation: undefined,
@@ -361,9 +371,37 @@ class Reader extends React.Component<IProps, IState> {
         this.handleDivinaSound = this.handleDivinaSound.bind(this);
 
         this.isRTLFlip = this.isRTLFlip.bind(this);
+        this.fixedLayoutZoomPercentDebounced = this.fixedLayoutZoomPercentDebounced.bind(this);
+
+        this.blackoutDebounced = debounce(() => {
+            this.setState({ blackoutMask: false });
+        }, 600).bind(this); // to match navigator 500ms timeout debouncer for fixedLayoutZoomPercent()
+
+        const resizeDebounced = debounce(() => {
+            this.setState({ blackoutMask: false });
+        }, 600); // nto match avigator 500ms timeout debouncer for internal webview/iframe window "resize" event
+        this.resizeObserver = new ResizeObserver((_entries: ResizeObserverEntry[], _observer: ResizeObserver) => {
+            if (!this.isFixedLayout()) {
+                this.setState({ blackoutMask: false });
+                return;
+            }
+            this.setState({ blackoutMask: true });
+            resizeDebounced();
+        });
+    }
+
+    private fixedLayoutZoomPercentDebounced(fxlZoomPercent: number) {
+        this.setState({ blackoutMask: true });
+        fixedLayoutZoomPercent(fxlZoomPercent); // navigator 500ms timeout debouncer
+        this.blackoutDebounced();
     }
 
     public async componentDidMount() {
+
+        if (this.mainElRef?.current) {
+            this.resizeObserver.observe(this.mainElRef.current);
+        }
+
         windowHistory._readerInstance = this;
 
         const store = getStore(); // diRendererSymbolTable.store
@@ -623,6 +661,10 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public componentWillUnmount() {
+        if (this.mainElRef?.current) {
+            this.resizeObserver.unobserve(this.mainElRef.current);
+        }
+
         this.unregisterAllKeyboardListeners();
 
         window.removeEventListener("popstate", this.onPopState);
@@ -646,11 +688,15 @@ class Reader extends React.Component<IProps, IState> {
                 }
             }
         }
-        if (typeof isFixedLayout === "undefined") {
-            isFixedLayout = this.props.r2Publication?.Metadata?.Rendition?.Layout === "fixed";
+        if (typeof isFixedLayout === "undefined" || isFixedLayout === null) {
+            isFixedLayout = this.state.currentLocation?.docInfo?.isFixedLayout;
+        }
+        if (typeof isFixedLayout === "undefined" || isFixedLayout === null) {
+            isFixedLayout = this.props.r2Publication?.Metadata?.Rendition?.Layout === "fixed" || this.props.publicationView?.isFixedLayoutPublication;
         }
         return isFixedLayout;
     }
+
     private isRTL(isFixedLayout: boolean): boolean {
         const isRTL_PackageMeta = this.props.r2Publication?.Metadata?.Direction === "rtl" || this.props.r2Publication?.Metadata?.Direction === "ttb";
         return isFixedLayout ? isRTL_PackageMeta : (isRTL_PackageMeta || this.state.currentLocation?.docInfo?.isRightToLeft);
@@ -699,10 +745,22 @@ class Reader extends React.Component<IProps, IState> {
 
             isDivina: this.props.isDivina,
             isPdf: this.props.isPdf,
-            isFXL: this.props.publicationView.isFixedLayoutPublication,
+            isFXL: this.props.publicationView.isFixedLayoutPublication, // see this.isFixedLayout() for publication-wide AND spine-item document check
             // openedSection: this.state.openedSectionSettings,
+            fxlZoomPercent: this.state.fxlZoomPercent,
             zenMode: this.state.zenMode,
-            setZenMode : () => this.setState({ zenMode : !this.state.zenMode}),
+            setZenModeAndFXLZoom: (zen: boolean, fxlZoom: number) => {
+                // this.setState({ zenMode: !this.state.zenMode });
+                // console.log("ZEN", this.state.zenMode, zen, this.state.fxlZoomPercent, fxlZoom);
+                if (this.state.fxlZoomPercent === fxlZoom && this.state.zenMode !== zen) {
+                    // HACK ATERT: simulate window resize to trigger navigator 500ms timeout debouncer
+                    // window.dispatchEvent(document.createEvent("resize")); // CRASH
+                    window.dispatchEvent(new Event("resize")); // WORKS
+                } else if (this.state.fxlZoomPercent !== fxlZoom && this.state.zenMode === zen) { // this.state.zenMode !== zen is captured by publication_viewport.ResizeObserver
+                    this.fixedLayoutZoomPercentDebounced(fxlZoom);
+                }
+                this.setState({ zenMode: zen, fxlZoomPercent: fxlZoom });
+            },
             searchEnable: this.props.searchEnable,
         };
 
@@ -812,7 +870,10 @@ class Reader extends React.Component<IProps, IState> {
                     />
                     :
                     <div className={stylesReader.exitZen_container}>
-                        <button onClick={() => this.setState({ zenMode: false })}
+                            <button onClick={() => {
+                                // this.setState({ zenMode: false });
+                                ReaderSettingsProps.setZenModeAndFXLZoom(false, this.state.fxlZoomPercent);
+                            }}
                             className={stylesReader.button_exitZen}
                             style={{ opacity: isPaginated ? "1" : "0" }}
                             aria-label={this.props.__("reader.navigation.ZenModeExit")}
@@ -856,12 +917,15 @@ class Reader extends React.Component<IProps, IState> {
                                             : this.props.readerConfig.readerDockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right_pdf
                                             : ""
                                         ) : undefined,
-                                        (this.props.searchEnable && !this.props.isPdf && this.props.readerConfig.paged) ? stylesReader.isOnSearch
+                                        (this.props.searchEnable && !this.props.isPdf && this.props.readerConfig.paged && !this.isFixedLayout()) ? stylesReader.isOnSearch
                                         : (this.props.searchEnable && this.props.isPdf) ? stylesReader.isOnSearchPdf :
-                                        (this.props.searchEnable && !this.props.readerConfig.paged) ? stylesReader.isOnSearchScroll
+                                        (this.props.searchEnable && !this.props.readerConfig.paged && !this.isFixedLayout()) ? stylesReader.isOnSearchScroll
                                         : "")}
                                     ref={this.mainElRef}
-                                    style={{ inset: isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina ? "0" : "75px 50px" }}>
+                                    style={{
+                                        inset: this.state.currentLocation?.docInfo?.isVerticalWritingMode || isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina || this.isFixedLayout() ? "0" : "75px 50px",
+                                        opacity: this.state.blackoutMask ? 0 : 1,
+                                    }}>
                                 </div>
 
                                 {arrowEnabled && !this.state.zenMode ?
@@ -1423,8 +1487,10 @@ class Reader extends React.Component<IProps, IState> {
             const isDivina = this.props.r2Publication && isDivinaFn(this.props.r2Publication);
             const isPdf = this.props.r2Publication && isPdfFn(this.props.r2Publication);
 
-        const isFixedLayoutPublication = this.props.r2Publication &&
-            this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
+            // this.isFixedLayout() ==> accounts for document spine item, not necessarily equivalent to publication metadata
+            // this.props.publicationView.isFixedLayoutPublication ??
+            const isFixedLayoutPublication = this.props.r2Publication &&
+                this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed";
 
             let txtProgression: string | undefined;
             let txtPagination: string | undefined;
@@ -2348,6 +2414,7 @@ class Reader extends React.Component<IProps, IState> {
         if (!this.props.isDivina && !this.props.isPdf && this.ttsOverlayEnableNeedsSync) {
             ttsOverlayEnable(this.props.readerConfig.ttsEnableOverlayMode);
             ttsSentenceDetectionEnable(this.props.readerConfig.ttsEnableSentenceDetection);
+            ttsAndMediaOverlaysManualPlayNext(this.props.readerConfig.ttsAndMediaOverlaysDisableContinuousPlay);
             ttsSkippabilityEnable(this.props.readerConfig.mediaOverlaysEnableSkippability);
         }
         this.ttsOverlayEnableNeedsSync = false;
@@ -2809,6 +2876,7 @@ class Reader extends React.Component<IProps, IState> {
 
     //     mediaOverlaysEnableSkippability(readerConfig.mediaOverlaysEnableSkippability);
     //     ttsSentenceDetectionEnable(readerConfig.ttsEnableSentenceDetection);
+    //     ttsAndMediaOverlaysManualPlayNext(readerConfig.ttsAndMediaOverlaysDisableContinuousPlay);
     //     ttsSkippabilityEnable(readerConfig.mediaOverlaysEnableSkippability);
     //     mediaOverlaysEnableCaptionsMode(readerConfig.mediaOverlaysEnableCaptionsMode);
     //     ttsOverlayEnable(readerConfig.ttsEnableOverlayMode);
@@ -2935,6 +3003,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     // see this.ttsOverlayEnableNeedsSync
     // ttsOverlayEnable(state.reader.config.ttsEnableOverlayMode);
     // ttsSentenceDetectionEnable(state.reader.config.ttsEnableSentenceDetection);
+    // ttsAndMediaOverlaysManualPlayNext(state.reader.config.ttsAndMediaOverlaysDisableContinuousPlay);
     // ttsSkippabilityEnable(state.reader.config.mediaOverlaysEnableSkippability);
 
     // extension or @type ?

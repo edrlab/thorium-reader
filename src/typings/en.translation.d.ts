@@ -822,6 +822,8 @@ declare namespace typed_i18n {
     readonly "activate": string,
     readonly "captions": string,
     readonly "captionsDescription": string,
+    readonly "disableContinuousPlay": string,
+    readonly "disableContinuousPlayDescription": string,
     readonly "next": string,
     readonly "pause": string,
     readonly "play": string,
@@ -1106,6 +1108,8 @@ declare namespace typed_i18n {
   readonly "activate": string,
   readonly "captions": string,
   readonly "captionsDescription": string,
+  readonly "disableContinuousPlay": string,
+  readonly "disableContinuousPlayDescription": string,
   readonly "next": string,
   readonly "pause": string,
   readonly "play": string,
@@ -1119,6 +1123,8 @@ declare namespace typed_i18n {
   (_: "reader.media-overlays.activate", __?: {}): string;
   (_: "reader.media-overlays.captions", __?: {}): string;
   (_: "reader.media-overlays.captionsDescription", __?: {}): string;
+  (_: "reader.media-overlays.disableContinuousPlay", __?: {}): string;
+  (_: "reader.media-overlays.disableContinuousPlayDescription", __?: {}): string;
   (_: "reader.media-overlays.next", __?: {}): string;
   (_: "reader.media-overlays.pause", __?: {}): string;
   (_: "reader.media-overlays.play", __?: {}): string;

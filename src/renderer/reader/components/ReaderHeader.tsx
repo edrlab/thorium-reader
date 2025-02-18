@@ -48,9 +48,9 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
-import { fixedLayoutZoomPercent,
-    // stealFocusDisable
-} from "@r2-navigator-js/electron/renderer/dom";
+// import { fixedLayoutZoomPercent,
+//     // stealFocusDisable
+// } from "@r2-navigator-js/electron/renderer/dom";
 import {
     MediaOverlaysStateEnum, TTSStateEnum,
 } from "@r2-navigator-js/electron/renderer/index";
@@ -158,7 +158,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 interface IState {
     pdfScaleMode: IPdfPlayerScale | undefined;
     divinaSoundEnabled: boolean;
-    fxlZoomPercent: number;
+    // fxlZoomPercent: number;
     forceTTS: boolean;
     ttsPopoverOpen: boolean;
     tabValue: string;
@@ -173,7 +173,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
     private infoMenuButtonRef: React.RefObject<HTMLButtonElement>;
 
     // private onwheel: React.WheelEventHandler<HTMLSelectElement>;
-    private timerFXLZoomDebounce: number | undefined;
+    // private timerFXLZoomDebounce: number | undefined;
 
     constructor(props: IProps) {
         super(props);
@@ -191,14 +191,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         this.state = {
             pdfScaleMode: undefined,
             divinaSoundEnabled: false,
-            fxlZoomPercent: 0,
+            // fxlZoomPercent: this.props.ReaderSettingsProps.fxlZoomPercent,
             forceTTS: false,
             ttsPopoverOpen: false,
             tabValue: this.props.ReaderSettingsProps.isDivina ? "tab-divina" : this.props.ReaderSettingsProps.isPdf ? "tab-pdfzoom" : "tab-display",
             voices: [],
         };
 
-        this.timerFXLZoomDebounce = undefined;
+        // this.timerFXLZoomDebounce = undefined;
 
         // this.onwheel = throttle((ev) => {
         //     const step = 10;
@@ -216,7 +216,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         //     }
         //     this.timerFXLZoomDebounce = window.setTimeout(() => {
         //         this.timerFXLZoomDebounce = undefined;
-        //         fixedLayoutZoomPercent(this.state.fxlZoomPercent);
+        //         this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, this.state.fxlZoomPercent);
+        //         // fixedLayoutZoomPercent(this.state.fxlZoomPercent);
         //     }, 600);
         // }, 200).bind(this);
     }
@@ -349,8 +350,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             }
             return;
         }
-        this.setState({ fxlZoomPercent: 0 });
-        fixedLayoutZoomPercent(0);
+        // this.setState({ fxlZoomPercent: 0 });
+        this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, 0);
+        // fixedLayoutZoomPercent(0);
     }
     private onKeyboardFixedLayoutZoomIn() {
         if (!this.props.shortcutEnable) {
@@ -360,20 +362,22 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             return;
         }
         const step = 10;
-        let z = this.state.fxlZoomPercent === 0 ? 100 : (this.state.fxlZoomPercent + step);
+        let z = this.props.ReaderSettingsProps.fxlZoomPercent === 0 ? 100 : (this.props.ReaderSettingsProps.fxlZoomPercent + step);
         if (z >= 400) {
             z = 400;
         }
 
-        this.setState({ fxlZoomPercent: z });
+        // this.setState({ fxlZoomPercent: z });
+        this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, z);
 
-        if (this.timerFXLZoomDebounce) {
-            clearTimeout(this.timerFXLZoomDebounce);
-        }
-        this.timerFXLZoomDebounce = window.setTimeout(() => {
-            this.timerFXLZoomDebounce = undefined;
-            fixedLayoutZoomPercent(z);
-        }, 600);
+        // if (this.timerFXLZoomDebounce) {
+        //     clearTimeout(this.timerFXLZoomDebounce);
+        // }
+        // this.timerFXLZoomDebounce = window.setTimeout(() => {
+        //     this.timerFXLZoomDebounce = undefined;
+        //     this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, z);
+        //     // fixedLayoutZoomPercent(z);
+        // }, 600);
     }
     private onKeyboardFixedLayoutZoomOut() {
         if (!this.props.shortcutEnable) {
@@ -383,20 +387,22 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             return;
         }
         const step = -10;
-        let z = this.state.fxlZoomPercent === 0 ? 100 : (this.state.fxlZoomPercent + step);
+        let z = this.props.ReaderSettingsProps.fxlZoomPercent === 0 ? 100 : (this.props.ReaderSettingsProps.fxlZoomPercent + step);
         if (z <= -step) {
             z = -step;
         }
 
-        this.setState({ fxlZoomPercent: z });
+        // this.setState({ fxlZoomPercent: z });
+        this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, z);
 
-        if (this.timerFXLZoomDebounce) {
-            clearTimeout(this.timerFXLZoomDebounce);
-        }
-        this.timerFXLZoomDebounce = window.setTimeout(() => {
-            this.timerFXLZoomDebounce = undefined;
-            fixedLayoutZoomPercent(z);
-        }, 600);
+        // if (this.timerFXLZoomDebounce) {
+        //     clearTimeout(this.timerFXLZoomDebounce);
+        // }
+        // this.timerFXLZoomDebounce = window.setTimeout(() => {
+        //     this.timerFXLZoomDebounce = undefined;
+        //     this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, z);
+        //     // fixedLayoutZoomPercent(z);
+        // }, 600);
     }
 
 
@@ -461,6 +467,17 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                 name: "200%",
             },
         ];
+        if (this.props.ReaderSettingsProps.fxlZoomPercent !== 0 &&
+            this.props.ReaderSettingsProps.fxlZoomPercent !== 50 &&
+            this.props.ReaderSettingsProps.fxlZoomPercent !== 100 &&
+            this.props.ReaderSettingsProps.fxlZoomPercent !== 200) {
+
+            fxlOptions.push({
+                id: 4,
+                value: this.props.ReaderSettingsProps.fxlZoomPercent,
+                name: this.props.ReaderSettingsProps.fxlZoomPercent + "%",
+            });
+        }
 
         const isDockedMode = this.props.readerConfig.readerDockingMode !== "full";
         const isOnSearch = this.props.isOnSearch;
@@ -815,16 +832,20 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 debug("FXL this.state.fxlZoomPercent TOGGLE: " + this.state.fxlZoomPercent);
                                                 if (this.state.fxlZoomPercent === 0) {
                                                     this.setState({ fxlZoomPercent: 200 });
-                                                    fixedLayoutZoomPercent(200); // twice (zoom in)
+                                                    this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, 200);
+                                                    // fixedLayoutZoomPercent(200); // twice (zoom in)
                                                 } else if (this.state.fxlZoomPercent === 200) {
                                                     this.setState({ fxlZoomPercent: 100 });
-                                                    fixedLayoutZoomPercent(100); // content natural dimensions (usually larger, so equivalent to zoom in)
+                                                    this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, 100);
+                                                    // fixedLayoutZoomPercent(100); // content natural dimensions (usually larger, so equivalent to zoom in)
                                                         } else if (this.state.fxlZoomPercent === 100) {
                                                             this.setState({ fxlZoomPercent: 50 });
-                                                            fixedLayoutZoomPercent(50); // half (zoom out, but if the content is massive then it may still be perceived as zoom in)
+                                                            this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, 50);
+                                                            // fixedLayoutZoomPercent(50); // half (zoom out, but if the content is massive then it may still be perceived as zoom in)
                                                         } else {
                                                             this.setState({ fxlZoomPercent: 0 });
-                                                            fixedLayoutZoomPercent(0); // special value: fit inside available viewport dimensions (default)
+                                                            this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, 0);
+                                                            // fixedLayoutZoomPercent(0); // special value: fit inside available viewport dimensions (default)
                                                         }
                                                     }}
                                                     aria-label={__("reader.navigation.pdfscalemode")}
@@ -1188,16 +1209,20 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             debug("FXL this.state.fxlZoomPercent TOGGLE: " + this.state.fxlZoomPercent);
                                             if (this.state.fxlZoomPercent === 0) {
                                                 this.setState({ fxlZoomPercent: 200 });
-                                                fixedLayoutZoomPercent(200); // twice (zoom in)
+                                                this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, 200);
+                                                // fixedLayoutZoomPercent(200); // twice (zoom in)
                                             } else if (this.state.fxlZoomPercent === 200) {
                                                 this.setState({ fxlZoomPercent: 100 });
-                                                fixedLayoutZoomPercent(100); // content natural dimensions (usually larger, so equivalent to zoom in)
+                                                this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, 100);
+                                                // fixedLayoutZoomPercent(100); // content natural dimensions (usually larger, so equivalent to zoom in)
                                             } else if (this.state.fxlZoomPercent === 100) {
                                                 this.setState({ fxlZoomPercent: 50 });
-                                                fixedLayoutZoomPercent(50); // half (zoom out, but if the content is massive then it may still be perceived as zoom in)
+                                                this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, 50);
+                                                // fixedLayoutZoomPercent(50); // half (zoom out, but if the content is massive then it may still be perceived as zoom in)
                                             } else {
                                                 this.setState({ fxlZoomPercent: 0 });
-                                                fixedLayoutZoomPercent(0); // special value: fit inside available viewport dimensions (default)
+                                                this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, 0);
+                                                // fixedLayoutZoomPercent(0); // special value: fit inside available viewport dimensions (default)
                                             }
                                         }}
                                         aria-label={__("reader.navigation.pdfscalemode")}
@@ -1220,7 +1245,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         onChange={(e) => {
                                             debug("FXL this.state.fxlZoomPercent TOGGLE: " + this.state.fxlZoomPercent);
                                             this.setState({ fxlZoomPercent: parseInt(e.target.value, 10) });
-                                            fixedLayoutZoomPercent(parseInt(e.target.value, 10))
+                                            this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, parseInt(e.target.value, 10));
+                                            // fixedLayoutZoomPercent(parseInt(e.target.value, 10))
                                         }}>
                                         <option value="">Fit</option>
                                         <option value={0}>Auto</option>
@@ -1233,14 +1259,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         id="buttonFXLZoom"
                                         aria-label={__("reader.navigation.pdfscalemode")}
                                         items={fxlOptions}
-                                        selectedKey={fxlOptions.find(({ value }) => this.state.fxlZoomPercent === value)?.id || 0}
-                                        defaultSelectedKey={0}
+                                        selectedKey={fxlOptions.find(({ value }) => this.props.ReaderSettingsProps.fxlZoomPercent === value)?.id || 0}
+                                        defaultSelectedKey={fxlOptions.find(({ value }) => this.props.ReaderSettingsProps.fxlZoomPercent === value)?.id || 0}
                                         onSelectionChange={(id) => {
-                                            const value = fxlOptions.find(({ id: _id }) => _id === id)?.value;
-                                            debug("FXL this.state.fxlZoomPercent TOGGLE: " + this.state.fxlZoomPercent);
-                                            console.log(value);
-                                            this.setState({ fxlZoomPercent: value as number });
-                                            fixedLayoutZoomPercent(value as number);
+                                            const value = fxlOptions.find(({ id: _id }) => _id === id)?.value || 0;
+                                            debug("FXL this.state.fxlZoomPercent TOGGLE: " + this.props.ReaderSettingsProps.fxlZoomPercent + " /// " + (value as number));
+                                            // this.setState({ fxlZoomPercent: value as number });
+                                            this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, value as number);
+                                            // fixedLayoutZoomPercent(value as number);
                                         }}
                                     >
                                         {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
@@ -1252,7 +1278,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         <li className={classNames(stylesReader.blue)}>
                             <button
                                 className={classNames(stylesReader.menu_button)}
-                                onClick={() => this.props.ReaderSettingsProps.setZenMode(!this.props.ReaderSettingsProps.zenMode)}
+                                onClick={() => {
+                                    this.props.ReaderSettingsProps.setZenModeAndFXLZoom(!this.props.ReaderSettingsProps.zenMode, this.props.ReaderSettingsProps.fxlZoomPercent);
+                                }}
                                 ref={this.enableFullscreenRef}
                                 aria-pressed={this.props.fullscreen}
                                 aria-label={__("reader.navigation.ZenModeTitle")}

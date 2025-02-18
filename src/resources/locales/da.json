@@ -406,7 +406,9 @@
             "skipDescription": "Hop over ekstra-indhold så som sideskift, fodnoter/slutnoter, osv.",
             "speed": "Oplæsningshastighed",
             "stop": "Stop oplæsning",
-            "title": "Oplæsning"
+            "title": "Oplæsning",
+            "disableContinuousPlay": "Deaktiver kontinuerlig afspilning",
+            "disableContinuousPlayDescription": "Afspil ikke automatisk næste del. Sæt på pause efter at den nuværende del er afspillet."
         },
         "navigation": {
             "ZenModeExit": "Forlad fokuseret læsetilstand",

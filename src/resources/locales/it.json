@@ -34,7 +34,7 @@
                         "no": "No",
                         "yes": "Sì"
                     },
-                    "help": "",
+                    "help": "Attivare questa opzione se si desidera che le finestre di lettura che sono aperte quando si chiude l'applicazione si riaprano automaticamente al successivo avvio.",
                     "message": "Vuoi salvare la sessione ?",
                     "title": "Salva la sessione"
                 }
@@ -122,14 +122,14 @@
     "dialog": {
         "annotations": {
             "descAuthor": "di {{- author}}",
-            "descCreator": "",
+            "descCreator": "creata da",
             "descList": "{{- nb}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
             "descNewer": "{{- nb}} nuove versioni di queste note sono già associate alla pubblicazione.",
             "descOlder": "{{- nb}} versioni precedenti di queste note sono già associate alla pubblicazione.",
             "descTitle": "Titolo del set:",
             "importAll": "Importa tutte le note",
             "importWithoutConflict": "Importa le note senza conflitti",
-            "origin": "",
+            "origin": "Pubblicazione originale: \"{{- title}}\" {{- author}}",
             "title": "Vuoi importare queste note?"
         },
         "cancel": "Annulla",
@@ -342,7 +342,7 @@
                 "red": "Rosso",
                 "yellow": "Giallo"
             },
-            "date": "",
+            "date": "Data di modifica",
             "export": "Salva le note come",
             "filter": {
                 "all": "Tutte",
@@ -356,7 +356,7 @@
             "hide": "Non mostrare",
             "highlight": "Evidenziare",
             "noSelectionToast": "Nessuna selezione",
-            "note": "",
+            "note": "{{- color}} nota",
             "quickAnnotations": "Creazione rapida (salta editor)",
             "saveNote": "Salva",
             "sorting": {
@@ -380,7 +380,7 @@
         "fxl": {
             "fit": "Adattare"
         },
-        "goToContent": "",
+        "goToContent": "Vai al contenuto",
         "marks": {
             "annotations": "Annotazioni",
             "bookmarks": "Segnalibri",
@@ -388,7 +388,7 @@
             "edit": "Modifica",
             "goTo": "Vai alla pagina",
             "landmarks": "Punti di riferimento",
-            "progression": "",
+            "progression": "Avanzamento",
             "saveMark": "Salva segnalibro",
             "search": "Ricerca",
             "searchResult": "Cerca [{{- searchText}}]",
@@ -406,11 +406,13 @@
             "skipDescription": "Salta/ignora i contenuti ausiliari come interruzioni di pagina, note a piè di pagina/note di chiusura, ecc.",
             "speed": "Velocità di riproduzione per la lettura ad alta voce",
             "stop": "Interrompi la lettura ad alta voce",
-            "title": "lettura ad alta voce"
+            "title": "lettura ad alta voce",
+            "disableContinuousPlay": "Disattivare la riproduzione continua",
+            "disableContinuousPlayDescription": "Non riprodurre automaticamente l'elemento successivo, ma mettere in pausa subito dopo la fine della riproduzione dell'elemento corrente."
         },
         "navigation": {
-            "ZenModeExit": "",
-            "ZenModeTitle": "",
+            "ZenModeExit": "Uscire dalla modalità Zen",
+            "ZenModeTitle": "Modalità Zen",
             "annotationTitle": "annotazione",
             "backHomeTitle": "ritorna alla libreria",
             "bookmarkTitle": "segnalibro",
@@ -467,7 +469,7 @@
             "noFootnotes": "Disattiva note a piè di pagina",
             "noRTLFlip": "Disabilita l'interfaccia utente da destra a sinistra",
             "noRuby": "Nascondi Ruby Giapponese",
-            "noTemporaryNavTargetOutline": "",
+            "noTemporaryNavTargetOutline": "Disattivare gli indicatori visivi di navigazione",
             "paginated": "Impaginato",
             "paraSpacing": "Spaziatura paragrafo",
             "pdfZoom": {
@@ -524,7 +526,7 @@
             "activate": "Attiva Testo a Voce",
             "language": "Lingua sintesi vocale",
             "next": "Prossimo Testo a Voce",
-            "options": "",
+            "options": "Opzioni sintesi vocale",
             "pause": "Metti in pausa Testo a Voce",
             "play": "Riproduci Testo a Voce",
             "previous": "Precedente Testo a Voce",
@@ -538,14 +540,14 @@
     "settings": {
         "annotationCreator": {
             "creator": "Creatore",
-            "help": "",
+            "help": "Se specificato, questo nome verrà incluso nei metadati delle note esportate.",
             "name": "Nome",
             "organization": "Organizzazione",
             "person": "Persona",
             "type": "Tipo:"
         },
         "auth": {
-            "help": "",
+            "help": "Questa azione cancella tutte le credenziali di accesso all'OPDS.",
             "title": "Gestire l'accesso ai cataloghi",
             "wipeData": "Elimina dati di autenticazione"
         },
