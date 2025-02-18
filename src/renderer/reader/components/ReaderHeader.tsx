@@ -60,10 +60,10 @@ import { IPdfPlayerScale } from "../pdf/common/pdfReader.type";
 import HeaderSearch from "./header/HeaderSearch";
 import { IReaderMenuProps, IReaderSettingsProps } from "./options-values";
 import { ReaderMenu } from "./ReaderMenu";
-import {
-    ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
-} from "readium-desktop/renderer/common/keyboard";
-import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
+// import {
+//     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
+// } from "readium-desktop/renderer/common/keyboard";
+// import { DEBUG_KEYBOARD, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import { connect } from "react-redux";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
@@ -109,7 +109,7 @@ interface IBaseProps extends TranslatorProps {
     handleMenuClick: (open?: boolean) => void;
     handleSettingsClick: (open?: boolean) => void;
     fullscreen: boolean;
-    handleFullscreenClick: () => void;
+    // handleFullscreenClick: () => void;
 
     handleTTSPlay: () => void;
     handleTTSPause: () => void;
@@ -184,9 +184,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
         // this.focusNaviguationMenuButton = this.focusNaviguationMenuButton.bind(this);
 
-        this.onKeyboardFixedLayoutZoomReset = this.onKeyboardFixedLayoutZoomReset.bind(this);
-        this.onKeyboardFixedLayoutZoomIn = this.onKeyboardFixedLayoutZoomIn.bind(this);
-        this.onKeyboardFixedLayoutZoomOut = this.onKeyboardFixedLayoutZoomOut.bind(this);
+        // this.onKeyboardFixedLayoutZoomReset = this.onKeyboardFixedLayoutZoomReset.bind(this);
+        // this.onKeyboardFixedLayoutZoomIn = this.onKeyboardFixedLayoutZoomIn.bind(this);
+        // this.onKeyboardFixedLayoutZoomOut = this.onKeyboardFixedLayoutZoomOut.bind(this);
 
         this.state = {
             pdfScaleMode: undefined,
@@ -236,8 +236,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
     public componentDidMount() {
 
-        ensureKeyboardListenerIsInstalled();
-        this.registerAllKeyboardListeners();
+        // ensureKeyboardListenerIsInstalled();
+        // this.registerAllKeyboardListeners();
 
         createOrGetPdfEventBus().subscribe("scale", this.setScaleMode);
 
@@ -283,7 +283,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
     public componentWillUnmount() {
 
-        this.unregisterAllKeyboardListeners();
+        // this.unregisterAllKeyboardListeners();
 
         createOrGetPdfEventBus().remove(this.setScaleMode, "scale");
     }
@@ -315,95 +315,95 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         //     this.focusNaviguationMenuButton();
         // }
 
-        if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
-            console.log("READER HEADER RELOAD KEYBOARD SHORTCUTS");
-            this.unregisterAllKeyboardListeners();
-            this.registerAllKeyboardListeners();
-        }
-    }
-
-    private registerAllKeyboardListeners() {
-        registerKeyboardListener(
-            true, // listen for key down (not key up)
-            this.props.keyboardShortcuts.FXLZoomReset,
-            this.onKeyboardFixedLayoutZoomReset);
-        registerKeyboardListener(
-            false, // listen for key down (not key up)
-            this.props.keyboardShortcuts.FXLZoomIn,
-            this.onKeyboardFixedLayoutZoomIn);
-        registerKeyboardListener(
-            false, // listen for key down (not key up)
-            this.props.keyboardShortcuts.FXLZoomOut,
-            this.onKeyboardFixedLayoutZoomOut);
-    }
-
-    private unregisterAllKeyboardListeners() {
-        unregisterKeyboardListener(this.onKeyboardFixedLayoutZoomReset);
-        unregisterKeyboardListener(this.onKeyboardFixedLayoutZoomIn);
-        unregisterKeyboardListener(this.onKeyboardFixedLayoutZoomOut);
-    }
-
-    private onKeyboardFixedLayoutZoomReset() {
-        if (!this.props.shortcutEnable) {
-            if (DEBUG_KEYBOARD) {
-                console.log("!shortcutEnable (onKeyboardFixedLayoutZoomReset)");
-            }
-            return;
-        }
-        // this.setState({ fxlZoomPercent: 0 });
-        this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, 0);
-        // fixedLayoutZoomPercent(0);
-    }
-    private onKeyboardFixedLayoutZoomIn() {
-        if (!this.props.shortcutEnable) {
-            if (DEBUG_KEYBOARD) {
-                console.log("!shortcutEnable (onKeyboardFixedLayoutZoomIn)");
-            }
-            return;
-        }
-        const step = 10;
-        let z = this.props.ReaderSettingsProps.fxlZoomPercent === 0 ? 100 : (this.props.ReaderSettingsProps.fxlZoomPercent + step);
-        if (z >= 400) {
-            z = 400;
-        }
-
-        // this.setState({ fxlZoomPercent: z });
-        this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, z);
-
-        // if (this.timerFXLZoomDebounce) {
-        //     clearTimeout(this.timerFXLZoomDebounce);
+        // if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
+        //     console.log("READER HEADER RELOAD KEYBOARD SHORTCUTS");
+        //     this.unregisterAllKeyboardListeners();
+        //     this.registerAllKeyboardListeners();
         // }
-        // this.timerFXLZoomDebounce = window.setTimeout(() => {
-        //     this.timerFXLZoomDebounce = undefined;
-        //     this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, z);
-        //     // fixedLayoutZoomPercent(z);
-        // }, 600);
     }
-    private onKeyboardFixedLayoutZoomOut() {
-        if (!this.props.shortcutEnable) {
-            if (DEBUG_KEYBOARD) {
-                console.log("!shortcutEnable (onKeyboardFixedLayoutZoomOut)");
-            }
-            return;
-        }
-        const step = -10;
-        let z = this.props.ReaderSettingsProps.fxlZoomPercent === 0 ? 100 : (this.props.ReaderSettingsProps.fxlZoomPercent + step);
-        if (z <= -step) {
-            z = -step;
-        }
 
-        // this.setState({ fxlZoomPercent: z });
-        this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, z);
+    // private registerAllKeyboardListeners() {
+    //     registerKeyboardListener(
+    //         true, // listen for key down (not key up)
+    //         this.props.keyboardShortcuts.FXLZoomReset,
+    //         this.onKeyboardFixedLayoutZoomReset);
+    //     registerKeyboardListener(
+    //         false, // listen for key down (not key up)
+    //         this.props.keyboardShortcuts.FXLZoomIn,
+    //         this.onKeyboardFixedLayoutZoomIn);
+    //     registerKeyboardListener(
+    //         false, // listen for key down (not key up)
+    //         this.props.keyboardShortcuts.FXLZoomOut,
+    //         this.onKeyboardFixedLayoutZoomOut);
+    // }
 
-        // if (this.timerFXLZoomDebounce) {
-        //     clearTimeout(this.timerFXLZoomDebounce);
-        // }
-        // this.timerFXLZoomDebounce = window.setTimeout(() => {
-        //     this.timerFXLZoomDebounce = undefined;
-        //     this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, z);
-        //     // fixedLayoutZoomPercent(z);
-        // }, 600);
-    }
+    // private unregisterAllKeyboardListeners() {
+    //     unregisterKeyboardListener(this.onKeyboardFixedLayoutZoomReset);
+    //     unregisterKeyboardListener(this.onKeyboardFixedLayoutZoomIn);
+    //     unregisterKeyboardListener(this.onKeyboardFixedLayoutZoomOut);
+    // }
+
+    // private onKeyboardFixedLayoutZoomReset() {
+    //     if (!this.props.shortcutEnable) {
+    //         if (DEBUG_KEYBOARD) {
+    //             console.log("!shortcutEnable (onKeyboardFixedLayoutZoomReset)");
+    //         }
+    //         return;
+    //     }
+    //     // this.setState({ fxlZoomPercent: 0 });
+    //     this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, 0);
+    //     // fixedLayoutZoomPercent(0);
+    // }
+    // private onKeyboardFixedLayoutZoomIn() {
+    //     if (!this.props.shortcutEnable) {
+    //         if (DEBUG_KEYBOARD) {
+    //             console.log("!shortcutEnable (onKeyboardFixedLayoutZoomIn)");
+    //         }
+    //         return;
+    //     }
+    //     const step = 10;
+    //     let z = this.props.ReaderSettingsProps.fxlZoomPercent === 0 ? 100 : (this.props.ReaderSettingsProps.fxlZoomPercent + step);
+    //     if (z >= 400) {
+    //         z = 400;
+    //     }
+
+    //     // this.setState({ fxlZoomPercent: z });
+    //     this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, z);
+
+    //     // if (this.timerFXLZoomDebounce) {
+    //     //     clearTimeout(this.timerFXLZoomDebounce);
+    //     // }
+    //     // this.timerFXLZoomDebounce = window.setTimeout(() => {
+    //     //     this.timerFXLZoomDebounce = undefined;
+    //     //     this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, z);
+    //     //     // fixedLayoutZoomPercent(z);
+    //     // }, 600);
+    // }
+    // private onKeyboardFixedLayoutZoomOut() {
+    //     if (!this.props.shortcutEnable) {
+    //         if (DEBUG_KEYBOARD) {
+    //             console.log("!shortcutEnable (onKeyboardFixedLayoutZoomOut)");
+    //         }
+    //         return;
+    //     }
+    //     const step = -10;
+    //     let z = this.props.ReaderSettingsProps.fxlZoomPercent === 0 ? 100 : (this.props.ReaderSettingsProps.fxlZoomPercent + step);
+    //     if (z <= -step) {
+    //         z = -step;
+    //     }
+
+    //     // this.setState({ fxlZoomPercent: z });
+    //     this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, z);
+
+    //     // if (this.timerFXLZoomDebounce) {
+    //     //     clearTimeout(this.timerFXLZoomDebounce);
+    //     // }
+    //     // this.timerFXLZoomDebounce = window.setTimeout(() => {
+    //     //     this.timerFXLZoomDebounce = undefined;
+    //     //     this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, z);
+    //     //     // fixedLayoutZoomPercent(z);
+    //     // }, 600);
+    // }
 
 
     private __closeNavPanel = false;

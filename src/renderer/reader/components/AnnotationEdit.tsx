@@ -43,24 +43,26 @@ interface IProps {
     btext?: string;
 }
 
+// DO NOT REMOVE THIS COMMENT BLOCK (USED FOR TRANSLATOR KEYS DETECTION DURING CODE SCANNING)
 // __("reader.annotations.colors.red")
 // __("reader.annotations.colors.orange")
 // __("reader.annotations.colors.yellow")
 // __("reader.annotations.colors.green")
-// __("reader.annotations.colors.bluegreen")
-// __("reader.annotations.colors.lightblue")
+// __xxx("reader.annotations.colors.bluegreen") // ===> "bluegreen" translation becomes unused!
+// __xxx("reader.annotations.colors.lightblue") // ===> "lightblue" translation becomes unused!
 // __("reader.annotations.colors.cyan")
 // __("reader.annotations.colors.purple")
 
+// https://github.com/readium/annotations/blob/main/README.md#14-body
 export const annotationsColorsLight: Record<string, TTranslatorKeyParameter> = {
-    "#EB9694": "reader.annotations.colors.red",
-    "#FAD0C3": "reader.annotations.colors.orange",
-    "#FEF3BD": "reader.annotations.colors.yellow",
-    "#C1EAC5": "reader.annotations.colors.green",
-    "#BEDADC": "reader.annotations.colors.bluegreen",
-    "#C4DEF6": "reader.annotations.colors.lightblue",
-    "#BED3F3": "reader.annotations.colors.cyan",
-    "#D4C4FB": "reader.annotations.colors.purple",
+    "#EB9694": "reader.annotations.colors.red", // "pink"
+    "#FAD0C3": "reader.annotations.colors.orange", // "orange"
+    "#FEF3BD": "reader.annotations.colors.yellow", // "yellow"
+    "#C1EAC5": "reader.annotations.colors.green", // "green"
+    // "#BEDADC": "reader.annotations.colors.bluegreen", // ===> "bluegreen" translation becomes unused!
+    // "#C4DEF6": "reader.annotations.colors.lightblue", // ===> "lightblue" translation becomes unused!
+    "#BED3F3": "reader.annotations.colors.cyan", // "blue"
+    "#D4C4FB": "reader.annotations.colors.purple", // "purple"
 };
 
 const drawType: TDrawType[] = [
@@ -191,7 +193,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                                 checked={colorSelected === colorHex}
                                 aria-label={__(translatorKey)}
                             />
-                            <label htmlFor={`anno_color_${uuid}_${colorHex}`}
+                            <label title={__(translatorKey)} htmlFor={`anno_color_${uuid}_${colorHex}`}
                                 style={{ backgroundColor: colorHex, border: colorSelected === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
                             >
                                 {colorSelected === colorHex ? <SVG ariaHidden svg={CheckIcon} /> : <></>}

@@ -292,6 +292,10 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardNavigationToBegin.bind(this);
         this.onKeyboardNavigationToEnd.bind(this);
 
+        this.onKeyboardFixedLayoutZoomReset = this.onKeyboardFixedLayoutZoomReset.bind(this);
+        this.onKeyboardFixedLayoutZoomIn = this.onKeyboardFixedLayoutZoomIn.bind(this);
+        this.onKeyboardFixedLayoutZoomOut = this.onKeyboardFixedLayoutZoomOut.bind(this);
+
         this.onPopState = this.onPopState.bind(this);
 
         this.fastLinkRef = React.createRef<HTMLAnchorElement>();
@@ -371,6 +375,9 @@ class Reader extends React.Component<IProps, IState> {
         this.handleDivinaSound = this.handleDivinaSound.bind(this);
 
         this.isRTLFlip = this.isRTLFlip.bind(this);
+
+        this.setZenModeAndFXLZoom = this.setZenModeAndFXLZoom.bind(this);
+
         this.fixedLayoutZoomPercentDebounced = this.fixedLayoutZoomPercentDebounced.bind(this);
 
         this.blackoutDebounced = debounce(() => {
@@ -708,6 +715,19 @@ class Reader extends React.Component<IProps, IState> {
         return this.isRTL(this.isFixedLayout());
     }
 
+    private setZenModeAndFXLZoom(zen: boolean, fxlZoom: number) {
+        // this.setState({ zenMode: !this.state.zenMode });
+        // console.log("ZEN", this.state.zenMode, zen, this.state.fxlZoomPercent, fxlZoom);
+        if (this.state.fxlZoomPercent === fxlZoom && this.state.zenMode !== zen) {
+            // HACK ATERT: simulate window resize to trigger navigator 500ms timeout debouncer
+            // window.dispatchEvent(document.createEvent("resize")); // CRASH
+            window.dispatchEvent(new Event("resize")); // WORKS
+        } else if (this.state.fxlZoomPercent !== fxlZoom && this.state.zenMode === zen) { // this.state.zenMode !== zen is captured by publication_viewport.ResizeObserver
+            this.fixedLayoutZoomPercentDebounced(fxlZoom);
+        }
+        this.setState({ zenMode: zen, fxlZoomPercent: fxlZoom });
+    }
+
     public render(): React.ReactElement<{}> {
 
         const readerMenuProps: IReaderMenuProps = {
@@ -750,16 +770,7 @@ class Reader extends React.Component<IProps, IState> {
             fxlZoomPercent: this.state.fxlZoomPercent,
             zenMode: this.state.zenMode,
             setZenModeAndFXLZoom: (zen: boolean, fxlZoom: number) => {
-                // this.setState({ zenMode: !this.state.zenMode });
-                // console.log("ZEN", this.state.zenMode, zen, this.state.fxlZoomPercent, fxlZoom);
-                if (this.state.fxlZoomPercent === fxlZoom && this.state.zenMode !== zen) {
-                    // HACK ATERT: simulate window resize to trigger navigator 500ms timeout debouncer
-                    // window.dispatchEvent(document.createEvent("resize")); // CRASH
-                    window.dispatchEvent(new Event("resize")); // WORKS
-                } else if (this.state.fxlZoomPercent !== fxlZoom && this.state.zenMode === zen) { // this.state.zenMode !== zen is captured by publication_viewport.ResizeObserver
-                    this.fixedLayoutZoomPercentDebounced(fxlZoom);
-                }
-                this.setState({ zenMode: zen, fxlZoomPercent: fxlZoom });
+                this.setZenModeAndFXLZoom(zen, fxlZoom);
             },
             searchEnable: this.props.searchEnable,
         };
@@ -848,7 +859,7 @@ class Reader extends React.Component<IProps, IState> {
                         handleSettingsClick={this.handleSettingsClick}
                         fullscreen={this.state.fullscreen}
                         mode={this.props.readerMode}
-                        handleFullscreenClick={this.handleFullscreenClick}
+                        // handleFullscreenClick={this.handleFullscreenClick}
                         handleReaderDetach={this.handleReaderDetach}
                         handleReaderClose={this.handleReaderClose}
                         toggleBookmark={() => this.handleToggleBookmark(false)}
@@ -1056,6 +1067,19 @@ class Reader extends React.Component<IProps, IState> {
     private registerAllKeyboardListeners() {
 
         registerKeyboardListener(
+            true, // listen for key down (not key up)
+            this.props.keyboardShortcuts.FXLZoomReset,
+            this.onKeyboardFixedLayoutZoomReset);
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.FXLZoomIn,
+            this.onKeyboardFixedLayoutZoomIn);
+        registerKeyboardListener(
+            false, // listen for key down (not key up)
+            this.props.keyboardShortcuts.FXLZoomOut,
+            this.onKeyboardFixedLayoutZoomOut);
+
+        registerKeyboardListener(
             false, // listen for key down (not key up)
             this.props.keyboardShortcuts.NavigatePreviousHistory,
             this.onKeyboardHistoryNavigationPrevious);
@@ -1213,6 +1237,11 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private unregisterAllKeyboardListeners() {
+
+        unregisterKeyboardListener(this.onKeyboardFixedLayoutZoomReset);
+        unregisterKeyboardListener(this.onKeyboardFixedLayoutZoomIn);
+        unregisterKeyboardListener(this.onKeyboardFixedLayoutZoomOut);
+
         unregisterKeyboardListener(this.onKeyboardHistoryNavigationPrevious);
         unregisterKeyboardListener(this.onKeyboardHistoryNavigationNext);
         unregisterKeyboardListener(this.onKeyboardPageNavigationPrevious);
@@ -1241,6 +1270,68 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardAnnotationMargin);
         unregisterKeyboardListener(this.onKeyboardAnnotation);
         unregisterKeyboardListener(this.onKeyboardQuickAnnotation);
+    }
+
+    private onKeyboardFixedLayoutZoomReset() {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardFixedLayoutZoomReset)");
+            }
+            return;
+        }
+        // this.setState({ fxlZoomPercent: 0 });
+        this.setZenModeAndFXLZoom(this.state.zenMode, 0);
+        // fixedLayoutZoomPercent(0);
+    }
+    private onKeyboardFixedLayoutZoomIn() {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardFixedLayoutZoomIn)");
+            }
+            return;
+        }
+        const step = 10;
+        let z = this.state.fxlZoomPercent === 0 ? 100 : (this.state.fxlZoomPercent + step);
+        if (z >= 400) {
+            z = 400;
+        }
+
+        // this.setState({ fxlZoomPercent: z });
+        this.setZenModeAndFXLZoom(this.state.zenMode, z);
+
+        // if (this.timerFXLZoomDebounce) {
+        //     clearTimeout(this.timerFXLZoomDebounce);
+        // }
+        // this.timerFXLZoomDebounce = window.setTimeout(() => {
+        //     this.timerFXLZoomDebounce = undefined;
+        //     this.setZenModeAndFXLZoom(this.state.zenMode, z);
+        //     // fixedLayoutZoomPercent(z);
+        // }, 600);
+    }
+    private onKeyboardFixedLayoutZoomOut() {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardFixedLayoutZoomOut)");
+            }
+            return;
+        }
+        const step = -10;
+        let z = this.state.fxlZoomPercent === 0 ? 100 : (this.state.fxlZoomPercent + step);
+        if (z <= -step) {
+            z = -step;
+        }
+
+        // this.setState({ fxlZoomPercent: z });
+        this.setZenModeAndFXLZoom(this.state.zenMode, z);
+
+        // if (this.timerFXLZoomDebounce) {
+        //     clearTimeout(this.timerFXLZoomDebounce);
+        // }
+        // this.timerFXLZoomDebounce = window.setTimeout(() => {
+        //     this.timerFXLZoomDebounce = undefined;
+        //     this.setZenModeAndFXLZoom(this.state.zenMode, z);
+        //     // fixedLayoutZoomPercent(z);
+        // }, 600);
     }
 
     private handleLinkLocator = (locator: R2Locator, isFromOnPopState = false) => {
@@ -1438,7 +1529,17 @@ class Reader extends React.Component<IProps, IState> {
     };
 
     private onKeyboardFullScreen = () => {
+
         this.handleFullscreenClick();
+
+        this.setState({ blackoutMask: true });
+        this.blackoutDebounced();
+
+        // this.fixedLayoutZoomPercentDebounced(this.state.fxlZoomPercent);
+
+        // HACK ATERT: simulate window resize to trigger navigator 500ms timeout debouncer
+        // window.dispatchEvent(document.createEvent("resize")); // CRASH
+        // window.dispatchEvent(new Event("resize")); // WORKS
     };
 
     private onKeyboardCloseReader = () => {
