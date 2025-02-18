@@ -146,7 +146,7 @@
     "error": {
         "errorBox": {
             "error": "Mensagem de erro:",
-            "message": "Ocorreu um erro em {{- filename}}",
+            "message": "Erro em {{- filename}}",
             "title": "Erro interno {{- appName}}"
         }
     },
