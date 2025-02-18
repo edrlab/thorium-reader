@@ -65,6 +65,7 @@ debug("_");
 
 // TODO: DEBUG ONLY AISDK
 import "dotenv/config";
+import { nanoid } from "nanoid";
 
 // !!!!!!
 /// BE CAREFUL DEBUG HAS BEED DISABLED IN package.json
@@ -355,6 +356,8 @@ const streamProtocolHandler = async (
                     debugAiSdk("AISDK usage", usage);
                     debugAiSdk("AISDK response", response);
                 },
+                experimental_generateMessageId: () => 
+                    modelId.split("-")[0] + "-?-" + nanoid(),
             });
 
             const { warnings, usage, sources, finishReason, providerMetadata, text, reasoning, toolCalls, toolResults, steps, request, response } = result;
