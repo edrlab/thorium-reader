@@ -68,15 +68,15 @@ export function convertMultiLangStringToString(items: string | IStringMap | unde
 // https://github.com/readium/r2-shared-js/blob/develop/test/test-JSON-Contributor.ts
 // https://github.com/readium/r2-shared-js/blob/develop/src/models/metadata-contributor-json-converter.ts
 // https://github.com/readium/r2-shared-js/blob/develop/src/models/metadata-contributor.ts
-export function convertContributorArrayToStringArray(items: Contributor[] | undefined, locale: keyof typeof availableLanguages): string[] {
+export function convertContributorArrayToStringArray(items: Contributor[] | undefined): (string | IStringMap)[] { // , locale: keyof typeof availableLanguages
     if (!items) {
         return  [];
     }
 
     return items.map((item) => {
-        if (typeof item.Name === "object") {
-            return convertMultiLangStringToString(item.Name, locale);
-        }
+        // if (typeof item.Name === "object") {
+        //     return convertMultiLangStringToString(item.Name, locale);
+        // }
         return item.Name;
     });
 }

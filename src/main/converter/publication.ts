@@ -199,15 +199,15 @@ export class PublicationViewConverter {
         const r2Publication = await this.unmarshallR2Publication(document);
         const r2PublicationJson = TaJsonSerialize(r2Publication); // note: does not include r2Publication.LCP
 
-        // TODO: preserve (string | IStringMap) for publishers and authors (contributors),
-        // and apply convertMultiLangStringToString() only downstream / at rendering time.
+        // convertMultiLangStringToString()
         const publishers = convertContributorArrayToStringArray(
             r2Publication.Metadata.Publisher,
-            this.store.getState().i18n.locale,
+            // this.store.getState().i18n.locale,
         );
+        // convertMultiLangStringToString()
         const authors = convertContributorArrayToStringArray(
             r2Publication.Metadata.Author,
-            this.store.getState().i18n.locale,
+            // this.store.getState().i18n.locale,
         );
 
         let publishedAt: string | undefined;
@@ -295,14 +295,19 @@ export class PublicationViewConverter {
             identifier: document.identifier, // preserve Identifiable identifier
 
             documentTitle: document.title || "-", // default title
+
             // convertMultiLangStringToString
             publicationTitle: r2Publication.Metadata.Title, // string | IStringMap
+            // convertMultiLangStringToString
             publicationSubTitle: r2Publication.Metadata.SubTitle, // string | IStringMap
 
-            authors,
+            // convertMultiLangStringToString
+            publishersLangString: publishers,
+            // convertMultiLangStringToString
+            authorsLangString: authors,
+
             description: r2Publication.Metadata.Description,
             languages: r2Publication.Metadata.Language,
-            publishers,
             workIdentifier: r2Publication.Metadata.Identifier,
             publishedAt,
             modifiedAt,

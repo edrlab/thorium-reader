@@ -51,10 +51,9 @@ export interface PublicationView extends Identifiable {
     publicationTitle: string | IStringMap; // convertMultiLangStringToString
     publicationSubTitle: string | IStringMap; // convertMultiLangStringToString
 
-    // TODO: preserve (string | IStringMap) for publishers and authors (contributors),
-    // and apply convertMultiLangStringToString() only downstream / at rendering time.
-    authors: string[];
-    publishers?: string[];
+    // convertMultiLangStringToString()
+    authorsLangString: (string | IStringMap)[];
+    publishersLangString?: (string | IStringMap)[];
 
     workIdentifier?: string;
     description?: string;
