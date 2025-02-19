@@ -406,7 +406,9 @@
             "skipDescription": "改ページ、脚注や文末脚注などの補助コンテンツをスキップまたは無視します。",
             "speed": "再生速度（朗読）",
             "stop": "停止（朗読）",
-            "title": "朗読"
+            "title": "朗読",
+            "disableContinuousPlay": "連続再生を無効に",
+            "disableContinuousPlayDescription": "次の項目を自動再生せずに、現在の項目の再生が終了したらすぐに一時停止する。"
         },
         "navigation": {
             "ZenModeExit": "Zenモードを終了",
@@ -524,7 +526,7 @@
             "activate": "音声読み上げ機能（TTS）を起動",
             "language": "TTS言語",
             "next": "次に進む（TTS）",
-            "options": "",
+            "options": "TTS オプション",
             "pause": "一時停止（TTS）",
             "play": "再生（TTS）",
             "previous": "前にもどる（TTS）",
