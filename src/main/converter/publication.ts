@@ -13,9 +13,7 @@ import { isAudiobookFn, isDivinaFn, isPdfFn } from "readium-desktop/common/isMan
 import { inject, injectable } from "inversify";
 import * as moment from "moment";
 import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
-import {
-    convertContributorArrayToStringArray,
-} from "readium-desktop/main/converter/tools/localisation";
+import { convertContributorArrayToStringArray } from "readium-desktop/common/language-string";
 import { PublicationDocument, PublicationDocumentWithoutTimestampable } from "readium-desktop/main/db/document/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
@@ -28,8 +26,8 @@ import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser
 import { diMainGet } from "../di";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
-import { type Store } from "redux";
-import { RootState } from "../redux/states";
+// import { type Store } from "redux";
+// import { RootState } from "../redux/states";
 
 // import { type Store } from "redux";
 // import { RootState } from "../redux/states";
@@ -49,8 +47,8 @@ export class PublicationViewConverter {
     @inject(diSymbolTable["publication-storage"])
     private readonly publicationStorage!: PublicationStorage;
 
-    @inject(diSymbolTable.store)
-    private readonly store!: Store<RootState>;
+    // @inject(diSymbolTable.store)
+    // private readonly store!: Store<RootState>;
 
     public removeFromMemoryCache(identifier: string) {
         if (_pubCache[identifier]) {
@@ -199,12 +197,12 @@ export class PublicationViewConverter {
         const r2Publication = await this.unmarshallR2Publication(document);
         const r2PublicationJson = TaJsonSerialize(r2Publication); // note: does not include r2Publication.LCP
 
-        // convertMultiLangStringToString()
+        // convertMultiLangStringToLangString()
         const publishers = convertContributorArrayToStringArray(
             r2Publication.Metadata.Publisher,
             // this.store.getState().i18n.locale,
         );
-        // convertMultiLangStringToString()
+        // convertMultiLangStringToLangString()
         const authors = convertContributorArrayToStringArray(
             r2Publication.Metadata.Author,
             // this.store.getState().i18n.locale,
@@ -289,21 +287,21 @@ export class PublicationViewConverter {
 
             a11y_accessModeSufficient: r2Publication.Metadata.Accessibility?.AccessModeSufficient || r2Publication.Metadata.AccessModeSufficient, // (string[])[]
 
-            // convertMultiLangStringToString
+            // convertMultiLangStringToLangString()
             a11y_accessibilitySummary: r2Publication.Metadata.Accessibility?.Summary || r2Publication.Metadata.AccessibilitySummary, // string | IStringMap
 
             identifier: document.identifier, // preserve Identifiable identifier
 
             documentTitle: document.title || "-", // default title
 
-            // convertMultiLangStringToString
+            // convertMultiLangStringToLangString()
             publicationTitle: r2Publication.Metadata.Title, // string | IStringMap
-            // convertMultiLangStringToString
+            // convertMultiLangStringToLangString()
             publicationSubTitle: r2Publication.Metadata.SubTitle, // string | IStringMap
 
-            // convertMultiLangStringToString
+            // convertMultiLangStringToLangString()
             publishersLangString: publishers,
-            // convertMultiLangStringToString
+            // convertMultiLangStringToLangString()
             authorsLangString: authors,
 
             description: r2Publication.Metadata.Description,

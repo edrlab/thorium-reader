@@ -11,7 +11,7 @@ import * as path from "path";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
-import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
+import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { extractCrc32OnZip } from "readium-desktop/main/tools/crc";
 import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,

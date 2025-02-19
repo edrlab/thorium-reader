@@ -13,7 +13,7 @@ import {
     IOpdsLinkView, IOpdsNavigationLink, IOpdsNavigationLinkView, IOPDSPropertiesView,
     IOpdsPublicationView, IOpdsResultView, IOpdsTagView,
 } from "readium-desktop/common/views/opds";
-import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
+import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { ContentType } from "readium-desktop/utils/contentType";
 
@@ -393,8 +393,8 @@ export class OpdsFeedViewConverter {
             baseUrl,
             // r2OpdsPublicationJson,
             documentTitle: title,
-            authors,
-            publishers,
+            authorsLangString: authors,
+            publishersLangString: publishers,
             workIdentifier,
             numberOfPages,
             description,
@@ -425,7 +425,7 @@ export class OpdsFeedViewConverter {
 
             a11y_accessModeSufficient: r2OpdsPublication.Metadata.Accessibility?.AccessModeSufficient || r2OpdsPublication.Metadata.AccessModeSufficient, // (string[])[]
 
-            // convertMultiLangStringToString
+            // convertMultiLangStringToLangString()
             a11y_accessibilitySummary: r2OpdsPublication.Metadata.Accessibility?.Summary || r2OpdsPublication.Metadata.AccessibilitySummary, // string | IStringMap
 
         };

@@ -22,6 +22,7 @@ import * as lunrde from "@lunr-languages/lunr.de.js";
 import * as lunrfr from "@lunr-languages/lunr.fr.js";
 import * as lunrmulti from "@lunr-languages/lunr.multi.js";
 import * as lunrstemmer from "@lunr-languages/lunr.stemmer.support.js";
+import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
 
 const debug = debug_("readium-desktop:main:db:repository:publication");
 
@@ -220,7 +221,17 @@ export class PublicationRepository {
                 const docs = pubViews.map((v) => ({
                     id: v.identifier,
                     title: v.documentTitle,
-                    author: v.authors.join(" "),
+                    author:
+                        // v.authors.join(" ")
+                        v.authorsLangString.reduce<string>((prev, text) => {
+                            const textLangStr = convertMultiLangStringToLangString(text, state.i18n.locale);
+                            // const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
+                            // const textIsRTL = langStringIsRTL(textLang);
+                            const textStr = textLangStr && textLangStr[1] ? textLangStr[1] : "";
+
+                            return prev ? `${prev} ${textStr}` : textStr;
+                        }, "")
+                    ,
                 }));
 
                 docs.forEach((v) => {

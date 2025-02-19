@@ -36,8 +36,11 @@ export interface IOpdsPublicationView {
     // documentTitle vs. publicationTitle
     documentTitle: string;
 
-    authors: IOpdsContributorView[];
-    publishers?: IOpdsContributorView[];
+    // authorsLangString: (string | IStringMap)[]; // convertMultiLangStringToLangString()
+    // publishersLangString?: (string | IStringMap)[]; // convertMultiLangStringToLangString()
+    authorsLangString: IOpdsContributorView[];
+    publishersLangString?: IOpdsContributorView[];
+
     workIdentifier?: string;
     description?: string;
     numberOfPages: number;
@@ -68,7 +71,7 @@ export interface IOpdsPublicationView {
 
     a11y_accessModeSufficient?: (string[])[];
 
-    a11y_accessibilitySummary?: string | IStringMap; // convertMultiLangStringToString
+    a11y_accessibilitySummary?: string | IStringMap; // convertMultiLangStringToLangString()
 }
 
 export interface IOpdsNavigationLinkView {

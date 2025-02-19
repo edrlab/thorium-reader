@@ -15,7 +15,7 @@ import * as debug_ from "debug";
 import DOMPurify from "dompurify";
 import * as React from "react";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
+import { convertMultiLangStringToLangString, langStringIsRTL } from "readium-desktop/common/language-string";
 import isURL from "validator/lib/isURL";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { connect } from "react-redux";
@@ -109,7 +109,7 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
 
             if (!a11y_accessibilitySummary) return undefined;
 
-            const accessibilitySummaryLangStr = convertMultiLangStringToString(a11y_accessibilitySummary, this.props.locale);
+            const accessibilitySummaryLangStr = convertMultiLangStringToLangString(a11y_accessibilitySummary, this.props.locale);
             const accessibilitySummaryLang = accessibilitySummaryLangStr && accessibilitySummaryLangStr[0] ? accessibilitySummaryLangStr[0].toLowerCase() : "";
             const accessibilitySummaryIsRTL = langStringIsRTL(accessibilitySummaryLang);
             const accessibilitySummaryStr = accessibilitySummaryLangStr && accessibilitySummaryLangStr[1] ? accessibilitySummaryLangStr[1] : "";

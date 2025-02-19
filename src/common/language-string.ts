@@ -43,7 +43,7 @@ import { availableLanguages } from "readium-desktop/common/services/translator";
 // https://github.com/readium/webpub-manifest/blob/ff5c1e9e76ccc184d4d670179cfb70ced691fcec/schema/contributor-object.schema.json#L7-L24
 // tslint:disable-next-line: max-line-length
 // https://github.com/readium/webpub-manifest/blob/ff5c1e9e76ccc184d4d670179cfb70ced691fcec/schema/metadata.schema.json#L15-L32
-export function convertMultiLangStringToString(items: string | IStringMap | undefined, locale: keyof typeof availableLanguages): string {
+export function convertMultiLangStringToString(items: string | IStringMap | undefined, locale: keyof typeof availableLanguages): string | undefined {
     if (typeof items === "object") {
         // see translator.translateContentField() ?
         const langs = Object.keys(items);
@@ -79,4 +79,34 @@ export function convertContributorArrayToStringArray(items: Contributor[] | unde
         // }
         return item.Name;
     });
+}
+
+export function convertMultiLangStringToLangString(items: string | IStringMap | undefined, locale: keyof typeof availableLanguages): [lang: string, str: string | undefined] {
+    if (typeof items === "object") {
+        // see translator.translateContentField() ?
+        const langs = Object.keys(items);
+        const lang = langs.filter((l) =>
+            l.toLowerCase().includes(locale.toLowerCase()));
+        const localeLang = lang[0];
+
+        if (items[localeLang]) {
+            return [localeLang, items[localeLang]];
+        }
+        if (items._) {
+            return [BCP47_UNKNOWN_LANG, items._];
+        }
+        if (items[BCP47_UNKNOWN_LANG]) {
+            return [BCP47_UNKNOWN_LANG, items[BCP47_UNKNOWN_LANG]];
+        }
+        return [langs[0], items[langs[0]]];
+    }
+    return [BCP47_UNKNOWN_LANG, items];
+}
+
+export function langStringIsRTL(lang: string): boolean {
+    return lang === "ar" || lang.startsWith("ar-") ||
+        lang === "he" || lang.startsWith("he-") ||
+        lang === "fa" || lang.startsWith("fa-") ||
+        lang === "zh-Hant" ||
+        lang === "zh-TW";
 }

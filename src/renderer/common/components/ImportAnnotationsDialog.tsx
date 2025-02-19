@@ -17,13 +17,15 @@ import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/compo
 import { PublicationView } from "readium-desktop/common/views/publication";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-bold.svg";
+import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 
 export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{ winId: string | undefined, publicationView: PublicationView }>> = (props) => {
 
     const importAnnotationState = useSelector((state: IRendererCommonRootState) => state.importAnnotations);
+    const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const { open, title, annotationsList, annotationsConflictListOlder, annotationsConflictListNewer, winId, about } = importAnnotationState;
     const { publicationView } = props;
-    const { publicationTitle, authors, identifier } = publicationView;
+    const { publicationTitle, authorsLangString, identifier } = publicationView;
     const dispatch = useDispatch();
     const [__] = useTranslator();
 
@@ -73,8 +75,8 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{ winId: 
                         <span>{annotationsList.length ? __("dialog.annotations.descList", {
                             nb: annotationsList.length,
                             creator: creatorNameList.length ? `${__("dialog.annotations.descCreator")} '${creatorNameList.join(", ")}'` : "", // TODO i18n
-                            title: publicationTitle,
-                            author: authors[0] ? __("dialog.annotations.descAuthor", { author: authors[0] }) : "",
+                            title: convertMultiLangStringToString(publicationTitle, locale),
+                            author: authorsLangString[0] ? __("dialog.annotations.descAuthor", { author: convertMultiLangStringToString(authorsLangString[0], locale) }) : "",
                         }) : <></>}</span>
                         <span>{annotationsConflictListNewer.length ? __("dialog.annotations.descNewer", { nb: annotationsConflictListNewer.length }) : <></>}</span>
                         <span>{annotationsConflictListOlder.length ? __("dialog.annotations.descOlder", { nb: annotationsConflictListOlder.length }) : <></>}</span>
