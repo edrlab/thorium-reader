@@ -13,7 +13,7 @@ import { isAudiobookFn, isDivinaFn, isPdfFn } from "readium-desktop/common/isMan
 import { inject, injectable } from "inversify";
 import * as moment from "moment";
 import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
-import { convertContributorArrayToStringArray } from "readium-desktop/common/language-string";
+// import { convertContributorArrayToStringArray } from "readium-desktop/common/language-string";
 import { PublicationDocument, PublicationDocumentWithoutTimestampable } from "readium-desktop/main/db/document/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
@@ -197,16 +197,13 @@ export class PublicationViewConverter {
         const r2Publication = await this.unmarshallR2Publication(document);
         const r2PublicationJson = TaJsonSerialize(r2Publication); // note: does not include r2Publication.LCP
 
+        // this.store.getState().i18n.locale
+
         // convertMultiLangStringToLangString()
-        const publishers = convertContributorArrayToStringArray(
-            r2Publication.Metadata.Publisher,
-            // this.store.getState().i18n.locale,
-        );
+        const publishersLangString = r2Publication.Metadata.Publisher ? r2Publication.Metadata.Publisher.map((contributor) => contributor.Name) : [];
+
         // convertMultiLangStringToLangString()
-        const authors = convertContributorArrayToStringArray(
-            r2Publication.Metadata.Author,
-            // this.store.getState().i18n.locale,
-        );
+        const authorsLangString = r2Publication.Metadata.Author ? r2Publication.Metadata.Author.map((contributor) => contributor.Name) : [];
 
         let publishedAt: string | undefined;
         if (r2Publication.Metadata.PublicationDate) {
@@ -300,9 +297,9 @@ export class PublicationViewConverter {
             publicationSubTitle: r2Publication.Metadata.SubTitle, // string | IStringMap
 
             // convertMultiLangStringToLangString()
-            publishersLangString: publishers,
+            publishersLangString,
             // convertMultiLangStringToLangString()
-            authorsLangString: authors,
+            authorsLangString,
 
             description: r2Publication.Metadata.Description,
             languages: r2Publication.Metadata.Language,

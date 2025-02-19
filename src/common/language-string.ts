@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Contributor } from "@r2-shared-js/models/metadata-contributor";
+// import { Contributor } from "@r2-shared-js/models/metadata-contributor";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { BCP47_UNKNOWN_LANG } from "@r2-shared-js/parser/epub";
 import { availableLanguages } from "readium-desktop/common/services/translator";
@@ -68,18 +68,18 @@ export function convertMultiLangStringToString(items: string | IStringMap | unde
 // https://github.com/readium/r2-shared-js/blob/develop/test/test-JSON-Contributor.ts
 // https://github.com/readium/r2-shared-js/blob/develop/src/models/metadata-contributor-json-converter.ts
 // https://github.com/readium/r2-shared-js/blob/develop/src/models/metadata-contributor.ts
-export function convertContributorArrayToStringArray(items: Contributor[] | undefined): (string | IStringMap)[] { // , locale: keyof typeof availableLanguages
-    if (!items) {
-        return  [];
-    }
+// export function convertContributorArrayToStringArray(items: Contributor[] | undefined): (string | IStringMap)[] { // , locale: keyof typeof availableLanguages
+//     if (!items) {
+//         return  [];
+//     }
 
-    return items.map((item) => {
-        // if (typeof item.Name === "object") {
-        //     return convertMultiLangStringToString(item.Name, locale);
-        // }
-        return item.Name;
-    });
-}
+//     return items.map((item) => {
+//         // if (typeof item.Name === "object") {
+//         //     return convertMultiLangStringToString(item.Name, locale);
+//         // }
+//         return item.Name;
+//     });
+// }
 
 export function convertMultiLangStringToLangString(items: string | IStringMap | undefined, locale: keyof typeof availableLanguages): [lang: string, str: string | undefined] {
     if (typeof items === "object") {
