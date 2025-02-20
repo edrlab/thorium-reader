@@ -114,7 +114,8 @@ function* exportAnnotationSet(): SagaGenerator<void> {
         });
     }
 
-    const readiumAnnotationSet = yield* callTyped(() => convertAnnotationStateArrayToReadiumAnnotationSet(annotationsWithCacheDocumentArray, publicationView, label));
+    const locale = yield* selectTyped((state: IReaderRootState) => state.i18n.locale);
+    const readiumAnnotationSet = yield* callTyped(() => convertAnnotationStateArrayToReadiumAnnotationSet(locale, annotationsWithCacheDocumentArray, publicationView, label));
 
     debug("readiumAnnotationSet generated, prepare to download it");
 

@@ -16,7 +16,7 @@ import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { I18nFunction } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import { formatTime } from "readium-desktop/common/utils/time";
-import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
+import { IOpdsContributorView } from "readium-desktop/common/views/opds";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 
@@ -30,7 +30,7 @@ import { FormatPublicationLanguage } from "./formatPublicationLanguage";
 import { FormatPublisherDate } from "./formatPublisherDate";
 import LcpInfo from "./LcpInfo";
 import PublicationInfoDescription from "./PublicationInfoDescription";
-import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
+import { convertMultiLangStringToLangString, langStringIsRTL } from "readium-desktop/common/language-string";
 import PublicationInfoA11y from "./publicationInfoA11y";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -59,7 +59,7 @@ export interface IProps {
     divinaNumberOfPages: number | undefined; // super hacky :(
     divinaContinousEqualTrue: boolean;
     readerReadingLocation: MiniLocatorExtended;
-    onClikLinkCb?: (tag: IOpdsBaseLinkView) => () => void | undefined;
+    onClikLinkCb?: (tag: IOpdsContributorView) => () => void | undefined;
     closeDialogCb: () => void;
 }
 
@@ -380,7 +380,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
     }, [publicationViewMaybeOpds, r2Publication_]);
 
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const pubTitleLangStr = convertMultiLangStringToString((publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle, locale);
+    const pubTitleLangStr = convertMultiLangStringToLangString((publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle, locale);
     const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
     const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
     const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
@@ -444,7 +444,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                             {pubTitleStr}
                         </h2>
                         <FormatContributorWithLink
-                            contributors={publicationViewMaybeOpds.authors}
+                            contributors={publicationViewMaybeOpds.authorsLangString}
                             onClickLinkCb={onClikLinkCb}
                             className={"authors"}
                         />
@@ -460,12 +460,12 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                         <div className={stylePublication.publicationInfo_moreInfo_content}>
                             <FormatPublisherDate publicationViewMaybeOpds={publicationViewMaybeOpds} __={__} />
                             {
-                                publicationViewMaybeOpds.publishers?.length ?
+                                publicationViewMaybeOpds.publishersLangString?.length ?
                                     <div>
                                         <strong>{`${__("catalog.publisher")}: `}</strong>
                                         <span className={stylesBookDetailsDialog.allowUserSelect}>
                                             <FormatContributorWithLink
-                                                contributors={publicationViewMaybeOpds.publishers}
+                                                contributors={publicationViewMaybeOpds.publishersLangString}
                                                 onClickLinkCb={onClikLinkCb}
                                             />
                                         </span>

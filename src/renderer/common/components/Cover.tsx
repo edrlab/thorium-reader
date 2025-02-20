@@ -18,7 +18,7 @@ import {
 } from "readium-desktop/renderer/common/logics/formatContributor";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
+import { convertMultiLangStringToLangString, langStringIsRTL } from "readium-desktop/common/language-string";
 import { useTranslator } from "../hooks/useTranslator";
 import { connect } from "react-redux";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
@@ -135,7 +135,7 @@ class Cover extends React.Component<IProps, IState> {
             );
         }
 
-        const authors = formatContributorToString(publicationViewMaybeOpds.authors, this.props.locale);
+        const authors = formatContributorToString(publicationViewMaybeOpds.authorsLangString, this.props.locale);
         let colors = publicationViewMaybeOpds.customCover;
         if (!colors) {
             colors = RandomCustomCovers[0];
@@ -143,7 +143,7 @@ class Cover extends React.Component<IProps, IState> {
         const backgroundStyle: React.CSSProperties = {
             backgroundImage: `linear-gradient(${colors.topColor}, ${colors.bottomColor})`,
         };
-        const pubTitleLangStr = convertMultiLangStringToString((publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle, this.props.locale);
+        const pubTitleLangStr = convertMultiLangStringToLangString((publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle, this.props.locale);
         const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
         const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";

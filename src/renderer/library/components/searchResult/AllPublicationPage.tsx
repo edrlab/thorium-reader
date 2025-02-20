@@ -15,7 +15,7 @@ import * as stylesDropDown from "readium-desktop/renderer/assets/styles/componen
 import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
 
 import { HoverEvent } from "@react-types/shared";
-import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
+import { convertMultiLangStringToLangString, langStringIsRTL } from "readium-desktop/common/language-string";
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Location } from "history";
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -707,50 +707,59 @@ const CellLangs: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
 };
 
 interface IColumnValue_Publishers extends IColumnValue_BaseString {
-    publishers: string[],
+    publishersLangString: (string | IStringMap)[];
 };
 interface ITableCellProps_Value_Publishers {
     value: IColumnValue_Publishers;
 }
 const CellPublishers: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Publishers> = (props) => {
 
-    const link = (t: string) => {
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+
+    const link = (text: string | IStringMap) => {
+
+        const textLangStr = convertMultiLangStringToLangString(text, locale);
+        const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
+        const textIsRTL = langStringIsRTL(textLang);
+        const textStr = textLangStr && textLangStr[1] ? textLangStr[1] : "";
+
         return <a
-            title={`${t} (${props.__("header.searchPlaceholder")})`}
+            dir={textIsRTL ? "rtl" : undefined}
+            title={`${textStr} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
             onKeyUp={(e) => {
                 if (e.key === "Enter") {
                     e.preventDefault();
                     // props.column.setFilter(t);
-                    props.setShowColumnFilters(true, props.column.id, t);
+                    props.setShowColumnFilters(true, props.column.id, textStr);
                 }
             }}
 
             onClick={(e) => {
                 e.preventDefault();
                 // props.column.setFilter(t);
-                props.setShowColumnFilters(true, props.column.id, t);
+                props.setShowColumnFilters(true, props.column.id, textStr);
             }}
-            className={stylesPublication.cell_link}>{t}</a>;
+            className={stylesPublication.cell_link}>{textStr}</a>;
     };
 
     // props.value.label === props.value.tags.join(", ")
 
-    return props.value.publishers?.length ?
+    return props.value.publishersLangString?.length ?
         (
-            props.value.publishers.length === 1 ? (
+            props.value.publishersLangString.length === 1 ? (
                 <div className={stylesPublication.cell_wrapper}>
                     {
-                        link(props.value.publishers[0])
+                        link(props.value.publishersLangString[0])
                     }
                 </div>
             ) : (
                 <ul className={classNames(stylesPublication.cell_wrapper, stylesPublication.cell_multi_langs)}>
                     {
-                        props.value.publishers.map((t, i) => {
+                        props.value.publishersLangString.map((langString, i) => {
                             return <li
                                 key={`k${i}`}
-                            >{link(t)}</li>;
+                            >{link(langString)}</li>;
                         })
                     }
                 </ul>
@@ -759,36 +768,45 @@ const CellPublishers: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
 };
 
 interface IColumnValue_Authors extends IColumnValue_BaseString {
-    authors: string[],
+    authorsLangString: (string | IStringMap)[];
 };
 interface ITableCellProps_Value_Authors {
     value: IColumnValue_Authors;
 }
 const CellAuthors: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Authors> = (props) => {
 
-    const link = (t: string) => {
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+
+    const link = (text: string | IStringMap) => {
+
+        const textLangStr = convertMultiLangStringToLangString(text, locale);
+        const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
+        const textIsRTL = langStringIsRTL(textLang);
+        const textStr = textLangStr && textLangStr[1] ? textLangStr[1] : "";
+
         return <a
-            title={`${t} (${props.__("header.searchPlaceholder")})`}
+            dir={textIsRTL ? "rtl" : undefined}
+            title={`${textStr} (${props.__("header.searchPlaceholder")})`}
             tabIndex={0}
             onKeyUp={(e) => {
                 if (e.key === "Enter") {
                     e.preventDefault();
                     // props.column.setFilter(t);
-                    props.setShowColumnFilters(true, props.column.id, t);
+                    props.setShowColumnFilters(true, props.column.id, textStr);
                 }
             }}
 
             onClick={(e) => {
                 e.preventDefault();
                 // props.column.setFilter(t);
-                props.setShowColumnFilters(true, props.column.id, t);
+                props.setShowColumnFilters(true, props.column.id, textStr);
             }}
-            className={stylesPublication.cell_link}>{t}</a>;
+            className={stylesPublication.cell_link}>{textStr}</a>;
     };
 
     // props.value.label === props.value.tags.join(", ")
 
-    return props.value.authors?.length ?
+    return props.value.authorsLangString?.length ?
         (
             <div style={{
                 ...commonCellStyles(props),
@@ -797,19 +815,19 @@ const CellAuthors: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell
                 // width: props.displayType === DisplayType.Grid ? "250px" : undefined,
             }}>
                 {
-                    props.value.authors.length === 1 ? (
+                    props.value.authorsLangString.length === 1 ? (
                         <div className={stylesPublication.cell_wrapper}>
                             {
-                                link(props.value.authors[0])
+                                link(props.value.authorsLangString[0])
                             }
                         </div>
                     ) : (
                         <ul className={classNames(stylesPublication.cell_wrapper, stylesPublication.cell_multi_langs)}>
                             {
-                                props.value.authors.map((t, i) => {
+                                props.value.authorsLangString.map((langString, i) => {
                                     return <li
                                         key={`k${i}`}
-                                    >{link(t)}</li>;
+                                    >{link(langString)}</li>;
                                 })
                             }
                         </ul>
@@ -882,7 +900,7 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
 const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_StringValue> = (props) => {
 
     const textNeedToBeSanitized = props.value || "";
-    const textSanitize = DOMPurify.sanitize(textNeedToBeSanitized).replace(/font-size:/g, "font-sizexx:");
+    const cellTextSanitized = DOMPurify.sanitize(textNeedToBeSanitized).replace(/font-size:/g, "font-sizexx:");
     const [isOpen, setIsOpen] = React.useState(false);
 
     return (<div
@@ -901,7 +919,7 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
             // textAlign: props.displayType === DisplayType.Grid ? "justify" : "start",
             textAlign: "start",
         }}>
-        <p dangerouslySetInnerHTML={{ __html: textSanitize }}></p>
+        <p dangerouslySetInnerHTML={{ __html: cellTextSanitized }}></p>
         {props.value ?
             <Popover.Root onOpenChange={() => setIsOpen(!isOpen)}>
                 <Popover.Trigger style={{maxWidth: "15px"}}>
@@ -913,7 +931,8 @@ const CellDescription: React.FC<ITableCellProps_Column & ITableCellProps_Generic
                 </Popover.Trigger>
                 <Popover.Portal>
                     <Popover.Content collisionPadding={{top : 280}} avoidCollisions sideOffset={5} align="end" alignOffset={-10} hideWhenDetached>
-                        <p className={stylesDropDown.dropdown_description} dangerouslySetInnerHTML={{ __html: textSanitize }}></p>
+                        <p className={stylesDropDown.dropdown_description}
+                            dangerouslySetInnerHTML={{ __html: cellTextSanitized }}></p>
                         <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
                     </Popover.Content>
                 </Popover.Portal>
@@ -1159,7 +1178,7 @@ const CellTitle: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
 
     // props.value.label
-    const pubTitleLangStr = convertMultiLangStringToString(props.value.pubTitle, locale);
+    const pubTitleLangStr = convertMultiLangStringToLangString(props.value.pubTitle, locale);
     const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
     const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
     const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
@@ -1330,7 +1349,7 @@ interface IColumns {
     colDuration: string;
     colActions: IColumnValue_Actions;
 
-    col_a11y_accessibilitySummary: string; // string | IStringMap => convertMultiLangStringToString()
+    col_a11y_accessibilitySummary: string; // string | IStringMap => convertMultiLangStringToLangString()
     // col_a11y_accessMode: IColumnValue_A11y_StringArray; // string[]
     // col_a11y_accessModeSufficient: IColumnValue_A11y_StringArrayArray; // (string[])[]
     // col_a11y_accessibilityFeature: IColumnValue_A11y_StringArray; // string[]
@@ -1428,8 +1447,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         return publicationViews.slice().reverse().map((publicationView) => {
 
             // translator.translateContentField(author)
-            // const authors = publicationView.authors ? formatContributorToString(publicationView.authors, translator) : "";
-            // const publishers = publicationView.publishers ? formatContributorToString(publicationView.publishers, translator) : "";
+            // const authors = publicationView.authors ? formatContributorToString(publicationView.authorsLangString, translator) : "";
+            // const publishers = publicationView.publishers ? formatContributorToString(publicationView.publishersLangString, translator) : "";
 
             // publicationView.publishedAt = r2Publication.metadata.PublicationDate && moment(metadata.PublicationDate).toISOString();
             const momPublishedDate_ = publicationView.publishedAt ? moment(publicationView.publishedAt) : undefined;
@@ -1515,7 +1534,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             let strA11Summary = "";
             if (publicationView.a11y_accessibilitySummary) {
 
-                const langStr = convertMultiLangStringToString(publicationView.a11y_accessibilitySummary, locale);
+                const langStr = convertMultiLangStringToLangString(publicationView.a11y_accessibilitySummary, locale);
 
                 if (langStr && langStr[1]) {
                     strA11Summary = DOMPurify.sanitize(langStr[1]).replace(/font-size:/g, "font-sizexx:");
@@ -1536,8 +1555,18 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     pubTitle: publicationView.publicationTitle,
                 },
                 colAuthors: { // IColumnValue_Authors
-                    label: publicationView.authors ? publicationView.authors.join(", ") : "",
-                    authors: publicationView.authors,
+                    label: publicationView.authorsLangString ?
+                        // publicationView.authors.join(", ")
+                        publicationView.authorsLangString.reduce<string>((prev, text) => {
+                            const textLangStr = convertMultiLangStringToLangString(text, locale);
+                            // const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
+                            // const textIsRTL = langStringIsRTL(textLang);
+                            const textStr = textLangStr && textLangStr[1] ? textLangStr[1] : "";
+
+                            return prev ? `${prev}, ${textStr}` : textStr;
+                        }, "")
+                        : "",
+                    authorsLangString: publicationView.authorsLangString,
                 },
                 colReadingState: { // IColumnValue_Authors
                     label: publicationView.readingFinished ? `${__("publication.read")}` : publicationView.lastReadingLocation ? `${__("publication.onGoing")}` : `${__("publication.notStarted")}`,
@@ -1548,8 +1577,18 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     isLcp: isLcp,
                 },
                 colPublishers: { // IColumnValue_Publishers
-                    label: publicationView.publishers ? publicationView.publishers.join(", ") : "",
-                    publishers: publicationView.publishers,
+                    label: publicationView.publishersLangString ?
+                        // publicationView.publishers.join(", ")
+                        publicationView.publishersLangString.reduce<string>((prev, text) => {
+                            const textLangStr = convertMultiLangStringToLangString(text, locale);
+                            // const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
+                            // const textIsRTL = langStringIsRTL(textLang);
+                            const textStr = textLangStr && textLangStr[1] ? textLangStr[1] : "";
+
+                            return prev ? `${prev}, ${textStr}` : textStr;
+                        }, "")
+                        : "",
+                    publishersLangString: publicationView.publishersLangString,
                 },
                 colLanguages: { // IColumnValue_Tags
                     label: langsArray ? langsArray.join(", ") : "",

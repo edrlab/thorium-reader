@@ -59,17 +59,17 @@ function* updateOpdsInfoWithEntryLink(links: IOpdsLinkView[]) {
 
         const [publication] = publications || [];
         if (publication) {
-            publication.authors = publication.authors
-                ? Array.isArray(publication.authors)
-                    ? publication.authors
-                    : [publication.authors]
+            publication.authorsLangString = publication.authorsLangString
+                ? Array.isArray(publication.authorsLangString)
+                    ? publication.authorsLangString
+                    : [publication.authorsLangString]
                 : undefined;
         }
 
         if (
             !action.error
             && publication?.documentTitle
-            && Array.isArray(publication?.authors)
+            && Array.isArray(publication?.authorsLangString)
         ) {
 
             debug("dispatch");

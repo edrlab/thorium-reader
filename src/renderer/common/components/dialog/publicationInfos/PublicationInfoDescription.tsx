@@ -65,8 +65,8 @@ export default class PublicationInfoDescription extends React.Component<IProps, 
         const { publicationViewMaybeOpds: { description }, __ } = this.props;
 
         if (!description) return <></>;
-        const textSanitize = DOMPurify.sanitize(description).replace(/font-size:/g, "font-sizexx:");
-        if (!textSanitize) return <></>;
+        const descriptionSanitized = DOMPurify.sanitize(description).replace(/font-size:/g, "font-sizexx:");
+        if (!descriptionSanitized) return <></>;
         return (
             <>
                 <div className={stylePublication.publicationInfo_heading}>
@@ -84,7 +84,7 @@ export default class PublicationInfoDescription extends React.Component<IProps, 
                         <div
                             ref={this.descriptionRef}
                             className={stylesBookDetailsDialog.allowUserSelect}
-                            dangerouslySetInnerHTML={{ __html: textSanitize }}
+                            dangerouslySetInnerHTML={{ __html: descriptionSanitized }}
                         >
                         </div>
                     </div>

@@ -404,7 +404,7 @@ class ReaderMenuSearch extends React.Component<IProps, IState> {
     //                                         }
     //                                         data-href={link.Href}
     //                                     >
-    //                                         <span dangerouslySetInnerHTML={{ __html: link.Title}}></span>
+    //                                         <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(link.Title)}}></span>
     //                                     </a>
     //                                 </div>
     //                             )}

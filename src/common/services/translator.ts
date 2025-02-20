@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import deCatalog from "readium-desktop/resources/locales/de.json";
 import enCatalog from "readium-desktop/resources/locales/en.json";
 import esCatalog from "readium-desktop/resources/locales/es.json";
@@ -194,10 +195,6 @@ export const availableLanguages = {
     "sl": "Slovenščina (Slovene)",
 };
 
-interface LocalizedContent {
-    [locale: string]: string;
-}
-
 export type I18nFunction = (_: TTranslatorKeyParameter, __?: {}) => string;
 
 export const setLocale = async (newLocale: keyof typeof availableLanguages) => {
@@ -219,7 +216,8 @@ export const translate = (message: string, options: TOptions = {}): string => {
     return label;
 };
 
-export const translateContentFieldHelper = (field: string | LocalizedContent, locale: keyof typeof availableLanguages): string => {
+// TODO: convertMultiLangStringToLangString() or convertMultiLangStringToString() ??
+export const translateContentFieldHelper = (field: string | IStringMap, locale: keyof typeof availableLanguages): string => {
     if (!field) {
         return "";
     }

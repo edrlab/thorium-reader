@@ -28,7 +28,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import CatalogMenu from "./menu/CatalogMenu";
 import OpdsMenu from "./menu/OpdsMenu";
 
-import { convertMultiLangStringToString, langStringIsRTL } from "readium-desktop/renderer/common/language-string";
+import { convertMultiLangStringToLangString, langStringIsRTL } from "readium-desktop/common/language-string";
 import { PublicationInfoOpdsWithRadix, PublicationInfoOpdsWithRadixContent, PublicationInfoOpdsWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
 import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-icon.svg";
 // import * as CalendarExpiredIcon from "readium-desktop/renderer/assets/icons/calendarExpired-icon.svg";
@@ -65,9 +65,9 @@ class PublicationCard extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         const { __, locale, publicationViewMaybeOpds, isOpds } = this.props;
 
-        const authors = formatContributorToString(publicationViewMaybeOpds.authors, locale);
+        const authors = formatContributorToString(publicationViewMaybeOpds.authorsLangString, locale);
 
-        const pubTitleLangStr = convertMultiLangStringToString((publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle, locale);
+        const pubTitleLangStr = convertMultiLangStringToLangString((publicationViewMaybeOpds as PublicationView).publicationTitle || publicationViewMaybeOpds.documentTitle, locale);
         const pubTitleLang = pubTitleLangStr && pubTitleLangStr[0] ? pubTitleLangStr[0].toLowerCase() : "";
         const pubTitleIsRTL = langStringIsRTL(pubTitleLang);
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";

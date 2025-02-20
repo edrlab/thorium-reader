@@ -45,16 +45,14 @@ export interface PublicationView extends Identifiable {
 
     a11y_accessModeSufficient?: (string[])[];
 
-    a11y_accessibilitySummary?: string | IStringMap; // convertMultiLangStringToString
+    a11y_accessibilitySummary?: string | IStringMap; // convertMultiLangStringToLangString()
 
     documentTitle: string;
-    publicationTitle: string | IStringMap; // convertMultiLangStringToString
-    publicationSubTitle: string | IStringMap; // convertMultiLangStringToString
+    publicationTitle: string | IStringMap; // convertMultiLangStringToLangString()
+    publicationSubTitle: string | IStringMap; // convertMultiLangStringToLangString()
 
-    // TODO: preserve (string | IStringMap) for publishers and authors (contributors),
-    // and apply convertMultiLangStringToString() only downstream / at rendering time.
-    authors: string[];
-    publishers?: string[];
+    authorsLangString: (string | IStringMap)[]; // convertMultiLangStringToLangString()
+    publishersLangString?: (string | IStringMap)[]; // convertMultiLangStringToLangString()
 
     workIdentifier?: string;
     description?: string;
