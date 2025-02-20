@@ -23,6 +23,8 @@ import { uniqueCssSelector } from "@r2-navigator-js/electron/renderer/common/css
 import { IRangeInfo, ISelectionInfo } from "@r2-navigator-js/electron/common/selection";
 
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
+import { availableLanguages } from "readium-desktop/common/services/translator";
 
 // Logger
 const debug = debug_("readium-desktop:common:readium:annotation:converter");
@@ -330,7 +332,7 @@ export async function convertAnnotationStateToReadiumAnnotation(annotation: IAnn
     };
 }
 
-export async function convertAnnotationStateArrayToReadiumAnnotationSet(annotationArray: IAnnotationStateWithICacheDocument[], publicationView: PublicationView, label?: string): Promise<IReadiumAnnotationSet> {
+export async function convertAnnotationStateArrayToReadiumAnnotationSet(locale: keyof typeof availableLanguages, annotationArray: IAnnotationStateWithICacheDocument[], publicationView: PublicationView, label?: string): Promise<IReadiumAnnotationSet> {
 
     const currentDate = new Date();
     const dateString: string = currentDate.toISOString();
@@ -352,8 +354,14 @@ export async function convertAnnotationStateArrayToReadiumAnnotationSet(annotati
             "dc:identifier": ["urn:thorium:" + publicationView.identifier, publicationView.workIdentifier ? publicationView.workIdentifier : ""], // TODO workIdentifier urn ?
             "dc:format": "application/epub+zip",
             "dc:title": publicationView.documentTitle || "",
-            "dc:publisher": publicationView.publishers || [],
-            "dc:creator": publicationView.authors || [],
+            "dc:publisher": publicationView.publishersLangString ?
+                publicationView.publishersLangString.map((item) => {
+                    return convertMultiLangStringToString(item, locale);
+                }) : [],
+            "dc:creator": publicationView.authorsLangString ?
+                publicationView.authorsLangString.map((item) => {
+                    return convertMultiLangStringToString(item, locale);
+                }) : [],
             "dc:date": publicationView.publishedAt || "",
         },
         items: await Promise.all((annotationArray || []).map(async (v) => await convertAnnotationStateToReadiumAnnotation(v, isLcp))),

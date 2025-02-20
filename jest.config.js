@@ -12,7 +12,7 @@ const { compilerOptions } = require("./tsconfig");
 const pathMaps = pathsToModuleNameMapper(compilerOptions.paths, { prefix: "<rootDir>/" } );
 // console.log(pathMaps);
 const moduleNameMapper = {
-    "readium-desktop/main/di": "<rootDir>/test/main/di.ts", // se src/common/utils.ts convertMultiLangStringToString()
+    "readium-desktop/main/di": "<rootDir>/test/main/di.ts", // see src/common/utils.ts convertMultiLangStringToString()
     ...pathMaps,
     // ...{
     //     "^@r2\\-streamer\\-js/(.*)$": "<rootDir>/scripts/jest_void.ts",
