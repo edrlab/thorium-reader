@@ -35,6 +35,8 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import Loader from "readium-desktop/renderer/common/components/Loader";
 import { useLocation } from "react-router";
+import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
+import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps {
@@ -194,6 +196,8 @@ export const PublicationInfoOpdsWithRadixContent = React.forwardRef<HTMLDivEleme
 PublicationInfoOpdsWithRadixContent.displayName = "PublicationInfoOpdsWithRadixContent";
 
 const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPublication | undefined, closeDialog: () => void, isOpds?: boolean}) => {
+
+    const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const dispatch = useDispatch();
     const link = dispatchOpdsLink(dispatch);
     const location = useLocation();
@@ -225,8 +229,7 @@ const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPubl
             TagManagerComponent={TagManager}
             // coverZoom={coverZoom}
             onClikLinkCb={
-                (_link) => () => link(
-                        _link.link[0], location, _link.name)
+                (_link) => () => link(_link.link[0], location, convertMultiLangStringToString(_link.nameLangString, locale))
             }
             focusWhereAmI={false}
             pdfPlayerNumberOfPages={undefined}

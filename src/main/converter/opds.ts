@@ -190,9 +190,7 @@ export class OpdsFeedViewConverter {
     public convertOpdsContributorToView(contributor: Contributor, baseUrl: string): IOpdsContributorView | undefined {
 
         return (contributor.Name) ? {
-            name: typeof contributor.Name === "object"
-                ? convertMultiLangStringToString(contributor.Name, this.store.getState().i18n.locale)
-                : contributor.Name,
+            nameLangString: contributor.Name,
             link: this.convertFilterLinksToView(baseUrl, contributor.Links || [], {
                 type: [
                     ContentType.AtomXml,

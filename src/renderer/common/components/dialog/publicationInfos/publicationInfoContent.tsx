@@ -16,7 +16,7 @@ import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { I18nFunction } from "readium-desktop/common/services/translator";
 import { TPublication } from "readium-desktop/common/type/publication.type";
 import { formatTime } from "readium-desktop/common/utils/time";
-import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
+import { IOpdsContributorView } from "readium-desktop/common/views/opds";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 
@@ -59,7 +59,7 @@ export interface IProps {
     divinaNumberOfPages: number | undefined; // super hacky :(
     divinaContinousEqualTrue: boolean;
     readerReadingLocation: MiniLocatorExtended;
-    onClikLinkCb?: (tag: IOpdsBaseLinkView) => () => void | undefined;
+    onClikLinkCb?: (tag: IOpdsContributorView) => () => void | undefined;
     closeDialogCb: () => void;
 }
 

@@ -25,8 +25,8 @@ export const formatContributorToString = (
 
             if (typeof newContributor === "string") {
                 retString += translateContentFieldHelper(newContributor, locale);
-            } else if (newContributor.name) {
-                retString += translateContentFieldHelper(newContributor.name, locale);
+            } else if (newContributor.nameLangString) {
+                retString += translateContentFieldHelper(newContributor.nameLangString, locale);
             } else {
                 retString += translateContentFieldHelper(newContributor as IStringMap, locale);
                 // const textLangStr = convertMultiLangStringToLangString(stringMap, locale);

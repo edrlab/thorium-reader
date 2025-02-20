@@ -39,7 +39,7 @@ export const FormatContributorWithLink: React.FC<IProps> = (props) => {
 
             if (
                 typeof newContributor === "object"
-                && newContributor.name
+                && newContributor.nameLangString
                 && newContributor.link?.length
                 && onClickLinkCb
             ) {
@@ -57,14 +57,14 @@ export const FormatContributorWithLink: React.FC<IProps> = (props) => {
                         className={classNames(stylesButtons.button_link, className ? stylesPublications.authors : "")}
                         tabIndex={0}
                     >
-                        {translateContentFieldHelper(newContributor.name, locale)}
+                        {translateContentFieldHelper(newContributor.nameLangString, locale)}
                     </a>,
                 );
-            } else if (typeof newContributor === "object" && newContributor.name) {
+            } else if (typeof newContributor === "object" && newContributor.nameLangString) {
                 retElement.push(
                     <span
                         className={classNames(stylesBookDetailsDialog.allowUserSelect, className  ? stylesPublications.authors : "")}>
-                        {translateContentFieldHelper(newContributor.name, locale)}
+                        {translateContentFieldHelper(newContributor.nameLangString, locale)}
                     </span>,
                 );
             } else {

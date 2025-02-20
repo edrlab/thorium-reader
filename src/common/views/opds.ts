@@ -136,16 +136,17 @@ export interface IOPDSPropertiesView {
 }
 
 export interface IOpdsBaseLinkView {
-    name: string;
     link: IOpdsLinkView[];
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IOpdsTagView extends IOpdsBaseLinkView {
+    name: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IOpdsContributorView extends IOpdsBaseLinkView {
+    nameLangString: string | IStringMap;
 }
 
 export interface IOpdsLinkView {
