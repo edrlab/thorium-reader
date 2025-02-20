@@ -413,7 +413,7 @@
         "navigation": {
             "ZenModeExit": "Zenモードを終了",
             "ZenModeTitle": "Zenモード",
-            "annotationTitle": "注釈",
+            "annotationTitle": "メモ",
             "backHomeTitle": "本棚にもどる",
             "bookmarkTitle": "しおりを挟む",
             "currentPage": "現在のページ：{{- current}}",
