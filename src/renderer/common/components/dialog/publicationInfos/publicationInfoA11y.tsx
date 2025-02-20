@@ -15,7 +15,7 @@ import * as debug_ from "debug";
 import DOMPurify from "dompurify";
 import * as React from "react";
 import { TPublication } from "readium-desktop/common/type/publication.type";
-import { convertMultiLangStringToString } from "readium-desktop/renderer/common/language-string";
+import { convertMultiLangStringToLangString, langStringIsRTL } from "readium-desktop/common/language-string";
 import isURL from "validator/lib/isURL";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { connect } from "react-redux";
@@ -109,13 +109,13 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
 
             if (!a11y_accessibilitySummary) return undefined;
 
-            let textSanitize_a11y = "";
-            const [, text] = convertMultiLangStringToString(a11y_accessibilitySummary, this.props.locale);
-            if (text) {
-                textSanitize_a11y = DOMPurify.sanitize(text).replace(/font-size:/g, "font-sizexx:");
-            }
+            const accessibilitySummaryLangStr = convertMultiLangStringToLangString(a11y_accessibilitySummary, this.props.locale);
+            const accessibilitySummaryLang = accessibilitySummaryLangStr && accessibilitySummaryLangStr[0] ? accessibilitySummaryLangStr[0].toLowerCase() : "";
+            const accessibilitySummaryIsRTL = langStringIsRTL(accessibilitySummaryLang);
+            const accessibilitySummaryStr = accessibilitySummaryLangStr && accessibilitySummaryLangStr[1] ? accessibilitySummaryLangStr[1] : "";
+            const accessibilitySummaryStrSanitized = accessibilitySummaryStr ? DOMPurify.sanitize(accessibilitySummaryStr).replace(/font-size:/g, "font-sizexx:") : "";
 
-            return textSanitize_a11y ?
+            return accessibilitySummaryStr ?
                 <div className={classNames(stylesBlocks.description_see_more)}>
                     <div
                         ref={this.descriptionWrapperRef_a11y}
@@ -127,7 +127,8 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
                         <div
                             ref={this.descriptionRef_a11y}
                             className={stylesBookDetailsDialog.allowUserSelect}
-                            dangerouslySetInnerHTML={{ __html: textSanitize_a11y }}
+                            dir={accessibilitySummaryIsRTL ? "rtl" : undefined}
+                            dangerouslySetInnerHTML={{ __html: accessibilitySummaryStrSanitized }}
                         >
                         </div>
                     </div>

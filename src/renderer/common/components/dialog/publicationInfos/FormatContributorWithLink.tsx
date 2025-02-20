@@ -15,9 +15,11 @@ import { translateContentFieldHelper } from "readium-desktop/common/services/tra
 import { IOpdsContributorView } from "readium-desktop/common/views/opds";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
+import { convertMultiLangStringToLangString, langStringIsRTL } from "readium-desktop/common/language-string";
 
 interface IProps {
-    contributors: string[] | IOpdsContributorView[] | undefined;
+    contributors: (string | IStringMap)[] | IOpdsContributorView[] | undefined;
     onClickLinkCb?: (newContributor: IOpdsContributorView) => () => void;
     className?: string;
 }
@@ -37,35 +39,47 @@ export const FormatContributorWithLink: React.FC<IProps> = (props) => {
 
             if (
                 typeof newContributor === "object"
+                && newContributor.nameLangString
                 && newContributor.link?.length
                 && onClickLinkCb
             ) {
 
                 // FIXME : add pointer hover on 'a' links
                 retElement.push(
-                    <a onClick={onClickLinkCb(newContributor)}
+                    <a
+                        onClick={onClickLinkCb(newContributor as IOpdsContributorView)}
                         onKeyUp={(e) => { // necessary because no href (with href, preventDefault() inside onClick would be necessary to avoid SHIT and OPT/ALT key mods on the hyperlink, and CSS visited styles would need to be added)
                             if (e.key === "Enter") {
-                               onClickLinkCb(newContributor)();
+                               onClickLinkCb(newContributor as IOpdsContributorView)();
                                e.preventDefault();
                             }
                         }}
                         className={classNames(stylesButtons.button_link, className ? stylesPublications.authors : "")}
                         tabIndex={0}
                     >
-                        {translateContentFieldHelper(newContributor.name, locale)}
+                        {translateContentFieldHelper(newContributor.nameLangString, locale)}
                     </a>,
                 );
-            } else if (typeof newContributor === "object") {
+            } else if (typeof newContributor === "object" && newContributor.nameLangString) {
                 retElement.push(
-                    <span className={classNames(stylesBookDetailsDialog.allowUserSelect, className  ? stylesPublications.authors : "")}>
-                        {translateContentFieldHelper(newContributor.name, locale)}
+                    <span
+                        className={classNames(stylesBookDetailsDialog.allowUserSelect, className  ? stylesPublications.authors : "")}>
+                        {translateContentFieldHelper(newContributor.nameLangString, locale)}
                     </span>,
                 );
             } else {
+                const strMap = newContributor as string | IStringMap;
+
+                const textLangStr = convertMultiLangStringToLangString(strMap, locale);
+                const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
+                const textIsRTL = langStringIsRTL(textLang);
+                const textStr = textLangStr && textLangStr[1] ? textLangStr[1] : "";
+
                 retElement.push(
-                    <span className={classNames(stylesBookDetailsDialog.allowUserSelect, className  ? stylesPublications.authors : "")}>
-                        {translateContentFieldHelper(newContributor, locale)}
+                    <span
+                        dir={textIsRTL ? "rtl" : undefined}
+                        className={classNames(stylesBookDetailsDialog.allowUserSelect, className  ? stylesPublications.authors : "")}>
+                        {translateContentFieldHelper(textStr, locale)}
                     </span>,
                 );
             }
