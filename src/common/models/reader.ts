@@ -95,6 +95,8 @@ export interface IReaderSettingsMenuState {
 }
 
 export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans, IAnnotationReaderConfigState, IReaderSettingsMenuState, ReaderTTSMediaOverlay {
+    ttsHighlightStyle: number;
+    ttsHighlightStyle_WORD: number;
 }
 
 // export interface BookmarkCollection {

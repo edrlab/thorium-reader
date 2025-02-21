@@ -59,6 +59,7 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import { comparePublisherReaderConfig } from "../../../common/publisherConfig";
 import debounce from "debounce";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import { HighlightDrawTypeBackground, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps {
@@ -643,10 +644,18 @@ export const ReadingAudio = ({ useMO }: { useMO: boolean }) => {
 
     // : Pick<ReaderConfig, "ttsEnableOverlayMode" | "mediaOverlaysEnableCaptionsMode" | "ttsAndMediaOverlaysDisableContinuousPlay" | "mediaOverlaysEnableSkippability" | "ttsEnableSentenceDetection">
     const config = useReaderConfigAll();
-    const { mediaOverlaysEnableCaptionsMode: moCaptions, ttsEnableOverlayMode: ttsCaptions, ttsAndMediaOverlaysDisableContinuousPlay: disableContinuousPlay, mediaOverlaysEnableSkippability: skippability, ttsEnableSentenceDetection: splitTTStext } = config;
+    const { mediaOverlaysEnableCaptionsMode: moCaptions, ttsHighlightStyle, ttsHighlightStyle_WORD, ttsEnableOverlayMode: ttsCaptions, ttsAndMediaOverlaysDisableContinuousPlay: disableContinuousPlay, mediaOverlaysEnableSkippability: skippability, ttsEnableSentenceDetection: splitTTStext } = config;
     const set = useSaveReaderConfigDebounced();
 
-    const options = [
+    const options: ({
+        id: string,
+        name: string,
+        label: string,
+        description: string,
+        checked: boolean | null,
+        value?: string,
+        onChange: React.ChangeEventHandler<HTMLInputElement>,
+    })[] = [
         {
             id: "captions",
             name: "Captions",
@@ -695,11 +704,65 @@ export const ReadingAudio = ({ useMO }: { useMO: boolean }) => {
                 set({ ttsEnableSentenceDetection: !splitTTStext });
             },
         });
+        options.push({
+            id: "ttsHighlightStyle",
+            name: "ttsHighlightStyle",
+            // `${__("reader.tts.highlightStyle")}`,
+            label: "TTS highlight style",
+            // `${__("reader.tts.highlightStyleDescription")}`,
+            description: "Solid Background = 0, Underline = 1, Strikethrough = 2, Outline = 3, Opacity Mask = 4, Opacity Mask / Ruler = 5",
+            checked: null,
+            value: `${typeof ttsHighlightStyle === "undefined" ? HighlightDrawTypeBackground : ttsHighlightStyle}`,
+            onChange: (ev) => {
+                const v = parseInt(ev.target.value, 10);
+                if (!Number.isNaN(v) && v >= 0 && v <= 5) {
+                    set({ ttsHighlightStyle: v });
+                }
+            },
+        });
+        options.push({
+            id: "ttsHighlightStyle_WORD",
+            name: "ttsHighlightStyle_WORD",
+            // `${__("reader.tts.highlightStyleWord")}`,
+            label: "TTS highlight style (word)",
+            // `${__("reader.tts.highlightStyleDescriptionWord")}`,
+            // description: "Solid Background = 0, Underline = 1, Strikethrough = 2, Outline = 3, Opacity Mask = 4, Opacity Mask / Ruler = 5",
+            description: "",
+            checked: null,
+            value: `${typeof ttsHighlightStyle_WORD === "undefined" ? HighlightDrawTypeUnderline : ttsHighlightStyle_WORD}`,
+            onChange: (ev) => {
+                const v = parseInt(ev.target.value, 10);
+                if (!Number.isNaN(v) && v >= 0 && v <= 5) {
+                    set({ ttsHighlightStyle_WORD: v });
+                }
+            },
+        });
     }
 
     return (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px,1fr)" }}>
-            {options.map((option) => (
+            {options.map((option) =>
+            option.checked === null ?
+            (
+                <div style={{ padding: "10px 0" }} key={option.id}>
+                    <hr/>
+                    <label htmlFor={option.id}>
+                        {option.label}
+                    </label>
+                    <br/>
+                    <input
+                        id={option.id}
+                        type="text"
+                        name={option.name}
+                        value={option.value}
+                        onChange={option.onChange}
+                    />
+                    <br/>
+                    <p>
+                        {option.description}
+                    </p>
+                </div>
+            ) : (
                 <div style={{ padding: "10px 0" }} key={option.id}>
                     <input
                         id={option.id}
@@ -726,6 +789,7 @@ export const ReadingAudio = ({ useMO }: { useMO: boolean }) => {
                                 // if (e.code === "Space") {
                                 if (e.key === " ") {
                                     e.preventDefault();
+                                    // @ts-expect-error unused function argument (boolean toggle from state)
                                     option.onChange();
                                 }
                             }}
@@ -743,7 +807,6 @@ export const ReadingAudio = ({ useMO }: { useMO: boolean }) => {
                     </label>
                     {/* <p className={stylesSettings.session_text}>{option.description}</p> */}
                 </div>
-
             ))}
         </div>
     );
