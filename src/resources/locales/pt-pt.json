@@ -311,11 +311,11 @@
             "title": "Progressão"
         },
         "read": "Concluído",
-        "remainingTime": "Empréstimo (restante)",
+        "remainingTime": "Empréstimo (tempo restante)",
         "renewButton": "Renovar",
         "returnButton": "Devolver",
         "returnedLcp": "Este documento, protegido por PCL, foi devolvido.",
-        "revokedLcp": "A licença deste documento protegido por PCL foi revogada.",
+        "revokedLcp": "A licença deste documento, protegido por PCL, foi revogada.",
         "seeLess": "Ver menos",
         "seeMore": "Ver mais",
         "timeLeft": "Tempo restante",
@@ -331,7 +331,7 @@
                 "description": "Dar um nome às anotações exportadas:",
                 "title": "Título"
             },
-            "annotationsOptions": "Opções",
+            "annotationsOptions": "Opções de anotações",
             "colors": {
                 "bluegreen": "Azul-esverdeado",
                 "cyan": "Ciano",
@@ -420,7 +420,7 @@
             "currentPageTotal": "Página atual: {{- current}}/{{- total}}",
             "detachWindowTitle": "Mostrar biblioteca / janela da estante",
             "goTo": "Ir para",
-            "goToError": "Esta quebra de página não existe",
+            "goToError": "A quebra de página não existe",
             "goToPlaceHolder": "Digitar n.º de página",
             "goToTitle": "Ir para a página",
             "historyNext": "Saltar para a frente",
@@ -460,7 +460,7 @@
             },
             "font": "Tipo de letra",
             "fontSize": "Tamanho da letra",
-            "infoCustomFont": "Selecionar fonte personalizada a partir do sistema operacional digitando o seu nome",
+            "infoCustomFont": "Selecionar fonte personalizada, a partir do sistema operacional, digitando o seu nome",
             "justification": "Alinhamento",
             "justify": "Justificar",
             "letterSpacing": "Espaçamento de letras",
@@ -491,7 +491,7 @@
                 "detail": "Guardar/Aplicar/Repor os seus parâmetros de leitura preferidos.",
                 "reset": "Repor",
                 "resetDetails": "Repor os seus parâmetros de leitura preferidos (valores predefinidos).",
-                "save": "Guardar os seus parâmetros de leitura preferidos.",
+                "save": "Guardar",
                 "saveDetails": "Esta ação guarda a configuração atual, ou seja, as suas opções preferidas de visualização e formatação de texto. As definições podem ser aplicadas a outras publicações clicando no botão \"Aplicar\" noutras janelas do leitor.",
                 "title": "Preferências"
             },
@@ -520,7 +520,7 @@
             "right": "Direita"
         },
         "toc": {
-            "publicationNoToc": "Documento sem índice"
+            "publicationNoToc": "Sem índice"
         },
         "tts": {
             "activate": "Ativar Texto para voz (TPV)",
@@ -542,7 +542,7 @@
             "creator": "Criador das anotações (opcional)",
             "help": "Se especificado, este nome será incluído nos metadados das anotações exportadas.",
             "name": "Nome",
-            "organization": "Organização",
+            "organization": "Entidade",
             "person": "Pessoa",
             "type": "Tipo:"
         },
@@ -604,7 +604,7 @@
             "catalogs": "Catálogos",
             "home": "Entrada",
             "readingView": "Vista de leitura",
-            "yourBooks": "Seus documentos"
+            "yourBooks": "Documentos"
         },
         "title": {
             "allBooks": "Todos os meus documentos",
