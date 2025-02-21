@@ -253,6 +253,8 @@ interface IState {
 
 class Reader extends React.Component<IProps, IState> {
 
+    private _ttsStateTimeout: NodeJS.Timeout | undefined;
+
     private fastLinkRef: React.RefObject<HTMLAnchorElement>;
     private refToolbar: React.RefObject<HTMLAnchorElement>;
     private mainElRef: React.RefObject<HTMLDivElement>;
@@ -274,6 +276,8 @@ class Reader extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+
+        this._ttsStateTimeout = undefined;
 
         this.ttsOverlayEnableNeedsSync = true;
 
@@ -684,11 +688,23 @@ class Reader extends React.Component<IProps, IState> {
         if (oldProps.readerConfig.readerDockingMode === "full" && this.props.readerConfig.readerDockingMode !== "full") {
             this.setState({shortcutEnable: true});
         }
-        if (this.props.ttsState !== oldProps.ttsState) {
+        if (oldProps.ttsState !== this.props.ttsState) {
+            if (this._ttsStateTimeout) {
+                clearTimeout(this._ttsStateTimeout);
+                this._ttsStateTimeout = undefined;
+            }
             if (this.props.ttsState === TTSStateEnum.STOPPED) {
-                ttsClickEnable(false);
-            } else  if (this.props.ttsState === TTSStateEnum.PLAYING || this.props.ttsState === TTSStateEnum.PAUSED) {
+                this._ttsStateTimeout = setTimeout(() => {
+                    this._ttsStateTimeout = undefined;
+                    if (this.props.ttsState === TTSStateEnum.STOPPED) {
+                        ttsClickEnable(false);
+                        this.restoreAnnotationStateAfterTTSStop();
+                    }
+                }, 1000); // end of document ==> potentially "resume" (from stopped) at next document's start
+
+            } else  if (oldProps.ttsState === TTSStateEnum.STOPPED && (this.props.ttsState === TTSStateEnum.PLAYING || this.props.ttsState === TTSStateEnum.PAUSED)) {
                 ttsClickEnable(true);
+                this.hideAnnotationsForTTSPlay();
             }
         }
     }
@@ -2938,9 +2954,16 @@ class Reader extends React.Component<IProps, IState> {
             // openedSectionSettings,
         });
     }
-
+    private hideAnnotationsForTTSPlay() {
+        if (this.props.readerConfig.annotation_defaultDrawView !== "hide") { // "margin" or "annotation"
+            this.setState({ previousReaderConfigAnnotationDefaultDrawView: this.props.readerConfig.annotation_defaultDrawView });
+            const href1 = this.state.currentLocation?.locator?.href;
+            const href2 = this.state.currentLocation?.secondWebViewHref;
+            this.props.dispatchMarginAnnotations("hide", href1, href2); // see marginAnnotationsOnChange() in ReaderMenu.tsx
+        }
+    }
     private handleTTSPlay() {
-        // ttsClickEnable(true);
+        ttsClickEnable(true);
         let delay = 0;
         if (!this.props.readerConfig?.noFootnotes) {
             delay = 100;
@@ -2949,10 +2972,7 @@ class Reader extends React.Component<IProps, IState> {
             // TODO: skippability should be disabled when user explicitly "requests" a skippable item, such as when clicking on a note reference hyperlink, or even on a skippable element itself(?)
         } else if (this.props.readerConfig.annotation_defaultDrawView !== "hide") { // "margin" or "annotation"
             delay = 200;
-            this.setState({ previousReaderConfigAnnotationDefaultDrawView: this.props.readerConfig.annotation_defaultDrawView });
-            const href1 = this.state.currentLocation?.locator?.href;
-            const href2 = this.state.currentLocation?.secondWebViewHref;
-            this.props.dispatchMarginAnnotations("hide", href1, href2); // see marginAnnotationsOnChange() in ReaderMenu.tsx
+            this.hideAnnotationsForTTSPlay();
         }
 
         setTimeout(() => {
@@ -2962,9 +2982,7 @@ class Reader extends React.Component<IProps, IState> {
     private handleTTSPause() {
         ttsPause();
     }
-    private handleTTSStop() {
-        // ttsClickEnable(false);
-        ttsStop();
+    private restoreAnnotationStateAfterTTSStop() {
         if (this.state.previousReaderConfigAnnotationDefaultDrawView) {
             if (this.props.readerConfig.annotation_defaultDrawView !== this.state.previousReaderConfigAnnotationDefaultDrawView) {
                 const href1 = this.state.currentLocation?.locator?.href;
@@ -2974,6 +2992,11 @@ class Reader extends React.Component<IProps, IState> {
             // this.setState({ previousReaderConfigAnnotationDefaultDrawView: this.props.readerConfig.annotation_defaultDrawView });
             this.setState({ previousReaderConfigAnnotationDefaultDrawView: undefined });
         }
+    }
+    private handleTTSStop() {
+        ttsClickEnable(false);
+        ttsStop();
+        this.restoreAnnotationStateAfterTTSStop();
     }
     private handleTTSResume() {
         ttsResume();
