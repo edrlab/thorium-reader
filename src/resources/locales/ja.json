@@ -72,9 +72,9 @@
             "lastAdditions": "最近追加したもの"
         },
         "export": "別の場所に保存",
-        "exportAnnotation": "注釈を出力",
+        "exportAnnotation": "メモを出力",
         "format": "形式",
-        "importAnnotation": "注釈を取りこむ",
+        "importAnnotation": "メモを取りこむ",
         "lang": "言語",
         "lastRead": "最終閲覧",
         "moreInfo": "詳細情報",
@@ -123,18 +123,18 @@
         "annotations": {
             "descAuthor": "{{- author}}によるもの",
             "descCreator": "作成：",
-            "descList": "{{- nb}} 件の注釈（{{- creator}}）が次の書籍に取り込まれます： 『{{- title}}』（{{- author}}）",
-            "descNewer": "競合：{{- nb}} 件のより新しい注釈",
-            "descOlder": "競合：{{- nb}} 件のより古い注釈",
-            "descTitle": "注釈タイトル",
-            "importAll": "注釈すべてを取りこむ",
-            "importWithoutConflict": "競合していない注釈のみを取りこむ",
-            "origin": "もともとの本：'{{- title}}' {{- author}}",
-            "title": "注釈を取りこみますか？"
+            "descList": "{{- nb}} 件のメモ（{{- creator}}）が次の書籍に取り込まれます： 『{{- title}}』（{{- author}}）",
+            "descNewer": "競合：{{- nb}} 件のより新しいメモ",
+            "descOlder": "競合：{{- nb}} 件のより古いメモ",
+            "descTitle": "メモのタイトル ",
+            "importAll": "全てのメモを取りこむ",
+            "importWithoutConflict": "競合していないメモのみを取りこむ",
+            "origin": "原本：'{{- title}}' {{- author}}",
+            "title": "メモを取りこみますか？"
         },
         "cancel": "キャンセル",
-        "deleteAnnotations": "注釈を削除しますか？",
-        "deleteAnnotationsText": "{{-annotationListLength}} 件の注釈を削除しますか？",
+        "deleteAnnotations": "メモを削除しますか？",
+        "deleteAnnotationsText": "{{-annotationListLength}} 件のメモを削除しますか？",
         "deleteFeed": "この図書目録を削除しますか？",
         "deletePublication": "この本を削除しますか？",
         "import": "追加します：",
@@ -181,11 +181,11 @@
     },
     "message": {
         "annotations": {
-            "alreadyImported": "すべての注釈はすでに取り込まれています。\n",
-            "emptyFile": "ファイル内に注釈はありません。",
+            "alreadyImported": "全てのメモがすでに取り込まれています。",
+            "emptyFile": "ファイル内にメモはありません。",
             "errorParsing": "ファイル解析中にエラーが発生しました：",
-            "noBelongTo": "注釈を取りこめません。少なくとも1つの注釈がこの本に関するものではありません。",
-            "nothing": "取りこめる状態の注釈がないため、取りこみを中止します",
+            "noBelongTo": "メモを取りこめません。少なくとも1つのメモがこの本に関するものではありません。",
+            "nothing": "取りこめる状態のメモがないため、取りこみを中止します",
             "success": "取り込みが正常に完了しました。"
         },
         "download": {
@@ -325,13 +325,13 @@
     "reader": {
         "annotations": {
             "Color": "色",
-            "addNote": "注釈をつける",
+            "addNote": "メモをつける",
             "advancedMode": "インスタントモード（本文を選択するだけで自動作成）",
             "annotationsExport": {
-                "description": "出力する注釈の名前を指定：",
+                "description": "出力するメモの名前を指定：",
                 "title": "名前"
             },
-            "annotationsOptions": "注釈オプション",
+            "annotationsOptions": "メモのオプション",
             "colors": {
                 "bluegreen": "青緑",
                 "cyan": "青",
@@ -343,7 +343,7 @@
                 "yellow": "黄"
             },
             "date": "変更日",
-            "export": "注釈を保存する",
+            "export": "メモを保存する",
             "filter": {
                 "all": "すべて",
                 "filterByColor": "色で絞りこむ",
@@ -353,11 +353,11 @@
                 "filterOptions": "オプションで絞りこむ\n",
                 "none": "なし"
             },
-            "hide": "注釈を表示しない",
+            "hide": "メモを表示しない",
             "highlight": "ハイライト",
             "noSelectionToast": "選択されていません",
-            "note": "{{- color}}の注釈",
-            "quickAnnotations": "クイック作成（注釈編集画面をスキップ）",
+            "note": "{{- color}}のメモ",
+            "quickAnnotations": "クイック作成（メモ編集画面をスキップ）",
             "saveNote": "保存",
             "sorting": {
                 "lastcreated": "最終作成日",
@@ -365,7 +365,7 @@
                 "progression": "進行度",
                 "sortingOptions": "並べ替えオプション"
             },
-            "toggleMarginMarks": "ページ余白に注釈マークを表示",
+            "toggleMarginMarks": "ページ余白にメモマークを表示",
             "type": {
                 "outline": "枠線",
                 "solid": "背景",
@@ -382,7 +382,7 @@
         },
         "goToContent": "コンテンツへ移動",
         "marks": {
-            "annotations": "注釈",
+            "annotations": "メモ",
             "bookmarks": "しおり",
             "delete": "削除",
             "edit": "編集",
@@ -539,10 +539,10 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "注釈の作成者［任意設定］",
-            "help": "指定すると、出力した注釈のメタデータにこの名前が含まれます。",
+            "creator": "メモの作成者［任意設定］",
+            "help": "指定すると、出力したメモのメタデータにこの名前が含まれます。",
             "name": "名前",
-            "organization": "組織",
+            "organization": "団体",
             "person": "個人",
             "type": "タイプ："
         },
@@ -591,7 +591,7 @@
             "next": "次へ"
         },
         "description": {
-            "annotations": "文書の本文を、スタイルと色を選択してハイライトできます。その際、個人的なメモも添付できます。オプションの「クイック」作成を有効にすると、注釈編集画面を飛ばすことができます（あとでメモを入力したり、スタイルをカスタマイズしたりできます)。さらなる高速化を求めたい方は、本文を選択するだけで、すぐにハイライトできる「インスタント」モードをあわせて使ってください！",
+            "annotations": "文書の本文を、スタイルと色を選択してハイライトできます。その際、個人的なメモも添付できます。オプションの「クイック」作成を有効にすると、メモ編集画面を飛ばすことができます（あとでメモを入力したり、スタイルをカスタマイズしたりできます)。さらなる高速化を求めたい方は、本文を選択するだけで、すぐにハイライトできる「インスタント」モードをあわせて使ってください！",
             "catalogs": "地元の図書館から本を借りたり、OPDSフィード経由で本を見つけたりできます。オンラインの図書目録により、複数のところにある、さまざまな本にアクセスできます。",
             "home": "Thoriumの見た目が違います！ 何が新しいのか見てみましょう...",
             "readingView1": "読書と聴き方の設定をカスタマイズ： Thoriumでは、ソフトウェアの外観（ユーザーインターフェイス）と電子書籍の両方に複数のカラーテーマが提供されるようになりました。また、電子書籍を合成音声で朗読したり同期される本文/音声ナレーションについての設定もより簡単になりました。",
@@ -600,7 +600,7 @@
         },
         "dontShow": "次回以降は表示しない",
         "tab": {
-            "annotations": "注釈",
+            "annotations": "メモ",
             "catalogs": "図書目録",
             "home": "ホーム",
             "readingView": "読書画面",
@@ -608,7 +608,7 @@
         },
         "title": {
             "allBooks": "自分の本棚",
-            "newFeature": "新機能：注釈",
+            "newFeature": "新機能：メモ",
             "welcome": "Thorium 3.0へようこそ"
         }
     }
