@@ -160,7 +160,10 @@ function* newLocatorEditAndSaveTheNote(locatorExtended: MiniLocatorExtended): Sa
 }
 
 function* annotationButtonTrigger(_action: readerLocalActionAnnotations.trigger.TAction) {
-
+    const defaultDrawView = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_defaultDrawView);
+    if (defaultDrawView === "hide") { // NOT "margin" or "annotation"
+        yield* putTyped(readerLocalActionSetConfig.build({ annotation_defaultDrawView: "annotation" }));
+    }
     const { locatorExtended } = __selectionInfoGlobal;
     if (!locatorExtended) {
         debug("annotationBtnTriggerRequestedAction received");
