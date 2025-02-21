@@ -38,9 +38,14 @@ const Controls = () => {
 
 export const ImageClickManager: React.FC = () => {
 
-    const { open, href } = useSelector((state: IReaderRootState) => state.img);
+    const { open, href, altAttribute, titleAttribute, imageWidth, imageHeight} = useSelector((state: IReaderRootState) => state.img);
     const dispatch = useDispatch();
     const [__] = useTranslator();
+
+    const scaleX = (window.innerHeight - 50) / imageHeight;
+    const scaleY = (window.innerWidth - 50) / imageWidth;
+    let scale = Math.min(scaleX, scaleY);
+    if (scale > 1) scale = 1 
 
     return (<>
 
@@ -52,18 +57,19 @@ export const ImageClickManager: React.FC = () => {
         >
             <Dialog.Portal>
                 <div className={stylesModals.modal_dialog_overlay}></div>
-                <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined}>
+                <Dialog.Content style={{ width: "100%", height: "100%", backgroundColor: "unset", border: "unset" }} className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined}>
                     <Dialog.Close asChild>
-                        <button style={{position: "absolute", top: "10px", right: "10px", zIndex: 105}} data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
+                        <button style={{position: "absolute", top: "10px", right: "10px", zIndex: 105}} className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
                             <SVG ariaHidden={true} svg={QuitIcon} />
                         </button>
                     </Dialog.Close>
-                    <TransformWrapper>
+                    <TransformWrapper initialScale={scale} minScale={scale / 2} maxScale={4 * scale}>
                         <Controls />
-                        <TransformComponent wrapperStyle={{ display: "flex", width: "100%", height: "100%", minHeight: "inherit" }} >
+                        <TransformComponent wrapperStyle={{ width: "100%", height: "100%", minHeight: "inherit" }} >
                             <img
                                 src={href}
-                                alt="image"
+                                alt={altAttribute}
+                                title={titleAttribute}
                                 tabIndex={0}
                             />
                         </TransformComponent>

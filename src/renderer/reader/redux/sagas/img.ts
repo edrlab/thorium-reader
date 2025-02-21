@@ -11,6 +11,7 @@ import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSp
 import { eventChannel } from "redux-saga";
 import { put as putTyped } from "typed-redux-saga";
 import { readerLocalActionSetImageClick } from "../actions";
+import { IEventPayload_R2_EVENT_IMAGE_CLICK } from "@r2-navigator-js/electron/common/events";
 
 // Logger
 const filename_ = "readium-desktop:renderer:reader:saga:img";
@@ -18,11 +19,11 @@ const debug = debug_(filename_);
 debug("_");
 
 export function getWebviewImageClickChannel() {
-    const channel = eventChannel<string>(
+    const channel = eventChannel<IEventPayload_R2_EVENT_IMAGE_CLICK>(
         (emit) => {
 
-            const handler = (href: string) => {
-                emit(href);
+            const handler = (payload: IEventPayload_R2_EVENT_IMAGE_CLICK) => {
+                emit(payload);
             };
 
             setImageClickHandler(handler);
@@ -38,10 +39,10 @@ export function getWebviewImageClickChannel() {
 }
 
 
-function* webviewImageClick(href: string) {
+function* webviewImageClick(payload: IEventPayload_R2_EVENT_IMAGE_CLICK) {
 
-    debug("IMAGE_CLICK received :", href);
-    yield* putTyped(readerLocalActionSetImageClick.build(href));
+    debug("IMAGE_CLICK received :", payload);
+    yield* putTyped(readerLocalActionSetImageClick.build(payload));
 }
 
 export function saga() {
