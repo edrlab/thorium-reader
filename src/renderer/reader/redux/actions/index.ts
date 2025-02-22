@@ -17,6 +17,7 @@ import * as readerLocalActionSetLocator from "./setLocator";
 import * as readerLocalActionReader from "./reader";
 import * as readerLocalActionSetResourceToCache from "./resourceCache";
 import * as readerLocalActionExportAnnotationSet from "./exportAnnotationSet";
+import * as readerLocalActionSetImageClick from "./setImgClick";
 
 export {
     readerLocalActionExportAnnotationSet,
@@ -31,4 +32,5 @@ export {
     readerLocalActionSearch,
     readerLocalActionDivina,
     readerLocalActionReader,
+    readerLocalActionSetImageClick,
 };

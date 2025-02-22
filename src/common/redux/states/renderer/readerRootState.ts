@@ -24,6 +24,7 @@ import { ITTSState } from "readium-desktop/renderer/reader/redux/state/tts";
 import { IMediaOverlayState } from "readium-desktop/renderer/reader/redux/state/mediaOverlay";
 import { IAllowCustomConfigState } from "readium-desktop/renderer/reader/redux/state/allowCustom";
 import { ICacheDocument } from "./resourceCache";
+import { IImageClickState } from "readium-desktop/renderer/reader/redux/state/imageClick";
 
 export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
@@ -33,6 +34,7 @@ export interface IReaderRootState extends IRendererCommonRootState {
     mode: ReaderMode;
     annotation: IAnnotationModeState;
     annotationTagsIndex: TAnnotationTagsIndex;
+    img: IImageClickState;
 }
 
 export interface IReaderStateReader {

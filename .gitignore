@@ -12,3 +12,4 @@ external-assets/*
 .flox/lib
 .flox/NPM_PREFIX
 .flox/NPM_CACHE
+.env

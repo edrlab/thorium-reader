@@ -31,6 +31,7 @@ import Reader from "./Reader";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { getStore } from "../createStore";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
+import { ImageClickManager } from "./ImageClickManager";
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -210,6 +211,7 @@ url("${rcssPath}/fonts/iAWriterDuospace-Regular.ttf") format("truetype");
                 <TranslatorContext.Provider value={getTranslator()}>
                     <Reader />
                     <ToastManager />
+                    <ImageClickManager />
                 </TranslatorContext.Provider>
             </Provider>
         );

@@ -20,6 +20,7 @@ import * as search from "./search";
 import * as winInit from "./win";
 import * as annotation from "./annotation";
 import * as shareAnnotationSet from "./shareAnnotationSet";
+import * as img from "./img";
 import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { setTheme } from "readium-desktop/common/redux/actions/theme";
 import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } from "@r2-navigator-js/electron/renderer";
@@ -95,6 +96,8 @@ export function* rootSaga() {
         annotation.saga(),
         
         shareAnnotationSet.saga(),
+
+        img.saga(),
 
         takeSpawnEvery(
             setTheme.ID,

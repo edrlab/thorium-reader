@@ -49,6 +49,7 @@ import { tagReducer } from "readium-desktop/common/redux/reducers/tag";
 import { fifoReducer } from "readium-desktop/utils/redux-reducers/fifo.reducer";
 import { readerResourceCacheReducer } from "./resourceCache";
 import { readerLockReducer } from "./lock";
+import { imageClickReducer } from "./imageClick";
 
 export const rootReducer = () => {
 
@@ -214,5 +215,6 @@ export const rootReducer = () => {
                 },
             },
         ),
+        img: imageClickReducer,
     });
 };
