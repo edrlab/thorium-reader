@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { SagaGenerator } from "typed-redux-saga";
 import { select as selectTyped, take as takeTyped, race as raceTyped, put as putTyped, all as allTyped, call as callTyped } from "typed-redux-saga/macro";
-import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionSetConfig, readerLocalActionSetLocator } from "../actions";
+import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig, readerLocalActionSetLocator } from "../actions";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
@@ -160,6 +160,15 @@ function* newLocatorEditAndSaveTheNote(locatorExtended: MiniLocatorExtended): Sa
 }
 
 function* annotationButtonTrigger(_action: readerLocalActionAnnotations.trigger.TAction) {
+    const defaultDrawView = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_defaultDrawView);
+    if (defaultDrawView === "hide") { // NOT "margin" or "annotation"
+        yield* putTyped(readerLocalActionSetConfig.build({ annotation_defaultDrawView: "annotation" }));
+
+        const currentLocation = yield* selectTyped((state: IReaderRootState) => state.reader.locator);
+        const href1 = currentLocation?.locator?.href;
+        const href2 = currentLocation?.secondWebViewHref;
+        yield* putTyped(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
+    }
 
     const { locatorExtended } = __selectionInfoGlobal;
     if (!locatorExtended) {
