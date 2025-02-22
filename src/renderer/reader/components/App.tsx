@@ -89,12 +89,39 @@ export default class App extends React.Component<{}, undefined> {
                     rcssPath, _PACKAGING, _NODE_MODULE_RELATIVE_URL, _RENDERER_READER_BASE_URL);
 
                 const css = `
+/*
 @font-face {
 font-family: AccessibleDfA;
 font-style: normal;
 font-weight: normal;
 src: local("AccessibleDfA"),
 url("${rcssPath}/fonts/AccessibleDfA.otf") format("opentype");
+}
+*/
+
+@font-face {
+  font-family: AccessibleDfA;
+  src: local("AccessibleDfA"),
+    url("${rcssPath}/fonts/AccessibleDfA-Regular.woff2") format("woff2"),
+    url("${rcssPath}/fonts/AccessibleDfA-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: AccessibleDfA;
+  src: local("AccessibleDfA"),
+    url("${rcssPath}/fonts/AccessibleDfA-Bold.woff2") format("woff2");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: AccessibleDfA;
+  src: local("AccessibleDfA"),
+    url("${rcssPath}/fonts/AccessibleDfA-Italic.woff2") format("woff2");
+  font-weight: normal;
+  font-style: italic;
 }
 
 @font-face {
@@ -104,7 +131,7 @@ font-weight: normal;
 src: local("iAWriterDuospace-Regular"),
 url("${rcssPath}/fonts/iAWriterDuospace-Regular.ttf") format("truetype");
 }
-        `;
+`;
 
 // https://github.com/readium/readium-css/pull/146/files
 // https://github.com/readium/readium-css/blob/2e1bb29d02de1b2d36ec960eb90c2c4ac238b346/css/src/modules/ReadiumCSS-base.css#L119-L131
