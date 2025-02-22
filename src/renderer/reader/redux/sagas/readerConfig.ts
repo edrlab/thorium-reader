@@ -11,6 +11,7 @@ import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEver
 import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysEnableCaptionsMode, mediaOverlaysEnableSkippability,
     mediaOverlaysPause, mediaOverlaysResume, readiumCssUpdate, reloadContent, ttsOverlayEnable, ttsPlay,
     ttsSentenceDetectionEnable, ttsAndMediaOverlaysManualPlayNext, ttsSkippabilityEnable, ttsStop,
+    ttsHighlightStyle,
 } from "@r2-navigator-js/electron/renderer";
 
 import { readerLocalActionReader, readerLocalActionSetConfig } from "../actions";
@@ -19,6 +20,7 @@ import { all as allTyped, put as putTyped, select as selectTyped, spawn as spawn
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
 import { isNotNil } from "readium-desktop/utils/nil";
+import { HighlightDrawTypeBackground, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
 
 
 function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaGenerator<void> {
@@ -52,6 +54,15 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
 
     if (isNotNil(payload.ttsAndMediaOverlaysDisableContinuousPlay)) {
         ttsAndMediaOverlaysManualPlayNext(readerConfig.ttsAndMediaOverlaysDisableContinuousPlay);
+    }
+
+    if (isNotNil(payload.ttsHighlightStyle) || isNotNil(payload.ttsHighlightStyle_WORD)) {
+        ttsHighlightStyle(
+            typeof readerConfig.ttsHighlightStyle === "undefined" ? HighlightDrawTypeBackground : readerConfig.ttsHighlightStyle,
+            undefined, //readerConfig.ttsHighlightColor,
+            typeof readerConfig.ttsHighlightStyle_WORD === "undefined" ? HighlightDrawTypeUnderline : readerConfig.ttsHighlightStyle_WORD,
+            undefined, // readerConfig.ttsHighlightColor_WORD,
+        );
     }
 
     if (isNotNil(payload.mediaOverlaysEnableSkippability)) {
