@@ -49,7 +49,7 @@ import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg
 interface ControlsProps {
     chatEnabled: boolean;
   }
-  
+
 
 
 // https://github.com/huggingface/transformers.js-examples/blob/5b6e0c18677e3e22ef42779a766f48e2ed0a4b18/smolvlm-webgpu/src/components/Chat.jsx#L10
@@ -57,7 +57,7 @@ function render(text: string) {
     // Replace all instances of single backslashes before brackets with double backslashes
     // See https://github.com/markedjs/marked/issues/546 for more information.
     text = text.replace(/\\([\[\]\(\)])/g, "\\\\$1");
-  
+
     const result = DOMPurify.sanitize(
       marked.parse(text, {
         async: false,
@@ -156,7 +156,7 @@ const Chat = ({ imageHref }: { imageHref: string}) => {
     }, [messages]);
 
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication.Metadata);
-    
+
 
     const shortDescription = "Décris cette image en 2 phrases.";
     const longDescription = `Décris cette illustration de façon détaillée (nature de l'image, technique, format, symbolique, personnages, décors, couleurs, style, époque, etc..) extraite du livre ${r2Publication.Title} écrit par ${r2Publication.Author[0].Name}. Renforce l'accessibilité de la réponse pour les lecteurs d’écran. Réponds-moi entièrement en langue : ${r2Publication.Language}.`;
@@ -261,7 +261,7 @@ const Chat = ({ imageHref }: { imageHref: string}) => {
                         onClick={showImage}
                     />
                 </div> */}
-                {messages.length ? "" : 
+                {messages.length ? "" :
                 <form style={{display: "flex", alignItems: "end", justifyContent: "end", flexDirection: "column", gap: "20px", width: "inherit", margin: "20px 10px"}} onSubmit={(event) => handleSubmit(event, {})}>
                     <button role="submit" onClick={() => setInput(shortDescription)} className={stylesChatbot.chatbot_description_button}
                         >
@@ -271,7 +271,7 @@ const Chat = ({ imageHref }: { imageHref: string}) => {
                         >
                         Longue Description
                     </button>
-                </form> 
+                </form>
                 }
                 {messages.map(message => (
                     <div className={classNames(stylesChatbot.chatbot_message, message.role === "user" ? stylesChatbot.chatbot_user_message : stylesChatbot.chatbot_ai_message)} key={message.id}>
@@ -338,9 +338,9 @@ const Chat = ({ imageHref }: { imageHref: string}) => {
 
             <form onSubmit={(event) => handleSubmit(event, {})} className={stylesChatbot.chatbot_user_form}>
                 <div>
-                {modelSelected.name === "openAI gpt-4o-mini" ? 
+                {modelSelected.name === "openAI gpt-4o-mini" ?
                     <img src={OpenAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
-                    : 
+                    :
                     <img src={MistralAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.mistral)} />
                     }
                 </div>
@@ -375,23 +375,30 @@ const Chat = ({ imageHref }: { imageHref: string}) => {
 
 export const ImageClickManager: React.FC = () => {
 
-    const { open, href } = useSelector((state: IReaderRootState) => state.img);
+    const { open, isSVGFragment, HTMLImgSrc_SVGImageHref_SVGFragmentMarkup, altAttributeOf_HTMLImg_SVGImage_SVGFragment, titleAttributeOf_HTMLImg_SVGImage_SVGFragment, ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment } = useSelector((state: IReaderRootState) => state.img);
+
+    // , naturalWidthOf_HTMLImg_SVGImage, naturalHeightOf_HTMLImg_SVGImage
+    // const scaleX = naturalWidthOf_HTMLImg_SVGImage ? ((window.innerHeight - 50) / naturalWidthOf_HTMLImg_SVGImage) : 1;
+    // const scaleY = naturalHeightOf_HTMLImg_SVGImage ? ((window.innerWidth - 50) / naturalHeightOf_HTMLImg_SVGImage) : 1;
+    // let scale = Math.min(scaleX, scaleY);
+
     const dispatch = useDispatch();
     const [__] = useTranslator();
-    const [chatEnabled, enableChat] = React.useState(false);
+    const [chatEnabled_, enableChat] = React.useState(false);
     // const imageHrefDataUrl = useGetDataUrl(href);
+
+    const chatEnabled = chatEnabled_ && !isSVGFragment; // isSVGImage and otherwise HTML image
 
     const [modelSelected, setModel] = React.useState(options[0]);
     const [systemPrompt, setSystemPrompt] = React.useState("Your goal is to describe the image, you should not answer on a topic other than this image");
-    const previousHref = React.useRef(href);
-
+    const previousHref = React.useRef(HTMLImgSrc_SVGImageHref_SVGFragmentMarkup);
 
     React.useEffect(() => {
-        if (href && previousHref.current !== href) {
+        if (HTMLImgSrc_SVGImageHref_SVGFragmentMarkup && previousHref.current !== HTMLImgSrc_SVGImageHref_SVGFragmentMarkup) {
             __messages = [];
-            previousHref.current = href;
+            previousHref.current = HTMLImgSrc_SVGImageHref_SVGFragmentMarkup;
         }
-    }, [href]);
+    }, [HTMLImgSrc_SVGImageHref_SVGFragmentMarkup]);
     const [showImage, setShowImage] = React.useState(true);
 
     return (<>
@@ -439,13 +446,13 @@ export const ImageClickManager: React.FC = () => {
                                 setSystemPrompt,
                                 showImage: () => enableChat((enabled) => !enabled),
                             }}>
-                                <Chat /*imageHrefDataUrl={imageHrefDataUrl}*/ imageHref={href} />
+                                <Chat /*imageHrefDataUrl={imageHrefDataUrl}*/ imageHref={HTMLImgSrc_SVGImageHref_SVGFragmentMarkup} />
                             </ChatContext.Provider>
                             :
                             ""
                         }
                         <div style={{flex: (showImage || !chatEnabled) ? "1" : "0"}} className={stylesChatbot.image_container}>
-                            {chatEnabled ? 
+                            {chatEnabled ?
                             <button
                             className={stylesChatbot.image_display_button}
                             title={showImage ? "hide image" : "show image"}
@@ -455,13 +462,16 @@ export const ImageClickManager: React.FC = () => {
                             </button>
                             : ""
                             }
+                            { /*  initialScale={scale} minScale={scale / 2} maxScale={4 * scale} */}
                             <TransformWrapper>
                                 <TransformComponent wrapperStyle={{ display: "flex", width: "100%", height: "100%", minHeight: "inherit", flex: "1", alignItems: "center" }}>
                                     <img
-                                        src={href}
-                                        alt="image"
+                                        style={{ width: "100%", height: "100%", maxHeight: "calc(100vh - 150px)", backgroundColor: "white", color: "black", fill: "currentcolor", stroke: "currentcolor" }}
+                                        src={isSVGFragment ? ("data:image/svg+xml;base64," + Buffer.from(HTMLImgSrc_SVGImageHref_SVGFragmentMarkup).toString("base64")) : HTMLImgSrc_SVGImageHref_SVGFragmentMarkup}
+                                        alt={altAttributeOf_HTMLImg_SVGImage_SVGFragment}
+                                        title={titleAttributeOf_HTMLImg_SVGImage_SVGFragment}
+                                        aria-label={ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment}
                                         tabIndex={0}
-                                        style={{width: "100%", height: "100%", maxHeight: "calc(100vh - 150px)"}}
                                         />
                                 </TransformComponent>
                                         {(showImage || !chatEnabled) ?
@@ -470,8 +480,8 @@ export const ImageClickManager: React.FC = () => {
                                         }
                             </TransformWrapper>
                         </div>
-                            { chatEnabled ? "" : 
-                    <button className={stylesChatbot.chatbot_open_title} onClick={() => enableChat((enabled) => !enabled)} title={"Chat with AI"}>        
+                            { chatEnabled ? "" :
+                    <button className={stylesChatbot.chatbot_open_title} onClick={() => enableChat((enabled) => !enabled)} title={"Chat with AI"}>
                             <SVG svg={AiIcon} ariaHidden />
                             {/* <h3>Chat with AI</h3> */}
                         </button>

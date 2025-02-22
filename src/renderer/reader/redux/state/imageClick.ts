@@ -5,9 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export interface IImageClickState {
-    open: boolean;
-    href?: string | undefined;
-}
+import { IEventPayload_R2_EVENT_IMAGE_CLICK } from "@r2-navigator-js/electron/common/events";
 
-export const defaultImageClickState: IImageClickState = { open: false, href: undefined };
+export type IImageClickState = ({
+    open: true;
+} & IEventPayload_R2_EVENT_IMAGE_CLICK) | ({
+    open: false;
+} & Partial<IEventPayload_R2_EVENT_IMAGE_CLICK>)
+
+export const defaultImageClickState: IImageClickState = { open: false };

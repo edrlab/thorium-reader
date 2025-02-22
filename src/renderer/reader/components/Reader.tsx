@@ -85,7 +85,7 @@ import { TToc } from "../pdf/common/pdfReader.type";
 import { pdfMount } from "../pdf/driver";
 import {
     readerLocalActionAnnotations,
-    readerLocalActionDivina, readerLocalActionSetConfig,
+    readerLocalActionDivina, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig,
     readerLocalActionSetLocator,
 } from "../redux/actions";
 import { TdivinaReadingMode, defaultReadingMode } from "readium-desktop/common/redux/states/renderer/divina";
@@ -106,6 +106,7 @@ import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/co
 import { translateContentFieldHelper } from "readium-desktop/common/services/translator";
 import { getStore } from "../createStore";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
+import { TDrawView } from "readium-desktop/common/redux/states/renderer/annotation";
 
 // TODO: key not used but translation kept for potential future use
 // discard some not used key from i18n-scan cmd
@@ -210,6 +211,8 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 }
 
 interface IState {
+    previousReaderConfigAnnotationDefaultDrawView: TDrawView | undefined;
+
     fxlZoomPercent: number;
     contentTableOpen: boolean;
     settingsOpen: boolean;
@@ -245,6 +248,8 @@ interface IState {
 
 class Reader extends React.Component<IProps, IState> {
 
+    private _ttsStateTimeout: NodeJS.Timeout | undefined;
+
     private fastLinkRef: React.RefObject<HTMLAnchorElement>;
     private refToolbar: React.RefObject<HTMLAnchorElement>;
     private mainElRef: React.RefObject<HTMLDivElement>;
@@ -266,6 +271,8 @@ class Reader extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+
+        this._ttsStateTimeout = undefined;
 
         this.ttsOverlayEnableNeedsSync = true;
 
@@ -303,6 +310,8 @@ class Reader extends React.Component<IProps, IState> {
         this.mainElRef = React.createRef<HTMLDivElement>();
 
         this.state = {
+            previousReaderConfigAnnotationDefaultDrawView: undefined,
+
             fxlZoomPercent: 0,
 
             // bookmarkMessage: undefined,
@@ -664,6 +673,25 @@ class Reader extends React.Component<IProps, IState> {
         }
         if (oldProps.readerConfig.readerDockingMode === "full" && this.props.readerConfig.readerDockingMode !== "full") {
             this.setState({shortcutEnable: true});
+        }
+        if (oldProps.ttsState !== this.props.ttsState) {
+            if (this._ttsStateTimeout) {
+                clearTimeout(this._ttsStateTimeout);
+                this._ttsStateTimeout = undefined;
+            }
+            if (this.props.ttsState === TTSStateEnum.STOPPED) {
+                this._ttsStateTimeout = setTimeout(() => {
+                    this._ttsStateTimeout = undefined;
+                    if (this.props.ttsState === TTSStateEnum.STOPPED) {
+                        ttsClickEnable(false);
+                        this.restoreAnnotationStateAfterTTSStop();
+                    }
+                }, 1000); // end of document ==> potentially "resume" (from stopped) at next document's start
+
+            } else  if (oldProps.ttsState === TTSStateEnum.STOPPED && (this.props.ttsState === TTSStateEnum.PLAYING || this.props.ttsState === TTSStateEnum.PAUSED)) {
+                ttsClickEnable(true);
+                this.hideAnnotationsForTTSPlay();
+            }
         }
     }
 
@@ -2885,7 +2913,14 @@ class Reader extends React.Component<IProps, IState> {
             // openedSectionSettings,
         });
     }
-
+    private hideAnnotationsForTTSPlay() {
+        if (this.props.readerConfig.annotation_defaultDrawView !== "hide") { // "margin" or "annotation"
+            this.setState({ previousReaderConfigAnnotationDefaultDrawView: this.props.readerConfig.annotation_defaultDrawView });
+            const href1 = this.state.currentLocation?.locator?.href;
+            const href2 = this.state.currentLocation?.secondWebViewHref;
+            this.props.dispatchMarginAnnotations("hide", href1, href2); // see marginAnnotationsOnChange() in ReaderMenu.tsx
+        }
+    }
     private handleTTSPlay() {
         ttsClickEnable(true);
         let delay = 0;
@@ -2894,7 +2929,11 @@ class Reader extends React.Component<IProps, IState> {
             // console.log("TTS PLAY ==> NO_FOOTNOTES MUST BE TRUE (POPUP DISABLED), SWITCHING...");
             this.props.setConfig({ noFootnotes: true });
             // TODO: skippability should be disabled when user explicitly "requests" a skippable item, such as when clicking on a note reference hyperlink, or even on a skippable element itself(?)
+        } else if (this.props.readerConfig.annotation_defaultDrawView !== "hide") { // "margin" or "annotation"
+            delay = 200;
+            this.hideAnnotationsForTTSPlay();
         }
+
         setTimeout(() => {
             ttsPlay(parseFloat(this.props.ttsPlaybackRate), this.props.ttsVoice);
         }, delay);
@@ -2902,9 +2941,21 @@ class Reader extends React.Component<IProps, IState> {
     private handleTTSPause() {
         ttsPause();
     }
+    private restoreAnnotationStateAfterTTSStop() {
+        if (this.state.previousReaderConfigAnnotationDefaultDrawView) {
+            if (this.props.readerConfig.annotation_defaultDrawView !== this.state.previousReaderConfigAnnotationDefaultDrawView) {
+                const href1 = this.state.currentLocation?.locator?.href;
+                const href2 = this.state.currentLocation?.secondWebViewHref;
+                this.props.dispatchMarginAnnotations(this.state.previousReaderConfigAnnotationDefaultDrawView, href1, href2); // see marginAnnotationsOnChange() in ReaderMenu.tsx
+            }
+            // this.setState({ previousReaderConfigAnnotationDefaultDrawView: this.props.readerConfig.annotation_defaultDrawView });
+            this.setState({ previousReaderConfigAnnotationDefaultDrawView: undefined });
+        }
+    }
     private handleTTSStop() {
         ttsClickEnable(false);
         ttsStop();
+        this.restoreAnnotationStateAfterTTSStop();
     }
     private handleTTSResume() {
         ttsResume();
@@ -3150,6 +3201,13 @@ let __READING_FINISHED_CALL_COUNTER = 0;
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
+        dispatchMarginAnnotations: (t: TDrawView, href1: string | undefined, href2: string | undefined) => {
+            dispatch(readerLocalActionSetConfig.build({ annotation_defaultDrawView: t }));
+
+            if (!!href1) {
+                dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
+            }
+        },
         toasty: (msg: string) => {
 
             dispatch(toastActions.openRequest.build(ToastType.Success, msg));
