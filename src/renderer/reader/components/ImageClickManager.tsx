@@ -26,7 +26,7 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 
 const Controls = () => {
     const { zoomIn, zoomOut, resetTransform } = useControls();
-  
+
     return (
       <div style={{position: "absolute", display: "flex", flexDirection: "column", zIndex: 105, top: "42%", right: "10px"}}>
         <button className={stylesButtons.button_nav_primary} onClick={() => zoomIn()}>+</button>
@@ -38,14 +38,14 @@ const Controls = () => {
 
 export const ImageClickManager: React.FC = () => {
 
-    const { open, href, altAttribute, titleAttribute, imageWidth, imageHeight} = useSelector((state: IReaderRootState) => state.img);
+    const { open, isSVGFragment, HTMLImgSrc_SVGImageHref_SVGFragmentMarkup, altAttributeOf_HTMLImg_SVGImage_SVGFragment, titleAttributeOf_HTMLImg_SVGImage_SVGFragment, ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment, naturalWidthOf_HTMLImg_SVGImage, naturalHeightOf_HTMLImg_SVGImage } = useSelector((state: IReaderRootState) => state.img);
     const dispatch = useDispatch();
     const [__] = useTranslator();
 
-    const scaleX = (window.innerHeight - 50) / imageHeight;
-    const scaleY = (window.innerWidth - 50) / imageWidth;
+    const scaleX = naturalWidthOf_HTMLImg_SVGImage ? ((window.innerHeight - 50) / naturalWidthOf_HTMLImg_SVGImage) : 1;
+    const scaleY = naturalHeightOf_HTMLImg_SVGImage ? ((window.innerWidth - 50) / naturalHeightOf_HTMLImg_SVGImage) : 1;
     let scale = Math.min(scaleX, scaleY);
-    if (scale > 1) scale = 1 
+    if (scale > 1) scale = 1;
 
     return (<>
 
@@ -67,9 +67,11 @@ export const ImageClickManager: React.FC = () => {
                         <Controls />
                         <TransformComponent wrapperStyle={{ width: "100%", height: "100%", minHeight: "inherit" }} >
                             <img
-                                src={href}
-                                alt={altAttribute}
-                                title={titleAttribute}
+                                style={{ width: "100%", height: "100%", backgroundColor: "white", color: "black", fill: "currentcolor", stroke: "currentcolor" }}
+                                src={isSVGFragment ? ("data:image/svg+xml;base64," + Buffer.from(HTMLImgSrc_SVGImageHref_SVGFragmentMarkup).toString("base64")) : HTMLImgSrc_SVGImageHref_SVGFragmentMarkup}
+                                alt={altAttributeOf_HTMLImg_SVGImage_SVGFragment}
+                                title={titleAttributeOf_HTMLImg_SVGImage_SVGFragment}
+                                aria-label={ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment}
                                 tabIndex={0}
                             />
                         </TransformComponent>
