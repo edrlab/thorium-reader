@@ -8,6 +8,7 @@
 import { IReaderSettingsMenuState, ReaderConfig } from "readium-desktop/common/models/reader";
 import { FONT_ID_DEFAULT } from "readium-desktop/utils/fontList";
 import { IAnnotationReaderConfigState, IColor } from "./renderer/annotation";
+import { HighlightDrawTypeBackground, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
 
 export const DEFAULT_COLOR_ANNOTATION: IColor = {red: 235, green: 150, blue: 148};
 
@@ -55,6 +56,16 @@ export const readerConfigInitialState: ReaderConfig = {
     noRuby: false,
     darken: undefined,
     ttsAndMediaOverlaysDisableContinuousPlay: false,
+
+    ttsHighlightStyle: HighlightDrawTypeBackground,
+    ttsHighlightStyle_WORD: HighlightDrawTypeUnderline,
+    // HighlightDrawTypeBackground
+    // HighlightDrawTypeUnderline
+    // HighlightDrawTypeStrikethrough
+    // HighlightDrawTypeOutline
+    // HighlightDrawTypeOpacityMask
+    // HighlightDrawTypeOpacityMaskRuler
+
     mediaOverlaysEnableSkippability: true,
     ttsEnableSentenceDetection: true,
     mediaOverlaysEnableCaptionsMode: false,

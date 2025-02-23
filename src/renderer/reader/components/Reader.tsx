@@ -78,6 +78,7 @@ import {
     ttsStop, ttsVoice, highlightsClickListen,
     // stealFocusDisable,
     keyboardFocusRequest,
+    ttsHighlightStyle,
 } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
@@ -2541,6 +2542,12 @@ class Reader extends React.Component<IProps, IState> {
         const miniLocatorExtended = minimizeLocatorExtended(locatorExtended);
 
         if (!this.props.isDivina && !this.props.isPdf && this.ttsOverlayEnableNeedsSync) {
+            ttsHighlightStyle(
+                this.props.readerConfig.ttsHighlightStyle,
+                undefined, // this.props.readerConfig.ttsHighlightColor,
+                this.props.readerConfig.ttsHighlightStyle_WORD,
+                undefined, // this.props.readerConfig.ttsHighlightColor_WORD,
+            );
             ttsOverlayEnable(this.props.readerConfig.ttsEnableOverlayMode);
             ttsSentenceDetectionEnable(this.props.readerConfig.ttsEnableSentenceDetection);
             ttsAndMediaOverlaysManualPlayNext(this.props.readerConfig.ttsAndMediaOverlaysDisableContinuousPlay);
@@ -3028,6 +3035,12 @@ class Reader extends React.Component<IProps, IState> {
 
     //     mediaOverlaysEnableSkippability(readerConfig.mediaOverlaysEnableSkippability);
     //     ttsSentenceDetectionEnable(readerConfig.ttsEnableSentenceDetection);
+    // ttsHighlightStyle(
+    //     this.props.readerConfig.ttsHighlightStyle,
+    //     undefined, // this.props.readerConfig.ttsHighlightColor,
+    //     undefined, // this.props.readerConfig.ttsHighlightStyle_WORD,
+    //     undefined, // this.props.readerConfig.ttsHighlightColor_WORD,
+    // );
     //     ttsAndMediaOverlaysManualPlayNext(readerConfig.ttsAndMediaOverlaysDisableContinuousPlay);
     //     ttsSkippabilityEnable(readerConfig.mediaOverlaysEnableSkippability);
     //     mediaOverlaysEnableCaptionsMode(readerConfig.mediaOverlaysEnableCaptionsMode);
@@ -3155,6 +3168,12 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     // see this.ttsOverlayEnableNeedsSync
     // ttsOverlayEnable(state.reader.config.ttsEnableOverlayMode);
     // ttsSentenceDetectionEnable(state.reader.config.ttsEnableSentenceDetection);
+    // ttsHighlightStyle(
+    //     this.props.readerConfig.ttsHighlightStyle,
+    //     undefined, // this.props.readerConfig.ttsHighlightColor,
+    //     undefined, // this.props.readerConfig.ttsHighlightStyle_WORD,
+    //     undefined, // this.props.readerConfig.ttsHighlightColor_WORD,
+    // );
     // ttsAndMediaOverlaysManualPlayNext(state.reader.config.ttsAndMediaOverlaysDisableContinuousPlay);
     // ttsSkippabilityEnable(state.reader.config.mediaOverlaysEnableSkippability);
 
