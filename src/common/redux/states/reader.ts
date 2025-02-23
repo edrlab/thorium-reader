@@ -65,6 +65,16 @@ export const readerConfigInitialState: ReaderConfig = {
     // HighlightDrawTypeOutline
     // HighlightDrawTypeOpacityMask
     // HighlightDrawTypeOpacityMaskRuler
+    ttsHighlightColor: {
+        blue: 116, // 204,
+        green: 248, // 218,
+        red: 248, // 255,
+    },
+    ttsHighlightColor_WORD: {
+        blue: 0,
+        green: 147,
+        red: 255,
+    },
 
     mediaOverlaysEnableSkippability: true,
     ttsEnableSentenceDetection: true,

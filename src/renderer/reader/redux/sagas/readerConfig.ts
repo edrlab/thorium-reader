@@ -18,10 +18,8 @@ import { readerLocalActionReader, readerLocalActionSetConfig } from "../actions"
 import { SagaGenerator } from "typed-redux-saga";
 import { all as allTyped, put as putTyped, select as selectTyped, spawn as spawnTyped, take as takeTyped } from "typed-redux-saga/macro";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
+import { readerConfigInitialState, readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
 import { isNotNil } from "readium-desktop/utils/nil";
-import { HighlightDrawTypeBackground, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
-
 
 function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaGenerator<void> {
 
@@ -56,12 +54,12 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
         ttsAndMediaOverlaysManualPlayNext(readerConfig.ttsAndMediaOverlaysDisableContinuousPlay);
     }
 
-    if (isNotNil(payload.ttsHighlightStyle) || isNotNil(payload.ttsHighlightStyle_WORD)) {
+    if (isNotNil(payload.ttsHighlightStyle) || isNotNil(payload.ttsHighlightStyle_WORD) || isNotNil(payload.ttsHighlightColor) || isNotNil(payload.ttsHighlightColor_WORD)) {
         ttsHighlightStyle(
-            typeof readerConfig.ttsHighlightStyle === "undefined" ? HighlightDrawTypeBackground : readerConfig.ttsHighlightStyle,
-            undefined, //readerConfig.ttsHighlightColor,
-            typeof readerConfig.ttsHighlightStyle_WORD === "undefined" ? HighlightDrawTypeUnderline : readerConfig.ttsHighlightStyle_WORD,
-            undefined, // readerConfig.ttsHighlightColor_WORD,
+            typeof readerConfig.ttsHighlightStyle === "undefined" || readerConfig.ttsHighlightStyle === null ? readerConfigInitialState.ttsHighlightStyle : readerConfig.ttsHighlightStyle,
+            !readerConfig.ttsHighlightColor ? readerConfigInitialState.ttsHighlightColor : readerConfig.ttsHighlightColor,
+            typeof readerConfig.ttsHighlightStyle_WORD === "undefined" || readerConfig.ttsHighlightStyle_WORD === null ? readerConfigInitialState.ttsHighlightStyle_WORD : readerConfig.ttsHighlightStyle_WORD,
+            !readerConfig.ttsHighlightColor_WORD ? readerConfigInitialState.ttsHighlightColor_WORD : readerConfig.ttsHighlightColor_WORD,
         );
     }
 

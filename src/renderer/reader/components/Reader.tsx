@@ -2544,9 +2544,9 @@ class Reader extends React.Component<IProps, IState> {
         if (!this.props.isDivina && !this.props.isPdf && this.ttsOverlayEnableNeedsSync) {
             ttsHighlightStyle(
                 this.props.readerConfig.ttsHighlightStyle,
-                undefined, // this.props.readerConfig.ttsHighlightColor,
+                this.props.readerConfig.ttsHighlightColor,
                 this.props.readerConfig.ttsHighlightStyle_WORD,
-                undefined, // this.props.readerConfig.ttsHighlightColor_WORD,
+                this.props.readerConfig.ttsHighlightColor_WORD,
             );
             ttsOverlayEnable(this.props.readerConfig.ttsEnableOverlayMode);
             ttsSentenceDetectionEnable(this.props.readerConfig.ttsEnableSentenceDetection);
@@ -3037,9 +3037,9 @@ class Reader extends React.Component<IProps, IState> {
     //     ttsSentenceDetectionEnable(readerConfig.ttsEnableSentenceDetection);
     // ttsHighlightStyle(
     //     this.props.readerConfig.ttsHighlightStyle,
-    //     undefined, // this.props.readerConfig.ttsHighlightColor,
-    //     undefined, // this.props.readerConfig.ttsHighlightStyle_WORD,
-    //     undefined, // this.props.readerConfig.ttsHighlightColor_WORD,
+    //     this.props.readerConfig.ttsHighlightColor,
+    //     this.props.readerConfig.ttsHighlightStyle_WORD,
+    //     this.props.readerConfig.ttsHighlightColor_WORD,
     // );
     //     ttsAndMediaOverlaysManualPlayNext(readerConfig.ttsAndMediaOverlaysDisableContinuousPlay);
     //     ttsSkippabilityEnable(readerConfig.mediaOverlaysEnableSkippability);
@@ -3170,9 +3170,9 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     // ttsSentenceDetectionEnable(state.reader.config.ttsEnableSentenceDetection);
     // ttsHighlightStyle(
     //     this.props.readerConfig.ttsHighlightStyle,
-    //     undefined, // this.props.readerConfig.ttsHighlightColor,
-    //     undefined, // this.props.readerConfig.ttsHighlightStyle_WORD,
-    //     undefined, // this.props.readerConfig.ttsHighlightColor_WORD,
+    //     this.props.readerConfig.ttsHighlightColor,
+    //     this.props.readerConfig.ttsHighlightStyle_WORD,
+    //     this.props.readerConfig.ttsHighlightColor_WORD,
     // );
     // ttsAndMediaOverlaysManualPlayNext(state.reader.config.ttsAndMediaOverlaysDisableContinuousPlay);
     // ttsSkippabilityEnable(state.reader.config.mediaOverlaysEnableSkippability);

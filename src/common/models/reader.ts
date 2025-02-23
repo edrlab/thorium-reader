@@ -10,6 +10,8 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { IAnnotationReaderConfigState } from "../redux/states/renderer/annotation";
 
+import { IColor } from "@r2-navigator-js/electron/common/highlight";
+
 export enum ReaderMode {
     Attached = "attached",
     Detached = "detached",
@@ -97,6 +99,8 @@ export interface IReaderSettingsMenuState {
 export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans, IAnnotationReaderConfigState, IReaderSettingsMenuState, ReaderTTSMediaOverlay {
     ttsHighlightStyle: number;
     ttsHighlightStyle_WORD: number;
+    ttsHighlightColor: IColor;
+    ttsHighlightColor_WORD: IColor;
 }
 
 // export interface BookmarkCollection {
