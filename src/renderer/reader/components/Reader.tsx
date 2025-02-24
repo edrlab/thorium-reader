@@ -214,6 +214,8 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 interface IState {
     previousReaderConfigAnnotationDefaultDrawView: TDrawView | undefined;
 
+    accessibilitySupportEnabled: boolean;
+
     fxlZoomPercent: number;
     contentTableOpen: boolean;
     settingsOpen: boolean;
@@ -277,6 +279,7 @@ class Reader extends React.Component<IProps, IState> {
 
         this.ttsOverlayEnableNeedsSync = true;
 
+        this.accessibilitySupportChanged = this.accessibilitySupportChanged.bind(this);
         this.onKeyboardHistoryNavigationPrevious = this.onKeyboardHistoryNavigationPrevious.bind(this);
         this.onKeyboardHistoryNavigationNext = this.onKeyboardHistoryNavigationNext.bind(this);
         this.onKeyboardPageNavigationPrevious = this.onKeyboardPageNavigationPrevious.bind(this);
@@ -311,6 +314,8 @@ class Reader extends React.Component<IProps, IState> {
         this.mainElRef = React.createRef<HTMLDivElement>();
 
         this.state = {
+            accessibilitySupportEnabled: false,
+
             previousReaderConfigAnnotationDefaultDrawView: undefined,
 
             fxlZoomPercent: 0,
@@ -414,6 +419,14 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public async componentDidMount() {
+
+        ipcRenderer.on("accessibility-support-changed", this.accessibilitySupportChanged);
+
+        // note that "@r2-navigator-js/electron/main/browser-window-tracker"
+        // uses "accessibility-support-changed" instead of "accessibility-support-query",
+        // so there is no duplicate event handler.
+        console.log("componentDidMount() ipcRenderer.send - accessibility-support-query");
+        ipcRenderer.send("accessibility-support-query");
 
         if (this.mainElRef?.current) {
             this.resizeObserver.observe(this.mainElRef.current);
@@ -697,6 +710,8 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public componentWillUnmount() {
+        ipcRenderer.off("accessibility-support-changed", this.accessibilitySupportChanged);
+
         if (this.mainElRef?.current) {
             this.resizeObserver.unobserve(this.mainElRef.current);
         }
@@ -1387,6 +1402,18 @@ class Reader extends React.Component<IProps, IState> {
     private handleLinkUrl = (url: string, isFromOnPopState = false) => {
         handleLinkUrl_UpdateHistoryState(url, isFromOnPopState);
         r2HandleLinkUrl(url);
+    };
+
+    private accessibilitySupportChanged = (_e: Electron.IpcRendererEvent, accessibilitySupportEnabled: boolean) => {
+        console.log("ipcRenderer.on - accessibility-support-changed: ", accessibilitySupportEnabled);
+
+        // prevents infinite loop via componentDidUpdate()
+        if (accessibilitySupportEnabled !== this.state.accessibilitySupportEnabled) {
+            this.setState({ accessibilitySupportEnabled });
+        }
+        if (accessibilitySupportEnabled && this.props.readerConfig.paged) {
+            this.props.setConfig({ paged: false });
+        }
     };
 
     private onKeyboardAnnotationMargin = () => {
