@@ -329,9 +329,9 @@ const streamProtocolHandler = async (
 
         let model: LanguageModelV1 | undefined;
         if (modelId.startsWith("openai")) {
-            model = openai(modelId.split("openai-")[1]);
+            model = openai(modelId.split("__!__")[1]);
         } else if (modelId.startsWith("mistralai")) {
-            model = mistral(modelId.split("mistralai-")[1]);
+            model = mistral(modelId.split("__!__")[1]);
         }
 
         try {

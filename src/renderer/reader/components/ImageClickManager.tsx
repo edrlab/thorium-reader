@@ -33,7 +33,7 @@ import Loader from "readium-desktop/renderer/common/components/Loader";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import { Select, SelectItem } from "readium-desktop/renderer/common/components/Select";
-import { aiSDKModelIDEnumType, aiSDKModelOptions } from "readium-desktop/common/aisdkModelOptions";
+import { aiSDKModelOptions, DEFAULT_SYSTEM_PROMPT, IaiSdkModel } from "readium-desktop/common/aisdkModelOptions";
 
 import * as stylesChatbot from "readium-desktop/renderer/assets/styles/chatbot.scss";
 import * as sendIcon from "readium-desktop/renderer/assets/icons/send-icon.svg";
@@ -45,6 +45,7 @@ import * as BackIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg
 import * as ResetIcon from "readium-desktop/renderer/assets/icons/backward-icon.svg";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg";
+import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
 
 interface ControlsProps {
     chatEnabled: boolean;
@@ -94,17 +95,9 @@ const Controls: React.FC<ControlsProps> = ({ chatEnabled }) => {
 // const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
 // SelectRef.displayName = "ComboBox";
 
-const options = aiSDKModelOptions;
-
 interface IChatContext {
-    modelSelected: {
-        id: aiSDKModelIDEnumType;
-        name: string;
-    }
-    setModel: React.Dispatch<React.SetStateAction<{
-        id: aiSDKModelIDEnumType;
-        name: string;
-    }>>,
+    modelSelected: IaiSdkModel,
+    setModel: React.Dispatch<React.SetStateAction<IaiSdkModel>>,
     systemPrompt: string,
     setSystemPrompt: React.Dispatch<React.SetStateAction<string>>
     showImage: () => void;
@@ -146,7 +139,7 @@ const Chat = ({ imageHref }: { imageHref: string}) => {
         body: {
             imageHref,
             modelId: modelSelected.id,
-            systemPrompt,
+            systemPrompt: systemPrompt,
         },
         credentials: "same-origin",
     });
@@ -230,11 +223,11 @@ const Chat = ({ imageHref }: { imageHref: string}) => {
                 <SVG svg={AiIcon} ariaHidden />
                 <h3>Chat with</h3>
                 <Select
-                    items={options}
+                    items={aiSDKModelOptions}
                     selectedKey={modelSelected.id}
                     onSelectionChange={(key) => {
                         // console.log("selectionchange: ", key);
-                        const found = options.find(({ id: _id }) => _id === key);
+                        const found = aiSDKModelOptions.find(({ id: _id }) => _id === key);
                         if (found) {
                             setModel(found);
                         }
@@ -375,7 +368,24 @@ const Chat = ({ imageHref }: { imageHref: string}) => {
 
 export const ImageClickManager: React.FC = () => {
 
-    const { open, isSVGFragment, HTMLImgSrc_SVGImageHref_SVGFragmentMarkup, altAttributeOf_HTMLImg_SVGImage_SVGFragment, titleAttributeOf_HTMLImg_SVGImage_SVGFragment, ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment } = useSelector((state: IReaderRootState) => state.img);
+    const {
+        open,
+        isSVGFragment,
+        HTMLImgSrc_SVGImageHref_SVGFragmentMarkup,
+        altAttributeOf_HTMLImg_SVGImage_SVGFragment,
+        titleAttributeOf_HTMLImg_SVGImage_SVGFragment,
+        ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment,
+        dom_afterText,
+        dom_beforeText,
+        dom_describedbyText,
+        dom_detailsText,
+        dom_figcaptionText,
+        dom_labelledByText,
+    } = useSelector((state: IReaderRootState) => state.img);
+    
+    const { documentTitle, authorsLangString, publishersLangString } = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
+
+    const { locale } = useSelector((state: IReaderRootState) => state.i18n);
 
     // , naturalWidthOf_HTMLImg_SVGImage, naturalHeightOf_HTMLImg_SVGImage
     // const scaleX = naturalWidthOf_HTMLImg_SVGImage ? ((window.innerHeight - 50) / naturalWidthOf_HTMLImg_SVGImage) : 1;
@@ -389,8 +399,8 @@ export const ImageClickManager: React.FC = () => {
 
     const chatEnabled = chatEnabled_ && !isSVGFragment; // isSVGImage and otherwise HTML image
 
-    const [modelSelected, setModel] = React.useState(options[0]);
-    const [systemPrompt, setSystemPrompt] = React.useState("Your goal is to describe the image, you should not answer on a topic other than this image");
+    const [modelSelected, setModel] = React.useState(aiSDKModelOptions[0]);
+    const [systemPrompt, setSystemPrompt] = React.useState(DEFAULT_SYSTEM_PROMPT);
     const previousHref = React.useRef(HTMLImgSrc_SVGImageHref_SVGFragmentMarkup);
 
     React.useEffect(() => {
@@ -400,6 +410,39 @@ export const ImageClickManager: React.FC = () => {
         }
     }, [HTMLImgSrc_SVGImageHref_SVGFragmentMarkup]);
     const [showImage, setShowImage] = React.useState(true);
+
+    React.useEffect(() => {
+        setSystemPrompt(modelSelected.systemPrompt
+            .replace("{{title}}", "\"" + documentTitle + "\"")
+            .replace("{{author}}", "\"" + authorsLangString ?
+                authorsLangString.reduce<string>((prev, text) => {
+                    const textLangStr = convertMultiLangStringToLangString(text, locale);
+                    // const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
+                    // const textIsRTL = langStringIsRTL(textLang);
+                    const textStr = textLangStr && textLangStr[1] ? textLangStr[1] : "";
+
+                    return prev ? `${prev}, ${textStr}` : textStr;
+                }, "")
+                : "" + "\"")
+            .replace("{{publisher}}", "\"" + publishersLangString ?
+                // publishers.join(", ")
+                publishersLangString.reduce<string>((prev, text) => {
+                    const textLangStr = convertMultiLangStringToLangString(text, locale);
+                    // const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
+                    // const textIsRTL = langStringIsRTL(textLang);
+                    const textStr = textLangStr && textLangStr[1] ? textLangStr[1] : "";
+
+                    return prev ? `${prev}, ${textStr}` : textStr;
+                }, "")
+                : "" + "\"")
+            .replace("{{beforeText}}", "\"" + dom_beforeText + "\"")
+            .replace("{{afterText}}", "\"" + dom_afterText + "\"")
+            .replace("{{describedby}}", "\"" + dom_describedbyText + "\"")
+            .replace("{{details}}", "\"" + dom_detailsText + "\"")
+            .replace("{{figcaption}}", "\"" + dom_figcaptionText + "\"")
+            .replace("{{labelledby}}", "\"" + dom_labelledByText + "\""),
+        );
+    }, [modelSelected.systemPrompt, dom_beforeText, dom_afterText, dom_describedbyText, dom_detailsText, dom_figcaptionText, dom_labelledByText, authorsLangString, documentTitle, locale, publishersLangString]);
 
     return (<>
 

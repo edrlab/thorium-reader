@@ -12,9 +12,9 @@ import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEver
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { ISearchResult, search } from "readium-desktop/utils/search/search";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, call, cancel, join, put, take } from "redux-saga/effects";
+import { all, call, cancel, put, take } from "redux-saga/effects";
 import {
-    all as allTyped, delay as delayTyped, fork as forkTyped, select as selectTyped, takeEvery as takeEveryTyped,
+    all as allTyped, delay as delayTyped, select as selectTyped, takeEvery as takeEveryTyped,
     takeLatest as takeLatestTyped,
 } from "typed-redux-saga/macro";
 
@@ -27,7 +27,6 @@ import { readerLocalActionHighlights, readerLocalActionSearch } from "../actions
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 
 import debounce from "debounce";
-import { getResourceCache } from "./resourceCache";
 
 const handleLinkLocatorDebounced = debounce(handleLinkLocator, 200);
 
@@ -185,11 +184,11 @@ function* searchFocus(action: readerLocalActionSearch.focus.TAction) {
 
 function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
 
-    const taskRequest = yield* forkTyped(getResourceCache);
+    // const taskRequest = yield* forkTyped(getResourceCache);
 
     const taskSearch = yield* takeLatestTyped(readerLocalActionSearch.request.ID,
         function*(action: readerLocalActionSearch.request.TAction) {
-            yield join(taskRequest);
+            // yield join(taskRequest);
 
             yield* delayTyped(100); // refresh load props in Search.tsx (Caused by React18 !?, the load spinner doesn't rotate now !)
 
@@ -204,7 +203,7 @@ function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
     // wait the search cancellation
     yield take(readerLocalActionSearch.cancel.ID);
 
-    yield cancel(taskRequest);
+    // yield cancel(taskRequest);
     yield cancel(taskSearch);
     yield cancel(taskFocus);
     yield cancel(taskFound);

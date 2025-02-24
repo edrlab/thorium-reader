@@ -10,7 +10,7 @@ import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoReaderAndLib from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
 import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, call, take } from "redux-saga/effects";
+import { all, call, take, fork } from "redux-saga/effects";
 
 import * as readerConfig from "./readerConfig";
 import * as highlightHandler from "./highlight/handler";
@@ -27,6 +27,7 @@ import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } 
 import { eventChannel } from "redux-saga";
 import { put as putTyped } from "typed-redux-saga/macro";
 import { readerLocalActionReader } from "../actions";
+import { getResourceCache } from "readium-desktop/renderer/reader/redux/sagas/resourceCache";
 
 // Logger
 const filename_ = "readium-desktop:renderer:reader:saga:index";
@@ -127,6 +128,8 @@ export function* rootSaga() {
         ),
     ]);
 
+
+    yield fork(getResourceCache);
 
     console.log("SAGA-rootSaga() INIT SUCCESS");
 
