@@ -1,1 +1,537 @@
-{}
+{
+    "accessibility": {
+        "bookMenu": "Menu",
+        "importFile": "Nahrát publikaci",
+        "mainContent": "hlavní obsah",
+        "skipLink": "Přeskočit na obsah",
+        "toolbar": "panel nástrojů",
+        "closeDialog": "Zavřít"
+    },
+    "apiapp": {
+        "howItWorks": "Jak to funguje?",
+        "noLibraryFound": "Knihovna {{- name}} nenalezena",
+        "informations": "Ve Francii nabízí mnoho veřejných knihoven strojově čitelný katalog (podobný OPDS, avšak ne identický), který umožňuje čtenářům stahovat digitální publikace z jejich osobní knihovny. Začlenění této technologie do Thorium Readeru umožňuje stahovat e-knihu nebo audioknihu přímo do Thorium Readeru.\nJak propojit účet francouzských veřejných knihoven s Thorium Readerem? Je to jednoduché. Zadejte název francouzského města (např. Paříž) nebo část názvu knihovny do vyhledávacího pole a stiskněte tlačítko Hledat. Zobrazí se seznam veřejných knihoven odpovídající vašemu vyhledávání. Zvolte vybranou knihovnu a stiskněte Přidat. V aktualizovaném seznamu katalogů vyberte tuto knihovnu: zobrazí se ověřovací formulář. Zadejte své uživatelské jméno, popřípadě e-mail, a stiskněte Přihlásit se. Nyní uvidíte obsah vaší osobní knihovny, ze kterého můžete stahovat vaše půjčené e-knihy a audioknihy."
+    },
+    "app": {
+        "edit": {
+            "copy": "Kopírovat",
+            "cut": "Vyjmout",
+            "paste": "Vložit",
+            "redo": "Zpět",
+            "selectAll": "Vybrat vše",
+            "title": "Upravit"
+        },
+        "hide": "Skrýt {{- appName}}",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Ne",
+                        "yes": "Ano"
+                    },
+                    "message": "Ukládání a obnovování relace čtení",
+                    "title": "Uložit relaci?",
+                    "help": "Aktivujte, pokud chcete, aby se při příštím spuštění okna čtečky, která jsou při zavření aplikace otevřená, automaticky znovu otevřela."
+                }
+            }
+        },
+        "quit": "Odejít z {{- appName}}",
+        "update": {
+            "message": "Nová verze je dostupná. Klikněte sem, abyste se dozvěděli více.",
+            "title": "Aktualizace softwaru {{- appName}}"
+        },
+        "window": {
+            "showLibrary": "Zobrazit knihovnu / knihovničku"
+        }
+    },
+    "catalog": {
+        "about": {
+            "title": "O aplikaci {{- appName}} (on-line)"
+        },
+        "addBookToLib": "Nahrát",
+        "addTags": "Přidat štítek",
+        "addTagsButton": "Přidat",
+        "bookInfo": "O publikaci",
+        "column": {
+            "ascending": "vzestupně",
+            "descending": "sestupně",
+            "unsorted": "netříděno"
+        },
+        "delete": "Odstranit",
+        "deleteBook": "Odstranit",
+        "emptyTagList": "Publikace bez štítků.",
+        "entry": {
+            "continueReading": "Pokračovat ve čtení",
+            "lastAdditions": "Nedávno přidané"
+        },
+        "export": "Uložit jako",
+        "exportAnnotation": "Exportovat poznámky...",
+        "format": "Formát",
+        "importAnnotation": "Importovat poznámky",
+        "lastRead": "Naposledy čteno",
+        "moreInfo": "Podropnosti o publikaci",
+        "myBooks": "Mé publikace",
+        "noPublicationHelpL1": "Sem přetáhněte soubory",
+        "noPublicationHelpL2": "nebo použijte tlačítko {{- importTitle }} nahoře.",
+        "noPublicationHelpL4": "Podporované přípony:",
+        "numberOfPages": "Počet stránek",
+        "opds": {
+            "auth": {
+                "password": "Heslo",
+                "register": "Registrovat",
+                "username": "Uživatelské jméno / e-mailová adresa",
+                "cancel": "Zrušit",
+                "login": "Přihlásit se"
+            },
+            "info": {
+                "availableSince": "Od",
+                "availableState": {
+                    "available": "Dostupný",
+                    "ready": "Připraveno",
+                    "reserved": "Rezervováno",
+                    "unavailable": "Nedostupné",
+                    "unknown": "Neznámé"
+                },
+                "availableUntil": "Do",
+                "copyAvalaible": "Dostupné",
+                "copyTotal": "Kopie",
+                "numberOfItems": "Počet položek",
+                "priveValue": "Cena",
+                "state": "Stav"
+            }
+        },
+        "publisher": "Vydavatel",
+        "readBook": "Číst",
+        "released": "Publikováno",
+        "sort": "Třídit",
+        "tag": "Štítek",
+        "tags": "Štítky",
+        "update": "Upravit",
+        "allBooks": "Všechny publikace",
+        "description": "Popis",
+        "deleteTag": "Odstranit štítek",
+        "lang": "Jazyk",
+        "noPublicationHelpL3": "Publikace chráněné protokolem LCP jsou podporovány."
+    },
+    "dialog": {
+        "annotations": {
+            "descAuthor": "autor: {{- author}}",
+            "descCreator": "vytvořil",
+            "descList": "{{- nb}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
+            "descTitle": "Anotace titulu: ",
+            "title": "Importovat poznámky?",
+            "importAll": "Importovat všechny poznámky"
+        },
+        "deleteAnnotations": "Odstranit anotace?",
+        "deleteAnnotationsText": "Opravdu chcete odstranit {{- annotationListLength}} poznámek?",
+        "deletePublication": "Odstranit publikaci?",
+        "import": "Potvrdit import:",
+        "importError": "Vyskytla se chyba, ověřte příponu souboru {{acceptedExtension}}",
+        "renew": "Prodloužit výpůjčku?",
+        "deleteFeed": "Odstranit katalog?",
+        "cancel": "Zrušit",
+        "return": "Vrátit publikaci?",
+        "yes": "Ano"
+    },
+    "error": {
+        "errorBox": {
+            "message": "Chyba v souboru {{- filename}}",
+            "error": "Chyba:"
+        }
+    },
+    "header": {
+        "allBooks": "Všechny publikace",
+        "catalogs": "Katalogy",
+        "fitlerTagTitle": "Filtrovat podle štítku",
+        "gridTitle": "Mřížka",
+        "importTitle": "Importovat publikace",
+        "listTitle": "Tabulka",
+        "myCatalogs": "Mé katalogy",
+        "refreshTitle": "znovu načíst",
+        "searchPlaceholder": "Hledat",
+        "searchTitle": "Hledat",
+        "settings": "Nastavení",
+        "viewMode": "Mód zobrazení",
+        "home": "Menu knihovničky",
+        "downloads": "Stahování",
+        "homeTitle": "Domů"
+    },
+    "library": {
+        "lcp": {
+            "hint": "Nápověda:",
+            "open": "Otevřít",
+            "whatIsLcp?": "Co je LCP?",
+            "whatIsLcpInfoDetails": "LCP znamená „Licensed Content Protection“.",
+            "whatIsLcpInfoDetailsLink": "Pro více informací klikněte na tento odkaz na webovou stránku EDRLabu."
+        }
+    },
+    "message": {
+        "annotations": {
+            "alreadyImported": "Všechny poznámky byly již importovány.",
+            "emptyFile": "V souboru nejsou dostupné žádné poznámky.",
+            "success": "Import úspěšně dokončen.",
+            "noBelongTo": "Poznámky nebylo možné importovat – alespoň jedna poznámka nepatří k této publikaci."
+        },
+        "download": {
+            "error": "Stahování publikace {{- title}} selhalo: {{- err}}"
+        },
+        "import": {
+            "alreadyImport": "Publikace {{- title}} je již nahrána.",
+            "success": "Import publikace {{- title}} dokončen.",
+            "fail": "Import {{- path}} selhal: {{- err}}"
+        },
+        "open": {
+            "error": "Načítání publikace sehlalo: {{- err}}"
+        }
+    },
+    "opds": {
+        "addForm": {
+            "addButton": "Přidat",
+            "namePlaceholder": "Název",
+            "url": "Odkaz:",
+            "urlPlaceholder": "Odkaz",
+            "name": "Název:"
+        },
+        "empty": "Nebyla nalezena žádná publikace",
+        "firstPage": "První",
+        "lastPage": "Poslední",
+        "menu": {
+            "addExtract": "Importovat úryvek",
+            "goBuyBook": "Koupit publikaci",
+            "goLoanBook": "Zapůjčit si publikaci",
+            "goRevokeLoanBook": "Zrušit půjčku",
+            "goSubBook": "Odebírat",
+            "aboutBook": "O publikaci"
+        },
+        "network": {
+            "noInternet": "Bez připojení k internetu",
+            "noInternetMessage": "Zkuste zkontrolovat síťový kabel, modem, router nebo wi-fi"
+        },
+        "shelf": "Polička",
+        "updateForm": {
+            "name": "Název:",
+            "updateButton": "Upravit",
+            "url": "Odkaz:"
+        },
+        "whatIsOpds": "Co je OPDS?",
+        "addFormApiapp": {
+            "title": "Přidat účet knihovny"
+        },
+        "breadcrumbRoot": "Katalogy",
+        "next": "Další",
+        "previous": "Předchozí"
+    },
+    "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": "Veškerý obsah je možné číst jako hlasité čtení nebo dynamické Brailleovo písmo"
+            },
+            "accessibilityFeature": {
+                "displayTransformability": "Vzhled textu a rozvržení stránky je možné upravit",
+                "printPageNumbers": "Obsahuje seznam stránek pro přechod na stránky z verze zdroje tisku"
+            },
+            "accessibilityHazard": {
+                "motionSimulation": "Simulace pohybu",
+                "name": "Nebezpečí:",
+                "none": "Žádné",
+                "noSound": "Bez zvuku",
+                "sound": "Zvuk",
+                "unknown": "Neznámé"
+            },
+            "certifierReport": "Zpráva o certifikaci:",
+            "moreInformation": "Více informací",
+            "name": "Přístupnost",
+            "noA11y": "Nejsou k dispozici žádné informace o přístupnosti"
+        },
+        "actions": "Akce",
+        "author": "Autor",
+        "cover": {
+            "img": "titulní obrázek"
+        },
+        "day": "den",
+        "days": "dny",
+        "duration": {
+            "title": "Trvání"
+        },
+        "encryptedNoLicense": "Publikace je šifrovaná, ale postrádá LCP licenci!",
+        "expired": "Výpůjčka vypršela",
+        "expiredLcp": "Licence LCP této publikace vypršela.",
+        "lcpEnd": "Skončit",
+        "lcpRightsCopy": "Zkopírováno znaků",
+        "lcpRightsPrint": "Vytištěné stránky",
+        "licenceLCP": "Licence (LCP)",
+        "licenseOutOfDate": "Zastaralá LCP licence.",
+        "licenseSignatureInvalid": "Neplatný podpis LCP licence.",
+        "markAsRead": "Označit jako přečtené",
+        "progression": {
+            "title": "Postup"
+        },
+        "read": "Dokončeno",
+        "remainingTime": "Zápůjčka (zbývající čas)",
+        "renewButton": "Obnovit",
+        "returnedLcp": "Tato publikace chráněná protokolem LCP byla vrácena.",
+        "revokedLcp": "Licence LCP této publikace je zrušena.",
+        "seeLess": "Zobrazit méně",
+        "seeMore": "Zobrazit více",
+        "title": "Název",
+        "lcpStart": "Začít",
+        "returnButton": "Vrátit",
+        "licensed": "Licencováno",
+        "timeLeft": "Zbývající čas"
+    },
+    "reader": {
+        "annotations": {
+            "Color": "Barva",
+            "annotationsOptions": "Možnosti anotace",
+            "colors": {
+                "bluegreen": "Modrozelená",
+                "cyan": "Azurová",
+                "green": "Zelená",
+                "orange": "Oranžová",
+                "red": "Červená",
+                "yellow": "Žlutá",
+                "lightblue": "Světle modrá",
+                "purple": "Fialová"
+            },
+            "date": "Datum úpravy",
+            "filter": {
+                "all": "Vše",
+                "filterByColor": "Filtrovat podle barvy",
+                "filterByCreator": "Filtrovat podle autora",
+                "filterByDrawtype": "Filtrovat podle typu",
+                "filterByTag": "Filtrovat podle štítku",
+                "filterOptions": "Možnosti filtrování",
+                "none": "Žádné"
+            },
+            "hide": "Nezobrazovat",
+            "highlight": "Zvýraznit",
+            "noSelectionToast": "Žádný výběr",
+            "note": "{{- color}} poznámka",
+            "saveNote": "Uložit",
+            "sorting": {
+                "lastcreated": "Naposled vytvořeno",
+                "progression": "Postup",
+                "sortingOptions": "Možnosti seřazení",
+                "lastmodified": "Naposled upraveno"
+            },
+            "type": {
+                "outline": "Osnova",
+                "solid": "Celistvé pozadí",
+                "strikethrough": "Přeškrtnout",
+                "underline": "Podtrhnout"
+            },
+            "export": "Uložit poznámky jako...",
+            "addNote": "Anotovat",
+            "annotationsExport": {
+                "title": "Název"
+            }
+        },
+        "divina": {
+            "mute": "ztlumit zvuk"
+        },
+        "goToContent": "Přejít na obsah",
+        "marks": {
+            "annotations": "Anotace",
+            "delete": "Odstranit",
+            "progression": "Postup",
+            "saveMark": "Uložit záložku",
+            "search": "Hledat",
+            "searchResult": "Hledat {{- searchText}}",
+            "toc": "Obsah",
+            "edit": "Upravit",
+            "bookmarks": "Záložky",
+            "goTo": "Jít na stránku"
+        },
+        "media-overlays": {
+            "activate": "Aktivovat hlasité čtení",
+            "disableContinuousPlay": "Zakázat souvislé přehrávání"
+        },
+        "navigation": {
+            "annotationTitle": "anotace",
+            "backHomeTitle": "Zavtřít toto čtecí okno (zpátky do knihovničky)",
+            "currentPage": "Aktuální stránka: {{- current}}",
+            "goTo": "Jít na",
+            "goToError": "Zalomení stránky neexistuje",
+            "goToPlaceHolder": "Zadejte číslo stránky",
+            "goToTitle": "Jít na stránku",
+            "infoTitle": "informace",
+            "magnifyingGlassButton": "hledat publikaci",
+            "openTableOfContentsTitle": "navigace",
+            "page": "Stránka",
+            "settingsTitle": "nastavení",
+            "currentPageTotal": "Aktuální stránka: {{- current}}/{{- total}}",
+            "bookmarkTitle": "záložka",
+            "ZenModeExit": "Opustit zenový mód",
+            "ZenModeTitle": "Zenový mód"
+        },
+        "picker": {
+            "search": {
+                "founds": "{{- nResults}} shod",
+                "next": "Další",
+                "input": "přesná shoda",
+                "notFound": "žádná shoda",
+                "previous": "Předchozí",
+                "submit": "Najít",
+                "results": "Výsledky"
+            },
+            "searchTitle": "Hledat:"
+        },
+        "settings": {
+            "column": {
+                "auto": "Výchozí",
+                "one": "1 sloupec",
+                "title": "Sloupce",
+                "two": "2 sloupce"
+            },
+            "customFontSelected": "Zvolili jste osobní písmo",
+            "customizeReader": "Přizpůsobit formátování textu",
+            "disabled": "vypnuto",
+            "display": "Zobrazení",
+            "disposition": {
+                "title": "Rozložení"
+            },
+            "font": "Písmo",
+            "infoCustomFont": "Vyberte vlastní písmo z operačního systému zadáním jeho názvu",
+            "justification": "Zarovnání",
+            "letterSpacing": "Proložení písmen",
+            "lineSpacing": "Řádkování",
+            "margin": "Okraj",
+            "noFootnotes": "Vypnout poznámky pod čarou",
+            "noRuby": "Skrýt japonské znaky rubi",
+            "paraSpacing": "Mezery mezi odstavci",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "100 %",
+                    "200pct": "200 %",
+                    "300pct": "300 %",
+                    "500pct": "500 %",
+                    "width": "podle šírky",
+                    "150pct": "150 %",
+                    "50pct": "50 %",
+                    "fit": "podle stránky"
+                },
+                "title": "Přiblížení"
+            },
+            "preset": {
+                "apply": "Použít",
+                "applyDetails": "Použít preferovanou konfiguraci na aktuální publikaci.",
+                "resetDetails": "Obnovit preferovanou konfiguraci (výchozí nastavení).",
+                "save": "Uložit",
+                "title": "Preference",
+                "detail": "Uložit / Použít / Obnovit preferovanou konfiguraci.",
+                "saveDetails": "Tento krok uloží aktuální konfiguraci, tj. vámi preferované možnosti zobrazení a formátování textu. Nastavení pak můžete použít na další publikace kliknutím na tlačítko „použít“ v ostatních čtecích oknech.",
+                "reset": "Obnovit"
+            },
+            "preview": "Náhled",
+            "text": "Text",
+            "theme": {
+                "name": {
+                    "Contrast1": "Kontrast 1",
+                    "Contrast2": "Kontrast 2",
+                    "Contrast3": "Kontrast 3",
+                    "Contrast4": "Kontrast 4",
+                    "Neutral": "Neutrální",
+                    "Night": "Noční",
+                    "Paper": "Papír",
+                    "Sepia": "Sépie"
+                },
+                "title": "Téma"
+            },
+            "wordSpacing": "Proložení slov",
+            "fontSize": "Velikost písma",
+            "justify": "Do bloku"
+        },
+        "svg": {
+            "right": "Doprava",
+            "left": "Doleva"
+        },
+        "toc": {
+            "publicationNoToc": "Bez obsahu"
+        },
+        "tts": {
+            "activate": "Aktivovat funkci Text To Speech (TTS)",
+            "language": "Jazyk funkce TTS",
+            "pause": "Pozastavit TTS",
+            "play": "Spustit TTS",
+            "previous": "Předchozí TTS",
+            "sentenceDetect": "Rozdělit text funkce TTS",
+            "sentenceDetectDescription": "Rozdělit dlouhé odstavce do vět.",
+            "speed": "Rychlost přehrávání TTS",
+            "stop": "Zastavit TTS",
+            "next": "Další TTS",
+            "options": "Možnosti funkce TTS",
+            "voice": "Hlas funkce TTS"
+        }
+    },
+    "settings": {
+        "annotationCreator": {
+            "creator": "Autor anotací (volitelné)",
+            "help": "Pokud je zadáno, bude toto jméno zahrnuto v metadatech exportovaných poznámek.",
+            "name": "Jméno",
+            "organization": "Společnost",
+            "person": "Osoba",
+            "type": "Typ:"
+        },
+        "auth": {
+            "help": "Tento krok odstraní všechny přihlašovací údaje OPDS.",
+            "wipeData": "Vymazat přihlašovací údaje"
+        },
+        "keyboard": {
+            "keyboardShortcuts": "Klávesové zkratky",
+            "loadUserJson": "Načíst z uživatelského souboru",
+            "editUserJson": "Upravit uživatelský soubor...",
+            "resetDefaults": "Obnovit (načíst výchozí)",
+            "cancel": "Zrušit",
+            "save": "Uložit"
+        },
+        "library": {
+            "enableAPIAPP": "Aktivovat knihovní systém „PNB“",
+            "title": "Přístup k účtům francouzských knihoven"
+        },
+        "session": {
+            "title": "Povolit ukládání relací"
+        },
+        "tabs": {
+            "appearance": "Vzhled",
+            "general": "Obecné",
+            "keyboardShortcuts": "Klávesové zkratky"
+        },
+        "theme": {
+            "auto": "Automatický",
+            "dark": "Tmavý",
+            "description": "Motiv aplikace bude odpovídat operačnímu systému.",
+            "light": "Světlý",
+            "title": "Motiv aplikace"
+        },
+        "language": {
+            "languageChoice": "Jazyk"
+        }
+    },
+    "wizard": {
+        "buttons": {
+            "discover": "Objevte, co je nového",
+            "goToBooks": "Přejít na mé publikace",
+            "next": "Další"
+        },
+        "description": {
+            "home": "Thorium vypadá jinak! Objevte, co je nového...",
+            "readingView1": "Přizpůsobte si nastavení čtení a poslechu: Thorium nyní nabízí více barevných motivů jak pro uživatelské rozhraní, tak pro dokumenty. Nyní je také snazší nastavit „čtení nahlas“ e-knihy se syntetickou řečí a synchronizovaným textem/zvukovým vyprávěním.",
+            "annotations": "Zvýrazněte text dokumentu, zvolte styl a barvu, připojte osobní poznámky. Vytvořte anotace v „rychlém“ režimu, abyste obešli editor (později můžete zadat text a upravit styly). Pro extra rychlost použijte „okamžitý“ režim, který vytváří poznámky bezprostředně po zvýraznění textu!",
+            "readingView2": "Vylepšené uživatelské rozhraní aplikace Thorium usnadňuje hledání textu v publikacích, zkoumání výsledků vyhledávání, procházení konkrétních stránek, procházení obsahu, vytváření záložek atd. díky novým „ukotveným“ panelům. Režim čtení přes celou obrazovku nadále nabízí prostředí bez rušivých vlivů.",
+            "yourBooks": "Vítejte ve své přepracované osobní knihovničce! V zobrazení „mřížka“ jednoduše filtrujte podle štítků nebo vyhledejte publikace podle klíčových slov. V rozšířeném zobrazení „tabulka“ vyberte a seřaďte publikace podle konkrétních autorů, názvu, data, formátu atd."
+        },
+        "tab": {
+            "yourBooks": "Vaše publikace",
+            "annotations": "Anotace",
+            "catalogs": "Katalogy",
+            "home": "Domů",
+            "readingView": "Režim čtení"
+        },
+        "title": {
+            "allBooks": "Všechny mé publikace",
+            "newFeature": "Nová funkce: Anotace",
+            "welcome": "Vítejte v aplikaci Thorium 3.0"
+        },
+        "dontShow": "Znovu nezobrazovat"
+    }
+}
