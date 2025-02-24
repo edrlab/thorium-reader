@@ -777,7 +777,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                             <VoiceSelection handleTTSVoice={this.handleTTSVoice} voices={this.state.voices}/>
                                                                         )}
                                                                     </div>
-                                                                    <ReadingAudio useMO={useMO}/>
+                                                                    <ReadingAudio useMO={useMO} ttsState={this.props.ttsState} ttsPause={this.props.handleTTSPause} ttsResume={this.props.handleTTSResume} />
                                                                 </div>
                                                                 <Popover.Arrow className={stylesReaderHeader.popover_arrow} />
                                                             </Popover.Content>

@@ -10,6 +10,7 @@ import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scs
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
+import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -59,7 +60,17 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import { comparePublisherReaderConfig } from "../../../common/publisherConfig";
 import debounce from "debounce";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
-import { HighlightDrawTypeBackground, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
+import { HighlightDrawTypeBackground, HighlightDrawTypeUnderline, HighlightDrawTypeOutline, HighlightDrawTypeOpacityMask, HighlightDrawTypeOpacityMaskRuler } from "@r2-navigator-js/electron/common/highlight";
+import { TTSStateEnum } from "@r2-navigator-js/electron/renderer/readaloud";
+import { annotationsColorsLight } from "./AnnotationEdit";
+import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
+import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
+
+const annotationsColorsLight_ = {
+    [rgbToHex(readerConfigInitialState.ttsHighlightColor)]: "Dark Yellow" as TTranslatorKeyParameter,
+    [rgbToHex(readerConfigInitialState.ttsHighlightColor_WORD)]: "Dark Orange" as TTranslatorKeyParameter,
+    ...annotationsColorsLight,
+};
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps {
@@ -639,13 +650,28 @@ const ReadingDisplayAlign = () => {
     );
 };
 
-export const ReadingAudio = ({ useMO }: { useMO: boolean }) => {
+export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: boolean, ttsState: TTSStateEnum, ttsPause: () => void, ttsResume: () => void }) => {
     const [__] = useTranslator();
 
     // : Pick<ReaderConfig, "ttsEnableOverlayMode" | "mediaOverlaysEnableCaptionsMode" | "ttsAndMediaOverlaysDisableContinuousPlay" | "mediaOverlaysEnableSkippability" | "ttsEnableSentenceDetection">
     const config = useReaderConfigAll();
-    const { mediaOverlaysEnableCaptionsMode: moCaptions, ttsHighlightStyle, ttsHighlightStyle_WORD, ttsEnableOverlayMode: ttsCaptions, ttsAndMediaOverlaysDisableContinuousPlay: disableContinuousPlay, mediaOverlaysEnableSkippability: skippability, ttsEnableSentenceDetection: splitTTStext } = config;
+    const { ttsHighlightStyle, ttsHighlightStyle_WORD, ttsHighlightColor, ttsHighlightColor_WORD, mediaOverlaysEnableCaptionsMode: moCaptions, ttsEnableOverlayMode: ttsCaptions, ttsAndMediaOverlaysDisableContinuousPlay: disableContinuousPlay, mediaOverlaysEnableSkippability: skippability, ttsEnableSentenceDetection: splitTTStext } = config;
     const set = useSaveReaderConfigDebounced();
+
+    const ttsTogglePlayResume = (func: () => void) => {
+        const wasPlaying = ttsState === TTSStateEnum.PLAYING;
+        if (wasPlaying) {
+            ttsPause();
+        }
+        setTimeout(() => {
+            func();
+            if (wasPlaying) {
+                setTimeout(() => {
+                    ttsResume();
+                }, 200);
+            }
+        }, wasPlaying ? 200 : 0);
+    };
 
     const options: ({
         id: string,
@@ -704,111 +730,187 @@ export const ReadingAudio = ({ useMO }: { useMO: boolean }) => {
                 set({ ttsEnableSentenceDetection: !splitTTStext });
             },
         });
-        options.push({
-            id: "ttsHighlightStyle",
-            name: "ttsHighlightStyle",
-            // `${__("reader.tts.highlightStyle")}`,
-            label: "TTS highlight style",
-            // `${__("reader.tts.highlightStyleDescription")}`,
-            description: "Solid Background = 0, Underline = 1, Strikethrough = 2, Outline = 3, Opacity Mask = 4, Opacity Mask / Ruler = 5",
-            checked: null,
-            value: `${typeof ttsHighlightStyle === "undefined" ? HighlightDrawTypeBackground : ttsHighlightStyle}`,
-            onChange: (ev) => {
-                const v = parseInt(ev.target.value, 10);
-                if (!Number.isNaN(v) && v >= 0 && v <= 5) {
-                    set({ ttsHighlightStyle: v });
-                }
-            },
-        });
-        options.push({
-            id: "ttsHighlightStyle_WORD",
-            name: "ttsHighlightStyle_WORD",
-            // `${__("reader.tts.highlightStyleWord")}`,
-            label: "TTS highlight style (word)",
-            // `${__("reader.tts.highlightStyleDescriptionWord")}`,
-            // description: "Solid Background = 0, Underline = 1, Strikethrough = 2, Outline = 3, Opacity Mask = 4, Opacity Mask / Ruler = 5",
-            description: "",
-            checked: null,
-            value: `${typeof ttsHighlightStyle_WORD === "undefined" ? HighlightDrawTypeUnderline : ttsHighlightStyle_WORD}`,
-            onChange: (ev) => {
-                const v = parseInt(ev.target.value, 10);
-                if (!Number.isNaN(v) && v >= 0 && v <= 5) {
-                    set({ ttsHighlightStyle_WORD: v });
-                }
-            },
-        });
     }
 
+    const ttsHighlightStyles = [{
+        description: "Solid background + word underline",
+        ttsHS: HighlightDrawTypeBackground,
+        ttsHSW: HighlightDrawTypeUnderline,
+    }, {
+        description: "Solid background + word outline",
+        ttsHS: HighlightDrawTypeBackground,
+        ttsHSW: HighlightDrawTypeOutline,
+    }, {
+        description: "Solid outline + word underline",
+        ttsHS: HighlightDrawTypeOutline,
+        ttsHSW: HighlightDrawTypeUnderline,
+    }, {
+        description: "Solid outline + word background",
+        ttsHS: HighlightDrawTypeOutline,
+        ttsHSW: HighlightDrawTypeBackground,
+    }, {
+        description: "Mask + word underline",
+        ttsHS: HighlightDrawTypeOpacityMask,
+        ttsHSW: HighlightDrawTypeUnderline,
+    }, {
+        description: "Mask + word outline",
+        ttsHS: HighlightDrawTypeOpacityMask,
+        ttsHSW: HighlightDrawTypeOutline,
+    }, {
+        description: "Mask + word solid background",
+        ttsHS: HighlightDrawTypeOpacityMask,
+        ttsHSW: HighlightDrawTypeBackground,
+    }, {
+        description: "Mask block + word underline",
+        ttsHS: HighlightDrawTypeOpacityMaskRuler,
+        ttsHSW: HighlightDrawTypeUnderline,
+    }, {
+        description: "Mask block + word outline",
+        ttsHS: HighlightDrawTypeOpacityMaskRuler,
+        ttsHSW: HighlightDrawTypeOutline,
+    }, {
+        description: "Mask block + word solid background",
+        ttsHS: HighlightDrawTypeOpacityMaskRuler,
+        ttsHSW: HighlightDrawTypeBackground,
+    }].map((obj, index) => {
+        return {
+            ...obj,
+            id: index,
+        };
+    });
+    const ttsHighlightStylesKey = ttsHighlightStyles.findIndex((obj) => ttsHighlightStyle === obj.ttsHS && ttsHighlightStyle_WORD === obj.ttsHSW);
+
     return (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px,1fr)" }}>
+        <>
+        {
+            //gridTemplateColumns: "repeat(auto-fill, minmax(300px,1fr)"
+        }
+        <div style={{ display: "grid" }}>
             {options.map((option) =>
-            option.checked === null ?
-            (
-                <div style={{ padding: "10px 0" }} key={option.id}>
-                    <hr/>
-                    <label htmlFor={option.id}>
-                        {option.label}
-                    </label>
-                    <br/>
-                    <input
-                        id={option.id}
-                        type="text"
-                        name={option.name}
-                        value={option.value}
-                        onChange={option.onChange}
-                    />
-                    <br/>
-                    <p>
-                        {option.description}
-                    </p>
-                </div>
-            ) : (
-                <div style={{ padding: "10px 0" }} key={option.id}>
-                    <input
-                        id={option.id}
-                        type="checkbox"
-                        name={option.name}
-                        onChange={option.onChange}
-                        defaultChecked={option.checked}
-                        className={stylesGlobal.checkbox_custom_input}
-                    />
-                    <label htmlFor={option.id} className={stylesGlobal.checkbox_custom_label}>
-                        <div
-                            tabIndex={0}
-                            role="checkbox"
-                            aria-checked={option.checked}
-                            aria-label={option.label}
-                            title={option.description}
-                            onKeyDown={(e) => {
-                                // if (e.code === "Space") {
-                                if (e.key === " ") {
-                                    e.preventDefault(); // prevent scroll
-                                }
-                            }}
-                            onKeyUp={(e) => {
-                                // if (e.code === "Space") {
-                                if (e.key === " ") {
-                                    e.preventDefault();
-                                    // @ts-expect-error unused function argument (boolean toggle from state)
-                                    option.onChange();
-                                }
-                            }}
-                            className={stylesGlobal.checkbox_custom}
-                            style={{ border: option.checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: option.checked ? "var(--color-blue)" : "transparent" }}>
-                            {option.checked ?
-                                <SVG ariaHidden svg={CheckIcon} />
-                                :
-                                <></>
+            <div style={{ padding: "10px 0" }} key={option.id}>
+                <input
+                    id={option.id}
+                    type="checkbox"
+                    name={option.name}
+                    onChange={option.onChange}
+                    defaultChecked={option.checked}
+                    className={stylesGlobal.checkbox_custom_input}
+                />
+                <label htmlFor={option.id} className={stylesGlobal.checkbox_custom_label}>
+                    <div
+                        tabIndex={0}
+                        role="checkbox"
+                        aria-checked={option.checked}
+                        aria-label={option.label}
+                        title={option.description}
+                        onKeyDown={(e) => {
+                            // if (e.code === "Space") {
+                            if (e.key === " ") {
+                                e.preventDefault(); // prevent scroll
                             }
-                        </div>
-                        <span aria-hidden>
-                            {option.label}
-                        </span>
-                    </label>
-                    {/* <p className={stylesSettings.session_text}>{option.description}</p> */}
-                </div>
-            ))}
+                        }}
+                        onKeyUp={(e) => {
+                            // if (e.code === "Space") {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                                // @ts-expect-error unused function argument (boolean toggle from state)
+                                option.onChange();
+                            }
+                        }}
+                        className={stylesGlobal.checkbox_custom}
+                        style={{ border: option.checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: option.checked ? "var(--color-blue)" : "transparent" }}>
+                        {option.checked ?
+                            <SVG ariaHidden svg={CheckIcon} />
+                            :
+                            <></>
+                        }
+                    </div>
+                    <span aria-hidden>
+                        {option.label}
+                    </span>
+                </label>
+                {/* <p className={stylesSettings.session_text}>{option.description}</p> */}
+            </div>)}
         </div>
+
+        {!useMO ?
+        (
+        <div style={{ border: "2px dotted black", padding: 6 }}>
+        <div className={stylesReader.ttsSelectRate}>
+        <ComboBox label="TTS highlight style"
+            defaultItems={ttsHighlightStyles}
+            defaultSelectedKey={ ttsHighlightStylesKey === -1 ? 0 : ttsHighlightStylesKey }
+            selectedKey={ ttsHighlightStylesKey === -1 ? 0 : ttsHighlightStylesKey }
+            onSelectionChange={(key) => {
+                if (key == null || key == undefined) return;
+                // const obj = ttsHighlightStyles.find((_obj, index) => index === key);
+                const obj = ttsHighlightStyles.find((obj) => obj.id === key);
+                if (obj)
+                ttsTogglePlayResume(() => {
+                    set({ ttsHighlightStyle: obj.ttsHS, ttsHighlightStyle_WORD: obj.ttsHSW });
+                });
+            }}>
+            {item => <ComboBoxItem>{item.description}</ComboBoxItem>}
+        </ComboBox>
+        </div>
+        <div role="radiogroup">
+        <p style={{marginBottom:4, paddingBottom: 0, fontWeight:"bold", fontSize:"120%"}}>Main colour</p>
+            <div style={{width:"fit-content"}} className={stylesAnnotations.colorPicker} role="radiogroup">
+            {
+            Object.entries(annotationsColorsLight_).map(([colorHex, translatorKey]) => {
+                const ttsHighlightColorHex = ttsHighlightColor ? rgbToHex(ttsHighlightColor) : rgbToHex(readerConfigInitialState.ttsHighlightColor);
+                return (
+                    <div key={`color_${colorHex}_key`}>
+                        <input type="radio" id={`ttscolorpick${colorHex}`} name="ttscolorpick" value={colorHex}
+                            onChange={() => {
+                                ttsTogglePlayResume(() => {
+                                    set({ ttsHighlightColor: hexToRgb(colorHex) });
+                                });
+                            }}
+                            checked={ttsHighlightColorHex === colorHex}
+                            aria-label={__(translatorKey)}
+                        />
+                        <label title={__(translatorKey)} htmlFor={`ttscolorpick${colorHex}`}
+                            style={{ backgroundColor: colorHex, border: ttsHighlightColorHex === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
+                        >
+                            {ttsHighlightColorHex === colorHex ? <SVG ariaHidden svg={DoubleCheckIcon} /> : <></>}
+                        </label>
+                    </div>
+                );
+            })
+            }
+            </div>
+            <p style={{marginBottom:4, paddingBottom: 0, fontWeight:"bold", fontSize:"120%"}}>Word colour</p>
+            <div style={{width:"fit-content"}} className={stylesAnnotations.colorPicker} role="radiogroup">
+            {
+            Object.entries(annotationsColorsLight_).map(([colorHex, translatorKey]) => {
+                const ttsHighlightColor_WORDHex = ttsHighlightColor_WORD ? rgbToHex(ttsHighlightColor_WORD) : rgbToHex(readerConfigInitialState.ttsHighlightColor_WORD);
+                return (
+                    <div key={`colorx_${colorHex}_key`}>
+                        <input type="radio" id={`ttscolorpickword${colorHex}`} name="ttscolorpickword" value={colorHex}
+                            onChange={() => {
+                                ttsTogglePlayResume(() => {
+                                    set({ ttsHighlightColor_WORD: hexToRgb(colorHex) });
+                                });
+                            }}
+                            checked={ttsHighlightColor_WORDHex === colorHex}
+                            aria-label={__(translatorKey)}
+                        />
+                        <label title={__(translatorKey)} htmlFor={`ttscolorpickword${colorHex}`}
+                            style={{ backgroundColor: colorHex, border: ttsHighlightColor_WORDHex === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
+                        >
+                            {ttsHighlightColor_WORDHex === colorHex ? <SVG ariaHidden svg={DoubleCheckIcon} /> : <></>}
+                        </label>
+                    </div>
+                );
+            })
+            }
+            </div>
+        </div>
+        </div>
+        )
+        : <></> }
+        </>
     );
 };
 
