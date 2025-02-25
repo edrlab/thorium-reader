@@ -62,9 +62,9 @@ import debounce from "debounce";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { HighlightDrawTypeBackground, HighlightDrawTypeUnderline, HighlightDrawTypeOutline, HighlightDrawTypeOpacityMask, HighlightDrawTypeOpacityMaskRuler } from "@r2-navigator-js/electron/common/highlight";
 import { TTSStateEnum } from "@r2-navigator-js/electron/renderer/readaloud";
-import { annotationsColorsLight } from "./AnnotationEdit";
 import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
+import { annotationsColorsLight } from "readium-desktop/common/redux/states/renderer/annotation";
 
 const annotationsColorsLight_ = {
     [rgbToHex(readerConfigInitialState.ttsHighlightColor)]: "Dark Yellow" as TTranslatorKeyParameter,

@@ -9,7 +9,7 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 
 import * as React from "react";
-import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
+import { annotationDrawType, annotationsColorsLight, IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -31,7 +31,6 @@ import { TextArea } from "react-aria-components";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
-import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
 
 // import { readiumCSSDefaults } from "@r2-navigator-js/electron/common/readium-css-settings";
 
@@ -42,35 +41,6 @@ interface IProps {
     dockedMode: boolean;
     btext?: string;
 }
-
-// DO NOT REMOVE THIS COMMENT BLOCK (USED FOR TRANSLATOR KEYS DETECTION DURING CODE SCANNING)
-// __("reader.annotations.colors.red")
-// __("reader.annotations.colors.orange")
-// __("reader.annotations.colors.yellow")
-// __("reader.annotations.colors.green")
-// __xxx("reader.annotations.colors.bluegreen") // ===> "bluegreen" translation becomes unused!
-// __xxx("reader.annotations.colors.lightblue") // ===> "lightblue" translation becomes unused!
-// __("reader.annotations.colors.cyan")
-// __("reader.annotations.colors.purple")
-
-// https://github.com/readium/annotations/blob/main/README.md#14-body
-export const annotationsColorsLight: Record<string, TTranslatorKeyParameter> = {
-    "#EB9694": "reader.annotations.colors.red", // "pink"
-    "#FAD0C3": "reader.annotations.colors.orange", // "orange"
-    "#FEF3BD": "reader.annotations.colors.yellow", // "yellow"
-    "#C1EAC5": "reader.annotations.colors.green", // "green"
-    // "#BEDADC": "reader.annotations.colors.bluegreen", // ===> "bluegreen" translation becomes unused!
-    // "#C4DEF6": "reader.annotations.colors.lightblue", // ===> "lightblue" translation becomes unused!
-    "#BED3F3": "reader.annotations.colors.cyan", // "blue"
-    "#D4C4FB": "reader.annotations.colors.purple", // "purple"
-};
-
-const drawType: TDrawType[] = [
-    "solid_background",
-    "underline",
-    "strikethrough",
-    "outline",
-];
 
 export const AnnotationEdit: React.FC<IProps> = (props) => {
 
@@ -206,7 +176,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
             <div className={stylesAnnotations.annotation_actions_container}>
                 <h4>{__("reader.annotations.highlight")}</h4>
                 <div role="radiogroup" className={stylesAnnotations.stylePicker}>
-                    {drawType.map((type, i) => (
+                    {annotationDrawType.map((type, i) => (
                         <div key={type}>
                             <input type="radio" id={`anno_type_${uuid}_${type}`} name="drawtype" value={type}
                                 onChange={() => setDrawType(type)}
