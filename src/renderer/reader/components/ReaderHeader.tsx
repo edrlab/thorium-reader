@@ -79,7 +79,16 @@ import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { VoiceSelection } from "./header/voiceSelection";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import { filterOnLanguage, getVoices, groupByRegions, IVoices } from "readium-speech";
-import { ttsVoice as r2navigatorSetTTSVoice } from "@r2-navigator-js/electron/renderer/index";
+
+const ConvertIVoiceWithIndexReadiumSpeechToSpeechSynthesisVoiceNavigator = (voice: IVoices) => {
+    return {
+        default: false,
+        lang: voice.language,
+        localService: voice.offlineAvailability,
+        name: voice.name,
+        voiceURI: voice.voiceURI,
+    };
+};
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -222,18 +231,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         // }, 200).bind(this);
     }
 
-    private handleTTSVoice = (voice: IVoices) => {
-        const v = voice ? {
-            default: false,
-            lang: voice.language,
-            localService: voice.offlineAvailability,
-            name: voice.name,
-            voiceURI: voice.voiceURI,
-        } : null;
-        r2navigatorSetTTSVoice(v);
-        this.props.setConfig({ ttsVoice: v });
-    };
-
     public componentDidMount() {
 
         // ensureKeyboardListenerIsInstalled();
@@ -247,6 +244,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                     voices: _voices.map((v, i) => ({...v, id: i+1})),
                 });
 
+                // Change this: array of preferred by language
+
                 const voicesFilteredOnLanguage = filterOnLanguage(_voices, this.props.r2Publication.Metadata?.Language || []) as IVoicesWithIndex[];
                 const voicesGroupedByRegions = groupByRegions(voicesFilteredOnLanguage, this.props.r2Publication.Metadata?.Language || [], this.props.locale) as Map<string, IVoicesWithIndex[]>;
 
@@ -256,24 +255,24 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                 const firstVoiceArraySecondVoicesListItems = (firstVoiceArrayFirst || [])[1];
                 const firstVoiceFirstItemFromVoicesList = (firstVoiceArraySecondVoicesListItems || [])[0];
                 if (firstVoiceFirstItemFromVoicesList) {
-                    const firstVoice = firstVoiceFirstItemFromVoicesList;
-                    if (this.props.ttsVoice) {
-                        if (firstVoice.voiceURI && firstVoice.voiceURI === this.props.ttsVoice.voiceURI &&
-                            firstVoice.name && firstVoice.name === this.props.ttsVoice.name &&
-                            firstVoice.language && firstVoice.language === this.props.ttsVoice.lang
+                    const firstVoice = ConvertIVoiceWithIndexReadiumSpeechToSpeechSynthesisVoiceNavigator(firstVoiceFirstItemFromVoicesList);
+                    if (this.props.ttsVoices.length) {
+                        if (firstVoice.voiceURI && firstVoice.voiceURI === this.props.ttsVoices[0]?.voiceURI &&
+                            firstVoice.name && firstVoice.name === this.props.ttsVoices[0]?.name &&
+                            firstVoice.lang && firstVoice.lang === this.props.ttsVoices[0]?.lang
                         ) {
                             // nothing
                         } else {
-                            if (firstVoice.language?.split("-")[0] === this.props.ttsVoice.lang?.split("-")[0]) {
+                            if (firstVoice.lang?.split("-")[0] === this.props.ttsVoices[0]?.lang?.split("-")[0]) {
                                 // nothing
                             } else {
                                 // when language code switch, change the default ttsVoice
-                                this.handleTTSVoice(firstVoice);
+                                this.props.handleTTSVoice(firstVoice);
                             }
                         }
                     } else {
                         // if there is no default TTSVoice, set the first voice returned par getVoices
-                        this.handleTTSVoice(firstVoice);
+                        this.props.handleTTSVoice(firstVoice);
                     }
                 }
             }
@@ -774,7 +773,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                             </ComboBox>
                                                                         </div>
                                                                         {!useMO && (
-                                                                            <VoiceSelection handleTTSVoice={this.handleTTSVoice} voices={this.state.voices}/>
+                                                                            <VoiceSelection handleTTSVoice={this.props.handleTTSVoice} voices={this.state.voices}/>
                                                                         )}
                                                                     </div>
                                                                     <ReadingAudio useMO={useMO} ttsState={this.props.ttsState} ttsPause={this.props.handleTTSPause} ttsResume={this.props.handleTTSResume} />
@@ -1317,7 +1316,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         publicationHasMediaOverlays: state.reader.info.navigator.r2PublicationHasMediaOverlays,
         mediaOverlaysState: state.reader.mediaOverlay.state,
         ttsState: state.reader.tts.state,
-        ttsVoice: state.reader.config.ttsVoice,
+        ttsVoices: state.reader.config.ttsVoices,
         mediaOverlaysPlaybackRate: state.reader.config.mediaOverlaysPlaybackRate,
         ttsPlaybackRate: state.reader.config.ttsPlaybackRate,
         readerConfig: state.reader.config,

@@ -22,8 +22,8 @@ export function build(config: ReaderConfig = readerConfigInitialState):
     const configCopy = {
         ...config,
     };
-    if (isNotNil(configCopy["ttsVoice"])) {
-        configCopy["ttsVoice"] = null;
+    if (isNotNil(configCopy["ttsVoices"])) {
+        configCopy["ttsVoices"] = [];
     }
     if (isNotNil(configCopy["annotation_defaultColor"])) {
         configCopy["annotation_defaultColor"] = { ...configCopy["annotation_defaultColor"] };

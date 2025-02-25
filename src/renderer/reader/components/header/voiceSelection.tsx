@@ -11,16 +11,26 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 
 export interface IProps {
     voices: IVoicesWithIndex[],
-    handleTTSVoice: (v: IVoicesWithIndex) => void,
+    handleTTSVoice: (v: SpeechSynthesisVoice | null) => void,
 }
 
 type IVoicesWithIndex = IVoices & { id: number };
+
+const ConvertIVoiceWithIndexReadiumSpeechToSpeechSynthesisVoiceNavigator = (voice: IVoices) => {
+    return voice ? {
+        default: false,
+        lang: voice.language,
+        localService: voice.offlineAvailability,
+        name: voice.name,
+        voiceURI: voice.voiceURI,
+    } : null;
+};
 
 export const VoiceSelection: React.FC<IProps> = (props) => {
 
     const [__] = useTranslator();
 
-    const ttsVoice = useReaderConfig("ttsVoice");
+    const ttsVoices = useReaderConfig("ttsVoices");
     const { voices, handleTTSVoice } = props;
 
     const [selectedLanguage, setSelectedLanguage] = React.useState<string>("");
@@ -28,7 +38,7 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
     const locale = useSelector((state: IReaderRootState) => state.i18n.locale);
 
     const languages = getLanguages(voices, r2Publication.Metadata?.Language || [], locale);
-    const ttsVoiceDefaultLanguageCode = (ttsVoice?.lang || "").split("-")[0];
+    const ttsVoiceDefaultLanguageCode = (ttsVoices[0]?.lang || "").split("-")[0];
     const defaultLanguageCode =  languages.find(({code}) => code === ttsVoiceDefaultLanguageCode)
         ? ttsVoiceDefaultLanguageCode
         : languages[0]?.code || ""; 
@@ -60,11 +70,11 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
             aria-label={__("reader.tts.voice")}
             defaultItems={voicesGroupedByRegions}
             selectedKey={
-                ttsVoice ?
+                ttsVoices[0] ?
                 `TTSID${(voices.find((voice) =>
-                    voice.name === ttsVoice.name
-                    && voice.language === ttsVoice.lang
-                    && voice.voiceURI === ttsVoice.voiceURI,
+                    voice.name === ttsVoices[0]?.name
+                    && voice.language === ttsVoices[0]?.lang
+                    && voice.voiceURI === ttsVoices[0]?.voiceURI,
                 ) || { id: -1 }).id}` :
                 "TTSID-1"
             }
@@ -74,7 +84,7 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
                 key = key.toString();
                 const id = parseInt(key.replace("TTSID", ""), 10);
                 const v = id === -1 ? null : (voices.find((voice) => voice.id === id) || null);
-                handleTTSVoice(v);
+                handleTTSVoice(ConvertIVoiceWithIndexReadiumSpeechToSpeechSynthesisVoiceNavigator(v));
             }}
             style={{ paddingBottom: "0", margin: "0" }}
         >

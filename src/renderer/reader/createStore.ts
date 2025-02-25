@@ -82,10 +82,20 @@ export const createStoreFromDi = (preloadedState: Partial<IReaderRootState>): St
         newConfig.mediaOverlaysPlaybackRate = defaultConfig.mediaOverlaysPlaybackRate;
         flag = true;
     }
-    if (newConfig.ttsVoice === undefined) {
 
-        console.log("MIGRATION !! ttsVoice not set migrate from defaultConfig value=", newConfig.ttsVoice);
-        newConfig.ttsVoice = defaultConfig.ttsVoice;
+    // https://github.com/edrlab/thorium-reader/issues/2811
+    if (newConfig.ttsVoices === undefined) {
+
+        console.log("MIGRATION !! ttsVoices not set migrate from defaultConfig value=", newConfig.ttsVoices);
+        newConfig.ttsVoices = defaultConfig.ttsVoices;
+        flag = true;
+    }
+    if (newConfig.ttsVoices.length === 0 && (newConfig as any).ttsVoice) {
+
+        console.log("MIGRATION !! ttsVoice to ttsVoices with a 's' (array of ttsVoice) value=", (newConfig as any).ttsVoice);
+        newConfig.ttsVoices = [(newConfig as any).ttsVoice];
+        (newConfig as any).ttsVoice = undefined;
+        delete (newConfig as any).ttsVoice;
         flag = true;
     }
 

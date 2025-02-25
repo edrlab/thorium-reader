@@ -75,7 +75,7 @@ import {
     setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
     setReadingLocationSaver, ttsClickEnable, ttsNext, ttsOverlayEnable, ttsPause,
     ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsAndMediaOverlaysManualPlayNext, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
-    ttsStop, ttsVoice, highlightsClickListen,
+    ttsStop, ttsVoices as navigatorTTSVoicesSetter, highlightsClickListen,
     // stealFocusDisable,
     keyboardFocusRequest,
     ttsHighlightStyle,
@@ -2969,7 +2969,7 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         setTimeout(() => {
-            ttsPlay(parseFloat(this.props.ttsPlaybackRate), this.props.ttsVoice);
+            ttsPlay(parseFloat(this.props.ttsPlaybackRate), this.props.ttsVoices);
         }, delay);
     }
     private handleTTSPause() {
@@ -3007,16 +3007,21 @@ class Reader extends React.Component<IProps, IState> {
     }
     private handleTTSVoice(voice: SpeechSynthesisVoice | null) {
         // alert(`${voice.name} ${voice.lang} ${voice.default} ${voice.voiceURI} ${voice.localService}`);
+        // const ttsVoices = this.props.ttsVoices;
         const v = voice ? {
             default: voice.default,
             lang: voice.lang,
             localService: voice.localService,
             name: voice.name,
             voiceURI: voice.voiceURI,
-        } : null;
-        ttsVoice(v);
-        // this.setState({ ttsVoice: v });
-        this.props.setConfig({ ttsVoice: v });
+        } : undefined;
+        
+        if (v) {
+            const newVoices = [v];// ttsVoices.slice();
+            // newVoices.push(v);
+            navigatorTTSVoicesSetter(newVoices);
+            this.props.setConfig({ ttsVoices: newVoices });
+        }
     }
 
     private handleMediaOverlaysPlay() {
@@ -3082,7 +3087,7 @@ class Reader extends React.Component<IProps, IState> {
     //     if (ttsWasPlaying) {
     //         ttsStop();
     //         setTimeout(() => {
-    //             ttsPlay(parseFloat(this.state.ttsPlaybackRate), this.state.ttsVoice);
+    //             ttsPlay(parseFloat(this.state.ttsPlaybackRate), this.state.ttsVoices);
     //         }, 300);
     //     }
 
@@ -3233,7 +3238,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         r2PublicationHasMediaOverlays: state.reader.info.navigator.r2PublicationHasMediaOverlays,
         ttsState: state.reader.tts.state,
         mediaOverlaysState: state.reader.mediaOverlay.state,
-        ttsVoice: state.reader.config.ttsVoice,
+        ttsVoices: state.reader.config.ttsVoices,
         mediaOverlaysPlaybackRate: state.reader.config.mediaOverlaysPlaybackRate,
         ttsPlaybackRate: state.reader.config.ttsPlaybackRate,
 
