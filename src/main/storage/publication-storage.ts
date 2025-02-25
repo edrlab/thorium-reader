@@ -177,6 +177,14 @@ export class PublicationStorage {
             return pathEpub3;
         }
         // --
+        const pathPnld = path.join(
+            root,
+            `book${acceptedExtensionObject.pnld}`,
+        );
+        if (fs.existsSync(pathPnld)) {
+            return pathPnld;
+        }
+        // --
         const pathDaisy = path.join(
             root,
             `book${acceptedExtensionObject.daisy}`,
@@ -250,7 +258,7 @@ export class PublicationStorage {
                                                     : (
                                                         isDaisy
                                                             ? acceptedExtensionObject.daisy
-                                                            : acceptedExtensionObject.epub
+                                                            : acceptedExtensionObject.epub // includes .epub3 and .pnld
                                                     )
                                             )
                                     )

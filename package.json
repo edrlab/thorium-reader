@@ -184,6 +184,11 @@
         "mimeType": "application/epub+zip"
       },
       {
+        "ext": "pnld",
+        "role": "Viewer",
+        "mimeType": "application/epub+zip"
+      },
+      {
         "ext": "daisy",
         "role": "Viewer",
         "mimeType": "application/daisy+zip"
