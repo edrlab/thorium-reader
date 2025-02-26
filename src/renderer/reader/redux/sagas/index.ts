@@ -21,11 +21,12 @@ import * as winInit from "./win";
 import * as annotation from "./annotation";
 import * as shareAnnotationSet from "./shareAnnotationSet";
 import * as img from "./img";
-import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { setTheme } from "readium-desktop/common/redux/actions/theme";
 import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } from "@r2-navigator-js/electron/renderer";
 import { eventChannel } from "redux-saga";
-import { put as putTyped } from "typed-redux-saga/macro";
+import { put as putTyped, throttle } from "typed-redux-saga/macro";
+
 import { readerLocalActionReader } from "../actions";
 
 // Logger
@@ -113,18 +114,32 @@ export function* rootSaga() {
     const MOChannel = getMediaOverlayStateChannel();
     const TTSChannel = getTTSStateChannel();
     yield all([
-        takeSpawnEveryChannel(
+        throttle(
+            1,
             MOChannel,
             function* (state: MediaOverlaysStateEnum) {
                 yield* putTyped(readerLocalActionReader.setMediaOverlayState.build(state));
             },
         ),
-        takeSpawnEveryChannel(
+        throttle(
+            1,
             TTSChannel,
             function* (state: TTSStateEnum) {
                 yield* putTyped(readerLocalActionReader.setTTSState.build(state));
             },
         ),
+        // takeSpawnEveryChannel(
+        //     MOChannel,
+        //     function* (state: MediaOverlaysStateEnum) {
+        //         yield* putTyped(readerLocalActionReader.setMediaOverlayState.build(state));
+        //     },
+        // ),
+        // takeSpawnEveryChannel(
+        //     TTSChannel,
+        //     function* (state: TTSStateEnum) {
+        //         yield* putTyped(readerLocalActionReader.setTTSState.build(state));
+        //     },
+        // ),
     ]);
 
 

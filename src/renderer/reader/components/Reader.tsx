@@ -3005,23 +3005,25 @@ class Reader extends React.Component<IProps, IState> {
         // this.setState({ ttsPlaybackRate: speed });
         this.props.setConfig({ ttsPlaybackRate: speed });
     }
-    private handleTTSVoice(voice: SpeechSynthesisVoice | null) {
+    private handleTTSVoice(voices: SpeechSynthesisVoice[] | SpeechSynthesisVoice | null) {
         // alert(`${voice.name} ${voice.lang} ${voice.default} ${voice.voiceURI} ${voice.localService}`);
         // const ttsVoices = this.props.ttsVoices;
-        const v = voice ? {
+
+        if (!voices) return ;
+        if (!Array.isArray(voices)) {
+            voices = [voices];
+        }
+
+        const v = voices.map<SpeechSynthesisVoice>((voice) => ({
             default: voice.default,
             lang: voice.lang,
             localService: voice.localService,
             name: voice.name,
             voiceURI: voice.voiceURI,
-        } : undefined;
+        }));
         
-        if (v) {
-            const newVoices = [v];// ttsVoices.slice();
-            // newVoices.push(v);
-            navigatorTTSVoicesSetter(newVoices);
-            this.props.setConfig({ ttsVoices: newVoices });
-        }
+        navigatorTTSVoicesSetter(v);
+        this.props.setConfig({ ttsVoices: v });
     }
 
     private handleMediaOverlaysPlay() {

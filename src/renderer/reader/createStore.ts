@@ -101,9 +101,9 @@ export const createStoreFromDi = (preloadedState: Partial<IReaderRootState>): St
 
 
     if (flag) {
-        console.log(`ANNOTATION MIGRATION : There are a data need to be migrated from defaultConfig to config OLD=${JSON.stringify(store.getState().reader.config, null, 4)} NEW=${JSON.stringify(newConfig, null, 4)}`);
+        console.log(`MIGRATION : There are a data need to be migrated from defaultConfig to config OLD=${JSON.stringify(store.getState().reader.config, null, 4)} NEW=${JSON.stringify(newConfig, null, 4)}`);
         store.dispatch(readerLocalActionSetConfig.build(newConfig));
-        console.log(`ANNOTATION MIGRATION : Data migrated after the dispatch so this is the new data : ${JSON.stringify(store.getState().reader.config, null, 4)}`);
+        console.log(`MIGRATION : Data migrated after the dispatch so this is the new data : ${JSON.stringify(store.getState().reader.config, null, 4)}`);
     }
     return store;
 };
