@@ -14,11 +14,59 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { IInfo } from "./extract.type";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 
+import { readFile } from "node:fs/promises";
+
+import * as mupdfjs from "mupdf";
+
 const debug = debug_("readium-desktop:main/pdf/extract/index.ts");
 debug("_");
 
 type TExtractPdfData = [data: IInfo | undefined, coverPNG: Buffer | undefined];
-export const extractPDFData =
+
+export const extractPDFData = async (pdfPath: string): Promise<TExtractPdfData> => {
+
+    try {
+        const pdfBuffer = await readFile(pdfPath);
+
+        const doc = mupdfjs.PDFDocument.openDocument(pdfBuffer, "application/pdf");
+
+        const info: IInfo = {
+            Title: doc.getMetaData("info:Title"),
+            Subject: doc.getMetaData("info:Subject"),
+            Keywords: doc.getMetaData("info:Keywords"),
+            Author: doc.getMetaData("info:Author"),
+            Creator: doc.getMetaData("info:Creator"),
+            Producer: doc.getMetaData("info:Producer"),
+            CreationDate: doc.getMetaData("info:CreationDate"),
+            ModDate: doc.getMetaData("info:ModDate"),
+            numberOfPages: doc.countPages(),
+        };
+
+        const page = new mupdfjs.PDFPage(doc, 0);
+
+        const pixmap = page.toPixmap(mupdfjs.Matrix.identity, mupdfjs.ColorSpace.DeviceRGB, false, true);
+        const pngImage = pixmap.asPNG();
+        const img = Buffer.alloc(pngImage.byteLength);
+        for (let i = 0; i < img.length; ++i) {
+            img[i] = pngImage[i];
+        }
+
+        return [info, img];
+
+
+    } catch (e) {
+
+        debug("####");
+        debug("####");
+        debug(e);
+        debug("####");
+        debug("####");
+    }
+
+    return [undefined, undefined];
+};
+
+export const extractPDFDataPdfjs =
     async (pdfPath: string)
         : Promise<TExtractPdfData> => {
 
