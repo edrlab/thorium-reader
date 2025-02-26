@@ -333,10 +333,8 @@
             },
             "annotationsOptions": "选项",
             "colors": {
-                "bluegreen": "蓝绿色",
                 "cyan": "青色",
                 "green": "绿色",
-                "lightblue": "浅蓝色",
                 "orange": "橙色",
                 "purple": "紫色",
                 "red": "红色",

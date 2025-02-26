@@ -333,10 +333,8 @@
             },
             "annotationsOptions": "Asetukset",
             "colors": {
-                "bluegreen": "Sinivihreä",
                 "cyan": "Turkoosi",
                 "green": "Vihreä",
-                "lightblue": "Vaaleansininen",
                 "orange": "Oranssi",
                 "purple": "Violetti",
                 "red": "Punainen",
@@ -398,6 +396,8 @@
             "activate": "Käynnistä luenta",
             "captions": "Synkronoitu teksti: pelkistetty",
             "captionsDescription": "Pelkistetty tekstinäkymä.",
+            "disableContinuousPlay": "Älä käytä jatkuvaa luentaa",
+            "disableContinuousPlayDescription": "Älä jatka luentaa automaattisesti seuraavaan kohteeseen vaan keskeytä luenta, kun nykyinen kohde on luettu.",
             "next": "Seuraava",
             "pause": "Pysäytä",
             "play": "Jatka",
@@ -406,9 +406,7 @@
             "skipDescription": "Ohita toissijainen sisältö kuten sivunvaihdot tai ala- ja loppuviitteet.",
             "speed": "Luennan nopeus",
             "stop": "Lopeta luenta",
-            "title": "Luenta",
-            "disableContinuousPlayDescription": "Älä jatka luentaa automaattisesti seuraavaan kohteeseen vaan keskeytä luenta, kun nykyinen kohde on luettu.",
-            "disableContinuousPlay": "Älä käytä jatkuvaa luentaa"
+            "title": "Luenta"
         },
         "navigation": {
             "ZenModeExit": "Poistu kokoruudun tilasta",
