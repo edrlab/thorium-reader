@@ -14,7 +14,7 @@ import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/m
 import { error } from "readium-desktop/main/tools/error";
 import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped, put as putTyped, select as selectTyped, take as takeTyped } from "typed-redux-saga/macro";
-import { IAnnotationPreParsingState, IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { ANNOTATION_DEFAULT_COLOR, annotationColorCodeToColorSet, annotationColorSetToColorCode, IAnnotationPreParsingState, IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { hexToRgb } from "readium-desktop/common/rgb";
 import { isNil } from "readium-desktop/utils/nil";
 import { RootState } from "../states";
@@ -175,7 +175,9 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 uuid,
                 target: incommingAnnotation.target,
                 comment: incommingAnnotation.body.value,
-                color: hexToRgb(incommingAnnotation.body.color),
+                color: hexToRgb(annotationColorSetToColorCode[incommingAnnotation.body.color] ||
+                    annotationColorSetToColorCode[annotationColorCodeToColorSet[incommingAnnotation.body.color] || ANNOTATION_DEFAULT_COLOR],
+                ),
                 drawType: (isNil(incommingAnnotation.body.highlight) || incommingAnnotation.body.highlight === "solid") ? "solid_background" : incommingAnnotation.body.highlight,
                 // TODO need to ask to user if the incomming tag is kept or the fileName is used
                 tags: [fileName], // incommingAnnotation.body.tag ? [incommingAnnotation.body.tag] : [],

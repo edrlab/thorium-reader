@@ -333,10 +333,8 @@
             },
             "annotationsOptions": "Opzioni",
             "colors": {
-                "bluegreen": "Blu-verde",
                 "cyan": "Ciano",
                 "green": "Verde",
-                "lightblue": "Azzurro",
                 "orange": "Arancione",
                 "purple": "Viola",
                 "red": "Rosso",
@@ -398,6 +396,8 @@
             "activate": "Attiva la lettura ad alta voce",
             "captions": "Testo sincronizzato",
             "captionsDescription": "Visualizzazione del testo semplificata con uno stile didascalia minimo.",
+            "disableContinuousPlay": "Disattivare la riproduzione continua",
+            "disableContinuousPlayDescription": "Non riprodurre automaticamente l'elemento successivo, ma mettere in pausa subito dopo la fine della riproduzione dell'elemento corrente.",
             "next": "Prossima lettura ad alta voce",
             "pause": "Metti in pausa la lettura ad alta voce",
             "play": "Riproduci la lettura ad alta voce",
@@ -406,9 +406,7 @@
             "skipDescription": "Salta/ignora i contenuti ausiliari come interruzioni di pagina, note a piè di pagina/note di chiusura, ecc.",
             "speed": "Velocità di riproduzione per la lettura ad alta voce",
             "stop": "Interrompi la lettura ad alta voce",
-            "title": "lettura ad alta voce",
-            "disableContinuousPlay": "Disattivare la riproduzione continua",
-            "disableContinuousPlayDescription": "Non riprodurre automaticamente l'elemento successivo, ma mettere in pausa subito dopo la fine della riproduzione dell'elemento corrente."
+            "title": "lettura ad alta voce"
         },
         "navigation": {
             "ZenModeExit": "Uscire dalla modalità Zen",

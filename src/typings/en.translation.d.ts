@@ -762,10 +762,8 @@ declare namespace typed_i18n {
     },
     readonly "annotationsOptions": string,
     readonly "colors": {
-      readonly "bluegreen": string,
       readonly "cyan": string,
       readonly "green": string,
-      readonly "lightblue": string,
       readonly "orange": string,
       readonly "purple": string,
       readonly "red": string,
@@ -964,10 +962,8 @@ declare namespace typed_i18n {
   },
   readonly "annotationsOptions": string,
   readonly "colors": {
-    readonly "bluegreen": string,
     readonly "cyan": string,
     readonly "green": string,
-    readonly "lightblue": string,
     readonly "orange": string,
     readonly "purple": string,
     readonly "red": string,
@@ -1012,19 +1008,15 @@ declare namespace typed_i18n {
   (_: "reader.annotations.annotationsExport.title", __?: {}): string;
   (_: "reader.annotations.annotationsOptions", __?: {}): string;
   (_: "reader.annotations.colors", __?: {}): {
-  readonly "bluegreen": string,
   readonly "cyan": string,
   readonly "green": string,
-  readonly "lightblue": string,
   readonly "orange": string,
   readonly "purple": string,
   readonly "red": string,
   readonly "yellow": string
 };
-  (_: "reader.annotations.colors.bluegreen", __?: {}): string;
   (_: "reader.annotations.colors.cyan", __?: {}): string;
   (_: "reader.annotations.colors.green", __?: {}): string;
-  (_: "reader.annotations.colors.lightblue", __?: {}): string;
   (_: "reader.annotations.colors.orange", __?: {}): string;
   (_: "reader.annotations.colors.purple", __?: {}): string;
   (_: "reader.annotations.colors.red", __?: {}): string;

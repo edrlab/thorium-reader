@@ -333,10 +333,8 @@
             },
             "annotationsOptions": "Opties",
             "colors": {
-                "bluegreen": "Blauw-groen",
                 "cyan": "Cyaan",
                 "green": "Groen",
-                "lightblue": "Licht Blauw",
                 "orange": "Oranje",
                 "purple": "Paars",
                 "red": "Rood",
@@ -398,6 +396,8 @@
             "activate": "Activeer Voorlezen",
             "captions": "Ondertitels / schone weergave",
             "captionsDescription": "Vereenvoudigde tekstweergave met minimale stijl onderschriften.",
+            "disableContinuousPlay": "Schakel doorlopend afspelen uit",
+            "disableContinuousPlayDescription": "Speel niet automatisch het volgende item af, pauzeer onmiddellijk nadat het huidige item is afgespeeld.",
             "next": "Volgende Voorlezen",
             "pause": "Pauzeer Voorlezen",
             "play": "Speel Voorlezen",
@@ -406,9 +406,7 @@
             "skipDescription": "Spring over/negeer aanvullende inhoud zoals pagina-einden, voetnoten/eindnoten, enz.",
             "speed": "Voorlezen snelheid",
             "stop": "Stop Voorlezen",
-            "title": "Voorlezen",
-            "disableContinuousPlay": "Schakel doorlopend afspelen uit",
-            "disableContinuousPlayDescription": "Speel niet automatisch het volgende item af, pauzeer onmiddellijk nadat het huidige item is afgespeeld."
+            "title": "Voorlezen"
         },
         "navigation": {
             "ZenModeExit": "Verlaat Zen modus",

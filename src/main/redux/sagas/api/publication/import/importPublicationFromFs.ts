@@ -53,6 +53,7 @@ export async function importPublicationFromFS(
 
         case acceptedExtensionObject.epub:
         case acceptedExtensionObject.epub3:
+        case acceptedExtensionObject.pnld:
 
             debug("epub extension", ext);
 

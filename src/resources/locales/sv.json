@@ -333,10 +333,8 @@
             },
             "annotationsOptions": "Alternativ",
             "colors": {
-                "bluegreen": "Blågrön",
                 "cyan": "Cyan",
                 "green": "Grön",
-                "lightblue": "Ljusblå",
                 "orange": "Orange",
                 "purple": "Lila",
                 "red": "Röd",
@@ -398,6 +396,8 @@
             "activate": "Aktivera uppläsning",
             "captions": "Textremsa/Enkel vy",
             "captionsDescription": "Förenklad textvy med minimal formatering.",
+            "disableContinuousPlay": "Inaktivera kontinuerlig uppläsning",
+            "disableContinuousPlayDescription": "Läs inte automatiskt upp nästa objekt. Pausa efter att det aktuella objektet har lästs upp.",
             "next": "Nästa",
             "pause": "Pausa",
             "play": "Läs upp",
@@ -406,9 +406,7 @@
             "skipDescription": "Hoppa över sekundärt innehåll såsom sidbrytningar, fotnoter och slutnoter.",
             "speed": "Uppläsningshastighet",
             "stop": "Stoppa uppläsning",
-            "title": "Uppläsning",
-            "disableContinuousPlay": "Inaktivera kontinuerlig uppläsning",
-            "disableContinuousPlayDescription": "Läs inte automatiskt upp nästa objekt. Pausa efter att det aktuella objektet har lästs upp."
+            "title": "Uppläsning"
         },
         "navigation": {
             "ZenModeExit": "Lämna zenläge",

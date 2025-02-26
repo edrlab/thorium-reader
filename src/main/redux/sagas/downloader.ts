@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import { createWriteStream, promises as fsp, WriteStream } from "fs";
 import * as path from "path";
-import { acceptedExtension } from "readium-desktop/common/extension";
+import { acceptedExtension, acceptedExtensionObject } from "readium-desktop/common/extension";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { authActions, downloadActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ok } from "readium-desktop/common/utils/assert";
@@ -372,6 +372,13 @@ function downloadCreateFilename(contentType: string | undefined, contentDisposit
         debug("contentType and contentDisposition have the same extension ! Good catch !", contentTypeFilename, contentDispositionFilename);
     } else {
         debug("contentType and contentDisposition does not have the same extension ! Server stream !?!", contentTypeFilename, contentDispositionFilename);
+
+
+        if (contentTypeFilename.toLowerCase().endsWith(acceptedExtensionObject.pdfLcp)
+            && contentDispositionFilename.toLowerCase().endsWith(acceptedExtensionObject.pdf)) {
+            // workaround for buggy servers
+            contentDispositionFilename = contentDispositionFilename.replace(/\.pdf$/i, ".lcpdf");
+        }
     }
 
     return contentDispositionFilename || contentTypeFilename || filename;

@@ -39,6 +39,8 @@ export const mimeTypes = {
     "emma": "application/emma+xml",
     "emotionml": "application/emotionml+xml",
     "epub": "application/epub+zip",
+    // "epub3": "application/epub+zip",
+    // "pnlb": "application/epub+zip",
     "exi": "application/exi",
     "fdt": "application/fdt+xml",
     "pfr": "application/font-tdpfr",

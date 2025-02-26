@@ -64,7 +64,7 @@ import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/componen
 import { MySelectProps, Select, SelectItem } from "readium-desktop/renderer/common/components/Select";
 import { ListBox, ListBoxItem, TextArea } from "react-aria-components";
 import type { Selection } from "react-aria-components";
-import { AnnotationEdit, annotationsColorsLight } from "./AnnotationEdit";
+import { AnnotationEdit } from "./AnnotationEdit";
 import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 // import {TextArea} from 'react-aria-components';
 // import { DialogTrigger as DialogTriggerReactAria, Popover as PopoverReactAria, Dialog as DialogReactAria } from "react-aria-components";
@@ -83,7 +83,7 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "@r2-shared-js/models/locator";
-import { IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
+import { annotationsColorsLight, IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionExportAnnotationSet, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
