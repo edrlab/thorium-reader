@@ -94,8 +94,7 @@ export const createStoreFromDi = (preloadedState: Partial<IReaderRootState>): St
 
         console.log("MIGRATION !! ttsVoice to ttsVoices with a 's' (array of ttsVoice) value=", (newConfig as any).ttsVoice);
         newConfig.ttsVoices = [(newConfig as any).ttsVoice];
-        (newConfig as any).ttsVoice = undefined;
-        delete (newConfig as any).ttsVoice;
+        (newConfig as any).ttsVoice = null;
         flag = true;
     }
 

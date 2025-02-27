@@ -19,7 +19,7 @@ export interface IProps {
     setSelectedVoice: (v: IVoices) => void;
 }
 
-const createNameId = ({ name, voiceURI, language, label }: Pick<IVoices, "name" | "voiceURI" | "label" | "language">) => `${name}__!?__${voiceURI}__!?__${label}__!?__${language}`;
+const createNameId = ({ name, voiceURI, language }: Pick<IVoices, "name" | "voiceURI" | "language">) => `${name}__!?__${voiceURI}__!?__${language}`;
 
 export const VoiceSelection: React.FC<IProps> = (props) => {
 
@@ -31,7 +31,7 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
     const voiceOptions: TVoiceOptions = voicesGroupByRegion.map(
         ([langLocalized, voices]) => ({
             id: langLocalized, name: langLocalized, children: voices.map(
-                ({ name, voiceURI, label, language }) => ({ id: createNameId({ name, voiceURI, label, language }), name })),
+                ({ name, voiceURI, language }) => ({ id: createNameId({ name, voiceURI, language }), name })),
         }));
 
     const voices = voicesGroupByRegion.reduce<IVoices[]>((acc, [__unusedLangLocalized, voices]) => [...acc, ...voices], []);
