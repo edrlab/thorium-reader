@@ -870,6 +870,13 @@ class Reader extends React.Component<IProps, IState> {
                     aria-label={this.props.__("accessibility.toolbar")}
                     tabIndex={-1}>{this.props.__("accessibility.toolbar")}</a>
                 <SkipLink
+                    onClick={() => {
+                        // const element = document.getElementById("main-content");
+                        // if (element) {
+                        //     element.focus();
+                        // }
+                        this.focusMainArea(true, true); // keyboard FocusMainDeep
+                    }}
                     className={stylesReader.skip_link}
                     anchorId="main-content"
                     label={this.props.__("accessibility.skipLink")}
