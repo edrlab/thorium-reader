@@ -178,6 +178,7 @@ const closeProcessLock = (() => {
 //
 // Create container used for dependency injection
 const container = new Container();
+// https://inversify.io/docs/guides/migrating-from-v6/
 
 
 const getStorePromiseFn = async () => {
@@ -340,9 +341,9 @@ interface IGet {
     (s: keyof typeof diSymbolTable): any;
 }
 
-// export function to get back depedency from container
+// export function to get back dependency from container
 // the type any for container.get is overloaded by IGet
-const diMainGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<any>(diSymbolTable[symbol]);
+const diMainGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<any>(diSymbolTable[symbol], { autobind: true });
 
 export {
     closeProcessLock,
