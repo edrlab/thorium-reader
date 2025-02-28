@@ -333,10 +333,8 @@
             },
             "annotationsOptions": "メモのオプション",
             "colors": {
-                "bluegreen": "青緑",
                 "cyan": "青",
                 "green": "緑",
-                "lightblue": "水色",
                 "orange": "橙",
                 "purple": "紫",
                 "red": "赤",
@@ -398,6 +396,8 @@
             "activate": "朗読機能を起動",
             "captions": "字幕 / 明確な表示",
             "captionsDescription": "字幕のスタイルを最小限にした、シンプルなテキスト表示",
+            "disableContinuousPlay": "連続再生を無効に",
+            "disableContinuousPlayDescription": "次の項目を自動再生せずに、現在の項目の再生が終了したらすぐに一時停止する。",
             "next": "次に進む（朗読）",
             "pause": "一時停止（朗読）",
             "play": "再生（朗読）",
@@ -406,9 +406,7 @@
             "skipDescription": "改ページ、脚注や文末脚注などの補助コンテンツをスキップまたは無視します。",
             "speed": "再生速度（朗読）",
             "stop": "停止（朗読）",
-            "title": "朗読",
-            "disableContinuousPlay": "連続再生を無効に",
-            "disableContinuousPlayDescription": "次の項目を自動再生せずに、現在の項目の再生が終了したらすぐに一時停止する。"
+            "title": "朗読"
         },
         "navigation": {
             "ZenModeExit": "Zenモードを終了",

@@ -333,10 +333,8 @@
             },
             "annotationsOptions": "Valgmuligheder",
             "colors": {
-                "bluegreen": "Blå-grøn",
                 "cyan": "Cyan",
                 "green": "Grøn",
-                "lightblue": "Lyseblå",
                 "orange": "Orange",
                 "purple": "Lilla",
                 "red": "Rød",
@@ -398,6 +396,8 @@
             "activate": "Start oplæsning",
             "captions": "Undertekster",
             "captionsDescription": "Simpel tekstvisning med minimal styling af billedtekster.",
+            "disableContinuousPlay": "Deaktiver kontinuerlig afspilning",
+            "disableContinuousPlayDescription": "Afspil ikke automatisk næste del. Sæt på pause efter at den nuværende del er afspillet.",
             "next": "Næste oplæsnings-stykke",
             "pause": "Pause oplæsning",
             "play": "Start oplæsning",
@@ -406,9 +406,7 @@
             "skipDescription": "Hop over ekstra-indhold så som sideskift, fodnoter/slutnoter, osv.",
             "speed": "Oplæsningshastighed",
             "stop": "Stop oplæsning",
-            "title": "Oplæsning",
-            "disableContinuousPlay": "Deaktiver kontinuerlig afspilning",
-            "disableContinuousPlayDescription": "Afspil ikke automatisk næste del. Sæt på pause efter at den nuværende del er afspillet."
+            "title": "Oplæsning"
         },
         "navigation": {
             "ZenModeExit": "Forlad fokuseret læsetilstand",

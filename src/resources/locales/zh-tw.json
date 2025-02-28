@@ -333,10 +333,8 @@
             },
             "annotationsOptions": "選項",
             "colors": {
-                "bluegreen": "藍綠色",
                 "cyan": "青色",
                 "green": "綠色",
-                "lightblue": "淺藍色",
                 "orange": "橘色",
                 "purple": "紫色",
                 "red": "紅色",
@@ -398,6 +396,8 @@
             "activate": "啟動語音朗讀",
             "captions": "字幕 / 簡明視圖",
             "captionsDescription": "簡化的文字視圖，具有最小的標題樣式。",
+            "disableContinuousPlay": "停用連續播放",
+            "disableContinuousPlayDescription": "不自動播放下一個項目，目前項目播放完畢後立即暫停。",
             "next": "朗讀下一段",
             "pause": "暫停朗讀",
             "play": "開始朗讀",
@@ -406,9 +406,7 @@
             "skipDescription": "跳過／忽略輔助內容，例如分頁符號、註腳／尾註等。",
             "speed": "語音朗讀速度",
             "stop": "停止朗讀",
-            "title": "語音朗讀",
-            "disableContinuousPlay": "停用連續播放",
-            "disableContinuousPlayDescription": "不自動播放下一個項目，目前項目播放完畢後立即暫停。"
+            "title": "語音朗讀"
         },
         "navigation": {
             "ZenModeExit": "退出 Zen 模式",

@@ -870,6 +870,13 @@ class Reader extends React.Component<IProps, IState> {
                     aria-label={this.props.__("accessibility.toolbar")}
                     tabIndex={-1}>{this.props.__("accessibility.toolbar")}</a>
                 <SkipLink
+                    onClick={() => {
+                        // const element = document.getElementById("main-content");
+                        // if (element) {
+                        //     element.focus();
+                        // }
+                        this.focusMainArea(true, true); // keyboard FocusMainDeep
+                    }}
                     className={stylesReader.skip_link}
                     anchorId="main-content"
                     label={this.props.__("accessibility.skipLink")}
@@ -1893,9 +1900,19 @@ class Reader extends React.Component<IProps, IState> {
     };
 
     private onKeyboardPageNavigationNext = () => {
+        // screen reader users do not "turn pages", in fact this can inadvertantly change the current reading location!
+        // NavigatePrevious/NextChapter can be used to switch document(chapter) back and forth
+        if (this.state.accessibilitySupportEnabled) {
+            return;
+        }
         this.onKeyboardPageNavigationPreviousNext(false);
     };
     private onKeyboardPageNavigationPrevious = () => {
+        // screen reader users do not "turn pages", in fact this can inadvertantly change the current reading location!
+        // NavigatePrevious/NextChapter can be used to switch document(chapter) back and forth
+        if (this.state.accessibilitySupportEnabled) {
+            return;
+        }
         this.onKeyboardPageNavigationPreviousNext(true);
     };
     private onKeyboardPageNavigationPreviousNext = (isPrevious: boolean) => {

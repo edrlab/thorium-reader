@@ -333,10 +333,8 @@
             },
             "annotationsOptions": "Možnosti",
             "colors": {
-                "bluegreen": "Modro-zelena",
                 "cyan": "Cyan",
                 "green": "Zelena",
-                "lightblue": "Svetlo modra",
                 "orange": "Oranžna",
                 "purple": "Vijolična",
                 "red": "Rdeča",

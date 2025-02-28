@@ -333,10 +333,8 @@
             },
             "annotationsOptions": "Opções",
             "colors": {
-                "bluegreen": "Azul-verde",
                 "cyan": "Azul-ciano",
                 "green": "Verde",
-                "lightblue": "Azul suave",
                 "orange": "Laranja",
                 "purple": "Roxo",
                 "red": "Vermelho",
@@ -398,6 +396,8 @@
             "activate": "Ativar Narração",
             "captions": "Legendas/visualização limpa",
             "captionsDescription": "Visualização de texto simplificada com estilo mínimo de legendas.",
+            "disableContinuousPlay": "Desativar a reprodução contínua",
+            "disableContinuousPlayDescription": "Não reproduza automaticamente o próximo item, pare imediatamente após o item atual terminado a reprodução.",
             "next": "Próxima narração",
             "pause": "Pausar narração",
             "play": "Tocar narração",
@@ -406,9 +406,7 @@
             "skipDescription": "Saltar/ignorar conteúdo auxiliar, como quebras de página, notas de rodapé/notas finais, etc.",
             "speed": "Velocidade de reprodução da narração",
             "stop": "Parar narração",
-            "title": "Narração",
-            "disableContinuousPlay": "Desativar a reprodução contínua",
-            "disableContinuousPlayDescription": "Não reproduza automaticamente o próximo item, pare imediatamente após o item atual terminado a reprodução."
+            "title": "Narração"
         },
         "navigation": {
             "ZenModeExit": "Sair do modo Zen",

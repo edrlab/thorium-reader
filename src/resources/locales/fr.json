@@ -333,10 +333,8 @@
             },
             "annotationsOptions": "Notes Options",
             "colors": {
-                "bluegreen": "Bleu-Vert",
                 "cyan": "Cyan",
                 "green": "Vert",
-                "lightblue": "Bleu clair",
                 "orange": "Orange",
                 "purple": "Violet",
                 "red": "Rouge",
@@ -398,6 +396,8 @@
             "activate": "Activer la lecture en voix de synthèse",
             "captions": "Vue simplifiée, style sous-titres",
             "captionsDescription": "Affichage du texte simplifié avec un formatage minimal des légendes.",
+            "disableContinuousPlay": "Désactiver la progression automatique",
+            "disableContinuousPlayDescription": "Ne pas jouer automatiquement l'élément audio suivant, faire une pause immediatement après la fin de l'audio en cours.",
             "next": "Suivant",
             "pause": "Mettre en pause",
             "play": "Lire",
@@ -406,9 +406,7 @@
             "skipDescription": "Omettre les sauts de pages, notes de de bas de page etc.",
             "speed": "Vitesse de lecture",
             "stop": "Arrêt",
-            "title": "Lire à haute voix",
-            "disableContinuousPlay": "Désactiver la progression automatique",
-            "disableContinuousPlayDescription": "Ne pas jouer automatiquement l'élément audio suivant, faire une pause immediatement après la fin de l'audio en cours."
+            "title": "Lire à haute voix"
         },
         "navigation": {
             "ZenModeExit": "Sortir du mode Zen",

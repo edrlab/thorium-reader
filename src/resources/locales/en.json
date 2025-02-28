@@ -333,10 +333,8 @@
             },
             "annotationsOptions": "Annotation Options",
             "colors": {
-                "bluegreen": "Blue-green",
                 "cyan": "Cyan",
                 "green": "Green",
-                "lightblue": "Light Blue",
                 "orange": "Orange",
                 "purple": "Purple",
                 "red": "Red",
