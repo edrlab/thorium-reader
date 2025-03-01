@@ -8,9 +8,11 @@
 import * as pop from "./pop";
 import * as push from "./push";
 import * as update from "./update";
+import * as edit from "./edit";
 
 export {
     push,
     pop,
     update,
+    edit,
 };

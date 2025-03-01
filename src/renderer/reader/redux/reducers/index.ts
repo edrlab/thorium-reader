@@ -69,6 +69,7 @@ export const rootReducer = () => {
             bookmark: priorityQueueReducer
                 <
                     readerActions.bookmark.push.TAction,
+                    // readerActions.bookmark.edit.TAction,
                     readerActions.bookmark.pop.TAction,
                     number,
                     IBookmarkState,

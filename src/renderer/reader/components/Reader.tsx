@@ -291,6 +291,7 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardFocusToolbar = this.onKeyboardFocusToolbar.bind(this);
         this.onKeyboardFullScreen = this.onKeyboardFullScreen.bind(this);
         this.onKeyboardBookmark = this.onKeyboardBookmark.bind(this);
+        this.onKeyboardBookmarkWithLabel = this.onKeyboardBookmarkWithLabel.bind(this);
         this.onKeyboardInfo = this.onKeyboardInfo.bind(this);
         this.onKeyboardInfoWhereAmI = this.onKeyboardInfoWhereAmI.bind(this);
         this.onKeyboardInfoWhereAmISpeak = this.onKeyboardInfoWhereAmISpeak.bind(this);
@@ -1210,6 +1211,11 @@ class Reader extends React.Component<IProps, IState> {
 
         registerKeyboardListener(
             true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.AddBookmarkWithLabel,
+            this.onKeyboardBookmarkWithLabel);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
             this.props.keyboardShortcuts.OpenReaderInfo,
             this.onKeyboardInfo);
 
@@ -1304,6 +1310,7 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardFocusToolbar);
         unregisterKeyboardListener(this.onKeyboardFullScreen);
         unregisterKeyboardListener(this.onKeyboardBookmark);
+        unregisterKeyboardListener(this.onKeyboardBookmarkWithLabel);
         unregisterKeyboardListener(this.onKeyboardInfo);
         unregisterKeyboardListener(this.onKeyboardInfoWhereAmI);
         unregisterKeyboardListener(this.onKeyboardInfoWhereAmISpeak);
@@ -1836,6 +1843,15 @@ class Reader extends React.Component<IProps, IState> {
         this.handleSettingsClick(true, true);
     };
 
+    private onKeyboardBookmarkWithLabel = async () => {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardBookmarkWithLabel)");
+            }
+            return;
+        }
+        await this.handleToggleBookmark(true, true);
+    };
     private onKeyboardBookmark = async () => {
         if (!this.state.shortcutEnable) {
             if (DEBUG_KEYBOARD) {
@@ -2802,7 +2818,7 @@ class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private async handleToggleBookmark(fromKeyboard?: boolean) {
+    private async handleToggleBookmark(fromKeyboard?: boolean, userLabel?: boolean) {
 
         // this.setState({bookmarkMessage: undefined});
 
@@ -2837,6 +2853,8 @@ class Reader extends React.Component<IProps, IState> {
             }
 
             const deleteAllVisibleBookmarks =
+
+                !userLabel &&
 
                 // "toggle" only if there is a single bookmark in the content visible inside the viewport
                 // otherwise preserve existing, and add new one (see addCurrentLocationToBookmarks below)
@@ -2873,20 +2891,25 @@ class Reader extends React.Component<IProps, IState> {
             }
 
             const addCurrentLocationToBookmarks =
-                !this.props.bookmarks?.find((b) => {
-                    const identical =
-                        b.locator.href === locator.href &&
-                        (b.locator.locations.progression === locator.locations.progression ||
-                            b.locator.locations.cssSelector && locator.locations.cssSelector &&
-                            b.locator.locations.cssSelector === locator.locations.cssSelector) &&
-                        b.locator.text?.highlight === locator.text?.highlight;
-
-                    return identical;
-                }) &&
-                (this.state.currentLocation.audioPlaybackInfo ||
-                    !visibleBookmarkList?.length ||
-                    fromKeyboard || // SCREEN READER CTRL+B on discrete text position (container element)
-                    locator.text?.highlight
+                userLabel
+                ||
+                (
+                    !this.props.bookmarks?.find((b) => {
+                        const identical =
+                            b.locator.href === locator.href &&
+                            (b.locator.locations.progression === locator.locations.progression ||
+                                b.locator.locations.cssSelector && locator.locations.cssSelector &&
+                                b.locator.locations.cssSelector === locator.locations.cssSelector) &&
+                            b.locator.text?.highlight === locator.text?.highlight;
+                        return identical;
+                    })
+                    &&
+                    (
+                        this.state.currentLocation.audioPlaybackInfo ||
+                        !visibleBookmarkList?.length ||
+                        fromKeyboard || // SCREEN READER CTRL+B on discrete text position (container element)
+                        locator.text?.highlight
+                    )
                 );
 
             if (addCurrentLocationToBookmarks) {
@@ -2904,18 +2927,26 @@ class Reader extends React.Component<IProps, IState> {
                     name = `${timestamp} (${percent}%)`;
                 }
 
-                // reader.navigation.bookmarkTitle
-                const msg = `${this.props.__("catalog.addTagsButton")} - ${this.props.__("reader.marks.bookmarks")} [${this.props.bookmarks?.length ? this.props.bookmarks.length + 1 : 1}] ${name ? ` (${name})` : ""}`;
-                // this.setState({bookmarkMessage: msg});
-                this.props.toasty(msg);
-
                 if (locator.locations && !locator.locations.rangeInfo && this.state.currentLocation.selectionInfo?.rangeInfo) {
-                    locator.locations.rangeInfo = this.state.currentLocation.selectionInfo?.rangeInfo;
+                    locator.locations.rangeInfo = this.state.currentLocation.selectionInfo.rangeInfo;
                 }
-                this.props.addBookmark({
-                    locator,
-                    name,
-                });
+
+                if (userLabel) {
+                    this.props.addBookmarkWithUserLabel({
+                        locator,
+                        name,
+                    });
+                } else {
+                    // reader.navigation.bookmarkTitle
+                    const msg = `${this.props.__("catalog.addTagsButton")} - ${this.props.__("reader.marks.bookmarks")} [${this.props.bookmarks?.length ? this.props.bookmarks.length + 1 : 1}] ${name ? ` (${name})` : ""}`;
+                    // this.setState({bookmarkMessage: msg});
+                    this.props.toasty(msg);
+
+                    this.props.addBookmark({
+                        locator,
+                        name,
+                    });
+                }
             }
         }
     }
@@ -3336,6 +3367,23 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                 // called once in the readerConfigChanged saga function triggerd by the readerLocalActionSetConfig action just above.
                 // dispatch(readerActions.configSetDefault.build(config));
             // }
+        },
+        addBookmarkWithUserLabel: (bookmark: IBookmarkStateWithoutUUID) => {
+
+            // apiDispatch(dispatch)()("publication/updateTags")(pubId, tagsName);
+            // dispatch(
+            //     dialogActions.updateRequest.build<DialogTypeName.PublicationInfoLib>(
+            //         {
+            //             publication: {
+            //                 ...publication,
+            //                 ...{
+            //                     tags: tagsName,
+            //                 },
+            //             },
+            //         },
+            //     ),
+            // );
+            dispatch(readerActions.bookmark.edit.build(bookmark));
         },
         addBookmark: (bookmark: IBookmarkStateWithoutUUID) => {
             dispatch(readerActions.bookmark.push.build(bookmark));

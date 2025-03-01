@@ -53,6 +53,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     // readerActions.bookmark.pop.ID,
     // readerActions.bookmark.push.ID,
     // readerActions.bookmark.update.ID,
+    // readerActions.bookmark.edit.ID,
 
     wizardActions.setWizard.ID,
 
