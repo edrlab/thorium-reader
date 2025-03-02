@@ -12,6 +12,7 @@ interface IBaseProps {
     anchorId: string;
     label: string;
     className?: string;
+    onClick?: () => void;
 }
 
 // IProps may typically extend:
@@ -29,10 +30,10 @@ export default class SkipLink extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}>  {
-        const { label, className } = this.props;
+        const { onClick, label, className } = this.props;
         return (
             <button
-                onClick={() => this.onClick()}
+                onClick={onClick || (() => this.onClick())}
                 aria-hidden={false}
                 className={className}
             >
