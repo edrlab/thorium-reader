@@ -464,7 +464,7 @@
             "letterSpacing": "Espacement des lettres",
             "lineSpacing": "Espacement des lignes",
             "margin": "Marge",
-            "noFootnotes": "Désactiver les notes de base de page.",
+            "noFootnotes": "Désactiver la fenêtre pop-up des notes de bas de page",
             "noRTLFlip": "Désactiver l'interface droite-à-gauche",
             "noRuby": "Cacher les caractères Ruby Japonais",
             "noTemporaryNavTargetOutline": "Désactiver les indications visuelles de navigation",

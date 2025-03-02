@@ -464,7 +464,7 @@
             "letterSpacing": "Letter spacing",
             "lineSpacing": "Line spacing",
             "margin": "Margin",
-            "noFootnotes": "Disable footnotes",
+            "noFootnotes": "Disable popup footnotes",
             "noRTLFlip": "Disable Right-To-Left UI",
             "noRuby": "Hide Japanese Ruby",
             "noTemporaryNavTargetOutline": "Disable visual navigation indicators",
