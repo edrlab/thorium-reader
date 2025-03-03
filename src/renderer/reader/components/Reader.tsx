@@ -3046,6 +3046,7 @@ class Reader extends React.Component<IProps, IState> {
             voiceURI: voice.voiceURI,
         }));
 
+        // console.log("HANDLE_TTS_VOICE", "PUSH_DEFAULT_TTS_VOICES_TO_NAVIGATOR", v);
         navigatorTTSVoicesSetter(v);
         this.props.setConfig({ ttsVoices: v });
     }

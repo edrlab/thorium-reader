@@ -39,8 +39,8 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
     console.log("LANGUAGEOPTIONS=", languageOptions);
     console.log("VOICEOPTIONS", voiceOptions);
 
-    const defaultSelectedLanguage = selectedLanguage?.code;
-    const defaultSelectedVoice = selectedVoice ? createNameId(selectedVoice) : undefined;
+    const selectedLanguageKey = selectedLanguage?.code;
+    const selectedVoiceKey = selectedVoice ? createNameId(selectedVoice) : undefined;
 
     return (
         <div className={stylesReader.ttsSelectVoice}>
@@ -49,7 +49,8 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
                 label={__("reader.tts.language")}
                 aria-label={__("reader.tts.language")}
                 defaultItems={languageOptions}
-                defaultSelectedKey={defaultSelectedLanguage}
+                defaultSelectedKey={selectedLanguageKey}
+                selectedKey={selectedLanguageKey}
                 onSelectionChange={(key) => {
 
                     if (key === null) {
@@ -69,7 +70,8 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
                 label={__("reader.tts.voice")}
                 aria-label={__("reader.tts.voice")}
                 defaultItems={voiceOptions}
-                defaultSelectedKey={defaultSelectedVoice}
+                defaultSelectedKey={selectedVoiceKey}
+                selectedKey={selectedVoiceKey}
                 onSelectionChange={(key) => {
                     if (key === null || key === -1) {
                         // nothing

@@ -553,251 +553,261 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         } */}
                     </ul>
                     {
-                    this.props.isPdf ? <></> :
-                    <ul className={classNames(stylesReader.tts_toolbar)}>
-                        {
-                            this.props.isDivina
-                                ?
-                                this.state.divinaSoundEnabled
-                                ? <li className={stylesReader.button_audio}>
+                        this.props.isPdf ? <></> :
+                            <ul className={classNames(stylesReader.tts_toolbar)}>
+                                {
+                                    this.props.isDivina
+                                        ?
+                                        this.state.divinaSoundEnabled
+                                            ? <li className={stylesReader.button_audio}>
                                                 <button
                                                     className={stylesReader.menu_button}
-                                                    onClick={() => this.setState({divinaSoundEnabled: false})}
+                                                    onClick={() => this.setState({ divinaSoundEnabled: false })}
                                                     title={__("reader.divina.mute")}
                                                 >
                                                     <SVG ariaHidden={true} svg={MuteIcon} />
                                                 </button>
                                             </li>
-                                : <li className={stylesReader.button_audio}>
+                                            : <li className={stylesReader.button_audio}>
                                                 <button
                                                     className={stylesReader.menu_button}
-                                                    onClick={() => this.setState({divinaSoundEnabled: true})}
+                                                    onClick={() => this.setState({ divinaSoundEnabled: true })}
                                                     title={__("reader.divina.unmute")}
                                                 >
                                                     <SVG ariaHidden={true} svg={AudioIcon} />
                                                 </button>
                                             </li>
-                                : (useMO &&
-                                    this.props.mediaOverlaysState === MediaOverlaysStateEnum.STOPPED ||
-                                    !useMO &&
-                                    this.props.ttsState === TTSStateEnum.STOPPED) ?
-                                    <li className={stylesReader.button_audio}>
-                                        <button
-                                            className={stylesReader.menu_button}
-                                            onClick={(e) => {
-                                                const forceTTS = e.shiftKey && e.altKey;
-                                                this.setState({forceTTS});
-                                                if (!forceTTS && this.props.publicationHasMediaOverlays) {
-                                                    this.props.handleMediaOverlaysPlay();
-                                                } else {
-                                                    this.props.handleTTSPlay();
-                                                }
-                                            }
-                                            }
-                                            title={
-                                                this.props.publicationHasMediaOverlays ?
-                                                    __("reader.media-overlays.activate") :
-                                                    __("reader.tts.activate")
-                                            }
-                                        >
-                                            <SVG ariaHidden={true} svg={AudioIcon} />
-                                        </button>
-                                    </li>
-                                    : <>
-                                        <li >
-                                            <button
-                                                className={stylesReader.menu_button}
-                                                onClick={(_e) => {
-                                                  const forceTTS = this.state.forceTTS;
-                                                  this.setState({forceTTS: false});
-                                                    if (!forceTTS && this.props.publicationHasMediaOverlays) {
-                                                        this.props.handleMediaOverlaysStop();
-                                                    } else {
-                                                        this.props.handleTTSStop();
-                                                    }
-                                                }
-                                                }
-                                                title={
-                                                    useMO ?
-                                                        __("reader.media-overlays.stop") :
-                                                        __("reader.tts.stop")
-                                                }
-                                            >
-                                                <SVG ariaHidden={true} svg={StopIcon} />
-                                            </button>
-                                        </li>
-                                        <li >
-                                            <button
-                                                className={stylesReader.menu_button}
-                                                onClick={(e) => {
-                                                    if (useMO) {
-                                                        if (isRTL) {
-                                                          this.props.handleMediaOverlaysNext();
-                                                        } else {
-                                                          this.props.handleMediaOverlaysPrevious();
-                                                        }
-                                                    } else {
-                                                        if (isRTL) {
-                                                          this.props.handleTTSNext(e.shiftKey && e.altKey && e.metaKey, e.shiftKey && e.altKey);
-                                                        } else {
-                                                          this.props.handleTTSPrevious(e.shiftKey && e.altKey && e.metaKey, e.shiftKey && e.altKey);
-                                                        }
-                                                    }
-                                                }}
-                                                title={
-                                                  isRTL ?
-                                                  (useMO ?
-                                                      __("reader.media-overlays.next") :
-                                                      __("reader.tts.next"))
-                                                  :
-                                                  (useMO ?
-                                                      __("reader.media-overlays.previous") :
-                                                      __("reader.tts.previous"))
-                                                }
-                                            >
-                                                <SVG ariaHidden={true} svg={SkipPrevious} />
-                                            </button>
-                                        </li>
-                                        {(useMO &&
-                                            this.props.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING ||
-                                            !useMO &&
-                                            this.props.ttsState === TTSStateEnum.PLAYING) ?
-                                            <li  style={{backgroundColor: "var(--color-blue)" }}>
-                                                <button
-                                                    className={stylesReader.menu_button}
-                                                    onClick={
-                                                        useMO ?
-                                                            this.props.handleMediaOverlaysPause :
-                                                            this.props.handleTTSPause
-                                                    }
-                                                    title={
-                                                        useMO ?
-                                                            __("reader.media-overlays.pause") :
-                                                            __("reader.tts.pause")
-                                                    }
-                                                >
-                                                    <SVG ariaHidden={true} svg={PauseIcon} className={stylesReaderHeader.active_svg} />
-                                                </button>
-                                            </li>
-                                            :
-                                            <li>
-                                                <button
-                                                    className={classNames(isRTL ? stylesReader.RTL_FLIP : undefined, stylesReader.menu_button)}
-                                                    onClick={(_e) => {
-                                                        if (useMO) {
-                                                            this.props.handleMediaOverlaysResume();
-                                                        } else {
-                                                            this.props.handleTTSResume();
-                                                        }
-                                                    }
-                                                    }
-                                                    title={
-                                                        useMO ?
-                                                            __("reader.media-overlays.play") :
-                                                            __("reader.tts.play")
-                                                    }
-                                                >
-                                                    <SVG ariaHidden={true} svg={PlayIcon} />
-                                                </button>
-                                            </li>
-                                        }
-                                        <li >
-                                            <button
-                                                className={stylesReader.menu_button}
+                                        :
+                                        <>
 
-                                                onClick={(e) => {
-                                                  if (isRTL) {
-                                                    if (useMO) {
-                                                        this.props.handleMediaOverlaysPrevious();
-                                                    } else {
-                                                        this.props.handleTTSPrevious(e.shiftKey && e.altKey && e.metaKey, e.shiftKey && e.altKey);
-                                                    }
-                                                  } else {
-                                                      if (useMO) {
-                                                          this.props.handleMediaOverlaysNext();
-                                                      } else {
-                                                          this.props.handleTTSNext(e.shiftKey && e.altKey && e.metaKey, e.shiftKey && e.altKey);
-                                                      }
-                                                  }
-                                                }}
-                                                title={
-                                                  isRTL ?
-                                                  (useMO ?
-                                                      __("reader.media-overlays.previous") :
-                                                      __("reader.tts.previous"))
-                                                  :
-                                                  (useMO ?
-                                                      __("reader.media-overlays.next") :
-                                                      __("reader.tts.next"))
-                                                }
-                                            >
-                                                <SVG ariaHidden={true} svg={SkipNext} />
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <Popover.Root open={this.state.ttsPopoverOpen} onOpenChange={(open) => this.setState({ ttsPopoverOpen : open})}>
-                                                <Popover.Trigger asChild>
-                                                    <button className={stylesReader.menu_button} style={{backgroundColor: this.state.ttsPopoverOpen ? "var(--color-blue)" : ""}} aria-label={__("reader.tts.options")} title={__("reader.tts.options")}>
-                                                        <SVG ariaHidden svg={HeadphoneIcon} className={this.state.ttsPopoverOpen ? stylesReaderHeader.active_svg : ""} />
-                                                    </button>
-                                                </Popover.Trigger>
-                                                <Popover.Portal>
-                                                    <Popover.Content style={{zIndex: 100}}>
-                                                        <div className={stylesReaderHeader.Tts_popover_container}>
-                                                            <div style={{paddingRight: "25px", borderRight: "1px solid var(--color-verylight-grey-alt)"}}>
-                                                            <div className={stylesReader.ttsSelectRate}>
-                                                                            <ComboBox label={useMO ?
+
+                                            {
+
+                                                (useMO &&
+                                                    this.props.mediaOverlaysState === MediaOverlaysStateEnum.STOPPED ||
+                                                    !useMO &&
+                                                    this.props.ttsState === TTSStateEnum.STOPPED) ?
+                                                    <li className={stylesReader.button_audio}>
+                                                        <button
+                                                            className={stylesReader.menu_button}
+                                                            onClick={(e) => {
+                                                                const forceTTS = e.shiftKey && e.altKey;
+                                                                this.setState({ forceTTS });
+                                                                if (!forceTTS && this.props.publicationHasMediaOverlays) {
+                                                                    this.props.handleMediaOverlaysPlay();
+                                                                } else {
+                                                                    this.props.handleTTSPlay();
+                                                                }
+                                                            }
+                                                            }
+                                                            title={
+                                                                this.props.publicationHasMediaOverlays ?
+                                                                    __("reader.media-overlays.activate") :
+                                                                    __("reader.tts.activate")
+                                                            }
+                                                        >
+                                                            <SVG ariaHidden={true} svg={AudioIcon} />
+                                                        </button>
+                                                    </li>
+                                                    : <>
+                                                        <li >
+                                                            <button
+                                                                className={stylesReader.menu_button}
+                                                                onClick={(_e) => {
+                                                                    const forceTTS = this.state.forceTTS;
+                                                                    this.setState({ forceTTS: false });
+                                                                    if (!forceTTS && this.props.publicationHasMediaOverlays) {
+                                                                        this.props.handleMediaOverlaysStop();
+                                                                    } else {
+                                                                        this.props.handleTTSStop();
+                                                                    }
+                                                                }
+                                                                }
+                                                                title={
+                                                                    useMO ?
+                                                                        __("reader.media-overlays.stop") :
+                                                                        __("reader.tts.stop")
+                                                                }
+                                                            >
+                                                                <SVG ariaHidden={true} svg={StopIcon} />
+                                                            </button>
+                                                        </li>
+                                                        <li >
+                                                            <button
+                                                                className={stylesReader.menu_button}
+                                                                onClick={(e) => {
+                                                                    if (useMO) {
+                                                                        if (isRTL) {
+                                                                            this.props.handleMediaOverlaysNext();
+                                                                        } else {
+                                                                            this.props.handleMediaOverlaysPrevious();
+                                                                        }
+                                                                    } else {
+                                                                        if (isRTL) {
+                                                                            this.props.handleTTSNext(e.shiftKey && e.altKey && e.metaKey, e.shiftKey && e.altKey);
+                                                                        } else {
+                                                                            this.props.handleTTSPrevious(e.shiftKey && e.altKey && e.metaKey, e.shiftKey && e.altKey);
+                                                                        }
+                                                                    }
+                                                                }}
+                                                                title={
+                                                                    isRTL ?
+                                                                        (useMO ?
+                                                                            __("reader.media-overlays.next") :
+                                                                            __("reader.tts.next"))
+                                                                        :
+                                                                        (useMO ?
+                                                                            __("reader.media-overlays.previous") :
+                                                                            __("reader.tts.previous"))
+                                                                }
+                                                            >
+                                                                <SVG ariaHidden={true} svg={SkipPrevious} />
+                                                            </button>
+                                                        </li>
+                                                        {(useMO &&
+                                                            this.props.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING ||
+                                                            !useMO &&
+                                                            this.props.ttsState === TTSStateEnum.PLAYING) ?
+                                                            <li style={{ backgroundColor: "var(--color-blue)" }}>
+                                                                <button
+                                                                    className={stylesReader.menu_button}
+                                                                    onClick={
+                                                                        useMO ?
+                                                                            this.props.handleMediaOverlaysPause :
+                                                                            this.props.handleTTSPause
+                                                                    }
+                                                                    title={
+                                                                        useMO ?
+                                                                            __("reader.media-overlays.pause") :
+                                                                            __("reader.tts.pause")
+                                                                    }
+                                                                >
+                                                                    <SVG ariaHidden={true} svg={PauseIcon} className={stylesReaderHeader.active_svg} />
+                                                                </button>
+                                                            </li>
+                                                            :
+                                                            <li>
+                                                                <button
+                                                                    className={classNames(isRTL ? stylesReader.RTL_FLIP : undefined, stylesReader.menu_button)}
+                                                                    onClick={(_e) => {
+                                                                        if (useMO) {
+                                                                            this.props.handleMediaOverlaysResume();
+                                                                        } else {
+                                                                            this.props.handleTTSResume();
+                                                                        }
+                                                                    }
+                                                                    }
+                                                                    title={
+                                                                        useMO ?
+                                                                            __("reader.media-overlays.play") :
+                                                                            __("reader.tts.play")
+                                                                    }
+                                                                >
+                                                                    <SVG ariaHidden={true} svg={PlayIcon} />
+                                                                </button>
+                                                            </li>
+                                                        }
+                                                        <li >
+                                                            <button
+                                                                className={stylesReader.menu_button}
+
+                                                                onClick={(e) => {
+                                                                    if (isRTL) {
+                                                                        if (useMO) {
+                                                                            this.props.handleMediaOverlaysPrevious();
+                                                                        } else {
+                                                                            this.props.handleTTSPrevious(e.shiftKey && e.altKey && e.metaKey, e.shiftKey && e.altKey);
+                                                                        }
+                                                                    } else {
+                                                                        if (useMO) {
+                                                                            this.props.handleMediaOverlaysNext();
+                                                                        } else {
+                                                                            this.props.handleTTSNext(e.shiftKey && e.altKey && e.metaKey, e.shiftKey && e.altKey);
+                                                                        }
+                                                                    }
+                                                                }}
+                                                                title={
+                                                                    isRTL ?
+                                                                        (useMO ?
+                                                                            __("reader.media-overlays.previous") :
+                                                                            __("reader.tts.previous"))
+                                                                        :
+                                                                        (useMO ?
+                                                                            __("reader.media-overlays.next") :
+                                                                            __("reader.tts.next"))
+                                                                }
+                                                            >
+                                                                <SVG ariaHidden={true} svg={SkipNext} />
+                                                            </button>
+                                                        </li>
+
+                                                    </>
+
+                                            }
+                                            <li>
+                                                <Popover.Root open={this.state.ttsPopoverOpen} onOpenChange={(open) => this.setState({ ttsPopoverOpen: open })}>
+                                                    <Popover.Trigger asChild>
+                                                        <button className={stylesReader.menu_button} style={{ backgroundColor: this.state.ttsPopoverOpen ? "var(--color-blue)" : "" }} aria-label={__("reader.tts.options")} title={__("reader.tts.options")}>
+                                                            <SVG ariaHidden svg={HeadphoneIcon} className={this.state.ttsPopoverOpen ? stylesReaderHeader.active_svg : ""} />
+                                                        </button>
+                                                    </Popover.Trigger>
+                                                    <Popover.Portal>
+                                                        <Popover.Content style={{ zIndex: 100 }}>
+                                                            <div className={stylesReaderHeader.Tts_popover_container}>
+                                                                <div style={{ paddingRight: "25px", borderRight: "1px solid var(--color-verylight-grey-alt)" }}>
+                                                                    <div className={stylesReader.ttsSelectRate}>
+                                                                        <ComboBox label={useMO ?
+                                                                            __("reader.media-overlays.speed")
+                                                                            : __("reader.tts.speed")}
+                                                                            aria-label={useMO ?
                                                                                 __("reader.media-overlays.speed")
                                                                                 : __("reader.tts.speed")}
-                                                                                aria-label={useMO ?
-                                                                                    __("reader.media-overlays.speed")
-                                                                                    : __("reader.tts.speed")}
-                                                                                defaultItems={playbackRate}
-                                                                                // defaultSelectedKey={2}
-                                                                                selectedKey={
-                                                                                    this.props.ttsPlaybackRate ?
+                                                                            defaultItems={playbackRate}
+                                                                            // defaultSelectedKey={2}
+                                                                            selectedKey={
+                                                                                this.props.ttsPlaybackRate ?
                                                                                     playbackRate.find((rate) => rate.value.toString() === (useMO ? this.props.mediaOverlaysPlaybackRate : this.props.ttsPlaybackRate)).id :
-                                                                                        2
+                                                                                    2
+                                                                            }
+                                                                            onSelectionChange={(ev) => {
+                                                                                const v = playbackRate.find((option) => option.id === ev).value;
+                                                                                if (useMO) {
+                                                                                    this.props.handleMediaOverlaysPlaybackRate(
+                                                                                        v.toString(),
+                                                                                    );
+                                                                                } else {
+                                                                                    this.props.handleTTSPlaybackRate(
+                                                                                        v.toString(),
+                                                                                    );
                                                                                 }
-                                                                                onSelectionChange={(ev) => {
-                                                                                    const v = playbackRate.find((option) => option.id === ev).value;
-                                                                                    if (useMO) {
-                                                                                        this.props.handleMediaOverlaysPlaybackRate(
-                                                                                            v.toString(),
-                                                                                        );
-                                                                                    } else {
-                                                                                        this.props.handleTTSPlaybackRate(
-                                                                                            v.toString(),
-                                                                                        );
-                                                                                    }
-                                                                                }}>
-                                                                                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                                                                            </ComboBox>
-                                                                        </div>
-                                                                        {/* EPUB3 Media Overlays can play TTS too */ (true || !useMO) && (
-                                                                            <VoiceSelection
-                                                                                // defaultVoices={[]}
-
-                                                                                languages={this.state.languages}
-                                                                                selectedLanguage={this.state.selectedLanguage}
-                                                                                setSelectedLanguage={(v) => this.setState({selectedLanguage: v})}
-
-                                                                                voicesGroupByRegion={this.state.voicesGroupByRegion}
-                                                                                selectedVoice={this.state.selectedVoice}
-                                                                                setSelectedVoice={(v) => this.setState({selectedVoice: v})}
-                                                                            />
-                                                                        )}
+                                                                            }}>
+                                                                            {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                                                                        </ComboBox>
                                                                     </div>
-                                                                    <ReadingAudio useMO={useMO} ttsState={this.props.ttsState} ttsPause={this.props.handleTTSPause} ttsResume={this.props.handleTTSResume} />
+                                                                    {/* EPUB3 Media Overlays can play TTS too */ (true || !useMO) && (
+                                                                        <VoiceSelection
+                                                                            // defaultVoices={[]}
+
+                                                                            languages={this.state.languages}
+                                                                            selectedLanguage={this.state.selectedLanguage}
+                                                                            setSelectedLanguage={(v) => this.setState({ selectedLanguage: v })}
+
+                                                                            voicesGroupByRegion={this.state.voicesGroupByRegion}
+                                                                            selectedVoice={this.state.selectedVoice}
+                                                                            setSelectedVoice={(v) => this.setState({ selectedVoice: v })}
+                                                                        />
+                                                                    )}
                                                                 </div>
-                                                                <Popover.Arrow className={stylesReaderHeader.popover_arrow} />
-                                                            </Popover.Content>
-                                                        </Popover.Portal>
-                                                    </Popover.Root>
-                                                </li>
-                                    </>
-                        }
-                    </ul>
+                                                                <ReadingAudio useMO={useMO} ttsState={this.props.ttsState} ttsPause={this.props.handleTTSPause} ttsResume={this.props.handleTTSResume} />
+                                                            </div>
+                                                            <Popover.Arrow className={stylesReaderHeader.popover_arrow} />
+                                                        </Popover.Content>
+                                                    </Popover.Portal>
+                                                </Popover.Root>
+                                            </li>
+                                        </>
+                                }
+                            </ul>
 
                     }
 
@@ -1346,7 +1356,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         debug("SET_CHECK_DEFAULT_VOICE", newDefaultVoice);
 
         const defaultVoices = parseSpeechSynthesisVoices(this.props.ttsVoices);
-        if (newDefaultVoice && defaultVoices.find((v) => v === newDefaultVoice)) return ;
+        if (newDefaultVoice && defaultVoices.find(({ voiceURI, name, language, offlineAvailability }) =>
+            `${voiceURI}_${name}_${language}_${offlineAvailability}` === `${newDefaultVoice.voiceURI}_${newDefaultVoice.name}_${newDefaultVoice.language}_${newDefaultVoice.offlineAvailability}`)
+        ) return;
 
         debug("SET_CHECK_DEFAULT_VOICE defaultVoices=", defaultVoices, "len=", defaultVoices.length);
 
