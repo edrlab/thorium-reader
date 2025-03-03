@@ -31,7 +31,7 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
     const ttsVoiceDefaultLanguageCode = (ttsVoice?.lang || "").split("-")[0];
     const defaultLanguageCode =  languages.find(({code}) => code === ttsVoiceDefaultLanguageCode)
         ? ttsVoiceDefaultLanguageCode
-        : languages[0]?.code || ""; 
+        : languages[0]?.code || "";
 
     if (selectedLanguage === "" && defaultLanguageCode) {
         setSelectedLanguage(defaultLanguageCode);
@@ -42,7 +42,7 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
 
     return (<div className={stylesReader.ttsSelectVoice}>
         <ComboBox
-        style={{paddingBottom: "0"}}
+            style={{paddingBottom: 0}}
             label={__("reader.tts.language")}
             aria-label={__("reader.tts.language")}
             defaultItems={languages}
@@ -76,11 +76,13 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
                 const v = id === -1 ? null : (voices.find((voice) => voice.id === id) || null);
                 handleTTSVoice(v);
             }}
-            style={{ paddingBottom: "0", margin: "0" }}
+            style={{ paddingBottom: 0, margin: 0 }}
         >
             {([lang, voicesSelected]) => (
                 <Section id={lang} key={`section-${lang}`}>
-                    <ReactAriaHeader style={{ paddingLeft: "5px", fontSize: "16px", color: "var(--color-blue)", borderBottom: "1px solid var(--color-light-blue)" }}>
+                    <ReactAriaHeader
+                        style={{ paddingLeft: "5px", fontSize: "16px", color: "var(--color-blue)", borderBottom: "1px solid var(--color-light-blue)" }}
+                    >
                         {lang}
                     </ReactAriaHeader>
                     <Collection items={voicesSelected} key={`collection-${lang}`}>
