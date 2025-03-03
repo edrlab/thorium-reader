@@ -835,7 +835,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
 
         {!useMO ?
         (
-        <div style={{ border: "2px dotted black", padding: 6 }}>
+        <div style={{ border: "2px dotted var(--color-verylight-grey-alt)", borderRadius: "1em", padding: 6 }}>
         <div className={stylesReader.ttsSelectRate}>
         <ComboBox label="TTS highlight style"
             defaultItems={ttsHighlightStyles}

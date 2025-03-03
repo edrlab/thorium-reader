@@ -242,6 +242,15 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         createOrGetPdfEventBus().subscribe("scale", this.setScaleMode);
 
         getVoices().then((_voices) => {
+
+            // console.log("getVoices()", JSON.stringify(_voices?.map(v => ({
+            //     name: v.name,
+            //     language: v.language,
+            //     lang: v.__lang,
+            //     voiceURI: v.voiceURI,
+            //     label: v.label,
+            //     })), null, 4));
+
             if (Array.isArray(_voices)) {
                 this.setState({
                     voices: _voices.map((v, i) => ({...v, id: i+1})),
@@ -773,7 +782,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                                                                             </ComboBox>
                                                                         </div>
-                                                                        {!useMO && (
+                                                                        {/* EPUB3 Media Overlays can play TTS too */ (true || !useMO) && (
                                                                             <VoiceSelection handleTTSVoice={this.handleTTSVoice} voices={this.state.voices}/>
                                                                         )}
                                                                     </div>
