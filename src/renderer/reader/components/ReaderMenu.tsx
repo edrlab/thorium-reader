@@ -520,7 +520,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 <></>
                 : <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
                     // title={bname}
-                    aria-label={__("reader.goToContent")}
+                    aria-label={`${__("reader.goToContent")} (${btext})`}
                     style={{ borderLeft: dockedEditAnnotation && "2px solid var(--color-blue)" }}
                     onClick={(e) => {
                         e.preventDefault();
@@ -1587,7 +1587,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number }> = (props) 
                                 const closeNavBookmark = !dockedMode && !(e.shiftKey && e.altKey);
                                 goToLocator(bookmark.locator, closeNavBookmark);
                             }}
-                            aria-label={__("reader.goToContent")}
+                            aria-label={`${__("reader.goToContent")} (${bname})`}
 
                         // does not work on button (works on 'a' link)
                         // onDoubleClick={(_e) => goToLocator(bookmark.locator, false)}
