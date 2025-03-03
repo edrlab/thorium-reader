@@ -421,7 +421,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public async componentDidMount() {
-        // ttsVoice(this.props.ttsVoice);
+        // navigatorTTSVoicesSetter(this.props.ttsVoices);
 
         ipcRenderer.on("accessibility-support-changed", this.accessibilitySupportChanged);
 
@@ -672,7 +672,7 @@ class Reader extends React.Component<IProps, IState> {
 
     public async componentDidUpdate(oldProps: IProps, oldState: IState) {
         // if (oldProps.ttsVoice !== this.props.ttsVoice) {
-        //     ttsVoice(this.props.ttsVoice);
+        //     navigatorTTSVoicesSetter(this.props.ttsVoices);
         // }
 
         // if (oldProps.readerMode !== this.props.readerMode) {
@@ -3045,7 +3045,7 @@ class Reader extends React.Component<IProps, IState> {
             name: voice.name,
             voiceURI: voice.voiceURI,
         }));
-        
+
         navigatorTTSVoicesSetter(v);
         this.props.setConfig({ ttsVoices: v });
     }
@@ -3068,7 +3068,7 @@ class Reader extends React.Component<IProps, IState> {
             //     default: v.default,
             //     localService: v.localService,
             //     })), null, 4));
-            ttsVoice(this.props.ttsVoice);
+            navigatorTTSVoicesSetter(this.props.ttsVoices);
         }
 
         mediaOverlaysClickEnable(true);
