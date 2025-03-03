@@ -182,7 +182,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
     // private onwheel: React.WheelEventHandler<HTMLSelectElement>;
     // private timerFXLZoomDebounce: number | undefined;
-    
+
     private ___lock = true;
 
     constructor(props: IProps) {
@@ -210,7 +210,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             voicesGroupByRegion: [],
             selectedLanguage: undefined,
             selectedVoice: undefined,
-            
+
             voices: [],
         };
 
@@ -246,6 +246,15 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         createOrGetPdfEventBus().subscribe("scale", this.setScaleMode);
 
         getVoices(/*TODO Param? */).then((voices) => {
+
+            // console.log("getVoices()", JSON.stringify(voices?.map(v => ({
+            //     name: v.name,
+            //     language: v.language,
+            //     lang: v.__lang,
+            //     voiceURI: v.voiceURI,
+            //     label: v.label,
+            //     })), null, 4));
+
             this.setVoices(voices);
         });
 
@@ -765,8 +774,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                                                                             </ComboBox>
                                                                         </div>
-                                                                        {!useMO && (
-                                                                            <VoiceSelection 
+                                                                        {/* EPUB3 Media Overlays can play TTS too */ (true || !useMO) && (
+                                                                            <VoiceSelection
                                                                                 // defaultVoices={[]}
 
                                                                                 languages={this.state.languages}
@@ -1402,7 +1411,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
         const voicesGroupByRegionArrayNotMapObject = Array.from(voicesGroupedByRegions.entries());
         // const voicesFromGroupByRegionFlatten = Array.from(voicesGroupedByRegions.values()).flat(1);
-        // const selectedVoice = 
+        // const selectedVoice =
         //     voicesFromGroupByRegionFlatten.find((voice) =>
         //         defaultVoices.find((defaultVoice) =>
         //             voice.name === defaultVoice.name && voice.voiceURI === defaultVoice.voiceURI && voice.offlineAvailability === defaultVoice.offlineAvailability))

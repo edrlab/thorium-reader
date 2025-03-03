@@ -39,14 +39,13 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
     console.log("LANGUAGEOPTIONS=", languageOptions);
     console.log("VOICEOPTIONS", voiceOptions);
 
-
     const defaultSelectedLanguage = selectedLanguage?.code;
     const defaultSelectedVoice = selectedVoice ? createNameId(selectedVoice) : undefined;
 
     return (
         <div className={stylesReader.ttsSelectVoice}>
             <ComboBox
-                style={{ paddingBottom: "0" }}
+                style={{ paddingBottom: 0 }}
                 label={__("reader.tts.language")}
                 aria-label={__("reader.tts.language")}
                 defaultItems={languageOptions}
@@ -72,7 +71,6 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
                 defaultItems={voiceOptions}
                 defaultSelectedKey={defaultSelectedVoice}
                 onSelectionChange={(key) => {
-
                     if (key === null || key === -1) {
                         // nothing
                     } else {
@@ -83,12 +81,14 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
                         }
                     }
                 }}
-                style={{ paddingBottom: "0", margin: "0" }}
+                style={{ paddingBottom: 0, margin: 0 }}
             >
                 {
                     (section) =>
                         <ListBoxSection id={section.id}>
-                            <ReactAriaHeader style={{ paddingLeft: "5px", fontSize: "16px", color: "var(--color-blue)", borderBottom: "1px solid var(--color-light-blue)" }}>
+                            <ReactAriaHeader
+                                style={{ paddingLeft: "5px", fontSize: "16px", color: "var(--color-blue)", borderBottom: "1px solid var(--color-light-blue)" }}
+                            >
                                 {section.name}
                             </ReactAriaHeader>
                             <Collection items={section.children}>

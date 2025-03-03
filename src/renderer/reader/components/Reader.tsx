@@ -109,6 +109,8 @@ import { getStore } from "../createStore";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 import { TDrawView } from "readium-desktop/common/redux/states/renderer/annotation";
 
+let _firstMediaOverlaysPlay = true;
+
 // TODO: key not used but translation kept for potential future use
 // discard some not used key from i18n-scan cmd
 // translate("catalog.sort")
@@ -419,6 +421,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public async componentDidMount() {
+        // ttsVoice(this.props.ttsVoice);
 
         ipcRenderer.on("accessibility-support-changed", this.accessibilitySupportChanged);
 
@@ -668,6 +671,10 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public async componentDidUpdate(oldProps: IProps, oldState: IState) {
+        // if (oldProps.ttsVoice !== this.props.ttsVoice) {
+        //     ttsVoice(this.props.ttsVoice);
+        // }
+
         // if (oldProps.readerMode !== this.props.readerMode) {
         // console.log("READER MODE = ", this.props.readerMode === ReaderMode.Detached ? "detached" : "attached");
         // }
@@ -3044,8 +3051,27 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private handleMediaOverlaysPlay() {
-        mediaOverlaysClickEnable(true);
         let delay = 0;
+
+        // brutal hack, fine for now (no need to add costly state to React)
+        if (_firstMediaOverlaysPlay) {
+            _firstMediaOverlaysPlay = false;
+            delay = 100;
+            // setTimeout(() => {
+            //     window.speechSynthesis.speak(new SpeechSynthesisUtterance(" "));
+            // }, 0);
+            // const systemVoices = window.speechSynthesis.getVoices();
+            // console.log("window.speechSynthesis.getVoices()", JSON.stringify(systemVoices.map(v => ({
+            //     name: v.name,
+            //     lang: v.lang,
+            //     voiceURI: v.voiceURI,
+            //     default: v.default,
+            //     localService: v.localService,
+            //     })), null, 4));
+            ttsVoice(this.props.ttsVoice);
+        }
+
+        mediaOverlaysClickEnable(true);
         if (!this.props.readerConfig?.noFootnotes) {
             delay = 100;
             // console.log("MO PLAY ==> NO_FOOTNOTES MUST BE TRUE (POPUP DISABLED), SWITCHING...");
