@@ -1236,7 +1236,7 @@ const SaveResetApplyPreset = () => {
 
     const cb = React.useCallback(() => {
 
-        const { ttsVoice: __ttsVoiceUNUSED, ...readerDefaultConfigCopyWithoutTTSVoice} = readerDefaultConfig;
+        const { ttsVoices: __ttsVoiceUNUSED, ...readerDefaultConfigCopyWithoutTTSVoice} = readerDefaultConfig;
         setReaderConfig(readerDefaultConfigCopyWithoutTTSVoice);
 
         if (allowCustomCheckboxChecked) {

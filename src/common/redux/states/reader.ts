@@ -5,16 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IReaderSettingsMenuState, ReaderConfig } from "readium-desktop/common/models/reader";
+import { IReaderSettingsMenuState, ReaderConfig, ReaderTTSMediaOverlay } from "readium-desktop/common/models/reader";
 import { FONT_ID_DEFAULT } from "readium-desktop/utils/fontList";
 import { IAnnotationReaderConfigState, IColor } from "./renderer/annotation";
 import { HighlightDrawTypeBackground, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
 
 export const DEFAULT_COLOR_ANNOTATION: IColor = {red: 235, green: 150, blue: 148};
 
-export const readerConfigInitialStateTTSMediaOverlay = {
+export const readerConfigInitialStateTTSMediaOverlay: ReaderTTSMediaOverlay = {
     ttsPlaybackRate: "1",
-    ttsVoice: null as SpeechSynthesisVoice,
+    ttsVoices: [],
     mediaOverlaysPlaybackRate: "1",
 };
 
