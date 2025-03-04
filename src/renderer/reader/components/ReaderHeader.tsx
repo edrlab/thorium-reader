@@ -1331,16 +1331,16 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         const defaultVoices = parseSpeechSynthesisVoices(this.props.ttsVoices);
         const selectedVoice = defaultVoices.find(({language}) => language.split("-")[0].toLowerCase() === selectedLanguage.code);
 
-        debug("SELECTED_LANGUAGE", selectedLanguage);
-        debug("SELECTED_VOICE", selectedVoice);
+        // debug("SELECTED_LANGUAGE", selectedLanguage);
+        // debug("SELECTED_VOICE", selectedVoice);
 
         const voicesFilteredOnLanguage = filterOnLanguage(voices, selectedLanguage?.code || "");
         const voicesGroupedByRegions = groupByRegions(voicesFilteredOnLanguage, this.props.r2Publication.Metadata?.Language || [], this.props.locale);
 
 
-        debug("VOICES=", voices);
-        debug("LANGUAGES=", languages);
-        debug("VOICESGroupedByRegion", voicesGroupedByRegions);
+        // debug("VOICES=", voices);
+        // debug("LANGUAGES=", languages);
+        // debug("VOICESGroupedByRegion", voicesGroupedByRegions);
 
         this.setState({
             languages: languages,
@@ -1353,14 +1353,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
     private setUpdateChecknewDefaultVoices = (voices: IVoices[], newDefaultVoice?: IVoices) => {
 
-        debug("SET_CHECK_DEFAULT_VOICE", newDefaultVoice);
+        // debug("SET_CHECK_DEFAULT_VOICE", newDefaultVoice);
 
         const defaultVoices = parseSpeechSynthesisVoices(this.props.ttsVoices);
         if (newDefaultVoice && defaultVoices.find(({ voiceURI, name, language, offlineAvailability }) =>
             `${voiceURI}_${name}_${language}_${offlineAvailability}` === `${newDefaultVoice.voiceURI}_${newDefaultVoice.name}_${newDefaultVoice.language}_${newDefaultVoice.offlineAvailability}`)
         ) return;
 
-        debug("SET_CHECK_DEFAULT_VOICE defaultVoices=", defaultVoices, "len=", defaultVoices.length);
+        // debug("SET_CHECK_DEFAULT_VOICE defaultVoices=", defaultVoices, "len=", defaultVoices.length);
 
         const defaultVoicesMatchWithInstalledVoices = defaultVoices.filter((defaultVoice) =>
             voices.find((voice) =>
@@ -1370,7 +1370,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                 defaultVoice.voiceURI === voice.voiceURI,
             ));
 
-        debug("SET_CHECK_DEFAULT_VOICE defaultVoicesFilteredWithInstalledVoices=", defaultVoicesMatchWithInstalledVoices, "len=", defaultVoicesMatchWithInstalledVoices.length);
+        // debug("SET_CHECK_DEFAULT_VOICE defaultVoicesFilteredWithInstalledVoices=", defaultVoicesMatchWithInstalledVoices, "len=", defaultVoicesMatchWithInstalledVoices.length);
 
         const defaultVoicesIsUniquePerLanguageMap = new Map<string, IVoices>();
 
@@ -1379,7 +1379,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             defaultVoicesIsUniquePerLanguageMap.set(langFromNewDefaultVoice, newDefaultVoice);
         }
 
-        debug("SET_CHECK_DEFAULT_VOICE defaultVoiceUniqueMap=", Array.from(defaultVoicesIsUniquePerLanguageMap.entries()));
+        // debug("SET_CHECK_DEFAULT_VOICE defaultVoiceUniqueMap=", Array.from(defaultVoicesIsUniquePerLanguageMap.entries()));
 
         for (const voice of defaultVoicesMatchWithInstalledVoices) {
             const { language } = voice;
@@ -1389,7 +1389,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             }
         }
 
-        debug("SET_CHECK_DEFAULT_VOICE defaultVoiceUniqueMap=", Array.from(defaultVoicesIsUniquePerLanguageMap.entries()));
+        // debug("SET_CHECK_DEFAULT_VOICE defaultVoiceUniqueMap=", Array.from(defaultVoicesIsUniquePerLanguageMap.entries()));
 
         const voicesGroupByLanguage = groupByLanguages(voices, this.props.r2Publication.Metadata?.Language || [], this.props.locale);
         for (const [_langLabel, voicesFilteredByLanguage] of voicesGroupByLanguage) {
@@ -1402,8 +1402,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             }
         }
 
-        debug("SET_CHECK_DEFAULT_VOICE defaultVoiceUniqueMap=", Array.from(defaultVoicesIsUniquePerLanguageMap.entries()));
-        debug("SET_CHECK_DEFAULT_VOICE NumberOfLanguageFound=", voicesGroupByLanguage.size, "VS NumberOfLanguageDefaultVoice=", defaultVoicesIsUniquePerLanguageMap.size);
+        // debug("SET_CHECK_DEFAULT_VOICE defaultVoiceUniqueMap=", Array.from(defaultVoicesIsUniquePerLanguageMap.entries()));
+        // debug("SET_CHECK_DEFAULT_VOICE NumberOfLanguageFound=", voicesGroupByLanguage.size, "VS NumberOfLanguageDefaultVoice=", defaultVoicesIsUniquePerLanguageMap.size);
 
         const newDefaultVoices = Array.from(defaultVoicesIsUniquePerLanguageMap.values());
         const newDefaultVoicesReadyToBePersistedAndSendToNavigator = convertToSpeechSynthesisVoices(newDefaultVoices);
@@ -1432,10 +1432,10 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         const defaultVoices = parseSpeechSynthesisVoices(this.props.ttsVoices);
         const selectedVoice = defaultVoices.find(({ language }) => language.split("-")[0].toLowerCase() === selectedLanguage.code);
 
-        debug("SELECTED_LANGUAGE_AFTER_LANGUAGE_UPDATED", selectedLanguage);
-        debug("SELECTED_VOICE_AFTER_LANGUAGE_UPDATED", selectedVoice);
+        // debug("SELECTED_LANGUAGE_AFTER_LANGUAGE_UPDATED", selectedLanguage);
+        // debug("SELECTED_VOICE_AFTER_LANGUAGE_UPDATED", selectedVoice);
 
-        debug("VOICESGroupedByRegion AFTER Language uptated (", this.state.selectedLanguage.code, ")", voicesGroupedByRegions);
+        // debug("VOICESGroupedByRegion AFTER Language uptated (", this.state.selectedLanguage.code, ")", voicesGroupedByRegions);
 
         this.setState({
             voicesGroupByRegion: voicesGroupByRegionArrayNotMapObject,

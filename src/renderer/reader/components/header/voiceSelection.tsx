@@ -36,8 +36,8 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
 
     const voices = voicesGroupByRegion.reduce<IVoices[]>((acc, [__unusedLangLocalized, voices]) => [...acc, ...voices], []);
 
-    console.log("LANGUAGEOPTIONS=", languageOptions);
-    console.log("VOICEOPTIONS", voiceOptions);
+    // console.log("LANGUAGEOPTIONS=", languageOptions);
+    // console.log("VOICEOPTIONS", voiceOptions);
 
     const selectedLanguageKey = selectedLanguage?.code;
     const selectedVoiceKey = selectedVoice ? createNameId(selectedVoice) : undefined;
