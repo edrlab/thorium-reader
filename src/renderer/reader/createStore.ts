@@ -82,18 +82,27 @@ export const createStoreFromDi = (preloadedState: Partial<IReaderRootState>): St
         newConfig.mediaOverlaysPlaybackRate = defaultConfig.mediaOverlaysPlaybackRate;
         flag = true;
     }
-    if (newConfig.ttsVoice === undefined) {
 
-        console.log("MIGRATION !! ttsVoice not set migrate from defaultConfig value=", newConfig.ttsVoice);
-        newConfig.ttsVoice = defaultConfig.ttsVoice;
+    // https://github.com/edrlab/thorium-reader/issues/2811
+    if (newConfig.ttsVoices === undefined) {
+
+        console.log("MIGRATION !! ttsVoices not set migrate from defaultConfig value=", newConfig.ttsVoices);
+        newConfig.ttsVoices = defaultConfig.ttsVoices;
+        flag = true;
+    }
+    if (newConfig.ttsVoices.length === 0 && (newConfig as any).ttsVoice) {
+
+        console.log("MIGRATION !! ttsVoice to ttsVoices with a 's' (array of ttsVoice) value=", (newConfig as any).ttsVoice);
+        newConfig.ttsVoices = [(newConfig as any).ttsVoice];
+        (newConfig as any).ttsVoice = null;
         flag = true;
     }
 
 
     if (flag) {
-        console.log(`ANNOTATION MIGRATION : There are a data need to be migrated from defaultConfig to config OLD=${JSON.stringify(store.getState().reader.config, null, 4)} NEW=${JSON.stringify(newConfig, null, 4)}`);
+        console.log(`MIGRATION : There are a data need to be migrated from defaultConfig to config OLD=${JSON.stringify(store.getState().reader.config, null, 4)} NEW=${JSON.stringify(newConfig, null, 4)}`);
         store.dispatch(readerLocalActionSetConfig.build(newConfig));
-        console.log(`ANNOTATION MIGRATION : Data migrated after the dispatch so this is the new data : ${JSON.stringify(store.getState().reader.config, null, 4)}`);
+        console.log(`MIGRATION : Data migrated after the dispatch so this is the new data : ${JSON.stringify(store.getState().reader.config, null, 4)}`);
     }
     return store;
 };

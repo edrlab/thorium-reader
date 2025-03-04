@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+
+import * as debug_ from "debug";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
 import debounce from "debounce";
@@ -56,7 +58,6 @@ import {
 } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
-import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { Unsubscribe } from "redux";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_LINK, R2_EVENT_LINK } from "@r2-navigator-js/electron/common/events";
@@ -68,17 +69,19 @@ import {
 } from "@r2-navigator-js/electron/renderer/audiobook";
 import {
     getCurrentReadingLocation, handleLinkLocator as r2HandleLinkLocator, handleLinkUrl as r2HandleLinkUrl, installNavigatorDOM,
-    isLocatorVisible, LocatorExtended, mediaOverlaysClickEnable, mediaOverlaysEnableCaptionsMode,
-    mediaOverlaysEnableSkippability, mediaOverlaysNext, mediaOverlaysPause,
+    isLocatorVisible, LocatorExtended, mediaOverlaysClickEnable,
+    mediaOverlaysNext, mediaOverlaysPause,
     mediaOverlaysPlay, mediaOverlaysPlaybackRate, mediaOverlaysPrevious, mediaOverlaysResume,
     MediaOverlaysStateEnum, mediaOverlaysStop, navLeftOrRight,
     setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
     setReadingLocationSaver, ttsClickEnable, ttsNext, ttsOverlayEnable, ttsPause,
     ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsAndMediaOverlaysManualPlayNext, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
-    ttsStop, ttsVoice, highlightsClickListen,
+    ttsStop, ttsVoices as navigatorTTSVoicesSetter, highlightsClickListen,
     // stealFocusDisable,
     keyboardFocusRequest,
     ttsHighlightStyle,
+    mediaOverlaysEnableCaptionsMode,
+    mediaOverlaysEnableSkippability,
 } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
@@ -90,8 +93,8 @@ import {
     readerLocalActionSetLocator,
 } from "../redux/actions";
 import { TdivinaReadingMode, defaultReadingMode } from "readium-desktop/common/redux/states/renderer/divina";
-import optionsValues, {
-    AdjustableSettingsNumber, IReaderMenuProps, IReaderSettingsProps, isDivinaReadingMode,
+import {
+    IReaderMenuProps, IReaderSettingsProps, isDivinaReadingMode,
 } from "./options-values";
 import { URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS, URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_GOTO, URL_PARAM_GOTO_DOM_RANGE, URL_PARAM_IS_IFRAME, URL_PARAM_PREVIOUS, URL_PARAM_REFRESH, URL_PARAM_SECOND_WEBVIEW, URL_PARAM_SESSION_INFO, URL_PARAM_WEBVIEW_SLOT } from "@r2-navigator-js/electron/renderer/common/url-params";
 
@@ -108,6 +111,9 @@ import { translateContentFieldHelper } from "readium-desktop/common/services/tra
 import { getStore } from "../createStore";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 import { TDrawView } from "readium-desktop/common/redux/states/renderer/annotation";
+
+const debug = debug_("readium-desktop:renderer:reader:components:Reader");
+debug("_");
 
 let _firstMediaOverlaysPlay = true;
 
@@ -421,7 +427,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public async componentDidMount() {
-        // ttsVoice(this.props.ttsVoice);
+        // navigatorTTSVoicesSetter(this.props.ttsVoices);
 
         ipcRenderer.on("accessibility-support-changed", this.accessibilitySupportChanged);
 
@@ -489,15 +495,6 @@ class Reader extends React.Component<IProps, IState> {
         });
         window.document.documentElement.addEventListener("mousemove", (_ev: MouseEvent) => {
             handleMouseKeyboard(false);
-        });
-
-        // TODO: this is a short-term hack.
-        // Can we instead subscribe to Redux action type == CloseRequest,
-        // but narrow it down specically to a reader window instance (not application-wide)
-        window.document.addEventListener("Thorium:DialogClose", (_ev: Event) => {
-            this.setState({
-                shortcutEnable: true,
-            });
         });
 
         ensureKeyboardListenerIsInstalled();
@@ -671,19 +668,24 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public async componentDidUpdate(oldProps: IProps, oldState: IState) {
-        // if (oldProps.ttsVoice !== this.props.ttsVoice) {
-        //     ttsVoice(this.props.ttsVoice);
-        // }
 
-        // if (oldProps.readerMode !== this.props.readerMode) {
-        // console.log("READER MODE = ", this.props.readerMode === ReaderMode.Detached ? "detached" : "attached");
-        // }
-        if (oldProps.bookmarks !== this.props.bookmarks ||
-            oldState.currentLocation !== this.state.currentLocation) {
+        if (
+            (
+                oldState.currentLocation && this.state.currentLocation &&
+                (oldState.currentLocation?.locator.href !== this.state.currentLocation.locator.href ||
+                    oldState.currentLocation?.locator.locations.cssSelector !== this.state.currentLocation.locator.locations.cssSelector)
+            ) ||
+            (
+                Array.isArray(oldProps.bookmarks) && Array.isArray(this.props.bookmarks) && (
+                    oldProps.bookmarks.length !== this.props.bookmarks.length ||
+                    !oldProps.bookmarks.reduce((acc, cv) => acc && !!this.props.bookmarks.find((v) => v.uuid === cv.uuid), true))
+            )
+        ) {
 
             // sets state visibleBookmarkList
             await this.updateVisibleBookmarks();
         }
+
         if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
             console.log("READER RELOAD KEYBOARD SHORTCUTS");
             this.unregisterAllKeyboardListeners();
@@ -800,7 +802,6 @@ class Reader extends React.Component<IProps, IState> {
         const ReaderSettingsProps: IReaderSettingsProps = {
             open: this.state.settingsOpen,
             doFocus: this.state.doFocus,
-            indexes: this.props.indexes,
             // readerConfig: this.props.readerConfig,
             // handleSettingChange: this.handleSettingChange.bind(this),
             // handleIndexChange: this.handleIndexChange.bind(this),
@@ -2993,7 +2994,7 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         setTimeout(() => {
-            ttsPlay(parseFloat(this.props.ttsPlaybackRate), this.props.ttsVoice);
+            ttsPlay(parseFloat(this.props.ttsPlaybackRate), this.props.ttsVoices);
         }, delay);
     }
     private handleTTSPause() {
@@ -3029,18 +3030,26 @@ class Reader extends React.Component<IProps, IState> {
         // this.setState({ ttsPlaybackRate: speed });
         this.props.setConfig({ ttsPlaybackRate: speed });
     }
-    private handleTTSVoice(voice: SpeechSynthesisVoice | null) {
+    private handleTTSVoice(voices: SpeechSynthesisVoice[] | SpeechSynthesisVoice | null) {
         // alert(`${voice.name} ${voice.lang} ${voice.default} ${voice.voiceURI} ${voice.localService}`);
-        const v = voice ? {
+        // const ttsVoices = this.props.ttsVoices;
+
+        if (!voices) return ;
+        if (!Array.isArray(voices)) {
+            voices = [voices];
+        }
+
+        const v = voices.map<SpeechSynthesisVoice>((voice) => ({
             default: voice.default,
             lang: voice.lang,
             localService: voice.localService,
             name: voice.name,
             voiceURI: voice.voiceURI,
-        } : null;
-        ttsVoice(v);
-        // this.setState({ ttsVoice: v });
-        this.props.setConfig({ ttsVoice: v });
+        }));
+
+        // console.log("HANDLE_TTS_VOICE", "PUSH_DEFAULT_TTS_VOICES_TO_NAVIGATOR", v);
+        navigatorTTSVoicesSetter(v);
+        this.props.setConfig({ ttsVoices: v });
     }
 
     private handleMediaOverlaysPlay() {
@@ -3061,7 +3070,7 @@ class Reader extends React.Component<IProps, IState> {
             //     default: v.default,
             //     localService: v.localService,
             //     })), null, 4));
-            ttsVoice(this.props.ttsVoice);
+            navigatorTTSVoicesSetter(this.props.ttsVoices);
         }
 
         mediaOverlaysClickEnable(true);
@@ -3125,7 +3134,7 @@ class Reader extends React.Component<IProps, IState> {
     //     if (ttsWasPlaying) {
     //         ttsStop();
     //         setTimeout(() => {
-    //             ttsPlay(parseFloat(this.state.ttsPlaybackRate), this.state.ttsVoice);
+    //             ttsPlay(parseFloat(this.state.ttsPlaybackRate), this.state.ttsVoices);
     //         }, 300);
     //     }
 
@@ -3212,25 +3221,6 @@ class Reader extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
-    const indexes: AdjustableSettingsNumber = {
-        fontSize: 2,
-        pageMargins: 0,
-        wordSpacing: 0,
-        letterSpacing: 0,
-        paraSpacing: 0,
-        lineHeight: 0,
-    };
-    for (const key of ObjectKeys(indexes)) {
-        let i = 0;
-        for (const value of optionsValues[key]) {
-            if (state.reader.config[key] === value) {
-                indexes[key] = i;
-                break;
-            }
-            i++;
-        }
-    }
-
     mediaOverlaysEnableSkippability(state.reader.config.mediaOverlaysEnableSkippability);
     mediaOverlaysEnableCaptionsMode(state.reader.config.mediaOverlaysEnableCaptionsMode);
 
@@ -3259,7 +3249,6 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         publicationView: state.reader.info.publicationView,
         r2Publication: state.reader.info.r2Publication,
         readerConfig: state.reader.config,
-        indexes,
         keyboardShortcuts: state.keyboard.shortcuts,
         infoOpen: state.dialog.open &&
             state.dialog.type === DialogTypeName.PublicationInfoReader,
@@ -3276,7 +3265,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         r2PublicationHasMediaOverlays: state.reader.info.navigator.r2PublicationHasMediaOverlays,
         ttsState: state.reader.tts.state,
         mediaOverlaysState: state.reader.mediaOverlay.state,
-        ttsVoice: state.reader.config.ttsVoice,
+        ttsVoices: state.reader.config.ttsVoices,
         mediaOverlaysPlaybackRate: state.reader.config.mediaOverlaysPlaybackRate,
         ttsPlaybackRate: state.reader.config.ttsPlaybackRate,
 

@@ -19,7 +19,7 @@ export enum ReaderMode {
 
 export interface ReaderTTSMediaOverlay {
     ttsPlaybackRate: string;
-    ttsVoice: SpeechSynthesisVoice | null,
+    ttsVoices: SpeechSynthesisVoice[],
 
     mediaOverlaysPlaybackRate: string,
 }

@@ -130,7 +130,6 @@ export const isDivinaReadingMode = (v: any): v is TdivinaReadingMode => {
 };
 
 export interface IReaderSettingsProps {
-    indexes: AdjustableSettingsNumber;
     open: boolean;
     doFocus: number;
     // readerConfig: ReaderConfig;
