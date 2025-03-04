@@ -594,7 +594,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         }
 
         let _chunkIndex = -1;
-        let _chunkIndexMapped = -1;
+        // let _chunkIndexMapped = -1;
         let _chunkIndexAtCurrentLocation = -1;
 
         const chunks =
@@ -655,7 +655,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             }
 
             _chunkIndex++;
-            _chunkIndexMapped = index;
+            // _chunkIndexMapped = index;
             if (atCurrentLocation) {
                 _chunkIndexAtCurrentLocation = _chunkIndex;
             }
