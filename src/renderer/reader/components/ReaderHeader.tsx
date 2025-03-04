@@ -183,8 +183,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
     // private onwheel: React.WheelEventHandler<HTMLSelectElement>;
     // private timerFXLZoomDebounce: number | undefined;
 
-    private ___lock = true;
-
     constructor(props: IProps) {
         super(props);
         this.enableFullscreenRef = React.createRef<HTMLButtonElement>();
@@ -243,58 +241,32 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         // ensureKeyboardListenerIsInstalled();
         // this.registerAllKeyboardListeners();
 
-        createOrGetPdfEventBus().subscribe("scale", this.setScaleMode);
+        if (this.props.isPdf) {
+            createOrGetPdfEventBus().subscribe("scale", this.setScaleMode);
+        }
 
-        getVoices(/*TODO Param? */).then((voices) => {
-
-            // console.log("getVoices()", JSON.stringify(voices?.map(v => ({
-            //     name: v.name,
-            //     language: v.language,
-            //     lang: v.__lang,
-            //     voiceURI: v.voiceURI,
-            //     label: v.label,
-            //     })), null, 4));
-
-            this.setVoices(voices);
-        });
-
+        if (!this.props.isDivina && !this.props.isPdf) {
+            getVoices(/*TODO Param? */).then((voices) => {
+                this.setVoices(voices);
+            });
+        }
     }
 
     public componentWillUnmount() {
 
         // this.unregisterAllKeyboardListeners();
 
-        createOrGetPdfEventBus().remove(this.setScaleMode, "scale");
+        if (this.props.isPdf) {
+            createOrGetPdfEventBus().remove(this.setScaleMode, "scale");
+        }
     }
 
     public componentDidUpdate(oldProps: IProps, oldState: IState) {
 
-        if (this.___lock && this.state.voices.length) {
-            this.___lock = false;
-        }
-
-
-        if (!this.___lock && this.state.selectedVoice && oldState.selectedVoice !== this.state.selectedVoice) {
-            this.setUpdateChecknewDefaultVoices(this.state.voices, this.state.selectedVoice);
-        }
-
-        if (!this.___lock && this.state.selectedLanguage && oldState.selectedLanguage !== this.state.selectedLanguage) {
-            this.updateLanguageVoicesState();
-        }
-
-        if (oldState.ttsPopoverOpen && this.state.ttsPopoverOpen &&
-            oldProps.ttsState !== TTSStateEnum.STOPPED && this.props.ttsState === TTSStateEnum.STOPPED) {
-            this.setState({ttsPopoverOpen: false});
-        }
-
-        if (!oldState.ttsPopoverOpen && this.state.ttsPopoverOpen) {
-
-            // getVoices(/*TODO Param? */).then((voices) => {
-            //     this.setVoices(voices);
-            //     this.setUpdateChecknewDefaultVoices();
-
-            // });
-        }
+        // if (oldState.ttsPopoverOpen && this.state.ttsPopoverOpen &&
+        //     oldProps.ttsState !== TTSStateEnum.STOPPED && this.props.ttsState === TTSStateEnum.STOPPED) {
+        //     this.setState({ttsPopoverOpen: false});
+        // }
 
         if (oldState.divinaSoundEnabled !== this.state.divinaSoundEnabled) {
             this.props.divinaSoundPlay(this.state.divinaSoundEnabled);
@@ -795,11 +767,15 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                                                                             languages={this.state.languages}
                                                                             selectedLanguage={this.state.selectedLanguage}
-                                                                            setSelectedLanguage={(v) => this.setState({ selectedLanguage: v })}
+                                                                            setSelectedLanguage={(newLanguageSelected) => {
+                                                                                this.setNewVoiceLanguage(newLanguageSelected);
+                                                                            }}
 
                                                                             voicesGroupByRegion={this.state.voicesGroupByRegion}
                                                                             selectedVoice={this.state.selectedVoice}
-                                                                            setSelectedVoice={(v) => this.setState({ selectedVoice: v })}
+                                                                            setSelectedVoice={(newVoiceSelected) => {
+                                                                                this.setNewVoiceVoice(newVoiceSelected);
+                                                                            }}
                                                                         />
                                                                     )}
                                                                 </div>
@@ -1331,10 +1307,12 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         const languages = getLanguages(voices, this.props.r2Publication.Metadata?.Language || [], this.props.locale);
         const selectedLanguage = languages[0];
 
-        this.setUpdateChecknewDefaultVoices(voices);
-
         const defaultVoices = parseSpeechSynthesisVoices(this.props.ttsVoices);
-        const selectedVoice = defaultVoices.find(({language}) => language.split("-")[0].toLowerCase() === selectedLanguage.code);
+        const newDefaultVoices = this.updateDefaultVoices(defaultVoices, voices);
+        // debug("TTS_SET_VOICE: DefaultVoices=", defaultVoices, defaultVoices.length);
+        // debug("TTS_SET_VOICE: NewDefaultVoices=", newDefaultVoices, newDefaultVoices.length);
+
+        const selectedVoice = newDefaultVoices.find(({ language }) => language.split("-")[0].toLowerCase() === selectedLanguage.code);
 
         // debug("SELECTED_LANGUAGE", selectedLanguage);
         // debug("SELECTED_VOICE", selectedVoice);
@@ -1356,14 +1334,15 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         });
     };
 
-    private setUpdateChecknewDefaultVoices = (voices: IVoices[], newDefaultVoice?: IVoices) => {
+    private updateDefaultVoices = (defaultVoices: IVoices[], voices: IVoices[], newDefaultVoice?: IVoices): IVoices[] => {
 
         // debug("SET_CHECK_DEFAULT_VOICE", newDefaultVoice);
 
-        const defaultVoices = parseSpeechSynthesisVoices(this.props.ttsVoices);
         if (newDefaultVoice && defaultVoices.find(({ voiceURI, name, language, offlineAvailability }) =>
             `${voiceURI}_${name}_${language}_${offlineAvailability}` === `${newDefaultVoice.voiceURI}_${newDefaultVoice.name}_${newDefaultVoice.language}_${newDefaultVoice.offlineAvailability}`)
-        ) return;
+        ) {
+            return defaultVoices;
+        }
 
         // debug("SET_CHECK_DEFAULT_VOICE defaultVoices=", defaultVoices, "len=", defaultVoices.length);
 
@@ -1411,40 +1390,81 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         // debug("SET_CHECK_DEFAULT_VOICE NumberOfLanguageFound=", voicesGroupByLanguage.size, "VS NumberOfLanguageDefaultVoice=", defaultVoicesIsUniquePerLanguageMap.size);
 
         const newDefaultVoices = Array.from(defaultVoicesIsUniquePerLanguageMap.values());
+
+        const noDiff =
+            newDefaultVoices.reduce(
+                (acc, newDefaultVoice) =>
+                    acc &&
+                    !!defaultVoices.find(({ voiceURI, name, language, offlineAvailability }) =>
+                        `${voiceURI}_${name}_${language}_${offlineAvailability}` === `${newDefaultVoice.voiceURI}_${newDefaultVoice.name}_${newDefaultVoice.language}_${newDefaultVoice.offlineAvailability}`)
+                , true);
+
         const newDefaultVoicesReadyToBePersistedAndSendToNavigator = convertToSpeechSynthesisVoices(newDefaultVoices);
 
-        this.props.handleTTSVoice(newDefaultVoicesReadyToBePersistedAndSendToNavigator);
+        if (!noDiff) {
+            // debug("NewDefaultVoices -> send to Reader.tsx HandleTTSVoices");
+            this.props.handleTTSVoice(newDefaultVoicesReadyToBePersistedAndSendToNavigator);
+        }
+
+        return newDefaultVoices;
     };
 
-    private updateLanguageVoicesState = () => {
+    private setNewVoiceLanguage = (selectedLanguage: ILanguages) => {
 
-        if (!this.state.selectedLanguage) return ;
+        if (
+            this.state.selectedLanguage.code !== selectedLanguage.code ||
+            this.state.selectedLanguage.label !== selectedLanguage.label
+        ) {
+            // nothing
+        } else {
+            return ;
+        }
 
-        const selectedLanguage = this.state.selectedLanguage;
+        const defaultVoiceSpeechSynthesis = this.props.ttsVoices;
+        const defaultVoices = parseSpeechSynthesisVoices(defaultVoiceSpeechSynthesis);
 
-        const voicesFilteredOnLanguage = filterOnLanguage(this.state.voices, this.state.selectedLanguage?.code || "");
+        const allVoices = this.state.voices;
+        const voicesFilteredOnLanguage = filterOnLanguage(allVoices, selectedLanguage.code);
         const voicesGroupedByRegions = groupByRegions(voicesFilteredOnLanguage, this.props.r2Publication.Metadata?.Language || [], this.props.locale);
 
 
         const voicesGroupByRegionArrayNotMapObject = Array.from(voicesGroupedByRegions.entries());
-        // const voicesFromGroupByRegionFlatten = Array.from(voicesGroupedByRegions.values()).flat(1);
-        // const selectedVoice =
-        //     voicesFromGroupByRegionFlatten.find((voice) =>
-        //         defaultVoices.find((defaultVoice) =>
-        //             voice.name === defaultVoice.name && voice.voiceURI === defaultVoice.voiceURI && voice.offlineAvailability === defaultVoice.offlineAvailability))
-        //     || voicesFromGroupByRegionFlatten[0];
-
-        const defaultVoices = parseSpeechSynthesisVoices(this.props.ttsVoices);
         const selectedVoice = defaultVoices.find(({ language }) => language.split("-")[0].toLowerCase() === selectedLanguage.code);
 
         // debug("SELECTED_LANGUAGE_AFTER_LANGUAGE_UPDATED", selectedLanguage);
         // debug("SELECTED_VOICE_AFTER_LANGUAGE_UPDATED", selectedVoice);
 
-        // debug("VOICESGroupedByRegion AFTER Language uptated (", this.state.selectedLanguage.code, ")", voicesGroupedByRegions);
+        // debug("VOICESGroupedByRegion AFTER Language uptated (", selectedLanguage.code, ")", voicesGroupedByRegions);
 
         this.setState({
+            selectedLanguage: selectedLanguage,
             voicesGroupByRegion: voicesGroupByRegionArrayNotMapObject,
             selectedVoice,
+        });
+    };
+
+    private setNewVoiceVoice = (selectedVoice: IVoices) => {
+        if (
+            this.state.selectedVoice.name !== selectedVoice.name ||
+            this.state.selectedVoice.voiceURI !== selectedVoice.voiceURI ||
+            this.state.selectedVoice.language !== selectedVoice.language ||
+            this.state.selectedVoice.offlineAvailability !== selectedVoice.offlineAvailability
+        ) { 
+            // nothing
+        } else {
+            return ;
+        }
+
+        const defaultVoiceSpeechSynthesis = this.props.ttsVoices;
+        const defaultVoices = parseSpeechSynthesisVoices(defaultVoiceSpeechSynthesis);
+
+        const allVoices = this.state.voices;
+        const newDefaultVoices = this.updateDefaultVoices(defaultVoices, allVoices, selectedVoice);
+        debug("TTS_SELECTED_VOICE_UPDATED: DefaultVoices=", defaultVoices, defaultVoices.length);
+        debug("TTS_SELECTED_VOICE_UPDATED: NewDefaultVoices=", newDefaultVoices, newDefaultVoices.length);
+
+        this.setState({
+            selectedVoice: selectedVoice,
         });
     };
 
