@@ -80,6 +80,8 @@ import {
     // stealFocusDisable,
     keyboardFocusRequest,
     ttsHighlightStyle,
+    mediaOverlaysEnableCaptionsMode,
+    mediaOverlaysEnableSkippability,
 } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
@@ -3219,8 +3221,8 @@ class Reader extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
-    // mediaOverlaysEnableSkippability(state.reader.config.mediaOverlaysEnableSkippability);
-    // mediaOverlaysEnableCaptionsMode(state.reader.config.mediaOverlaysEnableCaptionsMode);
+    mediaOverlaysEnableSkippability(state.reader.config.mediaOverlaysEnableSkippability);
+    mediaOverlaysEnableCaptionsMode(state.reader.config.mediaOverlaysEnableCaptionsMode);
 
     // too early in navigator lifecycle (READIUM2 context not instantiated)
     // see this.ttsOverlayEnableNeedsSync
