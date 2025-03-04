@@ -58,7 +58,6 @@ import {
 } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
-import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { Unsubscribe } from "redux";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_LINK, R2_EVENT_LINK } from "@r2-navigator-js/electron/common/events";
@@ -70,8 +69,8 @@ import {
 } from "@r2-navigator-js/electron/renderer/audiobook";
 import {
     getCurrentReadingLocation, handleLinkLocator as r2HandleLinkLocator, handleLinkUrl as r2HandleLinkUrl, installNavigatorDOM,
-    isLocatorVisible, LocatorExtended, mediaOverlaysClickEnable, mediaOverlaysEnableCaptionsMode,
-    mediaOverlaysEnableSkippability, mediaOverlaysNext, mediaOverlaysPause,
+    isLocatorVisible, LocatorExtended, mediaOverlaysClickEnable,
+    mediaOverlaysNext, mediaOverlaysPause,
     mediaOverlaysPlay, mediaOverlaysPlaybackRate, mediaOverlaysPrevious, mediaOverlaysResume,
     MediaOverlaysStateEnum, mediaOverlaysStop, navLeftOrRight,
     setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
@@ -92,8 +91,8 @@ import {
     readerLocalActionSetLocator,
 } from "../redux/actions";
 import { TdivinaReadingMode, defaultReadingMode } from "readium-desktop/common/redux/states/renderer/divina";
-import optionsValues, {
-    AdjustableSettingsNumber, IReaderMenuProps, IReaderSettingsProps, isDivinaReadingMode,
+import {
+    IReaderMenuProps, IReaderSettingsProps, isDivinaReadingMode,
 } from "./options-values";
 import { URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS, URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_GOTO, URL_PARAM_GOTO_DOM_RANGE, URL_PARAM_IS_IFRAME, URL_PARAM_PREVIOUS, URL_PARAM_REFRESH, URL_PARAM_SECOND_WEBVIEW, URL_PARAM_SESSION_INFO, URL_PARAM_WEBVIEW_SLOT } from "@r2-navigator-js/electron/renderer/common/url-params";
 
@@ -801,7 +800,6 @@ class Reader extends React.Component<IProps, IState> {
         const ReaderSettingsProps: IReaderSettingsProps = {
             open: this.state.settingsOpen,
             doFocus: this.state.doFocus,
-            indexes: this.props.indexes,
             // readerConfig: this.props.readerConfig,
             // handleSettingChange: this.handleSettingChange.bind(this),
             // handleIndexChange: this.handleIndexChange.bind(this),
@@ -3221,27 +3219,8 @@ class Reader extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
-    const indexes: AdjustableSettingsNumber = {
-        fontSize: 2,
-        pageMargins: 0,
-        wordSpacing: 0,
-        letterSpacing: 0,
-        paraSpacing: 0,
-        lineHeight: 0,
-    };
-    for (const key of ObjectKeys(indexes)) {
-        let i = 0;
-        for (const value of optionsValues[key]) {
-            if (state.reader.config[key] === value) {
-                indexes[key] = i;
-                break;
-            }
-            i++;
-        }
-    }
-
-    mediaOverlaysEnableSkippability(state.reader.config.mediaOverlaysEnableSkippability);
-    mediaOverlaysEnableCaptionsMode(state.reader.config.mediaOverlaysEnableCaptionsMode);
+    // mediaOverlaysEnableSkippability(state.reader.config.mediaOverlaysEnableSkippability);
+    // mediaOverlaysEnableCaptionsMode(state.reader.config.mediaOverlaysEnableCaptionsMode);
 
     // too early in navigator lifecycle (READIUM2 context not instantiated)
     // see this.ttsOverlayEnableNeedsSync
@@ -3268,7 +3247,6 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         publicationView: state.reader.info.publicationView,
         r2Publication: state.reader.info.r2Publication,
         readerConfig: state.reader.config,
-        indexes,
         keyboardShortcuts: state.keyboard.shortcuts,
         infoOpen: state.dialog.open &&
             state.dialog.type === DialogTypeName.PublicationInfoReader,
