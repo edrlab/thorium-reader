@@ -89,8 +89,12 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
         }
     }
 
-    if ((isNotNil(payload.ttsVoices) && payload.ttsVoices.length) || isNotNil(payload.ttsPlaybackRate) || isNotNil(payload.ttsEnableOverlayMode) || isNotNil(payload.ttsEnableSentenceDetection)) {
-
+    if (
+        // (isNotNil(payload.ttsVoices) && payload.ttsVoices.length) ||
+        // isNotNil(payload.ttsPlaybackRate) ||
+        isNotNil(payload.ttsEnableOverlayMode) ||
+        isNotNil(payload.ttsEnableSentenceDetection)
+    ) {
         const ttsState = yield* selectTyped((state: IReaderRootState) => state.reader.tts.state);
         const ttsWasPlaying = ttsState !== TTSStateEnum.STOPPED;
         if (ttsWasPlaying) {

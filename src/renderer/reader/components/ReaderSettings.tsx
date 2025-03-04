@@ -692,6 +692,10 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                 if (useMO) {
                     set({ mediaOverlaysEnableCaptionsMode: !moCaptions });
                 } else {
+                    // see readerConfig.ts Redux Saga readerConfigChanged (TTS STOP)
+                    // ttsTogglePlayResume(() => {
+                    //     set({ ttsEnableOverlayMode: !ttsCaptions });
+                    // });
                     set({ ttsEnableOverlayMode: !ttsCaptions });
                 }
             },
@@ -727,6 +731,10 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
             description: `${__("reader.tts.sentenceDetectDescription")}`,
             checked: splitTTStext,
             onChange: () => {
+                // see readerConfig.ts Redux Saga readerConfigChanged (TTS STOP)
+                // ttsTogglePlayResume(() => {
+                //     set({ ttsEnableSentenceDetection: !splitTTStext });
+                // });
                 set({ ttsEnableSentenceDetection: !splitTTStext });
             },
         });

@@ -282,6 +282,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             this.updateLanguageVoicesState();
         }
 
+        if (oldState.ttsPopoverOpen && this.state.ttsPopoverOpen &&
+            oldProps.ttsState !== TTSStateEnum.STOPPED && this.props.ttsState === TTSStateEnum.STOPPED) {
+            this.setState({ttsPopoverOpen: false});
+        }
+
         if (!oldState.ttsPopoverOpen && this.state.ttsPopoverOpen) {
 
             // getVoices(/*TODO Param? */).then((voices) => {
@@ -495,9 +500,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             isSepiaMode && stylesReader.sepiaMode,
           );
 
-          const isAudioBook = isAudiobookFn(this.props.r2Publication);
-
-
+        const isAudioBook = isAudiobookFn(this.props.r2Publication);
 
         return (
             <nav
@@ -786,6 +789,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                     </div>
                                                                     {/* EPUB3 Media Overlays can play TTS too */ (true || !useMO) && (
                                                                         <VoiceSelection
+                                                                            ttsState={this.props.ttsState} ttsPause={this.props.handleTTSPause} ttsResume={this.props.handleTTSResume}
+
                                                                             // defaultVoices={[]}
 
                                                                             languages={this.state.languages}
