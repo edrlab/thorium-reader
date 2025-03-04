@@ -491,15 +491,6 @@ class Reader extends React.Component<IProps, IState> {
             handleMouseKeyboard(false);
         });
 
-        // TODO: this is a short-term hack.
-        // Can we instead subscribe to Redux action type == CloseRequest,
-        // but narrow it down specically to a reader window instance (not application-wide)
-        window.document.addEventListener("Thorium:DialogClose", (_ev: Event) => {
-            this.setState({
-                shortcutEnable: true,
-            });
-        });
-
         ensureKeyboardListenerIsInstalled();
         this.registerAllKeyboardListeners();
 
