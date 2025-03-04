@@ -533,7 +533,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         } */}
                     </ul>
                     {
-                        this.props.isPdf ? <></> :
+                        (this.props.isPdf || isAudioBook) ? <></> :
                             <ul className={classNames(stylesReader.tts_toolbar)}>
                                 {
                                     this.props.isDivina
@@ -1451,7 +1451,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             this.state.selectedVoice.voiceURI !== selectedVoice.voiceURI ||
             this.state.selectedVoice.language !== selectedVoice.language ||
             this.state.selectedVoice.offlineAvailability !== selectedVoice.offlineAvailability
-        ) { 
+        ) {
             // nothing
         } else {
             return ;
