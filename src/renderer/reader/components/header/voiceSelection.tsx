@@ -5,7 +5,6 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { Collection, Header as ReactAriaHeader, ListBoxSection } from "react-aria-components";
 import { HoverEvent } from "@react-types/shared";
 import { IVoices, ILanguages } from "readium-speech";
-import { TTSStateEnum } from "@r2-navigator-js/electron/renderer";
 
 export type TLanguageOptions = Array<{ id: string, name: string, count: number }>;
 export type TVoiceOptions = Array<{ id: string, name: string, children: Array<{ id: string, name: string }> }>;
@@ -18,9 +17,6 @@ export interface IProps {
     voicesGroupByRegion: Array<[regionCode: string, voices: IVoices[]]>;
     selectedVoice: IVoices;
     setSelectedVoice: (v: IVoices) => void;
-    ttsState: TTSStateEnum;
-    ttsPause: () => void;
-    ttsResume: () => void;
 }
 
 const createNameId = ({ name, voiceURI, language }: Pick<IVoices, "name" | "voiceURI" | "language">) => `${name}__!?__${voiceURI}__!?__${language}`;
@@ -29,7 +25,7 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
 
     const [__] = useTranslator();
 
-    const { ttsState, ttsPause, ttsResume, languages, selectedLanguage, setSelectedLanguage, voicesGroupByRegion, selectedVoice, setSelectedVoice } = props;
+    const { languages, selectedLanguage, setSelectedLanguage, voicesGroupByRegion, selectedVoice, setSelectedVoice } = props;
 
     const languageOptions: TLanguageOptions = languages.map(({ label, count, code }) => ({ id: code, name: label, count }));
     const voiceOptions: TVoiceOptions = voicesGroupByRegion.map(
@@ -45,21 +41,6 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
 
     const selectedLanguageKey = selectedLanguage?.code;
     const selectedVoiceKey = selectedVoice ? createNameId(selectedVoice) : undefined;
-
-    const ttsTogglePlayResume = (func: () => void) => {
-        const wasPlaying = ttsState === TTSStateEnum.PLAYING;
-        if (wasPlaying) {
-            ttsPause();
-        }
-        setTimeout(() => {
-            func();
-            if (wasPlaying) {
-                setTimeout(() => {
-                    ttsResume();
-                }, 200);
-            }
-        }, wasPlaying ? 200 : 0);
-    };
 
     return (
         <div className={stylesReader.ttsSelectVoice}>
@@ -78,10 +59,6 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
 
                         const found = languages.find(({ code }) => code === key);
                         if (found) {
-                            // see readerConfig.ts Redux Saga readerConfigChanged (TTS STOP)
-                            // ttsTogglePlayResume(() => {
-                            //     setSelectedLanguage(found);
-                            // });
                             setSelectedLanguage(found);
                         }
                     }
@@ -102,11 +79,7 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
 
                         const found = voices.find((voice) => createNameId(voice) === key);
                         if (found) {
-                            // see readerConfig.ts Redux Saga readerConfigChanged (TTS STOP)
-                            ttsTogglePlayResume(() => {
-                                setSelectedVoice(found);
-                            });
-                            // setSelectedVoice(found);
+                            setSelectedVoice(found);
                         }
                     }
                 }}

@@ -196,6 +196,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         // this.onKeyboardFixedLayoutZoomIn = this.onKeyboardFixedLayoutZoomIn.bind(this);
         // this.onKeyboardFixedLayoutZoomOut = this.onKeyboardFixedLayoutZoomOut.bind(this);
 
+        this.setVoices = this.setVoices.bind(this);
+        this.updateDefaultVoices = this.updateDefaultVoices.bind(this);
+        this.setNewVoiceLanguage = this.setNewVoiceLanguage.bind(this);
+        this.setNewVoiceVoice = this.setNewVoiceVoice.bind(this);
+
         this.state = {
             pdfScaleMode: undefined,
             divinaSoundEnabled: false,
@@ -761,9 +766,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                     </div>
                                                                     {/* EPUB3 Media Overlays can play TTS too */ (true || !useMO) && (
                                                                         <VoiceSelection
-                                                                            ttsState={this.props.ttsState} ttsPause={this.props.handleTTSPause} ttsResume={this.props.handleTTSResume}
-
-                                                                            // defaultVoices={[]}
 
                                                                             languages={this.state.languages}
                                                                             selectedLanguage={this.state.selectedLanguage}
@@ -1301,7 +1303,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         this.setState({ pdfScaleMode: mode });
     };
 
-    private setVoices = (voices: IVoices[]) => {
+    private setVoices(voices: IVoices[]) {
 
         if (!Array.isArray(voices)) return;
         const languages = getLanguages(voices, this.props.r2Publication.Metadata?.Language || [], this.props.locale);
@@ -1334,7 +1336,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         });
     };
 
-    private updateDefaultVoices = (defaultVoices: IVoices[], voices: IVoices[], newDefaultVoice?: IVoices): IVoices[] => {
+    private updateDefaultVoices(defaultVoices: IVoices[], voices: IVoices[], newDefaultVoice?: IVoices): IVoices[] {
 
         // debug("SET_CHECK_DEFAULT_VOICE", newDefaultVoice);
 
@@ -1409,7 +1411,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         return newDefaultVoices;
     };
 
-    private setNewVoiceLanguage = (selectedLanguage: ILanguages) => {
+    private setNewVoiceLanguage(selectedLanguage: ILanguages) {
 
         if (
             this.state.selectedLanguage.code !== selectedLanguage.code ||
@@ -1443,7 +1445,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         });
     };
 
-    private setNewVoiceVoice = (selectedVoice: IVoices) => {
+    private setNewVoiceVoice(selectedVoice: IVoices) {
         if (
             this.state.selectedVoice.name !== selectedVoice.name ||
             this.state.selectedVoice.voiceURI !== selectedVoice.voiceURI ||
@@ -1455,17 +1457,33 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             return ;
         }
 
-        const defaultVoiceSpeechSynthesis = this.props.ttsVoices;
-        const defaultVoices = parseSpeechSynthesisVoices(defaultVoiceSpeechSynthesis);
+        // see readerConfig.ts Redux Saga readerConfigChanged (TTS STOP)
+        const wasPlaying = this.props.ttsState === TTSStateEnum.PLAYING;
+        if (wasPlaying) {
+            this.props.handleTTSPause();
+        }
 
-        const allVoices = this.state.voices;
-        const newDefaultVoices = this.updateDefaultVoices(defaultVoices, allVoices, selectedVoice);
-        debug("TTS_SELECTED_VOICE_UPDATED: DefaultVoices=", defaultVoices, defaultVoices.length);
-        debug("TTS_SELECTED_VOICE_UPDATED: NewDefaultVoices=", newDefaultVoices, newDefaultVoices.length);
+        setTimeout(() => {
 
-        this.setState({
-            selectedVoice: selectedVoice,
-        });
+            const defaultVoiceSpeechSynthesis = this.props.ttsVoices;
+            const defaultVoices = parseSpeechSynthesisVoices(defaultVoiceSpeechSynthesis);
+
+            const allVoices = this.state.voices;
+            const newDefaultVoices = this.updateDefaultVoices(defaultVoices, allVoices, selectedVoice);
+            debug("TTS_SELECTED_VOICE_UPDATED: DefaultVoices=", defaultVoices, defaultVoices.length);
+            debug("TTS_SELECTED_VOICE_UPDATED: NewDefaultVoices=", newDefaultVoices, newDefaultVoices.length);
+
+            this.setState({
+                selectedVoice: selectedVoice,
+            });
+
+            if (wasPlaying) {
+                setTimeout(() => {
+                    this.props.handleTTSResume();
+                }, 200);
+            }
+
+        }, wasPlaying ? 200 : 0);
     };
 
     // private focusNaviguationMenuButton() {
