@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+
+import * as debug_ from "debug";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
 import debounce from "debounce";
@@ -108,6 +110,9 @@ import { translateContentFieldHelper } from "readium-desktop/common/services/tra
 import { getStore } from "../createStore";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 import { TDrawView } from "readium-desktop/common/redux/states/renderer/annotation";
+
+const debug = debug_("readium-desktop:renderer:reader:components:Reader");
+debug("_");
 
 let _firstMediaOverlaysPlay = true;
 
@@ -662,19 +667,24 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public async componentDidUpdate(oldProps: IProps, oldState: IState) {
-        // if (oldProps.ttsVoice !== this.props.ttsVoice) {
-        //     navigatorTTSVoicesSetter(this.props.ttsVoices);
-        // }
 
-        // if (oldProps.readerMode !== this.props.readerMode) {
-        // console.log("READER MODE = ", this.props.readerMode === ReaderMode.Detached ? "detached" : "attached");
-        // }
-        if (oldProps.bookmarks !== this.props.bookmarks ||
-            oldState.currentLocation !== this.state.currentLocation) {
+        if (
+            (
+                oldState.currentLocation && this.state.currentLocation &&
+                (oldState.currentLocation?.locator.href !== this.state.currentLocation.locator.href ||
+                    oldState.currentLocation?.locator.locations.cssSelector !== this.state.currentLocation.locator.locations.cssSelector)
+            ) ||
+            (
+                Array.isArray(oldProps.bookmarks) && Array.isArray(this.props.bookmarks) && (
+                    oldProps.bookmarks.length !== this.props.bookmarks.length ||
+                    !oldProps.bookmarks.reduce((acc, cv) => acc && !!this.props.bookmarks.find((v) => v.uuid === cv.uuid), true))
+            )
+        ) {
 
             // sets state visibleBookmarkList
             await this.updateVisibleBookmarks();
         }
+
         if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
             console.log("READER RELOAD KEYBOARD SHORTCUTS");
             this.unregisterAllKeyboardListeners();
