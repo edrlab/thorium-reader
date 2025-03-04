@@ -77,12 +77,12 @@
                     background-color: transparent;
                     cursor:auto;
 
-                    &:not(:has(.active_svg)):hover, 
+                    &:not(:has(.active_svg)):hover,
                     &:not(:has(.active_svg)):focus {
                         border-color: transparent;
                         background-color: transparent;
                     }
-                    
+
                     svg {
                     fill: var(--color-medium-grey);
                     color: var(--color-medium-grey);
@@ -111,7 +111,7 @@
                     border-color: var(--color-blue);
                     background-color: var(--color-light-blue);
                 }
-    
+
                 svg {
                     height: 20px;
                     width: 30px;
@@ -263,6 +263,17 @@
         }
     }
 
+    .ttsSelectVoice {
+        margin-top: 2em;
+        border: 2px dotted var(--color-verylight-grey-alt);
+        border-radius: 1em;
+        padding: 0.4em;
+
+        .react_aria_ComboBox {
+            padding-bottom: 0;
+        }
+    }
+
     .ttsSelectRate, .ttsSelectVoice {
         input {
             padding-left: 10px;
@@ -320,7 +331,7 @@
 .searchHeader_container {
     display: flex;
     align-items: center;
-    
+
     // padding: 20px 0;
     width: 400px;
     margin-right: 10%;

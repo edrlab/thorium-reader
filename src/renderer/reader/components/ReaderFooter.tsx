@@ -7,6 +7,8 @@
 
 import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
 
+import debounce from "debounce";
+
 // import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
 // import * as ForwardIcon from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
 // import * as BackIcon from "readium-desktop/renderer/assets/icons/double_arrow_left_black_24dp.svg";
@@ -106,16 +108,32 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 
 interface IState {
     // moreInfo: boolean;
+    chapters_markers_width: number;
 }
 
+const MIN_chapters_markers_width = 30;
+
 export class ReaderFooter extends React.Component<IProps, IState> {
+
+    private resizeDebounced: (divEl: HTMLDivElement) => void;
 
     constructor(props: IProps) {
         super(props);
 
-        // this.state = {
-        //     moreInfo: false,
-        // };
+        this.state = {
+            // moreInfo: false,
+            chapters_markers_width: 0,
+        };
+
+        this.resizeDebounced = debounce((divEl: HTMLDivElement) => {
+            const divStyle = window.getComputedStyle(divEl);
+            if (divStyle) {
+                const w = parseInt(divStyle.width, 10);
+                if (!isNaN(w) && w > MIN_chapters_markers_width) {
+                    this.setState({ chapters_markers_width: w });
+                }
+            }
+        }, 500).bind(this);
 
         // this.handleMoreInfoClick = this.handleMoreInfoClick.bind(this);
 
@@ -166,6 +184,8 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
         const isRTL = this.props.isRTLFlip();
 
+        let _chunkIndex = -1;
+        let _chunkIndexMapped = -1;
         return (
             <div className={classNames(stylesReaderFooter.reader_footer,
                 this.props.fullscreen ? stylesReaderFooter.reader_footer_fullscreen : undefined)}
@@ -256,8 +276,23 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                         { // <div id={stylesReader.current}></div>
                             <div id={stylesReaderFooter.track_reading}>
                                 <div id={stylesReaderFooter.chapters_markers}
-                                    className={classNames(isRTL ? stylesReaderFooter.RTL_FLIP : undefined /* , moreInfo ? stylesReaderFooter.more_information : undefined */)}>
-                                    {
+                                    className={classNames(isRTL ? stylesReaderFooter.RTL_FLIP : undefined /* , moreInfo ? stylesReaderFooter.more_information : undefined */)}
+                                    ref={(divEl) => {
+                                        if (divEl) {
+                                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                            if (!(divEl as any)._resizeObserver) {
+                                                const resizeObserver = new ResizeObserver((_entries: ResizeObserverEntry[], _observer: ResizeObserver) => {
+                                                    this.setState({ chapters_markers_width: 0 });
+                                                    this.resizeDebounced(divEl);
+                                                });
+                                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                                (divEl as any)._resizeObserver = resizeObserver;
+                                                resizeObserver.observe(divEl);
+                                            }
+                                        }
+                                    }}
+                                >
+                                    {this.state.chapters_markers_width <= 0 ? <></> :
                                         (isPdf
                                             // tslint:disable-next-line: max-line-length
                                             ? Array.from({ length: r2Publication.Metadata?.NumberOfPages || 1 }, (_v, i) => {
@@ -266,7 +301,16 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                 return link;
                                             })
                                             : r2Publication.Spine
-                                        ).map((link, index) => {
+                                        ).map((link, index, arr) => {
+                                            // console.log("arr.length", arr.length);
+                                            const arrItemWidth = this.state.chapters_markers_width / arr.length;
+                                            // console.log("arrItemWidth", arrItemWidth);
+                                            const nChunks = Math.floor(this.state.chapters_markers_width / MIN_chapters_markers_width);
+                                            // console.log("nChunks", nChunks);
+                                            const chunkWidth = this.state.chapters_markers_width / nChunks;
+                                            // console.log("chunkWidth", arrItemWidth);
+
+                                            // console.log("=====> index", index);
 
                                             let atCurrentLocation = false;
                                             // SEE isDivinaLocation duck typing hack with totalProgression injection!!
@@ -289,15 +333,33 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                             } else {
                                                 atCurrentLocation = currentLocation.locator?.href === link.Href;
                                             }
+                                            // console.log(atCurrentLocation, currentLocation.locator?.href, link.Href);
                                             if (atCurrentLocation) {
                                                 afterCurrentLocation = true;
                                             }
 
+                                            if (arrItemWidth < chunkWidth
+                                                && index > 0 && index < (arr.length - 1) // first and last always render, middle chunks might skip
+                                                // && index !== (_chunkIndexMapped + 1)
+                                            ) {
+                                                const startX = index * arrItemWidth;
+                                                const endX = (_chunkIndex + 1) * chunkWidth;
+                                                const skipRender = startX < endX;
+                                                // console.log("----> skipRender", skipRender);
+
+                                                if (skipRender && !atCurrentLocation) {
+                                                    return <></>;
+                                                }
+                                            }
+
+                                            _chunkIndex++;
+                                            _chunkIndexMapped = index;
                                             return (
-                                                <Tooltip.Provider key={index}>
+                                                <Tooltip.Provider key={`chunk${index}`}>
                                                     <Tooltip.Root>
                                                         <Tooltip.Trigger asChild>
                                                             <span
+                                                                data-index={_chunkIndexMapped}
                                                                 onClick={(e) => {
                                                                     // e.preventDefault();
                                                                     // e.stopPropagation();
@@ -364,7 +426,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                         // this.props.handleLinkClick(e, link.Href);
                                                                     }
                                                                 }}
-                                                                key={index}
+
                                                                 className={
                                                                     classNames(
                                                                         stylesReaderFooter.progressChunkSpineItem,
@@ -374,7 +436,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                             {
                                                                 atCurrentLocation
                                                                     ? <span style={this.getProgressionStyle()}></span>
-                                                                    : !afterCurrentLocation && <span></span>
+                                                                    : afterCurrentLocation ? <></> : <span></span>
                                                             }
                                                         </span>
                                                     </Tooltip.Trigger>
@@ -382,7 +444,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                             <Tooltip.Content className={stylesReaderFooter.tooltip_content}>
                                                                 <div
                                                                     id={stylesReaderFooter.arrow_box}
-                                                                    style={this.getStyle(this.getArrowBoxStyle)}
+                                                                    style={this.getStyle()}
                                                                 >
                                                                     <span>{`[${this.getCurrentChapter(link)+1} / ${this.getTotalChapters()}] `} {
                                                                         isPdf ? "" :
@@ -398,7 +460,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                         : <></>
                                                                     }
                                                                     {/* <span
-                                                                        style={this.getStyle(this.getArrowStyle)}
+                                                                        style={this.getStyle()}
                                                                         className={stylesReaderFooter.after}
                                                                     /> */}
                                                                 </div>
@@ -484,28 +546,6 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         };
     }
 
-    private getArrowBoxPosition() {
-        const { currentLocation, r2Publication, isPdf } = this.props;
-        if (!r2Publication || !currentLocation) {
-            return undefined;
-        }
-
-        let spineItemId = 0;
-        if (currentLocation) {
-            if (isPdf) {
-                spineItemId = parseInt(currentLocation.locator?.href, 10) || 1;
-            } else {
-                spineItemId = r2Publication.Spine.findIndex((value) => value.Href === currentLocation.locator?.href);
-            }
-        }
-        const onePourcent = 100 / (isPdf ? r2Publication.Metadata?.NumberOfPages || 1 : r2Publication.Spine?.length);
-        let progression = currentLocation.locator?.locations?.progression;
-        if (progression >= 0.97) {
-            progression = 1;
-        }
-        return ((onePourcent * spineItemId) + (onePourcent * progression));
-    }
-
     private getProgression(link: Link, isAudioBook: boolean): string[] {
         const { currentLocation, isDivina, isPdf, __, r2Publication } = this.props;
 
@@ -545,12 +585,119 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
     // Get the style of the differents element of the arrow box
     // Take a function returning the good left css property
-    private getStyle(
-        func: (arrowBoxPosition: number, multiplicator: number, rest: number) => string): React.CSSProperties {
+    private getStyle(): React.CSSProperties {
+
+        const { currentLocation, r2Publication, isPdf, isDivina } = this.props;
+
+        if (!r2Publication || !currentLocation) {
+            return undefined;
+        }
+
+        let _chunkIndex = -1;
+        // let _chunkIndexMapped = -1;
+        let _chunkIndexAtCurrentLocation = -1;
+
+        const chunks =
+        (isPdf
+            // tslint:disable-next-line: max-line-length
+            ? Array.from({ length: r2Publication.Metadata?.NumberOfPages || 1 }, (_v, i) => {
+                const link = new Link();
+                link.Href = String(i + 1);
+                return link;
+            })
+            : r2Publication.Spine
+        ).map((link, index, arr) => {
+            // console.log("arr.length", arr.length);
+            const arrItemWidth = this.state.chapters_markers_width / arr.length;
+            // console.log("arrItemWidth", arrItemWidth);
+            const nChunks = Math.floor(this.state.chapters_markers_width / MIN_chapters_markers_width);
+            // console.log("nChunks", nChunks);
+            const chunkWidth = this.state.chapters_markers_width / nChunks;
+            // console.log("chunkWidth", arrItemWidth);
+
+            // console.log("=====> index", index);
+
+            let atCurrentLocation = false;
+            // SEE isDivinaLocation duck typing hack with totalProgression injection!!
+            if (isDivina && this.props.isDivinaLocation(currentLocation)) {
+                atCurrentLocation = this.props.divinaContinousEqualTrue
+                    ? (Math.floor(currentLocation.locator.locations.progression * r2Publication.Spine.length) - 1) === index
+                    : (currentLocation.locator?.locations.position || 0) === index; // see divinaNumberOfPages
+            } else if (isPdf) {
+                // let href = link.Href;
+                // try {
+                //     const n = parseInt(href, 10);
+                //     href = Number.isInteger(n) ? String(n) : "1"; // NaN
+                // } catch (_e) {
+                //     href = "1";
+                // }
+                // console.log(link.Href, href, currentLocation.locator?.href);
+                // atCurrentLocation = currentLocation.locator?.href === href;
+                // console.log(link.Href, currentLocation.locator?.href);
+                atCurrentLocation = currentLocation.locator?.href === link.Href;
+            } else {
+                atCurrentLocation = currentLocation.locator?.href === link.Href;
+            }
+            // console.log(atCurrentLocation, currentLocation.locator?.href, link.Href);
+
+            if (arrItemWidth < chunkWidth
+                && index > 0 && index < (arr.length - 1) // first and last always render, middle chunks might skip
+                // && index !== (_chunkIndexMapped + 1)
+            ) {
+                const startX = index * arrItemWidth;
+                const endX = (_chunkIndex + 1) * chunkWidth;
+                const skipRender = startX < endX;
+                // console.log("----> skipRender", skipRender);
+
+                if (skipRender && !atCurrentLocation) {
+                    return null;
+                }
+            }
+
+            _chunkIndex++;
+            // _chunkIndexMapped = index;
+            if (atCurrentLocation) {
+                _chunkIndexAtCurrentLocation = _chunkIndex;
+            }
+            return link;
+        }).filter((v) => !!v);
+
+        let spineItemId = 0;
+        if (currentLocation) {
+            if (_chunkIndexAtCurrentLocation >= 0) {
+                spineItemId = _chunkIndexAtCurrentLocation;
+            } else {
+                if (isPdf) {
+                    spineItemId = parseInt(currentLocation.locator?.href, 10) || 1;
+                } else {
+                    spineItemId = r2Publication.Spine.findIndex((value) => value.Href === currentLocation.locator?.href);
+                }
+            }
+        }
+
+        // (isPdf
+        //     // tslint:disable-next-line: max-line-length
+        //     ? Array.from({ length: r2Publication.Metadata?.NumberOfPages || 1 }, (_v, i) => {
+        //         const link = new Link();
+        //         link.Href = String(i+1);
+        //         return link;
+        //     })
+        //     : r2Publication.Spine
+        const onePourcent = 100 /
+            _chunkIndexAtCurrentLocation >= 0 ?
+            chunks.length :
+            (isPdf ? r2Publication.Metadata?.NumberOfPages || 1 : r2Publication.Spine?.length)
+            ;
+
+        let progression = currentLocation.locator?.locations?.progression;
+        if (progression >= 0.97) {
+            progression = 1;
+        }
+
+        let arrowBoxPosition = ((onePourcent * spineItemId) + (onePourcent * progression));
 
         const isRTL = this.props.isRTLFlip();
 
-        let arrowBoxPosition = this.getArrowBoxPosition();
         if (isRTL) {
           arrowBoxPosition = 100 - arrowBoxPosition;
         }
@@ -561,13 +708,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
             multiplicator = -1;
         }
         const style = {
-            left: func(arrowBoxPosition, multiplicator, rest),
+            left: `calc(${arrowBoxPosition}% + ${(multiplicator * (450 * (rest / 100) - 30 * rest / 100))}px)`,
         };
         return style;
-    }
-
-    private getArrowBoxStyle(arrowBoxPosition: number, multiplicator: number, rest: number) {
-        return `calc(${arrowBoxPosition}% + ${(multiplicator * (450 * (rest / 100) - 30 * rest / 100))}px)`;
     }
 
     // private getArrowStyle(arrowBoxPosition: number, multiplicator: number, rest: number) {

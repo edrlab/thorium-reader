@@ -83,7 +83,8 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                 // see issue https://github.com/edrlab/thorium-reader/issues/2532
                 defaultConfig: {
                     ...readerDefaultConfig,
-                    ttsVoice: null, // disable ttsVoice global preference for readium/speech lib
+                    ttsVoices: [], // disable ttsVoice global preference for readium/speech lib
+                    ttsVoice: null, // old key, need to migrate to ttsVoices 25/02/2025
                 },
                 transientConfig: {
                     font: transientConfigMerge.font,

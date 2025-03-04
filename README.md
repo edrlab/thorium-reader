@@ -6,7 +6,7 @@ Free application. No ads. No private data flowing anywhere.
 
 This project is in constant evolution, corrections and new features will be added soon and your support is welcome for that. The application is based on the open-source Readium Desktop toolkit.
 
-It is currently localized in following 25 languages:
+It is currently localized in following 27 languages:
 
 * (en) English
 * (fr) Français (French)
@@ -33,6 +33,8 @@ It is currently localized in following 25 languages:
 * (hr) Hrvatski (Croatian)
 * (da) Dansk (Danish)
 * (sl) Slovenščina (Slovene)
+* (cs) čeština (Czech)
+* (ar) عَرَبِيّ (Arabic)
 
 See: https://github.com/edrlab/thorium-reader/wiki/Localization-(l10n)-language-translations
 

@@ -85,8 +85,8 @@ export const useDiffBoolBetweenReaderConfigAndDefaultConfig = () => {
 
         for (const v of ObjectKeys(config)) {
 
-            if (v === "ttsVoice") {
-                // skip ttsVoice with readium/speech 
+            if (v === "ttsVoices") {
+                // skip ttsVoices with readium/speech 
                 continue ;
             }
             if (!equals(config[v], defaultConfig[v])) {
