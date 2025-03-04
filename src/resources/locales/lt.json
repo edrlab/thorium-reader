@@ -464,7 +464,7 @@
             "letterSpacing": "Raidžių išretinimas",
             "lineSpacing": "Eilučių išretinimas",
             "margin": "Paraštė",
-            "noFootnotes": "Išjungti išnašas",
+            "noFootnotes": "Išjungti iššokančias išnašas",
             "noRTLFlip": "Išjungti iš-dešinės-į-kairę naudotojo sąsają",
             "noRuby": "Slėpti japonų kalbos Ruby simbolius",
             "noTemporaryNavTargetOutline": "Išjungti vaizdinius naršymo indikatorius",
