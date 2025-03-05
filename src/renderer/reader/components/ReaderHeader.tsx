@@ -31,10 +31,7 @@ import * as AudioIcon from "readium-desktop/renderer/assets/icons/speaker-icon.s
 import * as HeadphoneIcon from "readium-desktop/renderer/assets/icons/headphone-icon.svg";
 import * as SettingsIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
 import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
-import * as MarkIcon from "readium-desktop/renderer/assets/icons/bookmarkSingle-icon.svg";
 import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
-import * as RemoveBookMarkIcon from "readium-desktop/renderer/assets/icons/BookmarkRemove-icon.svg";
-import * as PlusIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 // import * as BookmarkFullIcon from "readium-desktop/renderer/assets/icons/.unused-icons/outline-bookmark-24px.svg";
 // import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
 import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
@@ -79,6 +76,7 @@ import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { VoiceSelection } from "./header/voiceSelection";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import { convertToSpeechSynthesisVoices, filterOnLanguage, getLanguages, getVoices, groupByLanguages, groupByRegions, ILanguages, IVoices, parseSpeechSynthesisVoices } from "readium-speech";
+import { BookmarkButton } from "./header/BookmarkButton";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -877,7 +875,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         >
                                <HeaderSearch shortcutEnable={this.props.shortcutEnable} isPdf={this.props.isPdf} showSearchResults={this.props.showSearchResults} isAudiobook={isAudioBook} isDivina={this.props.isDivina}></HeaderSearch>
                         </li>
-                        <li
+
+                        <BookmarkButton shortcutEnable={this.props.shortcutEnable} />
+                        {/* <li
                             {...(this.props.numberOfVisibleBookmarks > 0 &&
                                 { style: { backgroundColor: "var(--color-blue" } })}
                         >
@@ -919,7 +919,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     this.props.numberOfVisibleBookmarks > 1 || (this.props.numberOfVisibleBookmarks === 1 && this.props.selectionIsNew)
                                     ? stylesReaderHeader.active_svg : "")} />
                             </label>
-                        </li>
+                        </li> */}
 
                         <Popover.Root open={this.props.isAnnotationModeEnabled} onOpenChange={(open) => {
                             if (open === false) {

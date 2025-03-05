@@ -298,7 +298,7 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardFocusMainDeep = this.onKeyboardFocusMainDeep.bind(this);
         this.onKeyboardFocusToolbar = this.onKeyboardFocusToolbar.bind(this);
         this.onKeyboardFullScreen = this.onKeyboardFullScreen.bind(this);
-        this.onKeyboardBookmark = this.onKeyboardBookmark.bind(this);
+        // this.onKeyboardBookmark = this.onKeyboardBookmark.bind(this);
         this.onKeyboardInfo = this.onKeyboardInfo.bind(this);
         this.onKeyboardInfoWhereAmI = this.onKeyboardInfoWhereAmI.bind(this);
         this.onKeyboardInfoWhereAmISpeak = this.onKeyboardInfoWhereAmISpeak.bind(this);
@@ -1211,10 +1211,10 @@ class Reader extends React.Component<IProps, IState> {
             this.props.keyboardShortcuts.ToggleReaderFullscreen,
             this.onKeyboardFullScreen);
 
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.ToggleBookmark,
-            this.onKeyboardBookmark);
+        // registerKeyboardListener(
+        //     true, // listen for key up (not key down)
+        //     this.props.keyboardShortcuts.ToggleBookmark,
+        //     this.onKeyboardBookmark);
 
         registerKeyboardListener(
             true, // listen for key up (not key down)
@@ -1311,7 +1311,7 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardFocusMainDeep);
         unregisterKeyboardListener(this.onKeyboardFocusToolbar);
         unregisterKeyboardListener(this.onKeyboardFullScreen);
-        unregisterKeyboardListener(this.onKeyboardBookmark);
+        // unregisterKeyboardListener(this.onKeyboardBookmark);
         unregisterKeyboardListener(this.onKeyboardInfo);
         unregisterKeyboardListener(this.onKeyboardInfoWhereAmI);
         unregisterKeyboardListener(this.onKeyboardInfoWhereAmISpeak);
@@ -1844,15 +1844,15 @@ class Reader extends React.Component<IProps, IState> {
         this.handleSettingsClick(true, true);
     };
 
-    private onKeyboardBookmark = async () => {
-        if (!this.state.shortcutEnable) {
-            if (DEBUG_KEYBOARD) {
-                console.log("!shortcutEnable (onKeyboardBookmark)");
-            }
-            return;
-        }
-        await this.handleToggleBookmark(true);
-    };
+    // private onKeyboardBookmark = async () => {
+    //     if (!this.state.shortcutEnable) {
+    //         if (DEBUG_KEYBOARD) {
+    //             console.log("!shortcutEnable (onKeyboardBookmark)");
+    //         }
+    //         return;
+    //     }
+    //     await this.handleToggleBookmark(true);
+    // };
 
     private onKeyboardFocusMain = () => {
         if (!this.state.shortcutEnable) {
@@ -2633,6 +2633,9 @@ class Reader extends React.Component<IProps, IState> {
             return undefined;
         }
 
+
+        console.time("UPDATE_BOOKMARK_OLD_METHOD");
+
         const locator = this.state.currentLocation ? this.state.currentLocation.locator : undefined;
 
         const visibleBookmarkList = [];
@@ -2659,6 +2662,9 @@ class Reader extends React.Component<IProps, IState> {
             }
         }
         this.setState({ visibleBookmarkList });
+
+        console.timeEnd("UPDATE_BOOKMARK_OLD_METHOD");
+
         return visibleBookmarkList;
     }
 
