@@ -584,7 +584,7 @@
     },
     "tts": {
         "highlight": {
-            "mainColor": "",
+            "mainColor": "Cor principal",
             "maskBlockWordOutline": "",
             "maskBlockWordSolidBackground": "",
             "maskBlockWordUnderline": "",
@@ -602,7 +602,7 @@
             "underlineWordOutline": "",
             "underlineWordSolidBackground": "",
             "underlineWordUnderline": "",
-            "wordColor": ""
+            "wordColor": "Cor de palavra"
         }
     },
     "wizard": {
