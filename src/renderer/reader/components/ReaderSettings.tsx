@@ -961,7 +961,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                             checked={ttsHighlightColorHex === colorHex}
                             aria-label={__(translatorKey)}
                         />
-                        <label title={__(translatorKey)} htmlFor={`ttscolorpick${colorHex}`}
+                        <label aria-hidden={true} title={__(translatorKey)} htmlFor={`ttscolorpick${colorHex}`}
                             style={{ backgroundColor: colorHex, border: ttsHighlightColorHex === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
                         >
                             {ttsHighlightColorHex === colorHex ? <SVG ariaHidden svg={DoubleCheckIcon} /> : <></>}
@@ -987,7 +987,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                             checked={ttsHighlightColor_WORDHex === colorHex}
                             aria-label={__(translatorKey)}
                         />
-                        <label title={__(translatorKey)} htmlFor={`ttscolorpickword${colorHex}`}
+                        <label aria-hidden={true} title={__(translatorKey)} htmlFor={`ttscolorpickword${colorHex}`}
                             style={{ backgroundColor: colorHex, border: ttsHighlightColor_WORDHex === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
                         >
                             {ttsHighlightColor_WORDHex === colorHex ? <SVG ariaHidden svg={DoubleCheckIcon} /> : <></>}
@@ -1001,6 +1001,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
         </div>
 <div style={{flexBasis: "100%", height: 0}}></div>
 <details
+aria-hidden={true}
 open={false}
 style={
 {
@@ -1044,7 +1045,7 @@ color: "silver",
 <div style={
 {
 border: "2px solid black",
-borderRadius: "4px",
+borderRadius: "8px",
 padding: "4px",
 }
 }><span>fringilla metus.</span> <span style={styleSentence}>Sed eu dignissim dui. <span style={styleWord}>Curabitur</span> venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</span> <span>Aenean laoreet justo vitae</span><br/></div>

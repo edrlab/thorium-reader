@@ -163,7 +163,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                                 checked={colorSelected === colorHex}
                                 aria-label={__(translatorKey)}
                             />
-                            <label title={__(translatorKey)} htmlFor={`anno_color_${uuid}_${colorHex}`}
+                            <label aria-hidden={true} title={__(translatorKey)} htmlFor={`anno_color_${uuid}_${colorHex}`}
                                 style={{ backgroundColor: colorHex, border: colorSelected === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
                             >
                                 {colorSelected === colorHex ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
@@ -187,7 +187,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                                             __("reader.annotations.type.underline") : type === "strikethrough" ?
                                                 __("reader.annotations.type.strikethrough") : __("reader.annotations.type.solid")}`}
                             />
-                            <label htmlFor={`anno_type_${uuid}_${type}`}
+                            <label aria-hidden={true} htmlFor={`anno_type_${uuid}_${type}`}
                                 title={`${type === "solid_background" ?
                                     __("reader.annotations.type.solid") : type === "outline" ?
                                         __("reader.annotations.type.outline") : type === "underline" ?
