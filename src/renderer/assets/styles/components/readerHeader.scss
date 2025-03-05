@@ -224,6 +224,7 @@
 
 .Tts_popover_container {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     height: fit-content;
     background-color: var(--color-extralight-grey);
@@ -232,7 +233,7 @@
     margin: 0;
     padding: 10px;
     border: 1px solid var(--color-verylight-grey-alt);
-    gap: 20px;
+    /* gap: 20px; */
     color: var(--color-primary);
 
 

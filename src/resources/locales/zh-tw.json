@@ -582,6 +582,24 @@
             "title": "應用程式主題"
         }
     },
+    "tts": {
+        "highlight": {
+            "mainColor": "",
+            "maskBlockWordOutline": "",
+            "maskBlockWordSolidBackground": "",
+            "maskBlockWordUnderline": "",
+            "maskWordOutline": "",
+            "maskWordSolidBackground": "",
+            "maskWordUnderline": "",
+            "preview": "",
+            "solidBackgroundWordOutline": "",
+            "solidBackgroundWordUnderline": "",
+            "solidOutlineWordBackground": "",
+            "solidOutlineWordUnderline": "",
+            "style": "",
+            "wordColor": ""
+        }
+    },
     "wizard": {
         "buttons": {
             "discover": "查看新動態",

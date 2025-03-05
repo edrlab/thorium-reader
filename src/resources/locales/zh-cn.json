@@ -582,6 +582,24 @@
             "title": "应用主题"
         }
     },
+    "tts": {
+        "highlight": {
+            "mainColor": "",
+            "maskBlockWordOutline": "",
+            "maskBlockWordSolidBackground": "",
+            "maskBlockWordUnderline": "",
+            "maskWordOutline": "",
+            "maskWordSolidBackground": "",
+            "maskWordUnderline": "",
+            "preview": "",
+            "solidBackgroundWordOutline": "",
+            "solidBackgroundWordUnderline": "",
+            "solidOutlineWordBackground": "",
+            "solidOutlineWordUnderline": "",
+            "style": "",
+            "wordColor": ""
+        }
+    },
     "wizard": {
         "buttons": {
             "discover": "探索新变化",

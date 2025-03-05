@@ -734,9 +734,10 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     <Popover.Portal>
                                                         <Popover.Content style={{ zIndex: 100 }}>
                                                             <div className={stylesReaderHeader.Tts_popover_container}>
-                                                                <div style={{ paddingRight: "25px", borderRight: "1px solid var(--color-verylight-grey-alt)" }}>
-                                                                    <div className={stylesReader.ttsSelectRate}>
-                                                                        <ComboBox label={useMO ?
+                                                                <div style={{ paddingRight: 25 /* , borderRight: "1px solid var(--color-verylight-grey-alt)" */ }}>
+                                                                    <div className={stylesReader.ttsSelectRate} style={{ paddingLeft: 8 }}>
+                                                                        <ComboBox
+                                                                            label={useMO ?
                                                                             __("reader.media-overlays.speed")
                                                                             : __("reader.tts.speed")}
                                                                             aria-label={useMO ?

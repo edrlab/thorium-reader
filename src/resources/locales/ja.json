@@ -582,6 +582,24 @@
             "title": "アプリケーション テーマ"
         }
     },
+    "tts": {
+        "highlight": {
+            "mainColor": "",
+            "maskBlockWordOutline": "",
+            "maskBlockWordSolidBackground": "",
+            "maskBlockWordUnderline": "",
+            "maskWordOutline": "",
+            "maskWordSolidBackground": "",
+            "maskWordUnderline": "",
+            "preview": "",
+            "solidBackgroundWordOutline": "",
+            "solidBackgroundWordUnderline": "",
+            "solidOutlineWordBackground": "",
+            "solidOutlineWordUnderline": "",
+            "style": "",
+            "wordColor": ""
+        }
+    },
     "wizard": {
         "buttons": {
             "discover": "新しい情報を見る",

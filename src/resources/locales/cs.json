@@ -582,6 +582,24 @@
             "title": "Motiv aplikace"
         }
     },
+    "tts": {
+        "highlight": {
+            "mainColor": "",
+            "maskBlockWordOutline": "",
+            "maskBlockWordSolidBackground": "",
+            "maskBlockWordUnderline": "",
+            "maskWordOutline": "",
+            "maskWordSolidBackground": "",
+            "maskWordUnderline": "",
+            "preview": "",
+            "solidBackgroundWordOutline": "",
+            "solidBackgroundWordUnderline": "",
+            "solidOutlineWordBackground": "",
+            "solidOutlineWordUnderline": "",
+            "style": "",
+            "wordColor": ""
+        }
+    },
     "wizard": {
         "buttons": {
             "discover": "Objevte, co je nového",
