@@ -28,6 +28,7 @@ import { formatTime } from "readium-desktop/common/utils/time";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { registerKeyboardListener, unregisterKeyboardListener } from "readium-desktop/renderer/common/keyboard";
 import { DEBUG_KEYBOARD } from "readium-desktop/common/keyboard";
+import { ReadiumElectronBrowserWindow } from "@r2-navigator-js/electron/renderer/webview/state";
 
 export interface IProps {
     shortcutEnable: boolean;
@@ -72,6 +73,25 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
     const { bookmark: bookmarksQueueState, locator: locatorExtended } = useSelector((state: IReaderRootState) => state.reader, equalFn);
 
     const bookmarks = React.useMemo(() => bookmarksQueueState.map(([, v]) => v), [bookmarksQueueState]);
+
+    const [webviewLoaded, setWebviewLoaded] = React.useState(false);
+    React.useEffect(() => {
+
+        const intervalId = window.setInterval(() => {
+
+
+            const win = global.window as ReadiumElectronBrowserWindow;
+
+            const isLoaded = win.READIUM2.getActiveWebViews().map((v) => v.READIUM2.DOMisReady).reduce((cv, pv) => cv || pv, false);
+
+            // console.log("IS_WEBVIEW_LOADED", isLoaded);
+            if (isLoaded) {
+                clearInterval(intervalId);
+                setWebviewLoaded(true);
+            }
+            
+        }, 100);
+    }, []);
 
     // const bookmarksRef = React.useRef(bookmarks);
     // const locatorRef = React.useRef(locatorExtended);
@@ -222,7 +242,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
         const currentBookmarks = bookmarks;
         // console.log("Bookmarks", currentBookmarks);
 
-        if (isNavigator) {
+        if (isNavigator && webviewLoaded) {
 
 
             const fetchVisibleBookmarks = () => {
@@ -246,7 +266,6 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                     },
                 ).catch((_e) => {
                     // console.log("rejection because webview not fully loaded yet");
-                    setTimeout(() => fetchVisibleBookmarks(), 1000);
                 }).finally(() => {
                     if (IS_DEV) {
                         console.timeEnd("UPDATE_BOOKMARK_NEW_METHOD");
@@ -254,13 +273,13 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                     }
                 });
             };
-            setTimeout(() => fetchVisibleBookmarks(), 1);
+            setTimeout(() => fetchVisibleBookmarks(), 0);
         } else {
             const visibleBookmarks = currentBookmarks.filter((bookmark) => bookmark.locator.href === currentLocator.locator.href);
             setVisibleBookmarks(visibleBookmarks);
         }
 
-    }, [bookmarks, locatorExtended, isNavigator]);
+    }, [bookmarks, locatorExtended, isNavigator, webviewLoaded]);
 
 
 
