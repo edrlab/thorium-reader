@@ -39,22 +39,30 @@ const equalFn = (prev: IReaderStateReader, current: IReaderStateReader) => {
     const previousLocator = prev.locator;
     const currentLocator = current.locator;
 
-    const previousBookmarks = prev.bookmark.map(([, v]) => v);
-    const currentBookmarks = current.bookmark.map(([, v]) => v);
-
-    return !(
+    if (
         (
             previousLocator && currentLocator &&
             (previousLocator?.locator.href !== currentLocator.locator.href ||
                 previousLocator?.locator.locations.cssSelector !== currentLocator.locator.locations.cssSelector)
         )
-        ||
+    ) {
+        return false;
+    }
+
+    const previousBookmarks = prev.bookmark.map(([, v]) => v);
+    const currentBookmarks = current.bookmark.map(([, v]) => v);
+
+    if (
         (
             Array.isArray(previousBookmarks) && Array.isArray(currentBookmarks) && (
                 previousBookmarks.length !== currentBookmarks.length ||
                 !previousBookmarks.reduce((acc, cv) => acc && !!currentBookmarks.find((v) => v.uuid === cv.uuid), true))
         )
-    );
+    ) {
+        return false;
+    }
+
+    return true;
 };
 
 let __time = false;
@@ -92,9 +100,6 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
             
         }, 100);
     }, []);
-
-    // const bookmarksRef = React.useRef(bookmarks);
-    // const locatorRef = React.useRef(locatorExtended);
 
     const dispatch = useDispatch();
     const deleteBookmark = React.useCallback((bookmark: IBookmarkState) => dispatch(readerActions.bookmark.pop.build(bookmark)), [dispatch]);
@@ -242,8 +247,11 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
         const currentBookmarks = bookmarks;
         // console.log("Bookmarks", currentBookmarks);
 
-        if (isNavigator && webviewLoaded) {
+        if (isNavigator) {
 
+            if (!webviewLoaded) {
+                return;
+            }
 
             const fetchVisibleBookmarks = () => {
 
@@ -273,7 +281,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                     }
                 });
             };
-            setTimeout(() => fetchVisibleBookmarks(), 0);
+            setTimeout(() => fetchVisibleBookmarks(), 1000);
         } else {
             const visibleBookmarks = currentBookmarks.filter((bookmark) => bookmark.locator.href === currentLocator.locator.href);
             setVisibleBookmarks(visibleBookmarks);
