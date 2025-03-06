@@ -2669,6 +2669,8 @@ class Reader extends React.Component<IProps, IState> {
                 this.currentDivinaPlayer.goTo(locator);
             }
         } else {
+
+            // TODO: do not allow to handle audiobook play time position
             this.handleLinkLocator(locator, isFromOnPopState);
 
             // this.focusMainArea();
