@@ -99,14 +99,14 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
 
         let index = undefined;
         if (isEpubNavigator) {
-            index = bookmarks.findIndex((bookmark) => 
+            index = bookmarks.findIndex((bookmark) =>
                 bookmark.locator.href === locatorExtended.locator.href && bookmark.locator.locations.cssSelector === locatorExtended.locator.locations.cssSelector,
             );
         } else if (isAudiobook) {
 
             // same algo as ln 308 update visible bookmark
             const { globalDuration, globalTime } = locatorExtended.audioPlaybackInfo;
-            index = bookmarks.findIndex((bookmark) => 
+            index = bookmarks.findIndex((bookmark) =>
                 bookmark.locator.href === locatorExtended.locator.href && Math.floor(globalTime) === Math.floor(globalDuration * bookmark.locator.locations.position),
             );
         } else {
@@ -139,17 +139,16 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
 
         const intervalId = window.setInterval(() => {
 
-
             const win = global.window as ReadiumElectronBrowserWindow;
 
-            const isLoaded = win.READIUM2.getActiveWebViews().map((v) => v.READIUM2.DOMisReady).reduce((cv, pv) => cv || pv, false);
+            const atLeastOneWebViewIsLoaded = win.READIUM2?.getActiveWebViews().map((webview) => webview.READIUM2.DOMisReady).reduce((prevDomIsLoaded, currentDomIsLoaded) => prevDomIsLoaded || currentDomIsLoaded, false);
 
-            // console.log("IS_WEBVIEW_LOADED", isLoaded);
-            if (isLoaded) {
+            // console.log("IS_WEBVIEW_LOADED", atLeastOneWebViewIsLoaded);
+            if (atLeastOneWebViewIsLoaded) {
                 clearInterval(intervalId);
                 setWebviewLoaded(true);
             }
-            
+
         }, 100);
     }, [isEpubNavigator]);
 
