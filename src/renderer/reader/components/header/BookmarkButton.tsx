@@ -94,7 +94,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
         if (isNavigator) {
             index = bookmarks.findIndex((bookmark) => 
                 bookmark.locator.href === locatorExtended.locator.href &&
-                bookmark.locator.locations.cssSelector === locatorExtended.locator.locations.cssSelector
+                bookmark.locator.locations.cssSelector === locatorExtended.locator.locations.cssSelector,
             );
         } else {
             const href = locatorExtended.locator.href;
@@ -291,7 +291,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
             }
         }
     }, [
-        __, addBookmark, bookmarks, deleteBookmark, isDivina, isNavigator, isPdf, locatorExtended.audioPlaybackInfo, locatorExtended.locator, locatorExtended.selectionInfo?.cleanText, locatorExtended.selectionInfo?.rangeInfo, numberOfVisibleBookmarks, toasty, visibleBookmarks,
+        __, addBookmark, bookmarks, deleteBookmark, isDivina, isNavigator, isPdf, locatorExtended.audioPlaybackInfo, locatorExtended.locator, locatorExtended.selectionInfo?.cleanText, locatorExtended.selectionInfo?.rangeInfo, toasty, bookmarkSelected, bookmarkSelectedIndex,
     ],
     );
 
