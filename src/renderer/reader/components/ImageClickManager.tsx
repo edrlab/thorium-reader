@@ -108,10 +108,10 @@ const ChatContext = React.createContext<IChatContext>(undefined);
 
 let __messages: UIMessage[] = [];
 
-const Chat = ({ imageHref }: { imageHref: string}) => {
+const Chat = ({ imageHref, imageDescription }: { imageHref: string, imageDescription: string}) => {
 
 
-    const { modelSelected, setModel, systemPrompt, setSystemPrompt /*showImage*/ } = React.useContext(ChatContext);
+    const { modelSelected, setModel, systemPrompt, setSystemPrompt  /*showImage*/ } = React.useContext(ChatContext);
 
 
     // const handleModelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -148,11 +148,12 @@ const Chat = ({ imageHref }: { imageHref: string}) => {
         __messages = [...messages];
     }, [messages]);
 
-    const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication.Metadata);
-
+    // const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication.Metadata);
 
     const shortDescription = "Décris cette image en 2 phrases.";
-    const longDescription = `Décris cette illustration de façon détaillée (nature de l'image, technique, format, symbolique, personnages, décors, couleurs, style, époque, etc..) extraite du livre ${r2Publication.Title} écrit par ${r2Publication.Author[0].Name}. Renforce l'accessibilité de la réponse pour les lecteurs d’écran. Réponds-moi entièrement en langue : ${r2Publication.Language}.`;
+    const longDescription = "Décris cette illustration de façon détaillée (nature de l'image, technique, format, symbolique, personnages, décors, couleurs, style, époque, etc..). Renforce l'accessibilité de la réponse pour les lecteurs d’écran.";
+
+    const [detailOpen, setDetailOpen] = React.useState(true);
 
     return (
         <div className={stylesChatbot.chatbot_modal_content}>
@@ -191,6 +192,42 @@ const Chat = ({ imageHref }: { imageHref: string}) => {
                         ></textarea>
                     </details>
                 </div>
+                { imageDescription ?
+                    <details
+                        className={stylesChatbot.chatbot_detail_element}
+                        open={detailOpen}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setDetailOpen(!detailOpen);
+                        }}
+                    >
+                        <summary className={stylesChatbot.chatbot_detail_element_summary}>
+                            <h3>Author description</h3>
+                            <SVG svg={ChevronRight} style={{ transform: detailOpen ? "rotate(90deg)" : "" }}></SVG>
+                        </summary>
+                        <p>
+                            {imageDescription}
+                        </p>
+                    </details>
+                    : 
+                    <form onSubmit={(event) => handleSubmit(event, {})} style={{ display: "inline" }}>
+                        <p>
+                            No description was provided by the author. You can ask the AI to generate either a{" "}
+                            <button role="submit" onClick={() => setInput(shortDescription)}
+                                style={{ fontSize: "12px", color: "var(--color-blue)", textDecoration: "underline", cursor: "pointer", display: "inline" }}
+                            >
+                                short description
+                            </button>{" "}
+                            or a{" "}
+                            <button role="submit" onClick={() => setInput(longDescription)}
+                                style={{ fontSize: "12px", color: "var(--color-blue)", textDecoration: "underline", cursor: "pointer", display: "inline" }}
+                            >
+                                precise description
+                            </button>.
+                        </p>
+                    </form>
+
+                }
                 {/* <div>
                     <a
                         tabIndex={0}
@@ -254,7 +291,7 @@ const Chat = ({ imageHref }: { imageHref: string}) => {
                         onClick={showImage}
                     />
                 </div> */}
-                {messages.length ? "" :
+                {/* {messages.length ? "" :
                 <form style={{display: "flex", alignItems: "end", justifyContent: "end", flexDirection: "column", gap: "20px", width: "inherit", margin: "20px 10px"}} onSubmit={(event) => handleSubmit(event, {})}>
                     <button role="submit" onClick={() => setInput(shortDescription)} className={stylesChatbot.chatbot_description_button}
                         >
@@ -265,7 +302,7 @@ const Chat = ({ imageHref }: { imageHref: string}) => {
                         Longue Description
                     </button>
                 </form>
-                }
+                } */}
                 {messages.map(message => (
                     <div className={classNames(stylesChatbot.chatbot_message, message.role === "user" ? stylesChatbot.chatbot_user_message : stylesChatbot.chatbot_ai_message)} key={message.id}>
                         <div className={stylesChatbot.chatbot_message_speaker}>
@@ -331,7 +368,7 @@ const Chat = ({ imageHref }: { imageHref: string}) => {
 
             <form onSubmit={(event) => handleSubmit(event, {})} className={stylesChatbot.chatbot_user_form}>
                 <div>
-                {modelSelected.name === "openAI gpt-4o-mini" ?
+                {modelSelected.name.startsWith("openAI") ?
                     <img src={OpenAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
                     :
                     <img src={MistralAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.mistral)} />
@@ -383,7 +420,7 @@ export const ImageClickManager: React.FC = () => {
         dom_labelledByText,
     } = useSelector((state: IReaderRootState) => state.img);
     
-    const { documentTitle, authorsLangString, publishersLangString } = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
+    const { documentTitle, authorsLangString, publishersLangString, languages } = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
 
     const { locale } = useSelector((state: IReaderRootState) => state.i18n);
 
@@ -435,6 +472,17 @@ export const ImageClickManager: React.FC = () => {
                     return prev ? `${prev}, ${textStr}` : textStr;
                 }, "")
                 : "" + "\"")
+            .replace("{{languages}}", "\"" + languages ?
+                // publishers.join(", ")
+                languages.reduce<string>((prev, text) => {
+                    const textLangStr = convertMultiLangStringToLangString(text, locale);
+                    // const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
+                    // const textIsRTL = langStringIsRTL(textLang);
+                    const textStr = textLangStr && textLangStr[1] ? textLangStr[1] : "";
+
+                    return prev ? `${prev}, ${textStr}` : textStr;
+                }, "")
+                : "" + "\"")
             .replace("{{beforeText}}", "\"" + dom_beforeText + "\"")
             .replace("{{afterText}}", "\"" + dom_afterText + "\"")
             .replace("{{describedby}}", "\"" + dom_describedbyText + "\"")
@@ -442,7 +490,9 @@ export const ImageClickManager: React.FC = () => {
             .replace("{{figcaption}}", "\"" + dom_figcaptionText + "\"")
             .replace("{{labelledby}}", "\"" + dom_labelledByText + "\""),
         );
-    }, [modelSelected.systemPrompt, dom_beforeText, dom_afterText, dom_describedbyText, dom_detailsText, dom_figcaptionText, dom_labelledByText, authorsLangString, documentTitle, locale, publishersLangString]);
+    }, [modelSelected.systemPrompt, dom_beforeText, dom_afterText, dom_describedbyText, dom_detailsText, dom_figcaptionText, dom_labelledByText, authorsLangString, documentTitle, locale, publishersLangString, languages]);
+
+    const imageDescription = dom_detailsText || dom_figcaptionText || dom_describedbyText || dom_labelledByText || "";
 
     return (<>
 
@@ -450,6 +500,7 @@ export const ImageClickManager: React.FC = () => {
             if (openState == false) {
                 dispatch(readerLocalActionSetImageClick.build());
                 enableChat(false);
+                setShowImage(true);
             }
         }}
         >
@@ -467,7 +518,7 @@ export const ImageClickManager: React.FC = () => {
                 }
            `}</style>
                     { chatEnabled ?
-                        <button onClick={() => enableChat((enabled) => !enabled)} style={{ position: "absolute", top: "10px", left: "10px", zIndex: 105 }} className={stylesButtons.button_transparency_icon}>
+                        <button onClick={() => {enableChat((enabled) => !enabled); setShowImage(true);}} style={{ position: "absolute", top: "10px", left: "10px", zIndex: 105 }} className={stylesButtons.button_transparency_icon}>
                         <SVG ariaHidden={true} svg={BackIcon} style={{transform: "rotate(180deg)"}} />
                     </button>
                     : ""
@@ -478,9 +529,7 @@ export const ImageClickManager: React.FC = () => {
                         </button>
                     </Dialog.Close>
                     <div style={{display: "flex", padding: "5px", alignItems: "center", gap: "30px", minHeight: "inherit"}}>
-                    {
-                        chatEnabled ?
-
+                        {chatEnabled ?
 
                             <ChatContext.Provider value={{
                                 modelSelected,
@@ -489,7 +538,7 @@ export const ImageClickManager: React.FC = () => {
                                 setSystemPrompt,
                                 showImage: () => enableChat((enabled) => !enabled),
                             }}>
-                                <Chat /*imageHrefDataUrl={imageHrefDataUrl}*/ imageHref={HTMLImgSrc_SVGImageHref_SVGFragmentMarkup} />
+                                <Chat /*imageHrefDataUrl={imageHrefDataUrl}*/ imageHref={HTMLImgSrc_SVGImageHref_SVGFragmentMarkup} imageDescription={imageDescription} />
                             </ChatContext.Provider>
                             :
                             ""
@@ -506,6 +555,8 @@ export const ImageClickManager: React.FC = () => {
                             : ""
                             }
                             { /*  initialScale={scale} minScale={scale / 2} maxScale={4 * scale} */}
+                            { showImage ?   
+                            <>            
                             <TransformWrapper>
                                 <TransformComponent wrapperStyle={{ display: "flex", width: "100%", height: "100%", minHeight: "inherit", flex: "1", alignItems: "center" }}>
                                     <img
@@ -522,6 +573,9 @@ export const ImageClickManager: React.FC = () => {
                                         : ""
                                         }
                             </TransformWrapper>
+                            </>     
+                            : ""
+                            }
                         </div>
                             { chatEnabled ? "" :
                     <button className={stylesChatbot.chatbot_open_title} onClick={() => enableChat((enabled) => !enabled)} title={"Chat with AI"}>

@@ -1,6 +1,8 @@
 export declare const chatbot_ai_message: string;
 export declare const chatbot_container: string;
 export declare const chatbot_description_button: string;
+export declare const chatbot_detail_element: string;
+export declare const chatbot_detail_element_summary: string;
 export declare const chatbot_error: string;
 export declare const chatbot_error_button: string;
 export declare const chatbot_image_controls: string;

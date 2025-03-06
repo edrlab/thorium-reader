@@ -5,7 +5,20 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export const DEFAULT_SYSTEM_PROMPT = "Your goal is to describe the image, you should not answer on a topic other than this image";
+export const DEFAULT_SYSTEM_PROMPT = "Your goal is to describe the image, you should not answer on a topic other than this image. Answer all requests in {{languages}} unless I explicitly ask you otherwise.";
+const ADVANCED_SYSTEM_PROMPT = {
+    goal: "describe the image, you should not answer on a topic other than this image. Answer all requests in {{languages}} unless I explicitly ask you otherwise",
+    context: {
+        title: "{{title}}",
+        author: "{{author}}",
+        publisher: "{{publisher}}",
+        languages: "{{languages}}",
+        text_before: "{{beforeText}}",
+        text_after: "{{afterText}}",
+    },
+};
+
+const ADVANCED_SYSTEM_PROMPT_STRING = JSON.stringify(ADVANCED_SYSTEM_PROMPT);
 
 export interface IaiSdkModel { id: string, name: string, systemPrompt: string };
 export const aiSDKModelOptions: Array<IaiSdkModel> = [
@@ -17,7 +30,7 @@ export const aiSDKModelOptions: Array<IaiSdkModel> = [
     {
         id: "openai__!__gpt-4o-mini__!__specific-prompt",
         name: "openAI gpt-4o-mini with a specific system prompt",
-        systemPrompt: "Your goal is to describe the image, you should not answer on a topic other than this image. The book metadata is {{title}} {{author}} {{publisher}}. The text before the image is {{beforeText}} and the text after is {{afterText}}",
+        systemPrompt: ADVANCED_SYSTEM_PROMPT_STRING,
     },
     {
         id: "mistralai__!__pixtral-12b-2409",
