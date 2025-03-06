@@ -141,10 +141,10 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
 
             const win = global.window as ReadiumElectronBrowserWindow;
 
-            const atLeastOneWebViewIsLoaded = win.READIUM2?.getActiveWebViews().map((webview) => webview.READIUM2.DOMisReady).reduce((prevDomIsLoaded, currentDomIsLoaded) => prevDomIsLoaded || currentDomIsLoaded, false);
+            // const atLeastOneWebViewIsLoaded = win.READIUM2?.getActiveWebViews().map((webview) => webview.READIUM2.DOMisReady).reduce((prevDomIsLoaded, currentDomIsLoaded) => prevDomIsLoaded || currentDomIsLoaded, false);
+            const allWebViewsAreLoaded = win.READIUM2?.getActiveWebViews().map((webview) => webview.READIUM2.DOMisReady).reduce((prevDomIsLoaded, currentDomIsLoaded) => prevDomIsLoaded && currentDomIsLoaded, true);
 
-            // console.log("IS_WEBVIEW_LOADED", atLeastOneWebViewIsLoaded);
-            if (atLeastOneWebViewIsLoaded) {
+            if (allWebViewsAreLoaded) {
                 clearInterval(intervalId);
                 setWebviewLoaded(true);
             }
