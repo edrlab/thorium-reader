@@ -1,3 +1,5 @@
+@use '../partials/mixin' as mx;
+
 .CSS_START_components_readerHeader {
     display: none;
 }
@@ -236,11 +238,16 @@
     /* gap: 20px; */
     color: var(--color-primary);
 
-    @media only screen and (width <= 1000px) {
-        flex-direction: column;
+    @media only screen and (width <= 980px) {
         max-height: 450px;
+        overflow-y: scroll;
+        flex-wrap: wrap;
+        max-width: 680px;
+        gap: 5px;
 
-        details {
+        @include mx.scrollbar_styling;
+
+        .colorPicker div input {
             display: none;
         }
     }
