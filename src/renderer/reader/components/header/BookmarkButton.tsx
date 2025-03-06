@@ -65,6 +65,12 @@ const equalFn = (prev: IReaderStateReader, current: IReaderStateReader) => {
     return true;
 };
 
+enum EBookmarkIcon {
+    NEUTRAL,
+    ADD,
+    DELETE
+}
+
 let __time = false;
 export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
 
@@ -77,13 +83,46 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
     const isPdf = React.useMemo(() => isPdfFn(r2Publication), [r2Publication]);
     const isNavigator = !(isDivina || isPdf);
 
-    const selectionIsNew = useSelector((state: IReaderRootState) => state.reader.locator.selectionIsNew);
+    // const selectionIsNew = useSelector((state: IReaderRootState) => state.reader.locator.selectionIsNew);
     const { bookmark: bookmarksQueueState, locator: locatorExtended } = useSelector((state: IReaderRootState) => state.reader, equalFn);
+    // const selectionIsNew = locatorExtended.selectionIsNew;
 
     const bookmarks = React.useMemo(() => bookmarksQueueState.map(([, v]) => v), [bookmarksQueueState]);
+    const [bookmarkSelected, bookmarkSelectedIndex] = React.useMemo(() => {
+
+        let index = undefined;
+        if (isNavigator) {
+            index = bookmarks.findIndex((bookmark) => 
+                bookmark.locator.href === locatorExtended.locator.href &&
+                bookmark.locator.locations.cssSelector === locatorExtended.locator.locations.cssSelector
+            );
+        } else {
+            const href = locatorExtended.locator.href;
+            index = bookmarks.findIndex(({ locator: { href: _href } }) => href === _href);
+        }
+        if (index > -1) {
+            return [bookmarks[index], index];
+        }
+        return [undefined, undefined];
+    }, [bookmarks, locatorExtended, isNavigator]);
+
+    // console.log("BookmarkSelected=", bookmarkSelected);
+    // console.log("BookmarkSelectedIndex=", bookmarkSelectedIndex);
+
+    let bookmarkIcon: EBookmarkIcon = EBookmarkIcon.NEUTRAL;
+
+    if (bookmarkSelected) {
+        bookmarkIcon = EBookmarkIcon.DELETE;
+    } else {
+        bookmarkIcon = EBookmarkIcon.ADD;
+    }
 
     const [webviewLoaded, setWebviewLoaded] = React.useState(false);
     React.useEffect(() => {
+
+        if (!isNavigator) {
+            return ;
+        }
 
         const intervalId = window.setInterval(() => {
 
@@ -99,7 +138,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
             }
             
         }, 100);
-    }, []);
+    }, [isNavigator]);
 
     const dispatch = useDispatch();
     const deleteBookmark = React.useCallback((bookmark: IBookmarkState) => dispatch(readerActions.bookmark.pop.build(bookmark)), [dispatch]);
@@ -114,60 +153,53 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                 return;
             }
 
-            const deleteAllVisibleBookmarks =
+            // const deleteAllVisibleBookmarks =
 
-                // "toggle" only if there is a single bookmark in the content visible inside the viewport
-                // otherwise preserve existing, and add new one (see addCurrentLocatorToBookmarks below)
-                numberOfVisibleBookmarks === 1 &&
+            //     // "toggle" only if there is a single bookmark in the content visible inside the viewport
+            //     // otherwise preserve existing, and add new one (see addCurrentLocatorToBookmarks below)
+            //     numberOfVisibleBookmarks === 1 &&
 
-                // CTRL-B (keyboard interaction) and audiobooks:
-                // do not toggle: never delete, just add current reading location to bookmarks
+            //     // CTRL-B (keyboard interaction) and audiobooks:
+            //     // do not toggle: never delete, just add current reading location to bookmarks
+            //     !fromKeyboard &&
+            //     !locatorExtended.audioPlaybackInfo &&
+            //     (!locatorExtended.locator.text?.highlight ||
+
+            //         // "toggle" only if visible bookmark == current reading location
+            //         visibleBookmarks[0].locator.href === locatorExtended.locator.href &&
+            //         visibleBookmarks[0].locator.locations.cssSelector === locatorExtended.locator.locations.cssSelector &&
+            //         visibleBookmarks[0].locator.text?.highlight === locatorExtended.locator.text.highlight
+            //     )
+            //     ;
+
+            // if (deleteAllVisibleBookmarks) {
+            //     const l = numberOfVisibleBookmarks;
+
+            //     // reader.navigation.bookmarkTitle
+            //     const msg = `${__("catalog.delete")} - ${__("reader.marks.bookmarks")} [${bookmarks.length + 1 - l}]`;
+            //     // this.setState({bookmarkMessage: msg});
+            //     toasty(msg);
+
+            //     for (const bookmark of visibleBookmarks) {
+            //         deleteBookmark(bookmark);
+            //     }
+
+            //     // we do not add the current reading location to bookmarks
+            //     // (just toggle the existing visible ones)
+            //     return;
+            // }
+
+            if (
                 !fromKeyboard &&
                 !locatorExtended.audioPlaybackInfo &&
-                (!locatorExtended.locator.text?.highlight ||
-
-                    // "toggle" only if visible bookmark == current reading location
-                    visibleBookmarks[0].locator.href === locatorExtended.locator.href &&
-                    visibleBookmarks[0].locator.locations.cssSelector === locatorExtended.locator.locations.cssSelector &&
-                    visibleBookmarks[0].locator.text?.highlight === locatorExtended.locator.text.highlight
-                )
-                ;
-
-            if (deleteAllVisibleBookmarks) {
-                const l = numberOfVisibleBookmarks;
-
-                // reader.navigation.bookmarkTitle
-                const msg = `${__("catalog.delete")} - ${__("reader.marks.bookmarks")} [${bookmarks.length + 1 - l}]`;
-                // this.setState({bookmarkMessage: msg});
-                toasty(msg);
-
-                for (const bookmark of visibleBookmarks) {
-                    deleteBookmark(bookmark);
-                }
-
-                // we do not add the current reading location to bookmarks
-                // (just toggle the existing visible ones)
-                return;
+                bookmarkSelected
+            ) {
+                toasty(`${__("catalog.delete")} - ${__("reader.marks.bookmarks")} [${bookmarks.length - bookmarkSelectedIndex}] ${bookmarkSelected.name ? `(${bookmarkSelected.name})` : ""}`);
+                deleteBookmark(bookmarkSelected);
+                return ;
             }
 
-            const addCurrentLocatorToBookmarks =
-                !bookmarks?.find((b) => {
-                    const identical =
-                        b.locator.href === locatorExtended.locator.href &&
-                        (b.locator.locations.progression === locatorExtended.locator.locations.progression ||
-                            b.locator.locations.cssSelector && locatorExtended.locator.locations.cssSelector &&
-                            b.locator.locations.cssSelector === locatorExtended.locator.locations.cssSelector) &&
-                        b.locator.text?.highlight === locatorExtended.locator.text?.highlight;
-
-                    return identical;
-                }) &&
-                (locatorExtended.audioPlaybackInfo ||
-                    !numberOfVisibleBookmarks ||
-                    fromKeyboard || // SCREEN READER CTRL+B on discrete text position (container element)
-                    locatorExtended.locator.text?.highlight
-                );
-
-            if (addCurrentLocatorToBookmarks) {
+            if (!bookmarkSelected) {
 
                 let name: string | undefined;
                 if (locatorExtended.locator.text?.highlight) {
@@ -194,16 +226,62 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                     locator: locatorExtended.locator,
                     name,
                 });
+
             }
+
+            // const addCurrentLocatorToBookmarks =
+            //     !bookmarks?.find((b) => {
+            //         const identical =
+            //             b.locator.href === locatorExtended.locator.href &&
+            //             (b.locator.locations.progression === locatorExtended.locator.locations.progression ||
+            //                 b.locator.locations.cssSelector && locatorExtended.locator.locations.cssSelector &&
+            //                 b.locator.locations.cssSelector === locatorExtended.locator.locations.cssSelector) &&
+            //             b.locator.text?.highlight === locatorExtended.locator.text?.highlight;
+
+            //         return identical;
+            //     }) &&
+            //     (locatorExtended.audioPlaybackInfo ||
+            //         !numberOfVisibleBookmarks ||
+            //         fromKeyboard || // SCREEN READER CTRL+B on discrete text position (container element)
+            //         locatorExtended.locator.text?.highlight
+            //     );
+
+            // if (addCurrentLocatorToBookmarks) {
+
+            //     let name: string | undefined;
+            //     if (locatorExtended.locator.text?.highlight) {
+            //         name = locatorExtended.locator.text.highlight;
+            //     } else if (locatorExtended.selectionInfo?.cleanText) {
+            //         name = locatorExtended.selectionInfo.cleanText;
+            //     } else if (locatorExtended.audioPlaybackInfo) {
+            //         const percent = Math.floor(100 * locatorExtended.audioPlaybackInfo.globalProgression);
+            //         // locatorExtended.audioPlaybackInfo.globalTime /
+            //         // locatorExtended.audioPlaybackInfo.globalDuration
+            //         const timestamp = formatTime(locatorExtended.audioPlaybackInfo.globalTime);
+            //         name = `${timestamp} (${percent}%)`;
+            //     }
+
+            //     // reader.navigation.bookmarkTitle
+            //     const msg = `${__("catalog.addTagsButton")} - ${__("reader.marks.bookmarks")} [${bookmarks?.length ? bookmarks.length + 1 : 1}] ${name ? ` (${name})` : ""}`;
+            //     // this.setState({bookmarkMessage: msg});
+            //     toasty(msg);
+
+            //     if (locatorExtended.locator.locations && !locatorExtended.locator.locations.rangeInfo && locatorExtended.selectionInfo?.rangeInfo) {
+            //         locatorExtended.locator.locations.rangeInfo = locatorExtended.selectionInfo?.rangeInfo;
+            //     }
+            //     addBookmark({
+            //         locator: locatorExtended.locator,
+            //         name,
+            //     });
+            // }
         } else {
 
             const href = locatorExtended.locator.href;
             const name = isDivina ? href : isPdf ? (parseInt(href, 10) + 1).toString() : "";
             if (href) {
 
-                const found = visibleBookmarks.find(({ locator: { href: _href } }) => href === _href);
-                if (found) {
-                    deleteBookmark(found);
+                if (bookmarkSelected) {
+                    deleteBookmark(bookmarkSelected);
                 } else {
                     addBookmark({
                         locator: locatorExtended.locator,
@@ -281,16 +359,13 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                     }
                 });
             };
-            setTimeout(() => fetchVisibleBookmarks(), 1000);
+            setTimeout(() => fetchVisibleBookmarks(), 1);
         } else {
             const visibleBookmarks = currentBookmarks.filter((bookmark) => bookmark.locator.href === currentLocator.locator.href);
             setVisibleBookmarks(visibleBookmarks);
         }
 
     }, [bookmarks, locatorExtended, isNavigator, webviewLoaded]);
-
-
-
 
     // console.log("numberOfVisibleBookmarks", numberOfVisibleBookmarks);
     return <>
@@ -321,19 +396,19 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                 className={stylesReader.menu_button}
                 id="bookmarkLabel"
 
-                aria-label={`${__("reader.navigation.bookmarkTitle")} (${(numberOfVisibleBookmarks === 1 && !selectionIsNew) ? __("catalog.delete") : __("catalog.addTagsButton")
+                aria-label={`${__("reader.navigation.bookmarkTitle")} (${bookmarkIcon === EBookmarkIcon.DELETE ? __("catalog.delete") : __("catalog.addTagsButton")
                     })`}
-                title={`${__("reader.navigation.bookmarkTitle")} (${(numberOfVisibleBookmarks === 1 && !selectionIsNew) ? __("catalog.delete") : __("catalog.addTagsButton")
+                title={`${__("reader.navigation.bookmarkTitle")} (${bookmarkIcon === EBookmarkIcon.ADD ? __("catalog.addTagsButton") : __("catalog.delete")
                     })`}
             >
                 <SVG ariaHidden={true} svg={MarkIcon} className={classNames(stylesReaderHeader.bookmarkIcon,
                     numberOfVisibleBookmarks > 0
                         ? stylesReaderHeader.active_svg : "")} />
                 <SVG ariaHidden={true} svg={RemoveBookMarkIcon} className={classNames(stylesReaderHeader.bookmarkRemove,
-                    (numberOfVisibleBookmarks === 1 && !selectionIsNew)
+                    numberOfVisibleBookmarks > 0 && bookmarkIcon === EBookmarkIcon.DELETE
                         ? stylesReaderHeader.active_svg : "")} />
                 <SVG ariaHidden={true} svg={PlusIcon} className={classNames(stylesReaderHeader.bookmarkRemove,
-                    numberOfVisibleBookmarks > 1 || (numberOfVisibleBookmarks === 1 && selectionIsNew)
+                    numberOfVisibleBookmarks > 0 && bookmarkIcon === EBookmarkIcon.ADD
                         ? stylesReaderHeader.active_svg : "")} />
             </label>
         </li>
