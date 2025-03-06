@@ -544,6 +544,17 @@
             "person": "Πρόσωπο",
             "type": "Τύπος:"
         },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
+        },
         "auth": {
             "help": "Αυτή η ενέργεια διαγράφει όλα τα OPDS διαπιστευτήρια σύνδεσης.",
             "title": "Πρόσβαση στους καταλόγους βιβλίων",

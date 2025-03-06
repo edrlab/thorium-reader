@@ -544,6 +544,17 @@
             "person": "个人",
             "type": "类型"
         },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
+        },
         "auth": {
             "help": "此操作将删除所有 OPDS 登录凭据。",
             "title": "访问出版物目录",

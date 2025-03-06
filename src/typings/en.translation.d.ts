@@ -1424,6 +1424,17 @@ declare namespace typed_i18n {
     readonly "person": string,
     readonly "type": string
   },
+  readonly "apiKey": {
+    readonly "addKey": string,
+    readonly "help": string,
+    readonly "keyLabel": string,
+    readonly "mistral": string,
+    readonly "openAi": string,
+    readonly "providerSelection": string,
+    readonly "removeKey": string,
+    readonly "title": string,
+    readonly "validate": string
+  },
   readonly "auth": {
     readonly "help": string,
     readonly "title": string,
@@ -1472,6 +1483,26 @@ declare namespace typed_i18n {
   (_: "settings.annotationCreator.organization", __?: {}): string;
   (_: "settings.annotationCreator.person", __?: {}): string;
   (_: "settings.annotationCreator.type", __?: {}): string;
+  (_: "settings.apiKey", __?: {}): {
+  readonly "addKey": string,
+  readonly "help": string,
+  readonly "keyLabel": string,
+  readonly "mistral": string,
+  readonly "openAi": string,
+  readonly "providerSelection": string,
+  readonly "removeKey": string,
+  readonly "title": string,
+  readonly "validate": string
+};
+  (_: "settings.apiKey.addKey", __?: {}): string;
+  (_: "settings.apiKey.help", __?: {}): string;
+  (_: "settings.apiKey.keyLabel", __?: {}): string;
+  (_: "settings.apiKey.mistral", __?: {}): string;
+  (_: "settings.apiKey.openAi", __?: {}): string;
+  (_: "settings.apiKey.providerSelection", __?: {}): string;
+  (_: "settings.apiKey.removeKey", __?: {}): string;
+  (_: "settings.apiKey.title", __?: {}): string;
+  (_: "settings.apiKey.validate", __?: {}): string;
   (_: "settings.auth", __?: {}): {
   readonly "help": string,
   readonly "title": string,

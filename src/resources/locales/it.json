@@ -544,6 +544,17 @@
             "person": "Persona",
             "type": "Tipo:"
         },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
+        },
         "auth": {
             "help": "Questa azione cancella tutte le credenziali di accesso all'OPDS.",
             "title": "Gestire l'accesso ai cataloghi",

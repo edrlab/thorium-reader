@@ -544,6 +544,17 @@
             "person": "Osoba",
             "type": "Typ:"
         },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
+        },
         "auth": {
             "help": "Tento krok odstraní všechny přihlašovací údaje OPDS.",
             "title": "",

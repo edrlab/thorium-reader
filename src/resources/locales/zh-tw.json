@@ -544,6 +544,17 @@
             "person": "個人",
             "type": "類型："
         },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
+        },
         "auth": {
             "help": "此操作將刪除所有 OPDS 登入憑證。",
             "title": "訪問出版物目錄",

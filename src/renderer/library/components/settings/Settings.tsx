@@ -17,8 +17,11 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as Tabs from "@radix-ui/react-tabs";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import * as CogIcon from "readium-desktop/renderer/assets/icons/cog-icon.svg";
+import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as PaletteIcon from "readium-desktop/renderer/assets/icons/palette-icon.svg";
 import * as KeyReturnIcon from "readium-desktop/renderer/assets/icons/keyreturn-icon.svg";
+import * as EyeOpenIcon from "readium-desktop/renderer/assets/icons/eye-icon.svg";
+import * as EyeClosedIcon from "readium-desktop/renderer/assets/icons/eye-password-hide-icon.svg";
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
@@ -38,12 +41,16 @@ import * as BrushIcon from "readium-desktop/renderer/assets/icons/paintbrush-ico
 import KeyboardSettings, { AdvancedTrigger } from "readium-desktop/renderer/library/components/settings/KeyboardSettings";
 import * as GearIcon from "readium-desktop/renderer/assets/icons/gear-icon.svg";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+import * as FloppyDiskIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
 import debounce from "debounce";
 import { IAnnotationCreator } from "readium-desktop/common/redux/states/creator";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { ApiappHowDoesItWorkInfoBox } from "../dialog/ApiappAddForm";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
+import OpenAiIcon from "readium-desktop/renderer/assets/logos/open-ai-icon.png";
+import MistralAiIcon from "readium-desktop/renderer/assets/logos/mistral-ai-icon.png";
+import * as stylesChatbot from "readium-desktop/renderer/assets/styles/chatbot.scss";
 
 interface ISettingsProps {};
 
@@ -228,6 +235,122 @@ const SaveCreatorSettings: React.FC<{}> = () => {
     );
 };
 
+const ApiKeys = () => {
+    const [__] = useTranslator();
+
+    const [keys, setKeys] = React.useState([]);
+    const [inputType, setInputType] = React.useState(["password"]);
+
+
+    const addNewKey = () => {
+        setKeys([...keys, { provider: "", key: "", submitted: false}]);
+        setInputType([...inputType, "password"]);
+    };
+
+    const updateKey = (index: number, newProvider: string, newKey: string, submitted: boolean) => {
+        const updatedKeys = keys.map((k, i) =>
+            i === index ? { provider: newProvider, key: newKey, submitted: submitted } : k,
+        );
+        setKeys(updatedKeys);
+    };
+
+    const removeKey = (index: number) => {
+        const updatedKeys = keys.filter((_, i) => i !== index);
+        setKeys(updatedKeys);
+    };
+
+    const updateInputType = (index: number, newType: string) => {
+        const updatedType = inputType.map((t, i) =>
+            i === index ? newType : t,
+        );
+        setInputType(updatedType);
+    };
+
+    return (
+        <section className={stylesSettings.section} style={{ position: "relative" }}>
+            <h4>{__("settings.apiKey.title")}</h4>
+            <div className={stylesSettings.session_text}>
+                <SVG ariaHidden svg={InfoIcon} />
+                <p>{__("settings.apiKey.help")}</p>
+            </div>
+            {keys.map((k, index) => (
+                <div key={index} className={stylesSettings.apiKey_container}>
+                    <button title={__("settings.apiKey.removeKey")} className={stylesSettings.apiKey_remove_button} onClick={() => removeKey(index)}><SVG ariaHidden svg={QuitIcon} style={{width: "15px"}}/></button>
+                    {k.submitted ? 
+                    <>
+                        <p>{
+                        k.provider.includes("OpenAi") ? 
+                        <span>
+                        <img src={OpenAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
+                        {__("settings.apiKey.openAi")}
+                        </span>
+                        :
+                        <span>
+                        <img src={MistralAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
+                        {__("settings.apiKey.mistral")}
+                        </span>
+                    }</p>
+                        <div className={stylesSettings.apiKey_input_submitted}>
+                            <input
+                            type={inputType[index]}
+                            name="api-key"
+                            className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                            title={k.provider}
+                            value={k.key}
+                            disabled
+                            
+                            />
+                            <button type="button" onClick={(e) => {e.preventDefault(); updateInputType(index, inputType[index] === "password" ? "text" : "password");}}>
+                                <SVG ariaHidden svg={inputType[index] === "password" ? EyeOpenIcon : EyeClosedIcon} style={{width: "20px"}} />
+                            </button>
+                        </div>
+                    </>
+                    :
+                    <form>
+                    <RadioGroup.Root orientation="horizontal" className={stylesSettings.apiKey_radiogroup}
+                        onValueChange={(option) => updateKey(index, option, k.key, false)}
+                    >
+                        <p>{__("settings.apiKey.providerSelection")}</p>
+                        {keys.some((e) => e.provider === "OpenAi" && e.key != k.key) ? <></> : <RadioGroupItem value="OpenAi" description={__("settings.apiKey.openAi")} className={stylesAnnotations.annotations_filter_tag} />}
+                        {keys.some((e) => e.provider === "Mistral" && e.key != k.key) ? <></> : <RadioGroupItem value="Mistral" description={__("settings.apiKey.mistral")} className={stylesAnnotations.annotations_filter_tag} />}
+                    </RadioGroup.Root>
+                    <div className={stylesSettings.apiKey_input_edit_container}>
+                        <div className={stylesInput.form_group}>
+                            <input
+                                type={inputType[index]}
+                                name="api-key"
+                                className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                                title={k.provider}
+                                value={k.key}
+                                onChange={(e) => {
+                                    const v = e.target.value;
+                                    updateKey(index, k.provider, v, false);
+                                }}
+                                required
+                            />
+                            <label htmlFor="api-key">{__("settings.apiKey.keyLabel")}</label>
+                            <button type="button" onClick={(e) => {e.preventDefault(); updateInputType(index, inputType[index] === "password" ? "text" : "password");}}>
+                                <SVG ariaHidden svg={inputType[index] === "password" ? EyeOpenIcon : EyeClosedIcon} style={{width: "20px"}} />
+                            </button>
+                        </div>
+                        <button type="submit" title={__("settings.apiKey.validate")} disabled={k.key.length === 0 || k.provider.length === 0} onClick={(e) => {
+                                    e.preventDefault();
+                                    updateKey(index, k.provider, k.key, true);
+                                }}><SVG ariaHidden svg={k.submitted ? CheckIcon: FloppyDiskIcon} style={{width: "inherit"}} /></button>
+                    </div>
+                    </form>
+                    }
+                </div>
+            ))}
+            {keys.length < 2 ?
+            <button onClick={addNewKey} className={stylesButtons.button_primary}><SVG ariaHidden svg={AddIcon} style={{width: "15px"}}/>{__("settings.apiKey.addKey")}</button>
+            : <></>
+            }
+        </section>
+    );
+};
+
+
 const ManageAccessToCatalogSettings = () => {
 
     const [__] = useTranslator();
@@ -370,6 +493,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                                 <SaveSessionSettings />
                                 <ManageAccessToCatalogSettings />
                                 <SaveCreatorSettings />
+                                <ApiKeys />
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab2" tabIndex={-1}>

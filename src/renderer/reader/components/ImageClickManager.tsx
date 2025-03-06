@@ -6,46 +6,42 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import * as Dialog from "@radix-ui/react-dialog";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
-
-import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-
-import * as Dialog from "@radix-ui/react-dialog";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+
 import { readerLocalActionSetImageClick } from "../redux/actions";
-import classNames from "classnames";
-
-import SVG from "readium-desktop/renderer/common/components/SVG";
-import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-
 import { TransformWrapper, TransformComponent, useControls } from "react-zoom-pan-pinch";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-
 import { useChat } from "@ai-sdk/react";
 import { type UIMessage } from "@ai-sdk/ui-utils";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 // import { nanoid } from "nanoid";
 // import { Attachment } from "ai";
 import Loader from "readium-desktop/renderer/common/components/Loader";
-
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import { Select, SelectItem } from "readium-desktop/renderer/common/components/Select";
 import { aiSDKModelOptions, DEFAULT_SYSTEM_PROMPT, IaiSdkModel } from "readium-desktop/common/aisdkModelOptions";
+import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
 
+import classNames from "classnames";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesChatbot from "readium-desktop/renderer/assets/styles/chatbot.scss";
+
+import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as sendIcon from "readium-desktop/renderer/assets/icons/send-icon.svg";
 import * as AiIcon from "readium-desktop/renderer/assets/icons/stars-icon.svg";
 import * as ChevronRight from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-import OpenAiIcon from "readium-desktop/renderer/assets/logos/open-ai-icon.png";
-import MistralAiIcon from "readium-desktop/renderer/assets/logos/mistral-ai-icon.png";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 import * as ResetIcon from "readium-desktop/renderer/assets/icons/backward-icon.svg";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg";
-import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
+import OpenAiIcon from "readium-desktop/renderer/assets/logos/open-ai-icon.png";
+import MistralAiIcon from "readium-desktop/renderer/assets/logos/mistral-ai-icon.png";
 
 interface ControlsProps {
     chatEnabled: boolean;

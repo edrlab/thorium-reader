@@ -544,6 +544,17 @@
             "person": "Persoon",
             "type": "Type:"
         },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
+        },
         "auth": {
             "help": "Deze actie verwijdert alle OPDS aanmeldingsgegevens.",
             "title": "Toegang tot publicatiecatalogi",

@@ -544,6 +544,17 @@
             "person": "Oseba",
             "type": "Tip:"
         },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
+        },
         "auth": {
             "help": "To dejanje izbriše vse poverilnice za prijavo v OPDS.",
             "title": "Dostop do katalogov publikacij",

@@ -544,6 +544,17 @@
             "person": "Person",
             "type": "Typ:"
         },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
+        },
         "auth": {
             "help": "Denna åtgärd raderar alla OPDS-inloggningsuppgifter.",
             "title": "Hantera åtkomst till kataloger",

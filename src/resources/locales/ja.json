@@ -544,6 +544,17 @@
             "person": "個人",
             "type": "タイプ："
         },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
+        },
         "auth": {
             "help": "この操作により、すべてのOPDSログイン情報が削除されます。",
             "title": "本の図書目録への接続",

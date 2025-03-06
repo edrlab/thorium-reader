@@ -544,6 +544,17 @@
             "person": "Person",
             "type": "Type:"
         },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
+        },
         "auth": {
             "help": "Denne handling sletter alle OPDS loginoplysninger.",
             "title": "Administrér adgang til kataloger",

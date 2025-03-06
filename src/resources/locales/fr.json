@@ -544,6 +544,17 @@
             "person": "Personne",
             "type": "Type"
         },
+        "apiKey": {
+            "addKey": "Ajouter une clé",
+            "help": "Ajoutez une clé d'API depuis le fournisseur de votre choix pour utiliser la fonctionnalité de description d'image.",
+            "keyLabel": "Clé d'API",
+            "mistral": "Mistral",
+            "openAi": "Open Ai",
+            "providerSelection": "Sélectionnez un fournisseur",
+            "removeKey": "Supprimer la clé",
+            "title": "Ajouter une clé API (fonctionnalité de description d'image)",
+            "validate": "Valider"
+        },
         "auth": {
             "help": "Souhaitez-vous supprimer vos identifiants de connexion à l'OPDS ?",
             "title": "Gérer l'accès aux catalogues",

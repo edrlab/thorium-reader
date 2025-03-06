@@ -923,6 +923,79 @@ div[data-radix-popper-content-wrapper] {
       }
 }
 
+.apiKey {
+    &_container {
+        border: 1px dashed var(--color-light-grey);
+        border-radius: 6px;
+        padding: 5px;
+        position: relative;
+
+        p {
+            margin: 0;
+
+            span {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+        }
+    }
+
+    &_remove_button {
+        position: absolute;
+        top: 0;
+        right: 5px;
+    }
+
+    &_input_submitted {
+        display: flex;
+        align-items: center;
+
+        input {
+            width: 100%!important;
+            margin-left: 10px;
+        }
+
+        button {
+            padding: 0 5px;
+        }
+    }
+
+    &_radiogroup {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    &_input_edit_container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .form_group {
+            margin-top: 20px;
+            width: 360px;
+            display: flex;
+
+            input {
+                width: 100%;
+                margin-left: 10px;
+            }
+
+            button {
+                padding: 0 5px;
+            }
+        }
+
+        button[type="submit"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 20px;
+        }
+    }
+}
+
 .CSS_END_components_settings {
     display: none;
 }

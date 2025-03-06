@@ -544,6 +544,17 @@
             "person": "Asmuo",
             "type": "Tipas:"
         },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
+        },
         "auth": {
             "help": "Šis veiksmas pašalina visus OPDS prisijungimo duomenis.",
             "title": "Valdyti katalogų prieigą",
