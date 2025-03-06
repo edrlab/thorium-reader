@@ -42,9 +42,9 @@ const equalFn = (prev: IReaderStateReader, current: IReaderStateReader) => {
     if (
         (
             previousLocator && currentLocator &&
-            (previousLocator?.locator.href !== currentLocator.locator.href ||
-                previousLocator?.locator.locations.cssSelector !== currentLocator.locator.locations.cssSelector ||
-                previousLocator?.locator.locations.position !== currentLocator.locator.locations.position)
+            (previousLocator.locator.href !== currentLocator.locator.href ||
+                previousLocator.locator.locations.cssSelector !== currentLocator.locator.locations.cssSelector ||
+                previousLocator.locator.locations.position !== currentLocator.locator.locations.position)
         )
     ) {
         return false;
@@ -93,21 +93,16 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
     const bookmarks = React.useMemo(() => bookmarksQueueState.map(([, v]) => v), [bookmarksQueueState]);
     const [bookmarkSelected, bookmarkSelectedIndex] = React.useMemo(() => {
 
-        // console.log("LOCATOR_EXTENDED", locatorExtended);
-        // console.log("LOCATIONS", locatorExtended.locator.locations);
-        // console.log("AUDIOPLAYBACKINFO", locatorExtended.audioPlaybackInfo);
-
         let index = undefined;
         if (isEpubNavigator) {
             index = bookmarks.findIndex((bookmark) =>
-                bookmark.locator.href === locatorExtended.locator.href && bookmark.locator.locations.cssSelector === locatorExtended.locator.locations.cssSelector,
+                bookmark.locator.href === locatorExtended.locator.href &&
+                bookmark.locator.locations.cssSelector === locatorExtended.locator.locations.cssSelector,
             );
         } else if (isAudiobook) {
-
-            // same algo as ln 308 update visible bookmark
-            const { globalDuration, globalTime } = locatorExtended.audioPlaybackInfo;
             index = bookmarks.findIndex((bookmark) =>
-                bookmark.locator.href === locatorExtended.locator.href && Math.floor(globalTime) === Math.floor(globalDuration * bookmark.locator.locations.position),
+                bookmark.locator.href === locatorExtended.locator.href &&
+                Math.floor(locatorExtended.audioPlaybackInfo.globalTime) === Math.floor(locatorExtended.audioPlaybackInfo.globalDuration * bookmark.locator.locations.position),
             );
         } else {
             const href = locatorExtended.locator.href;
@@ -118,9 +113,6 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
         }
         return [undefined, undefined];
     }, [bookmarks, locatorExtended, isAudiobook, isEpubNavigator]);
-
-    // console.log("BookmarkSelected=", bookmarkSelected);
-    // console.log("BookmarkSelectedIndex=", bookmarkSelectedIndex);
 
     let bookmarkIcon: EBookmarkIcon = EBookmarkIcon.NEUTRAL;
 
@@ -142,13 +134,14 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
             const win = global.window as ReadiumElectronBrowserWindow;
 
             // const atLeastOneWebViewIsLoaded = win.READIUM2?.getActiveWebViews().map((webview) => webview.READIUM2.DOMisReady).reduce((prevDomIsLoaded, currentDomIsLoaded) => prevDomIsLoaded || currentDomIsLoaded, false);
-            const allWebViewsAreLoaded = win.READIUM2?.getActiveWebViews().map((webview) => webview.READIUM2.DOMisReady).reduce((prevDomIsLoaded, currentDomIsLoaded) => prevDomIsLoaded && currentDomIsLoaded, true);
+            const allWebViewsAreLoaded = win.READIUM2?.getActiveWebViews()
+                .map((webview) => webview.READIUM2.DOMisReady)
+                .reduce((prevDomIsLoaded, currentDomIsLoaded) => prevDomIsLoaded && currentDomIsLoaded, true);
 
             if (allWebViewsAreLoaded) {
                 clearInterval(intervalId);
                 setWebviewLoaded(true);
             }
-
         }, 100);
     }, [isEpubNavigator]);
 
@@ -202,7 +195,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                 toasty(msg);
 
                 if (locatorExtended.locator.locations && !locatorExtended.locator.locations.rangeInfo && locatorExtended.selectionInfo?.rangeInfo) {
-                    locatorExtended.locator.locations.rangeInfo = locatorExtended.selectionInfo?.rangeInfo;
+                    locatorExtended.locator.locations.rangeInfo = locatorExtended.selectionInfo.rangeInfo;
                 }
 
                 addBookmark({
@@ -257,12 +250,6 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
 
     React.useEffect(() => {
 
-        // console.log("UPDATE_BOOKMARKS");
-
-        const currentLocator = locatorExtended;
-        const currentBookmarks = bookmarks;
-        // console.log("Bookmarks", currentBookmarks);
-
         if (isEpubNavigator) {
 
             if (!webviewLoaded) {
@@ -281,11 +268,10 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                     }
                 }
 
-                const visibleBookmarksPromise = currentBookmarks.map<Promise<boolean>>((bookmark) => isLocatorVisible(bookmark.locator));
+                const visibleBookmarksPromise = bookmarks.map<Promise<boolean>>((bookmark) => isLocatorVisible(bookmark.locator));
                 Promise.all(visibleBookmarksPromise).then(
                     (visibleBookmarks) => {
-
-                        const visibleBookmarksFiltered = visibleBookmarks.map((isVisible, index) => isVisible ? currentBookmarks[index] : undefined).filter((bookmark) => !!bookmark);
+                        const visibleBookmarksFiltered = visibleBookmarks.map((isVisible, index) => isVisible ? bookmarks[index] : undefined).filter((bookmark) => !!bookmark);
                         setVisibleBookmarks(visibleBookmarksFiltered);
                     },
                 ).catch((_e) => {
@@ -300,16 +286,15 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
             setTimeout(() => fetchVisibleBookmarks(), 1);
         } else if (isAudiobook) {
 
-            const { globalDuration, globalTime } = locatorExtended.audioPlaybackInfo;
-            const visibleBookmarks = currentBookmarks.filter((bookmark) =>
-
-                // same algo as ln 106 bookmarkSelected
-                bookmark.locator.href === currentLocator.locator.href &&
-                Math.floor(globalTime) === Math.floor(globalDuration * bookmark.locator.locations.position),
+            const visibleBookmarks = bookmarks.filter((bookmark) =>
+                bookmark.locator.href === locatorExtended.locator.href
+                // &&
+                // Math.floor(locatorExtended.audioPlaybackInfo.globalTime) === Math.floor(locatorExtended.audioPlaybackInfo.globalDuration * bookmark.locator.locations.position)
+                ,
             );
             setVisibleBookmarks(visibleBookmarks);
         } else {
-            const visibleBookmarks = currentBookmarks.filter((bookmark) => bookmark.locator.href === currentLocator.locator.href);
+            const visibleBookmarks = bookmarks.filter((bookmark) => bookmark.locator.href === locatorExtended.locator.href);
             setVisibleBookmarks(visibleBookmarks);
         }
 
@@ -332,8 +317,11 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                     if (e.key === "Enter") { toggleBookmark(); }
                 }}
                 onChange={() => toggleBookmark()}
-                aria-label={__("reader.navigation.bookmarkTitle")}
-                title={__("reader.navigation.bookmarkTitle")}
+
+                aria-label={`${__("reader.navigation.bookmarkTitle")} (${bookmarkIcon === EBookmarkIcon.DELETE ? __("catalog.delete") : __("catalog.addTagsButton")
+                    })`}
+                title={`${__("reader.navigation.bookmarkTitle")} (${bookmarkIcon === EBookmarkIcon.ADD ? __("catalog.addTagsButton") : __("catalog.delete")
+                    })`}
             />
             {
                 // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing
