@@ -236,6 +236,15 @@
     /* gap: 20px; */
     color: var(--color-primary);
 
+    @media only screen and (width <= 1000px) {
+        flex-direction: column;
+        max-height: 450px;
+
+        details {
+            display: none;
+        }
+    }
+
 
     .react_aria_ComboBox{
         .react_aria_Input {
