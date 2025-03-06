@@ -34,9 +34,9 @@
                         "no": "Nein",
                         "yes": "Ja"
                     },
-                    "help": "",
-                    "message": "Möchten Sie die Sitzung speichern?",
-                    "title": "Sitzung sichern"
+                    "help": "Aktivieren Sie diese Option, wenn Sie möchten, dass Fenster, die beim Schließen der Anwendung geöffnet sind, beim nächsten Start automatisch wieder geöffnet werden.",
+                    "message": "Lese-Sitzung speichern und wiederherstellen",
+                    "title": "Sitzung sichern?"
                 }
             }
         },
@@ -50,7 +50,7 @@
     },
     "catalog": {
         "about": {
-            "title": "Über {{appName}}"
+            "title": "Über {{-appName}} (online)"
         },
         "addBookToLib": "Import",
         "addTags": "Ein Tag hinzufügen",
@@ -72,9 +72,9 @@
             "lastAdditions": "Kürzlich hinzugefügt"
         },
         "export": "Export",
-        "exportAnnotation": "",
+        "exportAnnotation": "Notizen exportieren...",
         "format": "Format",
-        "importAnnotation": "",
+        "importAnnotation": "Notizen importieren",
         "lang": "Sprache",
         "lastRead": "Zuletzt gelesen",
         "moreInfo": "Mehr Informationen",
@@ -121,23 +121,23 @@
     },
     "dialog": {
         "annotations": {
-            "descAuthor": "",
-            "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
-            "descTitle": "",
-            "importAll": "",
-            "importWithoutConflict": "",
-            "origin": "",
-            "title": ""
+            "descAuthor": "nach '{{- author}}'",
+            "descCreator": "Erstellt von",
+            "descList": "{{- nb}} Notiz(en) {{- creator}} werden nach '{{- title}}' {{- author}} importiert",
+            "descNewer": "Konflikt: {{- nb}} neuere Notiz(en)",
+            "descOlder": "Konflikt: {{- nb}} ältere Notiz(en)",
+            "descTitle": "Titel der Notiz: ",
+            "importAll": "Importiere alle Notizen",
+            "importWithoutConflict": "Importiere nur konfliktfreie Notizen",
+            "origin": "Herkunftspublikation: '{{- title}}' {{- author}}",
+            "title": "Notizen importieren?"
         },
         "cancel": "Abbrechen",
-        "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
+        "deleteAnnotations": "Anmerkungen löschen?",
+        "deleteAnnotationsText": "Sind Sie sicher, dass Sie {{- annotationListLength}} Notiz(en) löschen wollen?",
         "deleteFeed": "Willst du diesen Katalog wirklich löschen?",
         "deletePublication": "Willst du diese Publikation wirklich löschen?",
-        "import": "Willst du diese EPUB-Dateien wirklich importieren?",
+        "import": "Import bestätigen:",
         "importError": "Ein Fehler ist aufgetreten, überprüfen Sie die Dateiendung ({{acceptedExtension}})",
         "renew": "Ausleihe verlängern?",
         "return": "Publikation zurückgeben?",
@@ -169,11 +169,11 @@
     },
     "library": {
         "lcp": {
-            "hint": "Dein Kennwort",
-            "open": "",
+            "hint": "Hinweis:",
+            "open": "Öffnen",
             "password": "Passwort",
-            "sentence": "Diese LCP-geschütze Publikation benötigt zum Öffnen ein Password: ",
-            "urlHint": "Passwort vergessen? Support ist verfügbar unter:",
+            "sentence": "Diese LCP-geschütze Publikation benötigt zum Öffnen ein Passwort",
+            "urlHint": "Passwort vergessen? Klicke hier für Support.",
             "whatIsLcp?": "Was ist LCP?",
             "whatIsLcpInfoDetails": "LCP steht für „Licensed Content Protection“.",
             "whatIsLcpInfoDetailsLink": "Um mehr zu erfahren, klicken Sie auf diesen Link zur EDRLab-Website."
@@ -181,12 +181,12 @@
     },
     "message": {
         "annotations": {
-            "alreadyImported": "",
-            "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
-            "nothing": "",
-            "success": ""
+            "alreadyImported": "Alle Notizen wurden bereits importiert.",
+            "emptyFile": "Keine Notizen in der Datei vorhanden.",
+            "errorParsing": "Fehler beim Einlesen der Datei: ",
+            "noBelongTo": "Notizen können nicht importiert werden, mindestens eine Notiz gehört nicht zur Veröffentlichung.",
+            "nothing": "Keine Notizen sind für den Import bereit. Import wird abgebrochen.",
+            "success": "Import vollständig abgeschlossen."
         },
         "download": {
             "error": "Der Download von [{{- title}}] ist fehlgeschlagen: {{- err}}"
@@ -230,7 +230,7 @@
             "error": "Ein Fehler ist aufgetreten",
             "noInternet": "Kein Internet",
             "noInternetMessage": "Überprüfen Sie das Netzwerkkabel, das Modem, den Router oder das WLAN",
-            "reject": "Beim Versuch, den OPDS-Feed zu verarbeiten, ist ein unerwarteter Fehler aufgetreten.",
+            "reject": "Sorry, unerwarteter Fehler!",
             "timeout": "Es ist eine Netzwerk-Zeitüberschreitung aufgetreten. Bitte versuchen Sie es später erneut"
         },
         "next": "Nächster",
@@ -269,7 +269,7 @@
                 "sound": "Audio",
                 "unknown": "Unbekannt"
             },
-            "certifierReport": "Zertifiziererbericht",
+            "certifierReport": "Zertifiziererbericht:",
             "conformsTo": "Entspricht:",
             "moreInformation": "Mehr Informationen",
             "name": "Barrierefreiheit",
@@ -291,10 +291,10 @@
         "duration": {
             "title": "Dauer"
         },
-        "encryptedNoLicense": "",
+        "encryptedNoLicense": "Publikation ist verschlüsselt, aber LCP-Lizenz fehlt!",
         "expired": "Ausleihe abgelaufen",
         "expiredLcp": "Die LCP-Lizenz dieser Veröffentlichung ist abgelaufen.",
-        "incorrectPassphrase": "",
+        "incorrectPassphrase": "Kein gespeichertes Passwort passt zu dieser Publikation oder das eingegebene Passwort ist falsch.",
         "lcpEnd": "Ende",
         "lcpRightsCopy": "Kopierte Zeichen",
         "lcpRightsPrint": "Gedruckte Seiten",
@@ -302,7 +302,7 @@
         "licenceLCP": "Lizenz (LCP)",
         "licenseCertificateDateInvalid": "Ungültiges Signaturdatum der LCP-Lizenz.",
         "licenseOutOfDate": "Veraltete LCP-Lizenz.",
-        "licenseSignatureInvalid": "Invalid LCP license signature.",
+        "licenseSignatureInvalid": "Ungültige LCP-Lizenzsignatur.",
         "licensed": "Lizenziert",
         "markAsRead": "Als gelesen markieren",
         "notStarted": "Nicht begonnen",
@@ -320,7 +320,7 @@
         "seeMore": "Mehr Infos",
         "timeLeft": "Links",
         "title": "Titel",
-        "userKeyCheckInvalid": "Falsches Passwort"
+        "userKeyCheckInvalid": "Falsches Passwort."
     },
     "reader": {
         "annotations": {
@@ -328,40 +328,40 @@
             "addNote": "Notiz hinzufügen",
             "advancedMode": "Sofortmodus (automatisch erstellen nach Auswahl)",
             "annotationsExport": {
-                "description": "",
-                "title": ""
+                "description": "Name für die exportierten Notizen:",
+                "title": "Titel"
             },
             "annotationsOptions": "Optionen",
             "colors": {
-                "cyan": "",
-                "green": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
+                "cyan": "Türkis",
+                "green": "Grün",
+                "orange": "Orange",
+                "purple": "Violett",
+                "red": "Rot",
+                "yellow": "Gelb"
             },
-            "date": "",
-            "export": "",
+            "date": "Änderungsdatum",
+            "export": "Notizen speichern als...",
             "filter": {
-                "all": "",
-                "filterByColor": "",
-                "filterByCreator": "",
-                "filterByDrawtype": "",
-                "filterByTag": "",
-                "filterOptions": "",
-                "none": ""
+                "all": "Alle",
+                "filterByColor": "Nach Farbe filtern",
+                "filterByCreator": "Nach Ersteller filtern",
+                "filterByDrawtype": "Nach Typ filtern",
+                "filterByTag": "Nach Tag filtern",
+                "filterOptions": "Filter-Optionen",
+                "none": "Keine"
             },
             "hide": "Ausblenden",
             "highlight": "Markieren",
             "noSelectionToast": "Keine Auswahl",
-            "note": "",
+            "note": "{{- color}} Notiz",
             "quickAnnotations": "Schnell erstellen (Editor überspringen)",
             "saveNote": "Speichern",
             "sorting": {
-                "lastcreated": "",
-                "lastmodified": "",
-                "progression": "",
-                "sortingOptions": ""
+                "lastcreated": "Zuletzt erstellt",
+                "lastmodified": "Zuletzt geändert",
+                "progression": "Fortschritt",
+                "sortingOptions": "Sortierungs-Optionen"
             },
             "toggleMarginMarks": "Anzeige in Rändern",
             "type": {
@@ -378,7 +378,7 @@
         "fxl": {
             "fit": "Einpassen"
         },
-        "goToContent": "",
+        "goToContent": "Zum Inhalt gehen",
         "marks": {
             "annotations": "Meine Anmerkungen",
             "bookmarks": "Meine Lesezeichen",
@@ -386,7 +386,7 @@
             "edit": "Bearbeiten",
             "goTo": "Gehe zu Seite",
             "landmarks": "Navigationspunkte",
-            "progression": "",
+            "progression": "Fortschritt",
             "saveMark": "Lesezeichen speichern",
             "search": "Suche",
             "searchResult": "Suche [{{- searchText}}]",
@@ -396,8 +396,8 @@
             "activate": "Vorlesen aktivieren",
             "captions": "Bildunterschriften / störungsfreie Ansicht",
             "captionsDescription": "Vereinfachte Textansicht mit minimalem Untertitel-Styling.",
-            "disableContinuousPlay": "",
-            "disableContinuousPlayDescription": "",
+            "disableContinuousPlay": "Deaktiviere automatisches Abspielen",
+            "disableContinuousPlayDescription": "Das nächste Element wird nicht automatisch abgespielt, sondern die Wiedergabe wird unmittelbar nach Beendigung des aktuellen Elements angehalten.",
             "next": "Nächstes Vorlesen",
             "pause": "Vorlesen pausieren",
             "play": "Vorlesen",
@@ -409,8 +409,8 @@
             "title": "Vorlesen"
         },
         "navigation": {
-            "ZenModeExit": "",
-            "ZenModeTitle": "",
+            "ZenModeExit": "Zen-Modus verlassen",
+            "ZenModeTitle": "Zen-Modus",
             "annotationTitle": "Notizen",
             "backHomeTitle": "Zurück zum Bücherregal",
             "bookmarkTitle": "Lesezeichen setzen",
@@ -449,7 +449,7 @@
                 "title": "Spaltendarstellung",
                 "two": "2 Spalten"
             },
-            "customFontSelected": "",
+            "customFontSelected": "Sie haben eine persönliche Schriftart gewählt",
             "customizeReader": "Anpassen der Textformatierung",
             "disabled": "deaktiviert",
             "display": "Lesefluss",
@@ -467,7 +467,7 @@
             "noFootnotes": "Fußnoten deaktivieren",
             "noRTLFlip": "Rechts-nach-links-Benutzeroberfläche deaktivieren",
             "noRuby": "Japanische Ruby-Notationen ausblenden",
-            "noTemporaryNavTargetOutline": "",
+            "noTemporaryNavTargetOutline": "Deaktiviere visuelle Navigationshinweise",
             "paginated": "Seitendarstellung",
             "paraSpacing": "Absatzabstand",
             "pdfZoom": {
@@ -484,14 +484,14 @@
                 "title": "Zoom"
             },
             "preset": {
-                "apply": "",
-                "applyDetails": "",
-                "detail": "",
-                "reset": "",
-                "resetDetails": "",
-                "save": "",
-                "saveDetails": "",
-                "title": ""
+                "apply": "Anwenden",
+                "applyDetails": "Wenden Sie Ihre bevorzugte Konfiguration auf die aktuelle Publikation an.",
+                "detail": "Speichern / Anwenden / Zurücksetzen der gewünschten Konfiguration.",
+                "reset": "Zurücksetzen",
+                "resetDetails": "Setzen Sie Ihre bevorzugte Konfiguration auf Standardeinstellungen zurück.",
+                "save": "Speichern",
+                "saveDetails": "Diese Aktion speichert die aktuelle Konfiguration, d. h. die von Ihnen bevorzugten Anzeige- und Textformatierungsoptionen. Die Einstellungen können dann auf andere Publikationen übertragen werden, indem Sie in anderen Lesefenstern auf die Schaltfläche „Anwenden“ klicken.",
+                "title": "Einstellungen"
             },
             "preview": "Vorschau",
             "reduceMotion": "Bewegung reduzieren",
@@ -522,9 +522,9 @@
         },
         "tts": {
             "activate": "Text-to-Speech (TTS) aktivieren",
-            "language": "",
+            "language": "TTS-Sprache",
             "next": "Nächstes TTS",
-            "options": "",
+            "options": "TTS-Einstellungen",
             "pause": "TTS pausieren",
             "play": "TTS abspielen",
             "previous": "Vorheriges TTS",
@@ -537,16 +537,16 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "",
-            "help": "",
-            "name": "",
-            "organization": "",
-            "person": "",
-            "type": ""
+            "creator": "Anmerkungs-Ersteller (optional)",
+            "help": "Falls angegeben, wird dieser Name in die Metadaten der exportierten Notizen aufgenommen.",
+            "name": "Name",
+            "organization": "Organisation",
+            "person": "Person",
+            "type": "Typ:"
         },
         "auth": {
-            "help": "",
-            "title": "",
+            "help": "Diese Aktion löscht alle OPDS-Anmeldedaten.",
+            "title": "Zugang zu Publikationskatalogen",
             "wipeData": "Login-Daten löschen"
         },
         "keyboard": {
@@ -563,8 +563,8 @@
             "languageChoice": "Sprachauswahl"
         },
         "library": {
-            "enableAPIAPP": "",
-            "title": ""
+            "enableAPIAPP": "Aktivieren Sie das 'PNB'-Bibliothekssystem",
+            "title": "Zugang zu französischen Bibliothekskonten"
         },
         "session": {
             "title": "Sitzung speichern"
@@ -584,25 +584,25 @@
     },
     "tts": {
         "highlight": {
-            "mainColor": "",
-            "maskBlockWordOutline": "",
-            "maskBlockWordSolidBackground": "",
-            "maskBlockWordUnderline": "",
-            "maskWordOutline": "",
-            "maskWordSolidBackground": "",
-            "maskWordUnderline": "",
-            "outlineWordOutline": "",
-            "outlineWordSolidBackground": "",
-            "outlineWordUnderline": "",
-            "preview": "",
-            "solidBackgroundWordOutline": "",
-            "solidBackgroundWordSolidBackground": "",
-            "solidBackgroundWordUnderline": "",
-            "style": "",
-            "underlineWordOutline": "",
-            "underlineWordSolidBackground": "",
-            "underlineWordUnderline": "",
-            "wordColor": ""
+            "mainColor": "Haupt-Farbe",
+            "maskBlockWordOutline": "Absatz markieren, Wort umranden",
+            "maskBlockWordSolidBackground": "Absatz markieren, Wort farblich hervorheben",
+            "maskBlockWordUnderline": "Absatz markieren, Wort unterstreichen",
+            "maskWordOutline": "Satz hervorheben, Wort umranden",
+            "maskWordSolidBackground": "Satz hervorheben, Wort farblich hervorheben",
+            "maskWordUnderline": "Satz hervorheben, Wort unterstreichen",
+            "outlineWordOutline": "Satz umranden, Wort umranden",
+            "outlineWordSolidBackground": "Satz umranden, Wort farblich hervorheben",
+            "outlineWordUnderline": "Satz umranden, Wort unterstreichen",
+            "preview": "Vorschau der TTS-Hervorhebung",
+            "solidBackgroundWordOutline": "Satz farblich hervorheben, Wort umranden",
+            "solidBackgroundWordSolidBackground": "Satz farblich hervorheben, Wort farblich hervorheben",
+            "solidBackgroundWordUnderline": "Satz farblich hervorheben, Wort unterstreichen",
+            "style": "Stil der TTS-Hervorhebung",
+            "underlineWordOutline": "Satz unterstreichen, Wort umranden",
+            "underlineWordSolidBackground": "Satz unterstreichen, Wort farblich hervorheben",
+            "underlineWordUnderline": "Satz unterstreichen, Wort unterstreichen",
+            "wordColor": "Wortfarbe"
         }
     },
     "wizard": {
