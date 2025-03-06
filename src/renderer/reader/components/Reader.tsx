@@ -27,9 +27,6 @@ import {
 } from "readium-desktop/common/models/reader";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { dialogActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
-import {
-    IBookmarkState, IBookmarkStateWithoutUUID,
-} from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { ok } from "readium-desktop/common/utils/assert";
 import { formatTime } from "readium-desktop/common/utils/time";
@@ -69,7 +66,7 @@ import {
 } from "@r2-navigator-js/electron/renderer/audiobook";
 import {
     getCurrentReadingLocation, handleLinkLocator as r2HandleLinkLocator, handleLinkUrl as r2HandleLinkUrl, installNavigatorDOM,
-    isLocatorVisible, LocatorExtended, mediaOverlaysClickEnable,
+    LocatorExtended, mediaOverlaysClickEnable,
     mediaOverlaysNext, mediaOverlaysPause,
     mediaOverlaysPlay, mediaOverlaysPlaybackRate, mediaOverlaysPrevious, mediaOverlaysResume,
     MediaOverlaysStateEnum, mediaOverlaysStop, navLeftOrRight,
@@ -236,7 +233,6 @@ interface IState {
     zenMode: boolean;
     blackoutMask: boolean;
 
-    visibleBookmarkList: IBookmarkState[];
     currentLocation: MiniLocatorExtended;
 
     divinaReadingModeSupported: TdivinaReadingMode[];
@@ -253,8 +249,6 @@ interface IState {
 
     historyCanGoBack: boolean;
     historyCanGoForward: boolean;
-
-    // bookmarkMessage: string | undefined;
 }
 
 class Reader extends React.Component<IProps, IState> {
@@ -298,7 +292,6 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardFocusMainDeep = this.onKeyboardFocusMainDeep.bind(this);
         this.onKeyboardFocusToolbar = this.onKeyboardFocusToolbar.bind(this);
         this.onKeyboardFullScreen = this.onKeyboardFullScreen.bind(this);
-        // this.onKeyboardBookmark = this.onKeyboardBookmark.bind(this);
         this.onKeyboardInfo = this.onKeyboardInfo.bind(this);
         this.onKeyboardInfoWhereAmI = this.onKeyboardInfoWhereAmI.bind(this);
         this.onKeyboardInfoWhereAmISpeak = this.onKeyboardInfoWhereAmISpeak.bind(this);
@@ -328,8 +321,6 @@ class Reader extends React.Component<IProps, IState> {
 
             fxlZoomPercent: 0,
 
-            // bookmarkMessage: undefined,
-
             contentTableOpen: false,
             settingsOpen: false,
             shortcutEnable: true,
@@ -341,7 +332,6 @@ class Reader extends React.Component<IProps, IState> {
             zenMode: false,
             blackoutMask: false,
 
-            visibleBookmarkList: [],
             currentLocation: undefined,
 
             divinaNumberOfPages: 0,
@@ -390,7 +380,6 @@ class Reader extends React.Component<IProps, IState> {
         this.handleReaderClose = this.handleReaderClose.bind(this);
         this.handleReaderDetach = this.handleReaderDetach.bind(this);
         this.handleReadingLocationChange = this.handleReadingLocationChange.bind(this);
-        this.handleToggleBookmark = this.handleToggleBookmark.bind(this);
         this.goToLocator = this.goToLocator.bind(this);
         this.handleLinkClick = this.handleLinkClick.bind(this);
         this.handlePublicationInfo = this.handlePublicationInfo.bind(this);
@@ -602,10 +591,6 @@ class Reader extends React.Component<IProps, IState> {
             this.loadPublicationIntoViewport();
         }
 
-        // sets state visibleBookmarkList
-        await this.updateVisibleBookmarks();
-
-
         highlightsClickListen((href, highlight, event) => {
 
             if (highlight.group !== "annotation") {
@@ -667,24 +652,7 @@ class Reader extends React.Component<IProps, IState> {
         this.props.dispatchReaderTSXMountedAndPublicationIntoViewportLoaded();
     }
 
-    public async componentDidUpdate(oldProps: IProps, oldState: IState) {
-
-        if (
-            (
-                oldState.currentLocation && this.state.currentLocation &&
-                (oldState.currentLocation?.locator.href !== this.state.currentLocation.locator.href ||
-                    oldState.currentLocation?.locator.locations.cssSelector !== this.state.currentLocation.locator.locations.cssSelector)
-            ) ||
-            (
-                Array.isArray(oldProps.bookmarks) && Array.isArray(this.props.bookmarks) && (
-                    oldProps.bookmarks.length !== this.props.bookmarks.length ||
-                    !oldProps.bookmarks.reduce((acc, cv) => acc && !!this.props.bookmarks.find((v) => v.uuid === cv.uuid), true))
-            )
-        ) {
-
-            // sets state visibleBookmarkList
-            await this.updateVisibleBookmarks();
-        }
+    public async componentDidUpdate(oldProps: IProps, _oldState: IState) {
 
         if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
             console.log("READER RELOAD KEYBOARD SHORTCUTS");
@@ -827,17 +795,6 @@ class Reader extends React.Component<IProps, IState> {
             searchEnable: this.props.searchEnable,
         };
 
-        // {this.state.bookmarkMessage ? <div
-        //     aria-live="assertive"
-        //     aria-relevant="all"
-        //     role="alert"
-
-        //     style={{position: "absolute", left: "-1000px"}}
-        // >
-        //     {this.state.bookmarkMessage}
-        // </div> : <></>}
-
-
         const isAudioBook = isAudiobookFn(this.props.r2Publication);
         const arrowDisabledNotEpub = isAudioBook || this.props.isPdf || this.props.isDivina;
         // const isFXL = this.isFixedLayout();
@@ -921,9 +878,6 @@ class Reader extends React.Component<IProps, IState> {
                         // handleFullscreenClick={this.handleFullscreenClick}
                         handleReaderDetach={this.handleReaderDetach}
                         handleReaderClose={this.handleReaderClose}
-                        toggleBookmark={() => this.handleToggleBookmark(false)}
-                        // isOnBookmark={this.state.visibleBookmarkList.length > 0}
-                        numberOfVisibleBookmarks={this.state.visibleBookmarkList.length}
                         isOnSearch={this.props.searchEnable}
                         ReaderSettingsProps={ReaderSettingsProps}
                         readerMenuProps={readerMenuProps}
@@ -1211,11 +1165,6 @@ class Reader extends React.Component<IProps, IState> {
             this.props.keyboardShortcuts.ToggleReaderFullscreen,
             this.onKeyboardFullScreen);
 
-        // registerKeyboardListener(
-        //     true, // listen for key up (not key down)
-        //     this.props.keyboardShortcuts.ToggleBookmark,
-        //     this.onKeyboardBookmark);
-
         registerKeyboardListener(
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.OpenReaderInfo,
@@ -1311,7 +1260,6 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardFocusMainDeep);
         unregisterKeyboardListener(this.onKeyboardFocusToolbar);
         unregisterKeyboardListener(this.onKeyboardFullScreen);
-        // unregisterKeyboardListener(this.onKeyboardBookmark);
         unregisterKeyboardListener(this.onKeyboardInfo);
         unregisterKeyboardListener(this.onKeyboardInfoWhereAmI);
         unregisterKeyboardListener(this.onKeyboardInfoWhereAmISpeak);
@@ -1843,16 +1791,6 @@ class Reader extends React.Component<IProps, IState> {
         }
         this.handleSettingsClick(true, true);
     };
-
-    // private onKeyboardBookmark = async () => {
-    //     if (!this.state.shortcutEnable) {
-    //         if (DEBUG_KEYBOARD) {
-    //             console.log("!shortcutEnable (onKeyboardBookmark)");
-    //         }
-    //         return;
-    //     }
-    //     await this.handleToggleBookmark(true);
-    // };
 
     private onKeyboardFocusMain = () => {
         if (!this.state.shortcutEnable) {
@@ -2619,53 +2557,6 @@ class Reader extends React.Component<IProps, IState> {
             // does not trigger onPopState!
             window.history.replaceState({ data: locatorExtended.locator, index: windowHistory._length - 1 }, "");
         }
-
-        // No need to explicitly refresh the bookmarks status here,
-        // as componentDidUpdate() will call the function after setState()!
-        // sets state visibleBookmarkList:
-        // await this.checkBookmupdateVisibleBookmarksarks();
-    }
-
-    // check if a bookmark is on the screen
-    private async updateVisibleBookmarks(): Promise<IBookmarkState[] | undefined> {
-        if (!this.props.bookmarks) {
-            this.setState({ visibleBookmarkList: [] });
-            return undefined;
-        }
-
-
-        console.time("UPDATE_BOOKMARK_OLD_METHOD");
-
-        const locator = this.state.currentLocation ? this.state.currentLocation.locator : undefined;
-
-        const visibleBookmarkList = [];
-        for (const bookmark of this.props.bookmarks) {
-            // calling into the webview via IPC is expensive,
-            // let's filter out ahead of time based on document href
-            if (!locator || locator.href === bookmark.locator.href) {
-                if (this.props.isDivina || this.props.isPdf) {
-                    const isVisible = bookmark.locator.href === this.props.locator.locator.href;
-                    if (isVisible) {
-                        visibleBookmarkList.push(bookmark);
-                    }
-                } else if (this.props.r2Publication) { // isLocatorVisible() API only once navigator ready
-                    let isVisible = false;
-                    try {
-                        isVisible = await isLocatorVisible(bookmark.locator);
-                    } catch (_e) {
-                        // rejection because webview not fully loaded yet
-                    }
-                    if (isVisible) {
-                        visibleBookmarkList.push(bookmark);
-                    }
-                }
-            }
-        }
-        this.setState({ visibleBookmarkList });
-
-        console.timeEnd("UPDATE_BOOKMARK_OLD_METHOD");
-
-        return visibleBookmarkList;
     }
 
     private focusMainArea(deep: boolean, immediate: boolean) {
@@ -2813,124 +2704,6 @@ class Reader extends React.Component<IProps, IState> {
         } else {
             const newUrl = isFromOnPopState ? url : this.props.manifestUrlR2Protocol + "/../" + url;
             this.handleLinkUrl(newUrl, isFromOnPopState);
-        }
-    }
-
-    private async handleToggleBookmark(fromKeyboard?: boolean) {
-
-        // this.setState({bookmarkMessage: undefined});
-
-        // sets state visibleBookmarkList
-        const visibleBookmarkList = await this.updateVisibleBookmarks();
-
-        if (this.props.isDivina || this.props.isPdf) {
-
-            const locator = this.props.locator?.locator;
-            // TODO?? const locator = this.state.currentLocation?.locator;
-
-            const href = locator?.href;
-            const name = this.props.isDivina ? locator.href : (parseInt(href, 10) + 1).toString();
-            if (href) {
-
-                const found = visibleBookmarkList.find(({ locator: { href: _href } }) => href === _href);
-                if (found) {
-                    this.props.deleteBookmark(found);
-                } else {
-                    this.props.addBookmark({
-                        locator,
-                        name,
-                    });
-                }
-            }
-
-        } else {
-
-            const locator = this.state.currentLocation?.locator;
-            if (!locator) {
-                return;
-            }
-
-            const deleteAllVisibleBookmarks =
-
-                // "toggle" only if there is a single bookmark in the content visible inside the viewport
-                // otherwise preserve existing, and add new one (see addCurrentLocationToBookmarks below)
-                visibleBookmarkList.length === 1 &&
-
-                // CTRL-B (keyboard interaction) and audiobooks:
-                // do not toggle: never delete, just add current reading location to bookmarks
-                !fromKeyboard &&
-                !this.state.currentLocation.audioPlaybackInfo &&
-                (!locator.text?.highlight ||
-
-                    // "toggle" only if visible bookmark == current reading location
-                    visibleBookmarkList[0].locator.href === locator.href &&
-                    visibleBookmarkList[0].locator.locations.cssSelector === locator.locations.cssSelector &&
-                    visibleBookmarkList[0].locator.text?.highlight === locator.text.highlight
-                )
-                ;
-
-            if (deleteAllVisibleBookmarks) {
-                const l = visibleBookmarkList.length;
-
-                // reader.navigation.bookmarkTitle
-                const msg = `${this.props.__("catalog.delete")} - ${this.props.__("reader.marks.bookmarks")} [${this.props.bookmarks?.length ? this.props.bookmarks.length + 1 - l : 0}]`;
-                // this.setState({bookmarkMessage: msg});
-                this.props.toasty(msg);
-
-                for (const bookmark of visibleBookmarkList) {
-                    this.props.deleteBookmark(bookmark);
-                }
-
-                // we do not add the current reading location to bookmarks
-                // (just toggle the existing visible ones)
-                return;
-            }
-
-            const addCurrentLocationToBookmarks =
-                !this.props.bookmarks?.find((b) => {
-                    const identical =
-                        b.locator.href === locator.href &&
-                        (b.locator.locations.progression === locator.locations.progression ||
-                            b.locator.locations.cssSelector && locator.locations.cssSelector &&
-                            b.locator.locations.cssSelector === locator.locations.cssSelector) &&
-                        b.locator.text?.highlight === locator.text?.highlight;
-
-                    return identical;
-                }) &&
-                (this.state.currentLocation.audioPlaybackInfo ||
-                    !visibleBookmarkList?.length ||
-                    fromKeyboard || // SCREEN READER CTRL+B on discrete text position (container element)
-                    locator.text?.highlight
-                );
-
-            if (addCurrentLocationToBookmarks) {
-
-                let name: string | undefined;
-                if (locator?.text?.highlight) {
-                    name = locator.text.highlight;
-                } else if (this.state.currentLocation.selectionInfo?.cleanText) {
-                    name = this.state.currentLocation.selectionInfo.cleanText;
-                } else if (this.state.currentLocation.audioPlaybackInfo) {
-                    const percent = Math.floor(100 * this.state.currentLocation.audioPlaybackInfo.globalProgression);
-                    // this.state.currentLocation.audioPlaybackInfo.globalTime /
-                    // this.state.currentLocation.audioPlaybackInfo.globalDuration
-                    const timestamp = formatTime(this.state.currentLocation.audioPlaybackInfo.globalTime);
-                    name = `${timestamp} (${percent}%)`;
-                }
-
-                // reader.navigation.bookmarkTitle
-                const msg = `${this.props.__("catalog.addTagsButton")} - ${this.props.__("reader.marks.bookmarks")} [${this.props.bookmarks?.length ? this.props.bookmarks.length + 1 : 1}] ${name ? ` (${name})` : ""}`;
-                // this.setState({bookmarkMessage: msg});
-                this.props.toasty(msg);
-
-                if (locator.locations && !locator.locations.rangeInfo && this.state.currentLocation.selectionInfo?.rangeInfo) {
-                    locator.locations.rangeInfo = this.state.currentLocation.selectionInfo?.rangeInfo;
-                }
-                this.props.addBookmark({
-                    locator,
-                    name,
-                });
-            }
         }
     }
 
@@ -3263,7 +3036,6 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         searchEnable: state.search.enable,
         manifestUrlR2Protocol: state.reader.info.manifestUrlR2Protocol,
         winId: state.win.identifier,
-        bookmarks: state.reader.bookmark.map(([, v]) => v),
         readerMode: state.mode,
         divinaReadingMode: state.reader.divina.readingMode,
         locale: state.i18n.locale,
@@ -3357,12 +3129,6 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                 // called once in the readerConfigChanged saga function triggerd by the readerLocalActionSetConfig action just above.
                 // dispatch(readerActions.configSetDefault.build(config));
             // }
-        },
-        addBookmark: (bookmark: IBookmarkStateWithoutUUID) => {
-            dispatch(readerActions.bookmark.push.build(bookmark));
-        },
-        deleteBookmark: (bookmark: IBookmarkState) => {
-            dispatch(readerActions.bookmark.pop.build(bookmark));
         },
         setDisableRTLFlip: (disable: boolean) => {
             dispatch(readerActions.disableRTLFlip.build(disable));
