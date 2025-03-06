@@ -749,13 +749,33 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
         ttsHS: HighlightDrawTypeBackground,
         ttsHSW: HighlightDrawTypeOutline,
     }, {
-        description: __("tts.highlight.solidOutlineWordUnderline"),
+        description: __("tts.highlight.solidBackgroundWordSolidBackground"),
+        ttsHS: HighlightDrawTypeBackground,
+        ttsHSW: HighlightDrawTypeBackground,
+    }, {
+        description: __("tts.highlight.outlineWordUnderline"),
         ttsHS: HighlightDrawTypeOutline,
         ttsHSW: HighlightDrawTypeUnderline,
     }, {
-        description: __("tts.highlight.solidOutlineWordBackground"),
+        description: __("tts.highlight.outlineWordOutline"),
+        ttsHS: HighlightDrawTypeOutline,
+        ttsHSW: HighlightDrawTypeOutline,
+    }, {
+        description: __("tts.highlight.outlineWordSolidBackground"),
         ttsHS: HighlightDrawTypeOutline,
         ttsHSW: HighlightDrawTypeBackground,
+    }, {
+       description: __("tts.highlight.underlineWordUnderline"),
+       ttsHS: HighlightDrawTypeUnderline,
+       ttsHSW: HighlightDrawTypeUnderline,
+    }, {
+       description: __("tts.highlight.underlineWordOutline"),
+       ttsHS: HighlightDrawTypeUnderline,
+       ttsHSW: HighlightDrawTypeOutline,
+    }, {
+       description: __("tts.highlight.underlineWordSolidBackground"),
+       ttsHS: HighlightDrawTypeUnderline,
+       ttsHSW: HighlightDrawTypeBackground,
     }, {
         description: __("tts.highlight.maskWordUnderline"),
         ttsHS: HighlightDrawTypeOpacityMask,
@@ -788,39 +808,67 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
     });
     const ttsHighlightStylesKey = ttsHighlightStyles.findIndex((obj) => ttsHighlightStyle === obj.ttsHS && ttsHighlightStyle_WORD === obj.ttsHSW);
 
+    const ttsHighlightStyle_ = (typeof ttsHighlightStyle !== "undefined" && ttsHighlightStyle !== null) ? ttsHighlightStyle : readerConfigInitialState.ttsHighlightStyle;
+    const ttsHighlightColor_ = ttsHighlightColor || readerConfigInitialState.ttsHighlightColor;
+    const ttsHighlightStyle_WORD_ = (typeof ttsHighlightStyle_WORD !== "undefined" && ttsHighlightStyle_WORD !== null) ? ttsHighlightStyle_WORD : readerConfigInitialState.ttsHighlightStyle_WORD;
+    const ttsHighlightColor_WORD_ = ttsHighlightColor_WORD || readerConfigInitialState.ttsHighlightColor_WORD;
+
     const styleSentence = {
         background:
-            (ttsHighlightStyle || readerConfigInitialState.ttsHighlightStyle) === HighlightDrawTypeBackground ?
-            rgbToHex(ttsHighlightColor || readerConfigInitialState.ttsHighlightColor) :
+            ttsHighlightStyle_ === HighlightDrawTypeBackground ?
+            rgbToHex(ttsHighlightColor_) :
             undefined,
         textDecorationLine:
-            (ttsHighlightStyle || readerConfigInitialState.ttsHighlightStyle) === HighlightDrawTypeUnderline ?
+            ttsHighlightStyle_ === HighlightDrawTypeUnderline ?
             "underline" :
             undefined,
         textDecorationColor:
-            (ttsHighlightStyle || readerConfigInitialState.ttsHighlightStyle) === HighlightDrawTypeUnderline ?
-            rgbToHex(ttsHighlightColor || readerConfigInitialState.ttsHighlightColor) :
+            ttsHighlightStyle_ === HighlightDrawTypeUnderline ?
+            rgbToHex(ttsHighlightColor_) :
             undefined,
         textDecorationThickness: "3px",
+        outlineWidth: "3px",
+        textUnderlineOffset: "3px",
+        outlineStyle:
+            ttsHighlightStyle_ === HighlightDrawTypeOutline ?
+            "solid" :
+            undefined,
+        outlineOffset:
+            ttsHighlightStyle_ === HighlightDrawTypeOutline ?
+            "2px" :
+            undefined,
+        outlineColor:
+            ttsHighlightStyle_ === HighlightDrawTypeOutline ?
+            rgbToHex(ttsHighlightColor_) :
+            undefined,
         color: "black",
-    };
+    } satisfies React.CSSProperties;
     const styleWord = {
-
         background:
-            (ttsHighlightStyle_WORD || readerConfigInitialState.ttsHighlightStyle_WORD) === HighlightDrawTypeBackground ?
-            rgbToHex(ttsHighlightColor_WORD || readerConfigInitialState.ttsHighlightColor_WORD) :
+            ttsHighlightStyle_WORD_ === HighlightDrawTypeBackground ?
+            rgbToHex(ttsHighlightColor_WORD_) :
             undefined,
         textDecorationLine:
-            (ttsHighlightStyle_WORD || readerConfigInitialState.ttsHighlightStyle_WORD) === HighlightDrawTypeUnderline ?
+            ttsHighlightStyle_WORD_ === HighlightDrawTypeUnderline ?
             "underline" :
             undefined,
         textDecorationColor:
-            (ttsHighlightStyle_WORD || readerConfigInitialState.ttsHighlightStyle_WORD) === HighlightDrawTypeUnderline ?
-            rgbToHex(ttsHighlightColor_WORD || readerConfigInitialState.ttsHighlightColor_WORD) :
+            ttsHighlightStyle_WORD_ === HighlightDrawTypeUnderline ?
+            rgbToHex(ttsHighlightColor_WORD_) :
             undefined,
         textDecorationThickness: "3px",
+        outlineWidth: "3px",
+        textUnderlineOffset: "3px",
+        outlineStyle:
+            ttsHighlightStyle_WORD_ === HighlightDrawTypeOutline ?
+            "solid" :
+            undefined,
+        outlineColor:
+            ttsHighlightStyle_WORD_ === HighlightDrawTypeOutline ?
+            rgbToHex(ttsHighlightColor_WORD_) :
+            undefined,
         color: "black",
-    };
+    } satisfies React.CSSProperties;
 
     return (
         <>
@@ -901,7 +949,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
             <div style={{width:"fit-content"}} className={stylesAnnotations.colorPicker} role="radiogroup">
             {
             Object.entries(annotationsColorsLight_).map(([colorHex, translatorKey]) => {
-                const ttsHighlightColorHex = ttsHighlightColor ? rgbToHex(ttsHighlightColor) : rgbToHex(readerConfigInitialState.ttsHighlightColor);
+                const ttsHighlightColorHex = rgbToHex(ttsHighlightColor || readerConfigInitialState.ttsHighlightColor);
                 return (
                     <div key={`color_${colorHex}_key`}>
                         <input type="radio" id={`ttscolorpick${colorHex}`} name="ttscolorpick" value={colorHex}
@@ -913,7 +961,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                             checked={ttsHighlightColorHex === colorHex}
                             aria-label={__(translatorKey)}
                         />
-                        <label title={__(translatorKey)} htmlFor={`ttscolorpick${colorHex}`}
+                        <label aria-hidden={true} title={__(translatorKey)} htmlFor={`ttscolorpick${colorHex}`}
                             style={{ backgroundColor: colorHex, border: ttsHighlightColorHex === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
                         >
                             {ttsHighlightColorHex === colorHex ? <SVG ariaHidden svg={DoubleCheckIcon} /> : <></>}
@@ -927,7 +975,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
             <div style={{width:"fit-content"}} className={stylesAnnotations.colorPicker} role="radiogroup">
             {
             Object.entries(annotationsColorsLight_).map(([colorHex, translatorKey]) => {
-                const ttsHighlightColor_WORDHex = ttsHighlightColor_WORD ? rgbToHex(ttsHighlightColor_WORD) : rgbToHex(readerConfigInitialState.ttsHighlightColor_WORD);
+                const ttsHighlightColor_WORDHex = rgbToHex(ttsHighlightColor_WORD || readerConfigInitialState.ttsHighlightColor_WORD);
                 return (
                     <div key={`colorx_${colorHex}_key`}>
                         <input type="radio" id={`ttscolorpickword${colorHex}`} name="ttscolorpickword" value={colorHex}
@@ -939,7 +987,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                             checked={ttsHighlightColor_WORDHex === colorHex}
                             aria-label={__(translatorKey)}
                         />
-                        <label title={__(translatorKey)} htmlFor={`ttscolorpickword${colorHex}`}
+                        <label aria-hidden={true} title={__(translatorKey)} htmlFor={`ttscolorpickword${colorHex}`}
                             style={{ backgroundColor: colorHex, border: ttsHighlightColor_WORDHex === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
                         >
                             {ttsHighlightColor_WORDHex === colorHex ? <SVG ariaHidden svg={DoubleCheckIcon} /> : <></>}
@@ -953,10 +1001,10 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
         </div>
 <div style={{flexBasis: "100%", height: 0}}></div>
 <details
-open={true}
+aria-hidden={true}
+open={false}
 style={
 {
-    display: "none",
     width: 0,
     flexBasis: "100%",
     marginTop: 10,
@@ -969,6 +1017,10 @@ style={
 cursor: "pointer",
 }
 }>{__("tts.highlight.preview")}</summary>
+{
+ttsHighlightStyle_ === HighlightDrawTypeOpacityMaskRuler
+?
+(
 <div style={
 {
 background: "white",
@@ -985,29 +1037,63 @@ lineHeight: "2em",
 {
 fontSize: "1.5em",
 }}>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec purus sodales, rhoncus nisl ac, fringilla metus. <span style={styleSentence}>Sed eu dignissim dui. <span style={styleWord}>Curabitur</span> venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</span> Aenean laoreet justo vitae mauris fermentum, eget ultrices augue placerat. Proin massa est, gravida feugiat ipsum feugiat, dapibus porttitor felis.
-</p>
+<span style={
 {
-/*
+color: "silver",
+}
+}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec purus sodales, rhoncus nisl ac,</span><br/>
+<div style={
+{
+border: "2px solid black",
+borderRadius: "8px",
+padding: "4px",
+}
+}><span>fringilla metus.</span> <span style={styleSentence}>Sed eu dignissim dui. <span style={styleWord}>Curabitur</span> venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</span> <span>Aenean laoreet justo vitae</span><br/></div>
+<span style={
+{
+color: "silver",
+}
+}>mauris fermentum, eget ultrices augue placerat. Proin massa est, gravida feugiat ipsum feugiat, dapibus porttitor felis.</span>
+</p>
+</div>
+)
+:
+(
+<div style={
+{
+background: "white",
+color: "black",
+fontFamily: "serif",
+marginTop: 6,
+padding: 6,
+paddingLeft: 50,
+paddingRight: 50,
+lineHeight: "2em",
+}
+}>
 <p style={
 {
-fontSize: "1.5em"
+fontSize: "1.5em",
 }}>
-Cras consectetur nisl ac libero consequat, ac finibus elit aliquet. Etiam ac dolor blandit orci venenatis pulvinar eget nec sapien. Aenean et molestie mi.
-Phasellus convallis erat in dapibus euismod. Duis vulputate, tellus eu sodales mollis, justo lacus dictum sem, vitae pharetra metus lectus eget ante. Proin laoreet eros neque, ut aliquet mauris accumsan ac.
-
-Morbi ac aliquam mi, ac hendrerit urna. Aliquam in ante arcu. Nulla pellentesque a dolor id tincidunt. Vivamus at interdum neque, ultricies fringilla lectus.
-
-Nulla in feugiat lorem, et rhoncus quam. Cras in posuere leo, quis volutpat mauris. Fusce interdum mattis erat eu bibendum. Sed condimentum dapibus lectus, in ultrices nulla molestie eget.
-Aenean eu egestas ligula, molestie hendrerit erat. Suspendisse pharetra quam felis. Aenean sit amet dignissim ligula. Praesent quis sapien vehicula, feugiat tortor eget, maximus ante. Nam sodales elementum posuere. Integer commodo elit nulla, a maximus felis dignissim vel. Sed vulputate risus in libero cursus, sed cursus enim tempus. Aenean at elit enim. Cras fringilla eros dui, volutpat varius urna suscipit in.
-Suspendisse aliquet eros facilisis arcu rutrum congue. Donec vitae laoreet est, eget ornare ante. Etiam molestie sit amet odio ac facilisis. Sed pellentesque nisl luctus bibendum dictum. Aliquam commodo dapibus convallis. In feugiat iaculis nisl rhoncus venenatis. Etiam in aliquet nibh.
-Cras non felis ac enim hendrerit cursus in ac justo. Vivamus tincidunt rhoncus purus. Pellentesque nec dignissim quam. Duis eu sodales dolor. Phasellus porttitor est in lectus mollis bibendum.
-Integer a elit erat. Maecenas nibh nisl, posuere nec urna sed, aliquam dictum enim. Integer purus nunc, consectetur sed mi id, feugiat ultricies nulla. Integer non finibus nisl, lacinia malesuada leo. Maecenas justo libero, maximus vitae lacus quis, gravida tempor arcu. Aenean at tincidunt ex.
-In posuere fringilla risus, vitae blandit nibh convallis nec. Nunc sed risus varius, posuere ipsum eu, sollicitudin nisi. Etiam vel maximus nisl. Curabitur lacinia risus vitae dui suscipit, ullamcorper facilisis ipsum pulvinar. Nulla sollicitudin aliquam congue. Duis ac ante id ex ultricies consequat eget at risus. Nam interdum, neque eu maximus scelerisque, nibh risus scelerisque diam, quis elementum neque nulla ac velit. Sed luctus tellus eget rutrum tincidunt. Fusce ultricies vehicula auctor. Praesent ultricies, nulla vel eleifend molestie, felis nisl efficitur risus, in convallis mauris tortor id arcu.
-</p>
-*/
+<span style={
+{
+color:
+ttsHighlightStyle_ === HighlightDrawTypeOpacityMask ?
+"silver" :
+undefined,
 }
+}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec purus sodales, rhoncus nisl ac, fringilla metus.</span> <span style={styleSentence}>Sed eu dignissim dui. <span style={styleWord}>Curabitur</span> venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</span> <span style={
+{
+color:
+ttsHighlightStyle_ === HighlightDrawTypeOpacityMask ?
+"silver" :
+undefined,
+}
+}>Aenean laoreet justo vitae mauris fermentum, eget ultrices augue placerat. Proin massa est, gravida feugiat ipsum feugiat, dapibus porttitor felis.</span>
+</p>
 </div>
+)
+}
 </details>
         </>
         )
