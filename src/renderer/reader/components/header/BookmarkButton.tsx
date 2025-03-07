@@ -274,7 +274,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                         const visibleBookmarksFiltered = visibleBookmarks.map((isVisible, index) => isVisible ? allBookmarksForCurrentLocationHref[index] : undefined).filter((bookmark) => !!bookmark);
                         setVisibleBookmarks(visibleBookmarksFiltered);
                     },
-                ).catch((e) => {
+                ).catch(async (e) => {
                     console.log("Promise.all(visibleBookmarksPromise) REJECT!!?");
                     console.log(e); // isLocatorVisible - no webview href match.
                     // setVisibleBookmarks([]);
@@ -282,7 +282,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                     const arr: IBookmarkState[] = [];
                     for (const bookmark of allBookmarks) {
                         try {
-                            if (isLocatorVisible(bookmark.locator)) {
+                            if (await isLocatorVisible(bookmark.locator)) {
                                 arr.push(bookmark);
                             }
                         } catch (_e) {
