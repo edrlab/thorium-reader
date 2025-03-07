@@ -7,11 +7,11 @@
 
 import * as React from "react";
 import { ReactReduxContext, ReactReduxContextValue } from "react-redux";
-import { useSyncExternalStore } from "./useSyncExternalStore";
+import { useSyncExternalStoreWithSelector } from "use-sync-external-store/with-selector";
 
-export function useSelector<State, Selected>(selector: (state: State) => Selected): Selected {
+export function useSelector<State, Selected>(selector: (state: State) => Selected, equalFn?: (prev: Selected, current: Selected) => boolean): Selected {
 
     const {store} = React.useContext<ReactReduxContextValue<State>>(ReactReduxContext);
-    const selected = useSyncExternalStore(store.subscribe, () => selector(store.getState()));
+    const selected = useSyncExternalStoreWithSelector(store.subscribe, () => store.getState(), () => store.getState(), selector, equalFn);
     return selected;
 }

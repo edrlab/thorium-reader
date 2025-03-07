@@ -464,7 +464,7 @@
             "letterSpacing": "文字の間隔",
             "lineSpacing": "行の間隔",
             "margin": "ページの余白",
-            "noFootnotes": "脚注を表示しない",
+            "noFootnotes": "ポップアップ脚注を表示しない",
             "noRTLFlip": "右から左へ進むUIを無効にする",
             "noRuby": "ルビを表示しない",
             "noTemporaryNavTargetOutline": "視覚ナビゲーションインジケーターを無効にする",
@@ -591,6 +591,29 @@
             "description": "アプリケーションのテーマは、OS（オペレーティングシステム）と一致するようにします。",
             "light": "ライト（明色）",
             "title": "アプリケーション テーマ"
+        }
+    },
+    "tts": {
+        "highlight": {
+            "mainColor": "色",
+            "maskBlockWordOutline": "マスクブロック、単語枠",
+            "maskBlockWordSolidBackground": "マスクブロック、単語ハイライト",
+            "maskBlockWordUnderline": "マスクブロック、単語下線",
+            "maskWordOutline": "マスク、単語枠",
+            "maskWordSolidBackground": "マスク、単語ハイライト",
+            "maskWordUnderline": "マスク、単語下線",
+            "outlineWordOutline": "囲み枠、単語枠",
+            "outlineWordSolidBackground": "囲み枠、単語ハイライト",
+            "outlineWordUnderline": "囲み枠、単語下線",
+            "preview": "TTS ハイライト・スタイル・プレビュー",
+            "solidBackgroundWordOutline": "ハイライト、単語枠",
+            "solidBackgroundWordSolidBackground": "文ハイライト、単語ハイライト",
+            "solidBackgroundWordUnderline": "ハイライト、単語下線",
+            "style": "TTS ハイライト スタイル",
+            "underlineWordOutline": "下線、単語枠",
+            "underlineWordSolidBackground": "下線、単語ハイライト",
+            "underlineWordUnderline": "下線、単語下線",
+            "wordColor": "単語色"
         }
     },
     "wizard": {

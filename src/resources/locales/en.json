@@ -593,6 +593,29 @@
             "title": "Application Theme"
         }
     },
+    "tts": {
+        "highlight": {
+            "mainColor": "Main colour",
+            "maskBlockWordOutline": "Mask Block, Word Outline",
+            "maskBlockWordSolidBackground": "Mask Block, Word Solid Background",
+            "maskBlockWordUnderline": "Mask Block, Word Underline",
+            "maskWordOutline": "Mask, Word Outline",
+            "maskWordSolidBackground": "Mask, Word Solid Background",
+            "maskWordUnderline": "Mask, Word Underline",
+            "outlineWordOutline": "Outline, Word Outline",
+            "outlineWordSolidBackground": "Outline, Word Solid Background",
+            "outlineWordUnderline": "Outline, Word Underline",
+            "preview": "TTS highlight style preview",
+            "solidBackgroundWordOutline": "Solid Background, Word Outline",
+            "solidBackgroundWordSolidBackground": "Solid Background, Word Solid Background",
+            "solidBackgroundWordUnderline": "Solid Background, Word Underline",
+            "style": "TTS highlight style",
+            "underlineWordOutline": "Underline, Word Outline",
+            "underlineWordSolidBackground": "Underline, Word Solid Background",
+            "underlineWordUnderline": "Underline, Word Underline",
+            "wordColor": "Word colour"
+        }
+    },
     "wizard": {
         "buttons": {
             "discover": "Discover what's new",

@@ -1556,6 +1556,69 @@ declare namespace typed_i18n {
   (_: "settings.theme.description", __?: {}): string;
   (_: "settings.theme.light", __?: {}): string;
   (_: "settings.theme.title", __?: {}): string;
+  (_: "tts", __?: {}): {
+  readonly "highlight": {
+    readonly "mainColor": string,
+    readonly "maskBlockWordOutline": string,
+    readonly "maskBlockWordSolidBackground": string,
+    readonly "maskBlockWordUnderline": string,
+    readonly "maskWordOutline": string,
+    readonly "maskWordSolidBackground": string,
+    readonly "maskWordUnderline": string,
+    readonly "outlineWordOutline": string,
+    readonly "outlineWordSolidBackground": string,
+    readonly "outlineWordUnderline": string,
+    readonly "preview": string,
+    readonly "solidBackgroundWordOutline": string,
+    readonly "solidBackgroundWordSolidBackground": string,
+    readonly "solidBackgroundWordUnderline": string,
+    readonly "style": string,
+    readonly "underlineWordOutline": string,
+    readonly "underlineWordSolidBackground": string,
+    readonly "underlineWordUnderline": string,
+    readonly "wordColor": string
+  }
+};
+  (_: "tts.highlight", __?: {}): {
+  readonly "mainColor": string,
+  readonly "maskBlockWordOutline": string,
+  readonly "maskBlockWordSolidBackground": string,
+  readonly "maskBlockWordUnderline": string,
+  readonly "maskWordOutline": string,
+  readonly "maskWordSolidBackground": string,
+  readonly "maskWordUnderline": string,
+  readonly "outlineWordOutline": string,
+  readonly "outlineWordSolidBackground": string,
+  readonly "outlineWordUnderline": string,
+  readonly "preview": string,
+  readonly "solidBackgroundWordOutline": string,
+  readonly "solidBackgroundWordSolidBackground": string,
+  readonly "solidBackgroundWordUnderline": string,
+  readonly "style": string,
+  readonly "underlineWordOutline": string,
+  readonly "underlineWordSolidBackground": string,
+  readonly "underlineWordUnderline": string,
+  readonly "wordColor": string
+};
+  (_: "tts.highlight.mainColor", __?: {}): string;
+  (_: "tts.highlight.maskBlockWordOutline", __?: {}): string;
+  (_: "tts.highlight.maskBlockWordSolidBackground", __?: {}): string;
+  (_: "tts.highlight.maskBlockWordUnderline", __?: {}): string;
+  (_: "tts.highlight.maskWordOutline", __?: {}): string;
+  (_: "tts.highlight.maskWordSolidBackground", __?: {}): string;
+  (_: "tts.highlight.maskWordUnderline", __?: {}): string;
+  (_: "tts.highlight.outlineWordOutline", __?: {}): string;
+  (_: "tts.highlight.outlineWordSolidBackground", __?: {}): string;
+  (_: "tts.highlight.outlineWordUnderline", __?: {}): string;
+  (_: "tts.highlight.preview", __?: {}): string;
+  (_: "tts.highlight.solidBackgroundWordOutline", __?: {}): string;
+  (_: "tts.highlight.solidBackgroundWordSolidBackground", __?: {}): string;
+  (_: "tts.highlight.solidBackgroundWordUnderline", __?: {}): string;
+  (_: "tts.highlight.style", __?: {}): string;
+  (_: "tts.highlight.underlineWordOutline", __?: {}): string;
+  (_: "tts.highlight.underlineWordSolidBackground", __?: {}): string;
+  (_: "tts.highlight.underlineWordUnderline", __?: {}): string;
+  (_: "tts.highlight.wordColor", __?: {}): string;
   (_: "wizard", __?: {}): {
   readonly "buttons": {
     readonly "discover": string,

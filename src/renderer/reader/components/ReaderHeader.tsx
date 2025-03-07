@@ -31,10 +31,7 @@ import * as AudioIcon from "readium-desktop/renderer/assets/icons/speaker-icon.s
 import * as HeadphoneIcon from "readium-desktop/renderer/assets/icons/headphone-icon.svg";
 import * as SettingsIcon from "readium-desktop/renderer/assets/icons/textarea-icon.svg";
 import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
-import * as MarkIcon from "readium-desktop/renderer/assets/icons/bookmarkSingle-icon.svg";
 import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/annotations-icon.svg";
-import * as RemoveBookMarkIcon from "readium-desktop/renderer/assets/icons/BookmarkRemove-icon.svg";
-import * as PlusIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 // import * as BookmarkFullIcon from "readium-desktop/renderer/assets/icons/.unused-icons/outline-bookmark-24px.svg";
 // import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
 import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
@@ -79,6 +76,7 @@ import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { VoiceSelection } from "./header/voiceSelection";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import { convertToSpeechSynthesisVoices, filterOnLanguage, getLanguages, getVoices, groupByLanguages, groupByRegions, ILanguages, IVoices, parseSpeechSynthesisVoices } from "readium-speech";
+import { BookmarkButton } from "./header/BookmarkButton";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -128,9 +126,6 @@ interface IBaseProps extends TranslatorProps {
 
     handleReaderClose: () => void;
     handleReaderDetach: () => void;
-    toggleBookmark: () => void;
-    // isOnBookmark: boolean;
-    numberOfVisibleBookmarks: number;
     isOnSearch: boolean;
     handlePublicationInfo: () => void;
     readerMenuProps: IReaderMenuProps;
@@ -734,9 +729,10 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     <Popover.Portal>
                                                         <Popover.Content style={{ zIndex: 100 }}>
                                                             <div className={stylesReaderHeader.Tts_popover_container}>
-                                                                <div style={{ paddingRight: "25px", borderRight: "1px solid var(--color-verylight-grey-alt)" }}>
-                                                                    <div className={stylesReader.ttsSelectRate}>
-                                                                        <ComboBox label={useMO ?
+                                                                <div style={{ paddingRight: 25 /* , borderRight: "1px solid var(--color-verylight-grey-alt)" */ }}>
+                                                                    <div className={stylesReader.ttsSelectRate} style={{ paddingLeft: 8 }}>
+                                                                        <ComboBox
+                                                                            label={useMO ?
                                                                             __("reader.media-overlays.speed")
                                                                             : __("reader.tts.speed")}
                                                                             aria-label={useMO ?
@@ -794,131 +790,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                     }
 
-                    {/* {
-                            this.props.isPdf || this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed" ?
-                    <ul className={classNames(stylesReader.menu_option, stylesReaderHeader.pdf_options)}>
-                        {
-                            this.props.isPdf
-                                ? <li
-                                    {...(this.state.pdfScaleMode === "page-width" &&
-                                        { style: { backgroundColor: "var(--color-blue" } })}
-                                >
-                                    <input
-                                        id="pdfScaleButton"
-                                        className={stylesReader.bookmarkButton}
-                                        type="checkbox"
-                                        checked={this.state.pdfScaleMode === "page-width"}
-                                        // tslint:disable-next-line: max-line-length
-                                        onChange={() => createOrGetPdfEventBus().dispatch("scale", this.state.pdfScaleMode === "page-fit" ? "page-width" : "page-fit")}
-                                        aria-label={__("reader.navigation.pdfscalemode")}
-                                    />
-                                    <label
-                                        htmlFor="pdfScaleButton"
-                                        className={stylesReader.menu_button}
-                                    >
-                                        { this.state.pdfScaleMode === "page-width" ?
-                                        <SVG ariaHidden svg={FullscreenIcon} title={__("reader.navigation.pdfscalemode")} />
-                                        :
-                                        <SVG ariaHidden svg={ExitFullscreenIcon} title={__("reader.navigation.pdfscalemode")}className={stylesReaderHeader.active_svg} />
-                                        }
-                                    </label>
-                                </li>
-                                : (this.props.r2Publication.Metadata?.Rendition?.Layout === "fixed"
-                                    ? <li>
-                                        <button
-                                         {...(this.state.fxlZoomPercent !== 0 &&
-                                            { style: { border: "2px solid var(--color-blue)", borderRadius: "6px" } })}
-                                            id="buttonFXLZoom"
-                                            className={classNames(stylesReader.menu_button)}
-                                            onWheel={this.onwheel}
-                                            onClick={() => {
-                                                // toggle
-                                                debug("FXL this.state.fxlZoomPercent TOGGLE: " + this.state.fxlZoomPercent);
-                                                if (this.state.fxlZoomPercent === 0) {
-                                                    this.setState({ fxlZoomPercent: 200 });
-                                                    this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, 200);
-                                                    // fixedLayoutZoomPercent(200); // twice (zoom in)
-                                                } else if (this.state.fxlZoomPercent === 200) {
-                                                    this.setState({ fxlZoomPercent: 100 });
-                                                    this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, 100);
-                                                    // fixedLayoutZoomPercent(100); // content natural dimensions (usually larger, so equivalent to zoom in)
-                                                        } else if (this.state.fxlZoomPercent === 100) {
-                                                            this.setState({ fxlZoomPercent: 50 });
-                                                            this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, 50);
-                                                            // fixedLayoutZoomPercent(50); // half (zoom out, but if the content is massive then it may still be perceived as zoom in)
-                                                        } else {
-                                                            this.setState({ fxlZoomPercent: 0 });
-                                                            this.props.ReaderSettingsProps.setZenModeAndFXLZoom(this.props.ReaderSettingsProps.zenMode, 0);
-                                                            // fixedLayoutZoomPercent(0); // special value: fit inside available viewport dimensions (default)
-                                                        }
-                                                    }}
-                                                    aria-label={__("reader.navigation.pdfscalemode")}
-                                                    title={__("reader.navigation.pdfscalemode")}
-                                                >
-                                                    {this.state.fxlZoomPercent > 0 ?
-                                                        <label
-                                                            htmlFor="buttonFXLZoom"
-                                                            style={{ pointerEvents: "none", color: "var(--color-blue)", fontSize: "80%" }}>{this.state.fxlZoomPercent > 0 ? `${this.state.fxlZoomPercent}%` : " "}</label>
-                                                        :
-                                                        <SVG ariaHidden={true} svg={viewMode} />
-                                                    }
-                                                </button>
-                                            </li>
-                                            : <></>)
-                        }
-                    </ul>
-                    : <></>
-                    } */}
-
                     <ul className={stylesReader.menu_option}>
                         <li
                             {...(this.props.isOnSearch && { style: { backgroundColor: "var(--color-blue" } })}
                         >
                                <HeaderSearch shortcutEnable={this.props.shortcutEnable} isPdf={this.props.isPdf} showSearchResults={this.props.showSearchResults} isAudiobook={isAudioBook} isDivina={this.props.isDivina}></HeaderSearch>
                         </li>
-                        <li
-                            {...(this.props.numberOfVisibleBookmarks > 0 &&
-                                { style: { backgroundColor: "var(--color-blue" } })}
-                        >
-                            <input
-                                id="bookmarkButton"
-                                className={stylesReader.bookmarkButton}
-                                type="checkbox"
-                                checked={this.props.numberOfVisibleBookmarks > 0}
-                                onKeyUp={(e) => {
-                                    if (e.key === "Enter") { this.props.toggleBookmark(); }
-                                }}
-                                onChange={this.props.toggleBookmark}
-                                aria-label={__("reader.navigation.bookmarkTitle")}
-                                title={__("reader.navigation.bookmarkTitle")}
-                            />
-                            {
-                                // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing
-                            }
-                            <label
-                                htmlFor="bookmarkButton"
-                                aria-hidden="true"
-                                className={stylesReader.menu_button}
-                                id="bookmarkLabel"
 
-                                aria-label={`${__("reader.navigation.bookmarkTitle")} (${
-                                    (this.props.numberOfVisibleBookmarks === 1 && !this.props.selectionIsNew) ? __("catalog.delete") : __("catalog.addTagsButton")
-                                })`}
-                                title={`${__("reader.navigation.bookmarkTitle")} (${
-                                    (this.props.numberOfVisibleBookmarks === 1 && !this.props.selectionIsNew) ? __("catalog.delete") : __("catalog.addTagsButton")
-                                })`}
-                            >
-                                <SVG ariaHidden={true} svg={MarkIcon} className={classNames(stylesReaderHeader.bookmarkIcon,
-                                    this.props.numberOfVisibleBookmarks > 0
-                                    ? stylesReaderHeader.active_svg : "")} />
-                                <SVG ariaHidden={true} svg={RemoveBookMarkIcon} className={classNames(stylesReaderHeader.bookmarkRemove,
-                                    (this.props.numberOfVisibleBookmarks === 1 && !this.props.selectionIsNew)
-                                    ? stylesReaderHeader.active_svg : "")} />
-                                <SVG ariaHidden={true} svg={PlusIcon} className={classNames(stylesReaderHeader.bookmarkRemove,
-                                    this.props.numberOfVisibleBookmarks > 1 || (this.props.numberOfVisibleBookmarks === 1 && this.props.selectionIsNew)
-                                    ? stylesReaderHeader.active_svg : "")} />
-                            </label>
-                        </li>
+                        <BookmarkButton shortcutEnable={this.props.shortcutEnable} />
 
                         <Popover.Root open={this.props.isAnnotationModeEnabled} onOpenChange={(open) => {
                             if (open === false) {
@@ -945,8 +824,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         onChange={() => {
                                             this.props.triggerAnnotationBtn();
                                         }}
-                                    // aria-label={__("reader.navigation.bookmarkTitle")}
-                                    // title={__("reader.navigation.bookmarkTitle")}
                                     />
                                     {
                                         // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing

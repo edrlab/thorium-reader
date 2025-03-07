@@ -741,43 +741,63 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
     }
 
     const ttsHighlightStyles = [{
-        description: "Solid background + word underline",
+        description: __("tts.highlight.solidBackgroundWordUnderline"),
         ttsHS: HighlightDrawTypeBackground,
         ttsHSW: HighlightDrawTypeUnderline,
     }, {
-        description: "Solid background + word outline",
+        description: __("tts.highlight.solidBackgroundWordOutline"),
         ttsHS: HighlightDrawTypeBackground,
         ttsHSW: HighlightDrawTypeOutline,
     }, {
-        description: "Solid outline + word underline",
+        description: __("tts.highlight.solidBackgroundWordSolidBackground"),
+        ttsHS: HighlightDrawTypeBackground,
+        ttsHSW: HighlightDrawTypeBackground,
+    }, {
+        description: __("tts.highlight.outlineWordUnderline"),
         ttsHS: HighlightDrawTypeOutline,
         ttsHSW: HighlightDrawTypeUnderline,
     }, {
-        description: "Solid outline + word background",
+        description: __("tts.highlight.outlineWordOutline"),
+        ttsHS: HighlightDrawTypeOutline,
+        ttsHSW: HighlightDrawTypeOutline,
+    }, {
+        description: __("tts.highlight.outlineWordSolidBackground"),
         ttsHS: HighlightDrawTypeOutline,
         ttsHSW: HighlightDrawTypeBackground,
     }, {
-        description: "Mask + word underline",
+       description: __("tts.highlight.underlineWordUnderline"),
+       ttsHS: HighlightDrawTypeUnderline,
+       ttsHSW: HighlightDrawTypeUnderline,
+    }, {
+       description: __("tts.highlight.underlineWordOutline"),
+       ttsHS: HighlightDrawTypeUnderline,
+       ttsHSW: HighlightDrawTypeOutline,
+    }, {
+       description: __("tts.highlight.underlineWordSolidBackground"),
+       ttsHS: HighlightDrawTypeUnderline,
+       ttsHSW: HighlightDrawTypeBackground,
+    }, {
+        description: __("tts.highlight.maskWordUnderline"),
         ttsHS: HighlightDrawTypeOpacityMask,
         ttsHSW: HighlightDrawTypeUnderline,
     }, {
-        description: "Mask + word outline",
+        description: __("tts.highlight.maskWordOutline"),
         ttsHS: HighlightDrawTypeOpacityMask,
         ttsHSW: HighlightDrawTypeOutline,
     }, {
-        description: "Mask + word solid background",
+        description: __("tts.highlight.maskWordSolidBackground"),
         ttsHS: HighlightDrawTypeOpacityMask,
         ttsHSW: HighlightDrawTypeBackground,
     }, {
-        description: "Mask block + word underline",
+        description: __("tts.highlight.maskBlockWordUnderline"),
         ttsHS: HighlightDrawTypeOpacityMaskRuler,
         ttsHSW: HighlightDrawTypeUnderline,
     }, {
-        description: "Mask block + word outline",
+        description: __("tts.highlight.maskBlockWordOutline"),
         ttsHS: HighlightDrawTypeOpacityMaskRuler,
         ttsHSW: HighlightDrawTypeOutline,
     }, {
-        description: "Mask block + word solid background",
+        description: __("tts.highlight.maskBlockWordSolidBackground"),
         ttsHS: HighlightDrawTypeOpacityMaskRuler,
         ttsHSW: HighlightDrawTypeBackground,
     }].map((obj, index) => {
@@ -788,12 +808,74 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
     });
     const ttsHighlightStylesKey = ttsHighlightStyles.findIndex((obj) => ttsHighlightStyle === obj.ttsHS && ttsHighlightStyle_WORD === obj.ttsHSW);
 
+    const ttsHighlightStyle_ = (typeof ttsHighlightStyle !== "undefined" && ttsHighlightStyle !== null) ? ttsHighlightStyle : readerConfigInitialState.ttsHighlightStyle;
+    const ttsHighlightColor_ = ttsHighlightColor || readerConfigInitialState.ttsHighlightColor;
+    const ttsHighlightStyle_WORD_ = (typeof ttsHighlightStyle_WORD !== "undefined" && ttsHighlightStyle_WORD !== null) ? ttsHighlightStyle_WORD : readerConfigInitialState.ttsHighlightStyle_WORD;
+    const ttsHighlightColor_WORD_ = ttsHighlightColor_WORD || readerConfigInitialState.ttsHighlightColor_WORD;
+
+    const styleSentence = {
+        background:
+            ttsHighlightStyle_ === HighlightDrawTypeBackground ?
+            rgbToHex(ttsHighlightColor_) :
+            undefined,
+        textDecorationLine:
+            ttsHighlightStyle_ === HighlightDrawTypeUnderline ?
+            "underline" :
+            undefined,
+        textDecorationColor:
+            ttsHighlightStyle_ === HighlightDrawTypeUnderline ?
+            rgbToHex(ttsHighlightColor_) :
+            undefined,
+        textDecorationThickness: "3px",
+        outlineWidth: "3px",
+        textUnderlineOffset: "3px",
+        outlineStyle:
+            ttsHighlightStyle_ === HighlightDrawTypeOutline ?
+            "solid" :
+            undefined,
+        outlineOffset:
+            ttsHighlightStyle_ === HighlightDrawTypeOutline ?
+            "2px" :
+            undefined,
+        outlineColor:
+            ttsHighlightStyle_ === HighlightDrawTypeOutline ?
+            rgbToHex(ttsHighlightColor_) :
+            undefined,
+        color: "black",
+    } satisfies React.CSSProperties;
+    const styleWord = {
+        background:
+            ttsHighlightStyle_WORD_ === HighlightDrawTypeBackground ?
+            rgbToHex(ttsHighlightColor_WORD_) :
+            undefined,
+        textDecorationLine:
+            ttsHighlightStyle_WORD_ === HighlightDrawTypeUnderline ?
+            "underline" :
+            undefined,
+        textDecorationColor:
+            ttsHighlightStyle_WORD_ === HighlightDrawTypeUnderline ?
+            rgbToHex(ttsHighlightColor_WORD_) :
+            undefined,
+        textDecorationThickness: "3px",
+        outlineWidth: "3px",
+        textUnderlineOffset: "3px",
+        outlineStyle:
+            ttsHighlightStyle_WORD_ === HighlightDrawTypeOutline ?
+            "solid" :
+            undefined,
+        outlineColor:
+            ttsHighlightStyle_WORD_ === HighlightDrawTypeOutline ?
+            rgbToHex(ttsHighlightColor_WORD_) :
+            undefined,
+        color: "black",
+    } satisfies React.CSSProperties;
+
     return (
         <>
         {
             //gridTemplateColumns: "repeat(auto-fill, minmax(300px,1fr)"
         }
-        <div style={{ display: "grid" }}>
+        <div style={{ display: "grid", paddingRight: 25 }}>
             {options.map((option) =>
             <div style={{ padding: "10px 0" }} key={option.id}>
                 <input
@@ -843,9 +925,10 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
 
         {!useMO ?
         (
+        <>
         <div style={{ border: "2px dotted var(--color-verylight-grey-alt)", borderRadius: "1em", padding: 6 }}>
         <div className={stylesReader.ttsSelectRate}>
-        <ComboBox label="TTS highlight style"
+        <ComboBox label={__("tts.highlight.style")}
             defaultItems={ttsHighlightStyles}
             defaultSelectedKey={ ttsHighlightStylesKey === -1 ? 0 : ttsHighlightStylesKey }
             selectedKey={ ttsHighlightStylesKey === -1 ? 0 : ttsHighlightStylesKey }
@@ -862,11 +945,11 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
         </ComboBox>
         </div>
         <div role="radiogroup">
-        <p style={{marginBottom:4, paddingBottom: 0, fontWeight:"bold", fontSize:"120%"}}>Main colour</p>
+        <p style={{marginBottom:4, paddingBottom: 0, fontWeight:"bold", fontSize:"120%"}}>{__("tts.highlight.mainColor")}</p>
             <div style={{width:"fit-content"}} className={stylesAnnotations.colorPicker} role="radiogroup">
             {
             Object.entries(annotationsColorsLight_).map(([colorHex, translatorKey]) => {
-                const ttsHighlightColorHex = ttsHighlightColor ? rgbToHex(ttsHighlightColor) : rgbToHex(readerConfigInitialState.ttsHighlightColor);
+                const ttsHighlightColorHex = rgbToHex(ttsHighlightColor || readerConfigInitialState.ttsHighlightColor);
                 return (
                     <div key={`color_${colorHex}_key`}>
                         <input type="radio" id={`ttscolorpick${colorHex}`} name="ttscolorpick" value={colorHex}
@@ -878,7 +961,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                             checked={ttsHighlightColorHex === colorHex}
                             aria-label={__(translatorKey)}
                         />
-                        <label title={__(translatorKey)} htmlFor={`ttscolorpick${colorHex}`}
+                        <label aria-hidden={true} title={__(translatorKey)} htmlFor={`ttscolorpick${colorHex}`}
                             style={{ backgroundColor: colorHex, border: ttsHighlightColorHex === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
                         >
                             {ttsHighlightColorHex === colorHex ? <SVG ariaHidden svg={DoubleCheckIcon} /> : <></>}
@@ -888,11 +971,11 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
             })
             }
             </div>
-            <p style={{marginBottom:4, paddingBottom: 0, fontWeight:"bold", fontSize:"120%"}}>Word colour</p>
+            <p style={{ marginBottom: 4, paddingBottom: 0, fontWeight: "bold", fontSize: "120%" }}>{__("tts.highlight.wordColor")}</p>
             <div style={{width:"fit-content"}} className={stylesAnnotations.colorPicker} role="radiogroup">
             {
             Object.entries(annotationsColorsLight_).map(([colorHex, translatorKey]) => {
-                const ttsHighlightColor_WORDHex = ttsHighlightColor_WORD ? rgbToHex(ttsHighlightColor_WORD) : rgbToHex(readerConfigInitialState.ttsHighlightColor_WORD);
+                const ttsHighlightColor_WORDHex = rgbToHex(ttsHighlightColor_WORD || readerConfigInitialState.ttsHighlightColor_WORD);
                 return (
                     <div key={`colorx_${colorHex}_key`}>
                         <input type="radio" id={`ttscolorpickword${colorHex}`} name="ttscolorpickword" value={colorHex}
@@ -904,7 +987,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                             checked={ttsHighlightColor_WORDHex === colorHex}
                             aria-label={__(translatorKey)}
                         />
-                        <label title={__(translatorKey)} htmlFor={`ttscolorpickword${colorHex}`}
+                        <label aria-hidden={true} title={__(translatorKey)} htmlFor={`ttscolorpickword${colorHex}`}
                             style={{ backgroundColor: colorHex, border: ttsHighlightColor_WORDHex === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
                         >
                             {ttsHighlightColor_WORDHex === colorHex ? <SVG ariaHidden svg={DoubleCheckIcon} /> : <></>}
@@ -916,6 +999,103 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
             </div>
         </div>
         </div>
+<div style={{flexBasis: "100%", height: 0}}></div>
+<details
+aria-hidden={true}
+open={false}
+style={
+{
+    width: 0,
+    flexBasis: "100%",
+    marginTop: 10,
+    border: "1px solid var(--color-verylight-grey-alt)",
+    padding: 6,
+}
+}>
+<summary style={
+{
+cursor: "pointer",
+}
+}>{__("tts.highlight.preview")}</summary>
+{
+ttsHighlightStyle_ === HighlightDrawTypeOpacityMaskRuler
+?
+(
+<div style={
+{
+background: "white",
+color: "black",
+fontFamily: "serif",
+marginTop: 6,
+padding: 6,
+paddingLeft: 50,
+paddingRight: 50,
+lineHeight: "2em",
+}
+}>
+<p style={
+{
+fontSize: "1.5em",
+}}>
+<span style={
+{
+color: "silver",
+}
+}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec purus sodales, rhoncus nisl ac,</span><br/>
+<div style={
+{
+border: "2px solid black",
+borderRadius: "8px",
+padding: "4px",
+}
+}><span>fringilla metus.</span> <span style={styleSentence}>Sed eu dignissim dui. <span style={styleWord}>Curabitur</span> venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</span> <span>Aenean laoreet justo vitae</span><br/></div>
+<span style={
+{
+color: "silver",
+}
+}>mauris fermentum, eget ultrices augue placerat. Proin massa est, gravida feugiat ipsum feugiat, dapibus porttitor felis.</span>
+</p>
+</div>
+)
+:
+(
+<div style={
+{
+background: "white",
+color: "black",
+fontFamily: "serif",
+marginTop: 6,
+padding: 6,
+paddingLeft: 50,
+paddingRight: 50,
+lineHeight: "2em",
+}
+}>
+<p style={
+{
+fontSize: "1.5em",
+}}>
+<span style={
+{
+color:
+ttsHighlightStyle_ === HighlightDrawTypeOpacityMask ?
+"silver" :
+undefined,
+}
+}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec purus sodales, rhoncus nisl ac, fringilla metus.</span> <span style={styleSentence}>Sed eu dignissim dui. <span style={styleWord}>Curabitur</span> venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</span> <span style={
+{
+color:
+ttsHighlightStyle_ === HighlightDrawTypeOpacityMask ?
+"silver" :
+undefined,
+}
+}>Aenean laoreet justo vitae mauris fermentum, eget ultrices augue placerat. Proin massa est, gravida feugiat ipsum feugiat, dapibus porttitor felis.</span>
+</p>
+</div>
+)
+}
+</details>
+        </>
         )
         : <></> }
         </>

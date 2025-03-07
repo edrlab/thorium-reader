@@ -464,7 +464,7 @@
             "letterSpacing": "Raidžių išretinimas",
             "lineSpacing": "Eilučių išretinimas",
             "margin": "Paraštė",
-            "noFootnotes": "Išjungti išnašas",
+            "noFootnotes": "Išjungti iššokančias išnašas",
             "noRTLFlip": "Išjungti iš-dešinės-į-kairę naudotojo sąsają",
             "noRuby": "Slėpti japonų kalbos Ruby simbolius",
             "noTemporaryNavTargetOutline": "Išjungti vaizdinius naršymo indikatorius",
@@ -591,6 +591,29 @@
             "description": "Programos tema atitinka operacinės sistemos temą.",
             "light": "Šviesi",
             "title": "Programos tema"
+        }
+    },
+    "tts": {
+        "highlight": {
+            "mainColor": "Pagrindinė spalva",
+            "maskBlockWordOutline": "Bloko kaukė, žodžio kontūras",
+            "maskBlockWordSolidBackground": "Bloko kaukė, žodis vientisame fone",
+            "maskBlockWordUnderline": "Bloko kaukė, žodžio pabraukimas",
+            "maskWordOutline": "Kaukė, žodžio kontūras",
+            "maskWordSolidBackground": "Kaukė, žodis vientisame fone",
+            "maskWordUnderline": "Kaukė, žodžio pabraukimas",
+            "outlineWordOutline": "Kontūras, žodžio kontūras",
+            "outlineWordSolidBackground": "Kontūras, žodis vientisame fone",
+            "outlineWordUnderline": "Kontūras, žodžio pabraukimas",
+            "preview": "Balso sintezės paryškinimo stiliaus peržiūra",
+            "solidBackgroundWordOutline": "Vientisas fonas, žodžio kontūras",
+            "solidBackgroundWordSolidBackground": "Vientisas fonas, žodis vientisame fone",
+            "solidBackgroundWordUnderline": "Vientisas fonas, žodžio pabraukimas",
+            "style": "Balso sintezės paryškinimo stilius",
+            "underlineWordOutline": "Pabraukimas, žodžio kontūras",
+            "underlineWordSolidBackground": "Pabraukimas, žodis vientisame fone",
+            "underlineWordUnderline": "Pabraukimas, žodžio pabraukimas",
+            "wordColor": "Žodžio spalva"
         }
     },
     "wizard": {

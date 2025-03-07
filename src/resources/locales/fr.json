@@ -593,6 +593,29 @@
             "title": "Thème de l'application"
         }
     },
+    "tts": {
+        "highlight": {
+            "mainColor": "Couleur principale",
+            "maskBlockWordOutline": "Bloque Masqué, mot Encadré",
+            "maskBlockWordSolidBackground": "Bloque Masqué, mot Surligné",
+            "maskBlockWordUnderline": "Bloque Masqué, mot Souligné",
+            "maskWordOutline": "Masqué, mot Encadré",
+            "maskWordSolidBackground": "Masqué, mot Surligné",
+            "maskWordUnderline": "Masqué, mot Souligné",
+            "outlineWordOutline": "Encadré, mot Encadré",
+            "outlineWordSolidBackground": "Encadré, mot Surligné",
+            "outlineWordUnderline": "Encadré, mot Souligné",
+            "preview": "Aperçu du style d'affichage de synthèse vocale",
+            "solidBackgroundWordOutline": "Surligné, mot Encadré",
+            "solidBackgroundWordSolidBackground": "Surligné, mot Surligné",
+            "solidBackgroundWordUnderline": "Surligné, mot Souligné",
+            "style": "Style d'affichage de la synthèse vocale",
+            "underlineWordOutline": "Souligné, mot Encadré",
+            "underlineWordSolidBackground": "Souligné, mot Surligné",
+            "underlineWordUnderline": "Souligné, mot Souligné",
+            "wordColor": "Couleur de mot"
+        }
+    },
     "wizard": {
         "buttons": {
             "discover": "Découvrir les nouveautés",
