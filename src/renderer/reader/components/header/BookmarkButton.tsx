@@ -40,11 +40,12 @@ const equalFn = (prev: IReaderStateReader, current: IReaderStateReader) => {
     const currentLocator = current.locator;
 
     if (
+        previousLocator && currentLocator &&
         (
-            previousLocator && currentLocator &&
-            (previousLocator.locator.href !== currentLocator.locator.href ||
-                previousLocator.locator.locations.cssSelector !== currentLocator.locator.locations.cssSelector ||
-                previousLocator.locator.locations.position !== currentLocator.locator.locations.position)
+            previousLocator.locEventID !== currentLocator.locEventID ||
+            previousLocator.locator.href !== currentLocator.locator.href ||
+            previousLocator.locator.locations.cssSelector !== currentLocator.locator.locations.cssSelector ||
+            previousLocator.locator.locations.position !== currentLocator.locator.locations.position
         )
     ) {
         return false;

@@ -101,6 +101,7 @@ export const minimizeLocatorExtended = (locatorExtended: LocatorExtended): MiniL
     // locatorExtended.followingElementIDs = undefined;
     // delete locatorExtended.followingElementIDs;
     return {
+        locEventID: locatorExtended.locEventID,
         audioPlaybackInfo: locatorExtended.audioPlaybackInfo,
         locator: locatorExtended.locator,
         paginationInfo: locatorExtended.paginationInfo,
