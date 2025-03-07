@@ -296,32 +296,48 @@
 .bookmarkButton:focus + label {
     outline: var(--color-blue) solid 2px !important;
     outline-offset: -2px;
-
 }
 
 #bookmarkLabel .bookmarkRemove{
     display: none;
     height: 24px;
+    zoom: 1.2;
 }
 
 #bookmarkLabel .bookmarkIcon{
     display: block;
+    zoom: 1.2;
 }
 
-#bookmarkLabel:hover .bookmarkRemove{
+#bookmarkLabel .bookmarkRemove,
+#bookmarkLabel .bookmarkAdd{
     display: none;
 }
 
-#bookmarkLabel:hover .bookmarkIcon{
+#bookmarkLabel .bookmarkAdd{
+    zoom: 0.6;
+}
+
+#bookmarkLabel .bookmarkRemove.active_svg_option,
+#bookmarkLabel .bookmarkAdd.active_svg_option{
     display: block;
 }
 
-#bookmarkLabel:hover .active_svg.bookmarkRemove {
-    display: block;
-}
-
-#bookmarkLabel:hover .bookmarkIcon.active_svg  {
+#bookmarkLabel:has(.bookmarkRemove.active_svg_option) .bookmarkIcon{
     display: none;
+}
+
+#bookmarkLabel:has(.bookmarkIcon.active_svg_option){
+    background-color: var(--color-blue) !important;
+}
+
+#bookmarkLabel:has(.bookmarkIcon.active_svg_option) .bookmarkRemove.active_svg_option,
+#bookmarkLabel:has(.bookmarkIcon.active_svg_option) .bookmarkIcon.active_svg_option{
+    color: var(--color-secondary) !important;
+}
+
+#bookmarkLabel:has(.bookmarkIcon.active_svg_option) .bookmarkAdd.active_svg_option{
+    fill: var(--color-secondary) !important;
 }
 
 .annotationsIcon svg {
