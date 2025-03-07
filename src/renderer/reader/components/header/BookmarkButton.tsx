@@ -285,7 +285,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                             if (isLocatorVisible(bookmark.locator)) {
                                 arr.push(bookmark);
                             }
-                        } catch (e) {
+                        } catch (_e) {
                             // ignore
                         }
                     }
