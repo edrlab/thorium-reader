@@ -22,7 +22,6 @@ import { combineReducers } from "redux";
 import { readerLocalActionHighlights } from "../actions";
 import { IHighlightHandlerState, IHighlightMounterState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { readerInfoReducer } from "./info";
-import { pickerReducer } from "./picker";
 import { readerConfigReducer } from "./readerConfig";
 import { readerLocatorReducer } from "./readerLocator";
 import { searchReducer } from "./search";
@@ -189,7 +188,6 @@ export const rootReducer = () => {
         resourceCache: readerResourceCacheReducer,
         annotation: annotationModeEnableReducer,
         annotationTagsIndex: annotationTagsIndexReducer,
-        picker: pickerReducer,
         win: winReducer,
         dialog: dialogReducer,
         toast: toastReducer,
