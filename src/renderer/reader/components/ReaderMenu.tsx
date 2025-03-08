@@ -1496,7 +1496,7 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number }> = (props) 
     const isAudioBook = isAudiobookFn(r2Publication);
     const deleteBookmark = (bookmark: IBookmarkState) => {
         dispatch(readerActions.bookmark.pop.build(bookmark));
-        if (bookmark.locator.locations.rangeInfo)
+        // if (bookmark.locator.locations.rangeInfo)
         dispatch(readerLocalActionHighlights.handler.pop.build([
             {
                 uuid: bookmark.uuid,
