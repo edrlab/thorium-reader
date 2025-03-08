@@ -607,7 +607,7 @@
             "outlineWordUnderline": "囲み枠、単語下線",
             "preview": "TTS ハイライト・スタイル・プレビュー",
             "solidBackgroundWordOutline": "ハイライト、単語枠",
-            "solidBackgroundWordSolidBackground": "文ハイライト、単語ハイライト",
+            "solidBackgroundWordSolidBackground": "ハイライト、単語ハイライト",
             "solidBackgroundWordUnderline": "ハイライト、単語下線",
             "style": "TTS ハイライト スタイル",
             "underlineWordOutline": "下線、単語枠",

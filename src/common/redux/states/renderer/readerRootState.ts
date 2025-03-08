@@ -9,7 +9,6 @@ import { ReaderConfig, ReaderConfigPublisher, ReaderInfo, ReaderMode } from "rea
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { IDivinaState } from "readium-desktop/common/redux/states/renderer/divina";
 import { IHighlightHandlerState, IHighlightMounterState } from "./highlight";
-import { IPickerState } from "./picker";
 import { ISearchState } from "./search";
 import { TMapState } from "readium-desktop/utils/redux-reducers/map.reducer";
 
@@ -28,7 +27,6 @@ import { IImageClickState } from "readium-desktop/renderer/reader/redux/state/im
 
 export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
-    picker: IPickerState;
     search: ISearchState;
     resourceCache: ICacheDocument[];
     mode: ReaderMode;

@@ -9,7 +9,6 @@ import * as readerLocalActionDivina from "./divina";
 import * as readerLocalActionHighlights from "./highlights";
 import * as readerLocalActionAnnotations from "./annotations";
 import * as readerLocalActionLocatorHrefChanged from "./locatorHrefChanged";
-import * as readerLocalActionPicker from "./picker";
 import * as readerLocalActionSearch from "./search";
 import * as readerLocalActionSetConfig from "./setConfig";
 import * as readerLocalActionSetTransientConfig from "./setTransientConfig";
@@ -28,7 +27,6 @@ export {
     readerLocalActionSetLocator,
     readerLocalActionHighlights,
     readerLocalActionLocatorHrefChanged,
-    readerLocalActionPicker,
     readerLocalActionSearch,
     readerLocalActionDivina,
     readerLocalActionReader,

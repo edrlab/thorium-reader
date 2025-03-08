@@ -23,7 +23,7 @@ import {
 } from "readium-desktop/renderer/common/keyboard";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-import { readerLocalActionPicker, readerLocalActionSearch } from "../../redux/actions";
+import { readerLocalActionSearch } from "../../redux/actions";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import SearchPicker from "../picker/Search";
 
@@ -183,10 +183,8 @@ const mapDispatchToProps = (dispatch: TDispatch) => ({
     enableSearch: (enable: boolean) => {
         if (enable) {
             dispatch(readerLocalActionSearch.enable.build());
-            dispatch(readerLocalActionPicker.manager.build(true, "search"));
         } else {
             dispatch(readerLocalActionSearch.cancel.build());
-            dispatch(readerLocalActionPicker.manager.build(false));
         }
     },
 });

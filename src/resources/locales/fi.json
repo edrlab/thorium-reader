@@ -522,9 +522,9 @@
         },
         "tts": {
             "activate": "Käynnistä tekstistä puheeksi",
-            "language": "TTS-kieli",
+            "language": "Tekstistä puheeksi -kieli",
             "next": "Seuraava",
-            "options": "TTS-valinnat",
+            "options": "Tekstistä puheeksi -valinnat",
             "pause": "Pysäytä",
             "play": "Jatka",
             "previous": "Edellinen",

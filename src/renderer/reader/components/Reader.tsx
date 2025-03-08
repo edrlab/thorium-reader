@@ -253,7 +253,7 @@ interface IState {
 
 class Reader extends React.Component<IProps, IState> {
 
-    private _ttsStateTimeout: NodeJS.Timeout | undefined;
+    private _ttsOrMoStateTimeout: NodeJS.Timeout | undefined;
 
     private fastLinkRef: React.RefObject<HTMLAnchorElement>;
     private refToolbar: React.RefObject<HTMLAnchorElement>;
@@ -277,7 +277,7 @@ class Reader extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
-        this._ttsStateTimeout = undefined;
+        this._ttsOrMoStateTimeout = undefined;
 
         this.ttsOverlayEnableNeedsSync = true;
 
@@ -593,7 +593,7 @@ class Reader extends React.Component<IProps, IState> {
 
         highlightsClickListen((href, highlight, event) => {
 
-            if (highlight.group !== "annotation") {
+            if (highlight.group !== "annotation" && highlight.group !== "bookmark") {
                 if (typeof (window as any).__hightlightClickChannelEmitFn === "function") {
                     (window as any).__hightlightClickChannelEmitFn([href, highlight, event]);
                 }
@@ -636,7 +636,7 @@ class Reader extends React.Component<IProps, IState> {
 
             console.log(`dispatchClick CLICK ACTION ... -- uuid: [${uuid}] handlerState: [${JSON.stringify(handlerState, null, 4)}]`);
 
-            this.handleMenuButtonClick(true, "tab-annotation", true, uuid);
+            this.handleMenuButtonClick(true, highlight.group === "annotation" ? "tab-annotation" : "tab-bookmark", true, uuid);
 
             if (href && handlerState.def.selectionInfo?.rangeInfo) {
                 this.handleLinkLocator({
@@ -666,22 +666,39 @@ class Reader extends React.Component<IProps, IState> {
             this.setState({shortcutEnable: true});
         }
         if (oldProps.ttsState !== this.props.ttsState) {
-            if (this._ttsStateTimeout) {
-                clearTimeout(this._ttsStateTimeout);
-                this._ttsStateTimeout = undefined;
+            if (this._ttsOrMoStateTimeout) {
+                clearTimeout(this._ttsOrMoStateTimeout);
+                this._ttsOrMoStateTimeout = undefined;
             }
             if (this.props.ttsState === TTSStateEnum.STOPPED) {
-                this._ttsStateTimeout = setTimeout(() => {
-                    this._ttsStateTimeout = undefined;
+                this._ttsOrMoStateTimeout = setTimeout(() => {
+                    this._ttsOrMoStateTimeout = undefined;
                     if (this.props.ttsState === TTSStateEnum.STOPPED) {
                         ttsClickEnable(false);
-                        this.restoreAnnotationStateAfterTTSStop();
+                        this.restoreAnnotationStateAfterTTSorMOStop();
                     }
                 }, 1000); // end of document ==> potentially "resume" (from stopped) at next document's start
 
-            } else  if (oldProps.ttsState === TTSStateEnum.STOPPED && (this.props.ttsState === TTSStateEnum.PLAYING || this.props.ttsState === TTSStateEnum.PAUSED)) {
+            } else if (oldProps.ttsState === TTSStateEnum.STOPPED && (this.props.ttsState === TTSStateEnum.PLAYING || this.props.ttsState === TTSStateEnum.PAUSED)) {
                 ttsClickEnable(true);
-                this.hideAnnotationsForTTSPlay();
+                this.hideAnnotationsForTTSorMOPlay();
+            }
+        }
+        if (oldProps.mediaOverlaysState !== this.props.mediaOverlaysState) {
+            if (this._ttsOrMoStateTimeout) {
+                clearTimeout(this._ttsOrMoStateTimeout);
+                this._ttsOrMoStateTimeout = undefined;
+            }
+            if (this.props.mediaOverlaysState === MediaOverlaysStateEnum.STOPPED) {
+                this._ttsOrMoStateTimeout = setTimeout(() => {
+                    this._ttsOrMoStateTimeout = undefined;
+                    if (this.props.mediaOverlaysState === MediaOverlaysStateEnum.STOPPED) {
+                        this.restoreAnnotationStateAfterTTSorMOStop();
+                    }
+                }, 1000); // end of document ==> potentially "resume" (from stopped) at next document's start
+
+            } else if (oldProps.mediaOverlaysState === MediaOverlaysStateEnum.STOPPED && (this.props.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING || this.props.mediaOverlaysState === MediaOverlaysStateEnum.PAUSED)) {
+                this.hideAnnotationsForTTSorMOPlay();
             }
         }
     }
@@ -2752,7 +2769,7 @@ class Reader extends React.Component<IProps, IState> {
             // openedSectionSettings,
         });
     }
-    private hideAnnotationsForTTSPlay() {
+    private hideAnnotationsForTTSorMOPlay() {
         if (this.props.readerConfig.annotation_defaultDrawView !== "hide") { // "margin" or "annotation"
             this.setState({ previousReaderConfigAnnotationDefaultDrawView: this.props.readerConfig.annotation_defaultDrawView });
             const href1 = this.state.currentLocation?.locator?.href;
@@ -2770,7 +2787,7 @@ class Reader extends React.Component<IProps, IState> {
             // TODO: skippability should be disabled when user explicitly "requests" a skippable item, such as when clicking on a note reference hyperlink, or even on a skippable element itself(?)
         } else if (this.props.readerConfig.annotation_defaultDrawView !== "hide") { // "margin" or "annotation"
             delay = 200;
-            this.hideAnnotationsForTTSPlay();
+            this.hideAnnotationsForTTSorMOPlay();
         }
 
         setTimeout(() => {
@@ -2780,7 +2797,7 @@ class Reader extends React.Component<IProps, IState> {
     private handleTTSPause() {
         ttsPause();
     }
-    private restoreAnnotationStateAfterTTSStop() {
+    private restoreAnnotationStateAfterTTSorMOStop() {
         if (this.state.previousReaderConfigAnnotationDefaultDrawView) {
             if (this.props.readerConfig.annotation_defaultDrawView !== this.state.previousReaderConfigAnnotationDefaultDrawView) {
                 const href1 = this.state.currentLocation?.locator?.href;
@@ -2794,7 +2811,7 @@ class Reader extends React.Component<IProps, IState> {
     private handleTTSStop() {
         ttsClickEnable(false);
         ttsStop();
-        this.restoreAnnotationStateAfterTTSStop();
+        this.restoreAnnotationStateAfterTTSorMOStop();
     }
     private handleTTSResume() {
         ttsResume();
@@ -2859,7 +2876,11 @@ class Reader extends React.Component<IProps, IState> {
             // console.log("MO PLAY ==> NO_FOOTNOTES MUST BE TRUE (POPUP DISABLED), SWITCHING...");
             this.props.setConfig({ noFootnotes: true });
             // TODO: skippability should be disabled when user explicitly "requests" a skippable item, such as when clicking on a note reference hyperlink, or even on a skippable element itself(?)
+        } else if (this.props.readerConfig.annotation_defaultDrawView !== "hide") { // "margin" or "annotation"
+            delay = 200;
+            this.hideAnnotationsForTTSorMOPlay();
         }
+
         setTimeout(() => {
             mediaOverlaysPlay(parseFloat(this.props.mediaOverlaysPlaybackRate));
         }, delay);
@@ -2870,6 +2891,7 @@ class Reader extends React.Component<IProps, IState> {
     private handleMediaOverlaysStop() {
         mediaOverlaysClickEnable(false);
         mediaOverlaysStop();
+        this.restoreAnnotationStateAfterTTSorMOStop();
     }
     private handleMediaOverlaysResume() {
         mediaOverlaysResume();
