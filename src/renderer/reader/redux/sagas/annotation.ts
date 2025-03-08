@@ -236,9 +236,9 @@ function* readerStart() {
 
     const { annotation_defaultDrawView } = yield* selectTyped((state: IReaderRootState) => state.reader.config);
     if (annotation_defaultDrawView === "margin") {
-        highlightsDrawMargin(["annotation"]);
+        highlightsDrawMargin(["annotation", "bookmark"]);
     } else {
-        highlightsDrawMargin(false);
+        highlightsDrawMargin(["bookmark"]);
     }
 
     const annotations = yield* selectTyped((store: IReaderRootState) => store.reader.annotation);
@@ -247,11 +247,49 @@ function* readerStart() {
 
     const annotationsHighlighted: IHighlightHandlerState[] = annotations.map(
         ([_, { uuid, locatorExtended: { locator: { href }, selectionInfo }, color, drawType}]) =>
-            ({ uuid, href, def: { selectionInfo, color, group: "annotation", drawType: convertDrawTypeToNumber(drawType) }}));
-
+            ({ uuid, href, def: { selectionInfo, color, group: "annotation", drawType: convertDrawTypeToNumber(drawType) }} satisfies IHighlightHandlerState));
     yield* putTyped(readerLocalActionHighlights.handler.push.build(annotationsHighlighted));
 
+    const bookmarks = yield* selectTyped((store: IReaderRootState) => store.reader.bookmark);
+    const bookmarksUuids = bookmarks.map(([_, bookmarkState]) => ({ uuid: bookmarkState.uuid }));
+    yield* putTyped(readerLocalActionHighlights.handler.pop.build(bookmarksUuids));
+
     debug(`${annotationsHighlighted.length} annotation(s) drawn`);
+
+    const bookmarksUuidsHighlighted: IHighlightHandlerState[] = bookmarks.map(
+        ([_, bookmark]) =>
+            (
+                {
+                    uuid: bookmark.uuid,
+                    href: bookmark.locator.href,
+                    def: {
+                        selectionInfo: {
+                            // @ts-expect-error not sure why??!
+                            textFragment: undefined,
+                            // textFragment: {
+                            //     prefix: "",
+                            //     textStart: "",
+                            //     textEnd: "",
+                            //     suffix: "",
+                            // },
+                            rangeInfo: bookmark.locator.locations.rangeInfo,
+                            cleanBefore: bookmark.locator.text?.before || "",
+                            cleanText: bookmark.locator.text?.highlight || bookmark.locator.title || bookmark.name,
+                            cleanAfter: bookmark.locator.text?.after || "",
+                            rawBefore: bookmark.locator.text?.beforeRaw || "",
+                            rawText: bookmark.locator.text?.highlightRaw || bookmark.locator.title || bookmark.name,
+                            rawAfter: bookmark.locator.text?.afterRaw || "",
+                        },
+                        color: {red: 0, green: 100, blue: 200},
+                        group: "bookmark",
+                        drawType: 6,
+                    },
+                } satisfies IHighlightHandlerState
+            ),
+    );
+    yield* putTyped(readerLocalActionHighlights.handler.push.build(bookmarksUuidsHighlighted));
+
+    debug(`${bookmarksUuidsHighlighted.length} bookmark(s) drawn`);
 }
 
 function* captureHightlightDrawMargin(action: readerLocalActionSetConfig.TAction) {
@@ -273,9 +311,9 @@ function* captureHightlightDrawMargin(action: readerLocalActionSetConfig.TAction
 
     debug(`captureHightlightDrawMargin : readerLocalActionSetConfig CHANGED apply=${annotation_defaultDrawView}`);
     if (annotation_defaultDrawView === "margin") {
-        highlightsDrawMargin(["annotation"]);
+        highlightsDrawMargin(["annotation", "bookmark"]);
     } else {
-        highlightsDrawMargin(false);
+        highlightsDrawMargin(["bookmark"]);
     }
 }
 

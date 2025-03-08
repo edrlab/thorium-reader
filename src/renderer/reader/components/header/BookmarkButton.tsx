@@ -29,6 +29,7 @@ import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { registerKeyboardListener, unregisterKeyboardListener } from "readium-desktop/renderer/common/keyboard";
 import { DEBUG_KEYBOARD } from "readium-desktop/common/keyboard";
 import { ReadiumElectronBrowserWindow } from "@r2-navigator-js/electron/renderer/webview/state";
+import { readerLocalActionHighlights } from "../../redux/actions";
 
 export interface IProps {
     shortcutEnable: boolean;
@@ -147,8 +148,41 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
     }, [isEpubNavigator]);
 
     const dispatch = useDispatch();
-    const deleteBookmark = React.useCallback((bookmark: IBookmarkState) => dispatch(readerActions.bookmark.pop.build(bookmark)), [dispatch]);
-    const addBookmark = React.useCallback((bookmark: IBookmarkStateWithoutUUID) => dispatch(readerActions.bookmark.push.build(bookmark)), [dispatch]);
+    const deleteBookmark = React.useCallback((bookmark: IBookmarkState) => {
+        dispatch(readerActions.bookmark.pop.build(bookmark));
+        if (bookmark.locator.locations.rangeInfo)
+        dispatch(readerLocalActionHighlights.handler.pop.build([
+            {
+                uuid: bookmark.uuid,
+            },
+        ]));
+    }, [dispatch]);
+    const addBookmark = React.useCallback((bookmark: IBookmarkStateWithoutUUID) => {
+        dispatch(readerActions.bookmark.push.build(bookmark));
+        // console.log("...bookmark.locator.locations.rangeInfo", JSON.stringify(bookmark.locator.locations.rangeInfo, null, 4));
+        if (bookmark.locator.locations.rangeInfo)
+        dispatch(readerLocalActionHighlights.handler.push.build([
+            {
+                uuid: bookmark.uuid,
+                href: bookmark.locator.href,
+                def: {
+                    selectionInfo: {
+                        textFragment: undefined,
+                        rangeInfo: bookmark.locator.locations.rangeInfo,
+                        cleanBefore: bookmark.locator.text?.before || "",
+                        cleanText: bookmark.locator.text?.highlight || bookmark.locator.title || bookmark.name,
+                        cleanAfter: bookmark.locator.text?.after || "",
+                        rawBefore: bookmark.locator.text?.beforeRaw || "",
+                        rawText: bookmark.locator.text?.highlightRaw || bookmark.locator.title || bookmark.name,
+                        rawAfter: bookmark.locator.text?.afterRaw || "",
+                    },
+                    color: {red: 0, green: 100, blue: 200},
+                    group: "bookmark",
+                    drawType: 6,
+                },
+            },
+        ]));
+    }, [dispatch]);
     const toasty = React.useCallback((msg: string) => dispatch(toastActions.openRequest.build(ToastType.Success, msg)), [dispatch]);
 
     const toggleBookmark = React.useCallback((fromKeyboard?: boolean) => {

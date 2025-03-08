@@ -84,7 +84,7 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "@r2-shared-js/models/locator";
 import { annotationsColorsLight, IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { readerLocalActionExportAnnotationSet, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
+import { readerLocalActionExportAnnotationSet, readerLocalActionHighlights, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
@@ -1496,6 +1496,12 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number }> = (props) 
     const isAudioBook = isAudiobookFn(r2Publication);
     const deleteBookmark = (bookmark: IBookmarkState) => {
         dispatch(readerActions.bookmark.pop.build(bookmark));
+        if (bookmark.locator.locations.rangeInfo)
+        dispatch(readerLocalActionHighlights.handler.pop.build([
+            {
+                uuid: bookmark.uuid,
+            },
+        ]));
     };
     let percent = 100;
     let p = -1;

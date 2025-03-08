@@ -32,14 +32,14 @@ export function* mountHighlight(href: string, handlerState: IHighlightHandlerSta
     const { annotation_defaultDrawView } = yield* selectTyped((state: IReaderRootState) => state.reader.config);
 
     // const atLeastOneAnnotationHighlight = handlerState.reduce((pv, {def: {group}}) => pv || group === "annotation", false);
-    const atLeastOneAnnotationHighlight = !!handlerState.find((v) => v.def.group === "annotation");
+    const atLeastOneAnnotationHighlight = !!handlerState.find((v) => (v.def.group === "annotation" || v.def.group === "bookmark"));
     if (atLeastOneAnnotationHighlight) {
         if (annotation_defaultDrawView === "margin") {
-            highlightsDrawMargin(["annotation"]);
+            highlightsDrawMargin(["annotation", "bookmark"]);
         } else if (annotation_defaultDrawView === "hide") {
             // return ; NEED TO DRAW OTHER ANNOTATIONS, such as SEARCH RESULTS
         } else {
-            highlightsDrawMargin(false);
+            highlightsDrawMargin(["bookmark"]);
         }
     }
 
@@ -52,7 +52,7 @@ export function* mountHighlight(href: string, handlerState: IHighlightHandlerSta
     const handlerStateFiltered = handlerState.filter(
         ({ uuid: uuidHandlerState, href: hrefHandlerState, def: defHandlerState }) =>
             hrefHandlerState === href &&
-            (annotation_defaultDrawView !== "hide" || defHandlerState.group !== "annotation") &&
+            (annotation_defaultDrawView !== "hide" || (defHandlerState.group !== "annotation" && defHandlerState.group !== "bookmark")) &&
             // exclude already-mounted items
             !mounterStateMap.find(([uuid, mounterState]) => uuidHandlerState === uuid && mounterState.href === href),
     );

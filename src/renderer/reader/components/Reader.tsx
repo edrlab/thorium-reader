@@ -593,7 +593,7 @@ class Reader extends React.Component<IProps, IState> {
 
         highlightsClickListen((href, highlight, event) => {
 
-            if (highlight.group !== "annotation") {
+            if (highlight.group !== "annotation" && highlight.group !== "bookmark") {
                 if (typeof (window as any).__hightlightClickChannelEmitFn === "function") {
                     (window as any).__hightlightClickChannelEmitFn([href, highlight, event]);
                 }
@@ -636,7 +636,7 @@ class Reader extends React.Component<IProps, IState> {
 
             console.log(`dispatchClick CLICK ACTION ... -- uuid: [${uuid}] handlerState: [${JSON.stringify(handlerState, null, 4)}]`);
 
-            this.handleMenuButtonClick(true, "tab-annotation", true, uuid);
+            this.handleMenuButtonClick(true, highlight.group === "annotation" ? "tab-annotation" : "tab-bookmark", true, uuid);
 
             if (href && handlerState.def.selectionInfo?.rangeInfo) {
                 this.handleLinkLocator({
