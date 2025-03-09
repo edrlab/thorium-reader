@@ -166,6 +166,11 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                 uuid: bookmark.uuid,
                 href: bookmark.locator.href,
                 def: {
+                    textPopup: bookmark.name ? {
+                        text: bookmark.name, // multiline
+                        dir: "ltr", // TODO
+                        lang: "en", // TODO
+                    } : undefined,
                     selectionInfo: {
                         textFragment: undefined,
                         rangeInfo: bookmark.locator.locations.rangeInfo || {

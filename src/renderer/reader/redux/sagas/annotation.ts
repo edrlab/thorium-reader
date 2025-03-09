@@ -59,16 +59,33 @@ function* annotationUpdate(action: readerActions.annotation.update.TAction) {
     debug(`annotationUpdate-- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
 
     const [_, newAnnot] = action.payload;
-    const {uuid, locatorExtended: {locator: {href}, selectionInfo}, color: newColor, drawType, tags: _tags} = newAnnot;
+    const { comment, uuid, locatorExtended: {locator: {href}, selectionInfo}, color: newColor, drawType, tags: _tags} = newAnnot;
 
     const item = yield* selectTyped((store: IReaderRootState) => store.reader.highlight.handler.find(([_, highlightState]) => highlightState.uuid === uuid));
 
     if (item) {
-        const { def: { color: previousColor, drawType: previousDrawType } } = item[1];
+        const { def: { textPopup, color: previousColor, drawType: previousDrawType } } = item[1];
 
-        if (previousColor.blue !== newColor.blue || previousColor.green !== newColor.green || previousColor.red !== newColor.red || convertDrawTypeToNumber(drawType) !== previousDrawType) {
+        if (comment && !textPopup?.text || !comment && textPopup?.text || comment !== textPopup?.text ||
+            previousColor.blue !== newColor.blue || previousColor.green !== newColor.green || previousColor.red !== newColor.red || convertDrawTypeToNumber(drawType) !== previousDrawType) {
             yield* putTyped(readerLocalActionHighlights.handler.pop.build([{ uuid }]));
-            yield* putTyped(readerLocalActionHighlights.handler.push.build([{ uuid, href, def: { selectionInfo, color: newColor, group: "annotation", drawType: convertDrawTypeToNumber(drawType) } }]));
+            yield* putTyped(readerLocalActionHighlights.handler.push.build([
+                {
+                    uuid,
+                    href,
+                    def: {
+                        textPopup: comment ? {
+                            text: comment, // multiline
+                            dir: "ltr", // TODO
+                            lang: "en", // TODO
+                        } : undefined,
+                        selectionInfo,
+                        color: newColor,
+                        group: "annotation",
+                        drawType: convertDrawTypeToNumber(drawType),
+                    },
+                },
+            ]));
         }
     } else {
         // error sync between hightlight data array and annotation array
@@ -79,9 +96,23 @@ function* annotationUpdate(action: readerActions.annotation.update.TAction) {
 function* annotationPush(action: readerActions.annotation.push.TAction) {
 
     debug(`annotationPush : [${JSON.stringify(action.payload, null, 4)}]`);
-    const {payload: {uuid, locatorExtended: {locator: {href}, selectionInfo}, color, drawType}} = action;
+    const {payload: {comment, uuid, locatorExtended: {locator: {href}, selectionInfo}, color, drawType}} = action;
 
-    yield* putTyped(readerLocalActionHighlights.handler.push.build([{ uuid, href, def: { selectionInfo, color, group: "annotation", drawType: convertDrawTypeToNumber(drawType) } }]));
+    yield* putTyped(readerLocalActionHighlights.handler.push.build([{
+        uuid,
+        href,
+        def: {
+            textPopup: comment ? {
+                text: comment, // multiline
+                dir: "ltr", // TODO
+                lang: "en", // TODO
+            } : undefined,
+            selectionInfo,
+            color,
+            group: "annotation",
+            drawType: convertDrawTypeToNumber(drawType),
+        },
+    }]));
 }
 
 function* annotationPop(action: readerActions.annotation.pop.TAction) {
@@ -246,8 +277,25 @@ function* readerStart() {
     yield* putTyped(readerLocalActionHighlights.handler.pop.build(annotationsUuids));
 
     const annotationsHighlighted: IHighlightHandlerState[] = annotations.map(
-        ([_, { uuid, locatorExtended: { locator: { href }, selectionInfo }, color, drawType}]) =>
-            ({ uuid, href, def: { selectionInfo, color, group: "annotation", drawType: convertDrawTypeToNumber(drawType) }} satisfies IHighlightHandlerState));
+        ([_, { uuid, locatorExtended: { locator: { href }, selectionInfo }, color, drawType, comment }]) =>
+            (
+            {
+                uuid,
+                href,
+                def: {
+                    textPopup: comment ? {
+                        text: comment,
+                        dir: "ltr", // TODO
+                        lang: "en", // TODO
+                    } : undefined,
+                    selectionInfo,
+                    color,
+                    group: "annotation",
+                    drawType: convertDrawTypeToNumber(drawType),
+                },
+            } satisfies IHighlightHandlerState
+            ),
+        );
     // yield* putTyped(readerLocalActionHighlights.handler.push.build(annotationsHighlighted));
 
     debug(`${annotationsHighlighted.length} annotation(s) to draw`);
@@ -263,6 +311,11 @@ function* readerStart() {
                     uuid: bookmark.uuid,
                     href: bookmark.locator.href,
                     def: {
+                        textPopup: bookmark.name ? {
+                            text: bookmark.name, // multiline
+                            dir: "ltr", // TODO
+                            lang: "en", // TODO
+                        } : undefined,
                         selectionInfo: {
                             // @ts-expect-error not sure why??!
                             textFragment: undefined,

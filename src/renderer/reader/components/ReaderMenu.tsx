@@ -16,7 +16,7 @@ import * as stylesDropDown from "readium-desktop/renderer/assets/styles/componen
 import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
-
+import { v4 as uuidv4 } from "uuid";
 import classNames from "classnames";
 import * as React from "react";
 import FocusLock from "react-focus-lock";
@@ -92,7 +92,6 @@ import { rgbToHex } from "readium-desktop/common/rgb";
 import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/components/ImportAnnotationsDialog";
 import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderMenuProps {
@@ -1524,7 +1523,62 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number }> = (props) 
 
     const submitBookmark = (textValue: string) => {
 
-        dispatch(readerActions.bookmark.update.build({ ...bookmark, name: textValue }));
+        // dispatch(readerActions.bookmark.update.build({ ...bookmark, name: textValue }));
+
+        dispatch(readerActions.bookmark.pop.build(bookmark));
+        dispatch(readerLocalActionHighlights.handler.pop.build([
+            {
+                uuid: bookmark.uuid,
+            },
+        ]));
+
+        const b = { ...bookmark, uuid: uuidv4(), name: textValue } satisfies IBookmarkState;
+
+        dispatch(readerActions.bookmark.push.build(b));
+        dispatch(readerLocalActionHighlights.handler.push.build([
+            {
+                uuid: b.uuid,
+                href: bookmark.locator.href,
+                def: {
+                    textPopup: b.name ? {
+                        text: b.name, // multiline
+                        dir: "ltr", // TODO
+                        lang: "en", // TODO
+                    } : undefined,
+                    selectionInfo: {
+                        textFragment: undefined,
+                        rangeInfo: bookmark.locator.locations.rangeInfo || {
+                            startContainerElementCssSelector: bookmark.locator.locations.cssSelector,
+                            startContainerElementCFI: undefined,
+                            startContainerElementXPath: undefined,
+                            startContainerChildTextNodeIndex: -1,
+                            startOffset: -1,
+                            endContainerElementCssSelector: bookmark.locator.locations.cssSelector,
+                            endContainerElementCFI: undefined,
+                            endContainerElementXPath: undefined,
+                            endContainerChildTextNodeIndex: -1,
+                            endOffset: -1,
+                            cfi: undefined,
+                        },
+                        cleanBefore: bookmark.locator.text?.before || "",
+                        cleanText: bookmark.locator.text?.highlight || bookmark.locator.title || b.name,
+                        cleanAfter: bookmark.locator.text?.after || "",
+                        rawBefore: bookmark.locator.text?.beforeRaw || "",
+                        rawText: bookmark.locator.text?.highlightRaw || bookmark.locator.title || b.name,
+                        rawAfter: bookmark.locator.text?.afterRaw || "",
+                    },
+                    color: {red:  52, green: 152, blue: 219},
+                    group: "bookmark",
+                    drawType: 6,
+                },
+            },
+        ]));
+
+        // const currentLocation = yield* selectTyped((state: IReaderRootState) => state.reader.locator);
+        // const href1 = currentLocation?.locator?.href;
+        // const href2 = currentLocation?.secondWebViewHref;
+        // dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
+
         setItemToEdit(-1);
     };
 
