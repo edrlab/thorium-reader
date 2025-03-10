@@ -164,6 +164,8 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
         ]));
     }, [dispatch]);
 
+    const toasty = React.useCallback((msg: string) => dispatch(toastActions.openRequest.build(ToastType.Success, msg)), [dispatch]);
+
     const addBookmark = React.useCallback((bookmark: IBookmarkStateWithoutUUID) => {
 
         if (ttsState !== TTSStateEnum.STOPPED ||
@@ -227,9 +229,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
             dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
         }
 
-    }, [dispatch, defaultDrawView, currentLocation]);
-
-    const toasty = React.useCallback((msg: string) => dispatch(toastActions.openRequest.build(ToastType.Success, msg)), [dispatch]);
+    }, [dispatch, defaultDrawView, currentLocation, ttsState, mediaOverlaysState, __, toasty]);
 
     const toggleBookmark = React.useCallback((fromKeyboard?: boolean) => {
 
