@@ -17,7 +17,7 @@ import { readerActions, toastActions } from "readium-desktop/common/redux/action
 import { ToastType } from "readium-desktop/common/models/toast";
 import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 
-import { highlightsDrawMargin } from "@r2-navigator-js/electron/renderer";
+import { highlightsDrawMargin, MediaOverlaysStateEnum, TTSStateEnum } from "@r2-navigator-js/electron/renderer";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 import { HighlightDrawTypeBackground, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
@@ -191,8 +191,28 @@ function* newLocatorEditAndSaveTheNote(locatorExtended: MiniLocatorExtended): Sa
 }
 
 function* annotationButtonTrigger(_action: readerLocalActionAnnotations.trigger.TAction) {
+
+    const ttsState = yield* selectTyped((state: IReaderRootState) => state.reader.tts.state);
+    const mediaOverlaysState = yield* selectTyped((state: IReaderRootState) => state.reader.mediaOverlay.state);
+
+    if (ttsState !== TTSStateEnum.STOPPED ||
+        mediaOverlaysState !== MediaOverlaysStateEnum.STOPPED
+    ) {
+        yield* putTyped(
+            toastActions.openRequest.build(
+                ToastType.Error,
+                `${getTranslator().__("reader.tts.stop")} / ${getTranslator().__("reader.media-overlays.stop")}`,
+            ),
+        );
+        return;
+    }
+
     const defaultDrawView = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_defaultDrawView);
-    if (defaultDrawView === "hide") { // NOT "margin" or "annotation"
+    if (defaultDrawView === "hide"
+        // SKIP ENTIRELY, see ABOVE
+        // ttsState === TTSStateEnum.STOPPED &&
+        // mediaOverlaysState === MediaOverlaysStateEnum.STOPPED
+    ) { // NOT "margin" or "annotation"
         yield* putTyped(readerLocalActionSetConfig.build({ annotation_defaultDrawView: "annotation" }));
 
         const currentLocation = yield* selectTyped((state: IReaderRootState) => state.reader.locator);

@@ -17,7 +17,7 @@ import * as RemoveBookMarkIcon from "readium-desktop/renderer/assets/icons/Bookm
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState, IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { isLocatorVisible } from "@r2-navigator-js/electron/renderer";
+import { isLocatorVisible, MediaOverlaysStateEnum, TTSStateEnum } from "@r2-navigator-js/electron/renderer";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { IBookmarkState, IBookmarkStateWithoutUUID } from "readium-desktop/common/redux/states/bookmark";
 import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
@@ -29,7 +29,7 @@ import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { registerKeyboardListener, unregisterKeyboardListener } from "readium-desktop/renderer/common/keyboard";
 import { DEBUG_KEYBOARD } from "readium-desktop/common/keyboard";
 import { ReadiumElectronBrowserWindow } from "@r2-navigator-js/electron/renderer/webview/state";
-import { readerLocalActionHighlights } from "../../redux/actions";
+import { readerLocalActionHighlights, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../../redux/actions";
 
 export interface IProps {
     shortcutEnable: boolean;
@@ -84,6 +84,12 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
     // const selectionIsNew = useSelector((state: IReaderRootState) => state.reader.locator.selectionIsNew);
     const { bookmark: bookmarksQueueState, locator: locatorExtended } = useSelector((state: IReaderRootState) => state.reader, equalFn);
     // const selectionIsNew = locatorExtended.selectionIsNew;
+
+    const defaultDrawView = useSelector((state: IReaderRootState) => state.reader.config.annotation_defaultDrawView);
+    const currentLocation = useSelector((state: IReaderRootState) => state.reader.locator);
+
+    const ttsState = useSelector((state: IReaderRootState) => state.reader.tts.state);
+    const mediaOverlaysState = useSelector((state: IReaderRootState) => state.reader.mediaOverlay.state);
 
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const isDivina = React.useMemo(() => isDivinaFn(r2Publication), [r2Publication]);
@@ -157,7 +163,17 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
             },
         ]));
     }, [dispatch]);
+
     const addBookmark = React.useCallback((bookmark: IBookmarkStateWithoutUUID) => {
+
+        if (ttsState !== TTSStateEnum.STOPPED ||
+            mediaOverlaysState !== MediaOverlaysStateEnum.STOPPED
+        ) {
+            // ToastType.Error
+            toasty(`${__("reader.tts.stop")} / ${__("reader.media-overlays.stop")}`);
+            return;
+        }
+
         dispatch(readerActions.bookmark.push.build(bookmark));
         // console.log("...bookmark.locator.locations.rangeInfo", JSON.stringify(bookmark.locator.locations.rangeInfo, null, 4));
         // if (bookmark.locator.locations.rangeInfo)
@@ -199,7 +215,20 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                 },
             },
         ]));
-    }, [dispatch]);
+
+        if (defaultDrawView === "hide"
+            // SKIP ENTIRELY, see ABOVE
+            // ttsState === TTSStateEnum.STOPPED &&
+            // mediaOverlaysState === MediaOverlaysStateEnum.STOPPED
+        ) { // NOT "margin" or "annotation"
+            dispatch(readerLocalActionSetConfig.build({ annotation_defaultDrawView: "annotation" }));
+            const href1 = currentLocation?.locator?.href;
+            const href2 = currentLocation?.secondWebViewHref;
+            dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
+        }
+
+    }, [dispatch, defaultDrawView, currentLocation]);
+
     const toasty = React.useCallback((msg: string) => dispatch(toastActions.openRequest.build(ToastType.Success, msg)), [dispatch]);
 
     const toggleBookmark = React.useCallback((fromKeyboard?: boolean) => {
