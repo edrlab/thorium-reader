@@ -398,6 +398,8 @@
             "captionsDescription": "Απλοποιημένη προβολή κειμένου με ελάχιστη εφαρμογή στυλ μορφοποίησης.",
             "disableContinuousPlay": "Απενεργοποίηση συνεχούς αναπαραγωγής",
             "disableContinuousPlayDescription": "Μη αυτόματη αναπαραγωγή επόμενου αντικειμένου, παύση αμέσως μετά την αναπαραγωγή του τρέχοντος.",
+            "ignoreAndUseTTS": "",
+            "ignoreAndUseTTSDescription": "",
             "next": "Επόμενο Readaloud",
             "pause": "Παύση Readaloud",
             "play": "Έναρξη Readaloud",

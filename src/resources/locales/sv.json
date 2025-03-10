@@ -398,6 +398,8 @@
             "captionsDescription": "Förenklad textvy med minimal formatering.",
             "disableContinuousPlay": "Inaktivera kontinuerlig uppläsning",
             "disableContinuousPlayDescription": "Läs inte automatiskt upp nästa objekt. Pausa efter att det aktuella objektet har lästs upp.",
+            "ignoreAndUseTTS": "",
+            "ignoreAndUseTTSDescription": "",
             "next": "Nästa",
             "pause": "Pausa",
             "play": "Läs upp",

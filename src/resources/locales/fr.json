@@ -398,6 +398,8 @@
             "captionsDescription": "Affichage du texte simplifié avec un formatage minimal des légendes.",
             "disableContinuousPlay": "Désactiver la progression automatique",
             "disableContinuousPlayDescription": "Ne pas jouer automatiquement l'élément audio suivant, faire une pause immediatement après la fin de l'audio en cours.",
+            "ignoreAndUseTTS": "Ignorer l'enregistrement audio, utiliser la voix de synthèse",
+            "ignoreAndUseTTSDescription": "Ignorer EPUB Media Overlays, lire avec la synthèse vocale",
             "next": "Suivant",
             "pause": "Mettre en pause",
             "play": "Lire",

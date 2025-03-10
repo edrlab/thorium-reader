@@ -398,6 +398,8 @@
             "captionsDescription": "Vereenvoudigde tekstweergave met minimale stijl onderschriften.",
             "disableContinuousPlay": "Schakel doorlopend afspelen uit",
             "disableContinuousPlayDescription": "Speel niet automatisch het volgende item af, pauzeer onmiddellijk nadat het huidige item is afgespeeld.",
+            "ignoreAndUseTTS": "",
+            "ignoreAndUseTTSDescription": "",
             "next": "Volgende Voorlezen",
             "pause": "Pauzeer Voorlezen",
             "play": "Speel Voorlezen",

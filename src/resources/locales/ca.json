@@ -398,6 +398,8 @@
             "captionsDescription": "Vista de text simplificada amb estil de llegenda mínim.",
             "disableContinuousPlay": "",
             "disableContinuousPlayDescription": "",
+            "ignoreAndUseTTS": "",
+            "ignoreAndUseTTSDescription": "",
             "next": "Sigüent (Lectura en veu alta)",
             "pause": "Pausar (Lectura en veu alta)",
             "play": "Reproduir (Lectura en veu alta)",

@@ -398,6 +398,8 @@
             "captionsDescription": "عرض مبسَّط للنص مع الحد الأدنى لتصميم التسميات التوضيحية.",
             "disableContinuousPlay": "",
             "disableContinuousPlayDescription": "",
+            "ignoreAndUseTTS": "",
+            "ignoreAndUseTTSDescription": "",
             "next": "القراءة التالية بصوت عالٍ",
             "pause": "إيقاف القراءة بصوت عالٍ مؤقتاً",
             "play": "تشغيل القراءة بصوت عالٍ",

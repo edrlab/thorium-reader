@@ -655,7 +655,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
 
     // : Pick<ReaderConfig, "ttsEnableOverlayMode" | "mediaOverlaysEnableCaptionsMode" | "ttsAndMediaOverlaysDisableContinuousPlay" | "mediaOverlaysEnableSkippability" | "ttsEnableSentenceDetection">
     const config = useReaderConfigAll();
-    const { ttsHighlightStyle, ttsHighlightStyle_WORD, ttsHighlightColor, ttsHighlightColor_WORD, mediaOverlaysEnableCaptionsMode: moCaptions, ttsEnableOverlayMode: ttsCaptions, ttsAndMediaOverlaysDisableContinuousPlay: disableContinuousPlay, mediaOverlaysEnableSkippability: skippability, ttsEnableSentenceDetection: splitTTStext } = config;
+    const { ttsHighlightStyle, ttsHighlightStyle_WORD, ttsHighlightColor, ttsHighlightColor_WORD, mediaOverlaysEnableCaptionsMode: moCaptions, ttsEnableOverlayMode: ttsCaptions, ttsAndMediaOverlaysDisableContinuousPlay: disableContinuousPlay, mediaOverlaysEnableSkippability: skippability, mediaOverlaysIgnoreAndUseTTS, ttsEnableSentenceDetection: splitTTStext } = config;
     const set = useSaveReaderConfigDebounced();
 
     const ttsTogglePlayResume = (func: () => void) => {
@@ -736,6 +736,21 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                 //     set({ ttsEnableSentenceDetection: !splitTTStext });
                 // });
                 set({ ttsEnableSentenceDetection: !splitTTStext });
+            },
+        });
+    } else {
+        options.push({
+            id: "ignoreMO",
+            name: "ignoreMO",
+            label: `${__("reader.media-overlays.ignoreAndUseTTS")}`,
+            description: `${__("reader.media-overlays.ignoreAndUseTTSDescription")}`,
+            checked: mediaOverlaysIgnoreAndUseTTS,
+            onChange: () => {
+                // see readerConfig.ts Redux Saga readerConfigChanged (TTS STOP)
+                // ttsTogglePlayResume(() => {
+                //     set({ ttsEnableSentenceDetection: !splitTTStext });
+                // });
+                set({ mediaOverlaysIgnoreAndUseTTS: !mediaOverlaysIgnoreAndUseTTS });
             },
         });
     }

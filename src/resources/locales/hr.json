@@ -398,6 +398,8 @@
             "captionsDescription": "",
             "disableContinuousPlay": "",
             "disableContinuousPlayDescription": "",
+            "ignoreAndUseTTS": "",
+            "ignoreAndUseTTSDescription": "",
             "next": "Čitaj naglas sljedeće",
             "pause": "Pauziraj čitanje naglas",
             "play": "Započni čitanje naglas",

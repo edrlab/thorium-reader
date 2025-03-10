@@ -566,7 +566,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                         <button
                                                             className={stylesReader.menu_button}
                                                             onClick={(e) => {
-                                                                const forceTTS = e.shiftKey && e.altKey;
+                                                                const forceTTS = e.shiftKey && e.altKey ||
+                                                                    this.props.readerConfig.mediaOverlaysIgnoreAndUseTTS;
                                                                 this.setState({ forceTTS });
                                                                 if (!forceTTS && this.props.publicationHasMediaOverlays) {
                                                                     this.props.handleMediaOverlaysPlay();

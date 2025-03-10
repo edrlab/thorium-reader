@@ -398,6 +398,8 @@
             "captionsDescription": "簡化的文字視圖，具有最小的標題樣式。",
             "disableContinuousPlay": "停用連續播放",
             "disableContinuousPlayDescription": "不自動播放下一個項目，目前項目播放完畢後立即暫停。",
+            "ignoreAndUseTTS": "",
+            "ignoreAndUseTTSDescription": "",
             "next": "朗讀下一段",
             "pause": "暫停朗讀",
             "play": "開始朗讀",
