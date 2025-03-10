@@ -93,11 +93,13 @@ export interface ReaderConfigBooleans {
     ttsEnableOverlayMode: boolean;
 }
 
-export interface IReaderSettingsMenuState {
+export interface IReaderConfigSettingsMenuState {
     readerDockingMode: "full" | "left" | "right";
+    readerSettingsSection: string; // TODO enum ?// default : isDivina ? "tab-divina" : isPdf ? "tab-pdfzoom" : "tab-display",
+    readerMenuSection: string; // TODO enum ? // default : tab-toc
 }
 
-export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans, IAnnotationReaderConfigState, IReaderSettingsMenuState, ReaderTTSMediaOverlay {
+export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans, IAnnotationReaderConfigState, IReaderConfigSettingsMenuState, ReaderTTSMediaOverlay {
     ttsHighlightStyle: number;
     ttsHighlightStyle_WORD: number;
     ttsHighlightColor: IColor;
@@ -113,3 +115,10 @@ export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans,
 //     docSelector: string;
 //     publicationIdentifier: string;
 // }
+
+
+// Dialog/Dock Reader menu or settings state
+export interface IReaderDialogOrDockSettingsMenuState {
+    id: string,
+    edit: boolean,
+}

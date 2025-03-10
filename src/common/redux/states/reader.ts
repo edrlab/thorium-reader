@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IReaderSettingsMenuState, ReaderConfig, ReaderTTSMediaOverlay } from "readium-desktop/common/models/reader";
+import { IReaderConfigSettingsMenuState, ReaderConfig, ReaderTTSMediaOverlay } from "readium-desktop/common/models/reader";
 import { FONT_ID_DEFAULT } from "readium-desktop/utils/fontList";
 import { IAnnotationReaderConfigState, IColor } from "./renderer/annotation";
 import { HighlightDrawTypeBackground, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
@@ -35,8 +35,10 @@ export const readerConfigInitialStateAnnotation: IAnnotationReaderConfigState = 
     annotation_defaultDrawView: "annotation",
 };
 
-export const readerConfigInitialStateReaderDockingMode: IReaderSettingsMenuState = {
+export const readerConfigInitialStateReaderDockingMode: IReaderConfigSettingsMenuState = {
     readerDockingMode: "full",
+    readerMenuSection: "tab-toc",
+    readerSettingsSection: "tab-display",
 };
 
 export const readerConfigInitialState: ReaderConfig = {

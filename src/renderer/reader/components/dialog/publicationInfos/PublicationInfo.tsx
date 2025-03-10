@@ -33,7 +33,7 @@ export const PublicationInfoReaderWithRadix: React.FC<React.PropsWithChildren<{ 
     const defaultOpen = false;
 
     // const dispatch = useDispatch();
-    const open = useSelector((state: IReaderRootState) => state.dialog.open);
+    const open = useSelector((state: IReaderRootState) => state.dialog.open && state.dialog.type === DialogTypeName.PublicationInfoReader);
     const data = useSelector((state: IReaderRootState) =>
         state.dialog.type === DialogTypeName.PublicationInfoReader
             ? state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader]
