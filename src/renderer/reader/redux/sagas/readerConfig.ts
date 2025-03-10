@@ -13,7 +13,6 @@ import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysEnableCaptionsMode, 
     ttsSentenceDetectionEnable, ttsAndMediaOverlaysManualPlayNext, ttsSkippabilityEnable, ttsStop,
     ttsHighlightStyle,
     mediaOverlaysStop,
-    mediaOverlaysPlay,
 } from "@r2-navigator-js/electron/renderer";
 
 import { readerLocalActionReader, readerLocalActionSetConfig } from "../actions";
