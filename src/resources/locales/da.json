@@ -398,6 +398,8 @@
             "captionsDescription": "Simpel tekstvisning med minimal styling af billedtekster.",
             "disableContinuousPlay": "Deaktiver kontinuerlig afspilning",
             "disableContinuousPlayDescription": "Afspil ikke automatisk næste del. Sæt på pause efter at den nuværende del er afspillet.",
+            "ignoreAndUseTTS": "",
+            "ignoreAndUseTTSDescription": "",
             "next": "Næste oplæsnings-stykke",
             "pause": "Pause oplæsning",
             "play": "Start oplæsning",

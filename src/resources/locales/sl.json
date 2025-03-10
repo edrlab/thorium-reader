@@ -398,6 +398,8 @@
             "captionsDescription": "Poenostavljen prikaz besedila z minimalnim oblikovanjem napisov.",
             "disableContinuousPlay": "Onemogoči neprekinjeno predvajanje",
             "disableContinuousPlayDescription": "Ne predvajaj samodejno naslednjega predmeta, začasno ustavi predvajanje trenutnega elementa.",
+            "ignoreAndUseTTS": "",
+            "ignoreAndUseTTSDescription": "",
             "next": "Naslednje glasovno branje",
             "pause": "Premor glasovnega branja",
             "play": "Predvajaj glasovno branje",

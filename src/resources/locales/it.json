@@ -398,6 +398,8 @@
             "captionsDescription": "Visualizzazione del testo semplificata con uno stile didascalia minimo.",
             "disableContinuousPlay": "Disattivare la riproduzione continua",
             "disableContinuousPlayDescription": "Non riprodurre automaticamente l'elemento successivo, ma mettere in pausa subito dopo la fine della riproduzione dell'elemento corrente.",
+            "ignoreAndUseTTS": "",
+            "ignoreAndUseTTSDescription": "",
             "next": "Prossima lettura ad alta voce",
             "pause": "Metti in pausa la lettura ad alta voce",
             "play": "Riproduci la lettura ad alta voce",

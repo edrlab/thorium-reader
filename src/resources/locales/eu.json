@@ -398,6 +398,8 @@
             "captionsDescription": "Testuaren ikuspegi sinplifikatua, gutxieneko epigrafeen estiloarekin.",
             "disableContinuousPlay": "",
             "disableContinuousPlayDescription": "",
+            "ignoreAndUseTTS": "",
+            "ignoreAndUseTTSDescription": "",
             "next": "Hurrengoa (ozenki irakurtzea)",
             "pause": "Geldiarazi (ozenki irakurri)",
             "play": "Erreproduzitu (ozenki irakurtzea)",

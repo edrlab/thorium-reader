@@ -398,6 +398,8 @@
             "captionsDescription": "Упрощенный вид текста с минимальным оформлением подписей.",
             "disableContinuousPlay": "",
             "disableContinuousPlayDescription": "",
+            "ignoreAndUseTTS": "",
+            "ignoreAndUseTTSDescription": "",
             "next": "Далее Чтение вслух",
             "pause": "Пауза Чтение вслух",
             "play": "Играть Чтение вслух",

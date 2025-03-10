@@ -398,6 +398,8 @@
             "captionsDescription": "Simplified text view with minimal captions styling.",
             "disableContinuousPlay": "Disable continuous play",
             "disableContinuousPlayDescription": "Do not automatically play the next item, pause immediately after the current item has finished playing.",
+            "ignoreAndUseTTS": "Ignore pre-recorded audio, use TTS",
+            "ignoreAndUseTTSDescription": "Ignore EPUB Media Overlays, read with Text To Speech instead",
             "next": "Next Readaloud",
             "pause": "Pause Readaloud",
             "play": "Play Readaloud",

@@ -398,6 +398,8 @@
             "captionsDescription": "Vereinfachte Textansicht mit minimalem Untertitel-Styling.",
             "disableContinuousPlay": "Deaktiviere automatisches Abspielen",
             "disableContinuousPlayDescription": "Das nächste Element wird nicht automatisch abgespielt, sondern die Wiedergabe wird unmittelbar nach Beendigung des aktuellen Elements angehalten.",
+            "ignoreAndUseTTS": "",
+            "ignoreAndUseTTSDescription": "",
             "next": "Nächstes Vorlesen",
             "pause": "Vorlesen pausieren",
             "play": "Vorlesen",

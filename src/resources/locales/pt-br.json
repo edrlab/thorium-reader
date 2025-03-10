@@ -398,6 +398,8 @@
             "captionsDescription": "Visualização de texto simplificada com estilo mínimo de legendas.",
             "disableContinuousPlay": "Desativar a reprodução contínua",
             "disableContinuousPlayDescription": "Não reproduza automaticamente o próximo item, pare imediatamente após o item atual terminado a reprodução.",
+            "ignoreAndUseTTS": "",
+            "ignoreAndUseTTSDescription": "",
             "next": "Próxima narração",
             "pause": "Pausar narração",
             "play": "Tocar narração",

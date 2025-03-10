@@ -398,6 +398,8 @@
             "captionsDescription": "",
             "disableContinuousPlay": "Zakázat souvislé přehrávání",
             "disableContinuousPlayDescription": "",
+            "ignoreAndUseTTS": "",
+            "ignoreAndUseTTSDescription": "",
             "next": "",
             "pause": "",
             "play": "",

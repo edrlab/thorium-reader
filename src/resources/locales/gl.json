@@ -398,6 +398,8 @@
             "captionsDescription": "Vista de texto simplificada con estilo de subtítulos mínimo.",
             "disableContinuousPlay": "",
             "disableContinuousPlayDescription": "",
+            "ignoreAndUseTTS": "",
+            "ignoreAndUseTTSDescription": "",
             "next": "Seguinte (Lectura en voz alta)",
             "pause": "Pausar (Lectura en voz alta)",
             "play": "Reproducir (Lectura en voz alta)",

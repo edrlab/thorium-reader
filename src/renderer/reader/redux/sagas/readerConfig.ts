@@ -12,6 +12,7 @@ import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysEnableCaptionsMode, 
     mediaOverlaysPause, mediaOverlaysResume, readiumCssUpdate, reloadContent, ttsOverlayEnable, ttsPlay,
     ttsSentenceDetectionEnable, ttsAndMediaOverlaysManualPlayNext, ttsSkippabilityEnable, ttsStop,
     ttsHighlightStyle,
+    mediaOverlaysStop,
 } from "@r2-navigator-js/electron/renderer";
 
 import { readerLocalActionReader, readerLocalActionSetConfig } from "../actions";
@@ -75,6 +76,40 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
         ttsOverlayEnable(readerConfig.ttsEnableOverlayMode);
     }
 
+    if (isNotNil(payload.mediaOverlaysIgnoreAndUseTTS)) {
+
+        const r2PublicationHasMediaOverlays = yield* selectTyped((state: IReaderRootState) => state.reader.info.navigator.r2PublicationHasMediaOverlays);
+        const mediaOverlaysState = yield* selectTyped((state: IReaderRootState) => state.reader.mediaOverlay.state);
+        const moWasPlaying = r2PublicationHasMediaOverlays && mediaOverlaysState !== MediaOverlaysStateEnum.STOPPED;
+        const ttsState = yield* selectTyped((state: IReaderRootState) => state.reader.tts.state);
+        const ttsWasPlaying = ttsState !== TTSStateEnum.STOPPED;
+
+        console.log("r2PublicationHasMediaOverlays", r2PublicationHasMediaOverlays);
+        console.log("ttsWasPlaying -- ttsState !== TTSStateEnum.STOPPED", ttsState !== TTSStateEnum.STOPPED);
+        console.log("moWasPlaying -- mediaOverlaysState !== MediaOverlaysStateEnum.STOPPED", mediaOverlaysState !== MediaOverlaysStateEnum.STOPPED);
+
+        if (moWasPlaying) {
+            mediaOverlaysStop();
+            // TODO: calling raw ttsPlay() or mediaOverlaysPlay() doesn't work here, after STOP we should invoke this.props.handleMediaOverlaysPlay() or this.props.handleTTSPlay() see ReaderHeader.tsx / Reader.tsx
+            // setTimeout(() => {
+            //     if (payload.mediaOverlaysIgnoreAndUseTTS) {
+            //         ttsPlay(parseFloat(readerConfig.ttsPlaybackRate), readerConfig.ttsVoices);
+            //     } else {
+            //         mediaOverlaysPlay(parseFloat(readerConfig.mediaOverlaysPlaybackRate));
+            //     }
+            // }, 300);
+        } else if (ttsWasPlaying) {
+            ttsStop();
+            // TODO: calling raw ttsPlay() or mediaOverlaysPlay() doesn't work here, after STOP we should invoke this.props.handleMediaOverlaysPlay() or this.props.handleTTSPlay() see ReaderHeader.tsx / Reader.tsx
+            // setTimeout(() => {
+            //     if (!payload.mediaOverlaysIgnoreAndUseTTS) {
+            //         ttsPlay(parseFloat(readerConfig.ttsPlaybackRate), readerConfig.ttsVoices);
+            //     } else {
+            //         mediaOverlaysPlay(parseFloat(readerConfig.mediaOverlaysPlaybackRate));
+            //     }
+            // }, 300);
+        }
+    }
 
     if (isNotNil(payload.mediaOverlaysEnableCaptionsMode) || isNotNil(payload.mediaOverlaysEnableSkippability) || isNotNil(payload.mediaOverlaysPlaybackRate)) {
 

@@ -77,6 +77,7 @@ export const readerConfigInitialState: ReaderConfig = {
     },
 
     mediaOverlaysEnableSkippability: true,
+    mediaOverlaysIgnoreAndUseTTS: false,
     ttsEnableSentenceDetection: true,
     mediaOverlaysEnableCaptionsMode: false,
     ttsEnableOverlayMode: false,

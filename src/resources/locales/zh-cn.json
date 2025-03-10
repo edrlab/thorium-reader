@@ -398,6 +398,8 @@
             "captionsDescription": "具有最少字幕样式的简化文本视图。",
             "disableContinuousPlay": "禁用连续播放",
             "disableContinuousPlayDescription": "当前项播放结束后立即暂停，不自动播放下一项内容。",
+            "ignoreAndUseTTS": "",
+            "ignoreAndUseTTSDescription": "",
             "next": "朗读下一段",
             "pause": "暂停朗读",
             "play": "开始朗读",

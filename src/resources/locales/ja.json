@@ -398,6 +398,8 @@
             "captionsDescription": "字幕のスタイルを最小限にした、シンプルなテキスト表示",
             "disableContinuousPlay": "連続再生を無効に",
             "disableContinuousPlayDescription": "次の項目を自動再生せずに、現在の項目の再生が終了したらすぐに一時停止する。",
+            "ignoreAndUseTTS": "",
+            "ignoreAndUseTTSDescription": "",
             "next": "次に進む（朗読）",
             "pause": "一時停止（朗読）",
             "play": "再生（朗読）",
