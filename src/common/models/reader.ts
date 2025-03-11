@@ -8,7 +8,7 @@
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import { IAnnotationReaderConfigState } from "../redux/states/renderer/annotation";
+import { TDrawType, TDrawView } from "../redux/states/renderer/annotation";
 
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 
@@ -19,6 +19,10 @@ export enum ReaderMode {
 
 export interface ReaderTTSMediaOverlay {
     ttsPlaybackRate: string;
+
+    // no need to be persisted in defaultConfig
+    // cf ReaderSettings.tsx -> SaveResetApplyPreset function
+    // cf configSetDefault.ts action READER_DEFAULT_CONFIG_SET_REQUEST
     ttsVoices: SpeechSynthesisVoice[],
 
     mediaOverlaysPlaybackRate: string,
@@ -97,7 +101,22 @@ export interface IReaderSettingsMenuState {
     readerDockingMode: "full" | "left" | "right";
 }
 
-export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans, IAnnotationReaderConfigState, IReaderSettingsMenuState, ReaderTTSMediaOverlay {
+export interface IAnnotationReaderConfigState {
+    annotation_popoverNotOpenOnNoteTaking: boolean;
+    annotation_defaultColor: IColor;
+    annotation_defaultDrawType: TDrawType;
+    annotation_defaultDrawView: TDrawView;
+}
+
+export interface IBookmarkReaderConfigState {
+
+    // no need to be persisted in defaultConfig
+    // cf ReaderSettings.tsx -> SaveResetApplyPreset function
+    // cf configSetDefault.ts action READER_DEFAULT_CONFIG_SET_REQUEST
+    bookmark_totalcount: number;
+}
+
+export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans, IAnnotationReaderConfigState, IReaderSettingsMenuState, ReaderTTSMediaOverlay, IBookmarkReaderConfigState {
     ttsHighlightStyle: number;
     ttsHighlightStyle_WORD: number;
     ttsHighlightColor: IColor;

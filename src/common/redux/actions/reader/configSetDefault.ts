@@ -28,10 +28,12 @@ export function build(config: ReaderConfig = readerConfigInitialState):
     if (isNotNil(configCopy["annotation_defaultColor"])) {
         configCopy["annotation_defaultColor"] = { ...configCopy["annotation_defaultColor"] };
     }
+    delete configCopy.bookmark_totalcount;
+
     return {
         type: ID,
         payload: {
-            config,
+            config: configCopy,
         },
     };
 }

@@ -6,15 +6,15 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IAnnotationCreator } from "../../states/creator";
+import { INoteCreator } from "../../states/creator";
 import { v4 as uuidv4 } from "uuid";
 
 export const ID = "CREATOR_SET";
 
-export interface Payload extends IAnnotationCreator {
+export interface Payload extends INoteCreator {
 }
 
-export function build(name: string, type: IAnnotationCreator["type"]): Action<typeof ID, Payload> {
+export function build(name: string, type: INoteCreator["type"]): Action<typeof ID, Payload> {
 
     return {
         type: ID,

@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export interface IAnnotationCreator {
+export interface INoteCreator {
     id: string,
     type: "Organization" | "Person",
     name?: string,

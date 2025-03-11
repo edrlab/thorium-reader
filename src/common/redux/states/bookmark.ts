@@ -7,6 +7,7 @@
 
 import { Locator } from "@r2-navigator-js/electron/common/locator";
 import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
+import { INoteCreator } from "./creator";
 
 export type TBookmarkState = TPQueueState<number, IBookmarkState>;
 
@@ -14,6 +15,9 @@ export interface IBookmarkState {
     uuid: string;
     name: string;
     locator: Locator;
+    modified?: number;
+    created: number;
+    creator?: INoteCreator;
 }
 
-export type IBookmarkStateWithoutUUID = Partial<Pick<IBookmarkState, "uuid">> & Pick<IBookmarkState, "name" | "locator">;
+export type IBookmarkStateWithoutUUID = Partial<Pick<IBookmarkState, "uuid">> & Omit<IBookmarkState, "uuid">;

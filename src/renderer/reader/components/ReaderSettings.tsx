@@ -1439,18 +1439,19 @@ const SaveResetApplyPreset = () => {
 
     const cb = React.useCallback(() => {
 
-        const { ttsVoices: __ttsVoiceUNUSED, ...readerDefaultConfigCopyWithoutTTSVoice} = readerDefaultConfig;
-        setReaderConfig(readerDefaultConfigCopyWithoutTTSVoice);
+        // CF src/common/models/reader.ts
+        const { ttsVoices: __ttsVoiceUNUSED, bookmark_totalcount: __bookmark_totalcountUNUSED, ...readerDefaultConfigWithoutSomeDefaultKeys} = readerDefaultConfig;
+        setReaderConfig(readerDefaultConfigWithoutSomeDefaultKeys);
 
         if (allowCustomCheckboxChecked) {
             if (publisherConfigOverrided) {
-                setPublisherConfig(readerDefaultConfigCopyWithoutTTSVoice);
+                setPublisherConfig(readerDefaultConfigWithoutSomeDefaultKeys);
             } else {
                 dispatch(readerLocalActionReader.allowCustom.build(false));
             }
         } else {
             if (publisherConfigOverrided) {
-                setPublisherConfig(readerDefaultConfigCopyWithoutTTSVoice);
+                setPublisherConfig(readerDefaultConfigWithoutSomeDefaultKeys);
                 dispatch(readerLocalActionReader.allowCustom.build(true));
             } else {
                 // nothing to do

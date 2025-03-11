@@ -8,7 +8,7 @@
 import { type Reducer } from "redux";
 
 import { creatorActions } from "../actions";
-import { IAnnotationCreator } from "../states/creator";
+import { INoteCreator } from "../states/creator";
 import { v4 as uuidv4 } from "uuid";
 
 const username = "";
@@ -18,7 +18,7 @@ const username = "";
 //     // ignore
 // }
 
-const initialState: IAnnotationCreator = {
+const initialState: INoteCreator = {
     id: uuidv4(),
     type: "Organization",
     name: username,
@@ -27,7 +27,7 @@ const initialState: IAnnotationCreator = {
 function creatorReducer_(
     state = initialState,
     action: creatorActions.set.TAction,
-): IAnnotationCreator {
+): INoteCreator {
 
     switch (action.type) {
         case creatorActions.set.ID:

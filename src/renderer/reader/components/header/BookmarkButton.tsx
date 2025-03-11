@@ -30,6 +30,7 @@ import { registerKeyboardListener, unregisterKeyboardListener } from "readium-de
 import { DEBUG_KEYBOARD } from "readium-desktop/common/keyboard";
 import { ReadiumElectronBrowserWindow } from "@r2-navigator-js/electron/renderer/webview/state";
 import { readerLocalActionHighlights, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../../redux/actions";
+import { useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 
 export interface IProps {
     shortcutEnable: boolean;
@@ -86,6 +87,8 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
     // const selectionIsNew = locatorExtended.selectionIsNew;
 
     const defaultDrawView = useSelector((state: IReaderRootState) => state.reader.config.annotation_defaultDrawView);
+    const bookmarkTotalCount = useSelector((state: IReaderRootState) => state.reader.config.bookmark_totalcount);
+    const setReaderConfig = useSaveReaderConfig();
     const currentLocation = useSelector((state: IReaderRootState) => state.reader.locator);
 
     const ttsState = useSelector((state: IReaderRootState) => state.reader.tts.state);
@@ -100,7 +103,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
 
     const allBookmarks = React.useMemo(() => bookmarksQueueState.map(([, v]) => v), [bookmarksQueueState]);
     const allBookmarksForCurrentLocationHref = React.useMemo(() => allBookmarks.filter((bookmark) => bookmark.locator.href === locatorExtended.locator.href), [allBookmarks, locatorExtended]);
-    const [bookmarkSelected, bookmarkSelectedIndex] = React.useMemo(() => {
+    const bookmarkSelected = React.useMemo(() => {
 
         let index = undefined;
         if (isEpubNavigator) {
@@ -118,9 +121,9 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
             index = allBookmarksForCurrentLocationHref.length ? 0 : -1;
         }
         if (index > -1) {
-            return [allBookmarksForCurrentLocationHref[index], index];
+            return allBookmarksForCurrentLocationHref[index];
         }
-        return [undefined, undefined];
+        return undefined;
     }, [allBookmarksForCurrentLocationHref, locatorExtended, isAudiobook, isEpubNavigator]);
 
     let bookmarkIcon: EBookmarkIcon = EBookmarkIcon.NEUTRAL;
@@ -243,14 +246,15 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                 !fromKeyboard &&
                 bookmarkSelected
             ) {
-                toasty(`${__("catalog.delete")} - ${__("reader.marks.bookmarks")} [${allBookmarks.length - bookmarkSelectedIndex}] ${bookmarkSelected.name ? `(${bookmarkSelected.name})` : ""}`);
+                toasty(`${__("catalog.delete")} - ${bookmarkSelected.name}`);
                 deleteBookmark(bookmarkSelected);
                 return ;
             }
 
             if (!bookmarkSelected) {
 
-                let name: string | undefined;
+                const bookmarkId = bookmarkTotalCount + 1;
+                let name: string = `${__("reader.marks.bookmarks")} [${bookmarkId}]`;
                 if (locatorExtended.locator.text?.highlight) {
                     name = locatorExtended.locator.text.highlight;
                 } else if (locatorExtended.selectionInfo?.cleanText) {
@@ -271,7 +275,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                 }
 
                 // reader.navigation.bookmarkTitle
-                const msg = `${__("catalog.addTagsButton")} - ${__("reader.marks.bookmarks")} [${allBookmarks.length ? allBookmarks.length + 1 : 1}] ${name ? ` (${name})` : ""}`;
+                const msg = `${__("catalog.addTagsButton")} - ${name}`;
                 // this.setState({bookmarkMessage: msg});
                 toasty(msg);
 
@@ -282,8 +286,9 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                 addBookmark({
                     locator: locatorExtended.locator,
                     name,
+                    created: (new Date()).getTime(),
                 });
-
+                setReaderConfig({bookmark_totalcount: bookmarkId});
             }
 
         } else {
@@ -298,12 +303,13 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                     addBookmark({
                         locator: locatorExtended.locator,
                         name,
+                        created: (new Date()).getTime(),
                     });
                 }
             }
         }
     }, [
-        __, addBookmark, allBookmarks, deleteBookmark, isDivina, isNavigator, isPdf, locatorExtended.audioPlaybackInfo, locatorExtended.locator, locatorExtended.selectionInfo?.cleanText, locatorExtended.selectionInfo?.rangeInfo, toasty, bookmarkSelected, bookmarkSelectedIndex,
+        __, addBookmark, deleteBookmark, isDivina, isNavigator, isPdf, locatorExtended.audioPlaybackInfo, locatorExtended.locator, locatorExtended.selectionInfo?.cleanText, locatorExtended.selectionInfo?.rangeInfo, toasty, bookmarkSelected, bookmarkTotalCount, setReaderConfig,
     ],
     );
 

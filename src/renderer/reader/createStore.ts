@@ -97,6 +97,19 @@ export const createStoreFromDi = (preloadedState: Partial<IReaderRootState>): St
         (newConfig as any).ttsVoice = null;
         flag = true;
     }
+    if (newConfig.bookmark_totalcount === undefined) {
+
+        console.log("MIGRATION !! bookmark_totalcount not set migrate from defaultConfig value=", newConfig.bookmark_totalcount);
+        newConfig.bookmark_totalcount = defaultConfig.bookmark_totalcount;
+        flag = true;
+    }
+    const bookmarkLength = store.getState().reader.bookmark?.length;
+    if (newConfig.bookmark_totalcount < bookmarkLength) {
+
+        console.log("bookmark_totalcount was badly initialized, was", newConfig.bookmark_totalcount, "now initialized to", bookmarkLength); 
+        newConfig.bookmark_totalcount = bookmarkLength;
+        flag = true;
+    }
 
 
     if (flag) {

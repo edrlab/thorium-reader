@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IReaderSettingsMenuState, ReaderConfig, ReaderTTSMediaOverlay } from "readium-desktop/common/models/reader";
+import { IAnnotationReaderConfigState, IBookmarkReaderConfigState, IReaderSettingsMenuState, ReaderConfig, ReaderTTSMediaOverlay } from "readium-desktop/common/models/reader";
 import { FONT_ID_DEFAULT } from "readium-desktop/utils/fontList";
-import { IAnnotationReaderConfigState, IColor } from "./renderer/annotation";
+import { IColor } from "./renderer/annotation";
 import { HighlightDrawTypeBackground, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
 
 export const DEFAULT_COLOR_ANNOTATION: IColor = {red: 235, green: 150, blue: 148};
@@ -37,6 +37,10 @@ export const readerConfigInitialStateAnnotation: IAnnotationReaderConfigState = 
 
 export const readerConfigInitialStateReaderDockingMode: IReaderSettingsMenuState = {
     readerDockingMode: "full",
+};
+
+export const readerConfigInitialStateBookmark: IBookmarkReaderConfigState = {
+    bookmark_totalcount: 0,
 };
 
 export const readerConfigInitialState: ReaderConfig = {
@@ -85,4 +89,5 @@ export const readerConfigInitialState: ReaderConfig = {
     ...readerConfigInitialStateAnnotation,
     ...readerConfigInitialStateReaderDockingMode,
     ...readerConfigInitialStateTTSMediaOverlay,
+    ...readerConfigInitialStateBookmark,
 };
