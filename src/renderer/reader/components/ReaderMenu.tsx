@@ -2630,7 +2630,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </Tabs.Content>
 
-                    <Tabs.Content value="tab-landmark" tabIndex={-1} id={"readermenu-tab-landmark"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                    <Tabs.Content value="tab-landmark" tabIndex={-1} id={"reader-menu-tab-landmark"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             {r2Publication.Landmarks &&

@@ -108,7 +108,7 @@ export const createStoreFromDi = (preloadedState: Partial<IReaderRootState>): St
     }
     if (newConfig.readerMenuSection === undefined) {
 
-        console.log("MIGRATION !! readerSettingsSection not set migrate from defaultConfig value=", newConfig.readerMenuSection);
+        console.log("MIGRATION !! readerMenuSection not set migrate from defaultConfig value=", newConfig.readerMenuSection);
         newConfig.readerMenuSection = defaultConfig.readerMenuSection;
         flag = true;
     }
