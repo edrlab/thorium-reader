@@ -28,6 +28,8 @@ export function build(config: ReaderConfig = readerConfigInitialState):
     if (isNotNil(configCopy["annotation_defaultColor"])) {
         configCopy["annotation_defaultColor"] = { ...configCopy["annotation_defaultColor"] };
     }
+    delete config.readerSettingsSection;
+    delete config.readerMenuSection;
     return {
         type: ID,
         payload: {

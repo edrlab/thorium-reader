@@ -95,7 +95,10 @@ export interface ReaderConfigBooleans {
 
 export interface IReaderConfigSettingsMenuState {
     readerDockingMode: "full" | "left" | "right";
+
+    // not persisted in defaultConfig, see SaveResetApplyPreset in ReaderSettings.tsx
     readerSettingsSection: string; // TODO enum ?// default : isDivina ? "tab-divina" : isPdf ? "tab-pdfzoom" : "tab-display",
+    // not persisted in defaultConfig, see SaveResetApplyPreset in ReaderSettings.tsx
     readerMenuSection: string; // TODO enum ? // default : tab-toc
 }
 
