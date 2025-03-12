@@ -74,10 +74,10 @@ const annotationsColorsLight_ = {
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderSettingsProps {
-    handleSettingsClick: (open: boolean) => void;
+    // handleSettingsClick: (open: boolean) => void;
 
-    tabValue: string;
-    setTabValue: (value: string) => void;
+    // tabValue: string;
+    // setTabValue: (value: string) => void;
 }
 
 interface IState {
@@ -1439,8 +1439,7 @@ const SaveResetApplyPreset = () => {
 
     const cb = React.useCallback(() => {
 
-        // CF src/common/models/reader.ts
-        const { ttsVoices: __ttsVoiceUNUSED, bookmark_totalcount: __bookmark_totalcountUNUSED, ...readerDefaultConfigWithoutSomeDefaultKeys} = readerDefaultConfig;
+        const { ttsVoices: __ttsVoiceUNUSED, readerSettingsSection: __readerSettingsSectionUNUSED, readerMenuSection: __readerMenuSectionUNUSED, ...readerDefaultConfigWithoutSomeDefaultKeys} = readerDefaultConfig;
         setReaderConfig(readerDefaultConfigWithoutSomeDefaultKeys);
 
         if (allowCustomCheckboxChecked) {
@@ -1496,20 +1495,24 @@ const SaveResetApplyPreset = () => {
 };
 
 export const ReaderSettings: React.FC<IBaseProps> = (props) => {
-    const { open } = props;
+    // const { open } = props;
     const { handleDivinaReadingMode, divinaReadingMode, divinaReadingModeSupported } = props;
-    const { tabValue, setTabValue } = props;
+    // const { tabValue, setTabValue } = props;
     const { isDivina, isPdf } = props;
     const isEpub = !isDivina && !isPdf;
-    const { doFocus } = props;
+    // const { doFocus } = props;
 
     const overridePublisherDefault = useSelector((state: IReaderRootState) => state.reader.allowCustomConfig.state);
     const dockingMode = useReaderConfig("readerDockingMode");
     const dockedMode = dockingMode !== "full";
     const setReaderConfig = useSaveReaderConfig();
-    const setDockingMode = React.useCallback((value: ReaderConfig["readerDockingMode"]) => {
+    const setDockingMode = (value: ReaderConfig["readerDockingMode"]) => {
         setReaderConfig({ readerDockingMode: value });
-    }, [setReaderConfig]);
+    };
+    const section = useReaderConfig("readerSettingsSection");
+    const setSection = (value: string) => {
+        setReaderConfig({ readerSettingsSection: value});
+    };
 
     const diffBetweenDefaultConfigAndConfig = useDiffBoolBetweenReaderConfigAndDefaultConfig();
 
@@ -1619,28 +1622,24 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
     const dockedModeRef = React.useRef<HTMLButtonElement>();
     const tabModeRef = React.useRef<HTMLDivElement>();
-    React.useEffect(() => {
-        console.log("ReaderSettings UPDATED");
+    // React.useEffect(() => {
+    //     console.log("ReaderSettings UPDATED");
 
-        if (dockingMode !== "full") {
+    //     if (dockingMode !== "full") {
 
-            setTimeout(() => {
-                if (dockedModeRef.current) {
-                    // TODO: is stealing focus here necessary? The logic here does not even check doFocus which is in the dependency array! Should this vary depending on keyboard or mouse interaction?
-                    console.log("Focus on docked mode combobox");
-                    dockedModeRef.current.focus();
-                } else {
-                    console.error("!no dockedModeRef on combobox");
-                }
-            }, 1);
+    //         setTimeout(() => {
+    //             if (dockedModeRef.current) {
+    //                 // TODO: is stealing focus here necessary? The logic here does not even check doFocus which is in the dependency array! Should this vary depending on keyboard or mouse interaction?
+    //                 console.log("Focus on docked mode combobox");
+    //                 dockedModeRef.current.focus();
+    //             } else {
+    //                 console.error("!no dockedModeRef on combobox");
+    //             }
+    //         }, 1);
 
-        }
+    //     }
 
-    }, [dockingMode, doFocus]);
-
-    if (!open) {
-        return <></>;
-    }
+    // }, [dockingMode, doFocus]);
 
     const sections: Array<React.JSX.Element> = [];
     const options: Array<{ id: number, value: string, name: string, disabled: boolean, svg: {} }> = [];
@@ -1738,11 +1737,11 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const setDockingModeLeftSide = () => setDockingMode("left");
     const setDockingModeRightSide = () => setDockingMode("right");
 
-    const optionSelected = options.find(({ value }) => value === tabValue)?.id;
+    const optionSelected = options.find(({ value }) => value === section)?.id;
     const optionDisabled = options.map(({ id, disabled }) => disabled ? id : -1).filter((v) => v > -1);
     const optionSelectedIsOnOptionDisabled = optionDisabled.includes(optionSelected);
     if (optionSelectedIsOnOptionDisabled) {
-        setTabValue("tab-display");
+        setSection("tab-display");
     }
 
 
@@ -1756,7 +1755,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         return (
             dockedMode ? <></> :
                 <div key="modal-header" className={stylesSettings.close_button_div}>
-                    <TabTitle value={tabValue} />
+                    <TabTitle value={section} />
                     <div>
                         <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.svg.left")} onClick={setDockingModeLeftSide}>
                             <SVG ariaHidden={true} svg={DockLeftIcon} />
@@ -1804,15 +1803,16 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             </div>
                         </div>
                         <SelectRef
+                            id="reader-settings-nav" 
                             items={options}
                             selectedKey={optionSelected}
                             disabledKeys={optionDisabled}
-                            svg={options.find(({ value }) => value === tabValue)?.svg}
+                            svg={options.find(({ value }) => value === section)?.svg}
                             onSelectionChange={(id) => {
                                 // console.log("selectionchange: ", id);
                                 const value = options.find(({ id: _id }) => _id === id)?.value;
                                 if (value) {
-                                    setTabValue(value);
+                                    setSection(value);
                                     setTimeout(() => {
                                         // TODO: is stealing focus here necessary? Should this vary depending on keyboard or mouse interaction?
                                         const elem = document.getElementById(`readerSettings_tabs-${value}`);
@@ -1844,10 +1844,10 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                     </>
                     : <></>
             }
-            <Tabs.Root value={tabValue} defaultValue={tabValue} onValueChange={dockedMode ? null : setTabValue} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
+            <Tabs.Root value={section} defaultValue={section} onValueChange={dockedMode ? null : setSection} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {
                     dockedMode ? <></> :
-                        <Tabs.List ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
+                        <Tabs.List id="reader-settings-nav" ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
                             {sections}
                         </Tabs.List>
                 }

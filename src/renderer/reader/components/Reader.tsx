@@ -88,6 +88,8 @@ import {
     readerLocalActionAnnotations,
     readerLocalActionDivina, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig,
     readerLocalActionSetLocator,
+    readerLocalActionToggleMenu,
+    readerLocalActionToggleSettings,
 } from "../redux/actions";
 import { TdivinaReadingMode, defaultReadingMode } from "readium-desktop/common/redux/states/renderer/divina";
 import {
@@ -108,6 +110,7 @@ import { translateContentFieldHelper } from "readium-desktop/common/services/tra
 import { getStore } from "../createStore";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 import { TDrawView } from "readium-desktop/common/redux/states/renderer/annotation";
+import { DockTypeName } from "readium-desktop/common/models/dock";
 
 const debug = debug_("readium-desktop:renderer:reader:components:Reader");
 debug("_");
@@ -223,12 +226,12 @@ interface IState {
 
     fxlZoomPercent: number;
     contentTableOpen: boolean;
-    settingsOpen: boolean;
+    // settingsOpen: boolean;
     shortcutEnable: boolean;
     landmarksOpen: boolean;
     landmarkTabOpen: number;
-    menuOpen: boolean;
-    doFocus: number;
+    // menuOpen: boolean;
+    // doFocus: number;
     fullscreen: boolean;
     zenMode: boolean;
     blackoutMask: boolean;
@@ -244,8 +247,8 @@ interface IState {
     pdfPlayerNumberOfPages: number | undefined;
 
     // openedSectionSettings: number | undefined;
-    openedSectionMenu: string;
-    annotationUUID: string;
+    // openedSectionMenu: string;
+    // annotationUUID: string;
 
     historyCanGoBack: boolean;
     historyCanGoForward: boolean;
@@ -322,12 +325,12 @@ class Reader extends React.Component<IProps, IState> {
             fxlZoomPercent: 0,
 
             contentTableOpen: false,
-            settingsOpen: false,
+            // settingsOpen: false,
             shortcutEnable: true,
             landmarksOpen: false,
             landmarkTabOpen: 0,
 
-            menuOpen: false,
+            // menuOpen: false,
             fullscreen: false,
             zenMode: false,
             blackoutMask: false,
@@ -341,8 +344,8 @@ class Reader extends React.Component<IProps, IState> {
             pdfPlayerNumberOfPages: undefined,
 
             // openedSectionSettings: undefined,
-            openedSectionMenu: "tab-toc",
-            annotationUUID: "",
+            // openedSectionMenu: "tab-toc",
+            // annotationUUID: "",
 
             divinaArrowEnabled: true,
             divinaContinousEqualTrue: false,
@@ -350,7 +353,7 @@ class Reader extends React.Component<IProps, IState> {
             historyCanGoBack: false,
             historyCanGoForward: false,
 
-            doFocus: 1,
+            // doFocus: 1,
         };
 
         this.handleTTSPlay = this.handleTTSPlay.bind(this);
@@ -374,8 +377,8 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardShowGotoPage = this.onKeyboardShowGotoPage.bind(this);
         this.onKeyboardShowTOC = this.onKeyboardShowTOC.bind(this);
 
-        this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
-        this.handleSettingsClick = this.handleSettingsClick.bind(this);
+        // this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
+        // this.handleSettingsClick = this.handleSettingsClick.bind(this);
         this.handleFullscreenClick = this.handleFullscreenClick.bind(this);
         this.handleReaderClose = this.handleReaderClose.bind(this);
         this.handleReaderDetach = this.handleReaderDetach.bind(this);
@@ -636,7 +639,8 @@ class Reader extends React.Component<IProps, IState> {
 
             console.log(`dispatchClick CLICK ACTION ... -- uuid: [${uuid}] handlerState: [${JSON.stringify(handlerState, null, 4)}]`);
 
-            this.handleMenuButtonClick(true, highlight.group === "annotation" ? "tab-annotation" : "tab-bookmark", true, uuid);
+            // this.handleMenuButtonClick(true, highlight.group === "annotation" ? "tab-annotation" : "tab-bookmark", true, uuid);
+            this.props.toggleMenu({open: true, section: highlight.group === "annotation" ? "tab-annotation" : "tab-bookmark", id: uuid, focus: true });
 
             if (href && handlerState.def.selectionInfo?.rangeInfo) {
                 this.handleLinkLocator({
@@ -658,6 +662,18 @@ class Reader extends React.Component<IProps, IState> {
             console.log("READER RELOAD KEYBOARD SHORTCUTS");
             this.unregisterAllKeyboardListeners();
             this.registerAllKeyboardListeners();
+        }
+        if (this.props.readerConfig.readerDockingMode === "full" && oldProps.menuOpen === true && this.props.menuOpen === false) {
+            this.setState({shortcutEnable: true});
+        }
+        if (this.props.readerConfig.readerDockingMode === "full" && oldProps.settingsOpen === true && this.props.settingsOpen === false) {
+            this.setState({shortcutEnable: true});
+        }
+        if (this.props.readerConfig.readerDockingMode === "full" && oldProps.menuOpen === false && this.props.menuOpen === true) {
+            this.setState({shortcutEnable: false});
+        }
+        if (this.props.readerConfig.readerDockingMode === "full" && oldProps.settingsOpen === false && this.props.settingsOpen === true) {
+            this.setState({shortcutEnable: false});
         }
         if (oldProps.readerConfig.readerDockingMode !== "full" && this.props.readerConfig.readerDockingMode === "full") {
             this.setState({shortcutEnable: false});
@@ -769,28 +785,28 @@ class Reader extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
 
         const readerMenuProps: IReaderMenuProps = {
-            open: this.state.menuOpen,
-            doFocus: this.state.doFocus,
+            // open: this.props.menuOpen,
+            // doFocus: this.state.doFocus,
             handleLinkClick: this.handleLinkClick,
             goToLocator: this.goToLocator,
-            toggleMenu: this.handleMenuButtonClick,
+            // toggleMenu: this.handleMenuButtonClick,
             focusMainAreaLandmarkAndCloseMenu: this.focusMainAreaLandmarkAndCloseMenu.bind(this),
             pdfToc: this.state.pdfPlayerToc,
             isPdf: this.props.isPdf,
-            openedSection: this.state.openedSectionMenu,
-            annotationUUID: this.state.annotationUUID,
-            resetAnnotationUUID: () => { this.setState({ annotationUUID: "" }); },
+            // openedSection: this.state.openedSectionMenu,
+            // annotationUUID: this.state.annotationUUID,
+            // resetAnnotationUUID: () => { this.setState({ annotationUUID: "" }); },
             pdfNumberOfPages: this.state.pdfPlayerNumberOfPages,
-            setOpenedSection: (v: string) => this.setState({ openedSectionMenu: v }),
+            // setOpenedSection: (v: string) => this.setState({ openedSectionMenu: v }),
         };
 
         const ReaderSettingsProps: IReaderSettingsProps = {
-            open: this.state.settingsOpen,
-            doFocus: this.state.doFocus,
+            // open: this.state.settingsOpen,
+            // doFocus: this.state.doFocus,
             // readerConfig: this.props.readerConfig,
             // handleSettingChange: this.handleSettingChange.bind(this),
             // handleIndexChange: this.handleIndexChange.bind(this),
-            toggleMenu: this.handleSettingsClick,
+            // toggleMenu: this.handleSettingsClick,
             // r2Publication: this.props.r2Publication,
             handleDivinaReadingMode: this.handleDivinaReadingMode.bind(this),
 
@@ -809,7 +825,7 @@ class Reader extends React.Component<IProps, IState> {
             setZenModeAndFXLZoom: (zen: boolean, fxlZoom: number) => {
                 this.setZenModeAndFXLZoom(zen, fxlZoom);
             },
-            searchEnable: this.props.searchEnable,
+            // searchEnable: this.props.searchEnable,
         };
 
         const isAudioBook = isAudiobookFn(this.props.r2Publication);
@@ -868,8 +884,8 @@ class Reader extends React.Component<IProps, IState> {
                 <ReaderHeader
                         shortcutEnable={this.state.shortcutEnable}
                         infoOpen={this.props.infoOpen}
-                        menuOpen={this.state.menuOpen}
-                        settingsOpen={this.state.settingsOpen}
+                        // menuOpen={this.props.menuOpen}
+                        // settingsOpen={this.state.settingsOpen}
 
                         handleTTSPlay={this.handleTTSPlay}
                         handleTTSResume={this.handleTTSResume}
@@ -888,8 +904,8 @@ class Reader extends React.Component<IProps, IState> {
                         handleMediaOverlaysPause={this.handleMediaOverlaysPause}
                         handleMediaOverlaysPlaybackRate={this.handleMediaOverlaysPlaybackRate}
 
-                        handleMenuClick={this.handleMenuButtonClick}
-                        handleSettingsClick={this.handleSettingsClick}
+                        // handleMenuClick={this.handleMenuButtonClick}
+                        // handleSettingsClick={this.handleSettingsClick}
                         fullscreen={this.state.fullscreen}
                         mode={this.props.readerMode}
                         // handleFullscreenClick={this.handleFullscreenClick}
@@ -948,7 +964,7 @@ class Reader extends React.Component<IProps, IState> {
                                 <div
                                     id="publication_viewport"
                                     // className={stylesReader.publication_viewport}
-                                    className={classNames(stylesReader.publication_viewport, (!this.state.zenMode && (this.state.settingsOpen || this.state.menuOpen)) ?
+                                    className={classNames(stylesReader.publication_viewport, (!this.state.zenMode && (this.props.settingsOpen || this.props.menuOpen)) ?
                                         (!this.props.isPdf ?
                                            this.props.readerConfig.readerDockingMode === "left" ? stylesReader.docked_left
                                             : this.props.readerConfig.readerDockingMode === "right" ? !this.props.readerConfig.paged ? stylesReader.docked_right_scrollable : stylesReader.docked_right
@@ -984,7 +1000,7 @@ class Reader extends React.Component<IProps, IState> {
                                             }
                                         }}
                                             title={this.props.__("reader.svg.left")}
-                                            className={(this.state.settingsOpen || this.state.menuOpen) ? (this.props.readerConfig.readerDockingMode === "left" ? stylesReaderFooter.navigation_arrow_docked_left :  stylesReaderFooter.navigation_arrow_left) : stylesReaderFooter.navigation_arrow_left}
+                                            className={(this.props.settingsOpen || this.props.menuOpen) ? (this.props.readerConfig.readerDockingMode === "left" ? stylesReaderFooter.navigation_arrow_docked_left :  stylesReaderFooter.navigation_arrow_left) : stylesReaderFooter.navigation_arrow_left}
                                             style={{ opacity: isPaginated ? "1" : "0"}}
                                         >
                                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
@@ -1048,7 +1064,7 @@ class Reader extends React.Component<IProps, IState> {
                                             }
                                         }}
                                             title={this.props.__("reader.svg.right")}
-                                            className={(this.state.settingsOpen || this.state.menuOpen) ? (this.props.readerConfig.readerDockingMode === "right" ? stylesReaderFooter.navigation_arrow_docked_right :  stylesReaderFooter.navigation_arrow_right) : stylesReaderFooter.navigation_arrow_right}
+                                            className={(this.props.settingsOpen || this.props.menuOpen) ? (this.props.readerConfig.readerDockingMode === "right" ? stylesReaderFooter.navigation_arrow_docked_right :  stylesReaderFooter.navigation_arrow_right) : stylesReaderFooter.navigation_arrow_right}
                                             style={{ opacity: isPaginated ? "1" : "0"}}
                                         >
                                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
@@ -1797,7 +1813,8 @@ class Reader extends React.Component<IProps, IState> {
         //     setTimeout(() => stealFocusDisable(false), 400);
         // }
 
-        this.handleMenuButtonClick(true, this.state.openedSectionMenu, true);
+        // this.handleMenuButtonClick(true, this.state.openedSectionMenu, true);
+        this.props.toggleMenu({open: true, id: this.props.readerConfig.readerDockingMode === "full" ? `reader-menu-${this.props.readerConfig.readerMenuSection}-trigger` : "reader-menu-docked-trigger", focus: true }); 
     };
     private onKeyboardFocusSettings = () => {
         if (!this.state.shortcutEnable) {
@@ -1806,7 +1823,8 @@ class Reader extends React.Component<IProps, IState> {
             }
             return;
         }
-        this.handleSettingsClick(true, true);
+        // this.handleSettingsClick(true, true);
+        this.props.toggleSettings({open: true, id: "reader-settings-nav", focus: true});
     };
 
     private onKeyboardFocusMain = () => {
@@ -2488,7 +2506,8 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        this.handleMenuButtonClick(true, "tab-gotopage", true);
+        // this.handleMenuButtonClick(true, "tab-gotopage", true);
+        this.props.toggleMenu({ open: true, section: "tab-gotopage", id: "reader-menu-tab-gotopage-input", focus: true });
     }
 
     private onKeyboardShowTOC() {
@@ -2505,7 +2524,8 @@ class Reader extends React.Component<IProps, IState> {
         //     setTimeout(() => stealFocusDisable(false), 400);
         // }
 
-        this.handleMenuButtonClick(true, "tab-toc");
+        // this.handleMenuButtonClick(true, "tab-toc");
+        this.props.toggleMenu({ open: true, section: "tab-toc", id: "reader-menu-tab-toc", focus: true });
 
         setTimeout(() => {
             const anchor = document.getElementById("headingFocus");
@@ -2518,25 +2538,32 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private showSearchResults() {
-        this.handleMenuButtonClick(true, "tab-search", true);
+        // this.handleMenuButtonClick(true, "tab-search", true);
+        this.props.toggleMenu({ open: true, section: "tab-search", id: "reader-menu-tab-search", focus: true });
     }
 
-    private handleMenuButtonClick(open?: boolean, openedSectionMenu?: string, doFocus?: boolean, annotationUUID?: string) {
-        console.log("handleMenuButtonClick", "menuOpen=", this.state.menuOpen ? "closeMenu" : "openMenu", open !== undefined ? `openFromParam=${open ? "openMenu" : "closeMenu"}` : "");
+    // private handleMenuButtonClick(open?: boolean, openedSectionMenu?: string, doFocus?: boolean, annotationUUID?: string) {
+    //     console.log("handleMenuButtonClick", "menuOpen=", this.props.menuOpen ? "closeMenu" : "openMenu", open !== undefined ? `openFromParam=${open ? "openMenu" : "closeMenu"}` : "");
 
-        const openToggle = !this.state.menuOpen;
-        const menuOpen = open !== undefined ? open : openToggle;
-        const shortcutEnable = (menuOpen && this.props.readerConfig.readerDockingMode === "full") ? false : true;
+    //     const openToggle = !this.props.menuOpen;
+    //     const menuOpen = open !== undefined ? open : openToggle;
+    //     const shortcutEnable = (menuOpen && this.props.readerConfig.readerDockingMode === "full") ? false : true;
 
-        this.setState({
-            menuOpen: menuOpen,
-            shortcutEnable: shortcutEnable,
-            settingsOpen: false,
-            openedSectionMenu: openedSectionMenu ? openedSectionMenu : this.state.openedSectionMenu,
-            doFocus: doFocus ? this.state.doFocus + 1 : this.state.doFocus,
-            annotationUUID: annotationUUID ? annotationUUID : "",
-        });
-    }
+    //     this.setState({
+    //         // menuOpen: menuOpen,
+    //         shortcutEnable: shortcutEnable,
+    //         settingsOpen: false,
+    //         openedSectionMenu: openedSectionMenu ? openedSectionMenu : this.state.openedSectionMenu,
+    //         doFocus: doFocus ? this.state.doFocus + 1 : this.state.doFocus,
+    //         annotationUUID: annotationUUID ? annotationUUID : "",
+    //     });
+
+    //     if (menuOpen) {
+    //         this.props.displayReaderMenu();
+    //     } else {
+    //         this.props.closeReaderMenu();
+    //     }
+    // }
 
     private saveReadingLocation(miniLocatorExtended: MiniLocatorExtended) {
         this.props.setMiniLocatorExtended(miniLocatorExtended);
@@ -2589,14 +2616,14 @@ class Reader extends React.Component<IProps, IState> {
 
     private closeMenu() {
 
-        if (this.state.menuOpen) {
-            this.handleMenuButtonClick(false);
+        if (this.props.menuOpen) {
+            this.props.toggleMenu({ open: false });
         }
     }
 
     private focusMainAreaLandmarkAndCloseMenu(deep: boolean) {
 
-        // if (this.state.menuOpen) {
+        // if (this.props.menuOpen) {
         //     this.handleMenuButtonClick(false);
         // }
 
@@ -2608,7 +2635,7 @@ class Reader extends React.Component<IProps, IState> {
         this.closeMenu();
         this.focusMainArea(deep, false);
         // if (this.fastLinkRef?.current) {
-        //     // shortcutEnable must be true (see handleMenuButtonClick() above, and this.state.menuOpen))
+        //     // shortcutEnable must be true (see handleMenuButtonClick() above, and this.props.menuOpen))
         //     console.log("@@@@@@@@@@@@@@@");
         //     console.log();
 
@@ -2746,29 +2773,29 @@ class Reader extends React.Component<IProps, IState> {
         this.props.toggleFullscreen(!this.state.fullscreen);
         this.setState({ fullscreen: !this.state.fullscreen });
 
-        if (this.state.menuOpen) {
-            this.handleMenuButtonClick();
-        }
-        if (this.state.settingsOpen) {
-            this.handleSettingsClick();
-        }
+        // if (this.props.menuOpen) {
+            this.props.toggleMenu({open: false});
+        // }
+        // if (this.props.settingsOpen) {
+            this.props.toggleSettings({ open: false });
+        // }
     }
 
-    private handleSettingsClick(open?: boolean, doFocus?: boolean) {
-        console.log("HandleSettingsClick", "settingsOpen=", this.state.settingsOpen ? "closeSettings" : "openSettings", open !== undefined ? `openFromParam=${open ? "openSettings" : "closeSettings"}`: "");
+    // private handleSettingsClick(open?: boolean, doFocus?: boolean) {
+    //     console.log("HandleSettingsClick", "settingsOpen=", this.state.settingsOpen ? "closeSettings" : "openSettings", open !== undefined ? `openFromParam=${open ? "openSettings" : "closeSettings"}`: "");
 
-        const openToggle = !this.state.settingsOpen;
-        const settingsOpen = open !== undefined ? open : openToggle;
-        const shortcutEnable = (settingsOpen && this.props.readerConfig.readerDockingMode === "full") ? false : true;
+    //     const openToggle = !this.state.settingsOpen;
+    //     const settingsOpen = open !== undefined ? open : openToggle;
+    //     const shortcutEnable = (settingsOpen && this.props.readerConfig.readerDockingMode === "full") ? false : true;
 
-        this.setState({
-            settingsOpen,
-            shortcutEnable: shortcutEnable,
-            menuOpen: false,
-            doFocus: doFocus ? this.state.doFocus + 1 : this.state.doFocus,
-            // openedSectionSettings,
-        });
-    }
+    //     this.setState({
+    //         settingsOpen,
+    //         shortcutEnable: shortcutEnable,
+    //         // menuOpen: false,
+    //         doFocus: doFocus ? this.state.doFocus + 1 : this.state.doFocus,
+    //         // openedSectionSettings,
+    //     });
+    // }
     private hideAnnotationsForTTSorMOPlay() {
         if (this.props.readerConfig.annotation_defaultDrawView !== "hide") { // "margin" or "annotation"
             this.setState({ previousReaderConfigAnnotationDefaultDrawView: this.props.readerConfig.annotation_defaultDrawView });
@@ -3069,6 +3096,8 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         ttsVoices: state.reader.config.ttsVoices,
         mediaOverlaysPlaybackRate: state.reader.config.mediaOverlaysPlaybackRate,
         ttsPlaybackRate: state.reader.config.ttsPlaybackRate,
+        menuOpen: state.dialog.open && state.dialog.type === DialogTypeName.ReaderMenu || state.dock.open && state.dock.type === DockTypeName.ReaderMenu,
+        settingsOpen: state.dialog.open && state.dialog.type === DialogTypeName.ReaderSettings || state.dock.open && state.dock.type === DockTypeName.ReaderSettings,
 
         // Reader Lock Demo
         // lock: state.reader.lock,
@@ -3169,6 +3198,12 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         triggerAnnotationBtn: () => {
             dispatch(readerLocalActionAnnotations.trigger.build());
+        },
+        toggleMenu: (data: readerLocalActionToggleMenu.Payload) => {
+            dispatch(readerLocalActionToggleMenu.build(data));
+        },
+        toggleSettings: (data: readerLocalActionToggleSettings.Payload) => {
+            dispatch(readerLocalActionToggleSettings.build(data));
         },
     };
 };

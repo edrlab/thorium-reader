@@ -49,6 +49,7 @@ import { fifoReducer } from "readium-desktop/utils/redux-reducers/fifo.reducer";
 import { readerResourceCacheReducer } from "./resourceCache";
 import { readerLockReducer } from "./lock";
 import { imageClickReducer } from "./imageClick";
+import { dockReducer } from "readium-desktop/common/redux/reducers/dock";
 
 export const rootReducer = () => {
 
@@ -190,6 +191,7 @@ export const rootReducer = () => {
         annotationTagsIndex: annotationTagsIndexReducer,
         win: winReducer,
         dialog: dialogReducer,
+        dock: dockReducer,
         toast: toastReducer,
         keyboard: keyboardReducer,
         mode: winModeReducer,

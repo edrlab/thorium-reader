@@ -21,6 +21,10 @@ import { all as allTyped, put as putTyped, select as selectTyped, spawn as spawn
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { readerConfigInitialState, readerConfigInitialStateDefaultPublisher } from "readium-desktop/common/redux/states/reader";
 import { isNotNil } from "readium-desktop/utils/nil";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
+import { DockTypeName } from "readium-desktop/common/models/dock";
+import { dialogActions, dockActions } from "readium-desktop/common/redux/actions";
+import { IReaderDialogOrDockSettingsMenuState } from "readium-desktop/common/models/reader";
 
 function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaGenerator<void> {
 
@@ -42,6 +46,31 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
         ...payload,
     };
 
+    if (isNotNil(payload.readerDockingMode)) {
+        if (readerConfig.readerDockingMode === "full") {
+            if (yield* selectTyped((state: IReaderRootState) => state.dialog.open && (state.dialog.type === DialogTypeName.ReaderMenu || state.dialog.type === DialogTypeName.ReaderSettings))) {
+                // nothing
+            } else {
+                if (yield* selectTyped((state: IReaderRootState) => state.dock.open && (state.dock.type === DockTypeName.ReaderMenu || state.dock.type === DockTypeName.ReaderSettings))) {
+                    const {data, type} = yield* selectTyped((state: IReaderRootState) => state.dock);
+                    const dialogType = type === DockTypeName.ReaderMenu ? DialogTypeName.ReaderMenu : DialogTypeName.ReaderSettings;
+                    yield* putTyped(dialogActions.openRequest.build(dialogType, data));;
+                    yield* putTyped(dockActions.closeRequest.build());
+                }
+            }
+        } else {
+            if (yield* selectTyped((state: IReaderRootState) => state.dock.open && (state.dock.type === DockTypeName.ReaderMenu || state.dock.type === DockTypeName.ReaderSettings))) {
+                // nothing
+            } else {
+                if (yield* selectTyped((state: IReaderRootState) => state.dialog.open && (state.dialog.type === DialogTypeName.ReaderMenu || state.dialog.type === DialogTypeName.ReaderSettings))) {
+                    const {data, type} = yield* selectTyped((state: IReaderRootState) => state.dialog);
+                    const dockType = type === DialogTypeName.ReaderMenu ? DockTypeName.ReaderMenu : DockTypeName.ReaderSettings;
+                    yield* putTyped(dockActions.openRequest.build(dockType, data as IReaderDialogOrDockSettingsMenuState));;
+                    yield* putTyped(dialogActions.closeRequest.build());
+                }
+            }
+        }
+    }
 
     if (isNotNil(payload.mediaOverlaysEnableSkippability)) {
         mediaOverlaysEnableSkippability(readerConfig.mediaOverlaysEnableSkippability);
