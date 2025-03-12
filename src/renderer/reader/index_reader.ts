@@ -101,7 +101,7 @@ ipcRenderer.on(readerIpc.CHANNEL,
                         bookmark.created = created;
                     }
                     if (!bookmark.name) {
-                        bookmark.name = `bookmark_${bookmarkIndex}`; // TODO? Probably translation issue !? 
+                        bookmark.name = `${bookmarkIndex}`;
                     }
                 }
 
