@@ -308,7 +308,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
         } else {
 
             const href = locatorExtended.locator.href;
-            const name = isDivina ? href : isPdf ? (parseInt(href, 10) + 1).toString() : "";
+            const _name = name ? name : isDivina ? href : isPdf ? (parseInt(href, 10) + 1).toString() : "";
             if (href) {
 
                 if (bookmarkSelected) {
@@ -316,7 +316,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                 } else {
                     addBookmark({
                         locator: locatorExtended.locator,
-                        name,
+                        name: _name,
                         created: (new Date()).getTime(),
                     });
                 }
