@@ -30,7 +30,6 @@ import { registerKeyboardListener, unregisterKeyboardListener } from "readium-de
 import { DEBUG_KEYBOARD } from "readium-desktop/common/keyboard";
 import { ReadiumElectronBrowserWindow } from "@r2-navigator-js/electron/renderer/webview/state";
 import { readerLocalActionHighlights, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../../redux/actions";
-import { useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 
 export interface IProps {
     shortcutEnable: boolean;
@@ -87,8 +86,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
     // const selectionIsNew = locatorExtended.selectionIsNew;
 
     const defaultDrawView = useSelector((state: IReaderRootState) => state.reader.config.annotation_defaultDrawView);
-    const bookmarkTotalCount = 0;  //TODO: useSelector((state: IReaderRootState) => state.reader.config.bookmark_totalcount);
-    const setReaderConfig = useSaveReaderConfig();
+    const bookmarkTotalCount = useSelector((state: IReaderRootState) => state.reader.bookmarkTotalCount.state);
     const currentLocation = useSelector((state: IReaderRootState) => state.reader.locator);
 
     const ttsState = useSelector((state: IReaderRootState) => state.reader.tts.state);
@@ -288,8 +286,6 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                     name,
                     created: (new Date()).getTime(),
                 });
-                // TODO:
-                // setReaderConfig({bookmark_totalcount: bookmarkId});
             }
 
         } else {
@@ -310,7 +306,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
             }
         }
     }, [
-        __, addBookmark, deleteBookmark, isDivina, isNavigator, isPdf, locatorExtended.audioPlaybackInfo, locatorExtended.locator, locatorExtended.selectionInfo?.cleanText, locatorExtended.selectionInfo?.rangeInfo, toasty, bookmarkSelected, bookmarkTotalCount, setReaderConfig,
+        __, addBookmark, deleteBookmark, isDivina, isNavigator, isPdf, locatorExtended.audioPlaybackInfo, locatorExtended.locator, locatorExtended.selectionInfo?.cleanText, locatorExtended.selectionInfo?.rangeInfo, toasty, bookmarkSelected, bookmarkTotalCount,
     ],
     );
 

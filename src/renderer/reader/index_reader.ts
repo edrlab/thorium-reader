@@ -80,9 +80,20 @@ ipcRenderer.on(readerIpc.CHANNEL,
                 }
                 data.payload.annotationTagsIndex = pushTags({}, annotationTagsList);
 
+
                 const bookmarkList = data.payload.reader.bookmark || [];
-                let bookmarkIndex = 0; // TODO : data.payload.reader?.config?.bookmark_totalcount || 0;
+                const bookmarkListLength = bookmarkList.length;
+
+                if (!data.payload.reader.bookmarkTotalCount) {
+                    data.payload.reader.bookmarkTotalCount = {
+                        state: bookmarkListLength,
+                    };
+                } else if (data.payload.reader.bookmarkTotalCount.state < bookmarkListLength) {
+                    data.payload.reader.bookmarkTotalCount.state = bookmarkListLength;
+                }
+                let bookmarkIndex = 0;
                 for (const [created, bookmark] of bookmarkList) {
+                    bookmarkIndex = bookmarkIndex + 1;
                     if (!bookmark.created && created > bookmark.modified) {
                         bookmark.created = bookmark.modified;
                     }
@@ -90,7 +101,7 @@ ipcRenderer.on(readerIpc.CHANNEL,
                         bookmark.created = created;
                     }
                     if (!bookmark.name) {
-                        bookmark.name = `bookmark_${++bookmarkIndex}`; // TODO? Probably translation issue !? 
+                        bookmark.name = `bookmark_${bookmarkIndex}`; // TODO? Probably translation issue !? 
                     }
                 }
 

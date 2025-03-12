@@ -41,10 +41,13 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.disableRTLFlip.ID,
 
     publicationActions.readingFinished.ID,
+
+    // needed to forward event to other reader windows, already synchronised with persistence readerActions.setReduxState
     readerActions.bookmark.pop.ID,
     readerActions.bookmark.push.ID,
     readerActions.bookmark.update.ID,
 
+    // needed to forward event to other reader windows, already synchronised with persistence readerActions.setReduxState
     readerActions.annotation.pop.ID,
     readerActions.annotation.push.ID,
     readerActions.annotation.update.ID,

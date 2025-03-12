@@ -72,10 +72,12 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     themeActions.setTheme.ID,
     versionUpdateActions.notify.ID,
 
-    // readerActions.bookmark.pop.ID,
-    // readerActions.bookmark.push.ID,
-    // readerActions.bookmark.update.ID,
+    // needed to broadcast events to all reader windows,
+    readerActions.bookmark.pop.ID,
+    readerActions.bookmark.push.ID,
+    readerActions.bookmark.update.ID,
 
+    // needed to broadcast events to all reader windows,
     readerActions.annotation.pop.ID,
     readerActions.annotation.push.ID,
     readerActions.annotation.update.ID,

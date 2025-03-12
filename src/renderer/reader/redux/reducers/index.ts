@@ -50,6 +50,7 @@ import { readerResourceCacheReducer } from "./resourceCache";
 import { readerLockReducer } from "./lock";
 import { imageClickReducer } from "./imageClick";
 import { dockReducer } from "readium-desktop/common/redux/reducers/dock";
+import { readerBookmarkTotalCountReducer } from "readium-desktop/common/redux/reducers/reader/bookmarkTotalCount";
 
 export const rootReducer = () => {
 
@@ -63,6 +64,7 @@ export const rootReducer = () => {
             defaultConfig: readerDefaultConfigReducer,
             config: readerConfigReducer,
             allowCustomConfig: readerAllowCustomConfigReducer,
+            bookmarkTotalCount: readerBookmarkTotalCountReducer,
             transientConfig: readerTransientConfigReducer,// ReaderConfigPublisher
             info: readerInfoReducer,
             locator: readerLocatorReducer,

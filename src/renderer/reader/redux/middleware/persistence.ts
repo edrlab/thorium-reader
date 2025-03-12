@@ -70,6 +70,11 @@ export const reduxPersistMiddleware: Middleware
                     readerState.allowCustomConfig = nextState.reader.allowCustomConfig;
                     dispatchFlag = true;
                 }
+                if (!ramda.equals(prevState.reader.bookmarkTotalCount, nextState.reader.bookmarkTotalCount)) {
+
+                    readerState.bookmarkTotalCount = nextState.reader.bookmarkTotalCount;
+                    dispatchFlag = true;
+                }
                 if (dispatchFlag) {
 
                     dispatchSetReduxState(store, readerState);
