@@ -323,7 +323,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
             }
         }
     }, [
-        __, addBookmark, deleteBookmark, locatorExtended.locator, locatorExtended.selectionInfo.rangeInfo, isDivina, isNavigator, isPdf, toasty, bookmarkSelected, bookmarkTotalCount,
+        __, addBookmark, deleteBookmark, locatorExtended.locator, locatorExtended.selectionInfo?.rangeInfo, isDivina, isNavigator, isPdf, toasty, bookmarkSelected, bookmarkTotalCount,
     ],
     );
 
@@ -439,7 +439,14 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
 
     }, [allBookmarks, allBookmarksForCurrentLocationHref, locatorExtended, isEpubNavigator, webviewLoaded, isAudiobook]);
 
-    const textAreaRef = React.useRef<HTMLTextAreaElement>();
+    const bookmarkMaxLength = 1500;
+    const [textAreaValue, setTextAreaValue] = React.useState("");
+    const textAreaDefaultValueWhenEditing = React.useMemo(() => isBookmarkNeedEditing ? getBookmarkName(locatorExtended) : "", [isBookmarkNeedEditing, locatorExtended]);
+    React.useEffect(() => {
+        if (isBookmarkNeedEditing) {
+            setTextAreaValue(textAreaDefaultValueWhenEditing.slice(0, bookmarkMaxLength));
+        }
+    }, [isBookmarkNeedEditing, setTextAreaValue, textAreaDefaultValueWhenEditing]);
 
     // console.log("numberOfVisibleBookmarks", numberOfVisibleBookmarks);
     return <>
@@ -506,23 +513,30 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                 // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
                 // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
                 >
-                    <form className={stylesBookmarks.bookmark_edit_form}>
-                        <TextArea defaultValue={isBookmarkNeedEditing ? getBookmarkName(locatorExtended) : ""} name="editBookmark" wrap="hard" ref={textAreaRef}
-                            className={stylesBookmarks.bookmark_edit_form_textarea}
-                        />
-                        <div style={{ display: "flex", gap: "5px" }}>
+                    <form className={stylesBookmarks.bookmark_form}>
+                        <div style={{ backgroundColor: "var(--color-extralight-grey)"}}>
+
+                            <p>{locatorExtended.selectionInfo?.cleanText ? (locatorExtended.selectionInfo.cleanText.length > (200 - 3) ? `${locatorExtended.selectionInfo.cleanText.slice(0, 200)}...` : locatorExtended.selectionInfo.cleanText) : ""}</p>
+                            <div>
+                                <TextArea value={textAreaValue} name="editBookmark" wrap="hard"
+                                    className={stylesBookmarks.bookmark_form_textarea}
+                                    maxLength={bookmarkMaxLength} onChange={(a) => setTextAreaValue(a.currentTarget.value)}
+                                ></TextArea>
+                                <span style={{ fontSize: "10px", color: "var(--color-medium-grey)", position: "relative", left: "350px" }}>{textAreaValue.length}/{bookmarkMaxLength}</span>
+                            </div>
+                        </div>
+                        <div className={stylesBookmarks.bookmark_form_textarea_buttons}>
                             <Popover.Close className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")}>{__("dialog.cancel")}</Popover.Close>
                             <button type="submit"
                                 className={stylesButtons.button_primary_blue}
                                 aria-label={__("reader.marks.saveMark")}
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    const textareaValue = textAreaRef?.current?.value || "";
-                                    const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
-                                    if (textareaNormalize) {
+                                    const textareaNormalize = textAreaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
+                                    // if (textareaNormalize) {
                                         toggleBookmark(true, textareaNormalize);
                                         setIsBookmarkNeedEditing(false);
-                                    }
+                                    // }
                                 }}
                             >
                                 <SVG ariaHidden svg={SaveIcon} />
