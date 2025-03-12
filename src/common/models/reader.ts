@@ -98,10 +98,12 @@ export interface IReaderConfigSettingsMenuState {
 
     // not persisted in defaultConfig, see SaveResetApplyPreset in ReaderSettings.tsx
     // removed from defaultCopy in src/common/redux/actions/reader/configSetDefault.ts
+    // skipped in src/renderer/common/hooks/useReaderConfig.ts
     readerSettingsSection: string; // TODO enum ?// default : isDivina ? "tab-divina" : isPdf ? "tab-pdfzoom" : "tab-display",
 
     // not persisted in defaultConfig, see SaveResetApplyPreset in ReaderSettings.tsx
     // removed from defaultCopy in src/common/redux/actions/reader/configSetDefault.ts
+    // skipped in src/renderer/common/hooks/useReaderConfig.ts
     readerMenuSection: string; // TODO enum ? // default : tab-toc
 }
 
