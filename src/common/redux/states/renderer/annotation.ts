@@ -8,7 +8,7 @@
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 import { IPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
-import { IAnnotationCreator } from "../creator";
+import { INoteCreator } from "../creator";
 import { IReadiumAnnotation } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
 
@@ -87,7 +87,7 @@ export interface IAnnotationState {
     tags?: string[] | undefined;
     modified?: number;
     created: number;
-    creator?: IAnnotationCreator;
+    creator?: INoteCreator;
 }
 
 export type TAnnotationState = IQueueAnnotationState[];

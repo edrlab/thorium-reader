@@ -1656,7 +1656,14 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number }> = (props) 
                                     <button type="submit"
                                         className={stylesButtons.button_primary_blue}
                                         aria-label={__("reader.marks.saveMark")}
-                                        onClick={(e) => { e.preventDefault(); submitBookmark(textearearef?.current?.value || ""); }}
+                                        onClick={(e) => { 
+                                            e.preventDefault();
+                                            const textareaValue = textearearef?.current?.value || "";
+                                            const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
+                                            if (textareaNormalize) {
+                                                submitBookmark(textareaNormalize); 
+                                            }
+                                        }}
                                     >
                                         <SVG ariaHidden svg={SaveIcon} />
                                         {__("reader.marks.saveMark")}

@@ -19,6 +19,10 @@ export enum ReaderMode {
 
 export interface ReaderTTSMediaOverlay {
     ttsPlaybackRate: string;
+
+    // no need to be persisted in defaultConfig
+    // cf ReaderSettings.tsx -> SaveResetApplyPreset function
+    // cf configSetDefault.ts action READER_DEFAULT_CONFIG_SET_REQUEST
     ttsVoices: SpeechSynthesisVoice[],
 
     mediaOverlaysPlaybackRate: string,

@@ -39,7 +39,7 @@ import KeyboardSettings, { AdvancedTrigger } from "readium-desktop/renderer/libr
 import * as GearIcon from "readium-desktop/renderer/assets/icons/gear-icon.svg";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import debounce from "debounce";
-import { IAnnotationCreator } from "readium-desktop/common/redux/states/creator";
+import { INoteCreator } from "readium-desktop/common/redux/states/creator";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { ApiappHowDoesItWorkInfoBox } from "../dialog/ApiappAddForm";
 import * as RadioGroup from "@radix-ui/react-radio-group";
@@ -193,7 +193,7 @@ const SaveCreatorSettings: React.FC<{}> = () => {
 
     const onChangeDebounced = React.useMemo(() =>
         debounce(
-            (name: string, type: IAnnotationCreator["type"]) => dispatch(creatorActions.set.build(name, type))
+            (name: string, type: INoteCreator["type"]) => dispatch(creatorActions.set.build(name, type))
             , 1000)
         , [dispatch]);
     React.useEffect(() => {
