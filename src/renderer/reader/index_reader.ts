@@ -81,7 +81,7 @@ ipcRenderer.on(readerIpc.CHANNEL,
                 data.payload.annotationTagsIndex = pushTags({}, annotationTagsList);
 
                 const bookmarkList = data.payload.reader.bookmark || [];
-                let bookmarkIndex = data.payload.reader?.config?.bookmark_totalcount || 0;
+                let bookmarkIndex = 0; // TODO : data.payload.reader?.config?.bookmark_totalcount || 0;
                 for (const [created, bookmark] of bookmarkList) {
                     if (!bookmark.created && created > bookmark.modified) {
                         bookmark.created = bookmark.modified;

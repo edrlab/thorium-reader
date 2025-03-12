@@ -87,7 +87,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
     // const selectionIsNew = locatorExtended.selectionIsNew;
 
     const defaultDrawView = useSelector((state: IReaderRootState) => state.reader.config.annotation_defaultDrawView);
-    const bookmarkTotalCount = useSelector((state: IReaderRootState) => state.reader.config.bookmark_totalcount);
+    const bookmarkTotalCount = 0;  //TODO: useSelector((state: IReaderRootState) => state.reader.config.bookmark_totalcount);
     const setReaderConfig = useSaveReaderConfig();
     const currentLocation = useSelector((state: IReaderRootState) => state.reader.locator);
 
@@ -288,7 +288,8 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                     name,
                     created: (new Date()).getTime(),
                 });
-                setReaderConfig({bookmark_totalcount: bookmarkId});
+                // TODO:
+                // setReaderConfig({bookmark_totalcount: bookmarkId});
             }
 
         } else {
