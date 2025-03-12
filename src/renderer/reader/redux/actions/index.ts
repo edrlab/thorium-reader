@@ -17,8 +17,12 @@ import * as readerLocalActionReader from "./reader";
 import * as readerLocalActionSetResourceToCache from "./resourceCache";
 import * as readerLocalActionExportAnnotationSet from "./exportAnnotationSet";
 import * as readerLocalActionSetImageClick from "./setImgClick";
+import * as readerLocalActionToggleMenu from "./toggleMenu";
+import * as readerLocalActionToggleSettings from "./toggleSettings";
 
 export {
+    readerLocalActionToggleSettings,
+    readerLocalActionToggleMenu,
     readerLocalActionExportAnnotationSet,
     readerLocalActionSetResourceToCache,
     readerLocalActionAnnotations,

@@ -8,7 +8,7 @@
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import { IAnnotationReaderConfigState } from "../redux/states/renderer/annotation";
+import { TDrawType, TDrawView } from "../redux/states/renderer/annotation";
 
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 
@@ -93,14 +93,38 @@ export interface ReaderConfigBooleans {
     ttsEnableOverlayMode: boolean;
 }
 
-export interface IReaderSettingsMenuState {
+export interface IReaderConfigSettingsMenuState {
     readerDockingMode: "full" | "left" | "right";
+
+    // not persisted in defaultConfig, see SaveResetApplyPreset in ReaderSettings.tsx
+    // removed from defaultCopy in src/common/redux/actions/reader/configSetDefault.ts
+    // skipped in src/renderer/common/hooks/useReaderConfig.ts
+    readerSettingsSection: string; // TODO enum ?// default : isDivina ? "tab-divina" : isPdf ? "tab-pdfzoom" : "tab-display",
+
+    // not persisted in defaultConfig, see SaveResetApplyPreset in ReaderSettings.tsx
+    // removed from defaultCopy in src/common/redux/actions/reader/configSetDefault.ts
+    // skipped in src/renderer/common/hooks/useReaderConfig.ts
+    readerMenuSection: string; // TODO enum ? // default : tab-toc
 }
 
-export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans, IAnnotationReaderConfigState, IReaderSettingsMenuState, ReaderTTSMediaOverlay {
+export interface IAnnotationReaderConfigState {
+    annotation_popoverNotOpenOnNoteTaking: boolean;
+
+    // removed from defaultCopy in src/common/redux/actions/reader/configSetDefault.ts
+    annotation_defaultColor: IColor;
+
+    annotation_defaultDrawType: TDrawType;
+    annotation_defaultDrawView: TDrawView;
+}
+
+export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans, IAnnotationReaderConfigState, IReaderConfigSettingsMenuState, ReaderTTSMediaOverlay {
     ttsHighlightStyle: number;
     ttsHighlightStyle_WORD: number;
+
+    // see defaultCopy in src/common/redux/actions/reader/configSetDefault.ts
     ttsHighlightColor: IColor;
+
+    // see defaultCopy in src/common/redux/actions/reader/configSetDefault.ts
     ttsHighlightColor_WORD: IColor;
 }
 
@@ -113,3 +137,10 @@ export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans,
 //     docSelector: string;
 //     publicationIdentifier: string;
 // }
+
+
+// Dialog/Dock Reader menu or settings state
+export interface IReaderDialogOrDockSettingsMenuState {
+    id: string,
+    edit: boolean,
+}

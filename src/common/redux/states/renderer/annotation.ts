@@ -103,11 +103,4 @@ export type IAnnotationModeState = {
 
 export type TDrawView = "annotation" | "margin" | "hide";
 
-export interface IAnnotationReaderConfigState {
-    annotation_popoverNotOpenOnNoteTaking: boolean;
-    annotation_defaultColor: IColor;
-    annotation_defaultDrawType: TDrawType;
-    annotation_defaultDrawView: TDrawView;
-}
-
 export type TAnnotationTagsIndex = Record<string, number>;

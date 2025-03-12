@@ -8,6 +8,7 @@
 import * as apiActions from "./api/";
 import * as authActions from "./auth";
 import * as dialogActions from "./dialog/";
+import * as dockActions from "./dock/";
 import * as downloadActions from "./download/";
 import * as historyActions from "./history";
 import * as i18nActions from "./i18n/";
@@ -33,6 +34,7 @@ export {
     authActions,
     apiActions,
     dialogActions,
+    dockActions,
     i18nActions,
     netActions,
     readerActions,

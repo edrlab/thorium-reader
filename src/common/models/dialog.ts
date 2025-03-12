@@ -10,6 +10,7 @@ import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { IReaderDialogOrDockSettingsMenuState } from "./reader";
 
 interface IPubInfoState {
     publication?: TPublication;
@@ -43,9 +44,13 @@ export enum DialogTypeName {
     LsdReturnConfirm = "lsd-return-confirm",
     LsdRenewConfirm = "lsd-renew-confirm",
     AboutThorium = "about-thorium",
+    ReaderMenu = "reader-menu",
+    ReaderSettings = "reader-settings",
 }
 
 export interface DialogType {
+    [DialogTypeName.ReaderMenu]: IReaderDialogOrDockSettingsMenuState,
+    [DialogTypeName.ReaderSettings]: IReaderDialogOrDockSettingsMenuState,
     [DialogTypeName.FileImport]: {
         files: IFileImport[];
     };

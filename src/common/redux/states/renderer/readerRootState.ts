@@ -24,6 +24,7 @@ import { IMediaOverlayState } from "readium-desktop/renderer/reader/redux/state/
 import { IAllowCustomConfigState } from "readium-desktop/renderer/reader/redux/state/allowCustom";
 import { ICacheDocument } from "./resourceCache";
 import { IImageClickState } from "readium-desktop/renderer/reader/redux/state/imageClick";
+import { DockState } from "../dock";
 
 export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
@@ -32,7 +33,9 @@ export interface IReaderRootState extends IRendererCommonRootState {
     mode: ReaderMode;
     annotation: IAnnotationModeState;
     annotationTagsIndex: TAnnotationTagsIndex;
-    img: IImageClickState;
+    img: IImageClickState; // TODO: replace by dock/dialog state
+    dock: DockState;
+    // cf dialog state in common
 }
 
 export interface IReaderStateReader {

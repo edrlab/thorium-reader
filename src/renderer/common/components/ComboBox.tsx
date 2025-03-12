@@ -26,6 +26,7 @@ export interface MyComboBoxProps<T extends object>
     refInputEl?: React.Ref<HTMLInputElement>;
     placeholder?: string;
     customWidth?: number;
+    inputId?: string;
 }
 
 // function forwardRef<T extends object>(
@@ -57,7 +58,7 @@ export interface MyComboBoxProps<T extends object>
 // );
 
 export function ComboBox<T extends object>(
-    { label, description, errorMessage, children, svg, refInputEl, placeholder, customWidth, ...props }: MyComboBoxProps<T>,
+    { inputId, label, description, errorMessage, children, svg, refInputEl, placeholder, customWidth, ...props }: MyComboBoxProps<T>,
 ) {
 
     return (
@@ -69,7 +70,7 @@ export function ComboBox<T extends object>(
             }
             <Group className={classNames(StylesCombobox.my_combobox_container, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} style={{width: customWidth ? `${customWidth}px` : ""}}>
                 {svg ? <SVG ariaHidden svg={svg} /> : <></>}
-                <Input className={classNames(StylesCombobox.react_aria_Input, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} ref={refInputEl} placeholder={placeholder} />
+                <Input id={inputId} className={classNames(StylesCombobox.react_aria_Input, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} ref={refInputEl} placeholder={placeholder} />
                 {(!props.defaultItems || !!Array(...(props.defaultItems || [])).length) &&
                     <Button className={StylesCombobox.react_aria_Button}>
                         <SVG ariaHidden svg={ChevronDown} />

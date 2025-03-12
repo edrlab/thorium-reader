@@ -69,7 +69,7 @@ import { ReaderSettings, ReadingAudio } from "./ReaderSettings";
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
-import { readerLocalActionAnnotations, readerLocalActionSetConfig } from "../redux/actions";
+import { readerLocalActionAnnotations, readerLocalActionSetConfig, readerLocalActionToggleMenu, readerLocalActionToggleSettings } from "../redux/actions";
 import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { AnnotationEdit } from "./AnnotationEdit";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
@@ -77,6 +77,8 @@ import { VoiceSelection } from "./header/voiceSelection";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import { convertToSpeechSynthesisVoices, filterOnLanguage, getLanguages, getVoices, groupByLanguages, groupByRegions, ILanguages, IVoices, parseSpeechSynthesisVoices } from "readium-speech";
 import { BookmarkButton } from "./header/BookmarkButton";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
+import { DockTypeName } from "readium-desktop/common/models/dock";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -97,13 +99,13 @@ const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    menuOpen: boolean;
+    // menuOpen: boolean;
     infoOpen: boolean;
     shortcutEnable: boolean;
     mode?: ReaderMode;
-    settingsOpen: boolean;
-    handleMenuClick: (open?: boolean) => void;
-    handleSettingsClick: (open?: boolean) => void;
+    // settingsOpen: boolean;
+    // handleMenuClick: (open?: boolean) => void;
+    // handleSettingsClick: (open?: boolean) => void;
     fullscreen: boolean;
     // handleFullscreenClick: () => void;
 
@@ -157,7 +159,7 @@ interface IState {
     // fxlZoomPercent: number;
     forceTTS: boolean;
     ttsPopoverOpen: boolean;
-    tabValue: string;
+    // tabValue: string;
 
     voices: IVoices[];
 
@@ -202,7 +204,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             // fxlZoomPercent: this.props.ReaderSettingsProps.fxlZoomPercent,
             forceTTS: false,
             ttsPopoverOpen: false,
-            tabValue: this.props.ReaderSettingsProps.isDivina ? "tab-divina" : this.props.ReaderSettingsProps.isPdf ? "tab-pdfzoom" : "tab-display",
+            // tabValue: this.props.ReaderSettingsProps.isDivina ? "tab-divina" : this.props.ReaderSettingsProps.isPdf ? "tab-pdfzoom" : "tab-display",
 
             languages: [],
             voicesGroupByRegion: [],
@@ -390,11 +392,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         const { __ } = this.props;
 
         // TODO change this
-        const readerSettingsHeaderProps = {
+        // const readerSettingsHeaderProps = {
 
-            tabValue: this.state.tabValue,
-            setTabValue: (value: string) => this.setState({ tabValue: value}),
-        };
+            // tabValue: this.state.tabValue,
+            // setTabValue: (value: string) => this.setState({ tabValue: value}),
+        // };
 
         const playbackRate = [
             { id: 0, value: 0.5, name: "0.5x" },
@@ -473,6 +475,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
           );
 
         const isAudioBook = isAudiobookFn(this.props.r2Publication);
+
+
+        const appOverlayElement = document.getElementById("app-overlay");
 
         return (
             <nav
@@ -727,7 +732,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                             <SVG ariaHidden svg={HeadphoneIcon} className={this.state.ttsPopoverOpen ? stylesReaderHeader.active_svg : ""} />
                                                         </button>
                                                     </Popover.Trigger>
-                                                    <Popover.Portal>
+                                                    <Popover.Portal container={appOverlayElement}>
                                                         <Popover.Content style={{ zIndex: 100 }}>
                                                             <div className={stylesReaderHeader.Tts_popover_container}>
                                                                 <div style={{ paddingRight: 25 /* , borderRight: "1px solid var(--color-verylight-grey-alt)" */ }}>
@@ -863,7 +868,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 open={this.props.menuOpen}
                                 onOpenChange={(open) => {
                                     console.log("MENU DialogOnOpenChange", open);
-                                    this.props.handleMenuClick(open);
+                                    // this.props.handleMenuClick(open);
+
+                                    this.props.toggleMenu({ open });
                                     if (open) {
                                         // if (!this.props.isDivina  && !this.props.isPdf) {
                                         //     stealFocusDisable(true);
@@ -889,7 +896,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         <SVG ariaHidden={true} svg={TOCIcon} className={this.props.menuOpen ? stylesReaderHeader.active_svg : ""} />
                                     </button>
                                 </Dialog.Trigger>
-                                <Dialog.Portal>
+                                <Dialog.Portal container={appOverlayElement}>
                                     {
                                         isDockedMode ?
                                             <div
@@ -909,7 +916,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     isPdf={this.props.isPdf}
                                                     currentLocation={this.props.currentLocation}
                                                     // focusNaviguationMenu={this.focusNaviguationMenuButton}
-                                                    handleMenuClick={this.props.handleMenuClick} />
+                                                    // handleMenuClick={this.props.handleMenuClick}
+                                                />
                                             </div>
                                         :
                                             <Dialog.Content
@@ -960,7 +968,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     isPdf={this.props.isPdf}
                                                     currentLocation={this.props.currentLocation}
                                                     // focusNaviguationMenu={this.focusNaviguationMenuButton}
-                                                    handleMenuClick={this.props.handleMenuClick} />
+                                                    // handleMenuClick={this.props.handleMenuClick}
+                                                />
                                             </Dialog.Content>
                                     }
                                 </Dialog.Portal>
@@ -974,7 +983,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 open={this.props.settingsOpen}
                                 onOpenChange={(open) => {
                                     console.log("SETTINGS DialogOnOpenChange", open);
-                                    this.props.handleSettingsClick(open);
+                                    this.props.toggleSettings({ open });
+                                    // this.props.handleSettingsClick(open);
                                     // if (open) {
                                     //     if (!this.props.isDivina  && !this.props.isPdf) {
                                     //         stealFocusDisable(true);
@@ -1000,7 +1010,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         <SVG ariaHidden={true} svg={SettingsIcon} className={this.props.settingsOpen ? stylesReaderHeader.active_svg : ""} />
                                     </button>
                                 </Dialog.Trigger>
-                                <Dialog.Portal>
+                                <Dialog.Portal container={appOverlayElement}>
 
                                     {isDockedMode ?
                                         <div
@@ -1016,9 +1026,10 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         >
                                             {/* TODO remove readerSettingsHeaderProps */}
                                             <ReaderSettings
-                                                {...readerSettingsHeaderProps}
+                                                // {...readerSettingsHeaderProps}
                                                 {...this.props.ReaderSettingsProps}
-                                                handleSettingsClick={this.props.handleSettingsClick} />
+                                                // handleSettingsClick={this.props.handleSettingsClick}
+                                            />
                                         </div>
                                     :
                                         <Dialog.Content
@@ -1040,9 +1051,10 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             </VisuallyHidden.Root>
                                             {/* TODO remove readerSettingsHeaderProps */}
                                             <ReaderSettings
-                                                {...readerSettingsHeaderProps}
+                                                // {...readerSettingsHeaderProps}
                                                 {...this.props.ReaderSettingsProps}
-                                                handleSettingsClick={this.props.handleSettingsClick} />
+                                                // handleSettingsClick={this.props.handleSettingsClick}
+                                            />
                                         </Dialog.Content>
 
                                     }
@@ -1389,6 +1401,8 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         r2Publication: state.reader.info.r2Publication,
         selectionIsNew: state.reader.locator.selectionIsNew,
         locale: state.i18n.locale, // refresh
+        menuOpen: state.dialog.open && state.dialog.type === DialogTypeName.ReaderMenu || state.dock.open && state.dock.type === DockTypeName.ReaderMenu,
+        settingsOpen: state.dialog.open && state.dialog.type === DialogTypeName.ReaderSettings || state.dock.open && state.dock.type === DockTypeName.ReaderSettings,
     };
 };
 
@@ -1405,6 +1419,12 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         saveAnnotation: (color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
             dispatch(readerLocalActionAnnotations.createNote.build(color, comment, drawType, tags));
+        },
+        toggleMenu: (data: readerLocalActionToggleMenu.Payload) => {
+            dispatch(readerLocalActionToggleMenu.build(data));
+        },
+        toggleSettings: (data: readerLocalActionToggleSettings.Payload) => {
+            dispatch(readerLocalActionToggleSettings.build(data));
         },
     };
 };

@@ -145,7 +145,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         <div
             className={classNames(displayFromReaderMenu ? "" : stylesAnnotations.annotations_line, dockedMode ? stylesAnnotations.docked_annotation_line : "")} style={{backgroundColor: !displayFromReaderMenu ? "var(--color-extralight-grey)" : ""}}>
             <p>{annotationState.locatorExtended ? (annotationState.locatorExtended.selectionInfo.cleanText.length > (200-3) ? `${annotationState.locatorExtended.selectionInfo.cleanText.slice(0, 200)}...` : annotationState.locatorExtended.selectionInfo.cleanText) : ""}</p>
-            <TextArea id="addNote" name="addNote" wrap="hard" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef} maxLength={annotationMaxLength} onChange={(a) => setAnnotationLength(a.currentTarget.value.length)}
+            <TextArea id={`${uuid}_edit`} name="addNote" wrap="hard" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef} maxLength={annotationMaxLength} onChange={(a) => setAnnotationLength(a.currentTarget.value.length)}
             ></TextArea>
             <span style={{fontSize: "10px", color: "var(--color-medium-grey)", width: "420px", textAlign: "end"}}>{annotationLength}/{annotationMaxLength}</span>
 
@@ -157,13 +157,13 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                 <div className={stylesAnnotations.colorPicker}
                     role="radiogroup">
                     {Object.entries(annotationsColorsLight).map(([colorHex, translatorKey]) => (
-                        <div key={`anno_color_${uuid}_${colorHex}_key`}>
-                            <input type="radio"  id={`anno_color_${uuid}_${colorHex}`} name="colorpicker" value={colorHex}
+                        <div key={`${uuid}_color-${colorHex}`}>
+                            <input type="radio"  id={`${uuid}_color-${colorHex}`} name="colorpicker" value={colorHex}
                                 onChange={() => setColor(colorHex)}
                                 checked={colorSelected === colorHex}
                                 aria-label={__(translatorKey)}
                             />
-                            <label aria-hidden={true} title={__(translatorKey)} htmlFor={`anno_color_${uuid}_${colorHex}`}
+                            <label aria-hidden={true} title={__(translatorKey)} htmlFor={`${uuid}_${colorHex}`}
                                 style={{ backgroundColor: colorHex, border: colorSelected === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
                             >
                                 {colorSelected === colorHex ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
@@ -178,7 +178,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                 <div role="radiogroup" className={stylesAnnotations.stylePicker}>
                     {annotationDrawType.map((type, i) => (
                         <div key={type}>
-                            <input type="radio" id={`anno_type_${uuid}_${type}`} name="drawtype" value={type}
+                            <input type="radio" id={`${uuid}_drawtype-${type}`} name="drawtype" value={type}
                                 onChange={() => setDrawType(type)}
                                 checked={drawTypeSelected === type}
                                 aria-label={`${__("reader.annotations.highlight")} ${type === "solid_background" ?
@@ -187,7 +187,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                                             __("reader.annotations.type.underline") : type === "strikethrough" ?
                                                 __("reader.annotations.type.strikethrough") : __("reader.annotations.type.solid")}`}
                             />
-                            <label aria-hidden={true} htmlFor={`anno_type_${uuid}_${type}`}
+                            <label aria-hidden={true} htmlFor={`${uuid}_drawtype-${type}`}
                                 title={`${type === "solid_background" ?
                                     __("reader.annotations.type.solid") : type === "outline" ?
                                         __("reader.annotations.type.outline") : type === "underline" ?

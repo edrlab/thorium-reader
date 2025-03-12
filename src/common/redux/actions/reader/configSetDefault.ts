@@ -22,16 +22,29 @@ export function build(config: ReaderConfig = readerConfigInitialState):
     const configCopy = {
         ...config,
     };
+
+
+    // see src/common/redux/states/reader.ts
+    // see src/common/models/reader.ts
     if (isNotNil(configCopy["ttsVoices"])) {
         configCopy["ttsVoices"] = [];
     }
     if (isNotNil(configCopy["annotation_defaultColor"])) {
         configCopy["annotation_defaultColor"] = { ...configCopy["annotation_defaultColor"] };
     }
+    if (isNotNil(configCopy["ttsHighlightColor"])) {
+        configCopy["ttsHighlightColor"] = { ...configCopy["ttsHighlightColor"] };
+    }
+    if (isNotNil(configCopy["ttsHighlightColor_WORD"])) {
+        configCopy["ttsHighlightColor_WORD"] = { ...configCopy["ttsHighlightColor_WORD"] };
+    }
+    delete configCopy.readerSettingsSection;
+    delete configCopy.readerMenuSection;
+
     return {
         type: ID,
         payload: {
-            config,
+            config: configCopy,
         },
     };
 }

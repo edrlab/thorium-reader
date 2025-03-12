@@ -15,6 +15,7 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 import { readerLocalActionSetConfig } from "./redux/actions";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { Store } from "redux";
+import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 
 // Create container used for dependency injection
 // const container = new Container();
@@ -30,6 +31,7 @@ export const createStoreFromDi = (preloadedState: Partial<IReaderRootState>): St
     const defaultConfig = readerConfigInitialState;
     const newConfig = { ...store.getState().reader.config };
     let flag = false;
+
 
     // Migrate new entry for annotation in READER config
     if (newConfig.annotation_defaultColor === undefined) {
@@ -95,6 +97,27 @@ export const createStoreFromDi = (preloadedState: Partial<IReaderRootState>): St
         console.log("MIGRATION !! ttsVoice to ttsVoices with a 's' (array of ttsVoice) value=", (newConfig as any).ttsVoice);
         newConfig.ttsVoices = [(newConfig as any).ttsVoice];
         (newConfig as any).ttsVoice = null;
+        flag = true;
+    }
+
+    if (newConfig.readerSettingsSection === undefined) {
+
+        console.log("MIGRATION !! readerSettingsSection not set migrate from defaultConfig value=", newConfig.ttsVoices);
+        newConfig.readerSettingsSection = defaultConfig.readerSettingsSection;
+        flag = true;
+    }
+    if (newConfig.readerMenuSection === undefined) {
+
+        console.log("MIGRATION !! readerMenuSection not set migrate from defaultConfig value=", newConfig.readerMenuSection);
+        newConfig.readerMenuSection = defaultConfig.readerMenuSection;
+        flag = true;
+    }
+
+    const state = store.getState();
+    const isDivina = isDivinaFn(state.reader.info.r2Publication);
+    const isPdf = isPdfFn(state.reader.info.r2Publication);
+    if (isDivina || isPdf) {
+        newConfig.readerSettingsSection = isDivina ? "tab-divina" : "tab-pdfzoom";
         flag = true;
     }
 
