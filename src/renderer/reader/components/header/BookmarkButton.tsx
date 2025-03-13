@@ -9,10 +9,15 @@ import classNames from "classnames";
 import * as React from "react";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+// import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
+import * as stylesBookmarks from "readium-desktop/renderer/assets/styles/components/bookmarks.scss";
 
+import * as SaveIcon from "readium-desktop/renderer/assets/icons/export-icon.svg";
 import * as MarkIcon from "readium-desktop/renderer/assets/icons/bookmarkSingle-icon.svg";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as RemoveBookMarkIcon from "readium-desktop/renderer/assets/icons/BookmarkRemove-icon.svg";
+import * as Popover from "@radix-ui/react-popover";
 
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
@@ -30,9 +35,12 @@ import { registerKeyboardListener, unregisterKeyboardListener } from "readium-de
 import { DEBUG_KEYBOARD } from "readium-desktop/common/keyboard";
 import { ReadiumElectronBrowserWindow } from "@r2-navigator-js/electron/renderer/webview/state";
 import { readerLocalActionHighlights, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../../redux/actions";
+import { TextArea } from "react-aria-components";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 export interface IProps {
     shortcutEnable: boolean;
+    isOnSearch: boolean;
 }
 
 const equalFn = (prev: IReaderStateReader, current: IReaderStateReader) => {
@@ -74,8 +82,31 @@ enum EBookmarkIcon {
     DELETE
 }
 
+const getBookmarkName = (locatorExtended: MiniLocatorExtended) => {
+    let name = "";
+    if (locatorExtended.locator.text?.highlight) {
+        name = locatorExtended.locator.text.highlight;
+    } else if (locatorExtended.selectionInfo?.cleanText) {
+        name = locatorExtended.selectionInfo.cleanText;
+    } else if (locatorExtended.audioPlaybackInfo) {
+
+        const audioPlaybackInfo = locatorExtended.audioPlaybackInfo;
+
+        if (audioPlaybackInfo.globalProgression && audioPlaybackInfo.globalTime) {
+            const percent = Math.floor(100 * audioPlaybackInfo.globalProgression);
+            const timestamp = formatTime(audioPlaybackInfo.globalTime);
+            name = `${timestamp} (${percent}%)`;
+        } else {
+            const percent = Math.floor(100 * audioPlaybackInfo.localProgression);
+            const timestamp = formatTime(audioPlaybackInfo.localTime);
+            name = `[${locatorExtended.locator.href}] ${timestamp} ${percent}%`;
+        }
+    }
+    return name;
+};
+
 let __time = false;
-export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
+export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) => {
 
     const [__] = useTranslator();
     const [visibleBookmarks, setVisibleBookmarks] = React.useState<IBookmarkState[]>([]);
@@ -232,7 +263,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
 
     }, [dispatch, defaultDrawView, currentLocation, ttsState, mediaOverlaysState, __, toasty]);
 
-    const toggleBookmark = React.useCallback((fromKeyboard?: boolean) => {
+    const toggleBookmark = React.useCallback((fromKeyboard?: boolean, name?: string) => {
 
         if (isNavigator) {
 
@@ -252,24 +283,10 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
             if (!bookmarkSelected) {
 
                 const bookmarkId = bookmarkTotalCount + 1;
-                let name: string = `${__("reader.marks.bookmarks")} [${bookmarkId}]`;
-                if (locatorExtended.locator.text?.highlight) {
-                    name = locatorExtended.locator.text.highlight;
-                } else if (locatorExtended.selectionInfo?.cleanText) {
-                    name = locatorExtended.selectionInfo.cleanText;
-                } else if (locatorExtended.audioPlaybackInfo) {
 
-                    const audioPlaybackInfo = locatorExtended.audioPlaybackInfo;
+                if (!name) {
+                    name = `${__("reader.marks.bookmarks")} [${bookmarkId}]`;
 
-                    if (audioPlaybackInfo.globalProgression && audioPlaybackInfo.globalTime) {
-                        const percent = Math.floor(100 * audioPlaybackInfo.globalProgression);
-                        const timestamp = formatTime(audioPlaybackInfo.globalTime);
-                        name = `${timestamp} (${percent}%)`;
-                    } else {
-                        const percent = Math.floor(100 * audioPlaybackInfo.localProgression);
-                        const timestamp = formatTime(audioPlaybackInfo.localTime);
-                        name = `[${locatorExtended.locator.href}] ${timestamp} ${percent}%`;
-                    }
                 }
 
                 // reader.navigation.bookmarkTitle
@@ -291,7 +308,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
         } else {
 
             const href = locatorExtended.locator.href;
-            const name = isDivina ? href : isPdf ? (parseInt(href, 10) + 1).toString() : "";
+            const _name = name ? name : isDivina ? href : isPdf ? (parseInt(href, 10) + 1).toString() : "";
             if (href) {
 
                 if (bookmarkSelected) {
@@ -299,14 +316,14 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
                 } else {
                     addBookmark({
                         locator: locatorExtended.locator,
-                        name,
+                        name: _name,
                         created: (new Date()).getTime(),
                     });
                 }
             }
         }
     }, [
-        __, addBookmark, deleteBookmark, isDivina, isNavigator, isPdf, locatorExtended.audioPlaybackInfo, locatorExtended.locator, locatorExtended.selectionInfo?.cleanText, locatorExtended.selectionInfo?.rangeInfo, toasty, bookmarkSelected, bookmarkTotalCount,
+        __, addBookmark, deleteBookmark, locatorExtended.locator, locatorExtended.selectionInfo?.rangeInfo, isDivina, isNavigator, isPdf, toasty, bookmarkSelected, bookmarkTotalCount,
     ],
     );
 
@@ -319,8 +336,8 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
             }
             return;
         }
-        toggleBookmark(true);
-    }, [shortcutEnable, toggleBookmark]);
+        toggleBookmark(true, getBookmarkName(locatorExtended));
+    }, [shortcutEnable, toggleBookmark, locatorExtended]);
     React.useEffect(() => {
         registerKeyboardListener(
             true, // listen for key up (not key down)
@@ -331,6 +348,30 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
             unregisterKeyboardListener(onKeyboardBookmark);
         };
     }, [onKeyboardBookmark, keyboardShortcuts]);
+
+    const [isBookmarkNeedEditing, setIsBookmarkNeedEditing] = React.useState(false);
+    if (bookmarkSelected && isBookmarkNeedEditing) {
+        setIsBookmarkNeedEditing(false);
+    }
+    const onKeyboardEditBookmark = React.useCallback(() => {
+        if (!shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardEditBookmark)");
+            }
+            return;
+        }
+        setIsBookmarkNeedEditing(true);
+    }, [shortcutEnable, setIsBookmarkNeedEditing]);
+    React.useEffect(() => {
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            keyboardShortcuts.AddBookmarkWithLabel,
+            onKeyboardEditBookmark);
+
+        return () => {
+            unregisterKeyboardListener(onKeyboardEditBookmark);
+        };
+    }, [onKeyboardEditBookmark, keyboardShortcuts]);
 
     React.useEffect(() => {
 
@@ -398,56 +439,116 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable}) => {
 
     }, [allBookmarks, allBookmarksForCurrentLocationHref, locatorExtended, isEpubNavigator, webviewLoaded, isAudiobook]);
 
+    const bookmarkMaxLength = 1500;
+    const [textAreaValue, setTextAreaValue] = React.useState("");
+    const textAreaDefaultValueWhenEditing = React.useMemo(() => isBookmarkNeedEditing ? getBookmarkName(locatorExtended) : "", [isBookmarkNeedEditing, locatorExtended]);
+    React.useEffect(() => {
+        if (isBookmarkNeedEditing) {
+            setTextAreaValue(textAreaDefaultValueWhenEditing.slice(0, bookmarkMaxLength));
+        }
+    }, [isBookmarkNeedEditing, setTextAreaValue, textAreaDefaultValueWhenEditing]);
+
     // console.log("numberOfVisibleBookmarks", numberOfVisibleBookmarks);
     return <>
 
-        <li
-            {...(numberOfVisibleBookmarks ?
-                { style: { backgroundColor: "var(--color-blue" } }
-                : {})}
-        >
-            <input
-                id="bookmarkButton"
-                className={stylesReader.bookmarkButton}
-                type="checkbox"
-                checked={!!numberOfVisibleBookmarks}
-                onKeyUp={(e) => {
-                    if (e.key === "Enter") { toggleBookmark(); }
-                }}
-                onChange={() => toggleBookmark()}
-
-                aria-label={`${__("reader.navigation.bookmarkTitle")} (${bookmarkIcon === EBookmarkIcon.DELETE ? __("catalog.delete") : __("catalog.addTagsButton")
-                    })`}
-                title={`${__("reader.navigation.bookmarkTitle")} (${bookmarkIcon === EBookmarkIcon.ADD ? __("catalog.addTagsButton") : __("catalog.delete")
-                    })`}
-            />
-            {
-                // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing
+        <Popover.Root open={isBookmarkNeedEditing} onOpenChange={(open) => {
+            if (isBookmarkNeedEditing) {
+                setIsBookmarkNeedEditing(open);
             }
-            <label
-                htmlFor="bookmarkButton"
-                aria-hidden="true"
-                className={stylesReader.menu_button}
-                id="bookmarkLabel"
+        }}>
+            <Popover.Trigger asChild>
+                <li
+                    {...(numberOfVisibleBookmarks ?
+                        { style: { backgroundColor: "var(--color-blue" } }
+                        : {})}
+                >
+                    <input
+                        id="bookmarkButton"
+                        className={stylesReader.bookmarkButton}
+                        type="checkbox"
+                        checked={!!numberOfVisibleBookmarks}
+                        onClick={() => {
+                            toggleBookmark();
+                        }}
+                        onKeyUp={(e) => {
+                            if (e.key === "Enter") { e.currentTarget.click(); }
+                        }}
+                        onChange={(e) => e.currentTarget.click()}
 
-                aria-label={`${__("reader.navigation.bookmarkTitle")} (${bookmarkIcon === EBookmarkIcon.DELETE ? __("catalog.delete") : __("catalog.addTagsButton")
-                    })`}
-                title={`${__("reader.navigation.bookmarkTitle")} (${bookmarkIcon === EBookmarkIcon.ADD ? __("catalog.addTagsButton") : __("catalog.delete")
-                    })`}
-            >
-                <SVG ariaHidden={true} svg={MarkIcon} className={classNames(stylesReaderHeader.bookmarkIcon,
-                    numberOfVisibleBookmarks > 0
-                        ? stylesReaderHeader.active_svg_option : "")} />
+                        aria-label={`${__("reader.navigation.bookmarkTitle")} (${bookmarkIcon === EBookmarkIcon.DELETE ? __("catalog.delete") : __("catalog.addTagsButton")
+                            })`}
+                        title={`${__("reader.navigation.bookmarkTitle")} (${bookmarkIcon === EBookmarkIcon.ADD ? __("catalog.addTagsButton") : __("catalog.delete")
+                            })`}
+                    />
+                    {
+                        // "htmlFor" is necessary as input is NOT located suitably for mouse hit testing
+                    }
+                    <label
+                        htmlFor="bookmarkButton"
+                        aria-hidden="true"
+                        className={stylesReader.menu_button}
+                        id="bookmarkLabel"
 
-                <SVG ariaHidden={true} svg={RemoveBookMarkIcon} className={classNames(stylesReaderHeader.bookmarkRemove,
-                    bookmarkIcon === EBookmarkIcon.DELETE
-                        ? stylesReaderHeader.active_svg_option : "")} />
+                        aria-label={`${__("reader.navigation.bookmarkTitle")} (${bookmarkIcon === EBookmarkIcon.DELETE ? __("catalog.delete") : __("catalog.addTagsButton")
+                            })`}
+                        title={`${__("reader.navigation.bookmarkTitle")} (${bookmarkIcon === EBookmarkIcon.ADD ? __("catalog.addTagsButton") : __("catalog.delete")
+                            })`}
+                    >
+                        <SVG ariaHidden={true} svg={MarkIcon} className={classNames(stylesReaderHeader.bookmarkIcon,
+                            numberOfVisibleBookmarks > 0
+                                ? stylesReaderHeader.active_svg_option : "")} />
 
-                <SVG ariaHidden={true} svg={PlusIcon} className={classNames(stylesReaderHeader.bookmarkAdd,
-                    bookmarkIcon === EBookmarkIcon.ADD
-                        ? stylesReaderHeader.active_svg_option : "")} />
-            </label>
-        </li>
+                        <SVG ariaHidden={true} svg={RemoveBookMarkIcon} className={classNames(stylesReaderHeader.bookmarkRemove,
+                            bookmarkIcon === EBookmarkIcon.DELETE
+                                ? stylesReaderHeader.active_svg_option : "")} />
+
+                        <SVG ariaHidden={true} svg={PlusIcon} className={classNames(stylesReaderHeader.bookmarkAdd,
+                            bookmarkIcon === EBookmarkIcon.ADD
+                                ? stylesReaderHeader.active_svg_option : "")} />
+                    </label>
+                </li>
+            </Popover.Trigger>
+            <Popover.Portal>
+                <Popover.Content sideOffset={isOnSearch ? 50 : 18} align="end" style={{ zIndex: 101 }}
+                // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
+                // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
+                >
+                    <form className={stylesBookmarks.bookmark_form}>
+                        <div style={{ backgroundColor: "var(--color-extralight-grey)"}}>
+
+                            <p>{locatorExtended.selectionInfo?.cleanText ? (locatorExtended.selectionInfo.cleanText.length > (200 - 3) ? `${locatorExtended.selectionInfo.cleanText.slice(0, 200)}...` : locatorExtended.selectionInfo.cleanText) : ""}</p>
+                            <div>
+                                <TextArea value={textAreaValue} name="editBookmark" wrap="hard"
+                                    className={stylesBookmarks.bookmark_form_textarea}
+                                    maxLength={bookmarkMaxLength} onChange={(a) => setTextAreaValue(a.currentTarget.value)}
+                                ></TextArea>
+                                <span style={{ fontSize: "10px", color: "var(--color-medium-grey)", position: "relative", left: "350px" }}>{textAreaValue.length}/{bookmarkMaxLength}</span>
+                            </div>
+                        </div>
+                        <div className={stylesBookmarks.bookmark_form_textarea_buttons}>
+                            <Popover.Close className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")}>{__("dialog.cancel")}</Popover.Close>
+                            <button type="submit"
+                                className={stylesButtons.button_primary_blue}
+                                aria-label={__("reader.marks.saveMark")}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    const textareaNormalize = textAreaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
+                                    // if (textareaNormalize) {
+                                        toggleBookmark(true, textareaNormalize);
+                                        setIsBookmarkNeedEditing(false);
+                                    // }
+                                }}
+                            >
+                                <SVG ariaHidden svg={SaveIcon} />
+                                {__("reader.marks.saveMark")}
+                            </button>
+                        </div>
+                    </form>
+                    <Popover.Arrow style={{ fill: "var(--color-extralight-grey)" }} width={15} height={10} />
+                </Popover.Content>
+            </Popover.Portal>
+
+        </Popover.Root>
     </>;
 
 };

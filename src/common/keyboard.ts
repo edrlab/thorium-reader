@@ -108,6 +108,14 @@ const _defaults_ = Object.freeze({
         key: "KeyB",
     }),
 
+    AddBookmarkWithLabel: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "KeyB",
+    }),
+
+
     ToggleReaderFullscreen: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,

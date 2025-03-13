@@ -803,7 +803,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                <HeaderSearch shortcutEnable={this.props.shortcutEnable} isPdf={this.props.isPdf} showSearchResults={this.props.showSearchResults} isAudiobook={isAudioBook} isDivina={this.props.isDivina}></HeaderSearch>
                         </li>
 
-                        <BookmarkButton shortcutEnable={this.props.shortcutEnable} />
+                        <BookmarkButton shortcutEnable={this.props.shortcutEnable} isOnSearch={this.props.isOnSearch}/>
 
                         <Popover.Root open={this.props.isAnnotationModeEnabled} onOpenChange={(open) => {
                             if (open === false) {
