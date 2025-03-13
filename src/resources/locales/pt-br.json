@@ -36,7 +36,7 @@
                     },
                     "help": "Ative isso se quiser que as janelas do leitor estejam abertas quando fechar o aplicativo para reabrir automaticamente no próximo lançamento.",
                     "message": "Salvar e restaurar a sessão de leitura",
-                    "title": "Salvar sessão"
+                    "title": "Salvar sessão?"
                 }
             }
         },
@@ -103,7 +103,7 @@
                 },
                 "availableUntil": "Até",
                 "copyAvalaible": "Disponível",
-                "copyTotal": "Cópias ",
+                "copyTotal": "Cópias",
                 "holdPosition": "Sua posição de espera",
                 "holdTotal": "Reservado",
                 "numberOfItems": "Número de ítens",
@@ -169,11 +169,11 @@
     },
     "library": {
         "lcp": {
-            "hint": "Dica : ",
+            "hint": "Dica :",
             "open": "Abrir",
             "password": "Senha",
-            "sentence": "Insira a senha desta publicação protegida por LCP:",
-            "urlHint": "Esqueceu sua senha? O suporte está disponível:",
+            "sentence": "Insira a senha desta publicação protegida por LCP",
+            "urlHint": "Esqueceu sua senha? O suporte está disponível.",
             "whatIsLcp?": "O que é LCP?",
             "whatIsLcpInfoDetails": "LCP significa 'Proteção de Conteúdo Licenciado'.",
             "whatIsLcpInfoDetailsLink": "Para saber mais, clique neste link para o site do EDRLab."
@@ -192,8 +192,8 @@
             "error": "O download de {{- title}} falhou: [{{- err}}]"
         },
         "import": {
-            "alreadyImport": "{{- title}} já foi importado",
-            "fail": "A importação de {{- path}} falhou.",
+            "alreadyImport": "{{- title}} já foi importado.",
+            "fail": "A importação de {{- path}} falhou: [{{- err}}]",
             "success": "A importação de {{- title}} terminou."
         },
         "open": {
@@ -230,11 +230,11 @@
             "error": "Incapaz de acessar a origem OPDS",
             "noInternet": "Sem Internet",
             "noInternetMessage": "Tente: checar o cabo de rede, modem, router ou wifi",
-            "reject": "Desculpe, houve um erro inesperado tentando processar a origem OPDS",
+            "reject": "Desculpe, houve um erro inesperado tentando processar a origem OPDS!",
             "timeout": "Houve um timeout na rede, por favor tente novamente mais tarde"
         },
         "next": "Próximo",
-        "previous": "Anterior ",
+        "previous": "Anterior",
         "shelf": "Estante",
         "updateForm": {
             "name": "Nome:",
@@ -269,7 +269,7 @@
                 "sound": "Som",
                 "unknown": "Desconhecido"
             },
-            "certifierReport": "Relatório do certificador",
+            "certifierReport": "Relatório do certificador:",
             "conformsTo": "Conforme a:",
             "moreInformation": "Mais Informações",
             "name": "Acessibilidade",
@@ -281,8 +281,8 @@
         },
         "author": "Autor",
         "cancelledLcp": "A licença LCP foi cancelada.",
-        "certificateRevoked": "O certificado foi revogado",
-        "certificateSignatureInvalid": "A assinatura do certificado é inválida",
+        "certificateRevoked": "O certificado foi revogado.",
+        "certificateSignatureInvalid": "A assinatura do certificado é inválida.",
         "cover": {
             "img": "imagem de capa"
         },
@@ -296,13 +296,13 @@
         "expiredLcp": "A licença LCP desta publicação expirou.",
         "incorrectPassphrase": "Nenhuma senha armazenada funciona na publicação, ou a senha inserida é errada.",
         "lcpEnd": "Fim",
-        "lcpRightsCopy": "Caracteres copiados ",
+        "lcpRightsCopy": "Caracteres copiados",
         "lcpRightsPrint": "Páginas impressas",
         "lcpStart": "Iniciar",
         "licenceLCP": "Licença (LCP)",
-        "licenseCertificateDateInvalid": "A data da assinatura da licença é inválida",
-        "licenseOutOfDate": "Licença vencida",
-        "licenseSignatureInvalid": "A assinatura da licença é inválida",
+        "licenseCertificateDateInvalid": "Certificado do provedor LCP expirado.",
+        "licenseOutOfDate": "Licença LCP vencida.",
+        "licenseSignatureInvalid": "A assinatura da licença LCP é inválida.",
         "licensed": "Licenciado",
         "markAsRead": "Marcar como lido",
         "notStarted": "Não iniciado",
@@ -320,7 +320,7 @@
         "seeMore": "Veja mais",
         "timeLeft": "Tempo restante",
         "title": "Título",
-        "userKeyCheckInvalid": "A senha está incorreta"
+        "userKeyCheckInvalid": "A senha está incorreta."
     },
     "reader": {
         "annotations": {
@@ -398,13 +398,13 @@
             "captionsDescription": "Visualização de texto simplificada com estilo mínimo de legendas.",
             "disableContinuousPlay": "Desativar a reprodução contínua",
             "disableContinuousPlayDescription": "Não reproduza automaticamente o próximo item, pare imediatamente após o item atual terminado a reprodução.",
-            "ignoreAndUseTTS": "",
-            "ignoreAndUseTTSDescription": "",
+            "ignoreAndUseTTS": "Ignorar audio pré gravado, usar TTS",
+            "ignoreAndUseTTSDescription": "Ignorar Media Overlays, ler com Text to Speech",
             "next": "Próxima narração",
             "pause": "Pausar narração",
             "play": "Tocar narração",
             "previous": "Narração anterior",
-            "skip": "Saltabilidade ",
+            "skip": "Saltabilidade",
             "skipDescription": "Saltar/ignorar conteúdo auxiliar, como quebras de página, notas de rodapé/notas finais, etc.",
             "speed": "Velocidade de reprodução da narração",
             "stop": "Parar narração",
@@ -418,7 +418,7 @@
             "bookmarkTitle": "marcador",
             "currentPage": "Página atual: {{- current}}",
             "currentPageTotal": "Página atual: {{- current}}/{{- total}}",
-            "detachWindowTitle": "mostrar tela da biblioteca / estante ",
+            "detachWindowTitle": "mostrar tela da biblioteca / estante",
             "goTo": "Ir para",
             "goToError": "Esta quebra de página não existe",
             "goToPlaceHolder": "Digite um número de página",
@@ -439,7 +439,7 @@
                 "next": "Próximo",
                 "notFound": "sem correspondências",
                 "previous": "Anterior",
-                "results": "Resultados ",
+                "results": "Resultados",
                 "submit": "Encontrar"
             },
             "searchTitle": "Buscar:"
@@ -449,7 +449,7 @@
                 "auto": "Padrão",
                 "one": "1 col",
                 "title": "Colunas",
-                "two": "2 cols"
+                "two": "2 colunas"
             },
             "customFontSelected": "Você escolheu uma fonte personalizada",
             "customizeReader": "Personalize a formatação do texto",
@@ -466,7 +466,7 @@
             "letterSpacing": "Espaçamento de letras",
             "lineSpacing": "Espaçamento de linhas",
             "margin": "Margem",
-            "noFootnotes": "Desativar notas de rodapé",
+            "noFootnotes": "Desativar notas de rodapé popup",
             "noRTLFlip": "Desativar UI da direita para a esquerda",
             "noRuby": "Ocultar Ruby Japonês",
             "noTemporaryNavTargetOutline": "Desativar indicadores de navegação visual",
@@ -586,25 +586,25 @@
     },
     "tts": {
         "highlight": {
-            "mainColor": "",
-            "maskBlockWordOutline": "",
-            "maskBlockWordSolidBackground": "",
-            "maskBlockWordUnderline": "",
-            "maskWordOutline": "",
-            "maskWordSolidBackground": "",
-            "maskWordUnderline": "",
-            "outlineWordOutline": "",
-            "outlineWordSolidBackground": "",
-            "outlineWordUnderline": "",
-            "preview": "",
-            "solidBackgroundWordOutline": "",
-            "solidBackgroundWordSolidBackground": "",
-            "solidBackgroundWordUnderline": "",
-            "style": "",
-            "underlineWordOutline": "",
-            "underlineWordSolidBackground": "",
-            "underlineWordUnderline": "",
-            "wordColor": ""
+            "mainColor": "Cor principal",
+            "maskBlockWordOutline": "Mascarar bloco, sublinhar palavra",
+            "maskBlockWordSolidBackground": "Mascarar bloco, palavra com fundo sólido",
+            "maskBlockWordUnderline": "Mascarar bloco, palavra sublinhada",
+            "maskWordOutline": "Máscara, palavra com contorno",
+            "maskWordSolidBackground": "Máscara, palavra com fundo sólido",
+            "maskWordUnderline": "Máscara, palavra sublinhada",
+            "outlineWordOutline": "Contorno, palavra com contorno",
+            "outlineWordSolidBackground": "Contorno, palavra com fundo sólido",
+            "outlineWordUnderline": "Contorno, palavra sublinhada",
+            "preview": "Visualização de estilo de destaque TTS",
+            "solidBackgroundWordOutline": "Fundo sólido, palavra com contorno",
+            "solidBackgroundWordSolidBackground": "Fundo sólido, palavra com fundo sólido",
+            "solidBackgroundWordUnderline": "Fundo sólido, palavra sublinhada",
+            "style": "Estilo de destaque do TTS",
+            "underlineWordOutline": "Sublinhar, palavra com contorno",
+            "underlineWordSolidBackground": "Contorno, palavra com fundo sólido",
+            "underlineWordUnderline": "Sublinhar, palavra com contorno",
+            "wordColor": "Cor da palavra"
         }
     },
     "wizard": {
