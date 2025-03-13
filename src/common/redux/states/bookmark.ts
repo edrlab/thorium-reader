@@ -14,6 +14,7 @@ export type TBookmarkState = TPQueueState<number, IBookmarkState>;
 export interface IBookmarkState {
     uuid: string;
     name: string;
+    index: number;
     locator: Locator;
     modified?: number;
     created: number;

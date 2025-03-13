@@ -265,6 +265,8 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
 
     const toggleBookmark = React.useCallback((fromKeyboard?: boolean, name?: string) => {
 
+        const bookmarkIndex = bookmarkTotalCount + 1;
+
         if (isNavigator) {
 
             if (!locatorExtended?.locator) {
@@ -275,23 +277,13 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                 !fromKeyboard &&
                 bookmarkSelected
             ) {
-                toasty(`${__("catalog.delete")} - ${bookmarkSelected.name}`);
+                toasty(`${__("catalog.delete")} - ${bookmarkSelected.name ? bookmarkSelected.name : `${__("reader.marks.bookmarks")} [${bookmarkIndex}]`}`);
                 deleteBookmark(bookmarkSelected);
                 return ;
             }
 
             if (!bookmarkSelected) {
-
-                const bookmarkId = bookmarkTotalCount + 1;
-
-                if (!name) {
-                    name = `${__("reader.marks.bookmarks")} [${bookmarkId}]`;
-
-                }
-
-                // reader.navigation.bookmarkTitle
-                const msg = `${__("catalog.addTagsButton")} - ${name}`;
-                // this.setState({bookmarkMessage: msg});
+                const msg = `${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${bookmarkIndex}]`}`;
                 toasty(msg);
 
                 if (locatorExtended.locator.locations && !locatorExtended.locator.locations.rangeInfo && locatorExtended.selectionInfo?.rangeInfo) {
@@ -302,22 +294,26 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     locator: locatorExtended.locator,
                     name,
                     created: (new Date()).getTime(),
+                    index: bookmarkIndex,
                 });
             }
 
         } else {
 
             const href = locatorExtended.locator.href;
-            const _name = name ? name : isDivina ? href : isPdf ? (parseInt(href, 10) + 1).toString() : "";
+            const pdfOrDivinaName = name ? name : isDivina ? href : isPdf ? (parseInt(href, 10) + 1).toString() : "";
             if (href) {
 
                 if (bookmarkSelected) {
+                    toasty(`${__("catalog.delete")} - ${bookmarkSelected.name ? bookmarkSelected.name : `${__("reader.marks.bookmarks")} [${bookmarkIndex}]`}`);
                     deleteBookmark(bookmarkSelected);
                 } else {
+                    toasty(`${__("catalog.addTagsButton")} - ${pdfOrDivinaName ? pdfOrDivinaName : `${__("reader.marks.bookmarks")} [${bookmarkIndex}]`}`);
                     addBookmark({
                         locator: locatorExtended.locator,
-                        name: _name,
+                        name: pdfOrDivinaName,
                         created: (new Date()).getTime(),
+                        index: bookmarkIndex,
                     });
                 }
             }

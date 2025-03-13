@@ -100,8 +100,8 @@ ipcRenderer.on(readerIpc.CHANNEL,
                     if (!bookmark.created) {
                         bookmark.created = created;
                     }
-                    if (!bookmark.name) {
-                        bookmark.name = `${bookmarkIndex}`;
+                    if (!bookmark.index) {
+                        bookmark.index = bookmarkIndex;
                     }
                 }
 

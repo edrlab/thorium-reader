@@ -1660,9 +1660,9 @@ const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number }> = (props) 
                                             e.preventDefault();
                                             const textareaValue = textearearef?.current?.value || "";
                                             const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
-                                            if (textareaNormalize) {
-                                                submitBookmark(textareaNormalize); 
-                                            }
+                                            // if (textareaNormalize) { // empty bookmark name allowed
+                                            submitBookmark(textareaNormalize); 
+                                            // }
                                         }}
                                     >
                                         <SVG ariaHidden svg={SaveIcon} />
