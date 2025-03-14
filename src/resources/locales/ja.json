@@ -135,6 +135,8 @@
         "cancel": "キャンセル",
         "deleteAnnotations": "メモを削除しますか？",
         "deleteAnnotationsText": "{{-annotationListLength}} 件のメモを削除しますか？",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "この図書目録を削除しますか？",
         "deletePublication": "この本を削除しますか？",
         "import": "追加します：",

@@ -135,6 +135,8 @@
         "cancel": "Отменить",
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Вы действительно хотите удалить этот каталог ?",
         "deletePublication": "Вы действительно хотите удалить эту книгу ?",
         "import": "Подтвердите импорт:",

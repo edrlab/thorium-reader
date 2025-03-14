@@ -135,6 +135,8 @@
         "cancel": "Zrušit",
         "deleteAnnotations": "Odstranit anotace?",
         "deleteAnnotationsText": "Opravdu chcete odstranit {{- annotationListLength}} poznámek?",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Odstranit katalog?",
         "deletePublication": "Odstranit publikaci?",
         "import": "Potvrdit import:",

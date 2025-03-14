@@ -135,6 +135,8 @@
         "cancel": "Ακύρωση",
         "deleteAnnotations": "Διαγραφή σημειώσεων;",
         "deleteAnnotationsText": "Είσαι σίγουρος/η για τη διαγραφή σημειώσεων {{- annotationListLength}};",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Διαγραφή καταλόγου;",
         "deletePublication": "Διαγραφή βιβλίου;",
         "import": "Επιβεβαίωση εισαγωγής:",

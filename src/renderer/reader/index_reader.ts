@@ -103,6 +103,26 @@ ipcRenderer.on(readerIpc.CHANNEL,
                     if (!bookmark.index) {
                         bookmark.index = bookmarkIndex;
                     }
+                    if (!bookmark.locatorExtended) {
+                        if (!bookmark.locator) {
+                            console.error("CRASH! NO LOCATOR FROM A BOOKMARK !!!", bookmark);
+                        }
+                        bookmark.locatorExtended = {
+                            audioPlaybackInfo: undefined,
+                            locator: bookmark.locator,
+                            paginationInfo: undefined,
+                            selectionInfo: undefined,
+                            selectionIsNew: undefined,
+                            docInfo: undefined,
+                            epubPage: undefined,
+                            epubPageID: undefined,
+                            headings: undefined,
+                            secondWebViewHref: undefined,
+                        };
+                    }
+                    if (!bookmark.locator) {
+                        bookmark.locator = bookmark.locatorExtended.locator;
+                    }
                 }
 
                 const store = createStoreFromDi(data.payload);

@@ -8,6 +8,7 @@
 import { Locator } from "@r2-navigator-js/electron/common/locator";
 import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { INoteCreator } from "./creator";
+import { MiniLocatorExtended } from "./locatorInitialState";
 
 export type TBookmarkState = TPQueueState<number, IBookmarkState>;
 
@@ -15,7 +16,11 @@ export interface IBookmarkState {
     uuid: string;
     name: string;
     index: number;
-    locator: Locator;
+
+    // deprecated, prefer locatorExtended instead
+    locator: Locator; // not used anymore, keep it only for data state migration
+    locatorExtended: MiniLocatorExtended, // TODO: migration
+
     modified?: number;
     created: number;
     creator?: INoteCreator;

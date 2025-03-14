@@ -135,6 +135,8 @@
         "cancel": "Annuler",
         "deleteAnnotations": "Supprimer la note",
         "deleteAnnotationsText": "Voulez-vous supprimer {{- annotationListLength}} note(s) ?",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Supprimer ce catalogue ?",
         "deletePublication": "Supprimer ce livre ?",
         "import": "Confirmer l'ajout :",

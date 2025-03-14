@@ -135,6 +135,8 @@
         "cancel": "Peru",
         "deleteAnnotations": "Poistetaanko muistiinpanot?",
         "deleteAnnotationsText": "Haluatko varmasti poistaa {{- annotationListLength}} muistiinpanoa?",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Haluatko poistaa tämän luettelon?",
         "deletePublication": "Haluatko poistaa tämän julkaisun?",
         "import": "Haluatko tuoda nämä tiedostot:",

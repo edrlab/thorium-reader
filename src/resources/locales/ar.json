@@ -135,6 +135,8 @@
         "cancel": "إلغاء الأمر",
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "حذف الكتالوغ؟",
         "deletePublication": "حذف المنشور؟",
         "import": "تأكيد الاستيراد:",

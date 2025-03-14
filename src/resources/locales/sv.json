@@ -135,6 +135,8 @@
         "cancel": "Avbryt",
         "deleteAnnotations": "Radera anteckningar?",
         "deleteAnnotationsText": "Vill du radera {{- annotationListLength}} anteckning(ar)?",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Vill du ta bort den här katalogen?",
         "deletePublication": "Vill du ta bort den här publikationen?",
         "import": "Vill du importera följande filer:",

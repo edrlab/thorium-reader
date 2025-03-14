@@ -135,6 +135,8 @@
         "cancel": "Cancelar",
         "deleteAnnotations": "Eliminar anotações?",
         "deleteAnnotationsText": "Quer mesmo eliminar {{- annotationListLength}} anotações?",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Eliminar catálogo?",
         "deletePublication": "Eliminar documento?",
         "import": "Confirmar importação:",

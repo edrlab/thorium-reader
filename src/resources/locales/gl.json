@@ -135,6 +135,8 @@
         "cancel": "Cancelar",
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Seguro que queres eliminar este catálogo?",
         "deletePublication": "Seguro que queres eliminar esta publicación?",
         "import": "Seguro que queres importar estes ficheiros?",

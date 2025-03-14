@@ -135,6 +135,8 @@
         "cancel": "Отказ",
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Наистина ли искате да изтриете този каталог?",
         "deletePublication": "Наистина ли искате да изтриете тази книга?",
         "import": "Наистина ли искате да добавите тези файлове:",

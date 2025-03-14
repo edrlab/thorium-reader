@@ -135,6 +135,8 @@
         "cancel": "Cancel·lar",
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Segur que vols eliminar aquest catàleg?",
         "deletePublication": "Segur que vols eliminar aquesta publicació?",
         "import": "Segur que vols importar aquests fitxers?",

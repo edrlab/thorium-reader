@@ -135,6 +135,8 @@
         "cancel": "Annuleer",
         "deleteAnnotations": "Verwijder aantekeningen?",
         "deleteAnnotationsText": "Weet je zeker dat je {{- annotationListLength}} aantekening(en) wil verwijderen?",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Wil je deze catalogus echt verwijderen ?",
         "deletePublication": "Wil je deze publicatie echt verwijderen ?",
         "import": "Wil je deze bestanden echt importeren :",

@@ -135,6 +135,8 @@
         "cancel": "Ezeztatu",
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Ziur zaude katalogo hau ezabatu nahi duzula?",
         "deletePublication": "Ziur zaude argitalpen hau ezabatu nahi duzula?",
         "import": "Ziur zaude fitxategi hauek inportatu nahi dituzula?",

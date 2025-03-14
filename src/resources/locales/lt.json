@@ -135,6 +135,8 @@
         "cancel": "Nutraukti",
         "deleteAnnotations": "Šalinti pastabas?",
         "deleteAnnotationsText": "Ar norite pašalinti {{- annotationListLength}} pastabą(-as, -ų)?",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Pašalinti katalogą?",
         "deletePublication": "Pašalinti leidinį?",
         "import": "Patvirtinkite importą:",
