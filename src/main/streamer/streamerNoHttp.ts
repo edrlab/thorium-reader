@@ -7,7 +7,7 @@
 
 import * as crypto from "crypto";
 import * as debug_ from "debug";
-import { app, protocol, ProtocolRequest, ProtocolResponse, session } from "electron";
+import { app, net, protocol, ProtocolRequest, ProtocolResponse, session } from "electron";
 import * as fs from "fs";
 import * as mime from "mime-types";
 import * as path from "path";
@@ -48,10 +48,24 @@ import {
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 
+import { openai } from "@ai-sdk/openai";
+import { mistral } from "@ai-sdk/mistral";
+import { CoreUserMessage, LanguageModelV1, streamText } from "ai";
+import { Readable } from "stream";
+import { ReadableStream as WebReadableStream } from "node:stream/web";
+// import { aiSDKModelOptions } from "readium-desktop/common/aisdkModelOptions";
+
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
 const debug = debug_("readium-desktop:main#streamerNoHttp");
 debug("_");
+
+const debugAiSdk = debug_("readium-desktop:main#AISDK");
+debug("_");
+
+// TODO: DEBUG ONLY AISDK
+import "dotenv/config";
+import { nanoid } from "nanoid";
 
 // !!!!!!
 /// BE CAREFUL DEBUG HAS BEED DISABLED IN package.json
@@ -215,6 +229,9 @@ const streamProtocolHandler = async (
         }
     }
 
+    const aiSdkPrefix = "/aisdk/";
+    const isAiSdk = uPathname.startsWith(aiSdkPrefix);
+
     const pdfjsAssetsPrefix = "/pdfjs/";
     const isPdfjsAssets = uPathname.startsWith(pdfjsAssetsPrefix);
 
@@ -231,6 +248,7 @@ const streamProtocolHandler = async (
     const isMediaOverlays = uPathname.endsWith(mediaOverlaysPrefix);
 
     debug("streamProtocolHandler uPathname", uPathname);
+    debug("streamProtocolHandler isAiSdk", isAiSdk);
     debug("streamProtocolHandler isPdfjsAssets", isPdfjsAssets);
     debug("streamProtocolHandler isPublicationAssets", isPublicationAssets);
     debug("streamProtocolHandler isMathJax", isMathJax);
@@ -275,6 +293,99 @@ const streamProtocolHandler = async (
     headers["Access-Control-Allow-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
     // tslint:disable-next-line:max-line-length
     headers["Access-Control-Expose-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
+
+    if (isAiSdk) {
+
+        // use specific debug instance
+        debugAiSdk("AISDK request !!!");
+
+        const body = JSON.parse(req.uploadData[0].bytes.toString());
+        debugAiSdk("AISDK JSON BODY", JSON.stringify(body, null, 4));
+
+        const { messages, imageHref, modelId, systemPrompt } = body;
+
+        let mimeType: string | undefined;
+        try {
+            const hrefToURL = new URL(imageHref);
+            const ext = path.extname(hrefToURL.pathname);
+            mimeType = findMimeTypeWithExtension(ext);
+        } catch {
+            // ignore
+        }
+
+        // TODO: resize img if over 1024x1024 ratio preserved
+        let imageBuffer: Uint8Array | undefined;
+        try {
+
+            const result = await net.fetch(imageHref);
+            if (!result.ok) throw new Error("NotOK!!");
+            imageBuffer = await result.bytes();
+
+        } catch (e) {
+            debugAiSdk("cannot fetch the img", e);
+        }
+
+        let readStream: NodeJS.ReadableStream | string = "";
+
+        let model: LanguageModelV1 | undefined;
+        if (modelId.startsWith("openai")) {
+            model = openai(modelId.split("__!__")[1]);
+        } else if (modelId.startsWith("mistralai")) {
+            model = mistral(modelId.split("__!__")[1]);
+        }
+
+        try {
+            const result = streamText({
+                model,
+                system: systemPrompt || "Your goal is to describe the image, you should not answer on a topic other than this image",
+                messages: [
+                    {
+                        role: "user",
+                        content: [{ type: "image", image: imageBuffer, mimeType }],
+
+                    } as CoreUserMessage,
+                    ...messages,
+                ],
+                onError: ({ error }) => {
+                    debugAiSdk("AISDK streamText ERROR", error);
+                },
+                onFinish: ({ text, finishReason, usage, response }) => {
+                    debugAiSdk("AISDK streamText FINISH");
+                    debugAiSdk("AISDK text", text);
+                    debugAiSdk("AISDK finishReason", finishReason);
+                    debugAiSdk("AISDK usage", usage);
+                    debugAiSdk("AISDK response", response);
+                },
+                experimental_generateMessageId: () => 
+                    modelId.split("-")[0] + "-?-" + nanoid(),
+            });
+
+            const { warnings, usage, sources, finishReason, providerMetadata, text, reasoning, toolCalls, toolResults, steps, request, response } = result;
+            const promises = [warnings, usage, sources, finishReason, providerMetadata, text, reasoning, toolCalls, toolResults, steps, request, response];
+
+            promises.map((p, i) => {
+                p.then((v) => debugAiSdk("AISDK PROMISES SUCESS", JSON.stringify(v, null, 4), "INDEX", i));
+                p.catch((e) => debugAiSdk("AISDK PROMISES ERROR", e, "INDEX", i));
+            });
+
+            const dataStream = result.toDataStream();
+            readStream = Readable.fromWeb(dataStream as unknown as WebReadableStream);
+        } catch (e) {
+            debugAiSdk("ERROR: OPENAI stream text", e);
+        }
+
+
+        const obj: { data: NodeJS.ReadableStream | string, headers: Record<string, string | string[]>, statusCode: number } = {
+            // NodeJS.ReadableStream
+            data: readStream || "",
+            headers,
+            statusCode: 200,
+        };
+
+        callback(obj);
+        return ;
+
+    }
 
     if (isPdfjsAssets) {
 

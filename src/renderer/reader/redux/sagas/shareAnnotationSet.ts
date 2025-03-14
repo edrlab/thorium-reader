@@ -39,7 +39,7 @@ const getCacheDocumentFromLocator = (cacheDocumentArray: ICacheDocument[], hrefS
 export function* importAnnotationSet(): SagaGenerator<void> {
 
     debug("importAnnotationSet just started !");
-    yield* callTyped(getResourceCache);
+    // yield* callTyped(getResourceCache);
 
     let importQueue = yield* selectTyped((state: IReaderRootState) => state.annotationImportQueue);
     debug("ImportAnnotationQueue length", importQueue.length);
