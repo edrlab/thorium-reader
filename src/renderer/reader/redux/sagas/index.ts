@@ -9,8 +9,9 @@ import * as debug_ from "debug";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoReaderAndLib from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
 import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
+
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, call, take, fork } from "redux-saga/effects";
+import { all, call, fork, take } from "redux-saga/effects";
 
 import * as readerConfig from "./readerConfig";
 import * as highlightHandler from "./highlight/handler";
@@ -21,13 +22,16 @@ import * as winInit from "./win";
 import * as annotation from "./annotation";
 import * as shareAnnotationSet from "./shareAnnotationSet";
 import * as img from "./img";
+import * as settingsOrMenuDialogOrDock from "./settingsOrMenu";
 import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { setTheme } from "readium-desktop/common/redux/actions/theme";
 import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } from "@r2-navigator-js/electron/renderer";
 import { eventChannel } from "redux-saga";
-import { put as putTyped } from "typed-redux-saga/macro";
+import { put as putTyped, take as takeTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { readerLocalActionReader } from "../actions";
 import { getResourceCache } from "readium-desktop/renderer/reader/redux/sagas/resourceCache";
+import { readerActions } from "readium-desktop/common/redux/actions";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 // Logger
 const filename_ = "readium-desktop:renderer:reader:saga:index";
@@ -95,10 +99,12 @@ export function* rootSaga() {
         search.saga(),
 
         annotation.saga(),
-        
+
         shareAnnotationSet.saga(),
 
         img.saga(),
+
+        settingsOrMenuDialogOrDock.saga(),
 
         takeSpawnEvery(
             setTheme.ID,
@@ -126,6 +132,15 @@ export function* rootSaga() {
                 yield* putTyped(readerLocalActionReader.setTTSState.build(state));
             },
         ),
+        fork(function*() {
+
+            while(true) {
+
+                yield* takeTyped(readerActions.bookmark.push.ID);
+                const currentBookmarkTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.bookmarkTotalCount.state);
+                yield* putTyped(readerLocalActionReader.bookmarkTotalCount.build(currentBookmarkTotalCount + 1));
+            }
+        }),
     ]);
 
 

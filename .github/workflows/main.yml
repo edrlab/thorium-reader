@@ -155,10 +155,10 @@ jobs:
       shell: bash
     - uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        node-version: '22'
         #check-latest: true
     - run: node --version && npm --version
-    - run: npm --global install npm@^10
+    - run: npm --global install npm@^11
     - run: npm --version
     - run: python --version || echo ok
     - run: python3 --version || echo ok

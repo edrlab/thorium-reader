@@ -64,7 +64,9 @@ ipcRenderer.on(readerIpc.CHANNEL,
                 };
 
                 const annotationList = data.payload.reader.annotation || [];
-                for (const [,anno] of annotationList) {
+                for (const [_createdTimestampFromAnno,anno] of annotationList) {
+                    
+                    // TODO? why do not used the _createdTimestampFromAnno instead !?
                     if (!anno.created && anno.modified) {
                         anno.created = anno.modified;
                     }
@@ -77,6 +79,31 @@ ipcRenderer.on(readerIpc.CHANNEL,
                     annotationTagsList.push(...(tags || []));
                 }
                 data.payload.annotationTagsIndex = pushTags({}, annotationTagsList);
+
+
+                const bookmarkList = data.payload.reader.bookmark || [];
+                const bookmarkListLength = bookmarkList.length;
+
+                if (!data.payload.reader.bookmarkTotalCount) {
+                    data.payload.reader.bookmarkTotalCount = {
+                        state: bookmarkListLength,
+                    };
+                } else if (data.payload.reader.bookmarkTotalCount.state < bookmarkListLength) {
+                    data.payload.reader.bookmarkTotalCount.state = bookmarkListLength;
+                }
+                let bookmarkIndex = 0;
+                for (const [created, bookmark] of bookmarkList) {
+                    bookmarkIndex = bookmarkIndex + 1;
+                    if (!bookmark.created && created > bookmark.modified) {
+                        bookmark.created = bookmark.modified;
+                    }
+                    if (!bookmark.created) {
+                        bookmark.created = created;
+                    }
+                    if (!bookmark.index) {
+                        bookmark.index = bookmarkIndex;
+                    }
+                }
 
                 const store = createStoreFromDi(data.payload);
                 const locale = store.getState().i18n.locale;

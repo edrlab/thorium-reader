@@ -85,6 +85,14 @@ export const useDiffBoolBetweenReaderConfigAndDefaultConfig = () => {
 
         for (const v of ObjectKeys(config)) {
 
+            // skip tab section change
+            if (v === "readerMenuSection") {
+                continue ;
+            }
+            if (v === "readerSettingsSection") {
+                continue ;
+            }
+
             if (v === "ttsVoices") {
                 // skip ttsVoices with readium/speech 
                 continue ;

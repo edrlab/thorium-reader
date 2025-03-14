@@ -108,21 +108,21 @@ export type AdjustableSettingsNumber = {
 export default optionsValues;
 
 export interface IReaderMenuProps {
-    open: boolean;
-    doFocus: number;
+    // open: boolean;
+    // doFocus: number;
     // tslint:disable-next-line: max-line-length
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeNavPanel?: boolean) => void;
     goToLocator: (locator: R2Locator, closeNavPanel?: boolean) => void;
-    toggleMenu: () => void;
+    // toggleMenu: () => void;
     focusMainAreaLandmarkAndCloseMenu: (deep: boolean) => void;
     pdfToc: TToc;
     isPdf: boolean;
     pdfNumberOfPages: number;
 
-    openedSection: string;
-    annotationUUID: string;
-    resetAnnotationUUID: () => void;
-    setOpenedSection: (v: string) => void;
+    // openedSection: string;
+    // annotationUUID: string;
+    // resetAnnotationUUID: () => void;
+    // setOpenedSection: (v: string) => void;
 }
 
 export const isDivinaReadingMode = (v: any): v is TdivinaReadingMode => {
@@ -130,8 +130,8 @@ export const isDivinaReadingMode = (v: any): v is TdivinaReadingMode => {
 };
 
 export interface IReaderSettingsProps {
-    open: boolean;
-    doFocus: number;
+    // open: boolean;
+    // doFocus: number;
     // readerConfig: ReaderConfig;
     // handleSettingChange: (
     //     event: TChangeEventOnInput | TChangeEventOnSelect | undefined,
@@ -140,7 +140,7 @@ export interface IReaderSettingsProps {
     // handleIndexChange: (
     //     event: TChangeEventOnInput,
     //     name: keyof ReaderConfigStringsAdjustables) => void;
-    toggleMenu: () => void;
+    // toggleMenu: () => void;
     // r2Publication: R2Publication | undefined;
     handleDivinaReadingMode: (v: TdivinaReadingMode) => void;
 
@@ -156,5 +156,5 @@ export interface IReaderSettingsProps {
     fxlZoomPercent: number;
     zenMode: boolean;
     setZenModeAndFXLZoom: (zen : boolean, fxlZoom: number) => void;
-    searchEnable: boolean;
+    // searchEnable: boolean;
 }

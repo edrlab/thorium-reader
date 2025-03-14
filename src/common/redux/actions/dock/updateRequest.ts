@@ -5,23 +5,22 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { DockType } from "readium-desktop/common/models/dock";
 import { Action } from "readium-desktop/common/models/redux";
-import { INoteCreator } from "../../states/creator";
-import { v4 as uuidv4 } from "uuid";
 
-export const ID = "CREATOR_SET";
+export const ID = "DOCK_UPDATE_REQUEST";
 
-export interface Payload extends INoteCreator {
+export interface Payload<T extends keyof DockType> {
+    data: DockType[T];
 }
 
-export function build(name: string, type: INoteCreator["type"]): Action<typeof ID, Payload> {
+export function build<T extends keyof DockType>(data: DockType[T]):
+    Action<typeof ID, Payload<T>> {
 
     return {
         type: ID,
         payload: {
-            id: uuidv4(),
-            name,
-            type,
+            data,
         },
     };
 }

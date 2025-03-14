@@ -24,6 +24,8 @@ import { IMediaOverlayState } from "readium-desktop/renderer/reader/redux/state/
 import { IAllowCustomConfigState } from "readium-desktop/renderer/reader/redux/state/allowCustom";
 import { ICacheDocument } from "./resourceCache";
 import { IImageClickState } from "readium-desktop/renderer/reader/redux/state/imageClick";
+import { DockState } from "../dock";
+import { IBookmarkTotalCountState } from "readium-desktop/renderer/reader/redux/state/bookmarkTotalCount";
 
 export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
@@ -32,7 +34,9 @@ export interface IReaderRootState extends IRendererCommonRootState {
     mode: ReaderMode;
     annotation: IAnnotationModeState;
     annotationTagsIndex: TAnnotationTagsIndex;
-    img: IImageClickState;
+    img: IImageClickState; // TODO: replace by dock/dialog state
+    dock: DockState;
+    // cf dialog state in common
 }
 
 export interface IReaderStateReader {
@@ -53,6 +57,7 @@ export interface IReaderStateReader {
     mediaOverlay: IMediaOverlayState;
     allowCustomConfig: IAllowCustomConfigState;
     transientConfig: ReaderConfigPublisher;
+    bookmarkTotalCount: IBookmarkTotalCountState;
 
 
     // got the lock

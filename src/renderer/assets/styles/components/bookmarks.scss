@@ -1,0 +1,75 @@
+.bookmark_form {
+    background-color: var(--color-extralight-grey);
+    width: 420px;
+    border-radius: 6px;
+    border: 1px solid var(--color-light-grey);
+    display: flex;
+    flex-direction: column;
+    padding: 5px 10px;
+    color: var(--color-primary);
+
+    // gap: 10px;
+
+    h4 {
+      margin: 5px 0;
+    }
+
+    label {
+      margin: 5px;
+    }
+
+    &_textarea{
+      width: -webkit-fill-available;
+      min-width: -webkit-fill-available;
+      max-width: -webkit-fill-available;
+      height: 100px;
+      min-height: 100px;
+      max-height: 300px;
+      border: 1px solid rgb(118 118 118);
+      border-radius: 3px;
+      font-family: Nunito, sans-serif;
+      background-color: var(--color-annotations-txt-area);
+      color: var(--color-primary);
+      margin: 5px;
+
+
+      &_container {
+      display: flex;
+      flex-direction: column;
+      }
+
+      &_buttons {
+        margin-top: -10px;
+        margin-bottom: 5px;
+        // margin: 5px 0;
+        display: flex;
+        gap: 5px;
+
+        button {
+          margin-left: 5px;
+          min-width: unset;
+          width: fit-content;
+          height: 25px;
+
+          &.button_primary_blue {
+            color: var(--color-secondary);
+
+            &:hover, &:focus:hover {
+              color: var(--color-blue)!important;
+            }
+          }
+
+          svg {
+            fill: var(--color-secondary);
+            color: var(--color-secondary);
+          }
+
+          &:hover svg {
+            fill: var(--color-blue);
+            color: var(--color-blue);
+          }
+        }
+      }
+    }
+  }
+

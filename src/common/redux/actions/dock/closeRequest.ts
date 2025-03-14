@@ -6,23 +6,14 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { INoteCreator } from "../../states/creator";
-import { v4 as uuidv4 } from "uuid";
 
-export const ID = "CREATOR_SET";
+export const ID = "DOCK_CLOSE_REQUEST";
 
-export interface Payload extends INoteCreator {
-}
-
-export function build(name: string, type: INoteCreator["type"]): Action<typeof ID, Payload> {
+export function build():
+    Action<typeof ID> {
 
     return {
         type: ID,
-        payload: {
-            id: uuidv4(),
-            name,
-            type,
-        },
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

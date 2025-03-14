@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IReaderSettingsMenuState, ReaderConfig, ReaderTTSMediaOverlay } from "readium-desktop/common/models/reader";
+import { IAnnotationReaderConfigState, IReaderConfigSettingsMenuState, ReaderConfig, ReaderTTSMediaOverlay } from "readium-desktop/common/models/reader";
 import { FONT_ID_DEFAULT } from "readium-desktop/utils/fontList";
-import { IAnnotationReaderConfigState, IColor } from "./renderer/annotation";
+import { IColor } from "./renderer/annotation";
 import { HighlightDrawTypeBackground, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
 
 export const DEFAULT_COLOR_ANNOTATION: IColor = {red: 235, green: 150, blue: 148};
@@ -35,8 +35,10 @@ export const readerConfigInitialStateAnnotation: IAnnotationReaderConfigState = 
     annotation_defaultDrawView: "annotation",
 };
 
-export const readerConfigInitialStateReaderDockingMode: IReaderSettingsMenuState = {
+export const readerConfigInitialStateReaderDockingMode: IReaderConfigSettingsMenuState = {
     readerDockingMode: "full",
+    readerMenuSection: "tab-toc",
+    readerSettingsSection: "tab-display",
 };
 
 export const readerConfigInitialState: ReaderConfig = {
@@ -65,11 +67,14 @@ export const readerConfigInitialState: ReaderConfig = {
     // HighlightDrawTypeOutline
     // HighlightDrawTypeOpacityMask
     // HighlightDrawTypeOpacityMaskRuler
+
+    // see defaultCopy in src/common/redux/actions/reader/configSetDefault.ts
     ttsHighlightColor: {
         blue: 116, // 204,
         green: 248, // 218,
         red: 248, // 255,
     },
+    // see defaultCopy in src/common/redux/actions/reader/configSetDefault.ts
     ttsHighlightColor_WORD: {
         blue: 0,
         green: 147,

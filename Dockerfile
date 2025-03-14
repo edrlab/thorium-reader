@@ -34,9 +34,9 @@ RUN echo $CONTAINER_TIMEZONE && arch && uname &&\
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata &&\
     apt-get install -y build-essential bsdmainutils curl \
     ruby-dev && gem i fpm -f && fpm --version &&\
-    curl -fsSL https://deb.nodesource.com/setup_20.x | bash &&\
+    curl -fsSL https://deb.nodesource.com/setup_22.x | bash &&\
     apt-get install -y nodejs &&\
-    npm install -g npm@10.x
+    npm install -g npm@11.x
 
 # wget libreadline-dev
 # libc6 xdg-utils libatspi2.0-0 libuuid1 libsecret-1-0 libappindicator3-1

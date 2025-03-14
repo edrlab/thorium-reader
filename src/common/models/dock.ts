@@ -5,14 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as setMediaOverlayState from "./mediaOverlay";
-import * as setTTSState from "./tts";
-import * as allowCustom from "./allowCustom";
-import * as bookmarkTotalCount from "./bookmarkTotalCount";
+import { IReaderDialogOrDockSettingsMenuState } from "./reader";
 
-export {
-    bookmarkTotalCount,
-    setMediaOverlayState,
-    setTTSState,
-    allowCustom,
-};
+export enum DockTypeName {
+    ReaderMenu = "reader-menu",
+    ReaderSettings = "reader-settings",
+}
+
+export interface DockType {
+    [DockTypeName.ReaderMenu]: IReaderDialogOrDockSettingsMenuState,
+    [DockTypeName.ReaderSettings]: IReaderDialogOrDockSettingsMenuState,
+}

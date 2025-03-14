@@ -5,24 +5,24 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { IReaderConfigSettingsMenuState, IReaderDialogOrDockSettingsMenuState } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
-import { INoteCreator } from "../../states/creator";
-import { v4 as uuidv4 } from "uuid";
 
-export const ID = "CREATOR_SET";
+export const ID = "READER_TOGGLE_SETTINGS";
 
-export interface Payload extends INoteCreator {
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Payload extends Partial<Pick<IReaderConfigSettingsMenuState, "readerDockingMode">>, Partial<IReaderDialogOrDockSettingsMenuState> {
+    open?: boolean;
+    section?: string;
+    focus?: boolean;
 }
 
-export function build(name: string, type: INoteCreator["type"]): Action<typeof ID, Payload> {
+export function build(data: Payload):
+    Action<typeof ID, Payload> {
 
     return {
         type: ID,
-        payload: {
-            id: uuidv4(),
-            name,
-            type,
-        },
+        payload: data,
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
