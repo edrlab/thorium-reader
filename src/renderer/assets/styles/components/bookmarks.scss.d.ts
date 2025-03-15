@@ -14,7 +14,6 @@ export declare const bookmarks_filter_tag: string;
 export declare const bookmarks_filter_tagGroup: string;
 export declare const bookmarks_filter_taglist: string;
 export declare const bookmarks_filter_trigger_button: string;
-export declare const bookmarks_options: string;
 export declare const bookmarks_sorting_container: string;
 export declare const bookmarksTitle_form_container: string;
 export declare const button_primary_blue: string;

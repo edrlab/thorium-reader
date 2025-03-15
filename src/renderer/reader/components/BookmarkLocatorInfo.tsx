@@ -37,6 +37,11 @@ const getBookmarkLocatorInfo = (locatorExtended: MiniLocatorExtended) => {
             name = `${locatorExtended.locator.href}`;
         }
     }
+
+    if (name.length > (200 - 3)) {
+        name = `${name.slice(0, 200)}...`;
+    }
+
     return name;
 };
 

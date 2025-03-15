@@ -19,7 +19,7 @@ export interface IBookmarkState {
 
     // deprecated, prefer locatorExtended instead
     locator: Locator; // not used anymore, keep it only for data state migration
-    locatorExtended: MiniLocatorExtended, // TODO: migration
+    locatorExtended: MiniLocatorExtended,
 
     modified?: number;
     created: number;

@@ -2091,7 +2091,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                         </Popover.Portal>
                     </Popover.Root>
                     <AlertDialog.Root>
-                        <AlertDialog.Trigger className={stylesBookmarks.bookmarks_filter_trigger_button} disabled={!bookmarkListFiltered.length} title={__("dialog.deleteAnnotations")} aria-label={__("dialog.deleteAnnotations")}>
+                        <AlertDialog.Trigger className={stylesBookmarks.bookmarks_filter_trigger_button} disabled={!bookmarkListFiltered.length} title={__("dialog.deleteBookmarks")} aria-label={__("dialog.deleteBookmarks")}>
                             <SVG svg={TrashIcon} ariaHidden />
                         </AlertDialog.Trigger>
                         <AlertDialog.Portal>
