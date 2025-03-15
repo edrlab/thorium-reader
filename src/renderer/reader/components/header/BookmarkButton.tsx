@@ -183,6 +183,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
 
     }, [dispatch, ttsState, mediaOverlaysState, __, toasty]);
 
+    const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
     const toggleBookmark = React.useCallback((fromKeyboard?: boolean, name: string = "") => {
 
         const bookmarkIndex = bookmarkTotalCount + 1;
@@ -216,6 +217,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     created: (new Date()).getTime(),
                     index: bookmarkIndex,
                     locatorExtended: locatorExtended,
+                    creator: creatorMyself,
                 });
             }
 
@@ -236,12 +238,13 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                         created: (new Date()).getTime(),
                         index: bookmarkIndex,
                         locatorExtended: locatorExtended,
+                        creator: creatorMyself,
                     });
                 }
             }
         }
     }, [
-        __, addBookmark, deleteBookmark, locatorExtended, isNavigator, toasty, bookmarkSelected, bookmarkTotalCount,
+        __, addBookmark, deleteBookmark, locatorExtended, isNavigator, toasty, bookmarkSelected, bookmarkTotalCount, creatorMyself,
     ],
     );
 
