@@ -10,8 +10,6 @@ import * as stylesBookmarks from "readium-desktop/renderer/assets/styles/compone
 
 import * as React from "react";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
-import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 import * as Popover from "@radix-ui/react-popover";
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -36,20 +34,6 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
 
     const displayFromReaderMenu = !!uuid;
     const [__] = useTranslator();
-
-    // const locatorExtended = useSelector((state: IReaderRootState) => state.reader.locator);
-    // const bookmarkListAll = useSelector((state: IReaderRootState) => state.reader.bookmark);
-
-    // let bookmark: IBookmarkState = { uuid: "", name: "", locator: locatorExtended.locator, locatorExtended: locatorExtended, created: 0, index: 0 };
-    // if (uuid) {
-    //     const tpl = bookmarkListAll.find(([, bookmarkFromList]) => bookmarkFromList.uuid === uuid);
-    //     if (tpl) {
-    //         const [, bk] = tpl;
-    //         if (bk) {
-    //             bookmark = bk;
-    //         }
-    //     }
-    // }
 
     const textAreaRef = React.useRef<HTMLTextAreaElement>();
     const bookmarkMaxLength = 1500;

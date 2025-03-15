@@ -180,57 +180,6 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
         }
 
         dispatch(readerActions.bookmark.push.build(bookmark));
-        // console.log("...bookmark.locator.locations.rangeInfo", JSON.stringify(bookmark.locator.locations.rangeInfo, null, 4));
-        // if (bookmark.locator.locations.rangeInfo)
-        // dispatch(readerLocalActionHighlights.handler.push.build([
-        //     {
-        //         uuid: bookmark.uuid,
-        //         href: bookmark.locator.href,
-        //         def: {
-        //             textPopup: bookmark.name ? {
-        //                 text: bookmark.name, // multiline
-        //                 dir: "ltr", // TODO
-        //                 lang: "en", // TODO
-        //             } : undefined,
-        //             selectionInfo: {
-        //                 textFragment: undefined,
-        //                 rangeInfo: bookmark.locator.locations.rangeInfo || {
-        //                     startContainerElementCssSelector: bookmark.locator.locations.cssSelector,
-        //                     startContainerElementCFI: undefined,
-        //                     startContainerElementXPath: undefined,
-        //                     startContainerChildTextNodeIndex: -1,
-        //                     startOffset: -1,
-        //                     endContainerElementCssSelector: bookmark.locator.locations.cssSelector,
-        //                     endContainerElementCFI: undefined,
-        //                     endContainerElementXPath: undefined,
-        //                     endContainerChildTextNodeIndex: -1,
-        //                     endOffset: -1,
-        //                     cfi: undefined,
-        //                 },
-        //                 cleanBefore: bookmark.locator.text?.before || "",
-        //                 cleanText: bookmark.locator.text?.highlight || bookmark.locator.title || bookmark.name,
-        //                 cleanAfter: bookmark.locator.text?.after || "",
-        //                 rawBefore: bookmark.locator.text?.beforeRaw || "",
-        //                 rawText: bookmark.locator.text?.highlightRaw || bookmark.locator.title || bookmark.name,
-        //                 rawAfter: bookmark.locator.text?.afterRaw || "",
-        //             },
-        //             color: {red:  52, green: 152, blue: 219},
-        //             group: "bookmark",
-        //             drawType: 6,
-        //         },
-        //     },
-        // ]));
-
-        // if (defaultDrawView === "hide"
-        //     // SKIP ENTIRELY, see ABOVE
-        //     // ttsState === TTSStateEnum.STOPPED &&
-        //     // mediaOverlaysState === MediaOverlaysStateEnum.STOPPED
-        // ) { // NOT "margin" or "annotation"
-        //     dispatch(readerLocalActionSetConfig.build({ annotation_defaultDrawView: "annotation" }));
-        //     const href1 = currentLocation?.locator?.href;
-        //     const href2 = currentLocation?.secondWebViewHref;
-        //     dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
-        // }
 
     }, [dispatch, ttsState, mediaOverlaysState, __, toasty]);
 
