@@ -824,7 +824,7 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
                 isEdited
                     ?
                     <FocusLock disabled={false} autoFocus={true}>
-                        <BookmarkEdit name={bookmark.name} uuid={bookmark.uuid} toggleBookmark={save} cancel={() => triggerEdition(false)} dockedMode={dockedMode} />
+                        <BookmarkEdit locatorExtended={bookmark.locatorExtended} name={bookmark.name} uuid={bookmark.uuid} toggleBookmark={save} cancel={() => triggerEdition(false)} dockedMode={dockedMode} />
                     </FocusLock>
                     :
                     <>
@@ -2014,7 +2014,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                 </div>
                 <div style={{ display: "flex", gap: "10px" }}>
                     <ImportAnnotationsDialog winId={winId} publicationView={publicationView}>
-                        <button className={stylesBookmarks.bookmarks_filter_trigger_button}
+                        <button style={{ display: "none" }} className={stylesBookmarks.bookmarks_filter_trigger_button}
                             title={__("catalog.importAnnotation")}
                             aria-label={__("catalog.importAnnotation")}>
                             <SVG svg={ImportIcon} />
@@ -2141,7 +2141,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                             >
                                 <div className={stylesAnnotations.annotations_checkbox}>
                                     <input type="checkbox" id="hideBookmark" name="hideBookmark" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "hide"} onChange={hideBookmarkOnChange} />
-                                    <label htmlFor="hideBookmark" className={stylesGlobal.checkbox_custom_label}>
+                                    <label htmlFor="hideBookmark" className={stylesGlobal.checkbox_custom_label} style={{ marginLeft: "10px" }}>
                                         <div
                                             tabIndex={0}
                                             role="checkbox"

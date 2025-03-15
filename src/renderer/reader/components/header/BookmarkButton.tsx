@@ -472,7 +472,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                 // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
                 // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
                 >
-                    <BookmarkEdit name={""} toggleBookmark={(name) => toggleBookmark(false, name)} />
+                    <BookmarkEdit locatorExtended={locatorExtended} name={""} toggleBookmark={(name) => toggleBookmark(false, name)} />
                     <Popover.Arrow style={{ fill: "var(--color-extralight-grey)" }} width={15} height={10} />
                 </Popover.Content>
             </Popover.Portal>

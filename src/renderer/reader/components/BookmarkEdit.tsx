@@ -18,6 +18,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
 import { TextArea } from "react-aria-components";
 import { BookmarkLocatorInfo } from "./BookmarkLocatorInfo";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 interface IProps {
     toggleBookmark: (name?: string) => void,
@@ -25,17 +26,18 @@ interface IProps {
     uuid?: string;
     dockedMode?: boolean;
     name: string;
+    locatorExtended: MiniLocatorExtended;
 }
 
 
 export const BookmarkEdit: React.FC<IProps> = (props) => {
 
-    const { cancel, uuid, /*dockedMode,*/ toggleBookmark, name } = props;
+    const { cancel, uuid, /*dockedMode,*/ toggleBookmark, name, locatorExtended } = props;
 
     const displayFromReaderMenu = !!uuid;
     const [__] = useTranslator();
 
-    const locatorExtended = useSelector((state: IReaderRootState) => state.reader.locator);
+    // const locatorExtended = useSelector((state: IReaderRootState) => state.reader.locator);
     // const bookmarkListAll = useSelector((state: IReaderRootState) => state.reader.bookmark);
 
     // let bookmark: IBookmarkState = { uuid: "", name: "", locator: locatorExtended.locator, locatorExtended: locatorExtended, created: 0, index: 0 };
