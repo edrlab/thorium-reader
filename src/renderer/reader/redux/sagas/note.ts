@@ -97,7 +97,7 @@ function* annotationUpdate(action: readerActions.annotation.update.TAction) {
 }
 
 function* bookmarkUpdate(action: readerActions.bookmark.update.TAction) {
-    debug(`annotationUpdate-- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
+    debug(`bookmarkUpdate-- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
 
     const [_, newBookmark] = action.payload;
     const { name, uuid, locatorExtended: { locator: { href }, selectionInfo } } = newBookmark;
