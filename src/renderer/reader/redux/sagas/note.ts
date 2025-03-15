@@ -224,7 +224,7 @@ function* annotationPop(action: readerActions.annotation.pop.TAction) {
     yield* putTyped(readerLocalActionHighlights.handler.pop.build([{uuid}]));
 }
 
-function* bookmarkPop(action: readerActions.annotation.pop.TAction) {
+function* bookmarkPop(action: readerActions.bookmark.pop.TAction) {
     debug(`bookmarkPop : [${action.payload.uuid}]`);
 
     const {
