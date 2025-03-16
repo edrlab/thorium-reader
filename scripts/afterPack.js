@@ -68,7 +68,7 @@ module.exports = async function afterPack(context) {
         [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: false,
 
         // OnlyLoadAppFromAsar = 5,
-        [FuseV1Options.OnlyLoadAppFromAsar]: false,
+        [FuseV1Options.OnlyLoadAppFromAsar]: true,
 
         // LoadBrowserProcessSpecificV8Snapshot = 6,
         [FuseV1Options.LoadBrowserProcessSpecificV8Snapshot]: false,
