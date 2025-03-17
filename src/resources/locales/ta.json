@@ -104,7 +104,7 @@
                 "availableUntil": "வரை",
                 "copyAvalaible": "கிடைக்கிறது",
                 "copyTotal": "நகல்கள்",
-                "holdPosition": "நிலை நிலை",
+                "holdPosition": "நிலை பிடி",
                 "holdTotal": "நடைபெற்றது",
                 "numberOfItems": "பொருட்களின் எண்ணிக்கை",
                 "priveValue": "விலை",
@@ -123,7 +123,7 @@
         "annotations": {
             "descAuthor": "வழங்கியவர் '{{- ஆசிரியர்}}'",
             "descCreator": "உருவாக்கியது",
-            "descList": "{{.",
+            "descList": "{{- nb}} குறிப்பு(கள்) {{- creator}} இல் இறக்குமதி செய்யப்படும் '{{- title}}' {{- author}}",
             "descNewer": "மோதல் (மற்றும்}} புதிய குறிப்புகள்)",
             "descOlder": "மோதல் (}} பழைய குறிப்புகளில்)",
             "descTitle": "சிறுகுறிப்பு தலைப்பு: ",
@@ -398,8 +398,8 @@
             "captionsDescription": "குறைந்தபட்ச தலைப்புகள் ச்டைலிங் கொண்ட எளிமைப்படுத்தப்பட்ட உரை காட்சி.",
             "disableContinuousPlay": "தொடர்ச்சியான விளையாட்டை முடக்கு",
             "disableContinuousPlayDescription": "அடுத்த உருப்படியை தானாகவே இயக்க வேண்டாம், தற்போதைய உருப்படி விளையாடுவதை முடித்த உடனேயே இடைநிறுத்தவும்.",
-            "ignoreAndUseTTS": "",
-            "ignoreAndUseTTSDescription": "",
+            "ignoreAndUseTTS": "முன்பே பதிவுசெய்யப்பட்ட ஆடியோவைப் புறக்கணித்து, TTS ஐப் பயன்படுத்து",
+            "ignoreAndUseTTSDescription": "EPUB மீடியா மேலடுக்குகளைப் புறக்கணித்து, அதற்குப் பதிலாக உரையிலிருந்துபேசு உடன் படி",
             "next": "அடுத்து சத்தமாக படியுங்கள்",
             "pause": "இடைநிறுத்தம் சத்தமாக படிக்க",
             "play": "சத்தமாக வாசிக்கவும்",
@@ -489,150 +489,150 @@
                 "apply": "இடு",
                 "applyDetails": "தற்போதைய வெளியீட்டில் உங்களுக்கு விருப்பமான உள்ளமைவைப் பயன்படுத்துங்கள்.",
                 "detail": "உங்களுக்கு விருப்பமான உள்ளமைவைச் சேமிக்கவும் / விண்ணப்பிக்கவும் / மீட்டமைக்கவும்.",
-                "reset": "",
-                "resetDetails": "",
-                "save": "",
-                "saveDetails": "",
-                "title": ""
+                "reset": "மீட்டமை",
+                "resetDetails": "உங்களுக்கு விருப்பமான உள்ளமைவை மீட்டமைக்கவும் (இயல்புநிலை அமைப்புகள்).",
+                "save": "சேமி",
+                "saveDetails": "இந்த செயல் தற்போதைய உள்ளமைவை சேமிக்கிறது, அதாவது உங்கள் விருப்பமான காட்சி மற்றும் உரை வடிவமைப்பு விருப்பங்கள். பிற வாசகர் சாளரங்களில் 'விண்ணப்பிக்கவும்' பொத்தானைக் சொடுக்கு செய்வதன் மூலம் அமைப்புகள் பிற வெளியீடுகளுக்குப் பயன்படுத்தப்படலாம்.",
+                "title": "விருப்பத்தேர்வுகள்"
             },
-            "preview": "",
-            "reduceMotion": "",
-            "scrolled": "",
-            "spacing": "",
-            "text": "",
+            "preview": "முன்னோட்டம்",
+            "reduceMotion": "இயக்கத்தைக் குறைக்கவும்",
+            "scrolled": "கீறப்பட்டது",
+            "spacing": "இடைவெளி",
+            "text": "உரை",
             "theme": {
                 "name": {
-                    "Contrast1": "",
-                    "Contrast2": "",
-                    "Contrast3": "",
-                    "Contrast4": "",
-                    "Neutral": "",
-                    "Night": "",
-                    "Paper": "",
-                    "Sepia": ""
+                    "Contrast1": "மாறுபாடு 1",
+                    "Contrast2": "மாறுபாடு 2",
+                    "Contrast3": "மாறுபாடு 3",
+                    "Contrast4": "மாறுபாடு 4",
+                    "Neutral": "நடுநிலை",
+                    "Night": "இரவு",
+                    "Paper": "காகிதம்",
+                    "Sepia": "செபியா"
                 },
-                "title": ""
+                "title": "கருப்பொருள்"
             },
-            "wordSpacing": ""
+            "wordSpacing": "சொல் இடைவெளி"
         },
         "svg": {
-            "left": "",
-            "right": ""
+            "left": "இடது",
+            "right": "வலது"
         },
         "toc": {
-            "publicationNoToc": ""
+            "publicationNoToc": "உள்ளடக்க அட்டவணை இல்லை"
         },
         "tts": {
-            "activate": "",
-            "language": "",
-            "next": "",
-            "options": "",
-            "pause": "",
-            "play": "",
-            "previous": "",
-            "sentenceDetect": "",
-            "sentenceDetectDescription": "",
-            "speed": "",
-            "stop": "",
-            "voice": ""
+            "activate": "உரைக்கு உரையை செயல்படுத்தவும் (TTS)",
+            "language": "Tts மொழி",
+            "next": "அடுத்த டி.டி.எச்",
+            "options": "TTS விருப்பங்கள்",
+            "pause": "இடைவேளை tts",
+            "play": "TTS ஐ விளையாடுங்கள்",
+            "previous": "முந்தைய டி.டி.எச்",
+            "sentenceDetect": "டி.டி.எச் உரையை பிரிக்கவும்",
+            "sentenceDetectDescription": "நீண்ட பத்திகளை வாக்கியங்களாக உடைக்கவும்.",
+            "speed": "TTS பிளேபேக் வீதம்",
+            "stop": "TTS ஐ நிறுத்துங்கள்",
+            "voice": "Tts குரல்"
         }
     },
     "settings": {
         "annotationCreator": {
-            "creator": "",
-            "help": "",
-            "name": "",
-            "organization": "",
-            "person": "",
-            "type": ""
+            "creator": "சிறுகுறிப்புகள் உருவாக்கியவர் (விரும்பினால்)",
+            "help": "குறிப்பிடப்பட்டால், இந்த பெயர் ஏற்றுமதி செய்யப்பட்ட குறிப்புகளின் மெட்டாடேட்டாவில் சேர்க்கப்படும்.",
+            "name": "பெயர்",
+            "organization": "அமைப்பு",
+            "person": "ஆள்",
+            "type": "தட்டச்சு:"
         },
         "auth": {
-            "help": "",
-            "title": "",
-            "wipeData": ""
+            "help": "இந்த செயல் அனைத்து OPDS உள்நுழைவு நற்சான்றுகளையும் நீக்குகிறது.",
+            "title": "வெளியீட்டு பட்டியல்களுக்கான அணுகல்",
+            "wipeData": "உள்நுழைவு தரவை அழிக்கவும்"
         },
         "keyboard": {
-            "advancedMenu": "",
-            "cancel": "",
-            "disclaimer": "",
-            "editUserJson": "",
-            "keyboardShortcuts": "",
-            "loadUserJson": "",
-            "resetDefaults": "",
-            "save": ""
+            "advancedMenu": "விசைப்பலகை குறுக்குவழிகள் மேம்பட்ட பட்டியல்",
+            "cancel": "ரத்துசெய்",
+            "disclaimer": "qwerty விசைப்பலகை தளவமைப்பிலிருந்து குறுக்குவழிகள் வரையறுக்கப்பட்டன.",
+            "editUserJson": "பயனர் கோப்பைத் திருத்து ...",
+            "keyboardShortcuts": "விசைப்பலகை குறுக்குவழிகள்",
+            "loadUserJson": "பயனர் கோப்பிலிருந்து ஏற்றவும்",
+            "resetDefaults": "மீட்டமைக்கவும் (இயல்புநிலைகளை ஏற்றவும்)",
+            "save": "சேமி"
         },
         "language": {
-            "languageChoice": ""
+            "languageChoice": "மொழி"
         },
         "library": {
-            "enableAPIAPP": "",
-            "title": ""
+            "enableAPIAPP": "'PNB' நூலக அமைப்பை செயல்படுத்தவும்",
+            "title": "பிரஞ்சு நூலக கணக்குகளுக்கான அணுகல்"
         },
         "session": {
-            "title": ""
+            "title": "அமர்வு சேமிப்பை இயக்கவும்"
         },
         "tabs": {
-            "appearance": "",
-            "general": "",
-            "keyboardShortcuts": ""
+            "appearance": "தோற்றம்",
+            "general": "பொது",
+            "keyboardShortcuts": "விசைப்பலகை குறுக்குவழிகள்"
         },
         "theme": {
-            "auto": "",
-            "dark": "",
-            "description": "",
-            "light": "",
-            "title": ""
+            "auto": "தானியங்கி",
+            "dark": "இருண்ட",
+            "description": "பயன்பாட்டு கருப்பொருள் இயக்க முறைமையுடன் பொருந்துகிறது.",
+            "light": "ஒளி",
+            "title": "பயன்பாட்டு கருப்பொருள்"
         }
     },
     "tts": {
         "highlight": {
-            "mainColor": "",
-            "maskBlockWordOutline": "",
-            "maskBlockWordSolidBackground": "",
-            "maskBlockWordUnderline": "",
-            "maskWordOutline": "",
-            "maskWordSolidBackground": "",
-            "maskWordUnderline": "",
-            "outlineWordOutline": "",
-            "outlineWordSolidBackground": "",
-            "outlineWordUnderline": "",
-            "preview": "",
-            "solidBackgroundWordOutline": "",
-            "solidBackgroundWordSolidBackground": "",
-            "solidBackgroundWordUnderline": "",
-            "style": "",
-            "underlineWordOutline": "",
-            "underlineWordSolidBackground": "",
-            "underlineWordUnderline": "",
-            "wordColor": ""
+            "mainColor": "முக்கிய நிறம்",
+            "maskBlockWordOutline": "மறைப்பு Block, சொல் Outline",
+            "maskBlockWordSolidBackground": "முகமூடி தொகுதி, சொல் திட பின்னணி",
+            "maskBlockWordUnderline": "முகமூடி தொகுதி, சொல் அடிக்கோடிட்டு",
+            "maskWordOutline": "முகமூடி, சொல் அவுட்லைன்",
+            "maskWordSolidBackground": "முகமூடி, சொல் திட பின்னணி",
+            "maskWordUnderline": "முகமூடி, சொல் அடிக்கோடிட்டு",
+            "outlineWordOutline": "அவுட்லைன், சொல் அவுட்லைன்",
+            "outlineWordSolidBackground": "அவுட்லைன், சொல் திட பின்னணி",
+            "outlineWordUnderline": "அவுட்லைன், சொல் அடிக்கோடிட்டு",
+            "preview": "TTS சிறப்பம்சமாக பாணி முன்னோட்டம்",
+            "solidBackgroundWordOutline": "திடமான பின்னணி, சொல் அவுட்லைன்",
+            "solidBackgroundWordSolidBackground": "திடமான பின்னணி, சொல் திட பின்னணி",
+            "solidBackgroundWordUnderline": "திடமான பின்னணி, சொல் அடிக்கோடிட்டு",
+            "style": "TTS சிறப்பம்சமாக பாணி",
+            "underlineWordOutline": "அடிக்கோடிட்டு, சொல் அவுட்லைன்",
+            "underlineWordSolidBackground": "அடிக்கோடிட்டு, சொல் திட பின்னணி",
+            "underlineWordUnderline": "அடிக்கோடிட்டு, சொல் அடிக்கோடிட்டு",
+            "wordColor": "சொல் நிறம்"
         }
     },
     "wizard": {
         "buttons": {
-            "discover": "",
-            "goToBooks": "",
-            "next": ""
+            "discover": "புதியதைக் கண்டறியவும்",
+            "goToBooks": "எனது வெளியீடுகளுக்குச் செல்லுங்கள்",
+            "next": "அடுத்தது"
         },
         "description": {
-            "annotations": "",
-            "catalogs": "",
-            "home": "",
-            "readingView1": "",
-            "readingView2": "",
-            "yourBooks": ""
+            "annotations": "ஆவண உரையை முன்னிலைப்படுத்தவும், பாணி மற்றும் வண்ணத்தைத் தேர்வுசெய்யவும், தனிப்பட்ட குறிப்புகளை இணைக்கவும். எடிட்டரைத் தவிர்ப்பதற்கு 'விரைவு' பயன்முறையில் சிறுகுறிப்புகளை உருவாக்கவும் (நீங்கள் உரையை உள்ளிட்டு பின்னர் பாணிகளைத் தனிப்பயனாக்கலாம்). கூடுதல் வேகத்திற்கு, ஆவண உரையை முன்னிலைப்படுத்திய உடனேயே குறிப்புகளை உருவாக்கும் 'உடனடி' பயன்முறையைப் பயன்படுத்தவும்!",
+            "catalogs": "உங்கள் உள்ளக நூலகத்திலிருந்து வெளியீடுகளை கடன் வாங்கவும் அல்லது OPDS ஊட்டங்கள் வழியாக வெளியீடுகளைக் கண்டறியவும். நிகழ்நிலை பட்டியல்களுக்கு நன்றி பல ஆதாரங்களிலிருந்து பல்வேறு வெளியீடுகளை அணுகவும்.",
+            "home": "தோரியம் வித்தியாசமாகத் தெரிகிறது! புதியது என்ன என்பதைக் கண்டுபிடிப்போம் ...",
+            "readingView1": "உங்கள் வாசிப்பு மற்றும் கேட்கும் விருப்பங்களைத் தனிப்பயனாக்குங்கள்: தோரியம் இப்போது பயனர் இடைமுகம் மற்றும் வெளியீட்டு ஆவணங்கள் இரண்டிற்கும் பல வண்ண கருப்பொருள்களை வழங்குகிறது. செயற்கை பேச்சு மற்றும் ஒத்திசைக்கப்பட்ட உரை/ஆடியோ விவரிப்புடன் 'மெடோலூட்' மின்புத்தகங்களை உள்ளமைப்பதும் இப்போது எளிதானது.",
+            "readingView2": "தோரியத்தின் மேம்பட்ட பயனர் இடைமுகம் வெளியீடுகளில் உரையைக் கண்டுபிடிப்பது, தேடல் முடிவுகளை ஆராய்வது, குறிப்பிட்ட பக்கங்களுக்குச் செல்வது, உள்ளடக்க அட்டவணையை உலாவுவது, புக்மார்க்குகளை உருவாக்குவது போன்றவற்றை எளிதாக்குகிறது. புதிய 'நறுக்கப்பட்ட' பேனல்களுக்கு நன்றி. முழுத்திரை வாசிப்பு முறை கவனச்சிதறல் இல்லாத சூழலை தொடர்ந்து வழங்குகிறது.",
+            "yourBooks": "உங்கள் மறுவடிவமைப்பு செய்யப்பட்ட தனிப்பட்ட புத்தக அலமாரிக்கு வருக! 'கட்டம்' பார்வையில், குறிச்சொற்களால் எளிதில் வடிகட்டவும் அல்லது முக்கிய வார்த்தைகளால் வெளியீடுகளைக் கண்டறியவும். மேம்பட்ட 'அட்டவணை' பார்வையில், குறிப்பிட்ட ஆசிரியர்கள், தலைப்பு, தேதி, வடிவம் போன்றவற்றின் வெளியீடுகளைத் தேர்ந்தெடுத்து வரிசைப்படுத்துங்கள்."
         },
-        "dontShow": "",
+        "dontShow": "மீண்டும் காட்ட வேண்டாம்",
         "tab": {
-            "annotations": "",
-            "catalogs": "",
-            "home": "",
-            "readingView": "",
-            "yourBooks": ""
+            "annotations": "சிறுகுறிப்புகள்",
+            "catalogs": "பட்டியல்கள்",
+            "home": "வீடு",
+            "readingView": "வாசிப்பு பார்வை",
+            "yourBooks": "உங்கள் வெளியீடுகள்"
         },
         "title": {
-            "allBooks": "",
-            "newFeature": "",
-            "welcome": ""
+            "allBooks": "எனது வெளியீடுகள் அனைத்தும்",
+            "newFeature": "புதிய அம்சம்: சிறுகுறிப்புகள்",
+            "welcome": "தோரியம் 3.0 க்கு வருக"
         }
     }
 }
