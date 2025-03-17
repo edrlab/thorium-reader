@@ -18,6 +18,8 @@ import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-
 import { TranslatorProps, withTranslator } from "../hoc/translator";
 import { connect } from "react-redux";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import { Link } from "react-router-dom";
 
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
@@ -31,6 +33,8 @@ interface IBaseProps extends TranslatorProps {
     message?: string;
     displaySystemNotification?: boolean;
     type?: ToastType;
+    publicationTitle?: string;
+    openReader? : (publicationView: PublicationView) => void;
 }
 
 // IProps may typically extend:
@@ -85,7 +89,7 @@ export class Toast extends React.Component<IProps, IState> {
         this.timer = window.setTimeout(() => {
             this.timer = undefined;
             this.handleClose();
-        }, fast ? 500 : 5000);
+        }, fast ? 1000 : 6000);
     }
 
     public componentDidMount() {
@@ -130,6 +134,8 @@ export class Toast extends React.Component<IProps, IState> {
             default:
                 break;
         }
+
+        console.log(this.props);
 
         return (
             <div
@@ -185,7 +191,46 @@ export class Toast extends React.Component<IProps, IState> {
                             // ignore
                         }
                     }
-                }>{ this.props.message }</p>
+                }>{this.props.publicationTitle ?
+                    <span>
+                        {this.props.message}
+                        <br/>
+                        <Link
+                            style={{textDecoration: "underline", fontStyle:"italic", fontWeight: "bold", color: "var(--color-primary)"}}
+                            to={{
+                                ...location,
+                                pathname: "/library",
+                                search: `?focus=search&value=${this.props.publicationTitle}`,
+                            }}
+                            onClick={(e) => {
+                                if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                    e.preventDefault();
+                                    e.currentTarget.click();
+                                }
+                            }}
+                            onKeyDown={(e) => {
+                                // if (e.code === "Space") {
+                                if (e.key === " " || e.altKey || e.ctrlKey) {
+                                    e.preventDefault(); // prevent scroll
+                                }
+                            }}
+                            onKeyUp={(e) => {
+                                // Includes screen reader tests:
+                                // if (e.code === "Space") { WORKS
+                                // if (e.key === "Space") { DOES NOT WORK
+                                // if (e.key === "Enter") { WORKS
+                                if (e.key === " ") { // WORKS
+                                    e.preventDefault();
+                                    e.currentTarget.click();
+                                }
+                            }}
+                        >
+                        {__("message.import.seeInLibrary")}
+                        </Link>
+                    </span>
+                    :
+                    (this.props.message)
+                    }</p>
                 {/*
                     onBlur={() => {
                         this.triggerTimer(true);

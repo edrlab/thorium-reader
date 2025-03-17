@@ -194,6 +194,7 @@
         "import": {
             "alreadyImport": "[{{- title}}] jau importuotas.",
             "fail": "[{{- path}}] importas nepavyko: [{{- err}}]",
+            "seeInLibrary": "",
             "success": "[{{- title}}] importas baigtas."
         },
         "open": {

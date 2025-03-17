@@ -194,6 +194,7 @@
         "import": {
             "alreadyImport": "{{- title}} já foi importado.",
             "fail": "A importação de {{- path}} falhou: [{{- err}}]",
+            "seeInLibrary": "",
             "success": "A importação de {{- title}} terminou."
         },
         "open": {

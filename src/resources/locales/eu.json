@@ -194,6 +194,7 @@
         "import": {
             "alreadyImport": "{- title}} inportatuta zegoen",
             "fail": "{- path}}-ren inportazioak huts egin du. {{- Err}}",
+            "seeInLibrary": "",
             "success": "{- title}}-ren inportazioa amaitu da."
         },
         "open": {

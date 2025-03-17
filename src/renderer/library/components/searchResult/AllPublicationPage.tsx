@@ -88,7 +88,7 @@ import classNames from "classnames";
 import * as Popover from "@radix-ui/react-popover";
 
 // import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 // import * as FilterIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
 // import * as DeleteFilter from "readium-desktop/renderer/assets/icons/deleteFilter-icon.svg";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
@@ -396,6 +396,17 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
 
     // className={classNames(classThemeExample)}
     // className={classNames(classStyleExample)}
+
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const searchValue = queryParams.get("value") || "";
+
+    React.useEffect(() => {
+        if (props.focusInputRef?.current) {
+            props.focusInputRef.current.value = searchValue;
+            onInputChange(searchValue || undefined);
+        }
+    }, [searchValue, onInputChange, props.focusInputRef]);
 
     return (
         <div className={classNames(stylesInput.form_group, stylesInput.form_group_allPubSearch)}>

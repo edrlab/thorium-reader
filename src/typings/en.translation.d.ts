@@ -439,6 +439,7 @@ declare namespace typed_i18n {
   readonly "import": {
     readonly "alreadyImport": string,
     readonly "fail": string,
+    readonly "seeInLibrary": string,
     readonly "success": string
   },
   readonly "open": { readonly "error": string }
@@ -462,10 +463,12 @@ declare namespace typed_i18n {
   (_: "message.import", __?: {}): {
   readonly "alreadyImport": string,
   readonly "fail": string,
+  readonly "seeInLibrary": string,
   readonly "success": string
 };
   (_: "message.import.alreadyImport", __?: {}): string;
   (_: "message.import.fail", __?: {}): string;
+  (_: "message.import.seeInLibrary", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
   (_: "message.open", __?: {}): { readonly "error": string };
   (_: "message.open.error", __?: {}): string;
