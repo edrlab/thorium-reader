@@ -73,12 +73,13 @@ import {
     setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
     setReadingLocationSaver, ttsClickEnable, ttsNext, ttsOverlayEnable, ttsPause,
     ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsAndMediaOverlaysManualPlayNext, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
-    ttsStop, ttsVoices as navigatorTTSVoicesSetter, highlightsClickListen,
+    ttsStop, ttsVoices as navigatorTTSVoicesSetter,
     // stealFocusDisable,
     keyboardFocusRequest,
     ttsHighlightStyle,
     mediaOverlaysEnableCaptionsMode,
     mediaOverlaysEnableSkippability,
+    highlightsClickListen,
 } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
@@ -269,8 +270,6 @@ class Reader extends React.Component<IProps, IState> {
     // @lazyInject(diRendererSymbolTable.translator)
     // private translator: Translator;
 
-    private unsubscribe: Unsubscribe;
-
     private ttsOverlayEnableNeedsSync: boolean;
 
     private resizeObserver: ResizeObserver;
@@ -417,7 +416,7 @@ class Reader extends React.Component<IProps, IState> {
         fixedLayoutZoomPercent(fxlZoomPercent); // navigator 500ms timeout debouncer
         this.blackoutDebounced();
     }
-
+    
     public async componentDidMount() {
         // navigatorTTSVoicesSetter(this.props.ttsVoices);
 
@@ -640,7 +639,7 @@ class Reader extends React.Component<IProps, IState> {
             console.log(`dispatchClick CLICK ACTION ... -- uuid: [${uuid}] handlerState: [${JSON.stringify(handlerState, null, 4)}]`);
 
             // this.handleMenuButtonClick(true, highlight.group === "annotation" ? "tab-annotation" : "tab-bookmark", true, uuid);
-            this.props.toggleMenu({open: true, section: highlight.group === "annotation" ? "tab-annotation" : "tab-bookmark", id: uuid, focus: true });
+            this.props.toggleMenu({open: true, section: highlight.group === "annotation" ? "tab-annotation" : "tab-bookmark", id: uuid, focus: true, edit: event.shift });
 
             if (href && handlerState.def.selectionInfo?.rangeInfo) {
                 this.handleLinkLocator({
@@ -729,10 +728,6 @@ class Reader extends React.Component<IProps, IState> {
         this.unregisterAllKeyboardListeners();
 
         window.removeEventListener("popstate", this.onPopState);
-
-        if (this.unsubscribe) {
-            this.unsubscribe();
-        }
     }
 
     private isFixedLayout(): boolean {
