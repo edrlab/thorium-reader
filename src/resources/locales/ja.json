@@ -135,6 +135,8 @@
         "cancel": "キャンセル",
         "deleteAnnotations": "メモを削除しますか？",
         "deleteAnnotationsText": "{{-annotationListLength}} 件のメモを削除しますか？",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "この図書目録を削除しますか？",
         "deletePublication": "この本を削除しますか？",
         "import": "追加します：",
@@ -371,6 +373,9 @@
                 "underline": "下線"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "音を鳴らさない",
             "unmute": "音を鳴らす"
@@ -386,7 +391,6 @@
             "edit": "編集",
             "goTo": "ページ移動",
             "landmarks": "構成",
-            "progression": "進行度",
             "saveMark": "しおりを挟む",
             "search": "検索",
             "searchResult": "検索 [{{- searchText}}]",

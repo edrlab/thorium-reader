@@ -49,6 +49,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 //     // stealFocusDisable
 // } from "@r2-navigator-js/electron/renderer/dom";
 import {
+    keyboardFocusRequest,
     MediaOverlaysStateEnum, TTSStateEnum,
 } from "@r2-navigator-js/electron/renderer/index";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
@@ -806,8 +807,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         <BookmarkButton shortcutEnable={this.props.shortcutEnable} isOnSearch={this.props.isOnSearch}/>
 
                         <Popover.Root open={this.props.isAnnotationModeEnabled} onOpenChange={(open) => {
-                            if (open === false) {
-                                setTimeout(() => this.props.closeAnnotationEditionMode(), 1); // trigger input onChange before the popover trigger
+                            if (!open) {
+                                setTimeout(() => this.props.closeAnnotationEditionMode(this.props.isAnnotationModeEnabledFromKeyboard), 1); // trigger input onChange before the popover trigger
                             }
                         }}>
                             <Popover.Trigger asChild>
@@ -816,7 +817,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         { style: { backgroundColor: "var(--color-blue" } })}
                                 >
                                     <input
-                                    disabled={this.props.isPdf || this.props.isDivina || isAudioBook}
+                                        disabled={this.props.isPdf || this.props.isDivina || isAudioBook}
                                         id="annotationButton"
                                         aria-label={__("reader.navigation.annotationTitle")}
                                         className={stylesReader.bookmarkButton}
@@ -824,11 +825,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         checked={this.props.isAnnotationModeEnabled}
                                         onKeyUp={(e) => {
                                             if (e.key === "Enter") {
-                                                this.props.triggerAnnotationBtn();
+                                                this.props.triggerAnnotationBtn(false);
                                             }
                                         }}
                                         onChange={() => {
-                                            this.props.triggerAnnotationBtn();
+                                            this.props.triggerAnnotationBtn(false);
                                         }}
                                     />
                                     {
@@ -850,7 +851,12 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
                                         // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
                                         >
-                                            <AnnotationEdit save={this.props.saveAnnotation} cancel={this.props.closeAnnotationEditionMode} dockedMode={isDockedMode}/>
+                                    <AnnotationEdit
+                                        save={(color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
+                                            this.props.saveAnnotation(this.props.isAnnotationModeEnabledFromKeyboard, color, comment, drawType, tags);
+                                        }}
+                                        cancel={() => this.props.closeAnnotationEditionMode(this.props.isAnnotationModeEnabledFromKeyboard)}
+                                        dockedMode={isDockedMode}/>
                                     <Popover.Arrow style={{ fill: "var(--color-extralight-grey)"}} width={15} height={10} />
                                 </Popover.Content>
                             </Popover.Portal>
@@ -1391,6 +1397,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         keyboardShortcuts: state.keyboard.shortcuts,
         annotationsDataArray: state.reader.annotation,
         isAnnotationModeEnabled: state.annotation.enable,
+        isAnnotationModeEnabledFromKeyboard: state.annotation.fromKeyboard,
         publicationHasMediaOverlays: state.reader.info.navigator.r2PublicationHasMediaOverlays,
         mediaOverlaysState: state.reader.mediaOverlay.state,
         ttsState: state.reader.tts.state,
@@ -1411,14 +1418,26 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         setConfig: (state: Partial<ReaderConfig>) => {
             dispatch(readerLocalActionSetConfig.build(state));
         },
-        triggerAnnotationBtn: () => {
-            dispatch(readerLocalActionAnnotations.trigger.build());
+        triggerAnnotationBtn: (fromKeyboard: boolean) => {
+            dispatch(readerLocalActionAnnotations.trigger.build(fromKeyboard));
         },
-        closeAnnotationEditionMode: () => {
-            dispatch(readerLocalActionAnnotations.enableMode.build(false, undefined));
+        closeAnnotationEditionMode: (fromKeyboard: boolean) => {
+            dispatch(readerLocalActionAnnotations.enableMode.build(false, undefined,  undefined));
+
+            if (fromKeyboard) {
+                setTimeout(() => {
+                    keyboardFocusRequest(true);
+                }, 200);
+            }
         },
-        saveAnnotation: (color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
+        saveAnnotation: (fromKeyboard: boolean, color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
             dispatch(readerLocalActionAnnotations.createNote.build(color, comment, drawType, tags));
+
+            if (fromKeyboard) {
+                setTimeout(() => {
+                    keyboardFocusRequest(true);
+                }, 200);
+            }
         },
         toggleMenu: (data: readerLocalActionToggleMenu.Payload) => {
             dispatch(readerLocalActionToggleMenu.build(data));

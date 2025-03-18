@@ -135,6 +135,8 @@
         "cancel": "ரத்துசெய்",
         "deleteAnnotations": "சிறுகுறிப்புகளை நீக்கவா?",
         "deleteAnnotationsText": "நீங்கள் நிச்சயமாக {{- சிறுகுறிப்பு செட்ட்லெங்}} குறிப்புகளை நீக்க விரும்புகிறீர்களா?",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "பட்டியலை நீக்கவா?",
         "deletePublication": "வெளியீட்டை நீக்கவா?",
         "import": "இறக்குமதியை உறுதிப்படுத்தவும்:",
@@ -371,6 +373,9 @@
                 "underline": "அடிக்கோடிட்டு"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "முடக்கு ஆடியோ",
             "unmute": "இயக்க ஆடியோ"
@@ -386,7 +391,6 @@
             "edit": "தொகு",
             "goTo": "பக்கத்திற்குச் செல்லுங்கள்",
             "landmarks": "அடையாளங்கள்",
-            "progression": "முன்னேற்றம்",
             "saveMark": "புத்தகக்குறியை சேமிக்கவும்",
             "search": "தேடல்",
             "searchResult": "தேடு [{{- SearchText}}]",

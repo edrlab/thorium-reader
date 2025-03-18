@@ -135,6 +135,8 @@
         "cancel": "Cancel·lar",
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Segur que vols eliminar aquest catàleg?",
         "deletePublication": "Segur que vols eliminar aquesta publicació?",
         "import": "Segur que vols importar aquests fitxers?",
@@ -371,6 +373,9 @@
                 "underline": "Subratllat"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "silenciar",
             "unmute": "deixar de silenciar"
@@ -386,7 +391,6 @@
             "edit": "Editar",
             "goTo": "Anar a la pàgina",
             "landmarks": "Punts de referència",
-            "progression": "",
             "saveMark": "Desa el marcador",
             "search": "Cercar",
             "searchResult": "Cercar [{{- searchText}}]",

@@ -55,7 +55,6 @@ import {
 } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
-import { Unsubscribe } from "redux";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_LINK, R2_EVENT_LINK } from "@r2-navigator-js/electron/common/events";
 import {
@@ -73,12 +72,13 @@ import {
     setEpubReadingSystemInfo, setKeyDownEventHandler, setKeyUpEventHandler,
     setReadingLocationSaver, ttsClickEnable, ttsNext, ttsOverlayEnable, ttsPause,
     ttsPlay, ttsPlaybackRate, ttsPrevious, ttsResume, ttsAndMediaOverlaysManualPlayNext, ttsSkippabilityEnable, ttsSentenceDetectionEnable, TTSStateEnum,
-    ttsStop, ttsVoices as navigatorTTSVoicesSetter, highlightsClickListen,
+    ttsStop, ttsVoices as navigatorTTSVoicesSetter,
     // stealFocusDisable,
     keyboardFocusRequest,
     ttsHighlightStyle,
     mediaOverlaysEnableCaptionsMode,
     mediaOverlaysEnableSkippability,
+    highlightsClickListen,
 } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
@@ -269,8 +269,6 @@ class Reader extends React.Component<IProps, IState> {
     // @lazyInject(diRendererSymbolTable.translator)
     // private translator: Translator;
 
-    private unsubscribe: Unsubscribe;
-
     private ttsOverlayEnableNeedsSync: boolean;
 
     private resizeObserver: ResizeObserver;
@@ -375,6 +373,10 @@ class Reader extends React.Component<IProps, IState> {
 
         this.showSearchResults = this.showSearchResults.bind(this);
         this.onKeyboardShowGotoPage = this.onKeyboardShowGotoPage.bind(this);
+        this.onKeyboardShowNavigationBookmarks = this.onKeyboardShowNavigationBookmarks.bind(this);
+        this.onKeyboardShowNavigationAnnotations = this.onKeyboardShowNavigationAnnotations.bind(this);
+        this.onKeyboardShowNavigationSearch = this.onKeyboardShowNavigationSearch.bind(this);
+
         this.onKeyboardShowTOC = this.onKeyboardShowTOC.bind(this);
 
         // this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
@@ -640,14 +642,16 @@ class Reader extends React.Component<IProps, IState> {
             console.log(`dispatchClick CLICK ACTION ... -- uuid: [${uuid}] handlerState: [${JSON.stringify(handlerState, null, 4)}]`);
 
             // this.handleMenuButtonClick(true, highlight.group === "annotation" ? "tab-annotation" : "tab-bookmark", true, uuid);
-            this.props.toggleMenu({open: true, section: highlight.group === "annotation" ? "tab-annotation" : "tab-bookmark", id: uuid, focus: true });
+            this.props.toggleMenu({open: true, section: highlight.group === "annotation" ? "tab-annotation" : "tab-bookmark", id: uuid, focus: true, edit: event.shift });
 
             if (href && handlerState.def.selectionInfo?.rangeInfo) {
                 this.handleLinkLocator({
                     href,
                     locations: {
                         cssSelector: handlerState.def.selectionInfo.rangeInfo.startContainerElementCssSelector,
-                        rangeInfo: handlerState.def.selectionInfo.rangeInfo,
+                        caretInfo: {
+                            ...handlerState.def.selectionInfo,
+                        },
                     },
                 });
             }
@@ -729,10 +733,6 @@ class Reader extends React.Component<IProps, IState> {
         this.unregisterAllKeyboardListeners();
 
         window.removeEventListener("popstate", this.onPopState);
-
-        if (this.unsubscribe) {
-            this.unsubscribe();
-        }
     }
 
     private isFixedLayout(): boolean {
@@ -1230,6 +1230,21 @@ class Reader extends React.Component<IProps, IState> {
 
         registerKeyboardListener(
             true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusReaderNavigationBookmarks,
+            this.onKeyboardShowNavigationBookmarks);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusReaderNavigationAnnotations,
+            this.onKeyboardShowNavigationAnnotations);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusReaderNavigationSearch,
+            this.onKeyboardShowNavigationSearch);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
             this.props.keyboardShortcuts.FocusReaderNavigationTOC,
             this.onKeyboardShowTOC);
 
@@ -1271,6 +1286,10 @@ class Reader extends React.Component<IProps, IState> {
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.AnnotationsCreate,
             this.onKeyboardAnnotation);
+        // registerKeyboardListener(
+        //     true, // listen for key up (not key down)
+        //     this.props.keyboardShortcuts.AnnotationsCreateAlt,
+        //     this.onKeyboardAnnotation);
         registerKeyboardListener(
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.AnnotationsCreateQuick,
@@ -1299,6 +1318,9 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardFocusSettings);
         unregisterKeyboardListener(this.onKeyboardFocusNav);
         unregisterKeyboardListener(this.onKeyboardShowGotoPage);
+        unregisterKeyboardListener(this.onKeyboardShowNavigationAnnotations);
+        unregisterKeyboardListener(this.onKeyboardShowNavigationSearch);
+        unregisterKeyboardListener(this.onKeyboardShowNavigationBookmarks);
         unregisterKeyboardListener(this.onKeyboardShowTOC);
         unregisterKeyboardListener(this.onKeyboardCloseReader);
         unregisterKeyboardListener(this.onKeyboardAudioPlayPause);
@@ -1434,7 +1456,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        this.props.triggerAnnotationBtn();
+        this.props.triggerAnnotationBtn(true);
     };
 
     private onKeyboardQuickAnnotation = () => {
@@ -1446,7 +1468,7 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         if (this.props.readerConfig.annotation_popoverNotOpenOnNoteTaking) {
-            this.props.triggerAnnotationBtn();
+            this.props.triggerAnnotationBtn(true);
             return ;
         }
 
@@ -1457,7 +1479,7 @@ class Reader extends React.Component<IProps, IState> {
         console.log(`onKeyboardQuickAnnotation : popoverNotOpenOnNoteTaking=${annotation_popoverNotOpenOnNoteTaking}`);
         this.props.setConfig(newReaderConfig);
 
-        this.props.triggerAnnotationBtn();
+        this.props.triggerAnnotationBtn(true);
 
         newReaderConfig = {};
         newReaderConfig.annotation_popoverNotOpenOnNoteTaking = annotation_popoverNotOpenOnNoteTaking;
@@ -1814,7 +1836,7 @@ class Reader extends React.Component<IProps, IState> {
         // }
 
         // this.handleMenuButtonClick(true, this.state.openedSectionMenu, true);
-        this.props.toggleMenu({open: true, id: this.props.readerConfig.readerDockingMode === "full" ? `reader-menu-${this.props.readerConfig.readerMenuSection}-trigger` : "reader-menu-docked-trigger", focus: true }); 
+        this.props.toggleMenu({open: true, id: this.props.readerConfig.readerDockingMode === "full" ? `reader-menu-${this.props.readerConfig.readerMenuSection}-trigger` : "reader-menu-docked-trigger", focus: true });
     };
     private onKeyboardFocusSettings = () => {
         if (!this.state.shortcutEnable) {
@@ -2497,6 +2519,40 @@ class Reader extends React.Component<IProps, IState> {
             window.history.replaceState(locator ? { data: locator, index: windowHistory._length - 1 } : null, "");
         }
     }
+
+    private onKeyboardShowNavigationBookmarks() {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardShowNavigationBookmarks)");
+            }
+            return;
+        }
+
+        this.props.toggleMenu({ open: true, section: "tab-bookmark", id: "reader-menu-tab-bookmark", focus: true });
+    }
+
+    private onKeyboardShowNavigationAnnotations() {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardShowNavigationAnnotations)");
+            }
+            return;
+        }
+
+        this.props.toggleMenu({ open: true, section: "tab-annotation", id: "reader-menu-tab-annotation", focus: true });
+    }
+
+    private onKeyboardShowNavigationSearch() {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardShowNavigationSearch)");
+            }
+            return;
+        }
+
+        this.props.toggleMenu({ open: true, section: "tab-search", id: "reader-menu-tab-search", focus: true });
+    }
+
 
     private onKeyboardShowGotoPage() {
         if (!this.state.shortcutEnable) {
@@ -3196,8 +3252,8 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         dispatchReaderTSXMountedAndPublicationIntoViewportLoaded: () => {
             dispatch(winActions.initSuccess.build());
         },
-        triggerAnnotationBtn: () => {
-            dispatch(readerLocalActionAnnotations.trigger.build());
+        triggerAnnotationBtn: (fromKeyboard: boolean) => {
+            dispatch(readerLocalActionAnnotations.trigger.build(fromKeyboard));
         },
         toggleMenu: (data: readerLocalActionToggleMenu.Payload) => {
             dispatch(readerLocalActionToggleMenu.build(data));

@@ -135,6 +135,8 @@
         "cancel": "Annuleer",
         "deleteAnnotations": "Verwijder aantekeningen?",
         "deleteAnnotationsText": "Weet je zeker dat je {{- annotationListLength}} aantekening(en) wil verwijderen?",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Wil je deze catalogus echt verwijderen ?",
         "deletePublication": "Wil je deze publicatie echt verwijderen ?",
         "import": "Wil je deze bestanden echt importeren :",
@@ -371,6 +373,9 @@
                 "underline": "Onderstrepen"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "demp geluid",
             "unmute": "geluid aan"
@@ -386,7 +391,6 @@
             "edit": "Wijzig",
             "goTo": "Ga naar pagina",
             "landmarks": "structuur elementen",
-            "progression": "Voortgang",
             "saveMark": "Bladwijzer opslaan",
             "search": "Zoek",
             "searchResult": "Zoek [{{- searchText}}]",

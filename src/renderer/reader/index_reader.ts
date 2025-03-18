@@ -65,7 +65,7 @@ ipcRenderer.on(readerIpc.CHANNEL,
 
                 const annotationList = data.payload.reader.annotation || [];
                 for (const [_createdTimestampFromAnno,anno] of annotationList) {
-                    
+
                     // TODO? why do not used the _createdTimestampFromAnno instead !?
                     if (!anno.created && anno.modified) {
                         anno.created = anno.modified;

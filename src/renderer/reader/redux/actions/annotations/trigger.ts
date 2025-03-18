@@ -11,14 +11,17 @@ export const ID = "READER_ANNOTATIONS_BTN_TRIGGER_REQUESTED";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IPayload {
+    fromKeyboard: boolean;
 }
 
-export function build():
+export function build(fromKeyboard: boolean):
     Action<typeof ID, IPayload> {
 
     return {
         type: ID,
-        payload: { },
+        payload: {
+            fromKeyboard,
+        },
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

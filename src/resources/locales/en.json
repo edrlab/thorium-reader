@@ -135,6 +135,8 @@
         "cancel": "Cancel",
         "deleteAnnotations": "Delete annotations?",
         "deleteAnnotationsText": "Are you sure you want to delete {{- annotationListLength}} note(s)?",
+        "deleteBookmarks": "Delete bookmarks?",
+        "deleteBookmarksText": "Are you sure you want to delete {{- bookmarkListLength}} bookmark(s)?",
         "deleteFeed": "Delete catalog?",
         "deletePublication": "Delete publication?",
         "import": "Confirm import:",
@@ -371,6 +373,9 @@
                 "underline": "Underline"
             }
         },
+        "bookmarks": {
+            "index": "Bookmark {{- index}}"
+        },
         "divina": {
             "mute": "mute audio",
             "unmute": "unmute audio"
@@ -386,8 +391,7 @@
             "edit": "Edit",
             "goTo": "Go to page",
             "landmarks": "Landmarks",
-            "progression": "Progression",
-            "saveMark": "Save bookmark",
+            "saveMark": "Save",
             "search": "Search",
             "searchResult": "Search [{{- searchText}}]",
             "toc": "Table of Contents"

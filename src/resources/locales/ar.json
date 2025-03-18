@@ -135,6 +135,8 @@
         "cancel": "إلغاء الأمر",
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "حذف الكتالوغ؟",
         "deletePublication": "حذف المنشور؟",
         "import": "تأكيد الاستيراد:",
@@ -371,6 +373,9 @@
                 "underline": "تسطير"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "كتم الصوت",
             "unmute": "إلغاء كتم الصوت"
@@ -386,7 +391,6 @@
             "edit": "تحرير",
             "goTo": "الانتقال إلى صفحة",
             "landmarks": "المَعالم",
-            "progression": "",
             "saveMark": "حفظ الإشارة المرجعية",
             "search": "بحث",
             "searchResult": "بحث عن [{{- searchText}}]",

@@ -135,6 +135,8 @@
         "cancel": "Ezeztatu",
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Ziur zaude katalogo hau ezabatu nahi duzula?",
         "deletePublication": "Ziur zaude argitalpen hau ezabatu nahi duzula?",
         "import": "Ziur zaude fitxategi hauek inportatu nahi dituzula?",
@@ -371,6 +373,9 @@
                 "underline": "Azpimarratu"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "isildu",
             "unmute": "isiltzeari utzi"
@@ -386,7 +391,6 @@
             "edit": "Editatu",
             "goTo": "Joan orrialdera",
             "landmarks": "Erreferentzia-puntuak",
-            "progression": "",
             "saveMark": "Gorde laster-marka",
             "search": "Bilatu",
             "searchResult": "Bilatu [{{- searchText}}]",

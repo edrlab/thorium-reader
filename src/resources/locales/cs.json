@@ -135,6 +135,8 @@
         "cancel": "Zrušit",
         "deleteAnnotations": "Odstranit anotace?",
         "deleteAnnotationsText": "Opravdu chcete odstranit {{- annotationListLength}} poznámek?",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Odstranit katalog?",
         "deletePublication": "Odstranit publikaci?",
         "import": "Potvrdit import:",
@@ -371,6 +373,9 @@
                 "underline": "Podtrhnout"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "ztlumit zvuk",
             "unmute": ""
@@ -386,7 +391,6 @@
             "edit": "Upravit",
             "goTo": "Jít na stránku",
             "landmarks": "",
-            "progression": "Postup",
             "saveMark": "Uložit záložku",
             "search": "Hledat",
             "searchResult": "Hledat {{- searchText}}",

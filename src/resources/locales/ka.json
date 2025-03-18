@@ -135,6 +135,8 @@
         "cancel": "გადაფიქრება",
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "ნამდვილად გსურთ ამ კატალოგის წაშლა ?",
         "deletePublication": "ნამდვილად გსურთ ამ პუბლიკაციის წაშლა ?",
         "import": "ნამდვილად გსურთ ამ ფაილების შემოტანა :",
@@ -371,6 +373,9 @@
                 "underline": ""
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "გაჩუმება",
             "unmute": "ხმის ჩართვა"
@@ -386,7 +391,6 @@
             "edit": "გადაკეთება",
             "goTo": "",
             "landmarks": "ორიენტირები",
-            "progression": "",
             "saveMark": "",
             "search": "ძიება",
             "searchResult": "",

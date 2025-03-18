@@ -135,6 +135,8 @@
         "cancel": "Отказ",
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Наистина ли искате да изтриете този каталог?",
         "deletePublication": "Наистина ли искате да изтриете тази книга?",
         "import": "Наистина ли искате да добавите тези файлове:",
@@ -371,6 +373,9 @@
                 "underline": ""
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "заглуши звука",
             "unmute": "включване на звука"
@@ -386,7 +391,6 @@
             "edit": "Edit",
             "goTo": "",
             "landmarks": "Landmarks",
-            "progression": "",
             "saveMark": "",
             "search": "Търси",
             "searchResult": "",
