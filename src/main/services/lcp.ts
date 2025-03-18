@@ -16,7 +16,7 @@ import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { LcpInfo, LsdStatus } from "readium-desktop/common/models/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { readerActions, toastActions } from "readium-desktop/common/redux/actions/";
+import { lcpActions, readerActions, toastActions } from "readium-desktop/common/redux/actions/";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,
@@ -42,7 +42,6 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { injectBufferInZip } from "../tools/zipInjector";
 
 import { lcpHashesFilePath } from "../di";
-import { lcpActions } from "../redux/actions";
 import { extractCrc32OnZip } from "../tools/crc";
 import { LSDManager } from "./lsd";
 import { getTranslator } from "readium-desktop/common/services/translator";

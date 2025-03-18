@@ -31,4 +31,6 @@ export declare const publication_main_container: string;
 export declare const publication_title: string;
 export declare const publication_title_wrapper: string;
 export declare const publication_wrapper: string;
+export declare const spinner: string;
+export declare const spinner_container: string;
 export declare const title: string;

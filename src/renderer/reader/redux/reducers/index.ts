@@ -51,6 +51,7 @@ import { readerLockReducer } from "./lock";
 import { imageClickReducer } from "./imageClick";
 import { dockReducer } from "readium-desktop/common/redux/reducers/dock";
 import { readerBookmarkTotalCountReducer } from "readium-desktop/common/redux/reducers/reader/bookmarkTotalCount";
+import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 
 export const rootReducer = () => {
 
@@ -220,5 +221,6 @@ export const rootReducer = () => {
             },
         ),
         img: imageClickReducer,
+        lcp: lcpReducer,
     });
 };
