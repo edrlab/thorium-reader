@@ -163,6 +163,7 @@ class Cover extends React.Component<IProps, IState> {
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
 
         return (
+            <>
             <div style={backgroundStyle} className={stylesPublications.no_img_wrapper}>
                 <div className={stylesPublications.no_img}>
                     <p aria-hidden
@@ -171,17 +172,18 @@ class Cover extends React.Component<IProps, IState> {
                     </p>
                     <p aria-hidden>{authors}</p>
                 </div>
-                {/* {!this.props.publicationViewMaybeOpds.lastReadTimeStamp ?
-                <div className={stylesPublications.corner}></div>
-                : <></>} */}
-                {
-                needsSpinner
-                ?
-                (<div className={stylesPublications.spinner_container}><div className={stylesPublications.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
-                :
-                <div className={stylesPublications.gradient}></div>
-                }
             </div>
+            {/* {!this.props.publicationViewMaybeOpds.lastReadTimeStamp ?
+            <div className={stylesPublications.corner}></div>
+            : <></>} */}
+            {
+            needsSpinner
+            ?
+            (<div className={stylesPublications.spinner_container}><div className={stylesPublications.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
+            :
+            <div className={stylesPublications.gradient}></div>
+            }
+            </>
         );
 
     }

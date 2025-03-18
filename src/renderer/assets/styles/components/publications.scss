@@ -28,9 +28,9 @@
   height: auto;
   align-items: start;
 
-    &:hover {
+  &:hover {
       img, .no_img_wrapper {
-			transform: rotateX(10deg);
+			  transform: rotateX(10deg);
       }
 
 			.gradient {
@@ -45,7 +45,7 @@
 
     &:hover {
       img, .no_img_wrapper {
-			transform: unset;
+			  transform: unset;
       }
     }
   }
