@@ -271,7 +271,7 @@ function* newLocatorEditAndSaveTheNote(locatorExtended: MiniLocatorExtended, fro
     }
 
     // open popover to edit and save the note
-    yield* putTyped(readerLocalActionAnnotations.enableMode.build(true, locatorExtended));
+    yield* putTyped(readerLocalActionAnnotations.enableMode.build(true, locatorExtended, fromKeyboard));
 
     // wait the action of the annotation popover, the user select the text, click on "take the note" button and then edit his note with the popover.
     // 2 choices: cancel (annotationModeEnabled = false) or takeNote with color and comment

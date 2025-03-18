@@ -18,7 +18,7 @@ import * as Popover from "@radix-ui/react-popover";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState, IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { isLocatorVisible, MediaOverlaysStateEnum, TTSStateEnum } from "@r2-navigator-js/electron/renderer";
+import { isLocatorVisible, keyboardFocusRequest, MediaOverlaysStateEnum, TTSStateEnum } from "@r2-navigator-js/electron/renderer";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { IBookmarkState, IBookmarkStateWithoutUUID } from "readium-desktop/common/redux/states/bookmark";
 import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
@@ -190,9 +190,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
     }, [dispatch, ttsState, mediaOverlaysState, __, toasty]);
 
     const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
-    const toggleBookmark = React.useCallback((fromKeyboard?: boolean, name: string = "") => {
-
-        const bookmarkIndex = bookmarkTotalCount + 1;
+    const toggleBookmark = React.useCallback((name: string = "") => {
 
         if (isNavigator) {
 
@@ -200,17 +198,14 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                 return;
             }
 
-            if (
-                !fromKeyboard &&
-                bookmarkSelected
-            ) {
-                toasty(`${__("catalog.delete")} - ${bookmarkSelected.name ? bookmarkSelected.name : `${__("reader.marks.bookmarks")} [${bookmarkIndex}]`}`);
+            if (bookmarkSelected) {
+                toasty(`${__("catalog.delete")} - ${bookmarkSelected.name ? bookmarkSelected.name : `${__("reader.marks.bookmarks")} [${bookmarkTotalCount}]`}`);
                 deleteBookmark(bookmarkSelected);
                 return ;
             }
 
             if (!bookmarkSelected) {
-                const msg = `${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${bookmarkIndex}]`}`;
+                const msg = `${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${bookmarkTotalCount + 1}]`}`;
                 toasty(msg);
 
                 if (locatorExtended.locator.locations && !locatorExtended.locator.locations.caretInfo?.rangeInfo && locatorExtended.selectionInfo?.rangeInfo) {
@@ -222,7 +217,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                 addBookmark({
                     name,
                     created: (new Date()).getTime(),
-                    index: bookmarkIndex,
+                    index: bookmarkTotalCount + 1,
                     locatorExtended: locatorExtended,
                     creator: creatorMyself,
                 });
@@ -235,14 +230,14 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
             if (href) {
 
                 if (bookmarkSelected) {
-                    toasty(`${__("catalog.delete")} - ${bookmarkSelected.name ? bookmarkSelected.name : `${__("reader.marks.bookmarks")} [${bookmarkIndex}]`}`);
+                    toasty(`${__("catalog.delete")} - ${bookmarkSelected.name ? bookmarkSelected.name : `${__("reader.marks.bookmarks")} [${bookmarkTotalCount}]`}`);
                     deleteBookmark(bookmarkSelected);
                 } else {
-                    toasty(`${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${bookmarkIndex}]`}`);
+                    toasty(`${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${bookmarkTotalCount + 1}]`}`);
                     addBookmark({
                         name,
                         created: (new Date()).getTime(),
-                        index: bookmarkIndex,
+                        index: bookmarkTotalCount + 1,
                         locatorExtended: locatorExtended,
                         creator: creatorMyself,
                     });
@@ -263,7 +258,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
             }
             return;
         }
-        toggleBookmark(true /*getBookmarkName(locatorExtended)*/);
+        toggleBookmark();
     }, [shortcutEnable, toggleBookmark]);
     React.useEffect(() => {
         registerKeyboardListener(
@@ -375,6 +370,10 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
             if (isBookmarkNeedEditing) {
                 setIsBookmarkNeedEditing(open);
             }
+
+            setTimeout(() => {
+                keyboardFocusRequest(true);
+            }, 200);
         }}>
             <Popover.Trigger asChild>
                 <li
@@ -433,7 +432,13 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                 // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
                 // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
                 >
-                    <BookmarkEdit locatorExtended={locatorExtended} name={""} toggleBookmark={(name) => toggleBookmark(false, name)} />
+                    <BookmarkEdit locatorExtended={locatorExtended} name={""} toggleBookmark={(name) => {
+                        toggleBookmark(name);
+
+                        setTimeout(() => {
+                            keyboardFocusRequest(true);
+                        }, 200);
+                    }} />
                     <Popover.Arrow style={{ fill: "var(--color-extralight-grey)" }} width={15} height={10} />
                 </Popover.Content>
             </Popover.Portal>

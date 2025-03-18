@@ -136,7 +136,6 @@ const _defaults_ = Object.freeze({
         alt: true,
         control: false,
         shift: true,
-        meta: false,
         key: "KeyB",
     }),
 
@@ -386,12 +385,11 @@ const _defaults_ = Object.freeze({
         alt: true,
         control: false,
         shift: true,
-        meta: false,
         key: "KeyA",
     }),
     AnnotationsCreateQuick: Object.freeze<TKeyboardShortcut>({
         alt: true,
-        control: true,
+        control: false,
         shift: true,
         key: "KeyQ",
     }),
