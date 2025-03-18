@@ -88,6 +88,24 @@ const _defaults_ = Object.freeze({
         shift: true,
         key: "KeyN",
     }),
+    FocusReaderNavigationBookmarks: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "KeyB",
+    }),
+    FocusReaderNavigationAnnotations: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "KeyA",
+    }),
+    FocusReaderNavigationSearch: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: true,
+        key: "KeyF",
+    }),
     FocusReaderGotoPage: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,
@@ -109,7 +127,7 @@ const _defaults_ = Object.freeze({
     }),
 
     AddBookmarkWithLabel: Object.freeze<TKeyboardShortcut>({
-        alt: false,
+        alt: true,
         control: true,
         shift: true,
         key: "KeyB",

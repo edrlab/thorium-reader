@@ -373,6 +373,10 @@ class Reader extends React.Component<IProps, IState> {
 
         this.showSearchResults = this.showSearchResults.bind(this);
         this.onKeyboardShowGotoPage = this.onKeyboardShowGotoPage.bind(this);
+        this.onKeyboardShowNavigationBookmarks = this.onKeyboardShowNavigationBookmarks.bind(this);
+        this.onKeyboardShowNavigationAnnotations = this.onKeyboardShowNavigationAnnotations.bind(this);
+        this.onKeyboardShowNavigationSearch = this.onKeyboardShowNavigationSearch.bind(this);
+
         this.onKeyboardShowTOC = this.onKeyboardShowTOC.bind(this);
 
         // this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
@@ -415,7 +419,7 @@ class Reader extends React.Component<IProps, IState> {
         fixedLayoutZoomPercent(fxlZoomPercent); // navigator 500ms timeout debouncer
         this.blackoutDebounced();
     }
-    
+
     public async componentDidMount() {
         // navigatorTTSVoicesSetter(this.props.ttsVoices);
 
@@ -1224,6 +1228,21 @@ class Reader extends React.Component<IProps, IState> {
 
         registerKeyboardListener(
             true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusReaderNavigationBookmarks,
+            this.onKeyboardShowNavigationBookmarks);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusReaderNavigationAnnotations,
+            this.onKeyboardShowNavigationAnnotations);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.FocusReaderNavigationSearch,
+            this.onKeyboardShowNavigationSearch);
+
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
             this.props.keyboardShortcuts.FocusReaderNavigationTOC,
             this.onKeyboardShowTOC);
 
@@ -1293,6 +1312,9 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardFocusSettings);
         unregisterKeyboardListener(this.onKeyboardFocusNav);
         unregisterKeyboardListener(this.onKeyboardShowGotoPage);
+        unregisterKeyboardListener(this.onKeyboardShowNavigationAnnotations);
+        unregisterKeyboardListener(this.onKeyboardShowNavigationSearch);
+        unregisterKeyboardListener(this.onKeyboardShowNavigationBookmarks);
         unregisterKeyboardListener(this.onKeyboardShowTOC);
         unregisterKeyboardListener(this.onKeyboardCloseReader);
         unregisterKeyboardListener(this.onKeyboardAudioPlayPause);
@@ -1808,7 +1830,7 @@ class Reader extends React.Component<IProps, IState> {
         // }
 
         // this.handleMenuButtonClick(true, this.state.openedSectionMenu, true);
-        this.props.toggleMenu({open: true, id: this.props.readerConfig.readerDockingMode === "full" ? `reader-menu-${this.props.readerConfig.readerMenuSection}-trigger` : "reader-menu-docked-trigger", focus: true }); 
+        this.props.toggleMenu({open: true, id: this.props.readerConfig.readerDockingMode === "full" ? `reader-menu-${this.props.readerConfig.readerMenuSection}-trigger` : "reader-menu-docked-trigger", focus: true });
     };
     private onKeyboardFocusSettings = () => {
         if (!this.state.shortcutEnable) {
@@ -2491,6 +2513,40 @@ class Reader extends React.Component<IProps, IState> {
             window.history.replaceState(locator ? { data: locator, index: windowHistory._length - 1 } : null, "");
         }
     }
+
+    private onKeyboardShowNavigationBookmarks() {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardShowNavigationBookmarks)");
+            }
+            return;
+        }
+
+        this.props.toggleMenu({ open: true, section: "tab-bookmark", id: "reader-menu-tab-bookmark", focus: true });
+    }
+
+    private onKeyboardShowNavigationAnnotations() {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardShowNavigationAnnotations)");
+            }
+            return;
+        }
+
+        this.props.toggleMenu({ open: true, section: "tab-annotation", id: "reader-menu-tab-annotation", focus: true });
+    }
+
+    private onKeyboardShowNavigationSearch() {
+        if (!this.state.shortcutEnable) {
+            if (DEBUG_KEYBOARD) {
+                console.log("!shortcutEnable (onKeyboardShowNavigationSearch)");
+            }
+            return;
+        }
+
+        this.props.toggleMenu({ open: true, section: "tab-search", id: "reader-menu-tab-search", focus: true });
+    }
+
 
     private onKeyboardShowGotoPage() {
         if (!this.state.shortcutEnable) {
