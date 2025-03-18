@@ -253,30 +253,31 @@ export async function importPublicationFromFS(
     // MUST BE AFTER storePublication() and pubDocument.files.push(file) so that the filesystem cache can be set
     publicationViewConverter.updatePublicationCache(pubDocument, r2Publication);
 
-    if (r2Publication.LCP) {
-        // MUST BE AFTER storePublication() and pubDocument.files.push(file) so that the filesystem cache can be set
-        // note: normally calls updateLcpCache(), but skip as updatePublicationCache() above did this already (avoid unnecessary filesystem writes)
-        lcpManager.updateDocumentLcp(pubDocument, r2Publication.LCP, true);
+    // see below checkPublicationLicenseUpdate
+    // if (r2Publication.LCP) {
+    //     // MUST BE AFTER storePublication() and pubDocument.files.push(file) so that the filesystem cache can be set
+    //     // note: normally calls updateLcpCache(), but skip as updatePublicationCache() above did this already (avoid unnecessary filesystem writes)
+    //     lcpManager.updateDocumentLcp(pubDocument, r2Publication.LCP, true);
 
-        try {
-            await lcpManager.processStatusDocument(
-                pubDocument.identifier,
-                r2Publication,
-            );
+    //     try {
+    //         await lcpManager.processStatusDocument(
+    //             pubDocument.identifier,
+    //             r2Publication,
+    //         );
 
-            debug(r2Publication.LCP);
-            debug(r2Publication.LCP.LSD);
+    //         debug(r2Publication.LCP);
+    //         debug(r2Publication.LCP.LSD);
 
-            lcpManager.updateDocumentLcp(pubDocument, r2Publication.LCP);
-        } catch (err) {
-            debug(err);
-        }
+    //         lcpManager.updateDocumentLcp(pubDocument, r2Publication.LCP);
+    //     } catch (err) {
+    //         debug(err);
+    //     }
 
-        if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
-            debug("processStatusDocument LCP updated.");
-            pubDocument.hash = await extractCrc32OnZip(filePath);
-        }
-    }
+    //     if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
+    //         debug("processStatusDocument LCP updated.");
+    //         pubDocument.hash = await extractCrc32OnZip(filePath);
+    //     }
+    // }
 
     debug("[START] Store publication in database", filePath);
     const newPubDocument = await publicationRepository.save(pubDocument);
@@ -284,6 +285,10 @@ export async function importPublicationFromFS(
 
     if (lcpHashedPassphrase) {
         await lcpManager.saveSecret(newPubDocument, lcpHashedPassphrase);
+    }
+
+    if (r2Publication.LCP) {
+        setTimeout(async () => await lcpManager.checkPublicationLicenseUpdate(newPubDocument), 0);
     }
 
     debug("Publication imported", filePath);
