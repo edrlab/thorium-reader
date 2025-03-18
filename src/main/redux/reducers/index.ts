@@ -15,7 +15,6 @@ import { combineReducers } from "redux";
 
 import { publicationActions, winActions } from "../actions";
 import { annotationActions, publicationActions as publicationActionsFromCommonAction } from "readium-desktop/common/redux/actions";
-import { lcpReducer } from "./lcp";
 import { readerDefaultConfigReducer } from "../../../common/redux/reducers/reader/defaultConfig";
 import { winRegistryReaderReducer } from "./win/registry/reader";
 import { winSessionLibraryReducer } from "./win/session/library";
@@ -33,6 +32,7 @@ import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 import { settingsReducer } from "readium-desktop/common/redux/reducers/settings";
 import { fifoReducer } from "readium-desktop/utils/redux-reducers/fifo.reducer";
 import { IAnnotationPreParsingState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 
 export const rootReducer = combineReducers({ // RootState
     versionUpdate: versionUpdateReducer,

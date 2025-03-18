@@ -12,7 +12,6 @@ import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 
 import { AppState } from "./app";
-import { ILcpState } from "./lcp";
 import { IDictPublicationState } from "./publication";
 import { StreamerState } from "./streamer";
 import { IDictWinRegistryReaderState } from "./win/registry/reader";
@@ -38,7 +37,6 @@ export interface RootState extends ICommonRootState {
         },
     };
     mode: ReaderMode;
-    lcp: ILcpState;
     publication: {
         lastReadingQueue: TPQueueState;
         readingFinishedQueue: TPQueueState;
