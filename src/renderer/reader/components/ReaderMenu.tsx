@@ -817,7 +817,7 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
                 >
                     <p>{__("reader.bookmarks.index", {index: bookmark.index})}</p>
                 </button>
-                    <BookmarkLocatorInfo locatorExtended={bookmark.locatorExtended} />
+                    <BookmarkLocatorInfo fallback={__("reader.bookmarks.index", {index: bookmark.index})} locatorExtended={bookmark.locatorExtended} />
                 </div>
             }
             {
