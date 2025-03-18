@@ -112,10 +112,10 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                 const currentLocations = locatorExtended.locator.locations;
 
                 return bookmarkLocations.cssSelector === currentLocations.cssSelector &&
-                    bookmarkLocations.rangeInfo?.startContainerElementCssSelector === currentLocations.rangeInfo?.startContainerElementCssSelector &&
-                    bookmarkLocations.rangeInfo?.endContainerElementCssSelector === currentLocations.rangeInfo?.endContainerElementCssSelector &&
-                    bookmarkLocations.rangeInfo?.startOffset === currentLocations.rangeInfo?.startOffset &&
-                    bookmarkLocations.rangeInfo?.endOffset === currentLocations.rangeInfo?.endOffset;
+                    bookmarkLocations.caretInfo?.rangeInfo?.startContainerElementCssSelector === currentLocations.caretInfo?.rangeInfo?.startContainerElementCssSelector &&
+                    bookmarkLocations.caretInfo?.rangeInfo?.endContainerElementCssSelector === currentLocations.caretInfo?.rangeInfo?.endContainerElementCssSelector &&
+                    bookmarkLocations.caretInfo?.rangeInfo?.startOffset === currentLocations.caretInfo?.rangeInfo?.startOffset &&
+                    bookmarkLocations.caretInfo?.rangeInfo?.endOffset === currentLocations.caretInfo?.rangeInfo?.endOffset;
             });
         } else if (isAudiobook) {
             index = allBookmarksForCurrentLocationHref.findIndex((bookmark) =>
@@ -213,8 +213,10 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                 const msg = `${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${bookmarkIndex}]`}`;
                 toasty(msg);
 
-                if (locatorExtended.locator.locations && !locatorExtended.locator.locations.rangeInfo && locatorExtended.selectionInfo?.rangeInfo) {
-                    locatorExtended.locator.locations.rangeInfo = locatorExtended.selectionInfo.rangeInfo;
+                if (locatorExtended.locator.locations && !locatorExtended.locator.locations.caretInfo?.rangeInfo && locatorExtended.selectionInfo?.rangeInfo) {
+                    locatorExtended.locator.locations.caretInfo = {
+                        ...locatorExtended.selectionInfo,
+                    };
                 }
 
                 addBookmark({
