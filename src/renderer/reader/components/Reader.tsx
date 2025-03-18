@@ -1468,7 +1468,7 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         if (this.props.readerConfig.annotation_popoverNotOpenOnNoteTaking) {
-            this.props.triggerAnnotationBtn(false);
+            this.props.triggerAnnotationBtn(true);
             return ;
         }
 
@@ -1479,7 +1479,7 @@ class Reader extends React.Component<IProps, IState> {
         console.log(`onKeyboardQuickAnnotation : popoverNotOpenOnNoteTaking=${annotation_popoverNotOpenOnNoteTaking}`);
         this.props.setConfig(newReaderConfig);
 
-        this.props.triggerAnnotationBtn(false);
+        this.props.triggerAnnotationBtn(true);
 
         newReaderConfig = {};
         newReaderConfig.annotation_popoverNotOpenOnNoteTaking = annotation_popoverNotOpenOnNoteTaking;

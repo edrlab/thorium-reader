@@ -372,8 +372,8 @@ function* setLocator(action: readerLocalActionSetLocator.TAction) {
     const annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator = (window as any).__annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator || false;
 
     if (annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator) {
-        yield* callTyped(newLocatorEditAndSaveTheNote, locatorExtended);
-        return ;
+        yield* callTyped(newLocatorEditAndSaveTheNote, locatorExtended, true);
+        return;
     }
 }
 

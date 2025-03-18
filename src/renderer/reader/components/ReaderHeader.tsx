@@ -824,11 +824,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         checked={this.props.isAnnotationModeEnabled}
                                         onKeyUp={(e) => {
                                             if (e.key === "Enter") {
-                                                this.props.triggerAnnotationBtn();
+                                                this.props.triggerAnnotationBtn(false);
                                             }
                                         }}
                                         onChange={() => {
-                                            this.props.triggerAnnotationBtn();
+                                            this.props.triggerAnnotationBtn(false);
                                         }}
                                     />
                                     {
@@ -1411,8 +1411,8 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         setConfig: (state: Partial<ReaderConfig>) => {
             dispatch(readerLocalActionSetConfig.build(state));
         },
-        triggerAnnotationBtn: () => {
-            dispatch(readerLocalActionAnnotations.trigger.build());
+        triggerAnnotationBtn: (fromKeyboard: boolean) => {
+            dispatch(readerLocalActionAnnotations.trigger.build(fromKeyboard));
         },
         closeAnnotationEditionMode: () => {
             dispatch(readerLocalActionAnnotations.enableMode.build(false, undefined));
