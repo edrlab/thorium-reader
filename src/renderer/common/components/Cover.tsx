@@ -102,6 +102,8 @@ class Cover extends React.Component<IProps, IState> {
     public render() {
         const { publicationViewMaybeOpds } = this.props;
 
+        const needsSpinner = true; // TODO: readerRootState.publicationFileLock
+
         // let tagString = "";
         // for (const tag of publicationViewMaybeOpds.tags) {
         //     if (typeof tag === "string") {
@@ -130,7 +132,13 @@ class Cover extends React.Component<IProps, IState> {
                 {/* {tagString === "/finished/"  ?
                 <div className={stylesPublications.corner}><SVG ariaHidden svg={ValidateIcon} /></div>
                 : <></>} */}
+                {
+                needsSpinner
+                ?
+                (<div className={stylesPublications.spinner_container}><div className={stylesPublications.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
+                :
                 <div className={stylesPublications.gradient}></div>
+                }
                 </>
             );
         }
@@ -160,7 +168,13 @@ class Cover extends React.Component<IProps, IState> {
                 {/* {!this.props.publicationViewMaybeOpds.lastReadTimeStamp ?
                 <div className={stylesPublications.corner}></div>
                 : <></>} */}
+                {
+                needsSpinner
+                ?
+                (<div className={stylesPublications.spinner_container}><div className={stylesPublications.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
+                :
                 <div className={stylesPublications.gradient}></div>
+                }
             </div>
         );
 
