@@ -1413,7 +1413,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     };
 };
 
-const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         setConfig: (state: Partial<ReaderConfig>) => {
             dispatch(readerLocalActionSetConfig.build(state));

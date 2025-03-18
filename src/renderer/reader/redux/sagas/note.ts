@@ -256,7 +256,7 @@ function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, 
     }));
 
     // sure! close the popover
-    yield* putTyped(readerLocalActionAnnotations.enableMode.build(false, undefined));
+    yield* putTyped(readerLocalActionAnnotations.enableMode.build(false, undefined, undefined));
 }
 
 function* newLocatorEditAndSaveTheNote(locatorExtended: MiniLocatorExtended, fromKeyboard: boolean): SagaGenerator<void> {
