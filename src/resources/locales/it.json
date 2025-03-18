@@ -373,6 +373,9 @@
                 "underline": "Sottolineatura"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "disattiva audio",
             "unmute": "riattiva audio"
@@ -388,7 +391,6 @@
             "edit": "Modifica",
             "goTo": "Vai alla pagina",
             "landmarks": "Punti di riferimento",
-            "progression": "Avanzamento",
             "saveMark": "Salva segnalibro",
             "search": "Ricerca",
             "searchResult": "Cerca [{{- searchText}}]",

@@ -373,6 +373,9 @@
                 "underline": "下底線"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "靜音",
             "unmute": "取消靜音"
@@ -388,7 +391,6 @@
             "edit": "編輯",
             "goTo": "前往到頁面",
             "landmarks": "地標",
-            "progression": "進展",
             "saveMark": "儲存書籤",
             "search": "搜尋",
             "searchResult": "搜尋 [{{- searchText}}]",

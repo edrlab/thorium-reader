@@ -373,6 +373,9 @@
                 "underline": "Onderstrepen"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "demp geluid",
             "unmute": "geluid aan"
@@ -388,7 +391,6 @@
             "edit": "Wijzig",
             "goTo": "Ga naar pagina",
             "landmarks": "structuur elementen",
-            "progression": "Voortgang",
             "saveMark": "Bladwijzer opslaan",
             "search": "Zoek",
             "searchResult": "Zoek [{{- searchText}}]",

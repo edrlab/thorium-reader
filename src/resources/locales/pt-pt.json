@@ -373,6 +373,9 @@
                 "underline": "Sublinhar"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "Silenciar áudio",
             "unmute": "Ativar áudio"
@@ -388,7 +391,6 @@
             "edit": "Editar",
             "goTo": "Ir para página",
             "landmarks": "Pontos de referência",
-            "progression": "Progresso",
             "saveMark": "Guardar favorito",
             "search": "Pesquisar",
             "searchResult": "Pesquisar [{{- searchText}}]",

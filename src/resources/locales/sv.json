@@ -373,6 +373,9 @@
                 "underline": "Understrykning"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "stäng av ljud",
             "unmute": "slå på ljud"
@@ -388,7 +391,6 @@
             "edit": "Redigera",
             "goTo": "Gå till sida",
             "landmarks": "Landmärken",
-            "progression": "Läsförlopp",
             "saveMark": "Spara bokmärke",
             "search": "Sök",
             "searchResult": "Sök [{{- searchText}}]",

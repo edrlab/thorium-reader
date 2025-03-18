@@ -815,7 +815,6 @@ declare namespace typed_i18n {
     readonly "edit": string,
     readonly "goTo": string,
     readonly "landmarks": string,
-    readonly "progression": string,
     readonly "saveMark": string,
     readonly "search": string,
     readonly "searchResult": string,
@@ -1088,7 +1087,6 @@ declare namespace typed_i18n {
   readonly "edit": string,
   readonly "goTo": string,
   readonly "landmarks": string,
-  readonly "progression": string,
   readonly "saveMark": string,
   readonly "search": string,
   readonly "searchResult": string,
@@ -1100,7 +1098,6 @@ declare namespace typed_i18n {
   (_: "reader.marks.edit", __?: {}): string;
   (_: "reader.marks.goTo", __?: {}): string;
   (_: "reader.marks.landmarks", __?: {}): string;
-  (_: "reader.marks.progression", __?: {}): string;
   (_: "reader.marks.saveMark", __?: {}): string;
   (_: "reader.marks.search", __?: {}): string;
   (_: "reader.marks.searchResult", __?: {}): string;

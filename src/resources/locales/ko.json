@@ -373,6 +373,9 @@
                 "underline": ""
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "오디오 음소거",
             "unmute": "오디오 음소거 해제"
@@ -388,7 +391,6 @@
             "edit": "수정",
             "goTo": "",
             "landmarks": "랜드마크",
-            "progression": "",
             "saveMark": "",
             "search": "검색",
             "searchResult": "",

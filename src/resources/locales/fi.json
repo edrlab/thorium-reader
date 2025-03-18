@@ -373,6 +373,9 @@
                 "underline": "Alleviivaus"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "mykistä",
             "unmute": "poista mykistys"
@@ -388,7 +391,6 @@
             "edit": "Muokkaa",
             "goTo": "Siirry sivulle",
             "landmarks": "Kiintopisteet",
-            "progression": "Eteneminen",
             "saveMark": "Tallenna kirjanmerkki",
             "search": "Hae",
             "searchResult": "Hae [{{- searchText}}]",

@@ -373,6 +373,9 @@
                 "underline": ""
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "заглуши звука",
             "unmute": "включване на звука"
@@ -388,7 +391,6 @@
             "edit": "Edit",
             "goTo": "",
             "landmarks": "Landmarks",
-            "progression": "",
             "saveMark": "",
             "search": "Търси",
             "searchResult": "",

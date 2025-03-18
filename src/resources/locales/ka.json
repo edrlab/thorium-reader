@@ -373,6 +373,9 @@
                 "underline": ""
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "გაჩუმება",
             "unmute": "ხმის ჩართვა"
@@ -388,7 +391,6 @@
             "edit": "გადაკეთება",
             "goTo": "",
             "landmarks": "ორიენტირები",
-            "progression": "",
             "saveMark": "",
             "search": "ძიება",
             "searchResult": "",

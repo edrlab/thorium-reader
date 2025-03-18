@@ -373,6 +373,9 @@
                 "underline": "Pabraukimas"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "išjungti garsą",
             "unmute": "įjungti garsą"
@@ -388,7 +391,6 @@
             "edit": "Keisti",
             "goTo": "Eiti į puslapį",
             "landmarks": "Gairės",
-            "progression": "Eiga",
             "saveMark": "Išsaugoti žymę",
             "search": "Paieška",
             "searchResult": "Ieškoti [{{- searchText}}]",

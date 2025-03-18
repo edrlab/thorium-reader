@@ -373,6 +373,9 @@
                 "underline": "Understreg"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "slå lyd fra",
             "unmute": "slå lyd til"
@@ -388,7 +391,6 @@
             "edit": "Rediger",
             "goTo": "Gå til side",
             "landmarks": "Regioner",
-            "progression": "Fremskridt",
             "saveMark": "Gem bogmærke",
             "search": "Søg",
             "searchResult": "Søgning [{{- searchText}}]",

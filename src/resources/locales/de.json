@@ -373,6 +373,9 @@
                 "underline": "Unterstreichen"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "Audio stummschalten",
             "unmute": "Ton einschalten"
@@ -388,7 +391,6 @@
             "edit": "Bearbeiten",
             "goTo": "Gehe zu Seite",
             "landmarks": "Navigationspunkte",
-            "progression": "Fortschritt",
             "saveMark": "Lesezeichen speichern",
             "search": "Suche",
             "searchResult": "Suche [{{- searchText}}]",

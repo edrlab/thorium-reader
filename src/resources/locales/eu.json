@@ -373,6 +373,9 @@
                 "underline": "Azpimarratu"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "isildu",
             "unmute": "isiltzeari utzi"
@@ -388,7 +391,6 @@
             "edit": "Editatu",
             "goTo": "Joan orrialdera",
             "landmarks": "Erreferentzia-puntuak",
-            "progression": "",
             "saveMark": "Gorde laster-marka",
             "search": "Bilatu",
             "searchResult": "Bilatu [{{- searchText}}]",

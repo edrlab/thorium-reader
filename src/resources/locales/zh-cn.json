@@ -373,6 +373,9 @@
                 "underline": "强调"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "静音",
             "unmute": "取消静音"
@@ -388,7 +391,6 @@
             "edit": "编辑",
             "goTo": "转到页码",
             "landmarks": "结构",
-            "progression": "进度",
             "saveMark": "保存书签",
             "search": "检索",
             "searchResult": "检索 [{{- searchText}}]",

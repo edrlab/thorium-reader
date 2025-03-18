@@ -373,6 +373,9 @@
                 "underline": "Podtrhnout"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "ztlumit zvuk",
             "unmute": ""
@@ -388,7 +391,6 @@
             "edit": "Upravit",
             "goTo": "Jít na stránku",
             "landmarks": "",
-            "progression": "Postup",
             "saveMark": "Uložit záložku",
             "search": "Hledat",
             "searchResult": "Hledat {{- searchText}}",

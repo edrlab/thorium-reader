@@ -373,6 +373,9 @@
                 "underline": "Podčrtaj"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "izklopi zvok",
             "unmute": "vklopi zvok"
@@ -388,7 +391,6 @@
             "edit": "Uredi",
             "goTo": "Pojdi na stran",
             "landmarks": "Mejniki",
-            "progression": "Napredek",
             "saveMark": "Shrani zaznamek",
             "search": "Iskanje",
             "searchResult": "Iskanje [{{- searchText}}]",
