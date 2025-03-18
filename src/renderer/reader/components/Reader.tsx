@@ -55,7 +55,6 @@ import {
 } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
-import { Unsubscribe } from "redux";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_LINK, R2_EVENT_LINK } from "@r2-navigator-js/electron/common/events";
 import {
