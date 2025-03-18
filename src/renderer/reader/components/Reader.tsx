@@ -1286,10 +1286,10 @@ class Reader extends React.Component<IProps, IState> {
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.AnnotationsCreate,
             this.onKeyboardAnnotation);
-        registerKeyboardListener(
-            true, // listen for key up (not key down)
-            this.props.keyboardShortcuts.AnnotationsCreateAlt,
-            this.onKeyboardAnnotation);
+        // registerKeyboardListener(
+        //     true, // listen for key up (not key down)
+        //     this.props.keyboardShortcuts.AnnotationsCreateAlt,
+        //     this.onKeyboardAnnotation);
         registerKeyboardListener(
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.AnnotationsCreateQuick,

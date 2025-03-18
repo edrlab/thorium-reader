@@ -126,17 +126,17 @@ const _defaults_ = Object.freeze({
         key: "KeyB",
     }),
 
+    // AddBookmarkWithLabelAlt: Object.freeze<TKeyboardShortcut>({
+    //     alt: true,
+    //     control: true,
+    //     shift: true,
+    //     key: "KeyB",
+    // }),
     AddBookmarkWithLabel: Object.freeze<TKeyboardShortcut>({
         alt: true,
-        control: true,
+        control: false,
         shift: true,
-        key: "KeyB",
-    }),
-    AddBookmarkWithLabelAlt: Object.freeze<TKeyboardShortcut>({
-        alt: false,
-        control: true,
-        shift: false,
-        meta: true,
+        meta: false,
         key: "KeyB",
     }),
 
@@ -376,17 +376,17 @@ const _defaults_ = Object.freeze({
         shift: true,
         key: "KeyZ",
     }),
+    // AnnotationsCreateAlt: Object.freeze<TKeyboardShortcut>({
+    //     alt: true,
+    //     control: true,
+    //     shift: true,
+    //     key: "KeyA",
+    // }),
     AnnotationsCreate: Object.freeze<TKeyboardShortcut>({
         alt: true,
-        control: true,
+        control: false,
         shift: true,
-        key: "KeyA",
-    }),
-    AnnotationsCreateAlt: Object.freeze<TKeyboardShortcut>({
-        alt: false,
-        control: true,
-        shift: false,
-        meta: true,
+        meta: false,
         key: "KeyA",
     }),
     AnnotationsCreateQuick: Object.freeze<TKeyboardShortcut>({

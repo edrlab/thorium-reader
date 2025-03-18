@@ -294,10 +294,10 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
             true, // listen for key up (not key down)
             keyboardShortcuts.AddBookmarkWithLabel,
             onKeyboardEditBookmark);
-        registerKeyboardListener(
-                true, // listen for key up (not key down)
-                keyboardShortcuts.AddBookmarkWithLabelAlt,
-                onKeyboardEditBookmark);
+        // registerKeyboardListener(
+        //         true, // listen for key up (not key down)
+        //         keyboardShortcuts.AddBookmarkWithLabelAlt,
+        //         onKeyboardEditBookmark);
         return () => {
             unregisterKeyboardListener(onKeyboardEditBookmark);
         };
