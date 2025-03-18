@@ -102,7 +102,13 @@ class Cover extends React.Component<IProps, IState> {
     public render() {
         const { publicationViewMaybeOpds } = this.props;
 
-        const needsSpinner = true; // TODO: readerRootState.publicationFileLock
+        let needsSpinner = false;
+
+        const { identifier } = this.props.publicationViewMaybeOpds;
+
+        if (this.props.lcp?.publicationFileLocks[identifier]) {
+            needsSpinner = true;
+        }
 
         // let tagString = "";
         // for (const tag of publicationViewMaybeOpds.tags) {
@@ -192,6 +198,7 @@ class Cover extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: IRendererCommonRootState) => ({
     locale: state.i18n.locale, // refresh
+    lcp: state.lcp,
 });
 
 

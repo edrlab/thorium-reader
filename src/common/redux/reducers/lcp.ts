@@ -7,8 +7,8 @@
 
 import { type Reducer } from "redux";
 
-import { lcpActions } from "../actions";
 import { ILcpState } from "../states/lcp";
+import { lcpActions } from "../actions";
 
 const initialState: ILcpState = {
     publicationFileLocks: {},
