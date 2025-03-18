@@ -58,7 +58,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
             {/* <p>{bookmark.locatorExtended.selectionInfo?.cleanText ?
             (bookmark.locatorExtended.selectionInfo.cleanText.length > (200 - 3) ?
             `${bookmark.locatorExtended.selectionInfo.cleanText.slice(0, 200)}...` : bookmark.locatorExtended.selectionInfo.cleanText) : ""}</p> */}
-            <BookmarkLocatorInfo fallback="" locatorExtended={locatorExtended}/>
+            <p><BookmarkLocatorInfo fallback="" locatorExtended={locatorExtended}/></p>
             <div>
                 <TextArea value={textAreaValue} name="editBookmark" wrap="hard"
                     className={stylesBookmarks.bookmark_form_textarea}

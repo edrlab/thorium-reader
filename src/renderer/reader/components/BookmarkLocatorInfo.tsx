@@ -56,5 +56,5 @@ const getBookmarkLocatorInfo = (locatorExtended: MiniLocatorExtended, fallback: 
 
 export const BookmarkLocatorInfo: React.FC<{fallback: string, locatorExtended: MiniLocatorExtended}> = ({locatorExtended, fallback}) => {
 
-    return <p>{getBookmarkLocatorInfo(locatorExtended, fallback)}</p>;
+    return <>{getBookmarkLocatorInfo(locatorExtended, fallback)}</>;
 };
