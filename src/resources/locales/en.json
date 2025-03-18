@@ -392,7 +392,7 @@
             "goTo": "Go to page",
             "landmarks": "Landmarks",
             "progression": "Progression",
-            "saveMark": "Save bookmark",
+            "saveMark": "Save",
             "search": "Search",
             "searchResult": "Search [{{- searchText}}]",
             "toc": "Table of Contents"
