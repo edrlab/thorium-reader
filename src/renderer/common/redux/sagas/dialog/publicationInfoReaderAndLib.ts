@@ -47,9 +47,18 @@ function* checkReaderAndLibPublication(action: dialogActions.openRequest.TAction
 
         // dispatch to API a publication get request
         if (id) {
-            const getAction = yield* callTyped(getApi, id);
+            {
+                const getAction = yield* callTyped(getApi, id, false);
+                if (!getAction) {
+                    debug("checkReaderAndLibPublication 1 timeout?", id);
+                    return;
+                }
+                yield call(updateReaderAndLibPublication, getAction, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, readerReadingLocation, handleLinkUrl);
+            }
+
+            const getAction = yield* callTyped(getApi, id, true);
             if (!getAction) {
-                debug("checkReaderAndLibPublication timeout?", id);
+                debug("checkReaderAndLibPublication 2 timeout?", id);
                 return;
             }
 
@@ -58,9 +67,9 @@ function* checkReaderAndLibPublication(action: dialogActions.openRequest.TAction
     }
 }
 
-function* getApi(id: string) {
+function* getApi(id: string, lsd: boolean) {
 
-    yield apiSaga("publication/get", REQUEST_ID, id, true);
+    yield apiSaga("publication/get", REQUEST_ID, id, lsd);
     while (true) {
         const action:
             apiActions.result.TAction<TReturnPromiseOrGeneratorType<TApiMethod["publication/get"]>>
