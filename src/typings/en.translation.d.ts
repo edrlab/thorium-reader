@@ -804,6 +804,7 @@ declare namespace typed_i18n {
       readonly "underline": string
     }
   },
+  readonly "bookmarks": { readonly "index": string },
   readonly "divina": { readonly "mute": string, readonly "unmute": string },
   readonly "fxl": { readonly "fit": string },
   readonly "goToContent": string,
@@ -1072,6 +1073,8 @@ declare namespace typed_i18n {
   (_: "reader.annotations.type.solid", __?: {}): string;
   (_: "reader.annotations.type.strikethrough", __?: {}): string;
   (_: "reader.annotations.type.underline", __?: {}): string;
+  (_: "reader.bookmarks", __?: {}): { readonly "index": string };
+  (_: "reader.bookmarks.index", __?: {}): string;
   (_: "reader.divina", __?: {}): { readonly "mute": string, readonly "unmute": string };
   (_: "reader.divina.mute", __?: {}): string;
   (_: "reader.divina.unmute", __?: {}): string;

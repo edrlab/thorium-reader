@@ -373,6 +373,9 @@
                 "underline": "Souligner"
             }
         },
+        "bookmarks": {
+            "index": "Bookmark N°{{- index}}"
+        },
         "divina": {
             "mute": "désactiver le son",
             "unmute": "activer le son"

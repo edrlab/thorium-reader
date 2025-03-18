@@ -373,6 +373,9 @@
                 "underline": "Underline"
             }
         },
+        "bookmarks": {
+            "index": "Bookmark {{- index}}"
+        },
         "divina": {
             "mute": "mute audio",
             "unmute": "unmute audio"

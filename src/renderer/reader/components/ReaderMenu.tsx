@@ -783,7 +783,7 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
                 : <div>
                     <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
                     // title={bname}
-                    aria-label={`${__("reader.goToContent")} (${bookmark.index})`}
+                    aria-label={`${__("reader.goToContent")} (${__("reader.bookmarks.index", {index: bookmark.index})})`}
                     style={{ borderLeft: dockedEditBookmark && "2px solid var(--color-blue)" }}
                     onClick={(e) => {
                         e.preventDefault();
@@ -815,7 +815,7 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
                     // }
                     id={uuid}
                 >
-                    <p>{bookmark.index}</p>
+                    <p>{__("reader.bookmarks.index", {index: bookmark.index})}</p>
                 </button>
                     <BookmarkLocatorInfo locatorExtended={bookmark.locatorExtended} />
                 </div>
