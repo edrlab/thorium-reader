@@ -102,13 +102,13 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
     const isNavigator = isAudiobook || isEpubNavigator;
 
     const allBookmarks = React.useMemo(() => bookmarksQueueState.map(([, v]) => v), [bookmarksQueueState]);
-    const allBookmarksForCurrentLocationHref = React.useMemo(() => allBookmarks.filter((bookmark) => bookmark.locator.href === locatorExtended.locator.href), [allBookmarks, locatorExtended]);
+    const allBookmarksForCurrentLocationHref = React.useMemo(() => allBookmarks.filter((bookmark) => bookmark.locatorExtended.locator.href === locatorExtended.locator.href), [allBookmarks, locatorExtended]);
     const bookmarkSelected = React.useMemo(() => {
 
         let index = undefined;
         if (isEpubNavigator) {
             index = allBookmarksForCurrentLocationHref.findIndex((bookmark) => {
-                const bookmarkLocations = bookmark.locator.locations;
+                const bookmarkLocations = bookmark.locatorExtended.locator.locations;
                 const currentLocations = locatorExtended.locator.locations;
 
                 return bookmarkLocations.cssSelector === currentLocations.cssSelector &&
@@ -120,7 +120,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
         } else if (isAudiobook) {
             index = allBookmarksForCurrentLocationHref.findIndex((bookmark) =>
                 // bookmark.locator.href === locatorExtended.locator.href &&
-                Math.floor(locatorExtended.audioPlaybackInfo.globalTime) === Math.floor(locatorExtended.audioPlaybackInfo.globalDuration * bookmark.locator.locations.position),
+                Math.floor(locatorExtended.audioPlaybackInfo.globalTime) === Math.floor(locatorExtended.audioPlaybackInfo.globalDuration * bookmark.locatorExtended.locator.locations.position),
             );
         } else {
             // index = allBookmarksForCurrentLocationHref.findIndex((bookmark) => bookmark.locator.href === locatorExtended.locator.href);
@@ -220,7 +220,6 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                 }
 
                 addBookmark({
-                    locator: locatorExtended.locator,
                     name,
                     created: (new Date()).getTime(),
                     index: bookmarkIndex,
@@ -241,7 +240,6 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                 } else {
                     toasty(`${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${bookmarkIndex}]`}`);
                     addBookmark({
-                        locator: locatorExtended.locator,
                         name,
                         created: (new Date()).getTime(),
                         index: bookmarkIndex,
@@ -322,7 +320,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     }
                 }
 
-                const visibleBookmarksPromise = allBookmarksForCurrentLocationHref.map<Promise<boolean>>((bookmark) => isLocatorVisible(bookmark.locator));
+                const visibleBookmarksPromise = allBookmarksForCurrentLocationHref.map<Promise<boolean>>((bookmark) => isLocatorVisible(bookmark.locatorExtended.locator));
                 Promise.all(visibleBookmarksPromise).then(
                     (visibleBookmarks) => {
                         const visibleBookmarksFiltered = visibleBookmarks.map((isVisible, index) => isVisible ? allBookmarksForCurrentLocationHref[index] : undefined).filter((bookmark) => !!bookmark);
@@ -336,7 +334,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     const arr: IBookmarkState[] = [];
                     for (const bookmark of allBookmarks) {
                         try {
-                            if (await isLocatorVisible(bookmark.locator)) {
+                            if (await isLocatorVisible(bookmark.locatorExtended.locator)) {
                                 arr.push(bookmark);
                             }
                         } catch (_e) {

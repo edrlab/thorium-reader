@@ -258,17 +258,85 @@ export async function initStore()
                 if (locations?.totalProgression) {
                     debug("INFO DIVINA preloadedState.win.registry.reader[id].reduxState.locator.locations.totalProgression: ", locations.totalProgression);
                 }
+
+                if ((state.reduxState.locator.locator?.locations as any)?.rangeInfo) {
+                    state.reduxState.locator.locator.locations.caretInfo = {
+                        rangeInfo: (state.reduxState.locator.locator.locations as any).rangeInfo,
+                        textFragment: undefined,
+                        cleanBefore: "",
+                        cleanText: "",
+                        cleanAfter: "",
+                        rawBefore: "",
+                        rawText: "",
+                        rawAfter: "",
+                    };
+                }
             }
 
             if (state?.reduxState?.annotation) {
                 for (const annotation of state.reduxState.annotation) {
-                    if (annotation[1]?.locatorExtended) {
+                    if (annotation[1].locatorExtended) {
                         const locatorExtended = annotation[1].locatorExtended as LocatorExtended;
                         if (locatorExtended.followingElementIDs) {
                             debug("REMOVE preloadedState.win.registry.reader[id].reduxState.annotation[i].locatorExtended.followingElementIDs (LocatorExtended): ", locatorExtended.followingElementIDs.length);
                         }
+
+                        if ((annotation[1].locatorExtended.locator.locations as any)?.rangeInfo) {
+                            annotation[1].locatorExtended.locator.locations.caretInfo = {
+                                rangeInfo: (annotation[1].locatorExtended.locator.locations as any).rangeInfo,
+                                textFragment: undefined,
+                                cleanBefore: "",
+                                cleanText: "",
+                                cleanAfter: "",
+                                rawBefore: "",
+                                rawText: "",
+                                rawAfter: "",
+                            };
+                        }
                         // REMOVE locatorExtended.followingElementIDs, no-op if property does not exist (same object returned)
                         annotation[1].locatorExtended = minimizeLocatorExtended(annotation[1].locatorExtended);
+                    }
+                }
+            }
+
+            if (state?.reduxState?.bookmark) {
+                for (const bookmark of state.reduxState.bookmark) {
+                    if ((bookmark[1] as any)?.locator) {
+                        bookmark[1].locatorExtended = {
+                            locator: (bookmark[1] as any).locator,
+                            audioPlaybackInfo: undefined,
+                            paginationInfo: undefined,
+                            selectionInfo: undefined,
+                            selectionIsNew: undefined,
+                            docInfo: undefined,
+                            epubPage: undefined,
+                            epubPageID: undefined,
+                            headings: undefined,
+                            secondWebViewHref: undefined,
+                        };
+                        (bookmark[1] as any).locator = undefined;
+                        delete (bookmark[1] as any).locator;
+                    }
+                    if (bookmark[1].locatorExtended) {
+                        const locatorExtended = bookmark[1].locatorExtended as LocatorExtended;
+                        if (locatorExtended.followingElementIDs) {
+                            debug("REMOVE preloadedState.win.registry.reader[id].reduxState.bookmark[i].locatorExtended.followingElementIDs (LocatorExtended): ", locatorExtended.followingElementIDs.length);
+                        }
+
+                        if ((bookmark[1].locatorExtended.locator.locations as any)?.rangeInfo) {
+                            bookmark[1].locatorExtended.locator.locations.caretInfo = {
+                                rangeInfo: (bookmark[1].locatorExtended.locator.locations as any).rangeInfo,
+                                textFragment: undefined,
+                                cleanBefore: "",
+                                cleanText: "",
+                                cleanAfter: "",
+                                rawBefore: "",
+                                rawText: "",
+                                rawAfter: "",
+                            };
+                        }
+                        // REMOVE locatorExtended.followingElementIDs, no-op if property does not exist (same object returned)
+                        bookmark[1].locatorExtended = minimizeLocatorExtended(bookmark[1].locatorExtended);
                     }
                 }
             }

@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Locator } from "@r2-navigator-js/electron/common/locator";
 import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { INoteCreator } from "./creator";
 import { MiniLocatorExtended } from "./locatorInitialState";
@@ -17,8 +16,6 @@ export interface IBookmarkState {
     name: string;
     index: number;
 
-    // deprecated, prefer locatorExtended instead
-    locator: Locator; // not used anymore, keep it only for data state migration
     locatorExtended: MiniLocatorExtended,
 
     modified?: number;

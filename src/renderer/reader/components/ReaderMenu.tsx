@@ -743,8 +743,8 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
     const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;
 
     const { percentRounded } = React.useMemo(() => {
-        if (r2Publication.Spine && bookmark.locator) {
-            const percent = computeProgression(r2Publication.Spine || [], bookmark.locator);
+        if (r2Publication.Spine && bookmark.locatorExtended?.locator) {
+            const percent = computeProgression(r2Publication.Spine || [], bookmark.locatorExtended.locator);
             const percentRounded = Math.round(percent);
             return { style: { width: `${percent}%` }, percentRounded };
         }
@@ -788,7 +788,7 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
                     onClick={(e) => {
                         e.preventDefault();
                         const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
-                        goToLocator(bookmark.locator, closeNavAnnotation);
+                        goToLocator(bookmark.locatorExtended.locator, closeNavAnnotation);
                         // dispatch(readerLocalActionAnnotations.focus.build(annotation));
                     }}
 
@@ -1785,7 +1785,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
         setPageNumber(cb);
     }, [setPageNumber, updateDialogOrDockDataInfo]);
 
-    bookmarkListFiltered = 
+    bookmarkListFiltered =
         (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size)
         ? bookmarkListAll.filter(([, { creator }]) => {
             return (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(getUuidFromUrn(creator.id) !== getUuidFromUrn(creatorMyself.id) ? creator.name : creatorMyself.name));
@@ -1826,10 +1826,10 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
     if (sortType !== "all" && sortType.has("progression")) {
 
         bookmarkListFiltered.sort((a, b) => {
-            const [, { locator: la }] = a;
-            const [, { locator: lb }] = b;
-            const pcta = computeProgression(r2Publication.Spine, la);
-            const pctb = computeProgression(r2Publication.Spine, lb);
+            const [, { locatorExtended: la }] = a;
+            const [, { locatorExtended: lb }] = b;
+            const pcta = computeProgression(r2Publication.Spine, la.locator);
+            const pctb = computeProgression(r2Publication.Spine, lb.locator);
             return pcta - pctb;
         });
     } else if (sortType !== "all" && sortType.has("lastCreated")) {
@@ -2079,7 +2079,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                             // label = label.replace(/^\./, ""); // remove dot start
                                             // label = label.toLowerCase();
 
-                                            // TODO 
+                                            // TODO
                                             // dispatch(readerLocalActionExportAnnotationSet.build(bookmarks, publicationView, label));
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />

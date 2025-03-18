@@ -163,7 +163,7 @@ function* bookmarkPush(action: readerActions.bookmark.push.TAction) {
     yield* putTyped(readerLocalActionHighlights.handler.push.build([
             {
                 uuid: bookmark.uuid,
-                href: bookmark.locator.href,
+                href: bookmark.locatorExtended.locator.href,
                 def: {
                     textPopup: bookmark.name ? {
                         text: bookmark.name, // multiline
@@ -172,25 +172,25 @@ function* bookmarkPush(action: readerActions.bookmark.push.TAction) {
                     } : undefined,
                     selectionInfo: {
                         textFragment: undefined,
-                        rangeInfo: bookmark.locator.locations.caretInfo?.rangeInfo || {
-                            startContainerElementCssSelector: bookmark.locator.locations.cssSelector,
+                        rangeInfo: bookmark.locatorExtended.locator.locations.caretInfo?.rangeInfo || {
+                            startContainerElementCssSelector: bookmark.locatorExtended.locator.locations.cssSelector,
                             startContainerElementCFI: undefined,
                             startContainerElementXPath: undefined,
                             startContainerChildTextNodeIndex: -1,
                             startOffset: -1,
-                            endContainerElementCssSelector: bookmark.locator.locations.cssSelector,
+                            endContainerElementCssSelector: bookmark.locatorExtended.locator.locations.cssSelector,
                             endContainerElementCFI: undefined,
                             endContainerElementXPath: undefined,
                             endContainerChildTextNodeIndex: -1,
                             endOffset: -1,
                             cfi: undefined,
                         },
-                        cleanBefore: bookmark.locator.locations.caretInfo?.cleanBefore || bookmark.locator.text?.before || "",
-                        cleanText: bookmark.locator.locations.caretInfo?.cleanText || bookmark.locator.text?.highlight || bookmark.locator.title || bookmark.name,
-                        cleanAfter: bookmark.locator.locations.caretInfo?.cleanAfter || bookmark.locator.text?.after || "",
-                        rawBefore: bookmark.locator.locations.caretInfo?.rawBefore || bookmark.locator.text?.beforeRaw || "",
-                        rawText: bookmark.locator.locations.caretInfo?.rawText || bookmark.locator.text?.highlightRaw || bookmark.locator.title || bookmark.name,
-                        rawAfter: bookmark.locator.locations.caretInfo?.rawAfter || bookmark.locator.text?.afterRaw || "",
+                        cleanBefore: bookmark.locatorExtended.locator.locations.caretInfo?.cleanBefore || bookmark.locatorExtended.locator.text?.before || "",
+                        cleanText: bookmark.locatorExtended.locator.locations.caretInfo?.cleanText || bookmark.locatorExtended.locator.text?.highlight || bookmark.locatorExtended.locator.title || bookmark.name,
+                        cleanAfter: bookmark.locatorExtended.locator.locations.caretInfo?.cleanAfter || bookmark.locatorExtended.locator.text?.after || "",
+                        rawBefore: bookmark.locatorExtended.locator.locations.caretInfo?.rawBefore || bookmark.locatorExtended.locator.text?.beforeRaw || "",
+                        rawText: bookmark.locatorExtended.locator.locations.caretInfo?.rawText || bookmark.locatorExtended.locator.text?.highlightRaw || bookmark.locatorExtended.locator.title || bookmark.name,
+                        rawAfter: bookmark.locatorExtended.locator.locations.caretInfo?.rawAfter || bookmark.locatorExtended.locator.text?.afterRaw || "",
                     },
                     color: {red:  52, green: 152, blue: 219},
                     group: "bookmark",
@@ -438,7 +438,7 @@ function* readerStart() {
             (
                 {
                     uuid: bookmark.uuid,
-                    href: bookmark.locator.href,
+                    href: bookmark.locatorExtended.locator.href,
                     def: {
                         textPopup: bookmark.name ? {
                             text: bookmark.name, // multiline
@@ -454,25 +454,25 @@ function* readerStart() {
                             //     textEnd: "",
                             //     suffix: "",
                             // },
-                            rangeInfo: bookmark.locator.locations.caretInfo?.rangeInfo || {
-                                startContainerElementCssSelector: bookmark.locator.locations.cssSelector,
+                            rangeInfo: bookmark.locatorExtended.locator.locations.caretInfo?.rangeInfo || {
+                                startContainerElementCssSelector: bookmark.locatorExtended.locator.locations.cssSelector,
                                 startContainerElementCFI: undefined,
                                 startContainerElementXPath: undefined,
                                 startContainerChildTextNodeIndex: -1,
                                 startOffset: -1,
-                                endContainerElementCssSelector: bookmark.locator.locations.cssSelector,
+                                endContainerElementCssSelector: bookmark.locatorExtended.locator.locations.cssSelector,
                                 endContainerElementCFI: undefined,
                                 endContainerElementXPath: undefined,
                                 endContainerChildTextNodeIndex: -1,
                                 endOffset: -1,
                                 cfi: undefined,
                             },
-                            cleanBefore: bookmark.locator.locations.caretInfo?.cleanBefore || bookmark.locator.text?.before || "",
-                            cleanText: bookmark.locator.locations.caretInfo?.cleanText || bookmark.locator.text?.highlight || bookmark.locator.title || bookmark.name,
-                            cleanAfter: bookmark.locator.locations.caretInfo?.cleanAfter || bookmark.locator.text?.after || "",
-                            rawBefore: bookmark.locator.locations.caretInfo?.rawBefore || bookmark.locator.text?.beforeRaw || "",
-                            rawText: bookmark.locator.locations.caretInfo?.rawText || bookmark.locator.text?.highlightRaw || bookmark.locator.title || bookmark.name,
-                            rawAfter: bookmark.locator.locations.caretInfo?.rawAfter || bookmark.locator.text?.afterRaw || "",
+                            cleanBefore: bookmark.locatorExtended.locator.locations.caretInfo?.cleanBefore || bookmark.locatorExtended.locator.text?.before || "",
+                            cleanText: bookmark.locatorExtended.locator.locations.caretInfo?.cleanText || bookmark.locatorExtended.locator.text?.highlight || bookmark.locatorExtended.locator.title || bookmark.name,
+                            cleanAfter: bookmark.locatorExtended.locator.locations.caretInfo?.cleanAfter || bookmark.locatorExtended.locator.text?.after || "",
+                            rawBefore: bookmark.locatorExtended.locator.locations.caretInfo?.rawBefore || bookmark.locatorExtended.locator.text?.beforeRaw || "",
+                            rawText: bookmark.locatorExtended.locator.locations.caretInfo?.rawText || bookmark.locatorExtended.locator.text?.highlightRaw || bookmark.locatorExtended.locator.title || bookmark.name,
+                            rawAfter: bookmark.locatorExtended.locator.locations.caretInfo?.rawAfter || bookmark.locatorExtended.locator.text?.afterRaw || "",
                         },
                         color: {red:  52, green: 152, blue: 219},
                         group: "bookmark",
