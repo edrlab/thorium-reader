@@ -1456,7 +1456,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        this.props.triggerAnnotationBtn();
+        this.props.triggerAnnotationBtn(true);
     };
 
     private onKeyboardQuickAnnotation = () => {
@@ -1468,7 +1468,7 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         if (this.props.readerConfig.annotation_popoverNotOpenOnNoteTaking) {
-            this.props.triggerAnnotationBtn();
+            this.props.triggerAnnotationBtn(false);
             return ;
         }
 
@@ -1479,7 +1479,7 @@ class Reader extends React.Component<IProps, IState> {
         console.log(`onKeyboardQuickAnnotation : popoverNotOpenOnNoteTaking=${annotation_popoverNotOpenOnNoteTaking}`);
         this.props.setConfig(newReaderConfig);
 
-        this.props.triggerAnnotationBtn();
+        this.props.triggerAnnotationBtn(false);
 
         newReaderConfig = {};
         newReaderConfig.annotation_popoverNotOpenOnNoteTaking = annotation_popoverNotOpenOnNoteTaking;
@@ -3252,8 +3252,8 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         dispatchReaderTSXMountedAndPublicationIntoViewportLoaded: () => {
             dispatch(winActions.initSuccess.build());
         },
-        triggerAnnotationBtn: () => {
-            dispatch(readerLocalActionAnnotations.trigger.build());
+        triggerAnnotationBtn: (fromKeyboard: boolean) => {
+            dispatch(readerLocalActionAnnotations.trigger.build(fromKeyboard));
         },
         toggleMenu: (data: readerLocalActionToggleMenu.Payload) => {
             dispatch(readerLocalActionToggleMenu.build(data));

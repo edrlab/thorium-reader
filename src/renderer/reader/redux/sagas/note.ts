@@ -20,7 +20,7 @@ import { readerActions, toastActions } from "readium-desktop/common/redux/action
 import { ToastType } from "readium-desktop/common/models/toast";
 import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 
-import { highlightsDrawMargin, MediaOverlaysStateEnum, TTSStateEnum } from "@r2-navigator-js/electron/renderer";
+import { highlightsDrawMargin, keyboardFocusRequest, MediaOverlaysStateEnum, TTSStateEnum } from "@r2-navigator-js/electron/renderer";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 import { HighlightDrawTypeBackground, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
@@ -259,7 +259,7 @@ function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, 
     yield* putTyped(readerLocalActionAnnotations.enableMode.build(false, undefined));
 }
 
-function* newLocatorEditAndSaveTheNote(locatorExtended: MiniLocatorExtended): SagaGenerator<void> {
+function* newLocatorEditAndSaveTheNote(locatorExtended: MiniLocatorExtended, fromKeyboard: boolean): SagaGenerator<void> {
     const defaultColor = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_defaultColor);
     const defaultDrawType = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_defaultDrawType);
 
@@ -297,9 +297,15 @@ function* newLocatorEditAndSaveTheNote(locatorExtended: MiniLocatorExtended): Sa
     } else {
         debug("ERROR: second yield RACE not worked !!?!!");
     }
+
+    if (fromKeyboard) {
+        setTimeout(() => {
+            keyboardFocusRequest(true);
+        }, 200);
+    }
 }
 
-function* annotationButtonTrigger(_action: readerLocalActionAnnotations.trigger.TAction) {
+function* annotationButtonTrigger(action: readerLocalActionAnnotations.trigger.TAction) {
 
     const ttsState = yield* selectTyped((state: IReaderRootState) => state.reader.tts.state);
     const mediaOverlaysState = yield* selectTyped((state: IReaderRootState) => state.reader.mediaOverlay.state);
@@ -344,7 +350,7 @@ function* annotationButtonTrigger(_action: readerLocalActionAnnotations.trigger.
     }
 
     debug("annotation trigger btn requested, create annotation");
-    yield* callTyped(newLocatorEditAndSaveTheNote, locatorExtended);
+    yield* callTyped(newLocatorEditAndSaveTheNote, locatorExtended, action.payload.fromKeyboard);
 
 }
 
