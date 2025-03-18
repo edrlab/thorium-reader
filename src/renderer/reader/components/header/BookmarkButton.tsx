@@ -107,10 +107,16 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
 
         let index = undefined;
         if (isEpubNavigator) {
-            index = allBookmarksForCurrentLocationHref.findIndex((bookmark) =>
-                // bookmark.locator.href === locatorExtended.locator.href &&
-                bookmark.locator.locations.cssSelector === locatorExtended.locator.locations.cssSelector,
-            );
+            index = allBookmarksForCurrentLocationHref.findIndex((bookmark) => {
+                const bookmarkLocations = bookmark.locator.locations;
+                const currentLocations = locatorExtended.locator.locations;
+
+                return bookmarkLocations.cssSelector === currentLocations.cssSelector &&
+                    bookmarkLocations.rangeInfo?.startContainerElementCssSelector === currentLocations.rangeInfo?.startContainerElementCssSelector &&
+                    bookmarkLocations.rangeInfo?.endContainerElementCssSelector === currentLocations.rangeInfo?.endContainerElementCssSelector &&
+                    bookmarkLocations.rangeInfo?.startOffset === currentLocations.rangeInfo?.startOffset &&
+                    bookmarkLocations.rangeInfo?.endOffset === currentLocations.rangeInfo?.endOffset;
+            });
         } else if (isAudiobook) {
             index = allBookmarksForCurrentLocationHref.findIndex((bookmark) =>
                 // bookmark.locator.href === locatorExtended.locator.href &&
