@@ -2521,7 +2521,6 @@ const GoToPageSection: React.FC<IBaseProps & { totalPages?: number }> = (props) 
                 {
                     currentPage ?
                         (parseInt(totalPages, 10)
-                            // tslint:disable-next-line: max-line-length
                             ? __("reader.navigation.currentPageTotal", { current: `${currentPage}`, total: `${totalPages}` })
                             : __("reader.navigation.currentPage", { current: `${currentPage}` })) :
                         ""
@@ -2984,7 +2983,6 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         <div className={stylesSettings.settings_tab}>
                             {(isPdf && pdfToc?.length && renderLinkTree_(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
                                 (isPdf && !pdfToc?.length && <p>{__("reader.toc.publicationNoToc")}</p>) ||
-                                // tslint:disable-next-line: max-line-length
                                 (!isPdf && r2Publication.TOC && renderLinkTree_(__("reader.marks.toc"), r2Publication.TOC, 1, undefined)) ||
                                 (!isPdf && r2Publication.Spine && renderLinkList_(__("reader.marks.toc"), r2Publication.Spine))}
                         </div>

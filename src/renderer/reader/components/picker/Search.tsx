@@ -39,8 +39,6 @@ interface IBaseProps {
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
-// tslint:disable: no-empty-interface
-// tslint:disable: max-line-length
 interface IProps extends IBaseProps,
     ReturnType<typeof mapStateToProps>,
     ReturnType<typeof mapDispatchToProps>,

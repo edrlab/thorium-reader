@@ -138,7 +138,6 @@ export async function importPublicationFromFS(
                 const r2PublicationJson = JSON.parse(r2PublicationStr);
                 r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 
-                // tslint:disable-next-line: max-line-length
                 // https://github.com/readium/r2-shared-js/blob/1aa1a1c10fe56ccb99ef0ed2c15a198c46600e7a/src/parser/divina.ts#L137
                 r2Publication.AddToInternal("type", ext.slice(1));
 

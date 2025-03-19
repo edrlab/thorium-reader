@@ -61,7 +61,6 @@ export function buildOpdsBrowserRoute(
 
 export function parseOpdsBrowserRoute(route: string) {
     // Parse route with regexp
-    // tslint:disable-next-line:max-line-length
     const regexp = /\/opds\/([a-zA-Z0-9-=]+)\/browse\/([0-9]+)\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)/g;
     const match = regexp.exec(route);
 

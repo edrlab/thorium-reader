@@ -83,7 +83,6 @@ export async function findManifestFromHtmlEntryAndReturnBuffer(
 // // TEST
 // if (require.main === module) {
 
-//     // tslint:disable-next-line: no-floating-promises
 //     (async () => {
 
 //         const buff = Buffer.from(`<!DOCTYPE html>
@@ -143,7 +142,6 @@ export async function findManifestFromHtmlEntryAndReturnBuffer(
 //         deepEqual(manifestParsed, manifestFoundParsed);
 //     })();
 
-//     // tslint:disable-next-line: no-floating-promises
 //     (async () => {
 
 //         const buff = Buffer.from(`<!DOCTYPE html>

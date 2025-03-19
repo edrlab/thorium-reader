@@ -365,7 +365,6 @@ const ProgressionDetails: React.FC<{summary: React.ReactElement[], details: Reac
 
 export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> = (props) => {
 
-    // tslint:disable-next-line: max-line-length
     const { closeDialogCb, readerReadingLocation, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication: r2Publication_, manifestUrlR2Protocol, handleLinkUrl, publicationViewMaybeOpds, ControlComponent, TagManagerComponent, onClikLinkCb, focusWhereAmI } = props;
 
     const r2Publication = React.useMemo(() => {
