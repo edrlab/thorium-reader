@@ -161,7 +161,7 @@ export class LcpManager {
 
         const str = JSON.stringify(allSecrets);
         const encrypted = encryptPersist(str, CONFIGREPOSITORY_LCP_SECRETS, lcpHashesFilePath);
-        fs.promises.writeFile(lcpHashesFilePath, encrypted);
+        return fs.promises.writeFile(lcpHashesFilePath, encrypted);
     }
 
     private async injectLcplIntoZip_(epubPath: string, lcpStr: string) {

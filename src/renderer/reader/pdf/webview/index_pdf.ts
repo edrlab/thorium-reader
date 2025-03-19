@@ -164,7 +164,6 @@ function main() {
         bus.subscribe("page", (pageNumber) => {
             console.log("pageNumber from host", pageNumber);
 
-            // tslint:disable-next-line: no-floating-promises
             p.then(() => {
 
                 pdfjsEventBus.dispatch("pagenumberchanged", {

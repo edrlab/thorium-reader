@@ -523,8 +523,7 @@ if (require.main === module) {
     `;
 
     const manifestParsed = JSON.parse(w3cManifest);
-    // tslint:disable-next-line: no-floating-promises
-    w3cPublicationManifestToReadiumPublicationManifest(manifestParsed, (uniqueResources) => {
+    return w3cPublicationManifestToReadiumPublicationManifest(manifestParsed, (uniqueResources) => {
         const toc = extract_TOC(el, uniqueResources);
 
         console.log("TOC");
