@@ -37,7 +37,7 @@ interface IProps {
 
 export const BookmarkEdit: React.FC<IProps> = (props) => {
 
-    const { cancel, uuid, /*dockedMode,*/ save, name, locatorExtended, color } = props;
+    const { cancel, uuid, /*dockedMode,*/ save, locatorExtended, color } = props;
 
     const displayFromReaderMenu = !!uuid;
     const [__] = useTranslator();
@@ -46,11 +46,6 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
     const textAreaRef = React.useRef<HTMLTextAreaElement>();
     const bookmarkMaxLength = 1500;
     const [textAreaValue, setTextAreaValue] = React.useState("");
-    React.useEffect(() => {
-        if (name) {
-            setTextAreaValue(name.slice(0, bookmarkMaxLength));
-        }
-    }, [name]);
 
     const colorStr = rgbToHex(color);
     const [colorSelected, setColor] = React.useState(colorStr);
