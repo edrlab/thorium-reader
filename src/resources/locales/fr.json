@@ -125,7 +125,7 @@
         "editorDescription": "Description de l'éditeur",
         "generateDescriptionTitle": "Générer une description textuelle",
         "inputPlaceholder": "Poser une question. Par example: peux-tu me décrire cette image ?",
-        "noDescription": "Aucun description n'a été fournie par l'éditeur. Vous pouvez demander à l'IA de générer soit une description courte, soit une description détaillée.",
+        "noDescription": "Aucune description n'a été fournie par l'éditeur. Vous pouvez demander à l'IA de générer soit une description courte, soit une description détaillée.",
         "reset": "Réinitialiser",
         "sendQuestion": "Envoyer la question",
         "shortDescTitle": "description courte",

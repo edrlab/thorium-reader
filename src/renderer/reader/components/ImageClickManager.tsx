@@ -185,18 +185,10 @@ const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, ima
                         `}
                 </style> */}
 
-                <div style={{ width: "80%", maxWidth: "600px", margin: "10px 0" }}>
+                <div className={stylesChatbot.chatbot_systemPrompt_container}>
                     <details>
                         <summary>{__("chatbot.systemPromptEditor")}</summary>
                         <textarea
-                            style={{
-                                width: "100%",
-                                minHeight: "100px",
-                                padding: "10px",
-                                borderRadius: "8px",
-                                border: "1px solid #ccc",
-                                resize: "vertical",
-                            }}
                             value={systemPrompt}
                             onChange={(e) => setSystemPrompt(e.target.value)}
                         ></textarea>
@@ -247,28 +239,8 @@ const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, ima
                     ))}
                     <div id="aichat-anchor"></div>
                 </div>
-
-
-                {/* {isLoading ? (
-                <div className={stylesChatbot.chatbot_loading}>
-                    <button className={stylesButtons.button_nav_primary} type="button" onClick={() => stop()}>
-                        Stop
-                    </button>
-                    <Loader svgStyle={{ width: "20px", height: "20px" }} />
-                </div>
-            ) :
-
-            error ? (
-                <div className={stylesChatbot.chatbot_error}>
-                    <button className={stylesButtons.button_nav_primary} type="button" onClick={() => reload()}>
-                        Retry
-                    </button>
-                    <div>An error occurred.</div>
-                </div>
-            ) : */}
-
                 <form onSubmit={(event) => handleSubmit(event, {})} className={stylesChatbot.chatbot_user_form}>
-                    <div style={{ display: "flex", gap: "10px", alignItems: "center", width: "100%"}}>
+                    <div className={stylesChatbot.chatbot_user_form_input_container}>
                         <div>
                             {modelSelected.name.startsWith("openAI") ?
                                 <SVG svg={OpenAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
@@ -285,7 +257,7 @@ const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, ima
                         />
                         <button type="submit" ref={quickDescriptionRef} style={{ display: "none"}}></button>
                     </div>
-                    <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "end", flexDirection: "row" }}>
+                    <div className={stylesChatbot.chatbot_user_form_conversation_container}>
                         {messages.length ?
                             <button className={stylesButtons.button_nav_primary} onClick={() => {
                                 __messages = [];
@@ -311,10 +283,10 @@ const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, ima
                                 <p style={{marginRight: " 10px"}}>An error occurred.</p>
                             </>
                         )}
-                    <button type="submit" className={stylesChatbot.chatbot_user_form_button}>
-                        <SVG svg={sendIcon} ariaHidden />
-                        <p>{__("chatbot.sendQuestion")}</p>
-                    </button>
+                        <button type="submit" className={stylesChatbot.chatbot_user_form_button}>
+                            <SVG svg={sendIcon} ariaHidden />
+                            <p>{__("chatbot.sendQuestion")}</p>
+                        </button>
                     </div>
                 </form>
                 {/* } */}
@@ -496,8 +468,15 @@ export const ImageClickManager: React.FC = () => {
                         </div>
                         : ""
                     }
-                    <div style={{ display: "flex", flexDirection: "column", padding: "5px 10px", alignItems: "center", flex: "1" }}>
-                        <div style={{ flex: (showImage || !chatEnabled) ? "1" : "0", display: "flex", flexDirection: chatEnabled ? "row" : "column", backgroundColor: chatEnabled ? "var(--color-extralight-grey)" : "", gap: "10px", width: "100%", borderLeft: chatEnabled ? "3px solid var(--color-blue)" : "", paddingLeft: "5px"}} className={stylesChatbot.image_container}>
+                    <div className={stylesChatbot.chatbot_content}>
+                        <div style={{ 
+                            flex: (showImage || !chatEnabled) ? "1" : "0", 
+                            flexDirection: chatEnabled ? "row" : "column", 
+                            backgroundColor: chatEnabled ? "var(--color-extralight-grey)" : "", 
+                            borderLeft: chatEnabled ? "3px solid var(--color-blue)" : "",
+                            }} 
+                            className={stylesChatbot.image_container}
+                            >
                             {chatEnabled ?
                                 <button
                                     className={stylesChatbot.image_display_button}
@@ -551,26 +530,22 @@ export const ImageClickManager: React.FC = () => {
                                     }
                                 </div>
                                 :
-                                    <p style={{ flex: "2"}}>
-                                            {noDescription[0]}
-                                            <button role="submit" onClick={() => { setAutoPrompt(shortDescription); enableChat(true); }}
-                                            style={{ fontSize: "12px", color: "var(--color-blue)", textDecoration: "underline", cursor: "pointer", display: "inline" }}
-                                            >
+                                    <p className={stylesChatbot.no_description_text}>
+                                        {noDescription[0]}
+                                        <button role="submit" onClick={() => { setAutoPrompt(shortDescription); enableChat(true); }}>
                                             {__("chatbot.shortDescTitle")}
-                                            </button>
-                                            {secondPartNoDescription[0]}
-                                            <button role="submit" onClick={() => { setAutoPrompt(longDescription); enableChat(true); }}
-                                            style={{ fontSize: "12px", color: "var(--color-blue)", textDecoration: "underline", cursor: "pointer", display: "inline" }}
-                                            >
+                                        </button>
+                                        {secondPartNoDescription[0]}
+                                        <button role="submit" onClick={() => { setAutoPrompt(longDescription); enableChat(true); }}>
                                             {__("chatbot.detailedDescTitle")}
-                                            </button>
-                                            {secondPartNoDescription[1]}
+                                        </button>
+                                        {secondPartNoDescription[1]}
                                     </p>
                             }
                         </div>
                         {chatEnabled ? "" :
-                        <div style={{width: "100%", height: "30px"}}>
-                            <button className={stylesChatbot.chatbot_open_title} onClick={() => enableChat((enabled) => !enabled)} title={"Chat with AI"}>
+                        <div className={stylesChatbot.chatbot_open_title}>
+                            <button  onClick={() => enableChat((enabled) => !enabled)} title={"Chat with AI"}>
                                 <SVG svg={AiIcon} ariaHidden />
                                 <p>{__("chatbot.generateDescriptionTitle")}</p>
                             </button>

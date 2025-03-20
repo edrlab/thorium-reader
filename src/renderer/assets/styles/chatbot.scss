@@ -5,7 +5,6 @@
 }
 
 .chatbot_detail_element {
-    // margin-bottom: 10px;
     width: 100%;
     flex: 2;
 
@@ -29,13 +28,46 @@
         display: flex;
         align-items: center;
         justify-content: start;
-        // text-align: center;
     }
 }
 
-.chatbot_open_title, .button_nav_primary {
+.no_description_text {
+    flex: 2;
+
+    button {
+        font-size: 12px;
+        color: var(--color-blue);
+        text-decoration: underline;
+        cursor: pointer;
+        display: inline;
+    }
+}
+
+.chatbot_systemPrompt {
+    &_container {
+        width: 80%;
+        max-width: 600px;
+        margin: 10px 0;
+
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            resize: vertical;
+        }
+    }
+}
+
+.chatbot_open_title {
+    width: 100%;
+    height: 30px;
+}
+
+.chatbot_open_title button,
+.chatbot_user_form .button_nav_primary {
     background-color: var(--color-light-blue);
-    // box-shadow: 0 1px 5px 2px var(--color-light-grey);
     color: var(--color-blue);
     display: flex;
     justify-content: end;
@@ -48,7 +80,7 @@
     width: fit-content;
     align-items: center;
     padding: 5px 10px;
-    gap: 5px!important;
+    gap: 5px !important;
     border-radius: 6px;
     border: 1px solid var(--color-blue);
 
@@ -63,29 +95,52 @@
         fill: var(--color-blue);
     }
 
-        &:hover {
-            background-color: var(--color-light-blue);
+    &:hover {
+        background-color: var(--color-light-blue);
+        color: var(--color-blue);
+
+        svg {
             color: var(--color-blue);
-
-            svg {
-                color: var(--color-blue);
-            }
-
-            button {
-                color: var(--color-blue);
-            }
         }
+
+        button {
+            color: var(--color-blue);
+        }
+    }
 }
 
-.button_nav_primary {
-    position: relative;
-    margin-left: 5px;
-    bottom: unset;
+.chatbot_content {
+    display: flex;
+    flex-direction: column;
+    padding: 5px 10px;
+    align-items: center;
+    flex: 1;
+}
+
+.chatbot_user_form {
+    &_input_container {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        width: 100%;
+    }
+
+    &_conversation_container {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        flex-direction: row;
+    }
+
+    .button_nav_primary {
+        position: relative;
+        margin-left: 5px;
+        bottom: unset;
+    }
 }
 
 .chatbot_title {
-    // background-color: var(--color-blue);
-    // box-shadow: 0 1px 5px 2px var(--color-light-grey);
     color: var(--color-primary);
     display: flex;
     align-items: center;
@@ -104,33 +159,30 @@
 
     button {
         color: var(--color-primary);
-
     }
-    
+
     .react_aria_ComboBox {
-        margin: 0!important;
-        // width: 50%!important;
+        margin: 0 !important;
         padding: 0;
-        padding-bottom: 10px!important;
+        padding-bottom: 10px !important;
         max-width: 350px;
         min-width: 180px;
         height: 30px;
         max-height: 30px;
-        
+
         .my_combobox_container {
-            padding-left: 10px!important;
-            border: none!important;
+            padding-left: 10px !important;
+            border: none !important;
             width: fit-content;
 
             button {
                 font-size: 16px;
-                // max-width: 200px;
                 min-width: 180px;
                 color: var(--color-blue);
             }
 
             svg {
-                background-color: unset!important;
+                background-color: unset !important;
                 margin-left: 5px;
                 color: var(--color-blue);
                 fill: var(--color-blue);
@@ -148,32 +200,21 @@
 
 .chatbot_container {
     border-radius: 6px;
-    // flex: 1;
-    // width: 100%;
     display: flex;
     flex-direction: column;
     margin: 0;
     height: 100%;
-    // justify-content: space-between;
     position: relative;
     overflow: hidden;
-    // box-shadow: 0 0 5px 5px var(--color-extralight-grey);
 
     .chatbot_messages_container {
         min-height: calc(100% - 100px);
         max-height: 50dvh;
-        // background-color: var(--color-light-blue);
-        // background-color: var(--color-extralight-grey);
         overflow-y: scroll;
         display: flex;
         flex-direction: column;
 
         @include mx.scrollbar_styling;
-
-        &::-webkit-scrollbar-track {
-            // background-color: var(--color-light-blue);
-            // background-color: var(--color-extralight-grey);
-          }
 
         .chatbot_message {
             border-radius: 6px;
@@ -188,7 +229,6 @@
             }
 
             &_speaker {
-                // width: 50px;
                 font-weight: bold;
             }
 
@@ -199,18 +239,15 @@
                 padding: 5px;
             }
         }
-        
+
         .chatbot_user_message {
-            // background-color: var(--color-blue);
-            // color: var(--color-secondary);
             background-color: var(--color-extralight-grey);
             color: var(--color-primary);
             align-self: end;
             border-radius: 6px 6px 0;
             font-style: italic;
-        
         }
-    
+
         .chatbot_ai_message {
             border-radius: 6px;
             max-width: 100%;
@@ -223,8 +260,9 @@
         }
     }
 
-
-    .chatbot_user_form, .chatbot_error, .chatbot_loading {
+    .chatbot_user_form,
+    .chatbot_error,
+    .chatbot_loading {
         background-color: var(--color-secondary);
         border-radius: 0 0 6px 6px;
         display: flex;
@@ -233,12 +271,7 @@
         align-items: end;
         justify-content: space-around;
         padding: 0 15px;
-        
-        // &:has(input:focus) {
-        //     outline: var(--color-blue) solid 2px !important;
-        //     outline-offset: -3px;
-        // }
-        
+
         .chatbot_user_input {
             border: 1px solid var(--color-light-grey);
             background-color: var(--color-secondary);
@@ -266,14 +299,15 @@
             svg {
                 width: 15px;
             }
-            
+
             p {
                 margin: 0;
             }
         }
     }
 
-    .chatbot_error, .chatbot_loading {
+    .chatbot_error,
+    .chatbot_loading {
         justify-content: start;
 
         > button {
@@ -288,11 +322,7 @@
     justify-content: center;
     padding: 2px;
 
-    &.openai {
-        width: 20px;
-        height: 20px;
-    }
-
+    &.openai,
     &.mistral {
         width: 20px;
         height: 20px;
@@ -308,7 +338,7 @@
     border-radius: 6px;
 
     &:has(input:focus) {
-      @include mx.R2_MIXIN_FOCUS_OUTLINE;
+        @include mx.R2_MIXIN_FOCUS_OUTLINE;
     }
 
     div {
@@ -332,7 +362,7 @@
     }
 
     svg {
-      color: #4d4d4d;
+        color: #4d4d4d;
     }
 }
 
@@ -341,27 +371,23 @@
     align-items: center;
     justify-content: center;
     z-index: 105;
-    // gap: 5px;
     border: 1px solid var(--color-light-grey);
     border-radius: 6px;
-    // right: 50%;
     transform: translate(50%, 50%);
-    // top: 0;
     display: flex;
     opacity: 0;
     transition: 200ms;
-    
+
     button {
         background-color: var(--color-secondary);
         padding: 10px;
         border-right: 1px solid var(--color-light-grey);
         filter: opacity(0.8);
         transition: 200ms;
-    
+
         &:hover {
             filter: opacity(1);
         }
-    
 
         &:last-child {
             border-right: unset;
@@ -393,6 +419,10 @@
 .image_container {
     min-height: inherit;
     position: relative;
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    padding-left: 5px;
 
     .image_display_button {
         width: 25px;
@@ -422,7 +452,6 @@
 
 .chatbot_description_button {
     background-color: var(--color-secondary);
-    // box-shadow: 0 1px 5px 2px var(--color-light-grey);
     color: var(--color-blue);
     border: 1px solid var(--color-blue);
     display: flex;
