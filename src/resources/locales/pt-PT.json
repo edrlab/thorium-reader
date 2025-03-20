@@ -1,1 +1,8 @@
-{}
+{
+    "settings": {
+        "theme": {
+            "description": "O tema da aplicação corresponde ao tema do sistema operativo.",
+            "title": "Tema da aplicação"
+        }
+    }
+}
