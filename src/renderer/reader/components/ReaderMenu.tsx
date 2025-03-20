@@ -81,7 +81,7 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "@r2-shared-js/models/locator";
-import { annotationsColorsLight, IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
+import { IAnnotationState, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { dialogActions, dockActions, readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionExportAnnotationSet, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
@@ -95,6 +95,8 @@ import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { BookmarkEdit } from "./BookmarkEdit";
 import { BookmarkLocatorInfo } from "./BookmarkLocatorInfo";
+import { IColor } from "@r2-navigator-js/electron/common/highlight";
+import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/note";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderMenuProps {
@@ -513,7 +515,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 }, 100);
             }
         } : undefined}
-        aria-label={__("reader.annotations.note", {color: __(Object.entries(annotationsColorsLight).find(([colorHex]) => colorHex === annotationColor)?.[1])})}
+        aria-label={__("reader.annotations.note", {color: __(Object.entries(noteColorCodeToColorTranslatorKeySet).find(([colorHex]) => colorHex === annotationColor)?.[1])})}
     >
         {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
         <div className={stylesAnnotations.annnotation_container}>
@@ -560,7 +562,17 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 isEdited
                     ?
                     <FocusLock disabled={false} autoFocus={true}>
-                        <AnnotationEdit uuid={uuid} save={save} cancel={() => triggerEdition(false)} dockedMode={dockedMode} btext={dockedEditAnnotation && btext} />
+                        <AnnotationEdit
+                            uuid={uuid}
+                            save={save}
+                            cancel={() => triggerEdition(false)}
+                            dockedMode={dockedMode}
+                            drawType={annotation.drawType}
+                            color={annotation.color}
+                            tags={annotation.tags}
+                            comment={annotation.comment}
+                            locatorExtended={annotation.locatorExtended}
+                        />
                     </FocusLock>
                     :
                     <>
@@ -719,13 +731,13 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
     const dockingMode = useReaderConfig("readerDockingMode");
     const dockedMode = dockingMode !== "full";
     const { timestamp, bookmark, isEdited, triggerEdition } = props;
-    const { uuid } = bookmark;
+    const { uuid, color } = bookmark;
     const dockedEditBookmark = isEdited && dockedMode;
     const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
-    const save = React.useCallback((name: string) => {
+    const save = React.useCallback((name: string, color: IColor) => {
         dispatch(readerActions.bookmark.update.build(
             {
                 ...bookmark,
@@ -733,6 +745,7 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
             {
                 ...bookmark,
                 name,
+                color,
                 modified: (new Date()).getTime(),
             },
         ));
@@ -762,7 +775,7 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
 
     return (<li
         className={stylesAnnotations.annotations_line}
-        style={{ backgroundColor: dockedEditBookmark ? "var(--color-extralight-grey)" : "", borderLeft: dockedEditBookmark ? "none" : "4px solid var(--color-blue)" }}
+        style={{ backgroundColor: dockedEditBookmark ? "var(--color-extralight-grey)" : "", borderLeft: dockedEditBookmark ? "none" : `4px solid ${rgbToHex(color)}` }}
         onKeyDown={isEdited ? (e) => {
             if (e.key === "Escape") {
                 e.preventDefault();
@@ -823,7 +836,7 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
                 isEdited
                     ?
                     <FocusLock disabled={false} autoFocus={true}>
-                        <BookmarkEdit locatorExtended={bookmark.locatorExtended} name={bookmark.name} uuid={bookmark.uuid} toggleBookmark={save} cancel={() => triggerEdition(false)} dockedMode={dockedMode} />
+                        <BookmarkEdit locatorExtended={bookmark.locatorExtended} name={bookmark.name} uuid={bookmark.uuid} color={bookmark.color} save={save} cancel={() => triggerEdition(false)} dockedMode={dockedMode} />
                     </FocusLock>
                     :
                     <>
@@ -1138,14 +1151,14 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
 
     const selectCreatorOptions = Object.entries(creatorSet).map(([k, v]) => ({ id: k, name: v }));
 
-    const annotationsColors = React.useMemo(() => Object.entries(annotationsColorsLight).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
+    const annotationsColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
 
     // I'm disable this feature for performance reason, push new Colors from incoming publicaiton annotation, not used for the moment. So let's commented it for the moment.
     // Need to be optimised in the future.
     // annotationsQueue.forEach(([, annotation]) => {
     //     const colorHex = rgbToHex(annotation.color);
-    //     if (!annotationsColorsLight.find((annotationColor) => annotationColor.hex === colorHex)) {
-    //         annotationsColorsLight.push({ hex: colorHex, name: colorHex });
+    //     if (!noteColorCodeToColorTranslatorKeySet.find((annotationColor) => annotationColor.hex === colorHex)) {
+    //         noteColorCodeToColorTranslatorKeySet.push({ hex: colorHex, name: colorHex });
     //     }
     // });
 

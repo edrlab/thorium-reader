@@ -71,7 +71,7 @@ import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driv
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { readerLocalActionAnnotations, readerLocalActionSetConfig, readerLocalActionToggleMenu, readerLocalActionToggleSettings } from "../redux/actions";
-import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
+import { TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { AnnotationEdit } from "./AnnotationEdit";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { VoiceSelection } from "./header/voiceSelection";
@@ -80,6 +80,7 @@ import { convertToSpeechSynthesisVoices, filterOnLanguage, getLanguages, getVoic
 import { BookmarkButton } from "./header/BookmarkButton";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { DockTypeName } from "readium-desktop/common/models/dock";
+import { IColor } from "@r2-navigator-js/electron/common/highlight";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -848,16 +849,23 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             </Popover.Trigger>
                             <Popover.Portal>
                                 <Popover.Content sideOffset={this.props.isOnSearch ? 50 : 18} align="end" style={{ zIndex: 101 }}
-                                        // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
-                                        // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
-                                        >
+                                // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
+                                // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
+                                >
                                     <AnnotationEdit
                                         save={(color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
                                             this.props.saveAnnotation(this.props.isAnnotationModeEnabledFromKeyboard, color, comment, drawType, tags);
                                         }}
                                         cancel={() => this.props.closeAnnotationEditionMode(this.props.isAnnotationModeEnabledFromKeyboard)}
-                                        dockedMode={isDockedMode}/>
-                                    <Popover.Arrow style={{ fill: "var(--color-extralight-grey)"}} width={15} height={10} />
+                                        dockedMode={isDockedMode}
+                                        uuid=""
+                                        color={{ ...this.props.readerConfig.annotation_defaultColor }}
+                                        drawType={this.props.readerConfig.annotation_defaultDrawType}
+                                        tags={[]}
+                                        comment=""
+                                        locatorExtended={this.props.locatorExtended}
+                                    />
+                                    <Popover.Arrow style={{ fill: "var(--color-extralight-grey)" }} width={15} height={10} />
                                 </Popover.Content>
                             </Popover.Portal>
                         </Popover.Root>
@@ -1410,6 +1418,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         locale: state.i18n.locale, // refresh
         menuOpen: state.dialog.open && state.dialog.type === DialogTypeName.ReaderMenu || state.dock.open && state.dock.type === DockTypeName.ReaderMenu,
         settingsOpen: state.dialog.open && state.dialog.type === DialogTypeName.ReaderSettings || state.dock.open && state.dock.type === DockTypeName.ReaderSettings,
+        locatorExtended: state.reader.locator,
     };
 };
 

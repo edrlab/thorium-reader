@@ -13,27 +13,35 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 
 import * as Popover from "@radix-ui/react-popover";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
 import { TextArea } from "react-aria-components";
 import { BookmarkLocatorInfo } from "./BookmarkLocatorInfo";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/note";
+import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
+import { IColor } from "@r2-navigator-js/electron/common/highlight";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { readerLocalActionSetConfig } from "../redux/actions";
 
 interface IProps {
-    toggleBookmark: (name?: string) => void,
+    save: (name: string, color: IColor) => void,
     cancel?: () => void;
-    uuid?: string;
     dockedMode?: boolean;
-    name: string;
     locatorExtended: MiniLocatorExtended;
+    uuid?: string;
+    name: string;
+    color: IColor;
 }
 
 
 export const BookmarkEdit: React.FC<IProps> = (props) => {
 
-    const { cancel, uuid, /*dockedMode,*/ toggleBookmark, name, locatorExtended } = props;
+    const { cancel, uuid, /*dockedMode,*/ save, name, locatorExtended, color } = props;
 
     const displayFromReaderMenu = !!uuid;
     const [__] = useTranslator();
+    const dispatch = useDispatch();
 
     const textAreaRef = React.useRef<HTMLTextAreaElement>();
     const bookmarkMaxLength = 1500;
@@ -43,6 +51,24 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
             setTextAreaValue(name.slice(0, bookmarkMaxLength));
         }
     }, [name]);
+
+    const colorStr = rgbToHex(color);
+    const [colorSelected, setColor] = React.useState(colorStr);
+    const previousColorSelected = React.useRef<string>(colorStr);
+
+    const saveConfig = React.useCallback(() => {
+
+        let flag = false;
+        if (previousColorSelected.current !== colorSelected) {
+            flag = true;
+        }
+
+        if (flag) {
+            dispatch(readerLocalActionSetConfig.build({ annotation_defaultColor: hexToRgb(colorStr) }));
+        }
+
+        previousColorSelected.current = colorSelected;
+    }, [colorStr, dispatch]);
 
     React.useEffect(() => {
         if (textAreaRef.current) {
@@ -67,6 +93,27 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
                 ></TextArea>
                 <span style={{ fontSize: "10px", color: "var(--color-medium-grey)", position: "relative", left: "350px" }}>{textAreaValue.length}/{bookmarkMaxLength}</span>
             </div>
+            <div className={stylesBookmarks.bookmarks_actions_container}>
+                <h4>{__("reader.annotations.Color")}</h4>
+                <div className={stylesBookmarks.colorPicker}
+                    role="radiogroup">
+                    {Object.entries(noteColorCodeToColorTranslatorKeySet).map(([colorHex, translatorKey]) => (
+                        <div key={`${uuid}_color-${colorHex}`}>
+                            <input type="radio" id={`${uuid}_color-${colorHex}`} name="colorpicker" value={colorHex}
+                                onChange={() => setColor(colorHex)}
+                                checked={colorSelected === colorHex}
+                                aria-label={__(translatorKey)}
+                            />
+                            <label aria-hidden={true} title={__(translatorKey)} htmlFor={`${uuid}_${colorHex}`}
+                                style={{ backgroundColor: colorHex, border: colorSelected === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
+                            >
+                                {colorSelected === colorHex ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
+                            </label>
+                        </div>
+                    ),
+                    )}
+                </div>
+            </div>
         </div>
         <div className={stylesBookmarks.bookmark_form_textarea_buttons}>
             {displayFromReaderMenu
@@ -80,7 +127,8 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
                     e.preventDefault();
                     const textareaNormalize = textAreaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
                     // if (textareaNormalize) {
-                    toggleBookmark(textareaNormalize);
+                    save(textareaNormalize, hexToRgb(colorSelected));
+                    saveConfig();
                     // }
                 }}
             >

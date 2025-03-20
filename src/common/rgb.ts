@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IColor } from "./redux/states/renderer/annotation";
+import { IColor } from "@r2-navigator-js/electron/common/highlight";
 
 export function rgbToHex(color: { red: number; green: number; blue: number }): string {
     const { red, green, blue } = color;

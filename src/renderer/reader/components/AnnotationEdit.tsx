@@ -9,7 +9,7 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 
 import * as React from "react";
-import { annotationDrawType, annotationsColorsLight, IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
+import { annotationDrawType, IAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -31,60 +31,47 @@ import { TextArea } from "react-aria-components";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
+import { IColor } from "@r2-navigator-js/electron/common/highlight";
+import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/note";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 // import { readiumCSSDefaults } from "@r2-navigator-js/electron/common/readium-css-settings";
 
 interface IProps {
     save: (color: IColor, comment: string, drawType: TDrawType, tags: string[]) => void;
     cancel: () => void;
-    uuid?: string;
     dockedMode: boolean;
-    btext?: string;
+    uuid?: string;
+    color: IColor;
+    drawType: TDrawType,
+    comment: string,
+    tags: string[],
+    locatorExtended: MiniLocatorExtended,
 }
 
 export const AnnotationEdit: React.FC<IProps> = (props) => {
 
-    const { save, cancel, uuid, dockedMode} = props;
+    const { save, cancel, uuid, dockedMode, color, drawType, comment, tags, locatorExtended} = props;
 
     const displayFromReaderMenu = !!uuid;
     const [__] = useTranslator();
-    const { annotation_defaultColor, annotation_defaultDrawType } = useSelector((state: IReaderRootState) => state.reader.config);
-
-    const { locatorExtended } = useSelector((state: IReaderRootState) => state.annotation);
-    const annotationReaderState = useSelector((state: IReaderRootState) => state.reader.annotation);
-
-    let annotationState: IAnnotationState = { uuid: "", color: annotation_defaultColor, comment: "", drawType: annotation_defaultDrawType, locatorExtended, created: 0 };
-    if (uuid) {
-        const tpl = annotationReaderState.find(([, annotationState]) => annotationState.uuid === uuid);
-        if (tpl) {
-            const [, iannotationState] = tpl;
-            if (iannotationState) {
-                annotationState = iannotationState;
-            }
-        }
-    }
-
-    const colorStr = rgbToHex(annotationState.color);
-
-    const [colorSelected, setColor] = React.useState(colorStr);
-
     const dispatch = useDispatch();
 
-    const colorObj = hexToRgb(colorSelected) || annotationState.color;
-
-    const previousColorSelected = React.useRef<IColor>(colorObj);
+    const colorStr = rgbToHex(color);
+    const [colorSelected, setColor] = React.useState(colorStr);
+    const previousColorSelected = React.useRef<string>(colorStr);
 
     const textAreaRef = React.useRef<HTMLTextAreaElement>();
 
-    const [drawTypeSelected, setDrawType] = React.useState(annotationState.drawType);
+    const [drawTypeSelected, setDrawType] = React.useState(drawType);
     const previousDrawTypeSelected = React.useRef<TDrawType>(drawTypeSelected);
 
-    const [tag, setTag] = React.useState<string>((annotationState.tags || [])[0] || "");
+    const [tag, setTag] = React.useState<string>((tags || [])[0] || "");
     const tagsIndexList = useSelector((state: IReaderRootState) => state.annotationTagsIndex);
     const selectTagOption = ObjectKeys(tagsIndexList).map((v, i) => ({id: i, name: v}));
 
     const annotationMaxLength = 1500;
-    const [annotationLength, setAnnotationLength] = React.useState(annotationState.comment.length);
+    const [annotationLength, setAnnotationLength] = React.useState(comment.length);
 
     const drawIcon = [
         HighLightIcon,
@@ -93,25 +80,10 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         TextOutlineIcon,
     ];
 
-//     switch (drawType) {
-//         case "solid_background":
-//             drawIcon = HighLightIcon;
-//             break;
-//         case "underline":
-//             drawIcon = UnderLineIcon;
-//             break;
-//         case "strikethrough":
-//             drawIcon = TextStrikeThroughtIcon;
-//             break;
-//         case "outline":
-//             drawIcon = TextOutlineIcon;
-//             break;
-// }
-
-    const saveConfig = () => {
+    const saveConfig = React.useCallback(() => {
 
         let flag = false;
-        if (previousColorSelected.current.red !== colorObj.red || previousColorSelected.current.blue !== colorObj.blue || previousColorSelected.current.green !== colorObj.green) {
+        if (previousColorSelected.current !== colorStr) {
             flag = true;
         }
         if (previousDrawTypeSelected.current !== drawTypeSelected) {
@@ -119,14 +91,14 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         }
 
         if (flag) {
-            const annotation_defaultColor = { ...colorObj };
+            const annotation_defaultColor = hexToRgb(colorStr);
             const annotation_defaultDrawType = drawTypeSelected;
             dispatch(readerLocalActionSetConfig.build({ annotation_defaultColor, annotation_defaultDrawType }));
         }
 
-        previousColorSelected.current = { ...colorObj };
+        previousColorSelected.current = colorStr;
         previousDrawTypeSelected.current = drawTypeSelected;
-    };
+    }, [colorStr, dispatch, drawTypeSelected]);
 
     React.useEffect(() => {
         if (textAreaRef.current) {
@@ -144,8 +116,8 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         }
         <div
             className={classNames(displayFromReaderMenu ? "" : stylesAnnotations.annotations_line, dockedMode ? stylesAnnotations.docked_annotation_line : "")} style={{backgroundColor: !displayFromReaderMenu ? "var(--color-extralight-grey)" : ""}}>
-            <p>{annotationState.locatorExtended ? (annotationState.locatorExtended.selectionInfo.cleanText.length > (200-3) ? `${annotationState.locatorExtended.selectionInfo.cleanText.slice(0, 200)}...` : annotationState.locatorExtended.selectionInfo.cleanText) : ""}</p>
-            <TextArea id={`${uuid}_edit`} name="addNote" wrap="hard" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={annotationState.comment} ref={textAreaRef} maxLength={annotationMaxLength} onChange={(a) => setAnnotationLength(a.currentTarget.value.length)}
+            <p>{locatorExtended ? (locatorExtended.selectionInfo.cleanText.length > (200 - 3) ? `${locatorExtended.selectionInfo.cleanText.slice(0, 200)}...` : locatorExtended.selectionInfo.cleanText) : ""}</p>
+            <TextArea id={`${uuid}_edit`} name="addNote" wrap="hard" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={comment} ref={textAreaRef} maxLength={annotationMaxLength} onChange={(a) => setAnnotationLength(a.currentTarget.value.length)}
             ></TextArea>
             <span style={{fontSize: "10px", color: "var(--color-medium-grey)", width: "420px", textAlign: "end"}}>{annotationLength}/{annotationMaxLength}</span>
 
@@ -156,7 +128,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                 <h4>{__("reader.annotations.Color")}</h4>
                 <div className={stylesAnnotations.colorPicker}
                     role="radiogroup">
-                    {Object.entries(annotationsColorsLight).map(([colorHex, translatorKey]) => (
+                    {Object.entries(noteColorCodeToColorTranslatorKeySet).map(([colorHex, translatorKey]) => (
                         <div key={`${uuid}_color-${colorHex}`}>
                             <input type="radio"  id={`${uuid}_color-${colorHex}`} name="colorpicker" value={colorHex}
                                 onChange={() => setColor(colorHex)}
@@ -247,7 +219,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
 
                         const textareaValue = textAreaRef?.current?.value || "";
                         const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
-                        save(colorObj, textareaNormalize, drawTypeSelected, tag ? [tag] : []);
+                        save(hexToRgb(colorStr), textareaNormalize, drawTypeSelected, tag ? [tag] : []);
                         saveConfig();
                     }}
                 >
@@ -264,7 +236,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
 
                         const textareaValue = textAreaRef?.current?.value || "";
                         const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
-                        save(colorObj, textareaNormalize, drawTypeSelected, tag ? [tag] : []);
+                        save(hexToRgb(colorStr), textareaNormalize, drawTypeSelected, tag ? [tag] : []);
                         saveConfig();
                     }}
                 >

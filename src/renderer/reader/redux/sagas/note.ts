@@ -18,12 +18,12 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
+import { TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 
 import { highlightsDrawMargin, keyboardFocusRequest, MediaOverlaysStateEnum, TTSStateEnum } from "@r2-navigator-js/electron/renderer";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
-import { HighlightDrawTypeBackground, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
+import { HighlightDrawTypeBackground, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline, IColor } from "@r2-navigator-js/electron/common/highlight";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { getTranslator } from "readium-desktop/common/services/translator";
 
@@ -99,28 +99,48 @@ function* annotationUpdate(action: readerActions.annotation.update.TAction) {
 function* bookmarkUpdate(action: readerActions.bookmark.update.TAction) {
     debug(`bookmarkUpdate-- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
 
-    const [_, newBookmark] = action.payload;
-    const { name, uuid, locatorExtended: { locator: { href }, selectionInfo } } = newBookmark;
+    const [_, bookmark] = action.payload;
 
-    const item = yield* selectTyped((store: IReaderRootState) => store.reader.highlight.handler.find(([_, highlightState]) => highlightState.uuid === uuid));
+    const item = yield* selectTyped((store: IReaderRootState) => store.reader.highlight.handler.find(([_, highlightState]) => highlightState.uuid === bookmark.uuid));
 
     if (item) {
         const { def: { textPopup } } = item[1];
 
-        if (name && !textPopup?.text || !name && textPopup?.text || name !== textPopup?.text) {
-            yield* putTyped(readerLocalActionHighlights.handler.pop.build([{ uuid }]));
+        if (bookmark.name && !textPopup?.text || !bookmark.name && textPopup?.text || bookmark.name !== textPopup?.text) {
+            yield* putTyped(readerLocalActionHighlights.handler.pop.build([{ uuid: bookmark.uuid }]));
             yield* putTyped(readerLocalActionHighlights.handler.push.build([
                 {
-                    uuid,
-                    href,
+                    uuid: bookmark.uuid,
+                    href: bookmark.locatorExtended.locator.href,
                     def: {
-                        textPopup: name ? {
-                            text: name, // multiline
+                        textPopup: bookmark.name ? {
+                            text: bookmark.name, // multiline
                             dir: "ltr", // TODO
                             lang: "en", // TODO
                         } : undefined,
-                        selectionInfo: selectionInfo,
-                        color: { red: 52, green: 152, blue: 219 },
+                            selectionInfo: {
+                            textFragment: undefined,
+                            rangeInfo: bookmark.locatorExtended.locator.locations.caretInfo?.rangeInfo || {
+                                startContainerElementCssSelector: bookmark.locatorExtended.locator.locations.cssSelector,
+                                startContainerElementCFI: undefined,
+                                startContainerElementXPath: undefined,
+                                startContainerChildTextNodeIndex: -1,
+                                startOffset: -1,
+                                endContainerElementCssSelector: bookmark.locatorExtended.locator.locations.cssSelector,
+                                endContainerElementCFI: undefined,
+                                endContainerElementXPath: undefined,
+                                endContainerChildTextNodeIndex: -1,
+                                endOffset: -1,
+                                cfi: undefined,
+                            },
+                            cleanBefore: bookmark.locatorExtended.locator.locations.caretInfo?.cleanBefore || bookmark.locatorExtended.locator.text?.before || "",
+                            cleanText: bookmark.locatorExtended.locator.locations.caretInfo?.cleanText || bookmark.locatorExtended.locator.text?.highlight || bookmark.locatorExtended.locator.title || bookmark.name,
+                            cleanAfter: bookmark.locatorExtended.locator.locations.caretInfo?.cleanAfter || bookmark.locatorExtended.locator.text?.after || "",
+                            rawBefore: bookmark.locatorExtended.locator.locations.caretInfo?.rawBefore || bookmark.locatorExtended.locator.text?.beforeRaw || "",
+                            rawText: bookmark.locatorExtended.locator.locations.caretInfo?.rawText || bookmark.locatorExtended.locator.text?.highlightRaw || bookmark.locatorExtended.locator.title || bookmark.name,
+                            rawAfter: bookmark.locatorExtended.locator.locations.caretInfo?.rawAfter || bookmark.locatorExtended.locator.text?.afterRaw || "",
+                        },
+                        color: { ...bookmark.color },
                         group: "bookmark",
                         drawType: 6,
                     },
@@ -129,7 +149,7 @@ function* bookmarkUpdate(action: readerActions.bookmark.update.TAction) {
         }
     } else {
         // error sync between hightlight data array and annotation array
-        yield* putTyped(readerLocalActionHighlights.handler.pop.build([{ uuid }]));
+        yield* putTyped(readerLocalActionHighlights.handler.pop.build([{ uuid: bookmark.uuid }]));
     }
 }
 
@@ -192,7 +212,7 @@ function* bookmarkPush(action: readerActions.bookmark.push.TAction) {
                         rawText: bookmark.locatorExtended.locator.locations.caretInfo?.rawText || bookmark.locatorExtended.locator.text?.highlightRaw || bookmark.locatorExtended.locator.title || bookmark.name,
                         rawAfter: bookmark.locatorExtended.locator.locations.caretInfo?.rawAfter || bookmark.locatorExtended.locator.text?.afterRaw || "",
                     },
-                    color: {red:  52, green: 152, blue: 219},
+                    color: { ...bookmark.color },
                     group: "bookmark",
                     drawType: 6,
                 },
