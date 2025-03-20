@@ -395,8 +395,13 @@ const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: I
     return RenderLinkTree;
 };
 
-const HardWrapComment: React.FC<{ comment: string }> = (props) => {
+const HardWrapComment: React.FC<{ comment: string | undefined }> = (props) => {
     const { comment } = props;
+    if (!comment) {
+        return (
+            <p> </p>
+        );
+    }
     const splittedComment = comment.split("\n");
 
     const strListComponent = [];
