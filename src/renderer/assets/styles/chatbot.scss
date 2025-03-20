@@ -5,8 +5,9 @@
 }
 
 .chatbot_detail_element {
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
     width: 100%;
+    flex: 2;
 
     &_summary {
         display: flex;
@@ -27,33 +28,39 @@
         margin: 0;
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: start;
         // text-align: center;
     }
 }
 
-.chatbot_open_title {
-    background-color: var(--color-blue);
-    box-shadow: 0 1px 5px 2px var(--color-light-grey);
-    color: var(--color-secondary);
+.chatbot_open_title, .button_nav_primary {
+    background-color: var(--color-light-blue);
+    // box-shadow: 0 1px 5px 2px var(--color-light-grey);
+    color: var(--color-blue);
     display: flex;
-    align-items: center;
-    justify-content: center;
+    justify-content: end;
     z-index: 2;
     transition: 200ms;
     height: fit-content;
     position: absolute;
     bottom: 10px;
     right: 10px;
-    padding: 10px;
+    width: fit-content;
+    align-items: center;
+    padding: 5px 10px;
     gap: 5px!important;
-    border-radius: 50%;
+    border-radius: 6px;
+    border: 1px solid var(--color-blue);
+
+    p {
+        margin: 0;
+    }
 
     svg {
-        width: 25px;
-        height: 25px;
-        color: var(--color-secondary);
-        fill: var(--color-secondary);
+        width: 15px;
+        height: 15px;
+        color: var(--color-blue);
+        fill: var(--color-blue);
     }
 
         &:hover {
@@ -70,34 +77,42 @@
         }
 }
 
+.button_nav_primary {
+    position: relative;
+    margin-left: 5px;
+    bottom: unset;
+}
+
 .chatbot_title {
-    background-color: var(--color-blue);
-    box-shadow: 0 1px 5px 2px var(--color-light-grey);
-    color: var(--color-secondary);
+    // background-color: var(--color-blue);
+    // box-shadow: 0 1px 5px 2px var(--color-light-grey);
+    color: var(--color-primary);
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 5px;
+    justify-content: start;
     z-index: 2;
     transition: 200ms;
     height: fit-content;
-    padding: 0;
+    padding: 0 10px;
+    width: calc(100% - 30px);
+    border-bottom: 1px solid var(--color-verylight-grey);
 
-    h3 {
+    h2 {
         margin: 0;
+        padding-bottom: 2px;
     }
 
     button {
-        color: var(--color-secondary);
+        color: var(--color-primary);
 
     }
     
     .react_aria_ComboBox {
         margin: 0!important;
-        width: 50%!important;
+        // width: 50%!important;
         padding: 0;
         padding-bottom: 10px!important;
-        max-width: 200px;
+        max-width: 350px;
         min-width: 180px;
         height: 30px;
         max-height: 30px;
@@ -105,15 +120,20 @@
         .my_combobox_container {
             padding-left: 10px!important;
             border: none!important;
+            width: fit-content;
 
             button {
                 font-size: 16px;
-                max-width: 200px;
+                // max-width: 200px;
                 min-width: 180px;
+                color: var(--color-blue);
             }
 
             svg {
                 background-color: unset!important;
+                margin-left: 5px;
+                color: var(--color-blue);
+                fill: var(--color-blue);
             }
         }
     }
@@ -121,8 +141,8 @@
     svg {
         width: 25px;
         height: 25px;
-        color: var(--color-secondary);
-        fill: var(--color-secondary);
+        color: var(--color-primary);
+        fill: var(--color-primary);
     }
 }
 
@@ -143,7 +163,7 @@
         min-height: calc(100% - 100px);
         max-height: 50dvh;
         // background-color: var(--color-light-blue);
-        background-color: var(--color-extralight-grey);
+        // background-color: var(--color-extralight-grey);
         overflow-y: scroll;
         display: flex;
         flex-direction: column;
@@ -152,7 +172,7 @@
 
         &::-webkit-scrollbar-track {
             // background-color: var(--color-light-blue);
-            background-color: var(--color-extralight-grey);
+            // background-color: var(--color-extralight-grey);
           }
 
         .chatbot_message {
@@ -168,7 +188,7 @@
             }
 
             &_speaker {
-                width: 50px;
+                // width: 50px;
                 font-weight: bold;
             }
 
@@ -176,24 +196,26 @@
                 flex: 1;
                 overflow: visible;
                 overflow-y: hidden;
-                padding-left: 20px;
+                padding: 5px;
             }
         }
         
         .chatbot_user_message {
             // background-color: var(--color-blue);
             // color: var(--color-secondary);
-            background-color: var(--color-verylight-grey);
+            background-color: var(--color-extralight-grey);
             color: var(--color-primary);
             align-self: end;
-            border-radius: 10px 10px 0;
+            border-radius: 6px 6px 0;
+            font-style: italic;
         
         }
     
         .chatbot_ai_message {
             border-radius: 6px;
-            align-items: start;
             max-width: 100%;
+            display: flex;
+            align-items: start;
 
             p {
                 text-align: start;
@@ -204,40 +226,49 @@
 
     .chatbot_user_form, .chatbot_error, .chatbot_loading {
         background-color: var(--color-secondary);
-        height: 50px;
-        border: 1px solid var(--color-verylight-grey);
         border-radius: 0 0 6px 6px;
         display: flex;
+        flex-direction: column;
         gap: 10px;
-        align-items: center;
+        align-items: end;
         justify-content: space-around;
         padding: 0 15px;
-
-        &:has(input:focus) {
-            outline: var(--color-blue) solid 2px !important;
-            outline-offset: -3px;
-          }
-
+        
+        // &:has(input:focus) {
+        //     outline: var(--color-blue) solid 2px !important;
+        //     outline-offset: -3px;
+        // }
+        
         .chatbot_user_input {
+            border: 1px solid var(--color-light-grey);
             background-color: var(--color-secondary);
             margin: auto;
-            border: none;
             width: 100%;
-            height: calc(100% - 4px);
             padding: 0;
+            padding-left: 5px;
+            height: 30px;
+            border-radius: 6px;
+
+            &::placeholder {
+                font-style: italic;
+            }
         }
 
         &_button {
             background-color: var(--color-blue);
             color: var(--color-secondary);
             fill: var(--color-secondary);
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            padding: 4px 4px 5px 5px;
+            width: fit-content;
+            height: 30px;
+            border-radius: 6px;
+            padding: 5px;
 
             svg {
-                width: unset;
+                width: 15px;
+            }
+            
+            p {
+                margin: 0;
             }
         }
     }
@@ -258,8 +289,8 @@
     padding: 2px;
 
     &.openai {
-        width: 30px;
-        height: 30px;
+        width: 20px;
+        height: 20px;
     }
 
     &.mistral {
@@ -307,15 +338,18 @@
 
 .chatbot_image_controls {
     position: absolute;
-    display: flex;
     align-items: center;
     justify-content: center;
     z-index: 105;
     // gap: 5px;
     border: 1px solid var(--color-light-grey);
     border-radius: 6px;
-    right: 50%;
+    // right: 50%;
     transform: translate(50%, 50%);
+    // top: 0;
+    display: flex;
+    opacity: 0;
+    transition: 200ms;
     
     button {
         background-color: var(--color-secondary);
@@ -346,6 +380,8 @@
     flex-direction: column;
     height: 70vh;
     flex: 2;
+    width: 100%;
+    justify-content: end;
 
     #aichat-scroller {
         display: flex;
@@ -359,11 +395,11 @@
     position: relative;
 
     .image_display_button {
-        width: 50px;
-        height: 50px;
+        width: 25px;
+        height: 25px;
         position: absolute;
-        bottom: 50%;
-        left: -45px;
+        bottom: 5px;
+        right: 5px;
         z-index: 10;
         fill: var(--color-blue);
         border-radius: 50%;
@@ -374,6 +410,13 @@
     > div:first-of-type > div:first-of-type {
         min-height: inherit;
         align-items: center;
+    }
+
+    &:has(> div:first-of-type > div:first-of-type:hover),
+    &:has(.chatbot_image_controls:hover) {
+        .chatbot_image_controls {
+            opacity: 1;
+        }
     }
 }
 

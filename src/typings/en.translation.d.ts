@@ -294,6 +294,32 @@ declare namespace typed_i18n {
   (_: "catalog.sort", __?: {}): string; (_: "catalog.tag", __?: {}): string;
   (_: "catalog.tags", __?: {}): string;
   (_: "catalog.update", __?: {}): string;
+  (_: "chatbot", __?: {}): {
+  readonly "detailedDescTitle": string,
+  readonly "detailedDescription": string,
+  readonly "editorDescription": string,
+  readonly "generateDescriptionTitle": string,
+  readonly "inputPlaceholder": string,
+  readonly "noDescription": string,
+  readonly "reset": string,
+  readonly "sendQuestion": string,
+  readonly "shortDescTitle": string,
+  readonly "shortDescription": string,
+  readonly "systemPromptEditor": string,
+  readonly "title": string
+};
+  (_: "chatbot.detailedDescTitle", __?: {}): string;
+  (_: "chatbot.detailedDescription", __?: {}): string;
+  (_: "chatbot.editorDescription", __?: {}): string;
+  (_: "chatbot.generateDescriptionTitle", __?: {}): string;
+  (_: "chatbot.inputPlaceholder", __?: {}): string;
+  (_: "chatbot.noDescription", __?: {}): string;
+  (_: "chatbot.reset", __?: {}): string;
+  (_: "chatbot.sendQuestion", __?: {}): string;
+  (_: "chatbot.shortDescTitle", __?: {}): string;
+  (_: "chatbot.shortDescription", __?: {}): string;
+  (_: "chatbot.systemPromptEditor", __?: {}): string;
+  (_: "chatbot.title", __?: {}): string;
   (_: "dialog", __?: {}): {
   readonly "annotations": {
     readonly "descAuthor": string,

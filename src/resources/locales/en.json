@@ -119,6 +119,20 @@
         "tags": "Tags",
         "update": "Edit"
     },
+    "chatbot": {
+        "detailedDescTitle": "detailed description",
+        "detailedDescription": "Describe this illustration in detail (nature of the image, technique, format, symbolism, characters, scenery, colours, style, period, etc.)",
+        "editorDescription": "Editor's description",
+        "generateDescriptionTitle": "Generate a textual description",
+        "inputPlaceholder": "Ask something, For example: can you describe this image?",
+        "noDescription": "No description was provided by the author. You can ask the AI to generate either a short description or a detailed description.",
+        "reset": "Reset",
+        "sendQuestion": "Send the question",
+        "shortDescTitle": "short description",
+        "shortDescription": "Describe this image in two sentences",
+        "systemPromptEditor": "System prompt editor",
+        "title": "Describe the image with {{- title}}"
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "by '{{- author}}'",

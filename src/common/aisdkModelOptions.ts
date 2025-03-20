@@ -24,12 +24,12 @@ export interface IaiSdkModel { id: string, name: string, systemPrompt: string };
 export const aiSDKModelOptions: Array<IaiSdkModel> = [
     {
         id: "openai__!__gpt-4o-mini__!__default-prompt",
-        name: "openAI gpt-4o-mini (default system prompt)",
+        name: "openAI gpt-4o-mini (default)",
         systemPrompt: DEFAULT_SYSTEM_PROMPT,
     },
     {
         id: "openai__!__gpt-4o-mini__!__specific-prompt",
-        name: "openAI gpt-4o-mini with a specific system prompt",
+        name: "openAI gpt-4o-mini (advanced)",
         systemPrompt: ADVANCED_SYSTEM_PROMPT_STRING,
     },
     {

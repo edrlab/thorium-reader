@@ -33,19 +33,20 @@ import * as stylesChatbot from "readium-desktop/renderer/assets/styles/chatbot.s
 
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-import * as sendIcon from "readium-desktop/renderer/assets/icons/send-icon.svg";
-import * as AiIcon from "readium-desktop/renderer/assets/icons/stars-icon.svg";
+import * as sendIcon from "readium-desktop/renderer/assets/icons/send-chat-icon.svg";
+import * as AiIcon from "readium-desktop/renderer/assets/icons/ai-icon.svg";
 import * as ChevronRight from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 import * as ResetIcon from "readium-desktop/renderer/assets/icons/backward-icon.svg";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg";
-import OpenAiIcon from "readium-desktop/renderer/assets/logos/open-ai-icon.png";
-import MistralAiIcon from "readium-desktop/renderer/assets/logos/mistral-ai-icon.png";
+import * as OpenAiIcon from "readium-desktop/renderer/assets/icons/open-ai-icon.svg";
+import * as MistralAiIcon from "readium-desktop/renderer/assets/icons/mistral-ai-icon.svg";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 interface ControlsProps {
     chatEnabled: boolean;
-  }
+}
 
 
 
@@ -56,13 +57,13 @@ function render(text: string) {
     text = text.replace(/\\([\[\]\(\)])/g, "\\\\$1");
 
     const result = DOMPurify.sanitize(
-      marked.parse(text, {
-        async: false,
-        breaks: true,
-      }),
+        marked.parse(text, {
+            async: false,
+            breaks: true,
+        }),
     );
     return result;
-  }
+}
 
 // async function getBase64ImageFromUrl(imageUrl: string): Promise<string> {
 //     const response = await fetch(imageUrl);
@@ -78,12 +79,13 @@ function render(text: string) {
 
 const Controls: React.FC<ControlsProps> = ({ chatEnabled }) => {
     const { zoomIn, zoomOut, resetTransform } = useControls();
+    console.log(chatEnabled);
 
     return (
-        <div style={{bottom: chatEnabled ? "40px" : "15px", right: "50%", transform: chatEnabled ? "" : "translateX(50%)"}} className={stylesChatbot.chatbot_image_controls}>
-            <button onClick={() => zoomOut()}><SVG svg={MinusIcon}/></button>
-            <button onClick={() => zoomIn()}><SVG svg={PlusIcon}/></button>
-            <button onClick={() => resetTransform()}><SVG svg={ResetIcon}/></button>
+        <div style={{ top: chatEnabled ? "unset" : "0", bottom: chatEnabled ? "20px" : "unset", right: chatEnabled ? "unset" : "50%", left: chatEnabled ? "17px" : "unset" }} className={stylesChatbot.chatbot_image_controls}>
+            <button onClick={() => zoomOut()}><SVG svg={MinusIcon} /></button>
+            <button onClick={() => zoomIn()}><SVG svg={PlusIcon} /></button>
+            <button onClick={() => resetTransform()}><SVG svg={ResetIcon} /></button>
         </div>
     );
 };
@@ -104,11 +106,11 @@ const ChatContext = React.createContext<IChatContext>(undefined);
 
 let __messages: UIMessage[] = [];
 
-const Chat = ({ imageHref, imageDescription }: { imageHref: string, imageDescription: string}) => {
+const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, imageDescription: string, autoPrompt: string, setAutoPrompt: (value: React.SetStateAction<string>) => void }) => {
 
 
-    const { modelSelected, setModel, systemPrompt, setSystemPrompt  /*showImage*/ } = React.useContext(ChatContext);
-
+    const { modelSelected, systemPrompt, setSystemPrompt  /*showImage*/ } = React.useContext(ChatContext);
+    const [__] = useTranslator();
 
     // const handleModelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     //     const selectedId = event.target.value;
@@ -119,7 +121,7 @@ const Chat = ({ imageHref, imageDescription }: { imageHref: string, imageDescrip
     // };
 
     // const image: Attachment = { url: imageHrefDataUrl, contentType: "image/jpeg" };
-    const { messages, input, handleInputChange, handleSubmit, error, reload, isLoading, stop, setMessages, setInput } = useChat({
+    const { messages, input, handleInputChange, handleSubmit, error, reload, isLoading, stop, setMessages,setInput } = useChat({
         initialMessages: [
             // { id: nanoid(), role: "user", content: "", experimental_attachments: [image] },
             ...__messages,
@@ -145,11 +147,23 @@ const Chat = ({ imageHref, imageDescription }: { imageHref: string, imageDescrip
     }, [messages]);
 
     // const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication.Metadata);
+    const quickDescriptionRef = React.useRef(null);
 
-    const shortDescription = "Décris cette image en 2 phrases.";
-    const longDescription = "Décris cette illustration de façon détaillée (nature de l'image, technique, format, symbolique, personnages, décors, couleurs, style, époque, etc..). Renforce l'accessibilité de la réponse pour les lecteurs d’écran.";
+      React.useEffect(() => {
+        if (autoPrompt) {
+            setInput(autoPrompt);
+        }
+    }, [autoPrompt, setInput]);
 
-    const [detailOpen, setDetailOpen] = React.useState(true);
+    React.useEffect(() => {
+        if (quickDescriptionRef.current && input === autoPrompt) {
+            setTimeout(() => {
+                quickDescriptionRef.current.click();
+            }, 0);
+            setAutoPrompt("");
+        }
+    }, [input, autoPrompt, setAutoPrompt]);
+
 
     return (
         <div className={stylesChatbot.chatbot_modal_content}>
@@ -173,7 +187,7 @@ const Chat = ({ imageHref, imageDescription }: { imageHref: string, imageDescrip
 
                 <div style={{ width: "80%", maxWidth: "600px", margin: "10px 0" }}>
                     <details>
-                        <summary>System Prompt Editor</summary>
+                        <summary>{__("chatbot.systemPromptEditor")}</summary>
                         <textarea
                             style={{
                                 width: "100%",
@@ -188,42 +202,6 @@ const Chat = ({ imageHref, imageDescription }: { imageHref: string, imageDescrip
                         ></textarea>
                     </details>
                 </div>
-                { imageDescription ?
-                    <details
-                        className={stylesChatbot.chatbot_detail_element}
-                        open={detailOpen}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            setDetailOpen(!detailOpen);
-                        }}
-                    >
-                        <summary className={stylesChatbot.chatbot_detail_element_summary}>
-                            <h3>Author description</h3>
-                            <SVG svg={ChevronRight} style={{ transform: detailOpen ? "rotate(90deg)" : "" }}></SVG>
-                        </summary>
-                        <p>
-                            {imageDescription}
-                        </p>
-                    </details>
-                    : 
-                    <form onSubmit={(event) => handleSubmit(event, {})} style={{ display: "inline" }}>
-                        <p>
-                            No description was provided by the author. You can ask the AI to generate either a{" "}
-                            <button role="submit" onClick={() => setInput(shortDescription)}
-                                style={{ fontSize: "12px", color: "var(--color-blue)", textDecoration: "underline", cursor: "pointer", display: "inline" }}
-                            >
-                                short description
-                            </button>{" "}
-                            or a{" "}
-                            <button role="submit" onClick={() => setInput(longDescription)}
-                                style={{ fontSize: "12px", color: "var(--color-blue)", textDecoration: "underline", cursor: "pointer", display: "inline" }}
-                            >
-                                precise description
-                            </button>.
-                        </p>
-                    </form>
-
-                }
                 {/* <div>
                     <a
                         tabIndex={0}
@@ -251,100 +229,27 @@ const Chat = ({ imageHref, imageDescription }: { imageHref: string, imageDescrip
                     </a>
                 </div> */}
             </div>
-        <div className={stylesChatbot.chatbot_container}>
-            <div className={stylesChatbot.chatbot_title}>
-                <SVG svg={AiIcon} ariaHidden />
-                <h3>Chat with</h3>
-                <Select
-                    items={aiSDKModelOptions}
-                    selectedKey={modelSelected.id}
-                    onSelectionChange={(key) => {
-                        // console.log("selectionchange: ", key);
-                        const found = aiSDKModelOptions.find(({ id: _id }) => _id === key);
-                        if (found) {
-                            setModel(found);
-                        }
-                    }}
-                    // disabledKeys={options.filter(option => option.disabled === true).map(option => option.id)}
-                    // style={{ padding: "0", width: "80%", height: "30px", maxHeight: "30px", margin: "10px" }}
-                >
-                    {item => <SelectItem>{item.name}</SelectItem>}
-                </Select>
-            </div>
-            <div id="scroller" className={stylesChatbot.chatbot_messages_container}>
-                {/* <div>
-                <img
-                        style={{
-                            maxWidth: "100px",
-                            maxHeight: "100px",
-                            width: "auto",
-                            height: "auto",
-                            objectFit: "contain",
-                            flex: 1,
-                        }}
-                        src={imageHref}
-                        // alt={attachment.name}
-                        onClick={showImage}
-                    />
-                </div> */}
-                {/* {messages.length ? "" :
-                <form style={{display: "flex", alignItems: "end", justifyContent: "end", flexDirection: "column", gap: "20px", width: "inherit", margin: "20px 10px"}} onSubmit={(event) => handleSubmit(event, {})}>
-                    <button role="submit" onClick={() => setInput(shortDescription)} className={stylesChatbot.chatbot_description_button}
-                        >
-                        Courte Description
-                    </button>
-                    <button role="submit" onClick={() => setInput(longDescription)} className={stylesChatbot.chatbot_description_button}
-                        >
-                        Longue Description
-                    </button>
-                </form>
-                } */}
-                {messages.map(message => (
-                    <div className={classNames(stylesChatbot.chatbot_message, message.role === "user" ? stylesChatbot.chatbot_user_message : stylesChatbot.chatbot_ai_message)} key={message.id}>
-                        <div className={stylesChatbot.chatbot_message_speaker}>
-                            {message.role === "user" ? "You:" : message.id.includes("openai") ?
-                                <img src={OpenAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
-                                :
-                                <img src={MistralAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.mistral)} />
-                            }
+            <div className={stylesChatbot.chatbot_container}>
+                <div id="scroller" className={stylesChatbot.chatbot_messages_container}>
+                    {messages.map(message => (
+                        <div className={classNames(stylesChatbot.chatbot_message, message.role === "user" ? stylesChatbot.chatbot_user_message : stylesChatbot.chatbot_ai_message)} key={message.id}>
+                            <div className={stylesChatbot.chatbot_message_speaker}>
+                                {message.role === "user" ? "" : message.id.includes("openai") ?
+                                    <SVG svg={OpenAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
+                                    :
+                                    <SVG svg={MistralAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.mistral)} />
+                                }
+                            </div>
+                            <div className={stylesChatbot.chatbot_message_content} dangerouslySetInnerHTML={{ __html: render(message.content) }}>
+                                {/* {message.content} */}
+                            </div>
                         </div>
-                        <div className={stylesChatbot.chatbot_message_content} dangerouslySetInnerHTML={{ __html: render(message.content) }}>
-                            {/* {message.content} */}
-                        </div>
-                    </div>
-                ))}
-                <div style={{ width: "100%", display: "flex", alignItems: "center", flexDirection: "row" }}>
-                    {messages.length ?
-                        <button style={{ width: "40px", height: "10px", margin: "10px" }} className={stylesButtons.button_nav_primary} onClick={() => {
-                            __messages = [];
-                            setMessages([]);
-                        }}>
-                            <span>RESET</span>
-                        </button>
-                        : <></>
-                    }
-                    {isLoading && (
-                        <>
-                            <Loader svgStyle={{ width: "20px", height: "20px", margin: "10px" }} />
-                            <button style={{ width: "40px", height: "10px", margin: "10px" }} className={stylesButtons.button_nav_primary} type="button" onClick={() => stop()}>
-                                Stop
-                            </button>
-                        </>
-                    )}
-                    {error && (
-                        <>
-                            <button style={{ width: "40px", height: "10px", margin: "10px" }} className={stylesButtons.button_nav_primary} type="button" onClick={() => reload()}>
-                                Retry
-                            </button>
-                            <span>An error occurred.</span>
-                        </>
-                    )}
+                    ))}
+                    <div id="aichat-anchor"></div>
                 </div>
-                <div id="aichat-anchor"></div>
-            </div>
 
 
-            {/* {isLoading ? (
+                {/* {isLoading ? (
                 <div className={stylesChatbot.chatbot_loading}>
                     <button className={stylesButtons.button_nav_primary} type="button" onClick={() => stop()}>
                         Stop
@@ -362,27 +267,58 @@ const Chat = ({ imageHref, imageDescription }: { imageHref: string, imageDescrip
                 </div>
             ) : */}
 
-            <form onSubmit={(event) => handleSubmit(event, {})} className={stylesChatbot.chatbot_user_form}>
-                <div>
-                {modelSelected.name.startsWith("openAI") ?
-                    <img src={OpenAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
-                    :
-                    <img src={MistralAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.mistral)} />
-                    }
-                </div>
-                <input
-                    name="prompt"
-                    value={input}
-                    onChange={handleInputChange}
-                    className={classNames(stylesChatbot.chatbot_user_input, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
-                    placeholder="Type something"
-                />
-                <button type="submit" className={stylesChatbot.chatbot_user_form_button}>
-                    <SVG svg={sendIcon} ariaHidden />
-                </button>
-            </form>
-{/* } */}
-        </div>
+                <form onSubmit={(event) => handleSubmit(event, {})} className={stylesChatbot.chatbot_user_form}>
+                    <div style={{ display: "flex", gap: "10px", alignItems: "center", width: "100%"}}>
+                        <div>
+                            {modelSelected.name.startsWith("openAI") ?
+                                <SVG svg={OpenAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
+                                :
+                                <SVG svg={MistralAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.mistral)} />
+                            }
+                        </div>
+                        <input
+                            name="prompt"
+                            value={input}
+                            onChange={handleInputChange}
+                            className={classNames(stylesChatbot.chatbot_user_input)}
+                            placeholder={__("chatbot.inputPlaceholder")}
+                        />
+                        <button type="submit" ref={quickDescriptionRef} style={{ display: "none"}}></button>
+                    </div>
+                    <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "end", flexDirection: "row" }}>
+                        {messages.length ?
+                            <button className={stylesButtons.button_nav_primary} onClick={() => {
+                                __messages = [];
+                                setMessages([]);
+                            }}>
+                                <p>{__("chatbot.reset")}</p>
+                            </button>
+                            : <></>
+                        }
+                        {isLoading && (
+                            <>
+                                <Loader svgStyle={{ width: "20px", height: "20px", marginRight: "15px" }} />
+                                <button className={stylesButtons.button_nav_primary} type="button" onClick={() => stop()}>
+                                    <p>Stop</p>
+                                </button>
+                            </>
+                        )}
+                        {error && (
+                            <>
+                                <button className={stylesButtons.button_nav_primary} type="button" onClick={() => reload()}>
+                                    <p>Retry</p>
+                                </button>
+                                <p style={{marginRight: " 10px"}}>An error occurred.</p>
+                            </>
+                        )}
+                    <button type="submit" className={stylesChatbot.chatbot_user_form_button}>
+                        <SVG svg={sendIcon} ariaHidden />
+                        <p>{__("chatbot.sendQuestion")}</p>
+                    </button>
+                    </div>
+                </form>
+                {/* } */}
+            </div>
         </div>
     );
 };
@@ -415,7 +351,7 @@ export const ImageClickManager: React.FC = () => {
         dom_figcaptionText,
         dom_labelledByText,
     } = useSelector((state: IReaderRootState) => state.img);
-    
+
     const { documentTitle, authorsLangString, publishersLangString, languages } = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
 
     const { locale } = useSelector((state: IReaderRootState) => state.i18n);
@@ -490,8 +426,18 @@ export const ImageClickManager: React.FC = () => {
 
     const imageDescription = dom_detailsText || dom_figcaptionText || dom_describedbyText || dom_labelledByText || "";
 
-    return (<>
+    const shortDescription = __("chatbot.shortDescription");
+    const longDescription = __("chatbot.detailedDescription");
 
+    const [detailOpen, setDetailOpen] = React.useState(true);
+    const [autoPrompt, setAutoPrompt] = React.useState("");
+
+    const noDescription = __("chatbot.noDescription").split(__("chatbot.shortDescTitle"));
+    const secondPartNoDescription = noDescription[1].split(__("chatbot.detailedDescTitle"));
+
+
+    return (
+    <>
         <Dialog.Root open={open} onOpenChange={(openState: boolean) => {
             if (openState == false) {
                 dispatch(readerLocalActionSetImageClick.build());
@@ -502,8 +448,11 @@ export const ImageClickManager: React.FC = () => {
         >
             <Dialog.Portal>
                 <div className={stylesModals.modal_dialog_overlay}></div>
-                <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined} style={{width: "100dvw"}}>
-            <style>{`
+                <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined} style={{padding: "5px 10px", minHeight: "unset"}} >
+                    <VisuallyHidden>
+                        <Dialog.DialogTitle>{__("chatbot.title")}</Dialog.DialogTitle>
+                    </VisuallyHidden>
+                    <style>{`
                 #aichat-scroller * {
                     overflow-anchor: none;
                 }
@@ -513,20 +462,121 @@ export const ImageClickManager: React.FC = () => {
                     height: 1px;
                 }
            `}</style>
-                    { chatEnabled ?
-                        <button onClick={() => {enableChat((enabled) => !enabled); setShowImage(true);}} style={{ position: "absolute", top: "10px", left: "10px", zIndex: 105 }} className={stylesButtons.button_transparency_icon}>
-                        <SVG ariaHidden={true} svg={BackIcon} style={{transform: "rotate(180deg)"}} />
-                    </button>
-                    : ""
-                    }
-                    <Dialog.Close asChild>
-                        <button style={{ position: "absolute", top: "10px", right: "10px", zIndex: 105 }} data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                            <SVG ariaHidden={true} svg={QuitIcon} />
-                        </button>
-                    </Dialog.Close>
-                    <div style={{display: "flex", padding: "5px", alignItems: "center", gap: "30px", minHeight: "inherit"}}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: chatEnabled ? "space-between" : "end" }}>
                         {chatEnabled ?
-
+                            <button onClick={() => { enableChat((enabled) => !enabled); setShowImage(true); }} style={{ zIndex: 105 }} className={stylesButtons.button_transparency_icon}>
+                                <SVG ariaHidden={true} svg={BackIcon} style={{ transform: "rotate(180deg)" }} />
+                            </button>
+                            : ""
+                        }
+                        <Dialog.Close asChild>
+                            <button style={{ zIndex: 105 }} data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
+                                <SVG ariaHidden={true} svg={QuitIcon} />
+                            </button>
+                        </Dialog.Close>
+                    </div>
+                    {chatEnabled ?
+                        <div className={stylesChatbot.chatbot_title}>
+                            <h2>{__("chatbot.title")}</h2>
+                            <Select
+                                items={aiSDKModelOptions}
+                                selectedKey={modelSelected.id}
+                                onSelectionChange={(key) => {
+                                    // console.log("selectionchange: ", key);
+                                    const found = aiSDKModelOptions.find(({ id: _id }) => _id === key);
+                                    if (found) {
+                                        setModel(found);
+                                    }
+                                }}
+                            // disabledKeys={options.filter(option => option.disabled === true).map(option => option.id)}
+                            // style={{ padding: "0", width: "80%", height: "30px", maxHeight: "30px", margin: "10px" }}
+                            >
+                                {item => <SelectItem>{item.name}</SelectItem>}
+                            </Select>
+                        </div>
+                        : ""
+                    }
+                    <div style={{ display: "flex", flexDirection: "column", padding: "5px 10px", alignItems: "center", flex: "1" }}>
+                        <div style={{ flex: (showImage || !chatEnabled) ? "1" : "0", display: "flex", flexDirection: chatEnabled ? "row" : "column", backgroundColor: chatEnabled ? "var(--color-extralight-grey)" : "", gap: "10px", width: "100%", borderLeft: chatEnabled ? "3px solid var(--color-blue)" : "", paddingLeft: "5px"}} className={stylesChatbot.image_container}>
+                            {chatEnabled ?
+                                <button
+                                    className={stylesChatbot.image_display_button}
+                                    title={showImage ? "hide image" : "show image"}
+                                    onClick={() => setShowImage(!showImage)}>
+                                    <SVG svg={ChevronRight} style={{ transform: showImage ? "rotate(90deg)" : "rotate(-90deg)" }}></SVG>
+                                </button>
+                                : ""
+                            }
+                            { /*  initialScale={scale} minScale={scale / 2} maxScale={4 * scale} */}
+                            {showImage ?
+                                <>
+                                    <TransformWrapper>
+                                        <TransformComponent wrapperStyle={{ display: "flex", width: "100%", height: "100%", minHeight: "inherit", alignItems: "center", flex: "1", position: "relative" }}>
+                                            <img
+                                                style={{ width: "100%", height: "100%", maxHeight: chatEnabled ? "200px" : "calc(100vh - 250px)", backgroundColor: "white", color: "black", fill: "currentcolor", stroke: "currentcolor" }}
+                                                src={isSVGFragment ? ("data:image/svg+xml;base64," + Buffer.from(HTMLImgSrc_SVGImageHref_SVGFragmentMarkup).toString("base64")) : HTMLImgSrc_SVGImageHref_SVGFragmentMarkup}
+                                                alt={altAttributeOf_HTMLImg_SVGImage_SVGFragment}
+                                                title={titleAttributeOf_HTMLImg_SVGImage_SVGFragment}
+                                                aria-label={ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment}
+                                                tabIndex={0}
+                                            />
+                                        </TransformComponent>
+                                        {(showImage || !chatEnabled) ?
+                                            <Controls chatEnabled={chatEnabled} />
+                                            : ""
+                                        }
+                                    </TransformWrapper>
+                                </>
+                                : ""
+                            }
+                            {imageDescription ?
+                                <div
+                                    className={stylesChatbot.chatbot_detail_element}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setDetailOpen(!detailOpen);
+                                    }}
+                                >
+                                    <div className={stylesChatbot.chatbot_detail_element_summary}>
+                                        {chatEnabled ? 
+                                        <h3>{__("chatbot.editorDescription")}</h3>
+                                        : <></>
+                                        }
+                                    </div>
+                                    {showImage ?
+                                    <p style={{ maxWidth: chatEnabled ? "500px" : "unset"}}>
+                                        {imageDescription}
+                                    </p>
+                                    : <></>
+                                    }
+                                </div>
+                                :
+                                    <p style={{ flex: "2"}}>
+                                            {noDescription[0]}
+                                            <button role="submit" onClick={() => { setAutoPrompt(shortDescription); enableChat(true); }}
+                                            style={{ fontSize: "12px", color: "var(--color-blue)", textDecoration: "underline", cursor: "pointer", display: "inline" }}
+                                            >
+                                            {__("chatbot.shortDescTitle")}
+                                            </button>
+                                            {secondPartNoDescription[0]}
+                                            <button role="submit" onClick={() => { setAutoPrompt(longDescription); enableChat(true); }}
+                                            style={{ fontSize: "12px", color: "var(--color-blue)", textDecoration: "underline", cursor: "pointer", display: "inline" }}
+                                            >
+                                            {__("chatbot.detailedDescTitle")}
+                                            </button>
+                                            {secondPartNoDescription[1]}
+                                    </p>
+                            }
+                        </div>
+                        {chatEnabled ? "" :
+                        <div style={{width: "100%", height: "30px"}}>
+                            <button className={stylesChatbot.chatbot_open_title} onClick={() => enableChat((enabled) => !enabled)} title={"Chat with AI"}>
+                                <SVG svg={AiIcon} ariaHidden />
+                                <p>{__("chatbot.generateDescriptionTitle")}</p>
+                            </button>
+                        </div>
+                        }
+                        {chatEnabled ?
                             <ChatContext.Provider value={{
                                 modelSelected,
                                 setModel,
@@ -534,51 +584,11 @@ export const ImageClickManager: React.FC = () => {
                                 setSystemPrompt,
                                 showImage: () => enableChat((enabled) => !enabled),
                             }}>
-                                <Chat /*imageHrefDataUrl={imageHrefDataUrl}*/ imageHref={HTMLImgSrc_SVGImageHref_SVGFragmentMarkup} imageDescription={imageDescription} />
+                                <Chat /*imageHrefDataUrl={imageHrefDataUrl}*/ imageHref={HTMLImgSrc_SVGImageHref_SVGFragmentMarkup} imageDescription={imageDescription} autoPrompt={autoPrompt} setAutoPrompt={setAutoPrompt} />
                             </ChatContext.Provider>
                             :
                             ""
                         }
-                        <div style={{flex: (showImage || !chatEnabled) ? "1" : "0"}} className={stylesChatbot.image_container}>
-                            {chatEnabled ?
-                            <button
-                            className={stylesChatbot.image_display_button}
-                            title={showImage ? "hide image" : "show image"}
-                            style={{right: showImage ? "" : "-5px"}}
-                            onClick={() => setShowImage(!showImage)}>
-                                <SVG svg={ChevronRight} style={{ transform: showImage ? "" : "rotate(180deg)"}}></SVG>
-                            </button>
-                            : ""
-                            }
-                            { /*  initialScale={scale} minScale={scale / 2} maxScale={4 * scale} */}
-                            { showImage ?   
-                            <>            
-                            <TransformWrapper>
-                                <TransformComponent wrapperStyle={{ display: "flex", width: "100%", height: "100%", minHeight: "inherit", flex: "1", alignItems: "center" }}>
-                                    <img
-                                        style={{ width: "100%", height: "100%", maxHeight: "calc(100vh - 150px)", backgroundColor: "white", color: "black", fill: "currentcolor", stroke: "currentcolor" }}
-                                        src={isSVGFragment ? ("data:image/svg+xml;base64," + Buffer.from(HTMLImgSrc_SVGImageHref_SVGFragmentMarkup).toString("base64")) : HTMLImgSrc_SVGImageHref_SVGFragmentMarkup}
-                                        alt={altAttributeOf_HTMLImg_SVGImage_SVGFragment}
-                                        title={titleAttributeOf_HTMLImg_SVGImage_SVGFragment}
-                                        aria-label={ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment}
-                                        tabIndex={0}
-                                        />
-                                </TransformComponent>
-                                        {(showImage || !chatEnabled) ?
-                                        <Controls chatEnabled={chatEnabled} />
-                                        : ""
-                                        }
-                            </TransformWrapper>
-                            </>     
-                            : ""
-                            }
-                        </div>
-                            { chatEnabled ? "" :
-                    <button className={stylesChatbot.chatbot_open_title} onClick={() => enableChat((enabled) => !enabled)} title={"Chat with AI"}>
-                            <SVG svg={AiIcon} ariaHidden />
-                            {/* <h3>Chat with AI</h3> */}
-                        </button>
-                    }
                     </div>
                 </Dialog.Content>
             </Dialog.Portal>
