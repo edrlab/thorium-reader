@@ -41,7 +41,7 @@
       }
 
       &_buttons {
-        margin-top: -10px;
+        margin-top: 20px;
         margin-bottom: 5px;
         // margin: 5px 0;
         display: flex;
@@ -294,6 +294,7 @@
 
 .bookmarks_actions {
 &_container {
+    margin-top: -15px;
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -370,6 +371,7 @@
   gap: 1px;
   border: 1px solid var(--color-dark-grey);
   border-radius: 6px;
+  width: fit-content;
 
   &:has(input:focus) {
     @include mx.R2_MIXIN_FOCUS_OUTLINE;

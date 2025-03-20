@@ -91,7 +91,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
                     maxLength={bookmarkMaxLength} onChange={(a) => setTextAreaValue(a.currentTarget.value)}
                     ref={textAreaRef}
                 ></TextArea>
-                <span style={{ fontSize: "10px", color: "var(--color-medium-grey)", position: "relative", left: "350px" }}>{textAreaValue.length}/{bookmarkMaxLength}</span>
+                <span style={{ fontSize: "10px", color: "var(--color-medium-grey)", position: "relative", left: "350px", top: "-6px" }}>{textAreaValue.length}/{bookmarkMaxLength}</span>
             </div>
             <div className={stylesBookmarks.bookmarks_actions_container}>
                 <h4>{__("reader.annotations.Color")}</h4>
