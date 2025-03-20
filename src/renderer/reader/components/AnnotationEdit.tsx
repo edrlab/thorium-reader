@@ -46,7 +46,7 @@ interface IProps {
     drawType: TDrawType,
     comment: string,
     tags: string[],
-    locatorExtended: MiniLocatorExtended,
+    locatorExtended?: MiniLocatorExtended,
 }
 
 export const AnnotationEdit: React.FC<IProps> = (props) => {
@@ -115,8 +115,13 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
             <h4>{__("reader.annotations.addNote")}</h4>
         }
         <div
-            className={classNames(displayFromReaderMenu ? "" : stylesAnnotations.annotations_line, dockedMode ? stylesAnnotations.docked_annotation_line : "")} style={{backgroundColor: !displayFromReaderMenu ? "var(--color-extralight-grey)" : ""}}>
-            <p>{locatorExtended.selectionInfo?.cleanText ? (locatorExtended.selectionInfo.cleanText.length > (200 - 3) ? `${locatorExtended.selectionInfo.cleanText.slice(0, 200)}...` : locatorExtended.selectionInfo.cleanText) : ""}</p>
+            className={classNames(displayFromReaderMenu ? "" : stylesAnnotations.annotations_line, dockedMode ? stylesAnnotations.docked_annotation_line : "")} style={{ backgroundColor: !displayFromReaderMenu ? "var(--color-extralight-grey)" : "" }}>
+            <p>{
+                locatorExtended?.selectionInfo?.cleanText ?
+                    (locatorExtended.selectionInfo.cleanText.length > (200 - 3) ?
+                        `${locatorExtended.selectionInfo.cleanText.slice(0, 200)}...` :
+                        locatorExtended.selectionInfo.cleanText)
+                    : ""}</p>
             <TextArea id={`${uuid}_edit`} name="addNote" wrap="hard" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={comment} ref={textAreaRef} maxLength={annotationMaxLength} onChange={(a) => setAnnotationLength(a.currentTarget.value.length)}
             ></TextArea>
             <span style={{fontSize: "10px", color: "var(--color-medium-grey)", width: "420px", textAlign: "end"}}>{annotationLength}/{annotationMaxLength}</span>

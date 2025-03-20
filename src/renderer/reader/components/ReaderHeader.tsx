@@ -863,7 +863,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         drawType={this.props.readerConfig.annotation_defaultDrawType}
                                         tags={[]}
                                         comment=""
-                                        locatorExtended={this.props.locatorExtended}
+                                        locatorExtended={this.props.annotationLocatorExtended}
                                     />
                                     <Popover.Arrow style={{ fill: "var(--color-extralight-grey)" }} width={15} height={10} />
                                 </Popover.Content>
@@ -1405,6 +1405,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         keyboardShortcuts: state.keyboard.shortcuts,
         annotationsDataArray: state.reader.annotation,
         isAnnotationModeEnabled: state.annotation.enable,
+        annotationLocatorExtended: state.annotation.locatorExtended,
         isAnnotationModeEnabledFromKeyboard: state.annotation.fromKeyboard,
         publicationHasMediaOverlays: state.reader.info.navigator.r2PublicationHasMediaOverlays,
         mediaOverlaysState: state.reader.mediaOverlay.state,
