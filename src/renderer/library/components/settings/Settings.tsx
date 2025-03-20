@@ -48,8 +48,8 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { ApiappHowDoesItWorkInfoBox } from "../dialog/ApiappAddForm";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
-import OpenAiIcon from "readium-desktop/renderer/assets/logos/open-ai-icon.png";
-import MistralAiIcon from "readium-desktop/renderer/assets/logos/mistral-ai-icon.png";
+import * as OpenAiIcon from "readium-desktop/renderer/assets/icons/open-ai-icon.svg";
+import * as MistralAiIcon from "readium-desktop/renderer/assets/icons/mistral-ai-icon.svg";
 import * as stylesChatbot from "readium-desktop/renderer/assets/styles/chatbot.scss";
 
 interface ISettingsProps {};
@@ -281,12 +281,12 @@ const ApiKeys = () => {
                         <p>{
                         k.provider.includes("OpenAi") ? 
                         <span>
-                        <img src={OpenAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
+                        <SVG svg={OpenAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
                         {__("settings.apiKey.openAi")}
                         </span>
                         :
                         <span>
-                        <img src={MistralAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
+                        <SVG svg={MistralAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
                         {__("settings.apiKey.mistral")}
                         </span>
                     }</p>

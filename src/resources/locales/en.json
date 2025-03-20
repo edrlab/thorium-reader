@@ -565,7 +565,7 @@
             "help": "Add a personal API Key from a provider to use the chatbot image description feature.",
             "keyLabel": "API Key",
             "mistral": "Mistral",
-            "openAi": "Open AI",
+            "openAi": "OpenAI",
             "providerSelection": "Choose a provider",
             "removeKey": "Remove this key",
             "title": "Add an API Key (Image Description feature)",

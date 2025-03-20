@@ -565,7 +565,7 @@
             "help": "Ajoutez une clé d'API depuis le fournisseur de votre choix pour utiliser la fonctionnalité de description d'image.",
             "keyLabel": "Clé d'API",
             "mistral": "Mistral",
-            "openAi": "Open Ai",
+            "openAi": "OpenAI",
             "providerSelection": "Sélectionnez un fournisseur",
             "removeKey": "Supprimer la clé",
             "title": "Ajouter une clé API (fonctionnalité de description d'image)",
