@@ -13,7 +13,7 @@ export type TBookmarkState = TPQueueState<number, IBookmarkState>;
 
 export interface IBookmarkState {
     uuid: string;
-    name: string;
+    name: string | undefined;
     index: number;
 
     locatorExtended: MiniLocatorExtended,

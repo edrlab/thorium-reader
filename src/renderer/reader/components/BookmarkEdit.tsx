@@ -19,11 +19,11 @@ import { BookmarkLocatorInfo } from "./BookmarkLocatorInfo";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 interface IProps {
-    toggleBookmark: (name?: string) => void,
+    toggleBookmark: (name: string) => void,
     cancel?: () => void;
     uuid?: string;
     dockedMode?: boolean;
-    name: string;
+    name: string | undefined;
     locatorExtended: MiniLocatorExtended;
 }
 
