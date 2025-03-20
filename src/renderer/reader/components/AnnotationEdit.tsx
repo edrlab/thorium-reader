@@ -9,7 +9,7 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 
 import * as React from "react";
-import { annotationDrawType, IAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
+import { annotationDrawType, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -140,7 +140,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                                 checked={colorSelected === colorHex}
                                 aria-label={__(translatorKey)}
                             />
-                            <label aria-hidden={true} title={__(translatorKey)} htmlFor={`${uuid}_${colorHex}`}
+                            <label aria-hidden={true} title={__(translatorKey)} htmlFor={`${uuid}_color-${colorHex}`}
                                 style={{ backgroundColor: colorHex, border: colorSelected === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
                             >
                                 {colorSelected === colorHex ? <SVG ariaHidden svg={CheckIcon} /> : <></>}

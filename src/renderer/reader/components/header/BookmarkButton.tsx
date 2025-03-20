@@ -32,7 +32,6 @@ import { ReadiumElectronBrowserWindow } from "@r2-navigator-js/electron/renderer
 import { readerLocalActionHighlights } from "../../redux/actions";
 import { BookmarkEdit } from "../BookmarkEdit";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { NOTE_DEFAULT_COLOR_OBJ } from "readium-desktop/common/redux/states/note";
 
 export interface IProps {
     shortcutEnable: boolean;

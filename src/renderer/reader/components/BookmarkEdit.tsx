@@ -63,7 +63,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
         }
 
         previousColorSelected.current = colorSelected;
-    }, [colorStr, dispatch]);
+    }, [colorStr, dispatch, colorSelected]);
 
     React.useEffect(() => {
         if (textAreaRef.current) {
@@ -99,7 +99,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
                                 checked={colorSelected === colorHex}
                                 aria-label={__(translatorKey)}
                             />
-                            <label aria-hidden={true} title={__(translatorKey)} htmlFor={`${uuid}_${colorHex}`}
+                            <label aria-hidden={true} title={__(translatorKey)} htmlFor={`${uuid}_color-${colorHex}`}
                                 style={{ backgroundColor: colorHex, border: colorSelected === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
                             >
                                 {colorSelected === colorHex ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
