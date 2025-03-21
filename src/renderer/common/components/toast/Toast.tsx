@@ -196,7 +196,7 @@ export class Toast extends React.Component<IProps, IState> {
                             to={{
                                 ...location,
                                 pathname: "/library",
-                                search: `?focus=search&value=${this.props.publicationTitle}`,
+                                search: `?focus=search&searchValue=${this.props.publicationTitle}`,
                             }}
                             onClick={(e) => {
                                 if (e.altKey || e.shiftKey || e.ctrlKey) {

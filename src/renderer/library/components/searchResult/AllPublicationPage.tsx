@@ -88,7 +88,7 @@ import classNames from "classnames";
 import * as Popover from "@radix-ui/react-popover";
 
 // import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 // import * as FilterIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
 // import * as DeleteFilter from "readium-desktop/renderer/assets/icons/deleteFilter-icon.svg";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
@@ -397,15 +397,16 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
     // className={classNames(classThemeExample)}
     // className={classNames(classStyleExample)}
 
+    const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const searchValue = queryParams.get("value") || "";
-    // console.log("searchValue", searchValue);
+    const searchValue = queryParams.get("searchValue") || undefined;
 
     React.useEffect(() => {
-        if (props.focusInputRef?.current) {
-            props.focusInputRef.current.value = searchValue;
-            onInputChange(searchValue || undefined);
+        const val = searchValue || "";
+        if (val && props.focusInputRef?.current && props.focusInputRef.current.value !== val) {
+            props.focusInputRef.current.value = val;
+            onInputChange(val);
         }
     }, [searchValue, onInputChange, props.focusInputRef?.current?.value]);
 
@@ -434,24 +435,35 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
 
                 onChange={(e) => {
                     // setValue(e.target.value);
+                    const val = (e.target.value || "").trim();
+                    if (queryParams.has("searchValue")) {
+                        // navigate(location.pathname + (val ? `?focus=search&searchValue=${encodeURIComponent(val)}` : ""), {
+                        //     state: location.state,
+                        //     replace: true,
+                        // });
+                        navigate(location.pathname, {
+                            state: location.state,
+                            replace: true,
+                        });
+                    }
                     if (!props.accessibilitySupportEnabled) {
-                        onInputChange((e.target.value || "").trim() || undefined);
+                        onInputChange(val);
                     }
                 }}
                 onKeyUp={(e) => {
+                    const val = (props.focusInputRef?.current?.value || "").trim();
                     if (props.accessibilitySupportEnabled && e.key === "Enter") {
                         props.setShowColumnFilters(true);
-                        props.setGlobalFilter( // value
-                            (props.focusInputRef?.current?.value || "").trim() || undefined);
+                        props.setGlobalFilter(val);
                     }
                 }}
                 placeholder={`${props.__("header.searchTitle")}`}
             />
             {props.accessibilitySupportEnabled ? <button
                 onClick={() => {
+                    const val = (props.focusInputRef?.current?.value || "").trim();
                     props.setShowColumnFilters(true);
-                    props.setGlobalFilter( // value
-                        (props.focusInputRef?.current?.value || "").trim() || undefined);
+                    props.setGlobalFilter(val);
                 }}
             >{`${props.__("header.searchPlaceholder")}`}</button> : <></>}
         </div>
