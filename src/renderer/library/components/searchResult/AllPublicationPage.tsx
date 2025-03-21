@@ -400,13 +400,14 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const searchValue = queryParams.get("value") || "";
+    // console.log("searchValue", searchValue);
 
     React.useEffect(() => {
         if (props.focusInputRef?.current) {
             props.focusInputRef.current.value = searchValue;
             onInputChange(searchValue || undefined);
         }
-    }, [searchValue, onInputChange, props.focusInputRef]);
+    }, [searchValue, onInputChange, props.focusInputRef?.current?.value]);
 
     return (
         <div className={classNames(stylesInput.form_group, stylesInput.form_group_allPubSearch)}>
