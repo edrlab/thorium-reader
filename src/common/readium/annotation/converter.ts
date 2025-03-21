@@ -178,7 +178,9 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
             href: cacheDoc.href,
             locations: {
                 cssSelector: selectionInfo.rangeInfo.startContainerElementCssSelector,
-                rangeInfo: selectionInfo.rangeInfo,
+                caretInfo: {
+                    ...selectionInfo,
+                },
                 progression: progressionValue,
             },
         },

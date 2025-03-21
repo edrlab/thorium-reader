@@ -96,9 +96,11 @@ export type IQueueAnnotationState = IPQueueState<number, IAnnotationState>;
 export type IAnnotationModeState = {
     enable: true;
     locatorExtended: MiniLocatorExtended;
+    fromKeyboard: boolean;
 } | {
     enable: false;
     locatorExtended: undefined;
+    fromKeyboard: undefined;
 };
 
 export type TDrawView = "annotation" | "margin" | "hide";

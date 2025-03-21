@@ -135,6 +135,8 @@
         "cancel": "Cancelar",
         "deleteAnnotations": "Excluir anotações?",
         "deleteAnnotationsText": "Tem certeza de que deseja excluir {{- annotationListLength}} notas(s)?",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Deseja excluir este catálogo?",
         "deletePublication": "Deseja excluir esta publicação?",
         "import": "Deseja importar estes arquivos:",
@@ -372,6 +374,9 @@
                 "underline": "Sublinhado"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "silenciar áudio",
             "unmute": "ativar áudio"
@@ -387,7 +392,6 @@
             "edit": "Editar",
             "goTo": "Ir para página",
             "landmarks": "Pontos de referência",
-            "progression": "Andamento",
             "saveMark": "Salvar marcador",
             "search": "Buscas",
             "searchResult": "Busca [{{- searchText}}]",

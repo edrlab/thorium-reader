@@ -94,6 +94,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     annotationActions.shiftFromAnnotationImportQueue.ID,
 
     readerActions.setTheLock.ID,
+
+    lcpActions.publicationFileLock.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

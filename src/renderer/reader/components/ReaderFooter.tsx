@@ -84,7 +84,6 @@ interface IBaseProps extends TranslatorProps {
     historyCanGoForward: boolean;
     currentLocation: MiniLocatorExtended;
     goToLocator: (locator: R2Locator, closeNavPanel?: boolean, isFromOnPopState?: boolean) => void;
-    // tslint:disable-next-line: max-line-length
     handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor, url: string, closeNavPanel?: boolean, isFromOnPopState?: boolean) => void;
     isDivina: boolean;
     isDivinaLocation: (data: any) => data is { pageIndex: number | undefined, nbOfPages: number | undefined, locator: R2Locator };
@@ -294,7 +293,6 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                 >
                                     {this.state.chapters_markers_width <= 0 ? <></> :
                                         (isPdf
-                                            // tslint:disable-next-line: max-line-length
                                             ? Array.from({ length: r2Publication.Metadata?.NumberOfPages || 1 }, (_v, i) => {
                                                 const link = new Link();
                                                 link.Href = String(i+1);
@@ -404,7 +402,6 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                                                                         let w: number | undefined;
                                                                         while (element && element.classList) {
                                                                             if (
-                                                                                // tslint:disable-next-line: max-line-length
                                                                                 element.classList.contains("progressChunkSpineItem")
                                                                             ) {
                                                                                 w = element.offsetWidth;
@@ -599,7 +596,6 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
         const chunks =
         (isPdf
-            // tslint:disable-next-line: max-line-length
             ? Array.from({ length: r2Publication.Metadata?.NumberOfPages || 1 }, (_v, i) => {
                 const link = new Link();
                 link.Href = String(i + 1);
@@ -676,7 +672,6 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         }
 
         // (isPdf
-        //     // tslint:disable-next-line: max-line-length
         //     ? Array.from({ length: r2Publication.Metadata?.NumberOfPages || 1 }, (_v, i) => {
         //         const link = new Link();
         //         link.Href = String(i+1);

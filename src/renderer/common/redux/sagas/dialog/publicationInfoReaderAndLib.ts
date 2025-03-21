@@ -13,8 +13,8 @@ import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLe
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { TReturnPromiseOrGeneratorType } from "readium-desktop/typings/api";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, call, delay, put, take } from "redux-saga/effects";
-import { race as raceTyped } from "typed-redux-saga/macro";
+import { all, call, put, take } from "redux-saga/effects";
+import { call as callTyped } from "typed-redux-saga/macro";
 
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
@@ -47,14 +47,18 @@ function* checkReaderAndLibPublication(action: dialogActions.openRequest.TAction
 
         // dispatch to API a publication get request
         if (id) {
+            {
+                const getAction = yield* callTyped(getApi, id, false);
+                if (!getAction) {
+                    debug("checkReaderAndLibPublication 1 timeout?", id);
+                    return;
+                }
+                yield call(updateReaderAndLibPublication, getAction, focusWhereAmI, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, readerReadingLocation, handleLinkUrl);
+            }
 
-            const { b: getAction } = yield* raceTyped({
-                a: delay(5000),
-                b: call(getApi, id),
-            });
-
+            const getAction = yield* callTyped(getApi, id, true);
             if (!getAction) {
-                debug("checkReaderAndLibPublication timeout?", id);
+                debug("checkReaderAndLibPublication 2 timeout?", id);
                 return;
             }
 
@@ -63,9 +67,9 @@ function* checkReaderAndLibPublication(action: dialogActions.openRequest.TAction
     }
 }
 
-function* getApi(id: string) {
+function* getApi(id: string, lsd: boolean) {
 
-    yield apiSaga("publication/get", REQUEST_ID, id, true);
+    yield apiSaga("publication/get", REQUEST_ID, id, lsd);
     while (true) {
         const action:
             apiActions.result.TAction<TReturnPromiseOrGeneratorType<TApiMethod["publication/get"]>>

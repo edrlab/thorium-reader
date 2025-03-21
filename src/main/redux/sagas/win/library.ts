@@ -114,6 +114,7 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
         },
         creator: state.creator,
         settings: state.settings,
+        lcp: state.lcp,
     };
     try {
         const publication = yield* callTyped(getCatalog);

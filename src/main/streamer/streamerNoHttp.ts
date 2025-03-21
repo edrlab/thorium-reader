@@ -271,9 +271,7 @@ const streamProtocolHandler = async (
     // CORS everything!
     headers["Access-Control-Allow-Origin"] = "*";
     headers["Access-Control-Allow-Methods"] = "GET, HEAD, OPTIONS"; // POST, DELETE, PUT, PATCH
-    // tslint:disable-next-line:max-line-length
     headers["Access-Control-Allow-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
-    // tslint:disable-next-line:max-line-length
     headers["Access-Control-Expose-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
 
     if (isPdfjsAssets) {
@@ -1104,7 +1102,6 @@ const transformerIFrames: TTransformFunction = (
             if (!el.childNodes) {
                 return;
             }
-            // tslint:disable-next-line: prefer-for-of
             for (let i = 0; i < el.childNodes.length; i++) {
                 const childNode = el.childNodes[i];
                 if (childNode.nodeType === 1) { // Node.ELEMENT_NODE

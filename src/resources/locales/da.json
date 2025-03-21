@@ -135,6 +135,8 @@
         "cancel": "Annullér",
         "deleteAnnotations": "Slet alle noter?",
         "deleteAnnotationsText": "Vil du slette {{- annotationListLength}} note(r)?",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Er du sikker på at du vil slette dette katalog?",
         "deletePublication": "Er du sikker på at du vil fjerne bogen?",
         "import": "Bekræft at du vil importere disse filer:",
@@ -372,6 +374,9 @@
                 "underline": "Understreg"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "slå lyd fra",
             "unmute": "slå lyd til"
@@ -387,7 +392,6 @@
             "edit": "Rediger",
             "goTo": "Gå til side",
             "landmarks": "Regioner",
-            "progression": "Fremskridt",
             "saveMark": "Gem bogmærke",
             "search": "Søg",
             "searchResult": "Søgning [{{- searchText}}]",

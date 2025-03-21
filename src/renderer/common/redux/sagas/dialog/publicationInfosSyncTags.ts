@@ -32,7 +32,6 @@ function* apiResult(action: apiActions.result.TAction) {
                 TReturnPromiseOrGeneratorType<TApiMethod["publication/updateTags"]>;
             const tagsArray = publicationView.tags;
             const publicationFromDialog = (yield* selectTyped((state: IRendererCommonRootState) =>
-                // tslint:disable-next-line: max-line-length
                 (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication)) as PublicationView;
 
             if (

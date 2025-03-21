@@ -62,7 +62,6 @@ function* unlockPublicationWithPassphrase(action: lcpActions.unlockPublicationWi
 
             // import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
             // import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-            // tslint:disable-next-line: max-line-length
             // const r2PublicationStr = Buffer.from(publicationView.r2PublicationBase64, "base64").toString("utf-8");
             // const r2PublicationJson = JSON.parse(r2PublicationStr);
             // const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);

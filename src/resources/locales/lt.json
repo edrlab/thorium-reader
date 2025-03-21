@@ -135,6 +135,8 @@
         "cancel": "Nutraukti",
         "deleteAnnotations": "Šalinti pastabas?",
         "deleteAnnotationsText": "Ar norite pašalinti {{- annotationListLength}} pastabą(-as, -ų)?",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Pašalinti katalogą?",
         "deletePublication": "Pašalinti leidinį?",
         "import": "Patvirtinkite importą:",
@@ -372,6 +374,9 @@
                 "underline": "Pabraukimas"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "išjungti garsą",
             "unmute": "įjungti garsą"
@@ -387,7 +392,6 @@
             "edit": "Keisti",
             "goTo": "Eiti į puslapį",
             "landmarks": "Gairės",
-            "progression": "Eiga",
             "saveMark": "Išsaugoti žymę",
             "search": "Paieška",
             "searchResult": "Ieškoti [{{- searchText}}]",

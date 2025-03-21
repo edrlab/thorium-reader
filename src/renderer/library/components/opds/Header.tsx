@@ -33,7 +33,6 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-// tslint:disable-next-line: max-line-length
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
