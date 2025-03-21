@@ -134,8 +134,6 @@ export class Toast extends React.Component<IProps, IState> {
                 break;
         }
 
-        console.log(this.props);
-
         return (
             <div
                 ref={this.ref}
