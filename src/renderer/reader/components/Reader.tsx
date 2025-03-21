@@ -5,11 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-
+// import debounce from "debounce";
 import * as debug_ from "debug";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
-import debounce from "debounce";
 import { fixedLayoutZoomPercent } from "@r2-navigator-js/electron/renderer/dom";
 import { ipcRenderer } from "electron";
 import classNames from "classnames";
@@ -234,7 +233,7 @@ interface IState {
     // doFocus: number;
     fullscreen: boolean;
     zenMode: boolean;
-    blackoutMask: boolean;
+    // blackoutMask: boolean;
 
     currentLocation: MiniLocatorExtended;
 
@@ -271,9 +270,8 @@ class Reader extends React.Component<IProps, IState> {
 
     private ttsOverlayEnableNeedsSync: boolean;
 
-    private resizeObserver: ResizeObserver;
-
-    private blackoutDebounced: () => void;
+    // private resizeObserver: ResizeObserver;
+    // private blackoutDebounced: () => void;
 
     constructor(props: IProps) {
         super(props);
@@ -331,7 +329,7 @@ class Reader extends React.Component<IProps, IState> {
             // menuOpen: false,
             fullscreen: false,
             zenMode: false,
-            blackoutMask: false,
+            // blackoutMask: false,
 
             currentLocation: undefined,
 
@@ -397,27 +395,27 @@ class Reader extends React.Component<IProps, IState> {
 
         this.fixedLayoutZoomPercentDebounced = this.fixedLayoutZoomPercentDebounced.bind(this);
 
-        this.blackoutDebounced = debounce(() => {
-            this.setState({ blackoutMask: false });
-        }, 600).bind(this); // to match navigator 500ms timeout debouncer for fixedLayoutZoomPercent()
+        // this.blackoutDebounced = debounce(() => {
+        //     this.setState({ blackoutMask: false });
+        // }, 200).bind(this); // to match navigator 100ms timeout debouncer for fixedLayoutZoomPercent()
 
-        const resizeDebounced = debounce(() => {
-            this.setState({ blackoutMask: false });
-        }, 600); // nto match avigator 500ms timeout debouncer for internal webview/iframe window "resize" event
-        this.resizeObserver = new ResizeObserver((_entries: ResizeObserverEntry[], _observer: ResizeObserver) => {
-            if (!this.isFixedLayout()) {
-                this.setState({ blackoutMask: false });
-                return;
-            }
-            this.setState({ blackoutMask: true });
-            resizeDebounced();
-        });
+        // const resizeDebounced = debounce(() => {
+        //     this.setState({ blackoutMask: false });
+        // }, 200); // to match navigator 100ms timeout debouncer for internal webview/iframe window "resize" event
+        // this.resizeObserver = new ResizeObserver((_entries: ResizeObserverEntry[], _observer: ResizeObserver) => { // publication_viewport
+        //     if (!this.isFixedLayout()) {
+        //         this.setState({ blackoutMask: false });
+        //         return;
+        //     }
+        //     this.setState({ blackoutMask: true });
+        //     resizeDebounced();
+        // });
     }
 
     private fixedLayoutZoomPercentDebounced(fxlZoomPercent: number) {
-        this.setState({ blackoutMask: true });
-        fixedLayoutZoomPercent(fxlZoomPercent); // navigator 500ms timeout debouncer
-        this.blackoutDebounced();
+        // this.setState({ blackoutMask: true });
+        fixedLayoutZoomPercent(fxlZoomPercent); // navigator 100ms timeout debouncer
+        // this.blackoutDebounced();
     }
 
     public async componentDidMount() {
@@ -431,9 +429,9 @@ class Reader extends React.Component<IProps, IState> {
         console.log("componentDidMount() ipcRenderer.send - accessibility-support-query");
         ipcRenderer.send("accessibility-support-query");
 
-        if (this.mainElRef?.current) {
-            this.resizeObserver.observe(this.mainElRef.current);
-        }
+        // if (this.mainElRef?.current) {
+        //     this.resizeObserver.observe(this.mainElRef.current);
+        // }
 
         windowHistory._readerInstance = this;
 
@@ -597,6 +595,9 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         highlightsClickListen((href, highlight, event) => {
+            // if (this.isFixedLayout()) {
+            //     this.setState({ blackoutMask: true });
+            // }
 
             if (highlight.group !== "annotation" && highlight.group !== "bookmark") {
                 if (typeof (window as any).__hightlightClickChannelEmitFn === "function") {
@@ -726,9 +727,9 @@ class Reader extends React.Component<IProps, IState> {
     public componentWillUnmount() {
         ipcRenderer.off("accessibility-support-changed", this.accessibilitySupportChanged);
 
-        if (this.mainElRef?.current) {
-            this.resizeObserver.unobserve(this.mainElRef.current);
-        }
+        // if (this.mainElRef?.current) {
+        //     this.resizeObserver.unobserve(this.mainElRef.current); // publication_viewport
+        // }
 
         this.unregisterAllKeyboardListeners();
 
@@ -772,11 +773,14 @@ class Reader extends React.Component<IProps, IState> {
     private setZenModeAndFXLZoom(zen: boolean, fxlZoom: number) {
         // this.setState({ zenMode: !this.state.zenMode });
         // console.log("ZEN", this.state.zenMode, zen, this.state.fxlZoomPercent, fxlZoom);
-        if (this.state.fxlZoomPercent === fxlZoom && this.state.zenMode !== zen) {
-            // HACK ATERT: simulate window resize to trigger navigator 500ms timeout debouncer
-            // window.dispatchEvent(document.createEvent("resize")); // CRASH
-            window.dispatchEvent(new Event("resize")); // WORKS
-        } else if (this.state.fxlZoomPercent !== fxlZoom && this.state.zenMode === zen) { // this.state.zenMode !== zen is captured by publication_viewport.ResizeObserver
+        // if (this.state.fxlZoomPercent === fxlZoom && this.state.zenMode !== zen) {
+        //     // HACK ALERT: simulate window resize to trigger navigator 100ms timeout debouncer
+        //     // window.dispatchEvent(document.createEvent("resize")); // CRASH
+        //     window.dispatchEvent(new Event("resize")); // WORKS
+        // } else if (this.state.fxlZoomPercent !== fxlZoom && this.state.zenMode === zen) { // this.state.zenMode !== zen is captured by publication_viewport.ResizeObserver
+        //     this.fixedLayoutZoomPercentDebounced(fxlZoom);
+        // }
+        if (this.state.fxlZoomPercent !== fxlZoom) {
             this.fixedLayoutZoomPercentDebounced(fxlZoom);
         }
         this.setState({ zenMode: zen, fxlZoomPercent: fxlZoom });
@@ -981,7 +985,7 @@ class Reader extends React.Component<IProps, IState> {
                                     ref={this.mainElRef}
                                     style={{
                                         inset: this.state.currentLocation?.docInfo?.isVerticalWritingMode || isAudioBook || !this.props.readerConfig.paged || this.props.isPdf || this.props.isDivina || this.isFixedLayout() ? "0" : "75px 50px",
-                                        opacity: this.state.blackoutMask ? 0 : 1,
+                                        // opacity: this.state.blackoutMask ? 0 : 1,
                                     }}>
                                 </div>
 
@@ -1414,11 +1418,19 @@ class Reader extends React.Component<IProps, IState> {
             // windowHistory._readerInstance === this
             this.setState({ historyCanGoForward: false, historyCanGoBack: windowHistory._length > 1 });
         }
+
+        // if (this.isFixedLayout()) {
+        //     this.setState({ blackoutMask: true });
+        // }
         r2HandleLinkLocator(locator);
     };
 
     private handleLinkUrl = (url: string, isFromOnPopState = false) => {
         handleLinkUrl_UpdateHistoryState(url, isFromOnPopState);
+
+        // if (this.isFixedLayout()) {
+        //     this.setState({ blackoutMask: true });
+        // }
         r2HandleLinkUrl(url);
     };
 
@@ -1606,12 +1618,12 @@ class Reader extends React.Component<IProps, IState> {
 
         this.handleFullscreenClick();
 
-        this.setState({ blackoutMask: true });
-        this.blackoutDebounced();
+        // this.setState({ blackoutMask: true });
+        // this.blackoutDebounced();
 
         // this.fixedLayoutZoomPercentDebounced(this.state.fxlZoomPercent);
 
-        // HACK ATERT: simulate window resize to trigger navigator 500ms timeout debouncer
+        // HACK ALERT: simulate window resize to trigger navigator 100ms timeout debouncer
         // window.dispatchEvent(document.createEvent("resize")); // CRASH
         // window.dispatchEvent(new Event("resize")); // WORKS
     };
@@ -2628,6 +2640,10 @@ class Reader extends React.Component<IProps, IState> {
     private handleReadingLocationChange(locatorExtended: LocatorExtended) {
 
         ok(locatorExtended, "handleReadingLocationChange loc KO");
+
+        // if (this.isFixedLayout()) {
+        //     this.setState({ blackoutMask: false });
+        // }
 
         const miniLocatorExtended = minimizeLocatorExtended(locatorExtended);
 
