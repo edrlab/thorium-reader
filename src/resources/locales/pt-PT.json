@@ -4,5 +4,194 @@
             "description": "O tema da aplicação corresponde ao tema do sistema operativo.",
             "title": "Tema da aplicação"
         }
+    },
+    "catalog": {
+        "update": "Editar",
+        "about": {
+            "title": "Sobre {{- appName}} (em linha)"
+        },
+        "addTags": "Adicionar etiqueta",
+        "addTagsButton": "Adicionar",
+        "allBooks": "Documentos",
+        "column": {
+            "descending": "descendente",
+            "unsorted": "não ordenado",
+            "ascending": "ascendente"
+        },
+        "delete": "Apagar",
+        "deleteBook": "Remover",
+        "deleteTag": "Apagar etiqueta",
+        "description": "Descrição",
+        "entry": {
+            "continueReading": "Retomar leitura",
+            "lastAdditions": "Adicionados recentemente"
+        },
+        "noPublicationHelpL3": "Ficheiros protegidos por PCL são suportados.",
+        "opds": {
+            "auth": {
+                "username": "Nome de utilizador / Endereço de email",
+                "cancel": "Cancelar",
+                "login": "Autenticar",
+                "password": "Senha",
+                "register": "Registar"
+            },
+            "info": {
+                "availableSince": "Desde",
+                "availableState": {
+                    "available": "Disponível",
+                    "ready": "Pronto",
+                    "reserved": "Reservado",
+                    "unavailable": "Indisponível",
+                    "unknown": "Desconhecido"
+                },
+                "priveValue": "Preço",
+                "state": "Situação",
+                "availableUntil": "Até",
+                "copyAvalaible": "Disponíveis",
+                "copyTotal": "Exemplares",
+                "holdPosition": "Sua posição na fila",
+                "holdTotal": "Reservado",
+                "numberOfItems": "Número de itens"
+            }
+        },
+        "publisher": "Editora",
+        "readBook": "Ler",
+        "sort": "Ordenar por",
+        "tag": "Etiqueta",
+        "emptyTagList": "Sem documentos etiquetados.",
+        "export": "Guardar como",
+        "bookInfo": "Sobre o documento",
+        "released": "Publicado em",
+        "tags": "Etiquetas",
+        "moreInfo": "Detalhes do documento",
+        "format": "Formato",
+        "importAnnotation": "Importar anotações",
+        "lang": "Idioma",
+        "lastRead": "Última leitura",
+        "myBooks": "Meus documentos",
+        "noPublicationHelpL1": "Soltar ficheiros aqui",
+        "noPublicationHelpL2": "ou usar o botão \"{{- importTitle }}\".",
+        "noPublicationHelpL4": "Extensões suportadas:",
+        "numberOfPages": "Número de páginas",
+        "exportAnnotation": "Exportar anotações...",
+        "addBookToLib": "Importar"
+    },
+    "accessibility": {
+        "importFile": "Importar documento",
+        "closeDialog": "Fechar",
+        "bookMenu": "Menu",
+        "leftSlideButton": "Deslizar para a esquerda",
+        "mainContent": "Conteúdo principal",
+        "rightSlideButton": "Deslizar para a direita",
+        "skipLink": "Ir para o conteúdo",
+        "toolbar": "Barra de ferramentas"
+    },
+    "app": {
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "yes": "Sim",
+                        "no": "Não"
+                    },
+                    "help": "Ativar se pretender que as janelas do leitor, que estejam abertas quando a aplicação é fechada, sejam reabertas automaticamente no próximo arranque.",
+                    "message": "Guardar e restaurar a sessão de leitura",
+                    "title": "Guardar sessão?"
+                }
+            }
+        },
+        "window": {
+            "showLibrary": "Mostrar biblioteca / estante"
+        },
+        "edit": {
+            "copy": "Copiar",
+            "cut": "Cortar",
+            "paste": "Colar",
+            "redo": "Refazer",
+            "selectAll": "Selecionar tudo",
+            "title": "Editar",
+            "undo": "Desfazer"
+        },
+        "hide": "Ocultar {{- appName}}",
+        "quit": "Sair de {{- appName}}",
+        "update": {
+            "message": "Nova versão disponível, clique para saber mais.",
+            "title": "Atualização de software: {{- appName}}."
+        }
+    },
+    "error": {
+        "errorBox": {
+            "message": "Erro em {{- filename}}",
+            "title": "Erro interno {{- appName}}",
+            "error": "Mensagem de erro:"
+        }
+    },
+    "header": {
+        "catalogs": "Catálogos",
+        "downloads": "Descarregamentos",
+        "fitlerTagTitle": "Filtrar por etiqueta",
+        "myCatalogs": "Meus catálogos",
+        "gridTitle": "Grelha",
+        "home": "Menu de estante",
+        "homeTitle": "Entrada",
+        "importTitle": "Importar documento",
+        "listTitle": "Tabela",
+        "refreshTitle": "recarregar",
+        "searchPlaceholder": "Pesquisa",
+        "allBooks": "Documentos",
+        "searchTitle": "Pesquisar por",
+        "settings": "Configurações",
+        "viewMode": "Modo de visualização"
+    },
+    "dialog": {
+        "annotations": {
+            "title": "Importar anotações?",
+            "descTitle": "Título das anotações: ",
+            "importWithoutConflict": "Importar apenas anotações sem conflitos",
+            "descNewer": "Conflitos: {{- nb}} anotações mais recentes",
+            "descAuthor": "por {{- author}}",
+            "descCreator": "criado por",
+            "descList": "{{- nb}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
+            "descOlder": "Conflitos: {{- nb}} anotações mais antigas",
+            "importAll": "Importar todas as anotações",
+            "origin": "Publicação de origem: '{{- title}}' {{- author}}"
+        },
+        "cancel": "Cancelar",
+        "deleteAnnotations": "Eliminar anotações?",
+        "deleteAnnotationsText": "Quer mesmo eliminar {{- annotationListLength}} anotações?",
+        "deletePublication": "Eliminar documento?",
+        "deleteFeed": "Eliminar catálogo?",
+        "import": "Confirmar importação:",
+        "importError": "Ocorreu um erro, verifique a extensão do ficheiro ({{acceptedExtension}})",
+        "renew": "Renovar empréstimo?",
+        "return": "Devolver documento?",
+        "yes": "Sim"
+    },
+    "apiapp": {
+        "informations": "Em França, muitas bibliotecas públicas disponibilizam um catálogo legível por máquina (semelhante ao OPDS, mas não idêntico), permitindo aos utilizadores descarregar publicações digitais da sua estante pessoal. A integração desta tecnologia no Thorium Reader permite-lhe descarregar um ebook ou audiolivro diretamente no Thorium Reader para leitura imediata.\nComo associar a sua conta de uma biblioteca pública francesa ao Thorium Reader? É simples. Digite uma cidade francesa ('Paris') ou parte do nome da biblioteca no campo Pesquisar e clique no botão Pesquisar. Aparecerá uma lista de bibliotecas públicas correspondente à sua pesquisa. Selecione uma biblioteca e clique em Adicionar. Na lista atualizada de catálogos, selecione esta biblioteca: um formulário de autenticação será exibido. Digite seu nome de utilizador/endereço de email e senha e clique em Autenticar. Agora já poderá ver o conteúdo da sua estante pessoal, da qual pode baixar e ler os ebooks e audiolivros que tenha feito o empréstimo anteriormente.",
+        "documentation": "Documentação Thorium",
+        "howItWorks": "Como funciona?",
+        "noLibraryFound": "Nenhuma biblioteca encontrada ({{- name}})"
+    },
+    "library": {
+        "lcp": {
+            "open": "Abrir",
+            "password": "Frase-passe",
+            "sentence": "Este documento necessita de uma frase-passe PCL para ser aberto",
+            "urlHint": "Esqueceu-se da sua frase-passe? Clique aqui para ajuda.",
+            "whatIsLcpInfoDetailsLink": "Para saber mais, visite esta página do sítio EDRLab.",
+            "hint": "Dica:",
+            "whatIsLcp?": "O que é PCL?",
+            "whatIsLcpInfoDetails": "PCL significa 'Proteção de Conteúdo Licenciado'."
+        }
+    },
+    "message": {
+        "annotations": {
+            "alreadyImported": "Todas as anotações já foram importadas.",
+            "emptyFile": "Nenhuma anotação disponível no ficheiro.",
+            "errorParsing": "Erro ao analisar o formato do ficheiro: ",
+            "nothing": "Não existem anotações prontas para serem importadas. A abortar a importação",
+            "noBelongTo": "Não foi possível importar o conjunto de anotações. Pelo menos uma anotação não pertence à publicação."
+        }
     }
 }
