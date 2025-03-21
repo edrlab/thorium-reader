@@ -18,9 +18,9 @@ import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-
 import { TranslatorProps, withTranslator } from "../hoc/translator";
 import { connect } from "react-redux";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
-import { PublicationView } from "readium-desktop/common/views/publication";
 import { Link } from "react-router-dom";
 
+// import { PublicationView } from "readium-desktop/common/views/publication";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -34,7 +34,7 @@ interface IBaseProps extends TranslatorProps {
     displaySystemNotification?: boolean;
     type?: ToastType;
     publicationTitle?: string;
-    openReader? : (publicationView: PublicationView) => void;
+    // openReader? : (publicationView: PublicationView) => void;
 }
 
 // IProps may typically extend:
