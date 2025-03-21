@@ -408,7 +408,7 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
             props.focusInputRef.current.value = val;
             onInputChange(val);
         }
-    }, [searchValue, onInputChange, props.focusInputRef?.current?.value]);
+    }, [searchValue, onInputChange, props.focusInputRef, props.focusInputRef?.current?.value]);
 
     return (
         <div className={classNames(stylesInput.form_group, stylesInput.form_group_allPubSearch)}>
