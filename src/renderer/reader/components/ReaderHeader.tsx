@@ -1078,7 +1078,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         className={stylesReader.bookmarkButton}
                                         type="checkbox"
                                         checked={this.state.pdfScaleMode === "page-width"}
-                                        // tslint:disable-next-line: max-line-length
                                         onChange={() => createOrGetPdfEventBus().dispatch("scale", this.state.pdfScaleMode === "page-fit" ? "page-width" : "page-fit")}
                                         aria-label={__("reader.navigation.pdfscalemode")}
                                     />

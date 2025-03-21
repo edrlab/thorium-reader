@@ -919,7 +919,6 @@ class Reader extends React.Component<IProps, IState> {
                         ReaderSettingsProps={ReaderSettingsProps}
                         readerMenuProps={readerMenuProps}
                         handlePublicationInfo={this.handlePublicationInfo}
-                        // tslint:disable-next-line: max-line-length
                         currentLocation={this.props.isDivina || this.props.isPdf ? this.props.locator : this.state.currentLocation}
                         isDivina={this.props.isDivina}
                         isPdf={this.props.isPdf}
@@ -1088,7 +1087,6 @@ class Reader extends React.Component<IProps, IState> {
                     gotoBegin={this.onKeyboardNavigationToBegin.bind(this)}
                     gotoEnd={this.onKeyboardNavigationToEnd.bind(this)}
                     fullscreen={this.state.fullscreen}
-                    // tslint:disable-next-line: max-line-length
                     currentLocation={this.props.isDivina || this.props.isPdf ? this.props.locator : this.state.currentLocation}
                     handleLinkClick={this.handleLinkClick}
                     goToLocator={this.goToLocator}
@@ -2216,7 +2214,6 @@ class Reader extends React.Component<IProps, IState> {
             // why does R2 navigator need this internally, instead of declaring the styles in the app's DOM?
             const publicationViewport = document.getElementById("publication_viewport");
             if (publicationViewport) {
-                // tslint:disable-next-line: max-line-length
                 publicationViewport.setAttribute("style", "display: block; position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: 0; padding: 0; box-sizing: border-box; background: white; overflow: hidden;");
             }
 
@@ -2793,7 +2790,6 @@ class Reader extends React.Component<IProps, IState> {
 
     }
 
-    // tslint:disable-next-line: max-line-length
     private handleLinkClick(event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeNavPanel = true, isFromOnPopState = false) {
         if (event) {
             event.preventDefault();

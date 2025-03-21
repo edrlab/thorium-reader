@@ -230,7 +230,6 @@ export function ensureKeyboardListenerIsInstalled() {
             (ev.target as Element).nodeName : "";
         const elementAttributes: {[name: string]: string} = {};
         if (ev.target && (ev.target as Element).attributes) {
-            // tslint:disable-next-line: prefer-for-of
             for (let i = 0; i < (ev.target as Element).attributes.length; i++) {
                 const attr = (ev.target as Element).attributes[i];
                 elementAttributes[attr.name] = attr.value;
@@ -247,7 +246,6 @@ export function ensureKeyboardListenerIsInstalled() {
             (ev.target as Element).nodeName : "";
         const elementAttributes: {[name: string]: string} = {};
         if (ev.target && (ev.target as Element).attributes) {
-            // tslint:disable-next-line: prefer-for-of
             for (let i = 0; i < (ev.target as Element).attributes.length; i++) {
                 const attr = (ev.target as Element).attributes[i];
                 elementAttributes[attr.name] = attr.value;

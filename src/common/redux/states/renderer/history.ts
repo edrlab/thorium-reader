@@ -7,5 +7,4 @@
 
 import { Location } from "history";
 
-// tslint:disable-next-line:no-empty-interface
 export type THistoryState = Location[];

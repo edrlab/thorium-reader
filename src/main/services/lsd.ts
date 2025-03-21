@@ -147,9 +147,7 @@ export class LSDManager {
         const forceUpdate = false; // just for testing!
         if (forceUpdate ||
             (updatedLicense.isBefore(updatedLicenseLSD)
-                // tslint:disable-next-line:max-line-length
                 // TODO: Should we check for this? Is LCP server supposed to deliver non-usable licenses? (e.g. rights.end in the past) Let's do a sanity check on response LCP JSON (see below)
-                // tslint:disable-next-line:max-line-length
                 // && (lcp.LSD.Status !== StatusEnum.Cancelled && lcp.LSD.Status !== StatusEnum.Expired && lcp.LSD.Status !== StatusEnum.Returned && lcp.LSD.Status !== StatusEnum.Revoked)
                 // && (lcp.LSD.Status === StatusEnum.Active || lcp.LSD.Status === StatusEnum.Ready)
             )) {

@@ -97,7 +97,6 @@ export class Toast extends React.Component<IProps, IState> {
 
         // https://www.electronjs.org/docs/latest/tutorial/notifications
         if (this.props.displaySystemNotification) {
-            // tslint:disable-next-line: no-unused-expression
             new Notification(capitalizedAppName, {
                 body: this.props.message,
             });
@@ -175,7 +174,6 @@ export class Toast extends React.Component<IProps, IState> {
                             clipboard.writeText(this.props.message, clipBoardType);
 
                             // https://www.electronjs.org/docs/latest/tutorial/notifications
-                            // tslint:disable-next-line: no-unused-expression
                             new Notification(capitalizedAppName, {
                                 body: `${__("app.edit.copy")} [${this.props.message}]`,
                             });

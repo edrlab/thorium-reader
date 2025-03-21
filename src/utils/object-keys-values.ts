@@ -28,7 +28,6 @@ export const ObjectValuesAll =
 // EXAMPLE:
 
 // Try this in the command line shell:
-// tslint:disable-next-line: max-line-length
 // node -e 'const obj = { keyForString: "val1", keyForNumber: 2, keyForBool: true, keyForObj: { name: "value", }, 111: { keyIsNumber: true, } }; obj[999] = { otherKeyIsNumber: true }; console.log(Object.keys(obj)); console.log(Object.values(obj));'
 //
 // NOTE THAT THE ACTUAL JAVASCRIPT OUTPUT

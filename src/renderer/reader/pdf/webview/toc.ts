@@ -29,7 +29,6 @@ export function destForPageIndexParse(destRaw: any | any[]): TdestForPageIndex |
     return destForPageIndex;
 }
 
-// tslint:disable-next-line: max-line-length
 export async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentProxy, pageLabels: string[]): Promise<ILink> {
 
     const link: ILink = {};
@@ -49,7 +48,6 @@ export async function tocOutlineItemToLink(outline: IOutline, pdf: PDFDocumentPr
         }
 
         if (destForPageIndex) {
-            // tslint:disable-next-line: max-line-length
             const page = (await pdf.getPageIndex(destForPageIndex) as unknown as number); // type error should return a number zero based
             const label = pageLabels[page];
             link.Href = label;

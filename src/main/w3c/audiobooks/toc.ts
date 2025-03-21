@@ -10,9 +10,6 @@
  *
  */
 
-// tslint:disable: variable-name
-// tslint:disable: max-line-length
-
 import * as debug_ from "debug";
 import { JSDOM } from "jsdom";
 
@@ -523,7 +520,6 @@ if (require.main === module) {
     `;
 
     const manifestParsed = JSON.parse(w3cManifest);
-    // tslint:disable-next-line: no-floating-promises
     w3cPublicationManifestToReadiumPublicationManifest(manifestParsed, (uniqueResources) => {
         const toc = extract_TOC(el, uniqueResources);
 

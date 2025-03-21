@@ -39,9 +39,7 @@ import { availableLanguages } from "readium-desktop/common/services/translator";
 // },
 // "publisher": "Hachette Antoine",
 //
-// tslint:disable-next-line: max-line-length
 // https://github.com/readium/webpub-manifest/blob/ff5c1e9e76ccc184d4d670179cfb70ced691fcec/schema/contributor-object.schema.json#L7-L24
-// tslint:disable-next-line: max-line-length
 // https://github.com/readium/webpub-manifest/blob/ff5c1e9e76ccc184d4d670179cfb70ced691fcec/schema/metadata.schema.json#L15-L32
 export function convertMultiLangStringToString(items: string | IStringMap | undefined, locale: keyof typeof availableLanguages): string | undefined {
     if (typeof items === "object") {

@@ -136,7 +136,6 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
     let accumulated = 0;
 
     let matches: RegExpExecArray;
-    // tslint:disable-next-line: no-conditional-assignment
     while (matches = regexp.exec(text)) {
         // console.log("matches.input: ", matches.input);
         // // console.log(matches);
