@@ -46,7 +46,7 @@ initGlobalConverters_GENERIC();
 // }
 
 ipcRenderer.on(readerIpc.CHANNEL,
-    (_0: any, data: readerIpc.EventPayload) => {
+    async (_0: any, data: readerIpc.EventPayload) => {
         switch (data.type) {
             case readerIpc.EventType.request:
                 // Initialize window
@@ -107,7 +107,7 @@ ipcRenderer.on(readerIpc.CHANNEL,
 
                 const store = createStoreFromDi(data.payload);
                 const locale = store.getState().i18n.locale;
-                getTranslator().setLocale(locale);
+                await getTranslator().setLocale(locale);
 
                 store.dispatch(winActions.initRequest.build(data.payload.win.identifier));
 

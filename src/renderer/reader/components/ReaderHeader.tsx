@@ -249,7 +249,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
         }
 
         if (!this.props.isDivina && !this.props.isPdf) {
-            getVoices(/*TODO Param? */).then((voices) => {
+            void getVoices(/*TODO Param? */).then((voices) => {
                 this.setVoices(voices);
             });
         }

@@ -225,7 +225,7 @@ function* opdsRequestMediaFlow({request, callback}: TregisterHttpProtocolHandler
             return ;
         }
 
-        httpGet(url, {
+        void httpGet(url, {
             ...request,
         }, (response) => {
 
@@ -733,8 +733,7 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
         win.show();
     });
 
-    // tslint:disable-next-line: no-floating-promises
-    win.loadURL(url);
+    void win.loadURL(url);
 
     return win;
 }
