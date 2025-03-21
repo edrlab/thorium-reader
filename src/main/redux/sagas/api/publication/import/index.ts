@@ -48,12 +48,14 @@ export function* importFromLink(
         const publicationViewConverter = diMainGet("publication-view-converter");
         const publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
 
+
         if (alreadyImported) {
             yield put(
                 toastActions.openRequest.build(
                     ToastType.Success,
                     translate("message.import.alreadyImport",
                         { title: publicationView.documentTitle }),
+                    publicationView.documentTitle,
                 ),
             );
 
@@ -63,6 +65,7 @@ export function* importFromLink(
                     ToastType.Success,
                     translate("message.import.success",
                         { title: publicationView.documentTitle }),
+                    publicationView.documentTitle,
                 ),
             );
 
@@ -149,6 +152,7 @@ export function* importFromFs(
                                 ToastType.Success,
                                 translate("message.import.alreadyImport",
                                     { title: publicationView.documentTitle }),
+                                publicationView.documentTitle,
                             ),
                         );
 
@@ -158,6 +162,7 @@ export function* importFromFs(
                                 ToastType.Success,
                                 translate("message.import.success",
                                     { title: publicationView.documentTitle }),
+                                publicationView.documentTitle,
                             ),
                         );
 

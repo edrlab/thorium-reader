@@ -196,6 +196,7 @@
         "import": {
             "alreadyImport": "{{- title}} έχει ήδη εισαχθεί.",
             "fail": "Η εισαγωγή του {{- path}} απέτυχε. {{- err}}",
+            "seeInLibrary": "",
             "success": "Η εισαγωγή του {{- title}} έχει ολοκληρωθεί."
         },
         "open": {
