@@ -6,6 +6,8 @@ Free application. No ads. No private data flowing anywhere.
 
 This project is in constant evolution, corrections and new features will be added soon and your support is welcome for that. The application is based on the open-source Readium Desktop toolkit.
 
+More information can be found in the [Landing page](https://thorium.edrlab.org/), within the [online support documentation](https://thorium.edrlab.org/en/th3/800_collaborating/802_localizing/). Users can [Add Documentation catalog to Thorium (OPDS link)](opds://edrlab.github.io/publications/feeds/thorium31_documentation.json) or [browse English documentation inline within the Readium web reader](https://thorium.edrlab.org/en/onlinedoc).
+
 It is currently localized in following 28 languages:
 
 * (en) English
