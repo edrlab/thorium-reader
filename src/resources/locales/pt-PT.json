@@ -135,8 +135,8 @@
         "cancel": "Cancelar",
         "deleteAnnotations": "Eliminar anotações?",
         "deleteAnnotationsText": "Quer mesmo eliminar {{- annotationListLength}} anotações?",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarks": "Eliminar marcadores?",
+        "deleteBookmarksText": "Tem a certeza que quer eliminar {{- bookmarkListLength}} marcadores?",
         "deleteFeed": "Eliminar catálogo?",
         "deletePublication": "Eliminar documento?",
         "import": "Confirmar importação:",
@@ -374,7 +374,7 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Marcador n.º {{- index}}"
         },
         "divina": {
             "mute": "Silenciar áudio",
@@ -419,7 +419,7 @@
             "ZenModeTitle": "Modo Zen",
             "annotationTitle": "Anotação",
             "backHomeTitle": "Fechar janela de leitura (voltar à estante)",
-            "bookmarkTitle": "Marcador",
+            "bookmarkTitle": "marcador",
             "currentPage": "Página atual: {{- current}}",
             "currentPageTotal": "Página atual: {{- current}}/{{- total}}",
             "detachWindowTitle": "Mostrar biblioteca / janela da estante",
