@@ -23,6 +23,8 @@ export interface IBookmarkState {
     modified?: number;
     created: number;
     creator?: INoteCreator;
+
+    tags?: string[] | undefined;
 }
 
 export type IBookmarkStateWithoutUUID = Partial<Pick<IBookmarkState, "uuid">> & Omit<IBookmarkState, "uuid">;

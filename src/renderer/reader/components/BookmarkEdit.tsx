@@ -15,6 +15,7 @@ import * as Popover from "@radix-ui/react-popover";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
+import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
 import { TextArea } from "react-aria-components";
 import { BookmarkLocatorInfo } from "./BookmarkLocatorInfo";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
@@ -23,21 +24,26 @@ import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { readerLocalActionSetConfig } from "../redux/actions";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 
 interface IProps {
-    save: (name: string, color: IColor) => void,
+    save: (name: string, color: IColor, tag: string | undefined) => void,
     cancel?: () => void;
     dockedMode?: boolean;
     locatorExtended: MiniLocatorExtended;
     uuid?: string;
     name: string;
     color: IColor;
+    tags: string[] | undefined;
 }
 
 
 export const BookmarkEdit: React.FC<IProps> = (props) => {
 
-    const { cancel, uuid, /*dockedMode,*/ save, locatorExtended, color } = props;
+    const { cancel, uuid, /*dockedMode,*/ save, locatorExtended, color, tags } = props;
 
     const displayFromReaderMenu = !!uuid;
     const [__] = useTranslator();
@@ -49,6 +55,10 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
 
     const [colorSelected, setColor] = React.useState(() => rgbToHex(color));
     const previousColorSelected = React.useRef<string>(colorSelected);
+
+    const [tag, setTag] = React.useState<string>((tags || [])[0] || "");
+    const tagsIndexList = useSelector((state: IReaderRootState) => state.annotationTagsIndex);
+    const selectTagOption = ObjectKeys(tagsIndexList).map((v, i) => ({id: i, name: v}));
 
     const saveConfig = React.useCallback(() => {
 
@@ -79,9 +89,9 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
                     maxLength={bookmarkMaxLength} onChange={(a) => setTextAreaValue(a.currentTarget.value)}
                     ref={textAreaRef}
                 ></TextArea>
-                <span style={{ fontSize: "10px", color: "var(--color-medium-grey)", position: "relative", left: "350px", top: "-6px" }}>{textAreaValue.length}/{bookmarkMaxLength}</span>
+                <div style={{ display: "flex" }}><span style={{ fontSize: "10px", color: "var(--color-medium-grey)", marginLeft: "auto" }}>{textAreaValue.length}/{bookmarkMaxLength}</span></div>
             </div>
-            <div className={stylesBookmarks.bookmarks_actions_container}>
+            <div className={stylesBookmarks.bookmarks_actions_container} style={{ marginTop: "-15px" }}>
                 <h4>{__("reader.annotations.Color")}</h4>
                 <div className={stylesBookmarks.colorPicker}
                     role="radiogroup">
@@ -102,6 +112,36 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
                     )}
                 </div>
             </div>
+            <div className={stylesBookmarks.bookmarks_actions_container} style={{ width: "95%" }}>
+                <h4>{__("catalog.tag")}</h4>
+                <ComboBox
+                    defaultItems={selectTagOption}
+                    placeholder={__("catalog.addTags")}
+                    defaultInputValue={tag}
+                    defaultSelectedKey={selectTagOption.findIndex(({name}) => name === tag)}
+                    selectedKey={selectTagOption.findIndex(({name}) => name === tag)}
+                    onSelectionChange={
+                        (key: React.Key) => {
+
+
+                            if (key === null) {
+
+                                // nothing
+                            } else {
+                                const found = selectTagOption.find((v) => v.id === key);
+                                if (found)
+                                    setTag(found.name);
+                            }
+                        }}
+                    svg={TagIcon}
+                    allowsCustomValue
+                    onInputChange={(v) => setTag(v)}
+                    inputValue={tag}
+                    aria-label={__("catalog.tag")}
+                >
+                    {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                </ComboBox>
+            </div>
         </div>
         <div className={stylesBookmarks.bookmark_form_textarea_buttons}>
             {displayFromReaderMenu
@@ -115,7 +155,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
                     e.preventDefault();
                     const textareaNormalize = textAreaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
                     // if (textareaNormalize) {
-                    save(textareaNormalize, hexToRgb(colorSelected));
+                    save(textareaNormalize, hexToRgb(colorSelected), tag);
                     saveConfig();
                     // }
                 }}

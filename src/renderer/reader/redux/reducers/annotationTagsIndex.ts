@@ -12,23 +12,26 @@ import { popTags, pushTags, updateTags } from "../../tags";
 
 function annotationTagsIndexReducer_(
     state: TAnnotationTagsIndex = {},
-    action: readerActions.annotation.pop.TAction | readerActions.annotation.push.TAction | readerActions.annotation.update.TAction,
+    action: readerActions.annotation.pop.TAction | readerActions.bookmark.pop.TAction | readerActions.annotation.push.TAction | readerActions.bookmark.push.TAction | readerActions.annotation.update.TAction | readerActions.bookmark.update.TAction,
 ): TAnnotationTagsIndex {
 
 
     switch (action.type) {
+        case readerActions.bookmark.pop.ID:
         case readerActions.annotation.pop.ID: {
 
             const { tags } = action.payload;
             return popTags(state, tags);
         }
 
+        case readerActions.bookmark.push.ID:
         case readerActions.annotation.push.ID: {
 
             const { tags } = action.payload;
             return pushTags(state, tags);
         }
 
+        case readerActions.bookmark.update.ID:
         case readerActions.annotation.update.ID: {
 
             const [oldAnnot, newAnnot] = action.payload;

@@ -74,11 +74,11 @@ ipcRenderer.on(readerIpc.CHANNEL,
                         anno.created = (new Date()).getTime();
                     }
                 }
-                const annotationTagsList = [];
+                const noteTagList = [];
                 for (const [_, {tags}] of annotationList) {
-                    annotationTagsList.push(...(tags || []));
+                    noteTagList.push(...(tags || []));
                 }
-                data.payload.annotationTagsIndex = pushTags({}, annotationTagsList);
+                data.payload.annotationTagsIndex = pushTags({}, noteTagList);
 
 
                 const bookmarkList = data.payload.reader.bookmark || [];
@@ -104,6 +104,11 @@ ipcRenderer.on(readerIpc.CHANNEL,
                         bookmark.index = bookmarkIndex;
                     }
                 }
+                
+                for (const [_, { tags }] of bookmarkList) {
+                    noteTagList.push(...(tags || []));
+                }
+                data.payload.annotationTagsIndex = pushTags({}, noteTagList);
 
                 const store = createStoreFromDi(data.payload);
                 const locale = store.getState().i18n.locale;
