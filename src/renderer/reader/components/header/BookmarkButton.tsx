@@ -192,7 +192,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
 
     const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
     const colorDefault = useSelector((state: IReaderRootState) => state.reader.config.annotation_defaultColor);
-    const toggleBookmark = React.useCallback((name: string = "", color: IColor = colorDefault) => {
+    const toggleBookmark = React.useCallback((name: string = "", color: IColor = colorDefault, tag?: string  ) => {
 
         if (isNavigator) {
 
@@ -223,6 +223,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     locatorExtended: locatorExtended,
                     creator: creatorMyself,
                     color,
+                    tags: tag ? [tag] : undefined,
                 });
             }
 
@@ -244,6 +245,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                         locatorExtended: locatorExtended,
                         creator: creatorMyself,
                         color,
+                        tags: tag ? [tag] : undefined,
                     });
                 }
             }
@@ -440,14 +442,15 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     <BookmarkEdit
                         locatorExtended={locatorExtended}
                         name={""}
-                        save={(name, color) => {
-                            toggleBookmark(name, color);
+                        save={(name, color, tag) => {
+                            toggleBookmark(name, color, tag);
 
                             setTimeout(() => {
                                 keyboardFocusRequest(true);
                             }, 200);
                         }}
                         color={noteDefaultColor}
+                        tags={[]}
                     />
                     <Popover.Arrow style={{ fill: "var(--color-extralight-grey)" }} width={15} height={10} />
                 </Popover.Content>
