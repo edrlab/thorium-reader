@@ -32,7 +32,6 @@ export interface AcrossRenderer {
     sendActionAcrossRenderer: boolean;
 }
 
-// tslint:disable-next-line: max-line-length
 export interface ActionWithSender<Type extends string = string, Payload = undefined, Meta = undefined> extends Action<Type, Payload, Meta>, WithSender {
 }
 

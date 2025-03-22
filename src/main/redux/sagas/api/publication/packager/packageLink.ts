@@ -102,7 +102,6 @@ function* downloadResources(
     debug(resourcesHref);
 
     const resourcesType = resourcesHref.map((v) => {
-        // tslint:disable-next-line
         try { new URL(v); return false; } catch {}
         return true;
     });

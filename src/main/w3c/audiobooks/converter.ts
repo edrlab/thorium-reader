@@ -156,7 +156,6 @@ function convertW3CpublicationLinksToReadiumManifestLink(
                     }
                     {
                         const raw = w3cLink.name;
-                        // tslint:disable-next-line: max-line-length
                         const titleStringOrMap = convertW3cLocalisableStringToReadiumManifestTitle(raw, defaultBcp47Language);
                         const title = typeof titleStringOrMap === "object"
                             ? titleStringOrMap[defaultBcp47Language]
@@ -184,7 +183,6 @@ function convertW3CpublicationLinksToReadiumManifestLink(
                     }
                     {
                         const alternate = w3cLink.alternate;
-                        // tslint:disable-next-line: max-line-length
                         const children = convertW3CpublicationLinksToReadiumManifestLink(alternate, defaultBcp47Language);
                         if (children.length) {
                             rwpmLink.Alternate = children;

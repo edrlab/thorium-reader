@@ -82,7 +82,6 @@ function* updateOpdsInfoWithEntryLink(links: IOpdsLinkView[]) {
             );
 
             // could be 401 OPDS Authentication document,
-            // tslint:disable-next-line: max-line-length
             // which we ignore in this case because should not occur with "entry" URLs (unlike "borrow", for example)
             debug("opds publication from publicationInfo received");
 

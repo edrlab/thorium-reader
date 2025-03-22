@@ -54,7 +54,6 @@ export const httpSetHeaderAuthorization =
     (type: string, credentials: string) => `${type} ${credentials}`;
 
 export const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN = "CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN";
-// tslint:disable-next-line: variable-name
 const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn =
     (host: string) => `${CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN}.${Buffer.from(host).toString("base64")}`;
 
