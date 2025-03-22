@@ -57,9 +57,8 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
     const [__] = useTranslator();
     const dispatch = useDispatch();
 
-    const colorStr = rgbToHex(color);
-    const [colorSelected, setColor] = React.useState(colorStr);
-    const previousColorSelected = React.useRef<string>(colorStr);
+    const [colorSelected, setColor] = React.useState(() => rgbToHex(color));
+    const previousColorSelected = React.useRef<string>(colorSelected);
 
     const textAreaRef = React.useRef<HTMLTextAreaElement>();
 
@@ -83,7 +82,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
     const saveConfig = React.useCallback(() => {
 
         let flag = false;
-        if (previousColorSelected.current !== colorStr) {
+        if (previousColorSelected.current !== colorSelected) {
             flag = true;
         }
         if (previousDrawTypeSelected.current !== drawTypeSelected) {
@@ -91,14 +90,14 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         }
 
         if (flag) {
-            const annotation_defaultColor = hexToRgb(colorStr);
+            const annotation_defaultColor = hexToRgb(colorSelected);
             const annotation_defaultDrawType = drawTypeSelected;
             dispatch(readerLocalActionSetConfig.build({ annotation_defaultColor, annotation_defaultDrawType }));
         }
 
-        previousColorSelected.current = colorStr;
+        previousColorSelected.current = colorSelected;
         previousDrawTypeSelected.current = drawTypeSelected;
-    }, [colorStr, dispatch, drawTypeSelected]);
+    }, [colorSelected, dispatch, drawTypeSelected]);
 
     React.useEffect(() => {
         if (textAreaRef.current) {
@@ -224,7 +223,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
 
                         const textareaValue = textAreaRef?.current?.value || "";
                         const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
-                        save(hexToRgb(colorStr), textareaNormalize, drawTypeSelected, tag ? [tag] : []);
+                        save(hexToRgb(colorSelected), textareaNormalize, drawTypeSelected, tag ? [tag] : []);
                         saveConfig();
                     }}
                 >
@@ -241,7 +240,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
 
                         const textareaValue = textAreaRef?.current?.value || "";
                         const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
-                        save(hexToRgb(colorStr), textareaNormalize, drawTypeSelected, tag ? [tag] : []);
+                        save(hexToRgb(colorSelected), textareaNormalize, drawTypeSelected, tag ? [tag] : []);
                         saveConfig();
                     }}
                 >
