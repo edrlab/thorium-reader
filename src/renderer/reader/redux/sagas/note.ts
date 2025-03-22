@@ -26,6 +26,7 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 import { HighlightDrawTypeBackground, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline, IColor } from "@r2-navigator-js/electron/common/highlight";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { getTranslator } from "readium-desktop/common/services/translator";
+import { ISelectionInfo } from "@r2-navigator-js/electron/common/selection";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
@@ -472,8 +473,7 @@ function* readerStart() {
                             lang: "en", // TODO
                         } : undefined,
                         selectionInfo: {
-                            // @ts-expect-error not sure why??!
-                            textFragment: undefined,
+                            textFragment: undefined as ISelectionInfo["textFragment"],
                             // textFragment: {
                             //     prefix: "",
                             //     textStart: "",
@@ -500,7 +500,7 @@ function* readerStart() {
                             rawText: bookmark.locatorExtended.locator.locations.caretInfo?.rawText || bookmark.locatorExtended.locator.text?.highlightRaw || bookmark.locatorExtended.locator.title || bookmark.name,
                             rawAfter: bookmark.locatorExtended.locator.locations.caretInfo?.rawAfter || bookmark.locatorExtended.locator.text?.afterRaw || "",
                         },
-                        color: {red:  52, green: 152, blue: 219},
+                        color: {...bookmark.color},
                         group: "bookmark",
                         drawType: 6,
                     },
