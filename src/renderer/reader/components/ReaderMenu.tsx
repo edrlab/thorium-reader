@@ -1498,10 +1498,10 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                     </AlertDialog.Cancel>
                                     <AlertDialog.Action asChild>
                                         <button className={stylesButtons.button_primary_blue} onClick={() => {
+                                            updateDialogOrDockDataInfo({id: "", edit: false});
                                             for (const [, annotation] of annotationListFiltered) {
 
                                                 dispatch(readerActions.annotation.pop.build(annotation));
-                                                updateDialogOrDockDataInfo({id: "", edit: false});
                                             }
 
                                             // reset filters
@@ -2176,14 +2176,15 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                     </AlertDialog.Cancel>
                                     <AlertDialog.Action asChild>
                                         <button className={stylesButtons.button_primary_blue} onClick={() => {
+                                            updateDialogOrDockDataInfo({id: "", edit: false});
                                             for (const [, bookmark] of bookmarkListFiltered) {
 
                                                 dispatch(readerActions.bookmark.pop.build(bookmark));
-                                                updateDialogOrDockDataInfo({id: "", edit: false});
                                             }
 
                                             // reset filters
                                             setCreatorArrayFilter(new Set([]));
+                                            setColorArrayFilter(new Set([]));
                                         }} type="button">
                                             <SVG ariaHidden svg={TrashIcon} />
                                             {__("dialog.yes")}</button>
