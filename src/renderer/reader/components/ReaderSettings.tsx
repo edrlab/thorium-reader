@@ -64,12 +64,12 @@ import { HighlightDrawTypeBackground, HighlightDrawTypeUnderline, HighlightDrawT
 import { TTSStateEnum } from "@r2-navigator-js/electron/renderer/readaloud";
 import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
-import { annotationsColorsLight } from "readium-desktop/common/redux/states/renderer/annotation";
+import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/note";
 
-const annotationsColorsLight_ = {
+const noteColorCodeToColorTranslatorKeySet_ = {
     [rgbToHex(readerConfigInitialState.ttsHighlightColor)]: "Dark Yellow" as TTranslatorKeyParameter,
     [rgbToHex(readerConfigInitialState.ttsHighlightColor_WORD)]: "Dark Orange" as TTranslatorKeyParameter,
-    ...annotationsColorsLight,
+    ...noteColorCodeToColorTranslatorKeySet,
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -963,7 +963,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
         <p style={{marginBottom:4, paddingBottom: 0, fontWeight:"bold", fontSize:"120%"}}>{__("tts.highlight.mainColor")}</p>
             <div style={{width:"fit-content"}} className={stylesAnnotations.colorPicker} role="radiogroup">
             {
-            Object.entries(annotationsColorsLight_).map(([colorHex, translatorKey]) => {
+            Object.entries(noteColorCodeToColorTranslatorKeySet_).map(([colorHex, translatorKey]) => {
                 const ttsHighlightColorHex = rgbToHex(ttsHighlightColor || readerConfigInitialState.ttsHighlightColor);
                 return (
                     <div key={`color_${colorHex}_key`}>
@@ -989,7 +989,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
             <p style={{ marginBottom: 4, paddingBottom: 0, fontWeight: "bold", fontSize: "120%" }}>{__("tts.highlight.wordColor")}</p>
             <div style={{width:"fit-content"}} className={stylesAnnotations.colorPicker} role="radiogroup">
             {
-            Object.entries(annotationsColorsLight_).map(([colorHex, translatorKey]) => {
+            Object.entries(noteColorCodeToColorTranslatorKeySet_).map(([colorHex, translatorKey]) => {
                 const ttsHighlightColor_WORDHex = rgbToHex(ttsHighlightColor_WORD || readerConfigInitialState.ttsHighlightColor_WORD);
                 return (
                     <div key={`colorx_${colorHex}_key`}>

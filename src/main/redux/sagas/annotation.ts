@@ -14,7 +14,7 @@ import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/m
 import { error } from "readium-desktop/main/tools/error";
 import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped, put as putTyped, select as selectTyped, take as takeTyped } from "typed-redux-saga/macro";
-import { ANNOTATION_DEFAULT_COLOR, annotationColorCodeToColorSet, annotationColorSetToColorCode, IAnnotationPreParsingState, IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { IAnnotationPreParsingState, IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { hexToRgb } from "readium-desktop/common/rgb";
 import { isNil } from "readium-desktop/utils/nil";
 import { RootState } from "../states";
@@ -27,6 +27,7 @@ import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { v4 as uuidv4 } from "uuid";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { getTranslator } from "readium-desktop/common/services/translator";
+import { NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, noteColorSetToColorCode } from "readium-desktop/common/redux/states/note";
 
 
 // Logger
@@ -175,8 +176,8 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 uuid,
                 target: incommingAnnotation.target,
                 comment: incommingAnnotation.body.value,
-                color: hexToRgb(annotationColorSetToColorCode[incommingAnnotation.body.color] ||
-                    annotationColorSetToColorCode[annotationColorCodeToColorSet[incommingAnnotation.body.color] || ANNOTATION_DEFAULT_COLOR],
+                color: hexToRgb(noteColorSetToColorCode[incommingAnnotation.body.color] ||
+                    noteColorSetToColorCode[noteColorCodeToColorSet[incommingAnnotation.body.color] || NOTE_DEFAULT_COLOR],
                 ),
                 drawType: (isNil(incommingAnnotation.body.highlight) || incommingAnnotation.body.highlight === "solid") ? "solid_background" : incommingAnnotation.body.highlight,
                 // TODO need to ask to user if the incomming tag is kept or the fileName is used

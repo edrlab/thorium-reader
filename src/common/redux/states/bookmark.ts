@@ -8,6 +8,7 @@
 import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { INoteCreator } from "./creator";
 import { MiniLocatorExtended } from "./locatorInitialState";
+import { IColor } from "@r2-navigator-js/electron/common/highlight";
 
 export type TBookmarkState = TPQueueState<number, IBookmarkState>;
 
@@ -18,6 +19,7 @@ export interface IBookmarkState {
 
     locatorExtended: MiniLocatorExtended,
 
+    color: IColor;
     modified?: number;
     created: number;
     creator?: INoteCreator;

@@ -7,10 +7,9 @@
 
 import { IAnnotationReaderConfigState, IReaderConfigSettingsMenuState, ReaderConfig, ReaderTTSMediaOverlay } from "readium-desktop/common/models/reader";
 import { FONT_ID_DEFAULT } from "readium-desktop/utils/fontList";
-import { IColor } from "./renderer/annotation";
 import { HighlightDrawTypeBackground, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
+import { NOTE_DEFAULT_COLOR_OBJ } from "./note";
 
-export const DEFAULT_COLOR_ANNOTATION: IColor = {red: 235, green: 150, blue: 148};
 
 export const readerConfigInitialStateTTSMediaOverlay: ReaderTTSMediaOverlay = {
     ttsPlaybackRate: "1",
@@ -29,7 +28,7 @@ export const readerConfigInitialStateDefaultPublisher = {
 };
 
 export const readerConfigInitialStateAnnotation: IAnnotationReaderConfigState = {
-    annotation_defaultColor: DEFAULT_COLOR_ANNOTATION,
+    annotation_defaultColor: { ...NOTE_DEFAULT_COLOR_OBJ },
     annotation_defaultDrawType: "solid_background",
     annotation_popoverNotOpenOnNoteTaking: false,
     annotation_defaultDrawView: "annotation",

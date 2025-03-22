@@ -25,6 +25,7 @@ import { reduxPersistMiddleware } from "../middleware/persistence";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 import { minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { NOTE_DEFAULT_COLOR_OBJ } from "readium-desktop/common/redux/states/note";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -337,6 +338,9 @@ export async function initStore()
                         }
                         // REMOVE locatorExtended.followingElementIDs, no-op if property does not exist (same object returned)
                         bookmark[1].locatorExtended = minimizeLocatorExtended(bookmark[1].locatorExtended);
+                    }
+                    if (!bookmark[1].color) {
+                        bookmark[1].color = { ...NOTE_DEFAULT_COLOR_OBJ };
                     }
                 }
             }

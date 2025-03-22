@@ -81,7 +81,7 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "@r2-shared-js/models/locator";
-import { annotationsColorsLight, IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
+import { IAnnotationState, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { dialogActions, dockActions, readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionExportAnnotationSet, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
@@ -95,6 +95,8 @@ import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { BookmarkEdit } from "./BookmarkEdit";
 import { BookmarkLocatorInfo } from "./BookmarkLocatorInfo";
+import { IColor } from "@r2-navigator-js/electron/common/highlight";
+import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/note";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderMenuProps {
@@ -518,7 +520,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 }, 100);
             }
         } : undefined}
-        aria-label={__("reader.annotations.note", {color: __(Object.entries(annotationsColorsLight).find(([colorHex]) => colorHex === annotationColor)?.[1])})}
+        aria-label={__("reader.annotations.note", {color: __(Object.entries(noteColorCodeToColorTranslatorKeySet).find(([colorHex]) => colorHex === annotationColor)?.[1])})}
     >
         {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
         <div className={stylesAnnotations.annnotation_container}>
@@ -565,7 +567,17 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 isEdited
                     ?
                     <FocusLock disabled={false} autoFocus={true}>
-                        <AnnotationEdit uuid={uuid} save={save} cancel={() => triggerEdition(false)} dockedMode={dockedMode} btext={dockedEditAnnotation && btext} />
+                        <AnnotationEdit
+                            uuid={uuid}
+                            save={save}
+                            cancel={() => triggerEdition(false)}
+                            dockedMode={dockedMode}
+                            drawType={annotation.drawType}
+                            color={annotation.color}
+                            tags={annotation.tags}
+                            comment={annotation.comment}
+                            locatorExtended={annotation.locatorExtended}
+                        />
                     </FocusLock>
                     :
                     <>
@@ -724,13 +736,13 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
     const dockingMode = useReaderConfig("readerDockingMode");
     const dockedMode = dockingMode !== "full";
     const { timestamp, bookmark, isEdited, triggerEdition } = props;
-    const { uuid } = bookmark;
+    const { uuid, color } = bookmark;
     const dockedEditBookmark = isEdited && dockedMode;
     const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
-    const save = React.useCallback((name: string) => {
+    const save = React.useCallback((name: string, color: IColor) => {
         dispatch(readerActions.bookmark.update.build(
             {
                 ...bookmark,
@@ -738,6 +750,7 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
             {
                 ...bookmark,
                 name,
+                color,
                 modified: (new Date()).getTime(),
             },
         ));
@@ -767,7 +780,7 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
 
     return (<li
         className={stylesAnnotations.annotations_line}
-        style={{ backgroundColor: dockedEditBookmark ? "var(--color-extralight-grey)" : "", borderLeft: dockedEditBookmark ? "none" : "4px solid var(--color-blue)" }}
+        style={{ backgroundColor: dockedEditBookmark ? "var(--color-extralight-grey)" : "", borderLeft: dockedEditBookmark ? "none" : `4px solid ${rgbToHex(color)}` }}
         onKeyDown={isEdited ? (e) => {
             if (e.key === "Escape") {
                 e.preventDefault();
@@ -828,7 +841,7 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
                 isEdited
                     ?
                     <FocusLock disabled={false} autoFocus={true}>
-                        <BookmarkEdit locatorExtended={bookmark.locatorExtended} name={bookmark.name} uuid={bookmark.uuid} toggleBookmark={save} cancel={() => triggerEdition(false)} dockedMode={dockedMode} />
+                        <BookmarkEdit locatorExtended={bookmark.locatorExtended} name={bookmark.name} uuid={bookmark.uuid} color={bookmark.color} save={save} cancel={() => triggerEdition(false)} dockedMode={dockedMode} />
                     </FocusLock>
                     :
                     <>
@@ -1143,14 +1156,14 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
 
     const selectCreatorOptions = Object.entries(creatorSet).map(([k, v]) => ({ id: k, name: v }));
 
-    const annotationsColors = React.useMemo(() => Object.entries(annotationsColorsLight).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
+    const annotationsColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
 
     // I'm disable this feature for performance reason, push new Colors from incoming publicaiton annotation, not used for the moment. So let's commented it for the moment.
     // Need to be optimised in the future.
     // annotationsQueue.forEach(([, annotation]) => {
     //     const colorHex = rgbToHex(annotation.color);
-    //     if (!annotationsColorsLight.find((annotationColor) => annotationColor.hex === colorHex)) {
-    //         annotationsColorsLight.push({ hex: colorHex, name: colorHex });
+    //     if (!noteColorCodeToColorTranslatorKeySet.find((annotationColor) => annotationColor.hex === colorHex)) {
+    //         noteColorCodeToColorTranslatorKeySet.push({ hex: colorHex, name: colorHex });
     //     }
     // });
 
@@ -1485,10 +1498,10 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                     </AlertDialog.Cancel>
                                     <AlertDialog.Action asChild>
                                         <button className={stylesButtons.button_primary_blue} onClick={() => {
+                                            updateDialogOrDockDataInfo({id: "", edit: false});
                                             for (const [, annotation] of annotationListFiltered) {
 
                                                 dispatch(readerActions.annotation.pop.build(annotation));
-                                                updateDialogOrDockDataInfo({id: "", edit: false});
                                             }
 
                                             // reset filters
@@ -1778,6 +1791,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
 
+    const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
     const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
 
     let bookmarkListFiltered: TBookmarkState = [];
@@ -1790,9 +1804,14 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
     }, [setPageNumber, updateDialogOrDockDataInfo]);
 
     bookmarkListFiltered =
-        (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size)
-        ? bookmarkListAll.filter(([, { creator }]) => {
-            return (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(getUuidFromUrn(creator.id) !== getUuidFromUrn(creatorMyself.id) ? creator.name : creatorMyself.name));
+        ((selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size) ||
+        (selectionIsSet(colorArrayFilter) && colorArrayFilter.size))
+        ? bookmarkListAll.filter(([, { creator, color }]) => {
+
+            const colorHex = rgbToHex(color);
+
+            return (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(getUuidFromUrn(creator.id) !== getUuidFromUrn(creatorMyself.id) ? creator.name : creatorMyself.name)) &&
+                (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex));
 
         })
         : bookmarkListAll;
@@ -1820,6 +1839,9 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                 // reset filters
                 if (creatorArrayFilter !== "all" && !creatorArrayFilter.has(annotationFound.creator?.name) && creatorArrayFilter.size !== 0) {
                     setCreatorArrayFilter(new Set([]));
+                }
+                if (colorArrayFilter !== "all" && !colorArrayFilter.has(rgbToHex(annotationFound.color)) && colorArrayFilter.size !== 0) {
+                    setColorArrayFilter(new Set([]));
                 }
             }
         }
@@ -1886,10 +1908,13 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
         return acc;
     }, {});
 
+    const bookmarksColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
+
     const selectCreatorOptions = Object.entries(creatorSet).map(([k, v]) => ({ id: k, name: v }));
 
     const nbOfFilters = ((creatorArrayFilter === "all") ?
-                    selectCreatorOptions.length : creatorArrayFilter.size);
+        selectCreatorOptions.length : creatorArrayFilter.size) + ((colorArrayFilter === "all") ?
+            bookmarksColors.length : colorArrayFilter.size);
 
     const bookmarkTitleRef = React.useRef<HTMLInputElement>();
 
@@ -1967,6 +1992,46 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                             >
                                 <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
                                 <FocusLock>
+                                    <TagGroup
+                                        selectionMode="multiple"
+                                        selectedKeys={colorArrayFilter}
+                                        onSelectionChange={setColorArrayFilter}
+                                        aria-label={__("reader.annotations.filter.filterByColor")}
+                                        style={{ marginBottom: "20px" }}
+                                    >
+                                        <details open id="bookmarkColorList">
+                                            <summary className={stylesBookmarks.bookmarks_filter_tagGroup}>
+                                                <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByColor")}</Label>
+                                                <div style={{ display: "flex", gap: "10px" }}>
+                                                    <button
+                                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                                        className={colorArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
+                                                        onClick={() => {
+                                                            setColorArrayFilter("all");
+                                                            const detailsElement = document.getElementById("bookmarkColorList") as HTMLDetailsElement;
+                                                            if (detailsElement) {
+                                                                detailsElement.open = true;
+                                                            }
+
+                                                        }}>
+                                                        {__("reader.annotations.filter.all")}
+                                                    </button>
+                                                    <button
+                                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                                        className={stylesButtons.button_secondary_blue}
+                                                        onClick={() => {
+                                                            setColorArrayFilter(new Set([]));
+
+                                                        }}>
+                                                        {__("reader.annotations.filter.none")}
+                                                    </button>
+                                                </div>
+                                            </summary>
+                                            <TagList items={bookmarksColors} className={stylesBookmarks.bookmarks_filter_taglist}>
+                                                {(item) => <Tag className={stylesBookmarks.bookmarks_filter_color} style={{ backgroundColor: item.hex, outlineColor: item.hex }} id={item.hex} textValue={item.name} ref={(r) => { if (r && (r as unknown as HTMLDivElement).setAttribute) { (r as unknown as HTMLDivElement).setAttribute("title", item.name); } }}></Tag>}
+                                            </TagList>
+                                        </details>
+                                    </TagGroup>
                                     <TagGroup
                                         selectionMode="multiple"
                                         selectedKeys={creatorArrayFilter}
@@ -2111,14 +2176,15 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                     </AlertDialog.Cancel>
                                     <AlertDialog.Action asChild>
                                         <button className={stylesButtons.button_primary_blue} onClick={() => {
+                                            updateDialogOrDockDataInfo({id: "", edit: false});
                                             for (const [, bookmark] of bookmarkListFiltered) {
 
                                                 dispatch(readerActions.bookmark.pop.build(bookmark));
-                                                updateDialogOrDockDataInfo({id: "", edit: false});
                                             }
 
                                             // reset filters
                                             setCreatorArrayFilter(new Set([]));
+                                            setColorArrayFilter(new Set([]));
                                         }} type="button">
                                             <SVG ariaHidden svg={TrashIcon} />
                                             {__("dialog.yes")}</button>
