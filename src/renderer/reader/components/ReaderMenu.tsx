@@ -1786,6 +1786,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
 
+    const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
     const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
 
     let bookmarkListFiltered: TBookmarkState = [];
@@ -1798,9 +1799,14 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
     }, [setPageNumber, updateDialogOrDockDataInfo]);
 
     bookmarkListFiltered =
-        (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size)
-        ? bookmarkListAll.filter(([, { creator }]) => {
-            return (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(getUuidFromUrn(creator.id) !== getUuidFromUrn(creatorMyself.id) ? creator.name : creatorMyself.name));
+        ((selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size) ||
+        (selectionIsSet(colorArrayFilter) && colorArrayFilter.size))
+        ? bookmarkListAll.filter(([, { creator, color }]) => {
+
+            const colorHex = rgbToHex(color);
+
+            return (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(getUuidFromUrn(creator.id) !== getUuidFromUrn(creatorMyself.id) ? creator.name : creatorMyself.name)) &&
+                (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex));
 
         })
         : bookmarkListAll;
@@ -1828,6 +1834,9 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                 // reset filters
                 if (creatorArrayFilter !== "all" && !creatorArrayFilter.has(annotationFound.creator?.name) && creatorArrayFilter.size !== 0) {
                     setCreatorArrayFilter(new Set([]));
+                }
+                if (colorArrayFilter !== "all" && !colorArrayFilter.has(rgbToHex(annotationFound.color)) && colorArrayFilter.size !== 0) {
+                    setColorArrayFilter(new Set([]));
                 }
             }
         }
@@ -1894,10 +1903,13 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
         return acc;
     }, {});
 
+    const bookmarksColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
+
     const selectCreatorOptions = Object.entries(creatorSet).map(([k, v]) => ({ id: k, name: v }));
 
     const nbOfFilters = ((creatorArrayFilter === "all") ?
-                    selectCreatorOptions.length : creatorArrayFilter.size);
+        selectCreatorOptions.length : creatorArrayFilter.size) + ((colorArrayFilter === "all") ?
+            bookmarksColors.length : colorArrayFilter.size);
 
     const bookmarkTitleRef = React.useRef<HTMLInputElement>();
 
@@ -1975,6 +1987,46 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                             >
                                 <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
                                 <FocusLock>
+                                    <TagGroup
+                                        selectionMode="multiple"
+                                        selectedKeys={colorArrayFilter}
+                                        onSelectionChange={setColorArrayFilter}
+                                        aria-label={__("reader.annotations.filter.filterByColor")}
+                                        style={{ marginBottom: "20px" }}
+                                    >
+                                        <details open id="bookmarkColorList">
+                                            <summary className={stylesBookmarks.bookmarks_filter_tagGroup}>
+                                                <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByColor")}</Label>
+                                                <div style={{ display: "flex", gap: "10px" }}>
+                                                    <button
+                                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                                        className={colorArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
+                                                        onClick={() => {
+                                                            setColorArrayFilter("all");
+                                                            const detailsElement = document.getElementById("annotationListColorDetails") as HTMLDetailsElement;
+                                                            if (detailsElement) {
+                                                                detailsElement.open = true;
+                                                            }
+
+                                                        }}>
+                                                        {__("reader.annotations.filter.all")}
+                                                    </button>
+                                                    <button
+                                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                                        className={stylesButtons.button_secondary_blue}
+                                                        onClick={() => {
+                                                            setColorArrayFilter(new Set([]));
+
+                                                        }}>
+                                                        {__("reader.annotations.filter.none")}
+                                                    </button>
+                                                </div>
+                                            </summary>
+                                            <TagList items={bookmarksColors} className={stylesBookmarks.bookmarks_filter_taglist}>
+                                                {(item) => <Tag className={stylesBookmarks.bookmarks_filter_color} style={{ backgroundColor: item.hex, outlineColor: item.hex }} id={item.hex} textValue={item.name} ref={(r) => { if (r && (r as unknown as HTMLDivElement).setAttribute) { (r as unknown as HTMLDivElement).setAttribute("title", item.name); } }}></Tag>}
+                                            </TagList>
+                                        </details>
+                                    </TagGroup>
                                     <TagGroup
                                         selectionMode="multiple"
                                         selectedKeys={creatorArrayFilter}
