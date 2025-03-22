@@ -123,9 +123,9 @@
         "annotations": {
             "descAuthor": "de {{- author}}",
             "descCreator": "creado por",
-            "descList": "{{- nb}} la nota o notas de {{- creator}} se asociarán a {{- title}} {{- author}}",
-            "descNewer": "{{- nb}} las versiones más recientes de estas notas ya están asociadas a la publicación.",
-            "descOlder": "{{- nb}} las versiones más antiguas de estas notas ya están asociadas a la publicación.",
+            "descList": "{{- count}} la nota o notas de {{- creator}} se asociarán a {{- title}} {{- author}}",
+            "descNewer": "{{- count}} las versiones más recientes de estas notas ya están asociadas a la publicación.",
+            "descOlder": "{{- count}} las versiones más antiguas de estas notas ya están asociadas a la publicación.",
             "descTitle": "Establecer título de anotación",
             "importAll": "Importar todas las notas",
             "importWithoutConflict": "Importar notas sin conflictos",
@@ -134,7 +134,7 @@
         },
         "cancel": "Cancelar",
         "deleteAnnotations": "¿Eliminar anotaciones?",
-        "deleteAnnotationsText": "¿Quieres eliminar {{- annotationListLength}} anotación/es?",
+        "deleteAnnotationsText": "¿Quieres eliminar {{- count}} anotación/es?",
         "deleteBookmarks": "",
         "deleteBookmarksText": "",
         "deleteFeed": "¿Seguro que quieres eliminar este catálogo?",
@@ -438,7 +438,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} encontrado/s",
+                "founds": "{{- count}} encontrado/s",
                 "input": "texto de búsqueda",
                 "next": "Siguiente",
                 "notFound": "no hay coincidencias",

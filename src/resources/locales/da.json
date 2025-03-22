@@ -123,9 +123,9 @@
         "annotations": {
             "descAuthor": "af {{- author}}",
             "descCreator": "lavet af",
-            "descList": "{{- nb}} note(r) fra {{- creator}} vil blive associeret med {{- title}} {{- author}}",
-            "descNewer": "{{- nb}} nyere version af disse noter er allerede associeret med denne bog",
-            "descOlder": "{{- nb}} ældre version af disse noter er allerede associeret med denne bog",
+            "descList": "{{- count}} note(r) fra {{- creator}} vil blive associeret med {{- title}} {{- author}}",
+            "descNewer": "{{- count}} nyere version af disse noter er allerede associeret med denne bog",
+            "descOlder": "{{- count}} ældre version af disse noter er allerede associeret med denne bog",
             "descTitle": "Navn på notesamling: ",
             "importAll": "Importér alle noter",
             "importWithoutConflict": "Importér noter uden sammenfald",
@@ -134,7 +134,7 @@
         },
         "cancel": "Annullér",
         "deleteAnnotations": "Slet alle noter?",
-        "deleteAnnotationsText": "Vil du slette {{- annotationListLength}} note(r)?",
+        "deleteAnnotationsText": "Vil du slette {{- count}} note(r)?",
         "deleteBookmarks": "",
         "deleteBookmarksText": "",
         "deleteFeed": "Er du sikker på at du vil slette dette katalog?",
@@ -438,7 +438,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} resultat(er)",
+                "founds": "{{- count}} resultat(er)",
                 "input": "søgetekst",
                 "next": "Næste",
                 "notFound": "ingen resultater",
