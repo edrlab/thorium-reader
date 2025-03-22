@@ -47,23 +47,16 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
     const bookmarkMaxLength = 1500;
     const [textAreaValue, setTextAreaValue] = React.useState("");
 
-    const colorStr = rgbToHex(color);
-    const [colorSelected, setColor] = React.useState(colorStr);
-    const previousColorSelected = React.useRef<string>(colorStr);
+    const [colorSelected, setColor] = React.useState(() => rgbToHex(color));
+    const previousColorSelected = React.useRef<string>(colorSelected);
 
     const saveConfig = React.useCallback(() => {
 
-        let flag = false;
         if (previousColorSelected.current !== colorSelected) {
-            flag = true;
+            dispatch(readerLocalActionSetConfig.build({ annotation_defaultColor: hexToRgb(colorSelected) }));
         }
-
-        if (flag) {
-            dispatch(readerLocalActionSetConfig.build({ annotation_defaultColor: hexToRgb(colorStr) }));
-        }
-
         previousColorSelected.current = colorSelected;
-    }, [colorStr, dispatch, colorSelected]);
+    }, [dispatch, colorSelected]);
 
     React.useEffect(() => {
         if (textAreaRef.current) {
