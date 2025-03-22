@@ -859,7 +859,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         cancel={() => this.props.closeAnnotationEditionMode(this.props.isAnnotationModeEnabledFromKeyboard)}
                                         dockedMode={isDockedMode}
                                         uuid=""
-                                        color={{ ...this.props.readerConfig.annotation_defaultColor }}
+                                        color={this.props.readerConfig.annotation_defaultColor}
                                         drawType={this.props.readerConfig.annotation_defaultDrawType}
                                         tags={[]}
                                         comment=""
