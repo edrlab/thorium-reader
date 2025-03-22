@@ -2008,7 +2008,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                                         className={colorArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
                                                         onClick={() => {
                                                             setColorArrayFilter("all");
-                                                            const detailsElement = document.getElementById("annotationListColorDetails") as HTMLDetailsElement;
+                                                            const detailsElement = document.getElementById("bookmarkColorList") as HTMLDetailsElement;
                                                             if (detailsElement) {
                                                                 detailsElement.open = true;
                                                             }
