@@ -196,6 +196,7 @@
         "import": {
             "alreadyImport": "{{- title}} je već uvezen",
             "fail": "Neuspjeli uvoz {{- path}}. {{- err}}",
+            "seeInLibrary": "",
             "success": "Uvoz {{- title}} je završen."
         },
         "open": {

@@ -196,6 +196,7 @@
         "import": {
             "alreadyImport": "{{- title}} 已被匯入",
             "fail": "匯入 [{{- path}}] 失敗：[{{- err}}]",
+            "seeInLibrary": "",
             "success": "匯入 [{{- title}}] 完成。"
         },
         "open": {

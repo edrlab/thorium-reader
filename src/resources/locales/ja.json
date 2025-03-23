@@ -196,6 +196,7 @@
         "import": {
             "alreadyImport": "『{{- title}}』はすでに追加されています。",
             "fail": "[{{- path}}]の追加に失敗しました：[{{- err}}]",
+            "seeInLibrary": "",
             "success": "『{{- title}}』の追加が完了しました。"
         },
         "open": {
