@@ -349,7 +349,7 @@
                 "all": "Tudo",
                 "filterByColor": "Filtrar por cor",
                 "filterByCreator": "Filtrar por criador",
-                "filterByDrawtype": "Filtrar por tipo",
+                "filterByDrawtype": "Filtrar por tipografia",
                 "filterByTag": "Filtrar por etiqueta",
                 "filterOptions": "Opções de filtro",
                 "none": "Nenhum"
@@ -577,7 +577,7 @@
             "title": "Ativar guardar sessão"
         },
         "tabs": {
-            "appearance": "Aparência",
+            "appearance": "Visual",
             "general": "Geral",
             "keyboardShortcuts": "Atalhos de teclado"
         },
