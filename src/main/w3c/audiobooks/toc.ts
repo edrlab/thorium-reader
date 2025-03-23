@@ -520,7 +520,7 @@ if (require.main === module) {
     `;
 
     const manifestParsed = JSON.parse(w3cManifest);
-    w3cPublicationManifestToReadiumPublicationManifest(manifestParsed, (uniqueResources) => {
+    void w3cPublicationManifestToReadiumPublicationManifest(manifestParsed, (uniqueResources) => {
         const toc = extract_TOC(el, uniqueResources);
 
         console.log("TOC");
@@ -533,5 +533,4 @@ if (require.main === module) {
         return undefined;
 
     });
-
 }

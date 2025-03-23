@@ -22,7 +22,7 @@ export function apiSubscribeFactory(storeCb: () => Store<any>) {
         const lastApiSuccess = store.getState().api[LAST_API_SUCCESS_ID];
         let lastSuccessTime = lastApiSuccess?.lastTime || 0;
 
-        cb();
+        void cb();
 
         return store.subscribe(() => {
             const state = store.getState();
@@ -34,7 +34,7 @@ export function apiSubscribeFactory(storeCb: () => Store<any>) {
                 if (!data.error) {
                     const path = `${data.moduleId}/${data.methodId}` as TApiMethodName;
                     if (pathArrayToRefresh.includes(path)) {
-                        cb();
+                        void cb();
                     }
                 }
             }

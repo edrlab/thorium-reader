@@ -97,7 +97,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 onClick={() => {
 
                                     if (ln.type === ContentType.Html || ln.type === ContentType.Xhtml) {
-                                        this.props.link(
+                                        void this.props.link(
                                             ln,
                                             this.props.location,
                                         );
@@ -131,7 +131,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 onClick={() => {
 
                                     if (ln.type === ContentType.Html || ln.type === ContentType.Xhtml) {
-                                        this.props.link(
+                                        void this.props.link(
                                             ln,
                                             this.props.location,
                                         );

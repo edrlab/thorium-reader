@@ -228,7 +228,7 @@ const yargsInit = () =>
                 if (openPublicationRequestedBool) {
 
                     // flush session because user ask to read a publication
-                    flushSession();
+                    await flushSession();
 
                     // pathArgv can be an url with deepLinkInvocation in windows
                     // https://github.com/oikonomopo/electron-deep-linking-mac-win
@@ -316,7 +316,7 @@ export function commandLineMainEntry(
     debug("processArgv", processArgv, "arg", argFormated);
 
     try {
-        y.parse(argFormated);
+        void y.parse(argFormated);
     } catch (e) {
         debug("YARGS ERROR !!!!!", e);
     }
