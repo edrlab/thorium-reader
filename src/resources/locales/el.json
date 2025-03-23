@@ -123,9 +123,9 @@
         "annotations": {
             "descAuthor": "από '{{- author}}'",
             "descCreator": "δημιουργήθηκε από",
-            "descList": "{{- nb}} σημειώσεις {{- creator}} θα εισαγχθούν στον τίτλο '{{- title}}' {{- author}}",
-            "descNewer": "Συγκρούσεις: {{- nb}} νεώτερες σημειώσεις",
-            "descOlder": "Συγκρούσεις: {{- nb}} παλιότερες σημειώσεις",
+            "descList": "{{- count}} σημειώσεις {{- creator}} θα εισαγχθούν στον τίτλο '{{- title}}' {{- author}}",
+            "descNewer": "Συγκρούσεις: {{- count}} νεώτερες σημειώσεις",
+            "descOlder": "Συγκρούσεις: {{- count}} παλιότερες σημειώσεις",
             "descTitle": "Τίτλος σημειώσεων: ",
             "importAll": "Εισαγωγή όλων των σημειώσεων",
             "importWithoutConflict": "Εισαγωγή μόνο των σημειώσεων απαλλαγμένων από συγκρούσεις",
@@ -134,7 +134,7 @@
         },
         "cancel": "Ακύρωση",
         "deleteAnnotations": "Διαγραφή σημειώσεων;",
-        "deleteAnnotationsText": "Είσαι σίγουρος/η για τη διαγραφή σημειώσεων {{- annotationListLength}};",
+        "deleteAnnotationsText": "Είσαι σίγουρος/η για τη διαγραφή σημειώσεων {{- count}};",
         "deleteBookmarks": "",
         "deleteBookmarksText": "",
         "deleteFeed": "Διαγραφή καταλόγου;",
@@ -439,7 +439,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} αποτελέσματα",
+                "founds": "{{- count}} αποτελέσματα",
                 "input": "κείμενο προς ανάκτηση",
                 "next": "Επόμενο",
                 "notFound": "καμία αντιστοιχία",
