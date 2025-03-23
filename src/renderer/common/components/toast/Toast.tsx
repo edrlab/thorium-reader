@@ -34,6 +34,7 @@ interface IBaseProps extends TranslatorProps {
     displaySystemNotification?: boolean;
     type?: ToastType;
     publicationTitle?: string;
+    publicationHash?: string;
     // openReader? : (publicationView: PublicationView) => void;
 }
 
@@ -187,7 +188,7 @@ export class Toast extends React.Component<IProps, IState> {
                             // ignore
                         }
                     }
-                }>{this.props.publicationTitle ?
+                }>{this.props.publicationTitle || this.props.publicationHash ?
                     <span>
                         {this.props.message}
                         <br/>
@@ -196,7 +197,7 @@ export class Toast extends React.Component<IProps, IState> {
                             to={{
                                 ...location,
                                 pathname: "/library",
-                                search: `?focus=search&searchValue=${this.props.publicationTitle}`,
+                                search: `?focus=search${this.props.publicationHash ? "&searchPubHash=" + encodeURIComponent(this.props.publicationHash) : ""}${this.props.publicationTitle ? "&searchPubTitle=" + encodeURIComponent(this.props.publicationTitle) : ""}`,
                             }}
                             onClick={(e) => {
                                 if (e.altKey || e.shiftKey || e.ctrlKey) {

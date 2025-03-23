@@ -72,6 +72,7 @@ export class ToastManager extends React.Component<IProps, IState> {
                                 type={toast.type}
                                 displaySystemNotification={false}
                                 publicationTitle={toast.publicationTitle}
+                                publicationHash={toast.publicationHash}
                             />;
                         case ToastType.Default:
                             return <Toast

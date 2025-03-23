@@ -14,14 +14,15 @@ import { diMainGet } from "readium-desktop/main/di";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
-import { all as allTyped, call as callTyped } from "typed-redux-saga/macro";
-
+import { all as allTyped, call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 import { importFromFsService } from "./importFromFs";
 import { importFromLinkService } from "./importFromLink";
 import { importFromStringService } from "./importFromString";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { getTranslator } from "readium-desktop/common/services/translator";
+import { RootState } from "readium-desktop/main/redux/states";
+import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/import");
@@ -38,7 +39,6 @@ export function* importFromLink(
     const translate = getTranslator().translate;
 
     try {
-
         const [publicationDocument, alreadyImported] = yield* callTyped(importFromLinkService, link, pub);
 
         if (!publicationDocument) {
@@ -48,27 +48,32 @@ export function* importFromLink(
         const publicationViewConverter = diMainGet("publication-view-converter");
         const publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
 
+        const locale = yield* selectTyped((state: RootState) => state.i18n.locale);
+        // convertMultiLangStringToLangString
+        const pubTitleLangStr = convertMultiLangStringToString(publicationView.publicationTitle || publicationView.documentTitle || "", locale);
 
         if (alreadyImported) {
             yield put(
                 toastActions.openRequest.build(
                     ToastType.Success,
                     translate("message.import.alreadyImport",
-                        { title: publicationView.documentTitle }),
-                    publicationView.documentTitle,
+                        { title: pubTitleLangStr }),
+                    pubTitleLangStr,
+                    undefined,
+                    publicationDocument.hash,
                 ),
             );
-
         } else {
             yield put(
                 toastActions.openRequest.build(
                     ToastType.Success,
                     translate("message.import.success",
-                        { title: publicationView.documentTitle }),
-                    publicationView.documentTitle,
+                        { title: pubTitleLangStr }),
+                    pubTitleLangStr,
+                    undefined,
+                    publicationDocument.hash,
                 ),
             );
-
         }
 
         return publicationView;
@@ -146,26 +151,32 @@ export function* importFromFs(
 
                     const publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
 
+                    const locale = yield* selectTyped((state: RootState) => state.i18n.locale);
+                    // convertMultiLangStringToLangString
+                    const pubTitleLangStr = convertMultiLangStringToString(publicationView.publicationTitle || publicationView.documentTitle || "", locale);
+
                     if (alreadyImported) {
                         yield put(
                             toastActions.openRequest.build(
                                 ToastType.Success,
                                 translate("message.import.alreadyImport",
-                                    { title: publicationView.documentTitle }),
-                                publicationView.documentTitle,
+                                    { title: pubTitleLangStr }),
+                                pubTitleLangStr,
+                                undefined,
+                                publicationDocument.hash,
                             ),
                         );
-
                     } else {
                         yield put(
                             toastActions.openRequest.build(
                                 ToastType.Success,
                                 translate("message.import.success",
-                                    { title: publicationView.documentTitle }),
-                                publicationView.documentTitle,
+                                    { title: pubTitleLangStr }),
+                                pubTitleLangStr,
+                                undefined,
+                                publicationDocument.hash,
                             ),
                         );
-
                     }
 
                     return publicationView;

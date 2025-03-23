@@ -12,5 +12,6 @@ export interface ToastState {
     type: ToastType;
     data: string;
     publicationIdentifier: string | undefined;
-    publicationTitle: string;
+    publicationTitle: string | undefined;
+    publicationHash: string | undefined;
 }

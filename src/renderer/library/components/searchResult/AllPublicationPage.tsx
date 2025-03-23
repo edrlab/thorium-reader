@@ -400,15 +400,16 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
     const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const searchValue = queryParams.get("searchValue") || undefined;
+    const searchPubTitle = queryParams.get("searchPubTitle") || undefined;
+    const searchPubHash = queryParams.get("searchPubHash") || undefined;
 
     React.useEffect(() => {
-        const val = searchValue || "";
+        const val = searchPubHash ? `id:${searchPubHash}` : (searchPubTitle || "");
         if (val && props.focusInputRef?.current && props.focusInputRef.current.value !== val) {
             props.focusInputRef.current.value = val;
             onInputChange(val);
         }
-    }, [searchValue, onInputChange, props.focusInputRef, props.focusInputRef?.current?.value]);
+    }, [searchPubHash, searchPubTitle, onInputChange, props.focusInputRef, props.focusInputRef?.current?.value]);
 
     return (
         <div className={classNames(stylesInput.form_group, stylesInput.form_group_allPubSearch)}>
@@ -436,8 +437,8 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
                 onChange={(e) => {
                     // setValue(e.target.value);
                     const val = (e.target.value || "").trim();
-                    if (queryParams.has("searchValue")) {
-                        // navigate(location.pathname + (val ? `?focus=search&searchValue=${encodeURIComponent(val)}` : ""), {
+                    if (queryParams.has("searchPubTitle") || queryParams.has("searchPubHash")) {
+                        // navigate(location.pathname + (val ? `?focus=search&searchPubTitle=${encodeURIComponent(val)}` : ""), {
                         //     state: location.state,
                         //     replace: true,
                         // });
@@ -1386,6 +1387,8 @@ interface IColumns {
     // colIdentifier: string;
     // colPublicationType: string;
     // colProgression: string;
+
+    col_pubHash: string;
 }
 
 // https://gist.github.com/ggascoigne/646e14c9d54258e40588a13aabf0102d
@@ -1681,6 +1684,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 // colProgression: "Progression",
                 // colIdentifier: identifier,
                 // colPublicationType: publicationType,
+
+                col_pubHash: "id:" + publicationView.publicationHash,
             };
             return cols;
         });
@@ -1929,6 +1934,12 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 //     accessor: "colPublicationType",
                 // sortType: sortFunction,
                 // },
+
+                {
+                    Header: "Publication Hash",
+                    accessor: "col_pubHash",
+                    sortType: sortFunction,
+                },
             ];
         return arr;
     }, [__]);
@@ -1994,7 +2005,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     const initialState: UsePaginationState<IColumns> & TableState<IColumns> = {
         pageSize: PAGESIZE, // displayType === DisplayType.List ? 20 : 10;
         pageIndex: 0,
-        hiddenColumns: displayType === DisplayType.Grid ? ["colLanguages", "colPublishers", "colPublishedDate", "colLCP", "colDuration", "colDescription", "col_a11y_accessibilitySummary"] : [],
+        hiddenColumns: displayType === DisplayType.Grid ? ["colLanguages", "colPublishers", "colPublishedDate", "colLCP", "colDuration", "colDescription", "col_a11y_accessibilitySummary", "col_pubHash"] : ["col_pubHash"],
     };
     const opts:
         TableOptions<IColumns> &
