@@ -11,7 +11,7 @@ import { ICssSelector, IProgressionSelector, IReadiumAnnotation, IReadiumAnnotat
 import { v4 as uuidv4 } from "uuid";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { ANNOTATION_DEFAULT_COLOR, annotationColorCodeToColorSet, IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { rgbToHex } from "readium-desktop/common/rgb";
 import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
 import { getDocumentFromICacheDocument } from "readium-desktop/utils/xmlDom";
@@ -25,6 +25,7 @@ import { IRangeInfo, ISelectionInfo } from "@r2-navigator-js/electron/common/sel
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { availableLanguages } from "readium-desktop/common/services/translator";
+import { NOTE_DEFAULT_COLOR, noteColorCodeToColorSet } from "readium-desktop/common/redux/states/note";
 
 // Logger
 const debug = debug_("readium-desktop:common:readium:annotation:converter");
@@ -316,7 +317,7 @@ export async function convertAnnotationStateToReadiumAnnotation(annotation: IAnn
             type: "TextualBody",
             value: comment || "",
             format: "text/plain",
-            color: annotationColorCodeToColorSet[rgbToHex(color)] || ANNOTATION_DEFAULT_COLOR,
+            color: noteColorCodeToColorSet[rgbToHex(color)] || NOTE_DEFAULT_COLOR,
             tag: (tags || [])[0] || "",
             highlight,
             //   textDirection: "ltr",

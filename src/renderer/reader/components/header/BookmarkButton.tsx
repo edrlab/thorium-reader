@@ -31,6 +31,7 @@ import { DEBUG_KEYBOARD } from "readium-desktop/common/keyboard";
 import { ReadiumElectronBrowserWindow } from "@r2-navigator-js/electron/renderer/webview/state";
 import { readerLocalActionHighlights } from "../../redux/actions";
 import { BookmarkEdit } from "../BookmarkEdit";
+import { IColor } from "@r2-navigator-js/electron/common/highlight";
 
 export interface IProps {
     shortcutEnable: boolean;
@@ -190,7 +191,8 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
     }, [dispatch, ttsState, mediaOverlaysState, __, toasty]);
 
     const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
-    const toggleBookmark = React.useCallback((name: string = "") => {
+    const colorDefault = useSelector((state: IReaderRootState) => state.reader.config.annotation_defaultColor);
+    const toggleBookmark = React.useCallback((name: string = "", color: IColor = colorDefault, tag?: string  ) => {
 
         if (isNavigator) {
 
@@ -220,6 +222,8 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     index: bookmarkTotalCount + 1,
                     locatorExtended: locatorExtended,
                     creator: creatorMyself,
+                    color,
+                    tags: tag ? [tag] : undefined,
                 });
             }
 
@@ -240,12 +244,14 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                         index: bookmarkTotalCount + 1,
                         locatorExtended: locatorExtended,
                         creator: creatorMyself,
+                        color,
+                        tags: tag ? [tag] : undefined,
                     });
                 }
             }
         }
     }, [
-        __, addBookmark, deleteBookmark, locatorExtended, isNavigator, toasty, bookmarkSelected, bookmarkTotalCount, creatorMyself,
+        __, addBookmark, deleteBookmark, locatorExtended, isNavigator, toasty, bookmarkSelected, bookmarkTotalCount, creatorMyself, colorDefault,
     ],
     );
 
@@ -363,6 +369,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
         }
 
     }, [allBookmarks, allBookmarksForCurrentLocationHref, locatorExtended, isEpubNavigator, webviewLoaded, isAudiobook]);
+    const noteDefaultColor = useSelector((state: IReaderRootState) => state.reader.config.annotation_defaultColor);
 
     return <>
 
@@ -432,13 +439,19 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                 // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
                 // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
                 >
-                    <BookmarkEdit locatorExtended={locatorExtended} name={""} toggleBookmark={(name) => {
-                        toggleBookmark(name);
+                    <BookmarkEdit
+                        locatorExtended={locatorExtended}
+                        name={""}
+                        save={(name, color, tag) => {
+                            toggleBookmark(name, color, tag);
 
-                        setTimeout(() => {
-                            keyboardFocusRequest(true);
-                        }, 200);
-                    }} />
+                            setTimeout(() => {
+                                keyboardFocusRequest(true);
+                            }, 200);
+                        }}
+                        color={noteDefaultColor}
+                        tags={[]}
+                    />
                     <Popover.Arrow style={{ fill: "var(--color-extralight-grey)" }} width={15} height={10} />
                 </Popover.Content>
             </Popover.Portal>
