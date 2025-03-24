@@ -154,7 +154,7 @@
 
     h2 {
         margin: 0;
-        padding-bottom: 2px;
+        // padding-bottom: 2px;
     }
 
     button {
@@ -176,7 +176,7 @@
             width: fit-content;
 
             button {
-                font-size: 16px;
+                font-size: 20px;
                 min-width: 180px;
                 color: var(--color-blue);
             }
@@ -270,7 +270,7 @@
         gap: 10px;
         align-items: end;
         justify-content: space-around;
-        padding: 0 15px;
+        padding: 0 15px 0 6px;
 
         .chatbot_user_input {
             border: 1px solid var(--color-light-grey);
