@@ -196,7 +196,6 @@
         "import": {
             "alreadyImport": "{{- title}} var redan importerad.",
             "fail": "Importen av {{- path}} misslyckades. {{- err}}",
-            "seeInLibrary": "",
             "success": "Importen av {{- title}} är slutförd."
         },
         "open": {

@@ -196,7 +196,6 @@
         "import": {
             "alreadyImport": "{{- title}} уже был импортирован",
             "fail": "Импорт {{- path}} не удался. {{- err}}",
-            "seeInLibrary": "",
             "success": "Импорт {{- title}} закончен."
         },
         "open": {

@@ -36,16 +36,12 @@ function* sameFileImport(action: importActions.verify.TAction) {
             return tuple[0].downloadUrls;
         }).find((urls) => urls.find((u) => u === link.url))
     ) {
-        // const locale = yield* selectTyped((state: ILibraryRootState) => state.i18n.locale);
-        // // convertMultiLangStringToLangString
-        // const pubTitleLangStr = convertMultiLangStringToString(pub.publicationTitle || pub.documentTitle, locale);
-
         yield put(
             toastActions.openRequest.build(
                 ToastType.Success,
                 getTranslator().__("message.import.alreadyImport",
                     {
-                        title: pub.documentTitle || "", // pubTitleLangStr
+                        title: pub.documentTitle || "",
                     },
                 ),
             ),

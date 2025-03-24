@@ -196,7 +196,6 @@
         "import": {
             "alreadyImport": "{{- title}} is al toegevoegd.",
             "fail": "Het toevoegen van {{- path}} is mislukt. {{- err}}",
-            "seeInLibrary": "",
             "success": "Het toevoegen van {{- title}} is gelukt."
         },
         "open": {

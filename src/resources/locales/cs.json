@@ -196,7 +196,6 @@
         "import": {
             "alreadyImport": "Publikace {{- title}} je již nahrána.",
             "fail": "Import {{- path}} selhal: {{- err}}",
-            "seeInLibrary": "",
             "success": "Import publikace {{- title}} dokončen."
         },
         "open": {
