@@ -175,13 +175,13 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
             const annotationParsed: IAnnotationPreParsingState = {
                 uuid,
                 target: incommingAnnotation.target,
-                comment: incommingAnnotation.body.value,
-                color: hexToRgb(noteColorSetToColorCode[incommingAnnotation.body.color] ||
-                    noteColorSetToColorCode[noteColorCodeToColorSet[incommingAnnotation.body.color] || NOTE_DEFAULT_COLOR],
+                comment: incommingAnnotation.body?.value,
+                color: hexToRgb(noteColorSetToColorCode[incommingAnnotation.body?.color] ||
+                    noteColorSetToColorCode[noteColorCodeToColorSet[incommingAnnotation.body?.color] || NOTE_DEFAULT_COLOR],
                 ),
-                drawType: (isNil(incommingAnnotation.body.highlight) || incommingAnnotation.body.highlight === "solid") ? "solid_background" : incommingAnnotation.body.highlight,
+                drawType: (isNil(incommingAnnotation.body?.highlight) || incommingAnnotation.body?.highlight === "solid") ? "solid_background" : incommingAnnotation.body.highlight,
                 // TODO need to ask to user if the incomming tag is kept or the fileName is used
-                tags: [fileName], // incommingAnnotation.body.tag ? [incommingAnnotation.body.tag] : [],
+                tags: [fileName], // incommingAnnotation.body?.tag ? [incommingAnnotation.body?.tag] : [],
                 modified: incommingAnnotation.modified ? tryCatchSync(() => new Date(incommingAnnotation.modified).getTime(), fileName) : undefined,
                 created: tryCatchSync(() => new Date(incommingAnnotation.created).getTime(), fileName) || currentTimestamp,
                 creator: creator ? {
