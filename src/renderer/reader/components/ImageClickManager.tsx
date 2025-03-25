@@ -109,8 +109,11 @@ let __messages: UIMessage[] = [];
 const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, imageDescription: string, autoPrompt: string, setAutoPrompt: (value: React.SetStateAction<string>) => void }) => {
 
 
-    const { modelSelected, systemPrompt, setSystemPrompt  /*showImage*/ } = React.useContext(ChatContext);
+    const { systemPrompt, setSystemPrompt  /*showImage*/ } = React.useContext(ChatContext);
     const [__] = useTranslator();
+
+    const apiList = useSelector((state: IReaderRootState) => state.apiKeys);
+    const modelSelected = aiSDKModelOptions.filter(e => apiList.map(item => item.provider).includes(e.name.split(" ")[0]))[0];
 
     // const handleModelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     //     const selectedId = event.target.value;
@@ -407,6 +410,10 @@ export const ImageClickManager: React.FC = () => {
     const noDescription = __("chatbot.noDescription").split(__("chatbot.shortDescTitle"));
     const secondPartNoDescription = noDescription[1].split(__("chatbot.detailedDescTitle"));
 
+    const apiList = useSelector((state: IReaderRootState) => state.apiKeys);
+
+    const selectModelItems = aiSDKModelOptions.filter(e => apiList.map(item => item.provider).includes(e.name.split(" ")[0]));
+
 
     return (
     <>
@@ -451,8 +458,8 @@ export const ImageClickManager: React.FC = () => {
                         <div className={stylesChatbot.chatbot_title}>
                             <h2>{__("chatbot.title")}</h2>
                             <Select
-                                items={aiSDKModelOptions}
-                                selectedKey={modelSelected.id}
+                                items={selectModelItems}
+                                selectedKey={selectModelItems[0].id}
                                 onSelectionChange={(key) => {
                                     // console.log("selectionchange: ", key);
                                     const found = aiSDKModelOptions.find(({ id: _id }) => _id === key);
@@ -482,7 +489,7 @@ export const ImageClickManager: React.FC = () => {
                                     className={stylesChatbot.image_display_button}
                                     title={showImage ? "hide image" : "show image"}
                                     onClick={() => setShowImage(!showImage)}>
-                                    <SVG svg={ChevronRight} style={{ transform: showImage ? "rotate(90deg)" : "rotate(-90deg)" }}></SVG>
+                                    <SVG svg={ChevronRight} style={{ transform: showImage ? "rotate(-90deg)" : "rotate(90deg)" }}></SVG>
                                 </button>
                                 : ""
                             }
@@ -543,13 +550,14 @@ export const ImageClickManager: React.FC = () => {
                                     </p>
                             }
                         </div>
-                        {chatEnabled ? "" :
+                        {apiList.length && !chatEnabled ?
                         <div className={stylesChatbot.chatbot_open_title}>
-                            <button  onClick={() => enableChat((enabled) => !enabled)} title={"Chat with AI"}>
+                            <button  onClick={() => enableChat((enabled) => !enabled)} title={__("chatbot.generateDescriptionTitle")}>
                                 <SVG svg={AiIcon} ariaHidden />
                                 <p>{__("chatbot.generateDescriptionTitle")}</p>
                             </button>
                         </div>
+                        : <></>
                         }
                         {chatEnabled ?
                             <ChatContext.Provider value={{
