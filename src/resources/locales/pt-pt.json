@@ -135,8 +135,8 @@
         "cancel": "Cancelar",
         "deleteAnnotations": "Eliminar anotações?",
         "deleteAnnotationsText": "Quer mesmo eliminar {{- annotationListLength}} anotações?",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarks": "Eliminar marcadores?",
+        "deleteBookmarksText": "Tem a certeza que quer eliminar {{- bookmarkListLength}} marcadores?",
         "deleteFeed": "Eliminar catálogo?",
         "deletePublication": "Eliminar documento?",
         "import": "Confirmar importação:",
@@ -196,6 +196,10 @@
         "import": {
             "alreadyImport": "Já tinha sido importado: {{- title}}.",
             "fail": "Falha ao importar {{- path}}. Erro: {{- err}}",
+<<<<<<< HEAD
+=======
+            "seeInLibrary": "Ver na biblioteca",
+>>>>>>> a514e476 (Translated using Weblate (Portuguese (Portugal)))
             "success": "Foi concluída a importação de {{- title}}."
         },
         "open": {
@@ -374,7 +378,7 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Marcador n.º {{- index}}"
         },
         "divina": {
             "mute": "Silenciar áudio",
