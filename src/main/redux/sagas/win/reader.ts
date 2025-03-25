@@ -48,6 +48,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const transientConfigMerge = {...readerConfigInitialState, ...config};
     const creator = yield* selectTyped((_state: RootState) => _state.creator);
     const annotationImportQueue = yield* selectTyped((_state: RootState) => _state.annotationImportQueue);
+    const apiKeys = yield* selectTyped((_state: RootState) => _state.apiKeys);
 
     const publicationRepository = diMainGet("publication-repository");
     let tag: string[] = [];
@@ -109,6 +110,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                 tag,
             },
             annotationImportQueue,
+            apiKeys,
         },
     } as readerIpc.EventPayload);
 }

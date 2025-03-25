@@ -51,6 +51,7 @@ import { readerLockReducer } from "./lock";
 import { imageClickReducer } from "./imageClick";
 import { dockReducer } from "readium-desktop/common/redux/reducers/dock";
 import { readerBookmarkTotalCountReducer } from "readium-desktop/common/redux/reducers/reader/bookmarkTotalCount";
+import { apiKeysReducer } from "readium-desktop/common/redux/reducers/api_key";
 
 export const rootReducer = () => {
 
@@ -202,6 +203,7 @@ export const rootReducer = () => {
         publication: combineReducers({
             tag: tagReducer,
         }),
+        apiKeys: apiKeysReducer,
         annotationImportQueue: fifoReducer
         <
             annotationActions.pushToAnnotationImportQueue.TAction,
